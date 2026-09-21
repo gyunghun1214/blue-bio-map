@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blue-bio Value Map · alt F4</title>
+  <meta name="description" content="해양생물의 활용 근거와 보전 정보를 함께 살펴보는 alt F4 연구 프로토타입.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b253c'/%3E%3Cpath d='M5 13q5-6 11 0t11 0M5 21q5-6 11 0t11 0' fill='none' stroke='%233de0c4' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="style.css">
+  <script defer src="vendor/leaflet.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="header"><a class="brand" href="./" aria-label="Blue-bio Value Map 처음으로"><span class="brand-mark" aria-hidden="true">≈</span><span>Blue-bio <strong>Value Map</strong></span></a><span class="project-tag">alt F4 <span> / </span> OCEAN 20 CHALLENGE</span><span class="version">연구 프로토타입 0.1</span></header>
+<main>
+<div class="intro"><div><div class="eyebrow">MARINE EVIDENCE EXPLORER</div><h1>바다의 가능성, 근거에서부터.</h1><p>해양생물의 활용 근거와 보전 정보를 한곳에서 비교합니다.</p></div><div class="scope"><strong>한반도 주변 해역</strong><span>122–136°E · 30–43°N</span></div></div>
+<nav class="tabs" aria-label="화면 선택"><button data-view="explore" class="active" aria-current="page">01 <span>탐색 지도</span></button><button data-view="compare">02 <span>비교와 지표</span></button><button data-view="method">03 <span>근거와 구현 범위</span></button></nav>
+<div class="notice"><span class="notice-label">실제 자료</span><p>학명·출현 자료를 연결한 첫 버전입니다. 활용가치와 보전 점수는 <strong>아직 산출하지 않았습니다.</strong></p><span id="snapshot-date"></span></div>
+<section id="explore" class="view active" aria-label="종 탐색 지도">
+<div class="explorer">
+<aside class="species-pane"><div class="pane-title"><h2>탐색 후보</h2><span id="species-count">—</span></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="종 이름 또는 학명 검색" aria-label="종 이름 또는 학명 검색"></label><div id="species-list" class="species-list"><p class="loading">자료를 불러오는 중입니다.</p></div><div class="list-foot"><span class="micro-label">이번 단계</span><p>종을 선택하고 출현 근거와<br>아직 필요한 자료를 확인하세요.</p><button class="text-button" id="go-compare">선택 후보 비교하기 →</button></div></aside>
+<div class="map-pane"><div class="map-title"><span><i class="dot"></i> OBIS 출현기록</span><button id="reset-map" title="선택 종의 전체 범위 보기">전체 범위 ↗</button></div><div id="map" role="region" aria-label="한반도 주변 출현기록 지도"></div><div class="map-key"><span><i class="map-symbol"></i> 1° 격자로 묶은 기록</span><span>색은 종 구분 · 개체수/활용점수 아님</span></div><div class="map-bottom"><div><strong id="map-count">—</strong><span>표시 대상 기록</span></div><div><strong id="map-cells">—</strong><span>출현 격자</span></div><div><strong id="map-years">—</strong><span>기록 연도</span></div></div></div>
+<aside id="detail" class="detail-pane" aria-live="polite"><p class="loading">종별 근거를 준비하고 있습니다.</p></aside>
+</div>
+</section>
+<section id="compare" class="view" aria-label="종 비교와 지표">
+<div class="section-heading"><div><h2>무엇을 알고, 무엇이 부족한가</h2><p>빈칸은 낮은 가치가 아니라, 아직 확인하지 못한 근거입니다.</p></div><span class="pill">검수된 자료부터 연결</span></div>
+<div id="comparison" class="comparison"></div>
+<div class="matrix-layout"><div><div class="section-heading compact"><h2>활용 × 보전 매트릭스</h2><button id="simulate" aria-pressed="false">가상 작동 예시 보기</button></div><div id="matrix-note" class="matrix-note">실제 종의 점수가 준비되면 이곳에 표시됩니다. 지금은 점수를 산출하지 않아 배치하지 않습니다.</div><div class="matrix" id="matrix"><div class="quadrant q1"><strong>보전 우선 검토</strong><span>보전·모니터링 근거 확인</span></div><div class="quadrant q2"><strong>대체생산 연구 검토</strong><span>높은 활용 근거 + 높은 보전 필요</span></div><div class="quadrant q3"><strong>기초조사 검토</strong><span>추가 근거와 관측 필요</span></div><div class="quadrant q4"><strong>활용 연구 검토</strong><span>안전성·생산성 추가 확인</span></div><span class="axis-y">보전 필요성 ↑</span><span class="axis-x">활용 근거 →</span><div id="matrix-points"></div></div></div><aside class="matrix-explanation"><div class="eyebrow">HOW TO READ</div><h3>두 축을 따로<br>보는 이유</h3><p>활용 가능성이 높아도 보전이 필요할 수 있습니다. 두 값을 합쳐 위험이 가려지지 않도록 분리합니다.</p><div class="rule"><b>활용가치</b><p>식량 근거(MFPI)와 생리활성 근거(MBPI)를 검토합니다.</p></div><div class="rule"><b>보전 필요성</b><p>보전 평가와 평가 시점을 확인합니다. 출현기록 수만으로 판정하지 않습니다.</p></div><div class="rule"><b>정보충분도</b><p>자료 유무와 품질을 별도로 보여줍니다. 미확인 항목은 0점으로 바꾸지 않습니다.</p></div></aside></div>
+</section>
+<section id="method" class="view" aria-label="근거와 구현 범위">
+<div class="section-heading"><div><h2>지금 할 수 있는 일과, 다음 검증</h2><p>화면이 작동하는 것과 과학적 타당성이 검증되는 것은 서로 다른 단계입니다.</p></div></div>
+<div class="method-grid"><article class="method-card"><span class="step">01 / 구현됨</span><h3>학명과 출현 연결</h3><p>WoRMS의 정명·AphiaID를 기준으로 OBIS 기록을 조회합니다. 지역 범위를 확인하고 1° 격자로 묶어 지도에 표시합니다.</p><ul><li>실제 자료 기반 검색·선택</li><li>종별 출현 격자와 연도 확인</li><li>원 데이터셋과 출처 확인</li></ul></article><article class="method-card"><span class="step amber">02 / 자료 확인 필요</span><h3>활용·보전 근거</h3><p>식량·생리활성·보전 평가 자료를 아직 수집·검수하지 않았습니다. 점수와 순위도 산출하지 않았습니다.</p><ul><li>영양성분의 단위·식품 상태 확인</li><li>종–화합물–실험 관계 검수</li><li>IUCN 평가 연도·범위 확인</li></ul></article><article class="method-card"><span class="step amber">03 / 검증 필요</span><h3>설명 가능한 지표</h3><p>지표는 팀의 제안입니다. 비교 기준과 가중치를 정하고, 별도 사례와 사용자 피드백으로 점검해야 합니다.</p><ul><li>조정용·확인용 사례 분리</li><li>가중치 변화에 따른 결과 확인</li><li>미탐색 후보의 별도 검증</li></ul></article></div>
+<div class="method-bottom"><article><h3>자료를 읽을 때</h3><ul class="large-list"><li>출현기록 수는 개체수나 자원량이 아닙니다.</li><li>현재 지도는 조회·선별된 자료의 위치 요약입니다. 전체 분포나 서식 적합도를 뜻하지 않습니다.</li><li>격자 중심은 실제 채집 지점이 아닙니다. 육지 위에 보일 수 있습니다.</li><li>가상 작동 예시는 실제 종의 평가·예측 결과가 아닙니다.</li><li>수집 시점의 자료를 보관해 사용합니다. 실시간 자동 갱신은 아직 없습니다.</li></ul></article><article><h3>팀 질의응답 연습</h3><details><summary>기존 데이터베이스 검색과 무엇이 다른가요?</summary><p>같은 종을 기준으로 서로 다른 근거를 연결해 한 화면에서 검토하도록 돕는 것이 목표입니다. 현재는 학명과 출현을 연결했고, 활용·보전 자료 통합과 사용자 효용 검증은 다음 단계입니다.</p></details><details><summary>자료가 없으면 가치가 낮은 종인가요?</summary><p>아닙니다. 정보 부족과 낮은 가치를 구분합니다. 현재 미확인 항목은 0점이 아니라 산출 보류로 표시합니다.</p></details><details><summary>지금 신약이나 식량 후보를 추천할 수 있나요?</summary><p>아직 아닙니다. 지금 버전은 자료 연결과 탐색 흐름을 보여줍니다. 실험 근거, 식량 관련 근거와 보전 평가를 검수하고 지표를 검증한 뒤 연구 후보 비교를 지원할 계획입니다.</p></details><details><summary>출현기록이 줄면 멸종위험이 높아지나요?</summary><p>기록 수에는 조사 노력과 자료 제공 차이가 영향을 줄 수 있어 바로 그렇게 판단하지 않습니다. 보전 평가와 관측 자료를 구분해 검토해야 합니다.</p></details></article></div>
+<div class="source-section"><h3>사용한 자료와 수집 방법</h3><p id="collection-note"></p><div id="all-sources"></div><p class="fine">배경 지도: <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">Natural Earth</a> · 1:110m 개요용 경계, public domain. 국경·관할권 판단용이 아닙니다. 지도 도구: Leaflet (BSD-2-Clause).</p></div>
+</section>
+<div id="error" class="error" hidden></div>
+</main>
+<footer><strong>Blue-bio Value Map</strong><span>활용의 가능성과 보전의 필요성을 함께.</span><span>alt F4 · 2026</span></footer>
+</body></html>
