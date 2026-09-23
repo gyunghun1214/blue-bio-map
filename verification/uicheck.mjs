@@ -93,6 +93,7 @@ try{
   check('Live map title says operational 1° cells',(await evaluate("document.getElementById('map-source').textContent")).includes('운영 지도'));
   t=await pick(836033);
   check('Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review',['지도 셀','공개 셀','왜 공개할 수 있는가','CC BY-NC 322건','육지 위 좌표','운영 DB에서 검토 중인 기존 기록','1°를 적용','기존 OBIS 시험 수집 26건'].every(x=>t.includes(x)),t);
+  check('Merged PR #1: evidence coverage row next to the map section, scores still withheld',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('통합점수 산출 보류')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
   check('Cell popup: period, sea area, source, licence, spatial resolution',['기간 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','조사 지점 2곳 (기록 3건','kbif','CC0 1.0','원좌표·개체수·분포 범위가 아닙니다'].every(x=>popup.includes(x)),popup);
   check('Cells use dashed style distinct from demo grid',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray'))"));
