@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Desktop live: connection state shows actual profile count",
+    "status": "PASS",
+    "detail": "운영 DB 연결됨 · 3종"
+  },
+  {
+    "name": "Live note uses received profile count (not fixed 2종)",
+    "status": "PASS",
+    "detail": "운영 DB에서 발행된 3종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 시연 자료와 합산하지 않습니다. 좌표·민감도·관측 품질은 검토 중이며, 지도와 점수는 아직 발행하지 않았습니다."
+  },
+  {
+    "name": "List: sea cucumber card shows 출현자료 미수집 (not 0건)",
+    "status": "PASS",
+    "detail": "[\"발행된 자료 요약 참굴 Magallana gigas 수집된 기록 26건\",\"발행된 자료 요약 살오징어 Todarodes pacificus 수집된 기록 2건\",\"발행된 자료 요약 해삼 Apostichopus japonicus 수집된 기록 출현자료 미수집\"]"
+  },
+  {
+    "name": "Oyster: nutrition 144 / measured 107 / calculated 37 / AFCD 25 / unit 4 / basis 144",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: aquaculture 4 shown as evidence records, not production",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: conservation withheld",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: compounds 미수집, occurrences 26 kept",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: 122 compounds, no quantitative activity",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: no efficacy claim",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: CMNPD source and NC-SA terms visible in compound summary",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: 출현자료 미수집, not 위치 공개 검토 중",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: conservation withheld, nutrition 미수집",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber map: no fabricated positions",
+    "status": "PASS",
+    "detail": "출현자료를 수집하지 않은 종입니다. 지도에 표시할 위치가 없으며, 배경 지도는 분포를 뜻하지 않습니다. | 해당 없음 | shapes=0"
+  },
+  {
+    "name": "Squid: 미수집 vs 미검토 distinguished",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n살오징어\n\nTodarodes pacificus\n\nAphiaID\n342067\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n1906년에 수집된 박물관 표본 자료입니다. 현재 서식 현황이나 자원량을 나타내지 않습니다.\n\n수집된 기록\n2건\n관측 기간\n1906\n원자료 학명\nTodarodes pacificus\n위치 공개 검토 중\n좌표 불확실성 미기재 2건 · 육지 위 품질경고 0건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n미검토\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nNational Museum of Natural History Invertebrate Zoology Collections ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "No CMNPD raw data / coordinates in page",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Compare table: per-species nutrition/compounds/conservation from API",
+    "status": "PASS",
+    "detail": "탐색 후보 3종의 자료 연결 현황\n확인 항목\t참굴\nMagallana gigas\n\t살오징어\nTodarodes pacificus\n\t해삼\nApostichopus japonicus\n\n학명·식별자\tWoRMS 확인\nAphiaID 836033\n\tWoRMS 확인\nAphiaID 342067\n\tWoRMS 확인\nAphiaID 241776\n\n출현기록\t26건 · 위치 검토 중\n2008–2014 · 조회·선별된 자료\n\t2건 · 위치 검토 중\n1906 · 조회·선별된 자료\n\t미수집\n식량 근거 · MFPI\t영양 144건\n실측 107건 · 계산 37건 · 기준량 가정 144건\n\t미수집\t미수집\n생리활성 · MBPI\t미수집\t미수집\t보고 화합물 122개\n정량 활성 자료 없음\n\n보전 평가 · MCUI\t근거 부족으로 보류\t미검토\t근거 부족으로 보류\n통합점수 · BBVI\t산출 보류\t산출 보류\t산출 보류"
+  },
+  {
+    "name": "Sources: AFCD/CMNPD show their own change notes, not OBIS labels",
+    "status": "PASS",
+    "detail": "참굴 · 학명\nMolluscaBase eds. (2026). MolluscaBase. Magallana gigas (Thunberg, 1793). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033 on 2026-09-22\nWoRMS 원문 ↗ · WoRMS 이용조건 · CC BY 텍스트\n살오징어 · 학명\nMolluscaBase eds. (2026). MolluscaBase. Todarodes pacificus (Steenstrup, 1880). Accessed through: World Register of Marine Species at: https"
+  },
+  {
+    "name": "Demo mode: separate 3 species with 1° grid map",
+    "status": "PASS",
+    "detail": "별도 시연 자료 · 3종 | shapes=14 | 기존 시연 자료의 1° 격자입니다. 운영 DB 자료와 별개입니다."
+  },
+  {
+    "name": "Mobile 390px mobile-sea-cucumber: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390,\"wide\":0}"
+  },
+  {
+    "name": "Mobile 390px mobile-oyster: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390,\"wide\":0}"
+  },
+  {
+    "name": "API failure: error shown, no stale data",
+    "status": "PASS",
+    "detail": "{\"state\":\"불러오기 실패\",\"error\":\"발행 자료를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.\",\"list\":\"다시 불러오기를 눌러 주세요.\",\"detail\":\"\"}"
+  },
+  {
+    "name": "Empty API response: \"아직 발행된 종이 없습니다\"",
+    "status": "PASS",
+    "detail": "{\"state\":\"연결됨 · 발행 자료 없음\",\"error\":\"\",\"list\":\"아직 발행된 종이 없습니다.\",\"detail\":\"\"}"
+  },
+  {
+    "name": "v2 keys absent: falls back to production_summary, no fake 0/미수집",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n통합점수 산출 보류\n생산·영양·생리활성·보전 근거 미검토. 점수 미산출.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "No uncaught page errors",
+    "status": "PASS",
+    "detail": ""
+  }
+]
