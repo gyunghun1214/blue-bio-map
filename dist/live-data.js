@@ -19,15 +19,18 @@ async function loadPublishedProfiles() {
     // evidence_summary v2 adds nutrition/compounds/conservation/production; older rows fall back to production_summary.
     const v2=info.summary_version===2;
     const noOccurrences=info.occurrence_status==='not_collected';
+    // An absent or malformed count is unknown, not an observed zero.
+    const recordCount=Number.isSafeInteger(info.record_count) && info.record_count>=0
+      ? info.record_count : null;
     return {aphiaID:Number(p.aphia_id),label:p.korean_name||p.scientific_name,name:p.scientific_name,
-      group:'발행된 자료 요약',live:true,recordCount:Number(info.record_count)||0,
+      group:'발행된 자료 요약',live:true,recordCount:noOccurrences?null:recordCount,
       yearStart:info.period_start?Number(info.period_start.slice(0,4)):null,
       yearEnd:info.period_end?Number(info.period_end.slice(0,4)):null,
       cells:[],summary:p.summary,info,productionSummary:p.production_summary,
       sources:citations.filter(c=>c.id!=='worms-taxonomy'),
       wormsUrl:taxonomy?.url,wormsCitation:taxonomy?.citation||'학명 출처 확인 필요',
       v2,noOccurrences,
-      publishedAt:p.published_at,status:noOccurrences?'출현자료 미수집':'위치 공개 검토 중',scores:null};
+      publishedAt:p.published_at,status:noOccurrences?'출현자료 미수집':recordCount===null?'출현자료 상태 확인 필요':'위치 공개 검토 중',scores:null};
   });
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
   return {live:true,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 시연 자료와 합산하지 않습니다. 좌표·민감도·관측 품질은 검토 중이며, 지도와 점수는 아직 발행하지 않았습니다.`};
