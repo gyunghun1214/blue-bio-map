@@ -46,3 +46,18 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 출현자료가 없는 종(`occurrence_status=not_collected`)은 "출현자료 미수집"으로 표시하며, 지도 도형은 만들지 않는다. CMNPD 화합물 요약에는 출처와 CC BY-NC-SA 4.0(비상업·동일조건) 안내를 함께 표시하고, 개별 화합물 자료는 요청하지 않는다.
 
 검증: 서버를 띄운 상태에서 `node verification/uicheck.mjs <출력폴더>`를 실행한다. Chrome headless와 DevTools 프로토콜을 쓰며 추가 의존성은 없다. 2026-09-23 결과는 `verification/2026-09-23/`에 있다(24 PASS, 화면 캡처 포함).
+
+## 운영 지도 셀 (2026-09-24, 운영 DB 반영 · 사이트 온라인 미배포)
+- 운영 모드는 `species_profiles`와 함께 `species_map_cells`(공개 1° 셀)를 읽어 지도에 점선 셀로 표시한다. 팝업에는 기간·해역(LME)·국가·출처·이용조건·해상도(실제 가장 짧은 변)가 나온다. 원좌표와 기록 ID는 API에 없다.
+- 셀 자료: `output/database/development/phase3_map/`(GBIF 입력 고정·SQL), `output/database/publication/publish_map_cells.sql`(발행). 기준은 `output/database/publication/OCCURRENCE_REVIEW.md`.
+- 임시 '지도 시제품' 보기와 `dist/map-prototype.json`은 운영 반영 후 삭제했다.
+- 검증: `python -m http.server 8765 --directory dist` 실행 후 `node verification/uicheck.mjs verification/<날짜>`. 운영 반영 전에는 `FIXTURE=<rest_fixture.json>`으로 로컬 DB 결과를 대신 넣어 검증할 수 있다. 2026-09-24: 로컬 DB 기준 33 PASS, 운영 API 기준 33 PASS.
+
+## 배경 지도 선택 (2026-09-24, 로컬 · 온라인 미배포)
+- 지도 제목 줄의 [기본 / 위성 / 수심] 버튼으로 바꾼다. 선택은 브라우저에만 기억한다(localStorage).
+  - 기본: Natural Earth 1:10m 경계(`scripts/prepare_basemap.py`로 지도 범위만 잘라 `dist/countries.json` 생성, 427 KB). 외부 요청이 없다.
+  - 위성: NASA GIBS Blue Marble(WMTS, 키 불필요). 출처 표시 문구는 GIBS 안내를 따른다.
+  - 수심: GEBCO_2026 WMS. 출처 표시와 "항해용 아님" 문구를 함께 넣었다.
+- 외부 타일을 불러오지 못하면(전환 후 4회 실패, 성공 0회) 기본 지도로 돌아가고 안내 문구를 띄운다.
+- 종을 고르면 그 종의 셀 범위로 확대한다. '전체 범위'로 되돌릴 수 있다. 데스크톱 지도는 높이를 고정하고, 스크롤할 때 화면에 붙어 있다.
+- 검증: 37 PASS(`verification/2026-09-24-basemap/`). 위성·수심 타일 로드, 셀 유지, 위성 서버를 막았을 때 기본 지도로 전환되는지 포함.
