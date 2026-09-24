@@ -41,7 +41,8 @@ const panel=ctx.panel(next.species[0]);
 for(const label of ['12 g / 100 g 가식부','2 mg / 100 g 가식부','양식 원자료','2025','test terms','80%'])assert.ok(panel.includes(label),label);
 const inventory=vm.runInContext('liveEvidence(data.species[0])',ctx);
 assert.match(inventory,/영양 기록 수 · 수집 현황/);
-assert.match(inventory,/식량가치 아님/);
+assert.match(inventory,/운영 공개 요약 · 지표 입력과 별도/);
+assert.match(inventory,/기록 건수는 종 간 영양 비교값이 아닙니다/);
 assert.doesNotMatch(inventory,/영양 성분 값/);
 
 let old=report();delete old.species[0].food_trace;ctx.fetch=async()=>({status:200,ok:true,json:async()=>old});

@@ -1,0 +1,27 @@
+{
+  "method_version": "verified-pilot-1",
+  "status": "provisional_unvalidated",
+  "nutrition": {
+    "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+    "food_item_ids": ["F006288", "F006289", "F006291"],
+    "minimum_species": 3,
+    "components": {"protein_g": "g", "iron_mg": "mg", "zinc_mg": "mg"},
+    "grade_factors": {"measured": 1.0, "calculated": 0.85, "proxy": 0.5},
+    "nutrient_weight": 0.8,
+    "edible_fraction_weight": 0.1,
+    "aquaculture_weight": 0.1
+  },
+  "bioactivity": {
+    "minimum_compounds_per_stratum": 3,
+    "single_doi_factor": 0.75,
+    "multiple_doi_factor": 1.0,
+    "primary_aggregation": "max",
+    "sensitivity_aggregation": "median",
+    "eligible_endpoints": ["IC50", "XC50", "EC50", "AC50", "Ki", "Kd", "Potency", "ED50"]
+  },
+  "conservation": {
+    "category_scores": {"LC": 10, "NT": 35, "VU": 60, "EN": 80, "CR": 100},
+    "effort_adjustment": 10
+  },
+  "bbvi": {"default_food_weight": 0.5, "sensitivity_food_weights": [0.25, 0.5, 0.75]}
+}
