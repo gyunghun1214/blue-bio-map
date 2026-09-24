@@ -45,9 +45,9 @@ try{
   check('List: sea cucumber card shows two broad cells',cards.some(c=>c.includes('해삼')&&c.includes('2셀 · 지점 2곳')),JSON.stringify(cards));
 
   let t=await pick(836033);
-  check('Oyster: nutrition 144 / measured 107 / calculated 37 / AFCD 25 / unit 4 / basis 144',
-    ['영양 근거','144건','실측 107건 · 계산 37건','AFCD 근거 기록 25건','단위 미확정 4건 · 기준량 가정 144건'].every(x=>t.includes(x)),t);
-  check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 표시 근거 4건')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
+  check('Oyster: nutrition shown as a collection inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144), not food value; MFPI withheld',
+    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','식량 가능성 · MFPI 산출 보류'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
+  check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
   check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
   check('Oyster: compounds 미수집, occurrences 26 kept',/보고 화합물\s*미수집/.test(t)&&/수집된 기록\s*26건/.test(t),t);
   await detailEl();await shot('desktop-oyster');
@@ -57,21 +57,21 @@ try{
   check('Sea cucumber: no efficacy claim',!/입증|효능|효과가 있/.test(t),t);
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
   check('Sea cucumber: two occurrence records, 4-degree generalization',t.includes('GBIF 공개 기록 2건')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
-  check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 성분 값\s*미수집/.test(t),t);
+  check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 기록 수\s*미수집/.test(t),t);
   check('Sea cucumber live: 2013 IUCN EN is historical, current assessment unverified',t.includes('EN A2bd · 2013년 발표 (역사적 평가)')&&/현행 평가\s*확인 보류/.test(t)&&t.includes('MCUI로 바꾸지 않습니다'),t);
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
   check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
-  check('Squid: 미수집 vs 미검토 distinguished',/영양 성분 값\s*미수집/.test(t)&&/보고 화합물\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('2건'),t);
+  check('Squid: 미수집 vs 미검토 distinguished',/영양 기록 수\s*미수집/.test(t)&&/보고 화합물\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('2건'),t);
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
   const cmp=await evaluate("document.getElementById('comparison').innerText");
-  check('Compare table: per-species nutrition/compounds/conservation from API',cmp.includes('영양 144건')&&cmp.includes('보고 화합물 122개')&&cmp.includes('근거 부족으로 보류')&&cmp.includes('미검토'),cmp);
+  check('Compare table: per-species nutrition/compounds/conservation from API',cmp.includes('영양 기록 144건')&&cmp.includes('단위/가식부 검증 전')&&cmp.includes('보고 화합물 122개')&&cmp.includes('근거 부족으로 보류')&&cmp.includes('미검토'),cmp);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
@@ -169,7 +169,7 @@ try{
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
-  check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 성분 값\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
+  check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 기록 수\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);

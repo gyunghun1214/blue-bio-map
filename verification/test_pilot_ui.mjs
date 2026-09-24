@@ -5,9 +5,17 @@ import vm from 'node:vm';
 // Evaluate only pure/UI data helpers. The page bootstrap needs a browser.
 const code=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8').split('function setView')[0];
 const specimen=()=>({live:true,species:[{aphiaID:123, name:'Accepted species',live:true}]});
+function food1(){
+  const peer=(id,value,unit)=>({aphia_id:id,value,unit,basis:'100 g edible portion',sample_state:'fresh',edible_part:'reviewed',
+    method:'synthetic assay',sample_year:2025,sample_region:'synthetic region',grade:'measured',source_id:'s',reviewed:true});
+  const nutrient=(value,unit)=>({...peer(123,value,unit),percentile:50,peers:[peer(123,value,unit),peer(124,value+1,unit),peer(125,value+2,unit)]});
+  return {schema_version:'food-1',reviewed:true,nutrients:{protein_g:nutrient(10,'g'),iron_mg:nutrient(2,'mg'),zinc_mg:nutrient(1,'mg')},
+    edible_fraction:{value:.7,method:'synthetic dissection',source_id:'s',reviewed:true},
+    aquaculture:{feasible:true,method:'synthetic cultivation',region:'synthetic region',assessment_year:2025,limitations:'synthetic constraints',source_id:'s',reviewed:true}};
+}
 const report=(name='Accepted species')=>({method_version:'pilot-1',status:'provisional_unvalidated',
   food_weight:.5,generated_at:'2026-09-23',sources:{s:{url:'https://example.org/s',license:'test',accessed:'2026-09-23'}},
-  species:[{aphia_id:123,scientific_name:name,source_ids:['s'],scores:{MFPI:50,MBPI:70,MCUI:80,BBVI:60},food_trace:{nutrients:{protein_g:{per_100g_edible:10,grade:'measured',peer_count:3,percentile:50,source_id:'s'}},edible_fraction:.5,edible_fraction_source:'s',aquaculture:true,aquaculture_source:'s'},bioactivity_trace:[{compound_id:'CID:1',stratum:['target-A','binding'],median_pchembl:7,peer_count:3,rank:50,independent_references:1,evidence_factor:.75,reference_ids:['s']}],conservation_trace:{category:'EN',assessment_year:2025,source_id:'s',current_status_verified:true,current_status_source_id:'s',current_status_checked_on:'2026-09-23'}}]});
+  species:[{aphia_id:123,scientific_name:name,source_ids:['s'],scores:{MFPI:50,MBPI:70,MCUI:80,BBVI:60},food_trace:food1(),bioactivity_trace:[{compound_id:'CID:1',stratum:['target-A','binding'],median_pchembl:7,peer_count:3,rank:50,independent_references:1,evidence_factor:.75,reference_ids:['s']}],conservation_trace:{category:'EN',assessment_year:2025,source_id:'s',current_status_verified:true,current_status_source_id:'s',current_status_checked_on:'2026-09-23'}}]});
 const ctx={fetch:async()=>({status:404,ok:false})};
 vm.createContext(ctx);
 vm.runInContext(code+';globalThis.attach=attachPilotAssessments;globalThis.pilot=pilotScore;globalThis.assessed=assessedForMatrix;globalThis.blockers=assessmentBlockers;globalThis.showDecision=showDecision',ctx);
@@ -27,6 +35,14 @@ await ctx.attach(data);
 assert.equal(ctx.pilot(data.species[0],'MCUI'),80);
 assert.equal(ctx.pilot(data.species[0],'BBVI'),60);
 assert.equal(ctx.assessed(data.species[0]),true);
+// PR #11: a bare MFPI with an old-format (non food-1) trace is withheld with BBVI; MCUI stays.
+{const legacyFood=report();legacyFood.species[0].food_trace={nutrients:{protein_g:{per_100g_edible:10}}};
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>legacyFood});
+const d=specimen();await ctx.attach(d);
+assert.equal(ctx.pilot(d.species[0],'MFPI'),null,'a bare MFPI number without food trace is withheld');
+assert.equal(ctx.pilot(d.species[0],'BBVI'),null,'BBVI depends on withheld MFPI');
+assert.equal(ctx.pilot(d.species[0],'MCUI'),80);
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});}
 const nodes=new Map();
 ctx.document={getElementById(id){
   if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',classList:{toggle(){}},setAttribute(){},addEventListener(){},querySelectorAll(){return []}});
@@ -60,7 +76,11 @@ assert.match(ctx.blockers(data.species[0]).MBPI,/화합물–정량 시험 연�
 const orphan=report(); delete orphan.species[0].food_trace;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>orphan});
 data=specimen(); await ctx.attach(data);
-assert.equal(data.species[0].assessment,undefined,'A score without its component evidence must be withheld');
+// PR #11 rule: a food score without its component trace is withheld (with BBVI); the other reviewed axes stay.
+assert.equal(ctx.pilot(data.species[0],'MFPI'),null,'A food score without its component evidence must be withheld');
+assert.equal(ctx.pilot(data.species[0],'BBVI'),null);
+assert.equal(ctx.pilot(data.species[0],'MBPI'),70);
+assert.equal(data.species[0].assessment.food_withheld,true);
 // The sea cucumber's 2013 IUCN EN is shown as a historical assessment, never as a current status or MCUI input.
 const cucumber={aphiaID:241776,name:'Apostichopus japonicus',label:'해삼',live:true,info:{conservation:{status:'withheld_insufficient_evidence'}}};
 assert.match(ctx.blockers(cucumber).MCUI,/EN A2bd: 2013년 발표\(2010-05-19 평가\)/);
@@ -125,4 +145,10 @@ const bad=report(); bad.species[0].conservation_trace.current_status_source_id='
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>bad});
 data=specimen(); await ctx.attach(data);
 assert.equal(ctx.pilot(data.species[0],'MCUI'),null);
+// An MBPI without its assay trace is withheld with BBVI; the reviewed food and conservation axes stay.
+{const noAssay=report();delete noAssay.species[0].bioactivity_trace;
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>noAssay});const d=specimen();await ctx.attach(d);
+assert.equal(ctx.pilot(d.species[0],'MBPI'),null);assert.equal(ctx.pilot(d.species[0],'BBVI'),null);
+assert.equal(ctx.pilot(d.species[0],'MFPI'),50);assert.equal(ctx.pilot(d.species[0],'MCUI'),80);
+assert.match(ctx.blockers(d.species[0]).MBPI,/추적이 없어 보류/);}
 console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard, historical IUCN, current-status gate, real check dates, recheck wording');
