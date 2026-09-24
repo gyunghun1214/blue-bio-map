@@ -6,11 +6,12 @@ const app=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
 const pre=app.split('function setView')[0];
 const mapCode='const REASONS='+app.split('const REASONS=')[1].split('function fitMap')[0];
 const html=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');
-assert.match(html,/id="map-legend"/);
+assert.match(html,/id="map-symbol-label"/);
+assert.match(html,/id="map-legend-note"/);
 assert.match(html,/id="map-judgment"/);
 
 const nodes=new Map();
-const popup=[];
+const popup=[], dots=[];
 const context={
   document:{getElementById(id){
     if(!nodes.has(id))nodes.set(id,{textContent:'',nextElementSibling:{textContent:''}});
@@ -18,6 +19,8 @@ const context={
   }},
   L:{rectangle(){
     return {addTo(){return this},bindPopup(body){popup.push(body);return this}};
+  },circleMarker(latlng,options){
+    const dot={latlng,options,addTo(){dots.push(this);return this}};return dot;
   }}
 };
 vm.createContext(context);
@@ -49,7 +52,7 @@ assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보�
 
 context.species=species;
 context.layer={clearLayers(){}};
-context.mapStub={fitBounds(){}};
+context.mapStub={fitBounds(){},getZoom(){return 5}};
 vm.runInContext('let lastFitted;overlay=globalThis.layer;map=globalThis.mapStub;',context);
 context.draw(species,'#123456');
 assert.equal(popup.length,1);
@@ -60,6 +63,19 @@ assert.match(popup[0],/https:\/\/example.org\/dataset/);
 assert.match(popup[0],/CC BY 4.0/);
 assert.match(popup[0],/관측 노력·중복/);
 assert.doesNotMatch(popup[0],/BBVI 90/);
+// Schematic dots must stay inside the cell and never take the click from the evidence popup.
+assert.equal(dots.length,9,'9 records -> 3x3 schematic band');
+assert.ok(dots.every(d=>d.options.interactive===false));
+assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
+assert.match(popup[0],/도트는 1° 셀의 기록 수 구간/);
+// Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
+popup.length=0;dots.length=0;
+species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
+context.draw(species,'#123456');
+assert.match(popup[0],/선별 출현기록 4° 셀/);
+assert.match(popup[0],/4°×4°/);
+assert.equal(dots.length,4);
+assert.ok(dots.some(({latlng:[lat]})=>lat>34),'dots spread over the whole 4° cell');
 species.cells=[];
 context.banner(species);
 assert.match(nodes.get('map-judgment').textContent,/공개 출현 셀이 없어/);
