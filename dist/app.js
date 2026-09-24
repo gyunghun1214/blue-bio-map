@@ -3,6 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic';
+let bioactivityReport = null; // PR #5 research snapshot only; never an approved scoring input.
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -15,7 +16,7 @@ function evidenceCoverage(s) {
     ['학명', Number.isSafeInteger(s.aphiaID) && !!s.wormsUrl],
     ['출현', !s.noOccurrences && Number.isSafeInteger(s.recordCount)],
     ['영양', n.status==='available' && Number.isSafeInteger(n.record_count) && n.record_count>0],
-    ['정량 활성', c.status==='available' && Number.isSafeInteger(c.quantitative_bioactivity_count) && c.quantitative_bioactivity_count>0],
+    ['정량 활성 연결 검증', false], // published summary counts have no compound–assay–paper join
     ['보전 평가', k.status==='available' && Number.isSafeInteger(k.assessment_count) && k.assessment_count>0]
   ];
   return {known:checks.filter(([,present])=>present).length, missing:checks.filter(([,present])=>!present).map(([name])=>name)};
@@ -49,6 +50,35 @@ async function attachPilotAssessments(next) {
   } catch { /* A malformed optional report must not hide the underlying species evidence. */ }
 }
 
+
+// Optional read-only research snapshot. No field here flows into assessments or scoring.
+async function loadBioactivityResearch() {
+  bioactivityReport=null;
+  try {
+    const response=await fetch('bioactivity-evidence.json',{cache:'no-store'});
+    if(!response.ok)return;
+    const report=await response.json();
+    if(report.schema_version===1 && report.status==='research_unapproved' && Array.isArray(report.cases))
+      bioactivityReport=report;
+  } catch { /* Missing research notes do not suppress the published species profile. */ }
+}
+function bioactivityEvidence(s) {
+  const entry=bioactivityReport?.cases.find(c=>c.aphia_id===s.aphiaID && c.scientific_name===s.name);
+  const heading='<h3>정량 생리활성 연결 검증 보류</h3>';
+  if(!entry)return heading+'<div class="withheld"><b>종별 원문 연결 미확인</b>발행 요약의 화합물·활성 건수만으로 기원종, 시험물질, 표적, 값과 원논문을 이어 붙일 수 없습니다. 자료 미확인은 활성 없음 또는 0점이 아닙니다.</div>';
+  const assays=entry.measurements.map(m=>row(m.endpoint,m.value+' '+m.unit)).join('');
+  return heading+`<p class="fine">PR #5 조사 요약 · ${esc(bioactivityReport.reviewed_at)} 조회 · 승인된 MBPI 입력 아님 · ${sourceLink(bioactivityReport.source_pr,'조사 PR ↗')}</p>
+    ${row('기원종(저장소 학명)',entry.scientific_name+' · AphiaID '+entry.aphia_id)}
+    ${row('보고 물질',entry.material+' · '+entry.kind)}
+    ${row('논문 내 식별',entry.paper_identifier)}
+    ${row('외부 화학 ID',entry.external_identifier||'미확정 · CID/InChIKey 연결 보류','pending')}
+    ${row('표적·시험 생물',entry.target)}
+    ${row('실험 종류',entry.method)}${assays}
+    <p class="fine">원논문 ${sourceLink(entry.url,entry.source+' · DOI '+entry.doi+' ↗')} · 조회 ${esc(entry.accessed)} · 이용조건: ${esc(entry.terms)}</p>
+    <div class="withheld"><b>${esc(entry.status)}</b>확인: ${esc(entry.confirmed)}<br>끊긴 연결: ${esc(entry.gap)}</div>
+    <p class="fine">${esc(entry.caveat)} 실험실 결과는 종 전체의 약효나 임상 효능을 입증하지 않습니다.</p>`;
+}
+
 function setView(view) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
   currentView=view;
@@ -74,8 +104,8 @@ function selectSpecies(id) {
 function renderDetail() {
   const s=selected;
   if(s.live)return renderLiveDetail(s);
-  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','자료 미확인',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI','평가 미조회','']];
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div><h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
+  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','자료 미확인',''],['생리활성 · MBPI','정량 연결 검증 보류',''],['보전 평가 · MCUI','평가 미조회','']];
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div><h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${bioactivityEvidence(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth',block:'start'});});
 }
 
@@ -96,8 +126,8 @@ function liveEvidence(s) {
   const aquaculture=Number.isFinite(p.aquaculture_evidence_count)&&p.aquaculture_evidence_count>0
     ? `<p class="fine">보조 · 양식 표시 근거 ${count(p.aquaculture_evidence_count)}: ${esc(p.note||'생산량 통계가 아닙니다.')}</p>`:'';
   const compounds=c.status==='available'
-    ? row('보고 화합물',count(c.compound_count,'개'),'done')
-      +row('정량 활성 자료',c.quantitative_bioactivity_count===0?'확인한 자료에서 없음':count(c.quantitative_bioactivity_count))
+    ? row('CMNPD 보고 화합물 · 활성 입증 아님',count(c.compound_count,'개'))
+      +row('정량 활성 요약 · 원문 연결 미검증',c.quantitative_bioactivity_count===0?'요약 0건 · 활성 부재 판정 아님':count(c.quantitative_bioactivity_count))
       +(c.note?`<p class="fine">${esc(c.note)}</p>`:'')
       +`<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'} — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`
     : row('보고 화합물',c.status==='not_collected'?'미수집':'정보 없음','pending');
@@ -105,7 +135,7 @@ function liveEvidence(s) {
     withheld_insufficient_evidence:row('보전평가','근거 부족으로 보류','pending')+row('검토 기록',`IUCN 검색 기록 ${count(k.search_record_count)} · 평가 ${count(k.assessment_count)}`)+(k.note?`<p class="fine">${esc(k.note)}</p>`:''),
     not_reviewed:row('보전평가','미검토','pending')
   }[k.status]||row('보전평가','정보 없음','pending');
-  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 근거</h3>${compounds}<h3>보전</h3>${conservation}`;
+  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 목록 요약 · 효능 판단 아님</h3>${compounds}<h3>보전</h3>${conservation}`;
 }
 
 function renderLiveDetail(s) {
@@ -123,7 +153,7 @@ function renderLiveDetail(s) {
   const pilot=s.assessment;
   const pilotRows=pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
   const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.':score;
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${evidence}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>`<p>${sourceLink(data.assessmentInfo.sources[id].url,'시범 산출 근거 '+id+' ↗')} · ${esc(data.assessmentInfo.sources[id].license)}</p>`).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 원자료 자동 수집 기능은 아직 없습니다.</p></div>`;
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${evidence}${bioactivityEvidence(s)}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>`<p>${sourceLink(data.assessmentInfo.sources[id].url,'시범 산출 근거 '+id+' ↗')} · ${esc(data.assessmentInfo.sources[id].license)}</p>`).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 원자료 자동 수집 기능은 아직 없습니다.</p></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
 }
 
@@ -227,7 +257,7 @@ function renderComparison(){
   const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
     ['출현기록',s=>s.live&&s.cells.length?`${s.cells.length}셀 · 조사 지점 ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 1° 셀 · GBIF CC0·CC BY</small>`:s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'위치 검토 중':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
     ['식량 근거 · MFPI',s=>pilotScore(s,'MFPI')!==null?pilotCell(s,'MFPI'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 ${count(n.record_count)}<small>실측 ${count(n.measured_count)} · 계산 ${count(n.calculated_count)} · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
-    ['생리활성 · MBPI',s=>pilotScore(s,'MBPI')!==null?pilotCell(s,'MBPI'):v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
+    ['생리활성 · MBPI',s=>pilotScore(s,'MBPI')!==null?pilotCell(s,'MBPI'):v2(s,({compounds:c={}})=>c.status==='available'?`CMNPD 목록 ${count(c.compound_count,'개')}<small>약효 아님 · 정량 요약 ${count(c.quantitative_bioactivity_count)} · 종–물질–시험–원문 연결 보류</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['보전 평가 · MCUI',s=>pilotScore(s,'MCUI')!==null?pilotCell(s,'MCUI'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),'평가 미조회')],
     ['자료 연결 현황',s=>s.live?`${evidenceCoverage(s).known}/5 항목<small>출처·수량 확인 · 품질 점수 아님</small>`:pending('2/5 항목 · 품질 점수 아님')],
     ['통합점수 · BBVI',s=>pilotScore(s,'BBVI')!==null?pilotCell(s,'BBVI'):'<strong>산출 보류</strong>']];
@@ -290,7 +320,7 @@ async function loadCollection(){
 }
 async function start(){
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);}catch{$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
-  await loadCollection();registerTools();
+  await loadBioactivityResearch();await loadCollection();registerTools();
 }
 $('collection').addEventListener('change',loadCollection);$('reload-data').addEventListener('click',loadCollection);
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
