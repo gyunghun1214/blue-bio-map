@@ -321,12 +321,14 @@ function addCellDots(lat0,lon0,size,records,color){
 function cellPopupNotice(size){
   return `<br><small>도트는 ${size}° 셀의 기록 수 구간을 보여주는 도식입니다. 각 점은 실제 출현 위치·기록 1건·조사 지점 1곳을 뜻하지 않습니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
+// Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
+const cellFrame=color=>({color:basemap==='basic'?color:'#ffd166',weight:1,opacity:.6,dashArray:'2 5',fillColor:color,fillOpacity:basemap==='basic'?.05:.08});
 function setMapLegend(live,s){
   // Live species without published cells only show the query extent (studyBounds).
   const extentOnly=live&&s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
   document.querySelector('.map-symbol').hidden=!!extentOnly;
   $('map-symbol-label').textContent=extentOnly?'점선 테두리: 자료 조회 범위':live?`선별된 출현기록 · 공개 ${size}° 셀`:'선별된 출현기록 · 별도 OBIS 시연 1° 격자';
-  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'도트 밀도: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 셀을 누르면 실제 집계값과 출처가 나옵니다.';
+  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'도트 밀도: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 옅은 점선 테두리가 공개 셀 범위이며, 육지 위 도트는 생략합니다. 셀을 누르면 실제 집계값과 출처가 나옵니다.';
 }
 
 function renderCellMap(s,color){
@@ -341,7 +343,7 @@ function renderCellMap(s,color){
   const dotted=new Set();
   for(const c of s.cells){
     // Transparent hit area: the dots are not interactive, so the cell carries the evidence popup.
-    L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],{stroke:false,fillColor:color,fillOpacity:.001}).addTo(overlay)
+    L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame(color)).addTo(overlay)
       .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(c))} · 공개 집계 기간 ${esc(c.period)}<br>기록의 해역 메타데이터 ${esc(c.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(c.countries.join(', ')||'미기재')}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>조사 지점 ${esc(c.sites)}곳 · 선별 기록 ${esc(c.records)}건${c.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(c.uncertaintyMissing)}건`:''}<br><b>이 셀의 출처·이용조건</b><ul>${occurrenceCitationLinks(c)||'<li>셀별 제공처 확인 필요</li>'}</ul><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,c).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
     const key=c.lat0+','+c.lon0;
     if(!dotted.has(key)){addCellDots(c.lat0,c.lon0,c.sizeDeg,spatialTotals.get(key),color);dotted.add(key);}
@@ -366,8 +368,8 @@ function renderMap() {
     if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30]});}
   }
   for(const cell of s.cells){
-    L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],{stroke:false,fillColor:color,fillOpacity:.001}).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`+cellPopupNotice(1));
+    L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame(color)).addTo(overlay)
+      .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 격자 중심은 개별 관측 위치가 아니며 개체수·자원량·현재 한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(1));
     addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count,color);
   }
   $('map-count').textContent=Number.isSafeInteger(s.recordCount)?s.recordCount.toLocaleString():'—';$('map-cells').textContent=s.live?'0':s.cells.length;$('map-years').textContent=years(s);

@@ -58,8 +58,9 @@ try{
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
   check('Sea cucumber: two occurrence records, 4-degree generalization',t.includes('GBIF 공개 기록 2건')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 성분 값\s*미수집/.test(t),t);
+  check('Sea cucumber live: 2013 IUCN EN is historical, current assessment unverified',t.includes('EN A2bd · 2013년 발표 (역사적 평가)')&&/현행 평가\s*확인 보류/.test(t)&&t.includes('MCUI로 바꾸지 않습니다'),t);
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('분포 전체나 개체수를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
+  check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('실제 좌표가 아닙니다')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
@@ -82,6 +83,16 @@ try{
   const demo=await evaluate("document.getElementById('connection-state').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length+' | '+document.getElementById('map-review-note').textContent");
   check('Demo mode: separate 3 species with 1° grid map',demo.startsWith('별도 시연 자료 · 3종')&&Number((demo.match(/shapes=(\d+)/)||[])[1])>0,demo);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-demo-map',false);
+  const demoPopup=await evaluate("(()=>{overlay.getLayers().find(x=>x.getPopup&&x.getPopup()).openPopup();return document.querySelector('.leaflet-popup-content').innerText})()");
+  check('Demo popup: separate OBIS grid, withheld judgment, real count, dot notice',['별도 OBIS 시연 출현 격자','해역별 활용·보전 판단: 보류','선별 기록','OBIS 조회 조건','도트는 1° 셀의 기록 수 구간'].every(x=>demoPopup.includes(x))&&await evaluate("overlay.getLayers().some(l=>l._schematicDot)"),demoPopup.slice(0,300));
+  await evaluate("map.closePopup();document.querySelector('[data-species=\"241776\"]').click();1");
+  const demoCuc=await evaluate("document.getElementById('detail').innerText");
+  check('Demo 돌기해삼: 2013 IUCN EN shown as historical, current status unverified',demoCuc.includes('2013년 발표 (역사적 평가)')&&/현행 평가\s*확인 보류/.test(demoCuc)&&!demoCuc.includes('평가 미조회'),demoCuc);
+  await evaluate("document.querySelector('[data-view=compare]').click();document.querySelector('.decision-card[data-aphia=\"241776\"]').click();1");
+  const dec=await evaluate("document.getElementById('decision-detail').innerText");
+  check('Decision panel: 돌기해삼 all four axes withheld, IUCN EN 2013 historical',['MFPI: 산출 보류','MBPI: 산출 보류','MCUI: 산출 보류','BBVI: 산출 보류','IUCN 원평가 · 역사적 평가','현행 평가 여부는 확인하지 않았습니다'].every(x=>dec.includes(x)),dec.slice(0,400));
+  await shot('desktop-decision-demo');
+  await evaluate("document.querySelector('[data-view=explore]').click();1");
 
   // ---------- Published 1° map cells (live) ----------
   await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
@@ -95,8 +106,15 @@ try{
   check('Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review',['지도 셀','공개 셀','왜 공개할 수 있는가','CC BY-NC 322건','육지 위 좌표','운영 DB에서 검토 중인 기존 기록','1°를 적용','기존 OBIS 시험 수집 26건'].every(x=>t.includes(x)),t);
   check('Merged PR #1: evidence coverage row next to the map section, scores still withheld',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('통합점수 산출 보류')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
-  check('Cell popup: period, sea area, source, licence, spatial resolution',['기간 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','조사 지점 2곳 (기록 3건','kbif','CC0 1.0','원좌표·개체수·분포 범위가 아닙니다'].every(x=>popup.includes(x)),popup);
-  check('Cells use dashed style distinct from demo grid',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray'))"));
+  check('Cell popup: period, sea area, source, licence, spatial resolution',['기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','조사 지점 2곳 · 선별 기록 3건','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','도트는 1° 셀의 기록 수 구간'].every(x=>popup.includes(x)),popup);
+  // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
+  check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
+  const dotXY=await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center'});const d=overlay.getLayers().find(l=>l._schematicDot);const p=map.latLngToContainerPoint(d.getLatLng());const r=document.getElementById('map').getBoundingClientRect();({x:r.left+p.x,y:r.top+p.y})");
+  for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:dotXY.x,y:dotXY.y,button:'left',clickCount:1});
+  await sleep(300);
+  const clicked=await evaluate("document.querySelector('.leaflet-popup-content')?.innerText||''");
+  check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',clicked.includes('해역별 활용·보전 판단: 보류')&&clicked.includes('이 셀의 출처·이용조건'),clicked.slice(0,200));
+  check('Legend explains dots and stays visible in live mode',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('도트 밀도')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
   check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 성분 값\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
