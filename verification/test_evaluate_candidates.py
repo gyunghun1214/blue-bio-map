@@ -16,10 +16,16 @@ def fixture():
             "aphia_id": i, "scientific_name": f"Synthetic species {i}",
             "bioassays": [{"compound_id": f"CID:{i}", "target_id": "target-A", "assay_type": "binding",
                            "pchembl": potency, "reference_id": "ref-1", "reviewed": True}],
-            "nutrition": {k: {"per_100g": v * i, "grade": "measured", "source_id": "ref-2", "reviewed": True}
+            "nutrition": {k: {"per_100g": v * i, "unit": "g" if k == "protein_g" else "mg",
+                              "basis": "100 g edible portion", "sample_state": "fresh", "edible_part": "reviewed",
+                              "sample_year": 2025, "sample_region": "synthetic region", "method": "synthetic assay",
+                              "grade": "measured", "source_id": "ref-2", "reviewed": True}
                           for k, v in (("protein_g", 10), ("iron_mg", 1), ("zinc_mg", .5))},
             "edible_fraction": i / 4, "edible_fraction_source": "ref-2",
-            "aquaculture": True, "aquaculture_source": "ref-3",
+            "edible_fraction_reviewed": True, "edible_fraction_method": "synthetic dissection",
+            "aquaculture": True, "aquaculture_source": "ref-3", "aquaculture_reviewed": True,
+            "aquaculture_method": "synthetic cultivation review", "aquaculture_region": "synthetic region",
+            "aquaculture_assessment_year": 2025, "aquaculture_limitations": "synthetic limitations",
             "conservation": {"category": ("CR", "LC", "DD")[i-1], "assessment_year": 2025,
                              "source_id": "ref-4", "reviewed": True}
         })
@@ -66,6 +72,22 @@ class PilotScoringTests(unittest.TestCase):
             "source_id": "ref-4", "reviewed": True, "effort_adjusted": False}
         with self.assertRaisesRegex(ValueError, "sampling effort"):
             scores(payload)
+
+    def test_food_requires_comparable_edible_basis_and_farming_context(self):
+        payload = fixture()
+        payload["species"][0]["nutrition"]["protein_g"]["sample_state"] = "dried"
+        with self.assertRaisesRegex(ValueError, "fresh edible basis"):
+            scores(payload)
+        payload = fixture()
+        del payload["species"][0]["aquaculture_region"]
+        with self.assertRaisesRegex(ValueError, "aquaculture method"):
+            scores(payload)
+        payload = fixture()
+        result = scores(payload)["species"][0]
+        trace = result["food_trace"]
+        self.assertEqual(trace["nutrients"]["iron_mg"]["unit"], "mg")
+        self.assertEqual(len(trace["nutrients"]["iron_mg"]["peers"]), 3)
+        self.assertEqual(trace["aquaculture"]["region"], "synthetic region")
 
     def test_literature_replication_does_not_add_comparator(self):
         payload = fixture()

@@ -66,13 +66,30 @@ def validate(payload):
             required(n.get("reviewed") is True and n.get("grade") in GRADE_WEIGHT and n.get("source_id"), f"{aphia}: nutrition provenance/grade required")
             sourced(n["source_id"], aphia)
             number(n.get("per_100g"), name)
+            required(n.get("unit") == ("g" if name == "protein_g" else "mg")
+                     and n.get("basis") == "100 g edible portion"
+                     and n.get("sample_state") == "fresh" and n.get("edible_part") == "reviewed",
+                     f"{aphia}: nutrient unit/fresh edible basis must be reviewed")
+            required(isinstance(n.get("method"), str) and n["method"].strip()
+                     and isinstance(n.get("sample_region"), str) and n["sample_region"].strip()
+                     and type(n.get("sample_year")) is int and 1900 <= n["sample_year"] <= date.today().year,
+                     f"{aphia}: sample method, region and year required")
         if "edible_fraction" in s:
             number(s["edible_fraction"], "edible_fraction", 0, 1)
             required(s.get("edible_fraction_source"), f"{aphia}: edible fraction source required")
             sourced(s["edible_fraction_source"], aphia)
+            required(s.get("edible_fraction_reviewed") is True
+                     and isinstance(s.get("edible_fraction_method"), str) and s["edible_fraction_method"].strip(),
+                     f"{aphia}: edible fraction method/review required")
         if "aquaculture" in s:
             required(type(s["aquaculture"]) is bool and s.get("aquaculture_source"), f"{aphia}: aquaculture evidence required")
             sourced(s["aquaculture_source"], aphia)
+            required(s.get("aquaculture_reviewed") is True
+                     and all(isinstance(s.get(k), str) and s[k].strip()
+                             for k in ("aquaculture_method", "aquaculture_region", "aquaculture_limitations"))
+                     and type(s.get("aquaculture_assessment_year")) is int
+                     and 1900 <= s["aquaculture_assessment_year"] <= date.today().year,
+                     f"{aphia}: aquaculture method, region, limitations and year required")
         if "conservation" in s:
             c = s["conservation"]
             required(c.get("reviewed") is True and c.get("source_id") and c.get("category") in (*IUCN, "DD", "NE"), f"{aphia}: reviewed IUCN category/source required")
@@ -123,10 +140,39 @@ def scores(payload, *, food_weight=.5, min_peers=3):
         enough_food = all(n in nutrition and len(nutrient_groups[n]) >= min_peers for n in NUTRIENTS)
         enough_food &= "edible_fraction" in s and "aquaculture" in s
         mfpi = None
+        food_trace = None
         if enough_food:
             nutrient_value = sum(percentile(nutrition[n]["per_100g"], list(nutrient_groups[n].values())) * GRADE_WEIGHT[nutrition[n]["grade"]] for n in NUTRIENTS) / len(NUTRIENTS)
             # Pilot weights are explicit and unvalidated, never inferred from missing data.
             mfpi = round(.8 * nutrient_value + 10 * s["edible_fraction"] + 10 * int(s["aquaculture"]), 1)
+            food_trace = {"schema_version": "food-1", "reviewed": True, "nutrients": {}}
+            for name in NUTRIENTS:
+                n = nutrition[name]
+                peers = [t for t in species if name in t.get("nutrition", {})]
+                food_trace["nutrients"][name] = {
+                    "value": n["per_100g"], "unit": n["unit"], "basis": n["basis"],
+                    "sample_state": n["sample_state"], "edible_part": n["edible_part"],
+                    "method": n["method"], "sample_year": n["sample_year"],
+                    "sample_region": n["sample_region"], "grade": n["grade"],
+                    "source_id": n["source_id"], "reviewed": True,
+                    "peers": [{"aphia_id": t["aphia_id"], "value": t["nutrition"][name]["per_100g"],
+                               "unit": t["nutrition"][name]["unit"], "basis": t["nutrition"][name]["basis"],
+                               "sample_state": t["nutrition"][name]["sample_state"],
+                               "edible_part": t["nutrition"][name]["edible_part"],
+                               "method": t["nutrition"][name]["method"],
+                               "sample_year": t["nutrition"][name]["sample_year"],
+                               "sample_region": t["nutrition"][name]["sample_region"],
+                               "grade": t["nutrition"][name]["grade"],
+                               "source_id": t["nutrition"][name]["source_id"], "reviewed": True}
+                              for t in peers]}
+            food_trace["edible_fraction"] = {
+                "value": s["edible_fraction"], "source_id": s["edible_fraction_source"],
+                "method": s["edible_fraction_method"], "reviewed": True}
+            food_trace["aquaculture"] = {
+                "feasible": s["aquaculture"], "source_id": s["aquaculture_source"],
+                "method": s["aquaculture_method"], "region": s["aquaculture_region"],
+                "assessment_year": s["aquaculture_assessment_year"],
+                "limitations": s["aquaculture_limitations"], "reviewed": True}
 
         conservation = s.get("conservation", {})
         category = conservation.get("category")
@@ -139,6 +185,8 @@ def scores(payload, *, food_weight=.5, min_peers=3):
         missing = [key for key, value in (("MFPI", mfpi), ("MBPI", mbpi), ("MCUI", mcui)) if value is None]
         provenance = {a["reference_id"] for a in s.get("bioassays", [])}
         provenance.update(n["source_id"] for n in nutrition.values())
+        if food_trace:
+            provenance.update(peer["source_id"] for n in food_trace["nutrients"].values() for peer in n["peers"])
         provenance.update(s[k] for k in ("edible_fraction_source", "aquaculture_source") if k in s)
         if conservation:
             provenance.add(conservation["source_id"])
@@ -149,7 +197,7 @@ def scores(payload, *, food_weight=.5, min_peers=3):
                        "missing": missing, "iucn_category": category or None,
                        "iucn_assessment_year": conservation.get("assessment_year"),
                        "iucn_review_older_than_10y": stale, "bioactivity_trace": bio,
-                       "source_ids": sorted(provenance),
+                       "food_trace": food_trace, "source_ids": sorted(provenance),
                        "note": "Pilot scores; external calibration and back-testing required."})
     return {"method_version": VERSION, "generated_at": datetime.now(timezone.utc).isoformat(),
             "food_weight": food_weight, "min_peers": min_peers,
