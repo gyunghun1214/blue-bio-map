@@ -1,16 +1,112 @@
 {
   "candidate_snapshot_date": "2026-09-25",
-  "comparison_cohort": {
-    "criteria": "AFCD Release 3 rows F006288/F006289/F006291: three distinct Australian aquacultured oyster species, raw shucked flesh, per 100 g edible portion, linked to the same SARDI/FRDC sampling and methods program. Fixed independently of website filters. Three species are exploratory, not a statistically validated reference population.",
-    "food_item_ids": [
-      "F006288",
-      "F006289",
-      "F006291"
-    ],
-    "id": "afcd-r3-2008-australian-raw-oysters",
-    "species_count": 3,
-    "warning": "Small fixed cohorts give unstable ranks; sensitivity is not a confidence interval."
-  },
+  "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
+  "comparison_cohorts": [
+    {
+      "cohort_id": "rda-10.4-raw-marine-animals",
+      "criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron and zinc all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
+      "exclusions": {
+        "K0150002550a": "고등어 남해: regional sub-sample of one species",
+        "K0150002560a": "고등어 서해: regional sub-sample of one species",
+        "K0440002570a": "대구 수컷: sex sub-sample of one species",
+        "K0440002580a": "대구 암컷: sex sub-sample of one species",
+        "K1440010000a": "은어 양식: freshwater-farmed (amphidromous) fish, outside the marine scope"
+      },
+      "food_item_ids": [
+        "K0270000000a",
+        "K0390010000a",
+        "K0620000000a",
+        "K0830011130a",
+        "K0960070000a",
+        "K1070000000a",
+        "K1140000000a",
+        "K1320000000a",
+        "K1370020000a",
+        "K1620000000a",
+        "K1650010000a",
+        "K1670000000a",
+        "K4000000000a",
+        "K4000010000a",
+        "K4000040000a",
+        "K4040020000a",
+        "K4060010000a",
+        "K4130000000a",
+        "K6000020000a",
+        "K6020010000a",
+        "K6080000000a",
+        "K6100000000a",
+        "K6110000000a",
+        "K6130180000a",
+        "K6230000000a"
+      ],
+      "foods": [
+        "넙치(광어), 생것",
+        "다랑어, 참다랑어, 생것",
+        "만새기, 생것",
+        "방어, 양식, 어린것, 생것",
+        "볼락, 조피볼락(우럭), 생것",
+        "삼치, 생것",
+        "샛멸, 생것",
+        "애꼬치, 생것",
+        "연어, 홍연어, 생것",
+        "조기(참조기), 생것",
+        "쥐치, 말쥐치, 생것",
+        "청새치, 생것",
+        "가리비, 생것",
+        "가리비, 국자가리비, 생것",
+        "가리비, 큰가리비, 생것",
+        "굴, 참굴, 생것",
+        "꼬막, 새꼬막, 생것",
+        "바지락, 생것",
+        "가재, 바닷가재, 생것",
+        "게, 꽃게, 생것",
+        "낙지, 생것",
+        "멍게(우렁쉥이), 생것",
+        "문어, 생것",
+        "새우, 흰다리새우, 생것",
+        "오징어, 생것"
+      ],
+      "operating_candidates": [
+        250680,
+        836033
+      ],
+      "role": "primary",
+      "size": 25,
+      "source": "RDA National Standard Food Composition DB 10.4 (retrieved 2026-09-25)"
+    },
+    {
+      "cohort_id": "rda-10.4-raw-seaweeds",
+      "criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron and zinc all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
+      "exclusions": {},
+      "food_item_ids": [
+        "L0110000000a",
+        "L0130000000a",
+        "L0270000000a"
+      ],
+      "foods": [
+        "매생이, 생것",
+        "미역, 생것",
+        "파래, 생것"
+      ],
+      "operating_candidates": [
+        145721
+      ],
+      "role": "primary",
+      "size": 3,
+      "source": "RDA National Standard Food Composition DB 10.4 (retrieved 2026-09-25)"
+    },
+    {
+      "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+      "criteria": "AFCD Release 3 rows F006288/F006289/F006291: three Australian aquacultured oyster species, raw shucked flesh (verified-pilot-1 primary cohort).",
+      "food_item_ids": [
+        "F006288",
+        "F006289",
+        "F006291"
+      ],
+      "role": "cross_check",
+      "size": 3
+    }
+  ],
   "food_weight": 0.5,
   "generated_at": "2026-09-25T00:00:00Z",
   "method": {
@@ -36,9 +132,13 @@
       "minimum_compounds_per_stratum": 3,
       "multiple_doi_factor": 1.0,
       "primary_aggregation": "max",
-      "sensitivity_aggregation": "median",
+      "sensitivity_aggregations": [
+        "median",
+        "mean"
+      ],
       "single_doi_factor": 0.75
     },
+    "changes_from": "verified-pilot-1 (archived in research/verified-indices/archive/)",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -47,34 +147,188 @@
         "NT": 35,
         "VU": 60
       },
-      "effort_adjustment": 10
+      "effort_adjustment": 10,
+      "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
-    "method_version": "verified-pilot-1",
+    "method_version": "verified-pilot-2",
     "nutrition": {
       "aquaculture_weight": 0.1,
-      "cohort_id": "afcd-r3-2008-australian-raw-oysters",
       "components": {
         "iron_mg": "mg",
         "protein_g": "g",
         "zinc_mg": "mg"
       },
-      "edible_fraction_weight": 0.1,
-      "food_item_ids": [
-        "F006288",
-        "F006289",
-        "F006291"
+      "cross_check_cohorts": [
+        {
+          "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+          "criteria": "AFCD Release 3 rows F006288/F006289/F006291: three Australian aquacultured oyster species, raw shucked flesh (verified-pilot-1 primary cohort).",
+          "food_item_ids": [
+            "F006288",
+            "F006289",
+            "F006291"
+          ],
+          "note": "verified-pilot-1 result kept as a cross-check only; not averaged with the RDA result."
+        }
       ],
+      "cross_check_source_ids": [
+        "afcd_r3_nutrients",
+        "afcd_r3_details",
+        "frdc_2008_905"
+      ],
+      "edible_fraction_weight": 0.1,
       "grade_factors": {
         "calculated": 0.85,
+        "domestic_table": 1.0,
+        "foreign_table_cited": 0.85,
         "measured": 1.0,
         "proxy": 0.5
       },
+      "grade_notes": {
+        "domestic_table": "RDA row with a domestic source label such as ('16); per-value analysed/calculated status is not exposed online, so the row is not labelled 'measured'.",
+        "foreign_table_cited": "RDA row whose source label names another national table, e.g. JAPAN('20) or USDA('18): same food, borrowed value. Pilot factor 0.85, same as 'calculated'.",
+        "measured/calculated/proxy": "Kept from verified-pilot-1 for the AFCD cross-check rows."
+      },
       "minimum_species": 3,
-      "nutrient_weight": 0.8
+      "nutrient_weight": 0.8,
+      "primary_cohorts": [
+        {
+          "cohort_id": "rda-10.4-raw-marine-animals",
+          "criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron and zinc all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
+          "frozen_food_item_ids": [
+            "K0270000000a",
+            "K0390010000a",
+            "K0620000000a",
+            "K0830011130a",
+            "K0960070000a",
+            "K1070000000a",
+            "K1140000000a",
+            "K1320000000a",
+            "K1370020000a",
+            "K1620000000a",
+            "K1650010000a",
+            "K1670000000a",
+            "K4000000000a",
+            "K4000010000a",
+            "K4000040000a",
+            "K4040020000a",
+            "K4060010000a",
+            "K4130000000a",
+            "K6000020000a",
+            "K6020010000a",
+            "K6080000000a",
+            "K6100000000a",
+            "K6110000000a",
+            "K6130180000a",
+            "K6230000000a"
+          ],
+          "rule": {
+            "exclude_food_item_ids": {
+              "K0150002550a": "고등어 남해: regional sub-sample of one species",
+              "K0150002560a": "고등어 서해: regional sub-sample of one species",
+              "K0440002570a": "대구 수컷: sex sub-sample of one species",
+              "K0440002580a": "대구 암컷: sex sub-sample of one species",
+              "K1440010000a": "은어 양식: freshwater-farmed (amphidromous) fish, outside the marine scope"
+            },
+            "exclude_name_terms": [
+              "내장",
+              "관자",
+              "붉은살",
+              "지방육"
+            ],
+            "group": "어패류 및 기타 수산물"
+          },
+          "uncertainty": [
+            "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
+            "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
+            "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked."
+          ]
+        },
+        {
+          "cohort_id": "rda-10.4-raw-seaweeds",
+          "criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron and zinc all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
+          "frozen_food_item_ids": [
+            "L0110000000a",
+            "L0130000000a",
+            "L0270000000a"
+          ],
+          "rule": {
+            "exclude_food_item_ids": {},
+            "exclude_name_terms": [],
+            "group": "해조류"
+          },
+          "uncertainty": [
+            "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points."
+          ]
+        }
+      ],
+      "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json"
     },
-    "status": "provisional_unvalidated"
+    "posthoc": {
+      "calibration_cases": [],
+      "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
+      "validation_sets": {
+        "MBPI": {
+          "cases": [
+            "Conus magus (ziconotide)",
+            "Halichondria okadai (eribulin; halichondrin B)",
+            "Ecteinascidia turbinata (trabectedin)"
+          ],
+          "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+          "reason": "No origin -> compound -> assay chain was collected for these species in this snapshot and no operating candidate has an MBPI, so there is nothing to rank against.",
+          "result": "not_computable"
+        },
+        "MCUI": {
+          "cases": [
+            "Apostichopus japonicus"
+          ],
+          "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
+          "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation.",
+          "result": "reproduced_n2"
+        }
+      }
+    },
+    "sensitivity": {
+      "mfpi_weights": [
+        {
+          "aquaculture_weight": 0.15,
+          "edible_fraction_weight": 0.15,
+          "nutrient_weight": 0.7
+        },
+        {
+          "aquaculture_weight": 0.05,
+          "edible_fraction_weight": 0.05,
+          "nutrient_weight": 0.9
+        }
+      ]
+    },
+    "status": "provisional_unvalidated",
+    "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-1",
+  "method_version": "verified-pilot-2",
+  "posthoc": {
+    "calibration_cases": [],
+    "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
+    "validation_sets": {
+      "MBPI": {
+        "cases": [
+          "Conus magus (ziconotide)",
+          "Halichondria okadai (eribulin; halichondrin B)",
+          "Ecteinascidia turbinata (trabectedin)"
+        ],
+        "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+        "reason": "No origin -> compound -> assay chain was collected for these species in this snapshot and no operating candidate has an MBPI, so there is nothing to rank against.",
+        "result": "not_computable"
+      },
+      "MCUI": {
+        "cases": [
+          "Apostichopus japonicus"
+        ],
+        "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
+        "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation.",
+        "result": "reproduced_n2"
+      }
+    }
+  },
   "snapshot_date": "2026-09-25",
   "sources": {
     "afcd_r3_details": {
@@ -145,6 +399,15 @@
       "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_pacificcuppedoyster.htm",
       "version": "FAO cultured-species factsheet, accessed 2026-09-25"
     },
+    "fao_seaweed_guide": {
+      "accessed": "2026-09-25",
+      "license": "FAO website terms",
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "terms": "FAO website terms; factual summary and link only",
+      "title": "A guide to the seaweed industry (FAO Fisheries Technical Paper 441), 8.5 Wakame",
+      "url": "https://www.fao.org/4/y4765e/y4765e0b.htm",
+      "version": "McHugh 2003"
+    },
     "frdc_2008_905": {
       "accessed": "2026-09-25",
       "license": "Copyright FRDC/SARDI; link and limited factual summary only",
@@ -154,6 +417,16 @@
       "title": "Australian Seafood Compositional Profiles, project 2008/905",
       "url": "https://www.frdc.com.au/sites/default/files/products/2008-905-DLD.pdf",
       "version": "Final report, July 2012, ISBN 978-0-9805789-9-7"
+    },
+    "gbif_iucn_checklist": {
+      "accessed": "2026-09-25",
+      "license": "CC BY 4.0",
+      "license_url": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "provider": "IUCN via GBIF",
+      "terms": "CC BY 4.0 dataset licence",
+      "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+      "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+      "version": "published 2026-07-28 (GBIF modified 2026-07-30)"
     },
     "gelidium_2018_extract": {
       "accessed": "2026-09-25",
@@ -175,6 +448,16 @@
       "url": "https://pubmed.ncbi.nlm.nih.gov/16337836/",
       "version": "2006 paper / PubMed abstract"
     },
+    "halorotetin_b_2026": {
+      "accessed": "2026-09-25",
+      "doi": "10.1002/advs.202515652",
+      "license": "CC BY 4.0",
+      "provider": "Advanced Science (Wiley)",
+      "terms": "CC BY",
+      "title": "Halorotetin B, a novel terpenoid compound derived from marine ascidian, targets UBE2C",
+      "url": "https://europepmc.org/article/PMC/PMC12948284",
+      "version": "2026, PMC12948284"
+    },
     "he_2012_mussel": {
       "accessed": "2026-09-25",
       "doi": "10.3969/j.issn.2095-0780.2012.04.006",
@@ -195,15 +478,37 @@
       "url": "https://doi.org/10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
       "version": "2013-1 historical record"
     },
+    "iucn_japonicus_2026": {
+      "accessed": "2026-09-25",
+      "doi": "10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en",
+      "license": "IUCN Red List terms (non-commercial)",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use",
+      "provider": "IUCN Red List",
+      "terms": "IUCN Red List terms of use; category, dates and link only",
+      "title": "Apostichopus japonicus assessment e.T180424A272708369",
+      "url": "https://www.iucnredlist.org/species/180424/272708369",
+      "version": "Red List 2026-1"
+    },
+    "iucn_redlist_search": {
+      "accessed": "2026-09-25",
+      "license": "IUCN Red List terms (non-commercial)",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use",
+      "provider": "IUCN Red List",
+      "terms": "IUCN Red List terms of use; search result counts only",
+      "title": "IUCN Red List species search (Global scope)",
+      "url": "https://www.iucnredlist.org/search",
+      "version": "Red List 2026-1 website search"
+    },
     "iucn_todarodes_2014": {
       "accessed": "2026-09-25",
       "doi": "10.2305/IUCN.UK.2014-1.RLTS.T176085A1428473.en",
       "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use",
       "provider": "IUCN Red List",
       "terms": "IUCN Red List use terms; record link and limited metadata",
       "title": "Todarodes pacificus assessment e.T176085A1428473",
-      "url": "https://doi.org/10.2305/IUCN.UK.2014-1.RLTS.T176085A1428473.en",
-      "version": "2014-1 historical record"
+      "url": "https://www.iucnredlist.org/species/176085/1428473",
+      "version": "2014-1 record, current in Red List 2026-1"
     },
     "li_2025_yield": {
       "accessed": "2026-09-25",
@@ -235,6 +540,17 @@
       "url": "https://pubmed.ncbi.nlm.nih.gov/32061872/",
       "version": "2020 article / PubMed primary abstract"
     },
+    "rda_db_10_4": {
+      "accessed": "2026-09-25",
+      "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+      "license_url": "https://www.kogl.or.kr/info/license.do",
+      "notice": "Values per 100 g edible portion. Blank = missing value (RDA English site); never treated as zero. Row source labels such as ('16) or JAPAN('20) are reproduced as published; per-value derivation is not exposed online.",
+      "provider": "Rural Development Administration (RDA), National Institute of Crop and Food Science",
+      "terms": "KOGL Type 1 (attribution) for the DB; printed 10th-revision book is KOGL Type 2",
+      "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+      "version": "10.4 (2026), online detail view"
+    },
     "sargassum_2024_fractions": {
       "accessed": "2026-09-25",
       "doi": "10.3390/molecules29246000",
@@ -244,6 +560,16 @@
       "title": "Sargassum fusiforme fractionation and alpha-glucosidase inhibition",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
       "version": "2024 article, Molecules 29(24):6000"
+    },
+    "shin_2011_seasquirt": {
+      "accessed": "2026-09-25",
+      "doi": "10.5657/KFAS.2011.0366",
+      "license": "Publisher terms",
+      "provider": "Korean Journal of Fisheries and Aquatic Sciences",
+      "terms": "Publisher terms; abstract facts and link only",
+      "title": "Shin, Jun, Kim & Hur 2011. Physiological changes and energy budget of the sea squirt Halocynthia roretzi from Tongyeong",
+      "url": "https://koreascience.kr/article/JAKO201127250032645.page",
+      "version": "KFAS 44(4):366, published 2011-08-30"
     },
     "todarodes_2011_peptide": {
       "accessed": "2026-09-25",
@@ -300,6 +626,12 @@
       "aphia_id": 145721,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
           "endpoint": "IC50",
           "exclusion_reason": "Extract and purchased standard cannot be linked as one species-derived single compound activity.",
           "material_kind": "acetone extract and separately purchased fucoxanthin standard",
@@ -329,54 +661,306 @@
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
-      "food_trace": {
-        "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
-        ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
-        "supplemental_nutrition": []
+      "conservation_trace": {
+        "aphia_id": 145721,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Undaria pinnatifida",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Undaria pinnatifida"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "food_trace": {
+        "aquaculture": {
+          "aphia_id": 145721,
+          "feasible": true,
+          "kind": "aquaculture",
+          "limitations": "Epiphyte fouling made frame cleaning too expensive in a French trial; local siting, temperature and cost need current review.",
+          "method": "Seeded strings wound onto float-suspended, bottom-anchored rope long-lines held 2–3 m below the surface; two-stage harvest ending in April",
+          "record_id": "FAO-FTP441:8.5-Wakame",
+          "region": "Republic of Korea named as the largest wakame producer; Japan and France also described",
+          "reviewed": true,
+          "source_id": "fao_seaweed_guide",
+          "year": "FAO FTP 441 (2003); page accessed 2026-09-25"
+        },
+        "basis": "100 g edible portion",
+        "cohort_criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron and zinc all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
+        "cohort_food_item_ids": [
+          "L0110000000a",
+          "L0130000000a",
+          "L0270000000a"
+        ],
+        "cohort_id": "rda-10.4-raw-seaweeds",
+        "cohort_species": 3,
+        "components": {
+          "aquaculture_contribution": 10.0,
+          "edible_fraction_contribution": 10.0,
+          "evidence_grade_deduction": 0.0,
+          "nutrient_value_contribution": 22.22
+        },
+        "cross_checks": [],
+        "edible_fraction": {
+          "kind": "edible_fraction",
+          "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
+          "method": "1 - refuse (0%) / 100 from the same RDA row",
+          "record_id": "RDA-10.4:L0130000000a:refuse",
+          "region": "Korea (RDA national table)",
+          "reviewed": true,
+          "sample_period": "('16)",
+          "source_id": "rda_db_10_4",
+          "unit": "edible share of food as purchased",
+          "value": 1.0
+        },
+        "english_name": "Sea mustard, Wild, Raw",
+        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
+        "grade_sensitivity": {
+          "all_grade_factors_1": 42.2
+        },
+        "method_version": "verified-pilot-2",
+        "nutrients": {
+          "iron_mg": {
+            "evidence_factor": 1.0,
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "L0110000000a",
+                "name": "매생이, 생것",
+                "value": 18.3
+              },
+              {
+                "food_item_id": "L0130000000a",
+                "name": "미역, 생것",
+                "value": 0.46
+              },
+              {
+                "food_item_id": "L0270000000a",
+                "name": "파래, 생것",
+                "value": 4.1
+              }
+            ],
+            "percentile": 16.67,
+            "percentile_unrounded": 16.666666666666668,
+            "unit": "mg",
+            "value": 0.46
+          },
+          "protein_g": {
+            "evidence_factor": 1.0,
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "L0110000000a",
+                "name": "매생이, 생것",
+                "value": 3.88
+              },
+              {
+                "food_item_id": "L0130000000a",
+                "name": "미역, 생것",
+                "value": 1.68
+              },
+              {
+                "food_item_id": "L0270000000a",
+                "name": "파래, 생것",
+                "value": 2.18
+              }
+            ],
+            "percentile": 16.67,
+            "percentile_unrounded": 16.666666666666668,
+            "unit": "g",
+            "value": 1.68
+          },
+          "zinc_mg": {
+            "evidence_factor": 1.0,
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "L0110000000a",
+                "name": "매생이, 생것",
+                "value": 1.01
+              },
+              {
+                "food_item_id": "L0130000000a",
+                "name": "미역, 생것",
+                "value": 0.14
+              },
+              {
+                "food_item_id": "L0270000000a",
+                "name": "파래, 생것",
+                "value": 0.13
+              }
+            ],
+            "percentile": 50.0,
+            "percentile_unrounded": 50.0,
+            "unit": "mg",
+            "value": 0.14
+          }
+        },
+        "observed_rows": [
+          {
+            "english_name": "Sea mustard, Wild, Raw",
+            "food_item_id": "L0130000000a",
+            "link_evidence": "미역 (sea mustard/wakame) = Undaria pinnatifida; WoRMS 145721 vernacular 'wakame'.",
+            "linked": true,
+            "missing": [],
+            "refuse_pct": 0.0,
+            "reported_food_name": "미역, 생것",
+            "row_source": "('16)",
+            "values": {
+              "iron_mg": 0.46,
+              "protein_g": 1.68,
+              "zinc_mg": 0.14
+            }
+          }
+        ],
+        "reported_food_name": "미역, 생것",
+        "row_source": "('16)",
+        "sample_state": "raw",
+        "source_food_item_id": "L0130000000a",
+        "source_id": "rda_db_10_4",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "supplemental_nutrition": [],
+        "uncertainty": [
+          "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points.",
+          "3-food fixed cohort: one rank step moves a nutrient percentile by about 33.3 points.",
+          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
+        ],
+        "unrounded": 42.22222222222223,
+        "weight_sensitivity": [
+          {
+            "aquaculture_weight": 0.15,
+            "edible_fraction_weight": 0.15,
+            "mfpi": 49.4,
+            "nutrient_weight": 0.7
+          },
+          {
+            "aquaculture_weight": 0.05,
+            "edible_fraction_weight": 0.05,
+            "mfpi": 35.0,
+            "nutrient_weight": 0.9
+          }
+        ],
+        "weights": {
+          "aquaculture_weight": 0.1,
+          "edible_fraction_weight": 0.1,
+          "nutrient_weight": 0.8
+        },
+        "yield_sensitivity": []
+      },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 2,
+          "ratio": 0.5,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.5
+      },
+      "korean_name": "미역",
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
-        "MFPI": "산출 보류"
+        "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 42.2
       },
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": 42.2
+      },
       "source_ids": [
+        "fao_seaweed_guide",
+        "iucn_redlist_search",
+        "rda_db_10_4",
         "undaria_2018_paper"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": "not_in_red_list",
+        "MFPI": null
       }
     },
     {
       "aphia_id": 241776,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": false
+          },
           "endpoint": "MIC/MFC",
           "exclusion_reason": "No confirmed CID/InChIKey to assay chain; MIC/MFC cannot be converted to IC50.",
           "material_kind": "reported isolated saponin",
@@ -401,70 +985,161 @@
       ],
       "bioactivity_trace": [],
       "conservation_trace": {
+        "annotations": null,
         "aphia_id": 241776,
-        "assessment_date": "2010-05-19",
-        "assessment_year": 2010,
+        "assessment_date": "2025-09-30",
+        "assessment_older_than_10y": false,
+        "assessment_year": 2025,
         "category": "EN",
         "criteria": "A2bd",
-        "current_status_check": null,
-        "original_copy_url": "https://www.researchgate.net/publication/295098284_Apostichopus_japonicus_The_IUCN_Red_List_of_Threatened_Species_2013_eT180424A1629389",
-        "publication_year": 2013,
-        "record_id": "IUCN:e.T180424A1629389",
+        "criteria_version": "3.1",
+        "current_status_check": {
+          "checked_on": "2026-09-25",
+          "is_current": true,
+          "method": "IUCN-published GBIF checklist + IUCN species page",
+          "red_list_version": "2026-1",
+          "source_id": "gbif_iucn_checklist"
+        },
+        "iucn_state": "assessed",
+        "iucn_taxon_id": "180424",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "occurrence_trend_adjustment": null,
+        "pilot_mapping": "EN -> 80 (team pilot rule, not an IUCN score)",
+        "population_trend": "Decreasing",
+        "previous_assessments": [
+          {
+            "assessment_date": "2010-05-19",
+            "category": "EN",
+            "criteria": "A2bd",
+            "publication_year": 2013,
+            "record_id": "IUCN:e.T180424A1629389",
+            "source_id": "iucn_japonicus_2013",
+            "status": "superseded by the 2026-1 assessment"
+          }
+        ],
+        "publication_year": 2026,
+        "record_id": "IUCN:e.T180424A272708369",
         "reviewed": true,
         "scientific_name": "Apostichopus japonicus",
-        "scope": "global; Northwest Pacific species, not a Korean regional assessment",
-        "search_state": "historical_assessment_verified_current_access_failed",
-        "source_id": "iucn_japonicus_2013",
-        "verification": "Original historical assessment copy checked for EN A2bd, 2010-05-19, global scope and decline basis; current IUCN 2026-1 status not verified."
+        "scope": "Global (native range: China, Japan, DPRK, Republic of Korea, Russian Federation)",
+        "source_id": "iucn_japonicus_2026",
+        "threats": "Biological resource use: fishing & harvesting aquatic resources",
+        "verification": "IUCN species page read in browser on 2026-09-25: Endangered A2bd ver 3.1, assessed 30 Sep 2025, published 2026, global. GBIF IUCN checklist (2026-07-28) lists taxonID 180424 as ENDANGERED with the same 2026 citation."
       },
       "food_trace": {
         "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [
+          {
+            "english_name": "Sea cucumber, Raw",
+            "food_item_id": "K6340000000a",
+            "link_evidence": "Generic 'sea cucumber' row; not assignable to Apostichopus japonicus 241776 without specimen identification.",
+            "linked": false,
+            "missing": [
+              "zinc_mg"
+            ],
+            "refuse_pct": 21.0,
+            "reported_food_name": "해삼, 생것",
+            "row_source": "('09)",
+            "values": {
+              "iron_mg": 2.1,
+              "protein_g": 3.7,
+              "zinc_mg": null
+            }
+          }
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
+        "sufficiency": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": []
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 2,
+          "ratio": 0.5,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 1.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.5
+      },
+      "korean_name": "해삼",
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "일부 근거 확인",
+        "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 80.0,
         "MFPI": null
       },
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": null
+      },
       "source_ids": [
         "apostichopus_2024_paper",
-        "iucn_japonicus_2013"
+        "gbif_iucn_checklist",
+        "iucn_japonicus_2013",
+        "iucn_japonicus_2026",
+        "rda_db_10_4"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "current_status_unverified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": null,
+        "MFPI": "food_row_not_species_specific"
       }
     },
     {
       "aphia_id": 250680,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
           "endpoint": "single-concentration cell viability",
           "exclusion_reason": "Single-concentration viability is not pChEMBL.",
           "material_kind": "two isolated carotenoids",
@@ -495,64 +1170,703 @@
               "viability_percent": 5.7
             }
           ]
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": false,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
+          "endpoint": "IC50 (figure only)",
+          "exclusion_reason": "Structure ID, tabulated IC50 and producing organism are not established.",
+          "material_kind": "isolated terpenoid (Halorotetin B)",
+          "missing": [
+            "IC50 values only in a figure, not in text or tables",
+            "No absolute configuration reported",
+            "No PubChem CID/InChIKey",
+            "Authors state H. roretzi defence metabolites are primarily produced by symbiotic microorganisms: producing organism unresolved"
+          ],
+          "origin_aphia_id": 250680,
+          "origin_scientific_name": "Halocynthia roretzi",
+          "record_id": "10.1002/advs.202515652:HalorotetinB",
+          "reviewed": false,
+          "source_id": "halorotetin_b_2026",
+          "status": "partial_only",
+          "test_system": "human tumour cell lines; HRESIMS [M+Na]+ 295.1666 (C18H24O2Na)",
+          "values": [
+            {
+              "material": "Halorotetin B, 48 h, tumour cell lines",
+              "unit": "µM, values shown only in Figure 2b"
+            }
+          ]
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
-      "food_trace": {
-        "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
-        ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
-        "supplemental_nutrition": []
+      "conservation_trace": {
+        "aphia_id": 250680,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Halocynthia roretzi",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Halocynthia roretzi"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "food_trace": {
+        "aquaculture": {
+          "aphia_id": 250680,
+          "feasible": true,
+          "kind": "aquaculture",
+          "limitations": "Scope for growth negative May–September at ~25 °C: summer high temperature is a documented physiological constraint. Abstract-level evidence by NIFS researchers.",
+          "method": "Farm culture of H. roretzi at an aquaculture farm (culture structure not described in the abstract)",
+          "record_id": "10.5657/KFAS.2011.0366:abstract",
+          "region": "Tongyeong, southern coast of Korea (abstract: 'mainly cultured in Tongyeong')",
+          "reviewed": true,
+          "source_id": "shin_2011_seasquirt",
+          "year": "2007 measurements; published 2011"
+        },
+        "basis": "100 g edible portion",
+        "cohort_criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron and zinc all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
+        "cohort_food_item_ids": [
+          "K0270000000a",
+          "K0390010000a",
+          "K0620000000a",
+          "K0830011130a",
+          "K0960070000a",
+          "K1070000000a",
+          "K1140000000a",
+          "K1320000000a",
+          "K1370020000a",
+          "K1620000000a",
+          "K1650010000a",
+          "K1670000000a",
+          "K4000000000a",
+          "K4000010000a",
+          "K4000040000a",
+          "K4040020000a",
+          "K4060010000a",
+          "K4130000000a",
+          "K6000020000a",
+          "K6020010000a",
+          "K6080000000a",
+          "K6100000000a",
+          "K6110000000a",
+          "K6130180000a",
+          "K6230000000a"
+        ],
+        "cohort_id": "rda-10.4-raw-marine-animals",
+        "cohort_species": 25,
+        "components": {
+          "aquaculture_contribution": 10.0,
+          "edible_fraction_contribution": 2.0,
+          "evidence_grade_deduction": 7.44,
+          "nutrient_value_contribution": 49.6
+        },
+        "cross_checks": [],
+        "edible_fraction": {
+          "kind": "edible_fraction",
+          "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
+          "method": "1 - refuse (80%) / 100 from the same RDA row",
+          "record_id": "RDA-10.4:K6100000000a:refuse",
+          "region": "Korea (RDA national table)",
+          "reviewed": true,
+          "sample_period": "JAPAN('20)",
+          "source_id": "rda_db_10_4",
+          "unit": "edible share of food as purchased",
+          "value": 0.2
+        },
+        "english_name": "Common sea squirt, Wild, Raw",
+        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
+        "grade_sensitivity": {
+          "all_grade_factors_1": 61.6
+        },
+        "method_version": "verified-pilot-2",
+        "nutrients": {
+          "iron_mg": {
+            "evidence_factor": 0.85,
+            "grade": "foreign_table_cited",
+            "method": "RDA DB 10.4 table value (row source JAPAN('20)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 0.45
+              },
+              {
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 1.98
+              },
+              {
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 0.7
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 1.0
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 0.44
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 0.1
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 0.4
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 0.43
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 1.17
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 2.95
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
+                "value": 2.0
+              },
+              {
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 0.92
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 8.72
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
+                "value": 3.75
+              },
+              {
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 2.68
+              },
+              {
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 0.84
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 0.74
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 1.48
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.7
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 0.89
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 0.18
+              }
+            ],
+            "percentile": 94.0,
+            "percentile_unrounded": 94.0,
+            "unit": "mg",
+            "value": 5.7
+          },
+          "protein_g": {
+            "evidence_factor": 0.85,
+            "grade": "foreign_table_cited",
+            "method": "RDA DB 10.4 table value (row source JAPAN('20)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 22.36
+              },
+              {
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 23.99
+              },
+              {
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 21.3
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 20.7
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 18.41
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 20.08
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 19.5
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 18.9
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 22.5
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 19.02
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 17.3
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 23.1
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 15.18
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
+                "value": 10.8
+              },
+              {
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 12.3
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 9.66
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
+                "value": 12.29
+              },
+              {
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 12.27
+              },
+              {
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 15.97
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 16.19
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 16.3
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.0
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 16.4
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 21.17
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 18.84
+              }
+            ],
+            "percentile": 2.0,
+            "percentile_unrounded": 2.0,
+            "unit": "g",
+            "value": 5.0
+          },
+          "zinc_mg": {
+            "evidence_factor": 0.85,
+            "grade": "foreign_table_cited",
+            "method": "RDA DB 10.4 table value (row source JAPAN('20)); per-value derivation not exposed",
+            "peer_values": [
+              {
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 0.52
+              },
+              {
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 0.8
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 0.78
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 0.56
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 1.3
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 0.45
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 2.56
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
+                "value": 6.1
+              },
+              {
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 2.15
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 15.9
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
+                "value": 1.1
+              },
+              {
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 1.22
+              },
+              {
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 1.3
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 2.05
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 2.02
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.3
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 1.6
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 2.26
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 1.4
+              }
+            ],
+            "percentile": 90.0,
+            "percentile_unrounded": 90.0,
+            "unit": "mg",
+            "value": 5.3
+          }
+        },
+        "observed_rows": [
+          {
+            "english_name": "Common sea squirt, Wild, Raw",
+            "food_item_id": "K6100000000a",
+            "link_evidence": "우렁쉥이 is the Korean standard name of Halocynthia roretzi; WoRMS 250680 vernacular 'Korean common sea squirt' matches the RDA English name.",
+            "linked": true,
+            "missing": [],
+            "refuse_pct": 80.0,
+            "reported_food_name": "멍게(우렁쉥이), 생것",
+            "row_source": "JAPAN('20)",
+            "values": {
+              "iron_mg": 5.7,
+              "protein_g": 5.0,
+              "zinc_mg": 5.3
+            }
+          }
+        ],
+        "reported_food_name": "멍게(우렁쉥이), 생것",
+        "row_source": "JAPAN('20)",
+        "sample_state": "raw",
+        "source_food_item_id": "K6100000000a",
+        "source_id": "rda_db_10_4",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "supplemental_nutrition": [],
+        "uncertainty": [
+          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
+          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
+          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
+          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
+        ],
+        "unrounded": 54.16,
+        "weight_sensitivity": [
+          {
+            "aquaculture_weight": 0.15,
+            "edible_fraction_weight": 0.15,
+            "mfpi": 54.9,
+            "nutrient_weight": 0.7
+          },
+          {
+            "aquaculture_weight": 0.05,
+            "edible_fraction_weight": 0.05,
+            "mfpi": 53.4,
+            "nutrient_weight": 0.9
+          }
+        ],
+        "weights": {
+          "aquaculture_weight": 0.1,
+          "edible_fraction_weight": 0.1,
+          "nutrient_weight": 0.8
+        },
+        "yield_sensitivity": []
+      },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 1,
+          "ratio": 0.25,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.42
+      },
+      "korean_name": "멍게",
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
-        "MFPI": "산출 보류"
+        "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 54.2
       },
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": 54.2
+      },
       "source_ids": [
-        "halocynthia_2006_paper"
+        "halocynthia_2006_paper",
+        "halorotetin_b_2026",
+        "iucn_redlist_search",
+        "rda_db_10_4",
+        "shin_2011_seasquirt"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": "not_in_red_list",
+        "MFPI": null
       }
     },
     {
       "aphia_id": 342067,
       "bioactivity_partial": [
         {
+          "assay_conditions": "Cushman & Cheung (1971) method; ACE purchased from Sigma-Aldrich (tissue source not stated in paper); substrate HHL; specimen T. pacificus skin, Jumunjin port, June 2010",
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": false
+          },
           "endpoint": "IC50",
           "exclusion_reason": "A real isolated-peptide IC50 is available, but an exact public structure join and comparable fixed cohort are not yet verified; do not mix peptides with small molecules.",
           "material_kind": "squid-skin protein hydrolysate; chromatographically purified heptapeptide Ser-Ala-Gly-Ser-Leu-Val-Pro, 657 Da",
           "missing": [
             "No confirmed stable CID/InChIKey for the exact peptide",
             "ACE preparation source and full assay conditions not transcribed",
-            "No fixed comparable ACE-peptide assay cohort"
+            "No fixed comparable ACE-peptide assay cohort",
+            "Sequence SAGSLVP (linear, all-L, free termini) computes to 629.7 Da (C27H47N7O10; RDKit InChIKey AUYBEMNUWGOKGL-WVBSATCKSA-N) but the paper reports 657 Da; the 28 Da difference is unexplained, so the structure is not confirmed."
           ],
           "origin_aphia_id": 342067,
           "origin_scientific_name": "Todarodes pacificus",
@@ -560,6 +1874,14 @@
           "reviewed": false,
           "source_id": "todarodes_2011_peptide",
           "status": "partial_only",
+          "structure_check": {
+            "computed_from": "sequence SAGSLVP via RDKit Chem.MolFromSequence",
+            "computed_inchikey": "AUYBEMNUWGOKGL-WVBSATCKSA-N",
+            "computed_mw": 629.71,
+            "pubchem_inchikey_match": false,
+            "reported_mass_da": 657,
+            "verdict": "mass_mismatch_withheld"
+          },
           "test_system": "in-vitro ACE enzyme inhibition; noncompetitive in reported Lineweaver-Burk analysis",
           "values": [
             {
@@ -574,67 +1896,157 @@
       ],
       "bioactivity_trace": [],
       "conservation_trace": {
+        "annotations": "Needs updating",
         "aphia_id": 342067,
-        "assessment_year": null,
-        "category": null,
-        "current_status_check": null,
+        "assessment_date": "2010-05-10",
+        "assessment_older_than_10y": true,
+        "assessment_year": 2010,
+        "category": "LC",
+        "criteria": null,
+        "criteria_version": "3.1",
+        "current_status_check": {
+          "checked_on": "2026-09-25",
+          "is_current": true,
+          "method": "IUCN-published GBIF checklist + IUCN species page",
+          "red_list_version": "2026-1",
+          "source_id": "gbif_iucn_checklist"
+        },
+        "iucn_state": "assessed",
+        "iucn_taxon_id": "176085",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "occurrence_trend_adjustment": null,
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
+        "population_trend": "Unknown",
         "publication_year": 2014,
         "record_id": "IUCN:e.T176085A1428473",
-        "reviewed": false,
+        "reviewed": true,
         "scientific_name": "Todarodes pacificus",
-        "scope": "global assessment DOI identified; original category and current edition not confirmed",
-        "search_state": "historical_record_identified_original_access_failed",
+        "scope": "Global (native range incl. Republic of Korea, Japan, China, Taiwan, DPRK, Russian Federation)",
         "source_id": "iucn_todarodes_2014",
-        "verification": "Original DOI exists, but full record could not be reviewed; secondary LC claim is not approved numeric input."
+        "threats": "Biological resource use: fishing & harvesting aquatic resources",
+        "verification": "IUCN species page read on 2026-09-25: Least Concern ver 3.1, assessed 10 May 2010, published 2014, annotation 'Needs updating'. GBIF IUCN checklist (2026-07-28) lists taxonID 176085 as LEAST_CONCERN citing the same 2014 record, so it is the current listed assessment."
       },
       "food_trace": {
         "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [
+          {
+            "english_name": "Japanese common squid, Raw",
+            "food_item_id": "K6230020000a",
+            "link_evidence": "살오징어 = Todarodes pacificus (Japanese common squid). The generic '오징어, 생것' row is NOT linked.",
+            "linked": true,
+            "missing": [
+              "zinc_mg"
+            ],
+            "refuse_pct": 20.0,
+            "reported_food_name": "오징어, 살오징어, 생것",
+            "row_source": "('09)",
+            "values": {
+              "iron_mg": 1.6,
+              "protein_g": 15.7,
+              "zinc_mg": null
+            }
+          }
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": []
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 2,
+          "ratio": 0.5,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 1.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.7
+      },
+      "korean_name": "살오징어",
       "scientific_name": "Todarodes pacificus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "일부 근거 확인",
-        "MFPI": "산출 보류"
+        "MCUI": "산출됨",
+        "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": null
+      },
       "source_ids": [
+        "gbif_iucn_checklist",
         "iucn_todarodes_2014",
+        "rda_db_10_4",
         "todarodes_2011_peptide"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "original_assessment_not_reviewed",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": null,
+        "MFPI": "component_missing_in_source"
       }
     },
     {
       "aphia_id": 372119,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": false,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
           "endpoint": "extract intervention outcomes; no molecule-level potency endpoint",
           "exclusion_reason": "Whole-extract animal outcomes cannot be assigned to a single compound or converted to pChEMBL.",
           "material_kind": "Gelidium elegans extract, not an isolated compound",
@@ -653,24 +2065,98 @@
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
+      "conservation_trace": {
+        "aphia_id": 372119,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Gelidium elegans",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Gelidium elegans"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
       "food_trace": {
         "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [
+          {
+            "english_name": "Ceylon moss, Raw",
+            "food_item_id": "L0190000000a",
+            "link_evidence": "Korean name and English 'Ceylon moss' are agar-weed labels without species identification; not assigned to Gelidium elegans 372119.",
+            "linked": false,
+            "missing": [
+              "zinc_mg"
+            ],
+            "refuse_pct": 0.0,
+            "reported_food_name": "우뭇가사리, 생것",
+            "row_source": "('09)",
+            "values": {
+              "iron_mg": 3.9,
+              "protein_g": 4.2,
+              "zinc_mg": null
+            }
+          }
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
+        "sufficiency": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": []
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 0,
+          "ratio": 0.0,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.0
+      },
+      "korean_name": "우뭇가사리",
       "scientific_name": "Gelidium elegans",
       "score_status": {
         "BBVI": "산출 보류",
@@ -687,20 +2173,33 @@
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": null
+      },
       "source_ids": [
-        "gelidium_2018_extract"
+        "gelidium_2018_extract",
+        "iucn_redlist_search",
+        "rda_db_10_4"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": "not_in_red_list",
+        "MFPI": "food_row_not_species_specific"
       }
     },
     {
       "aphia_id": 494972,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
           "endpoint": "alpha-glucosidase inhibition studied, but no qualifying isolated-compound IC50 recorded",
           "exclusion_reason": "Quantified fraction effects and qualitative single-compound observations are not an eligible compound-level MBPI input.",
           "material_kind": "active phlorotannin-rich and fatty-acid-containing fractions; separately isolated fucosterol",
@@ -720,30 +2219,113 @@
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
+      "conservation_trace": {
+        "aphia_id": 494972,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Sargassum fusiforme",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Sargassum fusiforme",
+            "Hizikia fusiformis"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
       "food_trace": {
         "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [
+          {
+            "english_name": "Seaweed fusiforme, Raw",
+            "food_item_id": "L0260000000a",
+            "link_evidence": "톳 (hijiki) = Sargassum fusiforme (syn. Hizikia fusiformis); RDA English 'Seaweed fusiforme'.",
+            "linked": true,
+            "missing": [
+              "zinc_mg"
+            ],
+            "refuse_pct": 0.0,
+            "reported_food_name": "톳, 생것",
+            "row_source": "('09)",
+            "values": {
+              "iron_mg": 3.9,
+              "protein_g": 1.9,
+              "zinc_mg": null
+            }
+          }
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": []
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 1,
+          "ratio": 0.25,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.28
+      },
+      "korean_name": "톳",
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
-        "MFPI": "산출 보류"
+        "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
@@ -754,20 +2336,33 @@
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": null
+      },
       "source_ids": [
+        "iucn_redlist_search",
+        "rda_db_10_4",
         "sargassum_2024_fractions"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": "not_in_red_list",
+        "MFPI": "component_missing_in_source"
       }
     },
     {
       "aphia_id": 506159,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
           "endpoint": "antimicrobial activity, no per-organism quantitative endpoint available in accessed primary abstract",
           "exclusion_reason": "Isolated peptide origin is documented, but the accessible assay record is insufficient for a reproducible potency percentile.",
           "material_kind": "natural mantle-derived myticusin-beta antimicrobial peptide; recombinant peptide and designed analogues tested separately",
@@ -787,22 +2382,67 @@
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
+      "conservation_trace": {
+        "aphia_id": 506159,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Mytilus coruscus",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Mytilus coruscus"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
       "food_trace": {
         "aquaculture": null,
-        "basis": "100 g edible portion",
-        "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [
+          {
+            "english_name": "Hard shelled mussel, Raw",
+            "food_item_id": "K4270000000a",
+            "link_evidence": "참담치 = Mytilus coruscus (hard-shelled mussel); RDA keeps separate rows for 진주담치 and 지중해담치, so this row is species-specific.",
+            "linked": true,
+            "missing": [
+              "zinc_mg"
+            ],
+            "refuse_pct": 76.0,
+            "reported_food_name": "담치, 참담치(홍합), 생것",
+            "row_source": "('09)",
+            "values": {
+              "iron_mg": 6.1,
+              "protein_g": 13.8,
+              "zinc_mg": null
+            }
+          }
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": null,
-        "edible_fraction_sensitivity": [],
-        "method_version": "verified-pilot-1",
-        "nutrients": {},
-        "sample_state": "raw",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": [
           {
             "aphia_id": 506159,
@@ -866,12 +2506,49 @@
           }
         ]
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 1,
+          "ratio": 0.25,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "edible_fraction"
+          ],
+          "ratio": 0.6,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.28
+      },
+      "korean_name": "홍합(참담치)",
       "scientific_name": "Mytilus coruscus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
-        "MFPI": "산출 보류"
+        "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
@@ -882,22 +2559,35 @@
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": null
+      },
       "source_ids": [
         "he_2012_mussel",
+        "iucn_redlist_search",
         "mytilus_2020_myticusin",
+        "rda_db_10_4",
         "ufish_1"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": "not_in_red_list",
+        "MFPI": "component_missing_in_source"
       }
     },
     {
       "aphia_id": 836033,
       "bioactivity_partial": [
         {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
           "endpoint": "cancer-cell death reported without cell-specific quantitative endpoint in accessible abstract",
           "exclusion_reason": "A partly characterized hydrolysate peptide cannot support a compound-identified, comparable MBPI percentile.",
           "material_kind": "peptide purified from oyster protein hydrolysate; only partial N-terminal sequence reported in accessed abstract",
@@ -918,7 +2608,30 @@
         }
       ],
       "bioactivity_trace": [],
-      "conservation_trace": null,
+      "conservation_trace": {
+        "aphia_id": 836033,
+        "category": null,
+        "iucn_state": "not_in_red_list",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
+        "reviewed": true,
+        "scientific_name": "Magallana gigas",
+        "search": {
+          "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names",
+          "checked_on": "2026-09-25",
+          "positive_controls": [
+            "Apostichopus japonicus: 1 result",
+            "Todarodes pacificus: 1 result"
+          ],
+          "queries": [
+            "Magallana gigas",
+            "Crassostrea gigas"
+          ],
+          "result_count": 0,
+          "scope": "Global, species"
+        },
+        "source_id": "iucn_redlist_search",
+        "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 836033,
@@ -934,156 +2647,541 @@
           "year": "historical methods, page accessed 2026-09-25"
         },
         "basis": "100 g edible portion",
+        "cohort_criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron and zinc all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
         "cohort_food_item_ids": [
-          "F006288",
-          "F006289",
-          "F006291"
+          "K0270000000a",
+          "K0390010000a",
+          "K0620000000a",
+          "K0830011130a",
+          "K0960070000a",
+          "K1070000000a",
+          "K1140000000a",
+          "K1320000000a",
+          "K1370020000a",
+          "K1620000000a",
+          "K1650010000a",
+          "K1670000000a",
+          "K4000000000a",
+          "K4000010000a",
+          "K4000040000a",
+          "K4040020000a",
+          "K4060010000a",
+          "K4130000000a",
+          "K6000020000a",
+          "K6020010000a",
+          "K6080000000a",
+          "K6100000000a",
+          "K6110000000a",
+          "K6130180000a",
+          "K6230000000a"
         ],
-        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
-        "cohort_species": 3,
-        "edible_fraction": {
-          "aphia_id": 836033,
-          "kind": "edible_fraction",
-          "limitations": "Independent market specimens (at least 30 animals from three batches), not the Australian AFCD nutrient specimens; site and season can change yield.",
-          "method": "(whole wet weight minus shell weight) / whole wet weight",
-          "publication_year": 2025,
-          "record_id": "10.3390/foods14091595:Table1:Crassostrea-gigas",
-          "region": "Dalian market, China",
-          "reviewed": true,
-          "sample_period": "Q2; collection year not supplied",
-          "source_id": "li_2025_yield",
-          "unit": "whole live animal to shucked meat mass fraction",
-          "value": 0.1157
+        "cohort_id": "rda-10.4-raw-marine-animals",
+        "cohort_species": 25,
+        "components": {
+          "aquaculture_contribution": 10.0,
+          "edible_fraction_contribution": 1.6,
+          "evidence_grade_deduction": 0.0,
+          "nutrient_value_contribution": 53.87
         },
-        "edible_fraction_sensitivity": [
+        "cross_checks": [
           {
-            "aphia_id": 836033,
-            "kind": "edible_fraction_sensitivity",
-            "limitations": "Independent Chilean population (40 animals, two pools); scenario sensitivity only.",
-            "method": "wet shucked meat / whole wet weight",
-            "publication_year": 2022,
-            "record_id": "10.1371/journal.pone.0270825:Table3:Crassostrea-gigas-2017",
-            "region": "Faro Corona, Chiloé Island, Chile",
-            "reviewed": true,
-            "sample_period": "September 2017",
-            "source_id": "valenzuela_2022_yield",
-            "unit": "whole live animal to wet meat mass fraction",
-            "value": 0.1527
-          },
-          {
-            "aphia_id": 836033,
-            "kind": "edible_fraction_sensitivity",
-            "limitations": "Independent Chilean population (60 animals, three pools); use for sensitivity, not an average with Dalian yield.",
-            "method": "wet shucked meat / whole wet weight",
-            "publication_year": 2022,
-            "record_id": "10.1371/journal.pone.0270825:Table1:Crassostrea-gigas",
-            "region": "Hueihue, Chiloé Island, Chile",
-            "reviewed": true,
-            "sample_period": "August 2018",
-            "source_id": "valenzuela_2022_yield",
-            "unit": "whole live animal to wet meat mass fraction",
-            "value": 0.237
+            "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+            "cohort_species": 3,
+            "edible_fraction": 0.1157,
+            "mfpi": 65.6,
+            "note": "verified-pilot-1 result kept as a cross-check only; not averaged with the RDA result."
           }
         ],
-        "formula": "nutrient_weight × mean(percentile × evidence_factor) + 100 × edible_fraction_weight × edible_fraction + 100 × aquaculture_weight × aquaculture_boolean",
-        "method_source_id": "frdc_2008_905",
-        "method_version": "verified-pilot-1",
+        "edible_fraction": {
+          "kind": "edible_fraction",
+          "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
+          "method": "1 - refuse (84%) / 100 from the same RDA row",
+          "record_id": "RDA-10.4:K4040020000a:refuse",
+          "region": "Korea (RDA national table)",
+          "reviewed": true,
+          "sample_period": "('16)",
+          "source_id": "rda_db_10_4",
+          "unit": "edible share of food as purchased",
+          "value": 0.16
+        },
+        "english_name": "Pacific oyster, Wild, Raw",
+        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
+        "grade_sensitivity": {
+          "all_grade_factors_1": 65.5
+        },
+        "method_version": "verified-pilot-2",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
-            "grade": "measured",
-            "method": "Original FRDC acid-digest ICP-OES",
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
             "peer_values": [
               {
-                "food_item_id": "F006288",
-                "scientific_name": "Ostrea angasi",
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 0.45
+              },
+              {
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 1.98
+              },
+              {
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 0.7
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 1.0
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 0.44
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 0.1
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 0.4
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 0.43
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 1.17
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 2.95
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
+                "value": 2.0
+              },
+              {
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 0.92
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 8.72
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
                 "value": 3.75
               },
               {
-                "food_item_id": "F006289",
-                "scientific_name": "Magallana gigas",
-                "value": 4.43
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 2.68
               },
               {
-                "food_item_id": "F006291",
-                "scientific_name": "Saccostrea glomerata",
-                "value": 3.47
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 0.84
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 0.74
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 1.48
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.7
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 0.89
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 0.18
               }
             ],
-            "percentile": 83.33,
-            "percentile_unrounded": 83.33333333333333,
+            "percentile": 98.0,
+            "percentile_unrounded": 98.0,
             "unit": "mg",
-            "value": 4.43
+            "value": 8.72
           },
           "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "calculated",
-            "method": "AFCD Release 3 reported protein; original FRDC nitrogen × 6.25; original 10.9 g differs from later AFCD 10.8 g",
+            "evidence_factor": 1.0,
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
             "peer_values": [
               {
-                "food_item_id": "F006288",
-                "scientific_name": "Ostrea angasi",
-                "value": 7.3
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 22.36
               },
               {
-                "food_item_id": "F006289",
-                "scientific_name": "Magallana gigas",
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 23.99
+              },
+              {
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 21.3
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 20.7
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 18.41
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 20.08
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 19.5
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 18.9
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 22.5
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 19.02
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 17.3
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 23.1
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 15.18
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
                 "value": 10.8
               },
               {
-                "food_item_id": "F006291",
-                "scientific_name": "Saccostrea glomerata",
-                "value": 10.6
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 12.3
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 9.66
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
+                "value": 12.29
+              },
+              {
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 12.27
+              },
+              {
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 15.97
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 16.19
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 16.3
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.0
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 16.4
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 21.17
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 18.84
               }
             ],
-            "percentile": 83.33,
-            "percentile_unrounded": 83.33333333333333,
+            "percentile": 6.0,
+            "percentile_unrounded": 6.0,
             "unit": "g",
-            "value": 10.8
+            "value": 9.66
           },
           "zinc_mg": {
             "evidence_factor": 1.0,
-            "grade": "measured",
-            "method": "Original FRDC wet-oxidation ICP-OES",
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 table value (row source ('16)); per-value derivation not exposed",
             "peer_values": [
               {
-                "food_item_id": "F006288",
-                "scientific_name": "Ostrea angasi",
-                "value": 11.05
+                "food_item_id": "K0270000000a",
+                "name": "넙치(광어), 생것",
+                "value": 0.52
               },
               {
-                "food_item_id": "F006289",
-                "scientific_name": "Magallana gigas",
-                "value": 18.04
+                "food_item_id": "K0390010000a",
+                "name": "다랑어, 참다랑어, 생것",
+                "value": 0.5
               },
               {
-                "food_item_id": "F006291",
-                "scientific_name": "Saccostrea glomerata",
-                "value": 20.25
+                "food_item_id": "K0620000000a",
+                "name": "만새기, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K0830011130a",
+                "name": "방어, 양식, 어린것, 생것",
+                "value": 0.8
+              },
+              {
+                "food_item_id": "K0960070000a",
+                "name": "볼락, 조피볼락(우럭), 생것",
+                "value": 0.78
+              },
+              {
+                "food_item_id": "K1070000000a",
+                "name": "삼치, 생것",
+                "value": 0.56
+              },
+              {
+                "food_item_id": "K1140000000a",
+                "name": "샛멸, 생것",
+                "value": 1.3
+              },
+              {
+                "food_item_id": "K1320000000a",
+                "name": "애꼬치, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K1370020000a",
+                "name": "연어, 홍연어, 생것",
+                "value": 0.5
+              },
+              {
+                "food_item_id": "K1620000000a",
+                "name": "조기(참조기), 생것",
+                "value": 0.45
+              },
+              {
+                "food_item_id": "K1650010000a",
+                "name": "쥐치, 말쥐치, 생것",
+                "value": 0.3
+              },
+              {
+                "food_item_id": "K1670000000a",
+                "name": "청새치, 생것",
+                "value": 0.6
+              },
+              {
+                "food_item_id": "K4000000000a",
+                "name": "가리비, 생것",
+                "value": 2.56
+              },
+              {
+                "food_item_id": "K4000010000a",
+                "name": "가리비, 국자가리비, 생것",
+                "value": 6.1
+              },
+              {
+                "food_item_id": "K4000040000a",
+                "name": "가리비, 큰가리비, 생것",
+                "value": 2.15
+              },
+              {
+                "food_item_id": "K4040020000a",
+                "name": "굴, 참굴, 생것",
+                "value": 15.9
+              },
+              {
+                "food_item_id": "K4060010000a",
+                "name": "꼬막, 새꼬막, 생것",
+                "value": 1.1
+              },
+              {
+                "food_item_id": "K4130000000a",
+                "name": "바지락, 생것",
+                "value": 1.22
+              },
+              {
+                "food_item_id": "K6000020000a",
+                "name": "가재, 바닷가재, 생것",
+                "value": 1.3
+              },
+              {
+                "food_item_id": "K6020010000a",
+                "name": "게, 꽃게, 생것",
+                "value": 2.05
+              },
+              {
+                "food_item_id": "K6080000000a",
+                "name": "낙지, 생것",
+                "value": 2.02
+              },
+              {
+                "food_item_id": "K6100000000a",
+                "name": "멍게(우렁쉥이), 생것",
+                "value": 5.3
+              },
+              {
+                "food_item_id": "K6110000000a",
+                "name": "문어, 생것",
+                "value": 1.6
+              },
+              {
+                "food_item_id": "K6130180000a",
+                "name": "새우, 흰다리새우, 생것",
+                "value": 2.26
+              },
+              {
+                "food_item_id": "K6230000000a",
+                "name": "오징어, 생것",
+                "value": 1.4
               }
             ],
-            "percentile": 50.0,
-            "percentile_unrounded": 50.0,
+            "percentile": 98.0,
+            "percentile_unrounded": 98.0,
             "unit": "mg",
-            "value": 18.04
+            "value": 15.9
           }
         },
-        "publication_year": 2025,
-        "reported_scientific_name": "Crassostrea gigas",
-        "sample_state": "raw",
-        "sample_year_range": [
-          2010,
-          2011
+        "observed_rows": [
+          {
+            "english_name": "Pacific oyster, Wild, Raw",
+            "food_item_id": "K4040020000a",
+            "link_evidence": "Korean standard name 참굴 = Crassostrea gigas (e.g., KCI ART001166457 title '참굴, Crassostrea gigas'); RDA English 'Pacific oyster'; WoRMS accepted Magallana gigas 836033.",
+            "linked": true,
+            "missing": [],
+            "refuse_pct": 84.0,
+            "reported_food_name": "굴, 참굴, 생것",
+            "row_source": "('16)",
+            "values": {
+              "iron_mg": 8.72,
+              "protein_g": 9.66,
+              "zinc_mg": 15.9
+            }
+          }
         ],
-        "source_food_item_id": "F006289",
-        "source_id": "afcd_r3_nutrients",
+        "reported_food_name": "굴, 참굴, 생것",
+        "row_source": "('16)",
+        "sample_state": "raw",
+        "source_food_item_id": "K4040020000a",
+        "source_id": "rda_db_10_4",
+        "sufficiency": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
         "supplemental_nutrition": [],
         "uncertainty": [
-          "Only three oyster species in the fixed comparison cohort; ranks change in large steps.",
-          "AFCD Australian nutrient specimens and the independent Dalian edible-yield specimens differ by place and collection period.",
-          "AFCD workbook says 2008 (SARDI); the underlying FRDC report dates sample supply to July 2010–July 2011 and does not assign a year per food item."
+          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
+          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
+          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
+          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
-        "unrounded": 65.60144444444444,
+        "unrounded": 65.46666666666667,
+        "weight_sensitivity": [
+          {
+            "aquaculture_weight": 0.15,
+            "edible_fraction_weight": 0.15,
+            "mfpi": 64.5,
+            "nutrient_weight": 0.7
+          },
+          {
+            "aquaculture_weight": 0.05,
+            "edible_fraction_weight": 0.05,
+            "mfpi": 66.4,
+            "nutrient_weight": 0.9
+          }
+        ],
         "weights": {
           "aquaculture_weight": 0.1,
           "edible_fraction_weight": 0.1,
@@ -1091,19 +3189,67 @@
         },
         "yield_sensitivity": [
           {
+            "fraction": 0.1157,
+            "mfpi_at_same_nutrients": 65.0,
+            "record_id": "10.3390/foods14091595:Table1:Crassostrea-gigas",
+            "region": "Dalian market, China",
+            "source_id": "li_2025_yield"
+          },
+          {
             "fraction": 0.1527,
-            "mfpi_at_same_nutrients": 66.0,
+            "mfpi_at_same_nutrients": 65.4,
             "record_id": "10.1371/journal.pone.0270825:Table3:Crassostrea-gigas-2017",
+            "region": "Faro Corona, Chiloé Island, Chile",
             "source_id": "valenzuela_2022_yield"
           },
           {
             "fraction": 0.237,
-            "mfpi_at_same_nutrients": 66.8,
+            "mfpi_at_same_nutrients": 66.2,
             "record_id": "10.1371/journal.pone.0270825:Table1:Crassostrea-gigas",
+            "region": "Hueihue, Chiloé Island, Chile",
             "source_id": "valenzuela_2022_yield"
           }
         ]
       },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 1,
+          "ratio": 0.25,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ],
+          "ratio": 1.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.42
+      },
+      "korean_name": "참굴",
       "scientific_name": "Magallana gigas",
       "score_status": {
         "BBVI": "산출 보류",
@@ -1115,25 +3261,31 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": 65.6
+        "MFPI": 65.5
       },
       "sensitivity": {
         "food_weights": {}
       },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": null,
+        "food_only_MFPI": 65.5
+      },
       "source_ids": [
         "afcd_r3_details",
         "afcd_r3_nutrients",
-        "fao_korea_oyster",
         "fao_oyster_culture",
         "frdc_2008_905",
+        "iucn_redlist_search",
         "li_2025_yield",
         "magallana_2013_peptide",
+        "rda_db_10_4",
         "valenzuela_2022_yield"
       ],
+      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "assessment_not_verified",
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     }

@@ -4,6 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5;
+const VERIFIED = ['verified-pilot-2'];
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -54,7 +55,7 @@ function foodTraceValid(s,a,sources) {
 }
 
 const pilotScore = (s,key) => {
-  if(key==='BBVI' && s.assessment?.report_version==='verified-pilot-1'){
+  if(key==='BBVI' && VERIFIED.includes(s.assessment?.report_version)){
     const food=s.assessment?.scores?.MFPI, bio=s.assessment?.scores?.MBPI;
     return Number.isFinite(food)&&Number.isFinite(bio)
       ? Math.round((bbviWeight*food+(1-bbviWeight)*bio)*10)/10 : null;
@@ -68,12 +69,12 @@ const pilotCell = (s,key) => pilotScore(s,key)===null ? '<span class="pending">�
 function verifiedFoodValid(a,report){
   if(a.scores.MFPI===null)return true;
   const f=a.food_trace, config=report.method?.nutrition, sources=report.sources||{};
-  if(!f||!config||f.cohort_id!==config.cohort_id||f.cohort_species!==report.comparison_cohort?.species_count||
+  // The trace must name one fixed primary cohort, and its size must match the published cohort.
+  const cohort=(report.comparison_cohorts||[]).find(c=>c.cohort_id===f?.cohort_id&&c.role==='primary');
+  if(!f||!config||!cohort||f.cohort_species!==cohort.size||
      f.sample_state!=='raw'||f.basis!=='100 g edible portion'||!sources[f.source_id]||
-     !sources[f.method_source_id]||f.edible_fraction?.reviewed!==true||
-     f.aquaculture?.reviewed!==true||f.aquaculture.feasible!==true)return false;
-  const years=f.sample_year_range;
-  if(!Array.isArray(years)||years.length!==2||!years.every(x=>Number.isInteger(x)&&x>=1900&&x<=new Date().getUTCFullYear()))return false;
+     f.edible_fraction?.reviewed!==true||f.aquaculture?.reviewed!==true||
+     typeof f.aquaculture.feasible!=='boolean')return false;
   let nutrient=0;
   for(const [name,unit] of Object.entries(config.components||{})){
     const n=f.nutrients?.[name];
@@ -87,7 +88,7 @@ function verifiedFoodValid(a,report){
   if(!Number.isFinite(fraction.value)||fraction.value<0||fraction.value>1||!sources[fraction.source_id]||
      !sources[f.aquaculture.source_id])return false;
   const expected=config.nutrient_weight*nutrient/Object.keys(config.components).length+
-    100*config.edible_fraction_weight*fraction.value+100*config.aquaculture_weight;
+    100*config.edible_fraction_weight*fraction.value+100*config.aquaculture_weight*Number(f.aquaculture.feasible);
   return Math.abs(expected-a.scores.MFPI)<.06;
 }
 function verifiedConservationValid(a,report){
@@ -141,8 +142,8 @@ async function attachPilotAssessments(next) {
   if(!response.ok)return;
   try {
     const report=await response.json();
-    const verified=report.method_version==='verified-pilot-1';
-    if(!['pilot-1','verified-pilot-1'].includes(report.method_version)||report.status!=='provisional_unvalidated'||!Array.isArray(report.species))return;
+    const verified=VERIFIED.includes(report.method_version);
+    if(!['pilot-1',...VERIFIED].includes(report.method_version)||report.status!=='provisional_unvalidated'||!Array.isArray(report.species))return;
     const byId=new Map(report.species.map(s=>[s.aphia_id,s]));
     if(byId.size!==report.species.length)return;
     for(const s of next.species){
@@ -176,7 +177,7 @@ async function attachPilotAssessments(next) {
       s.assessment=a;
     }
     next.assessmentInfo={foodWeight:report.food_weight,generatedAt:report.generated_at,
-      sources:report.sources,method:report.method,cohort:report.comparison_cohort,version:report.method_version};
+      sources:report.sources,method:report.method,cohort:report.comparison_cohort,cohorts:report.comparison_cohorts||[],version:report.method_version};
   } catch { /* A malformed optional report must not hide the underlying species evidence. */ }
 }
 
@@ -213,6 +214,8 @@ const IUCN_HISTORICAL = {"241776":{"category":"EN A2bd","published":2013,"assess
 function iucnHistoricalText(h,s){
   const base=`IUCN ${h.category}: ${h.published}년 발표(${h.assessed} 평가) · ${h.scope}.`;
   const t=s&&pilotScore(s,'MCUI')!==null?s.assessment.conservation_trace:null;
+  if(t&&t.record_id&&t.publication_year&&t.publication_year!==h.published)
+    return `IUCN 현행 평가 ${t.category} ${t.criteria||''}: ${t.publication_year}년 발표(${t.assessment_date} 평가) · 전 지구 범위. 이전 ${h.category}(${h.published}년 발표, ${h.assessed} 평가)는 대체된 역사적 평가입니다. 검증 전 시범 MCUI에는 현행 평가만 사용했고, 한국 한정 평가나 확정된 정책 판단이 아닙니다.`;
   return t
     ? `${base} 시범 보고서가 ${t.current_status_checked_on}에 출처 ${t.current_status_source_id}로 이 평가가 현행 IUCN 평가임을 재확인해, 검증 전 시범 MCUI에 사용했습니다. 전 세계 범위 평가이며 2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다.`
     : `${base} 역사적 평가이며, 현행 평가 여부는 확인하지 않았습니다.`;
@@ -308,7 +311,7 @@ function showDecision(s){
 // Row counts are an inventory of retrieved records. They do not supply edible
 // portion values or a comparable peer set.
 function foodEvidencePanel(s) {
-  if(s.assessment?.report_version==='verified-pilot-1')return '';
+  if(VERIFIED.includes(s.assessment?.report_version))return '';
   const f=s.assessment?.food_trace, sources=data?.assessmentInfo?.sources||{};
   if(pilotScore(s,'MFPI')!==null && f && foodTraceValid(s,s.assessment,sources)){
     const names={protein_g:'단백질',iron_mg:'철',zinc_mg:'아연'};
@@ -338,77 +341,108 @@ function foodEvidencePanel(s) {
 
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
+  food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
+  component_missing_in_source:'원자료에 필수 성분(단백질·철·아연) 중 일부가 비어 있습니다. 빈칸은 0이 아니라 결측입니다.',
   species_edible_yield_unverified:'이 종의 원자료 가식부 비율을 검증하지 못했습니다.',
   aquaculture_method_unverified:'지역·시기·방법이 확인된 양식 근거가 부족합니다.',
   compound_origin_assay_chain_or_fixed_cohort_missing:'기원종·구조·시험값·원논문을 완결해 연결한 비교집단이 없습니다.',
-  original_assessment_not_reviewed:'IUCN 역사적 기록을 찾았지만 원평가와 현행 여부를 모두 검수하지 못했습니다.',
-  assessment_not_verified:'검증된 IUCN 원평가를 확보하지 못했습니다. 공식 미평가(NE)라는 뜻은 아닙니다.',
+  original_assessment_not_reviewed:'IUCN 기록을 찾았지만 원평가를 검수하지 못했습니다.',
+  not_in_red_list:'IUCN 적색목록 2026-1에서 이 종(및 확인한 동의어)의 평가를 찾지 못했습니다. IUCN이 부여한 공식 NE 범주나 낮은 점수가 아닙니다.',
+  assessment_lookup_failed:'IUCN 평가 조회에 실패했습니다. 평가가 없다는 뜻이 아닙니다.',
+  category_not_numeric:'DD(정보 부족) 등 시범 숫자 매핑이 없는 범주입니다. 낮은 점수로 바꾸지 않습니다.',
+  assessment_not_current:'확인한 평가가 현행 평가가 아닙니다.',
   current_status_unverified:'현행 IUCN 평가 여부를 확인하지 못했습니다.',
   requires_MFPI_and_MBPI:'기본 통합 BBVI에는 MFPI와 MBPI 두 축이 모두 필요합니다.'
 };
+const nutrientNames={protein_g:'단백질',iron_mg:'철',zinc_mg:'아연'};
 function verifiedSource(id,label){
   const src=data?.assessmentInfo?.sources?.[id];
   return src?sourceLink(src.url,label||src.title||id):esc(label||id||'출처 미확인');
 }
+function observedRows(f){
+  return (f.observed_rows||[]).map(o=>`<div class="score-fact"><b>${esc(o.reported_food_name)} · ${esc(o.food_item_id)}${o.linked?'':' · 종 연결 안 함'}</b>`+
+    `<span>${Object.entries(nutrientNames).map(([k,label])=>`${label} ${o.values[k]===null?'결측(빈칸)':esc(o.values[k])+' '+(k==='protein_g'?'g':'mg')}`).join(' · ')}`+
+    ` / 100 g 가식부 · 폐기율 ${o.refuse_pct===null?'결측':esc(o.refuse_pct)+'%'} · 출처 표기 ${esc(o.row_source||'없음')}</span></div>`+
+    `<p class="fine">${esc(o.link_evidence||'')} ${verifiedSource('rda_db_10_4','RDA 식품성분 DB 10.4 ↗')}</p>`).join('');
+}
 function verifiedFoodDetail(s){
-  const f=s.assessment.food_trace||{}, names={protein_g:'단백질',iron_mg:'철',zinc_mg:'아연'};
+  const f=s.assessment.food_trace||{};
+  if(!Number.isFinite(s.assessment.scores.MFPI))return observedRows(f)+
+    (f.supplemental_nutrition||[]).map(o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
+      `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
+      `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`).join('');
   const raw=Object.entries(f.nutrients||{}).map(([key,n])=>
-    `<div class="score-fact"><b>${esc(names[key]||key)} ${esc(n.value)} ${esc(n.unit)} / 100 g 가식부</b>`+
-    `<span>${esc(n.grade)} · ${esc(n.method)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 근거 계수 ${esc(n.evidence_factor)}</span></div>`).join('');
-  const observations=(f.supplemental_nutrition||[]).map(o=>
-    `<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
-    `${Object.entries(o.values||{}).map(([key,v])=>`${esc(key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
-    `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`).join('');
-  const e=f.edible_fraction,q=f.aquaculture;
-  const support=e&&q?`<p>가식부 비율 ${esc((e.value*100).toFixed(2))}% (${esc(e.region)}, ${esc(e.sample_period)}) · ${verifiedSource(e.source_id,'원자료 ↗')}</p>`+
-    `<p>양식 방법: ${esc(q.method)}. 적용 범위: ${esc(q.region)}. 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'FAO 근거 ↗')}</p>`:'';
-  const sensitivity=(f.yield_sensitivity||[]).map(item=>
-    `<p class="fine">가식부 ${esc((item.fraction*100).toFixed(2))}% 대입 시 MFPI ${esc(Number(item.mfpi_at_same_nutrients).toFixed(1))} · ${verifiedSource(item.source_id,'독립 자료 ↗')}</p>`).join('');
-  const cohort=f.cohort_species?`<p class="fine">고정 비교집단 ${esc(f.cohort_id)} · ${esc(f.cohort_species)}종 (${esc((f.cohort_food_item_ids||[]).join(', '))}). `+
-    `원자료 시료 공급 ${esc((f.sample_year_range||[]).join('–'))}; DB 공개 연도 ${esc(f.publication_year)}. ${verifiedSource(f.source_id,'AFCD 원값 ↗')} · ${verifiedSource(f.method_source_id,'원보고서 방법 ↗')}</p>`:'';
-  return raw+cohort+support+sensitivity+observations+
+    `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(n.value)} ${esc(n.unit)} / 100 g 가식부</b>`+
+    `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`).join('');
+  const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
+  const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);
+  return `<p>${esc(f.reported_food_name)} (${esc(f.english_name)}) · 식품코드 ${esc(f.source_food_item_id)} · 출처 표기 ${esc(f.row_source)} · ${verifiedSource(f.source_id,'원자료 ↗')}</p>`+raw+
+    `<p><b>점수 구성</b> 영양값 ${esc(c.nutrient_value_contribution)} − 자료 신뢰도 감점 ${esc(c.evidence_grade_deduction)} + 가식부 ${esc(c.edible_fraction_contribution)} + 양식 ${esc(c.aquaculture_contribution)} = ${esc(s.assessment.scores.MFPI)}</p>`+
+    `<p class="fine">고정 비교집단 ${esc(f.cohort_id)} · ${esc(f.cohort_species)}개 식품${cohort?' ('+esc(cohort.foods.join(', '))+')':''}. ${esc(f.cohort_criteria)} 비교집단이 다른 종의 MFPI끼리는 비교하지 않습니다.</p>`+
+    `<p>가식부 ${esc((e.value*100).toFixed(1))}% · ${esc(e.method)} · ${verifiedSource(e.source_id,'원자료 ↗')}</p>`+
+    `<p>양식 방법: ${esc(q.method)}. 적용 범위: ${esc(q.region)} (${esc(q.year)}). 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
+    (f.yield_sensitivity||[]).map(y=>`<p class="fine">가식부 ${esc((y.fraction*100).toFixed(2))}% (${esc(y.region||'')}) 대입 시 MFPI ${esc(Number(y.mfpi_at_same_nutrients).toFixed(1))} · ${verifiedSource(y.source_id,'독립 자료 ↗')}</p>`).join('')+
+    (f.weight_sensitivity||[]).map(w=>`<p class="fine">가중치 ${w.nutrient_weight}/${w.edible_fraction_weight}/${w.aquaculture_weight} 적용 시 MFPI ${esc(Number(w.mfpi).toFixed(1))}</p>`).join('')+
+    (f.grade_sensitivity?`<p class="fine">신뢰도 계수를 모두 1로 두면 MFPI ${esc(Number(f.grade_sensitivity.all_grade_factors_1).toFixed(1))}</p>`:'')+
+    (f.cross_checks||[]).map(x=>`<p class="fine">교차 점검 ${esc(x.cohort_id)} (${esc(x.cohort_species)}종): MFPI ${esc(Number(x.mfpi).toFixed(1))}. ${esc(x.note)}</p>`).join('')+
     (f.uncertainty||[]).map(x=>`<p class="fine">불확실성: ${esc(x)}</p>`).join('');
 }
 function verifiedBioDetail(s){
   const items=s.assessment.bioactivity_partial||[];
+  const steps={origin:'기원종',structure_id:'구조 ID',quantitative_endpoint:'정량값',comparable_cohort:'비교 코호트'};
   return items.length?items.map(item=>{
     const values=(item.values||[]).map(v=>{
-      const parts=[v.material, v.value!==undefined?`${v.value} ${v.unit||''}`:null,
+      const parts=[v.material, v.value!==undefined&&v.value!==null?`${v.value} ${v.unit||''}`:v.unit,
         v.dose!==undefined?`${v.dose} ${v.dose_unit||''}`:null,
         v.viability_percent!==undefined?`세포 생존율 ${v.viability_percent}%`:null].filter(Boolean);
       return parts.map(esc).join(' · ');
     }).join(' / ');
+    const chain=item.chain?Object.entries(steps).map(([k,label])=>`${label} ${item.chain[k]?'✓':'✗'}`).join(' → '):'';
     return `<div class="score-fact"><b>${esc(item.material_kind)} · ${esc(item.endpoint||'endpoint 미확인')}</b>`+
       `<span>${values} ${item.test_system?' · '+esc(item.test_system):''}</span></div>`+
+      (chain?`<p class="fine">연결 단계: ${esc(chain)}</p>`:'')+
+      ((item.missing||[]).length?`<p class="fine">누락: ${esc(item.missing.join(' / '))}</p>`:'')+
       `<p class="fine">점수 제외: ${esc(item.exclusion_reason)} ${verifiedSource(item.source_id,'원자료 ↗')}</p>`;
   }).join(''):'<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>';
 }
 function verifiedConservationDetail(s){
   const c=s.assessment.conservation_trace;
-  if(!c)return '<p>현재 확인 가능한 원평가가 없어 IUCN 범주를 추정하지 않습니다. 검색 실패는 공식 NE와 다릅니다.</p>';
-  return `<p>역사적 기록 ${esc(c.record_id)} · ${esc(c.category||'범주 원문 미확인')} · 평가 연도 ${esc(c.assessment_year||'미확인')} · `+
-    `발행 ${esc(c.publication_year||'미확인')} · 범위 ${esc(c.scope)}. ${verifiedSource(c.source_id,'기록 ↗')}</p>`+
-    `<p class="fine">${esc(c.verification)} 현행 평가: ${c.current_status_check?.is_current===true?'재확인됨':'확인 보류'}. `+
-    `OBIS 원시 건수는 개체군 추세 점수로 사용하지 않았습니다.</p>`;
+  if(!c)return '<p>IUCN 평가 조회 기록이 없습니다. 평가 없음(NE)으로 추정하지 않습니다.</p>';
+  if(c.iucn_state==='not_in_red_list')return `<p>IUCN 적색목록 검색 결과 0건 (${esc(c.search.queries.join(', '))}; ${esc(c.search.checked_on)}). `+
+    `대조 검색: ${esc(c.search.positive_controls.join(', '))}. ${esc(c.search.also_checked)}. ${verifiedSource(c.source_id,'IUCN 검색 ↗')}</p><p class="fine">${esc(c.verification)}</p>`;
+  const check=c.current_status_check;
+  return `<p>${esc(c.category)}${c.criteria?' '+esc(c.criteria):''} (기준 ${esc(c.criteria_version)}) · 평가일 ${esc(c.assessment_date)} · 발표 ${esc(c.publication_year)} · 범위 ${esc(c.scope)} · 개체군 추세 ${esc(c.population_trend)}`+
+    `${c.annotations?' · 주석 “'+esc(c.annotations)+'”':''}${c.assessment_older_than_10y?' · 10년 넘은 평가':''}. ${verifiedSource(c.source_id,'IUCN 평가 ↗')}</p>`+
+    (c.pilot_mapping?`<p>원래 등급과 시범 숫자: ${esc(c.pilot_mapping)} · ${esc(c.label)}</p>`:'')+
+    `<p class="fine">현행 확인: ${check?.is_current?'현행 평가 ('+esc(check.red_list_version)+', '+esc(check.checked_on)+')':'확인 보류'} · ${verifiedSource(check?.source_id,'확인 근거 ↗')}. ${esc(c.verification)}</p>`+
+    (c.previous_assessments||[]).map(p=>`<p class="fine">이전 평가 ${esc(p.record_id)} · ${esc(p.category)} ${esc(p.criteria||'')} · ${esc(p.assessment_date)} 평가 · ${esc(p.status)}</p>`).join('')+
+    '<p class="fine">OBIS·GBIF 원시 출현 건수는 개체군 추세로 쓰지 않았고, MCUI에 가감하지 않았습니다. 종 단위 평가를 출현 셀의 해역 등급으로 옮기지 않습니다.</p>';
+}
+function sufficiencyText(a){
+  const i=a.information_sufficiency;
+  if(!i)return `네 지표 중 ${Object.values(a.scores).filter(Number.isFinite).length}개 산출.`;
+  const pct=x=>Math.round(x*100)+'%';
+  return `MFPI 필수 입력 ${pct(i.MFPI.ratio)} (${esc(i.MFPI.present.join(', ')||'없음')}) · MBPI 연결 단계 ${i.MBPI.best_record_steps}/4 · MCUI ${pct(i.MCUI.ratio)} · 평균 ${pct(i.mean_ratio)}. 점수와 합치지 않는 별도 표시입니다.`;
 }
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
   const bodies={MFPI:verifiedFoodDetail(s),MBPI:verifiedBioDetail(s),MCUI:verifiedConservationDetail(s),
-    BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다.</p>'};
+    BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'};
+  const unexplored=a.unexplored_candidate?`<p class="pending">미탐색 후보: 같은 ${esc(a.unexplored_candidate.rank)} ${esc(a.unexplored_candidate.taxon)}의 ${esc(a.unexplored_candidate.relatives.join(', '))}에 BBVI가 있습니다. 이 종의 점수는 추정하지 않습니다.</p>`:'';
   return `<section class="verified-scores"><h3>실제 원자료 기반 지표 · 검증 전 시범 지표</h3>`+
-    `<p class="fine">자료 스냅샷 ${esc(data.assessmentInfo?.generatedAt?.slice(0,10))} · MFPI·MBPI·MCUI는 각각 독립적으로 판정합니다. `+
-    `숫자는 종 단위 연구용 지표이며 지도 1° 셀이나 해역에 전가하지 않습니다.</p>`+
+    `<p class="fine">자료 스냅샷 ${esc(data.assessmentInfo?.generatedAt?.slice(0,10))} · 방법론 ${esc(data.assessmentInfo?.version)} · MFPI·MBPI·MCUI는 각각 독립적으로 판정합니다. `+
+    `숫자는 종 단위 연구용 지표이며 지도 셀이나 해역에 전가하지 않습니다.</p>`+
     ` ${Object.keys(names).map(key=>{
       const value=pilotScore(s,key),reason=a.withheld_reasons?.[key];
       const status=a.score_status?.[key]||'산출 보류';
       return `<details class="score-disclosure" data-axis="${key}"><summary><span>${esc(key)} · ${esc(names[key])}</span>`+
-        `<b>${value===null?esc(status):value.toFixed(1)+' · '+esc(status)}</b></summary>`+
+        `<b>${value===null?esc(status):value.toFixed(1)+' · 검증 전 시범 지표'}</b></summary>`+
         `<div class="score-disclosure-body">${value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
-        `${bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위·근거등급 80% + 전체 중 가식부 비율 10% + 양식 방법 근거 10%. 이 비중은 자체 시범 규칙입니다.</p>':''}`+
+        `${bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 팀의 시범 규칙입니다.</p>':''}`+
         `</div></details>`;
-    }).join('')}<p class="fine">정보충분도: 네 지표 중 ${Object.values(a.scores).filter(Number.isFinite).length}개 산출. `+
-    `민감도 범위는 통계적 신뢰구간이 아닙니다. 식량 전용 탐색은 MFPI 자체를 보되 기본 BBVI와 구분합니다.</p></section>`;
+    }).join('')}${unexplored}<p class="fine">정보충분도: ${sufficiencyText(a)} `+
+    `민감도 범위는 통계적 신뢰구간이 아닙니다.</p></section>`;
 }
 
 function setView(view) {
@@ -484,7 +518,7 @@ function renderLiveDetail(s) {
   const evidence=s.v2?liveEvidence(s):'';
   const score=s.v2?'활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.':esc(s.productionSummary);
   const pilot=s.assessment;
-  const pilotRows=pilot?.report_version==='verified-pilot-1'?renderVerifiedIndices(s)
+  const pilotRows=VERIFIED.includes(pilot?.report_version)?renderVerifiedIndices(s)
     :pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}${pilot.scores.MCUI===null&&pilot.iucn_category?' · 현행 평가 확인 보류':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
   const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.':score;
   $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${institutionChecks(s)}${evidence}${foodEvidencePanel(s)}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,'지표 근거 '+id+' ↗')} · ${esc(src.license)}${src.notice?`<br><span class="fine">${esc(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`;
@@ -736,7 +770,7 @@ function renderComparison(){
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
-    if(s.assessment?.report_version!=='verified-pilot-1')return pilotScore(s,key)!==null?pilotCell(s,key):null;
+    if(!VERIFIED.includes(s.assessment?.report_version))return pilotScore(s,key)!==null?pilotCell(s,key):null;
     const value=pilotScore(s,key),status=s.assessment.score_status?.[key]||'산출 보류';
     return `<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="${key}" aria-label="${esc(s.label)} ${key} ${value===null?status:value.toFixed(1)} 근거 보기">`+
       `${value===null?esc(status):value.toFixed(1)}<small>${value===null?'근거·보류 사유 보기':'검증 전 시범 지표 · 근거 보기'}</small></button>`;

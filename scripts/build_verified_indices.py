@@ -1,8 +1,16 @@
 """Build a deterministic, provisional species score report from reviewed snapshots.
 
-No network or database writes occur here. Source retrieval and human review are
-separate stages; this module rejects incomplete numeric score inputs rather than
-silently filling them. `--check` verifies the committed public report byte for byte.
+Stages (all offline; network retrieval lives in collect_*.py and writes dated snapshots):
+  1. standardize  - RDA snapshot rows -> nutrition rows (blank = missing, never zero)
+  2. link         - food rows -> accepted species only through reviewed rda_taxon_links
+  3. cohort       - fixed comparison cohorts from rules; the resulting member list must
+                    equal the frozen list in the config, so a snapshot change cannot
+                    silently move ranks
+  4. score        - MFPI / MBPI / MCUI independently; BBVI only when MFPI and MBPI exist
+  5. publish      - dist/assessments.json (`--check` compares byte for byte)
+
+Weights, grade factors, minimum cohort sizes and the IUCN number mapping are the team's
+pilot rules, not international standards.
 """
 from __future__ import annotations
 
@@ -17,11 +25,14 @@ from pathlib import Path
 from statistics import median
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_EVIDENCE = ROOT / "research" / "verified-indices" / "evidence.json"
-DEFAULT_CANDIDATES = ROOT / "research" / "verified-indices" / "candidates.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v1.json"
+FOLDER = ROOT / "research" / "verified-indices"
+DEFAULT_EVIDENCE = FOLDER / "evidence.json"
+DEFAULT_CANDIDATES = FOLDER / "candidates.json"
+DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
+AXES = ("MFPI", "MBPI", "MCUI", "BBVI")
 
 
 def require(ok: bool, message: str) -> None:
@@ -55,98 +66,212 @@ def valid_date(value: object, *, not_before: int | None = None, not_after: str |
     return (not_before is None or day.year >= not_before) and (not_after is None or value <= not_after)
 
 
-def source_ids_valid(ids: list[str], sources: dict) -> bool:
-    return bool(ids) and all(i in sources for i in ids)
+# ---------- 1. standardize ----------------------------------------------------------
+
+def _number(raw: object) -> float | None:
+    """Blank, '-' and 'tr' are not usable magnitudes; they stay missing (never 0)."""
+    if raw in (None, "", "-", "tr"):
+        return None
+    try:
+        return float(str(raw).replace(",", ""))
+    except ValueError:
+        return None
 
 
-def nutrition_rows(evidence: dict, config: dict) -> tuple[list[dict], dict[str, dict]]:
+def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
+    """Standardize RDA snapshot rows. Grade comes from the published row-source label."""
     settings = config["nutrition"]
-    all_rows = {r["food_item_id"]: r for r in evidence.get("nutrition_rows", [])}
-    require(len(all_rows) == len(evidence.get("nutrition_rows", [])), "duplicate food item ID")
-    cohort = [all_rows[i] for i in settings["food_item_ids"]]
-    require(len(cohort) >= settings["minimum_species"], "nutrition cohort too small")
-    require(len({r["scientific_name"] for r in cohort}) == len(cohort), "duplicate species in nutrition cohort")
-    for row in cohort:
-        require(row.get("reviewed") is True and row.get("source_id") in evidence["sources"]
-                and row.get("sample_state") == "raw" and row.get("basis") == "100 g edible portion"
-                and row.get("original_reference_ids")
-                and row.get("method_source_id") in evidence["sources"]
-                and isinstance(row.get("sample_year_range"), list)
-                and len(row["sample_year_range"]) == 2
-                and all(type(year) is int and 1900 <= year <= date.today().year
-                        for year in row["sample_year_range"])
-                and row["sample_year_range"][0] <= row["sample_year_range"][1],
-                f"{row['food_item_id']}: incompatible/unreviewed food row")
+    links = {l["food_item_id"]: l for l in evidence.get("rda_taxon_links", [])}
+    out = {}
+    for r in snapshot["rows"]:
+        v = r["values"]
+        label = v.get("row_source") or ""
+        grade = "foreign_table_cited" if re.match(r"^[A-Z]{2,}", label) else "domestic_table"
+        nutrients = {}
         for name, unit in settings["components"].items():
-            n = row.get("nutrients", {}).get(name)
-            require(isinstance(n, dict) and n.get("unit") == unit
-                    and n.get("grade") in settings["grade_factors"] and n.get("method"),
-                    f"{row['food_item_id']}: {name} unit/grade/method")
-            finite(n.get("value"), f"{row['food_item_id']}:{name}")
-    return cohort, all_rows
+            value = _number(v.get(name))
+            nutrients[name] = None if value is None else {
+                "value": value, "unit": unit, "grade": grade,
+                "method": f"RDA DB 10.4 table value (row source {label or 'not shown'}); per-value derivation not exposed"}
+        link = links.get(r["code"], {})
+        refuse = _number(v.get("refuse_pct"))
+        out[r["code"]] = {
+            "food_item_id": r["code"], "reported_food_name": r["name"], "english_name": r.get("english_name"),
+            "group": r["group"], "row_source": label or None,
+            "aphia_id": link.get("aphia_id") if link.get("reviewed") else None,
+            "scientific_name": link.get("scientific_name") if link.get("reviewed") else None,
+            "taxon_link": link or None, "source_id": "rda_db_10_4", "reviewed": True,
+            "sample_state": "raw", "basis": "100 g edible portion", "nutrients": nutrients,
+            "edible_fraction": None if refuse is None else {
+                "kind": "edible_fraction", "value": round(1 - refuse / 100, 4), "unit": "edible share of food as purchased",
+                "method": f"1 - refuse ({refuse:g}%) / 100 from the same RDA row", "source_id": "rda_db_10_4",
+                "record_id": f"RDA-10.4:{r['code']}:refuse", "region": "Korea (RDA national table)",
+                "sample_period": label or "not stated", "reviewed": True,
+                "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin."}}
+    return out
 
 
-def food_score(candidate: dict, evidence: dict, config: dict, cohort: list[dict]) -> tuple[float | None, dict, str]:
-    settings = config["nutrition"]
-    row = next((r for r in cohort if r.get("aphia_id") == candidate["aphia_id"]), None)
-    trace = {"cohort_id": settings["cohort_id"], "cohort_species": len(cohort),
-             "cohort_food_item_ids": settings["food_item_ids"], "sample_state": "raw",
-             "basis": "100 g edible portion", "nutrients": {}, "edible_fraction": None,
-             "aquaculture": None, "method_version": config["method_version"],
-             "supplemental_nutrition": [r for r in evidence.get("nutrition_observations", [])
-                                      if r.get("aphia_id") == candidate["aphia_id"]]}
-    if row:
-        trace["source_food_item_id"] = row["food_item_id"]
-        trace["source_id"] = row["source_id"]
-        trace["method_source_id"] = row["method_source_id"]
-        trace["reported_scientific_name"] = row["reported_scientific_name"]
-        trace["sample_year_range"] = row["sample_year_range"]
-        trace["publication_year"] = row.get("publication_year")
-        for name in settings["components"]:
-            n = row["nutrients"][name]
-            peers = [float(r["nutrients"][name]["value"]) for r in cohort]
-            rank = percentile(float(n["value"]), peers)
-            trace["nutrients"][name] = {**n, "percentile": round(rank, 2),
-                "percentile_unrounded": rank,
-                "evidence_factor": settings["grade_factors"][n["grade"]],
-                "peer_values": [{"food_item_id": r["food_item_id"], "scientific_name": r["scientific_name"],
-                                 "value": r["nutrients"][name]["value"]} for r in cohort]}
-    supports = [r for r in evidence.get("food_support", []) if r.get("aphia_id") == candidate["aphia_id"]]
-    fraction = next((r for r in supports if r.get("kind") == "edible_fraction"), None)
-    aqua = next((r for r in supports if r.get("kind") == "aquaculture"), None)
-    trace["edible_fraction"], trace["aquaculture"] = fraction, aqua
-    trace["edible_fraction_sensitivity"] = [r for r in supports if r.get("kind") == "edible_fraction_sensitivity"]
-    if not row:
+# ---------- 2/3. link and cohorts ----------------------------------------------------
+
+def check_row(row: dict, settings: dict, sources: dict) -> None:
+    require(row.get("reviewed") is True and row.get("source_id") in sources
+            and row.get("sample_state") == "raw" and row.get("basis") == "100 g edible portion",
+            f"{row['food_item_id']}: incompatible/unreviewed food row")
+    for name, unit in settings["components"].items():
+        n = row.get("nutrients", {}).get(name)
+        require(isinstance(n, dict) and n.get("unit") == unit
+                and n.get("grade") in settings["grade_factors"] and n.get("method"),
+                f"{row['food_item_id']}: {name} unit/grade/method")
+        finite(n.get("value"), f"{row['food_item_id']}:{name}")
+
+
+def cohort_members(spec: dict, rows: dict[str, dict], settings: dict) -> list[str]:
+    if "food_item_ids" in spec:
+        return list(spec["food_item_ids"])
+    rule = spec["rule"]
+    members = []
+    for code, r in rows.items():
+        if r["group"] != rule["group"] or code in rule.get("exclude_food_item_ids", {}):
+            continue
+        if any(term in r["reported_food_name"] for term in rule.get("exclude_name_terms", [])):
+            continue
+        if all(r["nutrients"].get(name) for name in settings["components"]):
+            members.append(code)
+    return sorted(members)
+
+
+def build_cohorts(specs: list[dict], rows: dict[str, dict], settings: dict, sources: dict) -> dict[str, dict]:
+    cohorts = {}
+    for spec in specs:
+        ids = cohort_members(spec, rows, settings)
+        if "rule" in spec:
+            require(ids == sorted(spec["frozen_food_item_ids"]),
+                    f"{spec['cohort_id']}: cohort differs from frozen member list (snapshot changed?)")
+        require(all(i in rows for i in ids), f"{spec['cohort_id']}: unknown food item")
+        members = [rows[i] for i in ids]
+        require(len(members) >= settings["minimum_species"], f"{spec['cohort_id']}: cohort too small")
+        require(len({r["food_item_id"] for r in members}) == len(members), "duplicate food item in cohort")
+        for row in members:
+            check_row(row, settings, sources)
+        cohorts[spec["cohort_id"]] = {"spec": spec, "rows": members}
+    return cohorts
+
+
+# ---------- 4. scoring ---------------------------------------------------------------
+
+def mfpi(row: dict, cohort: list[dict], fraction: dict, aqua: dict, settings: dict,
+         weights: dict | None = None, factors: dict | None = None) -> tuple[float, dict]:
+    weights = weights or {k: settings[k] for k in ("nutrient_weight", "edible_fraction_weight", "aquaculture_weight")}
+    factors = factors or settings["grade_factors"]
+    nutrients = {}
+    for name in settings["components"]:
+        n = row["nutrients"][name]
+        rank = percentile(n["value"], [r["nutrients"][name]["value"] for r in cohort])
+        nutrients[name] = {**n, "percentile": round(rank, 2), "percentile_unrounded": rank,
+                           "evidence_factor": factors[n["grade"]],
+                           "peer_values": [{"food_item_id": r["food_item_id"], "name": r["reported_food_name"],
+                                            "value": r["nutrients"][name]["value"]} for r in cohort]}
+    graded = sum(n["percentile_unrounded"] * n["evidence_factor"] for n in nutrients.values()) / len(nutrients)
+    raw = sum(n["percentile_unrounded"] for n in nutrients.values()) / len(nutrients)
+    score = (weights["nutrient_weight"] * graded
+             + 100 * weights["edible_fraction_weight"] * finite(fraction["value"], "edible_fraction", 0, 1)
+             + 100 * weights["aquaculture_weight"] * int(aqua["feasible"]))
+    parts = {"nutrient_value_contribution": round(weights["nutrient_weight"] * raw, 2),
+             "evidence_grade_deduction": round(weights["nutrient_weight"] * (raw - graded), 2),
+             "edible_fraction_contribution": round(100 * weights["edible_fraction_weight"] * fraction["value"], 2),
+             "aquaculture_contribution": round(100 * weights["aquaculture_weight"] * int(aqua["feasible"]), 2)}
+    return score, {"nutrients": nutrients, "components": parts, "weights": weights}
+
+
+def support_for(aphia: int, evidence: dict, kind: str) -> list[dict]:
+    return [r for r in evidence.get("food_support", []) if r.get("aphia_id") == aphia and r.get("kind") == kind]
+
+
+def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary: dict, cross: dict) -> tuple:
+    settings, aphia, sources = config["nutrition"], candidate["aphia_id"], evidence["sources"]
+    aqua = next((r for r in support_for(aphia, evidence, "aquaculture") if r.get("reviewed") is True), None)
+    if aqua:
+        require(aqua.get("source_id") in sources and aqua.get("record_id") and aqua.get("method")
+                and aqua.get("region") and aqua.get("year") and aqua.get("limitations")
+                and type(aqua.get("feasible")) is bool, "aquaculture provenance incomplete")
+    trace = {"method_version": config["method_version"], "aquaculture": aqua,
+             "supplemental_nutrition": [r for r in evidence.get("nutrition_observations", []) if r.get("aphia_id") == aphia],
+             "observed_rows": [], "cross_checks": []}
+    # every linked (or explicitly unlinked) RDA row is shown as a raw observation
+    for r in rows.values():
+        link = r.get("taxon_link") or {}
+        if r["aphia_id"] == aphia or link.get("candidate_aphia_id") == aphia:
+            trace["observed_rows"].append({
+                "food_item_id": r["food_item_id"], "reported_food_name": r["reported_food_name"],
+                "english_name": r["english_name"], "row_source": r["row_source"], "linked": r["aphia_id"] == aphia,
+                "link_evidence": link.get("link_evidence"),
+                "values": {k: (n or {}).get("value") for k, n in r["nutrients"].items()},
+                "missing": [k for k, n in r["nutrients"].items() if n is None],
+                "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4)})
+    trace["observed_rows"].sort(key=lambda x: x["food_item_id"])
+    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False, "edible_fraction": False, "aquaculture": aqua is not None}
+    for obs in trace["observed_rows"]:
+        if obs["linked"]:
+            for k in settings["components"]:
+                have[k] = have[k] or obs["values"][k] is not None
+            have["edible_fraction"] = have["edible_fraction"] or obs["refuse_pct"] is not None
+    trace["sufficiency"] = {"required": list(have), "present": [k for k, ok in have.items() if ok],
+                            "ratio": round(sum(have.values()) / len(have), 2)}
+
+    def scored(cohort_id: str, cohort: dict):
+        row = next((r for r in cohort["rows"] if r.get("aphia_id") == aphia), None)
+        if not row or not aqua:
+            return None
+        fraction = row.get("edible_fraction") or next((r for r in support_for(aphia, evidence, "edible_fraction")
+                                                       if r.get("reviewed") is True), None)
+        if not fraction:
+            return None
+        score, detail = mfpi(row, cohort["rows"], fraction, aqua, settings)
+        return score, {"cohort_id": cohort_id, "cohort_species": len(cohort["rows"]), "row": row, "fraction": fraction, **detail}
+
+    for cid, cohort in cross.items():
+        hit = scored(cid, cohort)
+        if hit:
+            trace["cross_checks"].append({"cohort_id": cid, "mfpi": round1(hit[0]), "cohort_species": hit[1]["cohort_species"],
+                                          "edible_fraction": hit[1]["fraction"]["value"], "note": cohort["spec"].get("note", "")})
+    for cid, cohort in primary.items():
+        hit = scored(cid, cohort)
+        if not hit:
+            continue
+        score, d = hit
+        row, fraction = d.pop("row"), d.pop("fraction")
+        trace.update(d)
+        trace.update({"source_food_item_id": row["food_item_id"], "reported_food_name": row["reported_food_name"],
+                      "english_name": row.get("english_name"), "row_source": row.get("row_source"),
+                      "source_id": row["source_id"], "sample_state": row["sample_state"], "basis": row["basis"],
+                      "cohort_food_item_ids": [r["food_item_id"] for r in cohort["rows"]],
+                      "cohort_criteria": cohort["spec"]["criteria"], "edible_fraction": fraction, "unrounded": score,
+                      "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean"})
+        others = [r for r in support_for(aphia, evidence, "edible_fraction") + support_for(aphia, evidence, "edible_fraction_sensitivity")
+                  if r.get("reviewed") is True and r is not fraction]
+        trace["yield_sensitivity"] = [{"source_id": r["source_id"], "record_id": r["record_id"], "fraction": r["value"],
+                                       "region": r.get("region"),
+                                       "mfpi_at_same_nutrients": round1(score + 100 * settings["edible_fraction_weight"] * (r["value"] - fraction["value"]))}
+                                      for r in others]
+        trace["weight_sensitivity"] = [{**alt, "mfpi": round1(mfpi(row, cohort["rows"], fraction, aqua, settings, weights=alt)[0])}
+                                       for alt in config["sensitivity"]["mfpi_weights"]]
+        trace["grade_sensitivity"] = {"all_grade_factors_1": round1(mfpi(row, cohort["rows"], fraction, aqua, settings,
+                                                                         factors={k: 1.0 for k in settings["grade_factors"]})[0])}
+        step = round(100 / len(cohort["rows"]), 1)
+        trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + [
+            f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
+            "Sensitivity values are scenario arithmetic, not a statistical confidence interval."]
+        return round1(score), trace, None
+    linked = [o for o in trace["observed_rows"] if o["linked"]]
+    if not trace["observed_rows"] and not trace["supplemental_nutrition"]:
         return None, trace, "comparable_nutrition_missing"
-    if not fraction or fraction.get("reviewed") is not True:
-        return None, trace, "species_edible_yield_unverified"
-    if not aqua or aqua.get("reviewed") is not True:
+    if not linked:
+        return None, trace, "food_row_not_species_specific"
+    if all(o["missing"] for o in linked):
+        return None, trace, "component_missing_in_source"
+    if not aqua:
         return None, trace, "aquaculture_method_unverified"
-    require(fraction.get("source_id") in evidence["sources"] and fraction.get("record_id")
-            and fraction.get("method") and fraction.get("region") and fraction.get("limitations"),
-            "edible fraction provenance incomplete")
-    require(aqua.get("source_id") in evidence["sources"] and aqua.get("record_id")
-            and aqua.get("method") and aqua.get("region") and aqua.get("year")
-            and aqua.get("limitations") and type(aqua.get("feasible")) is bool,
-            "aquaculture provenance incomplete")
-    edible = finite(fraction.get("value"), "edible_fraction", 0, 1)
-    numerator = sum(n["percentile_unrounded"] * n["evidence_factor"]
-                    for n in trace["nutrients"].values()) / len(settings["components"])
-    score = 100 * (settings["nutrient_weight"] * numerator / 100
-                   + settings["edible_fraction_weight"] * edible
-                   + settings["aquaculture_weight"] * int(aqua["feasible"]))
-    trace["formula"] = "nutrient_weight × mean(percentile × evidence_factor) + 100 × edible_fraction_weight × edible_fraction + 100 × aquaculture_weight × aquaculture_boolean"
-    trace["weights"] = {k: settings[k] for k in ("nutrient_weight", "edible_fraction_weight", "aquaculture_weight")}
-    trace["unrounded"] = score
-    trace["yield_sensitivity"] = [{"source_id": r["source_id"], "record_id": r["record_id"],
-                                   "fraction": r["value"],
-                                   "mfpi_at_same_nutrients": round1(score + 100 * settings["edible_fraction_weight"]
-                                                                     * (r["value"] - edible))}
-                                  for r in trace["edible_fraction_sensitivity"]]
-    trace["uncertainty"] = ["Only three oyster species in the fixed comparison cohort; ranks change in large steps.",
-                            "AFCD Australian nutrient specimens and the independent Dalian edible-yield specimens differ by place and collection period.",
-                            "AFCD workbook says 2008 (SARDI); the underlying FRDC report dates sample supply to July 2010–July 2011 and does not assign a year per food item."]
-    return round1(score), trace, "calculated"
+    return None, trace, "species_edible_yield_unverified"
 
 
 def _approved_assays(evidence: dict, config: dict) -> list[dict]:
@@ -176,13 +301,12 @@ def bio_scores(evidence: dict, config: dict) -> dict[int, tuple[float, list, dic
     approved = _approved_assays(evidence, config)
     by_id = {a["activity_id"]: a for a in approved}
     require(len(by_id) == len(approved), "duplicate bioactivity ID")
-    out: dict[int, tuple[float, list, dict]] = {}
+    out: dict[int, tuple] = {}
     for stratum in evidence.get("bioactivity_cohorts", []):
         ids = stratum["activity_ids"]
         require(all(i in by_id for i in ids) and len(ids) == len(set(ids)), "invalid fixed bioactivity cohort")
         rows = [by_id[i] for i in ids]
-        keys = {(a["target_id"], a["assay_type"], a["endpoint"], a["test_system"],
-                 a["conditions_key"]) for a in rows}
+        keys = {(a["target_id"], a["assay_type"], a["endpoint"], a["test_system"], a["conditions_key"]) for a in rows}
         require(len(keys) == 1, "mixed bioactivity stratum")
         compounds = defaultdict(list)
         for a in rows:
@@ -200,31 +324,38 @@ def bio_scores(evidence: dict, config: dict) -> dict[int, tuple[float, list, dic
                         "activity_ids": sorted(a["activity_id"] for a in own),
                         "original_paper_dois": sorted({a["original_paper_doi"] for a in own}),
                         "peer_compounds": len(peers), "median_pchembl": round(peers[compound], 3),
-                        "percentile": round(rank, 2), "evidence_factor": factor,
-                        "adjusted": rank * factor}
-                old = out.get(origin, (None, [], {}))[1]
-                out[origin] = (None, old + [item], {})
+                        "percentile": round(rank, 2), "evidence_factor": factor, "adjusted": rank * factor}
+                out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for aphia, (_, items, _) in list(out.items()):
         adjusted = [i["adjusted"] for i in items]
         primary = max(adjusted)
         out[aphia] = (round1(primary), items,
                       {"median_compound_sensitivity": round1(median(adjusted)),
+                       "mean_compound_sensitivity": round1(sum(adjusted) / len(adjusted)),
                        "range_from_aggregation": [round1(min(adjusted)), round1(primary)]})
     return out
 
 
-def conservation_score(candidate: dict, evidence: dict, config: dict) -> tuple[float | None, dict | None, str]:
-    assessment = next((r for r in evidence.get("conservation", [])
-                       if r.get("aphia_id") == candidate["aphia_id"]), None)
+def conservation_axis(candidate: dict, evidence: dict, config: dict) -> tuple:
+    assessment = next((r for r in evidence.get("conservation", []) if r.get("aphia_id") == candidate["aphia_id"]), None)
     if not assessment:
-        return None, None, "assessment_not_verified"
-    checked = assessment.get("current_status_check")
-    trace = {k: v for k, v in assessment.items() if k != "current_status_check"}
-    trace["current_status_check"] = checked
+        return None, None, "assessment_lookup_failed"
+    trace = dict(assessment)
+    state = assessment.get("iucn_state")
+    require(state in ("assessed", "data_deficient", "not_in_red_list", "lookup_failed"), "unknown IUCN state")
+    trace["label"] = config["conservation"]["label"]
+    if state == "not_in_red_list":
+        search = assessment.get("search") or {}
+        require(search.get("result_count") == 0 and search.get("queries") and valid_date(search.get("checked_on")),
+                "not_in_red_list needs a dated zero-result search")
+        return None, trace, "not_in_red_list"
+    if state == "lookup_failed":
+        return None, trace, "assessment_lookup_failed"
     if assessment.get("reviewed") is not True:
         return None, trace, "original_assessment_not_reviewed"
-    if assessment.get("category") not in config["conservation"]["category_scores"]:
-        return None, trace, "category_not_numeric_or_unverified"
+    if state == "data_deficient" or assessment.get("category") not in config["conservation"]["category_scores"]:
+        return None, trace, "category_not_numeric"
+    checked = assessment.get("current_status_check")
     if not checked:
         return None, trace, "current_status_unverified"
     require(type(checked.get("is_current")) is bool and checked.get("source_id") in evidence["sources"]
@@ -232,106 +363,138 @@ def conservation_score(candidate: dict, evidence: dict, config: dict) -> tuple[f
                            not_after=evidence["snapshot_date"]), "invalid current IUCN assessment check")
     if not checked["is_current"]:
         return None, trace, "assessment_not_current"
-    score = config["conservation"]["category_scores"][assessment["category"]]
-    trend = assessment.get("obis_trend")
-    if trend:
-        require(trend.get("reviewed") is True and trend.get("effort_adjusted") is True
-                and trend.get("source_id") in evidence["sources"]
-                and trend.get("direction") in ("declining", "stable", "increasing"),
-                "OBIS trend needs independent effort adjustment")
-        delta = {"declining": 1, "stable": 0, "increasing": -1}[trend["direction"]]
-        score = max(0, min(100, score + config["conservation"]["effort_adjustment"] * delta))
-    return float(score), trace, "calculated"
+    value = config["conservation"]["category_scores"][assessment["category"]]
+    trace["assessment_older_than_10y"] = int(evidence["snapshot_date"][:4]) - assessment["assessment_year"] > 10
+    trace["pilot_mapping"] = f"{assessment['category']} -> {value} (team pilot rule, not an IUCN score)"
+    trace["occurrence_trend_adjustment"] = None
+    return float(value), trace, None
 
 
-def build(evidence: dict, candidates: dict, config: dict) -> dict:
-    require(evidence.get("schema_version") == 2 and candidates.get("schema_version") == 1,
-            "unsupported evidence/candidate schema")
+def bio_sufficiency(partials: list[dict]) -> dict:
+    steps = ("origin", "structure_id", "quantitative_endpoint", "comparable_cohort")
+    best = max((sum(bool((p.get("chain") or {}).get(s)) for s in steps) for p in partials), default=0)
+    return {"required": list(steps), "best_record_steps": best, "ratio": round(best / len(steps), 2)}
+
+
+def unexplored_flag(aphia: int, output: list[dict], taxonomy: dict, threshold: float) -> dict | None:
+    """Flag a low-information species when a relative (same genus, else family) has a BBVI.
+    The relative's score is never copied."""
+    mine = taxonomy.get(str(aphia), {})
+    me = next(s for s in output if s["aphia_id"] == aphia)
+    if me["information_sufficiency"]["mean_ratio"] >= threshold:
+        return None
+    for rank in ("genus", "family"):
+        rel = [s for s in output if s["aphia_id"] != aphia and s["scores"]["BBVI"] is not None
+               and mine.get(rank) and taxonomy.get(str(s["aphia_id"]), {}).get(rank) == mine[rank]]
+        if rel:
+            return {"rank": rank, "taxon": mine[rank], "relatives": [s["scientific_name"] for s in rel],
+                    "note": "A relative has a calculated BBVI; this species' score is not inferred from it."}
+    return None
+
+
+def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxonomy: dict) -> dict:
+    require(evidence.get("schema_version") == 3 and candidates.get("schema_version") == 1, "unsupported evidence/candidate schema")
     require(valid_date(evidence.get("snapshot_date")) and config.get("method_version"), "snapshot/method required")
     require(evidence["snapshot_date"] >= candidates["checked_on"], "candidate list newer than evidence")
-    weights = [config["nutrition"][key] for key in ("nutrient_weight", "edible_fraction_weight", "aquaculture_weight")]
-    require(all(type(w) in (int, float) and 0 <= w <= 1 for w in weights)
-            and abs(sum(weights) - 1) < 1e-9, "MFPI weights must sum to one")
+    settings = config["nutrition"]
+    weights = [settings[k] for k in ("nutrient_weight", "edible_fraction_weight", "aquaculture_weight")]
+    require(all(type(w) in (int, float) and 0 <= w <= 1 for w in weights) and abs(sum(weights) - 1) < 1e-9,
+            "MFPI weights must sum to one")
     finite(config["bbvi"]["default_food_weight"], "BBVI food weight", 0, 1)
     sources = evidence.get("sources", {})
-    require(bool(sources), "sources required")
     for sid, src in sources.items():
-        require(str(src.get("url", "")).startswith("https://") and src.get("provider")
-                and src.get("version") and src.get("terms") and valid_date(src.get("accessed"),
-                not_after=evidence["snapshot_date"]), f"{sid}: incomplete source registration")
+        require(str(src.get("url", "")).startswith("https://") and src.get("provider") and src.get("version")
+                and src.get("terms") and valid_date(src.get("accessed"), not_after=evidence["snapshot_date"]),
+                f"{sid}: incomplete source registration")
     identities = candidates.get("candidates", [])
-    require(len(identities) == 8 and len({c["aphia_id"] for c in identities}) == 8,
-            "expected 8 unique published candidates")
-    cohort, _ = nutrition_rows(evidence, config)
+    require(len(identities) == 8 and len({c["aphia_id"] for c in identities}) == 8, "expected 8 unique published candidates")
+    rows = rda_rows(snapshot, evidence, config)
+    evidence_rows = {r["food_item_id"]: r for r in evidence.get("nutrition_rows", [])}
+    require(len(evidence_rows) == len(evidence.get("nutrition_rows", [])), "duplicate food item ID")
+    primary = build_cohorts(settings["primary_cohorts"], rows, settings, sources)
+    cross = build_cohorts(settings["cross_check_cohorts"], evidence_rows, settings, sources)
     assay = bio_scores(evidence, config)
     output = []
     for candidate in identities:
         aphia = candidate["aphia_id"]
-        mfpi, food_trace, food_reason = food_score(candidate, evidence, config, cohort)
+        mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
         mbpi, bio_trace, bio_sensitivity = assay.get(aphia, (None, [], {}))
-        mcui, conservation_trace, conservation_reason = conservation_score(candidate, evidence, config)
-        bbvi = round1(config["bbvi"]["default_food_weight"] * mfpi
-                      + (1 - config["bbvi"]["default_food_weight"]) * mbpi) if mfpi is not None and mbpi is not None else None
-        scores = {"MFPI": mfpi, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi}
-        partial_bio = [r for r in evidence.get("bioactivity", []) if r.get("origin_aphia_id") == aphia
-                       and r.get("status") != "approved_for_score"]
-        status = {"MFPI": "산출됨" if mfpi is not None else "일부 근거 확인" if food_trace["nutrients"] else "산출 보류",
+        mcui, conservation_trace, conservation_reason = conservation_axis(candidate, evidence, config)
+        w = config["bbvi"]["default_food_weight"]
+        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if mfpi_value is not None and mbpi is not None else None
+        partial_bio = [r for r in evidence.get("bioactivity", []) if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
+        scores = {"MFPI": mfpi_value, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi}
+        assessed = bool(conservation_trace) and conservation_trace.get("iucn_state") == "assessed"
+        status = {"MFPI": "산출됨" if mfpi_value is not None else "일부 근거 확인" if food_trace["sufficiency"]["present"] else "산출 보류",
                   "MBPI": "산출됨" if mbpi is not None else "일부 근거 확인" if partial_bio else "산출 보류",
-                  "MCUI": "산출됨" if mcui is not None else "일부 근거 확인" if conservation_trace else "산출 보류",
+                  "MCUI": "산출됨" if mcui is not None else "일부 근거 확인" if assessed else "산출 보류",
                   "BBVI": "산출됨" if bbvi is not None else "산출 보류"}
-        reasons = {"MFPI": food_reason if mfpi is None else None,
-                   "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing" if mbpi is None else None,
-                   "MCUI": conservation_reason if mcui is None else None,
-                   "BBVI": "requires_MFPI_and_MBPI" if bbvi is None else None}
-        weights = config["bbvi"]["sensitivity_food_weights"]
-        sensitivity = {"food_weights": {str(w): round1(w * mfpi + (1-w) * mbpi)
-                         for w in weights} if bbvi is not None else {}, **bio_sensitivity}
-        source_ids = set()
-        if food_trace.get("source_id"):
-            source_ids.add(food_trace["source_id"])
-        if food_trace.get("method_source_id"):
-            source_ids.add(food_trace["method_source_id"])
-        if food_trace.get("source_id"):
-            source_ids.add(cohort[0]["detail_source_id"])
-        for item in food_trace.get("edible_fraction_sensitivity", []):
-            require(item.get("source_id") in sources, "unregistered edible-yield sensitivity source")
-            source_ids.add(item["source_id"])
-        for item in food_trace["supplemental_nutrition"]:
-            require(item.get("source_id") in sources and item.get("record_id"), "unregistered nutrition observation")
-            source_ids.add(item["source_id"])
-        for kind in ("edible_fraction", "aquaculture"):
-            if food_trace.get(kind):
-                source_ids.add(food_trace[kind]["source_id"])
-        if (food_trace.get("aquaculture") or {}).get("regional_source_id"):
-            source_ids.add(food_trace["aquaculture"]["regional_source_id"])
-        if conservation_trace and conservation_trace.get("source_id"):
-            source_ids.add(conservation_trace["source_id"])
-        if conservation_trace and conservation_trace.get("current_status_check"):
-            source_ids.add(conservation_trace["current_status_check"]["source_id"])
-        source_ids.update(r["source_id"] for r in partial_bio)
+        reasons = {"MFPI": food_reason, "MBPI": None if mbpi is not None else "compound_origin_assay_chain_or_fixed_cohort_missing",
+                   "MCUI": conservation_reason, "BBVI": None if bbvi is not None else "requires_MFPI_and_MBPI"}
+        c = conservation_trace or {}
+        c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
+                   c.get("category") in config["conservation"]["category_scores"],
+                   bool(c.get("current_status_check"))]
+        sufficiency = {"MFPI": food_trace["sufficiency"], "MBPI": bio_sufficiency(partial_bio),
+                       "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
+                                "ratio": round(sum(c_steps) / 3, 2)}}
+        sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
+        sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
+                                        for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
+                       **bio_sensitivity}
+        source_ids = {food_trace.get("source_id")} | {x["source_id"] for x in food_trace.get("yield_sensitivity", [])}
+        source_ids |= {x["source_id"] for x in food_trace["supplemental_nutrition"]}
+        if food_trace["observed_rows"]:
+            source_ids.add("rda_db_10_4")
+        for key in ("edible_fraction", "aquaculture"):
+            if food_trace.get(key):
+                source_ids.add(food_trace[key]["source_id"])
+        for cc in food_trace["cross_checks"]:
+            source_ids |= set(config["nutrition"]["cross_check_source_ids"])
+        if conservation_trace:
+            source_ids.add(conservation_trace.get("source_id"))
+            if conservation_trace.get("current_status_check"):
+                source_ids.add(conservation_trace["current_status_check"]["source_id"])
+            source_ids |= {p["source_id"] for p in conservation_trace.get("previous_assessments", [])}
+        source_ids |= {r["source_id"] for r in partial_bio}
         for item in bio_trace:
-            source_ids.update(r["source_id"] for r in evidence["bioactivity"]
-                              if r.get("activity_id") in item["activity_ids"])
-        output.append({"aphia_id": aphia, "scientific_name": candidate["scientific_name"],
+            source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item["activity_ids"]}
+        source_ids.discard(None)
+        require(all(s in sources for s in source_ids), f"{aphia}: unregistered source")
+        output.append({"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
                        "scores": scores, "score_status": status, "withheld_reasons": reasons,
-                       "food_trace": food_trace, "bioactivity_trace": bio_trace,
-                       "bioactivity_partial": partial_bio,
-                       "conservation_trace": conservation_trace,
-                       "sensitivity": sensitivity, "source_ids": sorted(source_ids)})
+                       "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
+                       "information_sufficiency": sufficiency,
+                       "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
+                       "conservation_trace": conservation_trace, "sensitivity": sensitivity,
+                       "source_ids": sorted(source_ids)})
+    for s in output:
+        s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], output, taxonomy.get("species", {}), config["unexplored_threshold"])
+    cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
+                "food_item_ids": [r["food_item_id"] for r in c["rows"]],
+                "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),
+                "source": f"RDA National Standard Food Composition DB 10.4 (retrieved {snapshot['retrieved']})",
+                "operating_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"]}),
+                "exclusions": c["spec"]["rule"].get("exclude_food_item_ids", {})} for cid, c in primary.items()]
+    cohorts += [{"cohort_id": cid, "role": "cross_check", "criteria": c["spec"]["criteria"],
+                 "food_item_ids": [r["food_item_id"] for r in c["rows"]], "size": len(c["rows"])} for cid, c in cross.items()]
     return {"method_version": config["method_version"], "status": config["status"],
             "snapshot_date": evidence["snapshot_date"], "candidate_snapshot_date": candidates["checked_on"],
-            "generated_at": evidence["snapshot_date"] + "T00:00:00Z",
-            "food_weight": config["bbvi"]["default_food_weight"],
-            "comparison_cohort": {"id": config["nutrition"]["cohort_id"],
-                 "criteria": evidence["nutrition_cohort_criteria"],
-                 "food_item_ids": config["nutrition"]["food_item_ids"],
-                 "species_count": len(cohort),
-                 "warning": "Small fixed cohorts give unstable ranks; sensitivity is not a confidence interval."},
-            "method": config, "sources": sources, "species": output}
+            "generated_at": evidence["snapshot_date"] + "T00:00:00Z", "food_weight": config["bbvi"]["default_food_weight"],
+            "comparison_cohorts": cohorts,
+            "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
+            "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output}
 
 
 def render(report: dict) -> str:
     return json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+
+
+def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config=DEFAULT_CONFIG, taxonomy=DEFAULT_TAXONOMY):
+    def read(p):
+        return json.loads(Path(p).read_text(encoding="utf-8"))
+    cfg = read(config)
+    return read(evidence), read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
 def main() -> None:
@@ -342,10 +505,7 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--check", action="store_true", help="compare existing output without writing")
     args = parser.parse_args()
-    evidence = json.loads(args.evidence.read_text(encoding="utf-8"))
-    candidates = json.loads(args.candidates.read_text(encoding="utf-8"))
-    config = json.loads(args.config.read_text(encoding="utf-8"))
-    content = render(build(evidence, candidates, config))
+    content = render(build(*load_inputs(args.evidence, args.candidates, args.config)))
     if args.check:
         require(args.out.read_text(encoding="utf-8") == content, "public report differs from reproducible build")
         print("Reproducible report matches committed output")
@@ -353,9 +513,7 @@ def main() -> None:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(content, encoding="utf-8")
         report = json.loads(content)
-        count = {axis: sum(s["scores"][axis] is not None for s in report["species"])
-                 for axis in ("MFPI", "MBPI", "MCUI", "BBVI")}
-        print(f"Wrote {args.out}: {count}")
+        print(f"Wrote {args.out}: " + str({a: sum(s['scores'][a] is not None for s in report['species']) for a in AXES}))
 
 
 if __name__ == "__main__":

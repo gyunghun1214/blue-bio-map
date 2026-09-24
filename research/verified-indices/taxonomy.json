@@ -1,0 +1,14 @@
+{
+  "source": "WoRMS AphiaClassificationByAphiaID REST",
+  "retrieved": "2026-09-25",
+  "species": {
+    "836033": {"phylum": "Mollusca", "class": "Bivalvia", "order": "Ostreida", "family": "Ostreidae", "genus": "Magallana"},
+    "506159": {"phylum": "Mollusca", "class": "Bivalvia", "order": "Mytilida", "family": "Mytilidae", "genus": "Mytilus"},
+    "494972": {"phylum": "Ochrophyta", "class": "Phaeophyceae", "order": "Fucales", "family": "Sargassaceae", "genus": "Sargassum"},
+    "372119": {"class": "Florideophyceae", "order": "Gelidiales", "family": "Gelidiaceae", "genus": "Gelidium"},
+    "342067": {"phylum": "Mollusca", "class": "Cephalopoda", "order": "Oegopsida", "family": "Ommastrephidae", "genus": "Todarodes"},
+    "250680": {"phylum": "Chordata", "class": "Ascidiacea", "order": "Stolidobranchia", "family": "Pyuridae", "genus": "Halocynthia"},
+    "241776": {"phylum": "Echinodermata", "class": "Holothuroidea", "order": "Synallactida", "family": "Stichopodidae", "genus": "Apostichopus"},
+    "145721": {"phylum": "Ochrophyta", "class": "Phaeophyceae", "order": "Laminariales", "family": "Alariaceae", "genus": "Undaria"}
+  }
+}

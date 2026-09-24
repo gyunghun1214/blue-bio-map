@@ -1,0 +1,5961 @@
+{
+ "provider": "Rural Development Administration, National Institute of Crop and Food Science",
+ "database": "National Standard Food Composition DB (국가표준식품성분 DB)",
+ "version": "10.4 (2026)",
+ "retrieved": "2026-09-25",
+ "detail_endpoint": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=<code>",
+ "licence": "KOGL Type 1 (attribution) for the DB; the printed 10th-revision book is KOGL Type 2",
+ "blank_rule": "Blank = missing value (RDA English site). '-' is treated as missing; never zero.",
+ "rows": [
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다랑어, 가다랑어, 생것",
+   "code": "K0010000000a",
+   "english_name": "Skipjack tuna, Raw",
+   "values": {
+    "water_g": "70.3",
+    "protein_g": "25.9",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "34",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가라지, 생것",
+   "code": "K0040000000a",
+   "english_name": "White-tipped mackerel scad, Raw",
+   "values": {
+    "water_g": "81.5",
+    "protein_g": "14.8",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가물치, 생것",
+   "code": "K0050000000a",
+   "english_name": "Snakehead, Raw",
+   "values": {
+    "water_g": "79.6",
+    "protein_g": "18.2",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가시망둑, 생것",
+   "code": "K0060000000a",
+   "english_name": "Sunrise sculpin, Raw",
+   "values": {
+    "water_g": "75.4",
+    "protein_g": "22.4",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가오리, 나비가오리, 생것",
+   "code": "K0070010000a",
+   "english_name": "Ray, Butterfly ray, Raw",
+   "values": {
+    "water_g": "78.7",
+    "protein_g": "17.3",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "19",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가오리, 노랑가오리, 생것",
+   "code": "K0070020000a",
+   "english_name": "Ray, Red sting ray, Raw",
+   "values": {
+    "water_g": "75.8",
+    "protein_g": "21.6",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "14",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가오리, 목탁가오리, 생것",
+   "code": "K0070030000a",
+   "english_name": "Ray, Thorn back ray, Raw",
+   "values": {
+    "water_g": "74",
+    "protein_g": "22.2",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "25",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가오리, 전기가오리, 생것",
+   "code": "K0070040000a",
+   "english_name": "Ray, Electric ray, Raw",
+   "values": {
+    "water_g": "84.3",
+    "protein_g": "13",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "15",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 생것",
+   "code": "K0080000000a",
+   "english_name": "Flounder, Raw",
+   "values": {
+    "water_g": "72.3",
+    "protein_g": "22.1",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 각시가자미, 생것",
+   "code": "K0080010000a",
+   "english_name": "Yellowfin sole, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "16.8",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 갈가자미, 생것",
+   "code": "K0080020000a",
+   "english_name": "Willowy flounder, Raw",
+   "values": {
+    "water_g": "79.1",
+    "protein_g": "18.3",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 기름가자미, 생것",
+   "code": "K0080030000a",
+   "english_name": "Blackfin flounder, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "18.2",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 눈가자미, 생것",
+   "code": "K0080040000a",
+   "english_name": "Rikuzen sole, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "19.4",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 돌가자미, 생것",
+   "code": "K0080050000a",
+   "english_name": "Stone flounder, Raw",
+   "values": {
+    "water_g": "78",
+    "protein_g": "20",
+    "iron_mg": "0.2",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 문치가자미, 생것",
+   "code": "K0080060000a",
+   "english_name": "Marbled sole, Raw",
+   "values": {
+    "water_g": "77.7",
+    "protein_g": "19.9",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 범가자미, 생것",
+   "code": "K0080070000a",
+   "english_name": "Spotted halibut, Raw",
+   "values": {
+    "water_g": "79.5",
+    "protein_g": "18.2",
+    "iron_mg": "0.2",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 술봉가자미, 생것",
+   "code": "K0080080000a",
+   "english_name": "Dusky sole, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "16.8",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 용가자미, 생것",
+   "code": "K0080090000a",
+   "english_name": "Sohachi Flounder, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "18.1",
+    "iron_mg": "4",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 줄가자미, 생것",
+   "code": "K0080100000a",
+   "english_name": "Roughscale sole, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "17.4",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가자미, 참가자미, 생것",
+   "code": "K0080110000a",
+   "english_name": "Littlemouth flounder, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.4",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "갈치, 생것",
+   "code": "K0100000000a",
+   "english_name": "Hair tail, Raw",
+   "values": {
+    "water_g": "72.7",
+    "protein_g": "18.5",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "33",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "갈치, 동갈치, 생것",
+   "code": "K0100010000a",
+   "english_name": "Pacific needlefish, Raw",
+   "values": {
+    "water_g": "76.9",
+    "protein_g": "19.8",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "66",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "갈치, 동동갈치, 생것",
+   "code": "K0100020000a",
+   "english_name": "Channel scabbardfish, Raw",
+   "values": {
+    "water_g": "74.6",
+    "protein_g": "20",
+    "iron_mg": null,
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "강달이, 눈강달이, 생것",
+   "code": "K0120010000a",
+   "english_name": "Bighead croaker, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "17",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게르치, 생것",
+   "code": "K0140000000a",
+   "english_name": "Japanese bluefish, Raw",
+   "values": {
+    "water_g": "70.5",
+    "protein_g": "20.8",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고등어, 생것",
+   "code": "K0150000000a",
+   "english_name": "Mackerel, Raw",
+   "values": {
+    "water_g": "68.1",
+    "protein_g": "20.2",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고등어, 남해, 생것",
+   "code": "K0150002550a",
+   "english_name": "Mackerel, Southern ocean of Korea, Raw",
+   "values": {
+    "water_g": "64.8",
+    "protein_g": "21.06",
+    "iron_mg": "0.71",
+    "zinc_mg": "0.48",
+    "refuse_pct": "49",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고등어, 서해, 생것",
+   "code": "K0150002560a",
+   "english_name": "Mackerel, Western ocean of Korea, Raw",
+   "values": {
+    "water_g": "55.7",
+    "protein_g": "20.26",
+    "iron_mg": "1.02",
+    "zinc_mg": "0.46",
+    "refuse_pct": "53",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "괴도라치, 생것",
+   "code": "K0160000000a",
+   "english_name": "Fringed blenny, Raw",
+   "values": {
+    "water_g": "81.3",
+    "protein_g": "17.2",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "군평선이, 생것",
+   "code": "K0170000000a",
+   "english_name": "Belted beard grunt, Raw",
+   "values": {
+    "water_g": "77.4",
+    "protein_g": "18.5",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "기름종개, 생것",
+   "code": "K0180000000a",
+   "english_name": "Spined loach, Raw",
+   "values": {
+    "water_g": "75.8",
+    "protein_g": "17.5",
+    "iron_mg": "2.7",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "까나리, 생것",
+   "code": "K0190000000a",
+   "english_name": "Sandlance, Raw",
+   "values": {
+    "water_g": "76.4",
+    "protein_g": "16",
+    "iron_mg": "13.3",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꺽저기, 생것",
+   "code": "K0200000000a",
+   "english_name": "Japanese aucha perch, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "19.5",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼬치고기, 생것",
+   "code": "K0210000000a",
+   "english_name": "Red barracuda, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "20.5",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "38",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼼치, 생것",
+   "code": "K0220000000a",
+   "english_name": "Tanakas snailfish, Raw",
+   "values": {
+    "water_g": "82.4",
+    "protein_g": "16.4",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꽁치, 생것",
+   "code": "K0230000000a",
+   "english_name": "Pacific saury, Raw",
+   "values": {
+    "water_g": "70.9",
+    "protein_g": "22.7",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "날치, 생것",
+   "code": "K0240000000a",
+   "english_name": "Flyingfish, Raw",
+   "values": {
+    "water_g": "75.8",
+    "protein_g": "22.2",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "38",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "날치, 알, 생것",
+   "code": "K025000D590a",
+   "english_name": "Flyingfish edible offal, Roe, Raw",
+   "values": {
+    "water_g": "75.6",
+    "protein_g": "10.2",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "납지리, 생것",
+   "code": "K0260000000a",
+   "english_name": "Flat bitterling, Raw",
+   "values": {
+    "water_g": "80.1",
+    "protein_g": "17.5",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "넙치(광어), 생것",
+   "code": "K0270000000a",
+   "english_name": "Bastard halibut, Raw",
+   "values": {
+    "water_g": "74.5",
+    "protein_g": "22.36",
+    "iron_mg": "0.45",
+    "zinc_mg": "0.52",
+    "refuse_pct": "46",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "넙치(광어), 껍질, 생것",
+   "code": "K028000B050a",
+   "english_name": "Bastard halibut, Skin, Raw",
+   "values": {
+    "water_g": "65",
+    "protein_g": "29.3",
+    "iron_mg": "7.7",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "네동가리, 생것",
+   "code": "K0290000000a",
+   "english_name": "Redbelt monoclebream, Raw",
+   "values": {
+    "water_g": "79.2",
+    "protein_g": "19.2",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "노랑촉수, 생것",
+   "code": "K0300000000a",
+   "english_name": "Bensasi goatfish, Raw",
+   "values": {
+    "water_g": "64.3",
+    "protein_g": "7.1",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "37",
+    "row_source": "국('77)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "노래미, 생것",
+   "code": "K0310000000a",
+   "english_name": "Spottybelly greenling, Raw",
+   "values": {
+    "water_g": "78.7",
+    "protein_g": "17.5",
+    "iron_mg": "2.9",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "노래미, 줄노래미, 생것",
+   "code": "K0310010000a",
+   "english_name": "Masked greenling, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "17.5",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "노래미, 쥐노래미, 생것",
+   "code": "K0310020000a",
+   "english_name": "Fat greenling, Raw",
+   "values": {
+    "water_g": "74.1",
+    "protein_g": "21",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "놀래기, 생것",
+   "code": "K0320000000a",
+   "english_name": "Motleystripe rainbowfish, Raw",
+   "values": {
+    "water_g": "76.2",
+    "protein_g": "19.2",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "놀래기, 사랑놀래기, 생것",
+   "code": "K0320010000a",
+   "english_name": "Golden-spot hogfish, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "20.3",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "놀래기, 용치놀래기, 생것",
+   "code": "K0320020000a",
+   "english_name": "Multicolorfin rainbowfish, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.3",
+    "iron_mg": "2.6",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "놀래기, 황놀래기, 생것",
+   "code": "K0320030000a",
+   "english_name": "Bambooleaf wrasse, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "18.9",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "농어, 생것",
+   "code": "K0330000000a",
+   "english_name": "Common sea bass, Raw",
+   "values": {
+    "water_g": "78.5",
+    "protein_g": "18.2",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('95)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "농어, 점농어, 생것",
+   "code": "K0330010000a",
+   "english_name": "Spotted sea bass, Raw",
+   "values": {
+    "water_g": "74.5",
+    "protein_g": "18.5",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "누치, 생것",
+   "code": "K0340000000a",
+   "english_name": "Skin carp, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "17.3",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "39",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "눈볼대, 생것",
+   "code": "K0350000000a",
+   "english_name": "Black-throatperch, Raw",
+   "values": {
+    "water_g": "71.2",
+    "protein_g": "22.3",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "37",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "눈퉁멸, 생것",
+   "code": "K0360000000a",
+   "english_name": "Round herring, Raw",
+   "values": {
+    "water_g": "73.4",
+    "protein_g": "18.5",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "34",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "능성어, 생것",
+   "code": "K0370000000a",
+   "english_name": "Seven-band grouper, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "18.8",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다금바리, 생것",
+   "code": "K0380000000a",
+   "english_name": "Sawedged perch, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "19.3",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다랑어, 참다랑어, 생것",
+   "code": "K0390010000a",
+   "english_name": "Bluefin tuna, Raw",
+   "values": {
+    "water_g": "67.1",
+    "protein_g": "23.99",
+    "iron_mg": "1.98",
+    "zinc_mg": "0.5",
+    "refuse_pct": "53",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다랑어, 참다랑어, 붉은살, 생것",
+   "code": "K0390010940a",
+   "english_name": "Bluefin tuna, Lean meat, Raw",
+   "values": {
+    "water_g": "70.4",
+    "protein_g": "26.4",
+    "iron_mg": "1.1",
+    "zinc_mg": "0.4",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다랑어, 참다랑어, 지방육, 생것",
+   "code": "K039001D310a",
+   "english_name": "Bluefin tuna, Fat meat, Raw",
+   "values": {
+    "water_g": "51.4",
+    "protein_g": "20.1",
+    "iron_mg": "1.6",
+    "zinc_mg": "0.5",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다랑어, 황다랑어, 생것",
+   "code": "K0390020000a",
+   "english_name": "Yellowfin tuna, Raw",
+   "values": {
+    "water_g": "72.8",
+    "protein_g": "23.9",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "33",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "달강어, 생것",
+   "code": "K0420000000a",
+   "english_name": "Rad-wing searobin, Raw",
+   "values": {
+    "water_g": "74.7",
+    "protein_g": "19.7",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "달고기, 생것",
+   "code": "K0430000000a",
+   "english_name": "John dory, Raw",
+   "values": {
+    "water_g": "77.7",
+    "protein_g": "19.1",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 생것",
+   "code": "K0440000000a",
+   "english_name": "Pacific cod, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.5",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 수컷, 생것",
+   "code": "K0440002570a",
+   "english_name": "Pacific cod, Male, Raw",
+   "values": {
+    "water_g": "80.5",
+    "protein_g": "18.2",
+    "iron_mg": "1.17",
+    "zinc_mg": "0.55",
+    "refuse_pct": "62",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 암컷, 생것",
+   "code": "K0440002580a",
+   "english_name": "Pacific cod, Female, Raw",
+   "values": {
+    "water_g": "83.3",
+    "protein_g": "15.42",
+    "iron_mg": "0.72",
+    "zinc_mg": "0.47",
+    "refuse_pct": "0",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 빨간대구, 생것",
+   "code": "K0440010000a",
+   "english_name": "Safforn cod, Raw",
+   "values": {
+    "water_g": "82",
+    "protein_g": "12.6",
+    "iron_mg": "4",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 은대구, 생것",
+   "code": "K0440020000a",
+   "english_name": "Sablefish, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "13.1",
+    "iron_mg": "2.2",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 내장, 생것",
+   "code": "K045000D370a",
+   "english_name": "Pacific cod edible offal, Viscera, Raw",
+   "values": {
+    "water_g": "80.8",
+    "protein_g": "15",
+    "iron_mg": "7.3",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구, 알, 생것",
+   "code": "K045000D590a",
+   "english_name": "Pacific cod edible offal, Roe, Raw",
+   "values": {
+    "water_g": "69.6",
+    "protein_g": "23.4",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대구횟대, 생것",
+   "code": "K0480000000a",
+   "english_name": "Black edged sculpin, Raw",
+   "values": {
+    "water_g": "77.2",
+    "protein_g": "19.5",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대두어(흑연), 생것",
+   "code": "K0490000000a",
+   "english_name": "Big-head carp, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "17.5",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "도다리, 생것",
+   "code": "K0500000000a",
+   "english_name": "Fine-spotted flounder, Raw",
+   "values": {
+    "water_g": "80.3",
+    "protein_g": "17.6",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "도도바리, 생것",
+   "code": "K0510000000a",
+   "english_name": "Yellow grouper, Raw",
+   "values": {
+    "water_g": "77.6",
+    "protein_g": "19.4",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "도루묵, 생것",
+   "code": "K0520000000a",
+   "english_name": "Sandfish, Raw",
+   "values": {
+    "water_g": "77.7",
+    "protein_g": "16",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "도치, 생것",
+   "code": "K0530000000a",
+   "english_name": "Pacific spiny lumpsucker, Raw",
+   "values": {
+    "water_g": "87.8",
+    "protein_g": "7.2",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "60",
+    "row_source": "국('85)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "독가시치, 생것",
+   "code": "K0540000000a",
+   "english_name": "Rabbit fish, Raw",
+   "values": {
+    "water_g": "77.1",
+    "protein_g": "20.3",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 각시돔, 생것",
+   "code": "K0550010000a",
+   "english_name": "Princess small porgy, Raw",
+   "values": {
+    "water_g": "77.7",
+    "protein_g": "20.1",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 감성돔, 생것",
+   "code": "K0550020000a",
+   "english_name": "Black sea bream, Raw",
+   "values": {
+    "water_g": "76.7",
+    "protein_g": "18.8",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('95)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 강담돔, 생것",
+   "code": "K0550030000a",
+   "english_name": "Spotted parrot fish, Raw",
+   "values": {
+    "water_g": "78.5",
+    "protein_g": "18.9",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 구갈돔, 생것",
+   "code": "K0550040000a",
+   "english_name": "Japanese scavenger, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "20.4",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 금눈돔, 생것",
+   "code": "K0550050000a",
+   "english_name": "Broad alfonsino, Raw",
+   "values": {
+    "water_g": "75.7",
+    "protein_g": "18.5",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 꼽새돔, 생것",
+   "code": "K0550060000a",
+   "english_name": "Beard grunt, Raw",
+   "values": {
+    "water_g": "77.4",
+    "protein_g": "19",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 도화돔, 생것",
+   "code": "K0550070000a",
+   "english_name": "Hardscale soldierfish, Raw",
+   "values": {
+    "water_g": "73.3",
+    "protein_g": "21.3",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 독돔, 생것",
+   "code": "K0550080000a",
+   "english_name": "Banjo fish, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "20.8",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 돌돔, 생것",
+   "code": "K0550090000a",
+   "english_name": "Rock bream, Raw",
+   "values": {
+    "water_g": "79.5",
+    "protein_g": "17.8",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 백미돔, 생것",
+   "code": "K0550100000a",
+   "english_name": "Triple tail, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "21",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 범돔, 생것",
+   "code": "K0550110000a",
+   "english_name": "Stripey, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "19.5",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 벵에돔, 생것",
+   "code": "K0550120000a",
+   "english_name": "Largescale blackfish, Raw",
+   "values": {
+    "water_g": "77",
+    "protein_g": "20.2",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 뿔돔, 생것",
+   "code": "K0550130000a",
+   "english_name": "Longfinned bullseye, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "18",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 샛돔, 생것",
+   "code": "K0550140000a",
+   "english_name": "Pacific rudderfish, Raw",
+   "values": {
+    "water_g": "76.4",
+    "protein_g": "16.3",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 실꼬리돔, 생것",
+   "code": "K0550160000a",
+   "english_name": "Golden-threadfin bream, Raw",
+   "values": {
+    "water_g": "76.3",
+    "protein_g": "19.8",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 실붉돔, 생것",
+   "code": "K0550170000a",
+   "english_name": "Taiwan tai, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "17.8",
+    "iron_mg": "9.1",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 어름돔, 생것",
+   "code": "K0550180000a",
+   "english_name": "Threeband sweetlips, Raw",
+   "values": {
+    "water_g": "78",
+    "protein_g": "19.5",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 옥돔, 생것",
+   "code": "K0550190000a",
+   "english_name": "Red tilefish, Raw",
+   "values": {
+    "water_g": "79.5",
+    "protein_g": "18.1",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 육동가리돔, 생것",
+   "code": "K0550200000a",
+   "english_name": "Striped boarfish, Raw",
+   "values": {
+    "water_g": "77.6",
+    "protein_g": "18.6",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "58",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 자리돔, 생것",
+   "code": "K0550210000a",
+   "english_name": "Pearl-spot chromis, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "19.5",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 참돔, 생것",
+   "code": "K0550220000a",
+   "english_name": "Red seabream, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "18.4",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 호박돔, 생것",
+   "code": "K0550230000a",
+   "english_name": "Scarbreast tuskfish, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "20.3",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 혹돔, 생것",
+   "code": "K0550240000a",
+   "english_name": "Cold porgy, Raw",
+   "values": {
+    "water_g": "78.1",
+    "protein_g": "18.5",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 황돔, 생것",
+   "code": "K0550250000a",
+   "english_name": "Yellowback seabream, Raw",
+   "values": {
+    "water_g": "76.4",
+    "protein_g": "20.2",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 황줄돔, 생것",
+   "code": "K0550260000a",
+   "english_name": "Sailfin armourhead, Raw",
+   "values": {
+    "water_g": "77.6",
+    "protein_g": "19.3",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "66",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "돔, 참돔, 껍질, 생것",
+   "code": "K056000B050a",
+   "english_name": "Red seabream, Skin, Raw",
+   "values": {
+    "water_g": "70.2",
+    "protein_g": "16.6",
+    "iron_mg": "7",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "동사리, 생것",
+   "code": "K0570000000a",
+   "english_name": "Korean dark sleeper, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "16.9",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "동자개(빠가사리), 생것",
+   "code": "K0580000000a",
+   "english_name": "Korean bullhead, Raw",
+   "values": {
+    "water_g": "81.6",
+    "protein_g": "15.7",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('18)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "둑중개, 생것",
+   "code": "K0590000000a",
+   "english_name": "Yellow fin sculpin, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "15",
+    "iron_mg": "2.8",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "드렁허리, 생것",
+   "code": "K0600000000a",
+   "english_name": "Swamp eel, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "17.9",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "27",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "등가시치, 생것",
+   "code": "K0610000000a",
+   "english_name": "Blotched eelpout, Raw",
+   "values": {
+    "water_g": "80.3",
+    "protein_g": "18.5",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "만새기, 생것",
+   "code": "K0620000000a",
+   "english_name": "Common Dolphinfish, Raw",
+   "values": {
+    "water_g": "75.5",
+    "protein_g": "21.3",
+    "iron_mg": "0.7",
+    "zinc_mg": "0.5",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "망둑어(풀망둑), 생것",
+   "code": "K0630000000a",
+   "english_name": "Javelin goby, Raw",
+   "values": {
+    "water_g": "81.6",
+    "protein_g": "16.4",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "매퉁이, 생것",
+   "code": "K0640000000a",
+   "english_name": "Lizard fish, Raw",
+   "values": {
+    "water_g": "77.1",
+    "protein_g": "20.8",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "메기, 생것",
+   "code": "K0650000000a",
+   "english_name": "Cat fish, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "15.1",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('95)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "메기, 물메기, 생것",
+   "code": "K0650010000a",
+   "english_name": "Cubed snailfish, Raw",
+   "values": {
+    "water_g": "81.6",
+    "protein_g": "16.4",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "60",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "메기, 붉은메기, 생것",
+   "code": "K0650020000a",
+   "english_name": "Armored weasel-fish, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "18.2",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "멸치, 생것",
+   "code": "K0660000000a",
+   "english_name": "Anchovy, Raw",
+   "values": {
+    "water_g": "73.4",
+    "protein_g": "17.7",
+    "iron_mg": "3.6",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "명태, 생것",
+   "code": "K0700000000a",
+   "english_name": "Alaska pollock, Raw",
+   "values": {
+    "water_g": "80.3",
+    "protein_g": "17.5",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "명태, 알, 생것",
+   "code": "K071000D590a",
+   "english_name": "Alaska pollock edible offal, Roe, Raw",
+   "values": {
+    "water_g": "66",
+    "protein_g": "20.5",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "모래무지, 생것",
+   "code": "K0730000000a",
+   "english_name": "Goby minnow, Raw",
+   "values": {
+    "water_g": "82.1",
+    "protein_g": "15.7",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "몽치다래, 생것",
+   "code": "K0740000000a",
+   "english_name": "Frigate mackerel, Raw",
+   "values": {
+    "water_g": "66.9",
+    "protein_g": "24.1",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "문절망둑, 생것",
+   "code": "K0750000000a",
+   "english_name": "Yellowfin goby, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "18.7",
+    "iron_mg": "4",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "물치다래, 생것",
+   "code": "K0760000000a",
+   "english_name": "Frigate tuna, Raw",
+   "values": {
+    "water_g": "67.9",
+    "protein_g": "23.4",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "34",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "미꾸리, 생것",
+   "code": "K0770000000a",
+   "english_name": "Pond loach, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "16.2",
+    "iron_mg": "8",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "민달고기, 생것",
+   "code": "K0780000000a",
+   "english_name": "Mirror dory, Raw",
+   "values": {
+    "water_g": "77.1",
+    "protein_g": "20.3",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "민어, 생것",
+   "code": "K0790000000a",
+   "english_name": "Brown croaker, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "18",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "민태, 생것",
+   "code": "K0810000000a",
+   "english_name": "Belenger's jewfish, Raw",
+   "values": {
+    "water_g": "81.1",
+    "protein_g": "15.2",
+    "iron_mg": "2.6",
+    "zinc_mg": null,
+    "refuse_pct": "35",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "박대, 생것",
+   "code": "K0820000000a",
+   "english_name": "Tongue sole, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "19.2",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "방어, 생것",
+   "code": "K0830000000a",
+   "english_name": "Yellowtail, Raw",
+   "values": {
+    "water_g": "75.6",
+    "protein_g": "21.7",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "방어, 양식, 어린것, 생것",
+   "code": "K0830011130a",
+   "english_name": "Yellowtail, Farm-raised, Young, Raw",
+   "values": {
+    "water_g": "61.5",
+    "protein_g": "20.7",
+    "iron_mg": "1",
+    "zinc_mg": "0.8",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "방어, 자연산, 어린것, 생것",
+   "code": "K0830021130a",
+   "english_name": "Yellowtail, Wild, Young, Raw",
+   "values": {
+    "water_g": "69.5",
+    "protein_g": "21",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "백연, 생것",
+   "code": "K0840000000a",
+   "english_name": "Silver Carp, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "32",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "밴댕이, 생것",
+   "code": "K0850000000a",
+   "english_name": "Big-eyed herring, Raw",
+   "values": {
+    "water_g": "65.8",
+    "protein_g": "16.3",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "뱅어, 생것",
+   "code": "K0870000000a",
+   "english_name": "Icefish, Raw",
+   "values": {
+    "water_g": "84",
+    "protein_g": "13.3",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "베도라치, 생것",
+   "code": "K0880000000a",
+   "english_name": "Tidepool gunnel, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "20.7",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "베도라치, 그물베도라치, 생것",
+   "code": "K0880010000a",
+   "english_name": "Ribbed gunnel, Raw",
+   "values": {
+    "water_g": "74.8",
+    "protein_g": "22",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "베도라치, 장어베도라치, 생것",
+   "code": "K0880020000a",
+   "english_name": "Snake prickleback, Raw",
+   "values": {
+    "water_g": "73.2",
+    "protein_g": "19.3",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "베로치, 생것",
+   "code": "K0890000000a",
+   "english_name": "Elegant sculpin, Raw",
+   "values": {
+    "water_g": "78.8",
+    "protein_g": "19.5",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "베스, 생것",
+   "code": "K0900000000a",
+   "english_name": "Large mouth bass, Raw",
+   "values": {
+    "water_g": "80.1",
+    "protein_g": "18.2",
+    "iron_mg": "4.5",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "벤자리, 생것",
+   "code": "K0910000000a",
+   "english_name": "Threeline grunt, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "17",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "벤자리, 노랑벤자리, 생것",
+   "code": "K0910010000a",
+   "english_name": "Yellowtail red bass, Raw",
+   "values": {
+    "water_g": "79",
+    "protein_g": "17.3",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "병어, 생것",
+   "code": "K0920000000a",
+   "english_name": "Silver pomfret, Raw",
+   "values": {
+    "water_g": "75.5",
+    "protein_g": "16.4",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "보구치, 생것",
+   "code": "K0930000000a",
+   "english_name": "White croaker, Raw",
+   "values": {
+    "water_g": "75",
+    "protein_g": "19.3",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "보리멸, 생것",
+   "code": "K0940000000a",
+   "english_name": "Sand smelt, Raw",
+   "values": {
+    "water_g": "78.1",
+    "protein_g": "19.5",
+    "iron_mg": "2.3",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 검복, 생것",
+   "code": "K0950010000a",
+   "english_name": "Purple puffer, Raw",
+   "values": {
+    "water_g": "76.7",
+    "protein_g": "21.5",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 국매리복, 생것",
+   "code": "K0950020000a",
+   "english_name": "Pear puffer, Raw",
+   "values": {
+    "water_g": "77.4",
+    "protein_g": "20.7",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "60",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 까치복, 생것",
+   "code": "K0950030000a",
+   "english_name": "Yellowfin puffer, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.3",
+    "iron_mg": "4.4",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 까칠복, 생것",
+   "code": "K0950040000a",
+   "english_name": "Spotty-back puffer, Raw",
+   "values": {
+    "water_g": "79",
+    "protein_g": "19.3",
+    "iron_mg": "3.1",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 매리복, 생것",
+   "code": "K0950050000a",
+   "english_name": "Vermiculated puffer, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "19.8",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 밀복, 생것",
+   "code": "K0950060000a",
+   "english_name": "Green rough-backed puffer, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "17.3",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 자주복, 생것",
+   "code": "K0950070000a",
+   "english_name": "Tiger puffer, Raw",
+   "values": {
+    "water_g": "79",
+    "protein_g": "18.8",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 졸복, 생것",
+   "code": "K0950080000a",
+   "english_name": "Panther puffer, Raw",
+   "values": {
+    "water_g": "78.8",
+    "protein_g": "18.9",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "64",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "복어, 흰점복, 생것",
+   "code": "K0950090000a",
+   "english_name": "Fine-patterned puffer, Raw",
+   "values": {
+    "water_g": "82.2",
+    "protein_g": "15.9",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 생것",
+   "code": "K0960000000a",
+   "english_name": "Black rock fish, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "19.3",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 개볼락, 생것",
+   "code": "K0960010000a",
+   "english_name": "Spotbelly rockfish, Raw",
+   "values": {
+    "water_g": "78.7",
+    "protein_g": "19.1",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "86",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 누루시볼락, 생것",
+   "code": "K0960020000a",
+   "english_name": "Fox jacopever, Raw",
+   "values": {
+    "water_g": "70.5",
+    "protein_g": "22.4",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 불볼락, 생것",
+   "code": "K0960040000a",
+   "english_name": "Gold eye rockfish, Raw",
+   "values": {
+    "water_g": "74.7",
+    "protein_g": "18.6",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 우럭볼락, 생것",
+   "code": "K0960060000a",
+   "english_name": "Armorclad rockfish, Raw",
+   "values": {
+    "water_g": "79.2",
+    "protein_g": "18.3",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 조피볼락(우럭), 생것",
+   "code": "K0960070000a",
+   "english_name": "Korean rockfish, Raw",
+   "values": {
+    "water_g": "76.8",
+    "protein_g": "18.41",
+    "iron_mg": "0.44",
+    "zinc_mg": "0.78",
+    "refuse_pct": "75",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 탁자볼락, 생것",
+   "code": "K0960080000a",
+   "english_name": "White-edged rockfish, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.7",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼락, 황점볼락, 생것",
+   "code": "K0960090000a",
+   "english_name": "Oblong rockfish, Raw",
+   "values": {
+    "water_g": "76.1",
+    "protein_g": "21.3",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "부세, 생것",
+   "code": "K0970000000a",
+   "english_name": "Large yellow croaker, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "17.2",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "부시리, 생것",
+   "code": "K0980000000a",
+   "english_name": "Amberjack, Raw",
+   "values": {
+    "water_g": "74.6",
+    "protein_g": "22.3",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "부치, 빨강부치, 생것",
+   "code": "K0990010000a",
+   "english_name": "Red bat fish, Raw",
+   "values": {
+    "water_g": "82.5",
+    "protein_g": "15.8",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "85",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "붉바리, 생것",
+   "code": "K1000000000a",
+   "english_name": "Red-spotted grouper, Raw",
+   "values": {
+    "water_g": "76.5",
+    "protein_g": "21",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "붕어, 생것",
+   "code": "K1010000000a",
+   "english_name": "Crucian carp, Raw",
+   "values": {
+    "water_g": "78.9",
+    "protein_g": "18.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "붕어, 참붕어, 생것",
+   "code": "K1010010000a",
+   "english_name": "Stone moroko, Raw",
+   "values": {
+    "water_g": "74.7",
+    "protein_g": "16.4",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "블루길, 생것",
+   "code": "K1020000000a",
+   "english_name": "Bluegill, Raw",
+   "values": {
+    "water_g": "80",
+    "protein_g": "17.8",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "빙어, 생것",
+   "code": "K1030000000a",
+   "english_name": "Pond smelt, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "18.4",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "빙어, 바다빙어, 생것",
+   "code": "K1030010000a",
+   "english_name": "Rainbow smelt, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "17.4",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "산천어, 생것",
+   "code": "K1040000000a",
+   "english_name": "Cherry salmon, Raw",
+   "values": {
+    "water_g": "74.6",
+    "protein_g": "20.3",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "살살치, 생것",
+   "code": "K1050000000a",
+   "english_name": "Izu scorpionfish, Raw",
+   "values": {
+    "water_g": "82.2",
+    "protein_g": "15.5",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "58",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "삼세기, 생것",
+   "code": "K1060000000a",
+   "english_name": "Sea raven, Raw",
+   "values": {
+    "water_g": "77.3",
+    "protein_g": "18.6",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "삼치, 생것",
+   "code": "K1070000000a",
+   "english_name": "Spanish mackerel, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "20.08",
+    "iron_mg": "0.1",
+    "zinc_mg": "0.56",
+    "refuse_pct": "56",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "삼치, 줄삼치, 생것",
+   "code": "K1070020000a",
+   "english_name": "Striped bonito, Raw",
+   "values": {
+    "water_g": "70.5",
+    "protein_g": "24.6",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "31",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "삼치, 평삼치, 생것",
+   "code": "K1070030000a",
+   "english_name": "Korean seerfish, Raw",
+   "values": {
+    "water_g": "76.1",
+    "protein_g": "17.9",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "32",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 가래상어, 생것",
+   "code": "K1090010000a",
+   "english_name": "Skate shark, Raw",
+   "values": {
+    "water_g": "75.5",
+    "protein_g": "22.2",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "30",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 곱상어, 생것",
+   "code": "K1090020000a",
+   "english_name": "Spiny dogfish, Raw",
+   "values": {
+    "water_g": "72",
+    "protein_g": "16.2",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "60",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 까치상어, 생것",
+   "code": "K1090030000a",
+   "english_name": "Banded houndshark, Raw",
+   "values": {
+    "water_g": "73",
+    "protein_g": "24.1",
+    "iron_mg": "7.8",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 돔발상어, 생것",
+   "code": "K1090040000a",
+   "english_name": "Shortspine spurdog, Raw",
+   "values": {
+    "water_g": "80",
+    "protein_g": "17.9",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 두툽상어, 생것",
+   "code": "K1090050000a",
+   "english_name": "Cloudy dogfish, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "21.4",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 망상어, 생것",
+   "code": "K1090060000a",
+   "english_name": "Sea chub, Raw",
+   "values": {
+    "water_g": "78.5",
+    "protein_g": "18.9",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 모조리상어, 생것",
+   "code": "K1090070000a",
+   "english_name": "Shortnose dogfish, Raw",
+   "values": {
+    "water_g": "75.1",
+    "protein_g": "21.7",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 별상어, 생것",
+   "code": "K1090080000a",
+   "english_name": "Star-spotted shark, Raw",
+   "values": {
+    "water_g": "73.7",
+    "protein_g": "23.5",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "65",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 악상어, 생것",
+   "code": "K1090090000a",
+   "english_name": "Salmon shark, Raw",
+   "values": {
+    "water_g": "61.5",
+    "protein_g": "13.4",
+    "iron_mg": "4.2",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 은상어, 생것",
+   "code": "K1090100000a",
+   "english_name": "Silver chimaera, Raw",
+   "values": {
+    "water_g": "75.3",
+    "protein_g": "22.9",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 청새리상어, 생것",
+   "code": "K1090110000a",
+   "english_name": "Bule shark, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "18.5",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 흉상어, 생것",
+   "code": "K1090120000a",
+   "english_name": "Sandbar Shark, Raw",
+   "values": {
+    "water_g": "73.7",
+    "protein_g": "23.5",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 지느러미, 생것",
+   "code": "K110000D520a",
+   "english_name": "Shark, Shark fin, Raw",
+   "values": {
+    "water_g": "18.4",
+    "protein_g": "80.7",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "상어, 알, 생것",
+   "code": "K111000D590a",
+   "english_name": "Shark edible offal, Roe, Raw",
+   "values": {
+    "water_g": "50",
+    "protein_g": "25",
+    "iron_mg": null,
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새다래, 생것",
+   "code": "K1120000000a",
+   "english_name": "Pacific pomfret, Raw",
+   "values": {
+    "water_g": "76.9",
+    "protein_g": "18.9",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "38",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "샛멸, 생것",
+   "code": "K1140000000a",
+   "english_name": "Deepsea smelt, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "19.5",
+    "iron_mg": "0.3",
+    "zinc_mg": "1.3",
+    "refuse_pct": "45",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "서대, 각시서대, 생것",
+   "code": "K1150010000a",
+   "english_name": "Wavy-banded sole, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "18.4",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "서대, 궁제기서대, 생것",
+   "code": "K1150020000a",
+   "english_name": "Striped sole, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "18.9",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "34",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "서대, 참서대, 생것",
+   "code": "K1150030000a",
+   "english_name": "Red tongue sole, Raw",
+   "values": {
+    "water_g": "79.1",
+    "protein_g": "18.6",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "39",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성대, 생것",
+   "code": "K1160000000a",
+   "english_name": "Bluefin searobin, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "19.9",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성대, 별성대, 생것",
+   "code": "K1160010000a",
+   "english_name": "Spotted armoured-gurnard, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "19.3",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "65",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성대, 별쭉지성대, 생것",
+   "code": "K1160020000a",
+   "english_name": "Starry flying gurnard, Raw",
+   "values": {
+    "water_g": "74.5",
+    "protein_g": "19.2",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "송어, 생것",
+   "code": "K1170000000a",
+   "english_name": "River salmon, Raw",
+   "values": {
+    "water_g": "73.8",
+    "protein_g": "21",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "송어, 무지개송어, 생것",
+   "code": "K1170010000a",
+   "english_name": "Rainbow trout, Raw",
+   "values": {
+    "water_g": "73.3",
+    "protein_g": "21.1",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "38",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "숭어, 생것",
+   "code": "K1200000000a",
+   "english_name": "Common mullet, Raw",
+   "values": {
+    "water_g": "74.1",
+    "protein_g": "21.7",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쌍동가리, 생것",
+   "code": "K1220000000a",
+   "english_name": "Saddled weever, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "20.8",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쌍뿔달재, 생것",
+   "code": "K1230000000a",
+   "english_name": "Forksnout searobin, Raw",
+   "values": {
+    "water_g": "81.2",
+    "protein_g": "16.9",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "71",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쏘가리, 생것",
+   "code": "K1240000000a",
+   "english_name": "Mandarin fish, Raw",
+   "values": {
+    "water_g": "77.6",
+    "protein_g": "17.2",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쏨뱅이, 생것",
+   "code": "K1250000000a",
+   "english_name": "Marbled rockfish, Raw",
+   "values": {
+    "water_g": "78.1",
+    "protein_g": "19.9",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쑤기미, 생것",
+   "code": "K1260000000a",
+   "english_name": "Devil stinger, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "18.5",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쑥감펭, 생것",
+   "code": "K1270000000a",
+   "english_name": "Hairy stingfish, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "19",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "아귀, 생것",
+   "code": "K1280000000a",
+   "english_name": "Blackmouth angler, Raw",
+   "values": {
+    "water_g": "84",
+    "protein_g": "14.1",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "아귀, 황아귀, 생것",
+   "code": "K1280010000a",
+   "english_name": "Yellow goosefish, Raw",
+   "values": {
+    "water_g": "82.2",
+    "protein_g": "16.3",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "68",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "아귀, 간, 생것",
+   "code": "K129000D330a",
+   "english_name": "Blackmouth angler edible offal, Liver, Raw",
+   "values": {
+    "water_g": "44.5",
+    "protein_g": "10.4",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "아홉동가리, 생것",
+   "code": "K1310000000a",
+   "english_name": "Spottedtail morwong, Raw",
+   "values": {
+    "water_g": "76.5",
+    "protein_g": "19.8",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "애꼬치, 생것",
+   "code": "K1320000000a",
+   "english_name": "Japanese barracuda, Raw",
+   "values": {
+    "water_g": "72.7",
+    "protein_g": "18.9",
+    "iron_mg": "0.3",
+    "zinc_mg": "0.5",
+    "refuse_pct": "40",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양미리, 생것",
+   "code": "K1330000000a",
+   "english_name": "Naked sand lance, Raw",
+   "values": {
+    "water_g": "73.7",
+    "protein_g": "21.5",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양태, 생것",
+   "code": "K1340000000a",
+   "english_name": "Bartailed flathead, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "20",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양태, 꽁지양태, 생것",
+   "code": "K1340010000a",
+   "english_name": "Japanese dragonet, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "16.5",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "49",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양태, 눈양태, 생것",
+   "code": "K1340020000a",
+   "english_name": "Matron flathead, Raw",
+   "values": {
+    "water_g": "78",
+    "protein_g": "20.1",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양태, 도화양태, 생것",
+   "code": "K1340030000a",
+   "english_name": "Red dragonet, Raw",
+   "values": {
+    "water_g": "81.2",
+    "protein_g": "16.9",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "양태, 돛양태, 생것",
+   "code": "K1340040000a",
+   "english_name": "Moon dragonet, Raw",
+   "values": {
+    "water_g": "79.5",
+    "protein_g": "18.5",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "얼룩통구멍, 생것",
+   "code": "K1350000000a",
+   "english_name": "Japanese stargazer, Raw",
+   "values": {
+    "water_g": "80.1",
+    "protein_g": "18.2",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "여덟동가리, 생것",
+   "code": "K1360000000a",
+   "english_name": "Black-barred morwong, Raw",
+   "values": {
+    "water_g": "76.4",
+    "protein_g": "19.2",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "연어, 생것",
+   "code": "K1370000000a",
+   "english_name": "Chum salmon, Raw",
+   "values": {
+    "water_g": "75.8",
+    "protein_g": "20.6",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "39",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "연어, 은연어, 생것",
+   "code": "K1370010000a",
+   "english_name": "Coho Salmon, Raw",
+   "values": {
+    "water_g": "75",
+    "protein_g": "21.7",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "연어, 홍연어, 생것",
+   "code": "K1370020000a",
+   "english_name": "Sockeye salmon, Raw",
+   "values": {
+    "water_g": "71.4",
+    "protein_g": "22.5",
+    "iron_mg": "0.4",
+    "zinc_mg": "0.5",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "연어, 알, 생것",
+   "code": "K138000D590a",
+   "english_name": "Chum salmon edible offal, Roe, Raw",
+   "values": {
+    "water_g": "53",
+    "protein_g": "25",
+    "iron_mg": "12",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "열쌍동가리, 생것",
+   "code": "K1400000000a",
+   "english_name": "Gold-birdled sandsmelt, Raw",
+   "values": {
+    "water_g": "79.2",
+    "protein_g": "18.3",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('95)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "우각바리, 생것",
+   "code": "K1410000000a",
+   "english_name": "Yellowfin red bass, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "19",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "55",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "볼기우럭, 생것",
+   "code": "K1420000000a",
+   "english_name": "Silver-belly sea perch, Raw",
+   "values": {
+    "water_g": "74.6",
+    "protein_g": "18.7",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "웅어, 생것",
+   "code": "K1430000000a",
+   "english_name": "Korean anchovy, Raw",
+   "values": {
+    "water_g": "72.1",
+    "protein_g": "15.9",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "은어, 생것",
+   "code": "K1440000000a",
+   "english_name": "Sweet fish, Wild-caught, Raw",
+   "values": {
+    "water_g": "77",
+    "protein_g": "16.7",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "은어, 양식, 생것",
+   "code": "K1440010000a",
+   "english_name": "Sweet fish, Farm-raised, Raw",
+   "values": {
+    "water_g": "72",
+    "protein_g": "17.8",
+    "iron_mg": "0.8",
+    "zinc_mg": "0.9",
+    "refuse_pct": "50",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "은어, 내장, 생것",
+   "code": "K145000D370a",
+   "english_name": "Sweet fish edible offal, Wild-caught, Viscera, Raw",
+   "values": {
+    "water_g": "68.6",
+    "protein_g": "9.5",
+    "iron_mg": "24",
+    "zinc_mg": "2",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "은어, 양식, 내장, 생것",
+   "code": "K145001D370a",
+   "english_name": "Sweet fish edible offal, Farm-raised, Viscera, Raw",
+   "values": {
+    "water_g": "36.6",
+    "protein_g": "7.4",
+    "iron_mg": "8",
+    "zinc_mg": "1.3",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "인상어, 생것",
+   "code": "K1470000000a",
+   "english_name": "Surfperch, Raw",
+   "values": {
+    "water_g": "71.8",
+    "protein_g": "21.8",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "임연수어, 생것",
+   "code": "K1480000000a",
+   "english_name": "Atka mackerel, Raw",
+   "values": {
+    "water_g": "71.5",
+    "protein_g": "19.6",
+    "iron_mg": "7.9",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "잉어, 생것",
+   "code": "K1490000000a",
+   "english_name": "Common carp, Raw",
+   "values": {
+    "water_g": "76.9",
+    "protein_g": "17.5",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "잉어, 내장, 생것",
+   "code": "K150000D370a",
+   "english_name": "Common carp edible offal, Viscera, Raw",
+   "values": {
+    "water_g": "62.6",
+    "protein_g": "9",
+    "iron_mg": "3.1",
+    "zinc_mg": "7",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장갱이, 생것",
+   "code": "K1510000000a",
+   "english_name": "Long shanny, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "19.1",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장문볼락, 생것",
+   "code": "K1520000000a",
+   "english_name": "Pacific ocean perch, Raw",
+   "values": {
+    "water_g": "80.8",
+    "protein_g": "15.7",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 갯장어, 생것",
+   "code": "K1530010000a",
+   "english_name": "Daggertooth pike conger, Raw",
+   "values": {
+    "water_g": "70.5",
+    "protein_g": "17.9",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 먹장어, 생것",
+   "code": "K1530020000a",
+   "english_name": "Inshore hagfish, Raw",
+   "values": {
+    "water_g": "75.3",
+    "protein_g": "16.9",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "39",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 뱀장어, 생것",
+   "code": "K1530040000a",
+   "english_name": "Japanese eel, Raw",
+   "values": {
+    "water_g": "67.1",
+    "protein_g": "14.4",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "14",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 붕장어, 생것",
+   "code": "K1530050000a",
+   "english_name": "White-spotted conger, Raw",
+   "values": {
+    "water_g": "74.7",
+    "protein_g": "17.4",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "29",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 칠성장어, 생것",
+   "code": "K1530060000a",
+   "english_name": "Arctic lamprey, Raw",
+   "values": {
+    "water_g": "60",
+    "protein_g": "21",
+    "iron_mg": "18",
+    "zinc_mg": null,
+    "refuse_pct": "20",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "장어, 뱀장어, 간, 생것",
+   "code": "K154001D330a",
+   "english_name": "Japanese eel edible offal, Liver, Raw",
+   "values": {
+    "water_g": "51.5",
+    "protein_g": "12.2",
+    "iron_mg": "2.7",
+    "zinc_mg": null,
+    "refuse_pct": "90",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전갱이, 생것",
+   "code": "K1550000000a",
+   "english_name": "Horse mackerel, Raw",
+   "values": {
+    "water_g": "72.6",
+    "protein_g": "20.7",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전갱이, 어린것, 생것",
+   "code": "K1550001130a",
+   "english_name": "Horse mackerel, Young, Raw",
+   "values": {
+    "water_g": "76.7",
+    "protein_g": "19.9",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전갱이, 갈전갱이, 생것",
+   "code": "K1550010000a",
+   "english_name": "Horse kingfish, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "19.6",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전갱이, 줄전갱이, 생것",
+   "code": "K1550020000a",
+   "english_name": "Bigeye trevally, Raw",
+   "values": {
+    "water_g": "73.2",
+    "protein_g": "24",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전어, 생것",
+   "code": "K1570000000a",
+   "english_name": "Dotted gizzard shad, Raw",
+   "values": {
+    "water_g": "75.7",
+    "protein_g": "19.2",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "점감펭, 생것",
+   "code": "K1600000000a",
+   "english_name": "Scorpion fish, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "19.4",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "점줄우럭, 생것",
+   "code": "K1880000000a",
+   "english_name": "Dotted grouper, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "19.3",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "정어리, 생것",
+   "code": "K1610000000a",
+   "english_name": "Sardine, Raw",
+   "values": {
+    "water_g": "69.2",
+    "protein_g": "20",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조기(참조기), 생것",
+   "code": "K1620000000a",
+   "english_name": "Yellow croaker, Raw",
+   "values": {
+    "water_g": "76.3",
+    "protein_g": "19.02",
+    "iron_mg": "0.43",
+    "zinc_mg": "0.45",
+    "refuse_pct": "42",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "준치, 생것",
+   "code": "K1640000000a",
+   "english_name": "Slender shad, Raw",
+   "values": {
+    "water_g": "73.7",
+    "protein_g": "20.1",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "43",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "준치, 강준치, 생것",
+   "code": "K1640010000a",
+   "english_name": "Skygager, Raw",
+   "values": {
+    "water_g": "78.8",
+    "protein_g": "18.7",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "39",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쥐치, 생것",
+   "code": "K1650000000a",
+   "english_name": "Threadsail filefish, Raw",
+   "values": {
+    "water_g": "79",
+    "protein_g": "19.1",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "쥐치, 말쥐치, 생것",
+   "code": "K1650010000a",
+   "english_name": "File fish, Raw",
+   "values": {
+    "water_g": "75.4",
+    "protein_g": "17.3",
+    "iron_mg": "1.17",
+    "zinc_mg": "0.3",
+    "refuse_pct": "73",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "참마자, 생것",
+   "code": "K1660000000a",
+   "english_name": "Long-nose barbel, Raw",
+   "values": {
+    "water_g": "79.4",
+    "protein_g": "17.7",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "청새치, 생것",
+   "code": "K1670000000a",
+   "english_name": "Striped marlin, Raw",
+   "values": {
+    "water_g": "73.8",
+    "protein_g": "23.1",
+    "iron_mg": "0.6",
+    "zinc_mg": "0.6",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "청어, 생것",
+   "code": "K1680000000a",
+   "english_name": "Pacific herring, Raw",
+   "values": {
+    "water_g": "66.3",
+    "protein_g": "16.3",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "청어, 알, 생것",
+   "code": "K169000D590a",
+   "english_name": "Pacific herring edible offal, Roe, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "19.6",
+    "iron_mg": "2.3",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "초어, 생것",
+   "code": "K1700000000a",
+   "english_name": "Grass carp, Raw",
+   "values": {
+    "water_g": "79.7",
+    "protein_g": "17.1",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "통치, 생것",
+   "code": "K1710000000a",
+   "english_name": "Royal escolar, Raw",
+   "values": {
+    "water_g": "72.9",
+    "protein_g": "20",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "41",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "투라치, 생것",
+   "code": "K1720000000a",
+   "english_name": "Slender ribbonfish, Raw",
+   "values": {
+    "water_g": "80.1",
+    "protein_g": "18.1",
+    "iron_mg": "0.3",
+    "zinc_mg": null,
+    "refuse_pct": "59",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "틸라피아, 생것",
+   "code": "K1730000000a",
+   "english_name": "Mozambique tilapia, Raw",
+   "values": {
+    "water_g": "74.6",
+    "protein_g": "19.3",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "57",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "푸렁통구멍, 생것",
+   "code": "K1740000000a",
+   "english_name": "Bluespotted stargazer, Raw",
+   "values": {
+    "water_g": "80.9",
+    "protein_g": "17.4",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "풀반지, 생것",
+   "code": "K1750000000a",
+   "english_name": "Deep-bodied anchovy, Raw",
+   "values": {
+    "water_g": "70.8",
+    "protein_g": "16.9",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "40",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "피라미, 생것",
+   "code": "K1760000000a",
+   "english_name": "Pale chub, Raw",
+   "values": {
+    "water_g": "77.4",
+    "protein_g": "18.5",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "학공치, 생것",
+   "code": "K1770000000a",
+   "english_name": "Half beak, Raw",
+   "values": {
+    "water_g": "78.7",
+    "protein_g": "17.8",
+    "iron_mg": "3.5",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "향어, 생것",
+   "code": "K1780000000a",
+   "english_name": "Common carp, Raw",
+   "values": {
+    "water_g": "71.5",
+    "protein_g": "18.4",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('18)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "홍감펭, 생것",
+   "code": "K1790000000a",
+   "english_name": "Rose fish, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "16.7",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "48",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "홍어, 생것",
+   "code": "K1800000000a",
+   "english_name": "Skate ray, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "19.6",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "28",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "홍치, 생것",
+   "code": "K1810000000a",
+   "english_name": "Red Bigeye, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "18.9",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "황매퉁이, 생것",
+   "code": "K1820000000a",
+   "english_name": "Snakefish, Raw",
+   "values": {
+    "water_g": "77.3",
+    "protein_g": "20",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "42",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "황새치, 생것",
+   "code": "K1830000000a",
+   "english_name": "Swordfish, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "17",
+    "iron_mg": "6.2",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "황어, 생것",
+   "code": "K1850000000a",
+   "english_name": "Sea rundace, Raw",
+   "values": {
+    "water_g": "78.5",
+    "protein_g": "18.3",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "횟대, 빨간횟대, 생것",
+   "code": "K1860010000a",
+   "english_name": "Elkhorn sculpin, Raw",
+   "values": {
+    "water_g": "81.1",
+    "protein_g": "17.1",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "히메치, 생것",
+   "code": "K1870000000a",
+   "english_name": "Japanese thread-sail fish, Raw",
+   "values": {
+    "water_g": "76.7",
+    "protein_g": "20.9",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가리비, 생것",
+   "code": "K4000000000a",
+   "english_name": "Scallop, Raw",
+   "values": {
+    "water_g": "81.6",
+    "protein_g": "15.18",
+    "iron_mg": "2.95",
+    "zinc_mg": "2.56",
+    "refuse_pct": "0",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가리비, 관자, 생것",
+   "code": "K4000001300a",
+   "english_name": "Scallop, Adductor muscle, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "16.9",
+    "iron_mg": "0.2",
+    "zinc_mg": "1.5",
+    "refuse_pct": "0",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가리비, 국자가리비, 생것",
+   "code": "K4000010000a",
+   "english_name": "Japanese baking scallop, Raw",
+   "values": {
+    "water_g": "84.9",
+    "protein_g": "10.8",
+    "iron_mg": "2",
+    "zinc_mg": "6.1",
+    "refuse_pct": "65",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가리비, 비단가리비, 생것",
+   "code": "K4000020000a",
+   "english_name": "Scallop, Farrer's scallop, Raw",
+   "values": {
+    "water_g": "81",
+    "protein_g": "14.5",
+    "iron_mg": "3.2",
+    "zinc_mg": null,
+    "refuse_pct": "64",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가리비, 큰가리비, 생것",
+   "code": "K4000040000a",
+   "english_name": "Yesso scallop, Raw",
+   "values": {
+    "water_g": "85.5",
+    "protein_g": "12.3",
+    "iron_mg": "0.92",
+    "zinc_mg": "2.15",
+    "refuse_pct": "58",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "각시수랑, 생것",
+   "code": "K4020000000a",
+   "english_name": "Ample fragile buccinum, Raw",
+   "values": {
+    "water_g": "80",
+    "protein_g": "15",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 갈색고리돼지고둥, 생것",
+   "code": "K4030010000a",
+   "english_name": "Brow-lined whelk, Raw",
+   "values": {
+    "water_g": "76.9",
+    "protein_g": "16.1",
+    "iron_mg": "5",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 갈색띠매물고둥, 생것",
+   "code": "K4030020000a",
+   "english_name": "Ezoneptune shell, Raw",
+   "values": {
+    "water_g": "79.2",
+    "protein_g": "15.1",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "68",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 관절매물고둥(보라골뱅이), 생것",
+   "code": "K4030030000a",
+   "english_name": "Small neptune shell, Raw",
+   "values": {
+    "water_g": "74.2",
+    "protein_g": "17.7",
+    "iron_mg": "2.3",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 긴고둥(긴뿔고둥), 생것",
+   "code": "K4030040000a",
+   "english_name": "Spindle shell, Raw",
+   "values": {
+    "water_g": "73.6",
+    "protein_g": "17.2",
+    "iron_mg": "7.2",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 나팔고둥, 생것",
+   "code": "K4030050000a",
+   "english_name": "Triton shell, Raw",
+   "values": {
+    "water_g": "73.8",
+    "protein_g": "15.9",
+    "iron_mg": "5",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 두드럭고둥, 생것",
+   "code": "K4030060000a",
+   "english_name": "Bronn's dogwhelk, Raw",
+   "values": {
+    "water_g": "77",
+    "protein_g": "14.2",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "91",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 매끈이고둥, 생것",
+   "code": "K4030070000a",
+   "english_name": "Sea snail, Raw",
+   "values": {
+    "water_g": "72.6",
+    "protein_g": "22.5",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "91",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 물레고둥, 생것",
+   "code": "K4030080000a",
+   "english_name": "Finely-striate buccinum, Raw",
+   "values": {
+    "water_g": "76",
+    "protein_g": "17.1",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "65",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 민허리돼지고둥, 생것",
+   "code": "K4030090000a",
+   "english_name": "Fusiform whelk, Raw",
+   "values": {
+    "water_g": "75.7",
+    "protein_g": "16.5",
+    "iron_mg": "7.2",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 보말고둥, 생것",
+   "code": "K4030100000a",
+   "english_name": "Top shell, Raw",
+   "values": {
+    "water_g": "78.2",
+    "protein_g": "14.6",
+    "iron_mg": "12.9",
+    "zinc_mg": null,
+    "refuse_pct": "75",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 비단고둥, 생것",
+   "code": "K4030110000a",
+   "english_name": "Sand snail, Raw",
+   "values": {
+    "water_g": "75.3",
+    "protein_g": "17",
+    "iron_mg": "25.4",
+    "zinc_mg": null,
+    "refuse_pct": "72",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 세고리물레고둥, 생것",
+   "code": "K4030120000a",
+   "english_name": "Constricted whelk, Raw",
+   "values": {
+    "water_g": "79.2",
+    "protein_g": "15",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 위고둥, 생것",
+   "code": "K4030130000a",
+   "english_name": "Tun shell, Raw",
+   "values": {
+    "water_g": "83.7",
+    "protein_g": "11.2",
+    "iron_mg": "3.7",
+    "zinc_mg": null,
+    "refuse_pct": "44",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 조각매물고둥, 생것",
+   "code": "K4030140000a",
+   "english_name": "Double sculptured neptune, Raw",
+   "values": {
+    "water_g": "72.5",
+    "protein_g": "17.7",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 콩깍지고둥, 생것",
+   "code": "K4030150000a",
+   "english_name": "Oragon triton shell, Raw",
+   "values": {
+    "water_g": "74.5",
+    "protein_g": "19.7",
+    "iron_mg": "2.3",
+    "zinc_mg": null,
+    "refuse_pct": "83",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 털탑고둥, 생것",
+   "code": "K4030160000a",
+   "english_name": "False trumpet shell, Raw",
+   "values": {
+    "water_g": "67",
+    "protein_g": "20.7",
+    "iron_mg": "3.5",
+    "zinc_mg": null,
+    "refuse_pct": "50",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "고둥, 피뿔고둥, 생것",
+   "code": "K4030170000a",
+   "english_name": "Thomas' rapa whelk, Raw",
+   "values": {
+    "water_g": "71.7",
+    "protein_g": "17.9",
+    "iron_mg": "3.3",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "굴, 석굴, 생것",
+   "code": "K4040010000a",
+   "english_name": "Oyster, Grown on underwater rocks, Raw",
+   "values": {
+    "water_g": "84.6",
+    "protein_g": "8.9",
+    "iron_mg": "3.9",
+    "zinc_mg": null,
+    "refuse_pct": "72",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "굴, 참굴, 생것",
+   "code": "K4040020000a",
+   "english_name": "Pacific oyster, Wild, Raw",
+   "values": {
+    "water_g": "80.3",
+    "protein_g": "9.66",
+    "iron_mg": "8.72",
+    "zinc_mg": "15.9",
+    "refuse_pct": "84",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "굴, 참굴, 양식, 생것",
+   "code": "K4040030000a",
+   "english_name": "Pacific oyster, Farm-raised, Raw",
+   "values": {
+    "water_g": "80.4",
+    "protein_g": "10.5",
+    "iron_mg": "3.8",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "굴, 토굴, 생것",
+   "code": "K4040040000a",
+   "english_name": "Lamellated oyster, Wild-caught, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "10.2",
+    "iron_mg": "3.4",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼬막, 생것",
+   "code": "K4060000000a",
+   "english_name": "Granulated ark shell, Raw",
+   "values": {
+    "water_g": "82.9",
+    "protein_g": "12.6",
+    "iron_mg": "6.8",
+    "zinc_mg": null,
+    "refuse_pct": "74",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼬막, 새꼬막, 생것",
+   "code": "K4060010000a",
+   "english_name": "Half-crenated ark, Raw",
+   "values": {
+    "water_g": "81.3",
+    "protein_g": "12.29",
+    "iron_mg": "3.75",
+    "zinc_mg": "1.1",
+    "refuse_pct": "62",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 생것",
+   "code": "K4070000000a",
+   "english_name": "Melania snail, Raw",
+   "values": {
+    "water_g": "78.6",
+    "protein_g": "11.9",
+    "iron_mg": "3.3",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('18)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 곳체다슬기, 생것",
+   "code": "K4070010000a",
+   "english_name": "Melania snail, Gotchedaseulgi, Raw",
+   "values": {
+    "water_g": "81.9",
+    "protein_g": "11.6",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('18)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 띠구슬다슬기, 생것",
+   "code": "K4070020000a",
+   "english_name": "Melania snail, Ttiquseuldaseulgi, Raw",
+   "values": {
+    "water_g": "70.1",
+    "protein_g": "16.9",
+    "iron_mg": "6.4",
+    "zinc_mg": null,
+    "refuse_pct": "74",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 염주알다슬기, 생것",
+   "code": "K4070030000a",
+   "english_name": "Melania snail, Yeomjualdaseulgi, Raw",
+   "values": {
+    "water_g": "71.3",
+    "protein_g": "12.7",
+    "iron_mg": "11.2",
+    "zinc_mg": null,
+    "refuse_pct": "76",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 좀주름다슬기, 생것",
+   "code": "K4070040000a",
+   "english_name": "Melania snail, Jomjureumdaseulgi, Raw",
+   "values": {
+    "water_g": "76.7",
+    "protein_g": "14",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "79",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 참다슬기, 생것",
+   "code": "K4070050000a",
+   "english_name": "Melania snail, Chamdaseulgi, Raw",
+   "values": {
+    "water_g": "79.5",
+    "protein_g": "12.3",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "다슬기, 주름다슬기, 생것",
+   "code": "K4070060000a",
+   "english_name": "Melania snail, Jureumdaseulgi, Raw",
+   "values": {
+    "water_g": "75.7",
+    "protein_g": "14.2",
+    "iron_mg": "8.2",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "담치, 지중해담치, 생것",
+   "code": "K4080010000a",
+   "english_name": "Mediterranean mussel, Raw",
+   "values": {
+    "water_g": "85.3",
+    "protein_g": "8.9",
+    "iron_mg": "8.6",
+    "zinc_mg": null,
+    "refuse_pct": "60",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "담치, 진주담치, 생것",
+   "code": "K4080020000a",
+   "english_name": "Blue mussel, Wild, Raw",
+   "values": {
+    "water_g": "81.2",
+    "protein_g": "10.3",
+    "iron_mg": "6.6",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "담치, 진주담치, 양식, 생것",
+   "code": "K4080030000a",
+   "english_name": "Blue mussel, Farm-raised, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "11.9",
+    "iron_mg": "5.1",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대수리, 생것",
+   "code": "K4090000000a",
+   "english_name": "Daesu-ri, Raw",
+   "values": {
+    "water_g": "74.3",
+    "protein_g": "18.8",
+    "iron_mg": "3.9",
+    "zinc_mg": null,
+    "refuse_pct": "75",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "대합, 북방대합, 생것",
+   "code": "K4100010000a",
+   "english_name": "Sakhalin surf-clam, Raw",
+   "values": {
+    "water_g": "83.8",
+    "protein_g": "12",
+    "iron_mg": "5.4",
+    "zinc_mg": null,
+    "refuse_pct": "64",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "동죽, 생것",
+   "code": "K4110000000a",
+   "english_name": "Surf clam, Raw",
+   "values": {
+    "water_g": "82.7",
+    "protein_g": "11.8",
+    "iron_mg": "22.7",
+    "zinc_mg": null,
+    "refuse_pct": "69",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "맛, 붉은맛(큰죽합), 생것",
+   "code": "K4120010000a",
+   "english_name": "Razor clam, Raw",
+   "values": {
+    "water_g": "77.3",
+    "protein_g": "16.1",
+    "iron_mg": "12.5",
+    "zinc_mg": null,
+    "refuse_pct": "22",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "바지락, 생것",
+   "code": "K4130000000a",
+   "english_name": "Little neck clam, Wild, Raw",
+   "values": {
+    "water_g": "80.4",
+    "protein_g": "12.27",
+    "iron_mg": "2.68",
+    "zinc_mg": "1.22",
+    "refuse_pct": "68",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "바지락, 양식, 생것",
+   "code": "K4130010000a",
+   "english_name": "Little neck clam, Farm-raised, Raw",
+   "values": {
+    "water_g": "82.2",
+    "protein_g": "13",
+    "iron_mg": "13.3",
+    "zinc_mg": null,
+    "refuse_pct": "79",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "백합, 생것",
+   "code": "K4150000000a",
+   "english_name": "Orient hard clam, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "11.7",
+    "iron_mg": "11.9",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "백합, 말백합, 생것",
+   "code": "K4150010000a",
+   "english_name": "Spotted hard clam, Raw",
+   "values": {
+    "water_g": "84.3",
+    "protein_g": "10.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "66",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "소라, 생것",
+   "code": "K4160000000a",
+   "english_name": "Turban shell, Raw",
+   "values": {
+    "water_g": "72.5",
+    "protein_g": "20.7",
+    "iron_mg": "8.2",
+    "zinc_mg": null,
+    "refuse_pct": "87",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "수랑, 생것",
+   "code": "K4170000000a",
+   "english_name": "Japanese babylon, Raw",
+   "values": {
+    "water_g": "78.8",
+    "protein_g": "15.9",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오분자기, 생것",
+   "code": "K4180000000a",
+   "english_name": "Variously coloured abalone, Raw",
+   "values": {
+    "water_g": "78.1",
+    "protein_g": "13.3",
+    "iron_mg": "4.7",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "우렁이, 논우렁이, 생것",
+   "code": "K4190010000a",
+   "english_name": "River snail, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "10.5",
+    "iron_mg": "5.8",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "우렁이, 왕우렁, 생것",
+   "code": "K4190030000a",
+   "english_name": "Channeled applesnail, Raw",
+   "values": {
+    "water_g": "83.1",
+    "protein_g": "10.6",
+    "iron_mg": "16.8",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "우렁이, 큰구슬우렁이(골뱅이), 생것",
+   "code": "K4190040000a",
+   "english_name": "Real bladder moon snail, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "17.4",
+    "iron_mg": "2.6",
+    "zinc_mg": null,
+    "refuse_pct": "58",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "우렁이, 큰논우렁이, 생것",
+   "code": "K4190050000a",
+   "english_name": "Japanese mystery snail, Raw",
+   "values": {
+    "water_g": "80.4",
+    "protein_g": "9.8",
+    "iron_mg": "17.1",
+    "zinc_mg": null,
+    "refuse_pct": "67",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "재첩, 생것",
+   "code": "K4210000000a",
+   "english_name": "Marsh clam, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "12.5",
+    "iron_mg": "21",
+    "zinc_mg": null,
+    "refuse_pct": "84",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전복, 둥근전복, 생것",
+   "code": "K4220010000a",
+   "english_name": "Disk abalone, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "14.3",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "51",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전복, 말전복, 생것",
+   "code": "K4220020000a",
+   "english_name": "Giant abalone, Raw",
+   "values": {
+    "water_g": "80.3",
+    "protein_g": "12.8",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "59",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전복, 북방전복, 생것",
+   "code": "K4220030000a",
+   "english_name": "Abalone, Raw",
+   "values": {
+    "water_g": "77.2",
+    "protein_g": "15",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "53",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "전복, 내장, 생것",
+   "code": "K423000D370a",
+   "english_name": "Abalone edible offal, Viscera, Raw",
+   "values": {
+    "water_g": "70.4",
+    "protein_g": "18.5",
+    "iron_mg": "107.8",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 가무락조개, 생것",
+   "code": "K4250010000a",
+   "english_name": "Chinese cyclina, Raw",
+   "values": {
+    "water_g": "79.9",
+    "protein_g": "14.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 개량조개(명주조개), 생것",
+   "code": "K4250020000a",
+   "english_name": "Sunray surf clam, Raw",
+   "values": {
+    "water_g": "84",
+    "protein_g": "12",
+    "iron_mg": "11",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 개조개, 생것",
+   "code": "K4250030000a",
+   "english_name": "Purple washington clam, Raw",
+   "values": {
+    "water_g": "82.6",
+    "protein_g": "10.9",
+    "iron_mg": "6",
+    "zinc_mg": null,
+    "refuse_pct": "61",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 떡조개, 생것",
+   "code": "K4250040000a",
+   "english_name": "Japanese dosinia, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "11.2",
+    "iron_mg": "3.8",
+    "zinc_mg": null,
+    "refuse_pct": "74",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 맛조개, 생것",
+   "code": "K4250050000a",
+   "english_name": "Gould's razor shell, Raw",
+   "values": {
+    "water_g": "85.2",
+    "protein_g": "9.7",
+    "iron_mg": "5.5",
+    "zinc_mg": null,
+    "refuse_pct": "36",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 살조개, 생것",
+   "code": "K4250070000a",
+   "english_name": "Jedo venus, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "14.2",
+    "iron_mg": "14.4",
+    "zinc_mg": null,
+    "refuse_pct": "75",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 새조개, 생것",
+   "code": "K4250080000a",
+   "english_name": "Egg cockle, Raw",
+   "values": {
+    "water_g": "73.9",
+    "protein_g": "21.5",
+    "iron_mg": "3.7",
+    "zinc_mg": null,
+    "refuse_pct": "88",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 왕우럭조개, 생것",
+   "code": "K4250090000a",
+   "english_name": "Keen’s gaper, Raw",
+   "values": {
+    "water_g": "76.6",
+    "protein_g": "16.4",
+    "iron_mg": "6.3",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 우럭, 생것",
+   "code": "K4250100000a",
+   "english_name": "Soft shell clam, Raw",
+   "values": {
+    "water_g": "76.8",
+    "protein_g": "16.3",
+    "iron_mg": "4.1",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 접시조개(비단조개), 생것",
+   "code": "K4250110000a",
+   "english_name": "Pink butterfly shell, Raw",
+   "values": {
+    "water_g": "82.6",
+    "protein_g": "11.9",
+    "iron_mg": "5.8",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 진주조개, 생것",
+   "code": "K4250130000a",
+   "english_name": "Pearl oyster, Raw",
+   "values": {
+    "water_g": "85.3",
+    "protein_g": "10.1",
+    "iron_mg": "2.6",
+    "zinc_mg": null,
+    "refuse_pct": "77",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 키조개, 생것",
+   "code": "K4250140000a",
+   "english_name": "Comb pen shell, Raw",
+   "values": {
+    "water_g": "86.5",
+    "protein_g": "10.3",
+    "iron_mg": "8.2",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 키조개, 패주, 생것",
+   "code": "K4250141310a",
+   "english_name": "Comb pen shell, Adductor muscle, Raw",
+   "values": {
+    "water_g": "81.8",
+    "protein_g": "12.4",
+    "iron_mg": "6.5",
+    "zinc_mg": null,
+    "refuse_pct": "80",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 키조개, 근육, 생것",
+   "code": "K4250141320a",
+   "english_name": "Comb pen shell, Muscle, Raw",
+   "values": {
+    "water_g": "76.4",
+    "protein_g": "18.6",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "72",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 펄조개, 생것",
+   "code": "K4250150000a",
+   "english_name": "Swan mussel, Raw",
+   "values": {
+    "water_g": "81.4",
+    "protein_g": "9.4",
+    "iron_mg": "18.2",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 피조개, 생것",
+   "code": "K4250160000a",
+   "english_name": "Ark shell, Wild, Raw",
+   "values": {
+    "water_g": "82.6",
+    "protein_g": "11.6",
+    "iron_mg": "3.7",
+    "zinc_mg": null,
+    "refuse_pct": "59",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "조개, 피조개, 양식, 생것",
+   "code": "K4250170000a",
+   "english_name": "Ark shell, Farm-raised, Raw",
+   "values": {
+    "water_g": "81.2",
+    "protein_g": "11.8",
+    "iron_mg": "7.4",
+    "zinc_mg": null,
+    "refuse_pct": "54",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "담치, 참담치(홍합), 생것",
+   "code": "K4270000000a",
+   "english_name": "Hard shelled mussel, Raw",
+   "values": {
+    "water_g": "79.7",
+    "protein_g": "13.8",
+    "iron_mg": "6.1",
+    "zinc_mg": null,
+    "refuse_pct": "76",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가재, 갯가재, 생것",
+   "code": "K6000010000a",
+   "english_name": "Mantis prawn, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "16.1",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": "52",
+    "row_source": "('08)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "가재, 바닷가재, 생것",
+   "code": "K6000020000a",
+   "english_name": "Lobster, Raw",
+   "values": {
+    "water_g": "82.24",
+    "protein_g": "15.97",
+    "iron_mg": "0.84",
+    "zinc_mg": "1.3",
+    "refuse_pct": "0",
+    "row_source": "USDA('18)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "개불, 생것",
+   "code": "K6010000000a",
+   "english_name": "Urechis unicinctus, Raw",
+   "values": {
+    "water_g": "85.3",
+    "protein_g": "10.5",
+    "iron_mg": "5.5",
+    "zinc_mg": null,
+    "refuse_pct": "72",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 꽃게, 생것",
+   "code": "K6020010000a",
+   "english_name": "Blue crab, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "16.19",
+    "iron_mg": "0.74",
+    "zinc_mg": "2.05",
+    "refuse_pct": "76",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 닭게, 생것",
+   "code": "K6020020000a",
+   "english_name": "Red frog crab, Raw",
+   "values": {
+    "water_g": "82.3",
+    "protein_g": "15.2",
+    "iron_mg": "0.8",
+    "zinc_mg": null,
+    "refuse_pct": "67",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 대게, 생것",
+   "code": "K6020030000a",
+   "english_name": "Tanner crab, Raw",
+   "values": {
+    "water_g": "79.7",
+    "protein_g": "17.4",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "85",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 민꽃게, 생것",
+   "code": "K6020040000a",
+   "english_name": "Japanese swimming crab, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "14.8",
+    "iron_mg": "1.9",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 방게, 생것",
+   "code": "K6020060000a",
+   "english_name": "Three-spined shore crab, Raw",
+   "values": {
+    "water_g": "76.9",
+    "protein_g": "11.9",
+    "iron_mg": "4.8",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('86)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 왕게, 생것",
+   "code": "K6020070000a",
+   "english_name": "Red king crab, Raw",
+   "values": {
+    "water_g": "83",
+    "protein_g": "13.7",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "67",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 주름송편게, 생것",
+   "code": "K6020080000a",
+   "english_name": "Reticular egg crab, Raw",
+   "values": {
+    "water_g": "78.4",
+    "protein_g": "18.8",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "84",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 참게, 생것",
+   "code": "K6020090000a",
+   "english_name": "Chinese mitten crab, Raw",
+   "values": {
+    "water_g": "70.7",
+    "protein_g": "14.4",
+    "iron_mg": "11.4",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "게, 붉은대게, 생것",
+   "code": "K6020100000a",
+   "english_name": "Red snow crab, Raw",
+   "values": {
+    "water_g": "87",
+    "protein_g": "10.5",
+    "iron_mg": "1.5",
+    "zinc_mg": null,
+    "refuse_pct": "89",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "군소, 생것",
+   "code": "K6050000000a",
+   "english_name": "Sea hare, Raw",
+   "values": {
+    "water_g": "90.1",
+    "protein_g": "5.8",
+    "iron_mg": "1.7",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "군소, 풍선군소, 생것",
+   "code": "K6050010000a",
+   "english_name": "False sea hare, Raw",
+   "values": {
+    "water_g": "88.4",
+    "protein_g": "7.7",
+    "iron_mg": "2.2",
+    "zinc_mg": null,
+    "refuse_pct": "62",
+    "row_source": "('08)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼴뚜기, 참꼴뚜기, 생것",
+   "code": "K6060000000a",
+   "english_name": "Beka squid, Raw",
+   "values": {
+    "water_g": "81.6",
+    "protein_g": "13.6",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "4",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼴뚜기, 불똥꼴뚜기, 생것",
+   "code": "K6060010000a",
+   "english_name": "Sparkling enope squid, Raw",
+   "values": {
+    "water_g": "77.5",
+    "protein_g": "14.4",
+    "iron_mg": "5",
+    "zinc_mg": null,
+    "refuse_pct": "10",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "꼴뚜기, 창꼴뚜기, 생것",
+   "code": "K6060020000a",
+   "english_name": "Swordtip squid, Raw",
+   "values": {
+    "water_g": "82.7",
+    "protein_g": "14.7",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "9",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "낙지, 생것",
+   "code": "K6080000000a",
+   "english_name": "Whiparm octopus, Raw",
+   "values": {
+    "water_g": "80.7",
+    "protein_g": "16.3",
+    "iron_mg": "1.48",
+    "zinc_mg": "2.02",
+    "refuse_pct": "23",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "낙지, 세발낙지, 생것",
+   "code": "K6080010000a",
+   "english_name": "Whiparm octopus, Fiine legs, Raw",
+   "values": {
+    "water_g": "86.6",
+    "protein_g": "11.5",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "13",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "멍게(우렁쉥이), 생것",
+   "code": "K6100000000a",
+   "english_name": "Common sea squirt, Wild, Raw",
+   "values": {
+    "water_g": "88.8",
+    "protein_g": "5",
+    "iron_mg": "5.7",
+    "zinc_mg": "5.3",
+    "refuse_pct": "80",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "멍게, 끈멍게, 생것",
+   "code": "K6100010000a",
+   "english_name": "False sea squirt, Raw",
+   "values": {
+    "water_g": "84",
+    "protein_g": "7.4",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "78",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "멍게, 붉은멍게, 생것",
+   "code": "K6100020000a",
+   "english_name": "Golden sea squirt, Raw",
+   "values": {
+    "water_g": "82.2",
+    "protein_g": "9.2",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "65",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "멍게, 양식, 생것",
+   "code": "K6100030000a",
+   "english_name": "Common sea squirt, Farm-raised, Raw",
+   "values": {
+    "water_g": "82.7",
+    "protein_g": "8.7",
+    "iron_mg": "6.9",
+    "zinc_mg": null,
+    "refuse_pct": "65",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "문어, 생것",
+   "code": "K6110000000a",
+   "english_name": "Giant octopus, Raw",
+   "values": {
+    "water_g": "81.1",
+    "protein_g": "16.4",
+    "iron_mg": "0.6",
+    "zinc_mg": "1.6",
+    "refuse_pct": "15",
+    "row_source": "JAPAN('20)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "문어, 대문어, 생것",
+   "code": "K6110010000a",
+   "english_name": "North pacific giant octopus, Raw",
+   "values": {
+    "water_g": "85.4",
+    "protein_g": "12.2",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "13",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "문어, 참문어, 생것",
+   "code": "K6110030000a",
+   "english_name": "Common octopus, Raw",
+   "values": {
+    "water_g": "84.4",
+    "protein_g": "12.7",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "14",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "미더덕, 생것",
+   "code": "K6120000000a",
+   "english_name": "Warty sea squirt, Raw",
+   "values": {
+    "water_g": "87.6",
+    "protein_g": "4.3",
+    "iron_mg": "3.2",
+    "zinc_mg": null,
+    "refuse_pct": "70",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "미더덕, 주름미더덕, 생것",
+   "code": "K6120010000a",
+   "english_name": "Wrinkled sea squirt, Raw",
+   "values": {
+    "water_g": "84.7",
+    "protein_g": "9",
+    "iron_mg": "8.5",
+    "zinc_mg": null,
+    "refuse_pct": "67",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 가시발새우, 생것",
+   "code": "K6130010000a",
+   "english_name": "Red-banded lobster, Raw",
+   "values": {
+    "water_g": "81.7",
+    "protein_g": "15.2",
+    "iron_mg": "7.4",
+    "zinc_mg": null,
+    "refuse_pct": "63",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 각시흰새우, 생것",
+   "code": "K6130030000a",
+   "english_name": "Siberian shrimp, Raw",
+   "values": {
+    "water_g": "77.8",
+    "protein_g": "15.7",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 긴뿔천길새우, 생것",
+   "code": "K6130040000a",
+   "english_name": "Giant red shrimp, Raw",
+   "values": {
+    "water_g": "77.3",
+    "protein_g": "20",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 꽃새우, 생것",
+   "code": "K6130050000a",
+   "english_name": "Southern rough shrimp, Raw",
+   "values": {
+    "water_g": "67.5",
+    "protein_g": "22",
+    "iron_mg": "6",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 닭새우, 생것",
+   "code": "K6130060000a",
+   "english_name": "Spiny lobster, Raw",
+   "values": {
+    "water_g": "79.1",
+    "protein_g": "17",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "59",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 대하, 생것",
+   "code": "K6130070000a",
+   "english_name": "Fleshy prawn, Raw",
+   "values": {
+    "water_g": "80",
+    "protein_g": "18.1",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "46",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 물렁가시붉은새우, 생것",
+   "code": "K6130090000a",
+   "english_name": "Morotoge shrimp, Raw",
+   "values": {
+    "water_g": "79.3",
+    "protein_g": "18",
+    "iron_mg": null,
+    "zinc_mg": null,
+    "refuse_pct": "66",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 보리새우, 생것",
+   "code": "K6130110000a",
+   "english_name": "Kuruma prawn, Raw",
+   "values": {
+    "water_g": "82.8",
+    "protein_g": "15.1",
+    "iron_mg": "1.1",
+    "zinc_mg": null,
+    "refuse_pct": "45",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 부채새우, 생것",
+   "code": "K6130120000a",
+   "english_name": "Japanese fan lobster, Raw",
+   "values": {
+    "water_g": "84.1",
+    "protein_g": "13.7",
+    "iron_mg": "1.3",
+    "zinc_mg": null,
+    "refuse_pct": "68",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 중하, 생것",
+   "code": "K6130130000a",
+   "english_name": "Shiba shrimp, Raw",
+   "values": {
+    "water_g": "77.2",
+    "protein_g": "20.1",
+    "iron_mg": "2.6",
+    "zinc_mg": null,
+    "refuse_pct": "47",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 젓새우, 생것",
+   "code": "K6130140000a",
+   "english_name": "Akiami paste shrimp, Raw",
+   "values": {
+    "water_g": "64.9",
+    "protein_g": "9.6",
+    "iron_mg": "0.7",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 징거미새우, 생것",
+   "code": "K6130150000a",
+   "english_name": "Oriental river prawn, Raw",
+   "values": {
+    "water_g": "78.8",
+    "protein_g": "18.3",
+    "iron_mg": "1.8",
+    "zinc_mg": null,
+    "refuse_pct": "56",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 철모새우(도화새우), 생것",
+   "code": "K6130160000a",
+   "english_name": "Coonstriped shrimp, Raw",
+   "values": {
+    "water_g": "77.9",
+    "protein_g": "18.5",
+    "iron_mg": "0.6",
+    "zinc_mg": null,
+    "refuse_pct": "68",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 펄닭새우, 생것",
+   "code": "K6130170000a",
+   "english_name": "Japanese spear lobster, Raw",
+   "values": {
+    "water_g": "84.6",
+    "protein_g": "13.2",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "76",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 흰다리새우, 생것",
+   "code": "K6130180000a",
+   "english_name": "Whiteleg shrimp, Raw",
+   "values": {
+    "water_g": "75.9",
+    "protein_g": "21.17",
+    "iron_mg": "0.89",
+    "zinc_mg": "2.26",
+    "refuse_pct": "61",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "새우, 껍질, 생것",
+   "code": "K615000B050a",
+   "english_name": "Shrimp, Skin, Raw",
+   "values": {
+    "water_g": "14.1",
+    "protein_g": "44",
+    "iron_mg": "0.1",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성게, 생것",
+   "code": "K6180000000a",
+   "english_name": "Sea urchin, Raw",
+   "values": {
+    "water_g": "71.5",
+    "protein_g": "15.8",
+    "iron_mg": "4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('82)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성게, 보라성게, 생것",
+   "code": "K6180010000a",
+   "english_name": "Purple sea urchin, Raw",
+   "values": {
+    "water_g": "65.6",
+    "protein_g": "16.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "90",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "성게, 보라성게, 알, 생것",
+   "code": "K619001D599a",
+   "english_name": "Purple sea urchin gonads edible offal, Roe, Raw",
+   "values": {
+    "water_g": "65.6",
+    "protein_g": "16.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "90",
+    "row_source": "('89)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오징어, 생것",
+   "code": "K6230000000a",
+   "english_name": "Japanese flying squid, Raw",
+   "values": {
+    "water_g": "78.3",
+    "protein_g": "18.84",
+    "iron_mg": "0.18",
+    "zinc_mg": "1.4",
+    "refuse_pct": "31",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오징어, 갑오징어, 생것",
+   "code": "K6230010000a",
+   "english_name": "Cuttle fish, Raw",
+   "values": {
+    "water_g": "82.4",
+    "protein_g": "15.1",
+    "iron_mg": "0.9",
+    "zinc_mg": null,
+    "refuse_pct": "26",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오징어, 살오징어, 생것",
+   "code": "K6230020000a",
+   "english_name": "Japanese common squid, Raw",
+   "values": {
+    "water_g": "82.3",
+    "protein_g": "15.7",
+    "iron_mg": "1.6",
+    "zinc_mg": null,
+    "refuse_pct": "20",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오징어, 쇠갑오징어, 생것",
+   "code": "K6230030000a",
+   "english_name": "Japanese spineless cuttlefish, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "16.9",
+    "iron_mg": "0.5",
+    "zinc_mg": null,
+    "refuse_pct": "25",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "오징어, 참갑오징어, 생것",
+   "code": "K6230040000a",
+   "english_name": "Golden cuttlefish, Raw",
+   "values": {
+    "water_g": "80.6",
+    "protein_g": "17.3",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "31",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "주꾸미, 생것",
+   "code": "K6290000000a",
+   "english_name": "Webfoot octopus, Raw",
+   "values": {
+    "water_g": "86.8",
+    "protein_g": "10.8",
+    "iron_mg": "1.4",
+    "zinc_mg": null,
+    "refuse_pct": "14",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "크릴, 생것",
+   "code": "K6300000000a",
+   "english_name": "Antarctic krill, Raw",
+   "values": {
+    "water_g": "81.9",
+    "protein_g": "12.1",
+    "iron_mg": "2",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('08)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "한치, 생것",
+   "code": "K6330000000a",
+   "english_name": "Mitra squid, Raw",
+   "values": {
+    "water_g": "81.3",
+    "protein_g": "14.9",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "15",
+    "row_source": "('96)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "해삼, 생것",
+   "code": "K6340000000a",
+   "english_name": "Sea cucumber, Raw",
+   "values": {
+    "water_g": "91.8",
+    "protein_g": "3.7",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "21",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "어패류 및 기타 수산물",
+   "name": "해파리, 생것",
+   "code": "K6360000000a",
+   "english_name": "Jelly-fish, Raw",
+   "values": {
+    "water_g": "96.9",
+    "protein_g": "1.3",
+    "iron_mg": null,
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "갈래곰보, 생것",
+   "code": "L0010000000a",
+   "english_name": "Seaweed papulosa, Raw",
+   "values": {
+    "water_g": "93.5",
+    "protein_g": "0.9",
+    "iron_mg": "1.2",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "김, 참김, 생것",
+   "code": "L0030090000a",
+   "english_name": "Laver product, Raw",
+   "values": {
+    "water_g": "90.5",
+    "protein_g": "3.3",
+    "iron_mg": "4.5",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('95)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "꼬시래기, 생것",
+   "code": "L0040000000a",
+   "english_name": "Sea string, Raw",
+   "values": {
+    "water_g": "89.1",
+    "protein_g": "1.8",
+    "iron_mg": "6.9",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "다시마, 생것",
+   "code": "L0050000000a",
+   "english_name": "Brown Kelp, Raw",
+   "values": {
+    "water_g": "91",
+    "protein_g": "1.1",
+    "iron_mg": "2.4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "매생이, 생것",
+   "code": "L0110000000a",
+   "english_name": "Seaweed fulvescens, Raw",
+   "values": {
+    "water_g": "84.3",
+    "protein_g": "3.88",
+    "iron_mg": "18.3",
+    "zinc_mg": "1.01",
+    "refuse_pct": "0",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "모자반, 생것",
+   "code": "L0120000000a",
+   "english_name": "Gulf weed, Raw",
+   "values": {
+    "water_g": "86.2",
+    "protein_g": "1.8",
+    "iron_mg": "2.1",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "미역, 생것",
+   "code": "L0130000000a",
+   "english_name": "Sea mustard, Wild, Raw",
+   "values": {
+    "water_g": "91.2",
+    "protein_g": "1.68",
+    "iron_mg": "0.46",
+    "zinc_mg": "0.14",
+    "refuse_pct": "0",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "미역, 줄기, 생것",
+   "code": "L013000B160a",
+   "english_name": "Sea mustard, Stem, Raw",
+   "values": {
+    "water_g": "88.1",
+    "protein_g": "1.8",
+    "iron_mg": "0.4",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "미역, 양식, 생것",
+   "code": "L0130020000a",
+   "english_name": "Sea mustard, Farm-raised, Raw",
+   "values": {
+    "water_g": "88.8",
+    "protein_g": "2.1",
+    "iron_mg": "1",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "순채, 생것",
+   "code": "L0180000000a",
+   "english_name": "Water shield, Raw",
+   "values": {
+    "water_g": "87.4",
+    "protein_g": "2.5",
+    "iron_mg": "6.9",
+    "zinc_mg": null,
+    "refuse_pct": null,
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "우뭇가사리, 생것",
+   "code": "L0190000000a",
+   "english_name": "Ceylon moss, Raw",
+   "values": {
+    "water_g": "70.3",
+    "protein_g": "4.2",
+    "iron_mg": "3.9",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "청각, 생것",
+   "code": "L0230000000a",
+   "english_name": "Sea staghom, Raw",
+   "values": {
+    "water_g": "92.1",
+    "protein_g": "1.4",
+    "iron_mg": "2.5",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "톳, 생것",
+   "code": "L0260000000a",
+   "english_name": "Seaweed fusiforme, Raw",
+   "values": {
+    "water_g": "88.1",
+    "protein_g": "1.9",
+    "iron_mg": "3.9",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "파래, 생것",
+   "code": "L0270000000a",
+   "english_name": "Sea lettuce, Raw",
+   "values": {
+    "water_g": "93.8",
+    "protein_g": "2.18",
+    "iron_mg": "4.1",
+    "zinc_mg": "0.13",
+    "refuse_pct": "0",
+    "row_source": "('16)"
+   }
+  },
+  {
+   "group": "해조류",
+   "name": "파래, 납작파래, 생것",
+   "code": "L0270030000a",
+   "english_name": "Sea lettuce, Green confertii, Dried",
+   "values": {
+    "water_g": "87.6",
+    "protein_g": "3.3",
+    "iron_mg": "11.9",
+    "zinc_mg": null,
+    "refuse_pct": "0",
+    "row_source": "('09)"
+   }
+  }
+ ]
+}
