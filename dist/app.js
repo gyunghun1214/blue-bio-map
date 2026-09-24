@@ -330,51 +330,69 @@ function onLand(lat,lon){
     lon>=west&&lon<=east&&lat>=south&&lat<=north&&
     pointInRing(lon,lat,rings[0])&&!rings.slice(1).some(hole=>pointInRing(lon,lat,hole)));
 }
-function dotColumns(records){
-  // These four bands are visual categories, not observed site or record totals.
-  if(records>=100)return 5;
-  if(records>=20)return 4;
-  if(records>=5)return 3;
-  return 2;
+// Dots per degree along one side, by record band: denser = more records. Visual bands, not counts.
+function dotsPerDegree(records){
+  if(records>=100)return 10;
+  if(records>=20)return 8;
+  if(records>=5)return 6;
+  return 4;
 }
-function addCellDots(lat0,lon0,size,records,color){
+// One red for every species so the pattern reads at a glance; the edge adapts to the basemap.
+const DOT_RED='#d7263d';
+const dotStyle=()=>basemap==='basic'
+  ? {color:'#7a0f1d',weight:.6,opacity:.55,fillColor:DOT_RED,fillOpacity:.78}
+  : {color:'#ffffff',weight:1,opacity:.95,fillColor:DOT_RED,fillOpacity:.92};
+// Radius grows with zoom but never beyond ~40% of the dot spacing, so dots stay separate marks.
+function dotRadius(spacingDeg){
+  const z=map.getZoom(), pxPerDeg=256*2**z/360;
+  return Math.max(1.6,Math.min([2.4,2.4,3,3.8,4.6,5.4][Math.max(0,Math.min(5,z-3))],spacingDeg*pxPerDeg*.4));
+}
+let dotCells=[]; // cells whose dot pattern is redrawn on zoom (reset with the overlay in renderMap)
+function addCellDots(lat0,lon0,size,records){
   if(!Number.isFinite(records)||records<=0)return;
-  // Same dot density per area as a 1° cell: a 4° cell with 2×2 dots would read as two point sightings.
-  const cols=dotColumns(records)*Math.max(1,Math.round(size));
-  // Fixed inset grid: no random jitter, false precision or publication of raw coordinates.
+  dotCells.push([lat0,lon0,size,records]);drawCellDots(lat0,lon0,size,records);
+}
+function drawCellDots(lat0,lon0,size,records){
+  // Same density per area for 1° and 4° cells; capped so a wide cell stays fast (≤ 24×24 before masking)
+  // and so dots keep ≥ 6 px apart at the current zoom (dense cells would otherwise fuse into a solid block).
+  // ponytail: at overview zooms the cap can equalize record bands; they separate again when zoomed in.
+  const pxPerDeg=256*2**map.getZoom()/360;
+  const cols=Math.max(2,Math.min(24,dotsPerDegree(records)*Math.max(1,Math.round(size)),Math.floor(size*pxPerDeg/6))), step=size/cols;
+  // Skip the land test for cells that touch no land polygon's bounding box.
+  const nearLand=landPolygons.some(({bounds:[w,s,e,n]})=>lon0<=e&&lon0+size>=w&&lat0<=n&&lat0+size>=s);
+  // Fixed staggered grid inside the published cell: no jitter, no coordinates beyond the cell itself.
   for(let row=0;row<cols;row++)for(let col=0;col<cols;col++){
-    const lat=lat0+size*(.14+.72*(row+.5)/cols),lon=lon0+size*(.14+.72*(col+.5)/cols);
-    if(onLand(lat,lon))continue; // Natural Earth coast approximation; no marks on mapped land.
-    const dot=L.circleMarker([lat,lon],{renderer:dotRenderer,radius:map.getZoom()>=6?3:2.2,
-      stroke:basemap!=='basic',color:'#ffffff',weight:.8,opacity:.9, // thin light edge keeps dots visible on imagery
-      fillColor:color,fillOpacity:basemap==='basic'?.75:.9,interactive:false});
+    const lat=lat0+step*(row+.5), lon=lon0+step*(col+(row%2?.75:.25));
+    if(nearLand&&onLand(lat,lon))continue; // Natural Earth coast approximation; no marks on mapped land.
+    const dot=L.circleMarker([lat,lon],{renderer:dotRenderer,radius:dotRadius(step),...dotStyle(),interactive:false});
     dot._schematicDot=true;dot.addTo(overlay);
   }
 }
 function cellPopupNotice(size){
-  return `<br><small>도트는 ${size}° 셀의 기록 수 구간을 보여주는 도식입니다. 각 점은 실제 출현 위치·기록 1건·조사 지점 1곳을 뜻하지 않습니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
+  return `<br><small>붉은 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
 // Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
-const cellFrame=color=>({color:basemap==='basic'?color:'#ffd166',weight:1,opacity:basemap==='basic'?.6:.85,dashArray:'2 5',fillColor:color,fillOpacity:basemap==='basic'?.05:.08});
+// Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap.
+const cellFrame=()=>({color:basemap==='basic'?'#1f4e6b':'#ffffff',weight:1.2,opacity:basemap==='basic'?.75:.9,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:basemap==='basic'?.06:.1});
 function setMapLegend(live,s){
   // Live species without published cells only show the query extent (studyBounds).
   const extentOnly=live&&s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
   document.querySelector('.map-symbol').hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리: 자료 조회 범위':live?`선별된 출현기록 · 공개 ${size}° 셀`:'선별된 출현기록 · 별도 OBIS 시연 1° 격자';
-  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'도트 밀도: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상, 면적당 같은 밀도). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 옅은 점선 테두리가 공개 셀 범위이며, 육지 위 도트는 생략합니다. 셀을 누르면 실제 집계값과 출처가 나옵니다.';
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리: 자료 조회 범위':live?`붉은 점: 공개 ${size}° 셀의 도식적 표시 (실제 발견 좌표 아님)`:'붉은 점: 별도 OBIS 시연 1° 격자의 도식적 표시 (실제 발견 좌표 아님)';
+  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'점 간격: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상일수록 촘촘, 1°·4° 셀 모두 면적당 같은 기준). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 점선 테두리가 공개 셀 범위이고 육지 위 점은 생략합니다. 셀을 누르면 실제 집계값·기간·출처가 나옵니다.';
 }
 
 function renderCellMap(s,color){
   const degree=s.cells[0]?.sizeDeg||1;
-  $('map-review-note').textContent=`선별된 GBIF 출현기록을 공개 ${degree}° 셀의 도트 패턴으로 표시합니다. 도트는 실제 좌표가 아닙니다. 색은 선택 종 구분이며 가치·보전 등급이 아니고, 기록 수는 개체수·자원량·현재 한국 전체 분포를 뜻하지 않습니다.`;
+  $('map-review-note').textContent=`선별된 GBIF 출현기록을 공개 ${degree}° 셀의 도트 패턴으로 표시합니다. 붉은 점은 실제 발견 좌표가 아닌 공개 셀의 도식적 표시이며 가치·보전 등급도 아닙니다. 기록 수는 개체수·자원량·현재 한국 전체 분포를 뜻하지 않습니다.`;
   mapJudgmentStatus(s);
   for(const rows of spatialCells(s)){
     const c=rows[0], reasons=[...new Set(rows.flatMap(r=>cellAssessmentStatus(s,r).reasons))];
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(r.countries.join(', ')||'미기재')}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
-    L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame(color)).addTo(overlay)
+    L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay)
       .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
-    addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0),color); // one pattern per spatial cell
+    addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[40,40],maxZoom:7,animate:false});}
@@ -383,23 +401,23 @@ function renderCellMap(s,color){
 function renderMap() {
   if(!map)return;
   map.invalidateSize(); // the detail pane can change the map column height
-  overlay.clearLayers();
+  overlay.clearLayers();dotCells=[];
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
   $('map-source').textContent=s.live?(s.cells.length?`운영 지도 · 공개 ${s.cells[0].sizeDeg}° 셀`:'운영 지도 · 자료 조회 범위'):'OBIS 출현기록 · 시연 격자';
   $('map-count').nextElementSibling.textContent='수집된 기록';
   setMapLegend(s.live,s);
   if(s.live&&s.cells.length)return renderCellMap(s,color);
   mapJudgmentStatus(s);
-  $('map-review-note').textContent=!s.live?'별도 OBIS 시연의 선별 출현기록을 1° 도트 패턴으로 표시합니다. 운영 DB와 별개입니다. 점은 실제 좌표나 기록 1건이 아니며, 기록 수와 색은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
+  $('map-review-note').textContent=!s.live?'별도 OBIS 시연의 선별 출현기록을 1° 격자의 붉은 점 무늬로 표시합니다. 운영 DB와 별개입니다. 붉은 점은 실제 발견 좌표나 기록 1건이 아니며, 기록 수와 점은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
   if(s.live){
     L.rectangle(studyBounds,{color:basemap==='basic'?'#267bab':'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
       .addTo(overlay).bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`);
     if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30],animate:false});}
   }
   for(const cell of s.cells){
-    L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame(color)).addTo(overlay)
+    L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame()).addTo(overlay)
       .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 격자 중심은 개별 관측 위치가 아니며 개체수·자원량·현재 한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(1));
-    addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count,color);
+    addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count);
   }
   $('map-count').textContent=Number.isSafeInteger(s.recordCount)?s.recordCount.toLocaleString():'—';$('map-cells').textContent=s.live?'0':s.cells.length;$('map-years').textContent=years(s);
 }
@@ -452,7 +470,7 @@ function initMap(geography){
   const dotPane=map.createPane('dotPane');dotPane.style.zIndex=390;dotPane.style.pointerEvents='none';
   dotRenderer=L.canvas({pane:'dotPane',padding:.5});
   overlay=L.layerGroup().addTo(map);
-  map.on('zoomend',()=>overlay.eachLayer(layer=>{if(layer._schematicDot)layer.setRadius(map.getZoom()>=6?3:2.2);}));
+  map.on('zoomend',()=>{overlay.eachLayer(l=>{if(l._schematicDot)overlay.removeLayer(l);});for(const c of dotCells)drawCellDots(...c);});
   map.attributionControl.setPrefix('Leaflet');map.attributionControl.addAttribution('OBIS · GBIF');fitMap();setBasemap(savedBasemap());
 }
 

@@ -52,7 +52,7 @@ assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보�
 
 context.species=species;
 context.layer={clearLayers(){}};
-context.mapStub={fitBounds(){},getZoom(){return 5}};
+context.mapStub={zoom:7,fitBounds(){},getZoom(){return this.zoom}};
 vm.runInContext('let lastFitted;overlay=globalThis.layer;map=globalThis.mapStub;',context);
 context.draw(species,'#123456');
 assert.equal(popup.length,1);
@@ -64,17 +64,18 @@ assert.match(popup[0],/CC BY 4.0/);
 assert.match(popup[0],/관측 노력·중복/);
 assert.doesNotMatch(popup[0],/BBVI 90/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
-assert.equal(dots.length,9,'9 records -> 3x3 schematic band');
+assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
+assert.ok(dots.every(d=>d.options.fillColor==='#d7263d'),'one red for the schematic pattern');
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
-assert.match(popup[0],/도트는 1° 셀의 기록 수 구간/);
+assert.match(popup[0],/붉은 점은 실제 발견 좌표가 아닌 이 1° 공개 셀의 도식적 표시/);
 // Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
 popup.length=0;dots.length=0;
 species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
 context.draw(species,'#123456');
 assert.match(popup[0],/선별 출현기록 4° 셀/);
 assert.match(popup[0],/4°×4°/);
-assert.equal(dots.length,64,'4° cell keeps the 1° dot density (8x8 for the 1–4 band), not 2x2 point-like marks');
+assert.equal(dots.length,256,'4° cell keeps the 1° density (16x16 for the 1–4 band), not a few point-like marks');
 assert.ok(dots.some(({latlng:[lat]})=>lat>35)&&dots.every(({latlng:[lat,lon]})=>lat>32&&lat<36&&lon>124&&lon<128),'dots spread over, and stay inside, the 4° cell');
 assert.ok(dots.every(d=>d.options.interactive===false));
 // Two period rows at one location: one hit area whose popup lists both periods in full.
@@ -87,7 +88,7 @@ assert.equal(popup.length,1,'one clickable area per spatial cell, not one per pe
 for(const x of [/공개 집계 기간 2015–2020/,/기록 연도 2015–2020/,/선별 기록 9건 · 조사 지점 2곳/,/https:\/\/example.org\/dataset/,/CC BY 4.0/,
   /공개 집계 기간 2021–2026/,/기록 연도 2023/,/선별 기록 15건 · 조사 지점 4곳/,/https:\/\/example.org\/second/,/CC0 1.0/,/기간 2개 · 선별 기록 합계 24건/])
   assert.match(popup[0],x);
-assert.equal(dots.length,16,'one 4x4 pattern for the 24-record total, drawn once');
+assert.equal(dots.length,64,'one 8x8 pattern for the 24-record total (20–99 band), drawn once');
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.equal(nodes.get('map-cells').textContent,1);
 assert.match(nodes.get('map-count').nextElementSibling.textContent,/기간별 합계/);
@@ -96,4 +97,12 @@ assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보�
 species.cells=[];
 context.banner(species);
 assert.match(nodes.get('map-judgment').textContent,/공개 출현 셀이 없어/);
+// Bands stay visible and very busy cells are capped for speed.
+dots.length=0;species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:500}];context.draw(species,'#123456');
+assert.equal(dots.length,576,'4° cell capped at 24x24');
+assert.ok(dots.every(d=>d.options.radius>0&&d.options.interactive===false));
+// At an overview zoom dots keep >= 6 px apart instead of fusing into a solid red block.
+dots.length=0;context.mapStub.zoom=5;context.draw(species,'#123456');
+assert.equal(dots.length,15*15,'4° cell at zoom 5: spacing-capped grid');
+context.mapStub.zoom=7;
 console.log('PASS: selected occurrences and unapproved spatial decisions remain separate');
