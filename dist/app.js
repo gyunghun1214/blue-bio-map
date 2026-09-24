@@ -265,7 +265,7 @@ function renderLiveDetail(s) {
     : s.noOccurrences
     ? row('출현자료','미수집','pending')+`<div class="withheld"><b>지도에 조사 범위 표시</b>한반도 주변 자료 조회 범위를 지도에 표시합니다. 이 범위가 이 종의 출현 위치나 분포를 뜻하지는 않습니다.</div>`
     : Number.isSafeInteger(s.recordCount)
-      ? `<div class="evidence-item"><span>수집된 기록</span><b>${recordLabel(s)}</b></div><div class="evidence-item"><span>관측 기간</span><b>${years(s)}</b></div><div class="evidence-item"><span>원자료 학명</span><span>${esc((i.original_names||[]).join(', '))}</span></div><div class="withheld"><b>지도에 조사 범위 표시</b>좌표 불확실성 미기재 ${count(i.uncertainty_missing)} · 육지 위 품질경고 ${count(i.on_land_count)}. 공개 출현 셀 대신 자료 조회 범위를 표시하며, 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.</div>`
+      ? `<div class="evidence-item"><span>수집된 기록</span><b>${recordLabel(s)}</b></div><div class="evidence-item"><span>관측 기간</span><b>${years(s)}</b></div><div class="evidence-item"><span>원자료 학명</span><span>${esc((i.original_names||[]).join(', '))}</span></div><div class="withheld"><b>${s.cells.length?'이 수집 기록은 지도 셀에 쓰지 않음':'지도에 조사 범위 표시'}</b>좌표 불확실성 미기재 ${count(i.uncertainty_missing)} · 육지 위 품질경고 ${count(i.on_land_count)}. ${s.cells.length?'지도에는 공개 기준을 통과한 별도 GBIF 기록의 셀만 표시하며, 이 기록은 검토 중이라 셀에 넣지 않았습니다.':'공개 출현 셀 대신 자료 조회 범위를 표시하며,'} 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.</div>`
       : row('출현자료','기록 수 미확인','pending')+`<div class="withheld"><b>지도에 조사 범위 표시</b>발행 자료의 기록 수를 확인할 수 없어 0건으로 표시하지 않습니다. 지도에는 출현 위치 대신 자료 조회 범위를 표시합니다.</div>`;
   const evidence=s.v2?liveEvidence(s):'';
   const score=s.v2?'활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.':esc(s.productionSummary);
