@@ -19,6 +19,7 @@ for(const expected of ['정량 생리활성 연결 검증 보류','holotoxin A�
 assert.equal(ctx.coverage(sea).known,0,'aggregate chemical/assay counts must not count as a verified join');
 assert.match(ctx.card({aphiaID:241776,name:'Other species'}),/종별 원문 연결 미확인/);
 assert.doesNotMatch(ctx.card({aphiaID:241776,name:'Other species'}),/holotoxin/);
+assert.doesNotMatch(ctx.card({aphiaID:999999,name:'Apostichopus japonicus'}),/holotoxin/);
 const fraction=ctx.card({aphiaID:377084,name:'Saccharina japonica'});
 assert.match(fraction,/다당류 분획/);assert.match(fraction,/153.27 ± 22.89 µg\/mL/);
 assert.match(fraction,/단일 분자 CID\/InChIKey가 없다/);
