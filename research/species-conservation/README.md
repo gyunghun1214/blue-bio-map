@@ -43,3 +43,11 @@ OBIS 시연의 데이터셋별 **원제공처 제목·URL·인용문·이용조�
 - 우뭇가사리의 WoRMS 212186 현재 상태, ‘해삼’과 ‘홍합’ 통용명 범위, 톳의 구명 조합을 원분류 레코드로 재검수한다.
 - IUCN 7종은 실제 평가 레코드를 찾을 때까지 범주·연도·범위를 모두 보류한다. 돌기해삼은 2013년판 이후의 평가가 있는지 확인하고 국가별 평가와 전 세계 평가를 구분한다.
 - 별도 진행 중인 [실제 종 시범 점수 PR #6](https://github.com/gyunghun1214/blue-bio-map/pull/6)의 문서에 “돌기해삼 IUCN 평가 없음”으로 적힌 부분은 **이 조사에서 찾은 2013년 원평가를 반영해 수정해야 한다**. 평가가 오래되었고 운영 ‘해삼’과의 동일성도 미확인이라 이 PR에서 점수를 생성하지 않는다.
+
+## 추가 확인 (2026-09-25): 돌기해삼 2026년 IUCN 평가
+
+GBIF가 수록한 IUCN 적색목록 체크리스트(2026-07-28판)의 *Apostichopus japonicus*(IUCN 180424) 항목이 **새 평가**를 인용한다: Hamel, J.-F. & Mercier, A. 2026. *Apostichopus japonicus* (Selenka, 1867). The IUCN Red List of Threatened Species 2026. [DOI 10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en](https://doi.org/10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en). 범주 **EN**, 범위 Global. DOI는 IUCN 평가 페이지(평가 ID 272708369)로 연결되고, 2013년 평가(ID 1629389)와 다르다.
+
+- 확인 경로: GBIF 종 API의 IUCN 체크리스트 레코드(`/species/176598261/distributions`)와 DOI 해석. IUCN 사이트는 자동 접근을 막아(403) 원문은 열지 못했다.
+- 따라서 2013년 EN A2bd는 **대체된 이전 평가**다. 사이트는 2026년 평가를 현행으로, 2013년 평가를 이전 평가로 표시한다.
+- 아직 확인하지 않은 것: 2026년 평가의 **기준(criteria)·평가일·범위 세부**. 사람이 원문을 읽고 검수하기 전에는 MCUI 입력(`reviewed: true`, `current_status_check`)으로 쓰지 않는다.

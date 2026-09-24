@@ -107,4 +107,29 @@ assert.ok(dots.every(d=>d.options.radius>0&&d.options.interactive===false));
 dots.length=0;context.mapStub.zoom=5;context.draw(species,'#123456');
 assert.equal(dots.length,15*15,'4° cell at zoom 5: spacing-capped grid');
 context.mapStub.zoom=7;
+// A-3: GBIF sensitive-species vocabulary; 4° cells say they are wider than GBIF's strictest level.
+vm.runInContext('globalThis.gen=generalizationNote;globalThis.pv=periodView;globalThis.csv=cellCsv;globalThis.eff=effortFor;globalThis.effLine=effortLine',context);
+assert.match(context.gen(1,true),/dataGeneralizations: 좌표를 1° 셀로 일반화, 좌표 이동·무작위화 없음/);
+assert.match(context.gen(1,true),/informationWithheld: 원좌표·기록 ID 비공개/);
+assert.match(context.gen(4,true),/가장 엄격한 등급\(1°\)보다 넓은 4° 셀/);
+assert.doesNotMatch(context.gen(1,false),/재검토 예정일/);
+// B-1: effort sums the 1° cells inside a cell; unknown without the snapshot.
+assert.equal(context.eff(34,126,1),null);
+vm.runInContext("effortData={startdate:'2000-01-01',cells:[{lat0:34,lon0:126,records:10},{lat0:35,lon0:127,records:5},{lat0:40,lon0:126,records:99}]}",context);
+assert.equal(context.eff(34,126,1),10);
+assert.equal(context.eff(32,124,4),15,'a 4° cell sums its 16 one-degree cells');
+assert.match(context.effLine(34,126,1),/OBIS 전체 종 기록 10건\(2000년 이후\) · 이 종의 존재·개체수와 무관/);
+// A-5: period filter keeps only that period's rows; an unknown period falls back to all rows.
+const two={live:true,cells:[cell,{...cell,period:'2021–2026'}]};
+vm.runInContext("periodFilter='2021–2026'",context);
+assert.equal(context.pv(two).cells.length,1);
+vm.runInContext("periodFilter='1900–1901'",context);
+assert.equal(context.pv(two).cells.length,2);
+vm.runInContext("periodFilter='all'",context);
+// A-5: CSV = the public aggregates only (cell range, counts, sources), with BOM and quoting.
+const csvText=context.csv({live:true,label:'시험, "종"',name:'Accepted species',aphiaID:123,cells:[cell]});
+assert.ok(csvText.startsWith('﻿"species_label"'));
+const csvRows=csvText.slice(1).split('\r\n');
+assert.equal(csvRows.length,2);
+assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류"');
 console.log('PASS: selected occurrences and unapproved spatial decisions remain separate');
