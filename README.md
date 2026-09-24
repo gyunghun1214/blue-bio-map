@@ -71,3 +71,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 `python scripts/evaluate_candidates.py tmp/curated-evidence.json`은 출처와 검수 여부가 명시된 입력을 읽어 `tmp/assessments.json`에 **검증 전** 결과를 쓴다. 기본 실행은 공개 `dist/`를 수정하지 않는다. 입력 형식과 산출 조건은 [근거 입력 문서](docs/evidence-schema.md)에 있다. `python -m unittest discover -s verification -p 'test_*.py'`로 합성 사례의 불변조건을 확인할 수 있다.
 
 별도 검토를 거쳐 `--out dist/assessments.json`으로 내보낸 경우에만 발행 프로필의 AphiaID·학명이 일치하는 종의 시범 지표를 화면에 읽는다. 두 축이 모두 산출된 종만 매트릭스에 배치한다. 운영 요약의 영양 건수나 CMNPD 화합물 건수만으로 점수를 만들지 않는다. 현재 저장소에는 공개용 `assessments.json`이 없다.
+
+## 조사 자료 접수 (2026-09-24)
+
+팀원 조사 자료는 `research/`의 분야별 CSV 양식으로 모으고 `python scripts/check_research.py`로 검사한다. 작성 안내는 `research/README.md`. 접수 자료는 검토 전 기록이며 DB 입력·점수 산출·배포에 쓰지 않는다.
