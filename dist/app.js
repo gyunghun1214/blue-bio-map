@@ -204,10 +204,17 @@ function setMapLegend(live){
 
 function renderCellMap(s,color){
   $('map-review-note').textContent='선별된 GBIF 출현기록을 공개 1° 셀의 도트 패턴으로 표시합니다. 도트는 실제 좌표가 아닙니다. 기록 수와 색은 개체수·자원량·생물학적 가치·현재 한국 전체 분포를 뜻하지 않습니다.';
+  const spatialTotals=new Map();
+  for(const c of s.cells){
+    const key=c.lat0+','+c.lon0;
+    spatialTotals.set(key,(spatialTotals.get(key)||0)+c.records);
+  }
+  const dotted=new Set();
   for(const c of s.cells){
     L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],{stroke:false,fillColor:color,fillOpacity:.001}).addTo(overlay)
       .bindPopup(`<strong>${esc(s.label)} · 공개 1° 셀</strong><br>기간 ${years(c)} <small>(${esc(c.period)} 구간)</small><br>해역 ${esc(c.seaAreas.map(a=>a==='해역명 미확인'?a:'LME '+a).join(', '))} · 국가 ${esc(c.countries.join(', '))}<br>공간 해상도 1°×1° · 가장 짧은 변 약 ${Math.floor(c.resolutionM/1000)} km<br>조사 지점 ${c.sites}곳 <small>(선별된 출현기록 ${c.records}건${c.uncertaintyMissing?` · 불확실성 결측 ${c.uncertaintyMissing}건`:''})</small><br>출처 ${esc(c.citations.map(x=>x.title).join(', '))} · ${esc(c.licenses.join(', '))}<br><small>셀 범위 ${c.lat0}–${c.lat0+c.sizeDeg}°N, ${c.lon0}–${c.lon0+c.sizeDeg}°E. 원좌표는 공개하지 않습니다.</small>${cellPopupNotice()}`);
-    addCellDots(c.lat0,c.lon0,c.records,color);
+    const key=c.lat0+','+c.lon0;
+    if(!dotted.has(key)){addCellDots(c.lat0,c.lon0,spatialTotals.get(key),color);dotted.add(key);}
   }
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.map(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[60,60],maxZoom:7});}
   $('map-count').textContent=cellSites(s).toLocaleString();$('map-count').nextElementSibling.textContent='조사 지점';$('map-cells').textContent=s.cells.length;$('map-years').textContent=years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))});
