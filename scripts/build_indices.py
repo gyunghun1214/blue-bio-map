@@ -46,6 +46,11 @@ def verify_links(snapshot, payload, method):
                      "IUCN taxon/source/date/scope mismatch")
             required(c["assessment_year"] == int(src["assessment_date"][:4])
                      and c["publication_year"] == src["publication_year"], "IUCN dates mismatch")
+            if c.get("reassessment_status") == "superseded_by_2026_1":
+                current = c.get("current_status_check", {})
+                newer = payload["sources"].get(current.get("source_id"), {})
+                required(current.get("is_current") is False and newer.get("record_id") ==
+                         "T180424A272708369", "superseded evaluation must be withheld")
             required("obis_trend" not in c or (c["obis_trend"]["effort_adjusted"] is True
                      and c["obis_trend"]["reviewed"] is True), "uncontrolled OBIS trend")
         for n in s.get("nutrition", {}).values():
@@ -106,6 +111,8 @@ def build():
         if row["scores"]["MCUI"] is not None:
             row["conservation_trace"]["score_rule"] = f"IUCN {row['iucn_category']} → {row['scores']['MCUI']} (project pilot, no occurrence correction)"
             row["conservation_trace"]["uncertainty"] = "2010 assessment is old; latest superseding assessment unverified; not a Korean regional score"
+        elif row["conservation_trace"] and row["conservation_trace"].get("mcui_withheld_reason") == "assessment_not_current":
+            row["conservation_trace"]["uncertainty"] = "2013 assessment superseded by 2026-1; newer assessment date, rationale and terms unverified; no current MCUI"
         row["missing"] = [axis for axis in ("MFPI", "MBPI", "MCUI", "BBVI") if row["scores"][axis] is None]
     return report
 
@@ -119,6 +126,10 @@ def main():
     for row in partial["records"]:
         required(row["url"].startswith("https://doi.org/") and row["excluded_reason"]
                  and row["kind"] != "approved_small_molecule", "partial record must not be approved")
+    for row in partial.get("food_records", []):
+        required(row["status"] == "research_partial" and row["excluded_reason"]
+                 and row["url"].startswith("https://doi.org/")
+                 and row["source_record_id"], "food research record is not a curated nutrient input")
     PARTIAL_OUT.write_text(json.dumps(partial, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"{len(result['species'])} candidates; "
           + ", ".join(f"{key}={sum(row['scores'][key] is not None for row in result['species'])}"

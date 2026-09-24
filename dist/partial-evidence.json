@@ -60,5 +60,45 @@
       "excluded_reason": "fraction rather than one molecule; no valid CID/InChIKey or comparable small-molecule stratum; demo kelp is outside stated eight operating labels",
       "verification": "Independent review of PR #5 paper-local chain; no approved compound join"
     }
+  ],
+  "food_records": [
+    {
+      "origin_name": "Halocynthia roretzi",
+      "aphia_id": 250680,
+      "source_record_id": "F-SS-01 / Gao 2024 Table 2",
+      "url": "https://doi.org/10.1016/j.heliyon.2024.e32321",
+      "doi": "10.1016/j.heliyon.2024.e32321",
+      "provider": "Gao et al., Heliyon; Europe PMC full-text record PMC11209008",
+      "publication_year": 2024,
+      "sample_period": "2023-03",
+      "sample_region": "Rongcheng, Shandong, China; purchased from aquaculture supplier",
+      "measurement": "edible internal organs / washed and dissected raw body, wet fraction",
+      "value": 35.32,
+      "unit": "% of wet body mass",
+      "method": "direct dissection and weighing, Table 2",
+      "status": "research_partial",
+      "grade": "measured",
+      "license": "Europe PMC record indicates CC BY-NC 4.0; only brief fact and DOI shared",
+      "excluded_reason": "local edible-part definition and link to matching fresh 100 g composition/iron/zinc/farming cohort unresolved"
+    },
+    {
+      "origin_name": "Halocynthia roretzi",
+      "aphia_id": 250680,
+      "source_record_id": "F-SS-02 / Gao 2024 Table 3",
+      "url": "https://doi.org/10.1016/j.heliyon.2024.e32321",
+      "doi": "10.1016/j.heliyon.2024.e32321",
+      "provider": "Gao et al., Heliyon; Europe PMC full-text record PMC11209008",
+      "publication_year": 2024,
+      "sample_period": "2023-03",
+      "sample_region": "Rongcheng, Shandong, China; purchased from aquaculture supplier",
+      "measurement": "crude protein in freeze-dried edible internal organs",
+      "value": 48.41,
+      "unit": "% dry edible internal tissue",
+      "method": "crude protein nitrogen ×6.25, Table 3",
+      "status": "research_partial",
+      "grade": "measured",
+      "license": "Europe PMC record indicates CC BY-NC 4.0; only brief fact and DOI shared",
+      "excluded_reason": "dry tissue percentage cannot be treated as grams per 100 g fresh edible portion without validated conversion; iron and zinc cohort missing"
+    }
   ]
 }

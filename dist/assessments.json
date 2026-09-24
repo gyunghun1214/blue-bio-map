@@ -27,6 +27,18 @@
       "license": "WoRMS page text CC BY; credit WoRMS",
       "accessed": "2026-09-24",
       "verification": "WoRMS indexed record gives Apostichopus japonicus and AphiaID 241776; direct page returned 403"
+    },
+    "iucn-aj-2026": {
+      "provider": "IUCN Red List 2026-1; current checklist indexed in GBIF",
+      "record_id": "T180424A272708369",
+      "url": "https://www.iucnredlist.org/species/180424/272708369",
+      "doi": "10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en",
+      "license": "IUCN original use terms unverified; GBIF IUCN checklist metadata CC BY 4.0; link/brief fact only",
+      "accessed": "2026-09-24",
+      "verification": "Main research/submissions/species_operating_8.csv S-OP-I1 and GBIF IUCN checklist list replacement EN global; original criteria and date assessed not available",
+      "assessment_date": null,
+      "assessment_scope": "Global",
+      "limitation": "Cannot approve 2026 MCUI without original assessed date, criteria/justification and source terms"
     }
   },
   "species": [
@@ -49,8 +61,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "참굴",
@@ -80,8 +92,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "살오징어",
@@ -98,35 +110,40 @@
       "scores": {
         "MFPI": null,
         "MBPI": null,
-        "MCUI": 80,
+        "MCUI": null,
         "BBVI": null
       },
       "missing": [
         "MFPI",
         "MBPI",
+        "MCUI",
         "BBVI"
       ],
       "iucn_category": "EN",
       "iucn_assessment_year": 2010,
       "iucn_review_older_than_10y": true,
       "bioactivity_trace": [],
+      "food_trace": null,
       "conservation_trace": {
         "category": "EN",
-        "criteria": "A2bd v3.1",
         "assessment_year": 2010,
+        "criteria": "A2bd v3.1",
         "publication_year": 2013,
         "assessment_scope": "Global native range: Northwest Pacific",
         "original_taxon": "Apostichopus japonicus (Selenka, 1867)",
-        "source_id": "iucn-aj-2013",
         "taxon_source_id": "worms-aj",
-        "reassessment_status": "not_checked",
-        "trend_correction": "none",
-        "score_rule": "IUCN EN → 80 (project pilot, no occurrence correction)",
-        "uncertainty": "2010 assessment is old; latest superseding assessment unverified; not a Korean regional score"
+        "reassessment_status": "superseded_by_2026_1",
+        "source_id": "iucn-aj-2013",
+        "obis_trend": null,
+        "current_status_verified": false,
+        "current_status_source_id": "iucn-aj-2026",
+        "current_status_checked_on": "2026-09-24",
+        "mcui_withheld_reason": "assessment_not_current",
+        "uncertainty": "2013 assessment superseded by 2026-1; newer assessment date, rationale and terms unverified; no current MCUI"
       },
-      "food_trace": null,
       "source_ids": [
         "iucn-aj-2013",
+        "iucn-aj-2026",
         "worms-aj"
       ],
       "note": "Pilot scores; external calibration and back-testing required.",
@@ -134,7 +151,7 @@
       "axis_status": {
         "MFPI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "BBVI": "산출 보류"
       }
     },
@@ -157,8 +174,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "톳",
@@ -188,8 +205,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "미역",
@@ -201,8 +218,8 @@
       }
     },
     {
-      "aphia_id": 212186,
-      "scientific_name": "Gelidium amansii",
+      "aphia_id": 372119,
+      "scientific_name": "Gelidium elegans",
       "scores": {
         "MFPI": null,
         "MBPI": null,
@@ -219,11 +236,11 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
-      "candidate_label": "우뭇가사리 (분류 후보, 승인명 미검수)",
+      "candidate_label": "우뭇가사리 (운영 공개 프로필 2026-09-23 기록)",
       "axis_status": {
         "MFPI": "산출 보류",
         "MBPI": "산출 보류",
@@ -250,8 +267,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "홍합 (참담치 결속 미검수)",
@@ -281,8 +298,8 @@
       "iucn_assessment_year": null,
       "iucn_review_older_than_10y": false,
       "bioactivity_trace": [],
-      "conservation_trace": null,
       "food_trace": null,
+      "conservation_trace": null,
       "source_ids": [],
       "note": "Pilot scores; external calibration and back-testing required.",
       "candidate_label": "멍게",
@@ -329,7 +346,7 @@
       241776,
       494972,
       145721,
-      212186,
+      372119,
       506159,
       250680
     ],
@@ -345,5 +362,5 @@
     "minimum_peer_count": 3,
     "limitation": "three peers is a pilot rule, not evidence of stable ranks; no qualifying nutrient or assay cohorts yet"
   },
-  "roster_status": "candidate_names_from_request_and_unmerged_pr7_live_profiles_inaccessible"
+  "roster_status": "candidate_names_confirmed_in_main_research_submissions_operating_8_live_api_inaccessible"
 }

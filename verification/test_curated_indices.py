@@ -13,18 +13,19 @@ from verification.test_evaluate_candidates import fixture  # noqa: E402
 
 
 class CuratedIndicesTests(unittest.TestCase):
-    def test_frozen_report_and_only_historical_mcui(self):
+    def test_frozen_report_withholds_superseded_mcui(self):
         one, two = build(), build()
         self.assertEqual(one, two)
         published = json.loads((ROOT / "dist/assessments.json").read_text())
         self.assertEqual(one, published)
         cucumber = next(s for s in one["species"] if s["aphia_id"] == 241776)
-        self.assertEqual(cucumber["scores"], {"MFPI": None, "MBPI": None, "MCUI": 80, "BBVI": None})
+        self.assertEqual(cucumber["scores"], {"MFPI": None, "MBPI": None, "MCUI": None, "BBVI": None})
         self.assertEqual(cucumber["conservation_trace"]["assessment_year"], 2010)
         self.assertEqual(cucumber["conservation_trace"]["publication_year"], 2013)
         self.assertTrue(cucumber["iucn_review_older_than_10y"])
         self.assertEqual(one["cohort"]["eligible_assay_compounds"], 0)
-        self.assertEqual(sum(s["scores"]["MCUI"] is not None for s in one["species"]), 1)
+        self.assertEqual(cucumber["conservation_trace"]["mcui_withheld_reason"], "assessment_not_current")
+        self.assertEqual(sum(s["scores"]["MCUI"] is not None for s in one["species"]), 0)
 
     def test_taxon_and_assay_link_must_be_explicit(self):
         original = collect_snapshot()

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "snapshot_date": "2026-09-24",
-  "roster_status": "candidate_names_from_request_and_unmerged_pr7_live_profiles_inaccessible",
+  "roster_status": "candidate_names_confirmed_in_main_research_submissions_operating_8_live_api_inaccessible",
   "sources": {
     "iucn-aj-2013": {
       "provider": "IUCN Red List; original assessment by Hamel & Mercier",
@@ -25,16 +25,78 @@
       "license": "WoRMS page text CC BY; credit WoRMS",
       "accessed": "2026-09-24",
       "verification": "WoRMS indexed record gives Apostichopus japonicus and AphiaID 241776; direct page returned 403"
+    },
+    "iucn-aj-2026": {
+      "provider": "IUCN Red List 2026-1; current checklist indexed in GBIF",
+      "record_id": "T180424A272708369",
+      "url": "https://www.iucnredlist.org/species/180424/272708369",
+      "doi": "10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en",
+      "license": "IUCN original use terms unverified; GBIF IUCN checklist metadata CC BY 4.0; link/brief fact only",
+      "accessed": "2026-09-24",
+      "verification": "Main research/submissions/species_operating_8.csv S-OP-I1 and GBIF IUCN checklist list replacement EN global; original criteria and date assessed not available",
+      "assessment_date": null,
+      "assessment_scope": "Global",
+      "limitation": "Cannot approve 2026 MCUI without original assessed date, criteria/justification and source terms"
     }
   },
   "species": [
-    {"aphia_id": 836033, "scientific_name": "Magallana gigas", "candidate_label": "참굴"},
-    {"aphia_id": 342067, "scientific_name": "Todarodes pacificus", "candidate_label": "살오징어"},
-    {"aphia_id": 241776, "scientific_name": "Apostichopus japonicus", "candidate_label": "해삼 (돌기해삼 동정 확인 필요)", "conservation": {"reviewed": true, "source_id": "iucn-aj-2013", "category": "EN", "criteria": "A2bd v3.1", "assessment_year": 2010, "publication_year": 2013, "assessment_scope": "Global native range: Northwest Pacific", "original_taxon": "Apostichopus japonicus (Selenka, 1867)", "taxon_source_id": "worms-aj", "reassessment_status": "not_checked", "trend_correction": "none"}},
-    {"aphia_id": 494972, "scientific_name": "Sargassum fusiforme", "candidate_label": "톳"},
-    {"aphia_id": 145721, "scientific_name": "Undaria pinnatifida", "candidate_label": "미역"},
-    {"aphia_id": 212186, "scientific_name": "Gelidium amansii", "candidate_label": "우뭇가사리 (분류 후보, 승인명 미검수)"},
-    {"aphia_id": 506159, "scientific_name": "Mytilus coruscus", "candidate_label": "홍합 (참담치 결속 미검수)"},
-    {"aphia_id": 250680, "scientific_name": "Halocynthia roretzi", "candidate_label": "멍게"}
+    {
+      "aphia_id": 836033,
+      "scientific_name": "Magallana gigas",
+      "candidate_label": "참굴"
+    },
+    {
+      "aphia_id": 342067,
+      "scientific_name": "Todarodes pacificus",
+      "candidate_label": "살오징어"
+    },
+    {
+      "aphia_id": 241776,
+      "scientific_name": "Apostichopus japonicus",
+      "candidate_label": "해삼 (돌기해삼 동정 확인 필요)",
+      "conservation": {
+        "reviewed": true,
+        "source_id": "iucn-aj-2013",
+        "category": "EN",
+        "criteria": "A2bd v3.1",
+        "assessment_year": 2010,
+        "publication_year": 2013,
+        "assessment_scope": "Global native range: Northwest Pacific",
+        "original_taxon": "Apostichopus japonicus (Selenka, 1867)",
+        "taxon_source_id": "worms-aj",
+        "reassessment_status": "superseded_by_2026_1",
+        "trend_correction": "none",
+        "current_status_check": {
+          "is_current": false,
+          "source_id": "iucn-aj-2026",
+          "checked_on": "2026-09-24"
+        }
+      }
+    },
+    {
+      "aphia_id": 494972,
+      "scientific_name": "Sargassum fusiforme",
+      "candidate_label": "톳"
+    },
+    {
+      "aphia_id": 145721,
+      "scientific_name": "Undaria pinnatifida",
+      "candidate_label": "미역"
+    },
+    {
+      "aphia_id": 372119,
+      "scientific_name": "Gelidium elegans",
+      "candidate_label": "우뭇가사리 (운영 공개 프로필 2026-09-23 기록)"
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "candidate_label": "홍합 (참담치 결속 미검수)"
+    },
+    {
+      "aphia_id": 250680,
+      "scientific_name": "Halocynthia roretzi",
+      "candidate_label": "멍게"
+    }
   ]
 }

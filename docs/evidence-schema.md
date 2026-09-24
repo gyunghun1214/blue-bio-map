@@ -2,9 +2,9 @@
 
 ## Frozen primary-evidence pilot (2026-09-24)
 
-See [the design decision](index-design.md) and [source audit](../research/index-inputs/README.md). Run `python scripts/build_indices.py` to reproduce `dist/assessments.json` from `research/index-inputs/curated.json` and `config/pilot-method.json`. This is a versioned, offline factual extract: the current frozen candidate list has one historical IUCN-based MCUI and no valid MFPI, MBPI or BBVI. A method/source change must be reviewed as a new snapshot. The source catalog includes an original IUCN record ID, DOI, evaluation versus publication date, geographic scope, URL, retrieval day and terms. Other candidates' IUCN assessments remain unverified (not NE).
+See [the design decision](index-design.md) and [source audit](../research/index-inputs/README.md). Run `python scripts/build_indices.py` to reproduce `dist/assessments.json` from `research/index-inputs/curated.json` and `config/pilot-method.json`. This is a versioned, offline factual extract: the current frozen candidate list has zero current MCUI and no valid MFPI, MBPI or BBVI; the old 2013 IUCN evaluation was superseded in 2026. A method/source change must be reviewed as a new snapshot. The source catalog includes an original IUCN record ID, DOI, evaluation versus publication date, geographic scope, URL, retrieval day and terms. Other candidates' IUCN assessments remain unverified (not NE).
 
-MFPI and MBPI calculations below are **project trial rules, not international standards**. Their output is withheld until a stable peer cohort and original assay/food record joins pass validation. Live profile names and AphiaIDs must match both fields; the eight candidate labels are not a confirmed read of the inaccessible live public profile. Historical IUCN-based MCUI is separate from BBVI and cannot be assigned to occurrence cells or represented as current Korean regional priority. `partial-evidence.json` retains paper-local MIC/MFC and fraction IC50 as research facts, not single-molecule pChEMBL scores. No absence becomes zero.
+MFPI and MBPI calculations below are **project trial rules, not international standards**. Their output is withheld until a stable peer cohort and original assay/food record joins pass validation. Live profile names and AphiaIDs must match both fields; the eight candidates have a published-profile extract in main research/submissions/species_operating_8.csv, though this environment could not re-read the live API. MCUI is separate from BBVI and cannot be assigned to occurrence cells or represented as current Korean regional priority. `partial-evidence.json` retains paper-local MIC/MFC and fraction IC50 as research facts, not single-molecule pChEMBL scores. No absence becomes zero.
 
 This pipeline is an **unvalidated research prototype**. Do not pass the currently
 published species summary to it: aggregate nutrition/compound counts lack units,
@@ -32,7 +32,8 @@ inputs in ignored `tmp/`; the default output also goes there.
     },
     "edible_fraction": 0.7, "edible_fraction_source": "nutrition-row", "edible_fraction_reviewed": true, "edible_fraction_method": "synthetic dissection",
     "aquaculture": true, "aquaculture_source": "nutrition-row", "aquaculture_reviewed": true, "aquaculture_method": "synthetic review", "aquaculture_region": "synthetic area", "aquaculture_assessment_year": 2025, "aquaculture_limitations": "synthetic constraints",
-    "conservation": {"category": "VU", "assessment_year": 2025, "source_id": "iucn-assessment", "reviewed": true}
+    "conservation": {"category": "VU", "assessment_year": 2025, "source_id": "iucn-assessment", "reviewed": true,
+                     "current_status_check": {"is_current": true, "source_id": "iucn-assessment", "checked_on": "2026-09-23"}}
   }]
 }
 ```
@@ -65,6 +66,13 @@ nutrient are needed. No example values are presented as real measurements.
   urgency. An OBIS trend can affect MCUI only when sampling effort was controlled
   and the adjustment was independently reviewed; raw occurrence counts cannot
   prove population decline. Assessments over ten years old receive a flag.
+  `reviewed` means the original assessment was read; it does not mean the
+  assessment is current. MCUI also needs `current_status_check` with
+  `is_current: true`, a registered `source_id` and `checked_on`: a real
+  YYYY-MM-DD date, not before the assessment year and not in the future (the
+  page also rejects dates after the report's `generated_at`).
+  Without it MCUI is withheld (`current_status_unverified`); `is_current: false`
+  withholds it as `assessment_not_current`. Age alone never decides either way.
 - Pilot weights: MBPI uses the best eligible compound percentile, multiplied by
   0.75 for one reference or 1.0 for two or more. MFPI uses 80% mean nutrient
   peer percentile adjusted by evidence grade, 10% edible fraction and 10%
