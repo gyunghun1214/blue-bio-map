@@ -36,7 +36,7 @@
 5. 원문이 열리지 않거나 이용조건을 확인하지 못했다면 `license_unclear`로 두고 이유를 `limitations`에 적는다.
 6. 비교용으로만 언급했거나 종·분모가 불명확한 값은 옮기지 않거나, 옮기더라도 `match_level=unresolved`, `license_unclear`로 보류한다.
 
-예시: `submissions/food_wakame_sea_squirt.csv`, `submissions/species_sea_squirt.csv`(PR #3 원고와 WoRMS에서 시험 삼아 옮긴 실제 출처 행).
+예시: `submissions/food_wakame_sea_squirt.csv`, `submissions/species_sea_squirt.csv`(PR #3 원고와 WoRMS에서 시험 삼아 옮긴 실제 출처 행). 운영 8종 분류·IUCN 행은 `submissions/species_operating_8.csv`, PR #3·#5·#7 원고 검토 기록은 `reviews/2026-09-24_research-prs.md`.
 
 ## 검사
 
