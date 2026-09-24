@@ -1,5 +1,22 @@
 # MFPI nutrition and cultivation evidence audit
 
+> **verified-pilot-2 갱신 (2026-09-25).** 주 비교집단을 농촌진흥청 국립식량과학원 **국가표준식품성분 DB 10.4 (2026)**로 바꿨다(공공누리 제1유형). 아래 AFCD 기록은 교차 점검으로 유지한다.
+>
+> | 종 · 식품코드 | 단백질 g | 철 mg | 아연 mg | 폐기율 % | 출처 표기 | 결과 |
+> | --- | --- | --- | --- | --- | --- | --- |
+> | 참굴 · K4040020000a 굴, 참굴, 생것 (Pacific oyster, Wild) | 9.66 | 8.72 | 15.9 | 84 | ('16) | MFPI 65.5 (수산동물 25개 코호트) |
+> | 멍게 · K6100000000a 멍게(우렁쉥이), 생것 | 5 | 5.7 | 5.3 | 80 | JAPAN('20) | MFPI 54.2 (타국 표 인용 0.85) |
+> | 미역 · L0130000000a 미역, 생것 | 1.68 | 0.46 | 0.14 | 0 | ('16) | MFPI 42.2 (해조류 3개 코호트) |
+> | 참담치 · K4270000000a | 13.8 | 6.1 | 빈칸 | 76 | ('09) | 아연 결측 → 보류 |
+> | 살오징어 · K6230020000a | 15.7 | 1.6 | 빈칸 | 20 | ('09) | 아연 결측 → 보류 |
+> | 톳 · L0260000000a | 1.9 | 3.9 | 빈칸 | 0 | ('09) | 아연 결측 → 보류 |
+> | 해삼 · K6340000000a "해삼, 생것" | 3.7 | 2.1 | 빈칸 | 21 | ('09) | 일반명 행 → 종 연결 안 함 |
+> | 우뭇가사리 · L0190000000a | 4.2 | 3.9 | 빈칸 | 0 | ('09) | 일반명(Ceylon moss) → 종 연결 안 함 |
+>
+> 양식 근거 추가: 멍게 — Shin et al. 2011, KFAS 44(4):366 (국립수산과학원, 통영 양식장 2007년 측정, 5–9월 고수온기 성장 음(−)); 미역 — FAO FTP 441 §8.5 (로프 연승 수하식, 한국 최대 생산국, 4월 수확 종료).
+> 재수집: `python scripts/collect_rda_nutrition.py` (상세 조회 `detailOne?foodCodes=<코드>`), 스냅샷 파일로 고정.
+
+
 Reviewed 2026-09-25. This audit distinguishes published raw values from the
 project's **unvalidated pilot scoring rule**. It does not authorize a species
 score for an entire sea area, and none of the reference oysters below are

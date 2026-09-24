@@ -1,5 +1,11 @@
 # Bioactivity evidence audit for the eight operating candidates
 
+> **verified-pilot-2 갱신 (2026-09-25).** MBPI 산출은 여전히 0건이다.
+> - 살오징어 SAGSLVP: RDKit `Chem.MolFromSequence`로 만든 구조는 629.7 Da(C27H47N7O10, InChIKey AUYBEMNUWGOKGL-WVBSATCKSA-N, PubChem 일치 없음)로 논문의 657 Da와 다르다. 구조 미확정으로 보류. 논문은 시료를 *Todarodes pacificus* 껍질(주문진항, 2010년 6월)로 명시하고, ACE(Sigma-Aldrich, 조직 출처 미기재)·HHL 기질·Cushman & Cheung 법을 사용했다.
+> - 멍게 Halorotetin B([PMC12948284](https://europepmc.org/article/PMC/PMC12948284), CC BY): HRESIMS C18H24O2, IC50은 그림(Figure 2b)에만 있음, 절대배치·PubChem ID 없음, 저자들이 공생 미생물 생산 가능성 언급 → 기원종·구조·정량값 미확정.
+> - 각 근거의 연결 단계(기원종 → 구조 ID → 정량값 → 비교 코호트)를 `evidence.json`의 `chain`에 기록해 정보충분도로 표시한다.
+
+
 Checked: **2026-09-25**. Scope: read-only examination of original articles and the public ChEMBL, PubChem and CMNPD interfaces. The candidate names and AphiaIDs came from the published, read-only `species_profiles` snapshot in `candidates.json`. This is an audit of leads found, not an exhaustive systematic review or an approval of unmerged PR data. No MBPI value is authorized by this audit.
 
 ## Admission rule used here

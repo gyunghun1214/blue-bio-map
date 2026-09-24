@@ -1,5 +1,17 @@
 # 운영 후보 8종의 IUCN 보전 근거 감사
 
+> **verified-pilot-2 갱신 (2026-09-25).** 아래 1차 기록 중 "현행판 미확인"은 해소되었다.
+> IUCN이 GBIF에 게시한 적색목록 체크리스트(데이터셋 19491596…, 2026-07-28 게시, CC BY 4.0)와 IUCN 종 페이지(내장 브라우저로 열람)로 확인했다.
+>
+> | 종 | 현행 평가 (Red List 2026-1) | MCUI |
+> | --- | --- | --- |
+> | 해삼 *A. japonicus* | **EN A2bd**, 기준 3.1, 평가일 2025-09-30, 발표 2026, e.T180424A272708369, 전 지구, 개체군 감소, 위협: 어획. 2013년 평가(2010-05-19 평가)는 대체됨 | 80 (EN→80 시범 매핑) |
+> | 살오징어 *T. pacificus* | **LC**, 기준 3.1, 평가일 2010-05-10, 발표 2014, e.T176085A1428473, 전 지구, 추세 미상, 주석 "Needs updating" | 10 (LC→10, 10년 넘은 평가 표시) |
+> | 나머지 6종 | IUCN 검색(전 지구, 종) 결과 0건: *Magallana gigas*, *Crassostrea gigas*, *Mytilus coruscus*, *Sargassum fusiforme*, *Hizikia fusiformis*, *Gelidium elegans*, *Halocynthia roretzi*, *Undaria pinnatifida*. 대조 검색(해삼·살오징어)은 각 1건. GBIF 체크리스트에도 없음 | 산출 보류 (`not_in_red_list`, 공식 NE나 낮은 점수 아님) |
+>
+> OBIS 출현 추세 보정은 하지 않았고 화면에 "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"를 표시한다.
+
+
 조회일: **2026-09-25**. 종명과 AphiaID의 기준은 [공개 `species_profiles` 읽기 전용 동결 목록](candidates.json)이다. 이 문서는 평가 기록의 존재, 원등급, 평가일, 발표연도, 평가 범위, **현재판 확인 여부**를 분리한다. IUCN 등급을 한국 해역의 보전 판단이나 출현 셀의 가치로 옮기지 않는다.
 
 ## 종별 결과
