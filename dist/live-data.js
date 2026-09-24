@@ -51,7 +51,7 @@ async function loadPublishedProfiles() {
       cells:cellsOf(p.species_id),
       wormsUrl:taxonomy?.url,wormsCitation:taxonomy?.citation||'학명 출처 확인 필요',
       v2,noOccurrences,
-      publishedAt:p.published_at,status:cellsOf(p.species_id).length?'공개 1° 셀':noOccurrences?'출현자료 미수집':recordCount===null?'출현자료 상태 확인 필요':'위치 공개 검토 중',scores:null};
+      publishedAt:p.published_at,status:cellsOf(p.species_id).length?'공개 1° 셀':'조사 범위 표시',scores:null};
   });
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
   return {live:true,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 시연 자료와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙, 1° 격자)을 통과한 GBIF 기록만 셀로 표시하고 원좌표는 공개하지 않습니다. 점수는 아직 발행하지 않았습니다.`};

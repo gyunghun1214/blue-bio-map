@@ -56,10 +56,10 @@ try{
   check('Sea cucumber: 122 compounds, no quantitative activity',/보고 화합물\s*122개/.test(t)&&/정량 활성 자료\s*확인한 자료에서 없음/.test(t),t);
   check('Sea cucumber: no efficacy claim',!/입증|효능|효과가 있/.test(t),t);
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
-  check('Sea cucumber: 출현자료 미수집, not 위치 공개 검토 중',t.includes('출현자료 미수집')&&!t.includes('위치 공개 검토 중'),t);
+  check('Sea cucumber: missing occurrences and survey area clearly separated',t.includes('출현자료')&&t.includes('미수집')&&t.includes('지도에 조사 범위 표시')&&!t.includes('위치 공개 검토 중'),t);
   check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 성분 값\s*미수집/.test(t),t);
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: no fabricated positions',mapNote.includes('출현자료를 수집하지 않은 종')&&mapNote.includes('해당 없음')&&mapNote.endsWith('shapes=0'),mapNote);
+  check('Sea cucumber map: survey area shown without claiming occurrence',mapNote.includes('자료를 조회한 범위')&&mapNote.includes('출현 위치나 분포를 뜻하지 않습니다')&&mapNote.includes(' | 0 | shapes=1'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
@@ -87,9 +87,9 @@ try{
   await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
   for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('운영 DB'))break;}
   const shapes=()=>evaluate("document.querySelectorAll('#map path.leaflet-interactive').length");
-  const expectCells={836033:1,342067:1,241776:0,494972:4,145721:4,372119:3,506159:2,250680:2};
+  const expectCells={836033:1,342067:1,241776:1,494972:4,145721:4,372119:3,506159:2,250680:2};
   const drawn={};for(const a of Object.keys(expectCells)){await pick(a);await sleep(150);drawn[a]=await shapes();}
-  check('Live map: cells drawn per species match the published cells',JSON.stringify(drawn)===JSON.stringify(expectCells),JSON.stringify(drawn));
+  check('Live map: every species has a spatial layer',JSON.stringify(drawn)===JSON.stringify(expectCells),JSON.stringify(drawn));
   check('Live map title says operational 1° cells',(await evaluate("document.getElementById('map-source').textContent")).includes('운영 지도'));
   t=await pick(836033);
   check('Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review',['지도 셀','공개 셀','왜 공개할 수 있는가','CC BY-NC 322건','육지 위 좌표','운영 DB에서 검토 중인 기존 기록','1°를 적용','기존 OBIS 시험 수집 26건'].every(x=>t.includes(x)),t);
@@ -102,7 +102,7 @@ try{
   check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 성분 값\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
-  check('Sea cucumber live: map held for sensitivity review, no cells',(await shapes())===0&&t.includes('지도 셀을 만들지 않음'),t);
+  check('Sea cucumber live: survey area visible, published occurrence cells still zero',(await shapes())===1&&t.includes('조사 범위 표시')&&t.includes('공개 셀')&&t.includes('없음'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
   // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
