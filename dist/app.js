@@ -410,18 +410,41 @@ function renderCellMap(s,color){
     const c=rows[0], reasons=[...new Set(rows.flatMap(r=>cellAssessmentStatus(s,r).reasons))];
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(r.countries.join(', ')||'미기재')}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
-    L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
+    cellLayers.push(L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[40,40],maxZoom:7,animate:false});}
   $('map-count').textContent=cellSites(s).toLocaleString();$('map-count').nextElementSibling.textContent=sitesLabel(s);$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))});
 }
+// The same cell evidence as the popups, as a table: reachable by keyboard and screen readers, and without the map.
+let cellLayers=[];
+function renderCellTable(s){
+  const box=$('cell-table');
+  if(!s?.cells?.length){box.innerHTML='';return;}
+  const live=s.live, groups=live?spatialCells(s):s.cells.map(c=>[c]);
+  const range=c=>live?`${c.lat0}–${c.lat0+c.sizeDeg}°N · ${c.lon0}–${c.lon0+c.sizeDeg}°E`:`${c.lat-.5}–${c.lat+.5}°N · ${c.lon-.5}–${c.lon+.5}°E`;
+  const rows=groups.map((g,i)=>{
+    const c=g[0];
+    const detail=live
+      ? g.map(r=>`<div>${esc(r.period)} · 기록 연도 ${esc(years(r))} · 선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></div>`).join('')
+      : `<div>기록 연도 ${esc(years(c))} · 선별 기록 ${esc(c.count)}건 · 종 전체 출처 ${s.sources.length}개(셀별 분배 미확인)</div>`;
+    return `<tr><th scope="row">${esc(range(c))}</th><td>${detail}</td><td>${map?`<button type="button" class="text-button" data-cell="${i}">지도에서 열기</button>`:'—'}</td></tr>`;
+  }).join('');
+  box.innerHTML=`<details><summary>셀 목록 표로 보기 (${groups.length}개 · 키보드·화면 낭독기용)</summary><table><caption class="sr-only">${esc(s.label)}의 공개 셀별 근거. 셀 범위는 원좌표가 아닌 공개 집계 범위입니다.</caption><thead><tr><th scope="col">셀 범위</th><th scope="col">기간·집계·출처</th><th scope="col">지도</th></tr></thead><tbody>${rows}</tbody></table><p class="fine">해역별 활용·보전 판단은 모든 셀에서 보류입니다. 셀 범위는 공개 집계 범위이며 실제 발견 좌표가 아닙니다.</p></details>`;
+  box.querySelectorAll('[data-cell]').forEach(b=>b.addEventListener('click',()=>{
+    const layer=cellLayers[Number(b.dataset.cell)];if(!layer)return;
+    map.panTo(layer.getBounds().getCenter(),{animate:false});layer.openPopup();
+    const content=document.querySelector('.leaflet-popup-content');
+    if(content){content.tabIndex=-1;content.focus();} // move reading focus into the opened evidence
+  }));
+}
 function renderMap() {
+  renderCellTable(selected); // before the map check: the table also works when the map failed to load
   if(!map)return;
   map.invalidateSize(); // the detail pane can change the map column height
-  overlay.clearLayers();dotCells=[];
+  overlay.clearLayers();dotCells=[];cellLayers=[];
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
   $('map-source').textContent=s.live?(s.cells.length?`운영 지도 · 공개 ${s.cells[0].sizeDeg}° 셀`:'운영 지도 · 자료 조회 범위'):'OBIS 출현기록 · 시연 격자';
   $('map-count').nextElementSibling.textContent='수집된 기록';
@@ -435,10 +458,11 @@ function renderMap() {
     if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30],animate:false});}
   }
   for(const cell of s.cells){
-    L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame()).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 붉은 점은 개별 관측 위치가 아니며, 개체수·자원량·현재 한국 전체 분포도 아닙니다.</small>`+cellPopupNotice(1));
+    cellLayers.push(L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame()).addTo(overlay));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 붉은 점은 개별 관측 위치가 아니며, 개체수·자원량·현재 한국 전체 분포도 아닙니다.</small>`+cellPopupNotice(1));
     addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count);
   }
+  if(!s.live&&s.cells.length&&s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat-.5,c.lon-.5],[c.lat+.5,c.lon+.5]]),{padding:[30,30],maxZoom:7,animate:false});}
   $('map-count').textContent=Number.isSafeInteger(s.recordCount)?s.recordCount.toLocaleString():'—';$('map-cells').textContent=s.live?'0':s.cells.length;$('map-years').textContent=years(s);
 }
 
@@ -543,7 +567,7 @@ async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
   data=null;selected=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';
   setMapLegend(live,null);

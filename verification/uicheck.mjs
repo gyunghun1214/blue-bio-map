@@ -81,6 +81,8 @@ try{
   await evaluate("document.querySelector('[data-view=explore]').click();const s=document.getElementById('collection');s.value='demo';s.dispatchEvent(new Event('change'));1");
   for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('시연'))break;}
   const demo=await evaluate("document.getElementById('connection-state').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length+' | '+document.getElementById('map-review-note').textContent");
+  const demoFit=await evaluate("[377084,836033,241776].map(a=>{selectSpecies(a);return map.getBounds().contains(L.latLngBounds(selected.cells.flatMap(c=>[[c.lat-.5,c.lon-.5],[c.lat+.5,c.lon+.5]])))&&document.querySelectorAll('#cell-table tbody tr').length===selected.cells.length})");
+  check('Demo mode: view fits each species grid; cell table lists every cell',demoFit.every(Boolean),JSON.stringify(demoFit));
   check('Demo mode: separate 3 species with 1° grid map',demo.startsWith('별도 시연 자료 · 3종')&&Number((demo.match(/shapes=(\d+)/)||[])[1])>0,demo);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-demo-map',false);
   const demoPopup=await evaluate("(()=>{overlay.getLayers().find(x=>x.getPopup&&x.getPopup()).openPopup();return document.querySelector('.leaflet-popup-content').innerText})()");
@@ -154,6 +156,16 @@ try{
   const badDate=await cucReport('2099-99-99');
   check('Sea cucumber with impossible check date: MCUI withheld, historical wording kept',badDate.includes('(역사적 평가)')&&/현행 평가\s*확인 보류/.test(badDate)&&badDate.includes('MCUI로 바꾸지 않습니다')&&!badDate.includes('재확인'),badDate.slice(badDate.indexOf('보전'),badDate.indexOf('보전')+400));
   await evaluate("for(const x of data.species)delete x.assessment;selectSpecies(836033);1");
+  // Keyboard / screen-reader path to the same cell evidence.
+  await pick(145721);await sleep(300);
+  const tbl=await evaluate("(()=>{const b=document.getElementById('cell-table');b.querySelector('details').open=true;return {rows:b.querySelectorAll('tbody tr').length,text:b.innerText}})()");
+  check('Cell table: one row per spatial cell, both periods of the shared cell listed',tbl.rows===3&&tbl.text.includes('33–34°N · 126–127°E')&&/2000–\d{4}/.test(tbl.text)&&/2016–\d{4}/.test(tbl.text)&&tbl.text.includes('CC0 1.0'),JSON.stringify(tbl).slice(0,400));
+  await evaluate("map.closePopup();document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
+  for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});
+  await sleep(500);
+  const kb=await evaluate("({popup:document.querySelector('.leaflet-popup-content')?.innerText||'',focusIn:!!document.activeElement?.closest('.leaflet-popup')})");
+  check('Keyboard: Enter on "지도에서 열기" opens the cell popup and moves focus into it',kb.popup.includes('해역별 활용·보전 판단: 보류')&&kb.focusIn,JSON.stringify(kb).slice(0,200));
+  await evaluate("map.closePopup();1");
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
