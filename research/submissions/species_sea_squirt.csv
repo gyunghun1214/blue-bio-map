@@ -1,0 +1,2 @@
+﻿record_id,scientific_name,aphia_id,match_level,topic,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations,region,period,iucn_scope,assessment_year
+S-SS-01,Halocynthia roretzi,250680,accepted,taxonomy,"WoRMS에서 Halocynthia roretzi (Drasche, 1884)가 정명(accepted)",accepted,,found,https://www.marinespecies.org/aphia.php?p=taxdetails&id=250680,,2026-09-24,"CC BY 4.0 (WoRMS 이용조건, 인용 필요)",self_checked,WoRMS REST AphiaRecordsByName으로 확인. 원 데이터베이스는 Ascidiacea World Database. 출현 범위·IUCN은 아직 미조회,,,,

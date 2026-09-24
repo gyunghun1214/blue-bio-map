@@ -1,5 +1,7 @@
-﻿record_id,scientific_name,aphia_id,match_level,compound_name,compound_id,experiment_type,target,assay,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations
-B-OK-1,Exemplum marinum (합성 예시),900000001,accepted,exemplamide A (가상),CID:1,in_vitro,가상 효소 X,효소 저해 (가상),가상 화합물이 효소 X를 저해,12.5,µM IC50,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
-B-OK-2,Exemplum marinum (합성 예시),900000001,accepted,,,,,,,,,not_searched,,,,,self_checked,
-B-BAD-assay,Exemplum marinum (합성 예시),900000001,accepted,exemplamide B (가상),,in_vitro,,,표적·assay 없이 값만 적은 예,3.1,µM,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
-B-BAD-id,Exemplum marinum (합성 예시),AphiaID:900000001,accepted,exemplamide C (가상),exemplamide,in_vitro,가상 수용체 Y,결합 (가상),ID 형식 오류 예,7,µM,found,https://example.org/synthetic,https://doi.org/10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
+﻿record_id,scientific_name,aphia_id,match_level,compound_name,compound_id,link_level,experiment_type,target,assay,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations
+B-OK-1,Exemplum marinum (합성 예시),900000001,accepted,exemplamide A (가상),CID:1,assay,in_vitro,가상 효소 X,효소 저해 (가상),가상 화합물이 효소 X를 저해,12.5,µM IC50,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
+B-OK-2,Exemplum marinum (합성 예시),900000001,accepted,,,,,,,,,,not_searched,,,,,self_checked,
+B-BAD-assay,Exemplum marinum (합성 예시),900000001,accepted,exemplamide B (가상),,assay,in_vitro,,,표적·assay 없이 값만 적은 예,3.1,µM,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
+B-BAD-id,Exemplum marinum (합성 예시),AphiaID:900000001,accepted,exemplamide C (가상),exemplamide,assay,in_vitro,가상 수용체 Y,결합 (가상),ID 형식 오류 예,7,µM,found,https://example.org/synthetic,https://doi.org/10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님
+B-OK-partial,Exemplum marinum (합성 예시),900000001,accepted,exemplamide D (가상),,compound,,,,가상 종에서 화합물 D를 분리했다고 보고. 정량 실험값은 원문에서 확인 못함,,,found,https://example.org/synthetic,10.0000/synthetic.2,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 활성 실험 논문 미확인
+B-BAD-partial,Exemplum marinum (합성 예시),900000001,accepted,exemplamide E (가상),,compound,,,,부분 연결인데 확인 안 된 값을 적은 예,5,µM,found,https://example.org/synthetic,10.0000/synthetic.2,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시

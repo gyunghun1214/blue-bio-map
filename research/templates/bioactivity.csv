@@ -1,1 +1,1 @@
-﻿record_id,scientific_name,aphia_id,match_level,compound_name,compound_id,experiment_type,target,assay,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations
+﻿record_id,scientific_name,aphia_id,match_level,compound_name,compound_id,link_level,experiment_type,target,assay,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations

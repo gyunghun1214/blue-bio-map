@@ -20,6 +20,24 @@
 6. 검사 도구를 돌려 오류를 고친다.
 7. 브랜치를 만들어 `submissions/`의 파일만 커밋하고 PR을 연다. 다른 팀원이 원문을 열어 몇 행을 대조한 뒤 `review_status`를 `cross_checked`로 바꾼다.
 
+## Markdown 원고와 CSV를 함께 쓰는 방법
+
+조사 내용을 Markdown으로 먼저 정리했다면(예: PR #3의 `research/food/*.md`) 원고를 지우거나 통째로 CSV로 바꾸지 않는다. 두 파일은 역할이 다르다.
+
+- **Markdown 원고**: 원문 근거 설명을 보존한다. 시료·분모·방법, 왜 이 값을 채택하지 않았는지, 원문 위치(표·절), 남은 불확실성. 사람이 읽고 판단하는 기록이다.
+- **CSV 행**: 원고에서 **근거 하나씩 검토할 수 있는 것만** 옮긴다. 원출처(URL/DOI)가 있고, 값·단위·기준량을 한 행으로 적을 수 있는 경우다.
+
+옮기는 순서:
+
+1. 원고의 근거 표에서 출처가 분명한 값 하나를 고른다. 요약 사이트나 원고 자체가 아니라 원출처 URL/DOI를 적는다.
+2. 원고에 적힌 분모와 시료 상태를 `unit`·`basis`·`sample_state`에 그대로 옮긴다. 건조 시료 %를 생것 100 g 값으로 바꾸지 않는다.
+3. `limitations`에 원고 경로(예: `PR #3 research/food/sea_squirt.md`)와 원문 위치(예: `Table 3`)를 적는다. 긴 설명은 원고에 남기고 CSV에는 한두 문장만 쓴다.
+4. 옮긴 사람이 원문을 직접 열어 값을 대조했다면 `self_checked`, 원고만 보고 옮겼다면 `unreviewed`로 둔다.
+5. 원문이 열리지 않거나 이용조건을 확인하지 못했다면 `license_unclear`로 두고 이유를 `limitations`에 적는다.
+6. 비교용으로만 언급했거나 종·분모가 불명확한 값은 옮기지 않거나, 옮기더라도 `match_level=unresolved`, `license_unclear`로 보류한다.
+
+예시: `submissions/food_wakame_sea_squirt.csv`, `submissions/species_sea_squirt.csv`(PR #3 원고와 WoRMS에서 시험 삼아 옮긴 실제 출처 행).
+
 ## 검사
 
 저장소 폴더에서 Python 3만 있으면 된다(추가 설치 없음).
@@ -62,7 +80,16 @@ python scripts/check_research.py research/examples   # 합성 예시로 동작 �
 
 ## 분야별 열
 
-**① 생리활성 (`bioactivity`)**: `compound_name`, `compound_id`(`CID:숫자` 또는 InChIKey), `experiment_type`(`in_vitro`·`in_vivo`·`clinical`·`in_silico`·`other`), `target`(효소·세포주·균주 등), `assay`(측정 방법과 지표, 예: IC50 효소 저해). `found`이면 화합물명·실험 유형·표적·assay가 모두 필요하다. 추출물 전체의 결과라면 `compound_name`에 추출물로 적고 `limitations`에 남긴다.
+**① 생리활성 (`bioactivity`)**: `compound_name`, `compound_id`(`CID:숫자` 또는 InChIKey), `experiment_type`(`in_vitro`·`in_vivo`·`clinical`·`in_silico`·`other`), `target`(효소·세포주·균주 등), `assay`(측정 방법과 지표, 예: IC50 효소 저해). 추출물 전체의 결과라면 `compound_name`에 추출물로 적고 `limitations`에 남긴다.
+
+`link_level`로 연결이 어디까지 확인됐는지 구분한다(`found`·`license_unclear` 행은 필수).
+
+| `link_level` | 뜻 | 필요한 것 | 비워 두는 것 |
+|---|---|---|---|
+| `assay` (완전 연결) | 종 → 화합물 → 정량 실험 → 논문 모두 확인 | 화합물명, 실험 유형, 표적, assay, 값, 단위 | - |
+| `compound` (부분 연결) | 종에서 화합물이 보고된 것만 확인, 정량 실험은 못 찾음 | 화합물명, claim, 출처 | `value`, `unit` (값이 있으면 오류). 모르는 표적·assay·실험 유형은 비워 둔다 |
+
+부분 연결 행은 확인하지 못한 실험 정보를 채우지 않아도 검사를 통과한다. 나중에 정량 실험 논문을 찾으면 행을 고치지 말고 `assay` 행을 새로 추가한다.
 
 **② 식량 (`food`)**: `topic`은 `nutrition`·`edible_portion`·`aquaculture`·`fishery`. `item`에 성분·항목(예: `protein`)을 적는다. 영양값은 `unit`과 `basis`(예: `per 100 g edible portion`, `per 100 g dry weight`)가 모두 필요하고 `sample_state`(생·건조·조리)도 적는다. 양식·어획은 `region`과 `period`가 필요하다.
 

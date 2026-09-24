@@ -20,11 +20,17 @@ class CheckResearchTests(unittest.TestCase):
         for kind in ("bioactivity", "food", "species"):
             self.assertEqual(check_file(ROOT / "research" / "templates" / f"{kind}.csv"), [])
 
-    def test_bioactivity_needs_target_assay_and_id_formats(self):
+    def test_bioactivity_full_link_needs_assay_partial_link_needs_no_value(self):
+        # Row 6 is a partial link (species -> compound only) with no invented assay data: it passes.
         self.assertEqual(errors("bioactivity_synthetic.csv"), [
             (4, "target"), (4, "assay"),
             (5, "aphia_id='AphiaID:900000001':"), (5, "doi='https://doi.org/10.0000/synthetic.1':"),
-            (5, "compound_id='exemplamide':")])
+            (5, "compound_id='exemplamide':"),
+            (7, "link_level=compound인데")])
+
+    def test_submissions_have_no_errors(self):
+        for path in (ROOT / "research" / "submissions").glob("*.csv"):
+            self.assertEqual([i for i in check_file(path) if i[1] == "ERROR"], [], path.name)
 
     def test_food_needs_unit_basis_and_keeps_missing_empty(self):
         self.assertEqual(errors("food_synthetic.csv"),
