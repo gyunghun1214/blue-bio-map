@@ -113,18 +113,35 @@ def scores(payload, *, food_weight=.5, min_peers=3):
             potency = median([r["pchembl"] for r in rows])
             references = len({r["reference_id"] for r in rows})
             evidence_factor = 1.0 if references >= 2 else .75
+            rank = percentile(potency, list(peers.values()))
             bio.append({"compound_id": compound, "stratum": [target, kind],
                         "peer_count": len(peers), "independent_references": references,
-                        "rank": round(percentile(potency, list(peers.values())), 2),
-                        "adjusted": percentile(potency, list(peers.values())) * evidence_factor})
+                        "median_pchembl": round(potency, 3),
+                        "reference_ids": sorted({r["reference_id"] for r in rows}),
+                        "rank": round(rank, 2), "evidence_factor": evidence_factor,
+                        "adjusted": rank * evidence_factor})
         mbpi = round(max((b["adjusted"] for b in bio), default=0), 1) if bio else None
 
         nutrition = s.get("nutrition", {})
         enough_food = all(n in nutrition and len(nutrient_groups[n]) >= min_peers for n in NUTRIENTS)
         enough_food &= "edible_fraction" in s and "aquaculture" in s
         mfpi = None
+        food_trace = None
         if enough_food:
+            nutrient_trace = {}
+            for n in NUTRIENTS:
+                item = nutrition[n]
+                nutrient_trace[n] = {
+                    "per_100g_edible": item["per_100g"], "grade": item["grade"],
+                    "peer_count": len(nutrient_groups[n]),
+                    "percentile": round(percentile(item["per_100g"], list(nutrient_groups[n].values())), 2),
+                    "source_id": item["source_id"]}
             nutrient_value = sum(percentile(nutrition[n]["per_100g"], list(nutrient_groups[n].values())) * GRADE_WEIGHT[nutrition[n]["grade"]] for n in NUTRIENTS) / len(NUTRIENTS)
+            food_trace = {"nutrients": nutrient_trace,
+                          "edible_fraction": s["edible_fraction"],
+                          "edible_fraction_source": s["edible_fraction_source"],
+                          "aquaculture": s["aquaculture"],
+                          "aquaculture_source": s["aquaculture_source"]}
             # Pilot weights are explicit and unvalidated, never inferred from missing data.
             mfpi = round(.8 * nutrient_value + 10 * s["edible_fraction"] + 10 * int(s["aquaculture"]), 1)
 
@@ -149,6 +166,12 @@ def scores(payload, *, food_weight=.5, min_peers=3):
                        "missing": missing, "iucn_category": category or None,
                        "iucn_assessment_year": conservation.get("assessment_year"),
                        "iucn_review_older_than_10y": stale, "bioactivity_trace": bio,
+                       "food_trace": food_trace,
+                       "conservation_trace": {
+                           "category": category, "assessment_year": conservation.get("assessment_year"),
+                           "source_id": conservation.get("source_id"),
+                           "obis_trend": trend
+                       } if conservation else None,
                        "source_ids": sorted(provenance),
                        "note": "Pilot scores; external calibration and back-testing required."})
     return {"method_version": VERSION, "generated_at": datetime.now(timezone.utc).isoformat(),

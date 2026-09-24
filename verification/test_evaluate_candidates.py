@@ -35,6 +35,10 @@ class PilotScoringTests(unittest.TestCase):
         a, b, c = scores(payload)["species"]
         self.assertLess(a["scores"]["MBPI"], b["scores"]["MBPI"])
         self.assertEqual(len(a["bioactivity_trace"]), 1)
+        self.assertEqual(a["bioactivity_trace"][0]["median_pchembl"], 5)
+        self.assertEqual(a["bioactivity_trace"][0]["reference_ids"], ["ref-1"])
+        self.assertEqual(a["food_trace"]["nutrients"]["protein_g"]["per_100g_edible"], 10)
+        self.assertEqual(a["conservation_trace"]["assessment_year"], 2025)
         self.assertEqual(a["scores"]["MCUI"], 100)
         self.assertLess(a["scores"]["BBVI"], b["scores"]["BBVI"])
         self.assertIsNone(c["scores"]["MCUI"])  # Data Deficient is not zero urgency.

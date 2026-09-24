@@ -42,8 +42,18 @@ async function attachPilotAssessments(next) {
     for(const s of next.species){
       const a=byId.get(s.aphiaID);
       if(a?.scientific_name!==s.name||!a.scores||!Array.isArray(a.source_ids)||!a.source_ids.length)continue;
-      if(!a.source_ids.every(id=>report.sources?.[id]?.url))continue;
+      if(!a.source_ids.every(id=>report.sources?.[id]?.url?.startsWith('https://')&&report.sources[id].license&&report.sources[id].accessed))continue;
       if(!['MFPI','MBPI','MCUI','BBVI'].every(k=>a.scores[k]===null||(Number.isFinite(a.scores[k])&&a.scores[k]>=0&&a.scores[k]<=100)))continue;
+      // A published score must carry inspectable components, not only a value.
+      if(a.scores.MFPI!==null&&!a.food_trace?.nutrients)continue;
+      if(a.scores.MBPI!==null&&(!Array.isArray(a.bioactivity_trace)||!a.bioactivity_trace.length))continue;
+      if(a.scores.MCUI!==null&&(!a.conservation_trace?.category||!a.conservation_trace?.assessment_year))continue;
+      if(a.scores.BBVI!==null){
+        if(['MFPI','MBPI','MCUI'].some(k=>a.scores[k]===null))continue;
+        if(!Number.isFinite(report.food_weight)||report.food_weight<0||report.food_weight>1)continue;
+        const expected=report.food_weight*a.scores.MFPI+(1-report.food_weight)*a.scores.MBPI;
+        if(Math.abs(a.scores.BBVI-expected)>.11)continue;
+      }
       s.assessment=a;
     }
     next.assessmentInfo={foodWeight:report.food_weight,generatedAt:report.generated_at,sources:report.sources};
@@ -76,6 +86,92 @@ function mapJudgmentStatus(s) {
     : '해역별 활용·보전 판단: 승인 0곳 · 공개 출현 셀이 없어 해역 판단도 보류합니다.';
 }
 
+// Original IUCN assessments verified in research/species-conservation. Historical records only:
+// not the current status, not a Korea-only assessment and not an MCUI input until a current check.
+const IUCN_HISTORICAL = {"241776":{"category":"EN A2bd","published":2013,"assessed":"2010-05-19","scope":"북서태평양 전 분포(한국 단독 평가 아님)","url":"https://www.iucnredlist.org/species/180424/1629389"}};
+const iucnHistoricalText = h => `IUCN ${h.category}: ${h.published}년 발표(${h.assessed} 평가) · ${h.scope}. 역사적 평가이며, 현행 평가 여부는 확인하지 않았습니다.`;
+function iucnHistoricalRows(s){
+  const h=IUCN_HISTORICAL[s.aphiaID];if(!h)return '';
+  return row('IUCN 원평가',`${h.category} · ${h.published}년 발표 (역사적 평가)`)+row('현행 평가','확인 보류','pending')
+    +`<p class="fine">${esc(iucnHistoricalText(h))} 2026년 한국 현황이나 MCUI로 바꾸지 않습니다. ${sourceLink(h.url,'IUCN 평가 레코드 ↗')}</p>`;
+}
+const CASE_NOTES = {"241776":{"title":"돌기해삼 원논문","url":"https://doi.org/10.1111/bph.16333","detail":"Holotoxin A₁의 Candida albicans SC5314 MIC·MFC 각 2 µg/mL은 원논문에서 직접 확인. 외부 CID의 구조 대응과 동일 표적·시험군 pChEMBL은 미확인. 사람 대상 약효 자료가 아님."},"377084":{"title":"다시마 원논문","url":"https://doi.org/10.1002/cbdv.202000233","detail":"Lj5 다당류 분획의 α-glucosidase IC50 153.27 ± 22.89 µg/mL 확인. 단일 분자 CID·InChIKey가 없으므로 현행 소분자 MBPI 입력에서 제외."}};
+function assessmentBlockers(s){
+  const i=s.info||{}, n=i.nutrition||{}, c=i.compounds||{}, k=i.conservation||{};
+  const reasons={};
+  if(pilotScore(s,'MFPI')===null){
+    const gaps=[];
+    if(n.status!=='available')gaps.push('검수된 영양 값 미확인');
+    else {
+      if(n.unit_unconfirmed_count>0)gaps.push('영양 단위 미확정');
+      if(n.basis_assumed_count>0)gaps.push('가식부 100 g 기준 가정');
+      gaps.push('단위·가식부 기준의 원자료와 동종 비교집단 재검수');
+    }
+    gaps.push('가식부 비율과 양식 가능성 근거 미연결');
+    reasons.MFPI=gaps.join(' · ');
+  }
+  if(pilotScore(s,'MBPI')===null){
+    const base=c.status==='available'&&Number.isFinite(c.compound_count)
+      ? `보고 화합물 ${c.compound_count}개는 활성 근거가 아님.`
+      : '화합물–정량 시험 연결 미확인.';
+    reasons.MBPI=base+' 기원종–단일 화합물 ID–표적·assay–pChEMBL–원논문과 동일 층 비교집단 검수 필요.';
+  }
+  if(pilotScore(s,'MCUI')===null){
+    const h=IUCN_HISTORICAL[s.aphiaID];
+    reasons.MCUI=h
+      ? iucnHistoricalText(h)+' 현행 평가 확인 전이라 MCUI 입력으로 쓰지 않음. 출현기록 수는 개체군 변화가 아님.'
+      : k.status==='withheld_insufficient_evidence'
+      ? 'IUCN 검색 이력은 있으나 해당 종의 검수된 평가 등급·연도·평가 범위가 연결되지 않음.'
+      : '검수된 IUCN 평가 등급·연도·평가 범위 미확인. 출현기록 수는 개체군 변화가 아님.';
+  }
+  if(pilotScore(s,'BBVI')===null)reasons.BBVI='MFPI와 MBPI가 모두 산출되어야 계산 가능.';
+  return reasons;
+}
+function assessedForMatrix(s){
+  return s.live&&['MFPI','MBPI','MCUI','BBVI'].every(k=>pilotScore(s,k)!==null);
+}
+function renderDecisionList(){
+  const list=$('decision-list'), panel=$('decision-detail');
+  list.innerHTML=data.species.map(s=>{
+    const ready=assessedForMatrix(s), missing=Object.keys(assessmentBlockers(s)).filter(k=>k!=='BBVI');
+    return `<button type="button" class="decision-card" data-aphia="${s.aphiaID}" aria-controls="decision-detail"><strong>${esc(s.label)}</strong><em>${esc(s.name)} · AphiaID ${s.aphiaID}</em><span>${ready?'검증 전 시범 지표 · 근거 확인':'산출 보류 · '+esc(missing.join(' · '))}</span></button>`;
+  }).join('');
+  list.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)))));
+  panel.textContent='종을 선택하면 산출 여부, 부족한 입력과 확인 가능한 원문을 볼 수 있습니다.';
+}
+function showDecision(s){
+  if(!s)return;
+  $('decision-list').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.aphia)===s.aphiaID)));
+  const a=s.assessment, info=data.assessmentInfo||{}, reasons=assessmentBlockers(s), study=CASE_NOTES[s.aphiaID];
+  let html=`<h3>${esc(s.label)} · 실제 종 근거</h3><p class="fine">${esc(s.name)} · AphiaID ${s.aphiaID} · ${a?'검증 전 시범 지표':'산출 보류'}</p>`;
+  for(const k of ['MFPI','MBPI','MCUI','BBVI']){
+    const value=pilotScore(s,k);
+    html+=`<div class="decision-axis"><b>${k}: ${value===null?'산출 보류':value.toFixed(1)+' / 100'}</b><p>${esc(reasons[k]||'검수된 입력을 사용한 시범 산출값. 외부 사례 검증 전.')}</p></div>`;
+  }
+  if(a){
+    const f=a.food_trace;
+    if(f){
+      html+='<h4>MFPI 구성</h4><ul>';
+      for(const [key,n] of Object.entries(f.nutrients||{})){
+        html+=`<li>${esc(key)}: 가식부 100 g당 ${esc(n.per_100g_edible)} ${key==='protein_g'?'g':'mg'} · ${esc(n.grade)} · 동종 비교 ${esc(n.peer_count)}종 · 백분위 ${esc(n.percentile)} · ${esc(n.source_id)}</li>`;
+      }
+      html+=`<li>가식부 비율 ${esc(f.edible_fraction)} (${esc(f.edible_fraction_source)}) · 양식 근거 ${f.aquaculture?'있음':'없음'} (${esc(f.aquaculture_source)})</li></ul>`;
+    }
+    if(a.bioactivity_trace?.length){
+      html+='<h4>MBPI 구성</h4><ul>';
+      for(const b of a.bioactivity_trace)html+=`<li>${esc(b.compound_id)} · 표적 ${esc(b.stratum?.[0])}, assay ${esc(b.stratum?.[1])} · 중앙 pChEMBL ${esc(b.median_pchembl)} · 비교 화합물 ${esc(b.peer_count)}개 · 백분위 ${esc(b.rank)} · 독립 문헌 ${esc(b.independent_references)}건 · 근거 계수 ${esc(b.evidence_factor)} · ${esc((b.reference_ids||[]).join(', '))}</li>`;
+      html+='</ul>';
+    }
+    const c=a.conservation_trace;
+    if(c)html+=`<h4>MCUI 구성</h4><p>IUCN ${esc(c.category||'미확인')} · 평가 ${esc(c.assessment_year||'미확인')} · 출처 ${esc(c.source_id||'미확인')}${a.iucn_review_older_than_10y?' · 10년 초과 평가':''}. ${c.obis_trend?`노력 보정 추세 ${esc(c.obis_trend.direction)} (${esc(c.obis_trend.source_id)})`:'출현기록만으로 추세 보정하지 않음.'}</p>`;
+    html+=`<h4>계산과 기준일</h4><p>MFPI: 영양 백분위·등급 80%, 가식부 10%, 양식 근거 10%. MBPI: 동일 표적·assay층 화합물 백분위 × 문헌 계수. BBVI: MFPI ${esc(info.foodWeight*100)}% + MBPI ${esc((1-info.foodWeight)*100)}%. MCUI는 별도 축. 산출 ${esc(info.generatedAt||'미기재')}. 모든 가중치와 점수는 검증 전 시범값입니다.</p>`;
+    html+='<h4>원문·이용조건</h4><ul>'+a.source_ids.map(id=>`<li>${sourceLink(info.sources?.[id]?.url,id+' ↗')} · ${esc(info.sources?.[id]?.license||'이용조건 미확인')} · 조회 ${esc(info.sources?.[id]?.accessed||'미기재')}</li>`).join('')+'</ul>';
+  }
+  if(IUCN_HISTORICAL[s.aphiaID])html+=`<h4>IUCN 원평가 · 역사적 평가</h4><p>${esc(iucnHistoricalText(IUCN_HISTORICAL[s.aphiaID]))} ${sourceLink(IUCN_HISTORICAL[s.aphiaID].url,'IUCN 평가 레코드 ↗')}</p>`;
+  if(study)html+=`<h4>별도 원문 조사 · 지표 입력 아님</h4><p>${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`;
+  html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p>';
+  $('decision-detail').innerHTML=html;
+}
 function setView(view) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
   currentView=view;
@@ -101,8 +197,8 @@ function selectSpecies(id) {
 function renderDetail() {
   const s=selected;
   if(s.live)return renderLiveDetail(s);
-  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','자료 미확인',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI','평가 미조회','']];
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div><h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도 도트는 선별된 출현기록의 1° 격자 집계를 도식화한 것입니다. 점은 실제 관측 위치나 기록 1건을 뜻하지 않습니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
+  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','자료 미확인',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI',IUCN_HISTORICAL[s.aphiaID]?'산출 보류 · IUCN 역사적 평가만 확인':'평가 미조회','']];
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div><h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${iucnHistoricalRows(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도 도트는 선별된 출현기록의 1° 격자 집계를 도식화한 것입니다. 점은 실제 관측 위치나 기록 1건을 뜻하지 않습니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth',block:'start'});});
 }
 
@@ -132,7 +228,7 @@ function liveEvidence(s) {
     withheld_insufficient_evidence:row('보전평가','근거 부족으로 보류','pending')+row('검토 기록',`IUCN 검색 기록 ${count(k.search_record_count)} · 평가 ${count(k.assessment_count)}`)+(k.note?`<p class="fine">${esc(k.note)}</p>`:''),
     not_reviewed:row('보전평가','미검토','pending')
   }[k.status]||row('보전평가','정보 없음','pending');
-  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 근거</h3>${compounds}<h3>보전</h3>${conservation}`;
+  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 근거</h3>${compounds}<h3>보전</h3>${conservation}${iucnHistoricalRows(s)}`;
 }
 
 function renderLiveDetail(s) {
@@ -336,7 +432,7 @@ function renderComparison(){
     ['출현기록',s=>s.live&&s.cells.length?`${s.cells.length}셀 · 조사 지점 ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · GBIF CC0·CC BY</small>`:s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
     ['식량 근거 · MFPI',s=>pilotScore(s,'MFPI')!==null?pilotCell(s,'MFPI'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 ${count(n.record_count)}<small>실측 ${count(n.measured_count)} · 계산 ${count(n.calculated_count)} · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['생리활성 · MBPI',s=>pilotScore(s,'MBPI')!==null?pilotCell(s,'MBPI'):v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
-    ['보전 평가 · MCUI',s=>pilotScore(s,'MCUI')!==null?pilotCell(s,'MCUI'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),'평가 미조회')],
+    ['보전 평가 · MCUI',s=>pilotScore(s,'MCUI')!==null?pilotCell(s,'MCUI'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:'')],
     ['자료 연결 현황',s=>s.live?`${evidenceCoverage(s).known}/5 항목<small>출처·수량 확인 · 품질 점수 아님</small>`:pending('2/5 항목 · 품질 점수 아님')],
     ['통합점수 · BBVI',s=>pilotScore(s,'BBVI')!==null?pilotCell(s,'BBVI'):'<strong>산출 보류</strong>']];
   $('comparison').innerHTML=`<table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${data.species.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${data.species.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -344,12 +440,12 @@ function renderComparison(){
 
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
-  const assessed=data?.species.filter(s=>pilotScore(s,'BBVI')!==null&&pilotScore(s,'MCUI')!==null)||[];
-  $('matrix-note').textContent=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 점수가 준비되면 이곳에 표시됩니다. 지금은 두 축을 산출하지 않아 배치하지 않습니다.';
+  const assessed=data?.species.filter(assessedForMatrix)||[];
+  $('matrix-note').textContent=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다.';
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
-    if(!value){selectSpecies(assessed[i].aphiaID);setView('explore');return;}
+    if(!value){showDecision(assessed[i]);$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
   }));
 }
@@ -375,7 +471,7 @@ async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
   data=null;selected=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';
   setMapLegend(live,null);
@@ -392,7 +488,7 @@ async function loadCollection(){
     if(next.species.some(s=>s.assessment))$('score-disclaimer').innerHTML='일부 종에 <strong>검증 전 시범 지표</strong>가 있습니다. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderSources();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
     $('connection-state').textContent=live?'운영 DB 연결됨 · '+data.species.length+'종':'별도 시연 자료 · '+data.species.length+'종';
     toggleSimulation(false);
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
