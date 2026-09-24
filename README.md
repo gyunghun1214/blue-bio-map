@@ -71,3 +71,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 `python scripts/evaluate_candidates.py tmp/curated-evidence.json`은 출처와 검수 여부가 명시된 입력을 읽어 `tmp/assessments.json`에 **검증 전** 결과를 쓴다. 기본 실행은 공개 `dist/`를 수정하지 않는다. 입력 형식과 산출 조건은 [근거 입력 문서](docs/evidence-schema.md)에 있다. `python -m unittest discover -s verification -p 'test_*.py'`로 합성 사례의 불변조건을 확인할 수 있다.
 
 별도 검토를 거쳐 `--out dist/assessments.json`으로 내보낸 경우에만 발행 프로필의 AphiaID·학명이 일치하는 종의 시범 지표를 화면에 읽는다. 두 축이 모두 산출된 종만 매트릭스에 배치한다. 운영 요약의 영양 건수나 CMNPD 화합물 건수만으로 점수를 만들지 않는다. 현재 저장소에는 공개용 `assessments.json`이 없다.
+
+## 1° 셀 도트 표시
+
+공개 API의 `species_map_cells`와 별도 OBIS 시연용 `data.json`은 모두 1° 집계만 제공한다. 정밀 좌표와 레코드 ID는 공개하지 않는다. 화면의 작은 점은 1° 셀 내부에 고정한 **도식적 밀도 무늬**로, 한 점이 관측·조사 지점 또는 기록 한 건을 나타내지 않는다. 셀 기록 수를 1–4, 5–19, 20–99, 100건 이상으로 구분하여 각각 2×2, 3×3, 4×4, 5×5 패턴을 그린다. Natural Earth 육지 경계 안의 도트는 생략하며 해안선 근처의 근사 오차가 남을 수 있다. 셀 범위는 투명 클릭 영역으로 유지해 기간, 출처, 실제 집계 건수와 공개 해상도를 확인할 수 있다. 개체수, 자원량, 생물학적 가치, 현재의 전체 분포를 추정하지 않는다.
