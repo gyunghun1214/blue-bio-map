@@ -1,0 +1,4 @@
+﻿record_id,scientific_name,aphia_id,match_level,topic,claim,value,unit,data_status,source_url,doi,accessed,license,review_status,limitations,region,period,iucn_scope,assessment_year
+S-OK-1,Exemplum marinum (합성 예시),900000001,accepted,iucn,가상 평가 범주,DD,,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님,,,global,2020
+S-OK-2,Exemplum marinum (합성 예시),,unresolved,taxonomy,,,,not_searched,,,,,self_checked,,,,,
+S-BAD-1,Exemplum marinum (합성 예시),900000001,accepted,occurrence,지역·기간 누락 예,출현 기록 있음,,found,https://example.org/synthetic,10.0000/synthetic.1,2026-9-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님,,,,
