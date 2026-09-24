@@ -76,6 +76,22 @@ assert.match(popup[0],/선별 출현기록 4° 셀/);
 assert.match(popup[0],/4°×4°/);
 assert.equal(dots.length,4);
 assert.ok(dots.some(({latlng:[lat]})=>lat>34),'dots spread over the whole 4° cell');
+// Two period rows at one location: one hit area whose popup lists both periods in full.
+popup.length=0;dots.length=0;
+const later={...cell,period:'2021–2026',yearStart:2023,yearEnd:2023,records:15,sites:4,uncertaintyMissing:0,
+  citations:[{title:'Second provider',url:'https://example.org/second',licenses:['CC0 1.0']}]};
+species.cells=[cell,later];
+context.draw(species,'#123456');
+assert.equal(popup.length,1,'one clickable area per spatial cell, not one per period');
+for(const x of [/공개 집계 기간 2015–2020/,/기록 연도 2015–2020/,/선별 기록 9건 · 조사 지점 2곳/,/https:\/\/example.org\/dataset/,/CC BY 4.0/,
+  /공개 집계 기간 2021–2026/,/기록 연도 2023/,/선별 기록 15건 · 조사 지점 4곳/,/https:\/\/example.org\/second/,/CC0 1.0/,/기간 2개 · 선별 기록 합계 24건/])
+  assert.match(popup[0],x);
+assert.equal(dots.length,16,'one 4x4 pattern for the 24-record total, drawn once');
+assert.ok(dots.every(d=>d.options.interactive===false));
+assert.equal(nodes.get('map-cells').textContent,1);
+assert.match(nodes.get('map-count').nextElementSibling.textContent,/기간별 합계/);
+context.banner(species);
+assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보류/);
 species.cells=[];
 context.banner(species);
 assert.match(nodes.get('map-judgment').textContent,/공개 출현 셀이 없어/);

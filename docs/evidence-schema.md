@@ -26,7 +26,8 @@ inputs in ignored `tmp/`; the default output also goes there.
     },
     "edible_fraction": 0.7, "edible_fraction_source": "nutrition-row",
     "aquaculture": true, "aquaculture_source": "nutrition-row",
-    "conservation": {"category": "VU", "assessment_year": 2025, "source_id": "iucn-assessment", "reviewed": true}
+    "conservation": {"category": "VU", "assessment_year": 2025, "source_id": "iucn-assessment", "reviewed": true,
+                     "current_status_check": {"is_current": true, "source_id": "iucn-assessment", "checked_on": "2026-09-23"}}
   }]
 }
 ```
@@ -52,6 +53,11 @@ nutrient are needed. No example values are presented as real measurements.
   urgency. An OBIS trend can affect MCUI only when sampling effort was controlled
   and the adjustment was independently reviewed; raw occurrence counts cannot
   prove population decline. Assessments over ten years old receive a flag.
+  `reviewed` means the original assessment was read; it does not mean the
+  assessment is current. MCUI also needs `current_status_check` with
+  `is_current: true`, a registered `source_id` and `checked_on` (YYYY-MM-DD).
+  Without it MCUI is withheld (`current_status_unverified`); `is_current: false`
+  withholds it as `assessment_not_current`. Age alone never decides either way.
 - Pilot weights: MBPI uses the best eligible compound percentile, multiplied by
   0.75 for one reference or 1.0 for two or more. MFPI uses 80% mean nutrient
   peer percentile adjusted by evidence grade, 10% edible fraction and 10%

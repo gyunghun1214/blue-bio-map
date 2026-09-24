@@ -21,7 +21,8 @@ def fixture():
             "edible_fraction": i / 4, "edible_fraction_source": "ref-2",
             "aquaculture": True, "aquaculture_source": "ref-3",
             "conservation": {"category": ("CR", "LC", "DD")[i-1], "assessment_year": 2025,
-                             "source_id": "ref-4", "reviewed": True}
+                             "source_id": "ref-4", "reviewed": True,
+                             "current_status_check": {"is_current": True, "source_id": "ref-4", "checked_on": "2026-09-23"}}
         })
     return {"schema_version": 1, "sources": sources, "species": species}
 
@@ -69,6 +70,31 @@ class PilotScoringTests(unittest.TestCase):
         payload["species"][0]["conservation"]["obis_trend"] = {"direction": "declining",
             "source_id": "ref-4", "reviewed": True, "effort_adjusted": False}
         with self.assertRaisesRegex(ValueError, "sampling effort"):
+            scores(payload)
+
+    def test_historical_iucn_without_current_check_withholds_mcui(self):
+        # Sea cucumber case: the 2013 EN original assessment was read, but nobody confirmed it is current.
+        payload = fixture()
+        c = payload["species"][0]["conservation"]
+        c.update(category="EN", assessment_year=2013)
+        del c["current_status_check"]
+        a = scores(payload)["species"][0]
+        self.assertIsNone(a["scores"]["MCUI"])
+        self.assertIn("MCUI", a["missing"])
+        self.assertTrue(a["iucn_review_older_than_10y"])
+        self.assertEqual(a["iucn_category"], "EN")
+        self.assertFalse(a["conservation_trace"]["current_status_verified"])
+        self.assertEqual(a["conservation_trace"]["mcui_withheld_reason"], "current_status_unverified")
+        self.assertIsNotNone(a["scores"]["BBVI"])  # the value axis is not hidden
+        # Age alone does not void it: an explicit, sourced check that it is still current allows MCUI.
+        c["current_status_check"] = {"is_current": True, "source_id": "ref-4", "checked_on": "2026-09-23"}
+        self.assertEqual(scores(payload)["species"][0]["scores"]["MCUI"], 80)
+        c["current_status_check"]["is_current"] = False
+        a = scores(payload)["species"][0]
+        self.assertIsNone(a["scores"]["MCUI"])
+        self.assertEqual(a["conservation_trace"]["mcui_withheld_reason"], "assessment_not_current")
+        c["current_status_check"] = {"is_current": True}
+        with self.assertRaisesRegex(ValueError, "current_status_check"):
             scores(payload)
 
     def test_literature_replication_does_not_add_comparator(self):

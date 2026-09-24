@@ -78,6 +78,15 @@ def validate(payload):
             required(c.get("reviewed") is True and c.get("source_id") and c.get("category") in (*IUCN, "DD", "NE"), f"{aphia}: reviewed IUCN category/source required")
             sourced(c["source_id"], aphia)
             required(type(c.get("assessment_year")) is int and 1900 <= c["assessment_year"] <= date.today().year, f"{aphia}: assessment year required")
+            # `reviewed` only means the original assessment was read. Whether it is still the
+            # current IUCN assessment is a separate, explicitly sourced check (optional here;
+            # without it MCUI is withheld in scores()).
+            if "current_status_check" in c:
+                k = c["current_status_check"]
+                required(isinstance(k, dict) and type(k.get("is_current")) is bool and k.get("source_id")
+                         and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(k.get("checked_on", ""))),
+                         f"{aphia}: current_status_check needs is_current, source_id and checked_on")
+                sourced(k["source_id"], aphia)
             if "obis_trend" in c:
                 t = c["obis_trend"]
                 required(t.get("reviewed") is True and t.get("effort_adjusted") is True and t.get("source_id") and t.get("direction") in ("declining", "stable", "increasing"), f"{aphia}: OBIS trend must control sampling effort")
@@ -147,7 +156,14 @@ def scores(payload, *, food_weight=.5, min_peers=3):
 
         conservation = s.get("conservation", {})
         category = conservation.get("category")
-        mcui = IUCN.get(category)
+        current = conservation.get("current_status_check")
+        mcui_withheld = None
+        if conservation and not current:
+            mcui_withheld = "current_status_unverified"
+        elif current and not current["is_current"]:
+            mcui_withheld = "assessment_not_current"
+        # An old assessment is neither assumed current nor assumed void: it needs an explicit check.
+        mcui = IUCN.get(category) if mcui_withheld is None else None
         trend = conservation.get("obis_trend")
         if mcui is not None and trend:
             mcui = max(0, min(100, mcui + {"declining": 10, "stable": 0, "increasing": -10}[trend["direction"]]))
@@ -161,6 +177,8 @@ def scores(payload, *, food_weight=.5, min_peers=3):
             provenance.add(conservation["source_id"])
             if trend:
                 provenance.add(trend["source_id"])
+            if current:
+                provenance.add(current["source_id"])
         result.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"],
                        "scores": {"MFPI": mfpi, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi},
                        "missing": missing, "iucn_category": category or None,
@@ -170,7 +188,11 @@ def scores(payload, *, food_weight=.5, min_peers=3):
                        "conservation_trace": {
                            "category": category, "assessment_year": conservation.get("assessment_year"),
                            "source_id": conservation.get("source_id"),
-                           "obis_trend": trend
+                           "obis_trend": trend,
+                           "current_status_verified": bool(current and current["is_current"]),
+                           "current_status_source_id": current["source_id"] if current else None,
+                           "current_status_checked_on": current["checked_on"] if current else None,
+                           "mcui_withheld_reason": mcui_withheld
                        } if conservation else None,
                        "source_ids": sorted(provenance),
                        "note": "Pilot scores; external calibration and back-testing required."})

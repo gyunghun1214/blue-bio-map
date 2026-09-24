@@ -7,7 +7,7 @@ const code=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8').spl
 const specimen=()=>({live:true,species:[{aphiaID:123, name:'Accepted species',live:true}]});
 const report=(name='Accepted species')=>({method_version:'pilot-1',status:'provisional_unvalidated',
   food_weight:.5,generated_at:'2026-09-23',sources:{s:{url:'https://example.org/s',license:'test',accessed:'2026-09-23'}},
-  species:[{aphia_id:123,scientific_name:name,source_ids:['s'],scores:{MFPI:50,MBPI:70,MCUI:80,BBVI:60},food_trace:{nutrients:{protein_g:{per_100g_edible:10,grade:'measured',peer_count:3,percentile:50,source_id:'s'}},edible_fraction:.5,edible_fraction_source:'s',aquaculture:true,aquaculture_source:'s'},bioactivity_trace:[{compound_id:'CID:1',stratum:['target-A','binding'],median_pchembl:7,peer_count:3,rank:50,independent_references:1,evidence_factor:.75,reference_ids:['s']}],conservation_trace:{category:'EN',assessment_year:2025,source_id:'s'}}]});
+  species:[{aphia_id:123,scientific_name:name,source_ids:['s'],scores:{MFPI:50,MBPI:70,MCUI:80,BBVI:60},food_trace:{nutrients:{protein_g:{per_100g_edible:10,grade:'measured',peer_count:3,percentile:50,source_id:'s'}},edible_fraction:.5,edible_fraction_source:'s',aquaculture:true,aquaculture_source:'s'},bioactivity_trace:[{compound_id:'CID:1',stratum:['target-A','binding'],median_pchembl:7,peer_count:3,rank:50,independent_references:1,evidence_factor:.75,reference_ids:['s']}],conservation_trace:{category:'EN',assessment_year:2025,source_id:'s',current_status_verified:true,current_status_source_id:'s',current_status_checked_on:'2026-09-23'}}]});
 const ctx={fetch:async()=>({status:404,ok:false})};
 vm.createContext(ctx);
 vm.runInContext(code+';globalThis.attach=attachPilotAssessments;globalThis.pilot=pilotScore;globalThis.assessed=assessedForMatrix;globalThis.blockers=assessmentBlockers;globalThis.showDecision=showDecision',ctx);
@@ -71,4 +71,28 @@ ctx.showDecision(cucumber);
 assert.match(nodes.get('decision-detail').innerHTML,/MCUI: 산출 보류/);
 assert.match(nodes.get('decision-detail').innerHTML,/IUCN 원평가 · 역사적 평가/);
 assert.match(nodes.get('decision-detail').innerHTML,/iucnredlist\.org\/species\/180424/);
-console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard, historical IUCN');
+// A report without a sourced current-status check (older format) must not show MCUI,
+// yet the reviewed value axis stays visible and the species stays off the matrix.
+const legacy=report(); delete legacy.species[0].conservation_trace.current_status_verified;
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>legacy});
+data=specimen(); await ctx.attach(data);
+assert.equal(ctx.pilot(data.species[0],'MCUI'),null,'legacy report cannot bypass the current-status check');
+assert.equal(ctx.pilot(data.species[0],'MFPI'),50);
+assert.equal(ctx.pilot(data.species[0],'BBVI'),60);
+assert.equal(ctx.assessed(data.species[0]),false);
+assert.match(ctx.blockers(data.species[0]).MCUI,/현행 평가인지 확인한 근거가 없어 보류/);
+// Sea cucumber: reviewed 2013 EN original, no current check -> MCUI withheld, historical wording kept.
+const cuc=report('Apostichopus japonicus'); cuc.species[0].aphia_id=241776;
+Object.assign(cuc.species[0].conservation_trace,{assessment_year:2013,current_status_verified:false,current_status_source_id:null,current_status_checked_on:null,mcui_withheld_reason:'current_status_unverified'});
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>cuc});
+data={live:true,species:[{aphiaID:241776,name:'Apostichopus japonicus',label:'해삼',live:true,info:{}}]}; await ctx.attach(data);
+assert.equal(ctx.pilot(data.species[0],'MCUI'),null);
+assert.equal(ctx.pilot(data.species[0],'MBPI'),70);
+assert.equal(ctx.assessed(data.species[0]),false);
+assert.match(ctx.blockers(data.species[0]).MCUI,/2013년 발표.*역사적 평가/);
+// A verified current check pointing at an unregistered source is not enough either.
+const bad=report(); bad.species[0].conservation_trace.current_status_source_id='missing';
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>bad});
+data=specimen(); await ctx.attach(data);
+assert.equal(ctx.pilot(data.species[0],'MCUI'),null);
+console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard, historical IUCN, current-status gate');
