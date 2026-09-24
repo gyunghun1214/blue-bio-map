@@ -38,6 +38,17 @@ def percentile(value, peers):
     return 100 * (sum(p < value for p in peers) + .5 * sum(p == value for p in peers)) / len(peers)
 
 
+def real_check_date(value, assessment_year):
+    """A YYYY-MM-DD calendar date, not before the assessment year and not after today."""
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        return False
+    try:
+        checked = date.fromisoformat(value)
+    except ValueError:  # e.g. 2026-02-30
+        return False
+    return assessment_year <= checked.year and checked <= date.today()
+
+
 def validate(payload):
     required(payload.get("schema_version") == 1, "schema_version must be 1")
     species = payload.get("species")
@@ -95,6 +106,16 @@ def validate(payload):
             required(c.get("reviewed") is True and c.get("source_id") and c.get("category") in (*IUCN, "DD", "NE"), f"{aphia}: reviewed IUCN category/source required")
             sourced(c["source_id"], aphia)
             required(type(c.get("assessment_year")) is int and 1900 <= c["assessment_year"] <= date.today().year, f"{aphia}: assessment year required")
+            # `reviewed` only means the original assessment was read. Whether it is still the
+            # current IUCN assessment is a separate, explicitly sourced check (optional here;
+            # without it MCUI is withheld in scores()).
+            if "current_status_check" in c:
+                k = c["current_status_check"]
+                required(isinstance(k, dict) and type(k.get("is_current")) is bool and k.get("source_id")
+                         and real_check_date(k.get("checked_on"), c["assessment_year"]),
+                         f"{aphia}: current_status_check needs is_current, source_id and a real checked_on date "
+                         "between the assessment year and today")
+                sourced(k["source_id"], aphia)
             if "obis_trend" in c:
                 t = c["obis_trend"]
                 required(t.get("reviewed") is True and t.get("effort_adjusted") is True and t.get("source_id") and t.get("direction") in ("declining", "stable", "increasing"), f"{aphia}: OBIS trend must control sampling effort")
@@ -130,10 +151,13 @@ def scores(payload, *, food_weight=.5, min_peers=3):
             potency = median([r["pchembl"] for r in rows])
             references = len({r["reference_id"] for r in rows})
             evidence_factor = 1.0 if references >= 2 else .75
+            rank = percentile(potency, list(peers.values()))
             bio.append({"compound_id": compound, "stratum": [target, kind],
                         "peer_count": len(peers), "independent_references": references,
-                        "rank": round(percentile(potency, list(peers.values())), 2),
-                        "adjusted": percentile(potency, list(peers.values())) * evidence_factor})
+                        "median_pchembl": round(potency, 3),
+                        "reference_ids": sorted({r["reference_id"] for r in rows}),
+                        "rank": round(rank, 2), "evidence_factor": evidence_factor,
+                        "adjusted": rank * evidence_factor})
         mbpi = round(max((b["adjusted"] for b in bio), default=0), 1) if bio else None
 
         nutrition = s.get("nutrition", {})
@@ -155,6 +179,7 @@ def scores(payload, *, food_weight=.5, min_peers=3):
                     "method": n["method"], "sample_year": n["sample_year"],
                     "sample_region": n["sample_region"], "grade": n["grade"],
                     "source_id": n["source_id"], "reviewed": True,
+                    "percentile": round(percentile(n["per_100g"], list(nutrient_groups[name].values())), 2),
                     "peers": [{"aphia_id": t["aphia_id"], "value": t["nutrition"][name]["per_100g"],
                                "unit": t["nutrition"][name]["unit"], "basis": t["nutrition"][name]["basis"],
                                "sample_state": t["nutrition"][name]["sample_state"],
@@ -176,7 +201,14 @@ def scores(payload, *, food_weight=.5, min_peers=3):
 
         conservation = s.get("conservation", {})
         category = conservation.get("category")
-        mcui = IUCN.get(category)
+        current = conservation.get("current_status_check")
+        mcui_withheld = None
+        if conservation and not current:
+            mcui_withheld = "current_status_unverified"
+        elif current and not current["is_current"]:
+            mcui_withheld = "assessment_not_current"
+        # An old assessment is neither assumed current nor assumed void: it needs an explicit check.
+        mcui = IUCN.get(category) if mcui_withheld is None else None
         trend = conservation.get("obis_trend")
         if mcui is not None and trend:
             mcui = max(0, min(100, mcui + {"declining": 10, "stable": 0, "increasing": -10}[trend["direction"]]))
@@ -192,12 +224,24 @@ def scores(payload, *, food_weight=.5, min_peers=3):
             provenance.add(conservation["source_id"])
             if trend:
                 provenance.add(trend["source_id"])
+            if current:
+                provenance.add(current["source_id"])
         result.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"],
                        "scores": {"MFPI": mfpi, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi},
                        "missing": missing, "iucn_category": category or None,
                        "iucn_assessment_year": conservation.get("assessment_year"),
                        "iucn_review_older_than_10y": stale, "bioactivity_trace": bio,
-                       "food_trace": food_trace, "source_ids": sorted(provenance),
+                       "food_trace": food_trace,
+                       "conservation_trace": {
+                           "category": category, "assessment_year": conservation.get("assessment_year"),
+                           "source_id": conservation.get("source_id"),
+                           "obis_trend": trend,
+                           "current_status_verified": bool(current and current["is_current"]),
+                           "current_status_source_id": current["source_id"] if current else None,
+                           "current_status_checked_on": current["checked_on"] if current else None,
+                           "mcui_withheld_reason": mcui_withheld
+                       } if conservation else None,
+                       "source_ids": sorted(provenance),
                        "note": "Pilot scores; external calibration and back-testing required."})
     return {"method_version": VERSION, "generated_at": datetime.now(timezone.utc).isoformat(),
             "food_weight": food_weight, "min_peers": min_peers,

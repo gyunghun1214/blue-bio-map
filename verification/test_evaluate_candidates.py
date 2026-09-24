@@ -1,5 +1,6 @@
 """Scientific guardrails for the provisional offline scoring pipeline."""
 import copy
+from datetime import date, timedelta
 import sys
 import unittest
 from pathlib import Path
@@ -27,7 +28,8 @@ def fixture():
             "aquaculture_method": "synthetic cultivation review", "aquaculture_region": "synthetic region",
             "aquaculture_assessment_year": 2025, "aquaculture_limitations": "synthetic limitations",
             "conservation": {"category": ("CR", "LC", "DD")[i-1], "assessment_year": 2025,
-                             "source_id": "ref-4", "reviewed": True}
+                             "source_id": "ref-4", "reviewed": True,
+                             "current_status_check": {"is_current": True, "source_id": "ref-4", "checked_on": "2026-09-23"}}
         })
     return {"schema_version": 1, "sources": sources, "species": species}
 
@@ -41,6 +43,11 @@ class PilotScoringTests(unittest.TestCase):
         a, b, c = scores(payload)["species"]
         self.assertLess(a["scores"]["MBPI"], b["scores"]["MBPI"])
         self.assertEqual(len(a["bioactivity_trace"]), 1)
+        self.assertEqual(a["bioactivity_trace"][0]["median_pchembl"], 5)
+        self.assertEqual(a["bioactivity_trace"][0]["reference_ids"], ["ref-1"])
+        self.assertEqual(a["food_trace"]["nutrients"]["protein_g"]["value"], 10)
+        self.assertIn("percentile", a["food_trace"]["nutrients"]["protein_g"])
+        self.assertEqual(a["conservation_trace"]["assessment_year"], 2025)
         self.assertEqual(a["scores"]["MCUI"], 100)
         self.assertLess(a["scores"]["BBVI"], b["scores"]["BBVI"])
         self.assertIsNone(c["scores"]["MCUI"])  # Data Deficient is not zero urgency.
@@ -72,6 +79,44 @@ class PilotScoringTests(unittest.TestCase):
             "source_id": "ref-4", "reviewed": True, "effort_adjusted": False}
         with self.assertRaisesRegex(ValueError, "sampling effort"):
             scores(payload)
+
+    def test_historical_iucn_without_current_check_withholds_mcui(self):
+        # Sea cucumber case: the 2013 EN original assessment was read, but nobody confirmed it is current.
+        payload = fixture()
+        c = payload["species"][0]["conservation"]
+        c.update(category="EN", assessment_year=2013)
+        del c["current_status_check"]
+        a = scores(payload)["species"][0]
+        self.assertIsNone(a["scores"]["MCUI"])
+        self.assertIn("MCUI", a["missing"])
+        self.assertTrue(a["iucn_review_older_than_10y"])
+        self.assertEqual(a["iucn_category"], "EN")
+        self.assertFalse(a["conservation_trace"]["current_status_verified"])
+        self.assertEqual(a["conservation_trace"]["mcui_withheld_reason"], "current_status_unverified")
+        self.assertIsNotNone(a["scores"]["BBVI"])  # the value axis is not hidden
+        # Age alone does not void it: an explicit, sourced check that it is still current allows MCUI.
+        c["current_status_check"] = {"is_current": True, "source_id": "ref-4", "checked_on": "2026-09-23"}
+        self.assertEqual(scores(payload)["species"][0]["scores"]["MCUI"], 80)
+        c["current_status_check"]["is_current"] = False
+        a = scores(payload)["species"][0]
+        self.assertIsNone(a["scores"]["MCUI"])
+        self.assertEqual(a["conservation_trace"]["mcui_withheld_reason"], "assessment_not_current")
+        c["current_status_check"] = {"is_current": True}
+        with self.assertRaisesRegex(ValueError, "current_status_check"):
+            scores(payload)
+
+    def test_current_status_check_needs_a_real_past_date(self):
+        payload = fixture()
+        c = payload["species"][0]["conservation"]
+        c.update(category="EN", assessment_year=2013)
+        tomorrow = (date.today() + timedelta(days=1)).isoformat()
+        # Impossible, nonexistent, future, or earlier than the assessment itself.
+        for bad in ("2099-99-99", "2026-02-30", tomorrow, "2012-12-31", "2026-9-23", 20260923):
+            c["current_status_check"] = {"is_current": True, "source_id": "ref-4", "checked_on": bad}
+            with self.assertRaisesRegex(ValueError, "real checked_on date", msg=str(bad)):
+                scores(payload)
+        c["current_status_check"]["checked_on"] = "2024-02-29"  # a real leap day
+        self.assertEqual(scores(payload)["species"][0]["scores"]["MCUI"], 80)
 
     def test_food_requires_comparable_edible_basis_and_farming_context(self):
         payload = fixture()

@@ -1,3 +1,5 @@
 .sites-runtime/
 tmp/
 .claude/
+__pycache__/
+*.pyc
