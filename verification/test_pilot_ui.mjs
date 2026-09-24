@@ -61,4 +61,8 @@ const orphan=report(); delete orphan.species[0].food_trace;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>orphan});
 data=specimen(); await ctx.attach(data);
 assert.equal(data.species[0].assessment,undefined,'A score without its component evidence must be withheld');
+// A confirmed IUCN assessment is shown as context and never becomes an MCUI score.
+const seaCucumber={aphiaID:241776,live:true,info:{conservation:{status:'withheld_insufficient_evidence'}}};
+assert.match(ctx.blockers(seaCucumber).MCUI,/IUCN 평가 기록은 확인했으나/);
+assert.equal(ctx.pilot(seaCucumber,'MCUI'),null);
 console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard');

@@ -60,6 +60,9 @@ async function attachPilotAssessments(next) {
 }
 
 const CASE_NOTES = {"241776":{"title":"돌기해삼 원논문","url":"https://doi.org/10.1111/bph.16333","detail":"Holotoxin A₁의 Candida albicans SC5314 MIC·MFC 각 2 µg/mL은 원논문에서 직접 확인. 외부 CID의 구조 대응과 동일 표적·시험군 pChEMBL은 미확인. 사람 대상 약효 자료가 아님."},"377084":{"title":"다시마 원논문","url":"https://doi.org/10.1002/cbdv.202000233","detail":"Lj5 다당류 분획의 α-glucosidase IC50 153.27 ± 22.89 µg/mL 확인. 단일 분자 CID·InChIKey가 없으므로 현행 소분자 MBPI 입력에서 제외."}};
+// IUCN assessments confirmed on 2026-09-24 (DOI via Crossref, category/scope via the GBIF mirror of the IUCN checklist).
+// Shown as context only: a global assessment is not Korean current risk and is not converted into MCUI.
+const IUCN_NOTES = {"241776":{"url":"https://doi.org/10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en","detail":"IUCN 평가 기록 있음. 현행: Red List 2026-1 EN(Hamel & Mercier, 전 세계 범위, 판정 기준 원문 미확인). 과거: 2013-1판 EN A2bd(평가일 2010-05-19, 전 세계)로 현행판으로 대체됨. 운영 프로필의 'IUCN 검색 결과 없음' 메모와 다르며, 한국 현재 위험도나 MCUI 점수로 바꾸지 않음."},"342067":{"url":"https://doi.org/10.2305/IUCN.UK.2014-1.RLTS.T176085A1428473.en","detail":"IUCN 평가 기록 있음: Red List 2014-1 LC(Barratt & Allcock, 평가일 2010-05-10, 전 세계). 10년 넘은 평가이며 이후 재평가는 확인하지 못함. 운영 프로필은 미검토 상태이고 MCUI 점수로 바꾸지 않음."}};
 function assessmentBlockers(s){
   const i=s.info||{}, n=i.nutrition||{}, c=i.compounds||{}, k=i.conservation||{};
   const reasons={};
@@ -81,7 +84,9 @@ function assessmentBlockers(s){
     reasons.MBPI=base+' 기원종–단일 화합물 ID–표적·assay–pChEMBL–원논문과 동일 층 비교집단 검수 필요.';
   }
   if(pilotScore(s,'MCUI')===null){
-    reasons.MCUI=k.status==='withheld_insufficient_evidence'
+    reasons.MCUI=IUCN_NOTES[s.aphiaID]
+      ? 'IUCN 평가 기록은 확인했으나(아래 참고) 검수 입력으로 연결·승인되지 않아 산출 보류. 전 세계 평가를 한국 현재 위험도로 바꾸지 않음.'
+      : k.status==='withheld_insufficient_evidence'
       ? 'IUCN 검색 이력은 있으나 해당 종의 검수된 평가 등급·연도·평가 범위가 연결되지 않음.'
       : '검수된 IUCN 평가 등급·연도·평가 범위 미확인. 출현기록 수는 개체군 변화가 아님.';
   }
@@ -128,6 +133,7 @@ function showDecision(s){
     html+=`<h4>계산과 기준일</h4><p>MFPI: 영양 백분위·등급 80%, 가식부 10%, 양식 근거 10%. MBPI: 동일 표적·assay층 화합물 백분위 × 문헌 계수. BBVI: MFPI ${esc(info.foodWeight*100)}% + MBPI ${esc((1-info.foodWeight)*100)}%. MCUI는 별도 축. 산출 ${esc(info.generatedAt||'미기재')}. 모든 가중치와 점수는 검증 전 시범값입니다.</p>`;
     html+='<h4>원문·이용조건</h4><ul>'+a.source_ids.map(id=>`<li>${sourceLink(info.sources?.[id]?.url,id+' ↗')} · ${esc(info.sources?.[id]?.license||'이용조건 미확인')} · 조회 ${esc(info.sources?.[id]?.accessed||'미기재')}</li>`).join('')+'</ul>';
   }
+  if(IUCN_NOTES[s.aphiaID])html+=`<h4>IUCN 평가 기록 · 지표 입력 아님</h4><p>${esc(IUCN_NOTES[s.aphiaID].detail)} ${sourceLink(IUCN_NOTES[s.aphiaID].url,'IUCN 평가 DOI ↗')}</p>`;
   if(study)html+=`<h4>별도 원문 조사 · 지표 입력 아님</h4><p>${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`;
   html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p>';
   $('decision-detail').innerHTML=html;
@@ -188,7 +194,8 @@ function liveEvidence(s) {
     withheld_insufficient_evidence:row('보전평가','근거 부족으로 보류','pending')+row('검토 기록',`IUCN 검색 기록 ${count(k.search_record_count)} · 평가 ${count(k.assessment_count)}`)+(k.note?`<p class="fine">${esc(k.note)}</p>`:''),
     not_reviewed:row('보전평가','미검토','pending')
   }[k.status]||row('보전평가','정보 없음','pending');
-  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 근거</h3>${compounds}<h3>보전</h3>${conservation}`;
+  const iucn=IUCN_NOTES[s.aphiaID]?`<p class="fine">저장소 확인(2026-09-24): ${esc(IUCN_NOTES[s.aphiaID].detail)} ${sourceLink(IUCN_NOTES[s.aphiaID].url,'IUCN 평가 DOI ↗')}</p>`:'';
+  return `<h3>영양 근거</h3>${nutrition}${aquaculture}<h3>화합물 근거</h3>${compounds}<h3>보전</h3>${conservation}${iucn}`;
 }
 
 function renderLiveDetail(s) {
@@ -204,7 +211,7 @@ function renderLiveDetail(s) {
   const evidence=s.v2?liveEvidence(s):'';
   const score=s.v2?'활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.':esc(s.productionSummary);
   const pilot=s.assessment;
-  const pilotRows=pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
+  const pilotRows=pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미확인')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
   const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.':score;
   $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${evidence}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>`<p>${sourceLink(data.assessmentInfo.sources[id].url,'시범 산출 근거 '+id+' ↗')} · ${esc(data.assessmentInfo.sources[id].license)}</p>`).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 원자료 자동 수집 기능은 아직 없습니다.</p></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
