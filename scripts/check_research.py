@@ -80,12 +80,15 @@ def check_row(kind, r):
 
     status = r["data_status"]
     partial = kind == "bioactivity" and r["link_level"] == "compound"
+    full = kind == "bioactivity" and r["link_level"] == "assay"
     if status in {"no_data", "not_searched", "no_access"} and r["value"]:
         err.append(f"data_status={status}인데 value={r['value']!r}: 결측은 비워 두기 (0으로 쓰지 않기)")
     if status in {"found", "no_data", "no_access", "license_unclear"}:
         if not (r["source_url"] or r["doi"]):
             err.append("source_url·doi 모두 비어 있음 (어디서 찾았는지/찾지 못했는지)")
         need("accessed")
+    if status == "no_data":
+        need("claim", why=" (no_data: 검색한 이름·검색어·범위를 적어 재현 가능하게)")
     if status == "found":
         need("claim", "license", "limitations", why=" (found)")
         if not partial:
@@ -95,9 +98,11 @@ def check_row(kind, r):
     numeric = bool(NUMBER.fullmatch(r["value"]))
     if status in {"found", "license_unclear"} and numeric and not r["unit"] and not nutrition:
         err.append("숫자 value에 unit 없음")
+    if full and status in {"found", "license_unclear"}:
+        need("compound_name", "experiment_type", "target", "assay", why=" (link_level=assay)")
+        if r["value"] and not NUMBER.fullmatch(r["value"]):
+            err.append(f"link_level=assay인데 value={r['value']!r}: 숫자만 (active 같은 말은 claim에, 정량값이 없으면 compound)")
     if status == "found":
-        if kind == "bioactivity" and not partial:
-            need("compound_name", "experiment_type", "target", "assay", why=" (link_level=assay)")
         if nutrition:
             need("unit", "basis", why=" (영양값: 예 g, per 100 g edible portion)")
         if kind == "food" and r["topic"] in {"aquaculture", "fishery"}:
@@ -119,6 +124,8 @@ def check_row(kind, r):
             need("compound_name", why=" (link_level=compound)")
             if r["value"] or r["unit"]:
                 err.append("link_level=compound인데 value/unit 있음: 정량값이 있으면 assay로, 없으면 비우기")
+            if r["experiment_type"] or r["target"] or r["assay"]:
+                err.append("link_level=compound인데 experiment_type/target/assay 있음: 실험을 확인했으면 assay 행으로")
         if r["compound_id"] and not COMPOUND.fullmatch(r["compound_id"]):
             err.append(f"compound_id={r['compound_id']!r}: CID:숫자 또는 InChIKey")
         if r["experiment_type"] and r["experiment_type"] not in EXPERIMENT:

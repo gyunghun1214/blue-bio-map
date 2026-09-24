@@ -3,3 +3,4 @@ F-OK-1,Exemplum marinum (합성 예시),900000001,accepted,nutrition,protein,가
 F-OK-2,Exemplum marinum (합성 예시),900000001,accepted,fishery,annual catch,,,,no_access,https://example.org/synthetic,,2026-09-20,,self_checked,로그인 필요 (가상),,,,
 F-BAD-unit,Exemplum marinum (합성 예시),900000001,accepted,nutrition,iron,단위·기준량 누락 예,2.0,,found,https://example.org/synthetic,10.0000/synthetic.1,2026-09-20,합성 예시 - 실제 이용조건 아님,self_checked,합성 예시. 실제 측정값 아님,,,,
 F-BAD-zero,Exemplum marinum (합성 예시),900000001,accepted,nutrition,zinc,,0,,no_data,https://example.org/synthetic,,2026-09-20,,self_checked,,,,,
+F-OK-nodata,Exemplum marinum (합성 예시),900000001,accepted,nutrition,iodine,"검색어 'Exemplum marinum iodine', 가상 DB 전체, 결과 0건",,,no_data,https://example.org/synthetic,,2026-09-20,,self_checked,합성 예시,,,,

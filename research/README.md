@@ -71,7 +71,7 @@ python scripts/check_research.py research/examples   # 합성 예시로 동작 �
 | 값 | 뜻 | `value` | 출처·조회일 |
 |---|---|---|---|
 | `found` | 자료 있음 | 필수 | 필수, `license`·`limitations`도 필수 |
-| `no_data` | 찾아봤지만 자료 없음 | **비움** | 찾아본 곳 필수 |
+| `no_data` | 찾아봤지만 자료 없음 | **비움** | 찾아본 곳 필수, `claim`에 검색한 이름·검색어·범위(예: `'Halocynthia roretzi iodine', PubMed 전체, 결과 0건`) |
 | `not_searched` | 아직 조회 안 함 | **비움** | 없어도 됨 |
 | `no_access` | 접근 불가(유료, 로그인, 링크 깨짐) | **비움** | 시도한 곳 필수 |
 | `license_unclear` | 자료는 있으나 이용조건 미확정 | 적어도 됨(공개 전 확인) | 필수 |
@@ -86,10 +86,10 @@ python scripts/check_research.py research/examples   # 합성 예시로 동작 �
 
 | `link_level` | 뜻 | 필요한 것 | 비워 두는 것 |
 |---|---|---|---|
-| `assay` (완전 연결) | 종 → 화합물 → 정량 실험 → 논문 모두 확인 | 화합물명, 실험 유형, 표적, assay, 값, 단위 | - |
-| `compound` (부분 연결) | 종에서 화합물이 보고된 것만 확인, 정량 실험은 못 찾음 | 화합물명, claim, 출처 | `value`, `unit` (값이 있으면 오류). 모르는 표적·assay·실험 유형은 비워 둔다 |
+| `assay` (완전 연결) | 종 → 화합물 → 정량 실험 → 논문 모두 확인 | 화합물명, 실험 유형, 표적, assay, 값(숫자), 단위. `license_unclear`여도 실험 정보는 필요 | - |
+| `compound` (부분 연결) | 종에서 화합물이 보고된 것만 확인, 정량 실험은 못 찾음 | 화합물명, claim, 출처 | `value`, `unit`, `experiment_type`, `target`, `assay` (하나라도 있으면 오류) |
 
-부분 연결 행은 확인하지 못한 실험 정보를 채우지 않아도 검사를 통과한다. 나중에 정량 실험 논문을 찾으면 행을 고치지 말고 `assay` 행을 새로 추가한다.
+`active`처럼 말로 된 결과는 `value`에 쓰지 않고 `claim`에 적는다. 정량값이 없으면 `assay`가 아니라 `compound` 행이다. 부분 연결 행은 확인하지 못한 실험 정보를 채우지 않아도 검사를 통과한다. 나중에 정량 실험 논문을 찾으면 행을 고치지 말고 `assay` 행을 새로 추가한다.
 
 **② 식량 (`food`)**: `topic`은 `nutrition`·`edible_portion`·`aquaculture`·`fishery`. `item`에 성분·항목(예: `protein`)을 적는다. 영양값은 `unit`과 `basis`(예: `per 100 g edible portion`, `per 100 g dry weight`)가 모두 필요하고 `sample_state`(생·건조·조리)도 적는다. 양식·어획은 `region`과 `period`가 필요하다.
 
