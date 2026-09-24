@@ -27,14 +27,20 @@ try{
   ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);m.error?p.rej(Error(m.error.message)):p.res(m.result);}};
   await new Promise(r=>ws.onopen=r);
   await send('Page.enable');await send('Runtime.enable');
+  if(process.env.FIXTURE){
+    const fx=fs.readFileSync(process.env.FIXTURE,'utf8');
+    const reply=k=>`Promise.resolve(new Response(JSON.stringify(FX.${k}),{status:200,headers:{'content-type':'application/json'}}))`;
+    await send('Page.addScriptToEvaluateOnNewDocument',{source:`{const FX=${fx};window.fetch=(o=>(u,...a)=>{const s=String(u);if(s.includes('/rest/v1/species_profiles'))return ${reply('profiles')};if(s.includes('/rest/v1/species_map_cells'))return ${reply('cells')};return o(u,...a);})(window.fetch);}`});
+    console.log('Using fixture',process.env.FIXTURE);
+  }
   const errors=[];ws.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);});
 
   // ---------- Desktop, real production API ----------
   await viewport(1440,1000,false);
   const st=await load();
-  check('Desktop live: connection state shows actual profile count',st==='운영 DB 연결됨 · 3종',st);
+  check('Desktop live: connection state shows actual profile count',st==='운영 DB 연결됨 · 8종',st);
   const note=await evaluate("document.getElementById('collection-note').textContent");
-  check('Live note uses received profile count (not fixed 2종)',note.includes('발행된 3종')&&!note.includes('2종'),note);
+  check('Live note uses received profile count (not fixed 2종)',note.includes('발행된 8종')&&!note.includes('2종'),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
   check('List: sea cucumber card shows 출현자료 미수집 (not 0건)',cards.some(c=>c.includes('해삼')&&c.includes('출현자료 미수집')&&!c.includes('0건')),JSON.stringify(cards));
 
@@ -77,6 +83,49 @@ try{
   check('Demo mode: separate 3 species with 1° grid map',demo.startsWith('별도 시연 자료 · 3종')&&Number((demo.match(/shapes=(\d+)/)||[])[1])>0,demo);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-demo-map',false);
 
+  // ---------- Published 1° map cells (live) ----------
+  await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
+  for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('운영 DB'))break;}
+  const shapes=()=>evaluate("document.querySelectorAll('#map path.leaflet-interactive').length");
+  const expectCells={836033:1,342067:1,241776:0,494972:4,145721:4,372119:3,506159:2,250680:2};
+  const drawn={};for(const a of Object.keys(expectCells)){await pick(a);await sleep(150);drawn[a]=await shapes();}
+  check('Live map: cells drawn per species match the published cells',JSON.stringify(drawn)===JSON.stringify(expectCells),JSON.stringify(drawn));
+  check('Live map title says operational 1° cells',(await evaluate("document.getElementById('map-source').textContent")).includes('운영 지도'));
+  t=await pick(836033);
+  check('Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review',['지도 셀','공개 셀','왜 공개할 수 있는가','CC BY-NC 322건','육지 위 좌표','운영 DB에서 검토 중인 기존 기록','1°를 적용','기존 OBIS 시험 수집 26건'].every(x=>t.includes(x)),t);
+  check('Merged PR #1: evidence coverage row next to the map section, scores still withheld',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('통합점수 산출 보류')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
+  const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
+  check('Cell popup: period, sea area, source, licence, spatial resolution',['기간 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','조사 지점 2곳 (기록 3건','kbif','CC0 1.0','원좌표·개체수·분포 범위가 아닙니다'].every(x=>popup.includes(x)),popup);
+  check('Cells use dashed style distinct from demo grid',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray'))"));
+  await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
+  t=await pick(494972);
+  check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 성분 값\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
+  await detailEl();await shot('desktop-live-hijiki');
+  t=await pick(241776);
+  check('Sea cucumber live: map held for sensitivity review, no cells',(await shapes())===0&&t.includes('지도 셀을 만들지 않음'),t);
+  const plain=await evaluate("document.body.innerText");
+  check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
+  // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
+  await pick(494972);
+  const tiles=host=>evaluate(`[...document.querySelectorAll('#map img.leaflet-tile-loaded')].filter(i=>i.src.includes('${host}')).length`);
+  const waitTiles=async host=>{for(let i=0;i<60;i++){if(await tiles(host)>0)return true;await sleep(500);}return false;};
+  // screenshots only after every visible tile finished (GEBCO WMS is slow)
+  const settle=async()=>{for(let i=0;i<60;i++){if(!(await evaluate("document.querySelectorAll('#map img.leaflet-tile:not(.leaflet-tile-loaded)').length")))break;await sleep(500);}await sleep(500);};
+  await evaluate("document.querySelector('[data-basemap=satellite]').click();1");
+  check('Satellite basemap: NASA GIBS tiles load, cells kept, bright style',await waitTiles('gibs.earthdata.nasa.gov')&&(await shapes())===4&&await evaluate("document.getElementById('map').classList.contains('map-dark')&&document.querySelector('[data-basemap=satellite]').getAttribute('aria-pressed')==='true'"));
+  await settle();await shot('desktop-basemap-satellite');
+  await evaluate("document.querySelector('[data-basemap=depth]').click();1");
+  check('Depth basemap: GEBCO tiles load, cells kept',await waitTiles('wms.gebco.net')&&(await shapes())===4&&(await tiles('gibs.earthdata.nasa.gov'))===0);
+  await settle();await shot('desktop-basemap-depth');
+  await evaluate("document.querySelector('[data-basemap=basic]').click();1");await sleep(300);
+  check('Basic basemap: 1:10m outline, no external tiles',(await evaluate("document.querySelectorAll('#map img.leaflet-tile').length"))===0&&!(await evaluate("document.getElementById('map').classList.contains('map-dark')"))&&(await shapes())===4);
+  await send('Network.enable');await send('Network.setCacheDisabled',{cacheDisabled:true});await send('Network.setBlockedURLs',{urls:['*gibs.earthdata.nasa.gov*']});
+  await evaluate("document.querySelector('[data-basemap=satellite]').click();1");
+  let fell='';for(let i=0;i<40;i++){await sleep(250);fell=await evaluate("document.getElementById('basemap-status').textContent");if(fell)break;}
+  check('Tile failure falls back to basic with a message',fell.includes('기본 지도로 바꿨습니다')&&(await evaluate("document.querySelector('[data-basemap=basic]').getAttribute('aria-pressed')"))==='true'&&(await shapes())===4,fell);
+  await send('Network.setBlockedURLs',{urls:[]});await send('Network.setCacheDisabled',{cacheDisabled:false});
+  await evaluate("try{localStorage.removeItem('basemap')}catch{};1");
+
   // ---------- Mobile 390px ----------
   await viewport(390,844,true);
   await load();
@@ -86,13 +135,18 @@ try{
     check(`Mobile 390px ${name}: no horizontal overflow`,ov.doc<=ov.vw&&ov.wide===0,JSON.stringify(ov));
     await shot(name);
   }
+  await pick(494972);await evaluate("document.querySelector('.map-pane').scrollIntoView();1");await sleep(1500);await shot('mobile-live-hijiki-map',false);
+  await detailEl();
+  const pov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");
+  check('Mobile 390px 톳 with cells: no horizontal overflow',pov.doc<=pov.vw&&pov.wide===0,JSON.stringify(pov));
+  await shot('mobile-live-hijiki');
 
   // ---------- Failure / empty / v1-only responses (fetch mocked in page) ----------
   await viewport(1440,1000,false);
   const mocks={
     'api-error':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('x',{status:500})):o(u,...a))(window.fetch);",
     'api-empty':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('[]',{status:200,headers:{'content-type':'application/json'}})):o(u,...a))(window.fetch);",
-    'v1-only':"window.fetch=(o=>async(u,...a)=>{const r=await o(u,...a);if(!String(u).includes('/rest/v1/'))return r;const rows=await r.json();for(const p of rows){const s=p.evidence_summary;for(const k of ['summary_version','nutrition','compounds','conservation','production','occurrence_status'])delete s[k];p.production_summary='생산·영양·생리활성·보전 근거 미검토. 점수 미산출.';}return new Response(JSON.stringify(rows),{status:200,headers:{'content-type':'application/json'}});})(window.fetch);"
+    'v1-only':"window.fetch=(o=>async(u,...a)=>{const r=await o(u,...a);if(!String(u).includes('/rest/v1/species_profiles'))return r;const rows=await r.json();for(const p of rows){const s=p.evidence_summary;for(const k of ['summary_version','nutrition','compounds','conservation','production','occurrence_status','map'])delete s[k];p.production_summary='생산·영양·생리활성·보전 근거 미검토. 점수 미산출.';}return new Response(JSON.stringify(rows),{status:200,headers:{'content-type':'application/json'}});})(window.fetch);"
   };
   let scriptId;
   for(const [name,src] of Object.entries(mocks)){

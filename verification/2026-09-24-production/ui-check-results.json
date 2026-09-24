@@ -1,0 +1,167 @@
+[
+  {
+    "name": "Desktop live: connection state shows actual profile count",
+    "status": "PASS",
+    "detail": "운영 DB 연결됨 · 8종"
+  },
+  {
+    "name": "Live note uses received profile count (not fixed 2종)",
+    "status": "PASS",
+    "detail": "운영 DB에서 발행된 8종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 시연 자료와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙, 1° 격자)을 통과한 GBIF 기록만 셀로 표시하고 원좌표는 공개하지 않습니다. 점수는 아직 발행하지 않았습니다."
+  },
+  {
+    "name": "List: sea cucumber card shows 출현자료 미수집 (not 0건)",
+    "status": "PASS",
+    "detail": "[\"발행된 자료 요약 참굴 Magallana gigas 공개 셀 1셀 · 지점 2곳\",\"발행된 자료 요약 홍합(참담치) Mytilus coruscus 공개 셀 2셀 · 지점 2곳\",\"발행된 자료 요약 톳 Sargassum fusiforme 공개 셀 4셀 · 지점 11곳\",\"발행된 자료 요약 우뭇가사리 Gelidium elegans 공개 셀 3셀 · 지점 4곳\",\"발행된 자료 요약 살오징어 Todarodes pacificus 공개 셀 1셀 · 지점 1곳\",\"발행된 자료 요약 멍게 Halocynthia roretzi 공개 셀 2셀 · 지점 2곳\",\"발행된 자료 요약 해삼 Apostichopus japonicus 수집된 기록 출현자료 미수집\",\"발행된 자료 요약 미역 Undaria pinnatifida 공개 셀 4셀 · 지점 6곳\"]"
+  },
+  {
+    "name": "Oyster: nutrition 144 / measured 107 / calculated 37 / AFCD 25 / unit 4 / basis 144",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n2곳\n셀에 쓴 기록\n3건\n셀 기록 연도\n2025\n\n기존 OBIS 시험 수집 26건(일본 갯벌 조사)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 322건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n383건\nCC0·CC BY 기록\n61건\n육지 위 좌표(OBIS 해안선 기준)\n32건\n운영 DB에서 검토 중인 기존 기록\n26건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: aquaculture 4 shown as evidence records, not production",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n2곳\n셀에 쓴 기록\n3건\n셀 기록 연도\n2025\n\n기존 OBIS 시험 수집 26건(일본 갯벌 조사)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 322건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n383건\nCC0·CC BY 기록\n61건\n육지 위 좌표(OBIS 해안선 기준)\n32건\n운영 DB에서 검토 중인 기존 기록\n26건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: conservation withheld",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n2곳\n셀에 쓴 기록\n3건\n셀 기록 연도\n2025\n\n기존 OBIS 시험 수집 26건(일본 갯벌 조사)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 322건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n383건\nCC0·CC BY 기록\n61건\n육지 위 좌표(OBIS 해안선 기준)\n32건\n운영 DB에서 검토 중인 기존 기록\n26건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Oyster: compounds 미수집, occurrences 26 kept",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n2곳\n셀에 쓴 기록\n3건\n셀 기록 연도\n2025\n\n기존 OBIS 시험 수집 26건(일본 갯벌 조사)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 322건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n383건\nCC0·CC BY 기록\n61건\n육지 위 좌표(OBIS 해안선 기준)\n32건\n운영 DB에서 검토 중인 기존 기록\n26건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: 122 compounds, no quantitative activity",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: no efficacy claim",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: CMNPD source and NC-SA terms visible in compound summary",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: 출현자료 미수집, not 위치 공개 검토 중",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber: conservation withheld, nutrition 미수집",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber map: no fabricated positions",
+    "status": "PASS",
+    "detail": "출현자료를 수집하지 않은 종입니다. 지도에 표시할 위치가 없으며, 배경 지도는 분포를 뜻하지 않습니다. | 해당 없음 | shapes=0"
+  },
+  {
+    "name": "Squid: 미수집 vs 미검토 distinguished",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n살오징어\n\nTodarodes pacificus\n\nAphiaID\n342067\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n1906년에 수집된 박물관 표본 자료입니다. 현재 서식 현황이나 자원량을 나타내지 않습니다.\n\n수집된 기록\n2건\n관측 기간\n1906\n원자료 학명\nTodarodes pacificus\n위치 공개 검토 중\n좌표 불확실성 미기재 2건 · 육지 위 품질경고 0건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n1곳\n셀에 쓴 기록\n5건\n셀 기록 연도\n2022\n\n조사 지점이 1곳뿐인 셀 1개: 1° 범위 안의 대략적인 조사 위치가 드러납니다.\n\n기존 OBIS 시험 수집 2건(1906년 표본)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 169건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n174건\nCC0·CC BY 기록\n5건\n제외\n없음\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n미검토\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nNational Museum of Natural History Invertebrate Zoology Collections ↗\n\n2022_nsmk_smpl_ms_514 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "No CMNPD raw data / coordinates in page",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Compare table: per-species nutrition/compounds/conservation from API",
+    "status": "PASS",
+    "detail": "탐색 후보 8종의 자료 연결 현황\n확인 항목\t참굴\nMagallana gigas\n\t홍합(참담치)\nMytilus coruscus\n\t톳\nSargassum fusiforme\n\t우뭇가사리\nGelidium elegans\n\t살오징어\nTodarodes pacificus\n\t멍게\nHalocynthia roretzi\n\t해삼\nApostichopus japonicus\n\t미역\nUndaria pinnatifida\n\n학명·식별자\tWoRMS 확인\nAphiaID 836033\n\tWoRMS 확인\nAphiaID 506159\n\tWoRMS 확인\nAphiaID 494972\n\tWoRMS 확인\nAphiaID 372119\n\tWoRMS 확인\nAphiaID 342067\n\tWoRMS 확인\nAphiaID 250680\n\tWoRMS 확인\nAphiaID 241776\n\tWoRMS 확인\nAphiaID 145721\n\n출현기록\t1셀 · 조사 지점 2곳\n기록 3건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t2셀 · 조사 지점 2곳\n기록 13건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t4셀 · 조사 지점 11곳\n기록 35건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t3셀 · 조사 지점 4곳\n기록 15건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t1셀 · 조사 지점 1곳\n기록 5건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t2셀 · 조사 지점 2곳\n기록 11건 · 공개 1° 셀 · GBIF CC0·CC BY\n\t미수집\t4셀 · 조사 지점 6곳\n기록 6건 · 공개 1° 셀 · GBIF CC0·CC BY\n\n식량 근거 · MFPI\t영양 144건\n실측 107건 · 계산 37건 · 기준량 가정 144건\n\t미수집\t미수집\t미수집\t미수집\t미수집\t미수집\t미수집\n생리활성 · MBPI\t미수집\t미수집\t미수집\t미수집\t미수집\t미수집\t보고 화합물 122개\n정량 활성 자료 없음\n\t미수집\n보전 평가 · MCUI\t근거 부족으로 보류\t미검토\t미검토\t미검토\t미검토\t미검토\t근거 부족으로 보류\t미검토\n통합점수 · BBVI\t산출 보류\t산출 보류\t산출 보류\t산출 보류\t산출 보류\t산출 보류\t산출 보류\t산출 보류"
+  },
+  {
+    "name": "Sources: AFCD/CMNPD show their own change notes, not OBIS labels",
+    "status": "PASS",
+    "detail": "참굴 · 학명\nMolluscaBase eds. (2026). MolluscaBase. Magallana gigas (Thunberg, 1793). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033 on 2026-09-22\nWoRMS 원문 ↗ · WoRMS 이용조건 · CC BY 텍스트\n홍합(참담치) · 학명\nMolluscaBase eds. (2026). MolluscaBase. Mytilus coruscus A. A. Gould, 1861. Accessed through: World Register of Marine Species at: https:"
+  },
+  {
+    "name": "Demo mode: separate 3 species with 1° grid map",
+    "status": "PASS",
+    "detail": "별도 시연 자료 · 3종 | shapes=14 | 기존 시연 자료의 1° 격자입니다. 운영 DB 자료와 별개입니다."
+  },
+  {
+    "name": "Live map: cells drawn per species match the published cells",
+    "status": "PASS",
+    "detail": "{\"145721\":4,\"241776\":0,\"250680\":2,\"342067\":1,\"372119\":3,\"494972\":4,\"506159\":2,\"836033\":1}"
+  },
+  {
+    "name": "Live map title says operational 1° cells",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n지도 셀\n공개 셀\n1개 · 1°×1°\n조사 지점\n2곳\n셀에 쓴 기록\n3건\n셀 기록 연도\n2025\n\n기존 OBIS 시험 수집 26건(일본 갯벌 조사)은 기록 검토 중이라 셀에 넣지 않았습니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 322건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n383건\nCC0·CC BY 기록\n61건\n육지 위 좌표(OBIS 해안선 기준)\n32건\n운영 DB에서 검토 중인 기존 기록\n26건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n144건\n실측 · 계산\n실측 107건 · 계산 37건\n근거 기록\nAFCD 근거 기록 25건\n불확실성\n단위 미확정 4건 · 기준량 가정 144건\n\n기준량(100 g 가식부)은 원자료에 명시되지 않아 가정한 값입니다. 계산값은 실측값과 구분해 집계했습니다. 근거 기록마다 조건이 달라 평균·순위로 쓰지 않습니다.\n\n보조 · 양식 표시 근거 4건: AFCD에서 양식(farmed)으로 표시된 근거 기록 수이며 생산량 통계가 아닙니다.\n\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 2건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Cell popup: period, sea area, source, licence, spatial resolution",
+    "status": "PASS",
+    "detail": "참굴 · 공개 1° 셀\n기간 2025 (2016–2026 구간)\n해역 LME Yellow Sea · 국가 KR\n공간 해상도 1°×1° · 가장 짧은 변 약 88 km\n조사 지점 2곳 (기록 3건 · 불확실성 결측 3건)\n출처 01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 · CC0 1.0\n셀 범위 36–37°N, 126–127°E. 원좌표·개체수·분포 범위가 아닙니다."
+  },
+  {
+    "name": "Cells use dashed style distinct from demo grid",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n톳\n\nSargassum fusiforme\n\nAphiaID\n494972\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\nGBIF에 공개된 한국 연안 관찰·표본 기록(CC0·CC BY)입니다. 공개 기준을 통과한 기록만 1° 셀로 묶었습니다.\n\n출현기록\nGBIF 공개 기록 35건\n관측 기간\n2009–2021\n원자료 학명\nSargassum fusiforme (Harvey) Setchell, 1931\n\nGBIF에서 CC0·CC BY 레코드만 가져왔습니다. 조사 노력이 고르지 않아 분포 전체, 현재 서식 범위, 개체수, 자원량을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n4개 · 1°×1°\n조사 지점\n11곳\n셀에 쓴 기록\n35건\n셀 기록 연도\n2009–2021\n\n조사 지점이 1곳뿐인 셀 2개: 1° 범위 안의 대략적인 조사 위치가 드러납니다.\n\n왜 공개할 수 있는가\n이용조건\nCC0·CC BY 4.0 기록만 썼습니다. CC BY-NC 1,003건은 비상업 이용 결정 전이라 쓰지 않았습니다.\n좌표 품질\nOBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.\n불확실성 결측\n0으로 보지 않고 1° 셀에서만 썼습니다.\n민감도\n아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.\n중복·기존 자료\n같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.\n비공개\n원좌표와 기록 ID는 공개하지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n1,049건\nCC0·CC BY 기록\n46건\n같은 표본 중복\n10건\n육지 위 좌표(OBIS 해안선 기준)\n1건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n미수집\n보전\n보전평가\n미검토\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\n2020_biodiversity_new_contents ↗\n\n2021_kbif_joint_survey_seaweed_specimen_information_nsmk_46 ↗\n\n2020_nsmk_smpl_sw ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Sea cucumber live: map held for sensitivity review, no cells",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n해삼\n\nApostichopus japonicus\n\nAphiaID\n241776\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n출현 기록은 수집하지 않았습니다. WoRMS 승인학명과 CMNPD 화합물 보고 개수만 요약합니다.\n\n출현자료\n미수집\n출현자료 미수집\n이 종은 출현 기록을 수집하지 않아 지도에 표시할 위치가 없습니다.\n\n출현 기록을 수집하지 않았습니다. 분포나 서식 현황을 나타내지 않습니다.\n\n지도 셀\n공개 셀\n없음\n왜 공개할 수 있는가\n지도 셀을 만들지 않음\n불법 채취 압력이 있어 민감도 검토 전에는 셀을 만들지 않습니다.\n조회와 제외 GBIF 2026-09-24\n조회 기록(2000년 이후)\n288건\nCC0·CC BY 기록\n4건\n민감도 검토 전 보류 종\n4건\n\n사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.\n\n영양 근거\n영양 성분 값\n미수집\n화합물 근거\n보고 화합물\n122개\n정량 활성 자료\n확인한 자료에서 없음\n\n문헌에 보고된 화합물 개수이며 활성 실험 건수가 아닙니다. 확인한 범위에서 정량 생리활성 자료는 없습니다. 화합물명·구조는 공개하지 않습니다.\n\n출처 CMNPD ↗ · CC BY-NC-SA 4.0 — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.\n\n보전\n보전평가\n근거 부족으로 보류\n검토 기록\nIUCN 검색 기록 3건 · 평가 0건\n\nIUCN 웹 검색에서 결과를 찾지 못했지만, 공식 미평가(NE)나 낮은 위험을 뜻하지 않습니다. 근거 부족으로 보전평가를 보류합니다.\n\n통합점수 산출 보류\n활용·보전 근거를 검수하는 중이라 점수를 계산하지 않았습니다. 미수집·보류 항목을 0점으로 처리하지 않습니다.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nComprehensive Marine Natural Products Database v1.0 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "Page shows no raw coordinates",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Mobile 390px mobile-sea-cucumber: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390,\"wide\":0}"
+  },
+  {
+    "name": "Mobile 390px mobile-oyster: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390,\"wide\":0}"
+  },
+  {
+    "name": "Mobile 390px 톳 with cells: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390,\"wide\":0}"
+  },
+  {
+    "name": "API failure: error shown, no stale data",
+    "status": "PASS",
+    "detail": "{\"state\":\"불러오기 실패\",\"error\":\"발행 자료를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.\",\"list\":\"다시 불러오기를 눌러 주세요.\",\"detail\":\"\"}"
+  },
+  {
+    "name": "Empty API response: \"아직 발행된 종이 없습니다\"",
+    "status": "PASS",
+    "detail": "{\"state\":\"연결됨 · 발행 자료 없음\",\"error\":\"\",\"list\":\"아직 발행된 종이 없습니다.\",\"detail\":\"\"}"
+  },
+  {
+    "name": "v2 keys absent: falls back to production_summary, no fake 0/미수집",
+    "status": "PASS",
+    "detail": "발행된 자료 요약\n학명 연결 확인\n참굴\n\nMagallana gigas\n\nAphiaID\n836033\n\n국명은 탐색용 표시명입니다.\n\n이번 수집에서 확인한 것\n\n일본 오이타현 나카츠 갯벌 조사 자료입니다. 원자료의 Crassostrea gigas를 승인학명 Magallana gigas에 연결했습니다.\n\n수집된 기록\n26건\n관측 기간\n2008–2014\n원자료 학명\nCrassostrea gigas\n위치 공개 검토 중\n좌표 불확실성 미기재 26건 · 육지 위 품질경고 6건. 좌표를 이동하거나 결측을 0으로 바꾸지 않았습니다.\n\n선별 수집한 과거 기록입니다. 한국 EEZ, 현재 분포, 개체수 또는 전체 생물다양성을 대표하지 않습니다. 이용조건 때문에 제외된 종과 자료가 있습니다.\n\n통합점수 산출 보류\n생산·영양·생리활성·보전 근거 미검토. 점수 미산출.\n출처와 이용조건\nWoRMS · 학명 원문 ↗\n\nSurvey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗\n\nAquatic Food Composition Database (AFCD) ↗\n\n01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗\n\n인용문과 이용조건 보기 →\n\n발행 2026-09-23 · 원자료 자동 수집 기능은 아직 없습니다."
+  },
+  {
+    "name": "No uncaught page errors",
+    "status": "PASS",
+    "detail": ""
+  }
+]

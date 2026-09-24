@@ -47,7 +47,7 @@ snapshot={'collectedAt':'2026-09-22','bounds':[[30,122],[43,136]],'geometry':'PO
 (out/'data.json').write_text(json.dumps(snapshot,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps([{'name':s['label'],'records':s['recordCount'],'cells':len(s['cells']),'years':[s['yearStart'],s['yearEnd']],'excluded':s['excluded']} for s in species],ensure_ascii=False))
 
-assets=[('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','vendor/leaflet.js'),('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','vendor/leaflet.css'),('https://raw.githubusercontent.com/Leaflet/Leaflet/v1.9.4/LICENSE','vendor/LEAFLET-LICENSE'),('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson','countries.json')]
+assets=[('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','vendor/leaflet.js'),('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','vendor/leaflet.css'),('https://raw.githubusercontent.com/Leaflet/Leaflet/v1.9.4/LICENSE','vendor/LEAFLET-LICENSE')]  # countries.json (1:10m outline) is built by prepare_basemap.py
 def asset(pair):
     url,name=pair
     data=urlopen(url,timeout=45).read()

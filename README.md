@@ -24,7 +24,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 
 ## 아직 구현·검증하지 않은 항목
 
-영양·가식부·생산 근거, 종–화합물–실험 연결, IUCN 보전 평가, MBPI/MFPI/MCUI/BBVI 계산 및 검증, 자동 갱신, 사용자별 권한, 정밀 좌표 승인, 법률 적용 판정.
+검수된 실제 영양·가식부·생산 근거, 종–화합물–실험 연결, IUCN 보전 평가와 사후 검증, 자동 갱신, 사용자별 권한, 정밀 좌표 승인, 법률 적용 판정. 지표의 시범 산출 코드는 추가했지만 실제 자료에 대한 점수는 아직 발행하지 않았다.
 
 ## 2026-09-22 확인
 
@@ -46,3 +46,28 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 출현자료가 없는 종(`occurrence_status=not_collected`)은 "출현자료 미수집"으로 표시하며, 지도 도형은 만들지 않는다. CMNPD 화합물 요약에는 출처와 CC BY-NC-SA 4.0(비상업·동일조건) 안내를 함께 표시하고, 개별 화합물 자료는 요청하지 않는다.
 
 검증: 서버를 띄운 상태에서 `node verification/uicheck.mjs <출력폴더>`를 실행한다. Chrome headless와 DevTools 프로토콜을 쓰며 추가 의존성은 없다. 2026-09-23 결과는 `verification/2026-09-23/`에 있다(24 PASS, 화면 캡처 포함).
+
+## 운영 지도 셀 (2026-09-24, 운영 DB 반영 · 사이트 온라인 미배포)
+- 운영 모드는 `species_profiles`와 함께 `species_map_cells`(공개 1° 셀)를 읽어 지도에 점선 셀로 표시한다. 팝업에는 기간·해역(LME)·국가·출처·이용조건·해상도(실제 가장 짧은 변)가 나온다. 원좌표와 기록 ID는 API에 없다.
+- 셀 자료: `output/database/development/phase3_map/`(GBIF 입력 고정·SQL), `output/database/publication/publish_map_cells.sql`(발행). 기준은 `output/database/publication/OCCURRENCE_REVIEW.md`.
+- 임시 '지도 시제품' 보기와 `dist/map-prototype.json`은 운영 반영 후 삭제했다.
+- 검증: `python -m http.server 8765 --directory dist` 실행 후 `node verification/uicheck.mjs verification/<날짜>`. 운영 반영 전에는 `FIXTURE=<rest_fixture.json>`으로 로컬 DB 결과를 대신 넣어 검증할 수 있다. 2026-09-24: 로컬 DB 기준 33 PASS, 운영 API 기준 33 PASS.
+
+## 배경 지도 선택 (2026-09-24, 로컬 · 온라인 미배포)
+- 지도 제목 줄의 [기본 / 위성 / 수심] 버튼으로 바꾼다. 선택은 브라우저에만 기억한다(localStorage).
+  - 기본: Natural Earth 1:10m 경계(`scripts/prepare_basemap.py`로 지도 범위만 잘라 `dist/countries.json` 생성, 427 KB). 외부 요청이 없다.
+  - 위성: NASA GIBS Blue Marble(WMTS, 키 불필요). 출처 표시 문구는 GIBS 안내를 따른다.
+  - 수심: GEBCO_2026 WMS. 출처 표시와 "항해용 아님" 문구를 함께 넣었다.
+- 외부 타일을 불러오지 못하면(전환 후 4회 실패, 성공 0회) 기본 지도로 돌아가고 안내 문구를 띄운다.
+- 종을 고르면 그 종의 셀 범위로 확대한다. '전체 범위'로 되돌릴 수 있다. 데스크톱 지도는 높이를 고정하고, 스크롤할 때 화면에 붙어 있다.
+- 검증: 37 PASS(`verification/2026-09-24-basemap/`). 위성·수심 타일 로드, 셀 유지, 위성 서버를 막았을 때 기본 지도로 전환되는지 포함.
+
+## 근거 현황 표시
+
+발행 자료 화면은 학명, 출현, 영양, 정량 생리활성, 보전평가의 **자료 연결 여부**를 5개 항목으로 보여준다. 이는 제안서의 정보충분도를 검토하기 위한 초기 현황이며 자료 품질, 지표 점수, 자원 가치, 미탐색 후보 판정이 아니다. 보고 화합물 개수만 있으면 정량 활성 근거로 세지 않는다. 미수집, 보류, 누락된 기록 수는 0으로 대체하지 않는다. 영양 단위·기준량, 실험 조건, IUCN 평가 범위가 검수되기 전에는 MFPI/MBPI/MCUI/BBVI를 계산하지 않는다.
+
+## 시범 지표 산출기
+
+`python scripts/evaluate_candidates.py tmp/curated-evidence.json`은 출처와 검수 여부가 명시된 입력을 읽어 `tmp/assessments.json`에 **검증 전** 결과를 쓴다. 기본 실행은 공개 `dist/`를 수정하지 않는다. 입력 형식과 산출 조건은 [근거 입력 문서](docs/evidence-schema.md)에 있다. `python -m unittest discover -s verification -p 'test_*.py'`로 합성 사례의 불변조건을 확인할 수 있다.
+
+별도 검토를 거쳐 `--out dist/assessments.json`으로 내보낸 경우에만 발행 프로필의 AphiaID·학명이 일치하는 종의 시범 지표를 화면에 읽는다. 두 축이 모두 산출된 종만 매트릭스에 배치한다. 운영 요약의 영양 건수나 CMNPD 화합물 건수만으로 점수를 만들지 않는다. 현재 저장소에는 공개용 `assessments.json`이 없다.
