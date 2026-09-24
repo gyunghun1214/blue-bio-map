@@ -13,3 +13,8 @@
 .basemap-switch{display:inline-flex;margin-left:auto;margin-right:8px;border:1px solid var(--line);border-radius:5px;overflow:hidden}.basemap-switch button{background:#fff;border:0;border-right:1px solid var(--line);padding:4px 9px;font-size:12px;color:var(--ink)}.basemap-switch button:last-child{border-right:0}.basemap-switch button[aria-pressed=true]{background:var(--navy);color:#fff}.basemap-status{font-size:11px;color:var(--amber);margin-right:8px}#map.map-dark{background:#0b1f33}#map.map-dark .geo-label{color:#fff;text-shadow:0 1px 3px #000,0 0 2px #000}#map.map-dark .sea-label{color:#d6ecf5;text-shadow:0 1px 3px #000;opacity:1}
 .map-pane{align-self:start;position:sticky;top:12px}.map-pane #map{flex:none;height:min(680px,calc(100vh - 170px))}@media(max-width:740px){.map-pane{position:static}.map-pane #map{height:400px}}
 .basemap-switch button,#reset-map{white-space:nowrap}@media(max-width:740px){.map-title{flex-wrap:wrap;gap:8px}.basemap-switch{margin-left:0}}
+
+/* Keep the occurrence key visible for both live and demo data. */
+.map-pane .map-key{position:static;z-index:auto;bottom:auto;left:auto;right:auto;box-shadow:none;border-radius:0;padding:9px 16px;background:#f5fafc;border-top:1px solid var(--line)}
+.map-judgment{margin:0;padding:9px 16px;background:#fff7e8;border-top:1px solid #e9d7ae;color:#694714;font-size:12px;line-height:1.5}
+.leaflet-popup-content ul{margin:4px 0 9px;padding-left:18px}.leaflet-popup-content li{margin:2px 0;overflow-wrap:anywhere}.leaflet-popup-content{max-height:min(65vh,480px);overflow:auto}
