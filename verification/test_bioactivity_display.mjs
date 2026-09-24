@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const report=JSON.parse(fs.readFileSync(new URL('../dist/bioactivity-evidence.json',import.meta.url),'utf8'));
+assert.equal(report.status,'research_unapproved');
+assert.equal(report.cases.length,2);
+assert.ok(report.cases.every(c=>c.external_identifier===null && c.doi && c.url && c.accessed && c.terms));
+const app=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
+const before=app.split('function setView')[0];
+const ctx={fetch:async()=>({ok:true,json:async()=>report})};
+vm.createContext(ctx);
+vm.runInContext(before+';globalThis.loadResearch=loadBioactivityResearch;globalThis.card=bioactivityEvidence;globalThis.coverage=evidenceCoverage;',ctx);
+vm.runInContext(app.slice(app.indexOf('const count ='),app.indexOf('function liveEvidence')),ctx);
+await ctx.loadResearch();
+const sea={aphiaID:241776,name:'Apostichopus japonicus',info:{compounds:{status:'available',compound_count:900,quantitative_bioactivity_count:40}}};
+const card=ctx.card(sea);
+for(const expected of ['정량 생리활성 연결 검증 보류','holotoxin A₁','Candida albicans SC5314','MIC','MFC','2 µg/mL','10.1111/bph.16333','2026-09-24','미확정 · CID/InChIKey','임상 효능'])assert.ok(card.includes(expected),expected);
+assert.equal(ctx.coverage(sea).known,0,'aggregate chemical/assay counts must not count as a verified join');
+assert.match(ctx.card({aphiaID:241776,name:'Other species'}),/종별 원문 연결 미확인/);
+assert.doesNotMatch(ctx.card({aphiaID:241776,name:'Other species'}),/holotoxin/);
+const fraction=ctx.card({aphiaID:377084,name:'Saccharina japonica'});
+assert.match(fraction,/다당류 분획/);assert.match(fraction,/153.27 ± 22.89 µg\/mL/);
+assert.match(fraction,/단일 분자 CID\/InChIKey가 없다/);
+ctx.fetch=async()=>({ok:false});
+await ctx.loadResearch();
+assert.match(ctx.card(sea),/종별 원문 연결 미확인/);
+console.log('PASS: guarded research join, original endpoints, missing-ID and absent-data withholding');
