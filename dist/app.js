@@ -112,7 +112,7 @@ function liveEvidence(s) {
 function renderLiveDetail(s) {
   const i=s.info;
   const coverage=evidenceCoverage(s);
-  const occurrence=i.collection==='gbif_map_2026_09_24'
+  const occurrence=String(i.collection||'').startsWith('gbif_map_')||String(i.collection||'').startsWith('gbif_sea_cucumber_map_')
     ? row('출현기록',`GBIF 공개 기록 ${count(s.recordCount)}`)+row('관측 기간',years(s))+row('원자료 학명',(i.original_names||[]).join(', '))
     : s.noOccurrences
     ? row('출현자료','미수집','pending')+`<div class="withheld"><b>지도에 조사 범위 표시</b>한반도 주변 자료 조회 범위를 지도에 표시합니다. 이 범위가 이 종의 출현 위치나 분포를 뜻하지는 않습니다.</div>`
@@ -137,23 +137,25 @@ const cellSites=s=>s.cells.reduce((a,c)=>a+c.sites,0);
 
 function mapSection(s){
   const m=s.info.map;if(!m)return '';
+  const degree=s.cells[0]?.sizeDeg||1;
   const single=s.cells.filter(c=>c.sites===1).length;
   const excluded=Object.entries(m.outcome||{}).filter(([k])=>k!=='accepted').map(([k,n])=>row(REASONS[k]||k,count(n))).join('')||row('제외','없음');
   const why=m.status==='held_sensitivity_review'?`<div class="withheld"><b>조사 범위 표시</b>출현 셀은 아직 발행되지 않았습니다. 지도에는 자료를 조회한 한반도 주변 범위를 표시합니다. ${esc(m.note)}</div>`:`<ul class="why">
 <li><b>이용조건</b>CC0·CC BY 4.0 기록만 썼습니다. CC BY-NC ${count(m.nc_records)}은 비상업 이용 결정 전이라 쓰지 않았습니다.</li>
 <li><b>좌표 품질</b>OBIS 해안선 거리로 육지 위 좌표를 제외했고 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.</li>
-<li><b>불확실성 결측</b>0으로 보지 않고 1° 셀에서만 썼습니다.</li>
-<li><b>민감도</b>아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.</li>
+<li><b>불확실성 결측</b>0으로 보지 않고 ${degree}° 셀에서만 썼습니다.</li>
+<li><b>민감도</b>${degree===4?'채취 압력을 고려해 4° 광역 셀을 적용했습니다.':'아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.'}</li>
 <li><b>중복·기존 자료</b>같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.</li>
 <li><b>비공개</b>원좌표와 기록 ID는 공개하지 않습니다.</li></ul>`;
-  return `<h3>지도 셀</h3>${row('공개 셀',s.cells.length?s.cells.length+'개 · 1°×1°':'없음',s.cells.length?'done':'pending')}${s.cells.length?row('조사 지점',count(cellSites(s),'곳'))+row('셀에 쓴 기록',count(cellRecords(s)))+row('셀 기록 연도',years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))})):''}${single?`<p class="fine">조사 지점이 1곳뿐인 셀 ${single}개: 1° 범위 안의 대략적인 조사 위치가 드러납니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 제외 <span class="fine">GBIF ${esc(m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${excluded}<p class="fine">사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.</p>`;
+  return `<h3>지도 셀</h3>${row('공개 셀',s.cells.length?`${s.cells.length}개 · ${degree}°×${degree}°`:'없음',s.cells.length?'done':'pending')}${s.cells.length?row('조사 지점',count(cellSites(s),'곳'))+row('셀에 쓴 기록',count(cellRecords(s)))+row('셀 기록 연도',years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))})):''}${single?`<p class="fine">조사 지점이 1곳뿐인 셀 ${single}개: ${degree}° 범위 안의 대략적인 조사 위치가 드러납니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 제외 <span class="fine">GBIF ${esc(m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${excluded}<p class="fine">사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.</p>`;
 }
 
 function renderCellMap(s,color){
-  $('map-review-note').textContent='공개 기준을 통과한 GBIF 기록만 1° 셀로 묶었습니다. 셀은 출현 확인 범위이며 분포 전체나 개체수를 뜻하지 않습니다.';
+  const degree=s.cells[0]?.sizeDeg||1;
+  $('map-review-note').textContent=`공개 기준을 통과한 GBIF 기록을 ${degree}° 셀로 묶었습니다. 셀은 출현 확인 범위이며 분포 전체나 개체수를 뜻하지 않습니다.`;
   for(const c of s.cells){
     L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],{color:{basic:'#b86b00',satellite:'#ffd166',depth:'#c2410c'}[basemap],weight:basemap==='basic'?2:2.6,dashArray:'6 4',fillColor:color,fillOpacity:basemap==='basic'?.28:.35}).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 공개 1° 셀</strong><br>기간 ${years(c)} <small>(${esc(c.period)} 구간)</small><br>해역 ${esc(c.seaAreas.map(a=>a==='해역명 미확인'?a:'LME '+a).join(', '))} · 국가 ${esc(c.countries.join(', '))}<br>공간 해상도 1°×1° · 가장 짧은 변 약 ${Math.floor(c.resolutionM/1000)} km<br>조사 지점 ${c.sites}곳 <small>(기록 ${c.records}건${c.uncertaintyMissing?` · 불확실성 결측 ${c.uncertaintyMissing}건`:''})</small><br>출처 ${esc(c.citations.map(x=>x.title).join(', '))} · ${esc(c.licenses.join(', '))}<br><small>셀 범위 ${c.lat0}–${c.lat0+c.sizeDeg}°N, ${c.lon0}–${c.lon0+c.sizeDeg}°E. 원좌표·개체수·분포 범위가 아닙니다.</small>`);
+      .bindPopup(`<strong>${esc(s.label)} · 공개 ${c.sizeDeg}° 셀</strong><br>기간 ${years(c)} <small>(${esc(c.period)} 구간)</small><br>해역 ${esc(c.seaAreas.map(a=>a==='해역명 미확인'?a:'LME '+a).join(', '))} · 국가 ${esc(c.countries.join(', '))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${Math.floor(c.resolutionM/1000)} km<br>조사 지점 ${c.sites}곳 <small>(기록 ${c.records}건${c.uncertaintyMissing?` · 불확실성 결측 ${c.uncertaintyMissing}건`:''})</small><br>출처 ${esc(c.citations.map(x=>x.title).join(', '))} · ${esc(c.licenses.join(', '))}<br><small>셀 범위 ${c.lat0}–${c.lat0+c.sizeDeg}°N, ${c.lon0}–${c.lon0+c.sizeDeg}°E. 원좌표·개체수·분포 범위가 아닙니다.</small>`);
   }
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.map(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[60,60],maxZoom:7});}
   $('map-count').textContent=cellSites(s).toLocaleString();$('map-count').nextElementSibling.textContent='조사 지점';$('map-cells').textContent=s.cells.length;$('map-years').textContent=years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))});
@@ -164,7 +166,7 @@ function renderMap() {
   map.invalidateSize(); // the detail pane can change the map column height
   overlay.clearLayers();
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
-  $('map-source').textContent=s.live?(s.cells.length?'운영 지도 · 공개 1° 셀':'운영 지도 · 자료 조회 범위'):'OBIS 출현기록 · 시연 격자';
+  $('map-source').textContent=s.live?(s.cells.length?`운영 지도 · 공개 ${s.cells[0].sizeDeg}° 셀`:'운영 지도 · 자료 조회 범위'):'OBIS 출현기록 · 시연 격자';
   $('map-count').nextElementSibling.textContent='수집된 기록';
   if(s.live&&s.cells.length)return renderCellMap(s,color);
   $('map-review-note').textContent=!s.live?'기존 시연 자료의 1° 격자입니다. 운영 DB 자료와 별개입니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
@@ -232,7 +234,7 @@ function renderComparison(){
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
-    ['출현기록',s=>s.live&&s.cells.length?`${s.cells.length}셀 · 조사 지점 ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 1° 셀 · GBIF CC0·CC BY</small>`:s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'위치 검토 중':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
+    ['출현기록',s=>s.live&&s.cells.length?`${s.cells.length}셀 · 조사 지점 ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · GBIF CC0·CC BY</small>`:s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
     ['식량 근거 · MFPI',s=>pilotScore(s,'MFPI')!==null?pilotCell(s,'MFPI'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 ${count(n.record_count)}<small>실측 ${count(n.measured_count)} · 계산 ${count(n.calculated_count)} · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['생리활성 · MBPI',s=>pilotScore(s,'MBPI')!==null?pilotCell(s,'MBPI'):v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['보전 평가 · MCUI',s=>pilotScore(s,'MCUI')!==null?pilotCell(s,'MCUI'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),'평가 미조회')],

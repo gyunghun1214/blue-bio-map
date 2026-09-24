@@ -42,7 +42,7 @@ try{
   const note=await evaluate("document.getElementById('collection-note').textContent");
   check('Live note uses received profile count (not fixed 2종)',note.includes('발행된 8종')&&!note.includes('2종'),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
-  check('List: sea cucumber card shows 출현자료 미수집 (not 0건)',cards.some(c=>c.includes('해삼')&&c.includes('출현자료 미수집')&&!c.includes('0건')),JSON.stringify(cards));
+  check('List: sea cucumber card shows two broad cells',cards.some(c=>c.includes('해삼')&&c.includes('2셀 · 지점 2곳')),JSON.stringify(cards));
 
   let t=await pick(836033);
   check('Oyster: nutrition 144 / measured 107 / calculated 37 / AFCD 25 / unit 4 / basis 144',
@@ -56,10 +56,10 @@ try{
   check('Sea cucumber: 122 compounds, no quantitative activity',/보고 화합물\s*122개/.test(t)&&/정량 활성 자료\s*확인한 자료에서 없음/.test(t),t);
   check('Sea cucumber: no efficacy claim',!/입증|효능|효과가 있/.test(t),t);
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
-  check('Sea cucumber: missing occurrences and survey area clearly separated',t.includes('출현자료')&&t.includes('미수집')&&t.includes('지도에 조사 범위 표시')&&!t.includes('위치 공개 검토 중'),t);
+  check('Sea cucumber: two occurrence records, 4-degree generalization',t.includes('GBIF 공개 기록 2건')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 성분 값\s*미수집/.test(t),t);
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: survey area shown without claiming occurrence',mapNote.includes('자료를 조회한 범위')&&mapNote.includes('출현 위치나 분포를 뜻하지 않습니다')&&mapNote.includes(' | 0 | shapes=1'),mapNote);
+  check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('분포 전체나 개체수를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
@@ -87,7 +87,7 @@ try{
   await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
   for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('운영 DB'))break;}
   const shapes=()=>evaluate("document.querySelectorAll('#map path.leaflet-interactive').length");
-  const expectCells={836033:1,342067:1,241776:1,494972:4,145721:4,372119:3,506159:2,250680:2};
+  const expectCells={836033:1,342067:1,241776:2,494972:4,145721:4,372119:3,506159:2,250680:2};
   const drawn={};for(const a of Object.keys(expectCells)){await pick(a);await sleep(150);drawn[a]=await shapes();}
   check('Live map: every species has a spatial layer',JSON.stringify(drawn)===JSON.stringify(expectCells),JSON.stringify(drawn));
   check('Live map title says operational 1° cells',(await evaluate("document.getElementById('map-source').textContent")).includes('운영 지도'));
@@ -102,7 +102,7 @@ try{
   check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 성분 값\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('GBIF 공개 기록'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
-  check('Sea cucumber live: survey area visible, published occurrence cells still zero',(await shapes())===1&&t.includes('조사 범위 표시')&&t.includes('공개 셀')&&t.includes('없음'),t);
+  check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
   // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
