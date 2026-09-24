@@ -74,8 +74,9 @@ species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
 context.draw(species,'#123456');
 assert.match(popup[0],/선별 출현기록 4° 셀/);
 assert.match(popup[0],/4°×4°/);
-assert.equal(dots.length,4);
-assert.ok(dots.some(({latlng:[lat]})=>lat>34),'dots spread over the whole 4° cell');
+assert.equal(dots.length,64,'4° cell keeps the 1° dot density (8x8 for the 1–4 band), not 2x2 point-like marks');
+assert.ok(dots.some(({latlng:[lat]})=>lat>35)&&dots.every(({latlng:[lat,lon]})=>lat>32&&lat<36&&lon>124&&lon<128),'dots spread over, and stay inside, the 4° cell');
+assert.ok(dots.every(d=>d.options.interactive===false));
 // Two period rows at one location: one hit area whose popup lists both periods in full.
 popup.length=0;dots.length=0;
 const later={...cell,period:'2021–2026',yearStart:2023,yearEnd:2023,records:15,sites:4,uncertaintyMissing:0,

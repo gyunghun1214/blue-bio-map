@@ -339,13 +339,15 @@ function dotColumns(records){
 }
 function addCellDots(lat0,lon0,size,records,color){
   if(!Number.isFinite(records)||records<=0)return;
-  const cols=dotColumns(records);
+  // Same dot density per area as a 1° cell: a 4° cell with 2×2 dots would read as two point sightings.
+  const cols=dotColumns(records)*Math.max(1,Math.round(size));
   // Fixed inset grid: no random jitter, false precision or publication of raw coordinates.
   for(let row=0;row<cols;row++)for(let col=0;col<cols;col++){
     const lat=lat0+size*(.14+.72*(row+.5)/cols),lon=lon0+size*(.14+.72*(col+.5)/cols);
     if(onLand(lat,lon))continue; // Natural Earth coast approximation; no marks on mapped land.
     const dot=L.circleMarker([lat,lon],{renderer:dotRenderer,radius:map.getZoom()>=6?3:2.2,
-      stroke:false,fillColor:color,fillOpacity:basemap==='basic'?.8:.95,interactive:false});
+      stroke:basemap!=='basic',color:'#ffffff',weight:.8,opacity:.9, // thin light edge keeps dots visible on imagery
+      fillColor:color,fillOpacity:basemap==='basic'?.75:.9,interactive:false});
     dot._schematicDot=true;dot.addTo(overlay);
   }
 }
@@ -353,13 +355,13 @@ function cellPopupNotice(size){
   return `<br><small>도트는 ${size}° 셀의 기록 수 구간을 보여주는 도식입니다. 각 점은 실제 출현 위치·기록 1건·조사 지점 1곳을 뜻하지 않습니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
 // Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
-const cellFrame=color=>({color:basemap==='basic'?color:'#ffd166',weight:1,opacity:.6,dashArray:'2 5',fillColor:color,fillOpacity:basemap==='basic'?.05:.08});
+const cellFrame=color=>({color:basemap==='basic'?color:'#ffd166',weight:1,opacity:basemap==='basic'?.6:.85,dashArray:'2 5',fillColor:color,fillOpacity:basemap==='basic'?.05:.08});
 function setMapLegend(live,s){
   // Live species without published cells only show the query extent (studyBounds).
   const extentOnly=live&&s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
   document.querySelector('.map-symbol').hidden=!!extentOnly;
   $('map-symbol-label').textContent=extentOnly?'점선 테두리: 자료 조회 범위':live?`선별된 출현기록 · 공개 ${size}° 셀`:'선별된 출현기록 · 별도 OBIS 시연 1° 격자';
-  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'도트 밀도: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 옅은 점선 테두리가 공개 셀 범위이며, 육지 위 도트는 생략합니다. 셀을 누르면 실제 집계값과 출처가 나옵니다.';
+  $('map-legend-note').textContent=extentOnly?'공개 출현 셀이 없습니다. 테두리는 출현 위치나 분포가 아닙니다.':'도트 밀도: 셀 기록 수 구간(1–4 / 5–19 / 20–99 / 100건 이상, 면적당 같은 밀도). 점 위치·개수는 실제 기록이나 조사 지점이 아닙니다. 옅은 점선 테두리가 공개 셀 범위이며, 육지 위 도트는 생략합니다. 셀을 누르면 실제 집계값과 출처가 나옵니다.';
 }
 
 function renderCellMap(s,color){
@@ -374,7 +376,8 @@ function renderCellMap(s,color){
       .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0),color); // one pattern per spatial cell
   }
-  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.map(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[60,60],maxZoom:7});}
+  // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
+  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[40,40],maxZoom:7,animate:false});}
   $('map-count').textContent=cellSites(s).toLocaleString();$('map-count').nextElementSibling.textContent=sitesLabel(s);$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))});
 }
 function renderMap() {
@@ -391,7 +394,7 @@ function renderMap() {
   if(s.live){
     L.rectangle(studyBounds,{color:basemap==='basic'?'#267bab':'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
       .addTo(overlay).bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`);
-    if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30]});}
+    if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30],animate:false});}
   }
   for(const cell of s.cells){
     L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame(color)).addTo(overlay)
