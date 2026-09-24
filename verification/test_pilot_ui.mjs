@@ -25,7 +25,8 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 data=specimen();
 await ctx.attach(data);
 assert.equal(ctx.pilot(data.species[0],'MCUI'),80);
-assert.equal(ctx.pilot(data.species[0],'BBVI'),60);
+assert.equal(ctx.pilot(data.species[0],'MFPI'),null,'a bare MFPI number without food trace is withheld');
+assert.equal(ctx.pilot(data.species[0],'BBVI'),null,'BBVI depends on withheld MFPI');
 const nodes=new Map();
 ctx.document={getElementById(id){
   if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',classList:{toggle(){}},setAttribute(){},addEventListener(){},querySelectorAll(){return []}});
@@ -42,7 +43,7 @@ ctx.next=data;
 vm.runInContext('data=globalThis.next;renderDetail(data.species[0]);renderMatrix(false)',ctx);
 assert.match(nodes.get('detail').innerHTML,/시범 지표 · 타당성 미검증/);
 assert.match(nodes.get('detail').innerHTML,/BBVI/);
-assert.match(nodes.get('matrix-points').innerHTML,/시범 활용 지표 60, 보전 지표 80/);
+assert.equal(nodes.get('matrix-points').innerHTML,'','without reviewed MFPI no real species point is plotted');
 
 const invalid=report(); invalid.species[0].scores.BBVI=150;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>invalid});
