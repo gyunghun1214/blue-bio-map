@@ -1,5 +1,6 @@
 """Scientific guardrails for the provisional offline scoring pipeline."""
 import copy
+from datetime import date, timedelta
 import sys
 import unittest
 from pathlib import Path
@@ -96,6 +97,19 @@ class PilotScoringTests(unittest.TestCase):
         c["current_status_check"] = {"is_current": True}
         with self.assertRaisesRegex(ValueError, "current_status_check"):
             scores(payload)
+
+    def test_current_status_check_needs_a_real_past_date(self):
+        payload = fixture()
+        c = payload["species"][0]["conservation"]
+        c.update(category="EN", assessment_year=2013)
+        tomorrow = (date.today() + timedelta(days=1)).isoformat()
+        # Impossible, nonexistent, future, or earlier than the assessment itself.
+        for bad in ("2099-99-99", "2026-02-30", tomorrow, "2012-12-31", "2026-9-23", 20260923):
+            c["current_status_check"] = {"is_current": True, "source_id": "ref-4", "checked_on": bad}
+            with self.assertRaisesRegex(ValueError, "real checked_on date", msg=str(bad)):
+                scores(payload)
+        c["current_status_check"]["checked_on"] = "2024-02-29"  # a real leap day
+        self.assertEqual(scores(payload)["species"][0]["scores"]["MCUI"], 80)
 
     def test_literature_replication_does_not_add_comparator(self):
         payload = fixture()

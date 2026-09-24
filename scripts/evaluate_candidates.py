@@ -38,6 +38,17 @@ def percentile(value, peers):
     return 100 * (sum(p < value for p in peers) + .5 * sum(p == value for p in peers)) / len(peers)
 
 
+def real_check_date(value, assessment_year):
+    """A YYYY-MM-DD calendar date, not before the assessment year and not after today."""
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        return False
+    try:
+        checked = date.fromisoformat(value)
+    except ValueError:  # e.g. 2026-02-30
+        return False
+    return assessment_year <= checked.year and checked <= date.today()
+
+
 def validate(payload):
     required(payload.get("schema_version") == 1, "schema_version must be 1")
     species = payload.get("species")
@@ -84,8 +95,9 @@ def validate(payload):
             if "current_status_check" in c:
                 k = c["current_status_check"]
                 required(isinstance(k, dict) and type(k.get("is_current")) is bool and k.get("source_id")
-                         and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(k.get("checked_on", ""))),
-                         f"{aphia}: current_status_check needs is_current, source_id and checked_on")
+                         and real_check_date(k.get("checked_on"), c["assessment_year"]),
+                         f"{aphia}: current_status_check needs is_current, source_id and a real checked_on date "
+                         "between the assessment year and today")
                 sourced(k["source_id"], aphia)
             if "obis_trend" in c:
                 t = c["obis_trend"]

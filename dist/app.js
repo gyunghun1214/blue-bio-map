@@ -28,6 +28,16 @@ const pilotScore = (s,key) => {
 const pilotCell = (s,key) => pilotScore(s,key)===null ? '<span class="pending">산출 보류</span>'
   : `${pilotScore(s,key).toFixed(1)}<small>시범 지표 · 타당성 미검증</small>`;
 
+// Same rule as scripts/evaluate_candidates.py: a real calendar date, not before the assessment
+// year and not after the check could have happened (report generation time, and never after now).
+function realCheckDate(value,assessmentYear,generatedAt){
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+  const d=new Date(value+'T00:00:00Z');
+  if(Number.isNaN(d.getTime())||d.toISOString().slice(0,10)!==value)return false; // 2026-02-30 rolls over
+  const generated=Date.parse(generatedAt||'');
+  const latest=Math.min(Date.now(),Number.isFinite(generated)?generated:Infinity);
+  return Number(value.slice(0,4))>=assessmentYear&&d.getTime()<=latest;
+}
 async function attachPilotAssessments(next) {
   if(!next.live)return;
   let response;
@@ -51,7 +61,7 @@ async function attachPilotAssessments(next) {
       // assessment is current; older reports lack it, so only MCUI is withheld, not the other axes.
       const t=a.conservation_trace;
       const currentChecked=t?.category&&t?.assessment_year&&t.current_status_verified===true
-        &&report.sources?.[t.current_status_source_id]?.url?.startsWith('https://')&&/^\d{4}-\d{2}-\d{2}$/.test(t.current_status_checked_on||'');
+        &&report.sources?.[t.current_status_source_id]?.url?.startsWith('https://')&&realCheckDate(t.current_status_checked_on,t.assessment_year,report.generated_at);
       if(a.scores.MCUI!==null&&!currentChecked)a={...a,scores:{...a.scores,MCUI:null},mcui_withheld_reason:t?.mcui_withheld_reason||'current_status_unverified'};
       if(a.scores.BBVI!==null){
         if(['MFPI','MBPI'].some(k=>a.scores[k]===null))continue;
@@ -94,11 +104,20 @@ function mapJudgmentStatus(s) {
 // Original IUCN assessments verified in research/species-conservation. Historical records only:
 // not the current status, not a Korea-only assessment and not an MCUI input until a current check.
 const IUCN_HISTORICAL = {"241776":{"category":"EN A2bd","published":2013,"assessed":"2010-05-19","scope":"북서태평양 전 분포(한국 단독 평가 아님)","url":"https://www.iucnredlist.org/species/180424/1629389"}};
-const iucnHistoricalText = h => `IUCN ${h.category}: ${h.published}년 발표(${h.assessed} 평가) · ${h.scope}. 역사적 평가이며, 현행 평가 여부는 확인하지 않았습니다.`;
+// Wording follows the MCUI gate: a pilot MCUI exists only after a sourced, dated current-status check.
+function iucnHistoricalText(h,s){
+  const base=`IUCN ${h.category}: ${h.published}년 발표(${h.assessed} 평가) · ${h.scope}.`;
+  const t=s&&pilotScore(s,'MCUI')!==null?s.assessment.conservation_trace:null;
+  return t
+    ? `${base} 시범 보고서가 ${t.current_status_checked_on}에 출처 ${t.current_status_source_id}로 이 평가가 현행 IUCN 평가임을 재확인해, 검증 전 시범 MCUI에 사용했습니다. 전 세계 범위 평가이며 2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다.`
+    : `${base} 역사적 평가이며, 현행 평가 여부는 확인하지 않았습니다.`;
+}
 function iucnHistoricalRows(s){
   const h=IUCN_HISTORICAL[s.aphiaID];if(!h)return '';
-  return row('IUCN 원평가',`${h.category} · ${h.published}년 발표 (역사적 평가)`)+(pilotScore(s,'MCUI')===null?row('현행 평가','확인 보류','pending'):row('현행 평가',`확인 ${s.assessment.conservation_trace.current_status_checked_on} · 시범 보고서`))
-    +`<p class="fine">${esc(iucnHistoricalText(h))} 2026년 한국 현황이나 MCUI로 바꾸지 않습니다. ${sourceLink(h.url,'IUCN 평가 레코드 ↗')}</p>`;
+  const verified=pilotScore(s,'MCUI')!==null;
+  return row('IUCN 원평가',`${h.category} · ${h.published}년 발표 ${verified?'(현행 여부 재확인 · 시범)':'(역사적 평가)'}`)
+    +(verified?row('현행 평가',`재확인 ${s.assessment.conservation_trace.current_status_checked_on} · 시범 보고서`):row('현행 평가','확인 보류','pending'))
+    +`<p class="fine">${esc(iucnHistoricalText(h,s))}${verified?'':' 2026년 한국 현황이나 MCUI로 바꾸지 않습니다.'} ${sourceLink(h.url,'IUCN 평가 레코드 ↗')}</p>`;
 }
 const CASE_NOTES = {"241776":{"title":"돌기해삼 원논문","url":"https://doi.org/10.1111/bph.16333","detail":"Holotoxin A₁의 Candida albicans SC5314 MIC·MFC 각 2 µg/mL은 원논문에서 직접 확인. 외부 CID의 구조 대응과 동일 표적·시험군 pChEMBL은 미확인. 사람 대상 약효 자료가 아님."},"377084":{"title":"다시마 원논문","url":"https://doi.org/10.1002/cbdv.202000233","detail":"Lj5 다당류 분획의 α-glucosidase IC50 153.27 ± 22.89 µg/mL 확인. 단일 분자 CID·InChIKey가 없으므로 현행 소분자 MBPI 입력에서 제외."}};
 function assessmentBlockers(s){
@@ -124,7 +143,7 @@ function assessmentBlockers(s){
   if(pilotScore(s,'MCUI')===null){
     const h=IUCN_HISTORICAL[s.aphiaID];
     reasons.MCUI=h
-      ? iucnHistoricalText(h)+' 현행 평가 확인 전이라 MCUI 입력으로 쓰지 않음. 출현기록 수는 개체군 변화가 아님.'
+      ? iucnHistoricalText(h,s)+' 현행 평가 확인 전이라 MCUI 입력으로 쓰지 않음. 출현기록 수는 개체군 변화가 아님.'
       : s.assessment?.mcui_withheld_reason
       ? `검수된 IUCN 원평가(${s.assessment.conservation_trace?.category||'등급 미기재'} · ${s.assessment.conservation_trace?.assessment_year||'연도 미기재'})는 있으나 현행 평가인지 확인한 근거가 없어 보류.`
       : k.status==='withheld_insufficient_evidence'
@@ -174,7 +193,7 @@ function showDecision(s){
     html+=`<h4>계산과 기준일</h4><p>MFPI: 영양 백분위·등급 80%, 가식부 10%, 양식 근거 10%. MBPI: 동일 표적·assay층 화합물 백분위 × 문헌 계수. BBVI: MFPI ${esc(info.foodWeight*100)}% + MBPI ${esc((1-info.foodWeight)*100)}%. MCUI는 별도 축. 산출 ${esc(info.generatedAt||'미기재')}. 모든 가중치와 점수는 검증 전 시범값입니다.</p>`;
     html+='<h4>원문·이용조건</h4><ul>'+a.source_ids.map(id=>`<li>${sourceLink(info.sources?.[id]?.url,id+' ↗')} · ${esc(info.sources?.[id]?.license||'이용조건 미확인')} · 조회 ${esc(info.sources?.[id]?.accessed||'미기재')}</li>`).join('')+'</ul>';
   }
-  if(IUCN_HISTORICAL[s.aphiaID])html+=`<h4>IUCN 원평가 · 역사적 평가</h4><p>${esc(iucnHistoricalText(IUCN_HISTORICAL[s.aphiaID]))} ${sourceLink(IUCN_HISTORICAL[s.aphiaID].url,'IUCN 평가 레코드 ↗')}</p>`;
+  if(IUCN_HISTORICAL[s.aphiaID])html+=`<h4>IUCN 원평가 · ${pilotScore(s,'MCUI')===null?'역사적 평가':'현행 여부 재확인(시범)'}</h4><p>${esc(iucnHistoricalText(IUCN_HISTORICAL[s.aphiaID],s))} ${sourceLink(IUCN_HISTORICAL[s.aphiaID].url,'IUCN 평가 레코드 ↗')}</p>`;
   if(study)html+=`<h4>별도 원문 조사 · 지표 입력 아님</h4><p>${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`;
   html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p>';
   $('decision-detail').innerHTML=html;

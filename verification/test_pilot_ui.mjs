@@ -90,9 +90,39 @@ assert.equal(ctx.pilot(data.species[0],'MCUI'),null);
 assert.equal(ctx.pilot(data.species[0],'MBPI'),70);
 assert.equal(ctx.assessed(data.species[0]),false);
 assert.match(ctx.blockers(data.species[0]).MCUI,/2013년 발표.*역사적 평가/);
+// checked_on must be a real date no later than the report (and now); other axes stay visible.
+const tomorrow=new Date(Date.now()+864e5).toISOString().slice(0,10);
+for(const bad of ['2099-99-99','2026-02-30',tomorrow,'2026-09-24','2012-12-31','2026-9-23',20260923]){
+  const r=report(); r.species[0].conservation_trace.current_status_checked_on=bad;
+  ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});
+  data=specimen(); await ctx.attach(data);
+  assert.equal(ctx.pilot(data.species[0],'MCUI'),null,`checked_on ${bad} must not allow MCUI`);
+  assert.equal(ctx.pilot(data.species[0],'MFPI'),50);assert.equal(ctx.pilot(data.species[0],'MBPI'),70);assert.equal(ctx.pilot(data.species[0],'BBVI'),60);
+  assert.equal(ctx.assessed(data.species[0]),false,`${bad}: off the matrix`);
+}
+// Sea cucumber with a valid, sourced recheck: pilot MCUI shown, no contradictory "not MCUI" text,
+// and never described as a Korea-only 2026 assessment or a settled policy decision.
+const recheck=report('Apostichopus japonicus'); recheck.species[0].aphia_id=241776;
+Object.assign(recheck.species[0].conservation_trace,{assessment_year:2013,current_status_checked_on:'2026-09-20'});
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>recheck});
+data={live:true,species:[{aphiaID:241776,name:'Apostichopus japonicus',label:'해삼',live:true,info:{}}]}; await ctx.attach(data);
+data.assessmentInfo={sources:recheck.sources,foodWeight:.5,generatedAt:'2026-09-23'};
+assert.equal(ctx.pilot(data.species[0],'MCUI'),80);
+ctx.next=data; vm.runInContext('data=globalThis.next;globalThis.rows=iucnHistoricalRows(data.species[0])',ctx);
+ctx.showDecision(data.species[0]);
+for(const html of [ctx.rows,nodes.get('decision-detail').innerHTML]){
+  assert.doesNotMatch(html,/MCUI로 바꾸지 않습니다|MCUI 입력으로 쓰지 않음|현행 평가 여부는 확인하지 않았습니다/);
+  assert.match(html,/2026-09-20에 출처 s로 이 평가가 현행 IUCN 평가임을 재확인/);
+  assert.match(html,/2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다/);
+}
+assert.match(ctx.rows,/재확인 2026-09-20 · 시범 보고서/);
+// Without the recheck, the historical wording stays.
+data.species[0].assessment=undefined;
+vm.runInContext('globalThis.rows=iucnHistoricalRows(data.species[0])',ctx);
+assert.match(ctx.rows,/역사적 평가/);assert.match(ctx.rows,/확인 보류/);assert.match(ctx.rows,/MCUI로 바꾸지 않습니다/);
 // A verified current check pointing at an unregistered source is not enough either.
 const bad=report(); bad.species[0].conservation_trace.current_status_source_id='missing';
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>bad});
 data=specimen(); await ctx.attach(data);
 assert.equal(ctx.pilot(data.species[0],'MCUI'),null);
-console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard, historical IUCN, current-status gate');
+console.log('PASS: optional report, taxonomy join, independent axes, invalid score guard, historical IUCN, current-status gate, real check dates, recheck wording');

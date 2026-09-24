@@ -55,7 +55,9 @@ nutrient are needed. No example values are presented as real measurements.
   prove population decline. Assessments over ten years old receive a flag.
   `reviewed` means the original assessment was read; it does not mean the
   assessment is current. MCUI also needs `current_status_check` with
-  `is_current: true`, a registered `source_id` and `checked_on` (YYYY-MM-DD).
+  `is_current: true`, a registered `source_id` and `checked_on`: a real
+  YYYY-MM-DD date, not before the assessment year and not in the future (the
+  page also rejects dates after the report's `generated_at`).
   Without it MCUI is withheld (`current_status_unverified`); `is_current: false`
   withholds it as `assessment_not_current`. Age alone never decides either way.
 - Pilot weights: MBPI uses the best eligible compound percentile, multiplied by
