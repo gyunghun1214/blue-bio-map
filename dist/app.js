@@ -248,6 +248,7 @@ function liveEvidence(s) {
     ? row('보고 화합물',count(c.compound_count,'개'),'done')
       +row('정량 활성 자료',c.quantitative_bioactivity_count===0?'확인한 자료에서 없음':count(c.quantitative_bioactivity_count))
       +(c.note?`<p class="fine">${esc(c.note)}</p>`:'')
+      +(CASE_NOTES[s.aphiaID]?`<p class="fine"><b>별도 원문 조사 · 지표 입력 아님</b> ${esc(CASE_NOTES[s.aphiaID].detail)} ${sourceLink(CASE_NOTES[s.aphiaID].url,CASE_NOTES[s.aphiaID].title+' ↗')}</p>`:'')
       +`<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'} — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`
     : row('보고 화합물',c.status==='not_collected'?'미수집':'정보 없음','pending');
   const conservation={
@@ -272,7 +273,7 @@ function renderLiveDetail(s) {
   const pilot=s.assessment;
   const pilotRows=pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}${pilot.scores.MCUI===null&&pilot.iucn_category?' · 현행 평가 확인 보류':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
   const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.':score;
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${evidence}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>`<p>${sourceLink(data.assessmentInfo.sources[id].url,'시범 산출 근거 '+id+' ↗')} · ${esc(data.assessmentInfo.sources[id].license)}</p>`).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 원자료 자동 수집 기능은 아직 없습니다.</p></div>`;
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${institutionChecks(s)}${evidence}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>`<p>${sourceLink(data.assessmentInfo.sources[id].url,'시범 산출 근거 '+id+' ↗')} · ${esc(data.assessmentInfo.sources[id].license)}</p>`).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 원자료 자동 수집 기능은 아직 없습니다.</p></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
 }
 
@@ -288,6 +289,25 @@ const cellCountLabel=s=>{const n=spatialCells(s).length;return n===s.cells.lengt
 // Summing sites over periods can count one site twice, so say what the number is.
 const sitesLabel=s=>spatialCells(s).length===s.cells.length?'조사 지점':'조사 지점(기간별 합계)';
 
+// Species-level status shown with each cell: the proposal's "zoom in to see indicators and conservation status".
+function speciesAxesLine(s){
+  // Status only, never the value: a species score printed on a cell would read as that sea area's score (PR #8).
+  const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>`${k} ${pilotScore(s,k)===null?'보류':'시범값 있음'}`).join(' · ');
+  const h=IUCN_HISTORICAL[s.aphiaID], k=s.info?.conservation||{};
+  const iucn=h?`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':'현행 재확인 · 시범'})`
+    :({withheld_insufficient_evidence:'보전평가 근거 부족으로 보류',not_reviewed:'보전평가 미검토'}[k.status]||'보전평가 정보 없음');
+  return `종 단위 상태(이 셀의 값 아님): ${axes} · ${iucn}`;
+}
+// A checklist, not a legal determination: cells are 1°/4° and cannot settle jurisdiction.
+function institutionChecks(s){
+  if(!s.cells?.length)return '';
+  const countries=[...new Set(s.cells.flatMap(c=>c.countries||[]))];
+  const allTagged=s.cells.every(c=>c.countries?.length);
+  return `<h3>활용 전 제도 확인 <span class="fine">법적 판단 아님</span></h3>${row('기록의 국가 메타데이터',countries.join(', ')||'미기재')}<ul class="why">
+<li><b>국가 관할 해역</b>국가 정보가 붙은 기록은 그 나라의 유전자원 접근·이익공유(ABS) 절차 확인 대상일 수 있습니다. 한국: ${sourceLink('https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%9C%A0%EC%A0%84%EC%9E%90%EC%9B%90%EC%9D%98%EC%A0%91%EA%B7%BC%C2%B7%EC%9D%B4%EC%9A%A9%EB%B0%8F%EC%9D%B4%EC%9D%B5%EA%B3%B5%EC%9C%A0%EC%97%90%EA%B4%80%ED%95%9C%EB%B2%95%EB%A5%A0','유전자원법 ↗')} · 나고야의정서 ${sourceLink('https://absch.cbd.int/','ABS 정보공유체계 ↗')}</li>
+<li><b>국가 관할권 이원 해역</b>공해·심해 자원은 ${sourceLink('https://www.un.org/bbnjagreement/en','BBNJ 협정 ↗')} 적용 여부를 따로 확인합니다. ${allTagged?'현재 공개 셀은 모두 국가 메타데이터가 붙은 기록입니다.':'국가 메타데이터가 없는 셀이 있어 관할 확인이 더 필요합니다.'}</li>
+<li><b>한계</b>${s.cells[0].sizeDeg}° 셀로는 관할 경계를 판정할 수 없습니다. 채집·연구 전 원문과 소관 기관에 확인하세요.</li></ul>`;
+}
 function mapSection(s){
   const m=s.info.map;if(!m)return '';
   const degree=s.cells[0]?.sizeDeg||1;
@@ -391,7 +411,7 @@ function renderCellMap(s,color){
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(r.countries.join(', ')||'미기재')}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
     L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
+      .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
@@ -416,7 +436,7 @@ function renderMap() {
   }
   for(const cell of s.cells){
     L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame()).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 격자 중심은 개별 관측 위치가 아니며 개체수·자원량·현재 한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(1));
+      .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 격자 중심은 개별 관측 위치가 아니며 개체수·자원량·현재 한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(1));
     addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count);
   }
   $('map-count').textContent=Number.isSafeInteger(s.recordCount)?s.recordCount.toLocaleString():'—';$('map-cells').textContent=s.live?'0':s.cells.length;$('map-years').textContent=years(s);
@@ -491,6 +511,9 @@ function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
   $('matrix-note').textContent=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다.';
+  const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
+  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)===null).join('·'))} 보류</small></button>`).join('')}</div>`:'';
+  $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
@@ -520,7 +543,7 @@ async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
   data=null;selected=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';
   setMapLegend(live,null);

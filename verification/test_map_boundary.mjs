@@ -63,6 +63,8 @@ assert.match(popup[0],/https:\/\/example.org\/dataset/);
 assert.match(popup[0],/CC BY 4.0/);
 assert.match(popup[0],/관측 노력·중복/);
 assert.doesNotMatch(popup[0],/BBVI 90/);
+assert.match(popup[0],/종 단위 상태\(이 셀의 값 아님\): MFPI 보류 · MBPI 보류 · MCUI 시범값 있음 · BBVI 시범값 있음/);
+assert.doesNotMatch(popup[0],/90\.0/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
 assert.ok(dots.every(d=>d.options.fillColor==='#d7263d'),'one red for the schematic pattern');
