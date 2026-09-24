@@ -1,0 +1,15 @@
+{
+  "method_version": "pilot-2-evidence-2026-09-24",
+  "snapshot_date": "2026-09-24",
+  "food_weight": 0.5,
+  "nutrient_weight": 0.8,
+  "edible_weight": 0.1,
+  "aquaculture_weight": 0.1,
+  "grade_weight": {"measured": 1.0, "calculated": 0.85, "proxy": 0.5},
+  "iucn_points": {"LC": 10, "NT": 35, "VU": 60, "EN": 80, "CR": 100},
+  "min_peer_species": 3,
+  "min_peer_compounds": 3,
+  "mbpi_single_reference_factor": 0.75,
+  "mbpi_aggregation": "max",
+  "description": "Uncalibrated pilot choices; small cohorts and research effort bias remain unresolved."
+}

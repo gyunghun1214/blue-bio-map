@@ -1,1 +1,7 @@
+.weight-control{display:block;margin:12px 0 4px;font-weight:700;color:#173e4b}
+.weight-control input{vertical-align:middle;accent-color:#067f7a;margin-left:12px;max-width:220px;width:38%}
+.score-link{background:transparent;border:0;color:#006e71;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:3px 0;text-align:left}
+.score-link:focus-visible,.weight-control input:focus-visible{outline:2px solid #006e71;outline-offset:3px}
+#detail details{margin:10px 0;padding:10px 12px;border:1px solid #b8d4d2;border-radius:8px;background:#f3faf9;overflow-wrap:anywhere}
+#detail summary{cursor:pointer;font-weight:700}
 .matrix-point.pilot { background: var(--teal); width: 36px; height: 36px; }

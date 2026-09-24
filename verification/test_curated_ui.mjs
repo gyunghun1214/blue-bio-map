@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const report=JSON.parse(fs.readFileSync(new URL('../dist/assessments.json',import.meta.url)));
+const partial=JSON.parse(fs.readFileSync(new URL('../dist/partial-evidence.json',import.meta.url)));
+const code=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
+const nodes=new Map();
+const document={getElementById(id){
+  if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',value:'',classList:{toggle(){}},setAttribute(){},addEventListener(){},querySelectorAll(){return []}});
+  return nodes.get(id);
+}};
+let current=report;
+const ctx={document,fetch:async()=>({ok:true,status:200,json:async()=>current})};
+vm.createContext(ctx);
+vm.runInContext(code.split('function setView')[0]+';globalThis.attach=attachPilotAssessments;globalThis.attachPartial=attachPartialEvidence;globalThis.pilot=pilotScore',ctx);
+const species={aphiaID:241776,name:'Apostichopus japonicus',label:'돌기해삼',live:true,sources:[],noOccurrences:true,info:{occurrence_status:'not_collected'}};
+const snapshot={live:true,species:[species]};
+await ctx.attach(snapshot);
+assert.equal(ctx.pilot(species,'MCUI'),80);
+assert.equal(ctx.pilot(species,'BBVI'),null);
+assert.equal(ctx.pilot(species,'MBPI'),null);
+assert.equal(species.assessment.conservation_trace.assessment_year,2010);
+current=partial;
+await ctx.attachPartial(snapshot);
+assert.equal(species.partialEvidence.length,1);
+vm.runInContext(code.split('function setView')[1].split('let requestNumber')[0].replace(/^/,'function setView')+';globalThis.renderDetail=renderLiveDetail;globalThis.renderMatrix=toggleSimulation',ctx);
+ctx.snapshot=snapshot;
+vm.runInContext('data=globalThis.snapshot;selected=data.species[0];renderDetail(selected);renderMatrix(false)',ctx);
+assert.match(nodes.get('detail').innerHTML,/IUCN.*EN.*A2bd/);
+assert.match(nodes.get('detail').innerHTML,/2010/);
+assert.match(nodes.get('detail').innerHTML,/MIC 2 µg\/mL/);
+assert.match(nodes.get('detail').innerHTML,/부분 근거 확인|일부 근거 확인/);
+assert.equal(nodes.get('matrix-points').innerHTML,'');
+const wrong={live:true,species:[{...species,aphiaID:987,assessment:undefined,partialEvidence:undefined}]};
+current=report;await ctx.attach(wrong);
+assert.equal(wrong.species[0].assessment,undefined);
+console.log('PASS: real IUCN report, partial assay, identity gate and no fabricated matrix point');

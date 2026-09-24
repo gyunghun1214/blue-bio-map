@@ -1,5 +1,11 @@
 # Curated evidence input for the pilot indices
 
+## Frozen primary-evidence pilot (2026-09-24)
+
+See [the design decision](index-design.md) and [source audit](../research/index-inputs/README.md). Run `python scripts/build_indices.py` to reproduce `dist/assessments.json` from `research/index-inputs/curated.json` and `config/pilot-method.json`. This is a versioned, offline factual extract: the current frozen candidate list has one historical IUCN-based MCUI and no valid MFPI, MBPI or BBVI. A method/source change must be reviewed as a new snapshot. The source catalog includes an original IUCN record ID, DOI, evaluation versus publication date, geographic scope, URL, retrieval day and terms. Other candidates' IUCN assessments remain unverified (not NE).
+
+MFPI and MBPI calculations below are **project trial rules, not international standards**. Their output is withheld until a stable peer cohort and original assay/food record joins pass validation. Live profile names and AphiaIDs must match both fields; the eight candidate labels are not a confirmed read of the inaccessible live public profile. Historical IUCN-based MCUI is separate from BBVI and cannot be assigned to occurrence cells or represented as current Korean regional priority. `partial-evidence.json` retains paper-local MIC/MFC and fraction IC50 as research facts, not single-molecule pChEMBL scores. No absence becomes zero.
+
 This pipeline is an **unvalidated research prototype**. Do not pass the currently
 published species summary to it: aggregate nutrition/compound counts lack units,
 assay context, edible fraction and reviewed conservation assessments. Keep working

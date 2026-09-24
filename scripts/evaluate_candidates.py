@@ -102,16 +102,30 @@ def validate(payload):
     return species
 
 
-def scores(payload, *, food_weight=.5, min_peers=3):
+def scores(payload, *, food_weight=.5, min_peers=3, method=None):
     number(food_weight, "food_weight", 0, 1)
     required(type(min_peers) is int and min_peers >= 3, "min_peers must be >= 3")
+    method = method or {}
+    nutrient_weight = number(method.get("nutrient_weight", .8), "nutrient_weight", 0, 1)
+    edible_weight = number(method.get("edible_weight", .1), "edible_weight", 0, 1)
+    aquaculture_weight = number(method.get("aquaculture_weight", .1), "aquaculture_weight", 0, 1)
+    required(abs(nutrient_weight + edible_weight + aquaculture_weight - 1) < 1e-9, "MFPI weights must sum to one")
+    grade_weight = method.get("grade_weight", GRADE_WEIGHT)
+    required(set(grade_weight) == set(GRADE_WEIGHT) and all(0 <= number(v, k, 0, 1) <= 1 for k, v in grade_weight.items()), "invalid evidence grades")
+    iucn_points = method.get("iucn_points", IUCN)
+    required(set(iucn_points) == set(IUCN), "incomplete IUCN pilot mapping")
+    for key, value in iucn_points.items():
+        number(value, key, 0, 100)
+    single_ref_factor = number(method.get("mbpi_single_reference_factor", .75), "single-reference factor", 0, 1)
+    aggregation = method.get("mbpi_aggregation", "max")
+    required(aggregation in ("max", "top_two_mean"), "unsupported MBPI aggregation")
     species = validate(payload)
     # Each peer is a unique compound within the SAME target and assay type.
     assay_groups = defaultdict(lambda: defaultdict(list))
     nutrient_groups = defaultdict(dict)
     for s in species:
         for a in s.get("bioassays", []):
-            assay_groups[(a["target_id"], a["assay_type"])][a["compound_id"]].append(a["pchembl"])
+            assay_groups[(a["target_id"], a.get("endpoint"), a["assay_type"], a.get("test_system"), a.get("conditions"))][a["compound_id"]].append(a["pchembl"])
         for n in NUTRIENTS:
             if n in s.get("nutrition", {}):
                 nutrient_groups[n][s["aphia_id"]] = s["nutrition"][n]["per_100g"]
@@ -120,21 +134,22 @@ def scores(payload, *, food_weight=.5, min_peers=3):
     for s in species:
         assays = defaultdict(list)
         for a in s.get("bioassays", []):
-            assays[(a["target_id"], a["assay_type"], a["compound_id"])].append(a)
+            assays[(a["target_id"], a.get("endpoint"), a["assay_type"], a.get("test_system"), a.get("conditions"), a["compound_id"])].append(a)
         bio = []
-        for (target, kind, compound), rows in assays.items():
-            peers = assay_peers[(target, kind)]
+        for (target, endpoint, kind, test_system, conditions, compound), rows in assays.items():
+            peers = assay_peers[(target, endpoint, kind, test_system, conditions)]
             if len(peers) < min_peers:
                 continue
             # Repeated reports for the same compound cannot create extra peers.
             potency = median([r["pchembl"] for r in rows])
-            references = len({r["reference_id"] for r in rows})
-            evidence_factor = 1.0 if references >= 2 else .75
-            bio.append({"compound_id": compound, "stratum": [target, kind],
+            references = len({payload["sources"][r["reference_id"]].get("doi") or r["reference_id"] for r in rows})
+            evidence_factor = 1.0 if references >= 2 else single_ref_factor
+            bio.append({"compound_id": compound, "stratum": [target, endpoint, kind, test_system, conditions],
                         "peer_count": len(peers), "independent_references": references,
                         "rank": round(percentile(potency, list(peers.values())), 2),
                         "adjusted": percentile(potency, list(peers.values())) * evidence_factor})
-        mbpi = round(max((b["adjusted"] for b in bio), default=0), 1) if bio else None
+        adjusted = sorted((b["adjusted"] for b in bio), reverse=True)
+        mbpi = round((sum(adjusted[:2]) / min(2, len(adjusted)) if aggregation == "top_two_mean" else adjusted[0]), 1) if adjusted else None
 
         nutrition = s.get("nutrition", {})
         enough_food = all(n in nutrition and len(nutrient_groups[n]) >= min_peers for n in NUTRIENTS)
@@ -142,15 +157,17 @@ def scores(payload, *, food_weight=.5, min_peers=3):
         mfpi = None
         food_trace = None
         if enough_food:
-            nutrient_value = sum(percentile(nutrition[n]["per_100g"], list(nutrient_groups[n].values())) * GRADE_WEIGHT[nutrition[n]["grade"]] for n in NUTRIENTS) / len(NUTRIENTS)
+            nutrient_value = sum(percentile(nutrition[n]["per_100g"], list(nutrient_groups[n].values())) * grade_weight[nutrition[n]["grade"]] for n in NUTRIENTS) / len(NUTRIENTS)
             # Pilot weights are explicit and unvalidated, never inferred from missing data.
-            mfpi = round(.8 * nutrient_value + 10 * s["edible_fraction"] + 10 * int(s["aquaculture"]), 1)
+            mfpi = round(100 * (nutrient_weight * nutrient_value / 100 + edible_weight * s["edible_fraction"] + aquaculture_weight * int(s["aquaculture"])), 1)
             food_trace = {"schema_version": "food-1", "reviewed": True, "nutrients": {}}
             for name in NUTRIENTS:
                 n = nutrition[name]
                 peers = [t for t in species if name in t.get("nutrition", {})]
                 food_trace["nutrients"][name] = {
                     "value": n["per_100g"], "unit": n["unit"], "basis": n["basis"],
+                    "nutrient_percentile": round(percentile(n["per_100g"], list(nutrient_groups[name].values())), 2),
+                    "evidence_multiplier": grade_weight[n["grade"]],
                     "sample_state": n["sample_state"], "edible_part": n["edible_part"],
                     "method": n["method"], "sample_year": n["sample_year"],
                     "sample_region": n["sample_region"], "grade": n["grade"],
@@ -176,11 +193,12 @@ def scores(payload, *, food_weight=.5, min_peers=3):
 
         conservation = s.get("conservation", {})
         category = conservation.get("category")
-        mcui = IUCN.get(category)
+        mcui = iucn_points.get(category)
         trend = conservation.get("obis_trend")
         if mcui is not None and trend:
             mcui = max(0, min(100, mcui + {"declining": 10, "stable": 0, "increasing": -10}[trend["direction"]]))
-        stale = bool(conservation and date.today().year - conservation["assessment_year"] > 10)
+        reference_year = int(method.get("snapshot_date", date.today().isoformat())[:4])
+        stale = bool(conservation and reference_year - conservation["assessment_year"] > 10)
         bbvi = round(food_weight * mfpi + (1-food_weight) * mbpi, 1) if mfpi is not None and mbpi is not None else None
         missing = [key for key, value in (("MFPI", mfpi), ("MBPI", mbpi), ("MCUI", mcui)) if value is None]
         provenance = {a["reference_id"] for a in s.get("bioassays", [])}
@@ -190,6 +208,8 @@ def scores(payload, *, food_weight=.5, min_peers=3):
         provenance.update(s[k] for k in ("edible_fraction_source", "aquaculture_source") if k in s)
         if conservation:
             provenance.add(conservation["source_id"])
+            if conservation.get("taxon_source_id"):
+                provenance.add(conservation["taxon_source_id"])
             if trend:
                 provenance.add(trend["source_id"])
         result.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"],
@@ -197,6 +217,7 @@ def scores(payload, *, food_weight=.5, min_peers=3):
                        "missing": missing, "iucn_category": category or None,
                        "iucn_assessment_year": conservation.get("assessment_year"),
                        "iucn_review_older_than_10y": stale, "bioactivity_trace": bio,
+                       "conservation_trace": ({k: conservation.get(k) for k in ("category", "criteria", "assessment_year", "publication_year", "assessment_scope", "original_taxon", "source_id", "taxon_source_id", "reassessment_status", "trend_correction")} if conservation else None),
                        "food_trace": food_trace, "source_ids": sorted(provenance),
                        "note": "Pilot scores; external calibration and back-testing required."})
     return {"method_version": VERSION, "generated_at": datetime.now(timezone.utc).isoformat(),

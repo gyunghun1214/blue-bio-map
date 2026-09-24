@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-24",
+  "roster_status": "candidate_names_from_request_and_unmerged_pr7_live_profiles_inaccessible",
+  "sources": {
+    "iucn-aj-2013": {
+      "provider": "IUCN Red List; original assessment by Hamel & Mercier",
+      "record_id": "T180424A1629389",
+      "url": "https://www.iucnredlist.org/species/180424/1629389",
+      "doi": "10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
+      "license": "IUCN Red List terms of use; link and brief factual summary only; full assessment not redistributed",
+      "accessed": "2026-09-24",
+      "publication_year": 2013,
+      "sample_year": null,
+      "assessment_date": "2010-05-19",
+      "scope": "Northwest Pacific native global range, not a Korean regional assessment",
+      "verification": "Original IUCN-authored assessment text (ResearchGate mirror) pp. 1–2 independently checked for taxon, EN A2bd, date, justification and geographic range",
+      "mirror_url": "https://www.researchgate.net/publication/295098284_Apostichopus_japonicus_The_IUCN_Red_List_of_Threatened_Species_2013_eT180424A1629389",
+      "limitation": "IUCN site currently returns 403 here; newer superseding assessment could not be ruled out"
+    },
+    "worms-aj": {
+      "provider": "World Register of Marine Species (WoRMS)",
+      "record_id": "AphiaID:241776",
+      "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=241776",
+      "license": "WoRMS page text CC BY; credit WoRMS",
+      "accessed": "2026-09-24",
+      "verification": "WoRMS indexed record gives Apostichopus japonicus and AphiaID 241776; direct page returned 403"
+    }
+  },
+  "species": [
+    {"aphia_id": 836033, "scientific_name": "Magallana gigas", "candidate_label": "참굴"},
+    {"aphia_id": 342067, "scientific_name": "Todarodes pacificus", "candidate_label": "살오징어"},
+    {"aphia_id": 241776, "scientific_name": "Apostichopus japonicus", "candidate_label": "해삼 (돌기해삼 동정 확인 필요)", "conservation": {"reviewed": true, "source_id": "iucn-aj-2013", "category": "EN", "criteria": "A2bd v3.1", "assessment_year": 2010, "publication_year": 2013, "assessment_scope": "Global native range: Northwest Pacific", "original_taxon": "Apostichopus japonicus (Selenka, 1867)", "taxon_source_id": "worms-aj", "reassessment_status": "not_checked", "trend_correction": "none"}},
+    {"aphia_id": 494972, "scientific_name": "Sargassum fusiforme", "candidate_label": "톳"},
+    {"aphia_id": 145721, "scientific_name": "Undaria pinnatifida", "candidate_label": "미역"},
+    {"aphia_id": 212186, "scientific_name": "Gelidium amansii", "candidate_label": "우뭇가사리 (분류 후보, 승인명 미검수)"},
+    {"aphia_id": 506159, "scientific_name": "Mytilus coruscus", "candidate_label": "홍합 (참담치 결속 미검수)"},
+    {"aphia_id": 250680, "scientific_name": "Halocynthia roretzi", "candidate_label": "멍게"}
+  ]
+}
