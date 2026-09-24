@@ -49,6 +49,32 @@ async function attachPilotAssessments(next) {
   } catch { /* A malformed optional report must not hide the underlying species evidence. */ }
 }
 
+// A species score does not establish a spatial decision. There is no reviewed
+// cell-level join, sampling-effort adjustment or comparison cohort in the public data.
+function cellAssessmentStatus(s,c) {
+  const reasons=[];
+  if(!s.live)reasons.push('별도 시연 격자: 운영 공개 셀의 평가 입력과 연결되지 않음');
+  if(['BBVI','MCUI'].some(k=>pilotScore(s,k)===null))reasons.push('검수된 종별 BBVI·MCUI 한 쌍이 없음');
+  if(!c?.citations?.length)reasons.push('해당 셀의 제공처·이용조건 연결 미확인');
+  if(!Number.isFinite(c?.yearStart)||!Number.isFinite(c?.yearEnd))reasons.push('해당 셀의 기록 연도 범위 미확인');
+  if(!c?.seaAreas?.length||c.seaAreas.includes('해역명 미확인'))reasons.push('해당 셀의 해역 메타데이터 미확인');
+  reasons.push('종별 지표를 셀에 귀속할 검수된 연결·해역별 집계 규칙 없음');
+  reasons.push('관측 노력·중복·조사 시기·국경 경계의 해역 간 비교 검증 없음');
+  return {eligible:false,reasons};
+}
+function occurrenceCitationLinks(c) {
+  return (c.citations||[]).map(x=>{
+    const terms=(x.licenses||[]).map(l=>sourceLink({'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/',
+      'CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/'}[l],l)).join(' · ')||'이용조건 미확인';
+    return `<li>${sourceLink(x.url,x.title||'제공처 원문')} · ${terms}</li>`;
+  }).join('');
+}
+function mapJudgmentStatus(s) {
+  $('map-judgment').textContent=s.cells?.length
+    ? `해역별 활용·보전 판단: 승인 0곳 · 표시된 ${s.cells.length}개 셀 모두 판단 보류. 셀을 눌러 원자료와 부족한 근거를 확인하세요.`
+    : '해역별 활용·보전 판단: 승인 0곳 · 공개 출현 셀이 없어 해역 판단도 보류합니다.';
+}
+
 function setView(view) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
   currentView=view;
@@ -149,10 +175,11 @@ function mapSection(s){
 }
 
 function renderCellMap(s,color){
-  $('map-review-note').textContent='공개 기준을 통과한 GBIF 기록만 1° 셀로 묶었습니다. 셀은 출현 확인 범위이며 분포 전체나 개체수를 뜻하지 않습니다.';
+  $('map-review-note').textContent='선별된 GBIF 출현기록의 1° 셀입니다. 색은 선택 종을 구분하며 가치·보전 등급이 아닙니다. 한국의 현재 전체 분포·개체수·자원량을 나타내지 않습니다.';
+  mapJudgmentStatus(s);
   for(const c of s.cells){
     L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],{color:{basic:'#b86b00',satellite:'#ffd166',depth:'#c2410c'}[basemap],weight:basemap==='basic'?2:2.6,dashArray:'6 4',fillColor:color,fillOpacity:basemap==='basic'?.28:.35}).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)} · 공개 1° 셀</strong><br>기간 ${years(c)} <small>(${esc(c.period)} 구간)</small><br>해역 ${esc(c.seaAreas.map(a=>a==='해역명 미확인'?a:'LME '+a).join(', '))} · 국가 ${esc(c.countries.join(', '))}<br>공간 해상도 1°×1° · 가장 짧은 변 약 ${Math.floor(c.resolutionM/1000)} km<br>조사 지점 ${c.sites}곳 <small>(기록 ${c.records}건${c.uncertaintyMissing?` · 불확실성 결측 ${c.uncertaintyMissing}건`:''})</small><br>출처 ${esc(c.citations.map(x=>x.title).join(', '))} · ${esc(c.licenses.join(', '))}<br><small>셀 범위 ${c.lat0}–${c.lat0+c.sizeDeg}°N, ${c.lon0}–${c.lon0+c.sizeDeg}°E. 원좌표·개체수·분포 범위가 아닙니다.</small>`);
+      .bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 1° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(c))} · 공개 집계 기간 ${esc(c.period)}<br>기록의 해역 메타데이터 ${esc(c.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(c.countries.join(', ')||'미기재')}<br>공간 해상도 1°×1° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>조사 지점 ${esc(c.sites)}곳 · 선별 기록 ${esc(c.records)}건${c.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(c.uncertaintyMissing)}건`:''}<br><b>이 셀의 출처·이용조건</b><ul>${occurrenceCitationLinks(c)||'<li>셀별 제공처 확인 필요</li>'}</ul><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,c).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`);
   }
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.map(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{padding:[60,60],maxZoom:7});}
   $('map-count').textContent=cellSites(s).toLocaleString();$('map-count').nextElementSibling.textContent='조사 지점';$('map-cells').textContent=s.cells.length;$('map-years').textContent=years({yearStart:Math.min(...s.cells.map(c=>c.yearStart)),yearEnd:Math.max(...s.cells.map(c=>c.yearEnd))});
@@ -165,10 +192,11 @@ function renderMap() {
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
   $('map-count').nextElementSibling.textContent='수집된 기록';
   if(s.live&&s.cells.length)return renderCellMap(s,color);
-  $('map-review-note').textContent=!s.live?'기존 시연 자료의 1° 격자입니다. 운영 DB 자료와 별개입니다.':s.noOccurrences?'출현자료를 수집하지 않은 종입니다. 지도에 표시할 위치가 없으며, 배경 지도는 분포를 뜻하지 않습니다.':!Number.isSafeInteger(s.recordCount)?'출현기록 수를 확인할 수 없습니다. 배경 지도는 분포를 뜻하지 않습니다.':'위치 공개 검토 중입니다. 배경 지도는 분포를 뜻하지 않습니다.';
+  mapJudgmentStatus(s);
+  $('map-review-note').textContent=!s.live?'별도 OBIS 시연의 선별 출현기록입니다. 운영 DB와 별개이며 가치·보전 등급이나 한국의 현재 전체 분포가 아닙니다.':s.noOccurrences?'출현자료를 수집하지 않은 종입니다. 지도에 표시할 위치가 없으며, 배경 지도는 분포를 뜻하지 않습니다.':!Number.isSafeInteger(s.recordCount)?'출현기록 수를 확인할 수 없습니다. 배경 지도는 분포를 뜻하지 않습니다.':'위치 공개 검토 중입니다. 배경 지도는 분포를 뜻하지 않습니다.';
   for(const cell of s.cells){
     L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],{color:{basic:color,satellite:'#ffd166',depth:'#c2410c'}[basemap],weight:1.3,fillColor:color,fillOpacity:basemap==='basic'?.23:.35}).addTo(overlay)
-      .bindPopup(`<strong>${esc(s.label)}</strong><br>1° 격자 내 기록 ${cell.count}건<br>기록 연도: ${years(cell)}<br><small>격자 중심 ${cell.lat}°N, ${cell.lon}°E<br>원좌표·개체수·서식 범위가 아닙니다.</small>`);
+      .bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 격자 중심은 개별 관측 위치가 아니며 개체수·자원량·현재 한국 전체 분포가 아닙니다.</small>`);
   }
   $('map-count').textContent=Number.isSafeInteger(s.recordCount)?s.recordCount.toLocaleString():'—';$('map-cells').textContent=s.live?(s.noOccurrences?'해당 없음':'검토 중'):s.cells.length;$('map-years').textContent=years(s);
 }
@@ -273,7 +301,8 @@ async function loadCollection(){
   $('data-label').textContent=live?'운영 자료':'기존 시연';
   $('score-disclaimer').innerHTML='학명·출현 자료를 연결한 첫 버전입니다. 활용가치와 보전 점수는 <strong>아직 산출하지 않았습니다.</strong>';
   $('scope-bounds').textContent=live?'124–132°E · 33–38.7°N · 시험 범위':'122–136°E · 30–43°N · 시연 범위';
-  document.querySelector('.map-key').hidden=live;
+  $('map-legend').textContent=live?'선별된 GBIF 출현기록 · 공개 1° 셀':'별도 OBIS 시연 · 선별된 출현기록 1° 격자';
+  $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent=live?'운영 지도 · 공개 1° 셀':'OBIS 출현기록 · 시연 격자';
   try{
     const next=live?await loadPublishedProfiles():await fetch('data.json').then(r=>{if(!r.ok)throw Error('시연 자료를 불러오지 못했습니다.');return r.json();});
@@ -283,7 +312,7 @@ async function loadCollection(){
     if(next.species.some(s=>s.assessment))$('score-disclaimer').innerHTML='일부 종에 <strong>검증 전 시범 지표</strong>가 있습니다. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];renderList();renderDetail();renderMap();renderComparison();renderSources();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderSources();
     $('connection-state').textContent=live?'운영 DB 연결됨 · '+data.species.length+'종':'별도 시연 자료 · '+data.species.length+'종';
     toggleSimulation(false);
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
