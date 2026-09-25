@@ -129,6 +129,21 @@ try{
   check('Matrix: unplaced species listed apart as priority-survey targets',unplaced.includes('정보 부족 · 우선 조사 대상 8종')&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' 8'),unplaced);
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
+  // ---- Presentation polish (2026-09-25) ----
+  const og=await evaluate("(async()=>{const m=p=>document.querySelector(`meta[${p}]`)?.content||'';const img=m('property=\"og:image\"');const r=await fetch('og.png');const b=await r.blob();return {title:m('property=\"og:title\"'),desc:m('property=\"og:description\"'),type:m('property=\"og:type\"'),url:m('property=\"og:url\"'),locale:m('property=\"og:locale\"'),card:m('name=\"twitter:card\"'),img,ok:r.ok,type2:b.type,size:b.size,dims:await createImageBitmap(b).then(i=>i.width+'x'+i.height)}})()");
+  check('OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB',!!og.title&&!!og.desc&&og.type==='website'&&og.url==='https://blue-bio-map.blue-bio-map.workers.dev/'&&og.locale==='ko_KR'&&og.card==='summary_large_image'&&og.img==='https://blue-bio-map.blue-bio-map.workers.dev/og.png'&&og.ok&&og.dims==='1200x630'&&og.size<=300*1024,JSON.stringify(og));
+  const slider=await evaluate("({n:data.species.filter(s=>pilotScore(s,'BBVI')!==null).length,disabled:document.getElementById('bbvi-weight').disabled,status:document.getElementById('bbvi-weight-status').textContent})");
+  check('BBVI 0 species: weight slider disabled with explanation',slider.n===0&&slider.disabled&&slider.status.includes('BBVI 산출 종 0종')&&slider.status.includes('두 축(MFPI·MBPI)'),JSON.stringify(slider));
+  const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
+  check('Oyster status card leads with computed value: "MFPI 65.5 · MBPI·MCUI 보류"',oyCard.startsWith('MFPI 65.5')&&oyCard.includes('MBPI·MCUI 보류'),oyCard);
+  const oyChip=await evaluate("document.querySelector('#matrix-unplaced [data-aphia=\"836033\"] small').textContent");
+  check('Oyster priority chip leads with computed value too',oyChip.startsWith('MFPI 65.5'),oyChip);
+  check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&n.includes('보류')})()"));
+  check('Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("!document.querySelector('.version').textContent.includes('0.2')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')"));
+  const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
+  check('Empty matrix note links straight to the simulated example (still labelled not real)',inlineSim===true,String(inlineSim));
+  const effortOp=await evaluate("(()=>{const eb=[...document.querySelectorAll('.effort-key .eb')].map(e=>getComputedStyle(e).opacity);const fills=[...new Set(effortLayer.getLayers().map(l=>l.options.fillOpacity))].sort();return {eb,fills}})()");
+  check('Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14)',JSON.stringify(effortOp.eb)==='["0.07","0.15","0.25","0.37"]'&&Math.max(...effortOp.fills)<=.14,JSON.stringify(effortOp));
   check('Method tab: back-test cases from the proposal, marked not yet done',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(아직 수행 안 함)')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
   check('Method tab: no outdated grid-centre wording',await evaluate("!document.getElementById('method').textContent.includes('격자 중심')&&document.getElementById('method').textContent.includes('실제 발견·채집 좌표가 아닙니다')"));
   check('Merged PR #1: evidence coverage row and map section both reachable; pilot values carry a caution box',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('시범 분석 주의')&&t.includes('지도 셀'),t);
@@ -237,6 +252,9 @@ try{
   // ---------- Mobile 390px ----------
   await viewport(390,844,true);
   await load();
+  // Before the 2026-09-25 polish the map started at 1065px (below the 844px first screen).
+  const mob=await evaluate("(()=>{const d=document.getElementById('score-disclaimer').getBoundingClientRect();return {map:Math.round(document.getElementById('map').getBoundingClientRect().top+scrollY),warn:d.height>0&&document.getElementById('score-disclaimer').textContent.includes('검증 전 시범 지표')}})()");
+  check('Mobile 390px: map moved up (top < 1065px, near first screen); pilot-index warning still visible',mob.map<1065&&mob.map<=844&&mob.warn,JSON.stringify(mob));
   for(const [aphia,name] of [[241776,'mobile-sea-cucumber'],[836033,'mobile-oyster']]){
     await pick(aphia);await detailEl();
     const ov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");

@@ -65,5 +65,5 @@ async function loadPublishedProfiles() {
       publishedAt:p.published_at,status:cellsOf(p.species_id).length?`공개 ${cellsOf(p.species_id)[0].sizeDeg}° 셀`:'조사 범위 표시',scores:null};
   });
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
-  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 해삼은 4°, 다른 종은 1°이며 원좌표는 공개하지 않습니다. 점수는 아직 발행하지 않았습니다.`};
+  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 해삼은 4°, 다른 종은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
 }
