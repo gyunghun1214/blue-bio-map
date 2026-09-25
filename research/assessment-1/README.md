@@ -44,3 +44,16 @@
 3. 종 기원 시료에서 단일 화합물 구조 ID까지 추적하고 동일 target/assay의 원논문 pChEMBL 행과 비교집단을 검수한다. PR #5의 미해결 ID와 분획을 점수에 사용하지 않는다.
 4. IUCN의 종별 평가 범위·등급·평가 연도·원문 링크를 검수하고 DD/NE·미평가를 보류한다. 출현기록만으로 개체군 변화 추정 금지.
 5. 이용조건과 외부 사례 검증을 통과한 뒤에야 선택 종의 결과 JSON 공개 여부를 별도 판단한다. 이 PR은 그 승인을 포함하지 않는다.
+
+## 추가 (2026-09-25): 첫 실제 판단 사례를 만들려면
+
+- **해삼 MCUI**: 2026년 IUCN EN 평가(Hamel & Mercier 2026)가 현행 평가로 확인됐다([보전 조사 추가 확인](../species-conservation/README.md)). 팀원이 IUCN 원문에서 기준·평가일·범위를 확인하면 아래 입력으로 시범 MCUI(EN → 80, 검증 전)를 산출할 수 있다. 확인 전에는 `reviewed`를 true로 두지 않는다.
+
+```json
+"conservation": {"category": "EN", "assessment_year": 2026, "source_id": "iucn-2026-apostichopus", "reviewed": true,
+                 "current_status_check": {"is_current": true, "source_id": "iucn-2026-apostichopus", "checked_on": "YYYY-MM-DD"}}
+```
+  출처 등록: `"iucn-2026-apostichopus": {"url": "https://doi.org/10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en", "license": "IUCN terms of use", "accessed": "YYYY-MM-DD"}`
+
+- **매트릭스 배치**에는 MCUI만으로는 부족하다. BBVI가 필요하고, BBVI는 MFPI와 MBPI가 **모두** 있어야 한다. MFPI는 food-1 형식(가식부 100 g 생물 기준 영양 원값·방법·시료, 동기준 3종 이상, 가식부 비율, 양식 근거), MBPI는 동일 표적·assay 화합물 3개 이상의 pChEMBL 자료가 필요하다. 현재 저장소에는 두 입력 모두 없다.
+- 즉 제출 전에 실현 가능한 "실제 사례"는 해삼의 **시범 MCUI 1축**이며, 매트릭스 점은 영양·생리활성 원자료 검수 후에야 가능하다.

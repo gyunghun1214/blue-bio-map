@@ -45,8 +45,8 @@ try{
   check('List: sea cucumber card shows two broad cells',cards.some(c=>c.includes('해삼')&&c.includes('2셀 · 지점 2곳')),JSON.stringify(cards));
 
   let t=await pick(836033);
-  check('Oyster: nutrition shown as a collection inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144), not food value; MFPI withheld',
-    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','식량 가능성 · MFPI 산출 보류'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
+  check('Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) kept apart from the verified-pilot-2 MFPI trace',
+    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','MFPI · 식량 가능성','65.5 · 검증 전 시범 지표'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
   check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
   check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
   check('Oyster: compounds 미수집, occurrences 26 kept',/보고 화합물\s*미수집/.test(t)&&/수집된 기록\s*26건/.test(t),t);
@@ -58,7 +58,7 @@ try{
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
   check('Sea cucumber: two occurrence records, 4-degree generalization',t.includes('GBIF 공개 기록 2건')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 기록 수\s*미수집/.test(t),t);
-  check('Sea cucumber live: 2013 IUCN EN is historical, current assessment unverified',t.includes('EN A2bd · 2013년 발표 (역사적 평가)')&&/현행 평가\s*확인 보류/.test(t)&&t.includes('MCUI로 바꾸지 않습니다'),t);
+  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN EN 2026 · 원문 검수 · 시범 MCUI')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 검증 전 시범 지표')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
   check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
@@ -71,7 +71,7 @@ try{
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
   const cmp=await evaluate("document.getElementById('comparison').innerText");
-  check('Compare table: per-species nutrition/compounds/conservation from API',cmp.includes('영양 기록 144건')&&cmp.includes('단위/가식부 검증 전')&&cmp.includes('보고 화합물 122개')&&cmp.includes('근거 부족으로 보류')&&cmp.includes('미검토'),cmp);
+  check('Compare table: verified-pilot-2 axis status per species (scores, partial evidence, withheld) with evidence links',['65.5','54.2','42.2','80.0','10.0','일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
@@ -89,10 +89,10 @@ try{
   check('Demo popup: separate OBIS grid, withheld judgment, real count, dot notice',['별도 OBIS 시연 출현 격자','해역별 활용·보전 판단: 보류','선별 기록','OBIS 조회 조건','붉은 점은 실제 발견 좌표가 아닌'].every(x=>demoPopup.includes(x))&&await evaluate("overlay.getLayers().some(l=>l._schematicDot)"),demoPopup.slice(0,300));
   await evaluate("map.closePopup();document.querySelector('[data-species=\"241776\"]').click();1");
   const demoCuc=await evaluate("document.getElementById('detail').innerText");
-  check('Demo 돌기해삼: 2013 IUCN EN shown as historical, current status unverified',demoCuc.includes('2013년 발표 (역사적 평가)')&&/현행 평가\s*확인 보류/.test(demoCuc)&&!demoCuc.includes('평가 미조회'),demoCuc);
+  check('Demo 돌기해삼: 2026 IUCN EN current (not yet reviewed), 2013 superseded',demoCuc.includes('2026년 발표 (원문 검수 전)')&&demoCuc.includes('2026년 평가로 대체')&&!demoCuc.includes('평가 미조회'),demoCuc);
   await evaluate("document.querySelector('[data-view=compare]').click();document.querySelector('.decision-card[data-aphia=\"241776\"]').click();1");
   const dec=await evaluate("document.getElementById('decision-detail').innerText");
-  check('Decision panel: 돌기해삼 all four axes withheld, IUCN EN 2013 historical',['MFPI: 산출 보류','MBPI: 산출 보류','MCUI: 산출 보류','BBVI: 산출 보류','IUCN 원평가 · 역사적 평가','현행 평가 여부는 확인하지 않았습니다'].every(x=>dec.includes(x)),dec.slice(0,400));
+  check('Decision panel: 돌기해삼 all four axes withheld, IUCN 2026 EN current but not reviewed',['MFPI: 산출 보류','MBPI: 산출 보류','MCUI: 산출 보류','BBVI: 산출 보류','IUCN 평가 · 2026년 현행 평가 확인 · 원문 검수 전','Hamel & Mercier 2026'].every(x=>dec.includes(x)),dec.slice(0,500));
   await shot('desktop-decision-demo');
   await evaluate("document.querySelector('[data-view=explore]').click();1");
 
@@ -123,7 +123,7 @@ try{
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   check('Method tab: back-test cases from the proposal, marked not yet done',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(아직 수행 안 함)')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
   check('Method tab: no outdated grid-centre wording',await evaluate("!document.getElementById('method').textContent.includes('격자 중심')&&document.getElementById('method').textContent.includes('실제 발견·채집 좌표가 아닙니다')"));
-  check('Merged PR #1: evidence coverage row next to the map section, scores still withheld',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('통합점수 산출 보류')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
+  check('Merged PR #1: evidence coverage row next to the map section; pilot values carry a caution box',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('시범 분석 주의')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
   check('Cell popup: period, sea area, source, licence, spatial resolution',['공개 집계 기간 2016–2026 · 기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','선별 기록 3건 · 조사 지점 2곳','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
@@ -154,7 +154,7 @@ try{
   check('Sea cucumber with valid recheck: pilot MCUI, no contradictory wording, not a Korea-only/policy claim',rechecked.includes('현행 여부 재확인 · 시범')&&rechecked.includes('재확인 2026-09-20 · 시범 보고서')&&rechecked.includes('2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다')&&!rechecked.includes('MCUI로 바꾸지 않습니다')&&!rechecked.includes('현행 평가 여부는 확인하지 않았습니다'),rechecked.slice(rechecked.indexOf('보전'),rechecked.indexOf('보전')+500));
   await evaluate("document.getElementById('detail').querySelector('h3:nth-of-type(3)')?.scrollIntoView();1");await shot('desktop-sea-cucumber-rechecked');
   const badDate=await cucReport('2099-99-99');
-  check('Sea cucumber with impossible check date: MCUI withheld, historical wording kept',badDate.includes('(역사적 평가)')&&/현행 평가\s*확인 보류/.test(badDate)&&badDate.includes('MCUI로 바꾸지 않습니다')&&!badDate.includes('재확인'),badDate.slice(badDate.indexOf('보전'),badDate.indexOf('보전')+400));
+  check('Sea cucumber with impossible check date: MCUI withheld, 2026 current-assessment wording kept',badDate.includes('2026년 발표 (원문 검수 전)')&&badDate.includes('MCUI는 평가 기준·평가일·범위를 원문으로 검수한 뒤에만')&&!badDate.includes('재확인'),badDate.slice(badDate.indexOf('보전'),badDate.indexOf('보전')+400));
   await evaluate("for(const x of data.species)delete x.assessment;selectSpecies(836033);1");
   // Keyboard / screen-reader path to the same cell evidence.
   await pick(145721);await sleep(300);
@@ -166,6 +166,34 @@ try{
   const kb=await evaluate("({popup:document.querySelector('.leaflet-popup-content')?.innerText||'',focusIn:!!document.activeElement?.closest('.leaflet-popup')})");
   check('Keyboard: Enter on "지도에서 열기" opens the cell popup and moves focus into it',kb.popup.includes('해역별 활용·보전 판단: 보류')&&kb.focusIn,JSON.stringify(kb).slice(0,200));
   await evaluate("map.closePopup();1");
+  // ---- A/B improvements ----
+  let ab=await pick(241776);
+  check('A-1 summary card: status chips (not a verdict) with publish date',await evaluate("(()=>{const c=document.querySelector('#detail .summary-card');return !!c&&c.innerText.includes('판정 아님')&&c.querySelectorAll('.chip').length===6&&/발행 \\d{4}-\\d{2}-\\d{2}/.test(c.innerText)})()"));
+  check('A-2 coverage bar: 5 segments, on/off matches n/5',await evaluate("(()=>{const b=document.querySelector('#detail .coverage-bar');return !!b&&b.querySelectorAll('.seg').length===5&&b.querySelectorAll('.seg.on').length===evidenceCoverage(selected).known})()"));
+  check('A-4 IUCN: superseded 2013 assessment no longer flagged Needs updating; 2026 assessment cited',!ab.includes('Needs updating')&&ab.includes('2013년 발표 (2026년 평가로 대체)')&&ab.includes('Hamel & Mercier 2026'),ab.slice(ab.indexOf('보전'),ab.indexOf('보전')+300));
+  const pop=await evaluate("(()=>{map.closePopup();overlay.getLayers().find(l=>!l._schematicDot).openPopup();return [...document.querySelectorAll('.leaflet-popup-content')].at(-1).innerText})()");
+  check('A-3 popup: GBIF generalisation vocabulary and 4° sensitivity note',['dataGeneralizations','informationWithheld','GBIF 지침의 가장 엄격한 등급(1°)보다 넓은 4° 셀','재검토 예정일: 미정'].every(x=>pop.includes(x)),pop.slice(0,400));
+  check('B-1 popup: effort reference line, not presence',/OBIS 전체 종 기록 [\d,]+건\(2000년 이후\)/.test(pop)&&pop.includes('이 종의 존재·개체수와 무관'),pop.slice(0,400));
+  const eff=await evaluate("(()=>({n:effortLayer?.getLayers().length,date:document.getElementById('effort-date').textContent,pane:getComputedStyle(map.getPane('effortPane')).pointerEvents}))()");
+  check('B-1 effort layer drawn from snapshot, non-clickable, dated',eff.n>100&&/\d{4}-\d{2}-\d{2} 조회/.test(eff.date)&&eff.pane==='none',JSON.stringify(eff));
+  const off=await evaluate("(()=>{const t=document.getElementById('effort-toggle');t.click();const a=effortLayer.getLayers().length;t.click();return [a,effortLayer.getLayers().length]})()");
+  check('B-1 effort toggle hides and restores the layer',off[0]===0&&off[1]>100,JSON.stringify(off));
+  await evaluate("map.closePopup();1");
+  await pick(145721);await sleep(200);
+  const pf=await evaluate("(()=>{const b=[...document.querySelectorAll('#period-filter [data-period]')];const all=overlay.getLayers().filter(l=>!l._schematicDot).length;b.find(x=>x.dataset.period.startsWith('2000')).click();const one=overlay.getLayers().filter(l=>!l._schematicDot).length;const rows=document.querySelectorAll('#cell-table tbody tr').length;const hash=location.hash;b[0].click();return {buttons:b.length,all,one,rows,hash,back:overlay.getLayers().filter(l=>!l._schematicDot).length}})()");
+  check('A-5 period filter: 미역 has 전체+2 periods; filtering reduces cells and table; hash records it',pf.buttons===3&&pf.one<pf.all&&pf.rows===pf.one&&/p=2000/.test(decodeURIComponent(pf.hash))&&pf.back===pf.all,JSON.stringify(pf));
+  const csv=await evaluate("(()=>{const t=cellCsv(selected);return {bom:t.charCodeAt(0)===0xFEFF,lines:t.split('\\r\\n').length,cells:selected.cells.length,head:t.slice(1,40)}})()");
+  check('A-5 CSV: BOM, header + one line per published period row',csv.bom&&csv.lines===csv.cells+1&&csv.head.startsWith('"species_label"'),JSON.stringify(csv));
+  check('A-6 info panel and copy-link control present',await evaluate("!!document.querySelector('.map-info summary')&&document.querySelector('.map-info').textContent.includes('회색 음영')&&!!document.getElementById('copy-link')"));
+  // Shared link restores species, tab and basemap after a reload.
+  await evaluate("location.hash='c=live&s=241776&v=compare&b=depth';location.reload();1");
+  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await sleep(800);
+  const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
+  check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
+  await evaluate("setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
+  check('A-2 comparison table shows coverage bars for all 8 species',await evaluate("document.querySelectorAll('#comparison .coverage-bar').length===8"));
+  t=await pick(836033);
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);

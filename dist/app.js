@@ -20,7 +20,12 @@ function evidenceCoverage(s) {
     ['정량 활성', c.status==='available' && Number.isSafeInteger(c.quantitative_bioactivity_count) && c.quantitative_bioactivity_count>0],
     ['보전 평가', k.status==='available' && Number.isSafeInteger(k.assessment_count) && k.assessment_count>0]
   ];
-  return {known:checks.filter(([,present])=>present).length, missing:checks.filter(([,present])=>!present).map(([name])=>name)};
+  return {known:checks.filter(([,present])=>present).length, missing:checks.filter(([,present])=>!present).map(([name])=>name), checks};
+}
+// Five linked-evidence slots as a bar (Ocean Health Index / Map of Life style): presence, not quality.
+function coverageBar(s){
+  const c=evidenceCoverage(s);
+  return `<div class="coverage-bar" role="img" aria-label="자료 연결 현황 ${c.known}/5: ${esc(c.checks.map(([n,p])=>n+(p?' 연결':' 미연결')).join(', '))}">${c.checks.map(([n,p])=>`<span class="seg ${p?'on':'off'}" title="${esc(n)}: ${p?'연결됨':'미연결'}">${esc(n)}</span>`).join('')}</div>`;
 }
 
 // Only a separately reviewed, traceable food input can expose an MFPI score.
@@ -209,7 +214,10 @@ function mapJudgmentStatus(s) {
 
 // Original IUCN assessments verified in research/species-conservation. Historical records only:
 // not the current status, not a Korea-only assessment and not an MCUI input until a current check.
-const IUCN_HISTORICAL = {"241776":{"category":"EN A2bd","published":2013,"assessed":"2010-05-19","scope":"북서태평양 전 분포(한국 단독 평가 아님)","url":"https://www.iucnredlist.org/species/180424/1629389"}};
+// 2026-09-25: GBIF's copy of the IUCN checklist (Red List version 2026-07-28) cites a newer 2026 assessment.
+// Category and citation are confirmed; criteria, date assessed and scope detail still need a read of the assessment text.
+const IUCN_HISTORICAL = {"241776":{"category":"EN A2bd","published":2013,"assessed":"2010-05-19","scope":"북서태평양 전 분포(한국 단독 평가 아님)","url":"https://www.iucnredlist.org/species/180424/1629389",
+  "current":{"category":"EN","published":2026,"citation":"Hamel & Mercier 2026","scope":"전 세계(Global) 평가","url":"https://doi.org/10.2305/IUCN.UK.2026-1.RLTS.T180424A272708369.en","found_via":"GBIF의 IUCN 적색목록 체크리스트(2026-07-28판)","checked":"2026-09-25"}}};
 // Wording follows the MCUI gate: a pilot MCUI exists only after a sourced, dated current-status check.
 function iucnHistoricalText(h,s){
   const base=`IUCN ${h.category}: ${h.published}년 발표(${h.assessed} 평가) · ${h.scope}.`;
@@ -218,12 +226,17 @@ function iucnHistoricalText(h,s){
     return `IUCN 현행 평가 ${t.category} ${t.criteria||''}: ${t.publication_year}년 발표(${t.assessment_date} 평가) · 전 지구 범위. 이전 ${h.category}(${h.published}년 발표, ${h.assessed} 평가)는 대체된 역사적 평가입니다. 검증 전 시범 MCUI에는 현행 평가만 사용했고, 한국 한정 평가나 확정된 정책 판단이 아닙니다.`;
   return t
     ? `${base} 시범 보고서가 ${t.current_status_checked_on}에 출처 ${t.current_status_source_id}로 이 평가가 현행 IUCN 평가임을 재확인해, 검증 전 시범 MCUI에 사용했습니다. 전 세계 범위 평가이며 2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다.`
+    : h.current
+    ? `IUCN ${h.current.category}: ${h.current.published}년 발표(${h.current.citation}) · ${h.current.scope}. ${h.published}년 ${h.category} 평가(${h.assessed} 평가)를 대체한 현행 평가입니다. 등급과 인용은 ${h.current.found_via}에서 ${h.current.checked}에 확인했고, 평가 기준·평가일·범위는 원문 검수 전입니다. 한국 한정 평가가 아닙니다.`
     : `${base} 역사적 평가이며, 현행 평가 여부는 확인하지 않았습니다.`;
 }
 function iucnHistoricalRows(s){
   const h=IUCN_HISTORICAL[s.aphiaID];if(!h)return '';
-  const verified=pilotScore(s,'MCUI')!==null;
-  return row('IUCN 원평가',`${h.category} · ${h.published}년 발표 ${verified?'(현행 여부 재확인 · 시범)':'(역사적 평가)'}`)
+  const verified=pilotScore(s,'MCUI')!==null, stale=new Date().getFullYear()-h.published>10;
+  if(h.current&&!verified)return row('IUCN 현행 평가',`${h.current.category} · ${h.current.published}년 발표 (원문 검수 전)`)
+    +row('이전 평가',`${h.category} · ${h.published}년 발표 (2026년 평가로 대체)`)
+    +`<p class="fine">${esc(iucnHistoricalText(h,s))} MCUI는 평가 기준·평가일·범위를 원문으로 검수한 뒤에만 씁니다. ${sourceLink(h.current.url,'2026년 평가 (DOI) ↗')} · ${sourceLink(h.url,'2013년 평가 ↗')}</p>`;
+  return (stale&&!verified?row('IUCN 표기','갱신 필요(Needs updating)','pending')+'<p class="fine">IUCN은 평가 후 10년이 지나면 적색목록 사이트에 \'Needs updating\'으로 표시합니다.</p>':'')+row('IUCN 원평가',`${h.category} · ${h.published}년 발표 ${verified?'(현행 여부 재확인 · 시범)':'(역사적 평가)'}`)
     +(verified?row('현행 평가',`재확인 ${s.assessment.conservation_trace.current_status_checked_on} · 시범 보고서`):row('현행 평가','확인 보류','pending'))
     +`<p class="fine">${esc(iucnHistoricalText(h,s))}${verified?'':' 2026년 한국 현황이나 MCUI로 바꾸지 않습니다.'} ${sourceLink(h.url,'IUCN 평가 레코드 ↗')}</p>`;
 }
@@ -252,7 +265,7 @@ function assessmentBlockers(s){
   if(pilotScore(s,'MCUI')===null){
     const h=IUCN_HISTORICAL[s.aphiaID];
     reasons.MCUI=h
-      ? iucnHistoricalText(h,s)+' 현행 평가 확인 전이라 MCUI 입력으로 쓰지 않음. 출현기록 수는 개체군 변화가 아님.'
+      ? iucnHistoricalText(h,s)+(h.current?' 원문(평가 기준·평가일·범위) 검수 전이라 MCUI 입력으로 쓰지 않음.':' 현행 평가 확인 전이라 MCUI 입력으로 쓰지 않음.')+' 출현기록 수는 개체군 변화가 아님.'
       : s.assessment?.mcui_withheld_reason
       ? `검수된 IUCN 원평가(${s.assessment.conservation_trace?.category||'등급 미기재'} · ${s.assessment.conservation_trace?.assessment_year||'연도 미기재'})는 있으나 현행 평가인지 확인한 근거가 없어 보류.`
       : k.status==='withheld_insufficient_evidence'
@@ -302,7 +315,7 @@ function showDecision(s){
     html+=`<h4>계산과 기준일</h4><p>MFPI: 영양 백분위·등급 80%, 가식부 10%, 양식 근거 10%. MBPI: 동일 표적·assay층 화합물 백분위 × 문헌 계수. BBVI: MFPI ${esc(info.foodWeight*100)}% + MBPI ${esc((1-info.foodWeight)*100)}%. MCUI는 별도 축. 산출 ${esc(info.generatedAt||'미기재')}. 모든 가중치와 점수는 검증 전 시범값입니다.</p>`;
     html+='<h4>원문·이용조건</h4><ul>'+a.source_ids.map(id=>`<li>${sourceLink(info.sources?.[id]?.url,id+' ↗')} · ${esc(info.sources?.[id]?.license||'이용조건 미확인')} · 조회 ${esc(info.sources?.[id]?.accessed||'미기재')}</li>`).join('')+'</ul>';
   }
-  if(IUCN_HISTORICAL[s.aphiaID])html+=`<h4>IUCN 원평가 · ${pilotScore(s,'MCUI')===null?'역사적 평가':'현행 여부 재확인(시범)'}</h4><p>${esc(iucnHistoricalText(IUCN_HISTORICAL[s.aphiaID],s))} ${sourceLink(IUCN_HISTORICAL[s.aphiaID].url,'IUCN 평가 레코드 ↗')}</p>`;
+  {const h=IUCN_HISTORICAL[s.aphiaID];if(h)html+=`<h4>IUCN 평가 · ${pilotScore(s,'MCUI')!==null?'현행 여부 재확인(시범)':h.current?'2026년 현행 평가 확인 · 원문 검수 전':'역사적 평가'}</h4><p>${esc(iucnHistoricalText(h,s))} ${sourceLink(h.current?.url||h.url,'IUCN 평가 레코드 ↗')}</p>`;}
   if(study)html+=`<h4>별도 원문 조사 · 지표 입력 아님</h4><p>${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`;
   html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p>';
   $('decision-detail').innerHTML=html;
@@ -451,6 +464,7 @@ function setView(view) {
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
+  writeHash();
 }
 
 function renderList() {
@@ -461,17 +475,29 @@ function renderList() {
   $('species-list').querySelectorAll('[data-species]').forEach(button=>button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species))));
 }
 
+// Status chips, not a verdict: what exists, what is withheld, and when the summary was published.
+function summaryCard(s){
+  const chip=(label,value,state)=>`<span class="chip ${state}"><b>${esc(label)}</b> ${esc(value)}</span>`;
+  const k=s.info?.conservation||{}, h=IUCN_HISTORICAL[s.aphiaID];
+  const cells=s.cells||[];
+  const occ=s.live?(cells.length?chip('출현',`공개 셀 ${spatialCells(s).length}개 · ${cells[0].sizeDeg}°`,'ok'):chip('출현','조사 범위만','warn')):chip('출현',`시연 격자 ${cells.length}개`,'ok');
+  const axes=['MFPI','MBPI','MCUI','BBVI'].map(a=>pilotScore(s,a)===null?chip(a,'보류','warn'):chip(a,'시범값','pilot')).join('');
+  const cons=h?chip('보전',h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published} · 원문 검수 전`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.publication_year} · 원문 검수 · 시범 MCUI`:`IUCN ${h.category.split(' ')[0]} ${h.published} · ${pilotScore(s,'MCUI')===null?'갱신 필요':'현행 재확인'}`),'warn')
+    :s.live?chip('보전',{withheld_insufficient_evidence:'평가 근거 부족',not_reviewed:'미검토'}[k.status]||'정보 없음','none'):chip('보전','미조회','none');
+  const when=s.live?(s.publishedAt||'').slice(0,10):data?.collectedAt;
+  return `<div class="summary-card" aria-label="상태 요약"><div class="summary-top"><b>상태 요약</b><span>판정 아님${when?' · 발행 '+esc(when):''}</span></div><div class="chips">${occ}${axes}${cons}</div>${coverageBar(s)}</div>`;
+}
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;renderList();renderDetail();renderMap();
+  selected=item;periodFilter='all';renderList();renderDetail();renderMap();writeHash();
 }
 
 function renderDetail() {
   const s=selected;
   if(s.live)return renderLiveDetail(s);
-  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','산출 보류 · 영양 원값 검증 필요',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI',IUCN_HISTORICAL[s.aphiaID]?'산출 보류 · IUCN 역사적 평가만 확인':'평가 미조회','']];
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div><h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${iucnHistoricalRows(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도의 붉은 점은 선별된 출현기록의 1° 격자 집계를 나타낸 도식적 표시입니다. 실제 발견 좌표나 기록 1건이 아닙니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
+  const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','산출 보류 · 영양 원값 검증 필요',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI',IUCN_HISTORICAL[s.aphiaID]?(IUCN_HISTORICAL[s.aphiaID].current?'산출 보류 · IUCN 2026 EN 원문 검수 전':'산출 보류 · IUCN 역사적 평가만 확인'):'평가 미조회','']];
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div>${summaryCard(s)}<h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${iucnHistoricalRows(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도의 붉은 점은 선별된 출현기록의 1° 격자 집계를 나타낸 도식적 표시입니다. 실제 발견 좌표나 기록 1건이 아닙니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth',block:'start'});});
 }
 
@@ -520,8 +546,8 @@ function renderLiveDetail(s) {
   const pilot=s.assessment;
   const pilotRows=VERIFIED.includes(pilot?.report_version)?renderVerifiedIndices(s)
     :pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}${pilot.scores.MCUI===null&&pilot.iucn_category?' · 현행 평가 확인 보류':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
-  const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.':score;
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div><h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${institutionChecks(s)}${evidence}${foodEvidencePanel(s)}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,'지표 근거 '+id+' ↗')} · ${esc(src.license)}${src.notice?`<br><span class="fine">${esc(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`;
+  const withheld=pilot?'근거가 부족한 항목은 산출 보류로 유지합니다. 시범 수치는 외부 사례 검증 전의 연구용 결과입니다.'+(s.v2?'':' '+score):score;
+  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>발행된 자료 요약</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다.</p></div><div>${summaryCard(s)}<h3>이번 수집에서 확인한 것</h3><p>${esc(s.summary)}</p>${occurrence}<p class="fine">${esc(i.limitations)}</p>${mapSection(s)}${institutionChecks(s)}${evidence}${foodEvidencePanel(s)}${row('자료 연결 현황',`${coverage.known}/5 항목 · 품질 점수 아님`)}${coverageBar(s)}<p class="fine">추가 확인: ${esc(coverage.missing.join(' · ')||'연결 여부는 모두 확인됨')}. 자료가 있어도 단위·시험 조건·평가 범위 등 품질 검증이 필요합니다.</p>${pilotRows}<div class="withheld"><b>${pilot?'시범 분석 주의':'통합점수 산출 보류'}</b>${withheld}</div></div><div class="source-area"><h3>출처와 이용조건</h3>${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,'지표 근거 '+id+' ↗')} · ${esc(src.license)}${src.notice?`<br><span class="fine">${esc(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
 }
 
@@ -542,7 +568,7 @@ function speciesAxesLine(s){
   // Status only, never the value: a species score printed on a cell would read as that sea area's score (PR #8).
   const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>`${k} ${pilotScore(s,k)===null?'보류':'시범값 있음'}`).join(' · ');
   const h=IUCN_HISTORICAL[s.aphiaID], k=s.info?.conservation||{};
-  const iucn=h?`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':'현행 재확인 · 시범'})`
+  const iucn=h?(h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published}년 발표(원문 검수 전, 2013 평가 대체)`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.criteria||''} ${s.assessment.conservation_trace.publication_year}년 발표(원문 검수 · 시범 MCUI, 2013 평가 대체)`:`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':'현행 재확인 · 시범'})`))
     :({withheld_insufficient_evidence:'보전평가 근거 부족으로 보류',not_reviewed:'보전평가 미검토'}[k.status]||'보전평가 정보 없음');
   return `종 단위 상태(이 셀의 값 아님): ${axes} · ${iucn}`;
 }
@@ -574,7 +600,7 @@ function mapSection(s){
 
 // The public datasets contain only 1° (sea cucumber: 4°) aggregates. Dots are fixed schematic marks,
 // not observations, and never encode individual record coordinates or a 1:1 count.
-let landPolygons=[], dotRenderer;
+let landPolygons=[], dotRenderer, effortRenderer;
 function pointInRing(lon,lat,ring){
   let inside=false;
   for(let i=0,j=ring.length-1;i<ring.length;j=i++){
@@ -636,6 +662,13 @@ function drawCellDots(lat0,lon0,size,records){
     dot._schematicDot=true;dot.addTo(overlay);
   }
 }
+// GBIF sensitive-species best practice: say what was generalised, what was withheld and why.
+function generalizationNote(size,live){
+  const sens=!live?'별도 OBIS 시연 자료: 1° 격자 집계만 보유(민감도 평가 대상 아님)'
+    :size>=4?'채취 압력을 고려해 GBIF 지침의 가장 엄격한 등급(1°)보다 넓은 4° 셀 적용'
+    :'민감도 미평가 → GBIF 지침의 가장 엄격한 공개 등급(1°) 적용';
+  return `<br><b>공개 일반화 (GBIF 민감종 지침 용어)</b><ul><li>dataGeneralizations: 좌표를 ${size}° 셀로 일반화, 좌표 이동·무작위화 없음</li><li>informationWithheld: 원좌표·기록 ID 비공개</li><li>민감도: ${esc(sens)}</li>${live?'<li>민감도 재검토 예정일: 미정(민감도 평가 후 결정)</li>':''}</ul>`;
+}
 function cellPopupNotice(size){
   return `<br><small>붉은 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
@@ -659,7 +692,7 @@ function renderCellMap(s,color){
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+x).join(', '))} · 국가 메타데이터 ${esc(r.countries.join(', ')||'미기재')}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
     cellLayers.push(L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay));
-    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+cellPopupNotice(c.sizeDeg));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>CC0·CC BY 공개 기준 및 좌표 품질 필터를 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+effortLine(c.lat0,c.lon0,c.sizeDeg)+generalizationNote(c.sizeDeg,true)+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
@@ -680,7 +713,11 @@ function renderCellTable(s){
       : `<div>기록 연도 ${esc(years(c))} · 선별 기록 ${esc(c.count)}건 · 종 전체 출처 ${s.sources.length}개(셀별 분배 미확인)</div>`;
     return `<tr><th scope="row">${esc(range(c))}</th><td>${detail}</td><td>${map?`<button type="button" class="text-button" data-cell="${i}">지도에서 열기</button>`:'—'}</td></tr>`;
   }).join('');
-  box.innerHTML=`<details><summary>셀 목록 표로 보기 (${groups.length}개 · 키보드·화면 낭독기용)</summary><table><caption class="sr-only">${esc(s.label)}의 공개 셀별 근거. 셀 범위는 원좌표가 아닌 공개 집계 범위입니다.</caption><thead><tr><th scope="col">셀 범위</th><th scope="col">기간·집계·출처</th><th scope="col">지도</th></tr></thead><tbody>${rows}</tbody></table><p class="fine">해역별 활용·보전 판단은 모든 셀에서 보류입니다. 셀 범위는 공개 집계 범위이며 실제 발견 좌표가 아닙니다.</p></details>`;
+  box.innerHTML=`<details><summary>셀 목록 표로 보기 (${groups.length}개 · 키보드·화면 낭독기용)</summary><button type="button" class="text-button" id="cell-csv">CSV 내려받기 (공개 집계·출처 포함)</button><table><caption class="sr-only">${esc(s.label)}의 공개 셀별 근거. 셀 범위는 원좌표가 아닌 공개 집계 범위입니다.</caption><thead><tr><th scope="col">셀 범위</th><th scope="col">기간·집계·출처</th><th scope="col">지도</th></tr></thead><tbody>${rows}</tbody></table><p class="fine">해역별 활용·보전 판단은 모든 셀에서 보류입니다. 셀 범위는 공개 집계 범위이며 실제 발견 좌표가 아닙니다.</p></details>`;
+  $('cell-csv').addEventListener('click',()=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([cellCsv(s)],{type:'text/csv;charset=utf-8'}));
+    a.download=`blue-bio-map_${s.aphiaID}_cells.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  });
   box.querySelectorAll('[data-cell]').forEach(b=>b.addEventListener('click',()=>{
     const layer=cellLayers[Number(b.dataset.cell)];if(!layer)return;
     map.panTo(layer.getBounds().getCenter(),{animate:false});layer.openPopup();
@@ -688,8 +725,70 @@ function renderCellTable(s){
     if(content){content.tabIndex=-1;content.focus();} // move reading focus into the opened evidence
   }));
 }
+// Period filter (Global Fishing Watch-style time filter) over the published period rows.
+let periodFilter='all';
+function periodView(s){
+  if(!s?.live||periodFilter==='all')return s;
+  const cells=s.cells.filter(c=>c.period===periodFilter);
+  return cells.length?{...s,cells}:s;
+}
+function renderPeriodFilter(s){
+  const box=$('period-filter'), periods=s?.live?[...new Set(s.cells.map(c=>c.period))].sort():[];
+  if(periods.length<2){box.innerHTML='';return;}
+  box.innerHTML=`<span>공개 집계 기간</span>${['all',...periods].map(p=>`<button type="button" data-period="${esc(p)}" aria-pressed="${p===periodFilter}">${p==='all'?'전체':esc(p)}</button>`).join('')}`;
+  box.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{periodFilter=b.dataset.period;renderMap();writeHash();}));
+}
+// B-1: survey-effort background (OBIS all-taxa records per 1° cell since 2000). No dots in a lightly surveyed sea can mean no survey.
+let effortData=null, effortLayer=null, effortOn=true;
+const effortBand=n=>n>=10000?4:n>=1000?3:n>=100?2:1;
+function effortFor(lat0,lon0,size){
+  if(!effortData)return null;
+  return effortData.cells.filter(c=>c.lat0>=lat0&&c.lat0<lat0+size&&c.lon0>=lon0&&c.lon0<lon0+size).reduce((a,c)=>a+c.records,0);
+}
+function effortLine(lat0,lon0,size){
+  const n=effortFor(lat0,lon0,size);
+  return n===null?'':`<br>조사 노력 참고: 이 셀 범위의 OBIS 전체 종 기록 ${n.toLocaleString()}건(${esc(effortData.startdate.slice(0,4))}년 이후) · 이 종의 존재·개체수와 무관`;
+}
+function drawEffort(){
+  if(!map||!effortData)return;
+  if(!effortLayer)effortLayer=L.layerGroup().addTo(map);
+  effortLayer.clearLayers();
+  if(!effortOn)return;
+  const ink=basemap==='basic'?'#35566f':'#ffffff';
+  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:ink,fillOpacity:[0,.05,.1,.16,.23][effortBand(c.records)]}).addTo(effortLayer);
+}
+// Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
+function cellCsv(s){
+  const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+  const head=['species_label','scientific_name','aphia_id','cell_south','cell_north','cell_west','cell_east','cell_deg','period','year_start','year_end','records','sites','sources','licenses','note'];
+  const note='공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류';
+  const rows=s.live
+    ? s.cells.map(c=>[s.label,s.name,s.aphiaID,c.lat0,c.lat0+c.sizeDeg,c.lon0,c.lon0+c.sizeDeg,c.sizeDeg,c.period,c.yearStart,c.yearEnd,c.records,c.sites,(c.citations||[]).map(x=>x.title).join('; '),(c.licenses||[...new Set((c.citations||[]).flatMap(x=>x.licenses||[]))]).join('; '),note])
+    : s.cells.map(c=>[s.label,s.name,s.aphiaID,c.lat-.5,c.lat+.5,c.lon-.5,c.lon+.5,1,'',c.yearStart,c.yearEnd,c.count,'',`종 전체 출처 ${s.sources.length}개(셀별 분배 미확인)`,'',note+' · 별도 OBIS 시연']);
+  return '﻿'+[head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
+}
+// Shareable view: collection, species, tab, basemap, period and map view live in the URL hash.
+function readHash(){try{return Object.fromEntries(new URLSearchParams(location.hash.slice(1)));}catch{return {};}}
+function writeHash(){
+  if(!data||!selected)return;
+  const p=new URLSearchParams({c:$('collection').value,s:selected.aphiaID,v:currentView,b:basemap});
+  if(periodFilter!=='all')p.set('p',periodFilter);
+  if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
+  try{history.replaceState(null,'','#'+p.toString());}catch{}
+}
+function applyHash(h){
+  const s=data?.species.find(x=>x.aphiaID===Number(h.s));
+  if(s)selectSpecies(s.aphiaID);
+  if(h.p&&selected?.cells.some(c=>c.period===h.p)){periodFilter=h.p;renderMap();}
+  if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
+  const m=(h.m||'').split('/').map(Number);
+  if(map&&m.length===3&&m.every(Number.isFinite))map.setView([m[1],m[2]],m[0],{animate:false});
+  if(['explore','compare','method'].includes(h.v))setView(h.v);
+  writeHash();
+}
 function renderMap() {
-  renderCellTable(selected); // before the map check: the table also works when the map failed to load
+  renderPeriodFilter(selected);
+  renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
   if(!map)return;
   map.invalidateSize(); // the detail pane can change the map column height
   overlay.clearLayers();dotCells=[];cellLayers=[];
@@ -697,7 +796,8 @@ function renderMap() {
   $('map-source').textContent=s.live?(s.cells.length?`운영 지도 · 공개 ${s.cells[0].sizeDeg}° 셀`:'운영 지도 · 자료 조회 범위'):'OBIS 출현기록 · 시연 격자';
   $('map-count').nextElementSibling.textContent='수집된 기록';
   setMapLegend(s.live,s);
-  if(s.live&&s.cells.length)return renderCellMap(s,color);
+  drawEffort();
+  if(s.live&&s.cells.length)return renderCellMap(periodView(s),color);
   mapJudgmentStatus(s);
   $('map-review-note').textContent=!s.live?'별도 OBIS 시연의 선별 출현기록을 1° 격자의 붉은 점 무늬로 표시합니다. 운영 DB와 별개입니다. 붉은 점은 실제 발견 좌표나 기록 1건이 아니며, 기록 수와 점은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
   if(s.live){
@@ -707,7 +807,7 @@ function renderMap() {
   }
   for(const cell of s.cells){
     cellLayers.push(L.rectangle([[cell.lat-.5,cell.lon-.5],[cell.lat+.5,cell.lon+.5]],cellFrame()).addTo(overlay));
-    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 붉은 점은 개별 관측 위치가 아니며, 개체수·자원량·현재 한국 전체 분포도 아닙니다.</small>`+cellPopupNotice(1));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 별도 OBIS 시연 출현 격자</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>기록 연도 ${esc(years(cell))} · 선별 기록 ${esc(cell.count)}건<br>조회 범위 122–136°E · 30–43°N (한국·일본 등 주변 해역)<br>종 전체 출처 ${s.sources.length}개 (셀별 제공처 분배 미확인) · ${sourceLink(s.queryUrl,'OBIS 조회 조건 ↗')}<br>이용조건은 출처마다 다릅니다. 종 상세의 ‘데이터셋과 이용 조건’을 확인하세요.<br><b>판단 보류 이유</b><ul>${cellAssessmentStatus(s,cell).reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>최대 1,000건 조회·라이선스 선별. 조사 노력·중복·시기·국경 영향 미보정. 붉은 점은 개별 관측 위치가 아니며, 개체수·자원량·현재 한국 전체 분포도 아닙니다.</small>`+effortLine(cell.lat-.5,cell.lon-.5,1)+generalizationNote(1,false)+cellPopupNotice(1));
     addCellDots(cell.lat-.5,cell.lon-.5,1,cell.count);
   }
   if(!s.live&&s.cells.length&&s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat-.5,c.lon-.5],[c.lat+.5,c.lon+.5]]),{padding:[30,30],maxZoom:7,animate:false});}
@@ -749,7 +849,7 @@ function setBasemap(name,failed=false){
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
   $('basemap-status').textContent=failed?'배경 지도를 불러오지 못해 기본 지도로 바꿨습니다.':'';
   try{if(!failed)localStorage.setItem('basemap',name);}catch{}
-  renderMap();
+  renderMap();writeHash();
 }
 
 function initMap(geography){
@@ -761,6 +861,9 @@ function initMap(geography){
   for(const [name,lat,lon] of [['서해',35.3,123],['동해',39,132],['남해',32.5,128]])L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'sea-label',html:name,iconSize:[60,20]})}).addTo(map);
   const dotPane=map.createPane('dotPane');dotPane.style.zIndex=390;dotPane.style.pointerEvents='none';
   dotRenderer=L.canvas({pane:'dotPane',padding:.5});
+  const effortPane=map.createPane('effortPane');effortPane.style.zIndex=360;effortPane.style.pointerEvents='none';
+  effortRenderer=L.canvas({pane:'effortPane',padding:.5});
+  map.on('moveend',writeHash);
   overlay=L.layerGroup().addTo(map);
   map.on('zoomend',()=>{overlay.eachLayer(l=>{if(l._schematicDot)overlay.removeLayer(l);});for(const c of dotCells)drawCellDots(...c);});
   map.attributionControl.setPrefix('Leaflet');map.attributionControl.addAttribution('OBIS · GBIF');fitMap();setBasemap(savedBasemap());
@@ -780,7 +883,7 @@ function renderComparison(){
     ['식량 근거 · MFPI',s=>axisCell(s,'MFPI')||v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['생리활성 · MBPI',s=>axisCell(s,'MBPI')||v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
-    ['자료 연결 현황',s=>s.live?`${evidenceCoverage(s).known}/5 항목<small>출처·수량 확인 · 품질 점수 아님</small>`:pending('2/5 항목 · 품질 점수 아님')],
+    ['자료 연결 현황',s=>s.live?`${evidenceCoverage(s).known}/5 항목${coverageBar(s)}<small>출처·수량 확인 · 품질 점수 아님</small>`:pending('2/5 항목 · 품질 점수 아님')],
     ['통합점수 · BBVI',s=>axisCell(s,'BBVI')||'<strong>산출 보류</strong>']];
   $('comparison').innerHTML=`<table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${data.species.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${data.species.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>{
@@ -846,15 +949,23 @@ async function loadCollection(){
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
     $('connection-state').textContent=live?'운영 DB 연결됨 · '+data.species.length+'종':'별도 시연 자료 · '+data.species.length+'종';
     toggleSimulation(false);
+    if(startHash){const h=startHash;startHash=null;if(h.s)applyHash(h);}
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
 }
+let startHash={};
 async function start(){
+  startHash=readHash();
+  if(['live','demo'].includes(startHash.c))$('collection').value=startHash.c;
+  try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS 통계 API · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);}catch{$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }
 $('collection').addEventListener('change',loadCollection);$('reload-data').addEventListener('click',loadCollection);
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
-$('search').addEventListener('input',()=>{if(data)renderList();});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
+$('search').addEventListener('input',()=>{if(data)renderList();});
+$('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
+$('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').textContent=m;};
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
 $('bbvi-weight').addEventListener('input',event=>{
   bbviWeight=Number(event.target.value);$('bbvi-weight-value').textContent=bbviWeight.toFixed(2);
   if(data){renderComparison();renderDetail();toggleSimulation(simulated);}
