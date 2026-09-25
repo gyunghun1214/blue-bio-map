@@ -144,6 +144,31 @@ technical feasibility with documented method, region and historical period**.
 It cannot mean that a particular Korean cell is suitable, licensed, safe or
 profitable in 2026. Production counts alone were not used as proof.
 
+## Cultivation evidence for sea cucumber (added 2026-09-25)
+
+Record `FAO-FTP463:pp277-286-Apostichopus-japonicus` summarises Wang & Cheng,
+"Breeding and culture of the sea cucumber, *Apostichopus japonicus*, Liao", in
+Lovatelli et al. (eds) 2004, [FAO Fisheries Technical Paper 463](https://openknowledge.fao.org/handle/20.500.14283/y5501e),
+pp. 277–286. The PDF chapter was read directly on 2026-09-25, so the record is
+`reviewed: true`. It documents hatchery seed production (broodstock
+conditioning, spawning induction, larval rearing on settlement plates) and
+grow-out in extensive or semi-intensive earth ponds, limited raft culture and
+sea ranching of juveniles >1 cm, in Dalian (Liaoning, China), with farm output
+of 8 000 t in 2002. Limitations kept in the record: a company-authored
+practice description from China, not Korean waters; wild broodstock
+collection; antibiotic and pesticide use against disease; reduced feeding and
+growth above about 23 °C; sea ranching limited by season and competing coastal
+uses. NIFS (Korea) material was not reviewed in this pass.
+
+Effect on indices: none. Sea cucumber MFPI stays **on hold** because the only
+food row is a generic-name row outside the comparable cohort; the new record
+only raises the food-axis sufficiency ratio (0.0 → 0.2, mean 0.5 → 0.57) and
+changes the MFPI status label from "산출 보류" to "일부 근거 확인". MCUI stays
+80.0; MFPI for oyster, sea squirt and wakame is unchanged (65.5 / 54.2 / 42.2).
+The record is used by the site only to show a "대체생산·양식 우선 검토" card
+under the team pilot display rule in `config/display-rules.json`; it is not
+a recommendation to collect wild animals.
+
 ## FAO uFiSh cross-check and mussel status
 
 In FAO uFiSh1.0, `02 Overview Species` has *Crassostrea gigas* at row **79**

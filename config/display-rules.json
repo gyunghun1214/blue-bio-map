@@ -1,0 +1,34 @@
+{
+  "schema_version": "display-rules-1",
+  "status": "team_pilot_rule",
+  "status_label": "팀 시범 규칙 · 외부 검증 전",
+  "updated": "2026-09-25",
+  "site_copy": "dist/display-rules.json must stay byte-identical; verification/uicheck.mjs compares them.",
+  "note": "Display rules only choose what the site shows first. They never change an index value, and a species that does not match is not rated lower.",
+  "rules": [
+    {
+      "id": "alt_production_priority",
+      "label": "대체생산 우선",
+      "basis": "제안서 기본 규칙",
+      "source": "Proposal p.4: species high on both BBVI and MCUI show alternative-production/culture information before coordinates.",
+      "when": {"BBVI": {"gte": 60}, "MCUI": {"gte": 80}},
+      "effect": "alt_production_card_first"
+    },
+    {
+      "id": "conservation_alt_production_card",
+      "label": "보전 우선 검토",
+      "basis": "제안서 취지를 따른 추가 시범 규칙",
+      "source": "Team pilot rule added 2026-09-25 following the proposal's intent: with BBVI not yet computable for any species, a high MCUI alone moves the alternative-production/aquaculture card above the cell summary.",
+      "when": {"MCUI": {"gte": 80}},
+      "effect": "alt_production_card_first"
+    }
+  ],
+  "coordinate_request": {
+    "mailto": null,
+    "mailto_note": "Recipient address to be decided by the team. While null the site shows the guidance without a mail link.",
+    "levels": ["researcher", "institution"],
+    "fields": ["목적", "기관", "사용 범위", "기간", "재배포 여부"],
+    "review": ["민감종 여부", "원자료 제공처 이용조건"],
+    "handling": "팀이 원자료 제공처의 이용조건을 확인한 뒤 개별 회신합니다."
+  }
+}

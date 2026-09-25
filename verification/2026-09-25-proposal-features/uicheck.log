@@ -1,0 +1,106 @@
+PASS Desktop live: connection state shows actual profile count 
+PASS Live note uses received profile count (not fixed 2종) 
+PASS List: sea cucumber card shows map records and cells (same numbers as panel) 
+PASS Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) kept apart from the verified-pilot-2 MFPI trace 
+PASS Oyster: aquaculture 4 shown as evidence records, not production 
+PASS Oyster: conservation withheld 
+PASS Oyster: compounds 미수집, separate OBIS 26 kept in details 
+PASS Sea cucumber: 122 compounds, no quantitative activity 
+PASS Sea cucumber: no efficacy claim 
+PASS Sea cucumber: CMNPD source and NC-SA terms visible in compound summary 
+PASS Sea cucumber: two occurrence records, 4-degree generalization 
+PASS Sea cucumber: conservation withheld, nutrition 미수집 
+PASS Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it 
+PASS Sea cucumber map: two broad cells shown without claiming full distribution 
+PASS Squid: 미수집 vs 미검토 distinguished 
+PASS No CMNPD raw data / coordinates in page 
+PASS Compare table: verified-pilot-2 axis status per species (scores, partial evidence, withheld) with evidence links 
+PASS Sources: AFCD/CMNPD show their own change notes, not OBIS labels 
+PASS Demo mode: view fits each species grid; cell table lists every cell 
+PASS Demo mode: separate 3 species with 1° grid map 
+PASS Demo popup: separate OBIS grid, withheld judgment, real count, dot notice 
+PASS Demo 돌기해삼: 2026 IUCN EN current (not yet reviewed), 2013 superseded 
+PASS Decision panel: 돌기해삼 all four axes withheld, IUCN 2026 EN current but not reviewed 
+PASS Map view contains every published cell, even on quick species switches 
+PASS 4° cells keep 1° dot density (not a few point-like dots) 
+PASS Live map: every species has a spatial layer 
+PASS Live map title names the public-criteria collection 
+PASS Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review 
+PASS Oyster: text matches its published cell (no "instead of cells" contradiction) 
+PASS Institution checklist: country metadata, ABS/BBNJ links, not a legal determination 
+PASS Sea cucumber detail: checked bioactivity case shown, marked not an index input 
+PASS Core regression: oyster top = map GBIF 3건 · 1개 격자 · 2025 only; OBIS 26건/2008–2014 not mixed in 
+PASS Oyster top explains why 1 published cell differs from 33 separate OBIS cells 
+PASS Detail: three disclosures closed by default, keyboard-focusable summaries 
+PASS Oyster details: separate OBIS 26건 2008–2014 labelled as not in cells; same-species OBIS comparison, not summed 
+PASS Counts agree: footer, list card and panel show the same map record total 
+PASS Mode selector: plain names and a closed "why maps differ" disclosure 
+PASS Matrix: unplaced species listed apart as priority-survey targets 
+PASS Matrix: priority-survey list hidden in the simulated A–D example 
+PASS OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB 
+PASS BBVI 0 species: weight slider disabled with explanation 
+PASS Oyster status card leads with computed value: "MFPI 65.5 · MBPI·MCUI 보류" 
+PASS Oyster priority chip leads with computed value too 
+PASS Collection note: no stale "점수는 아직 발행하지 않았습니다" 
+PASS Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아" 
+PASS Empty matrix note links straight to the simulated example (still labelled not real) 
+PASS Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14) 
+PASS Method tab: back-test cases from the proposal, marked not yet done 
+PASS Method tab: no outdated grid-centre wording 
+PASS Merged PR #1: evidence coverage row and map section both reachable; pilot values carry a caution box 
+PASS Cell popup: period, sea area, source, licence, spatial resolution 
+PASS Cells are faint dashed hit areas, dots drawn on a non-clickable pane 
+PASS Clicking on a dot opens the cell evidence popup (not blocked by dots) 
+PASS Two periods in one cell: one hit area, click shows both periods with counts, sites and sources 
+PASS Live 미역 N33E126: both published periods in one popup 
+PASS Sea cucumber with valid recheck: pilot MCUI, no contradictory wording, not a Korea-only/policy claim 
+PASS Sea cucumber with impossible check date: MCUI withheld, 2026 current-assessment wording kept 
+PASS Cell table: one row per spatial cell, both periods of the shared cell listed 
+PASS Keyboard: Enter on "지도에서 열기" opens the cell popup and moves focus into it 
+PASS A-1 top summary: map records, three axis statuses (not a verdict), limit line; publish date kept in sources 
+PASS A-2 coverage bar: 5 segments, each segment shows its evidence stage (PR #22 stages, not on/off) 
+PASS A-4 IUCN: superseded 2013 assessment no longer flagged Needs updating; 2026 assessment cited 
+PASS A-3 popup: GBIF generalisation vocabulary and 4° sensitivity note 
+PASS B-1 popup: effort reference line, not presence 
+PASS B-1 effort layer drawn from snapshot, non-clickable, dated 
+PASS B-1 effort toggle hides and restores the layer 
+PASS A-5 period filter: 미역 has 전체+2 periods; filtering reduces cells and table; hash records it 
+PASS Period filter relabels the panel summary (selected period vs 전체 기간) 
+PASS A-5 CSV: BOM, header + one line per published period row 
+PASS A-6 info panel and copy-link control present 
+PASS A-5 shared link restores species, tab and basemap 
+PASS D-2 shared link restores the view level 
+PASS A-2 comparison table shows coverage bars for all 8 species 
+PASS Legend: red dots are a schematic of published cells, not discovery coordinates 
+PASS 톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토 
+PASS Sea cucumber live: published 4-degree cells visible 
+PASS Page shows no raw coordinates 
+PASS D-1 "해역 지표 보기" is off by default (species red dots shown, region legend hidden) 
+PASS D-1 on: legend and warning text shown, dots replaced, map-judgment says summary not judgment, hash r=1 
+PASS D-1 sea cucumber 4° cells stay 4° outlines (not split into 1°) 
+PASS D-1 cells with no computed species are hatched "산출 종 없음" (not 0) 
+PASS D-1 popup: warning, every recorded species with values/status (산출/보류) and record years, max with mean 
+PASS D-1 x axis "식량 전용(MFPI) · BBVI 아님": cells show the MFPI max of recorded species; turning off restores dots 
+PASS D-2 index values, public cells, cell table and warnings identical at 시민/연구자/기관 
+PASS D-2 levels differ only in what is open: 시민 folded; 연구자 open + request guide; 기관 adds CSV and institution checks 
+PASS D-2 precise-coordinate request: approved users, fields, review, handling; no mailto while the address is unset 
+PASS D-2 view level stored in the URL hash 
+PASS D-2 no precise lat/lon (≥3 decimals) in any dist data or code file 
+PASS D-3 sea cucumber: "대체생산·양식 우선 검토" card first in the detail panel, above the cell summary, with method/region/period/limits/source 
+PASS D-3 map note "보전 우선 검토 대상 · 채집 위치 안내가 아님"; no card for species without a matching rule; missing evidence says "대체생산 근거 미수집"; matrix link 
+PASS D-3 rule thresholds on the page equal config/display-rules.json (base BBVI ≥ 60 & MCUI ≥ 80; pilot MCUI ≥ 80) 
+PASS Satellite basemap: NASA GIBS tiles load, cells kept, bright style 
+PASS Depth basemap: GEBCO tiles load, cells kept 
+PASS Basic basemap: 1:10m outline, no external tiles 
+PASS Tile failure falls back to basic with a message 
+PASS Mobile 390px: map moved up (top < 1065px, near first screen); pilot-index warning still visible 
+PASS Mobile 390px mobile-sea-cucumber: no horizontal overflow 
+PASS Mobile 390px mobile-oyster: no horizontal overflow 
+PASS Mobile 390px: opened "why maps differ" table fits 
+PASS Mobile 390px 톳 with cells: no horizontal overflow 
+PASS API unreachable: saved public snapshot shown with its date and a notice 
+PASS API failure and no snapshot: error shown, no stale data 
+PASS Empty API response: "아직 발행된 종이 없습니다" 
+PASS v2 keys absent: falls back to production_summary, no fake 0/미수집 
+PASS No uncaught page errors 
+105 PASS / 0 FAIL

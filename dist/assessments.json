@@ -381,6 +381,15 @@
       "url": "https://docs.cmnpd.org/",
       "version": "CMNPD 1.0"
     },
+    "fao_ftp463_seacucumber": {
+      "accessed": "2026-09-25",
+      "license": "FAO publication terms",
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "terms": "FAO publication terms; factual summary and link only",
+      "title": "Advances in sea cucumber aquaculture and management (FAO Fisheries Technical Paper 463): Wang & Cheng, Breeding and culture of the sea cucumber, Apostichopus japonicus, Liao, pp. 277-286",
+      "url": "https://openknowledge.fao.org/handle/20.500.14283/y5501e",
+      "version": "Lovatelli et al. (eds) 2004"
+    },
     "fao_korea_oyster": {
       "accessed": "2026-09-25",
       "license": "FAO website terms",
@@ -1118,7 +1127,18 @@
         "verification": "IUCN species page read in browser on 2026-09-25: Endangered A2bd ver 3.1, assessed 30 Sep 2025, published 2026, global. GBIF IUCN checklist (2026-07-28) lists taxonID 180424 as ENDANGERED with the same 2026 citation."
       },
       "food_trace": {
-        "aquaculture": null,
+        "aquaculture": {
+          "aphia_id": 241776,
+          "feasible": true,
+          "kind": "aquaculture",
+          "limitations": "Company-authored practice description from China, not Korean waters; broodstock is still collected from the wild; larval and juvenile disease is managed with antibiotics and pesticides; summer temperatures above about 23 °C cut feeding and growth; sea ranching is limited by season and competing coastal uses; not a yield or cost estimate",
+          "method": "Hatchery seed production (broodstock conditioning, spawning induction, larval rearing on settlement plates), then grow-out in extensive or semi-intensive earth ponds (often former shrimp ponds), limited raft culture, and sea ranching of juveniles >1 cm on rocky sites; marketable about two years after stocking",
+          "record_id": "FAO-FTP463:pp277-286-Apostichopus-japonicus",
+          "region": "Northern China (Dalian, Liaoning Province)",
+          "reviewed": true,
+          "source_id": "fao_ftp463_seacucumber",
+          "year": "FAO FTP 463 (2004); Dalian farm output 8 000 t in 2002; PDF read 2026-09-25"
+        },
         "cross_checks": [],
         "method_version": "verified-pilot-2",
         "observed_rows": [
@@ -1141,8 +1161,10 @@
           }
         ],
         "sufficiency": {
-          "present": [],
-          "ratio": 0.0,
+          "present": [
+            "aquaculture"
+          ],
+          "ratio": 0.2,
           "required": [
             "protein_g",
             "iron_mg",
@@ -1173,8 +1195,10 @@
           ]
         },
         "MFPI": {
-          "present": [],
-          "ratio": 0.0,
+          "present": [
+            "aquaculture"
+          ],
+          "ratio": 0.2,
           "required": [
             "protein_g",
             "iron_mg",
@@ -1183,7 +1207,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.5
+        "mean_ratio": 0.57
       },
       "korean_name": "해삼",
       "scientific_name": "Apostichopus japonicus",
@@ -1191,7 +1215,7 @@
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
-        "MFPI": "산출 보류"
+        "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
@@ -1208,6 +1232,7 @@
       },
       "source_ids": [
         "apostichopus_2024_paper",
+        "fao_ftp463_seacucumber",
         "gbif_iucn_checklist",
         "iucn_japonicus_2013",
         "iucn_japonicus_2026",

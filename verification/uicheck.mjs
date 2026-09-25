@@ -211,12 +211,13 @@ try{
   check('A-5 CSV: BOM, header + one line per published period row',csv.bom&&csv.lines===csv.cells+1&&csv.head.startsWith('"species_label"'),JSON.stringify(csv));
   check('A-6 info panel and copy-link control present',await evaluate("!!document.querySelector('.map-info summary')&&document.querySelector('.map-info').textContent.includes('회색 음영')&&!!document.getElementById('copy-link')"));
   // Shared link restores species, tab and basemap after a reload.
-  await evaluate("location.hash='c=live&s=241776&v=compare&b=depth';location.reload();1");
+  await evaluate("location.hash='c=live&s=241776&v=compare&b=depth&l=institution';location.reload();1");
   for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
   await sleep(800);
   const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
   check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
-  await evaluate("setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
+  check('D-2 shared link restores the view level',await evaluate("viewLevel==='institution'&&document.querySelector('[data-level=institution]').getAttribute('aria-pressed')==='true'"));
+  await evaluate("setLevel('citizen');setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
   check('A-2 comparison table shows coverage bars for all 8 species',await evaluate("document.querySelectorAll('#comparison .coverage-bar').length===8"));
   t=await pick(836033);
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
@@ -228,6 +229,56 @@ try{
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
+  // ---------- D: proposal features (PR 2) ----------
+  const WARN='종 단위 지표를 기록된 셀에 요약한 것 · 해역 자체의 가치·보전 등급이 아님 · 전체 분포 아님 · 산출된 종이 적어 해석에 한계';
+  await evaluate("map.closePopup();selectSpecies(836033);1");
+  const d1off=await evaluate("({on:regionOn,box:document.getElementById('region-toggle').checked,key:document.getElementById('region-key').hidden,dots:overlay.getLayers().some(l=>l._schematicDot)})");
+  check('D-1 "해역 지표 보기" is off by default (species red dots shown, region legend hidden)',!d1off.on&&!d1off.box&&d1off.key&&d1off.dots,JSON.stringify(d1off));
+  const d1=await evaluate(`(()=>{document.getElementById('region-toggle').click();const key=document.getElementById('region-key');const cuc=spatialCells(data.species.find(s=>s.aphiaID===241776));
+    return {key:key.hidden?'':key.innerText,note:document.getElementById('map-review-note').textContent,judg:document.getElementById('map-judgment').textContent,
+      dots:overlay.getLayers().filter(l=>l._schematicDot).length,four:regionCells.filter(c=>c.size===4).map(c=>c.species.map(x=>x.s.aphiaID).join()),cuc:cuc.length,
+      cucIn1:regionCells.some(c=>c.size<4&&c.species.some(x=>x.s.aphiaID===241776)),
+      bounds:regionCells.every(c=>{const b=c.layer.getBounds();return Math.abs(b.getNorth()-b.getSouth()-c.size)<1e-9&&Math.abs(b.getEast()-b.getWest()-c.size)<1e-9}),
+      hatch:regionCells.filter(c=>!c.x&&!c.y).map(c=>c.layer.getElement()?.getAttribute('fill')),hash:location.hash}})()`);
+  check('D-1 on: legend and warning text shown, dots replaced, map-judgment says summary not judgment, hash r=1',d1.key.includes(WARN)&&d1.note.includes(WARN)&&d1.judg.includes('해역 판단이 아니라')&&d1.dots===0&&/(^|&|#)r=1/.test(d1.hash),JSON.stringify(d1).slice(0,500));
+  check('D-1 sea cucumber 4° cells stay 4° outlines (not split into 1°)',d1.cuc===2&&d1.four.length===2&&d1.four.every(x=>x.split(',').includes('241776'))&&!d1.cucIn1&&d1.bounds,JSON.stringify({four:d1.four,cuc:d1.cuc,cucIn1:d1.cucIn1,bounds:d1.bounds}));
+  check('D-1 cells with no computed species are hatched "산출 종 없음" (not 0)',d1.hatch.length>0&&d1.hatch.every(f=>f==='url(#region-hatch)')&&d1.key.includes('산출 종 없음 (0점 아님)'),JSON.stringify(d1.hatch.slice(0,5)));
+  const d1p=await evaluate("(()=>{const c=regionCells.filter(r=>r.x||r.y).sort((a,b)=>b.species.length-a.species.length)[0];c.layer.openPopup();return {text:[...document.querySelectorAll('.leaflet-popup-content')].at(-1).innerText,labels:c.species.map(x=>x.s.label),items:document.querySelectorAll('.leaflet-popup-content .region-species li').length}})()");
+  check('D-1 popup: warning, every recorded species with values/status (산출/보류) and record years, max with mean',d1p.items===d1p.labels.length&&d1p.labels.length>1&&d1p.labels.every(l=>d1p.text.includes(l))&&d1p.text.includes(WARN)&&d1p.text.includes('보류')&&d1p.text.includes('기록 연도')&&d1p.text.includes('최댓값')&&d1p.text.includes('평균'),JSON.stringify(d1p).slice(0,600));
+  await sleep(300);await shot('desktop-region-summary');
+  const d1x=await evaluate("(()=>{map.closePopup();const sel=document.getElementById('region-axis');sel.value='MFPI';sel.dispatchEvent(new Event('change'));const r={withX:regionCells.filter(c=>c.x).length,maxOk:regionCells.filter(c=>c.x).every(c=>c.x.max===Math.max(...c.species.map(x=>pilotScore(x.s,'MFPI')).filter(v=>v!==null))),legend:document.getElementById('region-x-label').textContent};sel.value='BBVI';sel.dispatchEvent(new Event('change'));document.getElementById('region-toggle').click();return {...r,back:overlay.getLayers().some(l=>l._schematicDot),off:!regionOn&&document.getElementById('region-key').hidden}})()");
+  check('D-1 x axis "식량 전용(MFPI) · BBVI 아님": cells show the MFPI max of recorded species; turning off restores dots',d1x.withX>0&&d1x.maxOk&&d1x.legend.includes('BBVI 아님')&&d1x.back&&d1x.off,JSON.stringify(d1x));
+  const lv=await evaluate(`(()=>{const snap=()=>{const out={};for(const id of [241776,836033,145721]){selectSpecies(id);map.closePopup();const d=document.getElementById('detail');
+      out[id]={scores:data.species.map(s=>['MFPI','MBPI','MCUI','BBVI'].map(k=>pilotScore(s,k))),summary:d.querySelector('.detail-summary').innerText,
+        cells:overlay.getLayers().filter(l=>!l._schematicDot).map(l=>l.getBounds().toBBoxString()),
+        warn:[...['score-disclaimer','map-review-note','map-judgment','map-legend-note'].map(i=>document.getElementById(i).textContent),d.querySelector('.detail-limit')?.textContent||'',d.querySelector('.alt-production')?.innerText||''],
+        table:document.getElementById('cell-table').querySelector('tbody')?.textContent||'',
+        open:[...d.querySelectorAll('details.detail-more')].map(x=>x.open),csv:!!document.getElementById('cell-csv'),inst:!!d.querySelector('.institution-emphasis'),
+        req:d.querySelector('.coord-request')?.innerText||'',mail:!!d.querySelector('a[href^="mailto:"]')};}return out;};
+    const r={};for(const l of ['citizen','researcher','institution']){setLevel(l);r[l]=snap();}setLevel('researcher');r.hash=location.hash;setLevel('citizen');return r})()`);
+  const same=k=>['researcher','institution'].every(l=>Object.keys(lv.citizen).every(id=>JSON.stringify(lv[l][id][k])===JSON.stringify(lv.citizen[id][k])));
+  check('D-2 index values, public cells, cell table and warnings identical at 시민/연구자/기관',same('scores')&&same('summary')&&same('cells')&&same('warn')&&same('table'),JSON.stringify(['scores','summary','cells','warn','table'].map(k=>[k,same(k)])));
+  const [c0,r0,i0]=['citizen','researcher','institution'].map(l=>lv[l][836033]);
+  check('D-2 levels differ only in what is open: 시민 folded; 연구자 open + request guide; 기관 adds CSV and institution checks',c0.open.every(o=>!o)&&!c0.csv&&!c0.req&&!c0.inst&&r0.open.length===3&&r0.open.every(o=>o)&&!r0.csv&&!!r0.req&&i0.open.every(o=>o)&&i0.csv&&i0.inst&&!!i0.req,JSON.stringify({c0:[c0.open,c0.csv,c0.inst],r0:[r0.open,r0.csv],i0:[i0.open,i0.csv,i0.inst]}));
+  check('D-2 precise-coordinate request: approved users, fields, review, handling; no mailto while the address is unset',['승인','목적','기관','사용 범위','기간','재배포 여부','민감종','이용조건','개별 회신','받는 주소 확정 전','OBIS','GBIF'].every(x=>r0.req.includes(x))&&!r0.mail&&!i0.mail&&(await evaluate("rules.coordinate_request.mailto===null")),r0.req);
+  check('D-2 view level stored in the URL hash',/(^|&|#)l=researcher/.test(lv.hash),lv.hash);
+  // countries.json is the Natural Earth basemap outline (coastline geometry, not occurrence data); vendor/ is Leaflet.
+  const distFiles=fs.readdirSync(new URL('../dist/',import.meta.url),{recursive:true}).map(String).filter(f=>/\.(js|json|html|css|txt|csv)$/.test(f)&&!/^vendor[\\/]/.test(f)&&f!=='countries.json');
+  const precise=distFiles.filter(f=>{const s=fs.readFileSync(new URL('../dist/'+f.replace(/\\/g,'/'),import.meta.url),'utf8');return /-?\d{1,3}\.\d{3,}[^\d.]{1,4}-?\d{1,3}\.\d{3,}/.test(s)||/"(decimal)?(lat|lon|latitude|longitude)[a-z]*"\s*:\s*-?\d+\.\d{3,}/i.test(s);});
+  check('D-2 no precise lat/lon (≥3 decimals) in any dist data or code file',distFiles.length>=8&&precise.length===0,JSON.stringify({files:distFiles,precise}));
+  const d3=await evaluate(`(async()=>{selectSpecies(241776);const d=document.getElementById('detail');const first=d.children[1];const sum=d.querySelector('.detail-summary');
+    const served=await (await fetch('display-rules.json',{cache:'no-store'})).json();
+    const r={first:first?.className,above:!!(first&&sum&&(first.compareDocumentPosition(sum)&Node.DOCUMENT_POSITION_FOLLOWING)),card:first?.innerText||'',rules:JSON.stringify(rules),served:JSON.stringify(served),note:document.getElementById('map-review-note').textContent};
+    const f=selected.assessment.food_trace,q=f.aquaculture;f.aquaculture=null;renderDetail();r.missing=d.querySelector('.alt-production')?.innerText||'';f.aquaculture=q;renderDetail();
+    selectSpecies(836033);r.oyster=!!document.querySelector('#detail .alt-production')||document.getElementById('map-review-note').textContent.includes('보전 우선 검토 대상');
+    selectSpecies(241776);document.getElementById('alt-matrix').click();r.matrix=currentView==='compare'&&document.querySelector('.quadrant.q2').classList.contains('flash');setView('explore');return r})()`);
+  check('D-3 sea cucumber: "대체생산·양식 우선 검토" card first in the detail panel, above the cell summary, with method/region/period/limits/source',d3.first==='alt-production'&&d3.above&&['대체생산·양식 우선 검토','보전 우선 검토','MCUI ≥ 80','추가 시범 규칙','Dalian','463','채집 권장이 아님'].every(x=>d3.card.includes(x)),d3.card);
+  check('D-3 map note "보전 우선 검토 대상 · 채집 위치 안내가 아님"; no card for species without a matching rule; missing evidence says "대체생산 근거 미수집"; matrix link',d3.note.includes('이 종은 보전 우선 검토 대상 · 채집 위치 안내가 아님')&&!d3.oyster&&d3.missing.includes('대체생산 근거 미수집')&&d3.matrix,JSON.stringify({note:d3.note.slice(0,80),oyster:d3.oyster,missing:d3.missing.slice(0,120),matrix:d3.matrix}));
+  const cfgDisk=fs.readFileSync(new URL('../config/display-rules.json',import.meta.url),'utf8'),cfg=JSON.parse(cfgDisk);
+  const thr=cfg.rules.map(r=>JSON.stringify(r.when));
+  check('D-3 rule thresholds on the page equal config/display-rules.json (base BBVI ≥ 60 & MCUI ≥ 80; pilot MCUI ≥ 80)',d3.served===JSON.stringify(cfg)&&d3.rules===d3.served&&fs.readFileSync(new URL('../dist/display-rules.json',import.meta.url),'utf8')===cfgDisk&&thr[0]==='{"BBVI":{"gte":60},"MCUI":{"gte":80}}'&&thr[1]==='{"MCUI":{"gte":80}}'&&cfg.status==='team_pilot_rule',JSON.stringify(thr));
+  await evaluate("selectSpecies(241776);map.closePopup();document.getElementById('detail').scrollIntoView();1");await sleep(300);await shot('desktop-sea-cucumber-alt-production');
+  await evaluate("selectSpecies(836033);map.closePopup();setLevel('institution');document.getElementById('detail').scrollIntoView();1");await sleep(300);await shot('desktop-level-institution');await evaluate("setLevel('citizen');window.scrollTo(0,0);1");
   // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
   await pick(494972);
   const tiles=host=>evaluate(`[...document.querySelectorAll('#map img.leaflet-tile-loaded')].filter(i=>i.src.includes('${host}')).length`);

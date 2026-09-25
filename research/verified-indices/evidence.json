@@ -342,6 +342,15 @@
       "terms": "CC BY-NC 4.0; short factual summary and citation, no full text or figure redistribution",
       "license": "CC BY-NC 4.0",
       "license_url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    },
+    "fao_ftp463_seacucumber": {
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "title": "Advances in sea cucumber aquaculture and management (FAO Fisheries Technical Paper 463): Wang & Cheng, Breeding and culture of the sea cucumber, Apostichopus japonicus, Liao, pp. 277-286",
+      "version": "Lovatelli et al. (eds) 2004",
+      "url": "https://openknowledge.fao.org/handle/20.500.14283/y5501e",
+      "accessed": "2026-09-25",
+      "terms": "FAO publication terms; factual summary and link only",
+      "license": "FAO publication terms"
     }
   },
   "nutrition_rows": [
@@ -561,6 +570,18 @@
       "region": "Republic of Korea named as the largest wakame producer; Japan and France also described",
       "year": "FAO FTP 441 (2003); page accessed 2026-09-25",
       "limitations": "Epiphyte fouling made frame cleaning too expensive in a French trial; local siting, temperature and cost need current review."
+    },
+    {
+      "aphia_id": 241776,
+      "kind": "aquaculture",
+      "record_id": "FAO-FTP463:pp277-286-Apostichopus-japonicus",
+      "source_id": "fao_ftp463_seacucumber",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Hatchery seed production (broodstock conditioning, spawning induction, larval rearing on settlement plates), then grow-out in extensive or semi-intensive earth ponds (often former shrimp ponds), limited raft culture, and sea ranching of juveniles >1 cm on rocky sites; marketable about two years after stocking",
+      "region": "Northern China (Dalian, Liaoning Province)",
+      "year": "FAO FTP 463 (2004); Dalian farm output 8 000 t in 2002; PDF read 2026-09-25",
+      "limitations": "Company-authored practice description from China, not Korean waters; broodstock is still collected from the wild; larval and juvenile disease is managed with antibiotics and pesticides; summer temperatures above about 23 °C cut feeding and growth; sea ranching is limited by season and competing coastal uses; not a yield or cost estimate"
     }
   ],
   "nutrition_observations": [
