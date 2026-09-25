@@ -16,6 +16,14 @@ class ExpansionReleaseGate(unittest.TestCase):
         candidates = catalog["species"]
         audits = data["species"]
         self.assertEqual(len(candidates), 22)
+        # Catalog metadata must agree with the narrowly approved public release.
+        anadara = next(s for s in candidates if s["aphiaID"] == 504357)
+        self.assertEqual(anadara["occurrenceStatus"], "historical_public_cell")
+        self.assertEqual(anadara["sensitivityStatus"],
+                         "reviewed_historical_4_degree_only_remaining_withheld")
+        self.assertIn("other 21 candidate species have no approved public cells", catalog["scope"])
+        self.assertTrue(all(s["occurrenceStatus"] != "historical_public_cell"
+                            for s in candidates if s["aphiaID"] != 504357))
         self.assertEqual(len(audits), 22)
         self.assertEqual({s["aphiaID"] for s in candidates}, {s["aphiaID"] for s in audits})
         self.assertFalse({s["aphiaID"] for s in candidates} &
