@@ -31,3 +31,26 @@
 .weight-status{font-size:12px;color:var(--muted)}.weight-control input:disabled{opacity:.45;cursor:not-allowed}.link-button{border:0;background:none;padding:0;color:var(--teal);font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 /* Phones: bring the map near the first screen. The pilot-index warning (#score-disclaimer) stays visible. */
 @media(max-width:740px){.intro .eyebrow,.intro p,.scope{display:none}.intro{margin-bottom:8px}.intro h1{font-size:21px;margin:0}.tabs button{padding-top:6px}.collection-control{margin:10px 0;gap:8px;font-size:13px}.collection-control>label{display:none}.collection-control select,.collection-control button{padding:6px 8px}.mode-why{margin:0}.mode-why>summary{padding:7px 0}.notice{padding:8px 0}.notice p{font-size:12px;line-height:1.5}.species-pane{padding:10px 12px}.pane-title{margin-bottom:8px}.species-list{margin-top:8px;gap:8px}.species-card{padding:8px 10px;min-width:150px}.species-card .group{display:none}.species-card .count{margin-top:4px}.list-foot{display:none}}
+
+/* Evidence map: four future states are a key, never applied to unclassified cells. */
+.map-mode{display:flex;gap:6px;padding:10px 12px;background:#edf4f7;border-bottom:1px solid #cbdbe3}
+.map-mode button{border:1px solid #a8bdc8;border-radius:7px;background:#fff;color:#24455b;padding:8px 12px;font:inherit;cursor:pointer}
+.map-mode button[aria-pressed="true"]{background:#143f58;color:#fff;border-color:#143f58}
+.value-legend{padding:14px 16px;background:#f3f7f8;border-top:1px solid #d5e1e6;color:#244255;font-size:13px}
+.value-legend strong{display:block;margin-bottom:10px}
+.value-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.value-grid span{padding:8px;border-radius:5px;color:#142d3b;font-weight:600}
+.v-high-high{background:#9877ac}.v-low-high{background:#8ca9cf}.v-high-low{background:#dfaa8b}.v-low-low{background:#b4c8ba}
+.value-legend p{margin:10px 0 0;line-height:1.5}
+.value-cell-detail{margin:12px 16px;padding:14px;background:#f6f8f9;border:1px dashed #7d8e9d;border-radius:8px}
+.value-cell-detail h3{margin:0 0 8px;font-size:16px}.value-cell-detail p{line-height:1.5}
+.value-species{margin-top:12px;padding:12px;border:1px solid #dae2e6;border-radius:7px;background:#fff}
+.value-species h4{margin:0}.value-species h4 small{display:block;font-weight:normal;font-style:italic}
+.value-axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.value-axis{padding:8px;background:#eff4f6;border-radius:5px}
+.value-axis b,.value-axis span,.value-axis small{display:block}
+.value-axis small{font-size:11px;line-height:1.45;margin-top:4px}
+.value-species details{margin:8px 0}.value-species li{overflow-wrap:anywhere}
+@media(max-width:620px){.value-grid,.value-axes{grid-template-columns:1fr}.map-mode button{flex:1}}
+
+#occurrence-legend[hidden],#value-legend[hidden],#value-cell-detail[hidden],#period-filter[hidden]{display:none!important}
