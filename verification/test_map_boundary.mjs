@@ -11,13 +11,14 @@ assert.match(html,/id="map-legend-note"/);
 assert.match(html,/id="map-judgment"/);
 
 const nodes=new Map();
-const popup=[], dots=[];
+const popup=[], dots=[], rectangles=[];
 const context={
   document:{getElementById(id){
     if(!nodes.has(id))nodes.set(id,{textContent:'',nextElementSibling:{textContent:''}});
     return nodes.get(id);
   }},
-  L:{rectangle(){
+  L:{rectangle(bounds,options){
+    rectangles.push({bounds,options});
     return {addTo(){return this},bindPopup(body){popup.push(body);return this}};
   },circleMarker(latlng,options){
     const dot={latlng,options,addTo(){dots.push(this);return this}};return dot;
@@ -56,6 +57,9 @@ context.mapStub={zoom:7,fitBounds(){},getZoom(){return this.zoom}};
 vm.runInContext('let lastFitted;overlay=globalThis.layer;map=globalThis.mapStub;',context);
 context.draw(species,'#123456');
 assert.equal(popup.length,1);
+assert.equal(rectangles.length,1,'cell remains the full interactive map target');
+assert.deepEqual(JSON.parse(JSON.stringify(rectangles[0].bounds)),[[34,128],[35,129]]);
+assert.notEqual(rectangles[0].options.interactive,false,'smaller dots must not shrink the cell hit area');
 assert.match(popup[0],/해역별 활용·보전 판단: 보류/);
 assert.match(popup[0],/2015–2020/);
 assert.match(popup[0],/LME 43/);
@@ -69,6 +73,7 @@ assert.doesNotMatch(popup[0],/90\.0/);
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
 assert.ok(dots.every(d=>d.options.fillColor==='#d7263d'),'one red for the schematic pattern');
 assert.ok(dots.every(d=>d.options.interactive===false));
+assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=2.6),'zoom 7 dots stay small');
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
 assert.match(popup[0],/붉은 점은 실제 발견 좌표가 아닌 이 1° 공개 셀의 도식적 표시/);
 // Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
@@ -106,6 +111,9 @@ assert.ok(dots.every(d=>d.options.radius>0&&d.options.interactive===false));
 // At an overview zoom dots keep >= 6 px apart instead of fusing into a solid red block.
 dots.length=0;context.mapStub.zoom=5;context.draw(species,'#123456');
 assert.equal(dots.length,15*15,'4° cell at zoom 5: spacing-capped grid');
+assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=1.8),'zoom 5 dots stay legible without joining');
+dots.length=0;context.mapStub.zoom=8;context.draw(species,'#123456');
+assert.ok(dots.every(d=>d.options.radius<=3),'zoom 8 dots never become oversized');
 context.mapStub.zoom=7;
 // A-3: GBIF sensitive-species vocabulary; 4° cells say they are wider than GBIF's strictest level.
 vm.runInContext('globalThis.gen=generalizationNote;globalThis.pv=periodView;globalThis.csv=cellCsv;globalThis.eff=effortFor;globalThis.effLine=effortLine',context);
