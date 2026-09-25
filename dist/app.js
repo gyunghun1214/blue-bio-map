@@ -510,7 +510,7 @@ function renderList() {
     &&(evidence==='all'||(evidence==='published'?!!s.cells.length:!!s.catalog))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   $('species-count').textContent=`${matches.length}종`;
-  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.live?(s.catalog?(s.audit?'조회 · 공개 보류':'미수집'):s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:'공개 셀 없음'):`${recordLabel(s)} · ${s.cells.length}셀`}</strong></span></button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
+  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.live?(s.catalog?(s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 검색 0건':'조회 · 공개 보류'):'미수집'):s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:'공개 셀 없음'):`${recordLabel(s)} · ${s.cells.length}셀`}</strong></span></button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species))));
 }
 
@@ -580,7 +580,7 @@ let otherCollection=[];
 function mapSummaryHtml(s){
   const cells=s.cells||[];
   const scope=periodFilter==='all'||!cells.length?'전체 기간':`선택 기간 ${periodFilter}`;
-  if(!cells.length)return s.catalog?`<h3>지도에 표시한 기록</h3>${row('분포',s.audit?'GBIF 조회 · 공개 격자 검수 보류':'미수집 · 위치 정보 없음','pending')}`:`<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
+  if(!cells.length)return s.catalog?`<h3>지도에 표시한 기록</h3>${row('분포',s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 조회 조건에서 결과 0건 · OBIS 미조회':'GBIF 조회 · 공개 격자 검수 보류'):'미수집 · 위치 정보 없음','pending')}`:`<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
   const other=otherCollection.find(x=>x.aphiaID===s.aphiaID);
   const comparison=other?.cells?.length
     ? `<p class="detail-context">같은 종의 별도 OBIS 수집은 ${other.cells.length}셀입니다. 지역·기간·선별 기준이 달라 두 지도는 합산하지 않습니다.</p>`
@@ -603,7 +603,7 @@ function renderCandidateDetail(s){
     const datasetLinks=g.datasets.slice(0,5).map(d=>'<li>'+sourceLink(d.url,d.title||'GBIF 원 데이터셋')+
       ' · 원조회 '+esc(d.retrieved)+'건 · 레코드 '+esc(d.recordLicenses.join(', '))+
       ' · 데이터셋 '+esc(d.datasetLicense||'미기재')+'</li>').join('');
-    $('detail').innerHTML='<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">지도 공개 보류</span></div>'+
+    $('detail').innerHTML='<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">'+(g.retrievedCount===0?'GBIF 검색 0건':'지도 공개 보류')+'</span></div>'+
       '<h2>'+esc(s.label)+'</h2><p class="latin">'+esc(s.name)+'</p><p>AphiaID '+esc(s.aphiaID)+' · '+esc(s.group)+'</p></div>'+
       '<div class="detail-summary"><h3>선정 이유</h3><p>'+esc(s.reason)+'</p>'+
       (s.taxonNote?'<p class="fine">'+esc(s.taxonNote)+'</p>':'')+
@@ -1014,14 +1014,14 @@ function renderMap() {
   if(mapMode==='value'){effortLayer?.clearLayers();renderValueMap();return;}
   if(!map)return;
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
-  $('map-source').textContent=s.catalog?(s.audit?'조사 후보 · GBIF 조회/공개 보류':'조사 후보 · 분포 미수집'):s.live?(s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위'):'추가 수집 자료(OBIS) · 1° 격자';
+  $('map-source').textContent=s.catalog?(s.audit?(s.audit.gbif.retrievedCount===0?'조사 후보 · GBIF 검색 0건':'조사 후보 · GBIF 조회/공개 보류'):'조사 후보 · 분포 미수집'):s.live?(s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위'):'추가 수집 자료(OBIS) · 1° 격자';
   setMapLegend(s.live,s);
-  if(s.catalog){$('map-symbol-label').textContent=s.audit?'GBIF 기록 조회 · 공개 셀 검수 보류':'분포 미수집 · 공개 셀 없음';$('map-legend-note').textContent='빈 지도는 해당 종이 이 해역에 없다는 뜻이 아닙니다.';}
+  if(s.catalog){$('map-symbol-label').textContent=s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 해당 조회 조건 결과 0건 · OBIS 미조회':'GBIF 기록 조회 · 공개 셀 검수 보류'):'분포 미수집 · 공개 셀 없음';$('map-legend-note').textContent='빈 지도는 해당 종이 이 해역에 없다는 뜻이 아닙니다.';}
   $('effort-toggle').disabled=!!s.catalog;
   if(s.catalog)effortLayer?.clearLayers();else drawEffort();
   if(s.live&&$('detail-map-summary'))$('detail-map-summary').innerHTML=mapSummaryHtml(periodView(s));
   if(s.live&&s.cells.length)return renderCellMap(periodView(s),color);
-  if(s.catalog){$('map-judgment').textContent=s.audit?'종별 점수와 해역 판단 모두 보류 · GBIF 공개 검수 중':'종별 점수와 해역 판단 모두 보류 · 출현기록 미수집';$('map-review-note').textContent=s.audit?'GBIF 시험 범위 기록은 조회했습니다. 종 연결·라이선스·위치 품질·민감도 검토가 끝나지 않아 공개 격자를 발행하지 않았습니다.':'이 종의 분포는 아직 조회·검수하지 않았습니다. 지도에 표시할 공개 격자가 없습니다.';
+  if(s.catalog){$('map-judgment').textContent=s.audit?(s.audit.gbif.retrievedCount===0?'종별 점수와 해역 판단 모두 보류 · GBIF 검색 0건':'종별 점수와 해역 판단 모두 보류 · GBIF 공개 검수 중'):'종별 점수와 해역 판단 모두 보류 · 출현기록 미수집';$('map-review-note').textContent=s.audit?(s.audit.gbif.retrievedCount===0?'해당 이름·범위의 GBIF 검색 결과는 0건입니다. OBIS는 미조회이며, 종 부재나 전체 분포를 뜻하지 않습니다.':'GBIF 시험 범위 기록은 조회했습니다. 종 연결·라이선스·위치 품질·민감도 검토가 끝나지 않아 공개 격자를 발행하지 않았습니다.'):'이 종의 분포는 아직 조회·검수하지 않았습니다. 지도에 표시할 공개 격자가 없습니다.';
     $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent=!s.live?'추가 수집한 OBIS 선별 출현기록을 1° 격자의 붉은 점 무늬로 표시합니다. 공개 기준 적용 자료와 합산하지 않습니다. 붉은 점은 실제 발견 좌표나 기록 1건이 아니며, 기록 수와 점은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
@@ -1111,7 +1111,7 @@ function renderComparison(){
       (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''} · 집단 간 점수 비교 불가</small>`:'')+'</button>';
   };
   const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
-    ['출현기록',s=>s.live&&s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · GBIF CC0·CC BY</small>`:s.catalog&&s.audit?pending(`GBIF 조회 ${s.audit.gbif.retrievedCount}건 · 공개 보류`):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
+    ['출현기록',s=>s.live&&s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · GBIF CC0·CC BY</small>`:s.catalog&&s.audit?pending(s.audit.gbif.retrievedCount===0?'GBIF 검색 0건 · OBIS 미조회':`GBIF 조회 ${s.audit.gbif.retrievedCount}건 · 공개 보류`):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
     ['식량 근거 · MFPI',s=>axisCell(s,'MFPI')||(s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'))],
     ['생리활성 · MBPI',s=>axisCell(s,'MBPI')||v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
