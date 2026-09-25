@@ -540,6 +540,15 @@
       "url": "https://pubmed.ncbi.nlm.nih.gov/32061872/",
       "version": "2020 article / PubMed primary abstract"
     },
+    "pubchem_pugrest": {
+      "accessed": "2026-09-25",
+      "license": "NCBI public access",
+      "provider": "NCBI PubChem",
+      "terms": "NCBI public access; depositor records may carry their own terms",
+      "title": "PubChem PUG REST compound/substance records",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest",
+      "version": "queried 2026-09-25"
+    },
     "rda_db_10_4": {
       "accessed": "2026-09-25",
       "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
@@ -619,6 +628,16 @@
       "title": "Magallana gigas accepted taxon, AphiaID 836033",
       "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033",
       "version": "WoRMS public record accessed 2026-09-25"
+    },
+    "yun_2018_holotoxin": {
+      "accessed": "2026-09-25",
+      "doi": "10.3390/md16040123",
+      "license": "CC BY 4.0",
+      "provider": "Marine Drugs (MDPI)",
+      "terms": "CC BY 4.0",
+      "title": "Holotoxin A1 induces apoptosis by activating acid and neutral sphingomyelinase in K562 and human primary leukemia cells",
+      "url": "https://europepmc.org/article/PMC/PMC5923410",
+      "version": "Mar Drugs 2018;16(4):123, PMC5923410"
     }
   },
   "species": [
@@ -966,14 +985,54 @@
           "material_kind": "reported isolated saponin",
           "missing": [
             "Conflicting external CIDs 119551 and 163110604 need stereochemical resolution",
-            "MIC/MFC not eligible pChEMBL endpoints"
+            "MIC/MFC not eligible pChEMBL endpoints",
+            "No provenance-backed stereo-defined structure record: the only fully defined CID (154730607) is a vendor deposit."
           ],
           "origin_aphia_id": 241776,
           "origin_scientific_name": "Apostichopus japonicus",
           "record_id": "10.1111/bph.16333:holotoxin-A1",
+          "related_records": [
+            {
+              "record_id": "10.3390/md16040123:K562",
+              "source_id": "yun_2018_holotoxin",
+              "summary": "IC50 0.06 µM for apoptosis induction in K562 (6 h, annexin V/PI); holotoxin A1 tested there was isolated from Cladolabes schmeltzii, not A. japonicus, and the endpoint is apoptosis induction, not growth inhibition.",
+              "used_for_score": false
+            }
+          ],
           "reviewed": false,
           "source_id": "apostichopus_2024_paper",
           "status": "partial_only",
+          "structure_check": {
+            "candidates": [
+              {
+                "cid": 163110604,
+                "defined_stereo": 34,
+                "formula": "C67H106O31",
+                "title": "Holotoxin A1 (CAS 85344-35-0)",
+                "undefined_stereo": 3,
+                "verdict": "formula mismatch; name-mapped record"
+              },
+              {
+                "cid": 119551,
+                "defined_stereo": 0,
+                "formula": "C66H104O31",
+                "inchikey": "ZFOUAAXBXISYFU-UHFFFAOYSA-N",
+                "undefined_stereo": 36,
+                "verdict": "connectivity and CAS-style name (3-O-Me-Glc/Qui/Xyl chain, 16-oxo, 18(20)-lactone) match; stereochemistry undefined"
+              },
+              {
+                "cid": 154730607,
+                "defined_stereo": 36,
+                "formula": "C66H104O31",
+                "inchikey": "ZFOUAAXBXISYFU-WAIQHJBGSA-N",
+                "undefined_stereo": 0,
+                "verdict": "same connectivity with full stereo, but only depositor is a chemical vendor (Mcule SID 494206188) without provenance; stereo not verified against the original assignment"
+              }
+            ],
+            "reported_formula": "C66H104O31",
+            "source_id": "pubchem_pugrest",
+            "verdict": "connectivity_only_withheld"
+          },
           "test_system": "fungal antimicrobial assay; exact strain and conditions need original-table review",
           "values": [
             {
@@ -1191,6 +1250,14 @@
           "origin_scientific_name": "Halocynthia roretzi",
           "record_id": "10.1002/advs.202515652:HalorotetinB",
           "reviewed": false,
+          "si_check": {
+            "checked_on": "2026-09-25",
+            "files": [
+              "ADVS-13-e15652-s001.xlsx (Table S1 NMR, Table S2 target lists)",
+              "ADVS-13-e15652-s002.pdf (western blot originals)"
+            ],
+            "finding": "No tabulated IC50, optical rotation, ECD or absolute configuration in the machine-readable SI; IC50 values remain figure-only (Figure 2b)."
+          },
           "source_id": "halorotetin_b_2026",
           "status": "partial_only",
           "test_system": "human tumour cell lines; HRESIMS [M+Na]+ 295.1666 (C18H24O2Na)",

@@ -15,6 +15,7 @@
 >
 > 양식 근거 추가: 멍게 — Shin et al. 2011, KFAS 44(4):366 (국립수산과학원, 통영 양식장 2007년 측정, 5–9월 고수온기 성장 음(−)); 미역 — FAO FTP 441 §8.5 (로프 연승 수하식, 한국 최대 생산국, 4월 수확 종료).
 > 재수집: `python scripts/collect_rda_nutrition.py` (상세 조회 `detailOne?foodCodes=<코드>`), 스냅샷 파일로 고정.
+> 후속 확인 (2026-09-25): 식약처 식품영양성분 DB의 "담치, 참담치(홍합), 생것"은 출처가 국립식량과학원(RDA) 데이터로 표시된 같은 행이며 아연 항목이 없다. 공식 DB 두 곳 모두 아연 결측이므로 대체값을 채우지 않았다.
 
 
 Reviewed 2026-09-25. This audit distinguishes published raw values from the

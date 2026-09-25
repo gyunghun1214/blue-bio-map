@@ -291,6 +291,25 @@
       "accessed": "2026-09-25",
       "terms": "CC BY",
       "license": "CC BY 4.0"
+    },
+    "yun_2018_holotoxin": {
+      "provider": "Marine Drugs (MDPI)",
+      "title": "Holotoxin A1 induces apoptosis by activating acid and neutral sphingomyelinase in K562 and human primary leukemia cells",
+      "version": "Mar Drugs 2018;16(4):123, PMC5923410",
+      "doi": "10.3390/md16040123",
+      "url": "https://europepmc.org/article/PMC/PMC5923410",
+      "accessed": "2026-09-25",
+      "terms": "CC BY 4.0",
+      "license": "CC BY 4.0"
+    },
+    "pubchem_pugrest": {
+      "provider": "NCBI PubChem",
+      "title": "PubChem PUG REST compound/substance records",
+      "version": "queried 2026-09-25",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest",
+      "accessed": "2026-09-25",
+      "terms": "NCBI public access; depositor records may carry their own terms",
+      "license": "NCBI public access"
     }
   },
   "nutrition_rows": [
@@ -666,7 +685,8 @@
       "test_system": "fungal antimicrobial assay; exact strain and conditions need original-table review",
       "missing": [
         "Conflicting external CIDs 119551 and 163110604 need stereochemical resolution",
-        "MIC/MFC not eligible pChEMBL endpoints"
+        "MIC/MFC not eligible pChEMBL endpoints",
+        "No provenance-backed stereo-defined structure record: the only fully defined CID (154730607) is a vendor deposit."
       ],
       "exclusion_reason": "No confirmed CID/InChIKey to assay chain; MIC/MFC cannot be converted to IC50.",
       "chain": {
@@ -674,7 +694,46 @@
         "structure_id": false,
         "quantitative_endpoint": true,
         "comparable_cohort": false
-      }
+      },
+      "structure_check": {
+        "reported_formula": "C66H104O31",
+        "candidates": [
+          {
+            "cid": 163110604,
+            "title": "Holotoxin A1 (CAS 85344-35-0)",
+            "formula": "C67H106O31",
+            "defined_stereo": 34,
+            "undefined_stereo": 3,
+            "verdict": "formula mismatch; name-mapped record"
+          },
+          {
+            "cid": 119551,
+            "inchikey": "ZFOUAAXBXISYFU-UHFFFAOYSA-N",
+            "formula": "C66H104O31",
+            "defined_stereo": 0,
+            "undefined_stereo": 36,
+            "verdict": "connectivity and CAS-style name (3-O-Me-Glc/Qui/Xyl chain, 16-oxo, 18(20)-lactone) match; stereochemistry undefined"
+          },
+          {
+            "cid": 154730607,
+            "inchikey": "ZFOUAAXBXISYFU-WAIQHJBGSA-N",
+            "formula": "C66H104O31",
+            "defined_stereo": 36,
+            "undefined_stereo": 0,
+            "verdict": "same connectivity with full stereo, but only depositor is a chemical vendor (Mcule SID 494206188) without provenance; stereo not verified against the original assignment"
+          }
+        ],
+        "verdict": "connectivity_only_withheld",
+        "source_id": "pubchem_pugrest"
+      },
+      "related_records": [
+        {
+          "record_id": "10.3390/md16040123:K562",
+          "source_id": "yun_2018_holotoxin",
+          "summary": "IC50 0.06 µM for apoptosis induction in K562 (6 h, annexin V/PI); holotoxin A1 tested there was isolated from Cladolabes schmeltzii, not A. japonicus, and the endpoint is apoptosis induction, not growth inhibition.",
+          "used_for_score": false
+        }
+      ]
     },
     {
       "origin_aphia_id": 342067,
@@ -842,6 +901,14 @@
         "structure_id": false,
         "quantitative_endpoint": false,
         "comparable_cohort": false
+      },
+      "si_check": {
+        "checked_on": "2026-09-25",
+        "files": [
+          "ADVS-13-e15652-s001.xlsx (Table S1 NMR, Table S2 target lists)",
+          "ADVS-13-e15652-s002.pdf (western blot originals)"
+        ],
+        "finding": "No tabulated IC50, optical rotation, ECD or absolute configuration in the machine-readable SI; IC50 values remain figure-only (Figure 2b)."
       }
     }
   ],
