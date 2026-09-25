@@ -45,8 +45,8 @@ try{
   check('List: sea cucumber card shows two broad cells',cards.some(c=>c.includes('해삼')&&c.includes('2셀 · 지점 2곳')),JSON.stringify(cards));
 
   let t=await pick(836033);
-  check('Oyster: nutrition shown as a collection inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144), not food value; MFPI withheld',
-    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','식량 가능성 · MFPI 산출 보류'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
+  check('Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) kept apart from the verified-pilot-2 MFPI trace',
+    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','MFPI · 식량 가능성','65.5 · 검증 전 시범 지표'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
   check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
   check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
   check('Oyster: compounds 미수집, occurrences 26 kept',/보고 화합물\s*미수집/.test(t)&&/수집된 기록\s*26건/.test(t),t);
@@ -58,7 +58,7 @@ try{
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
   check('Sea cucumber: two occurrence records, 4-degree generalization',t.includes('GBIF 공개 기록 2건')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 기록 수\s*미수집/.test(t),t);
-  check('Sea cucumber live: 2026 IUCN EN shown as current (not yet reviewed), 2013 as superseded; MCUI not used',t.includes('EN · 2026년 발표 (원문 검수 전)')&&t.includes('EN A2bd · 2013년 발표 (2026년 평가로 대체)')&&t.includes('MCUI는 평가 기준·평가일·범위를 원문으로 검수한 뒤에만')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
+  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN EN 2026 · 원문 검수 · 시범 MCUI')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 검증 전 시범 지표')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
   check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
@@ -71,7 +71,7 @@ try{
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
   const cmp=await evaluate("document.getElementById('comparison').innerText");
-  check('Compare table: per-species nutrition/compounds/conservation from API',cmp.includes('영양 기록 144건')&&cmp.includes('단위/가식부 검증 전')&&cmp.includes('보고 화합물 122개')&&cmp.includes('근거 부족으로 보류')&&cmp.includes('미검토'),cmp);
+  check('Compare table: verified-pilot-2 axis status per species (scores, partial evidence, withheld) with evidence links',['65.5','54.2','42.2','80.0','10.0','일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
@@ -123,7 +123,7 @@ try{
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   check('Method tab: back-test cases from the proposal, marked not yet done',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(아직 수행 안 함)')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
   check('Method tab: no outdated grid-centre wording',await evaluate("!document.getElementById('method').textContent.includes('격자 중심')&&document.getElementById('method').textContent.includes('실제 발견·채집 좌표가 아닙니다')"));
-  check('Merged PR #1: evidence coverage row next to the map section, scores still withheld',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('통합점수 산출 보류')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
+  check('Merged PR #1: evidence coverage row next to the map section; pilot values carry a caution box',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('시범 분석 주의')&&t.indexOf('지도 셀')<t.indexOf('자료 연결 현황'),t);
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
   check('Cell popup: period, sea area, source, licence, spatial resolution',['공개 집계 기간 2016–2026 · 기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','선별 기록 3건 · 조사 지점 2곳','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.

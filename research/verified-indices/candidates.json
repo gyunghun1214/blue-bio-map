@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-09-25",
+  "source_url": "https://mmsyrshjuaxdvegjhpdz.supabase.co/rest/v1/species_profiles",
+  "source_query": "species_id,scientific_name,korean_name,aphia_id,published_at,public_citations",
+  "source_terms": "Published public profile; read-only GET; no private coordinates",
+  "candidates": [
+    {
+      "aphia_id": 145721,
+      "scientific_name": "Undaria pinnatifida",
+      "korean_name": "미역",
+      "published_at": "2026-09-24T02:34:27.923859+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=145721"
+    },
+    {
+      "aphia_id": 241776,
+      "scientific_name": "Apostichopus japonicus",
+      "korean_name": "해삼",
+      "published_at": "2026-09-25T00:29:52.353192+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=241776"
+    },
+    {
+      "aphia_id": 250680,
+      "scientific_name": "Halocynthia roretzi",
+      "korean_name": "멍게",
+      "published_at": "2026-09-24T02:34:27.923859+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=250680"
+    },
+    {
+      "aphia_id": 342067,
+      "scientific_name": "Todarodes pacificus",
+      "korean_name": "살오징어",
+      "published_at": "2026-09-23T18:04:08.690595+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=342067"
+    },
+    {
+      "aphia_id": 372119,
+      "scientific_name": "Gelidium elegans",
+      "korean_name": "우뭇가사리",
+      "published_at": "2026-09-24T02:34:27.923859+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=372119"
+    },
+    {
+      "aphia_id": 494972,
+      "scientific_name": "Sargassum fusiforme",
+      "korean_name": "톳",
+      "published_at": "2026-09-24T02:34:27.923859+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=494972"
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "korean_name": "홍합(참담치)",
+      "published_at": "2026-09-24T02:34:27.923859+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=506159"
+    },
+    {
+      "aphia_id": 836033,
+      "scientific_name": "Magallana gigas",
+      "korean_name": "참굴",
+      "published_at": "2026-09-23T18:04:08.690595+09:00",
+      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033"
+    }
+  ]
+}

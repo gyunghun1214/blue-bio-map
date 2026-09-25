@@ -1,0 +1,1142 @@
+{
+  "candidate_snapshot_date": "2026-09-25",
+  "comparison_cohort": {
+    "criteria": "AFCD Release 3 rows F006288/F006289/F006291: three distinct Australian aquacultured oyster species, raw shucked flesh, per 100 g edible portion, linked to the same SARDI/FRDC sampling and methods program. Fixed independently of website filters. Three species are exploratory, not a statistically validated reference population.",
+    "food_item_ids": [
+      "F006288",
+      "F006289",
+      "F006291"
+    ],
+    "id": "afcd-r3-2008-australian-raw-oysters",
+    "species_count": 3,
+    "warning": "Small fixed cohorts give unstable ranks; sensitivity is not a confidence interval."
+  },
+  "food_weight": 0.5,
+  "generated_at": "2026-09-25T00:00:00Z",
+  "method": {
+    "bbvi": {
+      "default_food_weight": 0.5,
+      "sensitivity_food_weights": [
+        0.25,
+        0.5,
+        0.75
+      ]
+    },
+    "bioactivity": {
+      "eligible_endpoints": [
+        "IC50",
+        "XC50",
+        "EC50",
+        "AC50",
+        "Ki",
+        "Kd",
+        "Potency",
+        "ED50"
+      ],
+      "minimum_compounds_per_stratum": 3,
+      "multiple_doi_factor": 1.0,
+      "primary_aggregation": "max",
+      "sensitivity_aggregation": "median",
+      "single_doi_factor": 0.75
+    },
+    "conservation": {
+      "category_scores": {
+        "CR": 100,
+        "EN": 80,
+        "LC": 10,
+        "NT": 35,
+        "VU": 60
+      },
+      "effort_adjustment": 10
+    },
+    "method_version": "verified-pilot-1",
+    "nutrition": {
+      "aquaculture_weight": 0.1,
+      "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+      "components": {
+        "iron_mg": "mg",
+        "protein_g": "g",
+        "zinc_mg": "mg"
+      },
+      "edible_fraction_weight": 0.1,
+      "food_item_ids": [
+        "F006288",
+        "F006289",
+        "F006291"
+      ],
+      "grade_factors": {
+        "calculated": 0.85,
+        "measured": 1.0,
+        "proxy": 0.5
+      },
+      "minimum_species": 3,
+      "nutrient_weight": 0.8
+    },
+    "status": "provisional_unvalidated"
+  },
+  "method_version": "verified-pilot-1",
+  "snapshot_date": "2026-09-25",
+  "sources": {
+    "afcd_r3_details": {
+      "accessed": "2026-09-25",
+      "license": "CC BY-SA 3.0 AU; FSANZ AFCD data user licence",
+      "license_url": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
+      "notice": "AFCD food-level Derivation=Analysed and Analysed Portion=100% flesh do not mean 100% of the whole shell-on animal is edible.",
+      "provider": "Food Standards Australia New Zealand (FSANZ)",
+      "terms": "CC BY-SA 3.0 Australia subject to FSANZ AFCD data user licence",
+      "title": "Australian Food Composition Database Release 3 — Food details",
+      "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Food%20Details.xlsx",
+      "version": "Release 3 (2025-12)"
+    },
+    "afcd_r3_nutrients": {
+      "accessed": "2026-09-25",
+      "license": "CC BY-SA 3.0 AU; FSANZ AFCD data user licence",
+      "license_url": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
+      "notice": "FSANZ data were transformed into a nine-cell extract. Nutrients vary with batch, season, processing and analytical method. Australian data may not represent food elsewhere. This project does not imply FSANZ endorsement.",
+      "provider": "Food Standards Australia New Zealand (FSANZ)",
+      "terms": "CC BY-SA 3.0 Australia subject to FSANZ AFCD data user licence",
+      "title": "Australian Food Composition Database Release 3 — Nutrient profiles",
+      "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Nutrient%20profiles.xlsx",
+      "version": "Release 3 (2025-12)"
+    },
+    "apostichopus_2024_paper": {
+      "accessed": "2026-09-25",
+      "doi": "10.1111/bph.16333",
+      "license": "Publisher terms; citation only",
+      "provider": "British Journal of Pharmacology article",
+      "terms": "Publisher terms; limited factual summary only",
+      "title": "Holotoxin A1 antimicrobial assay",
+      "url": "https://doi.org/10.1111/bph.16333",
+      "version": "Published article, DOI 10.1111/bph.16333"
+    },
+    "chembl_37": {
+      "accessed": "2026-09-25",
+      "license": "ChEMBL data terms",
+      "provider": "EMBL-EBI ChEMBL",
+      "terms": "ChEMBL data use terms; database search result is not a biological negative result",
+      "title": "ChEMBL database/document search",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+      "version": "ChEMBL_37 (2026-05-01)"
+    },
+    "cmnpd_1": {
+      "accessed": "2026-09-25",
+      "license": "CC BY-NC-SA 4.0",
+      "provider": "Comprehensive Marine Natural Products Database",
+      "terms": "CC BY-NC-SA 4.0; source-species and paper links absent from inspected activity/structure extracts",
+      "title": "CMNPD v1 standard activity and 2D structure files",
+      "url": "https://docs.cmnpd.org/",
+      "version": "CMNPD 1.0"
+    },
+    "fao_korea_oyster": {
+      "accessed": "2026-09-25",
+      "license": "FAO website terms",
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "terms": "FAO website terms; historical method evidence only",
+      "title": "Oyster culture in the Republic of Korea",
+      "url": "https://www.fao.org/4/ab706e/AB706E05.htm",
+      "version": "FAO manual based on 1986 industry information, published 1988"
+    },
+    "fao_oyster_culture": {
+      "accessed": "2026-09-25",
+      "license": "FAO website terms",
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "terms": "FAO website terms; factual summary and link only",
+      "title": "Cultured Aquatic Species Information Programme — Crassostrea gigas",
+      "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_pacificcuppedoyster.htm",
+      "version": "FAO cultured-species factsheet, accessed 2026-09-25"
+    },
+    "frdc_2008_905": {
+      "accessed": "2026-09-25",
+      "license": "Copyright FRDC/SARDI; link and limited factual summary only",
+      "notice": "Pages 8–10 give supply dates July 2010–July 2011 and DNA verification; appendices 3–4 give taxon-specific rows and methods. Project number 2008/905 is not a sample date.",
+      "provider": "Fisheries Research and Development Corporation / SARDI",
+      "terms": "Report copyright notice restricts reproduction and electronic storage without permission; only bibliographic/method facts are summarised here.",
+      "title": "Australian Seafood Compositional Profiles, project 2008/905",
+      "url": "https://www.frdc.com.au/sites/default/files/products/2008-905-DLD.pdf",
+      "version": "Final report, July 2012, ISBN 978-0-9805789-9-7"
+    },
+    "gelidium_2018_extract": {
+      "accessed": "2026-09-25",
+      "doi": "10.3390/nu10010051",
+      "license": "CC BY 4.0",
+      "provider": "Choi et al., Nutrients",
+      "terms": "CC BY 4.0 article; limited factual summary with citation",
+      "title": "Gelidium elegans extract in db/db mouse diabetes study",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29316644/",
+      "version": "2018 article, Nutrients 10(1):51"
+    },
+    "halocynthia_2006_paper": {
+      "accessed": "2026-09-25",
+      "doi": "10.1016/j.cbpc.2005.10.005",
+      "license": "Publisher terms; abstract summary",
+      "provider": "Konishi et al., Comparative Biochemistry and Physiology C",
+      "terms": "Publisher copyright; abstract facts and citation only",
+      "title": "Halocynthia roretzi carotenoids and HL-60 assay",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16337836/",
+      "version": "2006 paper / PubMed abstract"
+    },
+    "he_2012_mussel": {
+      "accessed": "2026-09-25",
+      "doi": "10.3969/j.issn.2095-0780.2012.04.006",
+      "license": "Publisher terms; factual summary only",
+      "provider": "He, Zhao and Liu, South China Fisheries Science",
+      "terms": "Publisher copyright; factual numbers and citation only",
+      "title": "Nutritional analysis of Mytilus coruscus soft body",
+      "url": "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf",
+      "version": "2012 article, Tables 2 and 5"
+    },
+    "iucn_japonicus_2013": {
+      "accessed": "2026-09-25",
+      "doi": "10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
+      "license": "IUCN Red List terms",
+      "provider": "IUCN Red List",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "title": "Apostichopus japonicus assessment e.T180424A1629389",
+      "url": "https://doi.org/10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
+      "version": "2013-1 historical record"
+    },
+    "iucn_todarodes_2014": {
+      "accessed": "2026-09-25",
+      "doi": "10.2305/IUCN.UK.2014-1.RLTS.T176085A1428473.en",
+      "license": "IUCN Red List terms",
+      "provider": "IUCN Red List",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "title": "Todarodes pacificus assessment e.T176085A1428473",
+      "url": "https://doi.org/10.2305/IUCN.UK.2014-1.RLTS.T176085A1428473.en",
+      "version": "2014-1 historical record"
+    },
+    "li_2025_yield": {
+      "accessed": "2026-09-25",
+      "doi": "10.3390/foods14091595",
+      "license": "CC BY 4.0",
+      "provider": "Li et al., Foods (MDPI)",
+      "terms": "CC BY 4.0 article; cite DOI and method",
+      "title": "Species-specific oyster meat yield in Dalian market specimens",
+      "url": "https://www.mdpi.com/2304-8158/14/9/1595",
+      "version": "Foods 2025 14(9):1595, Table 1"
+    },
+    "magallana_2013_peptide": {
+      "accessed": "2026-09-25",
+      "doi": "10.1021/jf4032553",
+      "license": "Publisher terms; abstract summary",
+      "provider": "Cheong et al., Journal of Agricultural and Food Chemistry",
+      "terms": "Publisher copyright; abstract facts and citation only",
+      "title": "Anticancer peptide purified from Crassostrea gigas hydrolysate",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24199654/",
+      "version": "2013 article / PubMed primary abstract"
+    },
+    "mytilus_2020_myticusin": {
+      "accessed": "2026-09-25",
+      "doi": "10.1016/j.fsi.2020.02.020",
+      "license": "Publisher terms; abstract summary",
+      "provider": "Oh et al., Fish & Shellfish Immunology",
+      "terms": "Publisher copyright; abstract facts and citation only",
+      "title": "Myticusin-beta antimicrobial peptide isolated from Mytilus coruscus",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32061872/",
+      "version": "2020 article / PubMed primary abstract"
+    },
+    "sargassum_2024_fractions": {
+      "accessed": "2026-09-25",
+      "doi": "10.3390/molecules29246000",
+      "license": "CC BY 4.0",
+      "provider": "Liu et al., Molecules",
+      "terms": "CC BY 4.0 article; limited factual summary with citation",
+      "title": "Sargassum fusiforme fractionation and alpha-glucosidase inhibition",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
+      "version": "2024 article, Molecules 29(24):6000"
+    },
+    "todarodes_2011_peptide": {
+      "accessed": "2026-09-25",
+      "doi": "10.5657/kfas.2011.44.2.118",
+      "license": "Publisher terms; factual summary only",
+      "provider": "Lee, Jeon and Byun, Korean Journal of Fisheries and Aquatic Sciences",
+      "terms": "Publisher terms; retain citation and limited measured facts, not full article",
+      "title": "Purification of angiotensin I-converting enzyme inhibitory peptide from Todarodes pacificus skin",
+      "url": "https://www.e-kfas.org/Upload/files/kfas/KSSHBC_2011_v44n2_118.pdf",
+      "version": "2011 article, volume 44 issue 2 pages 118-125"
+    },
+    "ufish_1": {
+      "accessed": "2026-09-25",
+      "license": "FAO database terms; attribution required",
+      "license_url": "https://www.fao.org/contact-us/terms/db-terms-of-use/",
+      "provider": "FAO/INFOODS",
+      "terms": "FAO/INFOODS database terms; third-party source rights may differ",
+      "title": "Global food composition database for fish and shellfish (uFiSh1.0)",
+      "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
+      "version": "uFiSh1.0 (2016)"
+    },
+    "undaria_2018_paper": {
+      "accessed": "2026-09-25",
+      "doi": "10.1016/j.foodchem.2018.07.142",
+      "license": "Publisher terms; citation only",
+      "provider": "Zaharudin et al., Food Chemistry",
+      "terms": "Publisher copyright; record metadata and limited factual summary",
+      "title": "Undaria pinnatifida acetone extract and purchased fucoxanthin standard alpha-glucosidase assays",
+      "url": "https://doi.org/10.1016/j.foodchem.2018.07.142",
+      "version": "2018 paper"
+    },
+    "valenzuela_2022_yield": {
+      "accessed": "2026-09-25",
+      "doi": "10.1371/journal.pone.0270825",
+      "license": "CC BY",
+      "provider": "Valenzuela et al., PLOS ONE",
+      "terms": "CC BY; cite DOI and method",
+      "title": "Pacific oyster wet meat yield, Chiloé Island",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825",
+      "version": "PLOS ONE 2022, Table 1"
+    },
+    "worms_gigas": {
+      "accessed": "2026-09-25",
+      "license": "WoRMS attribution",
+      "provider": "World Register of Marine Species",
+      "terms": "WoRMS attribution; verify synonym and accepted-name links against record",
+      "title": "Magallana gigas accepted taxon, AphiaID 836033",
+      "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033",
+      "version": "WoRMS public record accessed 2026-09-25"
+    }
+  },
+  "species": [
+    {
+      "aphia_id": 145721,
+      "bioactivity_partial": [
+        {
+          "endpoint": "IC50",
+          "exclusion_reason": "Extract and purchased standard cannot be linked as one species-derived single compound activity.",
+          "material_kind": "acetone extract and separately purchased fucoxanthin standard",
+          "missing": [
+            "No proven isolation of the tested standard from this Undaria specimen",
+            "No fixed comparable assay cohort"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1016/j.foodchem.2018.07.142:alpha-glucosidase",
+          "reviewed": false,
+          "source_id": "undaria_2018_paper",
+          "status": "partial_only",
+          "test_system": "alpha-glucosidase assay",
+          "values": [
+            {
+              "material": "extract",
+              "unit": "mg/mL",
+              "value": 0.08
+            },
+            {
+              "material": "purchased standard",
+              "unit": "mg/mL",
+              "value": 0.047
+            }
+          ]
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Undaria pinnatifida",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "undaria_2018_paper"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 241776,
+      "bioactivity_partial": [
+        {
+          "endpoint": "MIC/MFC",
+          "exclusion_reason": "No confirmed CID/InChIKey to assay chain; MIC/MFC cannot be converted to IC50.",
+          "material_kind": "reported isolated saponin",
+          "missing": [
+            "Conflicting external CIDs 119551 and 163110604 need stereochemical resolution",
+            "MIC/MFC not eligible pChEMBL endpoints"
+          ],
+          "origin_aphia_id": 241776,
+          "origin_scientific_name": "Apostichopus japonicus",
+          "record_id": "10.1111/bph.16333:holotoxin-A1",
+          "reviewed": false,
+          "source_id": "apostichopus_2024_paper",
+          "status": "partial_only",
+          "test_system": "fungal antimicrobial assay; exact strain and conditions need original-table review",
+          "values": [
+            {
+              "unit": "µg/mL",
+              "value": 2
+            }
+          ]
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": {
+        "aphia_id": 241776,
+        "assessment_date": "2010-05-19",
+        "assessment_year": 2010,
+        "category": "EN",
+        "criteria": "A2bd",
+        "current_status_check": null,
+        "original_copy_url": "https://www.researchgate.net/publication/295098284_Apostichopus_japonicus_The_IUCN_Red_List_of_Threatened_Species_2013_eT180424A1629389",
+        "publication_year": 2013,
+        "record_id": "IUCN:e.T180424A1629389",
+        "reviewed": true,
+        "scientific_name": "Apostichopus japonicus",
+        "scope": "global; Northwest Pacific species, not a Korean regional assessment",
+        "search_state": "historical_assessment_verified_current_access_failed",
+        "source_id": "iucn_japonicus_2013",
+        "verification": "Original historical assessment copy checked for EN A2bd, 2010-05-19, global scope and decline basis; current IUCN 2026-1 status not verified."
+      },
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Apostichopus japonicus",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "일부 근거 확인",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "apostichopus_2024_paper",
+        "iucn_japonicus_2013"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "current_status_unverified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 250680,
+      "bioactivity_partial": [
+        {
+          "endpoint": "single-concentration cell viability",
+          "exclusion_reason": "Single-concentration viability is not pChEMBL.",
+          "material_kind": "two isolated carotenoids",
+          "missing": [
+            "Full article experimental chain and structure stereochemistry not independently reviewed",
+            "No IC50/EC50 endpoint or fixed comparable assay cohort"
+          ],
+          "origin_aphia_id": 250680,
+          "origin_scientific_name": "Halocynthia roretzi",
+          "record_id": "PMID:16337836:HL60-48h",
+          "reviewed": false,
+          "source_id": "halocynthia_2006_paper",
+          "status": "partial_only",
+          "test_system": "HL-60, 48 h",
+          "values": [
+            {
+              "compound_id": "CID:11966451",
+              "dose": 12.5,
+              "dose_unit": "µM",
+              "material": "halocynthiaxanthin",
+              "viability_percent": 12.1
+            },
+            {
+              "compound_id": "CID:11273547",
+              "dose": 12.5,
+              "dose_unit": "µM",
+              "material": "fucoxanthinol",
+              "viability_percent": 5.7
+            }
+          ]
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Halocynthia roretzi",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "halocynthia_2006_paper"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 342067,
+      "bioactivity_partial": [
+        {
+          "endpoint": "IC50",
+          "exclusion_reason": "A real isolated-peptide IC50 is available, but an exact public structure join and comparable fixed cohort are not yet verified; do not mix peptides with small molecules.",
+          "material_kind": "squid-skin protein hydrolysate; chromatographically purified heptapeptide Ser-Ala-Gly-Ser-Leu-Val-Pro, 657 Da",
+          "missing": [
+            "No confirmed stable CID/InChIKey for the exact peptide",
+            "ACE preparation source and full assay conditions not transcribed",
+            "No fixed comparable ACE-peptide assay cohort"
+          ],
+          "origin_aphia_id": 342067,
+          "origin_scientific_name": "Todarodes pacificus",
+          "record_id": "10.5657/kfas.2011.44.2.118:ACE-heptapeptide",
+          "reviewed": false,
+          "source_id": "todarodes_2011_peptide",
+          "status": "partial_only",
+          "test_system": "in-vitro ACE enzyme inhibition; noncompetitive in reported Lineweaver-Burk analysis",
+          "values": [
+            {
+              "material": "purified heptapeptide",
+              "relation": "=",
+              "target": "angiotensin I-converting enzyme",
+              "unit": "µM",
+              "value": 766.2
+            }
+          ]
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": {
+        "aphia_id": 342067,
+        "assessment_year": null,
+        "category": null,
+        "current_status_check": null,
+        "publication_year": 2014,
+        "record_id": "IUCN:e.T176085A1428473",
+        "reviewed": false,
+        "scientific_name": "Todarodes pacificus",
+        "scope": "global assessment DOI identified; original category and current edition not confirmed",
+        "search_state": "historical_record_identified_original_access_failed",
+        "source_id": "iucn_todarodes_2014",
+        "verification": "Original DOI exists, but full record could not be reviewed; secondary LC claim is not approved numeric input."
+      },
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Todarodes pacificus",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "일부 근거 확인",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "iucn_todarodes_2014",
+        "todarodes_2011_peptide"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "original_assessment_not_reviewed",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 372119,
+      "bioactivity_partial": [
+        {
+          "endpoint": "extract intervention outcomes; no molecule-level potency endpoint",
+          "exclusion_reason": "Whole-extract animal outcomes cannot be assigned to a single compound or converted to pChEMBL.",
+          "material_kind": "Gelidium elegans extract, not an isolated compound",
+          "missing": [
+            "No isolated exact compound linked to the intervention",
+            "No molecule-level target, endpoint, value or fixed comparable assay cohort"
+          ],
+          "origin_aphia_id": 372119,
+          "origin_scientific_name": "Gelidium elegans",
+          "record_id": "10.3390/nu10010051:extract-dbdb-mice",
+          "reviewed": false,
+          "source_id": "gelidium_2018_extract",
+          "status": "partial_only",
+          "test_system": "db/db mouse diabetes model",
+          "values": []
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Gelidium elegans",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "gelidium_2018_extract"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 494972,
+      "bioactivity_partial": [
+        {
+          "endpoint": "alpha-glucosidase inhibition studied, but no qualifying isolated-compound IC50 recorded",
+          "exclusion_reason": "Quantified fraction effects and qualitative single-compound observations are not an eligible compound-level MBPI input.",
+          "material_kind": "active phlorotannin-rich and fatty-acid-containing fractions; separately isolated fucosterol",
+          "missing": [
+            "Fraction activity cannot be attributed to a named constituent",
+            "No numerical qualifying IC50 for isolated fucosterol in the checked original material",
+            "No fixed comparable single-compound assay cohort"
+          ],
+          "origin_aphia_id": 494972,
+          "origin_scientific_name": "Sargassum fusiforme",
+          "record_id": "10.3390/molecules29246000:fractions",
+          "reviewed": false,
+          "source_id": "sargassum_2024_fractions",
+          "status": "partial_only",
+          "test_system": "in-vitro alpha-glucosidase fraction/compound comparison",
+          "values": []
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": []
+      },
+      "scientific_name": "Sargassum fusiforme",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "sargassum_2024_fractions"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 506159,
+      "bioactivity_partial": [
+        {
+          "endpoint": "antimicrobial activity, no per-organism quantitative endpoint available in accessed primary abstract",
+          "exclusion_reason": "Isolated peptide origin is documented, but the accessible assay record is insufficient for a reproducible potency percentile.",
+          "material_kind": "natural mantle-derived myticusin-beta antimicrobial peptide; recombinant peptide and designed analogues tested separately",
+          "missing": [
+            "No assay-specific value, relation and unit from the accessible original abstract",
+            "Natural, recombinant and analogue assay results must not be pooled",
+            "No fixed comparable peptide cohort"
+          ],
+          "origin_aphia_id": 506159,
+          "origin_scientific_name": "Mytilus coruscus",
+          "record_id": "PMID:32061872:myticusin-beta",
+          "reviewed": false,
+          "source_id": "mytilus_2020_myticusin",
+          "status": "partial_only",
+          "test_system": "reported bacterial and parasite assays; organism-specific test conditions need full article review",
+          "values": []
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": null,
+        "edible_fraction_sensitivity": [],
+        "method_version": "verified-pilot-1",
+        "nutrients": {},
+        "sample_state": "raw",
+        "supplemental_nutrition": [
+          {
+            "aphia_id": 506159,
+            "basis": "100 g edible portion",
+            "exclusion_reason": "Different reference program from fixed AFCD oyster cohort; uFiSh EDIBLE=0.51 uses a generic mussel reference, not a species-specific confirmed fraction.",
+            "publication_year": 2016,
+            "record_id": "uFiSh1.0:093015",
+            "reported_scientific_name": "Mytilus coruscus",
+            "reviewed": true,
+            "sample_state": "raw",
+            "sample_year": null,
+            "source_id": "ufish_1",
+            "used_for_score": false,
+            "values": {
+              "iron_mg": {
+                "derivation": "analytical summary",
+                "unit": "mg",
+                "value": 2.255988
+              },
+              "protein_g": {
+                "derivation": "calculated summary",
+                "unit": "g",
+                "value": 12.38488975
+              },
+              "zinc_mg": {
+                "derivation": "analytical summary",
+                "unit": "mg",
+                "value": 1.3517015
+              }
+            }
+          },
+          {
+            "aphia_id": 506159,
+            "basis": "protein g/100 g; Fe/Zn reported mg/kg soft body",
+            "exclusion_reason": "Mineral wet/dry basis is inferred from methods but not explicit in Table 5; whole-to-edible fraction and aquaculture site-method are not supplied. No conversion or ranking applied.",
+            "publication_year": 2012,
+            "record_id": "10.3969/j.issn.2095-0780.2012.04.006:Tables2,5",
+            "reported_scientific_name": "Mytilus coruscus",
+            "reviewed": true,
+            "sample_state": "fresh soft body for proximate sample; mineral basis not explicit in table",
+            "sample_year": 2011,
+            "source_id": "he_2012_mussel",
+            "used_for_score": false,
+            "values": {
+              "iron": {
+                "method": "flame atomic absorption",
+                "unit": "mg/kg",
+                "value": 21
+              },
+              "protein_g": {
+                "method": "Kjeldahl, n=3",
+                "unit": "g/100 g",
+                "value": 11.12
+              },
+              "zinc": {
+                "method": "flame atomic absorption",
+                "unit": "mg/kg",
+                "value": 22.1
+              }
+            }
+          }
+        ]
+      },
+      "scientific_name": "Mytilus coruscus",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "he_2012_mussel",
+        "mytilus_2020_myticusin",
+        "ufish_1"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": "comparable_nutrition_missing"
+      }
+    },
+    {
+      "aphia_id": 836033,
+      "bioactivity_partial": [
+        {
+          "endpoint": "cancer-cell death reported without cell-specific quantitative endpoint in accessible abstract",
+          "exclusion_reason": "A partly characterized hydrolysate peptide cannot support a compound-identified, comparable MBPI percentile.",
+          "material_kind": "peptide purified from oyster protein hydrolysate; only partial N-terminal sequence reported in accessed abstract",
+          "missing": [
+            "Complete peptide sequence and exact public structure identifier not established",
+            "No cell-specific IC50, relation or unit in accessed original abstract",
+            "No fixed comparable peptide assay cohort"
+          ],
+          "origin_aphia_id": 836033,
+          "origin_scientific_name": "Magallana gigas",
+          "record_id": "PMID:24199654:oyster-anticancer-peptide",
+          "reported_origin_scientific_name": "Crassostrea gigas",
+          "reviewed": false,
+          "source_id": "magallana_2013_peptide",
+          "status": "partial_only",
+          "test_system": "prostate, breast and lung cancer cell lines; exact conditions need full article review",
+          "values": []
+        }
+      ],
+      "bioactivity_trace": [],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": {
+          "aphia_id": 836033,
+          "feasible": true,
+          "kind": "aquaculture",
+          "limitations": "Technical species-level cultivation evidence; local siting, temperature, salinity, phytoplankton, harmful algal blooms, disease and cost require current local review.",
+          "method": "Bottom sowing, off-bottom mesh bags/trays on trestles, and suspended longlines/rafts",
+          "record_id": "FAO-CASP-Crassostrea-gigas:Production-cycle",
+          "region": "Global species profile; historical Korean southern-coast raft/longline example separately documented",
+          "regional_source_id": "fao_korea_oyster",
+          "reviewed": true,
+          "source_id": "fao_oyster_culture",
+          "year": "historical methods, page accessed 2026-09-25"
+        },
+        "basis": "100 g edible portion",
+        "cohort_food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "cohort_species": 3,
+        "edible_fraction": {
+          "aphia_id": 836033,
+          "kind": "edible_fraction",
+          "limitations": "Independent market specimens (at least 30 animals from three batches), not the Australian AFCD nutrient specimens; site and season can change yield.",
+          "method": "(whole wet weight minus shell weight) / whole wet weight",
+          "publication_year": 2025,
+          "record_id": "10.3390/foods14091595:Table1:Crassostrea-gigas",
+          "region": "Dalian market, China",
+          "reviewed": true,
+          "sample_period": "Q2; collection year not supplied",
+          "source_id": "li_2025_yield",
+          "unit": "whole live animal to shucked meat mass fraction",
+          "value": 0.1157
+        },
+        "edible_fraction_sensitivity": [
+          {
+            "aphia_id": 836033,
+            "kind": "edible_fraction_sensitivity",
+            "limitations": "Independent Chilean population (40 animals, two pools); scenario sensitivity only.",
+            "method": "wet shucked meat / whole wet weight",
+            "publication_year": 2022,
+            "record_id": "10.1371/journal.pone.0270825:Table3:Crassostrea-gigas-2017",
+            "region": "Faro Corona, Chiloé Island, Chile",
+            "reviewed": true,
+            "sample_period": "September 2017",
+            "source_id": "valenzuela_2022_yield",
+            "unit": "whole live animal to wet meat mass fraction",
+            "value": 0.1527
+          },
+          {
+            "aphia_id": 836033,
+            "kind": "edible_fraction_sensitivity",
+            "limitations": "Independent Chilean population (60 animals, three pools); use for sensitivity, not an average with Dalian yield.",
+            "method": "wet shucked meat / whole wet weight",
+            "publication_year": 2022,
+            "record_id": "10.1371/journal.pone.0270825:Table1:Crassostrea-gigas",
+            "region": "Hueihue, Chiloé Island, Chile",
+            "reviewed": true,
+            "sample_period": "August 2018",
+            "source_id": "valenzuela_2022_yield",
+            "unit": "whole live animal to wet meat mass fraction",
+            "value": 0.237
+          }
+        ],
+        "formula": "nutrient_weight × mean(percentile × evidence_factor) + 100 × edible_fraction_weight × edible_fraction + 100 × aquaculture_weight × aquaculture_boolean",
+        "method_source_id": "frdc_2008_905",
+        "method_version": "verified-pilot-1",
+        "nutrients": {
+          "iron_mg": {
+            "evidence_factor": 1.0,
+            "grade": "measured",
+            "method": "Original FRDC acid-digest ICP-OES",
+            "peer_values": [
+              {
+                "food_item_id": "F006288",
+                "scientific_name": "Ostrea angasi",
+                "value": 3.75
+              },
+              {
+                "food_item_id": "F006289",
+                "scientific_name": "Magallana gigas",
+                "value": 4.43
+              },
+              {
+                "food_item_id": "F006291",
+                "scientific_name": "Saccostrea glomerata",
+                "value": 3.47
+              }
+            ],
+            "percentile": 83.33,
+            "percentile_unrounded": 83.33333333333333,
+            "unit": "mg",
+            "value": 4.43
+          },
+          "protein_g": {
+            "evidence_factor": 0.85,
+            "grade": "calculated",
+            "method": "AFCD Release 3 reported protein; original FRDC nitrogen × 6.25; original 10.9 g differs from later AFCD 10.8 g",
+            "peer_values": [
+              {
+                "food_item_id": "F006288",
+                "scientific_name": "Ostrea angasi",
+                "value": 7.3
+              },
+              {
+                "food_item_id": "F006289",
+                "scientific_name": "Magallana gigas",
+                "value": 10.8
+              },
+              {
+                "food_item_id": "F006291",
+                "scientific_name": "Saccostrea glomerata",
+                "value": 10.6
+              }
+            ],
+            "percentile": 83.33,
+            "percentile_unrounded": 83.33333333333333,
+            "unit": "g",
+            "value": 10.8
+          },
+          "zinc_mg": {
+            "evidence_factor": 1.0,
+            "grade": "measured",
+            "method": "Original FRDC wet-oxidation ICP-OES",
+            "peer_values": [
+              {
+                "food_item_id": "F006288",
+                "scientific_name": "Ostrea angasi",
+                "value": 11.05
+              },
+              {
+                "food_item_id": "F006289",
+                "scientific_name": "Magallana gigas",
+                "value": 18.04
+              },
+              {
+                "food_item_id": "F006291",
+                "scientific_name": "Saccostrea glomerata",
+                "value": 20.25
+              }
+            ],
+            "percentile": 50.0,
+            "percentile_unrounded": 50.0,
+            "unit": "mg",
+            "value": 18.04
+          }
+        },
+        "publication_year": 2025,
+        "reported_scientific_name": "Crassostrea gigas",
+        "sample_state": "raw",
+        "sample_year_range": [
+          2010,
+          2011
+        ],
+        "source_food_item_id": "F006289",
+        "source_id": "afcd_r3_nutrients",
+        "supplemental_nutrition": [],
+        "uncertainty": [
+          "Only three oyster species in the fixed comparison cohort; ranks change in large steps.",
+          "AFCD Australian nutrient specimens and the independent Dalian edible-yield specimens differ by place and collection period.",
+          "AFCD workbook says 2008 (SARDI); the underlying FRDC report dates sample supply to July 2010–July 2011 and does not assign a year per food item."
+        ],
+        "unrounded": 65.60144444444444,
+        "weights": {
+          "aquaculture_weight": 0.1,
+          "edible_fraction_weight": 0.1,
+          "nutrient_weight": 0.8
+        },
+        "yield_sensitivity": [
+          {
+            "fraction": 0.1527,
+            "mfpi_at_same_nutrients": 66.0,
+            "record_id": "10.1371/journal.pone.0270825:Table3:Crassostrea-gigas-2017",
+            "source_id": "valenzuela_2022_yield"
+          },
+          {
+            "fraction": 0.237,
+            "mfpi_at_same_nutrients": 66.8,
+            "record_id": "10.1371/journal.pone.0270825:Table1:Crassostrea-gigas",
+            "source_id": "valenzuela_2022_yield"
+          }
+        ]
+      },
+      "scientific_name": "Magallana gigas",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
+        "MCUI": "산출 보류",
+        "MFPI": "산출됨"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "MFPI": 65.6
+      },
+      "sensitivity": {
+        "food_weights": {}
+      },
+      "source_ids": [
+        "afcd_r3_details",
+        "afcd_r3_nutrients",
+        "fao_korea_oyster",
+        "fao_oyster_culture",
+        "frdc_2008_905",
+        "li_2025_yield",
+        "magallana_2013_peptide",
+        "valenzuela_2022_yield"
+      ],
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "assessment_not_verified",
+        "MFPI": null
+      }
+    }
+  ],
+  "status": "provisional_unvalidated"
+}
