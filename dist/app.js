@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5;
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null;
 const VERIFIED = ['verified-pilot-2'];
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
@@ -824,7 +824,7 @@ function cellCsv(s){
 function readHash(){try{return Object.fromEntries(new URLSearchParams(location.hash.slice(1)));}catch{return {};}}
 function writeHash(){
   if(!data||!selected)return;
-  const p=new URLSearchParams({c:$('collection').value,s:selected.aphiaID,v:currentView,b:basemap});
+  const p=new URLSearchParams({c:$('collection').value,s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
   if(periodFilter!=='all')p.set('p',periodFilter);
   if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
   try{history.replaceState(null,'','#'+p.toString());}catch{}
@@ -833,18 +833,113 @@ function applyHash(h){
   const s=data?.species.find(x=>x.aphiaID===Number(h.s));
   if(s)selectSpecies(s.aphiaID);
   if(h.p&&selected?.cells.some(c=>c.period===h.p)){periodFilter=h.p;renderMap();}
+  if(h.t==='value')setMapMode('value');
   if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
   const m=(h.m||'').split('/').map(Number);
   if(map&&m.length===3&&m.every(Number.isFinite))map.setView([m[1],m[2]],m[0],{animate:false});
   if(['explore','compare','method'].includes(h.v))setView(h.v);
   writeHash();
 }
+
+/* The evidence map joins published cell extents only. No occurrence coordinates or
+   species scores are promoted into sea-level scores. A 4° extent stays 4°. */
+const valueCellKey=(lat,lon,size)=>[lat,lon,size].join('/');
+function valueCellGroups(){
+  const groups=new Map();
+  if(!data)return groups;
+  for(const s of data.species){
+    const cells=s.live?periodView(s).cells:s.cells;
+    for(const c of cells){
+      const lat=s.live?c.lat0:c.lat-.5,lon=s.live?c.lon0:c.lon-.5,size=s.live?c.sizeDeg:1;
+      if(![lat,lon,size].every(Number.isFinite))continue;
+      const key=valueCellKey(lat,lon,size);
+      if(!groups.has(key))groups.set(key,{lat,lon,size,species:new Map()});
+      groups.get(key).species.set(s.aphiaID,s);
+    }
+  }
+  return groups;
+}
+function valueSpeciesCard(s){
+  const blockers=assessmentBlockers(s),report=data.assessmentInfo||{};
+  const scores=['BBVI','MFPI','MBPI','MCUI'].map(k=>{
+    const n=pilotScore(s,k);
+    const state=n===null?'산출 보류':n.toFixed(1)+' · 검증 전 시범';
+    return '<div class="value-axis"><b>'+k+'</b><span>'+esc(state)+'</span>'+(n===null?'<small>'+esc(blockers[k]||'필수 근거 미확인')+'</small>':'')+'</div>';
+  }).join('');
+  const stage=s.live?evidenceCoverage(s).checks.map(c=>c.name+' '+coverageStages[c.stage]).join(' · '):'별도 수집 자료 · 지표 연결 판정 없음';
+  const sourceIds=s.assessment?.source_ids||[];
+  const sources=sourceIds.map(id=>report.sources?.[id]).filter(Boolean);
+  const links=sources.map(src=>'<li>'+sourceLink(src.url,src.title||src.name||'지표 근거')+' · '+esc(src.license||'이용조건 미기재')+' · 조회 '+esc(src.accessed||'미기재')+'</li>').join('');
+  const raw=s.assessment?.food_trace?.nutrients;
+  const rawText=raw?Object.entries(raw).map(([k,v])=>k+' '+v.value+' '+(v.unit||'단위 미확인')+' / '+(v.sample_state||s.assessment.food_trace.sample_state||'시료 상태 미기재')).join(' · '):'원값은 종별 지표 상세에서 확인';
+  const cons=s.assessment?.conservation_trace;
+  return '<article class="value-species"><h4>'+esc(s.label)+' <small>'+esc(s.name)+'</small></h4>'+
+    '<p>종 단위 근거 · AphiaID '+esc(s.aphiaID)+' · '+esc(stage)+'</p>'+
+    '<div class="value-axes">'+scores+'</div><p class="fine">원자료(점수 아님): '+esc(rawText)+
+    (cons?' · IUCN '+esc(cons.category||'등급 미기재')+' / 평가 '+esc(cons.assessment_date||cons.assessment_year||'일자 미기재'):'')+'</p>'+
+    '<p class="fine">평가 보고서 '+esc(report.generatedAt?.slice(0,10)||'미발행')+
+    ' · 출현 자료 '+esc(s.publishedAt?.slice(0,10)||data.collectedAt||'미기재')+
+    ' · 이용조건: '+esc(data.live?'GBIF 공개 기준 CC0·CC BY 4.0':'OBIS 추가 수집 CC BY-NC 포함')+'</p>'+
+    (links?'<details><summary>지표 근거 원문과 이용조건</summary><ul>'+links+'</ul></details>':'<p class="fine">이 종에 연결된 지표 근거 원문은 아직 없습니다.</p>')+
+    '<button type="button" class="text-button" data-value-species="'+esc(s.aphiaID)+'">종별 상세 근거 보기 →</button></article>';
+}
+function showValueCell(key){
+  selectedValueCell=key;
+  const group=valueCellGroups().get(key),panel=$('value-cell-detail');
+  if(!group){panel.innerHTML='<p>선택한 공개 격자가 현재 기간의 자료에 없습니다. 지도의 다른 격자를 선택하세요.</p>';return;}
+  const species=[...group.species.values()].sort((a,b)=>a.label.localeCompare(b.label,'ko'));
+  panel.innerHTML='<h3>선택한 공개 격자 · 종별 근거</h3><p>'+
+    esc(group.lat)+'–'+esc(group.lat+group.size)+'°N · '+esc(group.lon)+'–'+esc(group.lon+group.size)+'°E ('+esc(group.size)+'° 공개 범위)</p>'+
+    '<p class="fine">연결 종 '+species.length+'종 · 해당 공개 셀에 기록이 있는 종만 표시합니다. 지표는 종 전체에 대한 시범값이며 이 해역에서 측정한 값이 아닙니다. 셀의 합산 점수·우선순위는 산출하지 않았습니다.</p>'+
+    species.map(valueSpeciesCard).join('');
+  panel.querySelectorAll('[data-value-species]').forEach(button=>button.addEventListener('click',()=>{
+    selectSpecies(Number(button.dataset.valueSpecies));
+    const detail=$('detail');detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }));
+}
+function renderValueMap(){
+  const groups=valueCellGroups(),panel=$('value-cell-detail');
+  $('map-source').textContent=data.live?'활용 × 보전 · GBIF 공개 격자':'활용 × 보전 · OBIS 추가 수집 격자';
+  $('map-review-note').textContent='공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 빗금은 가치·보전 등급이 아닙니다.';
+  $('map-judgment').textContent='해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
+  $('map-count').textContent='—';$('map-cells').textContent=String(groups.size);$('map-years').textContent='—';
+  if(!groups.size){panel.innerHTML='<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';return;}
+  if(!selectedValueCell||!groups.has(selectedValueCell))selectedValueCell=groups.keys().next().value;
+  showValueCell(selectedValueCell);
+  if(!map)return;
+  for(const [key,g] of groups){
+    const active=key===selectedValueCell;
+    const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{
+      color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',
+      fillColor:'#b7c0ca',fillOpacity:active?.36:.25
+    }).addTo(overlay);
+    layer.bindTooltip('공개 '+g.size+'° 격자 · '+g.species.size+'종 · 해역 판단 보류');
+    layer.on('click',()=>{showValueCell(key);renderMap();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+  }
+  if(lastFitted!=='value-'+$('collection').value){
+    lastFitted='value-'+$('collection').value;
+    map.fitBounds([...groups.values()].flatMap(g=>[[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]]),
+      {padding:[35,35],maxZoom:7,animate:false});
+  }
+}
+function setMapMode(mode){
+  if(!['occurrence','value'].includes(mode))return;
+  mapMode=mode;lastFitted=null;
+  document.querySelectorAll('[data-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapMode===mode)));
+  $('occurrence-legend').hidden=mode==='value';$('value-legend').hidden=mode!=='value';
+  $('value-cell-detail').hidden=mode!=='value';$('period-filter').hidden=mode==='value'&&!data?.live;
+  $('effort-toggle').disabled=mode==='value';
+  renderMap();writeHash();
+}
+
 function renderMap() {
   renderPeriodFilter(selected);
-  renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
+  $('period-filter').hidden=mapMode==='value'&&!data?.live;
+  if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
+  if(map)map.invalidateSize(); // the detail pane can change the map column height
+  overlay?.clearLayers();dotCells=[];cellLayers=[];
+  if(mapMode==='value'){renderValueMap();return;}
   if(!map)return;
-  map.invalidateSize(); // the detail pane can change the map column height
-  overlay.clearLayers();dotCells=[];cellLayers=[];
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
   $('map-source').textContent=s.live?(s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위'):'추가 수집 자료(OBIS) · 1° 격자';
   setMapLegend(s.live,s);
@@ -991,11 +1086,11 @@ function registerTools(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
-  data=null;selected=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
+  data=null;selected=null;selectedValueCell=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
-  $('map-review-note').textContent='자료를 확인하는 중입니다.';
+  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';
   setMapLegend(live,null);
   $('data-label').textContent=live?'공개 기준 자료':'추가 수집 자료';
   $('score-disclaimer').textContent='자료를 불러오는 중입니다.';
