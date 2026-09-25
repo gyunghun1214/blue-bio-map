@@ -321,6 +321,27 @@
       "accessed": "2026-09-25",
       "terms": "NCBI public access; depositor records may carry their own terms",
       "license": "NCBI public access"
+    },
+    "mext_fooddb_2023": {
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "title": "Standard Tables of Food Composition in Japan, Eighth Revised Edition, 2023 supplement — dried tengusa",
+      "version": "2023 supplement, food item 09025; fooddb update 2026-06-09",
+      "url": "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
+      "accessed": "2026-09-25",
+      "terms": "MEXT fooddb requests citation of the 2023 composition tables for use in publications; reuse permission for database bulk extraction not established. Only small factual values and a link recorded.",
+      "license": "MEXT citation instructions; bulk reuse conditions unverified",
+      "license_url": "https://fooddb.mext.go.jp/"
+    },
+    "lee_2024_sargassum_nutrition": {
+      "provider": "Lee HI, Kim CB, Lee MK; Korean Society of Food Preservation",
+      "title": "Nutrient composition and taste properties of Sargassum fusiforme from the Wando region",
+      "version": "Food Science and Preservation 31(2):324–331 (2024)",
+      "doi": "10.11002/fsp.2024.31.2.324",
+      "url": "https://www.ekosfop.or.kr/archive/view_article_pubreader?doi=10.11002/fsp.2024.31.2.324",
+      "accessed": "2026-09-25",
+      "terms": "CC BY-NC 4.0; short factual summary and citation, no full text or figure redistribution",
+      "license": "CC BY-NC 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/"
     }
   },
   "nutrition_rows": [
@@ -602,6 +623,63 @@
       "reviewed": true,
       "used_for_score": false,
       "exclusion_reason": "Mineral wet/dry basis is inferred from methods but not explicit in Table 5; whole-to-edible fraction and aquaculture site-method are not supplied. No conversion or ranking applied."
+    },
+    {
+      "aphia_id": 372119,
+      "record_id": "MEXT:2023:09025",
+      "source_id": "mext_fooddb_2023",
+      "reported_scientific_name": "Gelidium elegans",
+      "taxon_link_evidence": "The MEXT item itself prints Gelidium elegans; candidate AphiaID 372119 is the separately confirmed WoRMS accepted name.",
+      "sample_state": "dried tengusa (素干し); moisture 15.2 g per 100 g",
+      "basis": "per 100 g edible portion of dried product, not fresh whole seaweed",
+      "sample_year": null,
+      "publication_year": 2023,
+      "values": {
+        "protein_g": {
+          "value": 16.1,
+          "unit": "g",
+          "derivation": "published table value; measurement/estimation provenance not shown on the item page"
+        },
+        "iron_mg": {
+          "value": 6,
+          "unit": "mg",
+          "derivation": "published table value; measurement/estimation provenance not shown on the item page"
+        },
+        "zinc_mg": {
+          "value": 3,
+          "unit": "mg",
+          "derivation": "published table value; measurement/estimation provenance not shown on the item page"
+        }
+      },
+      "refuse_pct_for_dried_product": 0,
+      "verification_status": "original official row and printed scientific name verified; analytical method and specimen collection year not shown",
+      "reviewed": false,
+      "used_for_score": false,
+      "exclusion_reason": "Dried product is not comparable with the frozen raw/fresh seaweed MFPI cohort; the product's zero refuse is not a verified yield of fresh Gelidium elegans. No wet-weight conversion or cohort reassignment."
+    },
+    {
+      "aphia_id": 494972,
+      "record_id": "10.11002/fsp.2024.31.2.324:Fig2:WD-A",
+      "source_id": "lee_2024_sargassum_nutrition",
+      "reported_scientific_name": "Sargassum fusiforme",
+      "taxon_link_evidence": "The original paper names the operating species Sargassum fusiforme (WoRMS accepted AphiaID 494972).",
+      "sample_state": "washed and freeze-dried before analysis",
+      "basis": "zinc mg/100 g of freeze-dried sample; not the raw edible portion",
+      "sample_year": 2022,
+      "publication_year": 2024,
+      "region": "Wando-eup, Wando, Republic of Korea (WD-A); collected December 2022",
+      "method": "microwave acid digestion and ICP-OES (paper §2.3)",
+      "values": {
+        "zinc_mg": {
+          "value": 0.68,
+          "unit": "mg",
+          "derivation": "original article text §3.2 and Fig. 2 (WD-A); n=3"
+        }
+      },
+      "verification_status": "original paper zinc value, species, region, collection date, method and dried state confirmed; fresh edible basis and compatible cohort not confirmed",
+      "reviewed": false,
+      "used_for_score": false,
+      "exclusion_reason": "The fixed MFPI seaweed cohort uses raw/fresh 100 g edible portion. This freeze-dried single-region zinc value cannot fill a blank in the RDA raw row or be ranked against fresh foods without a validated conversion and same-state cohort."
     }
   ],
   "bioactivity_cohorts": [],
@@ -1247,3 +1325,4 @@
     "comparable_cohort": "Fixed stratum with at least the minimum number of comparable compounds"
   }
 }
+
