@@ -9,6 +9,8 @@ const html=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8')
 assert.match(html,/id="map-symbol-label"/);
 assert.match(html,/id="map-legend-note"/);
 assert.match(html,/id="map-judgment"/);
+const css=fs.readFileSync(new URL('../dist/style.css',import.meta.url),'utf8');
+assert.match(css,/\.map-symbol\{width:4px;height:4px;/,'legend marks reflect the smaller schematic dots');
 
 const nodes=new Map();
 const popup=[], dots=[], rectangles=[];
@@ -115,6 +117,12 @@ assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=1.8),'zoom 5 do
 dots.length=0;context.mapStub.zoom=8;context.draw(species,'#123456');
 assert.ok(dots.every(d=>d.options.radius<=3),'zoom 8 dots never become oversized');
 context.mapStub.zoom=7;
+dots.length=0;
+vm.runInContext("basemap='satellite'",context);
+context.draw(species,'#123456');
+assert.ok(dots.every(d=>d.options.radius<=2.6&&d.options.interactive===false));
+assert.ok(dots.every(d=>d.options.color==='#ffffff'&&d.options.weight===.65),'light rim keeps small dots visible on satellite/depth backgrounds');
+vm.runInContext("basemap='basic'",context);
 // A-3: GBIF sensitive-species vocabulary; 4° cells say they are wider than GBIF's strictest level.
 vm.runInContext('globalThis.gen=generalizationNote;globalThis.pv=periodView;globalThis.csv=cellCsv;globalThis.eff=effortFor;globalThis.effLine=effortLine',context);
 assert.match(context.gen(1,true),/dataGeneralizations: 좌표를 1° 셀로 일반화, 좌표 이동·무작위화 없음/);
