@@ -1205,6 +1205,7 @@ async function start(){
 }
 $('collection').addEventListener('change',loadCollection);$('reload-data').addEventListener('click',loadCollection);
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
 for(const id of ['species-group','species-evidence'])$(id).addEventListener('change',()=>{if(data)renderList();});
 $('comparison-prev').addEventListener('click',()=>{comparisonPage=Math.max(0,comparisonPage-1);renderComparison();});

@@ -9,10 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ExpansionReleaseGate(unittest.TestCase):
     def test_safe_evidence_and_unique_species(self):
-        catalog = json.loads((ROOT / "dist/candidate-catalog.json").read_text())
+        catalog = json.loads((ROOT / "dist/candidate-catalog.json").read_text(encoding="utf-8"))
         evidence_path = ROOT / "dist/expansion-evidence.json"
-        data = json.loads(evidence_path.read_text())
-        snapshot = json.loads((ROOT / "dist/live-snapshot.json").read_text())
+        data = json.loads(evidence_path.read_text(encoding="utf-8"))
+        snapshot = json.loads((ROOT / "dist/live-snapshot.json").read_text(encoding="utf-8"))
         candidates = catalog["species"]
         audits = data["species"]
         self.assertEqual(len(candidates), 22)
@@ -21,10 +21,10 @@ class ExpansionReleaseGate(unittest.TestCase):
         self.assertFalse({s["aphiaID"] for s in candidates} &
                          {int(s["aphia_id"]) for s in snapshot["profiles"]})
         self.assertEqual(len(snapshot["profiles"]), 8)
-        raw = evidence_path.read_text()
+        raw = evidence_path.read_text(encoding="utf-8")
         self.assertIsNone(re.search(r'"(?:decimalLatitude|decimalLongitude|gbifID|occurrenceID|recordID|dataset_id_record)"\s*:', raw))
         release_path = ROOT / "dist/expansion-public-cells.json"
-        released_text = release_path.read_text()
+        released_text = release_path.read_text(encoding="utf-8")
         self.assertIsNone(re.search(r'"(?:decimalLatitude|decimalLongitude|gbifID|occurrenceID|recordID|dataset_id_record)"\s*:', released_text))
         release = json.loads(released_text)
         self.assertEqual(release["schemaVersion"], "candidate-public-cells-1")
@@ -34,6 +34,17 @@ class ExpansionReleaseGate(unittest.TestCase):
         self.assertEqual((cell["lat0"], cell["lon0"], cell["sizeDeg"]), (32, 128, 4))
         self.assertEqual((cell["yearStart"], cell["yearEnd"], cell["records"]), (1930, 1930, 1))
         self.assertEqual(cell["licenses"], ["CC0 1.0"])
+        # Catalog, public cells and audit must name the same released species.
+        released = {s["aphiaID"] for s in release["species"]}
+        self.assertEqual(released,
+                         {s["aphiaID"] for s in candidates if s["occurrenceStatus"] == "historical_public_cell"})
+        self.assertEqual(released, {s["aphiaID"] for s in audits if s["gbif"]["publicCellCount"] > 0})
+        anadara = next(s for s in candidates if s["aphiaID"] == 504357)
+        self.assertEqual(anadara["sensitivityStatus"],
+                         "reviewed_historical_4_degree_only_remaining_withheld")
+        self.assertIn("other 21 candidate species have no approved public cells", catalog["scope"])
+        for item in candidates:
+            self.assertTrue(all(value is None for value in item["scores"].values()))
         for item in audits:
             self.assertTrue(all(value is None for value in item["scores"].values()))
             g = item["gbif"]

@@ -106,13 +106,45 @@ for(const [id,expected] of Object.entries(stages)){
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
-const comparison={innerHTML:'',querySelectorAll(){return []}};
-ctx.document={getElementById(id){return id==='comparison'?comparison:null}};
+// Same elements as index.html: five species per page with a page label and prev/next buttons.
+const el=()=>({innerHTML:'',textContent:'',disabled:false,handlers:{},querySelectorAll(){return []},
+  addEventListener(type,fn){this.handlers[type]=fn},click(){this.handlers.click()}});
+const dom={comparison:el(),'comparison-page':el(),'comparison-prev':el(),'comparison-next':el()};
+ctx.document={getElementById:id=>dom[id]??null};
 vm.runInContext(app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
+// Wire the buttons with the app's own listener lines, not a copy of their logic.
+vm.runInContext(app.split('\n').filter(l=>/^\$\('comparison-(prev|next)'\)\.addEventListener/.test(l)).join('\n'),ctx);
 for(const item of next.species)Object.assign(item,{cells:[],noOccurrences:true,info:{nutrition:{status:'not_collected'},compounds:{status:'not_collected'},conservation:{status:'not_reviewed'}}});
+const headers=()=>[...dom.comparison.innerHTML.matchAll(/<th scope="col">([^<]+)<small>/g)].map(m=>m[1]);
+const labels=next.species.map(s=>s.label);
+assert.equal(labels.length,8);
 ctx.compare();
-assert.match(comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
-assert.match(comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
+assert.deepEqual(headers(),labels.slice(0,5),'first page shows species 1-5');
+assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종');
+assert.equal(dom['comparison-prev'].disabled,true);assert.equal(dom['comparison-next'].disabled,false);
+// Page 1 happens to hold both cohorts (미역 seaweed, 멍게 animal); assert each against its own column.
+assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
+assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
+assert.match(dom.comparison.innerHTML,/>42\.2<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>54\.2<small>/);
+assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/>10\.0<small>/);
+assert.doesNotMatch(dom.comparison.innerHTML,/65\.5/,'page 2 species must not leak into page 1');
+dom['comparison-next'].click();
+assert.deepEqual(headers(),labels.slice(5),'next page shows species 6-8');
+assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종');
+assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison-next'].disabled,true);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
+assert.match(dom.comparison.innerHTML,/>65\.5<small>검증 전 시범 지표/);
+assert.doesNotMatch(dom.comparison.innerHTML,/해조류 3개 식품/,'no seaweed MFPI on page 2');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>근거·보류 사유 보기/,'unscored species stay withheld, not zero');
+dom['comparison-next'].click();
+assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
+dom['comparison-prev'].click();
+assert.deepEqual(headers(),labels.slice(0,5),'previous page returns to species 1-5');
+assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종');
+dom['comparison-prev'].click();
+assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종','prev stops at the first page');
 
 const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
