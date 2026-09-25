@@ -18,6 +18,14 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 
 자료 재수집은 `python scripts/collect_data.py`, 공개용 집계와 의존 자산 준비는 `python scripts/prepare_snapshot.py` 순서다. 원자료는 제외된 `tmp/`에만 저장하고, 배포 파일에는 원좌표·연락처를 포함하지 않는다. 재수집 후 출처와 이용 조건, 날짜, 포함 기준을 다시 검토해야 한다. 현재 조회는 종별 최대 1,000건이며 완전한 전수 자료가 아니다.
 
+## 공개 배포 (2026-09-25)
+
+- 공개 주소: https://blue-bio-map.blue-bio-map.workers.dev (Cloudflare Workers, 누구나 열람)
+- 설정: 저장소 루트 `wrangler.jsonc`. `dist/`를 빌드 없이 그대로 제공한다.
+- 자동 배포: Cloudflare Workers Builds가 이 저장소에 연결되어 있으면 `main`에 병합할 때마다 `npx wrangler deploy`로 자동 배포된다. 코드를 고치고 PR을 병합하는 것으로 충분하다.
+- 수동 배포: 저장소 루트에서 `npx wrangler deploy` (Cloudflare 로그인 필요).
+- 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다.
+
 ## 자료 사용
 
 `dist/data.json`에 종별 인용·라이선스·조회 URL·처리 방법을 기록했다. CC-BY-NC 4.0 자료를 포함하므로 비상업 연구 시연 범위로 사용한다. 상업적 이용·재배포 범위 변경 시 출처별 조건을 재검토한다. OBIS의 서로 다른 데이터셋 간 관측 중복과 원 동정 정확성은 아직 검증하지 않았다.
