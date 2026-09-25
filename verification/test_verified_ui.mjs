@@ -42,6 +42,20 @@ assert.match(html,/구조 ID ✗/,'bioactivity chain step shown');
 html=ctx.renderScores(by(145721));
 assert.match(html,/공식 NE 범주나 낮은 점수가 아닙니다/);
 assert.match(html,/결과 0건/);
+html=ctx.renderScores(by(494972));
+for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문에서 미확인','Publisher terms'])
+  assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
+assert.equal(ctx.score(by(494972),'MBPI'),null);
+assert.equal(ctx.score(by(494972),'BBVI'),null);
+
+// The side-by-side table must name each incompatible MFPI cohort where a number appears.
+const comparison={innerHTML:'',querySelectorAll(){return []}};
+ctx.document={getElementById(id){return id==='comparison'?comparison:null}};
+vm.runInContext(app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
+for(const item of next.species)Object.assign(item,{cells:[],noOccurrences:true,info:{nutrition:{status:'not_collected'},compounds:{status:'not_collected'},conservation:{status:'not_reviewed'}}});
+ctx.compare();
+assert.match(comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
+assert.match(comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
 
 const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;

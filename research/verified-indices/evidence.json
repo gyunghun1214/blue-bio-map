@@ -183,6 +183,17 @@
       "terms": "CC BY 4.0 article; limited factual summary with citation",
       "license": "CC BY 4.0"
     },
+    "li_2022_saringosterol_acetate": {
+      "provider": "Li et al., Chemistry & Biodiversity (Wiley)",
+      "title": "Saringosterol Acetate Isolated from Sargassum fusiformis Induces Mitochondrial-Mediated Apoptosis in MCF-7 Breast Cancer Cells",
+      "version": "Published 2022-01-07; publisher primary abstract; PMID 34997687",
+      "record_id": "PMID:34997687",
+      "doi": "10.1002/cbdv.202100848",
+      "url": "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
+      "accessed": "2026-09-25",
+      "terms": "Publisher copyright/terms; original abstract facts and DOI only. Full methods and supplementary structures were not available from this access route.",
+      "license": "Publisher terms; brief factual summary only"
+    },
     "mytilus_2020_myticusin": {
       "provider": "Oh et al., Fish & Shellfish Immunology",
       "title": "Myticusin-beta antimicrobial peptide isolated from Mytilus coruscus",
@@ -821,6 +832,46 @@
         "origin": true,
         "structure_id": false,
         "quantitative_endpoint": false,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "reported_origin_scientific_name": "Sargassum fusiformis",
+      "origin_name_link_status": "provisional; paper spelling not itself a WoRMS accepted-name record; original isolation paper and specimen identification not fully checked",
+      "record_id": "PMID:34997687:saringosterol-acetate-MCF7",
+      "source_id": "li_2022_saringosterol_acetate",
+      "status": "partial_only",
+      "reviewed": false,
+      "material_kind": "named saringosterol acetate; original 2022 authors state isolated in their previous study, exact stereochemical identity unconfirmed",
+      "compound_id": null,
+      "inchi_key": null,
+      "endpoint": "MCF-7 cell viability IC50; phenotypic cellular endpoint, no isolated molecular target established",
+      "assay_type": "cell viability; assay method not exposed in the primary abstract",
+      "values": [
+        {
+          "material": "saringosterol acetate, paper-local sample",
+          "endpoint": "IC50",
+          "relation": "=",
+          "value": 63.16,
+          "uncertainty": 3.6,
+          "unit": "µg/mL"
+        }
+      ],
+      "test_system": "human MCF-7 breast cancer cells; exposure duration and detailed viability method not available in the checked abstract",
+      "sample_year": null,
+      "publication_year": 2022,
+      "missing": [
+        "Original species spelling S. fusiformis and prior isolation report require specimen-level taxonomic reconciliation with WoRMS S. fusiforme 494972",
+        "Full original isolation methods and exact stereochemistry / PubChem CID / InChIKey not established; non-acetylated saringosterol CID 14161394 is a different material",
+        "Exposure duration, detailed cell-viability protocol and a fixed like-for-like compound cohort missing"
+      ],
+      "exclusion_reason": "Paper-local IC50 is real but incomplete source-taxonomy and exact-molecule joins and no comparable assay cohort prohibit MBPI; cell viability is not proof of clinical efficacy.",
+      "chain": {
+        "origin": false,
+        "structure_id": false,
+        "quantitative_endpoint": true,
         "comparable_cohort": false
       }
     },

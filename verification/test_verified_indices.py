@@ -143,6 +143,22 @@ class VerifiedIndicesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.run_build(evidence=evidence)
 
+    def test_tots_cell_assay_stays_partial_without_exact_identity(self):
+        report = self.run_build()
+        row = species(report, 494972)
+        lead = next(x for x in row["bioactivity_partial"] if x["record_id"].startswith("PMID:34997687"))
+        self.assertEqual(lead["reported_origin_scientific_name"], "Sargassum fusiformis")
+        self.assertEqual((lead["values"][0]["value"], lead["values"][0]["uncertainty"], lead["values"][0]["unit"]),
+                         (63.16, 3.6, "µg/mL"))
+        self.assertEqual(lead["chain"], {"origin": False, "structure_id": False,
+                                         "quantitative_endpoint": True, "comparable_cohort": False})
+        self.assertIsNone(row["scores"]["MBPI"])
+        self.assertIsNone(row["scores"]["BBVI"])
+        unreviewed = copy.deepcopy(self.evidence)
+        next(x for x in unreviewed["bioactivity"] if x["record_id"] == lead["record_id"])["status"] = "approved_for_score"
+        with self.assertRaises(ValueError):
+            self.run_build(evidence=unreviewed)
+
     def test_unexplored_flag_never_copies_scores(self):
         synthetic_assays(self.evidence)
         report = self.run_build()
