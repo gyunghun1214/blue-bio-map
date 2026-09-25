@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "candidate-public-cells-1",
+  "reviewedOn": "2026-09-25",
+  "scope": "One 1930 preserved specimen, not current distribution, abundance or regional value.",
+  "species": [
+    {
+      "aphiaID": 504357,
+      "name": "Anadara broughtonii",
+      "sensitivity": "harvested shellfish; release only at 4-degree resolution",
+      "taxonomySource": "https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni",
+      "review": "Original Scapharca name linked by WoRMS; 1930 archived marine specimen with 6065 m uncertainty. Single CAS specimen and CC0 at record and dataset level; no other 1930 match in GBIF query. Historical evidence only.",
+      "cells": [
+        {
+          "lat0": 32,
+          "lon0": 128,
+          "sizeDeg": 4,
+          "resolutionM": 360000,
+          "period": "1930–1930",
+          "yearStart": 1930,
+          "yearEnd": 1930,
+          "records": 1,
+          "sites": 1,
+          "uncertaintyMissing": 0,
+          "seaAreas": [
+            "해역명 미확인"
+          ],
+          "countries": [
+            "Japan"
+          ],
+          "citations": [
+            {
+              "title": "CAS Invertebrate Zoology (IZ)",
+              "url": "https://www.gbif.org/dataset/44bcde48-ac71-46f2-bf73-24fc3c008b6c",
+              "doi": "10.15468/tiac99",
+              "licenses": [
+                "CC0 1.0"
+              ]
+            }
+          ],
+          "licenses": [
+            "CC0 1.0"
+          ]
+        }
+      ]
+    }
+  ]
+}
