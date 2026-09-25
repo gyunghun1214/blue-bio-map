@@ -510,6 +510,17 @@
       "url": "https://www.iucnredlist.org/species/176085/1428473",
       "version": "2014-1 record, current in Red List 2026-1"
     },
+    "lee_2024_sargassum_nutrition": {
+      "accessed": "2026-09-25",
+      "doi": "10.11002/fsp.2024.31.2.324",
+      "license": "CC BY-NC 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "provider": "Lee HI, Kim CB, Lee MK; Korean Society of Food Preservation",
+      "terms": "CC BY-NC 4.0; short factual summary and citation, no full text or figure redistribution",
+      "title": "Nutrient composition and taste properties of Sargassum fusiforme from the Wando region",
+      "url": "https://www.ekosfop.or.kr/archive/view_article_pubreader?doi=10.11002/fsp.2024.31.2.324",
+      "version": "Food Science and Preservation 31(2):324–331 (2024)"
+    },
     "li_2022_saringosterol_acetate": {
       "accessed": "2026-09-25",
       "doi": "10.1002/cbdv.202100848",
@@ -540,6 +551,16 @@
       "title": "Anticancer peptide purified from Crassostrea gigas hydrolysate",
       "url": "https://pubmed.ncbi.nlm.nih.gov/24199654/",
       "version": "2013 article / PubMed primary abstract"
+    },
+    "mext_fooddb_2023": {
+      "accessed": "2026-09-25",
+      "license": "MEXT citation instructions; bulk reuse conditions unverified",
+      "license_url": "https://fooddb.mext.go.jp/",
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "terms": "MEXT fooddb requests citation of the 2023 composition tables for use in publications; reuse permission for database bulk extraction not established. Only small factual values and a link recorded.",
+      "title": "Standard Tables of Food Composition in Japan, Eighth Revised Edition, 2023 supplement — dried tengusa",
+      "url": "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
+      "version": "2023 supplement, food item 09025; fooddb update 2026-06-09"
     },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",
@@ -2200,7 +2221,41 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": []
+        "supplemental_nutrition": [
+          {
+            "aphia_id": 372119,
+            "basis": "per 100 g edible portion of dried product, not fresh whole seaweed",
+            "exclusion_reason": "Dried product is not comparable with the frozen raw/fresh seaweed MFPI cohort; the product's zero refuse is not a verified yield of fresh Gelidium elegans. No wet-weight conversion or cohort reassignment.",
+            "publication_year": 2023,
+            "record_id": "MEXT:2023:09025",
+            "refuse_pct_for_dried_product": 0,
+            "reported_scientific_name": "Gelidium elegans",
+            "reviewed": false,
+            "sample_state": "dried tengusa (素干し); moisture 15.2 g per 100 g",
+            "sample_year": null,
+            "source_id": "mext_fooddb_2023",
+            "taxon_link_evidence": "The MEXT item itself prints Gelidium elegans; candidate AphiaID 372119 is the separately confirmed WoRMS accepted name.",
+            "used_for_score": false,
+            "values": {
+              "iron_mg": {
+                "derivation": "published table value; measurement/estimation provenance not shown on the item page",
+                "unit": "mg",
+                "value": 6
+              },
+              "protein_g": {
+                "derivation": "published table value; measurement/estimation provenance not shown on the item page",
+                "unit": "g",
+                "value": 16.1
+              },
+              "zinc_mg": {
+                "derivation": "published table value; measurement/estimation provenance not shown on the item page",
+                "unit": "mg",
+                "value": 3
+              }
+            },
+            "verification_status": "original official row and printed scientific name verified; analytical method and specimen collection year not shown"
+          }
+        ]
       },
       "information_sufficiency": {
         "MBPI": {
@@ -2258,6 +2313,7 @@
       "source_ids": [
         "gelidium_2018_extract",
         "iucn_redlist_search",
+        "mext_fooddb_2023",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -2399,7 +2455,32 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": []
+        "supplemental_nutrition": [
+          {
+            "aphia_id": 494972,
+            "basis": "zinc mg/100 g of freeze-dried sample; not the raw edible portion",
+            "exclusion_reason": "The fixed MFPI seaweed cohort uses raw/fresh 100 g edible portion. This freeze-dried single-region zinc value cannot fill a blank in the RDA raw row or be ranked against fresh foods without a validated conversion and same-state cohort.",
+            "method": "microwave acid digestion and ICP-OES (paper §2.3)",
+            "publication_year": 2024,
+            "record_id": "10.11002/fsp.2024.31.2.324:Fig2:WD-A",
+            "region": "Wando-eup, Wando, Republic of Korea (WD-A); collected December 2022",
+            "reported_scientific_name": "Sargassum fusiforme",
+            "reviewed": false,
+            "sample_state": "washed and freeze-dried before analysis",
+            "sample_year": 2022,
+            "source_id": "lee_2024_sargassum_nutrition",
+            "taxon_link_evidence": "The original paper names the operating species Sargassum fusiforme (WoRMS accepted AphiaID 494972).",
+            "used_for_score": false,
+            "values": {
+              "zinc_mg": {
+                "derivation": "original article text §3.2 and Fig. 2 (WD-A); n=3",
+                "unit": "mg",
+                "value": 0.68
+              }
+            },
+            "verification_status": "original paper zinc value, species, region, collection date, method and dried state confirmed; fresh edible basis and compatible cohort not confirmed"
+          }
+        ]
       },
       "information_sufficiency": {
         "MBPI": {
@@ -2460,6 +2541,7 @@
       },
       "source_ids": [
         "iucn_redlist_search",
+        "lee_2024_sargassum_nutrition",
         "li_2022_saringosterol_acetate",
         "rda_db_10_4",
         "sargassum_2024_fractions"

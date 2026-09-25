@@ -12,7 +12,9 @@ vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.attach=attachPilotAssessments;
   globalThis.score=pilotScore;
-  globalThis.renderScores=renderVerifiedIndices;`,ctx);
+  globalThis.renderScores=renderVerifiedIndices;
+  globalThis.coverage=evidenceCoverage;
+  globalThis.coverageBar=coverageBar;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -47,6 +49,61 @@ for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002
   assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
 assert.equal(ctx.score(by(494972),'MBPI'),null);
 assert.equal(ctx.score(by(494972),'BBVI'),null);
+
+// The old operational summary has no IUCN assessment count, despite a separately
+// reviewed MCUI: coverage must follow the accepted report, not the stale counter.
+const liveMeta={wormUrl:'https://www.marinespecies.org/',cells:[{sizeDeg:4}],
+  info:{conservation:{status:'withheld_insufficient_evidence',assessment_count:0},
+    nutrition:{status:'available',record_count:50},
+    compounds:{status:'available',compound_count:122,quantitative_bioactivity_count:500}}};
+for(const id of [241776,342067]){
+  Object.assign(by(id),liveMeta);
+  assert.equal(ctx.coverage(by(id)).checks[4].stage,'calculated',`MCUI for ${id} must count despite old summary`);
+}
+Object.assign(by(836033),liveMeta);
+assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
+assert.notEqual(ctx.coverage(by(836033)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
+assert.equal(ctx.coverage(by(836033)).checks[4].stage,'unavailable','IUCN search miss is not an assessment');
+assert.match(ctx.coverageBar(by(836033)),/종 연결/);
+assert.doesNotMatch(ctx.coverageBar(by(836033)),/3\/5|점수 3/);
+for(const id of [372119,494972]){
+  Object.assign(by(id),liveMeta);
+  assert.equal(ctx.score(by(id),'MFPI'),null,'dried values cannot enter fresh cohort');
+  assert.equal(ctx.coverage(by(id)).checks[2].stage,'linked','verified source taxon labels retain partial raw values');
+}
+html=ctx.renderScores(by(372119));
+for(const fact of ['MEXT:2023:09025','16.1 g','6 mg','3 mg','dried tengusa'])
+  assert.ok(html.includes(fact),`original MEXT dry value missing: ${fact}`);
+html=ctx.renderScores(by(494972));
+assert.match(html,/0.68 mg/);
+assert.match(html,/freeze-dried/);
+
+// Reconcile every published public profile with the frozen report, including the
+// two MCUI records whose operational inventory still reports zero assessments.
+const snapshot=JSON.parse(fs.readFileSync(new URL('../dist/live-snapshot.json',import.meta.url),'utf8'));
+const published={live:true,species:snapshot.profiles.map(p=>({
+  aphiaID:p.aphia_id,name:p.scientific_name,label:p.korean_name,live:true,
+  wormsUrl:p.public_citations.find(c=>c.id==='worms-taxonomy')?.url,
+  cells:snapshot.cells.filter(c=>c.species_id===p.species_id),
+  info:p.evidence_summary,noOccurrences:p.evidence_summary.occurrence_status==='not_collected',
+  recordCount:p.evidence_summary.record_count
+}))};
+await ctx.attach(published);
+const stages={
+  836033:['verified','linked','calculated','linked','unavailable'],
+  506159:['verified','linked','linked','linked','unavailable'],
+  494972:['verified','linked','linked','linked','unavailable'],
+  372119:['verified','linked','linked','found','unavailable'],
+  342067:['verified','linked','linked','linked','calculated'],
+  250680:['verified','linked','calculated','linked','unavailable'],
+  241776:['verified','linked','found','linked','calculated'],
+  145721:['verified','linked','calculated','found','unavailable']
+};
+for(const [id,expected] of Object.entries(stages)){
+  const s=published.species.find(x=>x.aphiaID===Number(id));
+  assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
+  assert.equal(ctx.score(s,'BBVI'),null);
+}
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
 const comparison={innerHTML:'',querySelectorAll(){return []}};
