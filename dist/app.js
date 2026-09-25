@@ -980,7 +980,8 @@ async function loadCollection(){
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
-    $('connection-state').textContent=live?'공개 기준 자료 연결됨 · '+data.species.length+'종':'추가 수집 자료 · '+data.species.length+'종';
+    $('connection-state').textContent=data.snapshotAt?`저장된 사본 · ${data.species.length}종 (${data.snapshotAt} 기준)`:live?'공개 기준 자료 연결됨 · '+data.species.length+'종':'추가 수집 자료 · '+data.species.length+'종';
+    if(data.snapshotAt){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
     toggleSimulation(false);
     if(startHash){const h=startHash;startHash=null;if(h.s)applyHash(h);}
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}

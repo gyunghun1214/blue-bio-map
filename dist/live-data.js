@@ -4,7 +4,14 @@ const publicApi = {
   url: 'https://mmsyrshjuaxdvegjhpdz.supabase.co',
   key: 'sb_publishable_IubFbkBLgmVelt1MjYndjg_dSAXbvjd'
 };
-async function loadPublishedProfiles() {
+// Saved copy of the same public rows (scripts/snapshot_live.py), used only when the API cannot be reached.
+async function loadSnapshot(error) {
+  const r=await fetch('live-snapshot.json').catch(()=>null);
+  const snap=r?.ok?await r.json().catch(()=>null):null;
+  if(!Array.isArray(snap?.profiles)||!Array.isArray(snap?.cells))throw error;
+  return {rows:snap.profiles,cellRows:snap.cells,snapshotAt:snap.fetched_at};
+}
+async function fetchPublishedRows() {
   const columns='species_id,scientific_name,korean_name,aphia_id,summary,production_summary,public_citations,evidence_summary,published_at';
   const response=await fetch(`${publicApi.url}/rest/v1/species_profiles?select=${columns}&order=aphia_id.desc`,{
     headers:{apikey:publicApi.key},cache:'no-store',signal:AbortSignal.timeout(15000)
@@ -20,6 +27,10 @@ async function loadPublishedProfiles() {
   if(!cellResponse.ok)throw new Error('지도 셀을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
   const cellRows=await cellResponse.json();
   if(!Array.isArray(cellRows))throw new Error('지도 셀 응답 형식을 확인해야 합니다.');
+  return {rows,cellRows};
+}
+async function loadPublishedProfiles() {
+  const {rows,cellRows,snapshotAt}=await fetchPublishedRows().catch(loadSnapshot);
   const licenseUrl={'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/','CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/'};
   const cellsOf=id=>cellRows.filter(c=>c.species_id===id).flatMap(c=>{
     const m=/^deg(1|4):N(-?\d+)E(-?\d+):/.exec(c.cell_code);if(!m)return [];
@@ -54,5 +65,5 @@ async function loadPublishedProfiles() {
       publishedAt:p.published_at,status:cellsOf(p.species_id).length?`공개 ${cellsOf(p.species_id)[0].sizeDeg}° 셀`:'조사 범위 표시',scores:null};
   });
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
-  return {live:true,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 해삼은 4°, 다른 종은 1°이며 원좌표는 공개하지 않습니다. 점수는 아직 발행하지 않았습니다.`};
+  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB에서 발행된 ${species.length}종의 요약을 읽습니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 해삼은 4°, 다른 종은 1°이며 원좌표는 공개하지 않습니다. 점수는 아직 발행하지 않았습니다.`};
 }

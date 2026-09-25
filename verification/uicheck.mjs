@@ -254,7 +254,8 @@ try{
   // ---------- Failure / empty / v1-only responses (fetch mocked in page) ----------
   await viewport(1440,1000,false);
   const mocks={
-    'api-error':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('x',{status:500})):o(u,...a))(window.fetch);",
+    'api-offline':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.reject(new TypeError('Failed to fetch')):o(u,...a))(window.fetch);",
+    'api-error':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('x',{status:500})):String(u).includes('live-snapshot.json')?Promise.resolve(new Response('',{status:404})):o(u,...a))(window.fetch);",
     'api-empty':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('[]',{status:200,headers:{'content-type':'application/json'}})):o(u,...a))(window.fetch);",
     'v1-only':"window.fetch=(o=>async(u,...a)=>{const r=await o(u,...a);if(!String(u).includes('/rest/v1/species_profiles'))return r;const rows=await r.json();for(const p of rows){const s=p.evidence_summary;for(const k of ['summary_version','nutrition','compounds','conservation','production','occurrence_status','map'])delete s[k];p.production_summary='생산·영양·생리활성·보전 근거 미검토. 점수 미산출.';}return new Response(JSON.stringify(rows),{status:200,headers:{'content-type':'application/json'}});})(window.fetch);"
   };
@@ -264,7 +265,8 @@ try{
     scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:src})).identifier;
     const s=await load();
     const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,list:document.getElementById('species-list').innerText,detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
-    if(name==='api-error')check('API failure: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',JSON.stringify(state));
+    if(name==='api-offline')check('API unreachable: saved public snapshot shown with its date and a notice',/^저장된 사본 · \d+종 \(\d{4}-\d{2}-\d{2} 기준\)$/.test(state.state)&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),JSON.stringify(state).slice(0,400));
+    if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',JSON.stringify(state));
     if(name==='api-empty')check('Empty API response: "아직 발행된 종이 없습니다"',state.list.includes('아직 발행된 종이 없습니다')&&state.state.includes('발행 자료 없음'),JSON.stringify(state));
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
     await evaluate("window.scrollTo(0,0);1");await shot(name,false);

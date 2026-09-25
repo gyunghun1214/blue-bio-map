@@ -98,3 +98,9 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 - **지도 읽는 법(ⓘ)**: 붉은 점, 점선 테두리, 회색 음영, 기간, 배경 지도 출처와 주의를 한 곳에 정리했다.
 
 아직 하지 못한 것: 국립해양생물자원관 MBRIS API 연동은 공공데이터포털 인증키가 필요하다. 실제 종의 MCUI·매트릭스 배치는 검수된 원자료가 필요하다([입력 감사](research/assessment-1/README.md) 참고).
+
+## 운영 DB 연결 실패 시 저장된 사본 (2026-09-25)
+
+운영 공개 API(Supabase)에 연결하지 못하면(네트워크 끊김·시간 초과·오류 응답) `dist/live-snapshot.json`의 공개 자료 사본을 대신 읽고, 상단에 "저장된 사본 · N종 (날짜 기준)"과 안내문을 띄운다. 빈 응답은 실패가 아니므로 사본으로 바꾸지 않는다. 사본은 공개 API가 주는 `species_profiles`·`species_map_cells` 열 그대로이며 원좌표·레코드 ID가 없다. 인터넷 없이 시연하려면 `python -m http.server 8765 --directory dist`로 로컬에서 연다(기본 배경 지도만 표시).
+
+사본 갱신: `python scripts/snapshot_live.py`. URL·키·열 목록은 `dist/live-data.js`에서 읽는다. 운영 자료를 새로 발행한 뒤와 배포 전에 다시 실행한다.
