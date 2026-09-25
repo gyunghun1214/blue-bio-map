@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "blue-bio-map",
+  "compatibility_date": "2026-09-21",
+  "observability": {
+    "enabled": true
+  },
+  // Static site only: every file in dist/ is served as-is. No Worker script.
+  "assets": {
+    "directory": "dist"
+  },
+  // Public URL: https://blue-bio-map.blue-bio-map.workers.dev
+  "workers_dev": true,
+  "preview_urls": false
+}
