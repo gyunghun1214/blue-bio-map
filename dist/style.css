@@ -54,3 +54,13 @@
 @media(max-width:620px){.value-grid,.value-axes{grid-template-columns:1fr}.map-mode button{flex:1}}
 
 #occurrence-legend[hidden],#value-legend[hidden],#value-cell-detail[hidden],#period-filter[hidden]{display:none!important}
+
+.species-filters{display:grid;gap:8px;margin:10px 0}
+.species-filters label{display:grid;gap:3px;font-size:12px;color:#526b7b}
+.species-filters select{width:100%;padding:6px;border:1px solid #b6c9d2;border-radius:5px;background:#fff;color:#102e45}
+.species-list{max-height:min(70vh,740px);overflow-y:auto;padding-right:4px}
+.comparison-controls{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:12px 0}
+.comparison-controls span:first-child{margin-right:auto;color:#526b7b;font-size:13px}
+.comparison-controls button{border:1px solid #a9c3d0;border-radius:6px;background:white;padding:6px 12px;color:#102e45}
+.comparison-controls button:disabled{opacity:.5;cursor:default}
+.catalog-alert{padding:8px 12px;background:#fff2d7;border-radius:6px}

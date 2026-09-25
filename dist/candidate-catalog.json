@@ -1,0 +1,469 @@
+{
+  "schemaVersion": "candidate-catalog-1",
+  "reviewedOn": "2026-09-25",
+  "scope": "Taxonomy and investigation candidates only. Occurrence, nutrition, assays and IUCN have not been retrieved or verified.",
+  "species": [
+    {
+      "label": "다시마",
+      "name": "Saccharina japonica",
+      "aphiaID": 377084,
+      "group": "해조류",
+      "reason": "양식·식품 원자료 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=377084",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "감태",
+      "name": "Ecklonia cava",
+      "aphiaID": 371986,
+      "group": "해조류",
+      "reason": "해조류 유래 성분·식품 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "가시파래",
+      "name": "Ulva prolifera",
+      "aphiaID": 234476,
+      "group": "해조류",
+      "reason": "해조류 식량·대량발생 영향 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "괭생이모자반",
+      "name": "Sargassum horneri",
+      "aphiaID": 494853,
+      "group": "해조류",
+      "reason": "해조류 유래 성분·자원화 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=494853",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "Gracilaria vermiculophylla",
+      "name": "Gracilaria vermiculophylla",
+      "aphiaID": 236157,
+      "group": "해조류",
+      "reason": "한천 원료·식품 가능성 조사 후보; 국명 일치 재검토",
+      "taxonNote": "국명은 이 학명에 대해 별도 검증 전. 상용명 꼬시래기류로 동일시하지 않음.",
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "청각",
+      "name": "Codium fragile",
+      "aphiaID": 145086,
+      "group": "해조류",
+      "reason": "식품 원료·종내 아종 구분 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=145086",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "바지락",
+      "name": "Ruditapes philippinarum",
+      "aphiaID": 231750,
+      "group": "패류",
+      "reason": "식품 영양·양식 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "전복(종 수준)",
+      "name": "Haliotis discus",
+      "aphiaID": 397082,
+      "group": "패류",
+      "reason": "종/아종 식별과 양식·보전 근거 조사 후보",
+      "taxonNote": "시판 전복의 아종·근연종 시료와 구분 필요.",
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=397082",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "큰가리비",
+      "name": "Mizuhopecten yessoensis",
+      "aphiaID": 393716,
+      "group": "패류",
+      "reason": "식품 영양·양식 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=393716",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "시카메굴",
+      "name": "Magallana sikamea",
+      "aphiaID": 836041,
+      "group": "패류",
+      "reason": "근연 굴 종과의 분리·식품 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836041",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "피조개",
+      "name": "Anadara broughtonii",
+      "aphiaID": 504357,
+      "group": "패류",
+      "reason": "이전 조합명과 연결해 영양·양식 조사 후보",
+      "taxonNote": "이전 조합 Scapharca broughtonii와 혼동 주의.",
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=504357",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "맛조개",
+      "name": "Sinonovacula constricta",
+      "aphiaID": 413600,
+      "group": "패류",
+      "reason": "식품 영양·양식 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "고등어",
+      "name": "Scomber japonicus",
+      "aphiaID": 127022,
+      "group": "어류",
+      "reason": "식량·어획·보전 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=127022",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "멸치",
+      "name": "Engraulis japonicus",
+      "aphiaID": 219984,
+      "group": "어류",
+      "reason": "식량·어획 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=219984",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "참조기",
+      "name": "Larimichthys polyactis",
+      "aphiaID": 281273,
+      "group": "어류",
+      "reason": "식량·어획·보전 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=281273",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "넙치",
+      "name": "Paralichthys olivaceus",
+      "aphiaID": 275816,
+      "group": "어류",
+      "reason": "식량·양식 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=275816",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "조피볼락",
+      "name": "Sebastes schlegelii",
+      "aphiaID": 274849,
+      "group": "어류",
+      "reason": "식량·양식·보전 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=274849",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "방어",
+      "name": "Seriola quinqueradiata",
+      "aphiaID": 276651,
+      "group": "어류",
+      "reason": "식량·양식 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=276651",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "대구",
+      "name": "Gadus macrocephalus",
+      "aphiaID": 254538,
+      "group": "어류",
+      "reason": "식량·어획 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=254538",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "꽃게",
+      "name": "Portunus trituberculatus",
+      "aphiaID": 1061762,
+      "group": "기타 무척추동물",
+      "reason": "식량·어획 근거 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1061762",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "참문어(동아시아 종)",
+      "name": "Octopus sinensis",
+      "aphiaID": 534443,
+      "group": "기타 무척추동물",
+      "reason": "Octopus vulgaris와 종 구별 후 식량 조사 후보",
+      "taxonNote": null,
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    },
+    {
+      "label": "갑오징어",
+      "name": "Acanthosepion esculentum",
+      "aphiaID": 1666974,
+      "group": "기타 무척추동물",
+      "reason": "이전 이름 Sepia esculenta 연계 후 식량 조사 후보",
+      "taxonNote": "동의어 Sepia esculenta에서 WoRMS 승인명으로 연결.",
+      "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1666974",
+      "taxonomyReviewedOn": "2026-09-25",
+      "occurrenceStatus": "not_collected",
+      "nutritionStatus": "not_reviewed",
+      "bioactivityStatus": "not_reviewed",
+      "conservationStatus": "not_reviewed",
+      "sensitivityStatus": "not_reviewed",
+      "scores": {
+        "MFPI": null,
+        "MBPI": null,
+        "MCUI": null,
+        "BBVI": null
+      }
+    }
+  ]
+}
