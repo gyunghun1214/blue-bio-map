@@ -24,6 +24,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 - 설정: 저장소 루트 `wrangler.jsonc`. `dist/`를 빌드 없이 그대로 제공한다.
 - 자동 배포: Cloudflare Workers Builds가 이 저장소에 연결되어 있으면 `main`에 병합할 때마다 `npx wrangler deploy`로 자동 배포된다. 코드를 고치고 PR을 병합하는 것으로 충분하다.
 - 수동 배포: 저장소 루트에서 `npx wrangler deploy` (Cloudflare 로그인 필요).
+- 응답 헤더: `dist/_headers`. `app.js`·`style.css`·`pilot.css`·`live-data.js`·`vendor/*`는 1년 `immutable` 캐시이므로, 내용을 바꾸면 `index.html`의 `?v=` 버전을 반드시 올린다(`vendor/`는 파일 이름을 바꾼다). `index.html`·`*.json`은 기본 캐시.
 - 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다.
 
 ## 자료 사용

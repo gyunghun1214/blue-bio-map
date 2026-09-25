@@ -293,11 +293,16 @@ function assessmentBlockers(s){
 function assessedForMatrix(s){
   return s.live&&['MFPI','MBPI','MCUI','BBVI'].every(k=>pilotScore(s,k)!==null);
 }
+// Computed values first, then the axes still on hold: "MFPI 65.5 · MBPI·MCUI 보류".
+function scoreSummary(s){
+  const keys=['MFPI','MBPI','MCUI'], held=keys.filter(k=>pilotScore(s,k)===null);
+  return [...keys.filter(k=>!held.includes(k)).map(k=>`${k} ${pilotScore(s,k).toFixed(1)}`),held.length?held.join('·')+' 보류':''].filter(Boolean).join(' · ');
+}
 function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
   list.innerHTML=data.species.map(s=>{
-    const ready=assessedForMatrix(s), missing=Object.keys(assessmentBlockers(s)).filter(k=>k!=='BBVI');
-    return `<button type="button" class="decision-card" data-aphia="${s.aphiaID}" aria-controls="decision-detail"><strong>${esc(s.label)}</strong><em>${esc(s.name)} · AphiaID ${s.aphiaID}</em><span>${ready?'검증 전 시범 지표 · 근거 확인':'산출 보류 · '+esc(missing.join(' · '))}</span></button>`;
+    const ready=assessedForMatrix(s);
+    return `<button type="button" class="decision-card" data-aphia="${s.aphiaID}" aria-controls="decision-detail"><strong>${esc(s.label)}</strong><em>${esc(s.name)} · AphiaID ${s.aphiaID}</em><span>${ready?'검증 전 시범 지표 · 근거 확인':esc(scoreSummary(s))}</span></button>`;
   }).join('');
   list.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)))));
   panel.textContent='종을 선택하면 산출 여부, 부족한 입력과 확인 가능한 원문을 볼 수 있습니다.';
@@ -803,7 +808,7 @@ function drawEffort(){
   effortLayer.clearLayers();
   if(!effortOn)return;
   const ink=basemap==='basic'?'#35566f':'#ffffff';
-  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:ink,fillOpacity:[0,.05,.1,.16,.23][effortBand(c.records)]}).addTo(effortLayer);
+  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:ink,fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
 }
 // Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
 function cellCsv(s){
@@ -945,12 +950,19 @@ function renderComparison(){
   }));
 }
 
+// The BBVI weight only matters once some species has both MFPI and MBPI.
+function updateWeightControl(){
+  const n=data.species.filter(s=>pilotScore(s,'BBVI')!==null).length;
+  $('bbvi-weight').disabled=!n;
+  $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · 두 축(MFPI·MBPI)이 모두 있는 종이 생기면 조절됩니다';
+}
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
-  $('matrix-note').textContent=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다.';
+  $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
+  $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
-  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)===null).join('·'))} 보류</small></button>`).join('')}</div>`:'';
+  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(scoreSummary(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
@@ -986,7 +998,7 @@ async function loadCollection(){
   $('map-review-note').textContent='자료를 확인하는 중입니다.';
   setMapLegend(live,null);
   $('data-label').textContent=live?'공개 기준 자료':'추가 수집 자료';
-  $('score-disclaimer').innerHTML='학명·출현 자료를 연결한 첫 버전입니다. 활용가치와 보전 점수는 <strong>아직 산출하지 않았습니다.</strong>';
+  $('score-disclaimer').textContent='자료를 불러오는 중입니다.';
   $('scope-bounds').textContent=live?'124–132°E · 33–38.7°N · 시험 범위':'122–136°E · 30–43°N · 추가 수집 범위';
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent=live?'공개 기준 자료 · 공개 1° 셀':'추가 수집 자료(OBIS) · 1° 격자';
@@ -997,13 +1009,13 @@ async function loadCollection(){
     if(request!==requestNumber)return;
     if(live)await attachPilotAssessments(next);
     if(request!==requestNumber)return;
-    if(next.species.some(s=>s.assessment))$('score-disclaimer').innerHTML='일부 종에 <strong>검증 전 시범 지표</strong>가 있습니다. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.';
+    $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?'일부 종에 <strong>검증 전 시범 지표</strong>가 있습니다. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
     $('connection-state').textContent=data.snapshotAt?`저장된 사본 · ${data.species.length}종 (${data.snapshotAt} 기준)`:live?'공개 기준 자료 연결됨 · '+data.species.length+'종':'추가 수집 자료 · '+data.species.length+'종';
     if(data.snapshotAt){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
-    toggleSimulation(false);
+    toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s)applyHash(h);}
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
 }
