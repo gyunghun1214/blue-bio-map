@@ -14,6 +14,19 @@ const recordLabel = s => s.noOccurrences ? '출현자료 미수집'
 // A paper or a search with no matching assessment never becomes a scored input.
 const coverageStages={unavailable:'미확인',found:'원자료 발견',linked:'종 연결',verified:'필수 근거 검수',calculated:'시범 산출'};
 function evidenceCoverage(s) {
+  if(s.catalog&&s.audit){
+    const a=s.audit;
+    return {checks:[
+      {name:'학명',stage:'verified',detail:'WoRMS 승인명과 AphiaID 연결. 별도 GBIF 동의어는 원문 확인 뒤 연결.'},
+      {name:'출현',stage:a.gbif.retrievedCount>0?'found':'unavailable',
+        detail:a.gbif.retrievedCount>0?'GBIF 시험 범위에서 조회했지만 공개 셀의 종·라이선스·민감도 검수 보류. OBIS 미조회.':'GBIF 시험 범위 검색 0건. OBIS 미조회. 종 부재가 아님.'},
+      {name:'영양',stage:a.nutrition.foodCode?'found':'unavailable',
+        detail:a.nutrition.foodCode?'RDA 식품명 후보만 발견. 종 수준 시료 연결은 검수 전.':'종에 연결할 식품 행 미확인.'},
+      {name:'생리활성',stage:'unavailable',detail:'기원종·화합물·정량 실험 원문 미검수.'},
+      {name:'보전',stage:a.iucn.record?.category?'found':'unavailable',
+        detail:a.iucn.record?.category?'IUCN 게시 체크리스트에 전 지구 평가 메타데이터 있음. 원평가 일자·기준 미검수.':'체크리스트 정확한 승인명 연결 미확인. 공식 NE 아님.'}
+    ]};
+  }
   const i=s.info||{}, a=s.assessment, f=a?.food_trace||{};
   const partial=a?.bioactivity_partial||[], conservation=a?.conservation_trace;
   const nutrition=i.nutrition||{}, compounds=i.compounds||{};
