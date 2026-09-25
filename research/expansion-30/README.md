@@ -35,7 +35,9 @@
 - *Octopus vulgaris*: 동아시아 문어 기록을 일괄 합치지 않는다. *Octopus sinensis*를 독립된 학명으로 선택한다.
 - *Sepia esculenta*: WoRMS 승인명 *Acanthosepion esculentum*으로 연결한다. 이전 이름은 검색 보조로만 사용한다.
 
-## 발행 게이트와 현재 상태
+> 후속 수집 결과: [22종 GBIF·IUCN·RDA 감사](audit-2026-09-25.md). 아래 초기 선정 당시의 상태표는 변경 전 기록이다.
+
+## 발행 게이트와 선정 당시 상태
 
 | 항목 | 현재 확인 | 발행 요건 |
 |---|---|---|

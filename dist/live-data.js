@@ -54,6 +54,16 @@ async function loadPublishedProfiles() {
       }
     }
   }catch{/* A failed optional catalog does not hide the original published records. */}
+  let auditById=new Map();
+  try{
+    const res=await fetch('expansion-evidence.json',{cache:'no-store'});
+    if(res.ok){
+      const evidence=await res.json();
+      if(evidence.schemaVersion==='expansion-evidence-1'&&Array.isArray(evidence.species)
+         &&evidence.species.length===22&&new Set(evidence.species.map(s=>s.aphiaID)).size===22)
+        auditById=new Map(evidence.species.map(s=>[s.aphiaID,s]));
+    }
+  }catch{/* Keep taxonomy catalog available if the independent audit file is unavailable. */}
   const species=rows.map(p=>{
     const info=p.evidence_summary||{};
     const citations=Array.isArray(p.public_citations)?p.public_citations:[];
@@ -82,17 +92,20 @@ async function loadPublishedProfiles() {
   for(const c of candidateRows){
     if(existing.has(c.aphiaID))continue;
     existing.add(c.aphiaID);
-    const info={summary_version:2,occurrence_status:'not_collected',record_count:null,
-      conservation:{status:'not_reviewed'},nutrition:{status:'not_collected'},
+    const audit=auditById.get(c.aphiaID);
+    // A GBIF search result is not a published occurrence cell or a verified score.
+    const info={summary_version:2,occurrence_status:audit?'review_pending':'not_collected',record_count:null,
+      conservation:{status:audit?.iucn?.record?.category?'checklist_record':'not_reviewed'},
+      nutrition:{status:audit?.nutrition?.foodCode?'candidate_row':'not_collected'},
       compounds:{status:'not_collected'},production:{},
-      limitations:'이 종의 출현·식량·생리활성·IUCN 원자료는 아직 수집·검수하지 않았습니다.'};
+      limitations:audit?'GBIF 기록은 시험 범위에서 조회했지만 공개 좌표·종 식별·민감도 검수가 완료되지 않았습니다. OBIS 종별 조회는 아직 실행하지 않았습니다.':'이 종의 출현·식량·생리활성·IUCN 원자료는 아직 수집·검수하지 않았습니다.'};
     species.push({aphiaID:c.aphiaID,label:c.label,name:c.name,group:c.group,live:true,catalog:true,
-      reason:c.reason,taxonNote:c.taxonNote,recordCount:null,yearStart:null,yearEnd:null,cells:[],
+      reason:c.reason,taxonNote:c.taxonNote,audit,recordCount:null,yearStart:null,yearEnd:null,cells:[],
       summary:'종 후보 선정 이유: '+c.reason+'. 한반도 주변 실제 출현 여부는 미확인.',
-      info,productionSummary:'학명 연결만 확인. 출현·식량·생리활성·보전 근거 미수집.',
+      info,productionSummary:audit?'GBIF 조회·IUCN 체크리스트·RDA 식품명 후보는 원자료 단계이며 공개/지표 검수 전.':'학명 연결만 확인. 출현·식량·생리활성·보전 근거 미수집.',
       sources:[],wormsUrl:c.wormsUrl,wormsCitation:'WoRMS 종 상세 · 학명 검토 '+c.taxonomyReviewedOn,
-      v2:true,noOccurrences:true,publishedAt:null,status:'분포 미수집',scores:null});
+      v2:true,noOccurrences:!audit,publishedAt:null,status:audit?'출현 조회 · 공개 보류':'분포 미수집',scores:null});
   }
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
-  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB ${rows.length}종과 분류 검토 후보 ${species.length-rows.length}종을 별도로 표시합니다. 후보 종의 분포·영양·보전 근거는 미수집입니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 후보 22종은 지도 셀이 없습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
+  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB ${rows.length}종과 분류 검토 후보 ${species.length-rows.length}종을 별도로 표시합니다. 후보 종은 GBIF 기록을 시험 조회했지만 분포 공개 검수를 마치지 않았습니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 지도는 공개 기준(CC0·CC BY, OBIS 해안선 규칙)을 통과한 GBIF 기록을 일반화한 셀로 표시합니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 후보 22종의 지도 셀은 민감도·출처·중복 검수 전이라 발행하지 않았습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
 }
