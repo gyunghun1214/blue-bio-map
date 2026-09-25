@@ -93,7 +93,8 @@ for(const x of [/공개 집계 기간 2015–2020/,/기록 연도 2015–2020/,/
 assert.equal(dots.length,64,'one 8x8 pattern for the 24-record total (20–99 band), drawn once');
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.equal(nodes.get('map-cells').textContent,1);
-assert.match(nodes.get('map-count').nextElementSibling.textContent,/기간별 합계/);
+assert.equal(nodes.get('map-count').textContent,'24','footer shows the same record total as the panel, not summed site counts');
+assert.equal(nodes.get('map-years').textContent,'2015–2023');
 context.banner(species);
 assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보류/);
 species.cells=[];
