@@ -1,14 +1,50 @@
 // Headless Chrome via DevTools protocol (no deps). Renders the local site, clicks species, screenshots, checks text.
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os';
-const OUT=process.argv[2]; fs.mkdirSync(OUT,{recursive:true});
+const OUT=process.argv[2];
+if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
+fs.mkdirSync(OUT,{recursive:true});
 const URL0='http://127.0.0.1:8765/';
-const chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--remote-debugging-port=9333','--no-first-run','--disable-gpu',
-  '--user-data-dir='+fs.mkdtempSync(path.join(os.tmpdir(),'cdp-')),'about:blank'],{stdio:'ignore'});
+const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
+const chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
+  '--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-let ws,id=0;const pending=new Map();
-async function connect(){for(let i=0;i<50;i++){try{const t=await (await fetch('http://127.0.0.1:9333/json')).json();const p=t.find(x=>x.type==='page');if(p)return p.webSocketDebuggerUrl;}catch{}await sleep(200);}throw Error('no chrome');}
-const send=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));});
+let ws,id=0,chromeFailure=null,chromeStderr='';const pending=new Map();
+const diagnostic=()=>`Chrome ${chromeFailure?.message||'still running'}; stderr: ${chromeStderr.slice(-1800)||'(empty)'}`;
+const failPending=error=>{for(const p of pending.values()){clearTimeout(p.timer);p.rej(error);}pending.clear();};
+chrome.stderr.on('data',chunk=>{chromeStderr=(chromeStderr+chunk.toString()).slice(-10000);});
+chrome.on('error',error=>{chromeFailure=error;failPending(error);});
+chrome.on('exit',(code,signal)=>{chromeFailure=Error(`exited ${code??signal}`);failPending(Error(diagnostic()));});
+async function connect(){
+  for(let i=0;i<75;i++){
+    if(chromeFailure)throw Error(diagnostic());
+    try{
+      const port=Number(fs.readFileSync(path.join(profile,'DevToolsActivePort'),'utf8').split(/\r?\n/)[0]);
+      if(Number.isInteger(port)&&port>0){
+        const t=await (await fetch(`http://127.0.0.1:${port}/json`,{signal:AbortSignal.timeout(2000)})).json();
+        const p=t.find(x=>x.type==='page');if(p)return p.webSocketDebuggerUrl;
+      }
+    }catch{}
+    await sleep(200);
+  }
+  throw Error(`Chrome DevTools endpoint timeout. ${diagnostic()}`);
+}
+const send=(method,params={})=>new Promise((res,rej)=>{
+  if(ws?.readyState!==WebSocket.OPEN)return rej(Error(`${method}: WebSocket unavailable. ${diagnostic()}`));
+  const i=++id,timer=setTimeout(()=>{pending.delete(i);rej(Error(`${method}: response timeout. ${diagnostic()}`));},10000);
+  pending.set(i,{res,rej,timer});
+  try{ws.send(JSON.stringify({id:i,method,params}));}catch(error){clearTimeout(timer);pending.delete(i);rej(error);}
+});
+async function openWebSocket(url){
+  ws=new WebSocket(url);
+  return new Promise((resolve,reject)=>{
+    const timer=setTimeout(()=>reject(Error(`WebSocket open timeout. ${diagnostic()}`)),5000);
+    ws.onopen=()=>{clearTimeout(timer);resolve();};
+    ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);clearTimeout(p.timer);m.error?p.rej(Error(m.error.message)):p.res(m.result);}};
+    ws.onerror=()=>{const error=Error(`WebSocket error. ${diagnostic()}`);clearTimeout(timer);failPending(error);reject(error);};
+    ws.onclose=()=>{const error=Error(`WebSocket closed. ${diagnostic()}`);clearTimeout(timer);failPending(error);reject(error);};
+  });
+}
 const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
 const results=[];
 const check=(name,ok,detail='')=>{results.push({name,status:ok?'PASS':'FAIL',detail});console.log(ok?'PASS':'FAIL',name,ok?'':detail);};
@@ -23,9 +59,7 @@ async function shot(name,full=true){
 const pick=aphia=>evaluate(`document.querySelector('[data-species="${aphia}"]').click();document.querySelectorAll('#detail details.detail-more').forEach(d=>d.open=true);document.getElementById('detail').innerText`);
 const detailEl=()=>evaluate(`document.getElementById('detail').scrollIntoView();1`);
 try{
-  ws=new WebSocket(await connect());
-  ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);m.error?p.rej(Error(m.error.message)):p.res(m.result);}};
-  await new Promise(r=>ws.onopen=r);
+  await openWebSocket(await connect());
   await send('Page.enable');await send('Runtime.enable');
   if(process.env.FIXTURE){
     const fx=fs.readFileSync(process.env.FIXTURE,'utf8');
@@ -293,5 +327,16 @@ try{
   }
   check('No uncaught page errors',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
-finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();chrome.kill();
+finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();
+  if(chrome.exitCode===null&&chrome.signalCode===null){
+    const stopped=new Promise(resolve=>chrome.once('exit',resolve));chrome.kill();
+    await Promise.race([stopped,sleep(3000)]);
+  }
+  try{
+    const root=fs.realpathSync(os.tmpdir()).toLowerCase()+path.sep;
+    const target=fs.realpathSync(profile).toLowerCase();
+    if(target.startsWith(root)&&path.basename(target).startsWith('cdp-'))
+      fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});
+  }catch(error){console.warn('Could not remove isolated Chrome profile:',error.message);}
+  process.exitCode=results.some(r=>r.status!=='PASS')?1:0;
   console.log(`${results.filter(r=>r.status==='PASS').length} PASS / ${results.filter(r=>r.status!=='PASS').length} FAIL`);}
