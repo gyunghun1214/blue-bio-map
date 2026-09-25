@@ -52,3 +52,5 @@
 .value-axis small{font-size:11px;line-height:1.45;margin-top:4px}
 .value-species details{margin:8px 0}.value-species li{overflow-wrap:anywhere}
 @media(max-width:620px){.value-grid,.value-axes{grid-template-columns:1fr}.map-mode button{flex:1}}
+
+#occurrence-legend[hidden],#value-legend[hidden],#value-cell-detail[hidden],#period-filter[hidden]{display:none!important}
