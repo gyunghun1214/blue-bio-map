@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null;
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0;
 const VERIFIED = ['verified-pilot-2'];
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
@@ -492,9 +492,12 @@ function setView(view) {
 
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
-  const matches=data.species.filter(s=>[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
+  const group=$('species-group').value, evidence=$('species-evidence').value;
+  const matches=data.species.filter(s=>(group==='all'||s.group===group)
+    &&(evidence==='all'||(evidence==='published'?!!s.cells.length:!!s.catalog))
+    &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   $('species-count').textContent=`${matches.length}종`;
-  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.live?(s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:'없음'):`${recordLabel(s)} · ${s.cells.length}셀`}</strong></span></button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
+  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.live?(s.catalog?'미수집':s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:'공개 셀 없음'):`${recordLabel(s)} · ${s.cells.length}셀`}</strong></span></button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species))));
 }
 
@@ -513,11 +516,12 @@ function summaryCard(s){
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;periodFilter='all';renderList();renderDetail();renderMap();writeHash();
+  selected=item;comparisonPage=Math.floor(data.species.indexOf(item)/5);periodFilter='all';renderList();renderDetail();renderMap();renderComparison();writeHash();
 }
 
 function renderDetail() {
   const s=selected;
+  if(s.catalog)return renderCandidateDetail(s);
   if(s.live)return renderLiveDetail(s);
   const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','산출 보류 · 영양 원값 검증 필요',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI',IUCN_HISTORICAL[s.aphiaID]?(IUCN_HISTORICAL[s.aphiaID].current?'산출 보류 · IUCN 2026 EN 원문 검수 전':'산출 보류 · IUCN 역사적 평가만 확인'):'평가 미조회','']];
   $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div>${summaryCard(s)}<h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${iucnHistoricalRows(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도의 붉은 점은 선별된 출현기록의 1° 격자 집계를 나타낸 도식적 표시입니다. 실제 발견 좌표나 기록 1건이 아닙니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
@@ -563,13 +567,27 @@ let otherCollection=[];
 function mapSummaryHtml(s){
   const cells=s.cells||[];
   const scope=periodFilter==='all'||!cells.length?'전체 기간':`선택 기간 ${periodFilter}`;
-  if(!cells.length)return `<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
+  if(!cells.length)return s.catalog?`<h3>지도에 표시한 기록</h3>${row('분포','미수집 · 위치 정보 없음','pending')}`:`<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
   const other=otherCollection.find(x=>x.aphiaID===s.aphiaID);
   const comparison=other?.cells?.length
     ? `<p class="detail-context">같은 종의 별도 OBIS 수집은 ${other.cells.length}셀입니다. 지역·기간·선별 기준이 달라 두 지도는 합산하지 않습니다.</p>`
     : '';
   return `<h3>지도에 표시한 기록 <span class="fine">${esc(scope)}</span></h3>${row('지도 표시 기록',`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}개 격자(${cells[0].sizeDeg}°)`)}${row('기록 연도',cellYears(s))}${row('출처',s.info?.map?.source||'출처 미기재')}${comparison}`;
 }
+function renderCandidateDetail(s){
+  const details=[['분포·지도','미수집 · 공개 셀 없음'],['식량·영양','원값·시료 상태·가식부·양식 근거 미검수'],['생리활성','기원종·화합물·assay 연결 미검수'],['보전','IUCN 원평가·현행 상태 미검수'],['MFPI / MBPI / MCUI / BBVI','전부 산출 보류']];
+  $('detail').innerHTML='<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">분포 미수집</span></div>'+
+    '<h2>'+esc(s.label)+'</h2><p class="latin">'+esc(s.name)+'</p><p>AphiaID '+esc(s.aphiaID)+' · '+esc(s.group)+'</p></div>'+
+    '<div class="detail-summary"><h3>선정 이유</h3><p>'+esc(s.reason)+'</p>'+
+    (s.taxonNote?'<p class="fine">'+esc(s.taxonNote)+'</p>':'')+
+    '<p class="detail-limit">한국 주변 출현 여부, 식품 적합성 및 보전 필요성은 아직 평가하지 않았습니다. 지도에 셀이 없는 것은 생물이 없다는 뜻이 아닙니다.</p></div>'+
+    '<div class="detail-more-list"><h3>자료와 산출 상태</h3>'+
+    details.map(([label,status])=>row(label,status,'pending')).join('')+
+    '<p class="fine">정보충분도: 학명 연결만 확인 · 그 밖의 근거 미수집. 미확인은 0점이 아닙니다.</p>'+
+    '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
+    '<p class="fine">분포를 발행하려면 종 식별·이용조건·좌표 품질·민감도 검수 후 공개 격자만 게시해야 합니다.</p></div>';
+}
+
 function renderLiveDetail(s) {
   const i=s.info, cells=s.cells||[];
   const separate=!isMapRun(s)&&Number.isSafeInteger(s.recordCount)
@@ -906,6 +924,7 @@ function renderValueMap(){
   if(!groups.size){panel.innerHTML='<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';return;}
   if(!selectedValueCell||!groups.has(selectedValueCell))selectedValueCell=groups.keys().next().value;
   showValueCell(selectedValueCell);
+  if(selected?.catalog)$('value-cell-detail').insertAdjacentHTML('afterbegin','<p class="catalog-alert">선택한 종은 출현기록을 아직 수집하지 않아 아래 격자와 연결되지 않습니다. 격자를 누르면 다른 종의 근거를 볼 수 있습니다.</p>');
   if(!map)return;
   for(const [key,g] of groups){
     const active=key===selectedValueCell;
@@ -938,14 +957,18 @@ function renderMap() {
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
   if(map)map.invalidateSize(); // the detail pane can change the map column height
   overlay?.clearLayers();dotCells=[];cellLayers=[];
-  if(mapMode==='value'){renderValueMap();return;}
+  if(mapMode==='value'){effortLayer?.clearLayers();renderValueMap();return;}
   if(!map)return;
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
-  $('map-source').textContent=s.live?(s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위'):'추가 수집 자료(OBIS) · 1° 격자';
+  $('map-source').textContent=s.catalog?'조사 후보 · 분포 미수집':s.live?(s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위'):'추가 수집 자료(OBIS) · 1° 격자';
   setMapLegend(s.live,s);
-  drawEffort();
+  if(s.catalog){$('map-symbol-label').textContent='분포 미수집 · 공개 셀 없음';$('map-legend-note').textContent='빈 지도는 해당 종이 이 해역에 없다는 뜻이 아닙니다.';}
+  $('effort-toggle').disabled=!!s.catalog;
+  if(s.catalog)effortLayer?.clearLayers();else drawEffort();
   if(s.live&&$('detail-map-summary'))$('detail-map-summary').innerHTML=mapSummaryHtml(periodView(s));
   if(s.live&&s.cells.length)return renderCellMap(periodView(s),color);
+  if(s.catalog){$('map-judgment').textContent='종별 점수와 해역 판단 모두 보류 · 출현기록 미수집';$('map-review-note').textContent='이 종의 분포는 아직 조회·검수하지 않았습니다. 지도에 표시할 공개 격자가 없습니다.';
+    $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent=!s.live?'추가 수집한 OBIS 선별 출현기록을 1° 격자의 붉은 점 무늬로 표시합니다. 공개 기준 적용 자료와 합산하지 않습니다. 붉은 점은 실제 발견 좌표나 기록 1건이 아니며, 기록 수와 점은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
   if(s.live){
@@ -1018,6 +1041,9 @@ function initMap(geography){
 }
 
 function renderComparison(){
+  const compared=data.species.slice(comparisonPage*5,comparisonPage*5+5);
+  $('comparison-page').textContent=`${comparisonPage+1} / ${Math.ceil(data.species.length/5)} · ${comparisonPage*5+1}–${comparisonPage*5+compared.length}종`;
+  $('comparison-prev').disabled=comparisonPage===0;$('comparison-next').disabled=(comparisonPage+1)*5>=data.species.length;
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
@@ -1037,7 +1063,7 @@ function renderComparison(){
     ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
     ['자료 연결 현황',s=>s.live?`<span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}<small>발견·종 연결·필수 근거·시범 산출을 구분 · 점수 아님</small>`:pending('별도 수집 자료 · 지표 연결 판정 없음')],
     ['통합점수 · BBVI',s=>axisCell(s,'BBVI')||'<strong>산출 보류</strong>']];
-  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide)} 각 지표 칸을 누르면 원값·원문·보류 사유가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${data.species.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${data.species.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide)} 각 지표 칸을 누르면 원값·원문·보류 사유가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${compared.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${compared.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>{
     selectSpecies(Number(button.dataset.scoreAphia));setView('explore');
     const disclosure=$('detail').querySelector(`[data-axis="${button.dataset.scoreAxis}"]`);
@@ -1086,7 +1112,7 @@ function registerTools(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
-  data=null;selected=null;selectedValueCell=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
+  data=null;selected=null;selectedValueCell=null;comparisonPage=0;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
@@ -1125,6 +1151,9 @@ async function start(){
 $('collection').addEventListener('change',loadCollection);$('reload-data').addEventListener('click',loadCollection);
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
+for(const id of ['species-group','species-evidence'])$(id).addEventListener('change',()=>{if(data)renderList();});
+$('comparison-prev').addEventListener('click',()=>{comparisonPage=Math.max(0,comparisonPage-1);renderComparison();});
+$('comparison-next').addEventListener('click',()=>{comparisonPage=Math.min(Math.ceil(data.species.length/5)-1,comparisonPage+1);renderComparison();});
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
 $('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').textContent=m;};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
