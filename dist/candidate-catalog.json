@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidate-catalog-1",
   "reviewedOn": "2026-09-25",
-  "scope": "Taxonomy candidates with source audit states. GBIF records queried; none approved for public cells; OBIS and numeric indicators pending.",
+  "scope": "Taxonomy candidates and GBIF audit states. One reviewed 1930 Anadara specimen is released as a historical 4-degree cell; the other 21 candidate species have no approved public cells. OBIS and numeric indicators remain pending.",
   "species": [
     {
       "label": "다시마",
@@ -222,11 +222,11 @@
       "taxonNote": "이전 조합 Scapharca broughtonii와 혼동 주의.",
       "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=504357",
       "taxonomyReviewedOn": "2026-09-25",
-      "occurrenceStatus": "gbif_query_review_pending",
+      "occurrenceStatus": "historical_public_cell",
       "nutritionStatus": "food_name_candidate_unverified",
       "bioactivityStatus": "not_reviewed",
       "conservationStatus": "not_reviewed",
-      "sensitivityStatus": "withheld_pending_review",
+      "sensitivityStatus": "reviewed_historical_4_degree_only_remaining_withheld",
       "scores": {
         "MFPI": null,
         "MBPI": null,
