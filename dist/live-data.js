@@ -124,5 +124,7 @@ async function loadPublishedProfiles() {
       v2:true,noOccurrences:!audit,publishedAt:publicCells.length?'2026-09-25':null,status:publicCells.length?'역사 표본 1건 · 공개 4° 셀':audit?(audit.gbif.retrievedCount===0?'GBIF 검색 0건 · OBIS 미조회':'출현 조회 · 공개 보류'):'분포 미수집',scores:null});
   }
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
-  return {live:true,snapshotAt,species,collectedAt:latest,notes:`운영 DB ${rows.length}종과 분류 검토 후보 ${species.length-rows.length}종을 별도로 표시합니다. 후보 종의 GBIF 기록을 시험 조회했고 ${historicalCell?'피조개 1930년 표본 1건만 4° 역사적 출현 셀로 발행했습니다. 나머지 21종의 분포 공개와':'피조개 표본의 공개 파일 확인 실패로 신규 종의 분포 공개와'} 22종 모두의 신규 지표는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
+  // The only place the two groups are counted; status texts read these values and never add them into one "N종 연결".
+  const publishedCount=rows.length, candidateCount=species.length-rows.length;
+  return {live:true,snapshotAt,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. 후보 종의 GBIF 기록을 시험 조회했고 ${historicalCell?'피조개 1930년 표본 1건만 4° 역사적 출현 셀로 발행했습니다. 나머지 21종의 분포 공개와':'피조개 표본의 공개 파일 확인 실패로 신규 종의 분포 공개와'} 22종 모두의 신규 지표는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 시험 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
 }
