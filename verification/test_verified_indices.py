@@ -98,6 +98,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertIsNone(squirt["scores"]["MFPI"])
         self.assertEqual(squirt["withheld_reasons"]["MFPI"], "aquaculture_method_unverified")
 
+    def test_rejected_refuse_row_withholds_mfpi(self):
+        yellowtail = next(s for s in self.run_build()["candidate_species"] if s["aphia_id"] == 276651)
+        self.assertEqual(yellowtail["food_trace"]["edible_fraction"]["source_id"], "mext_sfct_2020")  # fillet row refuse 0 rejected
+        self.assertEqual(yellowtail["scores"]["MFPI"], 56.3)
+        evidence = copy.deepcopy(self.evidence)
+        evidence["rda_refuse_not_accepted"].append({**evidence["rda_refuse_not_accepted"][0], "food_item_id": "K4130000000a"})
+        clam = next(s for s in self.run_build(evidence=evidence)["candidate_species"] if s["aphia_id"] == 231750)
+        self.assertIsNone(clam["scores"]["MFPI"])
+        self.assertEqual(clam["withheld_reasons"]["MFPI"], "species_edible_yield_unverified")
+        row = next(r for r in clam["food_trace"]["observed_rows"] if r["linked"])
+        self.assertEqual((row["refuse_pct"], row["refuse_not_accepted"]["refuse_pct"]), (None, 68.0))
+        del evidence["rda_refuse_not_accepted"][0]["checked_on"]
+        with self.assertRaises(ValueError):
+            self.run_build(evidence=evidence)
+
     def test_iucn_states_are_distinct(self):
         report = self.run_build()
         self.assertEqual(species(report, 145721)["withheld_reasons"]["MCUI"], "not_in_red_list")

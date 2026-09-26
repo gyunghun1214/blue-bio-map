@@ -3859,27 +3859,29 @@
         "cohort_species": 25,
         "components": {
           "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 10.0,
+          "edible_fraction_contribution": 6.0,
           "evidence_grade_deduction": 7.12,
           "nutrient_value_contribution": 47.47
         },
         "cross_checks": [],
         "edible_fraction": {
+          "aphia_id": 276651,
           "kind": "edible_fraction",
-          "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
-          "method": "1 - refuse (0%) / 100 from the same RDA row",
-          "record_id": "RDA-10.4:K0830011130a:refuse",
-          "region": "Korea (RDA national table)",
+          "limitations": "Official table value for preparing the whole farmed young fish (head, viscera, bones and fins discarded); not a measured yield of Korean farmed fish. RDA rows K0830000000a ('09, refuse 41%) and K0830021130a ('82, wild young, refuse 45%) are different samples and are not used.",
+          "method": "1 - whole-fish refuse (40%) / 100 from the remark of MEXT 2020 food 10243, the table RDA row K0830011130a is borrowed from; that row's refuse 0 describes a fillet (切り身) and is not used",
+          "publication_year": 2020,
+          "record_id": "MEXT-2020:10243:remarks:whole-fish-refuse",
+          "region": "Japan (MEXT national table)",
           "reviewed": true,
-          "sample_period": "JAPAN('20)",
-          "source_id": "rda_db_10_4",
+          "sample_period": "2020 table (8th revision)",
+          "source_id": "mext_sfct_2020",
           "unit": "edible share of food as purchased",
-          "value": 1.0
+          "value": 0.6
         },
         "english_name": "Yellowtail, Farm-raised, Young, Raw",
         "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
         "grade_sensitivity": {
-          "all_grade_factors_1": 67.5
+          "all_grade_factors_1": 63.5
         },
         "method_version": "verified-pilot-2",
         "nutrients": {
@@ -4299,7 +4301,18 @@
             "link_evidence": "방어 = Seriola quinqueradiata (Japanese amberjack/yellowtail); farmed young-fish row borrowed from the Japanese table JAPAN('20).",
             "linked": true,
             "missing": [],
-            "refuse_pct": 0.0,
+            "refuse_not_accepted": {
+              "checked_on": "2026-09-26",
+              "food_item_id": "K0830011130a",
+              "quote": "切り身 (魚体全体から調理する場合、廃棄率： 40 %、廃棄部位： 頭部、内臓、骨、ひれ等)",
+              "reason": "The row is borrowed from the Japanese table (JAPAN('20)). MEXT 2020 food 10243 (はまち 養殖 皮つき 生) has the same refuse, water, protein, iron and zinc values, and its remark says the sample is a fillet (切り身). Refuse 0 therefore describes a trimmed fillet, not the fish as purchased, and is not edible-fraction evidence.",
+              "record_id": "MEXT-2020:10243:remarks",
+              "refuse_pct": 0.0,
+              "reported_food_name": "방어, 양식, 어린것, 생것",
+              "reviewed": true,
+              "source_id": "mext_sfct_2020"
+            },
+            "refuse_pct": null,
             "reported_food_name": "방어, 양식, 어린것, 생것",
             "row_source": "JAPAN('20)",
             "values": {
@@ -4339,18 +4352,18 @@
           "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
-        "unrounded": 60.346666666666664,
+        "unrounded": 56.346666666666664,
         "weight_sensitivity": [
           {
             "aquaculture_weight": 0.15,
             "edible_fraction_weight": 0.15,
-            "mfpi": 65.3,
+            "mfpi": 59.3,
             "nutrient_weight": 0.7
           },
           {
             "aquaculture_weight": 0.05,
             "edible_fraction_weight": 0.05,
-            "mfpi": 55.4,
+            "mfpi": 53.4,
             "nutrient_weight": 0.9
           }
         ],
@@ -4411,19 +4424,20 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": 10.0,
-        "MFPI": 60.3
+        "MFPI": 56.3
       },
       "sensitivity": {
         "food_weights": {}
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": null,
-        "food_only_MFPI": 60.3
+        "food_only_MFPI": 56.3
       },
       "source_ids": [
         "fao_casp_amberjack",
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
+        "mext_sfct_2020",
         "rda_db_10_4"
       ],
       "withheld_reasons": {
@@ -5664,6 +5678,17 @@
       "title": "Standard Tables of Food Composition in Japan, Eighth Revised Edition, 2023 supplement — dried tengusa",
       "url": "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
       "version": "2023 supplement, food item 09025; fooddb update 2026-06-09"
+    },
+    "mext_sfct_2020": {
+      "accessed": "2026-09-26",
+      "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+      "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20). One remark and one refuse value are quoted with attribution; no table data are redistributed.",
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "terms": "MEXT website terms of use, compliant with the Government Standard Terms of Use 2.0; no table-specific terms were shown on the download page (2026-09-26)",
+      "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
+      "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
+      "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d"
     },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",

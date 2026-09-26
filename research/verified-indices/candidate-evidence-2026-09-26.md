@@ -25,7 +25,7 @@
 | 참조기 *Larimichthys polyactis* | 281273 | 보류 | **10.0** (LC) | 보류 | KOSIS 어류양식동향 입식량 "-" → `aquaculture_method_unverified` |
 | 넙치 *Paralichthys olivaceus* | 275816 | 보류 | 보류 | 보류 | KOSIS는 "넙치류" 묶음값뿐 → `aquaculture_method_unverified` · IUCN 0건 |
 | 조피볼락 *Sebastes schlegelii* | 274849 | **42.9** | 보류 | 보류 | IUCN 0건 |
-| 방어 *Seriola quinqueradiata* | 276651 | **60.3** | **10.0** (LC) | 보류 | — (한계: 아래) |
+| 방어 *Seriola quinqueradiata* | 276651 | **56.3** | **10.0** (LC) | 보류 | — (가식부: 아래) |
 | 대구 *Gadus macrocephalus* | 254538 | 보류 | 보류 | 보류 | RDA 아연 결측 · IUCN 0건 |
 | 꽃게 *Portunus trituberculatus* | 1061762 | 보류 | 보류 | 보류 | 공식 양식 근거 미확인 · IUCN 0건 |
 | 참문어 *Octopus sinensis* | 534443 | 보류 | 보류 | 보류 | RDA "참문어" 영문 *O. vulgaris* 표기, 종 미특정 · IUCN 0건 |
@@ -58,7 +58,7 @@ BBVI는 22종 모두 보류(MBPI 없음).
 - 양식 근거(`food_support`):
   - 조피볼락·방어: KOSIS 어류양식동향조사 DT_1EZ0008 입식량 2026년 1/4분기 잠정. 방어는 FAO 양식 개요(CASP)도 있음.
   - 바지락·큰가리비: FAO CASP 종 수준 양식 기술 개요.
-- 방어 한계: RDA 행이 "양식, 어린것, JAPAN('20)"이고 폐기율 0이라 가식부 1.0으로 계산된다. 원자료 폐기율의 근거를 온라인에서 확인하지 못했다. 점수는 규칙대로 산출하되 이 한계를 함께 적는다.
+- 방어 가식부 (검수 반영, 2026-09-26): RDA 행 "양식, 어린것, JAPAN('20)"은 일본 원표 10243 はまち 養殖 皮つき 生과 값이 같고, 원표 비고가 "切り身(토막살)"이다. 폐기율 0은 토막살 기준이라 가식부 근거로 인정하지 않는다(`rda_refuse_not_accepted`). 같은 비고의 통째 손질 폐기율 40%(머리·내장·뼈·지느러미)로 가식부 0.60을 쓴다. MFPI 60.3 → 56.3. 7종 점검표는 [nutrition-audit.md](nutrition-audit.md) 맨 위.
 - 연결하지 않은 행: 고등어·다시마·꼬시래기·참문어·갑오징어 일반명 행. 김 L0110과 파래 L0270도 일반명 행이다. 과(科)·속(屬) 수준 값은 종으로 옮기지 않았다.
 
 ## MBPI 탐색 범위
