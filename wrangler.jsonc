@@ -9,6 +9,8 @@
   "assets": {
     "directory": "dist"
   },
+  // Explicit opt-in required by Workers Builds for non-production branches.
+  "previews": {},
   // Public URL: https://blue-bio-map.blue-bio-map.workers.dev
   "workers_dev": true,
   "preview_urls": false
