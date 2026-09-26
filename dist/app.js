@@ -1014,7 +1014,59 @@ function setMapMode(mode){
   renderMap();writeHash();
 }
 
+// A species-level reading aid. Never infer a sea-area grade from a published occurrence cell.
+function selectionSummaryModel(s){
+  const axes=['MFPI','MBPI','MCUI','BBVI'];
+  const scored=axes.filter(k=>pilotScore(s,k)!==null).map(k=>({axis:k,value:pilotScore(s,k)}));
+  const held=axes.filter(k=>pilotScore(s,k)===null);
+  const reasonCodes=s.assessment?.withheld_reasons||{};
+  const standard=assessmentBlockers(s);
+  const reason=k=>scoreReason[reasonCodes[k]]||standard[k]||'원자료 연결과 필수 입력 검수가 필요합니다.';
+  const cells=s.cells||[];
+  let occurrence;
+  if(cells.length){
+    const periods=[...new Set(cells.map(c=>c.period||years(c)))].sort().join(', ');
+    occurrence=`${s.catalog?'역사 표본만 · ':''}공개 ${cells[0].sizeDeg}° 셀 ${s.live?spatialCells(s).length:cells.length}개 · 기록 연도 ${[...new Set(cells.map(years))].join(', ')}`;
+    if(s.catalog)occurrence+=' · 1930년 일본 연안 표본, 현재 분포 아님';
+  }else if(s.catalog&&s.audit){
+    const g=s.audit.gbif;
+    occurrence=g.retrievedCount>0
+      ?`GBIF 시험 조회 ${g.retrievedCount.toLocaleString()}건 · 공개 셀 0개 · 종·좌표·이용조건·민감도 검수 필요`
+      :`해당 범위 GBIF 검색 0건 · ${obisSearchLabel(s)} · 종 부재 아님`;
+  }else if(s.live){
+    occurrence=s.noOccurrences?'공개 출현 셀 없음 · 출현자료 미수집 · 종 부재 아님'
+      :'공개 출현 셀 없음 · 조회 범위는 출현 위치가 아님';
+  }else occurrence='추가 수집 OBIS 자료 · 공개 기준 적용 자료와 별개';
+  const judgment='해역별 활용·보전 판단 보류 · 검증된 해역 집계 규칙 없음';
+  return {scored,held,reason,occurrence,judgment};
+}
+function renderSelectionSummary(s){
+  const box=$('selection-summary');
+  if(!box||!s){if(box)box.innerHTML='';return;}
+  const m=selectionSummaryModel(s);
+  const scores=m.scored.length?m.scored.map(({axis,value})=>
+    `<button type="button" data-summary-axis="${axis}" aria-label="${esc(s.label)} ${axis} ${value.toFixed(1)} 근거 보기">${axis} ${value.toFixed(1)}</button>`).join(' '):'<span>산출된 지표 없음</span>';
+  const lead=m.held.includes('MBPI')?'MBPI: '+m.reason('MBPI'):m.held.length?`${m.held[0]}: ${m.reason(m.held[0])}`:'종별 지표는 해역 등급이 아닙니다.';
+  box.innerHTML=`<div class="selection-summary-head"><div><span class="selection-kind">${s.catalog?'조사 후보':s.live?'운영 발행 종':'추가 수집 자료'}</span><h2 id="selection-summary-title">이 종에서 지금 판단 가능한 것 · ${esc(s.label)}</h2><span class="selection-taxon">${esc(s.name)} · AphiaID ${esc(s.aphiaID)}</span></div></div>
+    <div class="selection-summary-grid">
+      <div><strong>확인된 자료</strong><p>WoRMS 승인 학명·AphiaID 확인. ${esc(m.occurrence)}.</p></div>
+      <div><strong>산출된 지표</strong><p class="selection-scores">${scores}</p><small>있는 숫자만 검증 전 시범 지표 · 종 단위</small></div>
+      <div><strong>판단 보류</strong><p>${esc(m.held.length?m.held.join(' · ')+' 산출 보류':'지표 산출 상태 확인됨')} · ${esc(m.judgment)}</p><p class="selection-gap">${esc(lead)}</p>
+      ${m.held.length>1?`<details><summary>지표별 누락 근거</summary><ul>${m.held.map(k=>`<li><b>${k}</b> ${esc(m.reason(k))}</li>`).join('')}</ul></details>`:''}</div>
+    </div>
+    <p class="selection-location">붉은 도트는 공개 1°/4° 셀의 도식적 표시입니다. 실제 관측 좌표·개체수·자원량·현재 전체 분포가 아닙니다. <button type="button" class="link-button" data-summary-detail>원값·출처 자세히 보기</button></p>`;
+  const focusDetail=axis=>{
+    const detail=$('detail');
+    const disclosure=axis&&detail.querySelector(`.score-disclosure[data-axis="${axis}"]`);
+    if(disclosure){disclosure.open=true;disclosure.querySelector('summary').focus({preventScroll:true});disclosure.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    else {detail.tabIndex=-1;detail.focus({preventScroll:true});detail.scrollIntoView({behavior:'smooth',block:'start'});}
+  };
+  box.querySelectorAll('[data-summary-axis]').forEach(b=>b.addEventListener('click',()=>focusDetail(b.dataset.summaryAxis)));
+  box.querySelector('[data-summary-detail]').addEventListener('click',()=>focusDetail());
+}
+
 function renderMap() {
+  renderSelectionSummary(selected);
   renderPeriodFilter(selected);
   $('period-filter').hidden=mapMode==='value'&&!data?.live;
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
