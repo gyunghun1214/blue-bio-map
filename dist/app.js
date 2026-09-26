@@ -580,7 +580,7 @@ let otherCollection=[];
 function mapSummaryHtml(s){
   const cells=s.cells||[];
   const scope=periodFilter==='all'||!cells.length?'전체 기간':`선택 기간 ${periodFilter}`;
-  if(!cells.length)return s.catalog?`<h3>지도에 표시한 기록</h3>${row('분포',s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 조회 조건에서 결과 0건 · OBIS 미조회':'GBIF 조회 · 공개 격자 검수 보류'):'미수집 · 위치 정보 없음','pending')}`:`<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
+  if(!cells.length)return s.catalog?`<h3>지도에 표시한 기록</h3>${row('분포',s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 조회 조건에서 결과 0건 · 공개 셀 없음':'GBIF 조회 · 공개 격자 검수 보류'):'미수집 · 위치 정보 없음','pending')}`:`<h3>지도에 표시한 기록</h3>${row('지도 표시 기록','없음 · 자료 조회 범위만 표시','pending')}`;
   const other=otherCollection.find(x=>x.aphiaID===s.aphiaID);
   const comparison=other?.cells?.length
     ? `<p class="detail-context">같은 종의 별도 OBIS 수집은 ${other.cells.length}셀입니다. 지역·기간·선별 기준이 달라 두 지도는 합산하지 않습니다.</p>`
@@ -589,7 +589,7 @@ function mapSummaryHtml(s){
 }
 function renderCandidateDetail(s){
   if(s.audit){
-    const a=s.audit, g=a.gbif, n=a.nutrition, i=a.iucn;
+    const a=s.audit, g=a.gbif, n=a.nutrition, i=a.iucn, o=a.obis;
     const countOrUnknown=x=>Number.isSafeInteger(x)?x.toLocaleString():'미확인';
     const categories={ENDANGERED:'EN · 위기',LEAST_CONCERN:'LC · 관심대상'};
     const conservation=i.record?.category
@@ -611,7 +611,7 @@ function renderCandidateDetail(s){
       '<div class="detail-more-list"><h3>확인된 원자료와 남은 검수</h3>'+
       row('GBIF 시험 조회',`조회 ${countOrUnknown(g.retrievedCount)}건 · 최종 공개 ${s.cells.length?1:0}건 / ${s.cells.length}셀 · 잠정 품질 통과 ${countOrUnknown(g.preliminaryEligible)}건(나머지 민감도·중복 재검토 전)`,'pending')+
       (s.cells.length?'<p class="fine">공개 기록: 1930년 보존 표본, CAS Invertebrate Zoology · 기록과 데이터셋 CC0 1.0 · WoRMS 동의어 연결 확인 · 좌표 불확실성 6,065 m · 공개 해상도 4°. '+sourceLink(s.sources[0].url,'원 데이터셋 ↗')+' · '+sourceLink('https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni','동의어 근거 ↗')+'</p>':'')+
-      row('OBIS','접근 시간 초과 · 이 종의 조회는 미실행','pending')+
+      row('OBIS',o?(o.status==='query_count_unreviewed'?`조회 ${countOrUnknown(o.reportedTotal)}건 · 개별 기록·중복·라이선스 미검수`:o.status==='zero_for_scope'?'해당 질의·범위 결과 0건 · 부재 증거 아님':o.status==='collection_failed'?'수집 실패 · 결과 미확인':o.status==='taxonomy_review_required'?'학명 연결 재검토 필요 · 출현 조회 보류':'응답 재검토 필요 · 결과 미확인'):'종별 조회 미실행','pending')+
       row('식량·영양',food,'pending')+
       row('생리활성','기원종→화합물→assay 원문 미검수','pending')+
       row('보전',conservation,'pending')+
@@ -620,6 +620,7 @@ function renderCandidateDetail(s){
       '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
       '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
       ' · '+esc(g.scope)+' · 제외 사유와 원 데이터셋: <a href="https://github.com/gyunghun1214/blue-bio-map/blob/main/dist/expansion-evidence.json" target="_blank" rel="noopener noreferrer">22종 감사표 ↗</a></p>'+
+      (o?'<p>'+sourceLink(o.queryUrl,'OBIS 원검색·범위 ↗')+' · 조회 '+esc(o.queriedAt?.slice(0,10)||'미기재')+' · 건수는 GBIF와 합산하지 않으며 공개 출현 셀이 아닙니다.</p>':'')+
       (datasetLinks?'<details><summary>원 데이터셋 일부 (최대 5개 · 자료별 이용조건)</summary><ul>'+datasetLinks+'</ul></details>':'')+
       (n.foodCode?'<p>RDA 식품명 원행(목표 종 연결 전): '+sourceLink(n.rowUrl,n.foodName+' ↗')+
         ' · '+esc(values)+' · 생것, 가식부 100 g 기준(폐기율 별도) · 원행 출처 '+esc(n.values?.row_source||'미기재')+
