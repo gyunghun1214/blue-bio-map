@@ -111,7 +111,14 @@ function verifiedFoodValid(a,report){
   const f=a.food_trace, config=report.method?.nutrition, sources=report.sources||{};
   // The trace must name one fixed primary cohort, and its size must match the published cohort.
   const cohort=(report.comparison_cohorts||[]).find(c=>c.cohort_id===f?.cohort_id&&c.role==='primary');
-  if(!f||!config||!cohort||f.cohort_species!==cohort.size||
+  if(!f||!config||!cohort||!Number.isInteger(cohort.size)||cohort.size<3||f.cohort_species!==cohort.size||
+     !['nutrient_weight','edible_fraction_weight','aquaculture_weight'].every(k=>
+       Number.isFinite(config[k])&&config[k]>=0&&config[k]<=1)||
+     Math.abs(config.nutrient_weight+config.edible_fraction_weight+config.aquaculture_weight-1)>1e-8||
+     !Array.isArray(cohort.food_item_ids)||!Array.isArray(f.cohort_food_item_ids)||
+     f.cohort_food_item_ids.length!==cohort.size||
+     f.cohort_food_item_ids.some((id,i)=>id!==cohort.food_item_ids[i])||
+     !f.cohort_food_item_ids.includes(f.source_food_item_id)||
      f.sample_state!=='raw'||f.basis!=='100 g edible portion'||!sources[f.source_id]||
      f.edible_fraction?.reviewed!==true||f.aquaculture?.reviewed!==true||
      typeof f.aquaculture.feasible!=='boolean')return false;
@@ -119,9 +126,16 @@ function verifiedFoodValid(a,report){
   for(const [name,unit] of Object.entries(config.components||{})){
     const n=f.nutrients?.[name];
     if(!n||!Number.isFinite(n.value)||n.value<0||n.unit!==unit||
-       !Number.isFinite(n.percentile_unrounded)||n.percentile_unrounded<0||n.percentile_unrounded>100||
-       !Number.isFinite(n.evidence_factor)||!n.method||!Array.isArray(n.peer_values)||
-       n.peer_values.length!==f.cohort_species||!n.peer_values.every(p=>Number.isFinite(p.value)&&p.value>=0))return false;
+        !Number.isFinite(n.percentile)||!Number.isFinite(n.percentile_unrounded)||n.percentile_unrounded<0||n.percentile_unrounded>100||
+        !Number.isFinite(n.evidence_factor)||!n.method||!Array.isArray(n.peer_values)||
+        n.peer_values.length!==f.cohort_species||!n.peer_values.every((p,i)=>
+          p?.food_item_id===cohort.food_item_ids[i]&&Number.isFinite(p.value)&&p.value>=0)||
+        n.peer_values.find(p=>p.food_item_id===f.source_food_item_id)?.value!==n.value||
+        n.evidence_factor!==config.grade_factors?.[n.grade])return false;
+    const values=n.peer_values.map(p=>p.value);
+    const rank=100*(values.filter(v=>v<n.value).length+.5*values.filter(v=>v===n.value).length)/values.length;
+    if(Math.abs(n.percentile_unrounded-rank)>1e-8||
+       Math.abs(n.percentile-Math.round(rank*100)/100)>1e-8)return false;
     nutrient+=n.percentile_unrounded*n.evidence_factor;
   }
   const fraction=f.edible_fraction;
@@ -912,7 +926,13 @@ function drawEffort(){
 }
 // Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
 function cellCsv(s){
-  const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+  // Spreadsheet programs may evaluate quoted text cells beginning with formula characters.
+  // Preserve numeric coordinates; mark suspicious text as text inside the quoted CSV field.
+  const q=v=>{
+    const raw=String(v??'');
+    const safe=typeof v==='string'&&/^[\s]*[=+\-@＝＋－＠]/u.test(raw)?'\t'+raw.trimStart():raw;
+    return `"${safe.replace(/"/g,'""')}"`;
+  };
   const head=['species_label','scientific_name','aphia_id','cell_south','cell_north','cell_west','cell_east','cell_deg','period','year_start','year_end','records','sites','sources','licenses','note'];
   const note='공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류';
   const rows=s.live

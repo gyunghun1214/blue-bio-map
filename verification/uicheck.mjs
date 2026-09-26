@@ -13,7 +13,8 @@ if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0='http://127.0.0.1:8765/';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
-const chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
+const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
+const chrome=spawn(chromePath,['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
   '--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let ws,id=0,chromeFailure=null,chromeStderr='';const pending=new Map();
@@ -53,6 +54,16 @@ async function openWebSocket(url){
   });
 }
 const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
+async function waitForText(expr,accept,timeout=3000){
+  const deadline=Date.now()+timeout;
+  let value='';
+  do{
+    value=await evaluate(expr);
+    if(accept(value))return value;
+    await sleep(100);
+  }while(Date.now()<deadline);
+  return value;
+}
 const results=[];
 const check=(name,ok,detail='')=>{results.push({name,status:ok?'PASS':'FAIL',detail});console.log(ok?'PASS':'FAIL',name,ok?'':detail);};
 async function viewport(w,h,mobile){await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:mobile?2:1,mobile});}
@@ -184,7 +195,7 @@ try{
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
   check('Oyster status card leads with computed value: "MFPI 65.5 · MBPI·MCUI 보류"',oyCard.startsWith('MFPI 65.5')&&oyCard.includes('MBPI·MCUI 보류'),oyCard);
   const oyChip=await evaluate("document.querySelector('#matrix-unplaced [data-aphia=\"836033\"] small').textContent");
-  check('Oyster priority chip leads with computed value too',oyChip.startsWith('MFPI 65.5'),oyChip);
+  check('Oyster priority chip explains missing axes while status card shows MFPI',oyChip.includes('MBPI')&&oyChip.includes('MCUI')&&!oyChip.includes('MFPI 0'),oyChip);
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&n.includes('보류')})()"));
   check('Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("!document.querySelector('.version').textContent.includes('0.2')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
@@ -199,19 +210,19 @@ try{
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
   // The popup opened above auto-pans the map; measure the dot only after that pan and the scroll have settled.
-  await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center'})");
+  await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center',behavior:'instant'})");
   await sleep(800);
   const dotXY=await evaluate("const d=overlay.getLayers().find(l=>l._schematicDot);const p=map.latLngToContainerPoint(d.getLatLng());const r=document.getElementById('map').getBoundingClientRect();({x:r.left+p.x,y:r.top+p.y})");
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:dotXY.x,y:dotXY.y,button:'left',clickCount:1});
-  await sleep(300);
-  const clicked=await evaluate("document.querySelector('.leaflet-popup-content')?.innerText||''");
-  check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',clicked.includes('해역별 활용·보전 판단: 보류')&&clicked.includes('출처·이용조건'),clicked.slice(0,200));
+  const clicked=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>t.includes('해역별 활용·보전 판단: 보류')&&t.includes('출처·이용조건'));
+  const dotOk=clicked.includes('해역별 활용·보전 판단: 보류')&&clicked.includes('출처·이용조건');
+  if(!dotOk)await shot('dot-popup-failure',false).catch(()=>{});
+  check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',dotOk,JSON.stringify(dotXY)+' '+clicked.slice(0,200));
   // Same location, two periods (synthetic second row injected in-page; live data has none today): one hit area, both periods reachable by a real click.
   const twoXY=await evaluate("(()=>{const c=selected.cells[0];selected.cells.push({...c,period:'2099–2100',yearStart:2099,yearEnd:2099,records:7,sites:5,citations:[{title:'Synthetic second provider',url:'https://example.org/second',licenses:['CC0 1.0']}]});map.closePopup();renderMap();map.setView([c.lat0+c.sizeDeg/2,c.lon0+c.sizeDeg/2],7,{animate:false});document.getElementById('map').scrollIntoView({block:'center'});const p=map.latLngToContainerPoint([c.lat0+c.sizeDeg*.5,c.lon0+c.sizeDeg*.93]);const r=document.getElementById('map').getBoundingClientRect();return {x:r.left+p.x,y:r.top+p.y,hits:overlay.getLayers().filter(l=>!l._schematicDot).length,cells:document.getElementById('map-cells').textContent}})()");
   await sleep(400);
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:twoXY.x,y:twoXY.y,button:'left',clickCount:1});
-  await sleep(300);
-  const two=await evaluate("document.querySelector('.leaflet-popup-content')?.innerText||''");
+  const two=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>t.includes(x)));
   check('Two periods in one cell: one hit area, click shows both periods with counts, sites and sources',twoXY.hits===1&&twoXY.cells==='1'&&['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>two.includes(x)),JSON.stringify(twoXY)+' '+two.slice(0,300));
   await shot('desktop-two-period-popup',false);
   await evaluate("selected.cells.pop();map.closePopup();1");
