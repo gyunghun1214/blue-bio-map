@@ -72,3 +72,24 @@
 #comparison thead th:first-child{z-index:4;background:#f0f5f7}
 .coverage-bar .seg,.coverage-bar .seg b,.coverage-bar .seg small{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
 #comparison td .coverage-bar{min-width:330px}
+
+/* Species-level evidence stays in normal flow so it never covers map cells. */
+.selection-summary{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;color:var(--ink)}
+.selection-summary-head h2{font-size:16px;line-height:1.35;margin:2px 0 0}
+.selection-kind,.selection-taxon{font-size:12px;color:var(--muted)}
+.selection-kind{font-weight:700;color:var(--teal)}
+.selection-summary-grid{display:grid;grid-template-columns:1.2fr .9fr 1.35fr;gap:12px;margin-top:9px}
+.selection-summary-grid>div{border-left:2px solid #d2e2e8;padding-left:10px;min-width:0}
+.selection-summary-grid strong{display:block;font-size:12px}
+.selection-summary-grid p{font-size:12px;line-height:1.45;margin:2px 0 0;overflow-wrap:anywhere}
+.selection-summary-grid small{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.selection-summary-grid .selection-gap{color:#79551d}
+.selection-summary-grid details{font-size:12px;margin-top:5px}
+.selection-summary-grid details summary{color:var(--blue);cursor:pointer}
+.selection-summary-grid details ul{margin:4px 0;padding-left:18px;max-height:160px;overflow:auto}
+.selection-scores button{border:1px solid #a7c9c6;background:#e9f5f1;border-radius:5px;color:#075d58;padding:2px 5px;font-size:12px;font-weight:700;margin:0 4px 4px 0}
+.selection-scores button:hover{background:#d9ece5}
+.selection-location{font-size:11px;line-height:1.45;color:var(--muted);margin:8px 0 0}
+.selection-location .link-button{font-size:11px}
+@media(max-width:1100px){.selection-summary-grid{grid-template-columns:1fr 1fr}.selection-summary-grid>div:last-child{grid-column:1/-1}}
+@media(max-width:740px){.selection-summary{padding:9px 12px}.selection-summary-head h2{font-size:14px}.selection-summary-grid{grid-template-columns:1fr;gap:5px;margin-top:5px}.selection-summary-grid>div,.selection-summary-grid>div:last-child{grid-column:auto;border-left:0;padding-left:0}.selection-summary-grid>div+div{border-top:1px solid var(--line);padding-top:5px}.selection-summary-grid strong{font-size:11px}.selection-summary-grid p{font-size:11px}.selection-summary-grid .selection-gap{max-width:60ch}.selection-location{margin-top:5px}}
