@@ -455,6 +455,17 @@
       "accessed": "2026-09-26",
       "terms": "Bibliographic record and numeric values only; no text or tables copied",
       "license": "Publisher copyright; ChEMBL CC BY-SA 3.0 for the extracted values"
+    },
+    "mext_sfct_2020": {
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
+      "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d",
+      "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
+      "accessed": "2026-09-26",
+      "terms": "MEXT website terms of use, compliant with the Government Standard Terms of Use 2.0; no table-specific terms were shown on the download page (2026-09-26)",
+      "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+      "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20). One remark and one refuse value are quoted with attribution; no table data are redistributed."
     }
   },
   "nutrition_rows": [
@@ -723,6 +734,20 @@
       "year": "historical factsheet, page accessed 2026-09-26",
       "limitations": "Technical species-level cultivation evidence; current Korean siting, disease, seed supply and cost require local review. Wild-seed dependence.",
       "regional_source_id": "kosis_fish_aquaculture"
+    },
+    {
+      "aphia_id": 276651,
+      "kind": "edible_fraction",
+      "record_id": "MEXT-2020:10243:remarks:whole-fish-refuse",
+      "source_id": "mext_sfct_2020",
+      "reviewed": true,
+      "value": 0.6,
+      "unit": "edible share of food as purchased",
+      "method": "1 - whole-fish refuse (40%) / 100 from the remark of MEXT 2020 food 10243, the table RDA row K0830011130a is borrowed from; that row's refuse 0 describes a fillet (切り身) and is not used",
+      "region": "Japan (MEXT national table)",
+      "sample_period": "2020 table (8th revision)",
+      "publication_year": 2020,
+      "limitations": "Official table value for preparing the whole farmed young fish (head, viscera, bones and fins discarded); not a measured yield of Korean farmed fish. RDA rows K0830000000a ('09, refuse 41%) and K0830021130a ('82, wild young, refuse 45%) are different samples and are not used."
     }
   ],
   "nutrition_observations": [
@@ -2207,5 +2232,17 @@
     "structure_id": "Exact structure confirmed (CID/InChIKey or sequence consistent with reported mass)",
     "quantitative_endpoint": "Numeric endpoint with relation and unit in text/table (IC50, MIC, etc.)",
     "comparable_cohort": "Fixed stratum with at least the minimum number of comparable compounds"
-  }
+  },
+  "rda_refuse_not_accepted": [
+    {
+      "food_item_id": "K0830011130a",
+      "reported_food_name": "방어, 양식, 어린것, 생것",
+      "reviewed": true,
+      "reason": "The row is borrowed from the Japanese table (JAPAN('20)). MEXT 2020 food 10243 (はまち 養殖 皮つき 生) has the same refuse, water, protein, iron and zinc values, and its remark says the sample is a fillet (切り身). Refuse 0 therefore describes a trimmed fillet, not the fish as purchased, and is not edible-fraction evidence.",
+      "source_id": "mext_sfct_2020",
+      "record_id": "MEXT-2020:10243:remarks",
+      "quote": "切り身 (魚体全体から調理する場合、廃棄率： 40 %、廃棄部位： 頭部、内臓、骨、ひれ等)",
+      "checked_on": "2026-09-26"
+    }
+  ]
 }

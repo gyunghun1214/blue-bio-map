@@ -83,6 +83,12 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
     """Standardize RDA snapshot rows. Grade comes from the published row-source label."""
     settings = config["nutrition"]
     links = {l["food_item_id"]: l for l in evidence.get("rda_taxon_links", [])}
+    # a reviewed record here means the row's refuse does not describe the food as purchased (e.g. a fillet sample)
+    rejected = {x["food_item_id"]: x for x in evidence.get("rda_refuse_not_accepted", []) if x.get("reviewed") is True}
+    for x in rejected.values():
+        require(bool(x.get("reason")) and x.get("source_id") in evidence["sources"] and valid_date(x.get("checked_on")),
+                f"{x['food_item_id']}: refuse rejection provenance incomplete")
+    require(set(rejected) <= {r["code"] for r in snapshot["rows"]}, "refuse rejection names an unknown RDA row")
     out = {}
     for r in snapshot["rows"]:
         v = r["values"]
@@ -96,6 +102,7 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
                 "method": f"RDA DB 10.4 table value (row source {label or 'not shown'}); per-value derivation not exposed"}
         link = links.get(r["code"], {})
         refuse = _number(v.get("refuse_pct"))
+        refused = rejected.get(r["code"])
         out[r["code"]] = {
             "food_item_id": r["code"], "reported_food_name": r["name"], "english_name": r.get("english_name"),
             "group": r["group"], "row_source": label or None,
@@ -103,7 +110,8 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
             "scientific_name": link.get("scientific_name") if link.get("reviewed") else None,
             "taxon_link": link or None, "source_id": "rda_db_10_4", "reviewed": True,
             "sample_state": "raw", "basis": "100 g edible portion", "nutrients": nutrients,
-            "edible_fraction": None if refuse is None else {
+            "refuse_not_accepted": refused and {**refused, "refuse_pct": refuse},
+            "edible_fraction": None if refuse is None or refused else {
                 "kind": "edible_fraction", "value": round(1 - refuse / 100, 4), "unit": "edible share of food as purchased",
                 "method": f"1 - refuse ({refuse:g}%) / 100 from the same RDA row", "source_id": "rda_db_10_4",
                 "record_id": f"RDA-10.4:{r['code']}:refuse", "region": "Korea (RDA national table)",
@@ -208,9 +216,12 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                 "link_evidence": link.get("link_evidence"),
                 "values": {k: (n or {}).get("value") for k, n in r["nutrients"].items()},
                 "missing": [k for k, n in r["nutrients"].items() if n is None],
-                "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4)})
+                "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4),
+                **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {})})
     trace["observed_rows"].sort(key=lambda x: x["food_item_id"])
-    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False, "edible_fraction": False, "aquaculture": aqua is not None}
+    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False,
+            "edible_fraction": any(r.get("reviewed") is True for r in support_for(aphia, evidence, "edible_fraction")),
+            "aquaculture": aqua is not None}
     for obs in trace["observed_rows"]:
         if obs["linked"]:
             for k in settings["components"]:
