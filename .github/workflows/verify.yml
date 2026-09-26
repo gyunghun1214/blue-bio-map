@@ -1,0 +1,74 @@
+name: Verify BlueBioMap
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: windows-2025
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check browser and data code
+        run: |
+          node --check dist/app.js
+          node --check verification/uicheck.mjs
+          node verification/test_verified_ui.mjs
+          node verification/test_pilot_ui.mjs
+          node verification/test_food_evidence.mjs
+          node verification/test_map_boundary.mjs
+          node verification/test_csv_export.mjs
+          python -m unittest discover -s verification -p 'test_*.py'
+
+  browser:
+    runs-on: windows-2025
+    needs: unit
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run full browser checks against this commit
+        shell: pwsh
+        run: |
+          $server = Start-Process -FilePath python -ArgumentList @('-m','http.server','8765','--bind','127.0.0.1','--directory','dist') -PassThru -WindowStyle Hidden
+          try {
+            $ready = $false
+            for ($i = 0; $i -lt 30; $i++) {
+              try {
+                Invoke-WebRequest -Uri 'http://127.0.0.1:8765/' -TimeoutSec 2 | Out-Null
+                $ready = $true
+                break
+              } catch { Start-Sleep -Milliseconds 500 }
+            }
+            if (-not $ready) { throw 'Local site did not start on port 8765' }
+            node verification/uicheck.mjs verification/ci-ui
+            if ($LASTEXITCODE -ne 0) { throw "UI checks failed with exit code $LASTEXITCODE" }
+          } finally {
+            Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
+          }
+      - name: Upload browser results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-check-results
+          path: verification/ci-ui/
+          if-no-files-found: warn
+          retention-days: 7
