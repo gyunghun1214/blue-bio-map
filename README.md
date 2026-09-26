@@ -14,6 +14,7 @@ alt F4의 Ocean 20 Challenge 본선 준비용 연구 프로토타입.
 
 ## 30종 카탈로그와 다음 데이터 작업
 
+- [2026-09-26 신규 22종 OBIS 조회 감사](research/expansion-30/audit-2026-09-26.md): WoRMS 승인명을 다시 확인한 뒤 OBIS의 한반도 시험 범위 건수를 22종 모두 조회했다(21종 결과, 시카메굴 해당 질의 0건). 이 건수는 개별 기록·라이선스·중복·민감도를 검수한 출현 자료가 아니다. **신규 공개 셀과 지표는 추가하지 않았다.** 화면의 종 상세는 GBIF와 OBIS 검색 상태를 별개로 보여준다.
 - 선정·제외 기준: [research/expansion-30/README.md](research/expansion-30/README.md). 분류만 확인한 22종은 `dist/candidate-catalog.json`으로 읽으며, 국명·근연종과의 연결은 추가 검수 대상이다.
 - 이전 OBIS/WoRMS 실험은 수집 가능한 환경에서 `python scripts/collect_expansion_research.py`를 실행하면 WoRMS 승인명과 한반도 시험 범위 OBIS 원자료·데이터셋 메타데이터를 **무시되는 `tmp/expansion-30/`**에만 저장한다. 실행 결과를 자동 발행하지 않는다. 수집·분류·라이선스·좌표 품질·민감도 확인 후에만 운영 DB에 공개 격자로 올릴 수 있다.
 - GBIF 실측 감사와 22종별 보류 사유: [감사 보고서](research/expansion-30/audit-2026-09-25.md). 재현 명령은 `python scripts/collect_expansion_gbif.py`, `python scripts/audit_expansion_iucn.py`, `python scripts/build_expansion_evidence.py` 순서다. 원좌표/개별 기록 ID는 `tmp/`에만 남고 `dist/expansion-evidence.json`은 공개 전 연구 상태만 담는다.
