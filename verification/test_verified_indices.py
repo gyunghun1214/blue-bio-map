@@ -223,13 +223,27 @@ class VerifiedPilot3Tests(unittest.TestCase):
         report = self.run_build()
         undaria = species(report, 145721)
         self.assertEqual(undaria["mbpi_stratum"], "peptide")
-        self.assertTrue(undaria["bbvi_mbpi_from_peptide_stratum"])
+        self.assertFalse(undaria["bbvi_mbpi_from_peptide_stratum"])   # single-paper MBPI never reaches BBVI
         self.assertTrue(all(i["stratum_kind"] == "peptide" and "compound_id" not in i for i in undaria["bioactivity_trace"]))
         peptide = copy.deepcopy(next(r for r in self.evidence["peptide_bioactivity"] if r["status"] == "approved_for_score"))
         evidence = copy.deepcopy(self.evidence)
         evidence["bioactivity"].append({**peptide, "activity_id": "PEP1"})     # a peptide row offered as a ChEMBL compound
         with self.assertRaisesRegex(ValueError, "compound-origin/ChEMBL chain"):
             self.run_build(evidence)
+
+    def test_single_source_mbpi_is_reference_only(self):
+        undaria = species(self.run_build(), 145721)
+        self.assertEqual((undaria["scores"]["MBPI"], undaria["scores"]["BBVI"]), (19.6, None))
+        self.assertEqual((undaria["withheld_reasons"]["BBVI"], undaria["mbpi_label"]), ("mbpi_single_source", "참고값(단일 논문)"))
+        knfl = next(r for r in self.evidence["peptide_bioactivity"] if r["sequence"] == "KNFL")
+        for doi, computed in ((knfl["original_paper_doi"].upper(), False),           # same DOI again counts once
+                              ("10.9999/synthetic-independent-replicate", True)):
+            evidence = copy.deepcopy(self.evidence)
+            evidence["peptide_bioactivity"].append({**knfl, "record_id": "replicate", "original_paper_doi": doi})
+            undaria = species(self.run_build(evidence), 145721)
+            self.assertEqual(undaria["scores"]["BBVI"] is not None, computed)
+            self.assertEqual(undaria["mbpi_label"] is None, computed)
+        self.assertNotIn("mbpi_label", species(build(*load_inputs()), 145721))   # v2 has no such rule
 
     def test_national_assessment_is_labelled_apart_from_iucn(self):
         report = self.run_build()

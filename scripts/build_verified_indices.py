@@ -498,7 +498,12 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             if national_value is not None:
                 mcui, conservation_reason, mcui_basis = national_value, None, "national"
         w = config["bbvi"]["default_food_weight"]
-        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if mfpi_value is not None and mbpi is not None else None
+        best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
+        # verified-pilot-3: an MBPI value resting on fewer independent papers is shown for reference and kept out of BBVI
+        min_dois = config["bbvi"].get("minimum_independent_mbpi_dois")
+        single_source = bool(min_dois and best) and len({d.lower() for d in best["original_paper_dois"]}) < min_dois
+        both = mfpi_value is not None and mbpi is not None
+        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if both and not single_source else None
         partial_bio = [r for key in ("bioactivity", "peptide_bioactivity") for r in evidence.get(key, [])
                        if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
         scores = {"MFPI": mfpi_value, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi}
@@ -508,7 +513,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                   "MCUI": "산출됨" if mcui is not None else "일부 근거 확인" if assessed else "산출 보류",
                   "BBVI": "산출됨" if bbvi is not None else "산출 보류"}
         reasons = {"MFPI": food_reason, "MBPI": None if mbpi is not None else "compound_origin_assay_chain_or_fixed_cohort_missing",
-                   "MCUI": conservation_reason, "BBVI": None if bbvi is not None else "requires_MFPI_and_MBPI"}
+                   "MCUI": conservation_reason,
+                   "BBVI": None if bbvi is not None else "mbpi_single_source" if both else "requires_MFPI_and_MBPI"}
         c = conservation_trace or {}
         c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
                    c.get("category") in config["conservation"]["category_scores"],
@@ -551,8 +557,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
                 "conservation_trace": conservation_trace, "sensitivity": sensitivity,
                 "source_ids": sorted(source_ids)}
+        if min_dois:
+            row["mbpi_label"] = config["bbvi"]["single_source_mbpi_label"] if single_source else None
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
-            best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
             row["mbpi_stratum"] = None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
         if config.get("national_red_list"):

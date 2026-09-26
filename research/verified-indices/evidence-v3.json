@@ -79,12 +79,13 @@
     },
     "nibr_red_data_book_2024": {
       "provider": "National Institute of Biological Resources (NIBR), Republic of Korea",
-      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)",
+      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
       "version": "2024 integrated edition; mollusc revision (vol. 6) 2022",
       "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
       "accessed": "2026-09-26",
       "terms": "Category, criteria and page reference only; no text or tables copied",
-      "license": "Government publication; reuse terms not stated in the viewer"
+      "license": "Government publication; reuse terms not stated in the viewer",
+      "page_numbering": "viewer page = printed page + 2 (footer page number read on every page opened, 2026-09-26)"
     }
   },
   "peptide_bioactivity": [
@@ -521,11 +522,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1371,
-      "index_viewer_pages": [
-        1458,
-        1459
-      ],
+      "list_page_printed": 1371,
+      "list_page_viewer": 1373,
+      "index_page_printed": 1457,
+      "index_page_viewer": 1459,
       "reviewed": true
     },
     {
@@ -539,11 +539,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1376,
-      "index_viewer_pages": [
-        1474,
-        1475
-      ],
+      "list_page_printed": 1376,
+      "list_page_viewer": 1378,
+      "index_page_printed": 1473,
+      "index_page_viewer": 1475,
       "reviewed": true
     },
     {
@@ -557,11 +556,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1380,
-      "index_viewer_pages": [
-        1488,
-        1489
-      ],
+      "list_page_printed": 1380,
+      "list_page_viewer": 1382,
+      "index_page_printed": 1487,
+      "index_page_viewer": 1489,
       "reviewed": true,
       "name_note": "WoRMS 541675 M. unguiculatus is a nomen oblitum; valid name 506159 M. coruscus"
     },
@@ -576,11 +574,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1375,
-      "index_viewer_pages": [
-        1470,
-        1471
-      ],
+      "list_page_printed": 1375,
+      "list_page_viewer": 1377,
+      "index_page_printed": 1468,
+      "index_page_viewer": 1470,
       "reviewed": true
     },
     {
@@ -594,11 +591,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1380,
-      "index_viewer_pages": [
-        1488,
-        1489
-      ],
+      "list_page_printed": 1380,
+      "list_page_viewer": 1382,
+      "index_page_printed": 1486,
+      "index_page_viewer": 1488,
       "reviewed": true,
       "name_note": "WoRMS 591364 unaccepted; valid name 504357 A. broughtonii"
     },
@@ -613,11 +609,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1379,
-      "index_viewer_pages": [
-        1486,
-        1487
-      ],
+      "list_page_printed": 1379,
+      "list_page_viewer": 1381,
+      "index_page_printed": 1484,
+      "index_page_viewer": 1486,
       "reviewed": true
     },
     {
@@ -631,11 +626,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1370,
-      "index_viewer_pages": [
-        1454,
-        1455
-      ],
+      "list_page_printed": 1370,
+      "list_page_viewer": 1372,
+      "index_page_printed": 1453,
+      "index_page_viewer": 1455,
       "reviewed": true
     },
     {
@@ -649,11 +643,10 @@
       "first_edition_category": "LC",
       "change": "유지",
       "taxon_group": "연체동물",
-      "assessment_page": 1379,
-      "index_viewer_pages": [
-        1484,
-        1485
-      ],
+      "list_page_printed": 1379,
+      "list_page_viewer": 1381,
+      "index_page_printed": 1483,
+      "index_page_viewer": 1485,
       "reviewed": true,
       "name_note": "WoRMS 342131 superseded combination; valid name 1666974 A. esculentum"
     }
@@ -662,17 +655,17 @@
     {
       "aphia_id": 534443,
       "scientific_name": "Octopus sinensis",
-      "reason": "National row 참문어 is published as Octopus vulgaris (NT, p.1027); WoRMS keeps O. vulgaris (140605) as a separate accepted species, so the row is not assigned to O. sinensis."
+      "reason": "National row 참문어 is published as Octopus vulgaris (NT, list printed p.1027 = viewer p.1029; index printed p.1484 = viewer p.1486); WoRMS keeps O. vulgaris (140605) as a separate accepted species, so the row is not assigned to O. sinensis."
     },
     {
       "aphia_id": 397082,
       "scientific_name": "Haliotis discus",
-      "reason": "Only the subspecies 북방전복 Haliotis discus hannai (LC, p.1376) is listed; a subspecies assessment is not moved to the species. 까막전복 not found in the index."
+      "reason": "Only the subspecies 북방전복 Haliotis discus hannai (LC, list printed p.1376 = viewer p.1378; index printed p.1471 = viewer p.1473) is listed; a subspecies assessment is not moved to the species. 까막전복 not found in the index."
     }
   ],
   "national_red_list_search": {
     "checked_on": "2026-09-26",
-    "index_pages_read": "viewer pages 1438-1491 and spot checks 1508, 1520, 1528",
+    "index_pages_read": "viewer pages 1438-1491 (printed 1436-1489) and spot checks at viewer pages 1508, 1520, 1528",
     "groups_in_index": [
       "조류",
       "양서류",

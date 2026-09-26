@@ -99,6 +99,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "다시마",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -254,6 +255,7 @@
         "mean_ratio": 0.25
       },
       "korean_name": "감태",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -368,6 +370,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "가시파래",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -480,6 +483,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "괭생이모자반",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -610,6 +614,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "Gracilaria vermiculophylla",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -749,6 +754,7 @@
         "mean_ratio": 0.2
       },
       "korean_name": "청각",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -1415,21 +1421,21 @@
         "mean_ratio": 0.33
       },
       "korean_name": "바지락",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 231750,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1375,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1470,
-          1471
-        ],
+        "index_page_printed": 1468,
+        "index_page_viewer": 1470,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1375,
+        "list_page_viewer": 1377,
         "name_as_published": "바지락 Ruditapes philippinarum A. Adams & Reeve, 1848",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
@@ -1585,6 +1591,7 @@
         "mean_ratio": 0.53
       },
       "korean_name": "전복(종 수준)",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -2236,21 +2243,21 @@
         "mean_ratio": 0.33
       },
       "korean_name": "큰가리비",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 393716,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1379,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1486,
-          1487
-        ],
+        "index_page_printed": 1484,
+        "index_page_viewer": 1486,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1379,
+        "list_page_viewer": 1381,
         "name_as_published": "큰가리비 Mizuhopecten yessoensis Jay, 1856",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
@@ -2372,6 +2379,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "시카메굴",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -2511,21 +2519,21 @@
         "mean_ratio": 0.2
       },
       "korean_name": "피조개",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 504357,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1380,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1488,
-          1489
-        ],
+        "index_page_printed": 1486,
+        "index_page_viewer": 1488,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1380,
+        "list_page_viewer": 1382,
         "name_as_published": "피조개 Scapharca broughtonii Schrenck, 1867",
         "name_note": "WoRMS 591364 unaccepted; valid name 504357 A. broughtonii",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
@@ -2646,21 +2654,21 @@
         "mean_ratio": 0.0
       },
       "korean_name": "맛조개",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 413600,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1370,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1454,
-          1455
-        ],
+        "index_page_printed": 1453,
+        "index_page_viewer": 1455,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1370,
+        "list_page_viewer": 1372,
         "name_as_published": "가리맛조개 Sinonovacula constricta Lamarck, 1818",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
@@ -2806,6 +2814,7 @@
         "mean_ratio": 0.33
       },
       "korean_name": "고등어",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -2955,6 +2964,7 @@
         "mean_ratio": 0.53
       },
       "korean_name": "멸치",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -3104,6 +3114,7 @@
         "mean_ratio": 0.6
       },
       "korean_name": "참조기",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -3244,6 +3255,7 @@
         "mean_ratio": 0.27
       },
       "korean_name": "넙치",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -3894,6 +3906,7 @@
         "mean_ratio": 0.33
       },
       "korean_name": "조피볼락",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -4013,27 +4026,29 @@
         "cohort_species": 25,
         "components": {
           "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 10.0,
+          "edible_fraction_contribution": 6.0,
           "evidence_grade_deduction": 7.12,
           "nutrient_value_contribution": 47.47
         },
         "cross_checks": [],
         "edible_fraction": {
+          "aphia_id": 276651,
           "kind": "edible_fraction",
-          "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
-          "method": "1 - refuse (0%) / 100 from the same RDA row",
-          "record_id": "RDA-10.4:K0830011130a:refuse",
-          "region": "Korea (RDA national table)",
+          "limitations": "Official table value for preparing the whole farmed young fish (head, viscera, bones and fins discarded); not a measured yield of Korean farmed fish. RDA rows K0830000000a ('09, refuse 41%) and K0830021130a ('82, wild young, refuse 45%) are different samples and are not used.",
+          "method": "1 - whole-fish refuse (40%) / 100 from the remark of MEXT 2020 food 10243, the table RDA row K0830011130a is borrowed from; that row's refuse 0 describes a fillet (切り身) and is not used",
+          "publication_year": 2020,
+          "record_id": "MEXT-2020:10243:remarks:whole-fish-refuse",
+          "region": "Japan (MEXT national table)",
           "reviewed": true,
-          "sample_period": "JAPAN('20)",
-          "source_id": "rda_db_10_4",
+          "sample_period": "2020 table (8th revision)",
+          "source_id": "mext_sfct_2020",
           "unit": "edible share of food as purchased",
-          "value": 1.0
+          "value": 0.6
         },
         "english_name": "Yellowtail, Farm-raised, Young, Raw",
         "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
         "grade_sensitivity": {
-          "all_grade_factors_1": 67.5
+          "all_grade_factors_1": 63.5
         },
         "method_version": "verified-pilot-3",
         "nutrients": {
@@ -4453,7 +4468,18 @@
             "link_evidence": "방어 = Seriola quinqueradiata (Japanese amberjack/yellowtail); farmed young-fish row borrowed from the Japanese table JAPAN('20).",
             "linked": true,
             "missing": [],
-            "refuse_pct": 0.0,
+            "refuse_not_accepted": {
+              "checked_on": "2026-09-26",
+              "food_item_id": "K0830011130a",
+              "quote": "切り身 (魚体全体から調理する場合、廃棄率： 40 %、廃棄部位： 頭部、内臓、骨、ひれ等)",
+              "reason": "The row is borrowed from the Japanese table (JAPAN('20)). MEXT 2020 food 10243 (はまち 養殖 皮つき 生) has the same refuse, water, protein, iron and zinc values, and its remark says the sample is a fillet (切り身). Refuse 0 therefore describes a trimmed fillet, not the fish as purchased, and is not edible-fraction evidence.",
+              "record_id": "MEXT-2020:10243:remarks",
+              "refuse_pct": 0.0,
+              "reported_food_name": "방어, 양식, 어린것, 생것",
+              "reviewed": true,
+              "source_id": "mext_sfct_2020"
+            },
+            "refuse_pct": null,
             "reported_food_name": "방어, 양식, 어린것, 생것",
             "row_source": "JAPAN('20)",
             "values": {
@@ -4493,18 +4519,18 @@
           "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
-        "unrounded": 60.346666666666664,
+        "unrounded": 56.346666666666664,
         "weight_sensitivity": [
           {
             "aquaculture_weight": 0.15,
             "edible_fraction_weight": 0.15,
-            "mfpi": 65.3,
+            "mfpi": 59.3,
             "nutrient_weight": 0.7
           },
           {
             "aquaculture_weight": 0.05,
             "edible_fraction_weight": 0.05,
-            "mfpi": 55.4,
+            "mfpi": 53.4,
             "nutrient_weight": 0.9
           }
         ],
@@ -4554,6 +4580,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "방어",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -4568,19 +4595,20 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": 10.0,
-        "MFPI": 60.3
+        "MFPI": 56.3
       },
       "sensitivity": {
         "food_weights": {}
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": null,
-        "food_only_MFPI": 60.3
+        "food_only_MFPI": 56.3
       },
       "source_ids": [
         "fao_casp_amberjack",
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
+        "mext_sfct_2020",
         "rda_db_10_4"
       ],
       "withheld_reasons": {
@@ -4695,6 +4723,7 @@
         "mean_ratio": 0.2
       },
       "korean_name": "대구",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -4834,6 +4863,7 @@
         "mean_ratio": 0.27
       },
       "korean_name": "꽃게",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -4965,6 +4995,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "참문어(동아시아 종)",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -5128,21 +5159,21 @@
         "mean_ratio": 0.42
       },
       "korean_name": "갑오징어",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 1666974,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1379,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1484,
-          1485
-        ],
+        "index_page_printed": 1483,
+        "index_page_viewer": 1485,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1379,
+        "list_page_viewer": 1381,
         "name_as_published": "참갑오징어 Sepia esculenta Hoyle, 1885",
         "name_note": "WoRMS 342131 superseded combination; valid name 1666974 A. esculentum",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
@@ -5308,11 +5339,13 @@
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
+      "minimum_independent_mbpi_dois": 2,
       "sensitivity_food_weights": [
         0.25,
         0.5,
         0.75
-      ]
+      ],
+      "single_source_mbpi_label": "참고값(단일 논문)"
     },
     "bioactivity": {
       "eligible_endpoints": [
@@ -5334,7 +5367,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2: adds a separate MBPI peptide stratum and a national red-list MCUI stratum. Nutrition, weights, IUCN mapping, BBVI formula and the small-molecule stratum are unchanged.",
+    "changes_from": "verified-pilot-2: adds a separate MBPI peptide stratum and a national red-list MCUI stratum. Nutrition, weights, IUCN mapping, BBVI formula and the small-molecule stratum are unchanged. BBVI is withheld (mbpi_single_source) when the MBPI value rests on fewer than two independent DOIs (case-insensitive, duplicates counted once); that MBPI is still output with a reference-value label.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5532,12 +5565,12 @@
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
-      "reason": "National row 참문어 is published as Octopus vulgaris (NT, p.1027); WoRMS keeps O. vulgaris (140605) as a separate accepted species, so the row is not assigned to O. sinensis.",
+      "reason": "National row 참문어 is published as Octopus vulgaris (NT, list printed p.1027 = viewer p.1029; index printed p.1484 = viewer p.1486); WoRMS keeps O. vulgaris (140605) as a separate accepted species, so the row is not assigned to O. sinensis.",
       "scientific_name": "Octopus sinensis"
     },
     {
       "aphia_id": 397082,
-      "reason": "Only the subspecies 북방전복 Haliotis discus hannai (LC, p.1376) is listed; a subspecies assessment is not moved to the species. 까막전복 not found in the index.",
+      "reason": "Only the subspecies 북방전복 Haliotis discus hannai (LC, list printed p.1376 = viewer p.1378; index printed p.1471 = viewer p.1473) is listed; a subspecies assessment is not moved to the species. 까막전복 not found in the index.",
       "scientific_name": "Haliotis discus"
     }
   ],
@@ -5553,7 +5586,7 @@
       "곤충",
       "거미"
     ],
-    "index_pages_read": "viewer pages 1438-1491 and spot checks 1508, 1520, 1528",
+    "index_pages_read": "viewer pages 1438-1491 (printed 1436-1489) and spot checks at viewer pages 1508, 1520, 1528",
     "result": "Marine fish, sea cucumber, ascidian and seaweed candidates: 검색 범위 안에서 미발견. Fish rows are mostly freshwater; the index has no echinoderm, tunicate or seaweed group. Not an NE judgement."
   },
   "posthoc": {
@@ -5957,6 +5990,17 @@
       "url": "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
       "version": "2023 supplement, food item 09025; fooddb update 2026-06-09"
     },
+    "mext_sfct_2020": {
+      "accessed": "2026-09-26",
+      "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+      "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20). One remark and one refuse value are quoted with attribution; no table data are redistributed.",
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "terms": "MEXT website terms of use, compliant with the Government Standard Terms of Use 2.0; no table-specific terms were shown on the download page (2026-09-26)",
+      "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
+      "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
+      "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d"
+    },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",
       "doi": "10.1016/j.fsi.2020.02.020",
@@ -5970,9 +6014,10 @@
     "nibr_red_data_book_2024": {
       "accessed": "2026-09-26",
       "license": "Government publication; reuse terms not stated in the viewer",
+      "page_numbering": "viewer page = printed page + 2 (footer page number read on every page opened, 2026-09-26)",
       "provider": "National Institute of Biological Resources (NIBR), Republic of Korea",
       "terms": "Category, criteria and page reference only; no text or tables copied",
-      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)",
+      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
       "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
       "version": "2024 integrated edition; mollusc revision (vol. 6) 2022"
     },
@@ -6123,7 +6168,7 @@
   "species": [
     {
       "aphia_id": 145721,
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -6731,28 +6776,25 @@
         "mean_ratio": 0.58
       },
       "korean_name": "미역",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "national_assessment": null,
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 30.9,
+        "BBVI": null,
         "MBPI": 19.6,
         "MCUI": null,
         "MFPI": 42.2
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 25.3,
-          "0.5": 30.9,
-          "0.75": 36.6
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 19.6,
         "median_compound_sensitivity": 19.6,
         "range_from_aggregation": [
@@ -6776,7 +6818,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -6967,6 +7009,7 @@
         "mean_ratio": 0.5
       },
       "korean_name": "해삼",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -7697,6 +7740,7 @@
         "mean_ratio": 0.42
       },
       "korean_name": "멍게",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -7947,6 +7991,7 @@
         "mean_ratio": 0.78
       },
       "korean_name": "살오징어",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
@@ -8140,6 +8185,7 @@
         "mean_ratio": 0.0
       },
       "korean_name": "우뭇가사리",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -8373,6 +8419,7 @@
         "mean_ratio": 0.28
       },
       "korean_name": "톳",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
@@ -8602,21 +8649,21 @@
         "mean_ratio": 0.28
       },
       "korean_name": "홍합(참담치)",
+      "mbpi_label": null,
       "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 506159,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1380,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1488,
-          1489
-        ],
+        "index_page_printed": 1487,
+        "index_page_viewer": 1489,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1380,
+        "list_page_viewer": 1382,
         "name_as_published": "홍합 Mytilus unguiculatus Valenciennes, 1858",
         "name_note": "WoRMS 541675 M. unguiculatus is a nomen oblitum; valid name 506159 M. coruscus",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
@@ -8664,7 +8711,7 @@
     },
     {
       "aphia_id": 836033,
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -9379,21 +9426,21 @@
         "mean_ratio": 0.58
       },
       "korean_name": "참굴",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 836033,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
-        "assessment_page": 1371,
         "category": "LC",
         "change": "유지",
         "first_edition_category": "LC",
-        "index_viewer_pages": [
-          1458,
-          1459
-        ],
+        "index_page_printed": 1457,
+        "index_page_viewer": 1459,
         "label": "국가 평가",
         "legal_protection_facts": [],
+        "list_page_printed": 1371,
+        "list_page_viewer": 1373,
         "name_as_published": "굴 Magallana gigas Thunberg, 1793",
         "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
@@ -9404,23 +9451,19 @@
       },
       "scientific_name": "Magallana gigas",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 33.3,
+        "BBVI": null,
         "MBPI": 1.1,
         "MCUI": 10.0,
         "MFPI": 65.5
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 17.2,
-          "0.5": 33.3,
-          "0.75": 49.4
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 1.1,
         "median_compound_sensitivity": 1.1,
         "range_from_aggregation": [
@@ -9449,7 +9492,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null

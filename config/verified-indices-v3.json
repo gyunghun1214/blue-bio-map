@@ -1,7 +1,7 @@
 {
   "method_version": "verified-pilot-3",
   "status": "provisional_unvalidated",
-  "changes_from": "verified-pilot-2: adds a separate MBPI peptide stratum and a national red-list MCUI stratum. Nutrition, weights, IUCN mapping, BBVI formula and the small-molecule stratum are unchanged.",
+  "changes_from": "verified-pilot-2: adds a separate MBPI peptide stratum and a national red-list MCUI stratum. Nutrition, weights, IUCN mapping, BBVI formula and the small-molecule stratum are unchanged. BBVI is withheld (mbpi_single_source) when the MBPI value rests on fewer than two independent DOIs (case-insensitive, duplicates counted once); that MBPI is still output with a reference-value label.",
   "nutrition": {
     "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json",
     "components": {
@@ -147,6 +147,8 @@
   },
   "bbvi": {
     "default_food_weight": 0.5,
+    "minimum_independent_mbpi_dois": 2,
+    "single_source_mbpi_label": "참고값(단일 논문)",
     "sensitivity_food_weights": [
       0.25,
       0.5,

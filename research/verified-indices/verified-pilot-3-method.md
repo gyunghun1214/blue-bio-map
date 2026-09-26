@@ -15,7 +15,9 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
 - 추가한 것:
   - MBPI 펩타이드 층
   - MCUI 국가 평가 층
+  - BBVI 보류 규칙: MBPI가 논문 한 편에만 기대면 BBVI를 내지 않는다(아래 절)
 - 추가 근거는 `research/verified-indices/evidence-v3.json` 한 파일에만 둔다. v2 입력 파일은 건드리지 않았다.
+- **연구용, 공개 화면 미연결**: AHTPDB 라이선스를 확인하기 전까지 v3는 화면(`VERIFIED`)에 연결하지 않는다.
 
 ## MBPI 펩타이드 층
 
@@ -29,6 +31,8 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
   - 결과: **352개 펩타이드**.
 - **최소 크기 30**: 30개면 한 순위 차이가 약 3 백분위점이다. 그보다 작으면 구성원 하나가 단일 DOI 감점(0.75)보다 점수를 더 크게 움직인다. 팀 시범 기준이다.
 - **라이선스**: AHTPDB 내려받기 페이지에 라이선스 표기가 없다. 원파일과 서열은 저장소에 넣지 않았다. 비교집단 파일에는 AHTPDB 행 ID, 사용한 값, 원파일 해시만 있다.
+  - 원파일은 저장소 밖에 보관한다. 2026-09-26에 해시가 같고 `--check`가 통과함을 확인했다.
+  - 인용 방식과 재배포 조건을 묻는 문의 초안을 만들었다. 보내는 것은 사용자가 한다. 답을 받기 전까지 연구용이며 공개 화면에 연결하지 않는다.
 - **종 점수 조건**(하나라도 빠지면 `partial_only`):
   - 원논문이 기원종의 실제 재료에서 서열을 확인했다.
   - 합성 펩타이드로 IC50을 쟀고, 그 값이 본문에 숫자로 있다(그림에만 있으면 제외).
@@ -38,27 +42,78 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
   - 점수값 pIC50 = 6 − log10(µM).
   - 백분위와 단일/복수 DOI 계수(0.75/1.0), 종별 최댓값 집계는 v2 저분자 층과 같다.
   - 펩타이드 항목은 `stratum_kind: "peptide"`로 표시한다.
-  - 종 행에는 `mbpi_stratum`과 `bbvi_mbpi_from_peptide_stratum`을 붙인다.
+  - 종 행에는 `mbpi_stratum`, `bbvi_mbpi_from_peptide_stratum`, `mbpi_label`을 붙인다.
 
 | 종 | 펩타이드 | IC50 | 근거 | 판정 |
 |---|---|---|---|---|
-| 미역 *Undaria pinnatifida* | KNFL | 225.87 µM | Feng et al. 2021 *Mar Drugs* 19:177, 전문 확인(HHL, 합성 98%) | 산출: 백분위 26.1 × 0.75 = **19.6** |
-| 참굴 *Magallana gigas* | AEYLCEAC | 4.287 mM | Chen et al. 2022 *Front Nutr* 9:981163, 전문 확인(HHL, 합성 >95%) | 산출: 백분위 1.4 × 0.75 = **1.1** |
+| 미역 *Undaria pinnatifida* | KNFL | 225.87 µM | Feng et al. 2021 *Mar Drugs* 19:177, 전문 확인. 미역 단백질을 효소(브로멜라인)로 분해해 얻은 펩타이드를 합성해 측정(순도 98%, HHL) | 산출: 백분위 26.1 × 0.75 = **19.6** (참고값, 단일 논문) |
+| 참굴 *Magallana gigas* | AEYLCEAC | 4.287 mM | Chen et al. 2022 *Front Nutr* 9:981163, 전문 확인. 모의 소화(효소 분해)로 얻은 펩타이드를 합성해 측정(순도 >95%, HHL) | 산출: 백분위 1.4 × 0.75 = **1.1** (참고값, 단일 논문) |
 | 미역 | VY·IY·AW·FY·VW·IW·LW | 1.5~42.3 µM | Sato et al. 2002 *JAFC* 초록 | 보류: 시험 기질을 원문에서 확인하지 못함(AHTPDB는 Cushman-Cheung으로 적음) |
 | 미역 | AIYK·YKYY·KFYG·YNKL | 21~213 µM | Suetsuna & Nakano 2000 초록 | 보류: 같은 이유 |
 | 참굴 | LSL | 107.17 nM | Feng et al. 2022 *Food Chem* 초록 | 보류: 같은 이유 |
 | 살오징어 *Todarodes pacificus* | IIY·NPPK | pIC50 4.58·4.41 | Yu et al. 2019 *IJMS* 전문(HHL) | 보류: 미오신 서열의 in silico 절단 예측이며, 오징어 재료에서 방출을 관찰하지 않음 |
 
 - 한계:
-  - 비교집단의 시험법·값은 AHTPDB 큐레이션을 따르며, 원논문을 재확인하지 않았다.
+  - 비교집단의 시험법·값은 AHTPDB 큐레이션을 따른다. 무작위 20개 구성원의 원논문 대조 결과는 아래 "비교집단 표본 점검"에 있다.
   - 같은 서열의 중복 행 값이 서로 다른 경우가 있어(예: FY 3.7과 42.3 µM) 중앙값으로 묶었다.
   - 디펩타이드(IY, VW 등)는 여러 단백질에 흔한 서열이라 종 특이성이 낮다. 이번에 보류한 행 대부분이 여기에 해당한다.
-- 참굴 MBPI 1.1은 비교집단 안에서 실제로 약하다는 뜻이며 빈칸이 아니다.
-- 보류 행의 원문에서 HHL을 확인하면 미역 점수는 크게 오를 수 있다. 예: IW 1.5 µM.
+- 참굴 MBPI 1.1은 비교집단 안에서 실제로 약하다는 뜻이며 빈칸이 아니다. 논문 한 편의 값이라 BBVI에는 넣지 않는다.
+- 보류 행의 원문에서 HHL을 확인하면 미역 MBPI는 크게 오를 수 있다. 예: IW 1.5 µM. 그 펩타이드도 논문 한 편에만 있으면 BBVI 보류는 그대로다.
+
+### 비교집단 표본 점검 (2026-09-26)
+
+- 방법: 352개 구성원 중 20개를 무작위로 뽑았다(`random.Random(20260926).sample`, 구성원 번호는 비교집단 파일 `members`의 0부터 센 순서).
+  - 구성원마다 AHTPDB 행 → 상세 쪽의 PMID·서지 → 무료 전문 순서로 찾았다.
+  - 전문에서 ACE 기질, 효소 출처, 검출법, 표의 IC50을 AHTPDB 값과 대조했다.
+  - 무료로 공개된 전문(J-STAGE PDF)만 썼다. 로그인, 유료 결제, 무단 공유 사이트는 쓰지 않았다.
+- 결과: 확인 3, 일부 확인 5, 미확인 12. HHL이 아닌 기질은 0건이다.
+  - 확인: 구성원의 AHTPDB 행을 모두 원논문과 대조했다.
+  - 일부 확인: 행 하나 이상은 대조했고, 나머지 행은 총설·책·비공개 논문이라 열지 못했다.
+  - 미확인: 원논문을 열지 못했다. 대부분 AHTPDB 출처가 총설이나 책이라 원논문이 특정되지 않는다.
+- 전문을 연 7편은 모두 HHL 기질이고, IC50이 AHTPDB 값과 같았다.
+  - 2편은 검출법이 Cushman-Cheung법이 아니다(TNBS법, Lieberman법). AHTPDB는 둘 다 "Cushman and Cheung (1971)"로 적었다. 이 열은 HHL 기질 시험이라는 뜻으로는 맞지만 검출법 표기로는 부정확하다.
+  - 1편(1994 사케)은 효소 출처를 적지 않았다.
+- 판단: 표본에서 HHL이 아닌 기질이 없어 비교집단을 연구용으로 계속 쓴다. 미확인이 많아 이 결과가 352개 전체를 보증하지는 않는다.
+
+| 구성원 | AHTPDB 행 | 판정 | 근거 |
+|---|---|---|---|
+| 8 | 1027, 1851, 2660, 2907, 6274 | 미확인 | 총설 3편, IJSID 2012(PMID 없음), Suetsuna & Nakano 2000 *J Nutr Biochem*(비공개) |
+| 18 | 1037, 1869 | 미확인 | 총설 |
+| 23 | 1064, 5656 | 일부 확인 | 5656: Yokoyama et al. 1992 *BBB* 56:1541. HHL 5 mM, 토끼 폐(Sigma), Cushman-Cheung법, 표 IV 43 µM 일치. 1064는 총설 |
+| 26 | 1067, 5659, 5672 | 일부 확인 | 5659: 같은 1992 논문, 10 µM 일치. 5672: Matsumura et al. 1993 *BBB* 57:1743, 79 µM 일치, 방법은 앞선 보고(57:695, HHL)를 따른다고 적음. 1067은 총설 |
+| 37 | 1107 | 미확인 | 총설(비공개) |
+| 58 | 1306 | 미확인 | 책(PMID 없음) |
+| 65 | 1343, 1718, 5011 | 미확인 | 책, 총설, *J Mol Struct* 2013(PMID 없음) |
+| 94 | 1737 | 미확인 | 총설 |
+| 115 | 1845, 2668, 5117 | 미확인 | 총설 2편, *J Mol Struct* 2013(PMID 없음) |
+| 117 | 1847, 2670 | 미확인 | 총설 |
+| 126 | 1899, 6215 | 일부 확인 | 6215: Kuba et al. 2003 *BBB* 67:1278. HHL 12.5 mM, 토끼 폐, Lieberman법 변형, 44.8 µM 일치. 1899는 총설 |
+| 158 | 2940 | 미확인 | IJSID 2012(PMID 없음) |
+| 190 | 5095, 5666 | 일부 확인 | 5666: Matsumura et al. 1993 *BBB* 57:695. HHL 5 mM, 토끼 폐(Sigma), Cushman-Cheung법 변형, 합성 펩타이드, 2.5 µM 일치. 5095는 *J Mol Struct* 2013(PMID 없음) |
+| 209 | 5645, 6165 | 미확인 | *J Biosci Bioeng* 2003 96:496(비공개) |
+| 253 | 5834, 5846 | 일부 확인 | 5846: *Agric Biol Chem* 1982 46:1393(DOI 10.1271/bbb1961.46.1393). HHL 5 mM, 토끼 폐(Sigma), Cushman-Cheung법 변형, ID50 77 µM 일치. 5834는 *FEBS Lett* 2002 531:369(출판사 PDF가 열리지 않음) |
+| 258 | 5841 | 미확인 | *FEBS Lett* 2002 531:369(출판사 PDF가 열리지 않음) |
+| 278 | 5907 | 미확인 | *Int Dairy J* 1998 8:325(비공개) |
+| 300 | 6148 | 확인 | Saito et al. 1994 *BBB* 58:1767(사케). HHL 6.5 mM, Cushman-Cheung법 변형, 효소 출처 표기 없음, 9.4 µM 일치 |
+| 313 | 6172 | 확인 | Matsufuji et al. 1994 *BBB* 58:2244(정어리). HHL, 토끼 폐(Sigma), TNBS법, 51 µM 일치 |
+| 321 | 6182 | 확인 | 같은 1994 논문, 205.6 µM 일치 |
+
+- *BBB*: *Biosci Biotechnol Biochem*. DOI는 10.1271/bbb.{권}.{첫 쪽} 형식이다(예: 10.1271/bbb.56.1541).
+
+## BBVI 보류: 논문 한 편에만 기댄 MBPI
+
+- **규칙**: MBPI 최고 항목(펩타이드나 화합물)을 뒷받침하는 서로 다른 DOI가 2개 미만이면 BBVI를 내지 않는다.
+  - DOI는 소문자로 바꿔 비교하고, 같은 DOI는 한 번만 센다.
+  - 사유 코드는 `mbpi_single_source`, 상태는 "산출 보류"다.
+  - MBPI 값은 그대로 내고 `mbpi_label: "참고값(단일 논문)"`을 붙인다.
+  - 설정 키는 `bbvi.minimum_independent_mbpi_dois: 2`다. 이 키가 없는 v2에는 적용되지 않는다.
+- **이유**: BBVI는 MFPI와 MBPI의 평균이라 논문 한 편의 약한 값 하나가 BBVI를 절반 가까이 끌어내린다. 예: 참굴 (65.5 + 1.1) / 2 = 33.3. 미역 30.9도 논문 한 편(KNFL)에만 기댄다.
+- **결과**: 미역과 참굴의 BBVI를 보류했다. 30종 기준 BBVI 칸은 2 → 0이다.
+- **다시 내는 조건**: 같은 항목을 다른 DOI의 논문이 측정한 값이 확인되면 BBVI를 다시 계산한다. BBVI를 살리려고 규칙을 느슨하게 하지 않는다.
 
 ## MCUI 국가 평가 층
 
-- **출처**: 국립생물자원관 『국가생물적색자료집 통합본(2019-2024)』 찾아보기 표. 연체동물은 2022년 개정판이다. IUCN 지역 적용 지침으로 평가한 범주다.
+- **출처**: 국립생물자원관 『국가생물적색자료집 통합본(2019-2024)』 찾아보기 표와, 그 표의 '페이지' 칸이 가리키는 종 목록 쪽. 연체동물은 2022년 개정판이다. IUCN 지역 적용 지침으로 평가한 범주다.
 - **적용 조건**: IUCN 전 지구 축이 `not_in_red_list` 또는 `category_not_numeric`(DD)일 때만 쓴다.
   - IUCN 숫자가 있으면 IUCN을 쓴다. 예: 살오징어는 IUCN LC.
   - 매핑은 IUCN과 같다(LC 10 등). 출력에는 `mcui_basis: "national"`과 `national_assessment.label: "국가 평가"`를 붙인다.
@@ -68,21 +123,26 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
   - *Scapharca broughtonii* → *Anadara broughtonii*
   - *Sepia esculenta* → *Acanthosepion esculentum*
 
-| 종 | 자료집 표기 | 범주 | 평가 페이지 |
-|---|---|---|---|
-| 참굴 *Magallana gigas* | 굴 *Magallana gigas* | LC | 1371 |
-| 홍합 *Mytilus coruscus* | 홍합 *Mytilus unguiculatus* | LC | 1380 |
-| 바지락 *Ruditapes philippinarum* | 바지락 | LC | 1375 |
-| 피조개 *Anadara broughtonii* | 피조개 *Scapharca broughtonii* | LC | 1380 |
-| 큰가리비 *Mizuhopecten yessoensis* | 큰가리비 | LC | 1379 |
-| 가리맛조개 *Sinonovacula constricta* | 가리맛조개 | LC | 1370 |
-| 갑오징어 *Acanthosepion esculentum* | 참갑오징어 *Sepia esculenta* | LC (IUCN은 DD) | 1379 |
-| 살오징어 *Todarodes pacificus* | 살오징어 | LC | 1376 (IUCN 우선) |
+- **쪽수**: 인쇄본 쪽과 전자책 뷰어 쪽을 따로 적는다. 뷰어 쪽은 인쇄본 쪽에 2를 더한 값이다. 2026-09-26에 아래 쪽을 모두 다시 열어, 쪽 아래 여백에 인쇄된 번호로 확인했다.
+  - 목록 쪽: 찾아보기 '페이지' 칸이 가리키는 쪽이다. 분류군·학명·국명만 있는 종 목록이며, 여기서 종이 실려 있음을 확인했다.
+  - 찾아보기 쪽: 종 행(초판·개정판 범주, 변동, 페이지)이 있는 쪽이다. 범주는 이 행에서 읽었다.
+  - 이전 판의 "평가 페이지 1370~1380"은 목록 인쇄본 쪽이고, 검색 기록의 "뷰어 1438~1491"은 찾아보기 뷰어 쪽이다. 서로 다른 쪽이라 어긋나 보였다. 이전 필드 `assessment_page`, `index_viewer_pages`는 `list_page_printed`, `list_page_viewer`, `index_page_printed`, `index_page_viewer`로 나눴다.
+
+| 종 | 자료집 표기 | 범주 | 목록 쪽 (인쇄본 / 뷰어) | 찾아보기 쪽 (인쇄본 / 뷰어) |
+|---|---|---|---|---|
+| 참굴 *Magallana gigas* | 굴 *Magallana gigas* | LC | 1371 / 1373 | 1457 / 1459 |
+| 홍합 *Mytilus coruscus* | 홍합 *Mytilus unguiculatus* | LC | 1380 / 1382 | 1487 / 1489 |
+| 바지락 *Ruditapes philippinarum* | 바지락 | LC | 1375 / 1377 | 1468 / 1470 |
+| 피조개 *Anadara broughtonii* | 피조개 *Scapharca broughtonii* | LC | 1380 / 1382 | 1486 / 1488 |
+| 큰가리비 *Mizuhopecten yessoensis* | 큰가리비 | LC | 1379 / 1381 | 1484 / 1486 |
+| 가리맛조개 *Sinonovacula constricta* | 가리맛조개 | LC | 1370 / 1372 | 1453 / 1455 |
+| 갑오징어 *Acanthosepion esculentum* | 참갑오징어 *Sepia esculenta* | LC (IUCN은 DD) | 1379 / 1381 | 1483 / 1485 |
+| 살오징어 *Todarodes pacificus* | 살오징어 | LC (IUCN 우선) | 1376 / 1378 | 1473 / 1475 |
 
 - 연결하지 않은 행:
-  - 참문어: 자료집은 *Octopus vulgaris* NT로 표기한다. WoRMS에서 *O. sinensis*와 다른 승인 종이다.
-  - 전복: 북방전복 *Haliotis discus hannai* LC는 아종이라 종으로 옮기지 않았다.
-- 검색 범위 안에서 미발견:
+  - 참문어: 자료집은 *Octopus vulgaris* NT로 표기한다(목록 1027 / 1029, 찾아보기 1484 / 1486). WoRMS에서 *O. sinensis*와 다른 승인 종이다.
+  - 전복: 북방전복 *Haliotis discus hannai* LC(목록 1376 / 1378, 찾아보기 1471 / 1473)는 아종이라 종으로 옮기지 않았다.
+- 검색 범위(찾아보기 뷰어 1438~1491 = 인쇄본 1436~1489) 안에서 미발견:
   - 해양 어류 7종: 자료집 어류는 담수 중심이다.
   - 해삼, 우렁쉥이, 해조류: 찾아보기에 극피동물·피낭동물·해조류 분류군이 없다.
   - 이 결과는 NE(미평가) 판정이 아니다.
@@ -91,8 +151,8 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
 
 | 종 | v2 | v3 | 바뀐 이유 |
 |---|---|---|---|
-| 미역 | 42.2 / — / — / — | 42.2 / 19.6 / — / **30.9** | MBPI 펩타이드 층 |
-| 참굴 | 65.5 / — / — / — | 65.5 / 1.1 / 10.0 / **33.3** | MBPI 펩타이드 층, MCUI 국가 평가 |
+| 미역 | 42.2 / — / — / — | 42.2 / 19.6 (참고값) / — / 보류 | MBPI 펩타이드 층. 단일 논문이라 BBVI 보류 |
+| 참굴 | 65.5 / — / — / — | 65.5 / 1.1 (참고값) / 10.0 / 보류 | MBPI 펩타이드 층, MCUI 국가 평가. 단일 논문이라 BBVI 보류 |
 | 홍합 | — / — / — / — | — / — / 10.0 / — | 국가 평가 |
 | 바지락 (조사 후보) | 52.1 / — / — / — | 52.1 / — / 10.0 / — | 국가 평가 |
 | 큰가리비 (조사 후보) | 56.3 / — / — / — | 56.3 / — / 10.0 / — | 국가 평가 |
@@ -102,7 +162,8 @@ python scripts/build_peptide_cohort.py --source <AHTPDB pepic50.txt> [--check]
 
 - 30종 기준 채워진 칸 수(v2 → v3):
   - MFPI 7 → 7
-  - MBPI 0 → 2
+  - MBPI 0 → 2 (둘 다 참고값, 단일 논문)
   - MCUI 7 → 14
-  - BBVI 0 → 2
+  - BBVI 0 → 0 (보류 규칙 전에는 2였다: 미역 30.9, 참굴 33.3)
 - 나머지 모든 종의 네 축 값은 v2와 같다.
+- 방어 MFPI 60.3 → 56.3은 PR #39(가식부 근거 교체)의 변경이다. v2와 v3에 똑같이 들어가서 이 표에는 없다.
