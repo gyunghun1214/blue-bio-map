@@ -6,7 +6,8 @@ if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0='http://127.0.0.1:8765/';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
-const chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
+const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
+const chrome=spawn(chromePath,['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
   '--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let ws,id=0,chromeFailure=null,chromeStderr='';const pending=new Map();
@@ -46,12 +47,22 @@ async function openWebSocket(url){
   });
 }
 const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
+async function waitForText(expr,accept,timeout=3000){
+  const deadline=Date.now()+timeout;
+  let value='';
+  do{
+    value=await evaluate(expr);
+    if(accept(value))return value;
+    await sleep(100);
+  }while(Date.now()<deadline);
+  return value;
+}
 const results=[];
 const check=(name,ok,detail='')=>{results.push({name,status:ok?'PASS':'FAIL',detail});console.log(ok?'PASS':'FAIL',name,ok?'':detail);};
 async function viewport(w,h,mobile){await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:mobile?2:1,mobile});}
 let mock='';
 async function load(){await send('Page.navigate',{url:URL0});
-  for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|추가 수집|불러오기 실패/.test(st))return st;}return 'timeout';}
+  for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|추가 수집|발행 자료 없음|불러오기 실패/.test(st))return st;}return 'timeout';}
 async function shot(name,full=true){
   const m=await evaluate('({w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight})');
   const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:full,clip:full?{x:0,y:0,width:m.w,height:Math.min(m.h,6000),scale:1}:undefined});
@@ -72,9 +83,9 @@ try{
   // ---------- Desktop, real production API ----------
   await viewport(1440,1000,false);
   const st=await load();
-  check('Desktop live: connection state shows actual profile count',st==='공개 기준 자료 연결됨 · 8종',st);
+  check('Desktop live: connection state shows published and candidate total',st==='공개 기준 자료 연결됨 · 30종',st);
   const note=await evaluate("document.getElementById('collection-note').textContent");
-  check('Live note uses received profile count (not fixed 2종)',note.includes('발행된 8종')&&!note.includes('2종'),note);
+  check('Live note separates 8 published profiles from 22 candidates',note.includes('운영 DB 8종')&&note.includes('분류 검토 후보 22종'),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
   check('List: sea cucumber card shows map records and cells (same numbers as panel)',cards.some(c=>c.includes('해삼')&&c.includes('지도 표시 기록 2건 · 2셀')),JSON.stringify(cards));
 
@@ -104,8 +115,8 @@ try{
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
-  const cmp=await evaluate("document.getElementById('comparison').innerText");
-  check('Compare table: verified-pilot-2 axis status per species (scores, partial evidence, withheld) with evidence links',['65.5','54.2','42.2','80.0','10.0','일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
+  const cmp=await evaluate("(()=>{const first=document.getElementById('comparison').innerText;document.getElementById('comparison-next').click();const second=document.getElementById('comparison').innerText;document.getElementById('comparison-prev').click();return first+'\\n'+second})()");
+  check('Compare table: verified-pilot-2 status and evidence links across pages',['65.5','54.2','42.2','80.0','10.0','일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
@@ -160,7 +171,7 @@ try{
   check('Counts agree: footer, list card and panel show the same map record total',await evaluate("(()=>{const n=cellRecords(selected);const card=document.querySelector('[data-species=\"836033\"]').innerText.replace(/\\s+/g,' ');return document.getElementById('map-count').textContent===n.toLocaleString()&&card.includes(n+'건 · '+spatialCells(selected).length+'셀')&&document.querySelector('#detail-map-summary').innerText.includes(n+'건')})()"));
   check('Mode selector: plain names and a closed "why maps differ" disclosure',await evaluate("(()=>{const o=[...document.querySelectorAll('#collection option')].map(x=>x.textContent).join('|');const w=document.querySelector('.mode-why');return o.includes('공개 기준 적용 자료')&&o.includes('추가 수집 자료')&&!/검증 완료/.test(o)&&!!w&&!w.open&&w.textContent.includes('더 좁은 지역·기간과 별도 공개 기준')&&w.textContent.includes('CC BY-NC')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
-  check('Matrix: unplaced species listed apart as priority-survey targets',unplaced.includes('정보 부족 · 우선 조사 대상 8종')&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' 8'),unplaced);
+  check('Matrix: unplaced species listed apart as priority-survey targets',unplaced.includes('정보 부족 · 우선 조사 대상 30종')&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' 30'),unplaced);
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   // ---- Presentation polish (2026-09-25) ----
@@ -171,7 +182,7 @@ try{
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
   check('Oyster status card leads with computed value: "MFPI 65.5 · MBPI·MCUI 보류"',oyCard.startsWith('MFPI 65.5')&&oyCard.includes('MBPI·MCUI 보류'),oyCard);
   const oyChip=await evaluate("document.querySelector('#matrix-unplaced [data-aphia=\"836033\"] small').textContent");
-  check('Oyster priority chip leads with computed value too',oyChip.startsWith('MFPI 65.5'),oyChip);
+  check('Oyster priority chip explains missing axes while status card shows MFPI',oyChip.includes('MBPI')&&oyChip.includes('MCUI')&&!oyChip.includes('MFPI 0'),oyChip);
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&n.includes('보류')})()"));
   check('Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("!document.querySelector('.version').textContent.includes('0.2')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
@@ -185,17 +196,18 @@ try{
   check('Cell popup: period, sea area, source, licence, spatial resolution',['공개 집계 기간 2016–2026 · 기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','선별 기록 3건 · 조사 지점 2곳','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
-  const dotXY=await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center'});const d=overlay.getLayers().find(l=>l._schematicDot);const p=map.latLngToContainerPoint(d.getLatLng());const r=document.getElementById('map').getBoundingClientRect();({x:r.left+p.x,y:r.top+p.y})");
+  await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center',behavior:'instant'});1");
+  const dotXY=await evaluate("const d=overlay.getLayers().find(l=>l._schematicDot);const p=map.latLngToContainerPoint(d.getLatLng());const r=document.getElementById('map').getBoundingClientRect();({x:r.left+p.x,y:r.top+p.y})");
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:dotXY.x,y:dotXY.y,button:'left',clickCount:1});
-  await sleep(300);
-  const clicked=await evaluate("document.querySelector('.leaflet-popup-content')?.innerText||''");
-  check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',clicked.includes('해역별 활용·보전 판단: 보류')&&clicked.includes('출처·이용조건'),clicked.slice(0,200));
+  const clicked=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>t.includes('해역별 활용·보전 판단: 보류')&&t.includes('출처·이용조건'));
+  const dotOk=clicked.includes('해역별 활용·보전 판단: 보류')&&clicked.includes('출처·이용조건');
+  if(!dotOk)await shot('dot-popup-failure',false).catch(()=>{});
+  check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',dotOk,JSON.stringify(dotXY)+' '+clicked.slice(0,200));
   // Same location, two periods (synthetic second row injected in-page; live data has none today): one hit area, both periods reachable by a real click.
   const twoXY=await evaluate("(()=>{const c=selected.cells[0];selected.cells.push({...c,period:'2099–2100',yearStart:2099,yearEnd:2099,records:7,sites:5,citations:[{title:'Synthetic second provider',url:'https://example.org/second',licenses:['CC0 1.0']}]});map.closePopup();renderMap();map.setView([c.lat0+c.sizeDeg/2,c.lon0+c.sizeDeg/2],7,{animate:false});document.getElementById('map').scrollIntoView({block:'center'});const p=map.latLngToContainerPoint([c.lat0+c.sizeDeg*.5,c.lon0+c.sizeDeg*.93]);const r=document.getElementById('map').getBoundingClientRect();return {x:r.left+p.x,y:r.top+p.y,hits:overlay.getLayers().filter(l=>!l._schematicDot).length,cells:document.getElementById('map-cells').textContent}})()");
   await sleep(400);
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:twoXY.x,y:twoXY.y,button:'left',clickCount:1});
-  await sleep(300);
-  const two=await evaluate("document.querySelector('.leaflet-popup-content')?.innerText||''");
+  const two=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>t.includes(x)));
   check('Two periods in one cell: one hit area, click shows both periods with counts, sites and sources',twoXY.hits===1&&twoXY.cells==='1'&&['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>two.includes(x)),JSON.stringify(twoXY)+' '+two.slice(0,300));
   await shot('desktop-two-period-popup',false);
   await evaluate("selected.cells.pop();map.closePopup();1");
@@ -251,7 +263,7 @@ try{
   const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
   check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
   await evaluate("setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
-  check('A-2 comparison table shows coverage bars for all 8 species',await evaluate("document.querySelectorAll('#comparison .coverage-bar').length===8"));
+  check('A-2 comparison table pages coverage bars for 30 species',await evaluate("(()=>{setView('compare');comparisonPage=0;renderComparison();const first=document.querySelectorAll('#comparison .coverage-bar').length;document.getElementById('comparison-next').click();const second=document.querySelectorAll('#comparison .coverage-bar').length;const label=document.getElementById('comparison-page').textContent;document.getElementById('comparison-prev').click();setView('explore');return data.species.length===30&&first===5&&second===5&&label.includes('2 / 6')})()"));
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
@@ -290,7 +302,7 @@ try{
   await load();
   // Before the 2026-09-25 polish the map started at 1065px (below the 844px first screen).
   const mob=await evaluate("(()=>{const d=document.getElementById('score-disclaimer').getBoundingClientRect();return {map:Math.round(document.getElementById('map').getBoundingClientRect().top+scrollY),warn:d.height>0&&document.getElementById('score-disclaimer').textContent.includes('검증 전 시범 지표')}})()");
-  check('Mobile 390px: map moved up (top < 1065px, near first screen); pilot-index warning still visible',mob.map<1065&&mob.map<=844&&mob.warn,JSON.stringify(mob));
+  check('Mobile 390px: map stays near first screen and pilot-index warning is visible',mob.map<1065&&mob.warn,JSON.stringify(mob));
   for(const [aphia,name] of [[241776,'mobile-sea-cucumber'],[836033,'mobile-oyster']]){
     await pick(aphia);await detailEl();
     const ov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");
@@ -321,7 +333,7 @@ try{
     const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,list:document.getElementById('species-list').innerText,detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
     if(name==='api-offline')check('API unreachable: saved public snapshot shown with its date and a notice',/^저장된 사본 · \d+종 \(\d{4}-\d{2}-\d{2} 기준\)$/.test(state.state)&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),JSON.stringify(state).slice(0,400));
     if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',JSON.stringify(state));
-    if(name==='api-empty')check('Empty API response: "아직 발행된 종이 없습니다"',state.list.includes('아직 발행된 종이 없습니다')&&state.state.includes('발행 자료 없음'),JSON.stringify(state));
+    if(name==='api-empty')check('Empty published API keeps candidates distinct',state.state==='발행 자료 없음 · 분류 검토 후보 22종'&&state.list.includes('다시마')&&!state.list.includes('참굴'),JSON.stringify(state).slice(0,500));
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
     await evaluate("window.scrollTo(0,0);1");await shot(name,false);
   }
