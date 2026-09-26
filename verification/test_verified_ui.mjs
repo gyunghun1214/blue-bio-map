@@ -151,6 +151,24 @@ bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>bad});
 next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);
 assert.equal(next.species[0].assessment,undefined,'browser must reject score that differs from its trace');
+const falseRank=report();
+const falseFood=falseRank.species.find(s=>s.aphia_id===145721);
+falseFood.food_trace.nutrients.protein_g.percentile_unrounded=99;
+falseFood.food_trace.nutrients.protein_g.percentile=99;
+const f=falseFood.food_trace,settings=falseRank.method.nutrition;
+const nutrients=Object.values(f.nutrients);
+const recalculated=settings.nutrient_weight*nutrients.reduce((sum,n)=>sum+n.percentile_unrounded*n.evidence_factor,0)/nutrients.length+
+  100*settings.edible_fraction_weight*f.edible_fraction.value+
+  100*settings.aquaculture_weight*Number(f.aquaculture.feasible);
+falseFood.scores.MFPI=Math.round(recalculated*10)/10;
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>falseRank});
+next={live:true,species:[sp(145721,'Undaria pinnatifida','미역')]};await ctx.attach(next);
+assert.equal(next.species[0].assessment,undefined,'browser must recalculate percentile from frozen peer values, not trust a self-consistent forged score');
+const falsePeer=report();
+falsePeer.species.find(s=>s.aphia_id===145721).food_trace.nutrients.protein_g.peer_values[0].value=0.1;
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>falsePeer});
+next={live:true,species:[sp(145721,'Undaria pinnatifida','미역')]};await ctx.attach(next);
+assert.equal(next.species[0].assessment,undefined,'changed peer values must invalidate the published rank');
 const badMcui=report();
 badMcui.species.find(s=>s.aphia_id===241776).scores.MCUI=60;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>badMcui});
