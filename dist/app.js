@@ -16,7 +16,7 @@ const coverageStages={unavailable:'미확인',found:'원자료 발견',linked:'�
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
     const a=s.audit;
-    return {checks:[
+    const checks=[
       {name:'학명',stage:'verified',detail:'WoRMS 승인명과 AphiaID 연결. 별도 GBIF 동의어는 원문 확인 뒤 연결.'},
       {name:'출현',stage:s.cells.length?'linked':a.gbif.retrievedCount>0?'found':'unavailable',
         detail:s.cells.length?'1930년 표본 1건만 역사적 출현 셀에 연결. 나머지 조회 기록의 공개 검수 보류. OBIS 미조회.':a.gbif.retrievedCount>0?'GBIF 시험 범위에서 조회했지만 공개 셀의 종·라이선스·민감도 검수 보류. OBIS 미조회.':'GBIF 시험 범위 검색 0건. OBIS 미조회. 종 부재가 아님.'},
@@ -25,7 +25,9 @@ function evidenceCoverage(s) {
       {name:'생리활성',stage:'unavailable',detail:'기원종·화합물·정량 실험 원문 미검수.'},
       {name:'보전',stage:a.iucn.record?.category?'found':'unavailable',
         detail:a.iucn.record?.category?'IUCN 게시 체크리스트에 전 지구 평가 메타데이터 있음. 원평가 일자·기준 미검수.':'체크리스트 정확한 승인명 연결 미확인. 공식 NE 아님.'}
-    ]};
+    ];
+    // A reviewed candidate assessment replaces the audit-only axis stages; name and occurrence stay audit-based.
+    return s.assessment?{checks:[...checks.slice(0,2),...evidenceCoverage({...s,catalog:null}).checks.slice(2)]}:{checks};
   }
   const i=s.info||{}, a=s.assessment, f=a?.food_trace||{};
   const partial=a?.bioactivity_partial||[], conservation=a?.conservation_trace;
@@ -177,11 +179,13 @@ async function attachPilotAssessments(next) {
     const report=await response.json();
     const verified=VERIFIED.includes(report.method_version);
     if(!['pilot-1',...VERIFIED].includes(report.method_version)||report.status!=='provisional_unvalidated'||!Array.isArray(report.species))return;
-    const byId=new Map(report.species.map(s=>[s.aphia_id,s]));
-    if(byId.size!==report.species.length)return;
+    const rows=[...report.species,...(verified&&Array.isArray(report.candidate_species)?report.candidate_species:[])];
+    const byId=new Map(rows.map(s=>[s.aphia_id,s]));
+    if(byId.size!==rows.length)return;
     for(const s of next.species){
       let a=byId.get(s.aphiaID);
       if(a?.scientific_name!==s.name||!a.scores||!Array.isArray(a.source_ids))continue;
+      if(!!s.catalog!==(a.candidate_label==='조사 후보'))continue; // research candidates never attach as operating species
       if(verified){
         if(verifiedReportSpeciesValid(a,report))s.assessment={...a,report_version:report.method_version};
         continue;
@@ -385,6 +389,11 @@ function foodEvidencePanel(s) {
     `<div class="withheld"><b>동일 기준 종별 원자료 미확인</b>${esc(inventory)} ${esc(farming)} 단백질(g), 철·아연(mg)의 생물 가식부 100 g 실측·계산·대용값과 방법·시료 시기, 가식부 비율, 양식 근거, 동기준 비교 3종 이상 및 이용조건을 원레코드에서 확인해야 합니다. 미확인은 0점이 아닙니다.</div>`;
 }
 
+// Short table labels; the full sentence is in scoreReason. Unconfirmed is a reason, never a low value.
+const shortReason={comparable_nutrition_missing:'고정 비교집단에 종 행 없음',food_row_not_species_specific:'식품 행이 종 수준 아님',
+  component_missing_in_source:'필수 성분 결측',aquaculture_method_unverified:'양식 근거 부족',
+  compound_origin_assay_chain_or_fixed_cohort_missing:'기원종→물질→시험 비교집단 없음',not_in_red_list:'IUCN 검색 0건 · 낮은 점수 아님',
+  assessment_lookup_failed:'IUCN 조회 실패',category_not_numeric:'IUCN DD · 숫자 없음',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요'};
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
   food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
@@ -612,11 +621,12 @@ function renderCandidateDetail(s){
       row('GBIF 시험 조회',`조회 ${countOrUnknown(g.retrievedCount)}건 · 최종 공개 ${s.cells.length?1:0}건 / ${s.cells.length}셀 · 잠정 품질 통과 ${countOrUnknown(g.preliminaryEligible)}건(나머지 민감도·중복 재검토 전)`,'pending')+
       (s.cells.length?'<p class="fine">공개 기록: 1930년 보존 표본, CAS Invertebrate Zoology · 기록과 데이터셋 CC0 1.0 · WoRMS 동의어 연결 확인 · 좌표 불확실성 6,065 m · 공개 해상도 4°. '+sourceLink(s.sources[0].url,'원 데이터셋 ↗')+' · '+sourceLink('https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni','동의어 근거 ↗')+'</p>':'')+
       row('OBIS','접근 시간 초과 · 이 종의 조회는 미실행','pending')+
+      (s.assessment?'<p class="pending">조사 후보 · 운영 8종과 같은 규칙으로 축별 판정했지만 후보 목록에서 옮기지 않습니다.</p>'+renderVerifiedIndices(s):
       row('식량·영양',food,'pending')+
       row('생리활성','기원종→화합물→assay 원문 미검수','pending')+
       row('보전',conservation,'pending')+
       row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
-      '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'+
+      '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>')+
       '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
       '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
       ' · '+esc(g.scope)+' · 제외 사유와 원 데이터셋: <a href="https://github.com/gyunghun1214/blue-bio-map/blob/main/dist/expansion-evidence.json" target="_blank" rel="noopener noreferrer">22종 감사표 ↗</a></p>'+
@@ -1108,8 +1118,9 @@ function renderComparison(){
     const cohortLabel=cohort==='rda-10.4-raw-marine-animals'?'수산동물':cohort==='rda-10.4-raw-seaweeds'?'해조류':cohort;
     const cohortCount=cohort?(data.assessmentInfo?.cohorts||[]).find(c=>c.cohort_id===cohort)?.food_item_ids?.length:null;
     return `<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="${key}" aria-label="${esc(s.label)} ${key} ${value===null?status:value.toFixed(1)}${cohort?' · '+esc(cohortLabel)+' 고정 비교집단 · 다른 집단과 비교 불가':''} 근거 보기">`+
-      `${value===null?esc(status):value.toFixed(1)}<small>${value===null?'근거·보류 사유 보기':'검증 전 시범 지표 · 근거 보기'}</small>`+
-      (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''} · 집단 간 점수 비교 불가</small>`:'')+'</button>';
+      `${value===null?esc(status):value.toFixed(1)}<small>${value===null?esc(shortReason[s.assessment.withheld_reasons?.[key]]||'근거·보류 사유')+' · 보기':'검증 전 시범 지표 · 근거 보기'}</small>`+
+      (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''} · 집단 간 점수 비교 불가</small>`:'')+
+      (s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
   };
   const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
     ['출현기록',s=>s.live&&s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · GBIF CC0·CC BY</small>`:s.catalog&&s.audit?pending(s.audit.gbif.retrievedCount===0?'GBIF 검색 0건 · OBIS 미조회':`GBIF 조회 ${s.audit.gbif.retrievedCount}건 · 공개 보류`):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],

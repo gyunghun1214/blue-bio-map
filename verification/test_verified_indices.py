@@ -159,6 +159,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.run_build(evidence=unreviewed)
 
+    def test_research_candidates_stay_separate_from_operating_species(self):
+        report = self.run_build()
+        self.assertEqual(len(report["species"]), 8)
+        rows = {s["aphia_id"]: s for s in report["candidate_species"]}
+        self.assertEqual(len(rows), 22)
+        self.assertTrue(all(s["candidate_label"] == "조사 후보" for s in rows.values()))
+        self.assertEqual(rows[231750]["scores"]["MFPI"], 52.1)                       # 바지락, same frozen cohort
+        self.assertEqual(rows[397082]["scores"]["MCUI"], 80.0)                       # Haliotis discus EN
+        self.assertIsNone(rows[275816]["scores"]["MCUI"])                            # not in Red List is not low
+        self.assertEqual(rows[275816]["withheld_reasons"]["MCUI"], "not_in_red_list")
+        self.assertEqual(rows[1666974]["withheld_reasons"]["MCUI"], "category_not_numeric")
+        cohort = next(c for c in report["comparison_cohorts"] if c["cohort_id"] == "rda-10.4-raw-marine-animals")
+        self.assertEqual(cohort["operating_candidates"], [250680, 836033])
+        self.assertIn(231750, cohort["research_candidates"])
+
     def test_unexplored_flag_never_copies_scores(self):
         synthetic_assays(self.evidence)
         report = self.run_build()

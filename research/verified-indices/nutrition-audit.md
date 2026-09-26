@@ -235,3 +235,6 @@ Also state that **the data are based on Australian foods and may not be
 appropriate in other countries**. Do not imply FSANZ endorsement or use its
 logo. The original FRDC PDF has separate restrictive terms; attribution to
 AFCD does not grant permission to redistribute the PDF or its complete tables.
+
+
+**조사 후보 22종 (2026-09-26):** 같은 규칙으로 조사한 결과와 보류 사유는 [candidate-evidence-2026-09-26.md](candidate-evidence-2026-09-26.md)에 있다.

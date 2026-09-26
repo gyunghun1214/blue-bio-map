@@ -137,7 +137,7 @@ assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/>65\.5<small>검증 전 시범 지표/);
 assert.doesNotMatch(dom.comparison.innerHTML,/해조류 3개 식품/,'no seaweed MFPI on page 2');
-assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>근거·보류 사유 보기/,'unscored species stay withheld, not zero');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>필수 성분 결측 · 보기/,'unscored species stay withheld, not zero');
 dom['comparison-next'].click();
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
 dom['comparison-prev'].click();
@@ -161,4 +161,14 @@ noName.species.find(s=>s.aphia_id===836033).scientific_name='Another oyster';
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>noName});
 next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);
 assert.equal(next.species[0].assessment,undefined,'accepted taxon join needs both name and AphiaID');
-console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards');
+// Research candidates attach only to catalog entries and keep their own label.
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
+const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:{gbif:{retrievedCount:0},nutrition:{},iucn:{}},cells:[]});
+next={live:true,species:[cand(231750,'Ruditapes philippinarum','바지락'),cand(275816,'Paralichthys olivaceus','넙치'),sp(397082,'Haliotis discus','전복(종 수준)')]};
+await ctx.attach(next);
+assert.equal(ctx.score(next.species[0],'MFPI'),52.1);
+assert.equal(ctx.score(next.species[1],'MCUI'),null,'not in Red List is never a low score');
+assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
+assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
+assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'calculated');
+console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards, research candidates');

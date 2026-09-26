@@ -31,6 +31,7 @@ DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
 DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
+DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
 AXES = ("MFPI", "MBPI", "MCUI", "BBVI")
 
@@ -392,7 +393,7 @@ def unexplored_flag(aphia: int, output: list[dict], taxonomy: dict, threshold: f
     return None
 
 
-def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxonomy: dict) -> dict:
+def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxonomy: dict, catalog: dict | None = None) -> dict:
     require(evidence.get("schema_version") == 3 and candidates.get("schema_version") == 1, "unsupported evidence/candidate schema")
     require(valid_date(evidence.get("snapshot_date")) and config.get("method_version"), "snapshot/method required")
     require(evidence["snapshot_date"] >= candidates["checked_on"], "candidate list newer than evidence")
@@ -414,8 +415,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
     primary = build_cohorts(settings["primary_cohorts"], rows, settings, sources)
     cross = build_cohorts(settings["cross_check_cohorts"], evidence_rows, settings, sources)
     assay = bio_scores(evidence, config)
-    output = []
-    for candidate in identities:
+    def assess(candidate: dict) -> dict:
         aphia = candidate["aphia_id"]
         mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
         mbpi, bio_trace, bio_sensitivity = assay.get(aphia, (None, [], {}))
@@ -461,20 +461,31 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item["activity_ids"]}
         source_ids.discard(None)
         require(all(s in sources for s in source_ids), f"{aphia}: unregistered source")
-        output.append({"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
-                       "scores": scores, "score_status": status, "withheld_reasons": reasons,
-                       "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
-                       "information_sufficiency": sufficiency,
-                       "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
-                       "conservation_trace": conservation_trace, "sensitivity": sensitivity,
-                       "source_ids": sorted(source_ids)})
+        return {"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
+                "scores": scores, "score_status": status, "withheld_reasons": reasons,
+                "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
+                "information_sufficiency": sufficiency,
+                "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
+                "conservation_trace": conservation_trace, "sensitivity": sensitivity,
+                "source_ids": sorted(source_ids)}
+    output = [assess(c) for c in identities]
+    operating = {c["aphia_id"] for c in identities}
+    if catalog is None:
+        catalog = json.loads(DEFAULT_CATALOG.read_text(encoding="utf-8"))
+    research = []
+    for c in catalog.get("species", []):
+        require(c["aphiaID"] not in operating, f"{c['aphiaID']}: research candidate duplicates an operating species")
+        row = assess({"aphia_id": c["aphiaID"], "scientific_name": c["name"], "korean_name": c.get("label")})
+        row["candidate_label"] = "조사 후보"  # a score never promotes a research candidate to the operating list
+        research.append(row)
     for s in output:
         s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], output, taxonomy.get("species", {}), config["unexplored_threshold"])
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
                 "food_item_ids": [r["food_item_id"] for r in c["rows"]],
                 "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),
                 "source": f"RDA National Standard Food Composition DB 10.4 (retrieved {snapshot['retrieved']})",
-                "operating_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"]}),
+                "operating_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"] in operating}),
+                "research_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"] and r["aphia_id"] not in operating}),
                 "exclusions": c["spec"]["rule"].get("exclude_food_item_ids", {})} for cid, c in primary.items()]
     cohorts += [{"cohort_id": cid, "role": "cross_check", "criteria": c["spec"]["criteria"],
                  "food_item_ids": [r["food_item_id"] for r in c["rows"]], "size": len(c["rows"])} for cid, c in cross.items()]
@@ -483,7 +494,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             "generated_at": evidence["snapshot_date"] + "T00:00:00Z", "food_weight": config["bbvi"]["default_food_weight"],
             "comparison_cohorts": cohorts,
             "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
-            "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output}
+            "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
+            "candidate_species": research}
 
 
 def render(report: dict) -> str:
