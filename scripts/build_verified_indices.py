@@ -286,7 +286,7 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
     return None, trace, "species_edible_yield_unverified"
 
 
-def _approved_assays(evidence: dict, config: dict) -> list[dict]:
+def _approved_assays(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) -> list[dict]:
     rows = [r for r in evidence.get("bioactivity", []) if r.get("status") == "approved_for_score"]
     eligible = config["bioactivity"]["eligible_endpoints"]
     for a in rows:
@@ -302,6 +302,9 @@ def _approved_assays(evidence: dict, config: dict) -> list[dict]:
                 and a.get("data_validity_comment") in (None, "Manually validated")
                 and a.get("material_kind") == "single_compound",
                 f"{a.get('activity_id')}: incomplete compound-origin/ChEMBL chain")
+        candidate = candidates_by_id.get(a["origin_aphia_id"])
+        require(candidate is not None and candidate["scientific_name"] == a["origin_scientific_name"],
+                f"{a['activity_id']}: origin species does not match accepted candidate identity")
         finite(a.get("standard_value"), "standard_value", 0.0000001)
         p = finite(a.get("pchembl_value"), "pchembl_value", 0, 15)
         require(abs(p - (9 - math.log10(a["standard_value"]))) < 0.03,
@@ -349,8 +352,8 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
-def bio_scores(evidence: dict, config: dict) -> dict[int, tuple[float, list, dict]]:
-    approved = _approved_assays(evidence, config)
+def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) -> dict[int, tuple[float, list, dict]]:
+    approved = _approved_assays(evidence, config, candidates_by_id)
     by_id = {a["activity_id"]: a for a in approved}
     require(len(by_id) == len(approved), "duplicate bioactivity ID")
     out: dict[int, tuple] = {}
@@ -486,7 +489,13 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
     require(len(evidence_rows) == len(evidence.get("nutrition_rows", [])), "duplicate food item ID")
     primary = build_cohorts(settings["primary_cohorts"], rows, settings, sources)
     cross = build_cohorts(settings["cross_check_cohorts"], evidence_rows, settings, sources)
-    assay = bio_scores(evidence, config)
+    if catalog is None:
+        catalog = json.loads(DEFAULT_CATALOG.read_text(encoding="utf-8"))
+    # Approved assays must match an accepted identity: operating species or a catalog research candidate.
+    known_identities = {c["aphia_id"]: c for c in identities}
+    for c in catalog.get("species", []):
+        known_identities.setdefault(c["aphiaID"], {"aphia_id": c["aphiaID"], "scientific_name": c["name"]})
+    assay = bio_scores(evidence, config, known_identities)
     def assess(candidate: dict) -> dict:
         aphia = candidate["aphia_id"]
         mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
@@ -568,8 +577,6 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         return row
     output = [assess(c) for c in identities]
     operating = {c["aphia_id"] for c in identities}
-    if catalog is None:
-        catalog = json.loads(DEFAULT_CATALOG.read_text(encoding="utf-8"))
     research = []
     for c in catalog.get("species", []):
         require(c["aphiaID"] not in operating, f"{c['aphiaID']}: research candidate duplicates an operating species")

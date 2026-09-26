@@ -158,6 +158,17 @@ class VerifiedIndicesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.run_build(evidence=evidence)
 
+    def test_mislinked_origin_compound_and_assay_are_rejected(self):
+        for field, wrong in (("origin_scientific_name", "Apostichopus japonicus"),
+                             ("origin_aphia_id", 241776), ("compound_id", "unconfirmed"),
+                             ("target_id", "different-target"), ("conditions_key", "72h")):
+            with self.subTest(field=field):
+                evidence = copy.deepcopy(self.evidence)
+                synthetic_assays(evidence)  # arithmetic fixture, never a real-scored record
+                evidence["bioactivity"][-1][field] = wrong
+                with self.assertRaises(ValueError):
+                    self.run_build(evidence=evidence)
+
     def test_tots_cell_assay_stays_partial_without_exact_identity(self):
         report = self.run_build()
         row = species(report, 494972)
