@@ -1158,7 +1158,9 @@ function matrixBlockerText(s){
   const food=row.scores.MFPI===null?`MFPI ${Array.isArray(reason.MFPI)?reason.MFPI.map(k=>matrixReasonLabel[k]||k).join('·'):(matrixReasonLabel[reason.MFPI]||reason.MFPI)}`:null;
   const bio=row.scores.MBPI===null?`MBPI ${row.bioactivity_missing_steps.map(k=>matrixReasonLabel[k]||k).join('·')}`:null;
   const cons=row.scores.MCUI===null?`MCUI ${reason.MCUI==='not_in_red_list'?'IUCN 평가 검색 미확인':row.scope==='expansion_22'?'IUCN 원평가 검수 필요':'IUCN 원평가 확인 필요'}`:null;
-  return [food,bio,cons].filter(Boolean).join(' / ');
+  // Computed pilot values come first, so a held axis never hides a value the report did calculate.
+  const done=['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)!==null).map(k=>`${k} ${pilotScore(s,k).toFixed(1)}`);
+  return [...done,food,bio,cons].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
