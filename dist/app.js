@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0;
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
 const VERIFIED = ['verified-pilot-2'];
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
@@ -1140,13 +1140,23 @@ function updateWeightControl(){
   $('bbvi-weight').disabled=!n;
   $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · 두 축(MFPI·MBPI)이 모두 있는 종이 생기면 조절됩니다';
 }
+const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'IUCN 평가 검색 미확인',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단'};
+function matrixBlockerText(s){
+  const row=matrixReadiness.get(s.aphiaID);
+  if(!row||row.scientific_name!==s.name)return scoreSummary(s);
+  const reason=row.axis_reasons;
+  const food=row.scores.MFPI===null?`MFPI ${Array.isArray(reason.MFPI)?reason.MFPI.map(k=>matrixReasonLabel[k]||k).join('·'):(matrixReasonLabel[reason.MFPI]||reason.MFPI)}`:null;
+  const bio=row.scores.MBPI===null?`MBPI ${row.bioactivity_missing_steps.map(k=>matrixReasonLabel[k]||k).join('·')}`:null;
+  const cons=row.scores.MCUI===null?`MCUI ${reason.MCUI==='not_in_red_list'?'IUCN 평가 검색 미확인':row.scope==='expansion_22'?'IUCN 원평가 검수 필요':'IUCN 원평가 확인 필요'}`:null;
+  return [food,bio,cons].filter(Boolean).join(' / ');
+}
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
   $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
-  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(scoreSummary(s))}</small></button>`).join('')}</div>`:'';
+  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
@@ -1187,8 +1197,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent=live?'공개 기준 자료 · 공개 1° 셀':'추가 수집 자료(OBIS) · 1° 격자';
   try{
-    const [next,other]=await Promise.all([live?loadPublishedProfiles():fetch('data.json').then(r=>{if(!r.ok)throw Error('추가 수집 자료를 불러오지 못했습니다.');return r.json();}),
-      live?fetch('data.json').then(r=>r.ok?r.json():null).catch(()=>null):null]);
+    const [next,other,readiness]=await Promise.all([live?loadPublishedProfiles():fetch('data.json').then(r=>{if(!r.ok)throw Error('추가 수집 자료를 불러오지 못했습니다.');return r.json();}),
+      live?fetch('data.json').then(r=>r.ok?r.json():null).catch(()=>null):null,
+      fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    matrixReadiness=new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
     otherCollection=other?.species||[];
     if(request!==requestNumber)return;
     if(live)await attachPilotAssessments(next);
