@@ -1,0 +1,689 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-26",
+  "sources": {
+    "ahtpdb_ic50_2026": {
+      "provider": "AHTPDB, IIIT-Delhi (Raghava group)",
+      "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+      "version": "download retrieved 2026-09-26; sha256 in peptide-cohort-ahtpdb-ace-hhl.json",
+      "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
+      "accessed": "2026-09-26",
+      "terms": "No licence stated on the download page; only row IDs and numeric values are kept, sequences and the file are not redistributed",
+      "license": "none stated"
+    },
+    "feng_2021_knfl": {
+      "provider": "Marine Drugs 19:177 (Feng et al. 2021), full text via Europe PMC PMC8004985",
+      "title": "Affinity purification of ACE inhibitory peptides from wakame (Undaria pinnatifida)",
+      "version": "2021",
+      "doi": "10.3390/md19030177",
+      "pmid": "33807119",
+      "url": "https://doi.org/10.3390/md19030177",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "CC BY 4.0"
+    },
+    "chen_2022_oyster": {
+      "provider": "Frontiers in Nutrition 9:981163 (Chen et al. 2022), full text via Europe PMC PMC9445672",
+      "title": "A novel ACE inhibitory peptide from oyster (Crassostrea gigas)",
+      "version": "2022",
+      "doi": "10.3389/fnut.2022.981163",
+      "pmid": "36082025",
+      "url": "https://doi.org/10.3389/fnut.2022.981163",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "CC BY 4.0"
+    },
+    "sato_2002_wakame": {
+      "provider": "J Agric Food Chem 50:6245 (Sato et al. 2002), PubMed abstract",
+      "title": "ACE inhibitory peptides derived from wakame (Undaria pinnatifida)",
+      "version": "2002",
+      "doi": "10.1021/jf020482t",
+      "pmid": "12358510",
+      "url": "https://doi.org/10.1021/jf020482t",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    },
+    "suetsuna_2000_wakame": {
+      "provider": "J Nutr Biochem 11:450 (Suetsuna & Nakano 2000), PubMed abstract",
+      "title": "Identification of an antihypertensive peptide from peptic digest of wakame",
+      "version": "2000",
+      "doi": "10.1016/s0955-2863(00)00110-8",
+      "pmid": "11091100",
+      "url": "https://doi.org/10.1016/s0955-2863(00)00110-8",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    },
+    "feng_2022_oyster": {
+      "provider": "Food Chemistry 379:132160 (Feng et al. 2022), PubMed abstract",
+      "title": "Steam cooking and proteolysis of Pacific oyster (Crassostrea gigas) proteins",
+      "version": "2022",
+      "doi": "10.1016/j.foodchem.2022.132160",
+      "pmid": "35063855",
+      "url": "https://doi.org/10.1016/j.foodchem.2022.132160",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    },
+    "yu_2019_todarodes": {
+      "provider": "Int J Mol Sci 20:4159 (Yu et al. 2019), full text via Europe PMC PMC6747323",
+      "title": "Novel ACE inhibitory peptides from Todarodes pacificus: in silico and in vitro",
+      "version": "2019",
+      "doi": "10.3390/ijms20174159",
+      "pmid": "31454889",
+      "url": "https://doi.org/10.3390/ijms20174159",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "CC BY 4.0"
+    },
+    "nibr_red_data_book_2024": {
+      "provider": "National Institute of Biological Resources (NIBR), Republic of Korea",
+      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)",
+      "version": "2024 integrated edition; mollusc revision (vol. 6) 2022",
+      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
+      "accessed": "2026-09-26",
+      "terms": "Category, criteria and page reference only; no text or tables copied",
+      "license": "Government publication; reuse terms not stated in the viewer"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.3390/md19030177:KNFL",
+      "source_id": "feng_2021_knfl",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "KNFL",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 225.87,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.3390/md19030177",
+      "verification": "Full text: KNFL identified by MALDI-TOF-TOF in a fraction of wakame protein hydrolysate; the chemically synthesized peptide (98%) has IC50 225.87 ± 2.7 µM in text; HHL substrate, rabbit-lung ACE. The paper reports no AHTPDB match."
+    },
+    {
+      "origin_aphia_id": 836033,
+      "origin_scientific_name": "Magallana gigas",
+      "record_id": "10.3389/fnut.2022.981163:AEYLCEAC",
+      "source_id": "chen_2022_oyster",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "AEYLCEAC",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 4287.0,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.3389/fnut.2022.981163",
+      "verification": "Full text: AEYLCEAC screened from a Crassostrea gigas simulated GI digest; synthesized peptide (>95%) IC50 4.287 mM in text; HHL substrate, rabbit-lung ACE. C. gigas = Magallana gigas (WoRMS 836033)."
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:VY",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "VY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 35.2,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:IY",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 6.1,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:AW",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "AW",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 18.8,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:FY",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "FY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 42.3,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:VW",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "VW",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 3.3,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:IW",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IW",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 1.5,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1021/jf020482t:LW",
+      "source_id": "sato_2002_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "LW",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 23.6,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1016/s0955-2863(00)00110-8:AIYK",
+      "source_id": "suetsuna_2000_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "AIYK",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 213,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1016/s0955-2863(00)00110-8:YKYY",
+      "source_id": "suetsuna_2000_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "YKYY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 64.2,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1016/s0955-2863(00)00110-8:KFYG",
+      "source_id": "suetsuna_2000_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "KFYG",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 90.5,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 145721,
+      "origin_scientific_name": "Undaria pinnatifida",
+      "record_id": "10.1016/s0955-2863(00)00110-8:YNKL",
+      "source_id": "suetsuna_2000_wakame",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "YNKL",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 21,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 836033,
+      "origin_scientific_name": "Magallana gigas",
+      "record_id": "10.1016/j.foodchem.2022.132160:LSL",
+      "source_id": "feng_2022_oyster",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "LSL",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 0.10717,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": null,
+      "missing": [
+        "ACE substrate/method not confirmed from the paper (abstract only)"
+      ],
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
+    },
+    {
+      "origin_aphia_id": 342067,
+      "origin_scientific_name": "Todarodes pacificus",
+      "record_id": "10.3390/ijms20174159:IIY",
+      "source_id": "yu_2019_todarodes",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IIY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 26.3,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "reported_pIC50": 4.58,
+      "missing": [
+        "Sequence predicted by in silico hydrolysis of T. pacificus myosin; release from squid material not observed"
+      ],
+      "chain": {
+        "origin": false,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": true
+      }
+    },
+    {
+      "origin_aphia_id": 342067,
+      "origin_scientific_name": "Todarodes pacificus",
+      "record_id": "10.3390/ijms20174159:NPPK",
+      "source_id": "yu_2019_todarodes",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "NPPK",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 38.9,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "reported_pIC50": 4.41,
+      "missing": [
+        "Sequence predicted by in silico hydrolysis of T. pacificus myosin; release from squid material not observed"
+      ],
+      "chain": {
+        "origin": false,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": true
+      }
+    }
+  ],
+  "national_red_list": [
+    {
+      "aphia_id": 836033,
+      "scientific_name": "Magallana gigas",
+      "name_as_published": "굴 Magallana gigas Thunberg, 1793",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1371,
+      "index_viewer_pages": [
+        1458,
+        1459
+      ],
+      "reviewed": true
+    },
+    {
+      "aphia_id": 342067,
+      "scientific_name": "Todarodes pacificus",
+      "name_as_published": "살오징어 Todarodes pacificus Steenstrup, 1880",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1376,
+      "index_viewer_pages": [
+        1474,
+        1475
+      ],
+      "reviewed": true
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "name_as_published": "홍합 Mytilus unguiculatus Valenciennes, 1858",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1380,
+      "index_viewer_pages": [
+        1488,
+        1489
+      ],
+      "reviewed": true,
+      "name_note": "WoRMS 541675 M. unguiculatus is a nomen oblitum; valid name 506159 M. coruscus"
+    },
+    {
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "name_as_published": "바지락 Ruditapes philippinarum A. Adams & Reeve, 1848",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1375,
+      "index_viewer_pages": [
+        1470,
+        1471
+      ],
+      "reviewed": true
+    },
+    {
+      "aphia_id": 504357,
+      "scientific_name": "Anadara broughtonii",
+      "name_as_published": "피조개 Scapharca broughtonii Schrenck, 1867",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1380,
+      "index_viewer_pages": [
+        1488,
+        1489
+      ],
+      "reviewed": true,
+      "name_note": "WoRMS 591364 unaccepted; valid name 504357 A. broughtonii"
+    },
+    {
+      "aphia_id": 393716,
+      "scientific_name": "Mizuhopecten yessoensis",
+      "name_as_published": "큰가리비 Mizuhopecten yessoensis Jay, 1856",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1379,
+      "index_viewer_pages": [
+        1486,
+        1487
+      ],
+      "reviewed": true
+    },
+    {
+      "aphia_id": 413600,
+      "scientific_name": "Sinonovacula constricta",
+      "name_as_published": "가리맛조개 Sinonovacula constricta Lamarck, 1818",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1370,
+      "index_viewer_pages": [
+        1454,
+        1455
+      ],
+      "reviewed": true
+    },
+    {
+      "aphia_id": 1666974,
+      "scientific_name": "Acanthosepion esculentum",
+      "name_as_published": "참갑오징어 Sepia esculenta Hoyle, 1885",
+      "source_id": "nibr_red_data_book_2024",
+      "scope": "national (Republic of Korea)",
+      "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "category": "LC",
+      "first_edition_category": "LC",
+      "change": "유지",
+      "taxon_group": "연체동물",
+      "assessment_page": 1379,
+      "index_viewer_pages": [
+        1484,
+        1485
+      ],
+      "reviewed": true,
+      "name_note": "WoRMS 342131 superseded combination; valid name 1666974 A. esculentum"
+    }
+  ],
+  "national_red_list_not_assigned": [
+    {
+      "aphia_id": 534443,
+      "scientific_name": "Octopus sinensis",
+      "reason": "National row 참문어 is published as Octopus vulgaris (NT, p.1027); WoRMS keeps O. vulgaris (140605) as a separate accepted species, so the row is not assigned to O. sinensis."
+    },
+    {
+      "aphia_id": 397082,
+      "scientific_name": "Haliotis discus",
+      "reason": "Only the subspecies 북방전복 Haliotis discus hannai (LC, p.1376) is listed; a subspecies assessment is not moved to the species. 까막전복 not found in the index."
+    }
+  ],
+  "national_red_list_search": {
+    "checked_on": "2026-09-26",
+    "index_pages_read": "viewer pages 1438-1491 and spot checks 1508, 1520, 1528",
+    "groups_in_index": [
+      "조류",
+      "양서류",
+      "파충류",
+      "어류(담수 중심)",
+      "관속식물",
+      "연체동물",
+      "곤충",
+      "거미"
+    ],
+    "result": "Marine fish, sea cucumber, ascidian and seaweed candidates: 검색 범위 안에서 미발견. Fish rows are mostly freshwater; the index has no echinoderm, tunicate or seaweed group. Not an NE judgement."
+  },
+  "legal_protection_facts": []
+}

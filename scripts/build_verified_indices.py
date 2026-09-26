@@ -298,6 +298,46 @@ def _approved_assays(evidence: dict, config: dict) -> list[dict]:
     return rows
 
 
+PEPTIDE = re.compile(r"^[ACDEFGHIKLMNPQRSTVWY]{2,}$")
+
+
+def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
+    """verified-pilot-3 peptide stratum: its own fixed cohort, never mixed with ChEMBL compounds."""
+    settings = config.get("peptide_bioactivity")
+    if not settings:
+        return []
+    cohort = json.loads((ROOT / settings["cohort_file"]).read_text(encoding="utf-8"))
+    peers = [6 - math.log10(finite(m["ic50_uM"], "cohort IC50", 0.0000001)) for m in cohort["members"]]
+    require(cohort["size"] == len(peers) >= settings["minimum_peptides"], "peptide cohort below minimum size")
+    for r in evidence.get("peptide_bioactivity", []):
+        require(r.get("origin_aphia_id") and r.get("origin_scientific_name"), f"{r.get('record_id')}: peptide origin species required")
+        require(r.get("material_kind") not in settings["excluded_material_kinds"],
+                f"{r.get('record_id')}: extracts, hydrolysates and fractions cannot enter the peptide stratum")
+    approved = [r for r in evidence.get("peptide_bioactivity", []) if r.get("status") == "approved_for_score"]
+    groups = defaultdict(list)
+    for r in approved:
+        require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
+                and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None
+                and r.get("sequence_confirmed") is True and r.get("value_in_text") is True
+                and r.get("target") == settings["target"] and r.get("endpoint") == settings["endpoint"]
+                and r.get("substrate") == settings["substrate"] and r.get("relation") == "=" and r.get("unit") == "uM"
+                and r.get("source_id") in evidence["sources"] and r.get("original_paper_doi"),
+                f"{r.get('record_id')}: incomplete peptide origin/sequence/assay chain")
+        finite(r.get("value"), "peptide IC50", 0.0000001)
+        groups[(r["origin_aphia_id"], r["sequence"])].append(r)
+    out = []
+    for (origin, sequence), own in sorted(groups.items()):
+        value = median(6 - math.log10(r["value"]) for r in own)
+        rank = percentile(value, peers)
+        dois = {r["original_paper_doi"].lower() for r in own}
+        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        out.append((origin, {"stratum_kind": "peptide", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
+                             "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
+                             "peer_peptides": len(peers), "pIC50": round(value, 3), "percentile": round(rank, 2),
+                             "evidence_factor": factor, "adjusted": rank * factor}))
+    return out
+
+
 def bio_scores(evidence: dict, config: dict) -> dict[int, tuple[float, list, dict]]:
     approved = _approved_assays(evidence, config)
     by_id = {a["activity_id"]: a for a in approved}
@@ -327,6 +367,8 @@ def bio_scores(evidence: dict, config: dict) -> dict[int, tuple[float, list, dic
                         "peer_compounds": len(peers), "median_pchembl": round(peers[compound], 3),
                         "percentile": round(rank, 2), "evidence_factor": factor, "adjusted": rank * factor}
                 out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    for origin, item in peptide_items(evidence, config):
+        out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for aphia, (_, items, _) in list(out.items()):
         adjusted = [i["adjusted"] for i in items]
         primary = max(adjusted)
@@ -369,6 +411,25 @@ def conservation_axis(candidate: dict, evidence: dict, config: dict) -> tuple:
     trace["pilot_mapping"] = f"{assessment['category']} -> {value} (team pilot rule, not an IUCN score)"
     trace["occurrence_trend_adjustment"] = None
     return float(value), trace, None
+
+
+def national_axis(aphia: int, evidence: dict, config: dict) -> tuple:
+    """verified-pilot-3: a national red-list category (IUCN regional guidelines), used only when
+    the IUCN global axis has no number. Legal designations without a category stay facts."""
+    settings = config["national_red_list"]
+    facts = [f for f in evidence.get("legal_protection_facts", []) if f.get("aphia_id") == aphia]
+    require(all(not f.get("category") for f in facts), "legal protection facts must not carry a category")
+    record = next((r for r in evidence.get("national_red_list", []) if r.get("aphia_id") == aphia), None)
+    if not record:
+        return None, {"label": settings["label"], "legal_protection_facts": facts} if facts else None
+    require(record.get("reviewed") is True and record.get("source_id") in evidence["sources"]
+            and record.get("assessment_basis") == settings["accepted_basis"] and record.get("name_as_published")
+            and record.get("category") in config["conservation"]["category_scores"],
+            f"{aphia}: national assessment needs a reviewed IUCN-regional category")
+    value = config["conservation"]["category_scores"][record["category"]]
+    return float(value), {**record, "label": settings["label"],
+                          "pilot_mapping": f"{record['category']} -> {value} (national assessment, team pilot rule)",
+                          "legal_protection_facts": facts}
 
 
 def bio_sufficiency(partials: list[dict]) -> dict:
@@ -420,9 +481,15 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
         mbpi, bio_trace, bio_sensitivity = assay.get(aphia, (None, [], {}))
         mcui, conservation_trace, conservation_reason = conservation_axis(candidate, evidence, config)
+        national, mcui_basis = None, "iucn" if mcui is not None else None
+        if config.get("national_red_list") and conservation_reason in config["national_red_list"]["applies_when_iucn_reason"]:
+            national_value, national = national_axis(aphia, evidence, config)
+            if national_value is not None:
+                mcui, conservation_reason, mcui_basis = national_value, None, "national"
         w = config["bbvi"]["default_food_weight"]
         bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if mfpi_value is not None and mbpi is not None else None
-        partial_bio = [r for r in evidence.get("bioactivity", []) if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
+        partial_bio = [r for key in ("bioactivity", "peptide_bioactivity") for r in evidence.get(key, [])
+                       if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
         scores = {"MFPI": mfpi_value, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi}
         assessed = bool(conservation_trace) and conservation_trace.get("iucn_state") == "assessed"
         status = {"MFPI": "산출됨" if mfpi_value is not None else "일부 근거 확인" if food_trace["sufficiency"]["present"] else "산출 보류",
@@ -458,16 +525,29 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids |= {p["source_id"] for p in conservation_trace.get("previous_assessments", [])}
         source_ids |= {r["source_id"] for r in partial_bio}
         for item in bio_trace:
-            source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item["activity_ids"]}
+            source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item.get("activity_ids", [])}
+            source_ids |= {r["source_id"] for r in evidence.get("peptide_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
+        if national and national.get("source_id"):
+            source_ids.add(national["source_id"])
+        if bio_trace and config.get("peptide_bioactivity") and any(i.get("stratum_kind") == "peptide" for i in bio_trace):
+            source_ids.add(config["peptide_bioactivity"]["cohort_source_id"])
         source_ids.discard(None)
         require(all(s in sources for s in source_ids), f"{aphia}: unregistered source")
-        return {"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
+        row = {"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
                 "scores": scores, "score_status": status, "withheld_reasons": reasons,
                 "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
                 "information_sufficiency": sufficiency,
                 "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
                 "conservation_trace": conservation_trace, "sensitivity": sensitivity,
                 "source_ids": sorted(source_ids)}
+        if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
+            best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
+            row["mbpi_stratum"] = None if best is None else best.get("stratum_kind", "small_molecule")
+            row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
+        if config.get("national_red_list"):
+            row["national_assessment"] = national
+            row["mcui_basis"] = mcui_basis
+        return row
     output = [assess(c) for c in identities]
     operating = {c["aphia_id"] for c in identities}
     if catalog is None:
@@ -495,7 +575,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             "comparison_cohorts": cohorts,
             "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
             "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
-            "candidate_species": research}
+            "candidate_species": research,
+            **({k: evidence[k] for k in ("national_red_list_not_assigned", "national_red_list_search") if k in evidence}
+               if config.get("national_red_list") else {})}
 
 
 def render(report: dict) -> str:
@@ -506,7 +588,14 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
     def read(p):
         return json.loads(Path(p).read_text(encoding="utf-8"))
     cfg = read(config)
-    return read(evidence), read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
+    evidence = read(evidence)
+    if cfg.get("evidence_supplement"):
+        extra = read(ROOT / cfg["evidence_supplement"])
+        require(extra.get("snapshot_date") == evidence["snapshot_date"], "supplement snapshot differs from evidence")
+        require(not set(extra["sources"]) & set(evidence["sources"]), "supplement redefines a source")
+        evidence = {**evidence, **{k: v for k, v in extra.items() if k not in ("schema_version", "snapshot_date", "sources")},
+                    "sources": {**evidence["sources"], **extra["sources"]}}
+    return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
 def main() -> None:

@@ -185,5 +185,59 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertIsNone(flagged["scores"]["BBVI"])
 
 
+class VerifiedPilot3Tests(unittest.TestCase):
+    V3 = ROOT / "config" / "verified-indices-v3.json"
+
+    def setUp(self):
+        self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy = load_inputs(config=self.V3)
+
+    def run_build(self, evidence=None):
+        return build(evidence or self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy)
+
+    def test_committed_v3_output_is_reproducible_and_v2_scores_unchanged(self):
+        report = self.run_build()
+        self.assertEqual((ROOT / "research" / "verified-indices" / "assessments-v3.json").read_text(encoding="utf-8"), render(report))
+        v2 = build(*load_inputs())
+        for old in v2["species"]:
+            new = species(report, old["aphia_id"])
+            for axis in ("MFPI", "MCUI"):
+                if old["scores"][axis] is not None:
+                    self.assertEqual(new["scores"][axis], old["scores"][axis])
+
+    def test_peptides_never_join_the_small_molecule_stratum(self):
+        report = self.run_build()
+        undaria = species(report, 145721)
+        self.assertEqual(undaria["mbpi_stratum"], "peptide")
+        self.assertTrue(undaria["bbvi_mbpi_from_peptide_stratum"])
+        self.assertTrue(all(i["stratum_kind"] == "peptide" and "compound_id" not in i for i in undaria["bioactivity_trace"]))
+        peptide = copy.deepcopy(next(r for r in self.evidence["peptide_bioactivity"] if r["status"] == "approved_for_score"))
+        evidence = copy.deepcopy(self.evidence)
+        evidence["bioactivity"].append({**peptide, "activity_id": "PEP1"})     # a peptide row offered as a ChEMBL compound
+        with self.assertRaisesRegex(ValueError, "compound-origin/ChEMBL chain"):
+            self.run_build(evidence)
+
+    def test_national_assessment_is_labelled_apart_from_iucn(self):
+        report = self.run_build()
+        oyster, squid = species(report, 836033), species(report, 342067)
+        self.assertEqual((oyster["mcui_basis"], oyster["national_assessment"]["label"]), ("national", "국가 평가"))
+        self.assertEqual(oyster["conservation_trace"]["iucn_state"], "not_in_red_list")   # IUCN trace untouched
+        self.assertEqual(squid["mcui_basis"], "iucn")                                     # IUCN number wins when present
+        self.assertIsNone(squid["national_assessment"])
+        evidence = copy.deepcopy(self.evidence)
+        evidence["national_red_list"] = [r for r in evidence["national_red_list"] if r["aphia_id"] != 836033]
+        evidence["legal_protection_facts"] = [{"aphia_id": 836033, "designation": "synthetic legal designation"}]
+        oyster = species(self.run_build(evidence), 836033)
+        self.assertIsNone(oyster["scores"]["MCUI"])                                      # a designation is a fact, never a score
+        self.assertEqual(oyster["national_assessment"]["legal_protection_facts"][0]["designation"], "synthetic legal designation")
+
+    def test_peptide_without_origin_or_from_hydrolysate_is_rejected(self):
+        for change, message in (({"origin_aphia_id": None}, "origin species required"),
+                                ({"material_kind": "hydrolysate"}, "hydrolysates")):
+            evidence = copy.deepcopy(self.evidence)
+            evidence["peptide_bioactivity"][0].update(change)
+            with self.assertRaisesRegex(ValueError, message):
+                self.run_build(evidence)
+
+
 if __name__ == "__main__":
     unittest.main()
