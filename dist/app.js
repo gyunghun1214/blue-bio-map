@@ -29,7 +29,7 @@ function evidenceCoverage(s) {
         detail:s.cells.length?`1930년 표본 1건만 역사적 출현 셀에 연결. 나머지 조회 기록의 공개 검수 보류. ${obisSearchLabel(s)}.`:a.gbif.retrievedCount>0?`GBIF 시험 범위에서 조회했지만 공개 셀의 종·라이선스·민감도 검수 보류. ${obisSearchLabel(s)}.`:`GBIF 시험 범위 검색 0건. ${obisSearchLabel(s)}. 종 부재가 아님.`},
       {name:'영양',stage:a.nutrition.foodCode?'found':'unavailable',
         detail:a.nutrition.foodCode?'RDA 식품명 후보만 발견. 종 수준 시료 연결은 검수 전.':'종에 연결할 식품 행 미확인.'},
-      {name:'생리활성',stage:'unavailable',detail:'기원종·화합물·정량 실험 원문 미검수.'},
+      {name:'생리활성',stage:pilotScore(s,'MBPI')!==null?'calculated':'unavailable',detail:pilotScore(s,'MBPI')!==null?'감태 분리 화합물 5종의 동일 ACE 시험 원문으로 검증 전 시범 MBPI 산출. 독립 논문 재현은 미확인.':'기원종·화합물·정량 실험 원문 미검수.'},
       {name:'보전',stage:a.iucn.record?.category?'found':'unavailable',
         detail:a.iucn.record?.category?'IUCN 게시 체크리스트에 전 지구 평가 메타데이터 있음. 원평가 일자·기준 미검수.':'체크리스트 정확한 승인명 연결 미확인. 공식 NE 아님.'}
     ]};
@@ -611,6 +611,9 @@ function mapSummaryHtml(s){
 function renderCandidateDetail(s){
   if(s.audit){
     const a=s.audit, g=a.gbif, n=a.nutrition, i=a.iucn, o=a.obis;
+    const pilot=s.assessment, mbpi=pilotScore(s,'MBPI');
+    const bioRows=mbpi===null?'':(pilot.bioactivity_trace||[]).map(t=>(t.measurements||[]).map(m=>`<tr><td>${sourceLink(m.structure_url,m.compound_name+' · '+t.compound_id)}</td><td>${esc(m.relation)} ${esc(m.raw_value)} ± ${esc(m.raw_sd)} ${esc(m.raw_unit)}</td><td>${esc(t.percentile)} · ${esc(t.evidence_factor)}</td></tr>`).join('')).join('');
+    const bioDetail=mbpi===null?'기원종→화합물→assay 원문 미검수':`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 동일 ACE 효소 IC₅₀ 화합물 5종, 원논문 1편, 독립 재현 미확인. 같은 논문 안의 상대 백분위이며 임상 효능·종 간 가치 순위가 아닙니다.`;
     const countOrUnknown=x=>Number.isSafeInteger(x)?x.toLocaleString():'미확인';
     const categories={ENDANGERED:'EN · 위기',LEAST_CONCERN:'LC · 관심대상'};
     const conservation=i.record?.category
@@ -634,9 +637,10 @@ function renderCandidateDetail(s){
       (s.cells.length?'<p class="fine">공개 기록: 1930년 보존 표본, CAS Invertebrate Zoology · 기록과 데이터셋 CC0 1.0 · WoRMS 동의어 연결 확인 · 좌표 불확실성 6,065 m · 공개 해상도 4°. '+sourceLink(s.sources[0].url,'원 데이터셋 ↗')+' · '+sourceLink('https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni','동의어 근거 ↗')+'</p>':'')+
       row('OBIS',o?(o.status==='query_count_unreviewed'?`조회 ${countOrUnknown(o.reportedTotal)}건 · 개별 기록·중복·라이선스 미검수`:o.status==='zero_for_scope'?'해당 질의·범위 결과 0건 · 부재 증거 아님':o.status==='collection_failed'?'수집 실패 · 결과 미확인':o.status==='taxonomy_review_required'?'학명 연결 재검토 필요 · 출현 조회 보류':'응답 재검토 필요 · 결과 미확인'):'종별 조회 미실행','pending')+
       row('식량·영양',food,'pending')+
-      row('생리활성','기원종→화합물→assay 원문 미검수','pending')+
+      row('생리활성',bioDetail,mbpi===null?'pending':'linked')+
+      (bioRows?`<table><caption>감태 유래 분리 화합물 · ACE/HHL, 37°C, IC₅₀ · 원문 Table 2</caption><thead><tr><th>화합물 · 구조</th><th>원값</th><th>백분위 · 근거 계수</th></tr></thead><tbody>${bioRows}</tbody></table><p>${sourceLink(pilot.bioactivity_trace[0].measurements[0].paper_url,'분리·NMR·시험 원논문 ↗')} · ${sourceLink('https://github.com/gyunghun1214/blue-bio-map/blob/main/research/verified-indices/ecklonia-ace-2026-09-27.md','검수 및 산출 설명 ↗')}</p>`:'')+
       row('보전',conservation,'pending')+
-      row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
+      row('MFPI / MBPI / MCUI / BBVI',mbpi===null?'모두 산출 보류 · 원자료 발견은 점수가 아닙니다':`MFPI 보류 / MBPI ${mbpi.toFixed(1)} (검증 전) / MCUI 보류 / BBVI 보류 · 공간 가치로 환산하지 않음`,mbpi===null?'pending':'linked')+
       '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'+
       '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
       '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
@@ -1050,7 +1054,7 @@ function renderMap() {
   if(s.catalog)effortLayer?.clearLayers();else drawEffort();
   if(s.live&&$('detail-map-summary'))$('detail-map-summary').innerHTML=mapSummaryHtml(periodView(s));
   if(s.live&&s.cells.length)return renderCellMap(periodView(s),color);
-  if(s.catalog){$('map-judgment').textContent=s.audit?(s.audit.gbif.retrievedCount===0?'종별 점수와 해역 판단 모두 보류 · GBIF 검색 0건':'종별 점수와 해역 판단 모두 보류 · GBIF 공개 검수 중'):'종별 점수와 해역 판단 모두 보류 · 출현기록 미수집';$('map-review-note').textContent=s.audit?(s.audit.gbif.retrievedCount===0?`해당 이름·범위의 GBIF 검색 결과는 0건입니다. ${obisSearchLabel(s)}. 종 부재나 전체 분포를 뜻하지 않습니다.`:'GBIF 시험 범위 기록은 조회했습니다. 종 연결·라이선스·위치 품질·민감도 검토가 끝나지 않아 공개 격자를 발행하지 않았습니다.'):'이 종의 분포는 아직 조회·검수하지 않았습니다. 지도에 표시할 공개 격자가 없습니다.';
+  if(s.catalog){$('map-judgment').textContent=pilotScore(s,'MBPI')!==null?'종별 시범 MBPI만 산출 · BBVI·MCUI와 해역 판단 보류':s.audit?(s.audit.gbif.retrievedCount===0?'종별 점수와 해역 판단 모두 보류 · GBIF 검색 0건':'종별 점수와 해역 판단 모두 보류 · GBIF 공개 검수 중'):'종별 점수와 해역 판단 모두 보류 · 출현기록 미수집';$('map-review-note').textContent=s.audit?(s.audit.gbif.retrievedCount===0?`해당 이름·범위의 GBIF 검색 결과는 0건입니다. ${obisSearchLabel(s)}. 종 부재나 전체 분포를 뜻하지 않습니다.`:'GBIF 시험 범위 기록은 조회했습니다. 종 연결·라이선스·위치 품질·민감도 검토가 끝나지 않아 공개 격자를 발행하지 않았습니다.'):'이 종의 분포는 아직 조회·검수하지 않았습니다. 지도에 표시할 공개 격자가 없습니다.';
     $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent=!s.live?'추가 수집한 OBIS 선별 출현기록을 1° 격자의 붉은 점 무늬로 표시합니다. 공개 기준 적용 자료와 합산하지 않습니다. 붉은 점은 실제 발견 좌표나 기록 1건이 아니며, 기록 수와 점은 개체수·자원량·가치·보전 등급·현재 한국 전체 분포가 아닙니다.':'테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';

@@ -16,18 +16,31 @@ def species(report, aphia):
 def synthetic_assays(evidence):
     activities = []
     for n in range(3):
+        cid = f"CID:{n + 1}"
+        doi = f"10.0000/synthetic{n + 1}"
+        evidence["reviewed_compound_structures"][cid] = {
+            "name": f"fixture-{n}", "formula": "C2H6", "source_id": "pubchem_pugrest",
+            "url": f"https://pubchem.ncbi.nlm.nih.gov/compound/{n + 1}"}
+        evidence["reviewed_assay_protocols"][f"synthetic-assay-{n}"] = {
+            "original_paper_doi": doi, "origin_aphia_id": 836033,
+            "origin_scientific_name": "Magallana gigas", "target_id": "same-target",
+            "endpoint": "IC50", "assay_type": "B", "test_system": "cell-line-Z",
+            "conditions_key": "48h"}
         activities.append({"status": "approved_for_score", "reviewed": True,
             "origin_reviewed": True, "compound_structure_reviewed": True,
-            "compound_id": f"CID:{n + 1}", "source_id": "chembl_37",
+            "compound_id": cid, "compound_name": f"fixture-{n}", "molecular_formula": "C2H6",
+            "paper_structure_label": "fixture", "paper_species_name": "Magallana gigas",
+            "source_id": "chembl_37", "original_paper_url": evidence["sources"]["chembl_37"]["url"],
             "origin_aphia_id": 836033, "origin_scientific_name": "Magallana gigas",
-            "original_paper_doi": f"10.0000/synthetic{n + 1}", "activity_id": f"SYN{n + 1}",
-            "assay_id": "same-assay", "target_id": "same-target",
+            "original_paper_doi": doi, "activity_id": f"SYN{n + 1}",
+            "assay_id": f"synthetic-assay-{n}", "target_id": "same-target",
             "assay_type": "B", "test_system": "cell-line-Z", "conditions_key": "48h",
             "endpoint": "IC50", "standard_relation": "=", "standard_units": "nM",
             "standard_value": 10 ** (n + 2), "pchembl_value": 7 - n,
+            "raw_value": 10 ** (n + 2), "raw_unit": "nM",
             "data_validity_comment": None, "material_kind": "single_compound"})
     evidence["bioactivity"].extend(activities)
-    evidence["bioactivity_cohorts"] = [{"id": "synthetic-fixed-assay", "activity_ids": [a["activity_id"] for a in activities]}]
+    evidence["bioactivity_cohorts"].append({"id": "synthetic-fixed-assay", "activity_ids": [a["activity_id"] for a in activities]})
 
 
 class VerifiedIndicesTests(unittest.TestCase):
@@ -46,8 +59,33 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertEqual(got[145721]["MFPI"], 42.2)
         self.assertEqual(got[241776]["MCUI"], 80.0)
         self.assertEqual(got[342067]["MCUI"], 10.0)
-        self.assertTrue(all(v["MBPI"] is None and v["BBVI"] is None for v in got.values()))
+        self.assertEqual(got[371986], {"MFPI": None, "MBPI": 67.5, "MCUI": None, "BBVI": None})
+        self.assertTrue(all(v["BBVI"] is None for v in got.values()))
+        self.assertTrue(all(v["MBPI"] is None for k, v in got.items() if k != 371986))
         self.assertEqual(render(report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_ecklonia_original_measurements_and_fixed_cohort(self):
+        item = species(self.run_build(), 371986)
+        self.assertEqual(len(item["bioactivity_trace"]), 5)
+        self.assertEqual({r["peer_compounds"] for r in item["bioactivity_trace"]}, {5})
+        self.assertEqual({d for r in item["bioactivity_trace"] for d in r["original_paper_dois"]},
+                         {"10.4162/nrp.2011.5.2.93"})
+        self.assertEqual(item["scores"], {"MFPI": None, "MBPI": 67.5, "MCUI": None, "BBVI": None})
+        self.assertEqual(item["sensitivity"]["median_compound_sensitivity"], 37.5)
+        self.assertEqual(item["sensitivity"]["mean_compound_sensitivity"], 37.5)
+
+    def test_ecklonia_wrong_structure_paper_target_conditions_and_unit_rejected(self):
+        cases = (("compound_id", "CID:145937"), ("molecular_formula", "C18H10O9"),
+                 ("original_paper_doi", "10.0000/wrong"), ("target_id", "BACE1"),
+                 ("conditions_key", "different-time"), ("raw_unit", "µM"),
+                 ("origin_aphia_id", 836033), ("paper_species_name", "Ecklonia stolonifera"))
+        for field, bad in cases:
+            with self.subTest(field=field):
+                changed = copy.deepcopy(self.evidence)
+                next(a for a in changed["bioactivity"] if a.get("activity_id") ==
+                     "Wijesinghe2011:Table2:3008868")[field] = bad
+                with self.assertRaises(ValueError):
+                    self.run_build(evidence=changed)
 
     def test_hand_calculation_and_cross_check(self):
         oyster = species(self.run_build(), 836033)
@@ -125,7 +163,7 @@ class VerifiedIndicesTests(unittest.TestCase):
         duplicate = copy.deepcopy(self.evidence["bioactivity"][-3])
         duplicate["activity_id"] = "SYN1-duplicate-database-row"
         self.evidence["bioactivity"].append(duplicate)
-        self.evidence["bioactivity_cohorts"][0]["activity_ids"].append(duplicate["activity_id"])
+        self.evidence["bioactivity_cohorts"][-1]["activity_ids"].append(duplicate["activity_id"])
         same = species(self.run_build(), 836033)
         self.assertEqual(same["scores"]["MBPI"], 62.5)          # same DOI twice is still one paper
         self.assertEqual(same["bioactivity_trace"][0]["evidence_factor"], .75)
