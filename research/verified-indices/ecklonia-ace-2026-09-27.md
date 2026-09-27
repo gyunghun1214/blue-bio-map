@@ -12,7 +12,7 @@
 | 해삼 *Apostichopus japonicus* (241776) | [기존 원문·구조 불일치 감사](bioactivity-audit.md): holotoxin A₁ PubChem 동명이물 CID 163110604의 분자식과 원문 분자식 불일치; [별도 K562 논문](https://doi.org/10.3390/md16040123)의 시료는 *Cladolabes schmeltzii* | 해삼의 확정 구조–원논문 활성 연결로 승격하지 않음. |
 | 살오징어 *Todarodes pacificus* (342067) | [기존 원문·서열 감사](bioactivity-audit.md): SAGSLVP의 서열 계산 질량 629.7 Da와 논문 보고 657 Da 불일치 | 펩타이드 구조 보류. |
 | 멍게 *Halocynthia roretzi* (250680) | [기존 원문 감사](bioactivity-audit.md): 2006년 카로티노이드의 단일 농도 HL-60 생존율은 IC₅₀ 아님. [2026년 Halorotetin B 원문](https://doi.org/10.1002/advs.202515652)은 Fig. 2의 IC₅₀ 곡선을 제시 | 후자는 구조의 입체화학·안정 CID 및 동일 조건 비교층 확인 전까지 별도 단서로 보류. 두 시험을 섞지 않음. |
-| 기존 나머지 5종·신규 나머지 21종 | [기존 8종 감사](bioactivity-audit.md), [22종 원자료 상태](../../dist/expansion-evidence.json)에서 출발하여 위 검색식의 승인명을 치환하는 제목·초록 선별 | 이번 조사에서 분리 구조 ID–정량 원문–동일 assay의 세 화합물을 동시에 검수하지 못함. **체계적 문헌 고찰이나 활성이 없다는 판정이 아님**. 기존 보류 유지. |
+| 기존 나머지 5종·신규 나머지 21종 | [기존 8종 감사](bioactivity-audit.md), [22종 원자료 상태](../../dist/expansion-evidence.json)를 후보 풀로 확인 | 이번 집중 조사에서 원논문 사슬을 새로 검수하지 않았다. **30종별 체계적 제목·초록 선별이나 활성이 없다는 판정이 아님**. 기존 보류 유지, 후속 종별 검색 필요. |
 
 ## 원논문 사슬
 
