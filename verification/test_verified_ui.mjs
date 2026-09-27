@@ -320,7 +320,7 @@ for(const [id,value,texts] of [[836033,72.2,['LQP','1.18 µM','10.5352/jls.2012.
   html=ctx.renderScores(by(id));
   assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: scored values are not repeated as unscored raw values`);
   const mbpi=html.slice(html.indexOf('MBPI · 생리활성'));
-  for(const text of [...texts,'기질 HHL','참고값(단일 논문)','펩타이드 352개','doi:10.1093/nar/gku1141','CC BY-NC 4.0','점수에 쓴 값의 독립 원논문 1편'])
+  for(const text of [...texts,'기질 HHL','참고값(단일 논문)','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능','점수에 쓴 값의 독립 원논문 1편'])
     assert.ok(mbpi.includes(text),`${id}: missing ${text}`);
   assert.equal(ctx.score(by(id),'MBPI'),value);
   assert.equal(ctx.score(by(id),'BBVI'),null,'a single-paper MBPI never becomes BBVI');

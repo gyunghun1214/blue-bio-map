@@ -59,7 +59,7 @@
 - **판단**: 표기가 서로 어긋난다. 가장 보수적인 조건은 CC BY-NC 4.0(비영리, 출처 표시)이다.
 - 공모전 결과물이 비영리 이용인지는 팀이 판단할 몫이다. 그래서 공개 화면 연결은 보류한다.
 - 원파일과 서열은 저장소에 넣지 않았다(#40과 같다).
-- **문의**: `research/verified-indices/ahtpdb-permission-draft.md`. 2026-09-27 발송했고 회신 대기 중이다.
+- **문의**: `research/verified-indices/ahtpdb-permission-draft.md`. 2026-09-27 발송했고, 같은 날 개발자가 "공개 데이터베이스이며 누구나 사용할 수 있다"고 회신했다.
 
 ## 5. matrix-readiness 입력 확장
 

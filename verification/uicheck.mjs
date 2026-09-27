@@ -124,7 +124,7 @@ try{
   // verified-pilot-2.1: with no IUCN global record, the oyster MCUI is the separately labelled Korean national assessment.
   check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 시범 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, 매트릭스에도 놓지 않습니다')&&!nat.includes('IUCN LC'),nat);
   // verified-pilot-2.2: peptide LQP scored in the AHTPDB cohort as a single-paper reference value; BBVI stays withheld.
-  check('Oyster: MBPI 72.2 single-paper reference with paper value and AHTPDB CC BY-NC attribution',['72.2 · 검증 전 시범 지표 · 참고값(단일 논문)','LQP','1.18 µM','10.5352/jls.2012.22.2.220','펩타이드 352개','doi:10.1093/nar/gku1141','CC BY-NC 4.0'].every(x=>nat.includes(x)),nat);
+  check('Oyster: MBPI 72.2 single-paper reference with paper value and AHTPDB attribution (developer-confirmed public database)',['72.2 · 검증 전 시범 지표 · 참고값(단일 논문)','LQP','1.18 µM','10.5352/jls.2012.22.2.220','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'].every(x=>nat.includes(x)),nat);
   await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=false)");
   await detailEl();await shot('desktop-oyster');
 

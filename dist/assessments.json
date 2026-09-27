@@ -5965,10 +5965,16 @@
     "ahtpdb_ic50_2026": {
       "accessed": "2026-09-26",
       "citation": "Kumar R. et al. (2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides. Nucleic Acids Res 43:D956–D962, doi:10.1093/nar/gku1141",
-      "license": "CC BY-NC 4.0",
-      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+      "permission": {
+        "channel": "email reply to the team inquiry",
+        "date": "2026-09-27",
+        "from": "Prof. G. P. S. Raghava (IIIT-Delhi)",
+        "record": "research/verified-indices/ahtpdb-permission-draft.md",
+        "summary": "AHTPDB is a public database; anyone can use it."
+      },
       "provider": "AHTPDB, IIIT-Delhi (Raghava group)",
-      "terms": "Read as CC BY-NC 4.0 (repository README; its LICENSE file says MIT, the stricter reading is used): non-commercial public release with attribution. Only row IDs and numeric values are kept and turned into percentiles; sequences and the file are not redistributed",
+      "terms": "Public database: asked about reuse terms, the developer (Prof. G. P. S. Raghava, IIIT-Delhi) replied by email on 2026-09-27 that it is a public database anyone can use. Cite Kumar et al. 2015. The GitHub README says CC BY-NC 4.0 and its LICENSE file says MIT; this project stays non-commercial and cites the paper. Only row IDs and numeric values are kept and turned into percentiles; sequences and the file are not redistributed",
       "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
       "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
       "version": "download retrieved 2026-09-26; sha256 in peptide-cohort-ahtpdb-ace-hhl.json"

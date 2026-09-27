@@ -488,7 +488,8 @@ class VerifiedPilot22Tests(unittest.TestCase):
                                   (836033, "AEYLCEAC"): [(4287, "uM", "HHL", "chen_2022_oyster")],
                                   (836033, "LQP"): [(1.18, "uM", "HHL", "do_2012_oyster_lqp")]})
         ahtpdb = self.report["sources"]["ahtpdb_ic50_2026"]
-        self.assertEqual(ahtpdb["license"], "CC BY-NC 4.0")
+        self.assertEqual(ahtpdb["license"], "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능")
+        self.assertEqual(ahtpdb["permission"]["date"], "2026-09-27")
         self.assertIn("10.1093/nar/gku1141", ahtpdb["citation"])
         for aphia in (145721, 836033):
             self.assertIn("ahtpdb_ic50_2026", species(self.report, aphia)["source_ids"])
