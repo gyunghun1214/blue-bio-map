@@ -365,14 +365,14 @@ function appendFollowupBrief(s){
   const target=$('detail');
   if(typeof target?.insertAdjacentHTML!=='function')return;
   target.insertAdjacentHTML('beforeend',
-    '<details class="detail-more followup-brief"><summary>현재 판단 가능 범위 · 보류 이유 · 다음 조사</summary><div class="detail-more-body">'+
+    '<section class="detail-summary followup-brief"><h3>현재 판단 가능 범위 · 보류 이유 · 다음 조사</h3>'+
     '<p><b>현재 판단 가능 범위:</b> '+esc(plan.known.length?'검증 전 시범 '+plan.known.join('·')+'만 축별로 해석':'산출된 시범 지표 없음')+
     '. 실제 BBVI×MCUI 매트릭스 배치 '+(pilotScore(s,'BBVI')!==null&&pilotScore(s,'MCUI')!==null?'시범 조건 충족':'보류')+'.</p>'+
     '<p><b>판단 보류:</b> '+esc(plan.blocked.length?plan.blocked.join('·')+' 필수 근거 미충족':'실행 판단은 별도 검증 필요')+'. 미확인은 0점이 아닙니다.</p>'+
     '<p><b>연구기관:</b> '+plan.research.map(esc).join(' / ')+'</p>'+
     '<p><b>정부·보전기관:</b> '+plan.conservation.map(esc).join(' / ')+'</p>'+
     '<p><b>기업 검토:</b> '+esc(plan.industry)+'</p>'+
-    '<p class="fine">점수 또는 실행 우선순위가 아닌 후속 검증 과제. 원문 링크·조회일·이용조건은 위 근거 상세/출처에서 확인합니다. 종 단위 점수를 출현 셀·해역 가치로 전가하지 않습니다.</p></div></details>');
+    '<p class="fine">점수 또는 실행 우선순위가 아닌 후속 검증 과제. 원문 링크·조회일·이용조건은 위 근거 상세/출처에서 확인합니다. 종 단위 점수를 출현 셀·해역 가치로 전가하지 않습니다.</p></section>');
 }
 function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
