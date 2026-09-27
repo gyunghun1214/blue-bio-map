@@ -641,7 +641,7 @@ function renderCandidateDetail(s){
       (bioRows?`<table><caption>감태 유래 분리 화합물 · ACE/HHL, 37°C, IC₅₀ · 원문 Table 2</caption><thead><tr><th>화합물 · 구조</th><th>원값</th><th>백분위 · 근거 계수</th></tr></thead><tbody>${bioRows}</tbody></table><p>${sourceLink(pilot.bioactivity_trace[0].measurements[0].paper_url,'분리·NMR·시험 원논문 ↗')} · ${sourceLink('https://github.com/gyunghun1214/blue-bio-map/blob/main/research/verified-indices/ecklonia-ace-2026-09-27.md','검수 및 산출 설명 ↗')}</p>`:'')+
       row('보전',conservation,'pending')+
       row('MFPI / MBPI / MCUI / BBVI',mbpi===null?'모두 산출 보류 · 원자료 발견은 점수가 아닙니다':`MFPI 보류 / MBPI ${mbpi.toFixed(1)} (검증 전) / MCUI 보류 / BBVI 보류 · 공간 가치로 환산하지 않음`,mbpi===null?'pending':'linked')+
-      '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'+
+      '<p class="fine">'+(mbpi===null?'정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.':'정보충분도: MBPI 필수 사슬 4단계 확인 · ACE 단일 논문에서 도출한 시범 지표입니다. 독립 재현·종 간 공통 비교·식량 및 보전 필수 근거는 부족합니다.')+'</p>'+
       '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
       '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
       ' · '+esc(g.scope)+' · 제외 사유와 원 데이터셋: <a href="https://github.com/gyunghun1214/blue-bio-map/blob/main/dist/expansion-evidence.json" target="_blank" rel="noopener noreferrer">22종 감사표 ↗</a></p>'+
