@@ -329,6 +329,36 @@ function scoreSummary(s){
   const keys=['MFPI','MBPI','MCUI'], held=keys.filter(k=>pilotScore(s,k)===null);
   return [...keys.filter(k=>!held.includes(k)).map(k=>`${k} ${pilotScore(s,k).toFixed(1)}`),held.length?held.join('·')+' 보류':''].filter(Boolean).join(' · ');
 }
+// Follow-up tasks are an evidence-gap inventory, never a value or urgency rank.
+// Refuse stale, wrong-taxon or score-inconsistent readiness rows.
+function followupDecision(s){
+  if(!s?.live)return null;
+  const row=matrixReadiness.get(s.aphiaID);
+  if(!row||row.scientific_name!==s.name||row.scope!==(s.catalog?'expansion_22':'operating_8'))return null;
+  if(['MFPI','MBPI','MCUI','BBVI'].some(k=>row.scores?.[k]!==pilotScore(s,k)))return null;
+  const foodReason=row.axis_reasons?.MFPI;
+  const foodMissing=Array.isArray(foodReason)?foodReason:[foodReason].filter(Boolean);
+  const bioMissing=row.bioactivity_missing_steps||[];
+  const foodTask=foodMissing.length
+    ?'종 일치·시료 상태·가식부와 양식 근거를 원문에서 확인: '+foodMissing.map(k=>matrixReasonLabel[k]||k).join('·')
+    :'시범 MFPI의 식품 행·고정 비교집단·지역 시료를 독립 자료로 재검증';
+  const bioTask=bioMissing.length
+    ?'기원종→동정 물질→정량 시험 연결 및 동일 assay층 확보: '+bioMissing.map(k=>matrixReasonLabel[k]||k).join('·')
+    :'시범 MBPI의 동일 조건 독립 문헌·반복 실험을 확인';
+  const iucnTask=row.scores.MCUI===null
+    ?row.axis_reasons?.MCUI==='not_in_red_list'?'IUCN 검색 미발견(공식 NE 아님): 이명·원평가 범위·갱신 여부를 다시 조회'
+      :'IUCN 원평가의 범위·등급·기준·연도·현행 여부 검수'
+    :'시범 MCUI의 현행 평가·지역 적용 가능성 재검토';
+  return {
+    row,
+    research:[foodTask,bioTask],
+    conservation:[iucnTask,'출현 기록의 조사 노력·연도·중복·편향 확인. 기록 감소만으로 개체군 감소를 판정하지 않음'],
+    industry:'활용 실증 전에 안전성·관련 규제·ABS·권리·공급망·지속가능한 생산 근거를 별도로 검토. 적합성 또는 사업성 판정 아님',
+    known:['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)!==null),
+    blocked:['MFPI','MBPI','MCUI','BBVI'].filter(k=>pilotScore(s,k)===null),
+    sourceUrls:Array.isArray(row.source_urls)?row.source_urls.filter(url=>/^https:\/\//.test(url)):[]
+  };
+}
 function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
   list.innerHTML=data.species.map(s=>{
@@ -347,6 +377,22 @@ function showDecision(s){
     const value=pilotScore(s,k);
     html+=`<div class="decision-axis"><b>${k}: ${value===null?'산출 보류':value.toFixed(1)+' / 100'}</b><p>${esc(reasons[k]||'검수된 입력을 사용한 시범 산출값. 외부 사례 검증 전.')}</p></div>`;
   }
+  const plan=followupDecision(s);
+  if(plan){
+    const date=s.catalog?data.readinessCandidateDate:data.readinessAssessmentDate;
+    html+='<section class="followup-panel"><h4>현재 판단 가능한 범위</h4>'+
+      '<p>'+esc(plan.known.length?'검증 전 시범 지표: '+plan.known.join('·')+' (축별로만 해석)':'시범 산출 지표 없음. 확인된 원자료의 연결 상태만 설명 가능')+
+      '. BBVI×MCUI 종합 배치 '+(pilotScore(s,'BBVI')!==null&&pilotScore(s,'MCUI')!==null?'시범 조건 충족':'보류')+'. 출현 셀은 분포·개체수·자원량 또는 해역 가치가 아닙니다.</p>'+
+      '<h4>판단 보류 이유</h4><p>'+esc(plan.blocked.length?plan.blocked.map(k=>k==='MBPI'?k+' '+(plan.row.bioactivity_missing_steps||[]).map(x=>matrixReasonLabel[x]||x).join('·'):k+' '+(matrixReasonLabel[plan.row.axis_reasons?.[k]]||plan.row.axis_reasons?.[k]||'필수 근거 미충족')).join(' / '):'축별 시범 산출 가능. 실행 권고는 별도 검증 필요')+'</p>'+
+      '<h4>다음 조사 · 순위 아님</h4><dl>'+
+      '<dt>연구기관</dt><dd>'+plan.research.map(esc).join('<br>')+'</dd>'+
+      '<dt>정부·보전기관</dt><dd>'+plan.conservation.map(esc).join('<br>')+'</dd>'+
+      '<dt>기업의 검토 과제</dt><dd>'+esc(plan.industry)+'</dd></dl>'+
+      '<p class="fine">근거 수준: '+(plan.known.length?'검증 전 시범 지표 일부 · ':'')+'나머지 축은 보류 · '+esc(s.catalog?'조사 후보':'운영 발행 종')+
+      ' · 자료 스냅샷 '+esc(date||'미확인')+' · 제안 표시일 '+esc(data.readinessAssessmentDate||'미확인')+
+      ' · 비교집단/비용/실행가능성 기준으로 순위를 매기지 않았습니다.</p>'+
+      '<h4>연결된 원자료·조회 출처</h4><ul>'+plan.sourceUrls.map(url=>'<li>'+sourceLink(url,'원자료 ↗')+'</li>').join('')+'</ul></section>';
+  }else html+='<p class="fine">검수 상태 파일과 종명·AphiaID·축별 값의 연결을 확인하지 못해 후속조사 제안을 보류합니다.</p>';
   if(a){
     const f=pilotScore(s,'MFPI')!==null?a.food_trace:null;
     if(f){
@@ -1198,6 +1244,7 @@ function renderComparison(){
     ['생리활성 · MBPI',s=>axisCell(s,'MBPI')||v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
     ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
     ['자료 연결 현황',s=>s.live?`<span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}<small>발견·종 연결·원문 확인·시범 산출을 구분 · 점수 아님</small>`:pending('별도 수집 자료 · 지표 연결 판정 없음')],
+    ['후속조사 · 순위 아님',s=>{const p=followupDecision(s);return p?'<span class="pending">연구·보전·산업 검토 과제 분리</span><small>종 상세에서 차단 단계·원문·다음 조사 확인</small>':pending('검수 상태 연결 확인 필요');}],
     ['통합점수 · BBVI',s=>axisCell(s,'BBVI')||'<strong>산출 보류</strong>']];
   $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide)} 각 지표 칸을 누르면 원값·원문·보류 사유가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${compared.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${compared.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>{
@@ -1288,6 +1335,7 @@ async function loadCollection(){
       live?fetch('data.json').then(r=>r.ok?r.json():null).catch(()=>null):null,
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
     matrixReadiness=new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
+    data.readinessAssessmentDate=readiness?.assessments_snapshot||null;data.readinessCandidateDate=readiness?.candidate_snapshot||null;
     otherCollection=other?.species||[];
     if(request!==requestNumber)return;
     if(live)await attachPilotAssessments(next);
