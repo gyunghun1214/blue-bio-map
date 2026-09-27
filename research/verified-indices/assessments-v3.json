@@ -6159,7 +6159,7 @@
       "accessed": "2026-09-26",
       "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
       "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
-      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20). One remark and one refuse value are quoted with attribution; no table data are redistributed.",
+      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20), and for the refuse of food 09039 (wakame, raw) used as an edible-fraction sensitivity for 미역. Remarks and refuse values are quoted with attribution; no table data are redistributed.",
       "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
       "terms": "MEXT website terms of use, compliant with the Government Standard Terms of Use 2.0; no table-specific terms were shown on the download page (2026-09-26)",
       "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
@@ -6929,7 +6929,15 @@
           "edible_fraction_weight": 0.1,
           "nutrient_weight": 0.8
         },
-        "yield_sensitivity": []
+        "yield_sensitivity": [
+          {
+            "fraction": 0.65,
+            "mfpi_at_same_nutrients": 38.7,
+            "record_id": "MEXT-2020:09039:refuse",
+            "region": "Japan (MEXT national table)",
+            "source_id": "mext_sfct_2020"
+          }
+        ]
       },
       "information_sufficiency": {
         "MBPI": {
@@ -7005,6 +7013,7 @@
         "fao_seaweed_guide",
         "feng_2021_knfl",
         "iucn_redlist_search",
+        "mext_sfct_2020",
         "rda_db_10_4",
         "sato_2002_wakame",
         "suetsuna_2000_wakame",

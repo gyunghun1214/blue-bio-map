@@ -120,6 +120,9 @@ try{
   check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
   check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
   check('Oyster: compounds 미수집, separate OBIS 26 kept in details',/보고 화합물\s*미수집/.test(t)&&/기록 수\s*26건/.test(t),t);
+  const nat=await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=true);document.getElementById('detail').innerText");
+  check('Oyster: national red-list LC shown as a fact beside IUCN, not as MCUI',nat.includes('국가 평가(한국 범위): LC')&&nat.includes('MCUI 점수에 넣지 않는 사실 정보')&&!/보전 평가\s*10\.0/.test(nat),nat);
+  await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=false)");
   await detailEl();await shot('desktop-oyster');
 
   t=await pick(241776);

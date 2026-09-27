@@ -250,6 +250,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertIsNone(flagged["scores"]["BBVI"])
 
 
+    def test_national_fact_never_becomes_mcui(self):
+        report = self.run_build()
+        facts = [s for s in report["species"] + report["candidate_species"] if s.get("national_red_list_fact")]
+        self.assertEqual(len(facts), 8)
+        for s in facts:
+            self.assertFalse(s["national_red_list_fact"]["used_for_score"])
+            self.assertIn(s["national_red_list_fact"]["source_id"], s["source_ids"])
+        self.assertIsNone(species(report, 836033)["scores"]["MCUI"])  # 참굴: national LC only, IUCN not assessed
+        stripped = {k: v for k, v in self.config.items() if k != "national_fact_supplement"}
+        plain = self.run_build(config=stripped)
+        self.assertEqual({s["aphia_id"]: s["scores"] for s in plain["species"] + plain["candidate_species"]},
+                         {s["aphia_id"]: s["scores"] for s in report["species"] + report["candidate_species"]})
+        self.assertNotIn("ahtpdb", " ".join(report["sources"]).lower())
+
+
 class VerifiedPilot3Tests(unittest.TestCase):
     V3 = ROOT / "config" / "verified-indices-v3.json"
 
