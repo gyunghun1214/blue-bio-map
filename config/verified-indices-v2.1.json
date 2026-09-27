@@ -1,7 +1,7 @@
 {
   "method_version": "verified-pilot-2.1",
   "status": "provisional_unvalidated",
-  "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged.",
+  "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings.",
   "nutrition": {
     "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json",
     "components": {
@@ -228,5 +228,15 @@
       "ahtpdb_ic50_2026"
     ],
     "rule": "Public-paper peptide IC50 values are shown with their source only. No AHTPDB cohort, rank or percentile is published until the AHTPDB reuse terms are confirmed; these values never enter MBPI or BBVI."
+  },
+  "reference_combination": {
+    "label": "참고 통합값 · 독립 재현 미확인",
+    "formula": "w×MFPI+(1−w)×MBPI",
+    "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking.",
+    "limits": [
+      "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+      "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+      "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+    ]
   }
 }

@@ -661,11 +661,32 @@ function axisStateSection(s){
     `<details class="score-disclosure" data-axis="${k}"><summary><span>${k}</span><b>${esc(axisState(s,k).label)}</b></summary>`+
     `<div class="score-disclosure-body"><p class="pending">${esc(axisStateNote[s.assessmentState])}</p></div></details>`).join('')+'</section>';
 }
+// verified-pilot-2.1: shown only when both inputs equal the published axes and BBVI itself is withheld; never a score or rank.
+function referenceCombination(s){
+  const r=s.assessment.reference_combination;
+  if(!r||s.assessment.scores?.BBVI!==null||r.used_for_score!==false||r.inputs?.MFPI!==pilotScore(s,'MFPI')||r.inputs?.MBPI!==pilotScore(s,'MBPI')||r.inputs.MFPI===null||r.inputs.MBPI===null)return '';
+  return `<h4>${esc(r.label)}</h4><div class="score-fact"><b>참고값 ${esc(r.value.toFixed(1))} · 점수 아님</b><span>${esc(`${r.formula}, w = ${r.food_weight} · MFPI ${r.inputs.MFPI}(${r.mfpi_cohort}) · MBPI ${r.inputs.MBPI}(${r.mbpi_stratum}, 원논문 ${r.mbpi_original_paper_dois.join(', ')})`)}</span></div>`+
+    `<p class="fine">가중치 민감도: ${esc(Object.entries(r.sensitivity).map(([w,v])=>`w ${w} → ${v}`).join(' · '))}. ${esc(r.limits.join(' '))} BBVI 점수·매트릭스·순위에 쓰지 않습니다.</p>`;
+}
+// Species-level axis pairs, listed only where both values exist. Each group keeps one MCUI basis and one utilisation cohort;
+// national and IUCN MCUI, or different MFPI cohorts, are never merged, ranked or turned into a sea-area value.
+function axisPairsHtml(){
+  const groups=new Map();
+  for(const s of data?.species||[])for(const k of ['MFPI','MBPI','BBVI']){
+    if(pilotScore(s,k)===null||pilotScore(s,'MCUI')===null)continue;
+    const cohort=k==='MFPI'?s.assessment.food_trace?.cohort_id:k==='MBPI'?s.assessment.bioactivity_trace?.[0]?.stratum_id:'BBVI';
+    const key=`${k} × MCUI(${nationalMcui(s)?'한국 국가 평가 기반':'IUCN 기반'}) · ${cohort}`;
+    groups.set(key,[...(groups.get(key)||[]),`${s.label} ${k} ${pilotScore(s,k).toFixed(1)} · MCUI ${pilotScore(s,'MCUI').toFixed(1)}`]);
+  }
+  const zero=['MFPI','MBPI','BBVI'].filter(k=>![...groups.keys()].some(g=>g.startsWith(k+' ')));
+  return `<b>축 쌍 보기 · 두 값이 모두 있는 종만</b><span>MFPI만의 쌍은 BBVI가 아닙니다. IUCN 기반과 한국 국가 평가 기반 MCUI, 서로 다른 비교집단은 합치거나 순위를 매기지 않습니다. 종 단위 값이며 해역·셀 값이 아닙니다. 나열 순서는 카탈로그 순서입니다.</span>`+
+    `<ul>${[...groups].map(([k,v])=>`<li><b>${esc(k)}</b> ${v.length}종: ${esc(v.join(' / '))}</li>`).join('')}${zero.map(k=>`<li><b>${k} × MCUI</b> 0종 · 두 값을 함께 가진 종 없음</li>`).join('')}</ul>`;
+}
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
   const bodies={MFPI:verifiedFoodDetail(s),MBPI:verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s),
-    BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'};
+    BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'+referenceCombination(s)};
   const unexplored=a.unexplored_candidate?`<p class="pending">미탐색 후보: 같은 ${esc(a.unexplored_candidate.rank)} ${esc(a.unexplored_candidate.taxon)}의 ${esc(a.unexplored_candidate.relatives.join(', '))}에 BBVI가 있습니다. 이 종의 점수는 추정하지 않습니다.</p>`:'';
   return `<section class="verified-scores"><h3>실제 원자료 기반 지표 · 검증 전 시범 지표</h3>`+
     `<p class="fine">자료 스냅샷 ${esc(data.assessmentInfo?.generatedAt?.slice(0,10))} · 방법론 ${esc(data.assessmentInfo?.version)} · MFPI·MBPI·MCUI는 각각 독립적으로 판정합니다. `+
@@ -1433,6 +1454,7 @@ function toggleSimulation(value){
   const kinds=data?.live?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
   $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 후속조사 대상 ${unplaced.length}종${kinds}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  $('axis-pairs').innerHTML=value||!data?.live?'':axisPairsHtml();
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
@@ -1464,7 +1486,7 @@ async function loadCollection(){
   const request=++requestNumber,live=$('collection').value==='live';
   data=null;selected=null;selectedValueCell=null;comparisonPage=0;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('axis-pairs').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
   setMapLegend(live,null);

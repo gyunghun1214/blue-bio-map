@@ -611,6 +611,15 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if config.get("national_red_list"):
             row["national_assessment"] = national
             row["mcui_basis"] = mcui_basis
+        if config.get("reference_combination"):  # verified-pilot-2.1: beside the scores, never in scores.BBVI, the matrix or rankings
+            rc = config["reference_combination"]
+            row["reference_combination"] = {
+                "label": rc["label"], "formula": rc["formula"], "inputs": {"MFPI": mfpi_value, "MBPI": mbpi},
+                "mfpi_cohort": food_trace["cohort_id"], "mbpi_stratum": best["stratum_id"],
+                "mbpi_original_paper_dois": best["original_paper_dois"], "food_weight": w,
+                "value": round1(w * mfpi_value + (1 - w) * mbpi),
+                "sensitivity": {str(x): round1(x * mfpi_value + (1 - x) * mbpi) for x in config["bbvi"]["sensitivity_food_weights"]},
+                "limits": rc["limits"], "used_for_score": False} if both and single_source else None
         if config.get("peptide_raw_values"):  # shown as raw value and source; the peptide stratum is absent, so no score
             require(not config.get("peptide_bioactivity"), "raw-value display and the peptide stratum are exclusive")
             raw = [r for r in evidence.get("peptide_bioactivity", []) if r.get("origin_aphia_id") == aphia and r.get("status") == "approved_for_score"]
