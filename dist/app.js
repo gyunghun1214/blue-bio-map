@@ -613,6 +613,9 @@ function mapSummaryHtml(s){
   return `<h3>지도에 표시한 기록 <span class="fine">${esc(scope)}</span></h3>${row('지도 표시 기록',`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}개 격자(${cells[0].sizeDeg}°)`)}${row('기록 연도',cellYears(s))}${row('출처',s.info?.map?.source||'출처 미기재')}${comparison}`;
 }
 function renderCandidateDetail(s){
+  const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
+  const heading=(status)=>`<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">${status}</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`;
+  const identity=`<p class="detail-context">AphiaID ${esc(s.aphiaID)} · ${esc(s.group)} · ${sourceLink(s.wormsUrl,'WoRMS 학명 확인 ↗')}</p>`;
   if(s.audit){
     const a=s.audit, g=a.gbif, n=a.nutrition, i=a.iucn, o=a.obis;
     const countOrUnknown=x=>Number.isSafeInteger(x)?x.toLocaleString():'미확인';
@@ -628,45 +631,57 @@ function renderCandidateDetail(s){
     const datasetLinks=g.datasets.slice(0,5).map(d=>'<li>'+sourceLink(d.url,d.title||'GBIF 원 데이터셋')+
       ' · 원조회 '+esc(d.retrieved)+'건 · 레코드 '+esc(d.recordLicenses.join(', '))+
       ' · 데이터셋 '+esc(d.datasetLicense||'미기재')+'</li>').join('');
-    $('detail').innerHTML='<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">'+(s.cells.length?'역사적 4° 셀 공개':g.retrievedCount===0?'GBIF 검색 0건':'지도 공개 보류')+'</span></div>'+
-      '<h2>'+esc(s.label)+'</h2><p class="latin">'+esc(s.name)+'</p><p>AphiaID '+esc(s.aphiaID)+' · '+esc(s.group)+'</p></div>'+
-      '<div class="detail-summary"><h3>선정 이유</h3><p>'+esc(s.reason)+'</p>'+
-      (s.taxonNote?'<p class="fine">'+esc(s.taxonNote)+'</p>':'')+
-      '<p class="detail-limit">'+(s.cells.length?'1930년 일본 연안 표본 한 건의 4° 광역 출현 근거만 표시합니다. 현재 한국 해역 분포·개체수·자원량이 아니며 나머지 기록은 공개 검수 보류입니다.':'조회 결과는 전체 분포·개체수·자원량이 아닙니다. 공개 적격성·민감도 검토를 마칠 때까지 지도에 위치를 표시하지 않습니다.')+'</p></div>'+
-      '<div class="detail-more-list"><h3>확인된 원자료와 남은 검수</h3>'+
-      row('GBIF 시험 조회',`조회 ${countOrUnknown(g.retrievedCount)}건 · 최종 공개 ${s.cells.length?1:0}건 / ${s.cells.length}셀 · 잠정 품질 통과 ${countOrUnknown(g.preliminaryEligible)}건(나머지 민감도·중복 재검토 전)`,'pending')+
-      (s.cells.length?'<p class="fine">공개 기록: 1930년 보존 표본, CAS Invertebrate Zoology · 기록과 데이터셋 CC0 1.0 · WoRMS 동의어 연결 확인 · 좌표 불확실성 6,065 m · 공개 해상도 4°. '+sourceLink(s.sources[0].url,'원 데이터셋 ↗')+' · '+sourceLink('https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni','동의어 근거 ↗')+'</p>':'')+
-      row('OBIS',o?(o.status==='query_count_unreviewed'?`조회 ${countOrUnknown(o.reportedTotal)}건 · 개별 기록·중복·라이선스 미검수`:o.status==='zero_for_scope'?'해당 질의·범위 결과 0건 · 부재 증거 아님':o.status==='collection_failed'?'수집 실패 · 결과 미확인':o.status==='taxonomy_review_required'?'학명 연결 재검토 필요 · 출현 조회 보류':'응답 재검토 필요 · 결과 미확인'):'종별 조회 미실행','pending')+
-      row('식량·영양',food,'pending')+
-      row('생리활성','기원종→화합물→assay 원문 미검수','pending')+
-      row('보전',conservation,'pending')+
-      row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
-      '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'+
-      '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
-      '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
-      ' · '+esc(g.scope)+' · 제외 사유와 원 데이터셋: <a href="https://github.com/gyunghun1214/blue-bio-map/blob/main/dist/expansion-evidence.json" target="_blank" rel="noopener noreferrer">22종 감사표 ↗</a></p>'+
-      (o?'<p>'+sourceLink(o.queryUrl,'OBIS 원검색·범위 ↗')+' · 조회 '+esc(o.queriedAt?.slice(0,10)||'미기재')+' · 건수는 GBIF와 합산하지 않으며 공개 출현 셀이 아닙니다.</p>':'')+
-      (datasetLinks?'<details><summary>원 데이터셋 일부 (최대 5개 · 자료별 이용조건)</summary><ul>'+datasetLinks+'</ul></details>':'')+
-      (n.foodCode?'<p>RDA 식품명 원행(목표 종 연결 전): '+sourceLink(n.rowUrl,n.foodName+' ↗')+
-        ' · '+esc(values)+' · 생것, 가식부 100 g 기준(폐기율 별도) · 원행 출처 '+esc(n.values?.row_source||'미기재')+
-        ' · '+esc(n.note)+' · 조회 '+esc(data?.assessmentInfo?.generatedAt?.slice(0,10)||'2026-09-25')+
-        ' · 공공누리 제1유형</p>':'')+
-      (i.record?'<p>IUCN 체크리스트 원자료: '+sourceLink(i.checklistRecordUrl||i.record.reference,'평가 메타데이터 ↗')+
-        ' · '+sourceLink(i.record.reference,'원평가 페이지 ↗')+' · '+esc(i.record.citation||'인용 미기재')+'</p>':'')+
-      '<p class="fine">다음 단계: 기록별 라이선스와 데이터셋 조건을 교차 검수하고 관측 중복·해안선·민감도를 독립 확인합니다. 식품명의 종 동정과 IUCN 원평가 기준·시점을 확인한 뒤 축별 지표를 다시 심사합니다.</p></div>';
+    const mapStatus=s.cells.length?'1930년 표본 1건 · 공개 4° 셀 1개':g.retrievedCount===0?'GBIF 검색 0건 · 공개 셀 없음':'GBIF 조회 · 공개 셀 없음';
+    const limit=s.cells.length
+      ?'1930년 일본 연안 표본의 역사적 출현 근거입니다. 현재 한국 분포·개체수·자원량이 아닙니다.'
+      :g.retrievedCount===0?'이 조회 조건의 검색 결과가 0건입니다. 종 부재나 전체 분포를 뜻하지 않습니다.'
+      :'조회 기록은 공개 적격성·민감도 검수 중입니다. 지도에 위치를 표시하지 않습니다.';
+    $('detail').innerHTML=heading(s.cells.length?'역사적 4° 셀 공개':g.retrievedCount===0?'GBIF 검색 0건':'지도 공개 보류')+
+      `<div class="detail-summary">${identity}<h3>지도에 표시한 기록</h3>${row('공개 상태',mapStatus,'pending')}`+
+      `<h3>근거 상태 <span class="fine">판정 아님</span></h3>`+
+      row('식량 근거',n.foodCode?'식품명 후보 · 종 연결 미확인':'연결된 식품 행 없음','pending')+
+      row('생리활성 근거','원문 연결 미검수','pending')+
+      row('보전 평가',i.record?.category?'체크리스트 기록 · 원평가 미검수':'연결된 평가 미확인','pending')+
+      `<p class="detail-limit">${limit} MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.</p></div>`+
+      '<div class="detail-more-list">'+
+      more('근거 자세히 보기',`<h3>선정 이유</h3><p>${esc(s.reason)}</p>`+
+        (s.taxonNote?`<p class="fine">${esc(s.taxonNote)}</p>`:'')+
+        row('식량·영양',food,'pending')+row('생리활성','기원종→화합물→assay 원문 미검수','pending')+
+        row('보전',conservation,'pending')+
+        row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
+        '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>')+
+      more('수집·선별 기준',row('GBIF 시험 조회',`조회 ${countOrUnknown(g.retrievedCount)}건 · 최종 공개 ${s.cells.length?1:0}건 / ${s.cells.length}셀 · 잠정 품질 통과 ${countOrUnknown(g.preliminaryEligible)}건(나머지 민감도·중복 재검토 전)`,'pending')+
+        (s.cells.length?'<p class="fine">공개 기록: 1930년 보존 표본, CAS Invertebrate Zoology · 기록과 데이터셋 CC0 1.0 · WoRMS 동의어 연결 확인 · 좌표 불확실성 6,065 m · 공개 해상도 4°. '+sourceLink(s.sources[0].url,'원 데이터셋 ↗')+' · '+sourceLink('https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni','동의어 근거 ↗')+'</p>':'')+
+        row('OBIS',o?(o.status==='query_count_unreviewed'?`조회 ${countOrUnknown(o.reportedTotal)}건 · 개별 기록·중복·라이선스 미검수`:o.status==='zero_for_scope'?'해당 질의·범위 결과 0건 · 부재 증거 아님':o.status==='collection_failed'?'수집 실패 · 결과 미확인':o.status==='taxonomy_review_required'?'학명 연결 재검토 필요 · 출현 조회 보류':'응답 재검토 필요 · 결과 미확인'):'종별 조회 미실행','pending')+
+        '<p class="fine">다음 단계: 기록별 라이선스와 데이터셋 조건을 교차 검수하고 관측 중복·해안선·민감도를 독립 확인합니다. 식품명의 종 동정과 IUCN 원평가 기준·시점을 확인한 뒤 축별 지표를 다시 심사합니다.</p>')+
+      more('출처와 이용조건','<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
+        '<p>'+sourceLink(g.queryUrl,'GBIF 원검색·범위 ↗')+' · 조회 '+esc(g.queriedAt?.slice(0,10)||'미기재')+
+        ' · '+esc(g.scope)+' · 제외 사유와 원 데이터셋: <a href="https://github.com/gyunghun1214/blue-bio-map/blob/main/dist/expansion-evidence.json" target="_blank" rel="noopener noreferrer">22종 감사표 ↗</a></p>'+
+        (o?'<p>'+sourceLink(o.queryUrl,'OBIS 원검색·범위 ↗')+' · 조회 '+esc(o.queriedAt?.slice(0,10)||'미기재')+' · 건수는 GBIF와 합산하지 않으며 공개 출현 셀이 아닙니다.</p>':'')+
+        (datasetLinks?'<details><summary>원 데이터셋 일부 (최대 5개 · 자료별 이용조건)</summary><ul>'+datasetLinks+'</ul></details>':'')+
+        (n.foodCode?'<p>RDA 식품명 원행(목표 종 연결 전): '+sourceLink(n.rowUrl,n.foodName+' ↗')+
+          ' · '+esc(values)+' · 생것, 가식부 100 g 기준(폐기율 별도) · 원행 출처 '+esc(n.values?.row_source||'미기재')+
+          ' · '+esc(n.note)+' · 조회 '+esc(data?.assessmentInfo?.generatedAt?.slice(0,10)||'2026-09-25')+
+          ' · 공공누리 제1유형</p>':'')+
+        (i.record?'<p>IUCN 체크리스트 원자료: '+sourceLink(i.checklistRecordUrl||i.record.reference,'평가 메타데이터 ↗')+
+          ' · '+sourceLink(i.record.reference,'원평가 페이지 ↗')+' · '+esc(i.record.citation||'인용 미기재')+'</p>':''))+'</div>';
     return;
   }
   const details=[['분포·지도','미수집 · 공개 셀 없음'],['식량·영양','원값·시료 상태·가식부·양식 근거 미검수'],['생리활성','기원종·화합물·assay 연결 미검수'],['보전','IUCN 원평가·현행 상태 미검수'],['MFPI / MBPI / MCUI / BBVI','전부 산출 보류']];
-  $('detail').innerHTML='<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">분포 미수집</span></div>'+
-    '<h2>'+esc(s.label)+'</h2><p class="latin">'+esc(s.name)+'</p><p>AphiaID '+esc(s.aphiaID)+' · '+esc(s.group)+'</p></div>'+
-    '<div class="detail-summary"><h3>선정 이유</h3><p>'+esc(s.reason)+'</p>'+
-    (s.taxonNote?'<p class="fine">'+esc(s.taxonNote)+'</p>':'')+
-    '<p class="detail-limit">한국 주변 출현 여부, 식품 적합성 및 보전 필요성은 아직 평가하지 않았습니다. 지도에 셀이 없는 것은 생물이 없다는 뜻이 아닙니다.</p></div>'+
-    '<div class="detail-more-list"><h3>자료와 산출 상태</h3>'+
-    details.map(([label,status])=>row(label,status,'pending')).join('')+
-    '<p class="fine">정보충분도: 학명 연결만 확인 · 그 밖의 근거 미수집. 미확인은 0점이 아닙니다.</p>'+
-    '<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
-    '<p class="fine">분포를 발행하려면 종 식별·이용조건·좌표 품질·민감도 검수 후 공개 격자만 게시해야 합니다.</p></div>';
+  $('detail').innerHTML=heading('분포 미수집')+
+    `<div class="detail-summary">${identity}<h3>지도에 표시한 기록</h3>${row('공개 상태','자료 미수집 · 공개 셀 없음','pending')}`+
+    `<h3>근거 상태 <span class="fine">판정 아님</span></h3>`+
+    row('식량 근거','원자료 미검수','pending')+row('생리활성 근거','원문 연결 미검수','pending')+
+    row('보전 평가','원평가 미검수','pending')+
+    '<p class="detail-limit">지도에 셀이 없는 것은 종 부재가 아닙니다. MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.</p></div>'+
+    '<div class="detail-more-list">'+
+    more('근거 자세히 보기',`<h3>선정 이유</h3><p>${esc(s.reason)}</p>`+
+      (s.taxonNote?`<p class="fine">${esc(s.taxonNote)}</p>`:'')+
+      details.map(([label,status])=>row(label,status,'pending')).join('')+
+      '<p class="fine">정보충분도: 학명 연결만 확인 · 그 밖의 근거 미수집. 미확인은 0점이 아닙니다.</p>')+
+    more('수집·선별 기준','<p>한국 주변 출현 여부, 식품 적합성 및 보전 필요성은 아직 평가하지 않았습니다. 분포를 발행하려면 종 식별·이용조건·좌표 품질·민감도 검수 후 공개 격자만 게시해야 합니다.</p>')+
+    more('출처와 이용조건','<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>')+
+    '</div>';
 }
 
 function renderLiveDetail(s) {
