@@ -1335,7 +1335,7 @@ async function loadCollection(){
       live?fetch('data.json').then(r=>r.ok?r.json():null).catch(()=>null):null,
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
     matrixReadiness=new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
-    data.readinessAssessmentDate=readiness?.assessments_snapshot||null;data.readinessCandidateDate=readiness?.candidate_snapshot||null;
+    next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     otherCollection=other?.species||[];
     if(request!==requestNumber)return;
     if(live)await attachPilotAssessments(next);
