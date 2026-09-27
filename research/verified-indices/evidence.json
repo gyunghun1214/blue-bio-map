@@ -371,6 +371,130 @@
       "accessed": "2026-09-27",
       "terms": "PubChem facts cited by CID and formula; no database bulk content republished",
       "license": "NCBI PubChem public compound records"
+    },
+    "iucn_haliotis_discus_2022": {
+      "provider": "IUCN Red List",
+      "title": "Haliotis discus assessment e.T78764186A78772433",
+      "version": "2022-2 record, current in Red List 2026-1",
+      "doi": "10.2305/IUCN.UK.2022-2.RLTS.T78764186A78772433.en",
+      "url": "https://www.iucnredlist.org/species/78764186/78772433",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "iucn_scomber_japonicus_2023": {
+      "provider": "IUCN Red List",
+      "title": "Scomber japonicus assessment e.T170306A170083106",
+      "version": "2023-1 record, current in Red List 2026-1",
+      "doi": "10.2305/IUCN.UK.2023-1.RLTS.T170306A170083106.en",
+      "url": "https://www.iucnredlist.org/species/170306/170083106",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "iucn_engraulis_japonicus_2018": {
+      "provider": "IUCN Red List",
+      "title": "Engraulis japonicus assessment e.T98969433A143841777",
+      "version": "2018-2 record, current in Red List 2026-1",
+      "doi": "10.2305/IUCN.UK.2018-2.RLTS.T98969433A143841777.en",
+      "url": "https://www.iucnredlist.org/species/98969433/143841777",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "iucn_larimichthys_polyactis_2020": {
+      "provider": "IUCN Red List",
+      "title": "Larimichthys polyactis assessment e.T49182929A49229050",
+      "version": "2020-1 record, current in Red List 2026-1",
+      "doi": "10.2305/IUCN.UK.2020-1.RLTS.T49182929A49229050.en",
+      "url": "https://www.iucnredlist.org/species/49182929/49229050",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "iucn_seriola_quinqueradiata_2016": {
+      "provider": "IUCN Red List",
+      "title": "Seriola quinqueradiata assessment page 20435860/115383171",
+      "version": "2016 publication, current in Red List 2026-1",
+      "doi_as_listed_in_gbif_checklist": "10.2305/IUCN.UK.2016-3.RLTS.T20435860A65927987.en",
+      "url": "https://www.iucnredlist.org/species/20435860/115383171",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "iucn_sepia_esculenta_2012": {
+      "provider": "IUCN Red List",
+      "title": "Sepia esculenta assessment e.T162666A940677",
+      "version": "2012-1 record, current in Red List 2026-1",
+      "doi": "10.2305/IUCN.UK.2012-1.RLTS.T162666A940677.en",
+      "url": "https://www.iucnredlist.org/species/162666/940677",
+      "accessed": "2026-09-26",
+      "terms": "IUCN Red List use terms; record link and limited metadata",
+      "license": "IUCN Red List terms",
+      "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
+    },
+    "fao_casp_ruditapes": {
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "accessed": "2026-09-26",
+      "terms": "FAO website terms; factual summary and link only",
+      "license": "FAO website terms",
+      "title": "Cultured Aquatic Species Information Programme — Ruditapes philippinarum",
+      "version": "FAO cultured-species factsheet, accessed 2026-09-26",
+      "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm"
+    },
+    "fao_casp_yesso_scallop": {
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "accessed": "2026-09-26",
+      "terms": "FAO website terms; factual summary and link only",
+      "license": "FAO website terms",
+      "title": "Cultured Aquatic Species Information Programme — Patinopecten yessoensis",
+      "version": "FAO cultured-species factsheet, accessed 2026-09-26",
+      "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_yessoscallop.htm"
+    },
+    "fao_casp_amberjack": {
+      "provider": "Food and Agriculture Organization of the United Nations",
+      "accessed": "2026-09-26",
+      "terms": "FAO website terms; factual summary and link only",
+      "license": "FAO website terms",
+      "title": "Cultured Aquatic Species Information Programme — Seriola quinqueradiata",
+      "version": "FAO cultured-species factsheet, accessed 2026-09-26",
+      "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japaneseamberjack.htm"
+    },
+    "kosis_fish_aquaculture": {
+      "provider": "Statistics Korea (국가데이터처), 어류양식동향조사",
+      "title": "시도·시군구별 양식방법별 어종별 양식현황(입식, 생산, 사육, 먹이를 준 양) DT_1EZ0008",
+      "version": "2010 ~ 2026 2/4, table updated 2026-08-31",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
+      "accessed": "2026-09-26",
+      "terms": "KOSIS official statistics; value and table link only",
+      "license": "KOSIS terms of use (공공누리 표시 확인 필요)"
+    },
+    "park_2013_dieckol": {
+      "provider": "Bioorganic & Medicinal Chemistry 21:3730 (Park et al. 2013); abstract via Europe PMC, values via ChEMBL",
+      "title": "Dieckol, a SARS-CoV 3CL(pro) inhibitor, isolated from the edible brown algae Ecklonia cava",
+      "version": "2013; ChEMBL document CHEMBL2390950",
+      "doi": "10.1016/j.bmc.2013.04.026",
+      "pmid": "23647823",
+      "url": "https://doi.org/10.1016/j.bmc.2013.04.026",
+      "accessed": "2026-09-26",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright; ChEMBL CC BY-SA 3.0 for the extracted values"
+    },
+    "mext_sfct_2020": {
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
+      "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d",
+      "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
+      "accessed": "2026-09-26",
+      "terms": "MEXT website terms of use, compliant with the Government Standard Terms of Use 2.0; no table-specific terms were shown on the download page (2026-09-26)",
+      "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+      "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20). One remark and one refuse value are quoted with attribution; no table data are redistributed."
     }
   },
   "nutrition_rows": [
@@ -590,6 +714,69 @@
       "region": "Republic of Korea named as the largest wakame producer; Japan and France also described",
       "year": "FAO FTP 441 (2003); page accessed 2026-09-25",
       "limitations": "Epiphyte fouling made frame cleaning too expensive in a French trial; local siting, temperature and cost need current review."
+    },
+    {
+      "aphia_id": 274849,
+      "kind": "aquaculture",
+      "record_id": "KOSIS:101:DT_1EZ0008:2026-Q1p:조피볼락:입식량",
+      "source_id": "kosis_fish_aquaculture",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Korean fish-farm survey lists 조피볼락 as its own species row with stocking (입식량) of 1,740 thousand fish, all methods, nationwide",
+      "region": "Republic of Korea (전국)",
+      "year": "2026 Q1 (provisional 'p'), table updated 2026-08-31",
+      "limitations": "Provisional quarterly value; stocking shows current farming, not yield or site suitability."
+    },
+    {
+      "aphia_id": 231750,
+      "kind": "aquaculture",
+      "record_id": "FAO-CASP-Ruditapes-philippinarum:Production-systems",
+      "source_id": "fao_casp_ruditapes",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Intertidal on-bottom culture using wild seed or hatchery seed",
+      "region": "Global species profile",
+      "year": "historical factsheet, page accessed 2026-09-26",
+      "limitations": "Technical species-level cultivation evidence; current Korean siting, disease, seed supply and cost require local review."
+    },
+    {
+      "aphia_id": 393716,
+      "kind": "aquaculture",
+      "record_id": "FAO-CASP-Patinopecten-yessoensis:Production-systems",
+      "source_id": "fao_casp_yesso_scallop",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Wild seed collection with suspended (hanging) culture or ground lays; off-bottom methods spread from Japan to other North Pacific Asian countries",
+      "region": "Global species profile (Japan origin; Korea named among producers)",
+      "year": "historical factsheet, page accessed 2026-09-26",
+      "limitations": "Technical species-level cultivation evidence; current Korean siting, disease, seed supply and cost require local review."
+    },
+    {
+      "aphia_id": 276651,
+      "kind": "aquaculture",
+      "record_id": "FAO-CASP-Seriola-quinqueradiata:Production-systems",
+      "source_id": "fao_casp_amberjack",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Net-cage grow-out mainly from wild-caught seed; the factsheet names the Republic of Korea as the only producer besides Japan reporting to FAO",
+      "region": "Japan and Republic of Korea",
+      "year": "historical factsheet, page accessed 2026-09-26",
+      "limitations": "Technical species-level cultivation evidence; current Korean siting, disease, seed supply and cost require local review. Wild-seed dependence.",
+      "regional_source_id": "kosis_fish_aquaculture"
+    },
+    {
+      "aphia_id": 276651,
+      "kind": "edible_fraction",
+      "record_id": "MEXT-2020:10243:remarks:whole-fish-refuse",
+      "source_id": "mext_sfct_2020",
+      "reviewed": true,
+      "value": 0.6,
+      "unit": "edible share of food as purchased",
+      "method": "1 - whole-fish refuse (40%) / 100 from the remark of MEXT 2020 food 10243, the table RDA row K0830011130a is borrowed from; that row's refuse 0 describes a fillet (切り身) and is not used",
+      "region": "Japan (MEXT national table)",
+      "sample_period": "2020 table (8th revision)",
+      "publication_year": 2020,
+      "limitations": "Official table value for preparing the whole farmed young fish (head, viscera, bones and fins discarded); not a measured yield of Korean farmed fish. RDA rows K0830000000a ('09, refuse 41%) and K0830021130a ('82, wild young, refuse 45%) are different samples and are not used."
     }
   ],
   "nutrition_observations": [
@@ -1262,6 +1449,47 @@
       "data_validity_comment": null,
       "replication": "three determinations in the same publication; one independent article; no external replication",
       "assay_species": "commercial ACE (Sigma); source tissue not reported; not the compound source species"
+    },
+    {
+      "origin_aphia_id": 371986,
+      "origin_scientific_name": "Ecklonia cava",
+      "record_id": "10.1016/j.bmc.2013.04.026:SARS-CoV-3CLpro",
+      "source_id": "park_2013_dieckol",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "phlorotannins isolated from Ecklonia cava (dieckol, eckol, phlorofucofuroeckol A)",
+      "endpoint": "IC50",
+      "values": [
+        {
+          "material": "dieckol (ChEMBL CHEMBL508791, activity 13340940)",
+          "relation": "=",
+          "value": 2.7,
+          "unit": "µM"
+        },
+        {
+          "material": "eckol (CHEMBL471187, activity 13340937)",
+          "relation": "=",
+          "value": 8.8,
+          "unit": "µM"
+        },
+        {
+          "material": "phlorofucofuroeckol A (CHEMBL510508, activity 13340932)",
+          "relation": "=",
+          "value": 16.7,
+          "unit": "µM"
+        }
+      ],
+      "test_system": "SARS-CoV 3CLpro trans-cleavage (cell-free), ChEMBL assay CHEMBL2395056",
+      "missing": [
+        "No fixed comparable compound stratum for this target/assay in verified-pilot-2"
+      ],
+      "exclusion_reason": "Origin, structure and numeric endpoint are traceable, but the method has no fixed comparable stratum; PR-A adds no cohorts.",
+      "chain": {
+        "origin": true,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": false
+      }
     }
   ],
   "conservation": [
@@ -1463,6 +1691,511 @@
         "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for these names"
       },
       "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 397082,
+      "scientific_name": "Haliotis discus",
+      "iucn_state": "assessed",
+      "record_id": "IUCN:e.T78764186A78772433",
+      "iucn_taxon_id": "78764186",
+      "source_id": "iucn_haliotis_discus_2022",
+      "category": "EN",
+      "criteria": "A2d",
+      "criteria_version": "3.1",
+      "assessment_date": "2022-05-31",
+      "assessment_year": 2022,
+      "publication_year": 2022,
+      "scope": "Global (native range: Japan; Korea, Republic of)",
+      "population_trend": "Decreasing",
+      "threats": null,
+      "annotations": null,
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Endangered A2d ver 3.1, assessed 31 May 2022, published 2022, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 78764186 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      }
+    },
+    {
+      "aphia_id": 127022,
+      "scientific_name": "Scomber japonicus",
+      "iucn_state": "assessed",
+      "record_id": "IUCN:e.T170306A170083106",
+      "iucn_taxon_id": "170306",
+      "source_id": "iucn_scomber_japonicus_2023",
+      "category": "LC",
+      "criteria": null,
+      "criteria_version": "3.1",
+      "assessment_date": "2022-06-01",
+      "assessment_year": 2022,
+      "publication_year": 2023,
+      "scope": "Global",
+      "population_trend": "Stable",
+      "threats": null,
+      "annotations": null,
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 01 June 2022, published 2023, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 170306 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      }
+    },
+    {
+      "aphia_id": 219984,
+      "scientific_name": "Engraulis japonicus",
+      "iucn_state": "assessed",
+      "record_id": "IUCN:e.T98969433A143841777",
+      "iucn_taxon_id": "98969433",
+      "source_id": "iucn_engraulis_japonicus_2018",
+      "category": "LC",
+      "criteria": null,
+      "criteria_version": "3.1",
+      "assessment_date": "2018-05-16",
+      "assessment_year": 2018,
+      "publication_year": 2018,
+      "scope": "Global",
+      "population_trend": "Unknown",
+      "threats": null,
+      "annotations": null,
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 16 May 2018, published 2018, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 98969433 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      }
+    },
+    {
+      "aphia_id": 281273,
+      "scientific_name": "Larimichthys polyactis",
+      "iucn_state": "assessed",
+      "record_id": "IUCN:e.T49182929A49229050",
+      "iucn_taxon_id": "49182929",
+      "source_id": "iucn_larimichthys_polyactis_2020",
+      "category": "LC",
+      "criteria": null,
+      "criteria_version": "3.1",
+      "assessment_date": "2016-06-30",
+      "assessment_year": 2016,
+      "publication_year": 2020,
+      "scope": "Global",
+      "population_trend": "Unknown",
+      "threats": null,
+      "annotations": null,
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 30 June 2016, published 2020, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 49182929 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      }
+    },
+    {
+      "aphia_id": 276651,
+      "scientific_name": "Seriola quinqueradiata",
+      "iucn_state": "assessed",
+      "record_id": "IUCN:e.T20435860A115383171",
+      "iucn_taxon_id": "20435860",
+      "source_id": "iucn_seriola_quinqueradiata_2016",
+      "category": "LC",
+      "criteria": null,
+      "criteria_version": "3.1",
+      "assessment_date": "2015-03-09",
+      "assessment_year": 2015,
+      "publication_year": 2016,
+      "scope": "Global (native range incl. Japan; DPRK; Republic of Korea; Russian Federation)",
+      "population_trend": "Unknown",
+      "threats": null,
+      "annotations": "Needs updating",
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 09 March 2015, published 2016, global, annotation 'Needs updating'. The page ID (A115383171) differs from the DOI cited by the GBIF checklist (A65927987); both belong to taxon 20435860 and the checklist marks it current. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 20435860 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      }
+    },
+    {
+      "aphia_id": 1666974,
+      "scientific_name": "Acanthosepion esculentum",
+      "iucn_state": "data_deficient",
+      "record_id": "IUCN:e.T162666A940677",
+      "iucn_taxon_id": "162666",
+      "source_id": "iucn_sepia_esculenta_2012",
+      "category": "DD",
+      "criteria": null,
+      "criteria_version": "3.1",
+      "assessment_date": "2009-03-14",
+      "assessment_year": 2009,
+      "publication_year": 2012,
+      "scope": "Global",
+      "population_trend": "Unknown",
+      "threats": null,
+      "annotations": "Needs updating",
+      "reviewed": true,
+      "verification": "IUCN species page read in browser on 2026-09-26: Data Deficient ver 3.1, assessed 14 March 2009, published 2012, listed under the synonym Sepia esculenta (WoRMS synonym of Acanthosepion esculentum 1666974). GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 162666 with the same category.",
+      "current_status_check": {
+        "is_current": true,
+        "source_id": "gbif_iucn_checklist",
+        "checked_on": "2026-09-26",
+        "red_list_version": "2026-1",
+        "method": "IUCN-published GBIF checklist + IUCN species page"
+      },
+      "reported_scientific_name": "Sepia esculenta"
+    },
+    {
+      "aphia_id": 377084,
+      "scientific_name": "Saccharina japonica",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Saccharina japonica",
+          "Laminaria japonica"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Ecklonia cava"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 234476,
+      "scientific_name": "Ulva prolifera",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Ulva prolifera",
+          "Enteromorpha prolifera"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 494853,
+      "scientific_name": "Sargassum horneri",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Sargassum horneri"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 236157,
+      "scientific_name": "Gracilaria vermiculophylla",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Gracilaria vermiculophylla"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 145086,
+      "scientific_name": "Codium fragile",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Codium fragile"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Ruditapes philippinarum"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 393716,
+      "scientific_name": "Mizuhopecten yessoensis",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Mizuhopecten yessoensis",
+          "Patinopecten yessoensis"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 836041,
+      "scientific_name": "Magallana sikamea",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Magallana sikamea",
+          "Crassostrea sikamea"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 504357,
+      "scientific_name": "Anadara broughtonii",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Anadara broughtonii",
+          "Scapharca broughtonii"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 413600,
+      "scientific_name": "Sinonovacula constricta",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Sinonovacula constricta"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 275816,
+      "scientific_name": "Paralichthys olivaceus",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Paralichthys olivaceus"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 274849,
+      "scientific_name": "Sebastes schlegelii",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Sebastes schlegelii",
+          "Sebastes schlegeli"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 254538,
+      "scientific_name": "Gadus macrocephalus",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Gadus macrocephalus"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 1061762,
+      "scientific_name": "Portunus trituberculatus",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Portunus trituberculatus"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+    },
+    {
+      "aphia_id": 534443,
+      "scientific_name": "Octopus sinensis",
+      "iucn_state": "not_in_red_list",
+      "category": null,
+      "reviewed": true,
+      "source_id": "iucn_redlist_search",
+      "search": {
+        "queries": [
+          "Octopus sinensis"
+        ],
+        "scope": "Global, species",
+        "result_count": 0,
+        "checked_on": "2026-09-26",
+        "positive_controls": [
+          "Haliotis discus: 1 result"
+        ],
+        "also_checked": "GBIF IUCN checklist 19491596 (2026-07-28): no record for the accepted name or WoRMS species-rank synonyms"
+      },
+      "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
     }
   ],
   "rda_taxon_links": [
@@ -1539,6 +2272,182 @@
       "reviewed": false,
       "candidate_aphia_id": 241776,
       "link_evidence": "Generic 'sea cucumber' row; not assignable to Apostichopus japonicus 241776 without specimen identification."
+    },
+    {
+      "food_item_id": "K0270000000a",
+      "reported_food_name": "넙치(광어), 생것",
+      "english_name": "Bastard halibut, Raw",
+      "aphia_id": 275816,
+      "scientific_name": "Paralichthys olivaceus",
+      "reviewed": true,
+      "link_evidence": "넙치 is the Korean standard name of Paralichthys olivaceus; 'Bastard halibut' is its FAO English name."
+    },
+    {
+      "food_item_id": "K0960070000a",
+      "reported_food_name": "볼락, 조피볼락(우럭), 생것",
+      "english_name": "Korean rockfish, Raw",
+      "aphia_id": 274849,
+      "scientific_name": "Sebastes schlegelii",
+      "reviewed": true,
+      "link_evidence": "조피볼락 = Sebastes schlegelii ('Korean rockfish'); RDA keeps separate rows for the other 볼락 species."
+    },
+    {
+      "food_item_id": "K1620000000a",
+      "reported_food_name": "조기(참조기), 생것",
+      "english_name": "Yellow croaker, Raw",
+      "aphia_id": 281273,
+      "scientific_name": "Larimichthys polyactis",
+      "reviewed": true,
+      "link_evidence": "참조기 is the Korean standard name of Larimichthys polyactis; the English 'Yellow croaker' is looser than the Korean name (L. crocea is 부세)."
+    },
+    {
+      "food_item_id": "K4000040000a",
+      "reported_food_name": "가리비, 큰가리비, 생것",
+      "english_name": "Yesso scallop, Raw",
+      "aphia_id": 393716,
+      "scientific_name": "Mizuhopecten yessoensis",
+      "reviewed": true,
+      "link_evidence": "큰가리비 = Mizuhopecten (Patinopecten) yessoensis, English 'Yesso scallop'; other scallop species have their own rows."
+    },
+    {
+      "food_item_id": "K4130000000a",
+      "reported_food_name": "바지락, 생것",
+      "english_name": "Little neck clam, Wild, Raw",
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "reviewed": true,
+      "link_evidence": "바지락 = Ruditapes philippinarum (Japanese littleneck/Manila clam)."
+    },
+    {
+      "food_item_id": "K4130010000a",
+      "reported_food_name": "바지락, 양식, 생것",
+      "english_name": "Little neck clam, Farm-raised, Raw",
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "reviewed": true,
+      "link_evidence": "Farm-raised row of the same species (바지락)."
+    },
+    {
+      "food_item_id": "K6020010000a",
+      "reported_food_name": "게, 꽃게, 생것",
+      "english_name": "Blue crab, Raw",
+      "aphia_id": 1061762,
+      "scientific_name": "Portunus trituberculatus",
+      "reviewed": true,
+      "link_evidence": "꽃게 is the Korean standard name of Portunus trituberculatus; 민꽃게 (Charybdis japonica) has a separate row. The English 'Blue crab' is a loose translation."
+    },
+    {
+      "food_item_id": "K0830011130a",
+      "reported_food_name": "방어, 양식, 어린것, 생것",
+      "english_name": "Yellowtail, Farm-raised, Young, Raw",
+      "aphia_id": 276651,
+      "scientific_name": "Seriola quinqueradiata",
+      "reviewed": true,
+      "link_evidence": "방어 = Seriola quinqueradiata (Japanese amberjack/yellowtail); farmed young-fish row borrowed from the Japanese table JAPAN('20)."
+    },
+    {
+      "food_item_id": "K0660000000a",
+      "reported_food_name": "멸치, 생것",
+      "english_name": "Anchovy, Raw",
+      "aphia_id": 219984,
+      "scientific_name": "Engraulis japonicus",
+      "reviewed": true,
+      "link_evidence": "멸치 = Engraulis japonicus, the only anchovy named 멸치 in Korean waters."
+    },
+    {
+      "food_item_id": "K0440000000a",
+      "reported_food_name": "대구, 생것",
+      "english_name": "Pacific cod, Raw",
+      "aphia_id": 254538,
+      "scientific_name": "Gadus macrocephalus",
+      "reviewed": true,
+      "link_evidence": "대구 = Gadus macrocephalus ('Pacific cod'); 빨간대구 and 은대구 are separate rows."
+    },
+    {
+      "food_item_id": "K4220010000a",
+      "reported_food_name": "전복, 둥근전복, 생것",
+      "english_name": "Disk abalone, Raw",
+      "aphia_id": 397082,
+      "scientific_name": "Haliotis discus",
+      "reviewed": true,
+      "link_evidence": "둥근전복 = Haliotis discus discus ('Disk abalone'), a subspecies of the candidate species."
+    },
+    {
+      "food_item_id": "K4250170000a",
+      "reported_food_name": "조개, 피조개, 양식, 생것",
+      "english_name": "Ark shell, Farm-raised, Raw",
+      "aphia_id": 504357,
+      "scientific_name": "Anadara broughtonii",
+      "reviewed": true,
+      "link_evidence": "피조개 is the Korean standard name of Anadara (Scapharca) broughtonii."
+    },
+    {
+      "food_item_id": "K6230040000a",
+      "reported_food_name": "오징어, 참갑오징어, 생것",
+      "english_name": "Golden cuttlefish, Raw",
+      "aphia_id": 1666974,
+      "scientific_name": "Acanthosepion esculentum",
+      "reviewed": true,
+      "link_evidence": "참갑오징어 'Golden cuttlefish' = Sepia esculenta, WoRMS synonym of Acanthosepion esculentum."
+    },
+    {
+      "food_item_id": "L0230000000a",
+      "reported_food_name": "청각, 생것",
+      "english_name": "Sea staghorn, Raw",
+      "aphia_id": 145086,
+      "scientific_name": "Codium fragile",
+      "reviewed": true,
+      "link_evidence": "청각 is the Korean standard name of Codium fragile ('Sea staghorn')."
+    },
+    {
+      "food_item_id": "K0150000000a",
+      "reported_food_name": "고등어, 생것",
+      "english_name": "Mackerel, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "Generic 'Mackerel' row; Korean market 고등어 can include Scomber australasicus (망치고등어). Not assigned to S. japonicus.",
+      "candidate_aphia_id": 127022
+    },
+    {
+      "food_item_id": "L0050000000a",
+      "reported_food_name": "다시마, 생것",
+      "english_name": "Brown Kelp, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "Generic 'Brown kelp' label; not assigned to Saccharina japonica without specimen identification.",
+      "candidate_aphia_id": 377084
+    },
+    {
+      "food_item_id": "L0040000000a",
+      "reported_food_name": "꼬시래기, 생것",
+      "english_name": "Sea string, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "꼬시래기 was historically labelled Gracilaria verrucosa in Korea; not assigned to G. vermiculophylla without specimen identification.",
+      "candidate_aphia_id": 236157
+    },
+    {
+      "food_item_id": "K6110030000a",
+      "reported_food_name": "문어, 참문어, 생것",
+      "english_name": "Common octopus, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "'Common octopus' is Octopus vulgaris; the East Asian population is now O. sinensis, but the row does not state which. Not assigned.",
+      "candidate_aphia_id": 534443
+    },
+    {
+      "food_item_id": "K6230010000a",
+      "reported_food_name": "오징어, 갑오징어, 생것",
+      "english_name": "Cuttle fish, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "Generic 'Cuttle fish' row; the species-specific 참갑오징어 row is linked instead.",
+      "candidate_aphia_id": 1666974
     }
   ],
   "bioactivity_chain_definition": {
@@ -1600,5 +2509,17 @@
       "paper_panel": "3e",
       "stereo_note": "No stereogenic centers encoded in the cited 2D record; Figure 3 connectivity/name checked. Eckstolonol is catalogued as dioxinodehydroeckol; the synonym alone is not origin evidence."
     }
-  }
+  },
+  "rda_refuse_not_accepted": [
+    {
+      "food_item_id": "K0830011130a",
+      "reported_food_name": "방어, 양식, 어린것, 생것",
+      "reviewed": true,
+      "reason": "The row is borrowed from the Japanese table (JAPAN('20)). MEXT 2020 food 10243 (はまち 養殖 皮つき 生) has the same refuse, water, protein, iron and zinc values, and its remark says the sample is a fillet (切り身). Refuse 0 therefore describes a trimmed fillet, not the fish as purchased, and is not edible-fraction evidence.",
+      "source_id": "mext_sfct_2020",
+      "record_id": "MEXT-2020:10243:remarks",
+      "quote": "切り身 (魚体全体から調理する場合、廃棄率： 40 %、廃棄部位： 頭部、内臓、骨、ひれ等)",
+      "checked_on": "2026-09-26"
+    }
+  ]
 }

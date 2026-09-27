@@ -16,7 +16,7 @@ const coverageStages={unavailable:'미확인',found:'원자료 발견',linked:'�
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
     const a=s.audit;
-    return {checks:[
+    const checks=[
       {name:'학명',stage:'verified',detail:'WoRMS 승인명과 AphiaID 연결. 별도 GBIF 동의어는 원문 확인 뒤 연결.'},
       {name:'출현',stage:s.cells.length?'linked':s.review?.gbif.queried||s.review?.obis.queried?'found':'unavailable',
         detail:s.review?`${reviewLine(s.review)}. ${s.cells.length?'통과 기록만 공개 셀에 연결.':'공개 기준 통과 기록 없음 · 종 부재가 아님.'} 제외: ${withheldLine(s.review)}.`:'출현 검수 자료 확인 실패.'},
@@ -25,7 +25,9 @@ function evidenceCoverage(s) {
       {name:'생리활성',stage:pilotScore(s,'MBPI')!==null?'calculated':'unavailable',detail:pilotScore(s,'MBPI')!==null?'감태 분리 화합물 5종의 동일 ACE 시험 원문으로 검증 전 시범 MBPI 산출. 독립 논문 재현은 미확인.':'기원종·화합물·정량 실험 원문 미검수.'},
       {name:'보전',stage:a.iucn.record?.category?'found':'unavailable',
         detail:a.iucn.record?.category?'IUCN 게시 체크리스트에 전 지구 평가 메타데이터 있음. 원평가 일자·기준 미검수.':'체크리스트 정확한 승인명 연결 미확인. 공식 NE 아님.'}
-    ]};
+    ];
+    // A reviewed candidate assessment replaces the audit-only axis stages; name and occurrence stay audit-based.
+    return s.assessment?{checks:[...checks.slice(0,2),...evidenceCoverage({...s,catalog:null}).checks.slice(2)]}:{checks};
   }
   const i=s.info||{}, a=s.assessment, f=a?.food_trace||{};
   const partial=a?.bioactivity_partial||[], conservation=a?.conservation_trace;
@@ -191,11 +193,13 @@ async function attachPilotAssessments(next) {
     const report=await response.json();
     const verified=VERIFIED.includes(report.method_version);
     if(!['pilot-1',...VERIFIED].includes(report.method_version)||report.status!=='provisional_unvalidated'||!Array.isArray(report.species))return;
-    const byId=new Map(report.species.map(s=>[s.aphia_id,s]));
-    if(byId.size!==report.species.length)return;
+    const rows=[...report.species,...(verified&&Array.isArray(report.candidate_species)?report.candidate_species:[])];
+    const byId=new Map(rows.map(s=>[s.aphia_id,s]));
+    if(byId.size!==rows.length)return;
     for(const s of next.species){
       let a=byId.get(s.aphiaID);
       if(a?.scientific_name!==s.name||!a.scores||!Array.isArray(a.source_ids))continue;
+      if(!!s.catalog!==(a.candidate_label==='조사 후보'))continue; // research candidates never attach as operating species
       if(verified){
         if(verifiedReportSpeciesValid(a,report))s.assessment={...a,report_version:report.method_version};
         continue;
@@ -399,6 +403,11 @@ function foodEvidencePanel(s) {
     `<div class="withheld"><b>동일 기준 종별 원자료 미확인</b>${esc(inventory)} ${esc(farming)} 단백질(g), 철·아연(mg)의 생물 가식부 100 g 실측·계산·대용값과 방법·시료 시기, 가식부 비율, 양식 근거, 동기준 비교 3종 이상 및 이용조건을 원레코드에서 확인해야 합니다. 미확인은 0점이 아닙니다.</div>`;
 }
 
+// Short table labels; the full sentence is in scoreReason. Unconfirmed is a reason, never a low value.
+const shortReason={comparable_nutrition_missing:'고정 비교집단에 종 행 없음',food_row_not_species_specific:'식품 행이 종 수준 아님',
+  component_missing_in_source:'필수 성분 결측',aquaculture_method_unverified:'양식 근거 부족',
+  compound_origin_assay_chain_or_fixed_cohort_missing:'기원종→물질→시험 비교집단 없음',not_in_red_list:'IUCN 검색 0건 · 낮은 점수 아님',
+  assessment_lookup_failed:'IUCN 조회 실패',category_not_numeric:'IUCN DD · 숫자 없음',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요'};
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
   food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
@@ -625,25 +634,29 @@ function renderCandidateDetail(s){
       return labels[key]+' '+(n.values[key]??'결측');
     }).join(' · '):'';
     const sourceRow=(label,x)=>row(label,`조회 ${x.queried.toLocaleString()}건 · 통과 ${x.accepted.toLocaleString()}건${x.datasets===undefined?'':` · 데이터셋 ${x.datasets}개 중 개방 이용조건 ${x.openDatasets}개`}${x.genusFallback?' · 속 단위 조회 후 원자료 학명으로 선별':''}`);
+    const scored=['MFPI','MBPI','MCUI','BBVI'].filter(k=>pilotScore(s,k)!==null);
     const limit=s.cells.length
       ?'검수 통과 기록의 집계 셀입니다. 현재 분포·개체수·자원량이 아니며, 양식·방류 개체는 원자료 표시가 없으면 구분하지 못합니다.'
       :r?'공개 기준을 통과한 기록이 없어 셀을 두지 않았습니다. 종 부재나 전체 분포를 뜻하지 않습니다.'
       :'출현 검수 파일을 확인하지 못해 셀을 표시하지 않습니다.';
     $('detail').innerHTML=heading(s.cells.length?`공개 ${s.cells[0].sizeDeg}° 셀`:r?'공개 가능한 기록 없음':'검수 자료 확인 실패')+
       `<div class="detail-summary">${identity}<div id="detail-map-summary">${mapSummaryHtml(periodView(s))}</div>`+
+      (pilot?'<p class="pending">조사 후보 · 운영 8종과 같은 규칙으로 축별 판정했지만 후보 목록에서 옮기지 않습니다.</p>'+
+        (mbpi===null?'':row('생리활성 근거',`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 원논문 1편 · 같은 논문 안의 상대 백분위`,'linked'))+renderVerifiedIndices(s)+
+        `<p class="detail-limit">${limit} ${scored.length?scored.join('·')+'만 검증 전 시범 산출이며 나머지 축은 보류입니다.':'MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.'}</p></div>`:
       `<h3>근거 상태 <span class="fine">판정 아님</span></h3>`+
       row('식량 근거',n.foodCode?'식품명 후보 · 종 연결 미확인':'연결된 식품 행 없음','pending')+
-      row('생리활성 근거',mbpi===null?'원문 연결 미검수':`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 원논문 1편`,mbpi===null?'pending':'linked')+
+      row('생리활성 근거','원문 연결 미검수','pending')+
       row('보전 평가',i.record?.category?'체크리스트 기록 · 원평가 미검수':'연결된 평가 미확인','pending')+
-      `<p class="detail-limit">${limit} ${mbpi===null?'MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.':'MBPI만 검증 전 시범 산출이며 MFPI·MCUI·BBVI는 보류입니다.'}</p></div>`+
+      `<p class="detail-limit">${limit} MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.</p></div>`)+
       '<div class="detail-more-list">'+
       more('근거 자세히 보기',`<h3>선정 이유</h3><p>${esc(s.reason)}</p>`+
         (s.taxonNote?`<p class="fine">${esc(s.taxonNote)}</p>`:'')+
-        row('식량·영양',food,'pending')+row('생리활성',bioDetail,mbpi===null?'pending':'linked')+
+        (pilot?'':row('식량·영양',food,'pending')+row('생리활성',bioDetail,'pending'))+
         (bioRows?`<table><caption>감태 유래 분리 화합물 · ACE/HHL, 37°C, IC₅₀ · 원문 Table 2</caption><thead><tr><th>화합물 · 구조</th><th>원값</th><th>백분위 · 근거 계수</th></tr></thead><tbody>${bioRows}</tbody></table><p>${sourceLink(pilot.bioactivity_trace[0].measurements[0].paper_url,'분리·NMR·시험 원논문 ↗')} · ${sourceLink('https://github.com/gyunghun1214/blue-bio-map/blob/main/research/verified-indices/ecklonia-ace-2026-09-27.md','검수 및 산출 설명 ↗')}</p>`:'')+
-        row('보전',conservation,'pending')+
-        row('MFPI / MBPI / MCUI / BBVI',mbpi===null?'모두 산출 보류 · 원자료 발견은 점수가 아닙니다':`MFPI 보류 / MBPI ${mbpi.toFixed(1)} (검증 전) / MCUI 보류 / BBVI 보류 · 공간 가치로 환산하지 않음`,mbpi===null?'pending':'linked')+
-        '<p class="fine">'+(mbpi===null?'정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.':'정보충분도: MBPI 필수 사슬 4단계 확인 · ACE 단일 논문에서 도출한 시범 지표입니다. 독립 재현·종 간 공통 비교·식량 및 보전 필수 근거는 부족합니다.')+'</p>')+
+        (pilot?'':row('보전',conservation,'pending'))+
+        (pilot?'':row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
+        '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'))+
       more('수집·선별 기준',(r?sourceRow('GBIF',r.gbif)+sourceRow('OBIS',r.obis)+row('제외 사유',withheldLine(r))+
           row('통과 기록의 원자료 학명',r.names.join(', ')||'없음')+row('공개 해상도',s.sensitivity||'미기재')+
           '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0 기록만 · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선 기준 육상 좌표 제외 · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다. 양식·방류 여부는 원자료 표시가 없으면 구분하지 못합니다.</p>'
@@ -1169,8 +1182,9 @@ function renderComparison(){
     const cohortLabel=cohort==='rda-10.4-raw-marine-animals'?'수산동물':cohort==='rda-10.4-raw-seaweeds'?'해조류':cohort;
     const cohortCount=cohort?(data.assessmentInfo?.cohorts||[]).find(c=>c.cohort_id===cohort)?.food_item_ids?.length:null;
     return `<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="${key}" aria-label="${esc(s.label)} ${key} ${value===null?status:value.toFixed(1)}${cohort?' · '+esc(cohortLabel)+' 고정 비교집단 · 다른 집단과 비교 불가':''} 근거 보기">`+
-      `${value===null?esc(status):value.toFixed(1)}<small>${value===null?'근거·보류 사유 보기':'검증 전 시범 지표 · 근거 보기'}</small>`+
-      (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''} · 집단 간 점수 비교 불가</small>`:'')+'</button>';
+      `${value===null?esc(status):value.toFixed(1)}<small>${value===null?esc(shortReason[s.assessment.withheld_reasons?.[key]]||'근거·보류 사유')+' · 보기':'검증 전 시범 지표 · 근거 보기'}</small>`+
+      (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''} · 집단 간 점수 비교 불가</small>`:'')+
+      (s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
   };
   const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
     ['출현기록',s=>s.live&&s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · ${s.catalog?s.info.map.source:'GBIF CC0·CC BY'}${flaggedRecords(s,'historical')?` · 2000년 이전 ${flaggedRecords(s,'historical')}건`:''}</small>`:s.catalog?pending(s.review?`${reviewLine(s.review)} · 공개 셀 없음`:'검수 자료 확인 실패'):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · ${s.live?'조사 범위 표시':s.cells.length+'격자'}<small>${years(s)} · 조회·선별된 자료</small>`],
@@ -1204,7 +1218,7 @@ function updateWeightControl(){
   $('bbvi-weight').disabled=!n;
   $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · 두 축(MFPI·MBPI)이 모두 있는 종이 생기면 조절됩니다';
 }
-const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'IUCN 평가 검색 미확인',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단'};
+const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'IUCN 평가 검색 미확인',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단',comparable_nutrition_missing:'고정 비교집단의 종 행',aquaculture_method_unverified:'양식 근거',category_not_numeric:'IUCN DD · 숫자 없음'};
 function matrixBlockerText(s){
   const row=matrixReadiness.get(s.aphiaID);
   if(!row||row.scientific_name!==s.name)return scoreSummary(s);

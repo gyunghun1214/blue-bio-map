@@ -60,14 +60,6 @@
       "korean_name": "참굴",
       "published_at": "2026-09-23T18:04:08.690595+09:00",
       "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033"
-    },
-    {
-      "aphia_id": 371986,
-      "scientific_name": "Ecklonia cava",
-      "korean_name": "감태",
-      "published_at": "2026-09-25T00:00:00+09:00",
-      "taxonomy_url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
-      "candidate_scope": "expansion_22; no public occurrence cells"
     }
   ]
 }

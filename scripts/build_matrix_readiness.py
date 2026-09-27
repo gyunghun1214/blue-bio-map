@@ -26,7 +26,8 @@ def _bio_blockers(partials):
 
 
 def build(assessments, catalog, expansion):
-    assessed = assessments["species"]
+    # Reviewed research candidates (e.g. Ecklonia cava MBPI) are published separately as candidate_species.
+    assessed = assessments["species"] + assessments.get("candidate_species", [])
     candidates = catalog["species"]
     evidence = {s["aphiaID"]: s for s in expansion["species"]}
     if len(assessed) < 8 or len(candidates) != 22 or len(evidence) != 22:
@@ -79,6 +80,10 @@ def build(assessments, catalog, expansion):
                    "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed"
                    if i.get("record") else "original_assessment_not_found_or_not_reviewed",
                    "BBVI": "requires_MFPI_and_MBPI"}
+        if reviewed:
+            # The reviewed report's own reason wins; a calculated axis has no withheld reason.
+            reasons = {k: None if scores[k] is not None else (reviewed["withheld_reasons"].get(k) or v)
+                       for k, v in reasons.items()}
         rows.append({"aphia_id": s["aphiaID"], "scientific_name": s["name"],
                      "korean_name": s["label"], "scope": "expansion_22",
                      "scores": scores, "axis_reasons": reasons,

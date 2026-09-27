@@ -10,7 +10,8 @@ from build_verified_indices import build, load_inputs, render  # noqa: E402
 
 
 def species(report, aphia):
-    return next(item for item in report["species"] if item["aphia_id"] == aphia)
+    # Research candidates such as 감태 (371986) live in candidate_species, not among the 8 operating species.
+    return next(item for item in report["species"] + report.get("candidate_species", []) if item["aphia_id"] == aphia)
 
 
 def synthetic_assays(evidence):
@@ -53,7 +54,7 @@ class VerifiedIndicesTests(unittest.TestCase):
 
     def test_real_snapshot_scores_and_committed_output(self):
         report = self.run_build()
-        got = {s["aphia_id"]: s["scores"] for s in report["species"]}
+        got = {s["aphia_id"]: s["scores"] for s in report["species"] + report["candidate_species"]}
         self.assertEqual(got[836033], {"MFPI": 65.5, "MBPI": None, "MCUI": None, "BBVI": None})
         self.assertEqual(got[250680]["MFPI"], 54.2)
         self.assertEqual(got[145721]["MFPI"], 42.2)
@@ -136,6 +137,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertIsNone(squirt["scores"]["MFPI"])
         self.assertEqual(squirt["withheld_reasons"]["MFPI"], "aquaculture_method_unverified")
 
+    def test_rejected_refuse_row_withholds_mfpi(self):
+        yellowtail = next(s for s in self.run_build()["candidate_species"] if s["aphia_id"] == 276651)
+        self.assertEqual(yellowtail["food_trace"]["edible_fraction"]["source_id"], "mext_sfct_2020")  # fillet row refuse 0 rejected
+        self.assertEqual(yellowtail["scores"]["MFPI"], 56.3)
+        evidence = copy.deepcopy(self.evidence)
+        evidence["rda_refuse_not_accepted"].append({**evidence["rda_refuse_not_accepted"][0], "food_item_id": "K4130000000a"})
+        clam = next(s for s in self.run_build(evidence=evidence)["candidate_species"] if s["aphia_id"] == 231750)
+        self.assertIsNone(clam["scores"]["MFPI"])
+        self.assertEqual(clam["withheld_reasons"]["MFPI"], "species_edible_yield_unverified")
+        row = next(r for r in clam["food_trace"]["observed_rows"] if r["linked"])
+        self.assertEqual((row["refuse_pct"], row["refuse_not_accepted"]["refuse_pct"]), (None, 68.0))
+        del evidence["rda_refuse_not_accepted"][0]["checked_on"]
+        with self.assertRaises(ValueError):
+            self.run_build(evidence=evidence)
+
     def test_iucn_states_are_distinct(self):
         report = self.run_build()
         self.assertEqual(species(report, 145721)["withheld_reasons"]["MCUI"], "not_in_red_list")
@@ -207,6 +223,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         next(x for x in unreviewed["bioactivity"] if x["record_id"] == lead["record_id"])["status"] = "approved_for_score"
         with self.assertRaises(ValueError):
             self.run_build(evidence=unreviewed)
+
+    def test_research_candidates_stay_separate_from_operating_species(self):
+        report = self.run_build()
+        self.assertEqual(len(report["species"]), 8)
+        rows = {s["aphia_id"]: s for s in report["candidate_species"]}
+        self.assertEqual(len(rows), 22)
+        self.assertTrue(all(s["candidate_label"] == "조사 후보" for s in rows.values()))
+        self.assertEqual(rows[231750]["scores"]["MFPI"], 52.1)                       # 바지락, same frozen cohort
+        self.assertEqual(rows[397082]["scores"]["MCUI"], 80.0)                       # Haliotis discus EN
+        self.assertIsNone(rows[275816]["scores"]["MCUI"])                            # not in Red List is not low
+        self.assertEqual(rows[275816]["withheld_reasons"]["MCUI"], "not_in_red_list")
+        self.assertEqual(rows[1666974]["withheld_reasons"]["MCUI"], "category_not_numeric")
+        cohort = next(c for c in report["comparison_cohorts"] if c["cohort_id"] == "rda-10.4-raw-marine-animals")
+        self.assertEqual(cohort["operating_candidates"], [250680, 836033])
+        self.assertIn(231750, cohort["research_candidates"])
 
     def test_unexplored_flag_never_copies_scores(self):
         synthetic_assays(self.evidence)

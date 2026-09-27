@@ -31,6 +31,7 @@ DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
 DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
+DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
 AXES = ("MFPI", "MBPI", "MCUI", "BBVI")
 
@@ -82,6 +83,12 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
     """Standardize RDA snapshot rows. Grade comes from the published row-source label."""
     settings = config["nutrition"]
     links = {l["food_item_id"]: l for l in evidence.get("rda_taxon_links", [])}
+    # a reviewed record here means the row's refuse does not describe the food as purchased (e.g. a fillet sample)
+    rejected = {x["food_item_id"]: x for x in evidence.get("rda_refuse_not_accepted", []) if x.get("reviewed") is True}
+    for x in rejected.values():
+        require(bool(x.get("reason")) and x.get("source_id") in evidence["sources"] and valid_date(x.get("checked_on")),
+                f"{x['food_item_id']}: refuse rejection provenance incomplete")
+    require(set(rejected) <= {r["code"] for r in snapshot["rows"]}, "refuse rejection names an unknown RDA row")
     out = {}
     for r in snapshot["rows"]:
         v = r["values"]
@@ -95,6 +102,7 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
                 "method": f"RDA DB 10.4 table value (row source {label or 'not shown'}); per-value derivation not exposed"}
         link = links.get(r["code"], {})
         refuse = _number(v.get("refuse_pct"))
+        refused = rejected.get(r["code"])
         out[r["code"]] = {
             "food_item_id": r["code"], "reported_food_name": r["name"], "english_name": r.get("english_name"),
             "group": r["group"], "row_source": label or None,
@@ -102,7 +110,8 @@ def rda_rows(snapshot: dict, evidence: dict, config: dict) -> dict[str, dict]:
             "scientific_name": link.get("scientific_name") if link.get("reviewed") else None,
             "taxon_link": link or None, "source_id": "rda_db_10_4", "reviewed": True,
             "sample_state": "raw", "basis": "100 g edible portion", "nutrients": nutrients,
-            "edible_fraction": None if refuse is None else {
+            "refuse_not_accepted": refused and {**refused, "refuse_pct": refuse},
+            "edible_fraction": None if refuse is None or refused else {
                 "kind": "edible_fraction", "value": round(1 - refuse / 100, 4), "unit": "edible share of food as purchased",
                 "method": f"1 - refuse ({refuse:g}%) / 100 from the same RDA row", "source_id": "rda_db_10_4",
                 "record_id": f"RDA-10.4:{r['code']}:refuse", "region": "Korea (RDA national table)",
@@ -207,9 +216,12 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                 "link_evidence": link.get("link_evidence"),
                 "values": {k: (n or {}).get("value") for k, n in r["nutrients"].items()},
                 "missing": [k for k, n in r["nutrients"].items() if n is None],
-                "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4)})
+                "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4),
+                **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {})})
     trace["observed_rows"].sort(key=lambda x: x["food_item_id"])
-    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False, "edible_fraction": False, "aquaculture": aqua is not None}
+    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False,
+            "edible_fraction": any(r.get("reviewed") is True for r in support_for(aphia, evidence, "edible_fraction")),
+            "aquaculture": aqua is not None}
     for obs in trace["observed_rows"]:
         if obs["linked"]:
             for k in settings["components"]:
@@ -425,7 +437,7 @@ def unexplored_flag(aphia: int, output: list[dict], taxonomy: dict, threshold: f
     return None
 
 
-def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxonomy: dict) -> dict:
+def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxonomy: dict, catalog: dict | None = None) -> dict:
     require(evidence.get("schema_version") == 3 and candidates.get("schema_version") == 1, "unsupported evidence/candidate schema")
     require(valid_date(evidence.get("snapshot_date")) and config.get("method_version"), "snapshot/method required")
     require(evidence["snapshot_date"] >= candidates["checked_on"], "candidate list newer than evidence")
@@ -440,16 +452,21 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 and src.get("terms") and valid_date(src.get("accessed"), not_after=evidence["snapshot_date"]),
                 f"{sid}: incomplete source registration")
     identities = candidates.get("candidates", [])
-    require(len(identities) == 9 and len({c["aphia_id"] for c in identities}) == 9,
-            "expected 8 original candidates and one taxonomically reviewed expansion candidate")
+    # Research candidates such as Ecklonia cava (371986) come from the catalog as candidate_species, never from this list.
+    require(len(identities) == 8 and len({c["aphia_id"] for c in identities}) == 8, "expected 8 unique published candidates")
     rows = rda_rows(snapshot, evidence, config)
     evidence_rows = {r["food_item_id"]: r for r in evidence.get("nutrition_rows", [])}
     require(len(evidence_rows) == len(evidence.get("nutrition_rows", [])), "duplicate food item ID")
     primary = build_cohorts(settings["primary_cohorts"], rows, settings, sources)
     cross = build_cohorts(settings["cross_check_cohorts"], evidence_rows, settings, sources)
-    assay = bio_scores(evidence, config, {c["aphia_id"]: c for c in identities})
-    output = []
-    for candidate in identities:
+    if catalog is None:
+        catalog = json.loads(DEFAULT_CATALOG.read_text(encoding="utf-8"))
+    # Approved assays must match an accepted identity: operating species or a catalog research candidate.
+    known_identities = {c["aphia_id"]: c for c in identities}
+    for c in catalog.get("species", []):
+        known_identities.setdefault(c["aphiaID"], {"aphia_id": c["aphiaID"], "scientific_name": c["name"]})
+    assay = bio_scores(evidence, config, known_identities)
+    def assess(candidate: dict) -> dict:
         aphia = candidate["aphia_id"]
         mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
         mbpi, bio_trace, bio_sensitivity = assay.get(aphia, (None, [], {}))
@@ -500,20 +517,29 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids.add("worms_ecklonia")
         source_ids.discard(None)
         require(all(s in sources for s in source_ids), f"{aphia}: unregistered source")
-        output.append({"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
-                       "scores": scores, "score_status": status, "withheld_reasons": reasons,
-                       "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
-                       "information_sufficiency": sufficiency,
-                       "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
-                       "conservation_trace": conservation_trace, "sensitivity": sensitivity,
-                       "source_ids": sorted(source_ids)})
+        return {"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
+                "scores": scores, "score_status": status, "withheld_reasons": reasons,
+                "single_axis_views": {"food_only_MFPI": mfpi_value, "bioactivity_only_MBPI": mbpi},
+                "information_sufficiency": sufficiency,
+                "food_trace": food_trace, "bioactivity_trace": bio_trace, "bioactivity_partial": partial_bio,
+                "conservation_trace": conservation_trace, "sensitivity": sensitivity,
+                "source_ids": sorted(source_ids)}
+    output = [assess(c) for c in identities]
+    operating = {c["aphia_id"] for c in identities}
+    research = []
+    for c in catalog.get("species", []):
+        require(c["aphiaID"] not in operating, f"{c['aphiaID']}: research candidate duplicates an operating species")
+        row = assess({"aphia_id": c["aphiaID"], "scientific_name": c["name"], "korean_name": c.get("label")})
+        row["candidate_label"] = "조사 후보"  # a score never promotes a research candidate to the operating list
+        research.append(row)
     for s in output:
         s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], output, taxonomy.get("species", {}), config["unexplored_threshold"])
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
                 "food_item_ids": [r["food_item_id"] for r in c["rows"]],
                 "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),
                 "source": f"RDA National Standard Food Composition DB 10.4 (retrieved {snapshot['retrieved']})",
-                "operating_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"]}),
+                "operating_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"] in operating}),
+                "research_candidates": sorted({r["aphia_id"] for r in c["rows"] if r["aphia_id"] and r["aphia_id"] not in operating}),
                 "exclusions": c["spec"]["rule"].get("exclude_food_item_ids", {})} for cid, c in primary.items()]
     cohorts += [{"cohort_id": cid, "role": "cross_check", "criteria": c["spec"]["criteria"],
                  "food_item_ids": [r["food_item_id"] for r in c["rows"]], "size": len(c["rows"])} for cid, c in cross.items()]
@@ -522,7 +548,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             "generated_at": evidence["snapshot_date"] + "T00:00:00Z", "food_weight": config["bbvi"]["default_food_weight"],
             "comparison_cohorts": cohorts,
             "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
-            "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output}
+            "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
+            "candidate_species": research}
 
 
 def render(report: dict) -> str:
