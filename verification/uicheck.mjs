@@ -6,6 +6,9 @@ const OUT=process.argv[2];
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
 const readDist=f=>JSON.parse(fs.readFileSync(path.join(DIST,f),'utf8'));
 const catalogIds=readDist('candidate-catalog.json').species.map(s=>s.aphiaID), snapshot=readDist('live-snapshot.json'), report=readDist('assessments.json');
+// Expected candidate cells come from the reviewed release file, not from constants.
+const release=readDist('expansion-public-cells.json').species, places=e=>new Set(e.cells.map(c=>c.lat0+','+c.lon0)).size;
+const ark=release.find(e=>e.aphiaID===504357), arkPlaces=places(ark), arkOld=ark.cells.find(c=>c.historical);
 const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes(a)).length;
 const reportScores=report.species.flatMap(s=>Object.values(s.scores).filter(v=>v!==null).map(v=>v.toFixed(1)));
 const placedInMatrix=report.species.filter(s=>['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
@@ -310,7 +313,15 @@ try{
   await pick(836033);await sleep(300);ms=await modeState();
   check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
   await pick(504357);await sleep(300);ms=await modeState();
-  check('피조개: one historical 4° public cell, not a current distribution',ms.shapes===1&&ms.source==='1930년 표본 · 공개 4° 셀'&&(await evaluate("document.getElementById('map-review-note').textContent")).includes('현재 분포'),JSON.stringify(ms));
+  check('피조개: every reviewed 4° cell drawn once, not a current distribution',ms.shapes===arkPlaces&&ms.source==='조사 후보 · 검수 기록 공개 4° 셀'&&(await evaluate("document.getElementById('map-review-note').textContent")).includes('현재 분포'),JSON.stringify(ms));
+  const arkPop=await evaluate(`(()=>{const l=overlay.getLayers().filter(l=>!l._schematicDot).find(l=>l.getBounds().getSouth()===${arkOld.lat0}&&l.getBounds().getWest()===${arkOld.lon0});l.openPopup();const t=document.querySelector('.leaflet-popup-content').innerText;map.closePopup();return t})()`);
+  check('피조개 pre-2000 cell popup: historical record marked, outside-EEZ flag as in the release',arkPop.includes('과거 기록(2000년 이전) · 현재 분포 근거 아님')&&arkPop.includes(String(arkOld.yearStart))&&arkPop.includes('한국·북한 EEZ 밖')===arkOld.outsideKoreanEEZ,arkPop.slice(0,400));
+  const sweep=[];
+  for(const e of release){
+    const detail=await pick(e.aphiaID);await sleep(150);const m=await modeState(),note=await evaluate("document.getElementById('map-review-note').textContent");
+    if(m.shapes!==places(e)||!detail.includes(e.name)||!(e.cells.length?note.includes('현재 분포'):note.includes('제외 사유')&&note.includes('종 부재')))sweep.push(`${e.name} ${m.shapes}/${places(e)}`);
+  }
+  check(`All ${release.length} candidates: detail opens and the map draws exactly the reviewed cells or states the withheld reasons`,sweep.length===0,sweep.join(' | '));
   ms=await clickMode('value');ms=await clickMode('occurrence');ms=await clickMode('value');
   check('Repeated toggling leaves a single consistent value state',ms.mode==='value'&&ms.val==='true'&&ms.occ==='false'&&ms.valLegend&&!ms.occLegend&&ms.effort===0,JSON.stringify(ms));
   await evaluate("{const s=document.getElementById('collection');s.value='demo';s.dispatchEvent(new Event('change'));}1");
@@ -379,10 +390,10 @@ try{
     check(`Flow 2 ${tag}: 해삼 MCUI 80, IUCN EN, two 4° cells`,f.sel.includes('MCUI 80')&&f.detail.includes('EN A2bd')&&f.shapes===2&&f.src.includes('4° 셀'),f.sel+' | '+f.src);
     await mapShot('2-sea-cucumber');
     f=await flow(504357);
-    check(`Flow 3 ${tag}: 피조개 1930 specimen labelled not a current distribution`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='1930년 표본 · 공개 4° 셀'&&f.note.includes('현재 분포'),f.sel+' | '+f.src);
-    await mapShot('3-ark-shell-1930');
+    check(`Flow 3 ${tag}: 피조개 reviewed 4° cells labelled not a current distribution, pre-2000 records flagged`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='조사 후보 · 검수 기록 공개 4° 셀'&&f.shapes===arkPlaces&&f.note.includes('현재 분포')&&f.note.includes('2000년 이전'),f.sel+' | '+f.src);
+    await mapShot('3-ark-shell');
     f=await flow(377084);
-    check(`Flow 4 ${tag}: candidate without public cells draws no cell and says so`,f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&(f.note+f.detail).includes('공개'),f.sel+' | '+f.note.slice(0,120));
+    check(`Flow 4 ${tag}: candidate without public cells draws no cell and says so`,f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.note.includes('제외 사유')&&f.note.includes('종 부재'),f.sel+' | '+f.note.slice(0,120));
     await mapShot('4-candidate-no-cells');
     const walk=await walkComparison();
     check(`Flow 5 ${tag}: comparison walks ${Math.ceil(total/5)} pages of ≤5, page never overflows`,walk.length===Math.ceil(total/5)&&walk.reduce((a,p)=>a+p.cols,0)===total&&walk.every(p=>p.page),JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
