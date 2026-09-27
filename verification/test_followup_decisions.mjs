@@ -9,11 +9,11 @@ const ctx={};
 vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.followup=followupDecision;globalThis.setRows=rows=>matrixReadiness=new Map(rows.map(r=>[r.aphia_id,r]));',ctx);
-const byId=new Map(report.species.map(s=>[s.aphia_id,s]));
+const byId=new Map([...report.species,...report.candidate_species].map(s=>[s.aphia_id,s]));
 const make=row=>({
   live:true,catalog:row.scope==='expansion_22',aphiaID:row.aphia_id,
   name:row.scientific_name,label:row.korean_name,
-  assessment:byId.get(row.aphia_id)
+  assessment:{...byId.get(row.aphia_id),report_version:report.method_version}
 });
 ctx.setRows(readiness.species);
 assert.equal(readiness.species.length,30);
