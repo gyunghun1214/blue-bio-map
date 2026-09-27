@@ -362,19 +362,46 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                 f"{r.get('record_id')}: incomplete peptide origin/sequence/assay chain")
         finite(r.get("value"), "peptide IC50", 0.0000001)
         groups[(r["origin_aphia_id"], r["sequence"])].append(r)
+    xo = settings.get("cross_origin_potency")
     out = []
     for (origin, sequence), own in sorted(groups.items()):
         value = median(6 - math.log10(r["value"]) for r in own)
         rank = percentile(value, peers)
         dois = {r["original_paper_doi"].lower() for r in own}
-        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        replications = potency_replications(evidence, settings, sequence, value, dois) if xo else []
+        independent = dois | {r["original_paper_doi"].lower() for r in replications if r["used"]}
+        factor = config["bioactivity"]["single_doi_factor"] if len(independent) == 1 else config["bioactivity"]["multiple_doi_factor"]
         out.append((origin, {"stratum_kind": "peptide", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
                              "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
                              "peer_peptides": len(peers), "pIC50": round(value, 3), "percentile": round(rank, 2),
                              "evidence_factor": factor, "adjusted": rank * factor,
                              # the paper values behind pIC50, so the page can show the original number and its source
                              "measurements": [{k: r[k] for k in ("target", "endpoint", "relation", "value", "unit", "substrate",
-                                                                 "source_id", "original_paper_doi")} for r in own]}))
+                                                                 "source_id", "original_paper_doi")} for r in own],
+                             # research-only: same synthetic sequence measured from another origin counts toward DOIs, not value
+                             **({"independent_dois": sorted(independent), "potency_replications": replications} if xo else {})}))
+    return out
+
+
+def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
+    """Research rule: a synthetic peptide re-measured from another origin replicates potency, never origin or value."""
+    gap = settings["cross_origin_potency"]["max_pIC50_gap"]
+    out = []
+    for r in evidence.get("potency_replications", []):
+        if r.get("sequence") != sequence:
+            continue
+        require(r.get("reviewed") is True and r.get("synthetic") is True and r.get("value_in_text") is True
+                and r.get("target") == settings["target"] and r.get("endpoint") == settings["endpoint"]
+                and r.get("substrate") == settings["substrate"] and r.get("relation") == "=" and r.get("unit") == "uM"
+                and r.get("source_id") in evidence["sources"] and r.get("original_paper_doi"),
+                f"{r.get('record_id')}: incomplete potency replication")
+        p = 6 - math.log10(finite(r.get("value"), "replication IC50", 0.0000001))
+        same_paper = r["original_paper_doi"].lower() in dois
+        agrees = abs(p - value) <= gap
+        out.append({"record_id": r["record_id"], "original_paper_doi": r["original_paper_doi"], "source_id": r["source_id"],
+                    "origin_material": r["origin_material"], "value": r["value"], "unit": r["unit"], "pIC50": round(p, 3),
+                    "pIC50_gap": round(abs(p - value), 3), "used": agrees and not same_paper,
+                    "reason": "same paper as the origin measurement" if same_paper else None if agrees else f"pIC50 gap above {gap}"})
     return out
 
 
@@ -544,7 +571,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
         # verified-pilot-3: an MBPI value resting on fewer independent papers is shown for reference and kept out of BBVI
         min_dois = config["bbvi"].get("minimum_independent_mbpi_dois")
-        single_source = bool(min_dois and best) and len({d.lower() for d in best["original_paper_dois"]}) < min_dois
+        single_source = bool(min_dois and best) and len({d.lower() for d in best.get("independent_dois", best["original_paper_dois"])}) < min_dois
         both = mfpi_value is not None and mbpi is not None
         bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if both and not single_source else None
         partial_bio = [r for key in ("bioactivity", "peptide_bioactivity") for r in evidence.get(key, [])
@@ -589,6 +616,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         for item in bio_trace:
             source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item.get("activity_ids", [])}
             source_ids |= {r["source_id"] for r in evidence.get("peptide_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
+            source_ids |= {r["source_id"] for r in item.get("potency_replications", []) if r["used"]}
             if item.get("stratum_kind") != "peptide":
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if aphia == 371986:
@@ -686,6 +714,12 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(not used & set(evidence["sources"]), "peptide supplement redefines a source")
         evidence = {**evidence, "peptide_bioactivity": evidence.get("peptide_bioactivity", []) + extra["peptide_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
+    xo = (cfg.get("peptide_bioactivity") or {}).get("cross_origin_potency")
+    if xo:  # research-only: synthetic-peptide potency measured from another origin; never scored as an item of its own
+        extra = read(ROOT / xo["supplement"])
+        require(extra.get("snapshot_date") == evidence["snapshot_date"], "potency replication snapshot differs from evidence")
+        require(not set(extra["sources"]) & set(evidence["sources"]), "potency replication supplement redefines a source")
+        evidence = {**evidence, "potency_replications": extra["potency_replications"], "sources": {**evidence["sources"], **extra["sources"]}}
     if cfg.get("national_fact_supplement"):  # only the national red-list keys and their sources, not the whole v3 supplement
         extra = read(ROOT / cfg["national_fact_supplement"])
         require(extra.get("snapshot_date") == evidence["snapshot_date"], "national fact snapshot differs from evidence")
