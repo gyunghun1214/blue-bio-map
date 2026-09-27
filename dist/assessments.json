@@ -33,7 +33,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -365,7 +365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -491,7 +491,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -606,7 +606,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -721,7 +721,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -855,7 +855,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -1062,7 +1062,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -1713,7 +1713,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Disk abalone, Raw",
@@ -1922,7 +1922,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2548,7 +2548,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2664,7 +2664,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -2845,7 +2845,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -3006,7 +3006,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -3150,7 +3150,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -3302,7 +3302,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -3445,7 +3445,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -3653,7 +3653,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -4318,7 +4318,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -4919,7 +4919,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Pacific cod, Raw",
@@ -5061,7 +5061,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -5203,7 +5203,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -5344,7 +5344,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Cuttle fish, Raw",
@@ -5663,7 +5663,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2.1 (2026-09-27). Replaces the display-only peptide raw values with the verified-pilot-3 MBPI peptide stratum (fixed AHTPDB ACE/HHL cohort, 352 peptides, minimum 30, pIC50 percentile, DOI factor 0.75/1.0, max aggregation) after the team read the AHTPDB terms as CC BY-NC 4.0 with attribution (non-commercial public release, World Ocean Forum). Peptide rows: the v3 research supplement plus the 2.1 LQP row (Do et al. 2012, 10.5352/JLS.2012.22.2.220). No threshold, factor or substrate rule changed. Single-DOI MBPI keeps the '참고값(단일 논문)' label and BBVI stays withheld (mbpi_single_source). National red-list MCUI, IUCN mapping, nutrition, weights, BBVI formula and reference_combination are unchanged from 2.1.",
+    "changes_from": "verified-pilot-2.2 (2026-09-27). Adopts the research cross-origin potency rule (config/verified-indices-research-xo-potency.json, research/verified-indices/xo-potency-research-2026-09-27.md) as the public definition, with the same values: in the peptide stratum, a synthetic peptide with the same sequence measured by another paper from another origin (same target, endpoint, HHL substrate, uM, value in text) counts as an independent DOI for the single/multiple DOI factor and the BBVI independence check, when its pIC50 is within max_pIC50_gap of the species value. It never changes the species value (pIC50 stays the median of origin-species rows), never creates an item or a species row, and is not an origin claim. Only effect today: oyster (836033) LQP, Do et al. 2012 (origin) + Miyoshi et al. 1991 (synthetic LQP 2.0 uM, alpha-zein) -> MBPI 72.2 -> 96.3, BBVI withheld -> 80.9. Every other rule, factor, cohort, threshold and the other 29 species equal 2.2.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5675,7 +5675,7 @@
       "effort_adjustment": 10,
       "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
-    "method_version": "verified-pilot-2.2",
+    "method_version": "verified-pilot-2.3",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -5818,6 +5818,12 @@
     "peptide_bioactivity": {
       "cohort_file": "research/verified-indices/peptide-cohort-ahtpdb-ace-hhl.json",
       "cohort_source_id": "ahtpdb_ic50_2026",
+      "cross_origin_potency": {
+        "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
+        "max_pIC50_gap": 1.0,
+        "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper.",
+        "supplement": "research/verified-indices/evidence-xo-potency.json"
+      },
       "endpoint": "IC50",
       "excluded_material_kinds": [
         "extract",
@@ -5886,7 +5892,7 @@
     "status": "provisional_unvalidated",
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-2.2",
+  "method_version": "verified-pilot-2.3",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -6343,6 +6349,17 @@
       "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
       "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
       "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d"
+    },
+    "miyoshi_1991_zein": {
+      "accessed": "2026-09-27",
+      "alternate_doi": "10.1080/00021369.1991.10870760",
+      "doi": "10.1271/bbb1961.55.1313",
+      "license": "Publisher copyright (JSBBA; free access on J-STAGE, no CC licence stated)",
+      "provider": "Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF)",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "title": "Structures and activity of angiotensin-converting enzyme inhibitors in an alpha-zein hydrolysate",
+      "url": "https://doi.org/10.1271/bbb1961.55.1313",
+      "version": "1991"
     },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",
@@ -6878,6 +6895,9 @@
         {
           "adjusted": 19.602272727272727,
           "evidence_factor": 0.75,
+          "independent_dois": [
+            "10.3390/md19030177"
+          ],
           "measurements": [
             {
               "endpoint": "IC50",
@@ -6897,6 +6917,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "KNFL",
           "percentile": 26.14,
+          "potency_replications": [],
           "record_ids": [
             "10.3390/md19030177:KNFL"
           ],
@@ -6973,7 +6994,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -7363,7 +7384,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -7643,7 +7664,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -8341,7 +8362,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -8529,7 +8550,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -8766,7 +8787,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -8962,7 +8983,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Hard shelled mussel, Raw",
@@ -9179,7 +9200,7 @@
     },
     {
       "aphia_id": 836033,
-      "bbvi_mbpi_from_peptide_stratum": false,
+      "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [
         {
           "chain": {
@@ -9238,6 +9259,9 @@
         {
           "adjusted": 1.0653409090909092,
           "evidence_factor": 0.75,
+          "independent_dois": [
+            "10.3389/fnut.2022.981163"
+          ],
           "measurements": [
             {
               "endpoint": "IC50",
@@ -9257,6 +9281,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "AEYLCEAC",
           "percentile": 1.42,
+          "potency_replications": [],
           "record_ids": [
             "10.3389/fnut.2022.981163:AEYLCEAC"
           ],
@@ -9264,8 +9289,12 @@
           "stratum_kind": "peptide"
         },
         {
-          "adjusted": 72.23011363636364,
-          "evidence_factor": 0.75,
+          "adjusted": 96.30681818181819,
+          "evidence_factor": 1.0,
+          "independent_dois": [
+            "10.1271/bbb1961.55.1313",
+            "10.5352/jls.2012.22.2.220"
+          ],
           "measurements": [
             {
               "endpoint": "IC50",
@@ -9285,6 +9314,21 @@
           "peer_peptides": 352,
           "peptide_sequence": "LQP",
           "percentile": 96.31,
+          "potency_replications": [
+            {
+              "origin_label": "옥수수 α-제인 (합성 펩타이드로 측정)",
+              "origin_material": "alpha-zein (maize, Sigma) thermolysin hydrolysate; the scored value is the synthetic peptide",
+              "original_paper_doi": "10.1271/bbb1961.55.1313",
+              "pIC50": 5.699,
+              "pIC50_gap": 0.229,
+              "reason": null,
+              "record_id": "10.1271/bbb1961.55.1313:TableIII:LQP-synthetic",
+              "source_id": "miyoshi_1991_zein",
+              "unit": "uM",
+              "used": true,
+              "value": 2.0
+            }
+          ],
           "record_ids": [
             "10.5352/JLS.2012.22.2.220:LQP"
           ],
@@ -9393,7 +9437,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-2.2",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -9934,7 +9978,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "참굴",
-      "mbpi_label": "참고값(단일 논문)",
+      "mbpi_label": null,
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "national_assessment": {
@@ -9975,56 +10019,35 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 72.2,
-          "MFPI": 65.5
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.5352/jls.2012.22.2.220"
-        ],
-        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 70.5,
-          "0.5": 68.9,
-          "0.75": 67.2
-        },
-        "used_for_score": false,
-        "value": 68.9
-      },
+      "reference_combination": null,
       "scientific_name": "Magallana gigas",
       "score_status": {
-        "BBVI": "산출 보류",
+        "BBVI": "산출됨",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": null,
-        "MBPI": 72.2,
+        "BBVI": 80.9,
+        "MBPI": 96.3,
         "MCUI": 10.0,
         "MFPI": 65.5
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 36.6,
-        "median_compound_sensitivity": 36.6,
+        "food_weights": {
+          "0.25": 88.6,
+          "0.5": 80.9,
+          "0.75": 73.2
+        },
+        "mean_compound_sensitivity": 48.7,
+        "median_compound_sensitivity": 48.7,
         "range_from_aggregation": [
           1.1,
-          72.2
+          96.3
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 72.2,
+        "bioactivity_only_MBPI": 96.3,
         "food_only_MFPI": 65.5
       },
       "source_ids": [
@@ -10039,13 +10062,14 @@
         "iucn_redlist_search",
         "li_2025_yield",
         "magallana_2013_peptide",
+        "miyoshi_1991_zein",
         "nibr_red_data_book_2024",
         "rda_db_10_4",
         "valenzuela_2022_yield"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
+        "BBVI": null,
         "MBPI": null,
         "MCUI": null,
         "MFPI": null

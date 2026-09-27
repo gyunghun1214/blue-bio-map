@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "snapshot_date": "2026-09-27",
-  "purpose": "Research-only input for config/verified-indices-research-xo-potency.json. Synthetic peptides re-measured from another origin replicate potency only; they never become an item, a species value or an origin claim. Not read by the public config.",
+  "purpose": "Input for the cross-origin potency rule: config/verified-indices-v2.3.json (public, verified-pilot-2.3) and config/verified-indices-research-xo-potency.json (research record). Synthetic peptides re-measured from another origin replicate potency only; they never become an item, a species value or an origin claim.",
   "sources": {
     "miyoshi_1991_zein": {
       "provider": "Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF)",
@@ -20,6 +20,7 @@
       "record_id": "10.1271/bbb1961.55.1313:TableIII:LQP-synthetic",
       "sequence": "LQP",
       "origin_material": "alpha-zein (maize, Sigma) thermolysin hydrolysate; the scored value is the synthetic peptide",
+      "origin_label": "옥수수 α-제인 (합성 펩타이드로 측정)",
       "synthetic": true,
       "target": "ACE",
       "endpoint": "IC50",
