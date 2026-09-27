@@ -1,5 +1,5 @@
 {
-  "assessments_snapshot": "2026-09-25",
+  "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
   "matrix_points": 0,
   "method_version": "verified-pilot-2",
@@ -419,7 +419,7 @@
       "aphia_id": 371986,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
+        "MBPI": null,
         "MCUI": "original_assessment_not_found_or_not_reviewed",
         "MFPI": [
           "raw_nutrition",
@@ -430,24 +430,21 @@
         ]
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "감태",
       "matrix_eligible": false,
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 67.5,
         "MCUI": null,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ecklonia+cava&limit=100",
+        "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+        "https://pubchem.ncbi.nlm.nih.gov/",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986"
       ]
     },
