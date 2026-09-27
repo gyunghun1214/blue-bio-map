@@ -26,6 +26,7 @@ jobs:
         run: |
           node --check dist/app.js
           node --check verification/uicheck.mjs
+          node verification/test_followup_decisions.mjs
           node verification/test_verified_ui.mjs
           node verification/test_pilot_ui.mjs
           node verification/test_food_evidence.mjs
