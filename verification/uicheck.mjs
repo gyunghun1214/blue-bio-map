@@ -202,7 +202,7 @@ try{
   check('Mode selector: plain names and a closed "why maps differ" disclosure',await evaluate("(()=>{const o=[...document.querySelectorAll('#collection option')].map(x=>x.textContent).join('|');const w=document.querySelector('.mode-why');return o.includes('공개 기준 적용 자료')&&o.includes('추가 수집 자료')&&!/검증 완료/.test(o)&&!!w&&!w.open&&w.textContent.includes('더 좁은 지역·기간과 별도 공개 기준')&&w.textContent.includes('CC BY-NC')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
   const unplacedN=expPub+expCand-placedInMatrix;
-  check('Matrix: unplaced species listed apart as priority-survey targets, published and candidates counted separately',unplaced.includes(`정보 부족 · 우선 조사 대상 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종)`)&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
+  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplaced.includes(`정보 부족 · 후속조사 대상 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종)`)&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   // ---- Presentation polish (2026-09-25) ----
