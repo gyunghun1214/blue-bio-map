@@ -17,6 +17,7 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.coverage=evidenceCoverage;
   globalThis.coverageBar=coverageBar;
   globalThis.nationalMcui=nationalMcui;
+  globalThis.iucnGlobalNote=iucnGlobalNote;
   globalThis.axisPairs=axisPairsHtml;`,ctx);
 
 let next={live:true,species:all()};
@@ -285,7 +286,14 @@ for(const s of original.species.filter(s=>s.mcui_basis==='national')){
   assert.equal(ctx.nationalMcui(by(s.aphia_id)),true);
   assert.equal(ctx.assessedForMatrix(by(s.aphia_id)),false,`${s.korean_name}: national MCUI never enters the IUCN matrix`);
 }
-for(const [id,texts] of [[836033,['AEYLCEAC','4.287 mM (4287 µM)','기질 HHL','10.3389/fnut.2022.981163']],[145721,['KNFL','225.87 µM','기질 HHL','10.3390/md19030177']]]){
+// a national MCUI that stands in for an IUCN DD (갑오징어 1666974, DD 2009) must not claim the IUCN assessment is missing
+assert.equal(ctx.iucnGlobalNote(by(836033)),'IUCN 전 지구 평가 미확인');
+next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.aphia_id,s.scientific_name,s.korean_name))]};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
+assert.equal(ctx.nationalMcui(by(1666974)),true);
+assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 시범 숫자 없음');
+assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 시범 숫자 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
+next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
+for(const [id,texts] of [[836033,['AEYLCEAC','4.287 mM (4287 µM)','기질 HHL','10.3389/fnut.2022.981163','LQP','1.18 µM','10.5352/JLS.2012.22.2.220','Publisher copyright']],[145721,['KNFL','225.87 µM','기질 HHL','10.3390/md19030177']]]){
   html=ctx.renderScores(by(id));
   const raw=html.slice(html.indexOf('<h4>원값·출처 · 점수 미사용</h4>'));
   assert.ok(html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: raw-value section`);

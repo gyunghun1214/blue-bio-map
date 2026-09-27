@@ -685,13 +685,17 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, **{k: extra[k] for k in keys}, "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
     if cfg.get("peptide_raw_values"):  # verified-pilot-2.1: public-paper peptide values only, never an AHTPDB cohort or rank
         raw = cfg["peptide_raw_values"]
-        extra = read(ROOT / raw["supplement"])
-        require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide raw-value snapshot differs from evidence")
-        rows = extra["peptide_bioactivity"]
-        used = {r["source_id"] for r in rows}
-        require(not used & set(raw["excluded_sources"]), "peptide raw values must come from the papers, not an excluded database")
-        require(not used & set(evidence["sources"]), "peptide raw-value supplement redefines a source")
-        evidence = {**evidence, "peptide_bioactivity": rows, "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
+        rows, sources = [], {}
+        # extra_supplements: raw values reviewed for 2.1 only, kept out of the v3 research supplement and its AHTPDB stratum
+        for path in [raw["supplement"], *raw.get("extra_supplements", [])]:
+            extra = read(ROOT / path)
+            require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide raw-value snapshot differs from evidence")
+            used = {r["source_id"] for r in extra["peptide_bioactivity"]}
+            require(not used & set(raw["excluded_sources"]), "peptide raw values must come from the papers, not an excluded database")
+            require(not used & (set(evidence["sources"]) | set(sources)), "peptide raw-value supplement redefines a source")
+            rows += extra["peptide_bioactivity"]
+            sources |= {k: extra["sources"][k] for k in used}
+        evidence = {**evidence, "peptide_bioactivity": rows, "sources": {**evidence["sources"], **sources}}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
