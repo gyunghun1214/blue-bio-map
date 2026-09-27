@@ -455,6 +455,60 @@ class OysterLqpResearchScenarioTests(unittest.TestCase):
                          (None, "compound_origin_assay_chain_or_fixed_cohort_missing"))
 
 
+class CrossOriginPotencyResearchTests(unittest.TestCase):
+    """Research-only rule (not public): a synthetic peptide re-measured from another origin counts as an independent DOI."""
+    CONFIG = ROOT / "config" / "verified-indices-research-xo-potency.json"
+    OUT = ROOT / "research" / "verified-indices" / "assessments-research-xo-potency.json"
+
+    def setUp(self):
+        self.inputs = load_inputs(config=self.CONFIG)
+        self.report = build(*self.inputs)
+
+    def with_replication(self, **changes):
+        evidence = copy.deepcopy(self.inputs[0])
+        evidence["potency_replications"][0].update(changes)
+        return build(evidence, *self.inputs[1:])
+
+    def test_only_oyster_changes_and_its_value_stays_its_own(self):
+        self.assertEqual(self.OUT.read_text(encoding="utf-8"), render(self.report))
+        public = build(*load_inputs())
+        research_keys = ("independent_dois", "potency_replications")   # present on every research peptide item
+        plain = lambda s: {**s, "bioactivity_trace": [{k: v for k, v in i.items() if k not in research_keys} for i in s["bioactivity_trace"]]}
+        others = lambda r: {s["aphia_id"]: json.dumps(plain(s), sort_keys=True).replace(r["method_version"], "")
+                            for s in r["species"] + r["candidate_species"] if s["aphia_id"] != 836033}
+        self.assertEqual(others(self.report), others(public))   # 미역 KNFL and 감태 have no cross-origin replication
+        self.assertEqual(species(self.report, 145721)["bioactivity_trace"][0]["potency_replications"], [])
+        oyster = species(self.report, 836033)
+        lqp = max(oyster["bioactivity_trace"], key=lambda i: i["adjusted"])
+        self.assertEqual((lqp["peptide_sequence"], lqp["pIC50"], lqp["percentile"], lqp["evidence_factor"]), ("LQP", 5.928, 96.31, 1.0))
+        self.assertEqual(lqp["original_paper_dois"], ["10.5352/jls.2012.22.2.220"])   # origin claim is still one paper
+        self.assertEqual(lqp["independent_dois"], ["10.1271/bbb1961.55.1313", "10.5352/jls.2012.22.2.220"])
+        self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"], oyster["mbpi_label"]), (96.3, 80.9, None))
+        self.assertIn("miyoshi_1991_zein", oyster["source_ids"])
+        self.assertEqual(species(public, 836033)["scores"]["BBVI"], None)   # the public method is unchanged
+        from build_matrix_readiness import build as matrix
+        dist = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
+        rows = matrix(self.report, dist("candidate-catalog.json"), dist("expansion-evidence.json"))["species"]
+        self.assertFalse(next(r for r in rows if r["aphia_id"] == 836033)["matrix_eligible"])   # MCUI is national, not IUCN
+
+    def test_disagreeing_or_same_paper_replication_is_not_counted(self):
+        for changes, reason in (({"value": 200.0}, "pIC50 gap above 1.0"),
+                                ({"original_paper_doi": "10.5352/JLS.2012.22.2.220"}, "same paper as the origin measurement")):
+            oyster = species(self.with_replication(**changes), 836033)
+            lqp = max(oyster["bioactivity_trace"], key=lambda i: i["adjusted"])
+            self.assertEqual((lqp["potency_replications"][0]["used"], lqp["potency_replications"][0]["reason"]), (False, reason))
+            self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"]), (72.2, None))
+
+    def test_other_assays_and_unmatched_sequences_are_rejected_or_ignored(self):
+        for changes in ({"substrate": "FAPGG"}, {"synthetic": False}, {"unit": "ug/mL"}, {"value_in_text": False}):
+            with self.assertRaises(ValueError):
+                self.with_replication(**changes)
+        report = self.with_replication(sequence="VW")   # a replication never creates an item or a species row
+        self.assertEqual(species(report, 836033)["scores"]["BBVI"], None)
+        self.assertEqual(len(report["species"]) + len(report["candidate_species"]),
+                         len(self.report["species"]) + len(self.report["candidate_species"]))
+
+
 class VerifiedPilot22Tests(unittest.TestCase):
     """The published method: 2.1 with the v3 AHTPDB peptide stratum in place of display-only raw values."""
 
