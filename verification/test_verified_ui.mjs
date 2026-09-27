@@ -14,6 +14,7 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.score=pilotScore;
   globalThis.state=axisState;
   globalThis.renderScores=renderVerifiedIndices;
+  globalThis.summary=scoreSummary;
   globalThis.coverage=evidenceCoverage;
   globalThis.coverageBar=coverageBar;
   globalThis.nationalMcui=nationalMcui;
@@ -234,19 +235,36 @@ html=ctx.renderScores(next.species.find(s=>s.aphiaID===371986));
 const mbpiBody=html.slice(html.indexOf('data-axis="MBPI"'),html.indexOf('data-axis="MCUI"'));
 for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL25mM','wijesinghe-2011-cell-free-ACE-IC50','90 × 근거 계수 0.75 = 67.5','10.4162/nrp.2011.5.2.93','독립 원논문 1편','최댓값'])
   assert.ok(mbpiBody.includes(text),`Ecklonia MBPI evidence missing ${text}`);
+assert.match(mbpiBody,/67\.5 · 검증 전 시범 지표 · 참고값\(단일 논문\)/);
+assert.match(ctx.summary(next.species.find(s=>s.aphiaID===371986)),/MBPI 67\.5 \(참고값\(단일 논문\)\)/);
 assert.ok(mbpiBody.indexOf('dieckol')<mbpiBody.indexOf('후속 조사 단서'),'scored ACE evidence precedes the leads');
 assert.ok(mbpiBody.indexOf('후속 조사 단서')<mbpiBody.indexOf('3CLpro'),'3CLpro appears only under follow-up leads');
 assert.doesNotMatch(mbpiBody,/점수 제외/);
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
+next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
+ctx.next=next;vm.runInContext('data=globalThis.next;comparisonPage=0',ctx);ctx.compare();
+assert.match(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*참고값\(단일 논문\)/);
+assert.match(dom.comparison.innerHTML,/>67\.5<small>검증 전 시범 지표 · 참고값\(단일 논문\) · 근거 보기/);
+const badLabel=report();badLabel.candidate_species.find(s=>s.aphia_id===371986).mbpi_label=null;
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>badLabel});
+next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
+assert.equal(ctx.state(next.species[0],'MBPI').kind,'technical_error','missing reference label must not turn a single-paper result into an ordinary score');
 
 // BBVI: a held report value is never recomputed; the weight re-mixes only a BBVI the report found eligible.
-const withBio=(status,bbvi)=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033),e=r.candidate_species.find(s=>s.aphia_id===371986);
+const withBio=(status,bbvi,independent=false)=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033),e=r.candidate_species.find(s=>s.aphia_id===371986);
   o.bioactivity_trace=structuredClone(e.bioactivity_trace);o.scores.MBPI=67.5;o.score_status.MBPI='산출됨';
+  o.mbpi_label='참고값(단일 논문)';
+  if(independent){const best=o.bioactivity_trace.reduce((p,x)=>x.adjusted>p.adjusted?x:p);
+    best.original_paper_dois.push('10.0000/synthetic-independent');best.evidence_factor=1;best.adjusted=best.percentile;
+    o.scores.MBPI=best.adjusted;o.mbpi_label=null;}
   o.scores.BBVI=bbvi;o.score_status.BBVI=status;return r;};
 const oysterOnly=async r=>{ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);return next.species[0];};
 oyster=await oysterOnly(withBio('산출됨',66.5));
-assert.equal(ctx.score(oyster,'BBVI'),66.5);
+assert.equal(ctx.state(oyster,'BBVI').kind,'technical_error','a single-paper MBPI cannot enter BBVI even when the arithmetic matches');
+oyster=await oysterOnly(withBio('산출됨',77.8,true));
+assert.equal(ctx.score(oyster,'BBVI'),77.8);
 vm.runInContext('bbviWeight=.8',ctx);
-assert.equal(ctx.score(oyster,'BBVI'),65.9,'weight updates an eligible BBVI');
+assert.equal(ctx.score(oyster,'BBVI'),70.4,'weight updates an eligible BBVI');
 oyster=await oysterOnly(withBio('산출 보류',null));
 assert.equal(ctx.score(oyster,'MBPI'),67.5);
 assert.equal(ctx.score(oyster,'BBVI'),null,'a single-paper hold is not bypassed by pilotScore');
@@ -256,7 +274,7 @@ assert.equal(ctx.score(oyster,'BBVI'),null);
 // Peptide and small-molecule MBPI are validated as separate strata.
 const peptide=()=>({stratum_kind:'peptide',stratum_id:'ahtpdb-ace-ic50-hhl-cushman-cheung',peptide_sequence:'AEYLCEAC',pIC50:2.368,
   peer_peptides:352,percentile:1.42,evidence_factor:.75,adjusted:1.065,original_paper_dois:['10.3389/fnut.2022.981163']});
-const withPeptide=trace=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033);o.bioactivity_trace=trace;o.scores.MBPI=1.1;o.score_status.MBPI='산출됨';return r;};
+const withPeptide=trace=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033);o.bioactivity_trace=trace;o.scores.MBPI=1.1;o.score_status.MBPI='산출됨';o.mbpi_label='참고값(단일 논문)';return r;};
 oyster=await oysterOnly(withPeptide([peptide()]));
 assert.equal(ctx.score(oyster,'MBPI'),1.1,'peptide stratum accepted by its own rule');
 oyster=await oysterOnly(withPeptide([{...peptide(),peptide_sequence:undefined}]));
@@ -312,6 +330,7 @@ assert.doesNotMatch(pairs,/IUCN 기반\) · [^<]*참굴/,'a national MCUI never 
 // Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
 const refReport=report(),refOyster=refReport.species.find(s=>s.aphia_id===836033);
 refOyster.scores.MBPI=67.5;refOyster.score_status.MBPI='산출됨';
+refOyster.mbpi_label='참고값(단일 논문)';refOyster.withheld_reasons.BBVI='mbpi_single_source';
 refOyster.bioactivity_trace=original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace;
 refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:65.5,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
   mbpi_stratum:'fixture',mbpi_original_paper_dois:['10.0000/fixture'],food_weight:.5,value:66.5,sensitivity:{'0.25':67,'0.5':66.5,'0.75':66},limits:['독립 재현 미확인.'],used_for_score:false};
