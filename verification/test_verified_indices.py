@@ -1,5 +1,6 @@
 """Regression checks for the reviewed snapshot and the scorer's admission rules (verified-pilot-2)."""
 import copy
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -299,14 +300,21 @@ class VerifiedPilot21Tests(unittest.TestCase):
     def test_peptide_raw_values_never_score_or_rank(self):
         raw = {s["aphia_id"]: s.get("peptide_raw_values") for s in self.report["species"] + self.report["candidate_species"]
                if s.get("peptide_raw_values")}
-        self.assertEqual({k: [r["sequence"] for r in v] for k, v in raw.items()}, {145721: ["KNFL"], 836033: ["AEYLCEAC"]})
+        self.assertEqual({k: [r["sequence"] for r in v] for k, v in raw.items()}, {145721: ["KNFL"], 836033: ["AEYLCEAC", "LQP"]})
+        licences = {"feng_2021_knfl": "CC BY 4.0", "chen_2022_oyster": "CC BY 4.0",
+                    "do_2012_oyster_lqp": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)"}
         for rows in raw.values():
             for r in rows:
                 self.assertIs(r["used_for_score"], False)
                 self.assertEqual(r["label"], "원값·출처")
                 self.assertNotIn("percentile", r)
-                self.assertEqual(self.report["sources"][r["source_id"]]["license"], "CC BY 4.0")
-        self.assertEqual({k: v[0]["value"] for k, v in raw.items()}, {145721: 225.87, 836033: 4287})
+                self.assertEqual(self.report["sources"][r["source_id"]]["license"], licences[r["source_id"]])
+                self.assertIn("numeric values only", self.report["sources"][r["source_id"]]["terms"])
+        self.assertEqual({(k, r["sequence"]): r["value"] for k, v in raw.items() for r in v},
+                         {(145721, "KNFL"): 225.87, (836033, "AEYLCEAC"): 4287, (836033, "LQP"): 1.18})
+        # the 2.1-only raw value never reaches the v3 research supplement or its AHTPDB peptide stratum
+        v3 = json.loads((ROOT / "research" / "verified-indices" / "evidence-v3.json").read_text(encoding="utf-8"))
+        self.assertNotIn("do_2012_oyster_lqp", v3["sources"])
         self.assertNotIn("ahtpdb_ic50_2026", self.report["sources"])
         self.assertTrue(all(s["scores"]["BBVI"] is None for s in self.report["species"] + self.report["candidate_species"]))
 

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-27",
+  "note": "verified-pilot-2.1 raw values only (원값·출처). Not part of the v3 research supplement or any AHTPDB stratum; never scored or ranked.",
+  "sources": {
+    "do_2012_oyster_lqp": {
+      "provider": "Journal of Life Science 22(2):220-225 (Do et al. 2012), full text via KoreaScience JAKO201209640672935",
+      "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
+      "version": "2012",
+      "doi": "10.5352/JLS.2012.22.2.220",
+      "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
+      "accessed": "2026-09-27",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "license": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 836033,
+      "origin_scientific_name": "Magallana gigas",
+      "record_id": "10.5352/JLS.2012.22.2.220:LQP",
+      "source_id": "do_2012_oyster_lqp",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "LQP",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 1.18,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.5352/JLS.2012.22.2.220",
+      "verification": "Full text: farmed Crassostrea gigas (Tongyeong) Protamex hydrolysate, <10 kDa, RP-HPLC fraction B sequenced as Leu-Gln-Pro; the synthesized peptide has IC50 1.18 uM in text (Results). Assay: ACE Sigma A6778 (rabbit lung) 60 mU/ml, 5 mM HHL in borate pH 8.3 with 300 mM NaCl, 37 C 30 min, hippuric acid by HPLC at 228 nm. C. gigas = Magallana gigas (WoRMS 836033). Different peptide and paper from AEYLCEAC; not an independent reproduction of it."
+    }
+  ]
+}

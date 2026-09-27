@@ -1,7 +1,7 @@
 {
   "method_version": "verified-pilot-2.1",
   "status": "provisional_unvalidated",
-  "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings.",
+  "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings. (5) peptide_raw_values.extra_supplements: 2.1-only raw values kept outside the v3 research supplement (2026-09-27: oyster LQP 1.18 uM, Do et al. 2012, 10.5352/JLS.2012.22.2.220); display only, no score change.",
   "nutrition": {
     "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json",
     "components": {
@@ -223,6 +223,9 @@
   },
   "peptide_raw_values": {
     "supplement": "research/verified-indices/evidence-v3.json",
+    "extra_supplements": [
+      "research/verified-indices/peptide-raw-values-2.1.json"
+    ],
     "label": "원값·출처",
     "excluded_sources": [
       "ahtpdb_ic50_2026"

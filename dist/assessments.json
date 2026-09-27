@@ -5641,7 +5641,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings.",
+    "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings. (5) peptide_raw_values.extra_supplements: 2.1-only raw values kept outside the v3 research supplement (2026-09-27: oyster LQP 1.18 uM, Do et al. 2012, 10.5352/JLS.2012.22.2.220); display only, no score change.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5796,6 +5796,9 @@
     "peptide_raw_values": {
       "excluded_sources": [
         "ahtpdb_ic50_2026"
+      ],
+      "extra_supplements": [
+        "research/verified-indices/peptide-raw-values-2.1.json"
       ],
       "label": "원값·출처",
       "rule": "Public-paper peptide IC50 values are shown with their source only. No AHTPDB cohort, rank or percentile is published until the AHTPDB reuse terms are confirmed; these values never enter MBPI or BBVI.",
@@ -5966,6 +5969,16 @@
       "title": "CMNPD v1 standard activity and 2D structure files",
       "url": "https://docs.cmnpd.org/",
       "version": "CMNPD 1.0"
+    },
+    "do_2012_oyster_lqp": {
+      "accessed": "2026-09-27",
+      "doi": "10.5352/JLS.2012.22.2.220",
+      "license": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)",
+      "provider": "Journal of Life Science 22(2):220-225 (Do et al. 2012), full text via KoreaScience JAKO201209640672935",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
+      "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
+      "version": "2012"
     },
     "fao_casp_amberjack": {
       "accessed": "2026-09-26",
@@ -9832,6 +9845,28 @@
           "value": 4287.0,
           "value_in_text": true,
           "verification": "Full text: AEYLCEAC screened from a Crassostrea gigas simulated GI digest; synthesized peptide (>95%) IC50 4.287 mM in text; HHL substrate, rabbit-lung ACE. C. gigas = Magallana gigas (WoRMS 836033)."
+        },
+        {
+          "endpoint": "IC50",
+          "label": "원값·출처",
+          "material_kind": "single_peptide",
+          "origin_aphia_id": 836033,
+          "origin_scientific_name": "Magallana gigas",
+          "original_paper_doi": "10.5352/JLS.2012.22.2.220",
+          "record_id": "10.5352/JLS.2012.22.2.220:LQP",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "LQP",
+          "sequence_confirmed": true,
+          "source_id": "do_2012_oyster_lqp",
+          "status": "approved_for_score",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "used_for_score": false,
+          "value": 1.18,
+          "value_in_text": true,
+          "verification": "Full text: farmed Crassostrea gigas (Tongyeong) Protamex hydrolysate, <10 kDa, RP-HPLC fraction B sequenced as Leu-Gln-Pro; the synthesized peptide has IC50 1.18 uM in text (Results). Assay: ACE Sigma A6778 (rabbit lung) 60 mU/ml, 5 mM HHL in borate pH 8.3 with 300 mM NaCl, 37 C 30 min, hippuric acid by HPLC at 228 nm. C. gigas = Magallana gigas (WoRMS 836033). Different peptide and paper from AEYLCEAC; not an independent reproduction of it."
         }
       ],
       "reference_combination": null,
@@ -9859,6 +9894,7 @@
         "afcd_r3_details",
         "afcd_r3_nutrients",
         "chen_2022_oyster",
+        "do_2012_oyster_lqp",
         "fao_oyster_culture",
         "feng_2022_oyster",
         "frdc_2008_905",

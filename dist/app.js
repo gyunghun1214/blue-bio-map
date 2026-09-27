@@ -45,7 +45,7 @@ function evidenceCoverage(s) {
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null?'calculated':bioLinked?'linked':partial.length||compounds.status==='available'?'found':'unavailable',
       detail:pilotScore(s,'MBPI')!==null?'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 시범 MBPI를 산출했습니다.':partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?'calculated':conservation?.iucn_state==='assessed'?'linked':'unavailable',
-      detail:nationalMcui(s)?'IUCN 전 지구 평가가 없어 한국 국가생물적색자료집 등급으로 시범 MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.':pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 시범 MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.':'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.'}
+      detail:nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 시범 MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 시범 MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.':'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.'}
   ];
   return {checks};
 }
@@ -365,6 +365,8 @@ function assessedForMatrix(s){
 }
 // A Korean national-assessment MCUI is its own stratum: labelled apart and never ranked or plotted with IUCN-based MCUI.
 const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'MCUI')!==null;
+// the national branch also covers IUCN categories without a pilot number (DD), so say which case applies
+const iucnGlobalNote = s => {const c=s.assessment?.conservation_trace;return c?.category?`IUCN 전 지구 ${c.category}(${c.assessment_year||'평가연도 미기재'}) · 시범 숫자 없음`:'IUCN 전 지구 평가 미확인';};
 // Computed values first, then the axes still on hold: "MFPI 65.5 · MBPI·MCUI 보류".
 function scoreSummary(s){
   const keys=['MFPI','MBPI','MCUI'], held=keys.filter(k=>pilotScore(s,k)===null);
@@ -1214,7 +1216,7 @@ function valueSpeciesCard(s){
   return '<article class="value-species"><h4>'+esc(s.label)+' <small>'+esc(s.name)+'</small></h4>'+
     '<p>종 단위 근거 · AphiaID '+esc(s.aphiaID)+' · '+esc(stage)+'</p>'+
     '<div class="value-axes">'+scores+'</div><p class="fine">원자료(점수 아님): '+esc(rawText)+
-    (nationalMcui(s)?' · 한국 국가생물적색자료집 '+esc(s.assessment.national_assessment.category)+' / 목록 '+esc(s.assessment.national_assessment.list_page_printed)+'쪽 · IUCN 전 지구 평가 미확인'
+    (nationalMcui(s)?' · 한국 국가생물적색자료집 '+esc(s.assessment.national_assessment.category)+' / 목록 '+esc(s.assessment.national_assessment.list_page_printed)+'쪽 · '+esc(iucnGlobalNote(s))
       :cons?' · IUCN '+esc(cons.category||'등급 미기재')+' / 평가 '+esc(cons.assessment_date||cons.assessment_year||'일자 미기재'):'')+'</p>'+
     '<p class="fine">평가 보고서 '+esc(report.generatedAt?.slice(0,10)||'미발행')+
     ' · 출현 자료 '+esc(s.publishedAt?.slice(0,10)||data.collectedAt||'미기재')+
