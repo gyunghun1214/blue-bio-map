@@ -359,6 +359,21 @@ function followupDecision(s){
     sourceUrls:Array.isArray(row.source_urls)?row.source_urls.filter(url=>/^https:\/\//.test(url)):[]
   };
 }
+function appendFollowupBrief(s){
+  const plan=followupDecision(s);
+  if(!plan)return;
+  const target=$('detail');
+  if(typeof target?.insertAdjacentHTML!=='function')return;
+  target.insertAdjacentHTML('beforeend',
+    '<details class="detail-more followup-brief"><summary>현재 판단 가능 범위 · 보류 이유 · 다음 조사</summary><div class="detail-more-body">'+
+    '<p><b>현재 판단 가능 범위:</b> '+esc(plan.known.length?'검증 전 시범 '+plan.known.join('·')+'만 축별로 해석':'산출된 시범 지표 없음')+
+    '. 실제 BBVI×MCUI 매트릭스 배치 '+(pilotScore(s,'BBVI')!==null&&pilotScore(s,'MCUI')!==null?'시범 조건 충족':'보류')+'.</p>'+
+    '<p><b>판단 보류:</b> '+esc(plan.blocked.length?plan.blocked.join('·')+' 필수 근거 미충족':'실행 판단은 별도 검증 필요')+'. 미확인은 0점이 아닙니다.</p>'+
+    '<p><b>연구기관:</b> '+plan.research.map(esc).join(' / ')+'</p>'+
+    '<p><b>정부·보전기관:</b> '+plan.conservation.map(esc).join(' / ')+'</p>'+
+    '<p><b>기업 검토:</b> '+esc(plan.industry)+'</p>'+
+    '<p class="fine">점수 또는 실행 우선순위가 아닌 후속 검증 과제. 원문 링크·조회일·이용조건은 위 근거 상세/출처에서 확인합니다. 종 단위 점수를 출현 셀·해역 가치로 전가하지 않습니다.</p></div></details>');
+}
 function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
   list.innerHTML=data.species.map(s=>{
@@ -613,8 +628,8 @@ function selectSpecies(id) {
 
 function renderDetail() {
   const s=selected;
-  if(s.catalog)return renderCandidateDetail(s);
-  if(s.live)return renderLiveDetail(s);
+  if(s.catalog){renderCandidateDetail(s);appendFollowupBrief(s);return;}
+  if(s.live){renderLiveDetail(s);appendFollowupBrief(s);return;}
   const evidence=[['학명·식별자','WoRMS 연결','done'],['출현기록','OBIS 연결','done'],['식량 근거 · MFPI','산출 보류 · 영양 원값 검증 필요',''],['생리활성 · MBPI','자료 미확인',''],['보전 평가 · MCUI',IUCN_HISTORICAL[s.aphiaID]?(IUCN_HISTORICAL[s.aphiaID].current?'산출 보류 · IUCN 2026 EN 원문 검수 전':'산출 보류 · IUCN 역사적 평가만 확인'):'평가 미조회','']];
   $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>SPECIES EVIDENCE</span><span class="verified">정명 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p><div class="identity"><span>AphiaID</span><strong>${s.aphiaID}</strong></div><p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 식별번호를 기준으로 합니다.</p></div><div>${summaryCard(s)}<h3>연결된 근거 <span class="fine">2 / 5 항목 · 품질 점수 아님</span></h3>${evidence.map(e=>`<div class="evidence-item"><span>${e[0]}</span><span class="${e[2]}">${e[1]}</span></div>`).join('')}${iucnHistoricalRows(s)}<div class="withheld"><b>통합점수 산출 보류</b>활용·보전 자료를 검수한 뒤 점수 계산 여부를 결정합니다. 미확인 자료를 0점으로 처리하지 않습니다.</div></div><div class="source-area"><h3>출처와 범위</h3><a class="source-link" href="${esc(safeUrl(s.wormsUrl))}" target="_blank" rel="noopener"><span>WoRMS · 학명 확인</span><span>↗</span></a><a class="source-link" href="${esc(safeUrl(s.queryUrl))}" target="_blank" rel="noopener"><span>OBIS · 조회 조건과 응답</span><span>↗</span></a><p class="fine">지도의 붉은 점은 선별된 출현기록의 1° 격자 집계를 나타낸 도식적 표시입니다. 실제 발견 좌표나 기록 1건이 아닙니다.</p><p class="fine">조회 응답 ${s.reportedTotal.toLocaleString()}건 중 ${s.retrievedCount.toLocaleString()}건 취득, 선별 후 ${s.recordCount.toLocaleString()}건 표시. 연도 미기재 ${s.undated}건. 기록 간 중복·동정 정확성은 추가 검수 대상입니다.</p><button class="text-button" id="detail-sources">데이터셋 ${s.sources.length}개와 이용 조건 보기 →</button></div>`;
   $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth',block:'start'});});
