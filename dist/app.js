@@ -406,7 +406,7 @@ function showDecision(s){
       '<p class="fine">근거 수준: '+(plan.known.length?'검증 전 시범 지표 일부 · ':'')+'나머지 축은 보류 · '+esc(s.catalog?'조사 후보':'운영 발행 종')+
       ' · 자료 스냅샷 '+esc(date||'미확인')+' · 제안 표시일 '+esc(data.readinessAssessmentDate||'미확인')+
       ' · 비교집단/비용/실행가능성 기준으로 순위를 매기지 않았습니다.</p>'+
-      '<h4>연결된 원자료·조회 출처</h4><ul>'+plan.sourceUrls.map(url=>'<li>'+sourceLink(url,'원자료 ↗')+'</li>').join('')+'</ul></section>';
+      '<h4>연결된 조회 출처 · 각 축의 원문·이용조건은 아래 참조</h4><ul>'+plan.sourceUrls.map(url=>'<li>'+sourceLink(url,url.split('/')[2]+' ↗')+'</li>').join('')+'</ul></section>';
   }else html+='<p class="fine">검수 상태 파일과 종명·AphiaID·축별 값의 연결을 확인하지 못해 후속조사 제안을 보류합니다.</p>';
   if(a){
     const f=pilotScore(s,'MFPI')!==null?a.food_trace:null;
@@ -1286,7 +1286,7 @@ function updateWeightControl(){
   $('bbvi-weight').disabled=!n;
   $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · 두 축(MFPI·MBPI)이 모두 있는 종이 생기면 조절됩니다';
 }
-const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'IUCN 평가 검색 미확인',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단',comparable_nutrition_missing:'고정 비교집단의 종 행',aquaculture_method_unverified:'양식 근거',category_not_numeric:'IUCN DD · 숫자 없음'};
+const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'IUCN 평가 검색 미확인',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단',comparable_nutrition_missing:'고정 비교집단의 종 행',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요',aquaculture_method_unverified:'양식 근거',category_not_numeric:'IUCN DD · 숫자 없음'};
 function matrixBlockerText(s){
   const row=matrixReadiness.get(s.aphiaID);
   if(!row||row.scientific_name!==s.name)return scoreSummary(s);
@@ -1305,7 +1305,7 @@ function toggleSimulation(value){
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
   const kinds=data?.live?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
-  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종${kinds}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
+  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 후속조사 대상 ${unplaced.length}종${kinds}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
