@@ -193,7 +193,7 @@ try{
   check('Sea cucumber detail: checked bioactivity case shown, marked not an index input',cucT.includes('별도 원문 조사 · 지표 입력 아님')&&cucT.includes('Holotoxin'),cucT.slice(cucT.indexOf('화합물'),cucT.indexOf('화합물')+400));
   t=await pick(836033);
   const oyTop=await evaluate("(()=>{selectSpecies(836033);const d=document.getElementById('detail');const more=[...d.querySelectorAll('details.detail-more')];return {top:d.querySelector('.detail-summary').innerText,closed:more.length===3&&more.every(x=>!x.open),summaries:more.map(x=>x.querySelector('summary').innerText),kb:more.every(x=>x.querySelector('summary').tabIndex===0)}})()");
-  check('Core regression: oyster top = map GBIF 3건 · 1개 격자 · 2025 only; OBIS 26건/2008–2014 not mixed in',/지도 표시 기록\s*3건 · 1개 격자\(1°\)/.test(oyTop.top)&&/기록 연도\s*2025/.test(oyTop.top)&&oyTop.top.includes('GBIF')&&!oyTop.top.includes('26')&&!oyTop.top.includes('2008')&&!oyTop.top.includes('AphiaID'),oyTop.top);
+  check('Core regression: oyster top = map GBIF 3건 · 1개 격자 · 2025 only; OBIS 26건/2008–2014 not mixed in',/지도 표시 기록\s*3건 · 1개 격자\(1°\)/.test(oyTop.top)&&/기록 연도\s*2025/.test(oyTop.top)&&oyTop.top.includes('GBIF')&&!oyTop.top.split('제외 사유')[0].includes('26')&&!oyTop.top.includes('2008')&&/제외 사유\s*.*운영 DB에서 검토 중인 기존 기록 26건/.test(oyTop.top)&&!oyTop.top.includes('AphiaID'),oyTop.top);
   check('Oyster top explains why 1 published cell differs from 33 separate OBIS cells',oyTop.top.includes('별도 OBIS 수집은 33셀')&&oyTop.top.includes('지역·기간·선별 기준이 달라 두 지도는 합산하지 않습니다'),oyTop.top);
   await shot('desktop-oyster-collapsed');
   check('Detail: three disclosures closed by default, keyboard-focusable summaries',oyTop.closed&&oyTop.kb&&JSON.stringify(oyTop.summaries)===JSON.stringify(['근거 자세히 보기','수집·선별 기준','출처와 이용조건']),JSON.stringify(oyTop));
@@ -270,7 +270,7 @@ try{
   await evaluate("map.closePopup();1");
   // ---- A/B improvements ----
   let ab=await pick(241776);
-  check('A-1 top summary: map records, three axis statuses (not a verdict), limit line; publish date kept in sources',await evaluate("(()=>{const c=document.querySelector('#detail .detail-summary');return !!c&&c.innerText.includes('판정 아님')&&c.innerText.includes('지도 표시 기록')&&c.querySelectorAll('.evidence-item').length===6&&!!c.querySelector('.detail-limit')&&/발행 \\d{4}-\\d{2}-\\d{2}/.test(document.getElementById('detail').textContent)})()"));
+  check('A-1 top summary: map records, three axis statuses (not a verdict), limit line; publish date kept in sources',await evaluate("(()=>{const c=document.querySelector('#detail .detail-summary');return !!c&&c.innerText.includes('판정 아님')&&c.innerText.includes('지도 표시 기록')&&[...c.querySelectorAll('.evidence-item')].filter(e=>!['해역','이용조건','제외 사유'].includes(e.firstChild.textContent)).length===6&&['해역','이용조건'].every(l=>[...c.querySelectorAll('.evidence-item span')].some(e=>e.textContent===l))&&!!c.querySelector('.detail-limit')&&/발행 \\d{4}-\\d{2}-\\d{2}/.test(document.getElementById('detail').textContent)})()"));
   check('A-2 coverage bar: 5 segments, each segment shows its evidence stage (PR #22 stages, not on/off)',await evaluate("(()=>{const b=document.querySelector('#detail .coverage-bar');const c=evidenceCoverage(selected).checks;const seg=[...(b?.querySelectorAll('.seg')||[])];return seg.length===5&&c.length===5&&seg.every((e,i)=>e.classList.contains(c[i].stage)&&e.textContent.includes(coverageStages[c[i].stage]))})()"));
   check('A-4 IUCN: superseded 2013 assessment no longer flagged Needs updating; 2026 assessment cited',!ab.includes('Needs updating')&&ab.includes('2013년 발표 (2026년 평가로 대체)')&&ab.includes('Hamel & Mercier 2026'),ab.slice(ab.indexOf('보전'),ab.indexOf('보전')+300));
   const pop=await evaluate("(()=>{map.closePopup();overlay.getLayers().find(l=>!l._schematicDot).openPopup();return [...document.querySelectorAll('.leaflet-popup-content')].at(-1).innerText})()");
@@ -419,6 +419,28 @@ try{
     await evaluate("document.querySelector('[data-map-mode=occurrence]').click();1");await sleep(400);
     const after=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID,mode:mapMode})");
     check(`Flow 6 ${tag}: map mode value → occurrence keeps selection and scroll position`,after.sel===before.sel&&after.mode==='occurrence'&&Math.abs(after.y-before.y)<=4,JSON.stringify({before,after}));
+    // Every species × {occurrence, MFPI, MBPI, MCUI, BBVI} opens its own evidence, on every comparison page, and returns to the same page, horizontal scroll and button.
+    const opens=await evaluate(`(()=>{const bad=[];setView('compare');
+      data.species.forEach((s,i)=>['OCC','MFPI','MBPI','MCUI','BBVI'].forEach(axis=>{
+        comparisonPage=Math.floor(i/5);renderComparison();setView('compare');const c=document.getElementById('comparison');c.scrollLeft=Math.min(37,c.scrollWidth-c.clientWidth);const left=c.scrollLeft;
+        const b=c.querySelector('[data-score-aphia="'+s.aphiaID+'"][data-score-axis="'+axis+'"]');if(!b){bad.push([s.label,axis,'no button']);return;}
+        b.click();const a=document.activeElement;
+        const ok=axis==='OCC'
+          ?selected===s&&mapMode==='occurrence'&&(s.cells?.length?a.closest('#cell-table details')?.open&&!!document.getElementById('cell-csv'):document.activeElement.id==='detail-map-summary'&&/없음/.test(a.textContent)&&!/개 격자/.test(a.textContent))
+          :selected===s&&a.closest('#detail [data-axis="'+axis+'"]')&&(()=>{for(let d=a.closest('details');d;d=d.parentElement?.closest('details'))if(!d.open)return false;return true;})();
+        if(!ok||currentView!=='explore'){bad.push([s.label,axis,'target',a.outerHTML.slice(0,80)]);}
+        document.querySelector('.comparison-return').click();
+        const back=document.activeElement;
+        if(currentView!=='compare'||comparisonPage!==Math.floor(i/5)||c.scrollLeft!==left||back.dataset.scoreAphia!==String(s.aphiaID)||back.dataset.scoreAxis!==axis)bad.push([s.label,axis,'return',comparisonPage,c.scrollLeft,left]);
+      }));return {n:data.species.length,bad:bad.slice(0,8)};})()`);
+    check(`Evidence ${tag}: all ${opens.n}×5 comparison buttons open their own evidence (incl. later pages) and return to page, scroll and focus`,opens.n===total&&opens.bad.length===0,JSON.stringify(opens));
+    const late=await evaluate("(()=>{const i=data.species.length-1;comparisonPage=Math.floor(i/5);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
+    await sleep(900);
+    const seen=await evaluate("(()=>{const r=document.activeElement.getBoundingClientRect();return {top:Math.round(r.top),h:innerHeight,axis:document.activeElement.closest('[data-axis]')?.dataset.axis}})()");
+    check(`Evidence ${tag}: last-page MBPI evidence scrolled into view`,late===1&&seen.axis==='MBPI'&&seen.top>=0&&seen.top<seen.h,JSON.stringify(seen));
+    const occ=await evaluate("(()=>{const s=data.species.find(x=>x.live&&x.cells?.length);comparisonPage=Math.floor(data.species.indexOf(s)/5);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+s.aphiaID+'\"][data-score-axis=OCC]').click();const sum=document.getElementById('detail-map-summary').innerText,csv=cellCsv(s);return {shapes:document.querySelectorAll('#map path.leaflet-interactive').length,rows:document.querySelectorAll('#cell-table tbody tr').length,period:/기록 연도/.test(sum),source:/출처/.test(sum),sea:/해역/.test(sum),license:/이용조건/.test(sum),csv:csv.includes('sea_areas')&&csv.includes('licenses')}})()");
+    check(`Evidence ${tag}: occurrence button draws the cells and lists period, sea area, source, licence and CSV columns`,occ.shapes>0&&occ.rows>0&&occ.period&&occ.source&&occ.sea&&occ.license&&occ.csv,JSON.stringify(occ));
+    await evaluate("setView('explore');1");
   }
 
   // ---------- Mobile 390px first screen and stability ----------

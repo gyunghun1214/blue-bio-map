@@ -132,5 +132,5 @@ const csvText=context.csv({live:true,label:'시험, "종"',name:'Accepted specie
 assert.ok(csvText.startsWith('﻿"species_label"'));
 const csvRows=csvText.slice(1).split('\r\n');
 assert.equal(csvRows.length,2);
-assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류"');
+assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","43","공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류"');
 console.log('PASS: selected occurrences and unapproved spatial decisions remain separate');
