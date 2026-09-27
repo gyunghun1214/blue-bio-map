@@ -276,6 +276,51 @@ try{
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
+  // ---------- Map mode buttons: occurrence <-> utilization × conservation ----------
+  const modeState=()=>evaluate(`(()=>{const q=s=>document.querySelector(s),pressed=m=>q('[data-map-mode="'+m+'"]').getAttribute('aria-pressed');
+    return {mode:mapMode,occ:pressed('occurrence'),val:pressed('value'),occLegend:!q('#occurrence-legend').hidden,valLegend:!q('#value-legend').hidden,
+      panel:!q('#value-cell-detail').hidden,panelText:q('#value-cell-detail').innerText,effortDisabled:q('#effort-toggle').disabled,
+      effort:effortLayer?effortLayer.getLayers().length:-1,source:q('#map-source').textContent,judgment:q('#map-judgment').textContent,
+      hash:decodeURIComponent(location.hash),shapes:document.querySelectorAll('#map path.leaflet-interactive').length}})()`);
+  const clickMode=async m=>{await evaluate(`document.querySelector('[data-map-mode="${m}"]').click();1`);await sleep(300);return modeState();};
+  let ms=await clickMode('value');
+  check('Map mode button → value: pressed state, value legend, cell panel, no effort layer, hash t=value',
+    ms.mode==='value'&&ms.occ==='false'&&ms.val==='true'&&!ms.occLegend&&ms.valLegend&&ms.panel&&ms.panelText.includes('선택한 공개 격자')&&ms.panelText.includes('합산 점수·우선순위는 산출하지 않았습니다')&&ms.effortDisabled&&ms.effort===0&&ms.source.startsWith('활용 × 보전')&&/(^|&)t=value/.test(ms.hash.slice(1))&&ms.shapes>0,JSON.stringify(ms));
+  await pick(377084);await sleep(300);ms=await modeState();
+  check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=377084/.test(ms.hash),JSON.stringify(ms));
+  ms=await clickMode('occurrence');
+  check('Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, no fake cell for candidate',
+    ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===0,JSON.stringify(ms));
+  await pick(836033);await sleep(300);ms=await modeState();
+  check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
+  await pick(504357);await sleep(300);ms=await modeState();
+  check('피조개: one historical 4° public cell, not a current distribution',ms.shapes===1&&ms.source==='1930년 표본 · 공개 4° 셀'&&(await evaluate("document.getElementById('map-review-note').textContent")).includes('현재 분포'),JSON.stringify(ms));
+  ms=await clickMode('value');ms=await clickMode('occurrence');ms=await clickMode('value');
+  check('Repeated toggling leaves a single consistent value state',ms.mode==='value'&&ms.val==='true'&&ms.occ==='false'&&ms.valLegend&&!ms.occLegend&&ms.effort===0,JSON.stringify(ms));
+  await evaluate("{const s=document.getElementById('collection');s.value='demo';s.dispatchEvent(new Event('change'));}1");
+  for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('추가 수집'))break;}
+  await sleep(300);ms=await modeState();
+  check('Value mode survives switching to the OBIS demo collection',ms.mode==='value'&&ms.valLegend&&ms.source.startsWith('활용 × 보전 · OBIS')&&ms.panel,JSON.stringify(ms));
+  await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
+  for(let i=0;i<60;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('연결됨'))break;}
+  await sleep(300);ms=await clickMode('occurrence');
+  check('After collection round-trip, occurrence mode restores the live map',ms.mode==='occurrence'&&ms.occLegend&&!ms.panel&&!ms.source.startsWith('활용')&&ms.shapes>0,JSON.stringify(ms));
+  await evaluate("location.hash='c=live&s=836033&v=explore&b=basic&t=value';location.reload();1");
+  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await sleep(800);ms=await modeState();
+  check('Shared link with t=value restores the value map and its pressed button',ms.mode==='value'&&ms.val==='true'&&ms.valLegend,JSON.stringify(ms));
+  await clickMode('occurrence');await evaluate("history.replaceState(null,'',location.pathname);1");
+  // ---------- Comparison pages (5 species each) ----------
+  const pages=await evaluate(`(()=>{setView('compare');const heads=()=>[...document.querySelectorAll('#comparison thead th small')].map(x=>x.textContent);
+    const label=()=>document.getElementById('comparison-page').textContent;selectSpecies(data.species[0].aphiaID);setView('compare');
+    const out=[{label:label(),heads:heads(),prev:document.getElementById('comparison-prev').disabled}];
+    document.getElementById('comparison-next').click();out.push({label:label(),heads:heads()});
+    document.getElementById('comparison-prev').click();out.push({label:label(),heads:heads()});
+    const names=data.species.map(s=>s.name);setView('explore');return {total:data.species.length,names,out};})()`);
+  check('Comparison paging: 5 species per page, next/prev move by one page with matching label',
+    pages.total===30&&pages.out[0].label==='1 / 6 · 1–5종'&&pages.out[0].prev&&JSON.stringify(pages.out[0].heads)===JSON.stringify(pages.names.slice(0,5))&&
+    pages.out[1].label==='2 / 6 · 6–10종'&&JSON.stringify(pages.out[1].heads)===JSON.stringify(pages.names.slice(5,10))&&
+    pages.out[2].label==='1 / 6 · 1–5종'&&JSON.stringify(pages.out[2].heads)===JSON.stringify(pages.names.slice(0,5)),JSON.stringify(pages));
   // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
   await pick(494972);
   const tiles=host=>evaluate(`[...document.querySelectorAll('#map img.leaflet-tile-loaded')].filter(i=>i.src.includes('${host}')).length`);
