@@ -10,7 +10,8 @@ from build_verified_indices import build, load_inputs, render  # noqa: E402
 
 
 def species(report, aphia):
-    return next(item for item in report["species"] if item["aphia_id"] == aphia)
+    # Research candidates such as 감태 (371986) live in candidate_species, not among the 8 operating species.
+    return next(item for item in report["species"] + report.get("candidate_species", []) if item["aphia_id"] == aphia)
 
 
 def synthetic_assays(evidence):
@@ -53,7 +54,7 @@ class VerifiedIndicesTests(unittest.TestCase):
 
     def test_real_snapshot_scores_and_committed_output(self):
         report = self.run_build()
-        got = {s["aphia_id"]: s["scores"] for s in report["species"]}
+        got = {s["aphia_id"]: s["scores"] for s in report["species"] + report["candidate_species"]}
         self.assertEqual(got[836033], {"MFPI": 65.5, "MBPI": None, "MCUI": None, "BBVI": None})
         self.assertEqual(got[250680]["MFPI"], 54.2)
         self.assertEqual(got[145721]["MFPI"], 42.2)
@@ -136,6 +137,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertIsNone(squirt["scores"]["MFPI"])
         self.assertEqual(squirt["withheld_reasons"]["MFPI"], "aquaculture_method_unverified")
 
+    def test_rejected_refuse_row_withholds_mfpi(self):
+        yellowtail = next(s for s in self.run_build()["candidate_species"] if s["aphia_id"] == 276651)
+        self.assertEqual(yellowtail["food_trace"]["edible_fraction"]["source_id"], "mext_sfct_2020")  # fillet row refuse 0 rejected
+        self.assertEqual(yellowtail["scores"]["MFPI"], 56.3)
+        evidence = copy.deepcopy(self.evidence)
+        evidence["rda_refuse_not_accepted"].append({**evidence["rda_refuse_not_accepted"][0], "food_item_id": "K4130000000a"})
+        clam = next(s for s in self.run_build(evidence=evidence)["candidate_species"] if s["aphia_id"] == 231750)
+        self.assertIsNone(clam["scores"]["MFPI"])
+        self.assertEqual(clam["withheld_reasons"]["MFPI"], "species_edible_yield_unverified")
+        row = next(r for r in clam["food_trace"]["observed_rows"] if r["linked"])
+        self.assertEqual((row["refuse_pct"], row["refuse_not_accepted"]["refuse_pct"]), (None, 68.0))
+        del evidence["rda_refuse_not_accepted"][0]["checked_on"]
+        with self.assertRaises(ValueError):
+            self.run_build(evidence=evidence)
+
     def test_iucn_states_are_distinct(self):
         report = self.run_build()
         self.assertEqual(species(report, 145721)["withheld_reasons"]["MCUI"], "not_in_red_list")
@@ -208,6 +224,21 @@ class VerifiedIndicesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.run_build(evidence=unreviewed)
 
+    def test_research_candidates_stay_separate_from_operating_species(self):
+        report = self.run_build()
+        self.assertEqual(len(report["species"]), 8)
+        rows = {s["aphia_id"]: s for s in report["candidate_species"]}
+        self.assertEqual(len(rows), 22)
+        self.assertTrue(all(s["candidate_label"] == "조사 후보" for s in rows.values()))
+        self.assertEqual(rows[231750]["scores"]["MFPI"], 52.1)                       # 바지락, same frozen cohort
+        self.assertEqual(rows[397082]["scores"]["MCUI"], 80.0)                       # Haliotis discus EN
+        self.assertIsNone(rows[275816]["scores"]["MCUI"])                            # not in Red List is not low
+        self.assertEqual(rows[275816]["withheld_reasons"]["MCUI"], "not_in_red_list")
+        self.assertEqual(rows[1666974]["withheld_reasons"]["MCUI"], "category_not_numeric")
+        cohort = next(c for c in report["comparison_cohorts"] if c["cohort_id"] == "rda-10.4-raw-marine-animals")
+        self.assertEqual(cohort["operating_candidates"], [250680, 836033])
+        self.assertIn(231750, cohort["research_candidates"])
+
     def test_unexplored_flag_never_copies_scores(self):
         synthetic_assays(self.evidence)
         report = self.run_build()
@@ -217,6 +248,74 @@ class VerifiedIndicesTests(unittest.TestCase):
         flagged = species(build(self.evidence, self.candidates, self.config, self.snapshot, taxonomy), 506159)
         self.assertEqual(flagged["unexplored_candidate"]["relatives"], ["Magallana gigas"])
         self.assertIsNone(flagged["scores"]["BBVI"])
+
+
+class VerifiedPilot3Tests(unittest.TestCase):
+    V3 = ROOT / "config" / "verified-indices-v3.json"
+
+    def setUp(self):
+        self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy = load_inputs(config=self.V3)
+
+    def run_build(self, evidence=None):
+        return build(evidence or self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy)
+
+    def test_committed_v3_output_is_reproducible_and_v2_scores_unchanged(self):
+        report = self.run_build()
+        self.assertEqual((ROOT / "research" / "verified-indices" / "assessments-v3.json").read_text(encoding="utf-8"), render(report))
+        v2 = build(*load_inputs())
+        for old in v2["species"]:
+            new = species(report, old["aphia_id"])
+            for axis in ("MFPI", "MCUI"):
+                if old["scores"][axis] is not None:
+                    self.assertEqual(new["scores"][axis], old["scores"][axis])
+
+    def test_peptides_never_join_the_small_molecule_stratum(self):
+        report = self.run_build()
+        undaria = species(report, 145721)
+        self.assertEqual(undaria["mbpi_stratum"], "peptide")
+        self.assertFalse(undaria["bbvi_mbpi_from_peptide_stratum"])   # single-paper MBPI never reaches BBVI
+        self.assertTrue(all(i["stratum_kind"] == "peptide" and "compound_id" not in i for i in undaria["bioactivity_trace"]))
+        peptide = copy.deepcopy(next(r for r in self.evidence["peptide_bioactivity"] if r["status"] == "approved_for_score"))
+        evidence = copy.deepcopy(self.evidence)
+        evidence["bioactivity"].append({**peptide, "activity_id": "PEP1"})     # a peptide row offered as a ChEMBL compound
+        with self.assertRaisesRegex(ValueError, "compound-origin/ChEMBL chain"):
+            self.run_build(evidence)
+
+    def test_single_source_mbpi_is_reference_only(self):
+        undaria = species(self.run_build(), 145721)
+        self.assertEqual((undaria["scores"]["MBPI"], undaria["scores"]["BBVI"]), (19.6, None))
+        self.assertEqual((undaria["withheld_reasons"]["BBVI"], undaria["mbpi_label"]), ("mbpi_single_source", "참고값(단일 논문)"))
+        knfl = next(r for r in self.evidence["peptide_bioactivity"] if r["sequence"] == "KNFL")
+        for doi, computed in ((knfl["original_paper_doi"].upper(), False),           # same DOI again counts once
+                              ("10.9999/synthetic-independent-replicate", True)):
+            evidence = copy.deepcopy(self.evidence)
+            evidence["peptide_bioactivity"].append({**knfl, "record_id": "replicate", "original_paper_doi": doi})
+            undaria = species(self.run_build(evidence), 145721)
+            self.assertEqual(undaria["scores"]["BBVI"] is not None, computed)
+            self.assertEqual(undaria["mbpi_label"] is None, computed)
+        self.assertNotIn("mbpi_label", species(build(*load_inputs()), 145721))   # v2 has no such rule
+
+    def test_national_assessment_is_labelled_apart_from_iucn(self):
+        report = self.run_build()
+        oyster, squid = species(report, 836033), species(report, 342067)
+        self.assertEqual((oyster["mcui_basis"], oyster["national_assessment"]["label"]), ("national", "국가 평가"))
+        self.assertEqual(oyster["conservation_trace"]["iucn_state"], "not_in_red_list")   # IUCN trace untouched
+        self.assertEqual(squid["mcui_basis"], "iucn")                                     # IUCN number wins when present
+        self.assertIsNone(squid["national_assessment"])
+        evidence = copy.deepcopy(self.evidence)
+        evidence["national_red_list"] = [r for r in evidence["national_red_list"] if r["aphia_id"] != 836033]
+        evidence["legal_protection_facts"] = [{"aphia_id": 836033, "designation": "synthetic legal designation"}]
+        oyster = species(self.run_build(evidence), 836033)
+        self.assertIsNone(oyster["scores"]["MCUI"])                                      # a designation is a fact, never a score
+        self.assertEqual(oyster["national_assessment"]["legal_protection_facts"][0]["designation"], "synthetic legal designation")
+
+    def test_peptide_without_origin_or_from_hydrolysate_is_rejected(self):
+        for change, message in (({"origin_aphia_id": None}, "origin species required"),
+                                ({"material_kind": "hydrolysate"}, "hydrolysates")):
+            evidence = copy.deepcopy(self.evidence)
+            evidence["peptide_bioactivity"][0].update(change)
+            with self.assertRaisesRegex(ValueError, message):
+                self.run_build(evidence)
 
 
 if __name__ == "__main__":

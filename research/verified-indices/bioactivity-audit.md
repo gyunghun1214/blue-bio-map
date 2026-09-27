@@ -51,3 +51,6 @@ The [official ChEMBL pChEMBL rules](https://chembl.gitbook.io/chembl-interface-d
 | Original journal articles | Varies by article and publisher. The linked MDPI research articles identify **CC BY 4.0** on their pages; other full-text reuse was not presumed. | Cite DOI/PMID/PMCID and summarize limited measured facts. Do not store or republish article PDFs or full tables. |
 
 For reruns, freeze the candidate profile snapshot, ChEMBL release, accessed date, DOI/PMID and PUG REST CID queries. Recheck exact structural identity and primary assay tables before upgrading a partial row to `reviewed`. No stable MBPI cohort, species-level percentile or aggregate is emitted from these records. This is an evidence-gap finding for the **sources checked as of 2026-09-25**, not a claim that the species lack bioactivity or that no further primary studies exist.
+
+
+**조사 후보 22종 (2026-09-26):** 같은 규칙으로 조사한 결과와 보류 사유는 [candidate-evidence-2026-09-26.md](candidate-evidence-2026-09-26.md)에 있다.

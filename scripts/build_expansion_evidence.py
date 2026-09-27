@@ -8,13 +8,6 @@ gbif = {s["aphiaID"]: s for s in json.loads((ROOT / "tmp/expansion-30/gbif/summa
 iucn = {s["aphiaID"]: s for s in json.loads((ROOT / "tmp/expansion-30/iucn-audit.json").read_text())["species"]}
 rda = json.loads((ROOT / "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json").read_text())
 food = {r["code"]: r for r in rda["rows"]}
-released_path = ROOT / "dist/expansion-public-cells.json"
-released = json.loads(released_path.read_text()) if released_path.exists() else None
-published_historical = bool(released and released.get("schemaVersion") == "candidate-public-cells-1"
-                            and len(released.get("species", [])) == 1
-                            and released["species"][0].get("aphiaID") == 504357
-                            and len(released["species"][0].get("cells", [])) == 1
-                            and released["species"][0]["cells"][0].get("records") == 1)
 # Candidate food names are NOT verified species links. No food row is fed into a score.
 food_candidates = {
     377084: "L0050000000a", 236157: "L0040000000a", 145086: "L0230000000a",
@@ -64,9 +57,6 @@ for s in catalog:
                                "recordLicenses": d["licenses"], "retrieved": d["retrieved"],
                                "preliminaryEligible": d["eligible"]}
                               for d in g.get("datasets", [])],
-                 "publicCellStatus": "one_historical_4_degree_cell_published_remaining_withheld" if key == 504357 and published_historical else "withheld_pending_sensitivity_source_and_duplicate_review",
-                 "publicCellCount": 1 if key == 504357 and published_historical else 0,
-                 "publicRecordCount": 1 if key == 504357 and published_historical else 0,
                  "limitations": "GBIF 검색 응답만 검토. OBIS 종별 조회 미실행(API 시간 초과). 위치/연도/원기록 ID는 공개하지 않음."},
         "iucn": {"status": c["status"], "record": c.get("record"),
                  "checklistRecordUrl": c.get("checklist_record_url"),
@@ -82,12 +72,11 @@ for s in catalog:
                       "source": "RDA 국가표준식품성분 DB 10.4 (2026), 공개 스냅샷 2026-09-25; 공공누리 제1유형"},
         "bioactivity": {"status": "not_reviewed", "note": "기원종·화합물 구조·정량 assay·원논문 연결 미검수"},
         "scores": {"MFPI": None, "MBPI": None, "MCUI": None, "BBVI": None},
-        "sensitivity": "one_historical_4_degree_cell_reviewed_remaining_withheld" if key == 504357 and published_historical else "needs_review",
     })
 assert len(out) == 22 and len({s["aphiaID"] for s in out}) == 22
 (ROOT / "dist/expansion-evidence.json").write_text(json.dumps({
     "schemaVersion": "expansion-evidence-1", "retrievedOn": "2026-09-25",
-    "scope": "Candidate research with one independently reviewed historical 4-degree public cell. No original coordinates, occurrence IDs, or scored indicators.",
+    "scope": "Dated candidate audits (GBIF test query, OBIS counts, IUCN checklist, RDA food-name candidates). Public occurrence cells and their record review are in expansion-public-cells.json. No original coordinates, occurrence IDs, or scored indicators.",
     "sourceNotes": {"gbif": "GBIF API search; individual record licence and dataset licence retained separately",
                     "obis": "API endpoint timed out during representative query; 22 per-species queries not attempted",
                     "iucn": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",

@@ -32,7 +32,7 @@ def publish(report, evidence):
         species["obis"] = {key: source.get(key) for key in (
             "status", "reportedTotal", "queriedAt", "taxonomyUrl", "queryUrl", "scope", "limitations", "errorType")}
         species["gbif"]["limitations"] = "GBIF 개별 기록 잠정 필터만 검토. 위치/연도/원기록 ID는 공개하지 않음. OBIS 조회 건수는 별개이며 합산하지 않음."
-    evidence["sourceNotes"]["obis"] = "OBIS count-only queries; species-level records, rights, duplicates and precise positions not reviewed; no cells released"
+    evidence["sourceNotes"]["obis"] = "OBIS count-only queries; this audit reviews no records and releases no cells (record review and cells: expansion-public-cells.json)"
     evidence["obisAuditDate"] = report["generatedAt"][:10]
     return evidence
 

@@ -382,15 +382,9 @@
       "aphia_id": 377084,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "food_row_not_species_specific"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -411,8 +405,10 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Saccharina+japonica&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=377084",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
@@ -420,14 +416,8 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MCUI": "not_in_red_list",
+        "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
@@ -443,8 +433,10 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ecklonia+cava&limit=100",
+        "https://doi.org/10.1016/j.bmc.2013.04.026",
         "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
         "https://pubchem.ncbi.nlm.nih.gov/",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986"
       ]
     },
@@ -452,15 +444,9 @@
       "aphia_id": 234476,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -481,6 +467,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ulva+prolifera&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476"
       ]
     },
@@ -488,15 +475,9 @@
       "aphia_id": 494853,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -517,6 +498,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sargassum+horneri&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=494853"
       ]
     },
@@ -524,15 +506,9 @@
       "aphia_id": 236157,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "food_row_not_species_specific"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -553,23 +529,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gracilaria+vermiculophylla&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 145086,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -590,22 +562,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Codium+fragile&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=145086",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 231750,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -622,27 +591,24 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 52.1
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
+        "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 397082,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": null,
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -658,27 +624,25 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 80.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/258065905",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/78764186/78772433",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=397082",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 393716,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -695,27 +659,24 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 56.3
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Mizuhopecten+yessoensis&limit=100",
+        "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_yessoscallop.htm",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=393716",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 836041,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -736,6 +697,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Magallana+sikamea&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836041"
       ]
     },
@@ -743,15 +705,9 @@
       "aphia_id": 504357,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -772,23 +728,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Anadara+broughtonii&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=504357",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 413600,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -809,6 +761,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sinonovacula+constricta&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a"
       ]
@@ -817,14 +770,9 @@
       "aphia_id": 127022,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": null,
+        "MFPI": "food_row_not_species_specific"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -840,28 +788,25 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176707342",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/170306/170083106",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=127022",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 219984,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": null,
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -877,27 +822,25 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176690205",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/98969433/143841777",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=219984",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 281273,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": null,
+        "MFPI": "aquaculture_method_unverified"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -913,27 +856,25 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176748719",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/49182929/49229050",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=281273",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 275816,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "aquaculture_method_unverified"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -954,22 +895,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Paralichthys+olivaceus&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=275816",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 274849,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -986,27 +924,24 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 42.9
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
+        "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=274849",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 276651,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": null,
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1022,27 +957,27 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
-        "MFPI": null
+        "MCUI": 10.0,
+        "MFPI": 56.3
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176745256",
+        "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japaneseamberjack.htm",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/20435860/115383171",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=276651",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a"
+        "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 254538,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1063,22 +998,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=254538",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 1061762,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "aquaculture_method_unverified"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1099,23 +1031,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1061762",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 534443,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "not_in_red_list",
+        "MFPI": "food_row_not_species_specific"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1136,23 +1064,19 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
+        "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
     {
       "aphia_id": 1666974,
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-        "MCUI": "original_assessment_not_found_or_not_reviewed",
-        "MFPI": [
-          "complete_raw_nutrition",
-          "species_link",
-          "edible_fraction",
-          "aquaculture",
-          "fixed_comparable_cohort"
-        ]
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "MCUI": "category_not_numeric",
+        "MFPI": "component_missing_in_source"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1173,8 +1097,11 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Acanthosepion+esculentum&limit=100",
+        "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
+        "https://www.iucnredlist.org/species/162666/940677",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1666974",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     }
   ]

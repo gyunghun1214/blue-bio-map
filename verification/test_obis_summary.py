@@ -23,7 +23,7 @@ class OBISSummaryTests(unittest.TestCase):
         result = publish({"schemaVersion": "obis-count-audit-1", "generatedAt": "2026-09-26T00:00:00Z",
                           "species": self.rows}, self.evidence)
         for old, new in zip(before["species"], result["species"]):
-            self.assertEqual(new["gbif"]["publicCellCount"], old["gbif"]["publicCellCount"])
+            self.assertEqual(set(new), set(old))  # no cell or score field appears
             self.assertEqual(new["scores"], old["scores"])
             self.assertEqual(new["obis"]["reportedTotal"], 15)
             self.assertNotIn("results", new["obis"])
