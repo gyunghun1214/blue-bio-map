@@ -676,6 +676,12 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(not set(extra["sources"]) & set(evidence["sources"]), "supplement redefines a source")
         evidence = {**evidence, **{k: v for k, v in extra.items() if k not in ("schema_version", "snapshot_date", "sources")},
                     "sources": {**evidence["sources"], **extra["sources"]}}
+    for path in cfg.get("peptide_supplements", []):  # research scenario configs only: extra reviewed peptide rows, same rules
+        extra = read(ROOT / path)
+        require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide supplement snapshot differs from evidence")
+        require(not set(extra["sources"]) & set(evidence["sources"]), "peptide supplement redefines a source")
+        evidence = {**evidence, "peptide_bioactivity": evidence.get("peptide_bioactivity", []) + extra["peptide_bioactivity"],
+                    "sources": {**evidence["sources"], **extra["sources"]}}
     if cfg.get("national_fact_supplement"):  # only the national red-list keys and their sources, not the whole v3 supplement
         extra = read(ROOT / cfg["national_fact_supplement"])
         require(extra.get("snapshot_date") == evidence["snapshot_date"], "national fact snapshot differs from evidence")

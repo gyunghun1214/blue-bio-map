@@ -407,6 +407,53 @@ class VerifiedPilot3Tests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, message):
                 self.run_build(evidence)
 
+    def test_oyster_peptide_rows_outside_the_rules_are_rejected(self):
+        aeylceac = next(i for i, r in enumerate(self.evidence["peptide_bioactivity"]) if r["sequence"] == "AEYLCEAC")
+        for change, message in (({"material_kind": "extract"}, "hydrolysates"),
+                                ({"material_kind": "fraction"}, "hydrolysates"),
+                                ({"substrate": "FAPGG"}, "incomplete peptide"),          # non-HHL substrate
+                                ({"value_in_text": False}, "incomplete peptide"),        # figure-only IC50
+                                ({"unit": "mg/mL"}, "incomplete peptide"),               # unit not converted to µM
+                                ({"unit": "mM"}, "incomplete peptide"),
+                                ({"target": "Escherichia coli", "endpoint": "MIC"}, "incomplete peptide")):  # test organism
+            evidence = copy.deepcopy(self.evidence)
+            evidence["peptide_bioactivity"][aeylceac].update(change)
+            with self.assertRaisesRegex(ValueError, message):
+                self.run_build(evidence)
+        evidence = copy.deepcopy(self.evidence)   # another oyster species (Magallana rivularis) never scores for 참굴
+        evidence["peptide_bioactivity"][aeylceac].update({"origin_aphia_id": 836040, "origin_scientific_name": "Magallana rivularis"})
+        self.assertIsNone(species(self.run_build(evidence), 836033)["scores"]["MBPI"])
+
+
+class OysterLqpResearchScenarioTests(unittest.TestCase):
+    """Research-only config: v3 rules plus the Do 2012 LQP row. Not public (decisions A/B/C pending)."""
+    CONFIG = ROOT / "config" / "verified-indices-v3-oyster-lqp.json"
+    OUT = ROOT / "research" / "verified-indices" / "assessments-v3-oyster-lqp.json"
+
+    def test_only_oyster_changes_and_stays_out_of_bbvi_and_matrix(self):
+        report = build(*load_inputs(config=self.CONFIG))
+        self.assertEqual(self.OUT.read_text(encoding="utf-8"), render(report))
+        v3 = build(*load_inputs(config=VerifiedPilot3Tests.V3))
+        others = lambda r: {s["aphia_id"]: json.dumps(s, sort_keys=True).replace(r["method_version"], "")
+                            for s in r["species"] + r["candidate_species"] if s["aphia_id"] != 836033}
+        self.assertEqual(others(report), others(v3))   # the 29 other species are identical
+        oyster = species(report, 836033)
+        self.assertEqual([(i["peptide_sequence"], i["percentile"], i["evidence_factor"]) for i in oyster["bioactivity_trace"]],
+                         [("AEYLCEAC", 1.42, 0.75), ("LQP", 96.31, 0.75)])
+        self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"], oyster["withheld_reasons"]["BBVI"]),
+                         (72.2, None, "mbpi_single_source"))   # two peptides from two papers are not a reproduction
+        self.assertEqual(oyster["mbpi_label"], "참고값(단일 논문)")
+        self.assertEqual(oyster["sensitivity"]["median_compound_sensitivity"], 36.6)
+        self.assertEqual(species(v3, 836033)["scores"]["MBPI"], 1.1)
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from build_matrix_readiness import build as matrix
+        dist = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
+        rows = matrix(report, dist("candidate-catalog.json"), dist("expansion-evidence.json"))["species"]
+        self.assertFalse(next(r for r in rows if r["aphia_id"] == 836033)["matrix_eligible"])
+        public = species(build(*load_inputs()), 836033)   # public v2.1 keeps the withhold code
+        self.assertEqual((public["scores"]["MBPI"], public["withheld_reasons"]["MBPI"]),
+                         (None, "compound_origin_assay_chain_or_fixed_cohort_missing"))
+
 
 if __name__ == "__main__":
     unittest.main()
