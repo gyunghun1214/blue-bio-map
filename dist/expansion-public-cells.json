@@ -1,47 +1,3033 @@
 {
-  "schemaVersion": "candidate-public-cells-1",
-  "reviewedOn": "2026-09-25",
-  "scope": "One 1930 preserved specimen, not current distribution, abundance or regional value.",
-  "species": [
-    {
-      "aphiaID": 504357,
-      "name": "Anadara broughtonii",
-      "sensitivity": "harvested shellfish; release only at 4-degree resolution",
-      "taxonomySource": "https://www.marinespecies.org/aphia.php?p=taxlist&tName=Scapharca+broughtoni",
-      "review": "Original Scapharca name linked by WoRMS; 1930 archived marine specimen with 6065 m uncertainty. Single CAS specimen and CC0 at record and dataset level; no other 1930 match in GBIF query. Historical evidence only.",
-      "cells": [
-        {
-          "lat0": 32,
-          "lon0": 128,
-          "sizeDeg": 4,
-          "resolutionM": 360000,
-          "period": "1930–1930",
-          "yearStart": 1930,
-          "yearEnd": 1930,
-          "records": 1,
-          "sites": 1,
-          "uncertaintyMissing": 0,
-          "seaAreas": [
-            "해역명 미확인"
-          ],
-          "countries": [
-            "Japan"
-          ],
-          "citations": [
-            {
-              "title": "CAS Invertebrate Zoology (IZ)",
-              "url": "https://www.gbif.org/dataset/44bcde48-ac71-46f2-bf73-24fc3c008b6c",
-              "doi": "10.15468/tiac99",
-              "licenses": [
-                "CC0 1.0"
-              ]
-            }
-          ],
-          "licenses": [
-            "CC0 1.0"
-          ]
-        }
-      ]
+ "schemaVersion": "candidate-public-cells-2",
+ "reviewedOn": "2026-09-27",
+ "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27): scripts/build_expansion_cells.py",
+ "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not current distribution, abundance, stock size or regional value. Pre-2000 records are a separate historical period.",
+ "queryBox": "124–132°E · 33–38.7°N",
+ "species": [
+  {
+   "aphiaID": 377084,
+   "name": "Saccharina japonica",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 407,
+     "accepted": 0,
+     "excluded": {
+      "taxon_not_verified": 1,
+      "license_not_open": 388,
+      "no_year": 18
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5422368&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 398,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 398
+     },
+     "datasets": 3,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=377084&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
     }
-  ]
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 371986,
+   "name": "Ecklonia cava",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 16,
+    "historical": 16,
+    "outsideKoreanEEZ": 16,
+    "names": [
+     "Ecklonia cava",
+     "Ecklonia kurome"
+    ],
+    "gbif": {
+     "queried": 890,
+     "accepted": 16,
+     "excluded": {
+      "taxon_not_verified": 132,
+      "license_not_open": 473,
+      "no_year": 267,
+      "on_land_obis_rule": 2
+     },
+     "genusFallback": true,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=3196094&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 746,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 478,
+      "multi_year_range": 267,
+      "on_land_obis_rule": 1
+     },
+     "datasets": 5,
+     "openDatasets": 2,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=371986&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1988,
+     "yearEnd": 1988,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Kuroshio Current"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Kelp Dataset",
+       "url": "https://www.gbif.org/dataset/4230db27-6316-44f7-96c9-165972014686",
+       "doi": "10.15468/xkbfay",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1969,
+     "yearEnd": 1969,
+     "records": 15,
+     "sites": 5,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Kelp Dataset",
+       "url": "https://www.gbif.org/dataset/4230db27-6316-44f7-96c9-165972014686",
+       "doi": "10.15468/xkbfay",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 234476,
+   "name": "Ulva prolifera",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 245,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 223,
+      "no_year": 21,
+      "on_land_obis_rule": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5273366&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 247,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 247
+     },
+     "datasets": 3,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=234476&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 494853,
+   "name": "Sargassum horneri",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 14,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Sargassum horneri (Turner) C.Agardh, 1820"
+    ],
+    "gbif": {
+     "queried": 1222,
+     "accepted": 14,
+     "excluded": {
+      "license_not_open": 947,
+      "no_year": 249,
+      "on_land_obis_rule": 2,
+      "duplicate": 10
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=3196570&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1136,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 959,
+      "multi_year_range": 177
+     },
+     "datasets": 5,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=494853&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2009,
+     "yearEnd": 2009,
+     "records": 3,
+     "sites": 2,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_biodiversity_new_contents",
+       "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
+       "doi": "10.15468/6qs9p2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_nsmk_smpl_sw",
+       "url": "https://www.gbif.org/dataset/c5b99b0c-dcec-43a0-b7aa-d9131aeb9f21",
+       "doi": "10.15468/hge4mk",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 7,
+     "sites": 1,
+     "uncertaintyMissing": 7,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_nsmk_smpl_sw",
+       "url": "https://www.gbif.org/dataset/c5b99b0c-dcec-43a0-b7aa-d9131aeb9f21",
+       "doi": "10.15468/hge4mk",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 38,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 86511,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_nsmk_smpl_sw",
+       "url": "https://www.gbif.org/dataset/c5b99b0c-dcec-43a0-b7aa-d9131aeb9f21",
+       "doi": "10.15468/hge4mk",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 236157,
+   "name": "Gracilaria vermiculophylla",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 16,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Agarophyton vermiculophyllum (Ohmi) Gurgel, J.N.Norris & Fredericq"
+    ],
+    "gbif": {
+     "queried": 1008,
+     "accepted": 16,
+     "excluded": {
+      "license_not_open": 876,
+      "no_year": 93,
+      "on_land_obis_rule": 20,
+      "duplicate": 3
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5278964&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 861,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 844,
+      "multi_year_range": 17
+     },
+     "datasets": 5,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=236157&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2010,
+     "yearEnd": 2012,
+     "records": 7,
+     "sites": 2,
+     "uncertaintyMissing": 7,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_biodiversity_new_contents",
+       "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
+       "doi": "10.15468/6qs9p2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 6,
+     "sites": 2,
+     "uncertaintyMissing": 6,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_biodiversity_new_contents",
+       "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
+       "doi": "10.15468/6qs9p2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      },
+      {
+       "title": "2020_nsmk_smpl_sw",
+       "url": "https://www.gbif.org/dataset/c5b99b0c-dcec-43a0-b7aa-d9131aeb9f21",
+       "doi": "10.15468/hge4mk",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2021_kbif_joint_survey_seaweed_specimen_information_nsmk_46",
+       "url": "https://www.gbif.org/dataset/bd91e929-79d7-4b4b-8ad9-aad6ed5f7cf2",
+       "doi": "10.15468/2hyes4",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_biodiversity_new_contents",
+       "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
+       "doi": "10.15468/6qs9p2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 145086,
+   "name": "Codium fragile",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 13,
+    "historical": 1,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Codium fragile (Suringar) Har."
+    ],
+    "gbif": {
+     "queried": 1299,
+     "accepted": 13,
+     "excluded": {
+      "license_not_open": 1223,
+      "no_year": 43,
+      "uncertainty_over_10km": 2,
+      "on_land_obis_rule": 11,
+      "duplicate": 7
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5272096&taxon_key=5272101&taxon_key=5272105&taxon_key=5272106&taxon_key=7230558&taxon_key=12171760&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1238,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 1226,
+      "multi_year_range": 12
+     },
+     "datasets": 6,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=145086&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2009,
+     "yearEnd": 2015,
+     "records": 5,
+     "sites": 3,
+     "uncertaintyMissing": 5,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_biodiversity_new_contents",
+       "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
+       "doi": "10.15468/6qs9p2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1953,
+     "yearEnd": 1953,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Duke University Herbarium Algae Collection",
+       "url": "https://www.gbif.org/dataset/31b346f9-1a91-4688-af40-5a50a261c572",
+       "doi": "10.15468/uc7zzz",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 38,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 86511,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 7,
+     "sites": 1,
+     "uncertaintyMissing": 7,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2020_nsmk_smpl_sw",
+       "url": "https://www.gbif.org/dataset/c5b99b0c-dcec-43a0-b7aa-d9131aeb9f21",
+       "doi": "10.15468/hge4mk",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 231750,
+   "name": "Ruditapes philippinarum",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 152,
+    "historical": 5,
+    "outsideKoreanEEZ": 59,
+    "names": [
+     "Ruditapes philippinarum",
+     "Ruditapes philippinarum (A.Adams & Reeve, 1850)"
+    ],
+    "gbif": {
+     "queried": 839,
+     "accepted": 103,
+     "excluded": {
+      "taxon_not_verified": 6,
+      "absent_or_dropped": 79,
+      "fossil_specimen": 2,
+      "license_not_open": 590,
+      "no_year": 14,
+      "on_land_obis_rule": 45
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4372686&taxon_key=12258568&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 676,
+     "accepted": 49,
+     "excluded": {
+      "fossil_specimen": 2,
+      "license_not_open": 545,
+      "on_land_obis_rule": 13,
+      "duplicate": 67
+     },
+     "datasets": 8,
+     "openDatasets": 2,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=231750&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2008,
+     "yearEnd": 2014,
+     "records": 59,
+     "sites": 9,
+     "uncertaintyMissing": 59,
+     "seaAreas": [
+      "Kuroshio Current"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ",
+       "url": "https://www.gbif.org/dataset/a6d84a4e-d2c1-4cf1-924f-58d67f592a32",
+       "doi": "10.15468/bywe7w",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2014,
+     "records": 31,
+     "sites": 20,
+     "uncertaintyMissing": 31,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF",
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "Plankton&BenthosResearch",
+       "url": "https://obis.org/dataset/9db24ef5-0c19-4a5b-82a7-be3a31dec4b8",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "Plankton&BenthosResearch",
+       "url": "https://www.gbif.org/dataset/7ec20c70-32e9-4548-86f8-3c915bffefdf",
+       "doi": "10.15468/f55mxn",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "2013_nsmk_smpl_ms",
+       "url": "https://www.gbif.org/dataset/f1b4e02a-86c1-47c1-a24b-6e74fa3d70c2",
+       "doi": "10.15468/4gu58d",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0",
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2025,
+     "records": 37,
+     "sites": 32,
+     "uncertaintyMissing": 36,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF",
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "Plankton&BenthosResearch",
+       "url": "https://obis.org/dataset/9db24ef5-0c19-4a5b-82a7-be3a31dec4b8",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "Plankton&BenthosResearch",
+       "url": "https://www.gbif.org/dataset/7ec20c70-32e9-4548-86f8-3c915bffefdf",
+       "doi": "10.15468/f55mxn",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1993,
+     "yearEnd": 1993,
+     "records": 5,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Malacological Collection of the Kaunas Tadas Ivanauskas Museum of Zoology",
+       "url": "https://www.gbif.org/dataset/2b74f1d8-d1c0-4f88-a869-18507c65cf59",
+       "doi": "10.15468/x38fh3",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2006,
+     "yearEnd": 2015,
+     "records": 5,
+     "sites": 5,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2025,
+     "records": 10,
+     "sites": 6,
+     "uncertaintyMissing": 8,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "01_2025_kbif_joint_survey_marin_specimen_information_mabik_130",
+       "url": "https://www.gbif.org/dataset/131788b2-8edd-49c1-830b-1b646ae8835f",
+       "doi": "10.15468/akwquf",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      },
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0",
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 124,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2025,
+     "yearEnd": 2025,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 397082,
+   "name": "Haliotis discus",
+   "sizeDeg": 4,
+   "sensitivity": "IUCN 체크리스트 EN · 채취 압력이 큰 전복: 4°로만 공개",
+   "review": {
+    "status": "cells_published",
+    "accepted": 1,
+    "historical": 1,
+    "outsideKoreanEEZ": 1,
+    "names": [
+     "Haliotis discus Reeve, 1846"
+    ],
+    "gbif": {
+     "queried": 129,
+     "accepted": 1,
+     "excluded": {
+      "license_not_open": 120,
+      "no_year": 2,
+      "uncertainty_over_10km": 2,
+      "on_land_obis_rule": 4
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4357763&taxon_key=4357764&taxon_key=5859989&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 121,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 119,
+      "uncertainty_over_10km": 2
+     },
+     "datasets": 3,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=397082&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 32,
+     "lon0": 128,
+     "sizeDeg": 4,
+     "resolutionM": 360239,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1998,
+     "yearEnd": 1998,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Gunma Museum of Natural History, Molluscan Specimen",
+       "url": "https://www.gbif.org/dataset/95f883c4-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/n1nywb",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 393716,
+   "name": "Mizuhopecten yessoensis",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 12,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Mizuhopecten yessoensis (Jay, 1857)",
+     "Patinopecten yessoensis (Jay, 1857)"
+    ],
+    "gbif": {
+     "queried": 79,
+     "accepted": 12,
+     "excluded": {
+      "license_not_open": 67
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4373871&taxon_key=11602916&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 66,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 66
+     },
+     "datasets": 2,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=393716&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2013,
+     "yearEnd": 2013,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Natural History Museum Rotterdam - Specimens",
+       "url": "https://www.gbif.org/dataset/a307e4d7-1de2-4adc-95d5-a0a8d5f57236",
+       "doi": "10.15468/kwqaay",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2016,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2014,
+     "yearEnd": 2014,
+     "records": 10,
+     "sites": 1,
+     "uncertaintyMissing": 10,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2015_nsmk_smpl_ms",
+       "url": "https://www.gbif.org/dataset/f4004b04-bdcb-467f-9bbf-878b736a72ce",
+       "doi": "10.15468/szqjn2",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 836041,
+   "name": "Magallana sikamea",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 5,
+     "accepted": 0,
+     "excluded": {
+      "on_land_obis_rule": 5
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=8016550&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 0,
+     "accepted": 0,
+     "excluded": {},
+     "datasets": 0,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=836041&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 504357,
+   "name": "Anadara broughtonii",
+   "sizeDeg": 4,
+   "sensitivity": "채취 대상 패류: 2026-09-25 4° 공개 결정 유지",
+   "review": {
+    "status": "cells_published",
+    "accepted": 31,
+    "historical": 1,
+    "outsideKoreanEEZ": 1,
+    "names": [
+     "Anadara broughtonii (Schrenck, 1867)",
+     "Scapharca broughtoni (Schrenck, 1867)"
+    ],
+    "gbif": {
+     "queried": 224,
+     "accepted": 31,
+     "excluded": {
+      "license_not_open": 190,
+      "on_land_obis_rule": 3
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5855397&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 191,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 190,
+      "duplicate": 1
+     },
+     "datasets": 4,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=504357&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 32,
+     "lon0": 124,
+     "sizeDeg": 4,
+     "resolutionM": 360239,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 28,
+     "sites": 1,
+     "uncertaintyMissing": 28,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2023 ms_specimen_NSMK_228",
+       "url": "https://www.gbif.org/dataset/8b83fe34-18a2-4bd6-b9d0-cc6ef6f916da",
+       "doi": "10.15468/j49jzd",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      },
+      {
+       "title": "2021_nsmk_biodiversity_ms_748",
+       "url": "https://www.gbif.org/dataset/8e2be0ac-3b39-45c8-9d0b-33b3dd69a09f",
+       "doi": "10.15468/b5pa83",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 32,
+     "lon0": 128,
+     "sizeDeg": 4,
+     "resolutionM": 360239,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1930,
+     "yearEnd": 1930,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "CAS Invertebrate Zoology (IZ)",
+       "url": "https://www.gbif.org/dataset/44bcde48-ac71-46f2-bf73-24fc3c008b6c",
+       "doi": "10.15468/tiac99",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 124,
+     "sizeDeg": 4,
+     "resolutionM": 341104,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2016,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 128,
+     "sizeDeg": 4,
+     "resolutionM": 341104,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2013,
+     "yearEnd": 2013,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Natural History Museum Rotterdam - Specimens",
+       "url": "https://www.gbif.org/dataset/a307e4d7-1de2-4adc-95d5-a0a8d5f57236",
+       "doi": "10.15468/kwqaay",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 413600,
+   "name": "Sinonovacula constricta",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 192,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 168,
+      "no_year": 1,
+      "on_land_obis_rule": 23
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5855549&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 168,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 168
+     },
+     "datasets": 3,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=413600&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 127022,
+   "name": "Scomber japonicus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 23,
+    "historical": 1,
+    "outsideKoreanEEZ": 23,
+    "names": [
+     "Scomber japonicus",
+     "Scomber japonicus Houttuyn, 1782"
+    ],
+    "gbif": {
+     "queried": 366,
+     "accepted": 22,
+     "excluded": {
+      "license_not_open": 339,
+      "no_year": 1,
+      "market_purchase_point": 1,
+      "on_land_obis_rule": 3
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=7599552&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 408,
+     "accepted": 1,
+     "excluded": {
+      "license_not_open": 404,
+      "no_year": 1,
+      "locality_contradicts_coordinates": 1,
+      "duplicate": 1
+     },
+     "datasets": 8,
+     "openDatasets": 3,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=127022&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2014,
+     "yearEnd": 2014,
+     "records": 4,
+     "sites": 1,
+     "uncertaintyMissing": 4,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Occurrence records of southern African fish biodiversity",
+       "url": "https://www.gbif.org/dataset/1aaec653-c71c-4695-9b6e-0e26214dd817",
+       "doi": "10.15468/pv7vds",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 3,
+     "sites": 1,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2023,
+     "yearEnd": 2023,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1991,
+     "yearEnd": 1991,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of National Museum of Nature and Science",
+       "url": "https://obis.org/dataset/340cf56f-f494-48c1-9f13-dd1fb3bfbdf2",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2016,
+     "yearEnd": 2016,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2015,
+     "yearEnd": 2015,
+     "records": 12,
+     "sites": 3,
+     "uncertaintyMissing": 12,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 219984,
+   "name": "Engraulis japonicus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 15,
+    "historical": 9,
+    "outsideKoreanEEZ": 3,
+    "names": [
+     "Engraulis japonicus",
+     "Engraulis japonicus Temminck & Schlegel, 1846"
+    ],
+    "gbif": {
+     "queried": 469,
+     "accepted": 6,
+     "excluded": {
+      "license_not_open": 451,
+      "no_year": 2,
+      "market_purchase_point": 2,
+      "on_land_obis_rule": 8
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2413997&taxon_key=8997148&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 619,
+     "accepted": 9,
+     "excluded": {
+      "license_not_open": 609,
+      "on_land_obis_rule": 1
+     },
+     "datasets": 7,
+     "openDatasets": 2,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=219984&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2024,
+     "yearEnd": 2024,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2024_Recording_Local_Biodiversity_Fish_observation_NSMK_652",
+       "url": "https://www.gbif.org/dataset/bee4a65e-e1cb-4b60-89e8-0c1c9d9f36ee",
+       "doi": "10.15468/xkchrs",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2015,
+     "yearEnd": 2015,
+     "records": 3,
+     "sites": 1,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1960,
+     "yearEnd": 1960,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "World Ocean Database 2009",
+       "url": "https://obis.org/dataset/80479e14-2730-436d-acaa-b63bdc7dd06f",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 38,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 86511,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2013,
+     "yearEnd": 2013,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "niek_2022",
+       "url": "https://www.gbif.org/dataset/1e09d985-8f58-4a34-ab86-17e55f203c8a",
+       "doi": "10.15468/9axxge",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 281273,
+   "name": "Larimichthys polyactis",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 223,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 216,
+      "no_year": 6,
+      "market_purchase_point": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2400171&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 236,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 236
+     },
+     "datasets": 4,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=281273&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 275816,
+   "name": "Paralichthys olivaceus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 6,
+    "historical": 4,
+    "outsideKoreanEEZ": 6,
+    "names": [
+     "Paralichthys olivaceus",
+     "Paralichthys olivaceus (Temminck & Schlegel, 1846)"
+    ],
+    "gbif": {
+     "queried": 223,
+     "accepted": 2,
+     "excluded": {
+      "taxon_not_verified": 2,
+      "license_not_open": 214,
+      "uncertainty_over_10km": 1,
+      "market_purchase_point": 3,
+      "on_land_obis_rule": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2408877&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 261,
+     "accepted": 4,
+     "excluded": {
+      "license_not_open": 255,
+      "on_land_obis_rule": 2
+     },
+     "datasets": 6,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=275816&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2015,
+     "yearEnd": 2015,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Kuroshio Current"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1968,
+     "yearEnd": 1968,
+     "records": 4,
+     "sites": 2,
+     "uncertaintyMissing": 4,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of National Museum of Nature and Science",
+       "url": "https://obis.org/dataset/340cf56f-f494-48c1-9f13-dd1fb3bfbdf2",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2016,
+     "yearEnd": 2016,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 274849,
+   "name": "Sebastes schlegelii",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 9,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Sebastes schlegelii Hilgendorf, 1880"
+    ],
+    "gbif": {
+     "queried": 324,
+     "accepted": 9,
+     "excluded": {
+      "taxon_not_verified": 1,
+      "license_not_open": 307,
+      "no_year": 2,
+      "market_purchase_point": 1,
+      "on_land_obis_rule": 4
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2335435&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 314,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 314
+     },
+     "datasets": 4,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=274849&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "niek_2022",
+       "url": "https://www.gbif.org/dataset/1e09d985-8f58-4a34-ab86-17e55f203c8a",
+       "doi": "10.15468/9axxge",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2018,
+     "yearEnd": 2026,
+     "records": 6,
+     "sites": 2,
+     "uncertaintyMissing": 5,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "2018_nsmk_biodiversity_pi",
+       "url": "https://www.gbif.org/dataset/f1fc52ac-895e-47f2-9361-d033c6479f7c",
+       "doi": "10.15468/sdyqyu",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0",
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2024,
+     "yearEnd": 2024,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2024_Recording_Local_Biodiversity_Fish_observation_NSMK_652",
+       "url": "https://www.gbif.org/dataset/bee4a65e-e1cb-4b60-89e8-0c1c9d9f36ee",
+       "doi": "10.15468/xkchrs",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 276651,
+   "name": "Seriola quinqueradiata",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 5,
+    "historical": 0,
+    "outsideKoreanEEZ": 5,
+    "names": [
+     "Seriola quinqueradiata Temminck & Schlegel, 1845"
+    ],
+    "gbif": {
+     "queried": 225,
+     "accepted": 5,
+     "excluded": {
+      "taxon_not_verified": 1,
+      "license_not_open": 215,
+      "market_purchase_point": 3,
+      "on_land_obis_rule": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5961724&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 309,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 309
+     },
+     "datasets": 5,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=276651&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 34,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2020,
+     "yearEnd": 2021,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2016,
+     "yearEnd": 2022,
+     "records": 3,
+     "sites": 2,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "Fish collection of the Kagoshima University Museum",
+       "url": "https://www.gbif.org/dataset/80f63c1e-f762-11e1-a439-00145eb45e9a",
+       "doi": "10.15468/vcj3j8",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 254538,
+   "name": "Gadus macrocephalus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 2,
+    "historical": 2,
+    "outsideKoreanEEZ": 1,
+    "names": [
+     "Gadus macrocephalus Tilesius, 1810"
+    ],
+    "gbif": {
+     "queried": 219,
+     "accepted": 2,
+     "excluded": {
+      "taxon_not_verified": 5,
+      "license_not_open": 191,
+      "no_year": 21
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2415853&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 215,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 214,
+      "duplicate": 1
+     },
+     "datasets": 5,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=254538&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 34,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1929,
+     "yearEnd": 1929,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "University of Michigan Museum of Zoology, Division of Fishes",
+       "url": "https://www.gbif.org/dataset/59825263-9f89-43a9-8f22-c22a6a53b8fc",
+       "doi": "10.15468/8cxijb",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1906,
+     "yearEnd": 1906,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "NMNH Extant Specimen Records (USNM, US)",
+       "url": "https://www.gbif.org/dataset/821cc27a-e3bb-4bc5-ac34-89ada245069d",
+       "doi": "10.15468/hnhrg3",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 1061762,
+   "name": "Portunus trituberculatus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 12,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Portunus trituberculatus (Miers, 1876)"
+    ],
+    "gbif": {
+     "queried": 441,
+     "accepted": 12,
+     "excluded": {
+      "taxon_not_verified": 1,
+      "license_not_open": 383,
+      "no_year": 39,
+      "on_land_obis_rule": 6
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5716110&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 460,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 458,
+      "no_year": 2
+     },
+     "datasets": 6,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=1061762&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 36,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2015,
+     "yearEnd": 2015,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "INSDC Sequences",
+       "url": "https://www.gbif.org/dataset/d8cd16ba-bb74-4420-821e-083f2bac17c2",
+       "doi": "10.15468/sbmztx",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2014,
+     "yearEnd": 2014,
+     "records": 10,
+     "sites": 1,
+     "uncertaintyMissing": 10,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2014_nsmk_smpl_ms",
+       "url": "https://www.gbif.org/dataset/3695de2d-9991-4d19-8d04-f2bb36e75e13",
+       "doi": "10.15468/g56ncr",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2025,
+     "yearEnd": 2025,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 0,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "iNaturalist Research-grade Observations",
+       "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+       "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY 4.0"
+     ]
+    }
+   ]
+  },
+  {
+   "aphiaID": 534443,
+   "name": "Octopus sinensis",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 12,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 11,
+      "uncertainty_over_10km": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=6521626&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 11,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 11
+     },
+     "datasets": 1,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=534443&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": []
+  },
+  {
+   "aphiaID": 1666974,
+   "name": "Acanthosepion esculentum",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 10,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Sepia esculenta Hoyle, 1885"
+    ],
+    "gbif": {
+     "queried": 182,
+     "accepted": 10,
+     "excluded": {
+      "license_not_open": 171,
+      "on_land_obis_rule": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=12193375&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 189,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 189
+     },
+     "datasets": 4,
+     "openDatasets": 0,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=1666974&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 10,
+     "sites": 1,
+     "uncertaintyMissing": 10,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "2023 ms_specimen_NSMK_228",
+       "url": "https://www.gbif.org/dataset/8b83fe34-18a2-4bd6-b9d0-cc6ef6f916da",
+       "doi": "10.15468/j49jzd",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ]
+  }
+ ]
 }
