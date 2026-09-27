@@ -311,6 +311,27 @@ class VerifiedPilot21Tests(unittest.TestCase):
         self.assertTrue(all(s["scores"]["BBVI"] is None for s in self.report["species"] + self.report["candidate_species"]))
 
 
+    def test_reference_combination_is_never_a_score(self):
+        rows = self.report["species"] + self.report["candidate_species"]
+        self.assertTrue(all(s["reference_combination"] is None for s in rows), "no species has both MFPI and MBPI today")
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        synthetic_assays(evidence)   # oyster gets a one-paper-per-compound MBPI beside its MFPI
+        report = build(evidence, candidates, config, snapshot, taxonomy)
+        oyster = species(report, 836033)
+        self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"]), (62.5, None))
+        ref = oyster["reference_combination"]
+        self.assertEqual((ref["value"], ref["inputs"], ref["used_for_score"]), (64.0, {"MFPI": 65.5, "MBPI": 62.5}, False))
+        self.assertEqual((ref["label"], ref["formula"], ref["food_weight"]), ("참고 통합값 · 독립 재현 미확인", "w×MFPI+(1−w)×MBPI", 0.5))
+        self.assertEqual(set(ref["sensitivity"]), {"0.25", "0.5", "0.75"})
+        self.assertEqual(ref["mfpi_cohort"], "rda-10.4-raw-marine-animals")
+        for aphia in (250680, 371986):   # a single axis never yields a combination
+            self.assertIsNone(species(report, aphia)["reference_combination"])
+        config = copy.deepcopy(config)
+        config["bbvi"]["minimum_independent_mbpi_dois"] = 1   # once replication is met it is a real BBVI, not a reference
+        oyster = species(build(evidence, candidates, config, snapshot, taxonomy), 836033)
+        self.assertEqual((oyster["scores"]["BBVI"], oyster["reference_combination"]), (64.0, None))
+
+
 class VerifiedPilot3Tests(unittest.TestCase):
     V3 = ROOT / "config" / "verified-indices-v3.json"
 

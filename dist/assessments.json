@@ -103,6 +103,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
@@ -415,6 +416,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
         "BBVI": "산출 보류",
@@ -539,6 +541,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출 보류",
@@ -652,6 +655,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출 보류",
@@ -783,6 +787,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
         "BBVI": "산출 보류",
@@ -923,6 +928,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Codium fragile",
       "score_status": {
         "BBVI": "산출 보류",
@@ -1626,6 +1632,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
@@ -1777,6 +1784,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Haliotis discus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2465,6 +2473,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Mizuhopecten yessoensis",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2582,6 +2591,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Magallana sikamea",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2760,6 +2770,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Anadara broughtonii",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2911,6 +2922,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3052,6 +3064,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3202,6 +3215,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Engraulis japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3352,6 +3366,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3493,6 +3508,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4144,6 +4160,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4818,6 +4835,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4961,6 +4979,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5101,6 +5120,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5233,6 +5253,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Octopus sinensis",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5435,6 +5456,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5619,7 +5641,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged.",
+    "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5802,6 +5824,16 @@
           "result": "reproduced_n2"
         }
       }
+    },
+    "reference_combination": {
+      "formula": "w×MFPI+(1−w)×MBPI",
+      "label": "참고 통합값 · 독립 재현 미확인",
+      "limits": [
+        "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+        "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+        "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+      ],
+      "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking."
     },
     "sensitivity": {
       "mfpi_weights": [
@@ -7073,6 +7105,7 @@
           "verification": "Full text: KNFL identified by MALDI-TOF-TOF in a fraction of wakame protein hydrolysate; the chemically synthesized peptide (98%) has IC50 225.87 ± 2.7 µM in text; HHL substrate, rabbit-lung ACE. The paper reports no AHTPDB match."
         }
       ],
+      "reference_combination": null,
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
         "BBVI": "산출 보류",
@@ -7300,6 +7333,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8031,6 +8065,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8299,6 +8334,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Todarodes pacificus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8494,6 +8530,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8728,6 +8765,7 @@
       "national_assessment": null,
       "national_red_list_fact": null,
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8996,6 +9034,7 @@
         "used_for_score": false
       },
       "peptide_raw_values": [],
+      "reference_combination": null,
       "scientific_name": "Mytilus coruscus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -9795,6 +9834,7 @@
           "verification": "Full text: AEYLCEAC screened from a Crassostrea gigas simulated GI digest; synthesized peptide (>95%) IC50 4.287 mM in text; HHL substrate, rabbit-lung ACE. C. gigas = Magallana gigas (WoRMS 836033)."
         }
       ],
+      "reference_combination": null,
       "scientific_name": "Magallana gigas",
       "score_status": {
         "BBVI": "산출 보류",

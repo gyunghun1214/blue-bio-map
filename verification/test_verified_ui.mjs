@@ -16,7 +16,8 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.renderScores=renderVerifiedIndices;
   globalThis.coverage=evidenceCoverage;
   globalThis.coverageBar=coverageBar;
-  globalThis.nationalMcui=nationalMcui;`,ctx);
+  globalThis.nationalMcui=nationalMcui;
+  globalThis.axisPairs=axisPairsHtml;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -294,4 +295,25 @@ for(const [id,texts] of [[836033,['AEYLCEAC','4.287 mM (4287 µM)','기질 HHL',
 }
 // Peptide partial leads render their sequence and value, not an empty compound row.
 assert.match(ctx.renderScores(by(145721)),/펩타이드 IW · ACE IC50 = 1.5 µM/);
+// Axis pairs: only species with both values; national and IUCN MCUI and different cohorts stay in separate groups.
+const pairs=ctx.axisPairs();
+assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 65\.5 · MCUI 10\.0/);
+assert.match(pairs,/MBPI × MCUI<\/b> 0종/);assert.match(pairs,/BBVI × MCUI<\/b> 0종/);
+assert.match(pairs,/MFPI만의 쌍은 BBVI가 아닙니다/);
+assert.doesNotMatch(pairs,/IUCN 기반\) · [^<]*참굴/,'a national MCUI never joins the IUCN group');
+// Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
+const refReport=report(),refOyster=refReport.species.find(s=>s.aphia_id===836033);
+refOyster.scores.MBPI=67.5;refOyster.score_status.MBPI='산출됨';
+refOyster.bioactivity_trace=original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace;
+refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:65.5,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
+  mbpi_stratum:'fixture',mbpi_original_paper_dois:['10.0000/fixture'],food_weight:.5,value:66.5,sensitivity:{'0.25':67,'0.5':66.5,'0.75':66},limits:['독립 재현 미확인.'],used_for_score:false};
+let refOy=await oysterOnly(refReport);vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
+assert.equal(ctx.score(refOy,'MBPI'),67.5,'fixture MBPI must attach');{
+  html=ctx.renderScores(refOy);
+  for(const text of ['참고 통합값 · 독립 재현 미확인','참고값 66.5 · 점수 아님','w 0.75 → 66','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
+  assert.equal(ctx.score(refOy,'BBVI'),null,'a reference combination never becomes BBVI');
+}
+refOyster.reference_combination.inputs.MFPI=70;
+refOy=await oysterOnly(refReport);vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
+assert.ok(!ctx.renderScores(refOy).includes('참고 통합값'),'inputs that differ from the published axes are not shown');
 console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards, research candidates');
