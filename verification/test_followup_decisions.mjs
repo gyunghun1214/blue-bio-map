@@ -7,7 +7,7 @@ const readiness=JSON.parse(fs.readFileSync(new URL('../dist/matrix-readiness.jso
 const report=JSON.parse(fs.readFileSync(new URL('../dist/assessments.json',import.meta.url),'utf8'));
 const ctx={};
 vm.createContext(ctx);
-vm.runInContext(app.split('function setView')[0]+
+vm.runInContext(app.split('function setView')[0]+app.match(/^const matrixReasonLabel=.*$/m)[0]+
   ';globalThis.followup=followupDecision;globalThis.setRows=rows=>matrixReadiness=new Map(rows.map(r=>[r.aphia_id,r]));',ctx);
 const byId=new Map([...report.species,...report.candidate_species].map(s=>[s.aphia_id,s]));
 const make=row=>({
