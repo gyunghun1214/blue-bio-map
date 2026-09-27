@@ -34,6 +34,15 @@ WoRMS [승인명 *Ecklonia cava* / AphiaID 371986](https://www.marinespecies.org
 
 MFPI에는 종별 생것·가식부·양식 근거가 부족하며 MCUI에는 검수된 현행 IUCN 원평가가 없다. **BBVI와 매트릭스 점은 없다.** 종 점수를 출현 격자에 전가하지 않는다. 합성 회귀 화합물은 계산식 검사에만 사용했다.
 
+## 공개 v2.1 후속 판정
+
+현행 공개 방법 `verified-pilot-2.1`은 이 MBPI를 **"참고값(단일 논문)"**으로 표시한다. 서로 다른 원논문 DOI가 두 편 이상이어야 BBVI 입력 후보가 된다. 이는 최소 증거 조건이며 생물학적 독립 재현의 증명은 아니다. 따라서 감태의 MFPI가 확보되어도 지금의 ACE/HHL 논문 한 편만으로는 BBVI를 산출하지 않는다.
+
+- 현행 연결된 농촌진흥청 식품성분표 스냅샷에서 *E. cava*의 종별 생것·가식부 100 g 영양 행을 확인하지 못했다. 식품성분표 전체에 자료가 없다고 단정하지 않는다. 가공 상태·수분·부위가 다른 수치나 근연종 값은 종별 실측값을 대신하지 않는다. [국가표준식품성분표 검색](https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list)에서 종명·식품명과 원자료를 다시 대조해야 한다.
+- [EFSA의 2017년 안전성 의견](https://doi.org/10.2903/j.efsa.2017.5003)은 감태 유래 **phlorotannin 추출물**을 다룬다. 식용 감태 전체의 생것 영양성분이나 가식부 비율로 전용할 수 없다.
+- 저장된 IUCN 종 검색 결과 0건은 해당 조회 시점에 평가를 연결하지 못했다는 기록이다. 공식 NE·DD 판정이나 낮은 보전 위험 점수가 아니다. [IUCN 범주·기준](https://nrl.iucnredlist.org/resources/categories-and-criteria)과 평가 원문·연도·범위를 확인하기 전 MCUI는 보류한다.
+- 다음 작업: 종별 식품 실측 원자료와 가식부·가공 상태를 확인하고, 동일 ACE/HHL 조건의 독립 원논문을 찾아 DOI·화합물·시험값을 검수한다. 그 후에도 시범 점수의 외부 검증과 비교집단 민감도 검사가 필요하다.
+
 ## 이용조건
 
 원논문 [NRP](https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93)는 **CC BY-NC 3.0**; 표/그림 이미지는 재배포하지 않고 출처·측정 사실만 재정리. [WoRMS](https://www.marinespecies.org/about.php)는 저작자표시, [PubChem](https://pubchem.ncbi.nlm.nih.gov/)은 NIH 화합물 구조 기록으로 각 CID를 링크한다. 출처의 이용조건은 `evidence.json`에도 기록했다.
