@@ -84,3 +84,6 @@
 .species-pane{padding:8px 10px}.pane-title{margin-bottom:6px}.search{padding:4px 8px}.species-filters{grid-template-columns:1fr 1fr;margin:6px 0 0}.species-filters label{display:flex;align-items:center;gap:4px;font-size:11px;white-space:nowrap}.species-filters select{min-width:0;padding:4px}
 .species-list{margin-top:6px}.species-card{padding:6px 10px;min-width:140px}.species-card b{font-size:15px}.species-card b,.species-card em{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.species-card .count{display:block;margin-top:2px;font-size:12px;white-space:nowrap}.species-card .count>span{display:none}
 .map-title{padding:6px 10px;gap:4px 6px}.basemap-status:empty{display:none}.map-mode{padding:6px 10px}.map-mode button{padding:5px 8px}}
+.coverage-bar .seg.calculated small{color:#fff}
+#comparison .coverage-guide{position:sticky;left:0;z-index:1;width:min(100%,calc(100vw - 80px));max-width:100%;margin:0;padding:10px 14px;background:#fff;white-space:normal;overflow-wrap:anywhere}
+.comparison-return{display:block;margin:0 0 12px;text-decoration:underline;text-underline-offset:3px}

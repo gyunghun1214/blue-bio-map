@@ -130,7 +130,7 @@ async function loadPublishedProfiles() {
       reason:c.reason,taxonNote:c.taxonNote,audit,review:entry?.review,sensitivity:entry?.sensitivity,reviewedOn:entry?.reviewedOn,
       recordCount:cells.length?records:null,yearStart:cells.length?Math.min(...cells.map(x=>x.yearStart)):null,yearEnd:cells.length?Math.max(...cells.map(x=>x.yearEnd)):null,cells,
       summary:'종 후보 선정 이유: '+c.reason+'. '+(cells.length?`검수 통과 출현기록 ${records}건을 ${entry.sizeDeg}° 셀로 공개. 현재 분포·개체수 아님.`:entry?'공개 기준을 통과한 출현기록 없음 · 종 부재 아님.':'출현 검수 자료 확인 실패.'),
-      info,productionSummary:'식량·생리활성·IUCN 원평가와 지표 검수 전.',
+      info,productionSummary:'축별 지표는 별도 검수 보고서(assessments.json)를 통과한 항목만 표시하며 나머지는 보류입니다.',
       sources:[...new Map(cells.flatMap(x=>x.citations).map(x=>[x.url,asSource(x,`검수 기준을 통과한 기록만 ${entry.sizeDeg}° 셀로 집계. 원좌표·레코드 ID 미공개.`,entry.reviewedOn)])).values()],
       wormsUrl:c.wormsUrl,wormsCitation:'WoRMS 종 상세 · 학명 검토 '+c.taxonomyReviewedOn,
       v2:true,noOccurrences:false,publishedAt:cells.length?entry.reviewedOn:null,
@@ -140,5 +140,5 @@ async function loadPublishedProfiles() {
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
   // The only place the two groups are counted; status texts read these values and never add them into one "N종 연결".
   const publishedCount=rows.length, candidateCount=species.length-rows.length;
-  return {live:true,snapshotAt,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보 ${candidateCount}종의 신규 지표는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
+  return {live:true,snapshotAt,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표는 별도 검수 보고서를 통과한 항목(예: 감태 ACE 원논문 기반 시범 MBPI)만 표시하며 나머지는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
 }

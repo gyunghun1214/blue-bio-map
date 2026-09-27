@@ -277,6 +277,8 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
 def _approved_assays(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) -> list[dict]:
     rows = [r for r in evidence.get("bioactivity", []) if r.get("status") == "approved_for_score"]
     eligible = config["bioactivity"]["eligible_endpoints"]
+    structures = evidence.get("reviewed_compound_structures", {})
+    protocols = evidence.get("reviewed_assay_protocols", {})
     for a in rows:
         require(a.get("reviewed") is True and a.get("origin_reviewed") is True
                 and a.get("compound_structure_reviewed") is True
@@ -293,6 +295,27 @@ def _approved_assays(evidence: dict, config: dict, candidates_by_id: dict[int, d
         candidate = candidates_by_id.get(a["origin_aphia_id"])
         require(candidate is not None and candidate["scientific_name"] == a["origin_scientific_name"],
                 f"{a['activity_id']}: origin species does not match accepted candidate identity")
+        # A CID alone does not establish the structure of the isolated molecule.
+        # Freeze the source-structure and source-assay joins independently of the
+        # scored activity row, so a mistyped CID, DOI or assay cannot be accepted.
+        structure = structures.get(a["compound_id"])
+        protocol = protocols.get(a["assay_id"])
+        require(structure is not None and structure.get("name") == a.get("compound_name")
+                and structure.get("formula") == a.get("molecular_formula")
+                and structure.get("source_id") in evidence["sources"]
+                and structure.get("url") == f"https://pubchem.ncbi.nlm.nih.gov/compound/{a['compound_id'][4:]}"
+                and protocol is not None
+                and all(protocol.get(k) == a.get(k) for k in
+                        ("original_paper_doi", "origin_aphia_id", "origin_scientific_name",
+                         "target_id", "endpoint", "assay_type", "test_system", "conditions_key"))
+                and a.get("raw_unit") in ("mM", "µM", "nM")
+                and a.get("original_paper_url") == evidence["sources"][a["source_id"]].get("url")
+                and a.get("paper_structure_label")
+                and a.get("paper_species_name") == a["origin_scientific_name"],
+                f"{a['activity_id']}: reviewed structure/original paper/assay join mismatch")
+        multiplier = {"mM": 1e6, "µM": 1e3, "nM": 1}[a["raw_unit"]]
+        require(abs(a["raw_value"] * multiplier - a["standard_value"]) < max(1e-6, a["standard_value"] * 1e-8),
+                f"{a['activity_id']}: original unit conversion mismatch")
         finite(a.get("standard_value"), "standard_value", 0.0000001)
         p = finite(a.get("pchembl_value"), "pchembl_value", 0, 15)
         require(abs(p - (9 - math.log10(a["standard_value"]))) < 0.03,
@@ -326,6 +349,13 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
                 item = {"compound_id": compound, "stratum_id": stratum["id"],
                         "activity_ids": sorted(a["activity_id"] for a in own),
                         "original_paper_dois": sorted({a["original_paper_doi"] for a in own}),
+                        "measurements": [{"compound_name": a["compound_name"], "molecular_formula": a["molecular_formula"],
+                                          "raw_value": a["raw_value"], "raw_sd": a.get("raw_sd"),
+                                          "raw_unit": a["raw_unit"], "relation": a["standard_relation"],
+                                          "target_id": a["target_id"], "test_system": a["test_system"],
+                                          "conditions_key": a["conditions_key"], "assay_id": a["assay_id"],
+                                          "paper_url": a["original_paper_url"],
+                                          "structure_url": f"https://pubchem.ncbi.nlm.nih.gov/compound/{a['compound_id'][4:]}"} for a in own],
                         "peer_compounds": len(peers), "median_pchembl": round(peers[compound], 3),
                         "percentile": round(rank, 2), "evidence_factor": factor, "adjusted": rank * factor}
                 out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
@@ -410,7 +440,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 and src.get("terms") and valid_date(src.get("accessed"), not_after=evidence["snapshot_date"]),
                 f"{sid}: incomplete source registration")
     identities = candidates.get("candidates", [])
-    require(len(identities) == 8 and len({c["aphia_id"] for c in identities}) == 8, "expected 8 unique published candidates")
+    require(len(identities) == 9 and len({c["aphia_id"] for c in identities}) == 9,
+            "expected 8 original candidates and one taxonomically reviewed expansion candidate")
     rows = rda_rows(snapshot, evidence, config)
     evidence_rows = {r["food_item_id"]: r for r in evidence.get("nutrition_rows", [])}
     require(len(evidence_rows) == len(evidence.get("nutrition_rows", [])), "duplicate food item ID")
@@ -438,7 +469,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
                    c.get("category") in config["conservation"]["category_scores"],
                    bool(c.get("current_status_check"))]
-        sufficiency = {"MFPI": food_trace["sufficiency"], "MBPI": bio_sufficiency(partial_bio),
+        sufficiency = {"MFPI": food_trace["sufficiency"], "MBPI":
+                       {"required": ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"],
+                        "best_record_steps": 4, "ratio": 1.0} if mbpi is not None else bio_sufficiency(partial_bio),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
                                 "ratio": round(sum(c_steps) / 3, 2)}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
@@ -462,6 +495,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         source_ids |= {r["source_id"] for r in partial_bio}
         for item in bio_trace:
             source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item["activity_ids"]}
+            source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
+        if aphia == 371986:
+            source_ids.add("worms_ecklonia")
         source_ids.discard(None)
         require(all(s in sources for s in source_ids), f"{aphia}: unregistered source")
         output.append({"aphia_id": aphia, "scientific_name": candidate["scientific_name"], "korean_name": candidate.get("korean_name"),
