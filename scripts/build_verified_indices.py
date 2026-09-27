@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.1.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -611,6 +611,11 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if config.get("national_red_list"):
             row["national_assessment"] = national
             row["mcui_basis"] = mcui_basis
+        if config.get("peptide_raw_values"):  # shown as raw value and source; the peptide stratum is absent, so no score
+            require(not config.get("peptide_bioactivity"), "raw-value display and the peptide stratum are exclusive")
+            raw = [r for r in evidence.get("peptide_bioactivity", []) if r.get("origin_aphia_id") == aphia and r.get("status") == "approved_for_score"]
+            row["peptide_raw_values"] = [{**r, "label": config["peptide_raw_values"]["label"], "used_for_score": False} for r in raw]
+            row["source_ids"] = sorted({*row["source_ids"], *(r["source_id"] for r in raw)})
         if config.get("national_fact_supplement"):  # verified-pilot-2: national category is a fact beside MCUI, never a score
             fact = next((r for r in evidence.get("national_red_list", []) if r.get("aphia_id") == aphia and r.get("reviewed") is True), None)
             row["national_red_list_fact"] = fact and {**fact, "used_for_score": False}
@@ -669,6 +674,15 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         used = {r["source_id"] for r in extra["national_red_list"]}
         require(not used & set(evidence["sources"]), "national fact supplement redefines a source")
         evidence = {**evidence, **{k: extra[k] for k in keys}, "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
+    if cfg.get("peptide_raw_values"):  # verified-pilot-2.1: public-paper peptide values only, never an AHTPDB cohort or rank
+        raw = cfg["peptide_raw_values"]
+        extra = read(ROOT / raw["supplement"])
+        require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide raw-value snapshot differs from evidence")
+        rows = extra["peptide_bioactivity"]
+        used = {r["source_id"] for r in rows}
+        require(not used & set(raw["excluded_sources"]), "peptide raw values must come from the papers, not an excluded database")
+        require(not used & set(evidence["sources"]), "peptide raw-value supplement redefines a source")
+        evidence = {**evidence, "peptide_bioactivity": rows, "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 

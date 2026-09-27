@@ -25,6 +25,11 @@ def _bio_blockers(partials):
     return [k for k in STEPS if best.get("chain", {}).get(k) is not True]
 
 
+def _eligible(scores, mcui_basis):
+    # verified-pilot-2.1: a Korean national-assessment MCUI is a separate stratum and never shares the IUCN-based matrix.
+    return scores["BBVI"] is not None and scores["MCUI"] is not None and mcui_basis != "national"
+
+
 def build(assessments, catalog, expansion):
     # Reviewed research candidates (e.g. Ecklonia cava MBPI) are published separately as candidate_species.
     assessed = assessments["species"] + assessments.get("candidate_species", [])
@@ -50,8 +55,8 @@ def build(assessments, catalog, expansion):
                      "bioactivity_leads": [{"record_id": p["record_id"], "source_url": assessments["sources"][p["source_id"]]["url"],
                                             "chain": p.get("chain", {}), "exclusion_reason": p.get("exclusion_reason")}
                                            for p in partial],
-                     "source_urls": sorted(set(links)),
-                     "matrix_eligible": scores["BBVI"] is not None and scores["MCUI"] is not None})
+                     "source_urls": sorted(set(links)), "mcui_basis": s.get("mcui_basis"),
+                     "matrix_eligible": _eligible(scores, s.get("mcui_basis"))})
     for s in candidates:
         e = evidence[s["aphiaID"]]
         if e["name"] != s["name"] or e["scores"] != s["scores"]:
@@ -89,7 +94,8 @@ def build(assessments, catalog, expansion):
                      "scores": scores, "axis_reasons": reasons,
                      "bioactivity_missing_steps": [] if scores["MBPI"] is not None else list(STEPS),
                      "bioactivity_leads": [], "source_urls": sorted(set(urls)),
-                     "matrix_eligible": scores["BBVI"] is not None and scores["MCUI"] is not None})
+                     "mcui_basis": reviewed and reviewed.get("mcui_basis"),
+                     "matrix_eligible": _eligible(scores, reviewed and reviewed.get("mcui_basis"))})
     if len({r["aphia_id"] for r in rows}) != 30:
         raise ValueError("duplicate AphiaID")
     for row in rows:
@@ -97,7 +103,7 @@ def build(assessments, catalog, expansion):
             raise ValueError("missing score axis")
         if row["scores"]["BBVI"] is not None and (row["scores"]["MFPI"] is None or row["scores"]["MBPI"] is None):
             raise ValueError("BBVI without both inputs")
-        if row["matrix_eligible"] != (row["scores"]["BBVI"] is not None and row["scores"]["MCUI"] is not None):
+        if row["matrix_eligible"] != _eligible(row["scores"], row["mcui_basis"]):
             raise ValueError("matrix gate mismatch")
     return {"schema_version": 1, "method_version": assessments["method_version"],
             "assessments_snapshot": assessments["snapshot_date"], "candidate_snapshot": catalog["reviewedOn"],

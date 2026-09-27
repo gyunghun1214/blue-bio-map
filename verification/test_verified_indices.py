@@ -44,9 +44,13 @@ def synthetic_assays(evidence):
     evidence["bioactivity_cohorts"].append({"id": "synthetic-fixed-assay", "activity_ids": [a["activity_id"] for a in activities]})
 
 
+V2 = ROOT / "config" / "verified-indices-v2.json"  # superseded public method; its rules stay tested
+NATIONAL_MCUI = {506159, 836033, 231750, 393716, 504357, 413600, 1666974}
+
+
 class VerifiedIndicesTests(unittest.TestCase):
     def setUp(self):
-        self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy = load_inputs()
+        self.evidence, self.candidates, self.config, self.snapshot, self.taxonomy = load_inputs(config=V2)
 
     def run_build(self, evidence=None, config=None, snapshot=None):
         return build(evidence or self.evidence, self.candidates, config or self.config,
@@ -63,7 +67,6 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertEqual(got[371986], {"MFPI": None, "MBPI": 67.5, "MCUI": None, "BBVI": None})
         self.assertTrue(all(v["BBVI"] is None for v in got.values()))
         self.assertTrue(all(v["MBPI"] is None for k, v in got.items() if k != 371986))
-        self.assertEqual(render(report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
 
     def test_ecklonia_original_measurements_and_fixed_cohort(self):
         item = species(self.run_build(), 371986)
@@ -265,6 +268,49 @@ class VerifiedIndicesTests(unittest.TestCase):
         self.assertNotIn("ahtpdb", " ".join(report["sources"]).lower())
 
 
+class VerifiedPilot21Tests(unittest.TestCase):
+    """The published method: v2 plus a separately labelled national MCUI and paper-only peptide raw values."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v2 = build(*load_inputs(config=V2))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual(self.report["method_version"], "verified-pilot-2.1")
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_national_mcui_is_added_and_labelled(self):
+        for old in self.v2["species"] + self.v2["candidate_species"]:
+            new = species(self.report, old["aphia_id"])
+            for axis in ("MFPI", "MBPI", "BBVI"):
+                self.assertEqual(new["scores"][axis], old["scores"][axis], (old["aphia_id"], axis))
+            if new.get("mcui_basis") == "national":
+                self.assertIsNone(old["scores"]["MCUI"], "national MCUI only fills an IUCN gap")
+                self.assertEqual(new["national_assessment"]["category"], "LC")
+                self.assertEqual(new["scores"]["MCUI"], 10.0)
+            else:
+                self.assertEqual(new["scores"]["MCUI"], old["scores"]["MCUI"], old["aphia_id"])
+        got = {s["aphia_id"] for s in self.report["species"] + self.report["candidate_species"] if s.get("mcui_basis") == "national"}
+        self.assertEqual(got, NATIONAL_MCUI)
+        recheck = self.report["method"]["national_red_list"]["page_recheck"]
+        self.assertEqual(recheck["checked_on"], "2026-09-27")
+        self.assertEqual({int(k) for k in recheck["rows"]}, NATIONAL_MCUI)
+
+    def test_peptide_raw_values_never_score_or_rank(self):
+        raw = {s["aphia_id"]: s.get("peptide_raw_values") for s in self.report["species"] + self.report["candidate_species"]
+               if s.get("peptide_raw_values")}
+        self.assertEqual({k: [r["sequence"] for r in v] for k, v in raw.items()}, {145721: ["KNFL"], 836033: ["AEYLCEAC"]})
+        for rows in raw.values():
+            for r in rows:
+                self.assertIs(r["used_for_score"], False)
+                self.assertEqual(r["label"], "원값·출처")
+                self.assertNotIn("percentile", r)
+                self.assertEqual(self.report["sources"][r["source_id"]]["license"], "CC BY 4.0")
+        self.assertEqual({k: v[0]["value"] for k, v in raw.items()}, {145721: 225.87, 836033: 4287})
+        self.assertNotIn("ahtpdb_ic50_2026", self.report["sources"])
+        self.assertTrue(all(s["scores"]["BBVI"] is None for s in self.report["species"] + self.report["candidate_species"]))
+
+
 class VerifiedPilot3Tests(unittest.TestCase):
     V3 = ROOT / "config" / "verified-indices-v3.json"
 
@@ -308,7 +354,7 @@ class VerifiedPilot3Tests(unittest.TestCase):
             undaria = species(self.run_build(evidence), 145721)
             self.assertEqual(undaria["scores"]["BBVI"] is not None, computed)
             self.assertEqual(undaria["mbpi_label"] is None, computed)
-        self.assertNotIn("mbpi_label", species(build(*load_inputs()), 145721))   # v2 has no such rule
+        self.assertNotIn("mbpi_label", species(build(*load_inputs(config=V2)), 145721))   # v2 has no such rule
 
     def test_national_assessment_is_labelled_apart_from_iucn(self):
         report = self.run_build()
