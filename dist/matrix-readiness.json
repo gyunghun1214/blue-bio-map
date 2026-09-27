@@ -2,14 +2,14 @@
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
   "matrix_points": 0,
-  "method_version": "verified-pilot-2.1",
+  "method_version": "verified-pilot-2.2",
   "schema_version": 1,
   "species": [
     {
       "aphia_id": 145721,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
@@ -147,9 +147,7 @@
           "source_url": "https://doi.org/10.1016/s0955-2863(00)00110-8"
         }
       ],
-      "bioactivity_missing_steps": [
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "미역",
       "matrix_eligible": false,
       "mcui_basis": null,
@@ -157,7 +155,7 @@
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 19.6,
         "MCUI": null,
         "MFPI": 42.2
       },
@@ -166,6 +164,7 @@
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
         "https://doi.org/10.3390/md19030177",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.fao.org/4/y4765e/y4765e0b.htm",
         "https://www.iucnredlist.org/search",
         "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
@@ -488,8 +487,8 @@
     {
       "aphia_id": 836033,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
@@ -517,9 +516,7 @@
           "source_url": "https://doi.org/10.1016/j.foodchem.2022.132160"
         }
       ],
-      "bioactivity_missing_steps": [
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "참굴",
       "matrix_eligible": false,
       "mcui_basis": "national",
@@ -527,7 +524,7 @@
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 72.2,
         "MCUI": 10.0,
         "MFPI": 65.5
       },
@@ -537,6 +534,7 @@
         "https://doi.org/10.5352/JLS.2012.22.2.220",
         "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825",
         "https://pubmed.ncbi.nlm.nih.gov/24199654/",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_pacificcuppedoyster.htm",
         "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Food%20Details.xlsx",
         "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Nutrient%20profiles.xlsx",

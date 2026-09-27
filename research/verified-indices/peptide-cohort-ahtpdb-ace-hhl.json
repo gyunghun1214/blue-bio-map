@@ -7,7 +7,8 @@
   "retrieved": "2026-09-26",
   "sha256": "c10deee61556bc33309ada8bb8d8fbc8e4d61299e238208c3f967a4ffd5178e0",
   "rows": 3364,
-  "licence": "none stated; IDs and values only, sequences not redistributed"
+  "licence": "CC BY-NC 4.0 (README; LICENSE file says MIT, stricter reading used); IDs and values only, sequences not redistributed",
+  "citation": "Kumar R. et al. (2015) Nucleic Acids Res 43:D956-D962, doi:10.1093/nar/gku1141"
  },
  "rule": "(ACE inhibition, HHL substrate):\n  - assay column exactly \"Cushman and Cheung (1971)\" (hippuryl-His-Leu method)\n  - IC50 a single number in uM, nM or mM (ranges, \"<\", \">\", \"uM/L\", mass and % units dropped)\n  - sequence of standard one-letter amino acids only\n  - duplicate sequences collapse to one member; value = median of their uM values",
  "size": 352,

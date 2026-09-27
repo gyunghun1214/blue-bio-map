@@ -1,8 +1,10 @@
 """Freeze the verified-pilot-3 peptide comparison cohort from a local AHTPDB IC50 download.
 
-AHTPDB (https://webs.iiitd.edu.in/raghava/ahtpdb/download.php) states no licence, so the
-download itself is never committed. The cohort file keeps only AHTPDB row IDs, the value
-used and the source hash; sequences are not redistributed.
+AHTPDB (https://webs.iiitd.edu.in/raghava/ahtpdb/download.php): the download page states no
+licence; the repository README says CC BY-NC 4.0 (its LICENSE file says MIT), and the stricter
+reading is used. The download itself is never committed. The cohort file keeps only AHTPDB row
+IDs, the value used and the source hash; sequences are not redistributed. Cite Kumar et al. 2015,
+Nucleic Acids Res 43:D956, doi:10.1093/nar/gku1141.
 
 Rule (ACE inhibition, HHL substrate):
   - assay column exactly "Cushman and Cheung (1971)" (hippuryl-His-Leu method)
@@ -47,7 +49,8 @@ def build(source: Path) -> dict:
             "source": {"provider": "AHTPDB (IIIT-Delhi, Raghava group)", "file": "pepic50.txt (IC50 download)",
                        "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php", "retrieved": "2026-09-26",
                        "sha256": hashlib.sha256(raw).hexdigest(), "rows": len(rows),
-                       "licence": "none stated; IDs and values only, sequences not redistributed"},
+                       "licence": "CC BY-NC 4.0 (README; LICENSE file says MIT, stricter reading used); IDs and values only, sequences not redistributed",
+                       "citation": "Kumar R. et al. (2015) Nucleic Acids Res 43:D956-D962, doi:10.1093/nar/gku1141"},
             "rule": __doc__.split("Rule")[1].split("python")[0].strip(),
             "size": len(members), "members": members}
 

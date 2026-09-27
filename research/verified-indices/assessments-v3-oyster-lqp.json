@@ -33,7 +33,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -363,7 +363,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -487,7 +487,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -600,7 +600,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -713,7 +713,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -845,7 +845,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -1050,7 +1050,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -1682,7 +1682,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Disk abalone, Raw",
@@ -1889,7 +1889,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2496,7 +2496,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2610,7 +2610,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -2771,7 +2771,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2913,7 +2913,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -3055,7 +3055,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -3205,7 +3205,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -3346,7 +3346,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -3552,7 +3552,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -4215,7 +4215,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -4814,7 +4814,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Pacific cod, Raw",
@@ -4954,7 +4954,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -5094,7 +5094,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -5233,7 +5233,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Cuttle fish, Raw",
@@ -5532,7 +5532,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2: adds a separate MBPI peptide stratum and a national red-list MCUI stratum. Nutrition, weights, IUCN mapping, BBVI formula and the small-molecule stratum are unchanged. BBVI is withheld (mbpi_single_source) when the MBPI value rests on fewer than two independent DOIs (case-insensitive, duplicates counted once); that MBPI is still output with a reference-value label.",
+    "changes_from": "verified-pilot-3 rules unchanged. Adds one reviewed peptide row (Do et al. 2012, Magallana gigas LQP, 1.18 uM, HHL, synthetic peptide) through peptide_supplements to show the oyster MBPI if the v2.1 display-only row entered the v3 peptide stratum. Research only: not public, not the public MBPI definition, awaiting decisions A/B/C in research/verified-indices/oyster-mbpi-2026-09-27.md.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5545,7 +5545,7 @@
       "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
     "evidence_supplement": "research/verified-indices/evidence-v3.json",
-    "method_version": "verified-pilot-3",
+    "method_version": "verified-pilot-3-oyster-lqp-research",
     "national_red_list": {
       "accepted_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
       "applies_when_iucn_reason": [
@@ -5685,6 +5685,9 @@
       "target": "ACE",
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     },
+    "peptide_supplements": [
+      "research/verified-indices/peptide-raw-values-2.1.json"
+    ],
     "posthoc": {
       "calibration_cases": [],
       "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
@@ -5723,10 +5726,10 @@
         }
       ]
     },
-    "status": "provisional_unvalidated",
+    "status": "research_scenario_not_public",
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3",
+  "method_version": "verified-pilot-3-oyster-lqp-research",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -5851,6 +5854,16 @@
       "title": "CMNPD v1 standard activity and 2D structure files",
       "url": "https://docs.cmnpd.org/",
       "version": "CMNPD 1.0"
+    },
+    "do_2012_oyster_lqp": {
+      "accessed": "2026-09-27",
+      "doi": "10.5352/JLS.2012.22.2.220",
+      "license": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)",
+      "provider": "Journal of Life Science 22(2):220-225 (Do et al. 2012), full text via KoreaScience JAKO201209640672935",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
+      "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
+      "version": "2012"
     },
     "fao_casp_amberjack": {
       "accessed": "2026-09-26",
@@ -6797,7 +6810,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -7160,7 +7173,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -7438,7 +7451,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -8134,7 +8147,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -8302,7 +8315,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -8537,7 +8550,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -8731,7 +8744,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "observed_rows": [
           {
             "english_name": "Hard shelled mussel, Raw",
@@ -9011,6 +9024,34 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
+        },
+        {
+          "adjusted": 72.23011363636364,
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.5352/JLS.2012.22.2.220",
+              "relation": "=",
+              "source_id": "do_2012_oyster_lqp",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 1.18
+            }
+          ],
+          "original_paper_dois": [
+            "10.5352/jls.2012.22.2.220"
+          ],
+          "pIC50": 5.928,
+          "peer_peptides": 352,
+          "peptide_sequence": "LQP",
+          "percentile": 96.31,
+          "record_ids": [
+            "10.5352/JLS.2012.22.2.220:LQP"
+          ],
+          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+          "stratum_kind": "peptide"
         }
       ],
       "conservation_trace": {
@@ -9114,7 +9155,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-3",
+        "method_version": "verified-pilot-3-oyster-lqp-research",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -9687,21 +9728,21 @@
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 1.1,
+        "MBPI": 72.2,
         "MCUI": 10.0,
         "MFPI": 65.5
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 1.1,
-        "median_compound_sensitivity": 1.1,
+        "mean_compound_sensitivity": 36.6,
+        "median_compound_sensitivity": 36.6,
         "range_from_aggregation": [
           1.1,
-          1.1
+          72.2
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 1.1,
+        "bioactivity_only_MBPI": 72.2,
         "food_only_MFPI": 65.5
       },
       "source_ids": [
@@ -9709,6 +9750,7 @@
         "afcd_r3_nutrients",
         "ahtpdb_ic50_2026",
         "chen_2022_oyster",
+        "do_2012_oyster_lqp",
         "fao_oyster_culture",
         "feng_2022_oyster",
         "frdc_2008_905",
@@ -9728,5 +9770,5 @@
       }
     }
   ],
-  "status": "provisional_unvalidated"
+  "status": "research_scenario_not_public"
 }

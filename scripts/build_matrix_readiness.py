@@ -41,6 +41,8 @@ def build(assessments, catalog, expansion):
     if len(candidate_ids) != 22 or len({s["aphia_id"] for s in assessed}) != len(assessed):
         raise ValueError("duplicate candidate or assessment")
     assessed_by_id = {s["aphia_id"]: s for s in assessed}
+    if any(s["scores"]["BBVI"] is not None and s.get("mbpi_label") for s in assessed):
+        raise ValueError("BBVI from a single-source MBPI")  # the label marks an MBPI below the independent-DOI minimum
     rows = []
     for s in assessed:
         if s["aphia_id"] in candidate_ids:
