@@ -20,8 +20,10 @@ class MatrixReadinessTests(unittest.TestCase):
         report = build(self.assessments, self.catalog, self.expansion)
         self.assertEqual(len(report["species"]), 30)
         self.assertEqual(report["matrix_points"], 0)
-        self.assertTrue(all(r["scores"]["MBPI"] is None and r["scores"]["BBVI"] is None
-                            and not r["matrix_eligible"] for r in report["species"]))
+        self.assertTrue(all(r["scores"]["BBVI"] is None and not r["matrix_eligible"]
+                            for r in report["species"]))
+        self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
+                          if r["scores"]["MBPI"] is not None], [(371986, 67.5)])
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 3)
         self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 2)
         published = json.loads((ROOT / "dist/matrix-readiness.json").read_text())

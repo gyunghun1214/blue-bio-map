@@ -29,10 +29,16 @@ def build(assessments, catalog, expansion):
     assessed = assessments["species"]
     candidates = catalog["species"]
     evidence = {s["aphiaID"]: s for s in expansion["species"]}
-    if len(assessed) != 8 or len(candidates) != 22 or len(evidence) != 22:
-        raise ValueError("expected 8 operating and 22 expansion species")
+    if len(assessed) < 8 or len(candidates) != 22 or len(evidence) != 22:
+        raise ValueError("expected original 8 and 22 expansion species")
+    candidate_ids = {s["aphiaID"] for s in candidates}
+    if len(candidate_ids) != 22 or len({s["aphia_id"] for s in assessed}) != len(assessed):
+        raise ValueError("duplicate candidate or assessment")
+    assessed_by_id = {s["aphia_id"]: s for s in assessed}
     rows = []
     for s in assessed:
+        if s["aphia_id"] in candidate_ids:
+            continue  # Reviewed expansion assessments are joined in the loop below.
         scores = s["scores"]
         partial = s.get("bioactivity_partial", [])
         links = [assessments["sources"][sid]["url"] for sid in s["source_ids"]]
@@ -62,16 +68,23 @@ def build(assessments, catalog, expansion):
             urls.append(i["checklistRecordUrl"])
         elif i.get("searchUrl"):
             urls.append(i["searchUrl"])
+        reviewed = assessed_by_id.get(s["aphiaID"])
+        if reviewed and reviewed["scientific_name"] != s["name"]:
+            raise ValueError(f"reviewed expansion identity mismatch: {s['aphiaID']}")
+        if reviewed:
+            urls.extend(assessments["sources"][sid]["url"] for sid in reviewed["source_ids"])
+        scores = reviewed["scores"] if reviewed else s["scores"]
+        reasons = {"MFPI": missing_food,
+                   "MBPI": None if scores["MBPI"] is not None else "origin_structure_quantitative_assay_and_cohort_not_reviewed",
+                   "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed"
+                   if i.get("record") else "original_assessment_not_found_or_not_reviewed",
+                   "BBVI": "requires_MFPI_and_MBPI"}
         rows.append({"aphia_id": s["aphiaID"], "scientific_name": s["name"],
                      "korean_name": s["label"], "scope": "expansion_22",
-                     "scores": s["scores"],
-                     "axis_reasons": {"MFPI": missing_food,
-                                      "MBPI": "origin_structure_quantitative_assay_and_cohort_not_reviewed",
-                                      "MCUI": "original_assessment_date_scope_criteria_and_current_status_not_reviewed"
-                                      if i.get("record") else "original_assessment_not_found_or_not_reviewed",
-                                      "BBVI": "requires_MFPI_and_MBPI"},
-                     "bioactivity_missing_steps": list(STEPS), "bioactivity_leads": [],
-                     "source_urls": sorted(set(urls)), "matrix_eligible": False})
+                     "scores": scores, "axis_reasons": reasons,
+                     "bioactivity_missing_steps": [] if scores["MBPI"] is not None else list(STEPS),
+                     "bioactivity_leads": [], "source_urls": sorted(set(urls)),
+                     "matrix_eligible": scores["BBVI"] is not None and scores["MCUI"] is not None})
     if len({r["aphia_id"] for r in rows}) != 30:
         raise ValueError("duplicate AphiaID")
     for row in rows:

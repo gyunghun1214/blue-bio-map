@@ -108,7 +108,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-09-25T00:00:00Z",
+  "generated_at": "2026-09-27T00:00:00Z",
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
@@ -329,7 +329,7 @@
       }
     }
   },
-  "snapshot_date": "2026-09-25",
+  "snapshot_date": "2026-09-27",
   "sources": {
     "afcd_r3_details": {
       "accessed": "2026-09-25",
@@ -572,6 +572,15 @@
       "url": "https://pubmed.ncbi.nlm.nih.gov/32061872/",
       "version": "2020 article / PubMed primary abstract"
     },
+    "pubchem_ecklonia_structures": {
+      "accessed": "2026-09-27",
+      "license": "NCBI PubChem public compound records",
+      "provider": "NCBI PubChem",
+      "terms": "PubChem facts cited by CID and formula; no database bulk content republished",
+      "title": "Compound records for five E. cava phlorotannins",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/",
+      "version": "CID structure pages checked 2026-09-27"
+    },
     "pubchem_pugrest": {
       "accessed": "2026-09-25",
       "license": "NCBI public access",
@@ -651,6 +660,26 @@
       "title": "Pacific oyster wet meat yield, Chiloé Island",
       "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825",
       "version": "PLOS ONE 2022, Table 1"
+    },
+    "wijesinghe_2011_ace": {
+      "accessed": "2026-09-27",
+      "license": "CC BY-NC 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "notice": "Five within-paper enzyme IC50 values, not human effects; no independent replication established.",
+      "provider": "Nutrition Research and Practice / Korean Nutrition Society",
+      "terms": "CC BY-NC 3.0; bibliographic facts and numeric measurements re-tabulated with attribution; no article image redistributed",
+      "title": "Effect of phlorotannins isolated from Ecklonia cava on ACE inhibitory activity",
+      "url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+      "version": "2011 5(2):93-100, DOI 10.4162/nrp.2011.5.2.93; Table 2 and Fig. 3"
+    },
+    "worms_ecklonia": {
+      "accessed": "2026-09-27",
+      "license": "WoRMS attribution",
+      "provider": "WoRMS",
+      "terms": "WoRMS attribution",
+      "title": "Ecklonia cava accepted taxon, AphiaID 371986",
+      "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
+      "version": "public taxon record checked 2026-09-27"
     },
     "worms_gigas": {
       "accessed": "2026-09-25",
@@ -3488,6 +3517,257 @@
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
+      }
+    },
+    {
+      "aphia_id": 371986,
+      "bioactivity_partial": [],
+      "bioactivity_trace": [
+        {
+          "activity_ids": [
+            "Wijesinghe2011:Table2:359"
+          ],
+          "adjusted": 22.5,
+          "compound_id": "CID:359",
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "assay_id": "Wijesinghe2011:Table2:ACE",
+              "compound_name": "phloroglucinol",
+              "conditions_key": "Wijesinghe2011:37C:10min-preincubation:60min:HHL25mM:borate-pH8.3:NaCl500mM:abs228nm",
+              "molecular_formula": "C6H6O3",
+              "paper_url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+              "raw_sd": 0.09,
+              "raw_unit": "mM",
+              "raw_value": 2.57,
+              "relation": "=",
+              "structure_url": "https://pubchem.ncbi.nlm.nih.gov/compound/359",
+              "target_id": "ACE:EC-3.4.15.1",
+              "test_system": "cell-free Sigma ACE/HHL substrate"
+            }
+          ],
+          "median_pchembl": 2.59,
+          "original_paper_dois": [
+            "10.4162/nrp.2011.5.2.93"
+          ],
+          "peer_compounds": 5,
+          "percentile": 30.0,
+          "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
+        },
+        {
+          "activity_ids": [
+            "Wijesinghe2011:Table2:23427055"
+          ],
+          "adjusted": 52.5,
+          "compound_id": "CID:23427055",
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "assay_id": "Wijesinghe2011:Table2:ACE",
+              "compound_name": "triphlorethol-A",
+              "conditions_key": "Wijesinghe2011:37C:10min-preincubation:60min:HHL25mM:borate-pH8.3:NaCl500mM:abs228nm",
+              "molecular_formula": "C18H14O9",
+              "paper_url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+              "raw_sd": 0.36,
+              "raw_unit": "mM",
+              "raw_value": 2.01,
+              "relation": "=",
+              "structure_url": "https://pubchem.ncbi.nlm.nih.gov/compound/23427055",
+              "target_id": "ACE:EC-3.4.15.1",
+              "test_system": "cell-free Sigma ACE/HHL substrate"
+            }
+          ],
+          "median_pchembl": 2.697,
+          "original_paper_dois": [
+            "10.4162/nrp.2011.5.2.93"
+          ],
+          "peer_compounds": 5,
+          "percentile": 70.0,
+          "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
+        },
+        {
+          "activity_ids": [
+            "Wijesinghe2011:Table2:145937"
+          ],
+          "adjusted": 37.5,
+          "compound_id": "CID:145937",
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "assay_id": "Wijesinghe2011:Table2:ACE",
+              "compound_name": "eckol",
+              "conditions_key": "Wijesinghe2011:37C:10min-preincubation:60min:HHL25mM:borate-pH8.3:NaCl500mM:abs228nm",
+              "molecular_formula": "C18H12O9",
+              "paper_url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+              "raw_sd": 0.08,
+              "raw_unit": "mM",
+              "raw_value": 2.27,
+              "relation": "=",
+              "structure_url": "https://pubchem.ncbi.nlm.nih.gov/compound/145937",
+              "target_id": "ACE:EC-3.4.15.1",
+              "test_system": "cell-free Sigma ACE/HHL substrate"
+            }
+          ],
+          "median_pchembl": 2.644,
+          "original_paper_dois": [
+            "10.4162/nrp.2011.5.2.93"
+          ],
+          "peer_compounds": 5,
+          "percentile": 50.0,
+          "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
+        },
+        {
+          "activity_ids": [
+            "Wijesinghe2011:Table2:3008868"
+          ],
+          "adjusted": 67.5,
+          "compound_id": "CID:3008868",
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "assay_id": "Wijesinghe2011:Table2:ACE",
+              "compound_name": "dieckol",
+              "conditions_key": "Wijesinghe2011:37C:10min-preincubation:60min:HHL25mM:borate-pH8.3:NaCl500mM:abs228nm",
+              "molecular_formula": "C36H22O18",
+              "paper_url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+              "raw_sd": 0.04,
+              "raw_unit": "mM",
+              "raw_value": 1.47,
+              "relation": "=",
+              "structure_url": "https://pubchem.ncbi.nlm.nih.gov/compound/3008868",
+              "target_id": "ACE:EC-3.4.15.1",
+              "test_system": "cell-free Sigma ACE/HHL substrate"
+            }
+          ],
+          "median_pchembl": 2.833,
+          "original_paper_dois": [
+            "10.4162/nrp.2011.5.2.93"
+          ],
+          "peer_compounds": 5,
+          "percentile": 90.0,
+          "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
+        },
+        {
+          "activity_ids": [
+            "Wijesinghe2011:Table2:10429214"
+          ],
+          "adjusted": 7.5,
+          "compound_id": "CID:10429214",
+          "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "assay_id": "Wijesinghe2011:Table2:ACE",
+              "compound_name": "eckstolonol",
+              "conditions_key": "Wijesinghe2011:37C:10min-preincubation:60min:HHL25mM:borate-pH8.3:NaCl500mM:abs228nm",
+              "molecular_formula": "C18H10O9",
+              "paper_url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
+              "raw_sd": 0.28,
+              "raw_unit": "mM",
+              "raw_value": 2.95,
+              "relation": "=",
+              "structure_url": "https://pubchem.ncbi.nlm.nih.gov/compound/10429214",
+              "target_id": "ACE:EC-3.4.15.1",
+              "test_system": "cell-free Sigma ACE/HHL substrate"
+            }
+          ],
+          "median_pchembl": 2.53,
+          "original_paper_dois": [
+            "10.4162/nrp.2011.5.2.93"
+          ],
+          "peer_compounds": 5,
+          "percentile": 10.0,
+          "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
+        }
+      ],
+      "conservation_trace": null,
+      "food_trace": {
+        "aquaculture": null,
+        "cross_checks": [],
+        "method_version": "verified-pilot-2",
+        "observed_rows": [],
+        "sufficiency": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "supplemental_nutrition": []
+      },
+      "information_sufficiency": {
+        "MBPI": {
+          "best_record_steps": 4,
+          "ratio": 1.0,
+          "required": [
+            "origin",
+            "structure_id",
+            "quantitative_endpoint",
+            "comparable_cohort"
+          ]
+        },
+        "MCUI": {
+          "ratio": 0.0,
+          "required": [
+            "assessment_record",
+            "numeric_category",
+            "current_check"
+          ]
+        },
+        "MFPI": {
+          "present": [],
+          "ratio": 0.0,
+          "required": [
+            "protein_g",
+            "iron_mg",
+            "zinc_mg",
+            "edible_fraction",
+            "aquaculture"
+          ]
+        },
+        "mean_ratio": 0.33
+      },
+      "korean_name": "감태",
+      "scientific_name": "Ecklonia cava",
+      "score_status": {
+        "BBVI": "산출 보류",
+        "MBPI": "산출됨",
+        "MCUI": "산출 보류",
+        "MFPI": "산출 보류"
+      },
+      "scores": {
+        "BBVI": null,
+        "MBPI": 67.5,
+        "MCUI": null,
+        "MFPI": null
+      },
+      "sensitivity": {
+        "food_weights": {},
+        "mean_compound_sensitivity": 37.5,
+        "median_compound_sensitivity": 37.5,
+        "range_from_aggregation": [
+          7.5,
+          67.5
+        ]
+      },
+      "single_axis_views": {
+        "bioactivity_only_MBPI": 67.5,
+        "food_only_MFPI": null
+      },
+      "source_ids": [
+        "pubchem_ecklonia_structures",
+        "wijesinghe_2011_ace",
+        "worms_ecklonia"
+      ],
+      "unexplored_candidate": null,
+      "withheld_reasons": {
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": null,
+        "MCUI": "assessment_lookup_failed",
+        "MFPI": "comparable_nutrition_missing"
       }
     }
   ],
