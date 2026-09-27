@@ -1,7 +1,14 @@
 // Headless Chrome via DevTools protocol (no deps). Renders the local site, clicks species, screenshots, checks text.
 import {spawn} from 'node:child_process';
-import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os';
+import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
 const OUT=process.argv[2];
+// Expected counts are computed from the published files, never typed in: 22 candidates, snapshot rows, pilot scores.
+const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
+const readDist=f=>JSON.parse(fs.readFileSync(path.join(DIST,f),'utf8'));
+const catalogIds=readDist('candidate-catalog.json').species.map(s=>s.aphiaID), snapshot=readDist('live-snapshot.json'), report=readDist('assessments.json');
+const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes(a)).length;
+const reportScores=report.species.flatMap(s=>Object.values(s.scores).filter(v=>v!==null).map(v=>v.toFixed(1)));
+const placedInMatrix=report.species.filter(s=>['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
 if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0='http://127.0.0.1:8765/';
@@ -62,13 +69,15 @@ const check=(name,ok,detail='')=>{results.push({name,status:ok?'PASS':'FAIL',det
 async function viewport(w,h,mobile){await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:mobile?2:1,mobile});}
 let mock='';
 async function load(){await send('Page.navigate',{url:URL0});
-  for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|추가 수집|발행 자료 없음|불러오기 실패/.test(st))return st;}return 'timeout';}
+  for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|추가 수집|불러오기 실패|연결 실패/.test(st))return st;}return 'timeout';}
 async function shot(name,full=true){
   const m=await evaluate('({w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight})');
   const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:full,clip:full?{x:0,y:0,width:m.w,height:Math.min(m.h,6000),scale:1}:undefined});
   fs.writeFileSync(path.join(OUT,name+'.png'),Buffer.from(r.data,'base64'));}
 const pick=aphia=>evaluate(`document.querySelector('[data-species="${aphia}"]').click();document.querySelectorAll('#detail details.detail-more').forEach(d=>d.open=true);document.getElementById('detail').innerText`);
 const detailEl=()=>evaluate(`document.getElementById('detail').scrollIntoView();1`);
+// Every comparison page (5 species each): text, coverage bars and species columns, then back to page 1.
+const walkComparison=()=>evaluate("(()=>{const out=[];comparisonPage=0;renderComparison();for(;;){out.push({label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,cols:document.querySelectorAll('#comparison thead th').length-1,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth});if(document.getElementById('comparison-next').disabled)break;document.getElementById('comparison-next').click();}comparisonPage=0;renderComparison();return out})()");
 try{
   await openWebSocket(await connect());
   await send('Page.enable');await send('Runtime.enable');
@@ -78,14 +87,17 @@ try{
     await send('Page.addScriptToEvaluateOnNewDocument',{source:`{const FX=${fx};window.fetch=(o=>(u,...a)=>{const s=String(u);if(s.includes('/rest/v1/species_profiles'))return ${reply('profiles')};if(s.includes('/rest/v1/species_map_cells'))return ${reply('cells')};return o(u,...a);})(window.fetch);}`});
     console.log('Using fixture',process.env.FIXTURE);
   }
-  const errors=[];ws.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);});
+  const errors=[];ws.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')errors.push('console.error: '+m.params.args.map(x=>x.value??x.description).join(' '));});
 
   // ---------- Desktop, real production API ----------
-  await viewport(1440,1000,false);
+  await viewport(1560,900,false);
   const st=await load();
-  check('Desktop live: connection state shows published and candidate total',st==='공개 기준 자료 연결됨 · 30종',st);
+  // Published count straight from the public API (read-only), candidates from dist/candidate-catalog.json.
+  const apiIds=await evaluate("fetch(publicApi.url+'/rest/v1/species_profiles?select=aphia_id',{headers:{apikey:publicApi.key},cache:'no-store'}).then(r=>r.json()).then(r=>r.map(x=>Number(x.aphia_id)))");
+  const expPub=apiIds.length, expCand=candidatesBeside(apiIds), total=await evaluate('data.species.length');
+  check('Desktop live: connection state names published profiles and candidates separately (API + catalog counts)',st===`공개 기준 자료 연결됨 · 운영 발행 ${expPub}종 · 조사 후보 ${expCand}종`&&expPub+expCand===total,`${st} | API ${expPub}, catalog ${expCand}, shown ${total}`);
   const note=await evaluate("document.getElementById('collection-note').textContent");
-  check('Live note separates 8 published profiles from 22 candidates',note.includes('운영 DB 8종')&&note.includes('분류 검토 후보 22종'),note);
+  check('Live note uses the same published/candidate counts (not a fixed 2종)',note.includes(`운영 발행 ${expPub}종과 조사 후보 ${expCand}종`)&&!/(^|[^\d])2종/.test(note),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
   check('List: sea cucumber card shows map records and cells (same numbers as panel)',cards.some(c=>c.includes('해삼')&&c.includes('지도 표시 기록 2건 · 2셀')),JSON.stringify(cards));
 
@@ -115,8 +127,8 @@ try{
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
-  const cmp=await evaluate("(()=>{const first=document.getElementById('comparison').innerText;document.getElementById('comparison-next').click();const second=document.getElementById('comparison').innerText;document.getElementById('comparison-prev').click();return first+'\\n'+second})()");
-  check('Compare table: verified-pilot-2 status and evidence links across pages',['65.5','54.2','42.2','80.0','10.0','일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
+  const cmp=(await walkComparison()).map(p=>p.text).join('\n');
+  check('Compare table (all pages): every assessments.json score plus partial evidence, withheld and evidence links',reportScores.length>0&&[...reportScores,'일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','근거·보류 사유 보기'].every(x=>cmp.includes(x)),cmp);
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
@@ -171,7 +183,8 @@ try{
   check('Counts agree: footer, list card and panel show the same map record total',await evaluate("(()=>{const n=cellRecords(selected);const card=document.querySelector('[data-species=\"836033\"]').innerText.replace(/\\s+/g,' ');return document.getElementById('map-count').textContent===n.toLocaleString()&&card.includes(n+'건 · '+spatialCells(selected).length+'셀')&&document.querySelector('#detail-map-summary').innerText.includes(n+'건')})()"));
   check('Mode selector: plain names and a closed "why maps differ" disclosure',await evaluate("(()=>{const o=[...document.querySelectorAll('#collection option')].map(x=>x.textContent).join('|');const w=document.querySelector('.mode-why');return o.includes('공개 기준 적용 자료')&&o.includes('추가 수집 자료')&&!/검증 완료/.test(o)&&!!w&&!w.open&&w.textContent.includes('더 좁은 지역·기간과 별도 공개 기준')&&w.textContent.includes('CC BY-NC')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
-  check('Matrix: unplaced species listed apart as priority-survey targets',unplaced.includes('정보 부족 · 우선 조사 대상 30종')&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' 30'),unplaced);
+  const unplacedN=expPub+expCand-placedInMatrix;
+  check('Matrix: unplaced species listed apart as priority-survey targets, published and candidates counted separately',unplaced.includes(`정보 부족 · 우선 조사 대상 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종)`)&&unplaced.includes('네 유형과 별개')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   // ---- Presentation polish (2026-09-25) ----
@@ -196,7 +209,9 @@ try{
   check('Cell popup: period, sea area, source, licence, spatial resolution',['공개 집계 기간 2016–2026 · 기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','선별 기록 3건 · 조사 지점 2곳','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
-  await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center',behavior:'instant'});1");
+  // The popup opened above auto-pans the map; measure the dot only after that pan and the scroll have settled.
+  await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center',behavior:'instant'})");
+  await sleep(800);
   const dotXY=await evaluate("const d=overlay.getLayers().find(l=>l._schematicDot);const p=map.latLngToContainerPoint(d.getLatLng());const r=document.getElementById('map').getBoundingClientRect();({x:r.left+p.x,y:r.top+p.y})");
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:dotXY.x,y:dotXY.y,button:'left',clickCount:1});
   const clicked=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>t.includes('해역별 활용·보전 판단: 보류')&&t.includes('출처·이용조건'));
@@ -263,7 +278,8 @@ try{
   const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
   check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
   await evaluate("setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
-  check('A-2 comparison table pages coverage bars for 30 species',await evaluate("(()=>{setView('compare');comparisonPage=0;renderComparison();const first=document.querySelectorAll('#comparison .coverage-bar').length;document.getElementById('comparison-next').click();const second=document.querySelectorAll('#comparison .coverage-bar').length;const label=document.getElementById('comparison-page').textContent;document.getElementById('comparison-prev').click();setView('explore');return data.species.length===30&&first===5&&second===5&&label.includes('2 / 6')})()"));
+  const bars=await walkComparison();
+  check('A-2 comparison pages show one coverage bar per species column, all species covered',bars.every(p=>p.bars===p.cols&&p.cols>0&&p.cols<=5)&&bars.reduce((a,p)=>a+p.bars,0)===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.cols])));
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
@@ -318,9 +334,9 @@ try{
     document.getElementById('comparison-prev').click();out.push({label:label(),heads:heads()});
     const names=data.species.map(s=>s.name);setView('explore');return {total:data.species.length,names,out};})()`);
   check('Comparison paging: 5 species per page, next/prev move by one page with matching label',
-    pages.total===30&&pages.out[0].label==='1 / 6 · 1–5종'&&pages.out[0].prev&&JSON.stringify(pages.out[0].heads)===JSON.stringify(pages.names.slice(0,5))&&
-    pages.out[1].label==='2 / 6 · 6–10종'&&JSON.stringify(pages.out[1].heads)===JSON.stringify(pages.names.slice(5,10))&&
-    pages.out[2].label==='1 / 6 · 1–5종'&&JSON.stringify(pages.out[2].heads)===JSON.stringify(pages.names.slice(0,5)),JSON.stringify(pages));
+    pages.total===expPub+expCand&&pages.out[0].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&pages.out[0].prev&&JSON.stringify(pages.out[0].heads)===JSON.stringify(pages.names.slice(0,5))&&
+    pages.out[1].label===`2 / ${Math.ceil(pages.total/5)} · 6–10종`&&JSON.stringify(pages.out[1].heads)===JSON.stringify(pages.names.slice(5,10))&&
+    pages.out[2].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&JSON.stringify(pages.out[2].heads)===JSON.stringify(pages.names.slice(0,5)),JSON.stringify(pages));
   // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
   await pick(494972);
   const tiles=host=>evaluate(`[...document.querySelectorAll('#map img.leaflet-tile-loaded')].filter(i=>i.src.includes('${host}')).length`);
@@ -342,12 +358,60 @@ try{
   await send('Network.setBlockedURLs',{urls:[]});await send('Network.setCacheDisabled',{cacheDisabled:false});
   await evaluate("try{localStorage.removeItem('basemap')}catch{};1");
 
-  // ---------- Mobile 390px ----------
+  // ---------- Page width: only the comparison wrapper may scroll sideways ----------
+  for(const [w,h,mobile] of [[390,844,true],[768,1024,false],[1280,900,false],[1560,900,false]]){
+    await viewport(w,h,mobile);await load();
+    const widths=await evaluate("['explore','compare','method'].map(v=>{setView(v);const d=document.documentElement;return v+' '+d.scrollWidth+'/'+d.clientWidth+(d.scrollWidth<=d.clientWidth?'':' OVER')})");
+    const cmpScroll=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison'),s=getComputedStyle(c);const r={own:c.scrollWidth>c.clientWidth?s.overflowX:'fits',pageX:getComputedStyle(document.body).overflowX+'/'+getComputedStyle(document.documentElement).overflowX};setView('explore');return r})()");
+    check(`Page width ${w}px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page)`,widths.every(x=>!x.endsWith('OVER'))&&['fits','auto','scroll'].includes(cmpScroll.own)&&!cmpScroll.pageX.includes('hidden'),widths.join(' | ')+' '+JSON.stringify(cmpScroll));
+    if(w===1560){await evaluate("setView('compare');window.scrollTo(0,0);1");await shot('desktop-1560-compare',false);await evaluate("setView('explore');1");}
+  }
+
+  // ---------- The eight demo flows, desktop and mobile (screenshots in OUT) ----------
+  for(const [tag,w,h,mobile] of [['desktop',1560,900,false],['mobile',390,844,true]]){
+    await viewport(w,h,mobile);await load();
+    const mapShot=async name=>{await evaluate(`document.getElementById('map').scrollIntoView({block:'${mobile?'start':'center'}'});1`);await sleep(600);await shot(`${tag}-flow-${name}`,false);};
+    const flow=async aphia=>{await pick(aphia);await sleep(300);return evaluate("({sel:document.getElementById('map-selected').innerText,src:document.getElementById('map-source').textContent,note:document.getElementById('map-review-note').textContent,shapes:document.querySelectorAll('#map path.leaflet-interactive').length,detail:document.getElementById('detail').innerText})");};
+    let f=await flow(836033);
+    check(`Flow 1 ${tag}: 참굴 MFPI 65.5 above the map and in the panel`,f.sel.includes('참굴')&&f.sel.includes('운영 발행')&&f.sel.includes('MFPI 65.5')&&f.detail.includes('65.5 · 검증 전 시범 지표'),f.sel);
+    await mapShot('1-oyster');
+    f=await flow(241776);
+    check(`Flow 2 ${tag}: 해삼 MCUI 80, IUCN EN, two 4° cells`,f.sel.includes('MCUI 80')&&f.detail.includes('EN A2bd')&&f.shapes===2&&f.src.includes('4° 셀'),f.sel+' | '+f.src);
+    await mapShot('2-sea-cucumber');
+    f=await flow(504357);
+    check(`Flow 3 ${tag}: 피조개 1930 specimen labelled not a current distribution`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='1930년 표본 · 공개 4° 셀'&&f.note.includes('현재 분포'),f.sel+' | '+f.src);
+    await mapShot('3-ark-shell-1930');
+    f=await flow(377084);
+    check(`Flow 4 ${tag}: candidate without public cells draws no cell and says so`,f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&(f.note+f.detail).includes('공개'),f.sel+' | '+f.note.slice(0,120));
+    await mapShot('4-candidate-no-cells');
+    const walk=await walkComparison();
+    check(`Flow 5 ${tag}: comparison walks ${Math.ceil(total/5)} pages of ≤5, page never overflows`,walk.length===Math.ceil(total/5)&&walk.reduce((a,p)=>a+p.cols,0)===total&&walk.every(p=>p.page),JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
+    await evaluate("setView('compare');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");
+    await pick(836033);await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
+    const before=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID})");
+    await evaluate("document.querySelector('[data-map-mode=value]').click();1");await sleep(400);await shot(`${tag}-flow-6-value-mode`,false); // no scrollIntoView here: the check measures scroll drift
+    await evaluate("document.querySelector('[data-map-mode=occurrence]').click();1");await sleep(400);
+    const after=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID,mode:mapMode})");
+    check(`Flow 6 ${tag}: map mode value → occurrence keeps selection and scroll position`,after.sel===before.sel&&after.mode==='occurrence'&&Math.abs(after.y-before.y)<=4,JSON.stringify({before,after}));
+  }
+
+  // ---------- Mobile 390px first screen and stability ----------
   await viewport(390,844,true);
   await load();
-  // Before the 2026-09-25 polish the map started at 1065px (below the 844px first screen).
-  const mob=await evaluate("(()=>{const d=document.getElementById('score-disclaimer').getBoundingClientRect();return {map:Math.round(document.getElementById('map').getBoundingClientRect().top+scrollY),warn:d.height>0&&document.getElementById('score-disclaimer').textContent.includes('검증 전 시범 지표')}})()");
-  check('Mobile 390px: map stays near first screen and pilot-index warning is visible',mob.map<1065&&mob.warn,JSON.stringify(mob));
+  // Before this change the map started at 952px (0px visible in the 844px first screen).
+  const mob=await evaluate("(()=>{const r=id=>document.getElementById(id).getBoundingClientRect();const m=r('map');const c=document.querySelector('.species-card').getBoundingClientRect();return {top:Math.round(m.top+scrollY),visible:Math.round(Math.min(m.bottom,844)-Math.max(m.top,0)),search:r('search').bottom<=844,card:c.bottom<=844&&c.height>0,sel:document.getElementById('map-selected').innerText,warn:r('score-disclaimer').height>0&&document.getElementById('score-disclaimer').textContent.includes('검증 전 시범 지표'),legend:document.querySelector('.map-legend-more').open}})()");
+  check('Mobile 390×844 first screen: search, species cards and ≥200px of map; selected status by the map; warning kept; legend folded',mob.visible>=200&&mob.search&&mob.card&&/운영 발행|조사 후보/.test(mob.sel)&&mob.sel.length>4&&mob.warn&&!mob.legend,JSON.stringify(mob));
+  await shot('mobile-first-screen',false);
+  // Switching species on the horizontal card list and toggling map mode must not jump or close what the user opened.
+  const stab=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const list=document.getElementById('species-list');const cards=[...list.querySelectorAll('.species-card')];
+    document.querySelector('.map-legend-more').open=true;document.querySelector('.mode-why').open=true;
+    const target=cards[6];target.scrollIntoView({inline:'center',block:'nearest'});await wait(100);const y0=scrollY,x0=list.scrollLeft;target.click();await wait(300);
+    const r1={dy:Math.round(scrollY-y0),dx:Math.round(list.scrollLeft-x0),sel:selected.aphiaID===Number(target.dataset.species),selCard:list.querySelector('.species-card.selected')?.dataset.species===target.dataset.species,legend:document.querySelector('.map-legend-more').open,why:document.querySelector('.mode-why').open};
+    const y1=scrollY;document.querySelector('[data-map-mode=value]').click();await wait(300);document.querySelector('[data-map-mode=occurrence]').click();await wait(300);
+    return {...r1,modeDy:Math.round(scrollY-y1),mode:mapMode,still:selected.aphiaID===Number(target.dataset.species),legend2:document.querySelector('.map-legend-more').open,why2:document.querySelector('.mode-why').open}})()`);
+  check('Mobile: switching species keeps list/page scroll, selection and open disclosures; mode round-trip does not jump',Math.abs(stab.dy)<=4&&Math.abs(stab.dx)<=4&&stab.sel&&stab.selCard&&stab.legend&&stab.why&&Math.abs(stab.modeDy)<=4&&stab.mode==='occurrence'&&stab.still&&stab.legend2&&stab.why2,JSON.stringify(stab));
+  await evaluate("document.querySelector('.map-legend-more').open=false;document.querySelector('.mode-why').open=false;1");
+
   for(const [aphia,name] of [[241776,'mobile-sea-cucumber'],[836033,'mobile-oyster']]){
     await pick(aphia);await detailEl();
     const ov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");
@@ -363,26 +427,31 @@ try{
   await shot('mobile-live-hijiki');
 
   // ---------- Failure / empty / v1-only responses (fetch mocked in page) ----------
-  await viewport(1440,1000,false);
+  await viewport(1560,900,false);
   const mocks={
     'api-offline':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.reject(new TypeError('Failed to fetch')):o(u,...a))(window.fetch);",
     'api-error':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('x',{status:500})):String(u).includes('live-snapshot.json')?Promise.resolve(new Response('',{status:404})):o(u,...a))(window.fetch);",
     'api-empty':"window.fetch=(o=>(u,...a)=>String(u).includes('/rest/v1/')?Promise.resolve(new Response('[]',{status:200,headers:{'content-type':'application/json'}})):o(u,...a))(window.fetch);",
     'v1-only':"window.fetch=(o=>async(u,...a)=>{const r=await o(u,...a);if(!String(u).includes('/rest/v1/species_profiles'))return r;const rows=await r.json();for(const p of rows){const s=p.evidence_summary;for(const k of ['summary_version','nutrition','compounds','conservation','production','occurrence_status','map'])delete s[k];p.production_summary='생산·영양·생리활성·보전 근거 미검토. 점수 미산출.';}return new Response(JSON.stringify(rows),{status:200,headers:{'content-type':'application/json'}});})(window.fetch);"
   };
+  // Empty and failed API are demo flows 7 and 8: checked on desktop and phone. Expected counts come from dist/ files.
+  const offlineCounts=`운영 발행 ${snapshot.profiles.length}종 · 조사 후보 ${candidatesBeside(snapshot.profiles.map(p=>Number(p.aphia_id)))}종`;
+  const runs=[...Object.keys(mocks).map(n=>[n,'desktop']),['api-offline','mobile'],['api-empty','mobile']];
   let scriptId;
-  for(const [name,src] of Object.entries(mocks)){
+  for(const [name,tag] of runs){
+    if(tag==='mobile')await viewport(390,844,true);
     if(scriptId)await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
-    scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:src})).identifier;
+    scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:mocks[name]})).identifier;
     const s=await load();
-    const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,list:document.getElementById('species-list').innerText,detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
-    if(name==='api-offline')check('API unreachable: saved public snapshot shown with its date and a notice',/^저장된 사본 · \d+종 \(\d{4}-\d{2}-\d{2} 기준\)$/.test(state.state)&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),JSON.stringify(state).slice(0,400));
-    if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',JSON.stringify(state));
-    if(name==='api-empty')check('Empty published API keeps candidates distinct',state.state==='발행 자료 없음 · 분류 검토 후보 22종'&&state.list.includes('다시마')&&!state.list.includes('참굴'),JSON.stringify(state).slice(0,500));
+    const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,disclaimer:document.getElementById('score-disclaimer').textContent,cards:document.querySelectorAll('.species-card').length,published:(data?.species||[]).filter(s=>s.live&&!s.catalog).length,list:document.getElementById('species-list').innerText.slice(0,200),detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
+    const brief=JSON.stringify({...state,detail:state.detail.slice(0,80),full:undefined});
+    if(name==='api-offline')check(`Flow 8 ${tag}: API unreachable → "연결 실패" with the dated saved snapshot and separate counts`,state.state===`연결 실패 · 저장된 사본 사용 (${snapshot.fetched_at} 기준) · ${offlineCounts}`&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),brief);
+    if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',brief);
+    if(name==='api-empty')check(`Flow 7 ${tag}: empty API (200 []) → connected, 운영 발행 0종, the ${catalogIds.length} shown are candidates; no snapshot, no failure`,state.state===`공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 ${catalogIds.length}종`&&state.error===''&&!state.state.includes('사본')&&state.disclaimer.includes('운영 발행 자료가 0종')&&state.disclaimer.includes(`${catalogIds.length}종은 모두 조사 후보`)&&state.cards===catalogIds.length&&state.published===0,brief);
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
-    await evaluate("window.scrollTo(0,0);1");await shot(name,false);
+    await evaluate("window.scrollTo(0,0);1");await shot(tag==='mobile'?`mobile-${name}`:name,false);
   }
-  check('No uncaught page errors',errors.length===0,errors.join(' | '));
+  check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
 finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();
   if(chrome.exitCode===null&&chrome.signalCode===null){

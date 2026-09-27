@@ -121,6 +121,6 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 
 ## 운영 DB 연결 실패 시 저장된 사본 (2026-09-25)
 
-운영 공개 API(Supabase)에 연결하지 못하면(네트워크 끊김·시간 초과·오류 응답) `dist/live-snapshot.json`의 공개 자료 사본을 대신 읽고, 상단에 "저장된 사본 · N종 (날짜 기준)"과 안내문을 띄운다. 빈 응답은 실패가 아니므로 사본으로 바꾸지 않는다. 사본은 공개 API가 주는 `species_profiles`·`species_map_cells` 열 그대로이며 원좌표·레코드 ID가 없다. 인터넷 없이 시연하려면 `python -m http.server 8765 --directory dist`로 로컬에서 연다(기본 배경 지도만 표시).
+운영 공개 API(Supabase)에 연결하지 못하면(네트워크 끊김·시간 초과·오류 응답) `dist/live-snapshot.json`의 공개 자료 사본을 대신 읽고, 상단에 "연결 실패 · 저장된 사본 사용 (날짜 기준) · 운영 발행 N종 · 조사 후보 M종"과 안내문을 띄운다. 빈 응답(200 `[]`)은 실패가 아니므로 사본으로 바꾸지 않고 "공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 22종"과 함께 보이는 종이 모두 조사 후보임을 알린다. 정상 연결도 운영 발행과 조사 후보를 따로 센다(`live-data.js`의 `publishedCount`·`candidateCount` 한 곳에서 계산). 사본은 공개 API가 주는 `species_profiles`·`species_map_cells` 열 그대로이며 원좌표·레코드 ID가 없다. 인터넷 없이 시연하려면 `python -m http.server 8765 --directory dist`로 로컬에서 연다(기본 배경 지도만 표시).
 
 사본 갱신: `python scripts/snapshot_live.py`. URL·키·열 목록은 `dist/live-data.js`에서 읽는다. 운영 자료를 새로 발행한 뒤와 배포 전에 다시 실행한다.

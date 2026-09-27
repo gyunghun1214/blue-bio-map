@@ -531,8 +531,12 @@ function renderList() {
     &&(evidence==='all'||(evidence==='published'?!!s.cells.length:!!s.catalog&&!s.cells.length))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   $('species-count').textContent=`${matches.length}종`;
+  // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
+  const list=$('species-list'),left=list.scrollLeft,top=list.scrollTop,refocus=list.contains(document.activeElement);
   $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.live?(s.catalog?(s.cells.length?'역사 표본 1건 · 4° 셀':s.audit?(s.audit.gbif.retrievedCount===0?'GBIF 검색 0건':'조회 · 공개 보류'):'미수집'):s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:'공개 셀 없음'):`${recordLabel(s)} · ${s.cells.length}셀`}</strong></span></button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species))));
+  list.scrollLeft=left;list.scrollTop=top;
+  if(refocus)list.querySelector('.species-card.selected')?.focus({preventScroll:true});
 }
 
 // Status chips, not a verdict: what exists, what is withheld, and when the summary was published.
@@ -1034,7 +1038,13 @@ function setMapMode(mode){
   renderMap();writeHash();
 }
 
+// Short status next to the map so phones see name, published/candidate and index summary without reaching the detail pane.
+function renderMapSelected(s){
+  const where=!s.live?'추가 수집 OBIS 1° 격자':s.catalog&&s.cells.length?s.status+' · 현재 분포 아님':s.status;
+  $('map-selected').innerHTML=`<b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${!s.live?'추가 수집 자료':s.catalog?'조사 후보':'운영 발행'}</span> <span>${esc(scoreSummary(s))} · ${esc(where)}</span>`;
+}
 function renderMap() {
+  if(selected)renderMapSelected(selected);
   renderPeriodFilter(selected);
   $('period-filter').hidden=mapMode==='value'&&!data?.live;
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
@@ -1168,7 +1178,9 @@ function matrixBlockerText(s){
   const food=row.scores.MFPI===null?`MFPI ${Array.isArray(reason.MFPI)?reason.MFPI.map(k=>matrixReasonLabel[k]||k).join('·'):(matrixReasonLabel[reason.MFPI]||reason.MFPI)}`:null;
   const bio=row.scores.MBPI===null?`MBPI ${row.bioactivity_missing_steps.map(k=>matrixReasonLabel[k]||k).join('·')}`:null;
   const cons=row.scores.MCUI===null?`MCUI ${reason.MCUI==='not_in_red_list'?'IUCN 평가 검색 미확인':row.scope==='expansion_22'?'IUCN 원평가 검수 필요':'IUCN 원평가 확인 필요'}`:null;
-  return [food,bio,cons].filter(Boolean).join(' / ');
+  // Computed pilot values come first, so a held axis never hides a value the report did calculate.
+  const done=['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)!==null).map(k=>`${k} ${pilotScore(s,k).toFixed(1)}`);
+  return [...done,food,bio,cons].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
@@ -1176,7 +1188,8 @@ function toggleSimulation(value){
   $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`시범 지표 ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다. 타당성 미검증.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
-  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
+  const kinds=data?.live?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
+  $('matrix-unplaced').innerHTML=unplaced.length?`<b>정보 부족 · 우선 조사 대상 ${unplaced.length}종${kinds}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
   const points=[['A',24,74,'보전 우선 검토'],['B',77,76,'대체생산 연구 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>`<button class="matrix-point pilot" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}. 타당성 미검증">${i+1}</button>`).join('');
@@ -1209,7 +1222,7 @@ async function loadCollection(){
   $('connection-state').textContent='자료를 불러오는 중';
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
-  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';
+  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
   setMapLegend(live,null);
   $('data-label').textContent=live?'공개 기준 자료':'추가 수집 자료';
   $('score-disclaimer').textContent='자료를 불러오는 중입니다.';
@@ -1229,10 +1242,11 @@ async function loadCollection(){
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
-    $('connection-state').textContent=data.snapshotAt?`저장된 사본 · ${data.species.length}종 (${data.snapshotAt} 기준)`:
-      live&&data.publishedCount===0?`발행 자료 없음 · 분류 검토 후보 ${data.species.length}종`:
-      live?'공개 기준 자료 연결됨 · '+data.species.length+'종':'추가 수집 자료 · '+data.species.length+'종';
+    // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
+    const counts=live?`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`:'';
+    $('connection-state').textContent=data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:live?'공개 기준 자료 연결됨 · '+counts:'추가 수집 자료 · '+data.species.length+'종';
     if(data.snapshotAt){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
+    else if(live&&!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s)applyHash(h);}
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
@@ -1240,6 +1254,7 @@ async function loadCollection(){
 let startHash={};
 async function start(){
   startHash=readHash();
+  if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
   if(['live','demo'].includes(startHash.c))$('collection').value=startHash.c;
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS 통계 API · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);}catch{$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
