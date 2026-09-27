@@ -43,7 +43,7 @@ BBVI는 22종 모두 보류(MBPI 없음).
   - *Seriola quinqueradiata* LC · 2015-03-09 / 2016 · 주석 "Needs updating". 살오징어와 같은 처리로 현행 평가로 쓰고 10년 넘은 평가 표시.
   - *Sepia esculenta*(= *Acanthosepion esculentum*) DD · 2009-03-14 / 2012 · 숫자 매핑 없음.
 - 나머지 16종은 승인명과 주요 동의어(*Laminaria japonica*, *Enteromorpha prolifera*, *Patinopecten yessoensis*, *Crassostrea sikamea*, *Scapharca broughtonii*, *Sebastes schlegeli*)로 IUCN 사이트를 검색해 **검색 범위 안에서 미발견**. 대조 검색 *Haliotis discus* 1건. 공식 NE 판정이 아니며 낮은 점수로 바꾸지 않는다.
-- 국가 적색목록(NIBR·해수부)은 이번 PR에서 반영하지 않았다(PR-B).
+- 국가 적색목록(NIBR·해수부)은 이번 PR에서 반영하지 않았다(PR-B). 결과는 `verified-pilot-3-method.md`에 있다.
 
 ## MFPI 근거
 
