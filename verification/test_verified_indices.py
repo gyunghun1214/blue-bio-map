@@ -46,6 +46,7 @@ def synthetic_assays(evidence):
 
 
 V2 = ROOT / "config" / "verified-indices-v2.json"  # superseded public method; its rules stay tested
+V21 = ROOT / "config" / "verified-indices-v2.1.json"  # superseded by 2.2 (peptide stratum); its rules stay tested
 NATIONAL_MCUI = {506159, 836033, 231750, 393716, 504357, 413600, 1666974}
 
 
@@ -270,15 +271,14 @@ class VerifiedIndicesTests(unittest.TestCase):
 
 
 class VerifiedPilot21Tests(unittest.TestCase):
-    """The published method: v2 plus a separately labelled national MCUI and paper-only peptide raw values."""
+    """The 2.1 method: v2 plus a separately labelled national MCUI and paper-only peptide raw values."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V21))
         self.v2 = build(*load_inputs(config=V2))
 
-    def test_committed_output_is_reproducible(self):
+    def test_method_version(self):
         self.assertEqual(self.report["method_version"], "verified-pilot-2.1")
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
 
     def test_only_national_mcui_is_added_and_labelled(self):
         for old in self.v2["species"] + self.v2["candidate_species"]:
@@ -322,7 +322,7 @@ class VerifiedPilot21Tests(unittest.TestCase):
     def test_reference_combination_is_never_a_score(self):
         rows = self.report["species"] + self.report["candidate_species"]
         self.assertTrue(all(s["reference_combination"] is None for s in rows), "no species has both MFPI and MBPI today")
-        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V21)
         synthetic_assays(evidence)   # oyster gets a one-paper-per-compound MBPI beside its MFPI
         report = build(evidence, candidates, config, snapshot, taxonomy)
         oyster = species(report, 836033)
@@ -426,7 +426,7 @@ class VerifiedPilot3Tests(unittest.TestCase):
 
 
 class OysterLqpResearchScenarioTests(unittest.TestCase):
-    """Research-only config: v3 rules plus the Do 2012 LQP row. Not public (decisions A/B/C pending)."""
+    """Research config: v3 rules plus the Do 2012 LQP row; public 2.2 adopted the same peptide rows (decisions 2026-09-27)."""
     CONFIG = ROOT / "config" / "verified-indices-v3-oyster-lqp.json"
     OUT = ROOT / "research" / "verified-indices" / "assessments-v3-oyster-lqp.json"
 
@@ -450,9 +450,57 @@ class OysterLqpResearchScenarioTests(unittest.TestCase):
         dist = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
         rows = matrix(report, dist("candidate-catalog.json"), dist("expansion-evidence.json"))["species"]
         self.assertFalse(next(r for r in rows if r["aphia_id"] == 836033)["matrix_eligible"])
-        public = species(build(*load_inputs()), 836033)   # public v2.1 keeps the withhold code
-        self.assertEqual((public["scores"]["MBPI"], public["withheld_reasons"]["MBPI"]),
+        old = species(build(*load_inputs(config=V21)), 836033)   # 2.1 kept the withhold code
+        self.assertEqual((old["scores"]["MBPI"], old["withheld_reasons"]["MBPI"]),
                          (None, "compound_origin_assay_chain_or_fixed_cohort_missing"))
+
+
+class VerifiedPilot22Tests(unittest.TestCase):
+    """The published method: 2.1 with the v3 AHTPDB peptide stratum in place of display-only raw values."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v21 = build(*load_inputs(config=V21))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual(self.report["method_version"], "verified-pilot-2.2")
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_undaria_and_oyster_gain_a_single_source_mbpi(self):
+        changed = {}
+        for old in self.v21["species"] + self.v21["candidate_species"]:
+            new = species(self.report, old["aphia_id"])
+            self.assertEqual({k: v for k, v in new["scores"].items() if k != "MBPI"}, {k: v for k, v in old["scores"].items() if k != "MBPI"})
+            self.assertEqual(new.get("national_red_list_fact"), old.get("national_red_list_fact"))
+            if new["scores"]["MBPI"] != old["scores"]["MBPI"]:
+                changed[old["aphia_id"]] = (old["scores"]["MBPI"], new["scores"]["MBPI"], new["withheld_reasons"]["BBVI"], new["mbpi_label"])
+        self.assertEqual(changed, {145721: (None, 19.6, "mbpi_single_source", "참고값(단일 논문)"),
+                                   836033: (None, 72.2, "mbpi_single_source", "참고값(단일 논문)")})
+        research = build(*load_inputs(config=OysterLqpResearchScenarioTests.CONFIG))
+        for aphia in changed:   # same peptide rows and rules as the research scenario
+            self.assertEqual(species(self.report, aphia)["bioactivity_trace"], species(research, aphia)["bioactivity_trace"])
+        self.assertTrue(all(s["scores"]["BBVI"] is None for s in self.report["species"] + self.report["candidate_species"]))
+
+    def test_paper_values_and_ahtpdb_attribution_are_published(self):
+        values = {(s["aphia_id"], i["peptide_sequence"]): [(m["value"], m["unit"], m["substrate"], m["source_id"]) for m in i["measurements"]]
+                  for s in self.report["species"] for i in s["bioactivity_trace"] if i.get("stratum_kind") == "peptide"}
+        self.assertEqual(values, {(145721, "KNFL"): [(225.87, "uM", "HHL", "feng_2021_knfl")],
+                                  (836033, "AEYLCEAC"): [(4287, "uM", "HHL", "chen_2022_oyster")],
+                                  (836033, "LQP"): [(1.18, "uM", "HHL", "do_2012_oyster_lqp")]})
+        ahtpdb = self.report["sources"]["ahtpdb_ic50_2026"]
+        self.assertEqual(ahtpdb["license"], "CC BY-NC 4.0")
+        self.assertIn("10.1093/nar/gku1141", ahtpdb["citation"])
+        for aphia in (145721, 836033):
+            self.assertIn("ahtpdb_ic50_2026", species(self.report, aphia)["source_ids"])
+        cohort = json.loads((ROOT / "research" / "verified-indices" / "peptide-cohort-ahtpdb-ace-hhl.json").read_text(encoding="utf-8"))
+        self.assertIn("CC BY-NC 4.0", cohort["source"]["licence"])
+        self.assertIn("10.1093/nar/gku1141", cohort["source"]["citation"])
+
+    def test_reference_combination_sits_beside_withheld_bbvi(self):
+        oyster = species(self.report, 836033)
+        ref = oyster["reference_combination"]
+        self.assertEqual((ref["inputs"], ref["used_for_score"], oyster["scores"]["BBVI"]), ({"MFPI": 65.5, "MBPI": 72.2}, False, None))
+        self.assertEqual((ref["mbpi_stratum"], ref["mbpi_original_paper_dois"]), ("ahtpdb-ace-ic50-hhl-cushman-cheung", ["10.5352/jls.2012.22.2.220"]))
 
 
 if __name__ == "__main__":

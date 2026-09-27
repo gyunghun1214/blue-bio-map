@@ -8,8 +8,10 @@
       "version": "download retrieved 2026-09-26; sha256 in peptide-cohort-ahtpdb-ace-hhl.json",
       "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
       "accessed": "2026-09-26",
-      "terms": "No licence stated on the download page; only row IDs and numeric values are kept, sequences and the file are not redistributed",
-      "license": "none stated"
+      "terms": "Read as CC BY-NC 4.0 (repository README; its LICENSE file says MIT, the stricter reading is used): non-commercial public release with attribution. Only row IDs and numeric values are kept and turned into percentiles; sequences and the file are not redistributed",
+      "license": "CC BY-NC 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "citation": "Kumar R. et al. (2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides. Nucleic Acids Res 43:D956–D962, doi:10.1093/nar/gku1141"
     },
     "feng_2021_knfl": {
       "provider": "Marine Drugs 19:177 (Feng et al. 2021), full text via Europe PMC PMC8004985",

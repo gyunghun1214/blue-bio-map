@@ -1,6 +1,7 @@
 # AHTPDB 이용 문의 초안 (발송하지 않음)
 
 - 상태: **초안**이다. 발송 여부와 발신자는 팀이 정한다.
+- 2026-09-27: 발송하지 않기로 했다. 비영리 공개이므로 더 엄격한 CC BY-NC 4.0으로 보고 출처를 표시해 쓴다(`oyster-mbpi-2026-09-27.md` 6절).
 - 수신 후보: Prof. Gajendra P. S. Raghava (IIIT-Delhi), raghava@iiitd.ac.in
   - 출처: GitHub `sachini-tech/AHTPDB` README의 maintainer 표기
 - 배경: `docs/species-30-method-review.md` 4절. 내려받기 페이지에는 조건 표기가 없다. 공식 저장소 README는 CC BY-NC 4.0, LICENSE 파일은 MIT로 서로 다르다.

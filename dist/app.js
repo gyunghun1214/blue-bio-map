@@ -4,7 +4,9 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2'];
+// 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
+const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -43,7 +45,7 @@ function evidenceCoverage(s) {
     {name:'영양',stage:pilotScore(s,'MFPI')!==null?'calculated':foodLinked?'linked':foodRows.length||extras.length||nutrition.status==='available'?'found':'unavailable',
       detail:pilotScore(s,'MFPI')!==null?'동기준 영양·가식부·양식 근거로 검증 전 시범 MFPI를 산출했습니다.':foodLinked?'종별 원값은 확인했으나 시료 상태·가식부·동일 기준 비교 또는 양식 근거가 부족해 MFPI는 보류합니다.':'영양 자료가 있더라도 이 종의 비교 가능한 원값인지 확인해야 합니다.'},
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null?'calculated':bioLinked?'linked':partial.length||compounds.status==='available'?'found':'unavailable',
-      detail:pilotScore(s,'MBPI')!==null?'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 시범 MBPI를 산출했습니다.':partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
+      detail:pilotScore(s,'MBPI')!==null?`기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 시범 MBPI를 산출했습니다.${a.mbpi_label?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`:''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?'calculated':conservation?.iucn_state==='assessed'?'linked':'unavailable',
       detail:nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 시범 MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 시범 MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.':'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.'}
   ];
@@ -186,7 +188,7 @@ function verifiedBioValid(a,report){
   if(items.some(x=>!common(x)||!(peptide(x)||compound(x))))return false;
   if(new Set(items.map(x=>x.stratum_kind||'compound')).size!==1)return false;
   if(Math.abs(a.scores.MBPI-Math.max(...items.map(x=>x.adjusted)))>=.06)return false;
-  if(report.method_version==='verified-pilot-2.1'){
+  if(singleSourceRule(report.method_version)){
     const rule=report.method?.bbvi, best=items.reduce((p,x)=>x.adjusted>p.adjusted?x:p);
     if(!Number.isInteger(rule?.minimum_independent_mbpi_dois)||rule.minimum_independent_mbpi_dois<2||
        !rule.single_source_mbpi_label)return false;
@@ -210,7 +212,7 @@ function verifiedAxisErrors(a,report){
     if(a.scores.BBVI===null)return true;
     if(!Number.isFinite(a.scores.MFPI)||!Number.isFinite(a.scores.MBPI)||
        Math.abs(a.scores.BBVI-(w*a.scores.MFPI+(1-w)*a.scores.MBPI))>.06)return false;
-    if(report.method_version==='verified-pilot-2.1'){
+    if(singleSourceRule(report.method_version)){
       const best=(a.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
       const minimum=report.method?.bbvi?.minimum_independent_mbpi_dois;
       return Number.isInteger(minimum)&&best&&
@@ -487,7 +489,7 @@ function showDecision(s){
         if(!b.stratum_id){html+=`<li>${esc(b.compound_id)} · 표적 ${esc(b.stratum?.[0])}, assay ${esc(b.stratum?.[1])} · 중앙 pChEMBL ${esc(b.median_pchembl)} · 비교 화합물 ${esc(b.peer_count)}개 · 백분위 ${esc(b.rank)} · 독립 문헌 ${esc(b.independent_references)}건 · 근거 계수 ${esc(b.evidence_factor)} · ${esc((b.reference_ids||[]).join(', '))}</li>`;continue;}
         const m=(b.measurements||[])[0];
         html+=`<li>${esc(b.stratum_kind==='peptide'?'펩타이드 '+b.peptide_sequence:(m?.compound_name||'')+' '+b.compound_id)} · 비교 코호트 ${esc(b.stratum_id)} `+
-          `(${esc(b.peer_compounds??b.peer_peptides)}개) · ${m?`원값 ${esc(m.raw_value)} ${esc(m.raw_unit)} · `:''}백분위 ${esc(b.percentile)} × 근거 계수 ${esc(b.evidence_factor)} = ${esc(Math.round(b.adjusted*10)/10)} · 원논문 ${esc((b.original_paper_dois||[]).join(', '))}</li>`;
+          `(${esc(b.peer_compounds??b.peer_peptides)}개) · ${m?`원값 ${esc(b.stratum_kind==='peptide'?peptideValue(m):m.raw_value+' '+m.raw_unit)} · `:''}백분위 ${esc(b.percentile)} × 근거 계수 ${esc(b.evidence_factor)} = ${esc(Math.round(b.adjusted*10)/10)} · 원논문 ${esc((b.original_paper_dois||[]).join(', '))}</li>`;
       }
       html+='</ul>';
     }
@@ -595,7 +597,9 @@ function verifiedBioTrace(s){
   if(!items.length||a.axis_errors?.MBPI)return '';
   const cfg=data.assessmentInfo?.method?.bioactivity||{};
   const top=Math.max(...items.map(x=>x.adjusted));
-  const dois=[...new Set(items.flatMap(x=>x.original_paper_dois||[]).map(d=>d.toLowerCase()))];
+  // Independence is judged on the value that sets MBPI, as the BBVI rule does; other rows are other peptides or compounds.
+  const best=items.find(x=>Math.abs(x.adjusted-top)<1e-9);
+  const dois=[...new Set((best.original_paper_dois||[]).map(d=>d.toLowerCase()))];
   const doiLink=d=>`<a href="https://doi.org/${encodeURI(d)}" target="_blank" rel="noopener">${esc(d)}</a>`;
   const rows=[...items].sort((x,y)=>y.adjusted-x.adjusted).map(x=>{
     const used=Math.abs(x.adjusted-top)<1e-9;
@@ -603,18 +607,26 @@ function verifiedBioTrace(s){
     const m=(x.measurements||[])[0]||{};
     const name=peptide?`펩타이드 ${esc(x.peptide_sequence)}`:
       `${esc(m.compound_name||x.compound_id)} · ${m.structure_url?sourceLink(m.structure_url,x.compound_id):esc(x.compound_id)}${m.molecular_formula?' · '+esc(m.molecular_formula):''}`;
-    const raw=peptide?`pIC50 ${esc(x.pIC50)}`:(x.measurements||[]).map(v=>
+    const raw=peptide?(x.measurements||[]).map(v=>esc(`${v.target} ${v.endpoint} ${v.relation} ${peptideValue(v)} · 기질 ${v.substrate}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:(x.measurements||[]).map(v=>
       `IC50 ${esc(v.relation||'')} ${esc(v.raw_value)}${v.raw_sd!==undefined?' ± '+esc(v.raw_sd):''} ${esc(v.raw_unit)}`).join(' / ');
     const cohort=peptide?`펩타이드 ${esc(x.peer_peptides)}개`:`화합물 ${esc(x.peer_compounds)}개`;
     return `<div class="score-fact${used?' score-used':''}"><b>${used?'점수에 쓴 값 · ':''}${name}</b>`+
       `<span>${raw}${m.target_id?' · 표적 '+esc(m.target_id):''}${m.test_system?' · '+esc(m.test_system):''}</span></div>`+
       (m.conditions_key?`<p class="fine">시험 조건: ${esc(m.conditions_key)}</p>`:'')+
+      (peptide?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
+        return `<p class="fine">원값 출처: ${verifiedSource(v.source_id,esc(src?.provider||'원논문')+' ↗')} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}</p>`;}).join(''):'')+
       `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`;
   }).join('');
+  // A peptide percentile ranks against the fixed AHTPDB cohort (CC BY-NC 4.0), so the cohort is cited where the rank is shown.
+  const pep=best.stratum_kind==='peptide'?data.assessmentInfo?.method?.peptide_bioactivity:null;
+  const pepSrc=pep?data.assessmentInfo?.sources?.[pep.cohort_source_id]:null;
+  const scope=pep?`AHTPDB에서 고른 고정 비교집단(${esc(pep.target)} ${esc(pep.endpoint)}, 기질 ${esc(pep.substrate)}, 펩타이드 ${esc(best.peer_peptides)}개) 안의 상대 순위입니다.`:
+    '같은 논문·같은 시험 조건 안의 상대 순위입니다.';
   return `<h4>점수 근거 · ${esc(items.length)}개 측정값</h4>${rows}`+
-    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 독립 원논문 ${dois.length}편`+
+    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 원논문 ${dois.length}편`+
     `${dois.length<2?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
-    `<p class="fine">한계: 백분위는 같은 논문·같은 시험 조건 안의 상대 순위입니다. ${dois.length<2?'독립 재현 논문이 아직 없습니다. ':''}세포 밖(효소) 시험값이며 임상 효과나 제품 가치가 아닙니다.</p>`;
+    `<p class="fine">한계: 백분위는 ${scope} ${dois.length<2?'독립 재현 논문이 아직 없습니다. ':''}세포 밖(효소) 시험값이며 임상 효과나 제품 가치가 아닙니다.</p>`+
+    (pep?`<p class="fine">비교집단 출처: ${verifiedSource(pep.cohort_source_id,esc(pepSrc?.provider||'AHTPDB')+' ↗')} · ${esc(pepSrc?.citation||'인용 미기재')} · 이용조건 ${esc(pepSrc?.license||'미확인')} · 행 ID와 IC50 값만 써서 백분위로 가공했습니다.</p>`:'');
 }
 // Paper values are stored in µM; values of 1000 µM and above are also shown in mM as the paper reports them.
 const peptideValue = r => r.unit==='uM'?(r.value>=1000?`${r.value/1000} mM (${r.value} µM)`:`${r.value} µM`):`${r.value} ${r.unit||''}`;
@@ -699,7 +711,7 @@ function axisPairsHtml(){
     if(pilotScore(s,k)===null||pilotScore(s,'MCUI')===null)continue;
     const cohort=k==='MFPI'?s.assessment.food_trace?.cohort_id:k==='MBPI'?s.assessment.bioactivity_trace?.[0]?.stratum_id:'BBVI';
     const key=`${k} × MCUI(${nationalMcui(s)?'한국 국가 평가 기반':'IUCN 기반'}) · ${cohort}`;
-    groups.set(key,[...(groups.get(key)||[]),`${s.label} ${k} ${pilotScore(s,k).toFixed(1)} · MCUI ${pilotScore(s,'MCUI').toFixed(1)}`]);
+    groups.set(key,[...(groups.get(key)||[]),`${s.label} ${k} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment.mbpi_label?' ('+s.assessment.mbpi_label+')':''} · MCUI ${pilotScore(s,'MCUI').toFixed(1)}`]);
   }
   const zero=['MFPI','MBPI','BBVI'].filter(k=>![...groups.keys()].some(g=>g.startsWith(k+' ')));
   return `<b>축 쌍 보기 · 두 값이 모두 있는 종만</b><span>MFPI만의 쌍은 BBVI가 아닙니다. IUCN 기반과 한국 국가 평가 기반 MCUI, 서로 다른 비교집단은 합치거나 순위를 매기지 않습니다. 종 단위 값이며 해역·셀 값이 아닙니다. 나열 순서는 카탈로그 순서입니다.</span>`+
@@ -932,7 +944,7 @@ function renderLiveDetail(s) {
   // A status says whether an indicator was computed; "일부 근거 확인" is evidence without an indicator.
   const axes=[['MFPI','식량 근거'],['MBPI','생리활성 근거'],['MCUI','보전 평가']].map(([k,label])=>{
     const st=axisState(s,k), v=st.value, status=st.kind!=='withheld'||VERIFIED.includes(pilot?.report_version)?st.label:'산출 보류';
-    return row(label,v===null?(status==='산출 보류'?status:status+' · 지표 미산출'):`${v.toFixed(1)} · 검증 전 시범 지표`,v===null?'pending':'done');
+    return row(label,v===null?(status==='산출 보류'?status:status+' · 지표 미산출'):`${v.toFixed(1)} · 검증 전 시범 지표${k==='MBPI'&&s.assessment?.mbpi_label?' · '+esc(s.assessment.mbpi_label):''}`,v===null?'pending':'done');
   }).join('');
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
   $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+

@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.1.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v2.2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -371,7 +371,10 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         out.append((origin, {"stratum_kind": "peptide", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
                              "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
                              "peer_peptides": len(peers), "pIC50": round(value, 3), "percentile": round(rank, 2),
-                             "evidence_factor": factor, "adjusted": rank * factor}))
+                             "evidence_factor": factor, "adjusted": rank * factor,
+                             # the paper values behind pIC50, so the page can show the original number and its source
+                             "measurements": [{k: r[k] for k in ("target", "endpoint", "relation", "value", "unit", "substrate",
+                                                                 "source_id", "original_paper_doi")} for r in own]}))
     return out
 
 
@@ -676,12 +679,13 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(not set(extra["sources"]) & set(evidence["sources"]), "supplement redefines a source")
         evidence = {**evidence, **{k: v for k, v in extra.items() if k not in ("schema_version", "snapshot_date", "sources")},
                     "sources": {**evidence["sources"], **extra["sources"]}}
-    for path in cfg.get("peptide_supplements", []):  # research scenario configs only: extra reviewed peptide rows, same rules
+    for path in cfg.get("peptide_supplements", []):  # extra reviewed peptide rows, same rules; only their sources and the cohort's
         extra = read(ROOT / path)
         require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide supplement snapshot differs from evidence")
-        require(not set(extra["sources"]) & set(evidence["sources"]), "peptide supplement redefines a source")
+        used = {r["source_id"] for r in extra["peptide_bioactivity"]} | ({cfg["peptide_bioactivity"]["cohort_source_id"]} & set(extra["sources"]))
+        require(not used & set(evidence["sources"]), "peptide supplement redefines a source")
         evidence = {**evidence, "peptide_bioactivity": evidence.get("peptide_bioactivity", []) + extra["peptide_bioactivity"],
-                    "sources": {**evidence["sources"], **extra["sources"]}}
+                    "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
     if cfg.get("national_fact_supplement"):  # only the national red-list keys and their sources, not the whole v3 supplement
         extra = read(ROOT / cfg["national_fact_supplement"])
         require(extra.get("snapshot_date") == evidence["snapshot_date"], "national fact snapshot differs from evidence")

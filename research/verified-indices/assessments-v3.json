@@ -5804,9 +5804,11 @@
     },
     "ahtpdb_ic50_2026": {
       "accessed": "2026-09-26",
-      "license": "none stated",
+      "citation": "Kumar R. et al. (2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides. Nucleic Acids Res 43:D956–D962, doi:10.1093/nar/gku1141",
+      "license": "CC BY-NC 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
       "provider": "AHTPDB, IIIT-Delhi (Raghava group)",
-      "terms": "No licence stated on the download page; only row IDs and numeric values are kept, sequences and the file are not redistributed",
+      "terms": "Read as CC BY-NC 4.0 (repository README; its LICENSE file says MIT, the stricter reading is used): non-commercial public release with attribution. Only row IDs and numeric values are kept and turned into percentiles; sequences and the file are not redistributed",
       "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
       "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
       "version": "download retrieved 2026-09-26; sha256 in peptide-cohort-ahtpdb-ace-hhl.json"
@@ -6700,6 +6702,18 @@
         {
           "adjusted": 19.602272727272727,
           "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.3390/md19030177",
+              "relation": "=",
+              "source_id": "feng_2021_knfl",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 225.87
+            }
+          ],
           "original_paper_dois": [
             "10.3390/md19030177"
           ],
@@ -8973,6 +8987,18 @@
         {
           "adjusted": 1.0653409090909092,
           "evidence_factor": 0.75,
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.3389/fnut.2022.981163",
+              "relation": "=",
+              "source_id": "chen_2022_oyster",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 4287.0
+            }
+          ],
           "original_paper_dois": [
             "10.3389/fnut.2022.981163"
           ],
