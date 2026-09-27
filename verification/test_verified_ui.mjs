@@ -12,6 +12,7 @@ vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.attach=attachPilotAssessments;
   globalThis.score=pilotScore;
+  globalThis.state=axisState;
   globalThis.renderScores=renderVerifiedIndices;
   globalThis.coverage=evidenceCoverage;
   globalThis.coverageBar=coverageBar;`,ctx);
@@ -130,6 +131,7 @@ assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis
 assert.match(dom.comparison.innerHTML,/>42\.2<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>54\.2<small>/);
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/>10\.0<small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/65\.5/,'page 2 species must not leak into page 1');
+for(const s of next.species.slice(0,5))assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 dom['comparison-next'].click();
 assert.deepEqual(headers(),labels.slice(5),'next page shows species 6-8');
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종');
@@ -150,7 +152,14 @@ const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>bad});
 next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);
-assert.equal(next.species[0].assessment,undefined,'browser must reject score that differs from its trace');
+// Axis fault: only MFPI and the dependent BBVI are hidden as a technical error; MBPI and MCUI stay.
+let oyster=next.species[0];
+assert.equal(ctx.score(oyster,'MFPI'),null,'browser must reject score that differs from its trace');
+assert.equal(oyster.assessment.axis_errors.MFPI,'technical_error');
+assert.equal(oyster.assessment.axis_errors.BBVI,'technical_error');
+assert.equal(ctx.score(oyster,'MCUI'),original.species.find(s=>s.aphia_id===836033).scores.MCUI,'one axis error must not hide other axes');
+assert.equal(ctx.state(oyster,'MFPI').label,'기술 오류');
+assert.notEqual(ctx.state(oyster,'MBPI').kind,'technical_error');
 const falseRank=report();
 const falseFood=falseRank.species.find(s=>s.aphia_id===145721);
 falseFood.food_trace.nutrients.protein_g.percentile_unrounded=99;
@@ -163,22 +172,32 @@ const recalculated=settings.nutrient_weight*nutrients.reduce((sum,n)=>sum+n.perc
 falseFood.scores.MFPI=Math.round(recalculated*10)/10;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>falseRank});
 next={live:true,species:[sp(145721,'Undaria pinnatifida','미역')]};await ctx.attach(next);
-assert.equal(next.species[0].assessment,undefined,'browser must recalculate percentile from frozen peer values, not trust a self-consistent forged score');
+assert.equal(ctx.score(next.species[0],'MFPI'),null,'browser must recalculate percentile from frozen peer values, not trust a self-consistent forged score');
+assert.equal(next.species[0].assessment.axis_errors.MFPI,'technical_error');
 const falsePeer=report();
 falsePeer.species.find(s=>s.aphia_id===145721).food_trace.nutrients.protein_g.peer_values[0].value=0.1;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>falsePeer});
 next={live:true,species:[sp(145721,'Undaria pinnatifida','미역')]};await ctx.attach(next);
-assert.equal(next.species[0].assessment,undefined,'changed peer values must invalidate the published rank');
+assert.equal(ctx.score(next.species[0],'MFPI'),null,'changed peer values must invalidate the published rank');
+assert.equal(ctx.state(next.species[0],'MFPI').kind,'technical_error');
 const badMcui=report();
 badMcui.species.find(s=>s.aphia_id===241776).scores.MCUI=60;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>badMcui});
 next={live:true,species:[sp(241776,'Apostichopus japonicus','해삼')]};await ctx.attach(next);
-assert.equal(next.species[0].assessment,undefined,'MCUI must equal the pilot mapping of its IUCN category');
+assert.equal(ctx.score(next.species[0],'MCUI'),null,'MCUI must equal the pilot mapping of its IUCN category');
+assert.deepEqual(Object.keys(next.species[0].assessment.axis_errors),['MCUI'],'an MCUI fault leaves MFPI, MBPI and BBVI untouched');
 const noName=report();
 noName.species.find(s=>s.aphia_id===836033).scientific_name='Another oyster';
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>noName});
 next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);
 assert.equal(next.species[0].assessment,undefined,'accepted taxon join needs both name and AphiaID');
+assert.equal(ctx.state(next.species[0],'MCUI').label,'기술 오류','identity fault hides the whole species as a technical error');
+for(const [fetcher,why] of [[async()=>{throw new Error('offline')},'network'],[async()=>({status:503,ok:false}),'HTTP 503'],
+    [async()=>({status:200,ok:true,json:async()=>{throw new SyntaxError('bad json')}}),'unreadable JSON']]){
+  ctx.fetch=fetcher;next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);
+  for(const axis of ['MFPI','MBPI','MCUI','BBVI'])
+    assert.equal(ctx.state(next.species[0],axis).label,'조회 실패',`${why}: lookup failure is not a withheld score`);
+}
 // Research candidates attach only to catalog entries and keep their own label.
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:{gbif:{retrievedCount:0},nutrition:{},iucn:{}},cells:[]});
@@ -189,4 +208,66 @@ assert.equal(ctx.score(next.species[1],'MCUI'),null,'not in Red List is never a 
 assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
 assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'calculated');
+
+// All 30 published rows (8 operating + 22 candidates) attach without a technical or lookup fault.
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
+next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.aphia_id,s.scientific_name,s.korean_name))]};
+await ctx.attach(next);
+assert.equal(next.species.length,30);
+for(const s of next.species){
+  assert.equal(s.assessmentState,undefined,`${s.label}: no species-level fault`);
+  assert.equal(Object.keys(s.assessment.axis_errors).length,0,`${s.label}: no axis fault in the published report`);
+  const row=[...original.species,...original.candidate_species].find(r=>r.aphia_id===s.aphiaID);
+  for(const axis of ['MFPI','MBPI','MCUI','BBVI'])assert.equal(ctx.score(s,axis),row.scores[axis],`${s.label} ${axis}`);
+}
+// Ecklonia 67.5: the scored ACE measurements come first; the SARS-CoV 3CLpro paper is only a follow-up lead.
+ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
+html=ctx.renderScores(next.species.find(s=>s.aphiaID===371986));
+const mbpiBody=html.slice(html.indexOf('data-axis="MBPI"'),html.indexOf('data-axis="MCUI"'));
+for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL25mM','wijesinghe-2011-cell-free-ACE-IC50','90 × 근거 계수 0.75 = 67.5','10.4162/nrp.2011.5.2.93','독립 원논문 1편','최댓값'])
+  assert.ok(mbpiBody.includes(text),`Ecklonia MBPI evidence missing ${text}`);
+assert.ok(mbpiBody.indexOf('dieckol')<mbpiBody.indexOf('후속 조사 단서'),'scored ACE evidence precedes the leads');
+assert.ok(mbpiBody.indexOf('후속 조사 단서')<mbpiBody.indexOf('3CLpro'),'3CLpro appears only under follow-up leads');
+assert.doesNotMatch(mbpiBody,/점수 제외/);
+
+// BBVI: a held report value is never recomputed; the weight re-mixes only a BBVI the report found eligible.
+const withBio=(status,bbvi)=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033),e=r.candidate_species.find(s=>s.aphia_id===371986);
+  o.bioactivity_trace=structuredClone(e.bioactivity_trace);o.scores.MBPI=67.5;o.score_status.MBPI='산출됨';
+  o.scores.BBVI=bbvi;o.score_status.BBVI=status;return r;};
+const oysterOnly=async r=>{ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);return next.species[0];};
+oyster=await oysterOnly(withBio('산출됨',66.5));
+assert.equal(ctx.score(oyster,'BBVI'),66.5);
+vm.runInContext('bbviWeight=.8',ctx);
+assert.equal(ctx.score(oyster,'BBVI'),65.9,'weight updates an eligible BBVI');
+oyster=await oysterOnly(withBio('산출 보류',null));
+assert.equal(ctx.score(oyster,'MBPI'),67.5);
+assert.equal(ctx.score(oyster,'BBVI'),null,'a single-paper hold is not bypassed by pilotScore');
+vm.runInContext('bbviWeight=.5',ctx);
+assert.equal(ctx.score(oyster,'BBVI'),null);
+
+// Peptide and small-molecule MBPI are validated as separate strata.
+const peptide=()=>({stratum_kind:'peptide',stratum_id:'ahtpdb-ace-ic50-hhl-cushman-cheung',peptide_sequence:'AEYLCEAC',pIC50:2.368,
+  peer_peptides:352,percentile:1.42,evidence_factor:.75,adjusted:1.065,original_paper_dois:['10.3389/fnut.2022.981163']});
+const withPeptide=trace=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033);o.bioactivity_trace=trace;o.scores.MBPI=1.1;o.score_status.MBPI='산출됨';return r;};
+oyster=await oysterOnly(withPeptide([peptide()]));
+assert.equal(ctx.score(oyster,'MBPI'),1.1,'peptide stratum accepted by its own rule');
+oyster=await oysterOnly(withPeptide([{...peptide(),peptide_sequence:undefined}]));
+assert.equal(ctx.state(oyster,'MBPI').kind,'technical_error','peptide without a sequence is rejected');
+oyster=await oysterOnly(withPeptide([{...peptide(),stratum_kind:undefined,compound_id:'CID:1'}]));
+assert.equal(ctx.state(oyster,'MBPI').kind,'technical_error','a peptide row cannot pass as a small molecule');
+oyster=await oysterOnly(withPeptide([peptide(),{...original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace[0],adjusted:1.0,percentile:1.3333333}]));
+assert.equal(ctx.state(oyster,'MBPI').kind,'technical_error','peptide and compound strata never mix');
+assert.equal(ctx.score(oyster,'MFPI'),65.5,'an MBPI fault leaves MFPI');
+
+// National MCUI is its own branch and never passes as a global IUCN value.
+const withNational=(basis,score)=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033);
+  o.national_assessment={...o.national_red_list_fact,label:'국가 평가'};o.mcui_basis=basis;o.scores.MCUI=score;o.score_status.MCUI='산출됨';return r;};
+oyster=await oysterOnly(withNational('national',10));
+assert.equal(ctx.score(oyster,'MCUI'),10,'reviewed national LC maps to 10 in its own stratum');
+vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
+assert.match(ctx.renderScores(oyster),/한국 국가 평가 기반 시범 MCUI[^]*1371쪽/);
+oyster=await oysterOnly(withNational('national',35));
+assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','national score must equal its category mapping');
+oyster=await oysterOnly(withNational(undefined,10));
+assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','a national fact cannot pass as a global IUCN MCUI');
 console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards, research candidates');
