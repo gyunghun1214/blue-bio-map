@@ -72,3 +72,6 @@
 #comparison thead th:first-child{z-index:4;background:#f0f5f7}
 .coverage-bar .seg,.coverage-bar .seg b,.coverage-bar .seg small{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
 #comparison td .coverage-bar{min-width:330px}
+.coverage-bar .seg.calculated small{color:#fff}
+#comparison .coverage-guide{position:sticky;left:0;z-index:1;width:min(100%,calc(100vw - 80px));max-width:100%;margin:0;padding:10px 14px;background:#fff;white-space:normal;overflow-wrap:anywhere}
+.comparison-return{display:block;margin:0 0 12px;text-decoration:underline;text-underline-offset:3px}
