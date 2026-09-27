@@ -44,6 +44,7 @@
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
         "https://www.fao.org/4/y4765e/y4765e0b.htm",
         "https://www.iucnredlist.org/search",
+        "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
@@ -184,6 +185,7 @@
         "https://www.e-kfas.org/Upload/files/kfas/KSSHBC_2011_v44n2_118.pdf",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/176085/1428473",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
@@ -326,6 +328,7 @@
         "https://pubmed.ncbi.nlm.nih.gov/32061872/",
         "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
         "https://www.iucnredlist.org/search",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf"
       ]
@@ -375,6 +378,7 @@
         "https://www.frdc.com.au/sites/default/files/products/2008-905-DLD.pdf",
         "https://www.iucnredlist.org/search",
         "https://www.mdpi.com/2304-8158/14/9/1595",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
     },
@@ -598,6 +602,7 @@
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
@@ -666,6 +671,7 @@
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_yessoscallop.htm",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=393716",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
@@ -730,6 +736,7 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Anadara+broughtonii&limit=100",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=504357",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]
@@ -763,6 +770,7 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sinonovacula+constricta&limit=100",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a"
       ]
     },
@@ -1100,6 +1108,7 @@
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/162666/940677",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1666974",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ]

@@ -68,6 +68,8 @@
     "effort_adjustment": 10,
     "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
   },
+  "national_fact_supplement": "research/verified-indices/evidence-v3.json",
+  "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
   "bbvi": {"default_food_weight": 0.5, "sensitivity_food_weights": [0.25, 0.5, 0.75]},
   "sensitivity": {
     "mfpi_weights": [

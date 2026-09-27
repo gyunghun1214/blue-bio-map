@@ -611,6 +611,11 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if config.get("national_red_list"):
             row["national_assessment"] = national
             row["mcui_basis"] = mcui_basis
+        if config.get("national_fact_supplement"):  # verified-pilot-2: national category is a fact beside MCUI, never a score
+            fact = next((r for r in evidence.get("national_red_list", []) if r.get("aphia_id") == aphia and r.get("reviewed") is True), None)
+            row["national_red_list_fact"] = fact and {**fact, "used_for_score": False}
+            if fact:
+                row["source_ids"] = sorted({*row["source_ids"], fact["source_id"]})
         return row
     output = [assess(c) for c in identities]
     operating = {c["aphia_id"] for c in identities}
@@ -639,7 +644,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
             "candidate_species": research,
             **({k: evidence[k] for k in ("national_red_list_not_assigned", "national_red_list_search") if k in evidence}
-               if config.get("national_red_list") else {})}
+               if config.get("national_red_list") or config.get("national_fact_supplement") else {})}
 
 
 def render(report: dict) -> str:
@@ -657,6 +662,13 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(not set(extra["sources"]) & set(evidence["sources"]), "supplement redefines a source")
         evidence = {**evidence, **{k: v for k, v in extra.items() if k not in ("schema_version", "snapshot_date", "sources")},
                     "sources": {**evidence["sources"], **extra["sources"]}}
+    if cfg.get("national_fact_supplement"):  # only the national red-list keys and their sources, not the whole v3 supplement
+        extra = read(ROOT / cfg["national_fact_supplement"])
+        require(extra.get("snapshot_date") == evidence["snapshot_date"], "national fact snapshot differs from evidence")
+        keys = ("national_red_list", "national_red_list_not_assigned", "national_red_list_search")
+        used = {r["source_id"] for r in extra["national_red_list"]}
+        require(not used & set(evidence["sources"]), "national fact supplement redefines a source")
+        evidence = {**evidence, **{k: extra[k] for k in keys}, "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
