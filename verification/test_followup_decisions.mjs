@@ -33,7 +33,10 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
   assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
-assert.equal(scored,14,'7 MFPI + 1 MBPI + 7 MCUI include one overlapping species');
+assert.equal(scored,18,'7 MFPI + 1 MBPI + 14 MCUI (7 IUCN + 7 Korean national) cover 18 species');
+const national=readiness.species.filter(r=>r.mcui_basis==='national');
+assert.equal(national.length,7,'national MCUI stays labelled by basis');
+assert.ok(national.every(r=>r.matrix_eligible===false),'national MCUI never enters the IUCN-based matrix');
 const oyster=readiness.species.find(r=>r.aphia_id===836033);
 assert.equal(ctx.followup({...make(oyster),assessment:{...byId.get(836033),scores:{...byId.get(836033).scores,MFPI:0}}}),null,
   'forged zero or changed published score cannot attach a follow-up row');

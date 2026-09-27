@@ -15,7 +15,8 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.state=axisState;
   globalThis.renderScores=renderVerifiedIndices;
   globalThis.coverage=evidenceCoverage;
-  globalThis.coverageBar=coverageBar;`,ctx);
+  globalThis.coverageBar=coverageBar;
+  globalThis.nationalMcui=nationalMcui;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -64,7 +65,10 @@ for(const id of [241776,342067]){
 Object.assign(by(836033),liveMeta);
 assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
 assert.notEqual(ctx.coverage(by(836033)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
-assert.equal(ctx.coverage(by(836033)).checks[4].stage,'unavailable','IUCN search miss is not an assessment');
+// IUCN search miss is not an assessment: the oyster's MCUI comes only from the Korean national assessment, labelled as such.
+assert.equal(ctx.coverage(by(836033)).checks[4].stage,'calculated');
+assert.match(ctx.coverage(by(836033)).checks[4].detail,/한국 국가생물적색자료집.*IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다/);
+assert.doesNotMatch(ctx.coverage(by(836033)).checks[4].detail,/IUCN 평가와/);
 assert.match(ctx.coverageBar(by(836033)),/종 연결/);
 assert.doesNotMatch(ctx.coverageBar(by(836033)),/3\/5|점수 3/);
 for(const id of [372119,494972]){
@@ -90,15 +94,17 @@ const published={live:true,species:snapshot.profiles.map(p=>({
   recordCount:p.evidence_summary.record_count
 }))};
 await ctx.attach(published);
+// 2.1: oyster and mussel MCUI come from the Korean national assessment (labelled apart; see coverage detail test above).
 const stages={
-  836033:['verified','linked','calculated','linked','unavailable'],
-  506159:['verified','linked','linked','linked','unavailable'],
+  836033:['verified','linked','calculated','linked','calculated'],
+  506159:['verified','linked','linked','linked','calculated'],
   494972:['verified','linked','linked','linked','unavailable'],
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
   250680:['verified','linked','calculated','linked','unavailable'],
   241776:['verified','linked','found','linked','calculated'],
-  145721:['verified','linked','calculated','found','unavailable']
+  // 2.1: wakame's reviewed peptide leads confirm the origin species (chain.origin), so bioactivity is 'linked', still no MBPI.
+  145721:['verified','linked','calculated','linked','unavailable']
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
@@ -270,4 +276,22 @@ oyster=await oysterOnly(withNational('national',35));
 assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','national score must equal its category mapping');
 oyster=await oysterOnly(withNational(undefined,10));
 assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','a national fact cannot pass as a global IUCN MCUI');
+// verified-pilot-2.1 on the real report: national MCUI stays out of the matrix; paper peptide values are raw, never scored.
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
+next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
+for(const s of original.species.filter(s=>s.mcui_basis==='national')){
+  assert.equal(ctx.score(by(s.aphia_id),'MCUI'),10,`${s.korean_name}: national LC -> 10`);
+  assert.equal(ctx.nationalMcui(by(s.aphia_id)),true);
+  assert.equal(ctx.assessedForMatrix(by(s.aphia_id)),false,`${s.korean_name}: national MCUI never enters the IUCN matrix`);
+}
+for(const [id,texts] of [[836033,['AEYLCEAC','4.287 mM (4287 µM)','기질 HHL','10.3389/fnut.2022.981163']],[145721,['KNFL','225.87 µM','기질 HHL','10.3390/md19030177']]]){
+  html=ctx.renderScores(by(id));
+  const raw=html.slice(html.indexOf('<h4>원값·출처 · 점수 미사용</h4>'));
+  assert.ok(html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: raw-value section`);
+  for(const text of [...texts,'CC BY 4.0','백분위·점수를 내지 않습니다','MBPI·BBVI에 쓰지 않습니다'])assert.ok(raw.includes(text),`${id}: missing ${text}`);
+  assert.doesNotMatch(raw,/AHTPDB[^<]*\d|백분위 \d/,'no AHTPDB percentile or rank is shown');
+  assert.equal(ctx.score(by(id),'MBPI'),null,'a raw paper value never becomes MBPI');
+}
+// Peptide partial leads render their sequence and value, not an empty compound row.
+assert.match(ctx.renderScores(by(145721)),/펩타이드 IW · ACE IC50 = 1.5 µM/);
 console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards, research candidates');

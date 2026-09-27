@@ -32,7 +32,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -98,7 +98,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "다시마",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
@@ -358,7 +362,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -406,7 +410,11 @@
         "mean_ratio": 0.33
       },
       "korean_name": "감태",
+      "mbpi_label": "참고값(단일 논문)",
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Ecklonia cava",
       "score_status": {
         "BBVI": "산출 보류",
@@ -478,7 +486,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -526,7 +534,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "가시파래",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출 보류",
@@ -587,7 +599,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -635,7 +647,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "괭생이모자반",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출 보류",
@@ -696,7 +712,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -762,7 +778,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "Gracilaria vermiculophylla",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
         "BBVI": "산출 보류",
@@ -824,7 +844,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -898,7 +918,11 @@
         "mean_ratio": 0.2
       },
       "korean_name": "청각",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Codium fragile",
       "score_status": {
         "BBVI": "산출 보류",
@@ -1025,7 +1049,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -1561,6 +1585,28 @@
         "mean_ratio": 0.33
       },
       "korean_name": "바지락",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 231750,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1468,
+        "index_page_viewer": 1470,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1375,
+        "list_page_viewer": 1377,
+        "name_as_published": "바지락 Ruditapes philippinarum A. Adams & Reeve, 1848",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Ruditapes philippinarum",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 231750,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -1579,17 +1625,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출 보류",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 52.1
       },
       "sensitivity": {
@@ -1608,7 +1655,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       }
     },
@@ -1651,7 +1698,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Disk abalone, Raw",
@@ -1725,7 +1772,11 @@
         "mean_ratio": 0.53
       },
       "korean_name": "전복(종 수준)",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Haliotis discus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -1854,7 +1905,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2373,6 +2424,28 @@
         "mean_ratio": 0.33
       },
       "korean_name": "큰가리비",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 393716,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1484,
+        "index_page_viewer": 1486,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1379,
+        "list_page_viewer": 1381,
+        "name_as_published": "큰가리비 Mizuhopecten yessoensis Jay, 1856",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Mizuhopecten yessoensis",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 393716,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -2391,17 +2464,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Mizuhopecten yessoensis",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출 보류",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 56.3
       },
       "sensitivity": {
@@ -2420,7 +2494,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       }
     },
@@ -2455,7 +2529,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2503,7 +2577,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "시카메굴",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Magallana sikamea",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2565,7 +2643,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -2639,6 +2717,29 @@
         "mean_ratio": 0.2
       },
       "korean_name": "피조개",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 504357,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1486,
+        "index_page_viewer": 1488,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1380,
+        "list_page_viewer": 1382,
+        "name_as_published": "피조개 Scapharca broughtonii Schrenck, 1867",
+        "name_note": "WoRMS 591364 unaccepted; valid name 504357 A. broughtonii",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Anadara broughtonii",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 504357,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -2658,17 +2759,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Anadara broughtonii",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출 보류",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -2686,7 +2788,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": "component_missing_in_source"
       }
     },
@@ -2720,7 +2822,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2768,6 +2870,28 @@
         "mean_ratio": 0.0
       },
       "korean_name": "맛조개",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 413600,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1453,
+        "index_page_viewer": 1455,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1370,
+        "list_page_viewer": 1372,
+        "name_as_published": "가리맛조개 Sinonovacula constricta Lamarck, 1818",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Sinonovacula constricta",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 413600,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -2786,17 +2910,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출 보류",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -2813,7 +2938,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": "comparable_nutrition_missing"
       }
     },
@@ -2856,7 +2981,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -2922,7 +3047,11 @@
         "mean_ratio": 0.33
       },
       "korean_name": "고등어",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -2994,7 +3123,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -3068,7 +3197,11 @@
         "mean_ratio": 0.53
       },
       "korean_name": "멸치",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Engraulis japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3140,7 +3273,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -3214,7 +3347,11 @@
         "mean_ratio": 0.6
       },
       "korean_name": "참조기",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3277,7 +3414,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -3351,7 +3488,11 @@
         "mean_ratio": 0.27
       },
       "korean_name": "넙치",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -3479,7 +3620,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -3998,7 +4139,11 @@
         "mean_ratio": 0.33
       },
       "korean_name": "조피볼락",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4138,7 +4283,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -4668,7 +4813,11 @@
         "mean_ratio": 0.67
       },
       "korean_name": "방어",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4733,7 +4882,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Pacific cod, Raw",
@@ -4807,7 +4956,11 @@
         "mean_ratio": 0.2
       },
       "korean_name": "대구",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -4869,7 +5022,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -4943,7 +5096,11 @@
         "mean_ratio": 0.27
       },
       "korean_name": "꽃게",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5005,7 +5162,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -5071,7 +5228,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "참문어(동아시아 종)",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Octopus sinensis",
       "score_status": {
         "BBVI": "산출 보류",
@@ -5140,7 +5301,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Cuttle fish, Raw",
@@ -5231,6 +5392,29 @@
         "mean_ratio": 0.42
       },
       "korean_name": "갑오징어",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 1666974,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1483,
+        "index_page_viewer": 1485,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1379,
+        "list_page_viewer": 1381,
+        "name_as_published": "참갑오징어 Sepia esculenta Hoyle, 1885",
+        "name_note": "WoRMS 342131 superseded combination; valid name 1666974 A. esculentum",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Acanthosepion esculentum",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 1666974,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -5250,17 +5434,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출 보류",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -5279,7 +5464,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "category_not_numeric",
+        "MCUI": null,
         "MFPI": "component_missing_in_source"
       }
     }
@@ -5406,11 +5591,13 @@
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
+      "minimum_independent_mbpi_dois": 2,
       "sensitivity_food_weights": [
         0.25,
         0.5,
         0.75
-      ]
+      ],
+      "single_source_mbpi_label": "참고값(단일 논문)"
     },
     "bioactivity": {
       "eligible_endpoints": [
@@ -5432,7 +5619,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-1 (archived in research/verified-indices/archive/)",
+    "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -5444,9 +5631,34 @@
       "effort_adjustment": 10,
       "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
-    "method_version": "verified-pilot-2",
+    "method_version": "verified-pilot-2.1",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
+    "national_red_list": {
+      "accepted_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+      "applies_when_iucn_reason": [
+        "not_in_red_list",
+        "category_not_numeric"
+      ],
+      "category_scores": "same as conservation.category_scores",
+      "label": "한국 국가 평가 기반 시범 MCUI",
+      "legal_protection": "A legal protection designation without a red-list category is shown as a fact and never scored.",
+      "page_recheck": {
+        "checked_on": "2026-09-27",
+        "method": "NIBR e-catalogue page images re-read for the list page and the index page of every scored row (viewer page = printed page + 2)",
+        "rows": {
+          "1666974": "index p.1483: 참갑오징어 Sepia esculenta, LC -> LC, 유지, list p.1379",
+          "231750": "index p.1468: 바지락 Ruditapes philippinarum, LC -> LC, 유지, list p.1375",
+          "393716": "index p.1484: 큰가리비 Mizuhopecten yessoensis, LC -> LC, 유지, list p.1379",
+          "413600": "index p.1453: 가리맛조개 Sinonovacula constricta, LC -> LC, 유지, list p.1370",
+          "504357": "index p.1486: 피조개 Scapharca broughtonii, LC -> LC, 유지, list p.1380",
+          "506159": "list p.1380, index p.1487: 홍합 Mytilus unguiculatus, LC -> LC, 유지",
+          "836033": "list p.1371, index p.1457: 굴 Magallana gigas, LC -> LC, 유지"
+        }
+      },
+      "ranking_rule": "Never ranked, pooled or plotted with IUCN-based MCUI; national and global scopes stay separate.",
+      "taxon_rule": "Only rows whose published name resolves to the same accepted WoRMS species; subspecies and separate species are not moved."
+    },
     "nutrition": {
       "aquaculture_weight": 0.1,
       "components": {
@@ -5559,6 +5771,14 @@
       ],
       "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json"
     },
+    "peptide_raw_values": {
+      "excluded_sources": [
+        "ahtpdb_ic50_2026"
+      ],
+      "label": "원값·출처",
+      "rule": "Public-paper peptide IC50 values are shown with their source only. No AHTPDB cohort, rank or percentile is published until the AHTPDB reuse terms are confirmed; these values never enter MBPI or BBVI.",
+      "supplement": "research/verified-indices/evidence-v3.json"
+    },
     "posthoc": {
       "calibration_cases": [],
       "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
@@ -5600,7 +5820,7 @@
     "status": "provisional_unvalidated",
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-2",
+  "method_version": "verified-pilot-2.1",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -5695,6 +5915,17 @@
       "url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
       "version": "ChEMBL_37 (2026-05-01)"
     },
+    "chen_2022_oyster": {
+      "accessed": "2026-09-26",
+      "doi": "10.3389/fnut.2022.981163",
+      "license": "CC BY 4.0",
+      "pmid": "36082025",
+      "provider": "Frontiers in Nutrition 9:981163 (Chen et al. 2022), full text via Europe PMC PMC9445672",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "A novel ACE inhibitory peptide from oyster (Crassostrea gigas)",
+      "url": "https://doi.org/10.3389/fnut.2022.981163",
+      "version": "2022"
+    },
     "cmnpd_1": {
       "accessed": "2026-09-25",
       "license": "CC BY-NC-SA 4.0",
@@ -5757,6 +5988,28 @@
       "title": "A guide to the seaweed industry (FAO Fisheries Technical Paper 441), 8.5 Wakame",
       "url": "https://www.fao.org/4/y4765e/y4765e0b.htm",
       "version": "McHugh 2003"
+    },
+    "feng_2021_knfl": {
+      "accessed": "2026-09-26",
+      "doi": "10.3390/md19030177",
+      "license": "CC BY 4.0",
+      "pmid": "33807119",
+      "provider": "Marine Drugs 19:177 (Feng et al. 2021), full text via Europe PMC PMC8004985",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Affinity purification of ACE inhibitory peptides from wakame (Undaria pinnatifida)",
+      "url": "https://doi.org/10.3390/md19030177",
+      "version": "2021"
+    },
+    "feng_2022_oyster": {
+      "accessed": "2026-09-26",
+      "doi": "10.1016/j.foodchem.2022.132160",
+      "license": "Publisher copyright",
+      "pmid": "35063855",
+      "provider": "Food Chemistry 379:132160 (Feng et al. 2022), PubMed abstract",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Steam cooking and proteolysis of Pacific oyster (Crassostrea gigas) proteins",
+      "url": "https://doi.org/10.1016/j.foodchem.2022.132160",
+      "version": "2022"
     },
     "frdc_2008_905": {
       "accessed": "2026-09-25",
@@ -6068,6 +6321,17 @@
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
       "version": "2024 article, Molecules 29(24):6000"
     },
+    "sato_2002_wakame": {
+      "accessed": "2026-09-26",
+      "doi": "10.1021/jf020482t",
+      "license": "Publisher copyright",
+      "pmid": "12358510",
+      "provider": "J Agric Food Chem 50:6245 (Sato et al. 2002), PubMed abstract",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "ACE inhibitory peptides derived from wakame (Undaria pinnatifida)",
+      "url": "https://doi.org/10.1021/jf020482t",
+      "version": "2002"
+    },
     "shin_2011_seasquirt": {
       "accessed": "2026-09-25",
       "doi": "10.5657/KFAS.2011.0366",
@@ -6077,6 +6341,17 @@
       "title": "Shin, Jun, Kim & Hur 2011. Physiological changes and energy budget of the sea squirt Halocynthia roretzi from Tongyeong",
       "url": "https://koreascience.kr/article/JAKO201127250032645.page",
       "version": "KFAS 44(4):366, published 2011-08-30"
+    },
+    "suetsuna_2000_wakame": {
+      "accessed": "2026-09-26",
+      "doi": "10.1016/s0955-2863(00)00110-8",
+      "license": "Publisher copyright",
+      "pmid": "11091100",
+      "provider": "J Nutr Biochem 11:450 (Suetsuna & Nakano 2000), PubMed abstract",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Identification of an antihypertensive peptide from peptic digest of wakame",
+      "url": "https://doi.org/10.1016/s0955-2863(00)00110-8",
+      "version": "2000"
     },
     "todarodes_2011_peptide": {
       "accessed": "2026-09-25",
@@ -6147,6 +6422,17 @@
       "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033",
       "version": "WoRMS public record accessed 2026-09-25"
     },
+    "yu_2019_todarodes": {
+      "accessed": "2026-09-26",
+      "doi": "10.3390/ijms20174159",
+      "license": "CC BY 4.0",
+      "pmid": "31454889",
+      "provider": "Int J Mol Sci 20:4159 (Yu et al. 2019), full text via Europe PMC PMC6747323",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Novel ACE inhibitory peptides from Todarodes pacificus: in silico and in vitro",
+      "url": "https://doi.org/10.3390/ijms20174159",
+      "version": "2019"
+    },
     "yun_2018_holotoxin": {
       "accessed": "2026-09-25",
       "doi": "10.3390/md16040123",
@@ -6195,6 +6481,303 @@
               "value": 0.047
             }
           ]
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:VY",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "VY",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 35.2,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:IY",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "IY",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 6.1,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:AW",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "AW",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 18.8,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:FY",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "FY",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 42.3,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:VW",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "VW",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 3.3,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:IW",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "IW",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 1.5,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1021/jf020482t:LW",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "LW",
+          "sequence_confirmed": true,
+          "source_id": "sato_2002_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 23.6,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1016/s0955-2863(00)00110-8:AIYK",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "AIYK",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2000_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 213,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1016/s0955-2863(00)00110-8:YKYY",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "YKYY",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2000_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 64.2,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1016/s0955-2863(00)00110-8:KFYG",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "KFYG",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2000_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 90.5,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)"
+          ],
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "record_id": "10.1016/s0955-2863(00)00110-8:YNKL",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "YNKL",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2000_wakame",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 21,
+          "value_in_text": true
         }
       ],
       "bioactivity_trace": [],
@@ -6267,7 +6850,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -6425,8 +7008,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 3,
+          "ratio": 0.75,
           "required": [
             "origin",
             "structure_id",
@@ -6459,10 +7042,37 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.5
+        "mean_ratio": 0.58
       },
       "korean_name": "미역",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [
+        {
+          "endpoint": "IC50",
+          "label": "원값·출처",
+          "material_kind": "single_peptide",
+          "origin_aphia_id": 145721,
+          "origin_scientific_name": "Undaria pinnatifida",
+          "original_paper_doi": "10.3390/md19030177",
+          "record_id": "10.3390/md19030177:KNFL",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "KNFL",
+          "sequence_confirmed": true,
+          "source_id": "feng_2021_knfl",
+          "status": "approved_for_score",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "used_for_score": false,
+          "value": 225.87,
+          "value_in_text": true,
+          "verification": "Full text: KNFL identified by MALDI-TOF-TOF in a fraction of wakame protein hydrolysate; the chemically synthesized peptide (98%) has IC50 225.87 ± 2.7 µM in text; HHL substrate, rabbit-lung ACE. The paper reports no AHTPDB match."
+        }
+      ],
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
         "BBVI": "산출 보류",
@@ -6485,9 +7095,12 @@
       },
       "source_ids": [
         "fao_seaweed_guide",
+        "feng_2021_knfl",
         "iucn_redlist_search",
         "mext_sfct_2020",
         "rda_db_10_4",
+        "sato_2002_wakame",
+        "suetsuna_2000_wakame",
         "undaria_2018_paper"
       ],
       "unexplored_candidate": null,
@@ -6616,7 +7229,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -6682,7 +7295,11 @@
         "mean_ratio": 0.5
       },
       "korean_name": "해삼",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -6890,7 +7507,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -7409,7 +8026,11 @@
         "mean_ratio": 0.42
       },
       "korean_name": "멍게",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
         "BBVI": "산출 보류",
@@ -7489,6 +8110,62 @@
               "value": 766.2
             }
           ]
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "Sequence predicted by in silico hydrolysis of T. pacificus myosin; release from squid material not observed"
+          ],
+          "origin_aphia_id": 342067,
+          "origin_scientific_name": "Todarodes pacificus",
+          "record_id": "10.3390/ijms20174159:IIY",
+          "relation": "=",
+          "reported_pIC50": 4.58,
+          "reviewed": true,
+          "sequence": "IIY",
+          "sequence_confirmed": true,
+          "source_id": "yu_2019_todarodes",
+          "status": "partial_only",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "value": 26.3,
+          "value_in_text": true
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "Sequence predicted by in silico hydrolysis of T. pacificus myosin; release from squid material not observed"
+          ],
+          "origin_aphia_id": 342067,
+          "origin_scientific_name": "Todarodes pacificus",
+          "record_id": "10.3390/ijms20174159:NPPK",
+          "relation": "=",
+          "reported_pIC50": 4.41,
+          "reviewed": true,
+          "sequence": "NPPK",
+          "sequence_confirmed": true,
+          "source_id": "yu_2019_todarodes",
+          "status": "partial_only",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "value": 38.9,
+          "value_in_text": true
         }
       ],
       "bioactivity_trace": [],
@@ -7526,7 +8203,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -7565,8 +8242,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 3,
+          "ratio": 0.75,
           "required": [
             "origin",
             "structure_id",
@@ -7597,9 +8274,12 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.7
+        "mean_ratio": 0.78
       },
       "korean_name": "살오징어",
+      "mbpi_label": null,
+      "mcui_basis": "iucn",
+      "national_assessment": null,
       "national_red_list_fact": {
         "aphia_id": 342067,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -7618,6 +8298,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Todarodes pacificus",
       "score_status": {
         "BBVI": "산출 보류",
@@ -7643,7 +8324,8 @@
         "iucn_todarodes_2014",
         "nibr_red_data_book_2024",
         "rda_db_10_4",
-        "todarodes_2011_peptide"
+        "todarodes_2011_peptide",
+        "yu_2019_todarodes"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -7707,7 +8389,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -7807,7 +8489,11 @@
         "mean_ratio": 0.0
       },
       "korean_name": "우뭇가사리",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Gelidium elegans",
       "score_status": {
         "BBVI": "산출 보류",
@@ -7938,7 +8624,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -8037,7 +8723,11 @@
         "mean_ratio": 0.28
       },
       "korean_name": "톳",
+      "mbpi_label": null,
+      "mcui_basis": null,
+      "national_assessment": null,
       "national_red_list_fact": null,
+      "peptide_raw_values": [],
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출 보류",
@@ -8128,7 +8818,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "observed_rows": [
           {
             "english_name": "Hard shelled mussel, Raw",
@@ -8263,6 +8953,29 @@
         "mean_ratio": 0.28
       },
       "korean_name": "홍합(참담치)",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 506159,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1487,
+        "index_page_viewer": 1489,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1380,
+        "list_page_viewer": 1382,
+        "name_as_published": "홍합 Mytilus unguiculatus Valenciennes, 1858",
+        "name_note": "WoRMS 541675 M. unguiculatus is a nomen oblitum; valid name 506159 M. coruscus",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Mytilus coruscus",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 506159,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -8282,17 +8995,18 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [],
       "scientific_name": "Mytilus coruscus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -8314,7 +9028,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": "component_missing_in_source"
       }
     },
@@ -8345,6 +9059,33 @@
           "status": "partial_only",
           "test_system": "prostate, breast and lung cancer cell lines; exact conditions need full article review",
           "values": []
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "ACE substrate/method not confirmed from the paper (abstract only)"
+          ],
+          "origin_aphia_id": 836033,
+          "origin_scientific_name": "Magallana gigas",
+          "record_id": "10.1016/j.foodchem.2022.132160:LSL",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "LSL",
+          "sequence_confirmed": true,
+          "source_id": "feng_2022_oyster",
+          "status": "partial_only",
+          "substrate": null,
+          "target": "ACE",
+          "unit": "uM",
+          "value": 0.10717,
+          "value_in_text": true
         }
       ],
       "bioactivity_trace": [],
@@ -8449,7 +9190,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-2",
+        "method_version": "verified-pilot-2.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -8953,8 +9694,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 3,
+          "ratio": 0.75,
           "required": [
             "origin",
             "structure_id",
@@ -8987,9 +9728,31 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.42
+        "mean_ratio": 0.58
       },
       "korean_name": "참굴",
+      "mbpi_label": null,
+      "mcui_basis": "national",
+      "national_assessment": {
+        "aphia_id": 836033,
+        "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+        "category": "LC",
+        "change": "유지",
+        "first_edition_category": "LC",
+        "index_page_printed": 1457,
+        "index_page_viewer": 1459,
+        "label": "한국 국가 평가 기반 시범 MCUI",
+        "legal_protection_facts": [],
+        "list_page_printed": 1371,
+        "list_page_viewer": 1373,
+        "name_as_published": "굴 Magallana gigas Thunberg, 1793",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
+        "reviewed": true,
+        "scientific_name": "Magallana gigas",
+        "scope": "national (Republic of Korea)",
+        "source_id": "nibr_red_data_book_2024",
+        "taxon_group": "연체동물"
+      },
       "national_red_list_fact": {
         "aphia_id": 836033,
         "assessment_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
@@ -9008,17 +9771,41 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
+      "peptide_raw_values": [
+        {
+          "endpoint": "IC50",
+          "label": "원값·출처",
+          "material_kind": "single_peptide",
+          "origin_aphia_id": 836033,
+          "origin_scientific_name": "Magallana gigas",
+          "original_paper_doi": "10.3389/fnut.2022.981163",
+          "record_id": "10.3389/fnut.2022.981163:AEYLCEAC",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "AEYLCEAC",
+          "sequence_confirmed": true,
+          "source_id": "chen_2022_oyster",
+          "status": "approved_for_score",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "used_for_score": false,
+          "value": 4287.0,
+          "value_in_text": true,
+          "verification": "Full text: AEYLCEAC screened from a Crassostrea gigas simulated GI digest; synthesized peptide (>95%) IC50 4.287 mM in text; HHL substrate, rabbit-lung ACE. C. gigas = Magallana gigas (WoRMS 836033)."
+        }
+      ],
       "scientific_name": "Magallana gigas",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 65.5
       },
       "sensitivity": {
@@ -9031,7 +9818,9 @@
       "source_ids": [
         "afcd_r3_details",
         "afcd_r3_nutrients",
+        "chen_2022_oyster",
         "fao_oyster_culture",
+        "feng_2022_oyster",
         "frdc_2008_905",
         "iucn_redlist_search",
         "li_2025_yield",
@@ -9044,7 +9833,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       }
     }

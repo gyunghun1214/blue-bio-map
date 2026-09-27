@@ -107,7 +107,7 @@ try{
   const eck=await pick(371986);
   const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent}})()");
   check('Ecklonia candidate: paper-local MBPI 67.5 and five source-linked measurements without spatial or combined scores',
-    eckAxes.report==='verified-pilot-2'&&eckAxes.scores?.MBPI===67.5&&
+    eckAxes.report==='verified-pilot-2.1'&&eckAxes.scores?.MBPI===67.5&&
     eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===null&&eckAxes.scores.BBVI===null&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('승인 0곳')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('해역 판단 보류'))&&
     eck.includes('시범 MBPI 67.5')&&eck.includes('원논문 1편')&&
@@ -121,7 +121,8 @@ try{
   check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
   check('Oyster: compounds 미수집, separate OBIS 26 kept in details',/보고 화합물\s*미수집/.test(t)&&/기록 수\s*26건/.test(t),t);
   const nat=await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=true);document.getElementById('detail').innerText");
-  check('Oyster: national red-list LC shown as a fact beside IUCN, not as MCUI',nat.includes('국가 평가(한국 범위): LC')&&nat.includes('MCUI 점수에 넣지 않는 사실 정보')&&!/보전 평가\s*10\.0/.test(nat),nat);
+  // verified-pilot-2.1: with no IUCN global record, the oyster MCUI is the separately labelled Korean national assessment.
+  check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 시범 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, 매트릭스에도 놓지 않습니다')&&!nat.includes('IUCN LC'),nat);
   await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=false)");
   await detailEl();await shot('desktop-oyster');
 
@@ -211,7 +212,7 @@ try{
   const slider=await evaluate("({n:data.species.filter(s=>pilotScore(s,'BBVI')!==null).length,disabled:document.getElementById('bbvi-weight').disabled,status:document.getElementById('bbvi-weight-status').textContent})");
   check('BBVI 0 species: weight slider disabled with explanation',slider.n===0&&slider.disabled&&slider.status.includes('BBVI 산출 종 0종')&&slider.status.includes('두 축(MFPI·MBPI)'),JSON.stringify(slider));
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
-  check('Oyster status card leads with computed value: "MFPI 65.5 · MBPI·MCUI 보류"',oyCard.startsWith('MFPI 65.5')&&oyCard.includes('MBPI·MCUI 보류'),oyCard);
+  check('Oyster status card leads with computed values, national MCUI labelled: "MFPI 65.5 · MCUI(국가 평가) 10.0 · MBPI 보류"',oyCard.startsWith('MFPI 65.5 · MCUI(국가 평가) 10.0')&&oyCard.includes('MBPI 보류'),oyCard);
   const oyChip=await evaluate("document.querySelector('#matrix-unplaced [data-aphia=\"836033\"] small').textContent");
   check('Oyster priority chip explains missing axes while status card shows MFPI',oyChip.includes('MBPI')&&oyChip.includes('MCUI')&&!oyChip.includes('MFPI 0'),oyChip);
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&n.includes('보류')})()"));
@@ -420,8 +421,10 @@ try{
     const after=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID,mode:mapMode})");
     check(`Flow 6 ${tag}: map mode value → occurrence keeps selection and scroll position`,after.sel===before.sel&&after.mode==='occurrence'&&Math.abs(after.y-before.y)<=4,JSON.stringify({before,after}));
     // Every species × {occurrence, MFPI, MBPI, MCUI, BBVI} opens its own evidence, on every comparison page, and returns to the same page, horizontal scroll and button.
-    const opens=await evaluate(`(()=>{const bad=[];setView('compare');
-      data.species.forEach((s,i)=>['OCC','MFPI','MBPI','MCUI','BBVI'].forEach(axis=>{
+    // One CDP call per species keeps each call under the 10 s response limit; the assertions are unchanged.
+    const opens={n:await evaluate('data.species.length'),bad:[]};
+    for(let i=0;i<opens.n;i++)opens.bad.push(...await evaluate(`(()=>{const bad=[],i=${i},s=data.species[i];setView('compare');
+      ['OCC','MFPI','MBPI','MCUI','BBVI'].forEach(axis=>{
         comparisonPage=Math.floor(i/5);renderComparison();setView('compare');const c=document.getElementById('comparison');c.scrollLeft=Math.min(37,c.scrollWidth-c.clientWidth);const left=c.scrollLeft;
         const b=c.querySelector('[data-score-aphia="'+s.aphiaID+'"][data-score-axis="'+axis+'"]');if(!b){bad.push([s.label,axis,'no button']);return;}
         b.click();const a=document.activeElement;
@@ -432,7 +435,8 @@ try{
         document.querySelector('.comparison-return').click();
         const back=document.activeElement;
         if(currentView!=='compare'||comparisonPage!==Math.floor(i/5)||c.scrollLeft!==left||back.dataset.scoreAphia!==String(s.aphiaID)||back.dataset.scoreAxis!==axis)bad.push([s.label,axis,'return',comparisonPage,c.scrollLeft,left]);
-      }));return {n:data.species.length,bad:bad.slice(0,8)};})()`);
+      });return bad;})()`));
+    opens.bad=opens.bad.slice(0,8);
     check(`Evidence ${tag}: all ${opens.n}×5 comparison buttons open their own evidence (incl. later pages) and return to page, scroll and focus`,opens.n===total&&opens.bad.length===0,JSON.stringify(opens));
     const late=await evaluate("(()=>{const i=data.species.length-1;comparisonPage=Math.floor(i/5);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
     await sleep(900);

@@ -27,7 +27,9 @@ class MatrixReadinessTests(unittest.TestCase):
         # Operating MFPI 3 + MCUI 2 (main), plus the #39 reviewed candidates: MFPI 4 (바지락·참가리비·조피볼락·방어),
         # MCUI 5 (전복·고등어·멸치·참조기·방어). Every matrix score must equal the reviewed report, species by species.
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 7)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 7)
+        # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 7)
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
@@ -43,6 +45,10 @@ class MatrixReadinessTests(unittest.TestCase):
             if row["scope"] != "expansion_22" or row["scores"]["MCUI"] is None:
                 continue
             # A candidate MCUI must come from a reviewed original assessment, never from the catalog checklist line.
+            if row["mcui_basis"] == "national":
+                national = reviewed[row["aphia_id"]]["national_assessment"]
+                self.assertTrue(national["source_id"] and national["category"], row["aphia_id"])
+                continue
             trace = reviewed[row["aphia_id"]]["conservation_trace"]
             self.assertTrue(trace["assessment_date"] and trace["criteria_version"], row["aphia_id"])
             self.assertTrue(trace["current_status_check"]["is_current"], row["aphia_id"])
