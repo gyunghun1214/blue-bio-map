@@ -9316,6 +9316,7 @@
           "percentile": 96.31,
           "potency_replications": [
             {
+              "origin_label": "옥수수 α-제인 (합성 펩타이드로 측정)",
               "origin_material": "alpha-zein (maize, Sigma) thermolysin hydrolysate; the scored value is the synthetic peptide",
               "original_paper_doi": "10.1271/bbb1961.55.1313",
               "pIC50": 5.699,

@@ -1,0 +1,260 @@
+{
+  "method_version": "verified-pilot-2.3",
+  "status": "provisional_unvalidated",
+  "changes_from": "verified-pilot-2.2 (2026-09-27). Adopts the research cross-origin potency rule (config/verified-indices-research-xo-potency.json, research/verified-indices/xo-potency-research-2026-09-27.md) as the public definition, with the same values: in the peptide stratum, a synthetic peptide with the same sequence measured by another paper from another origin (same target, endpoint, HHL substrate, uM, value in text) counts as an independent DOI for the single/multiple DOI factor and the BBVI independence check, when its pIC50 is within max_pIC50_gap of the species value. It never changes the species value (pIC50 stays the median of origin-species rows), never creates an item or a species row, and is not an origin claim. Only effect today: oyster (836033) LQP, Do et al. 2012 (origin) + Miyoshi et al. 1991 (synthetic LQP 2.0 uM, alpha-zein) -> MBPI 72.2 -> 96.3, BBVI withheld -> 80.9. Every other rule, factor, cohort, threshold and the other 29 species equal 2.2.",
+  "nutrition": {
+    "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json",
+    "components": {
+      "protein_g": "g",
+      "iron_mg": "mg",
+      "zinc_mg": "mg"
+    },
+    "minimum_species": 3,
+    "grade_factors": {
+      "measured": 1.0,
+      "calculated": 0.85,
+      "proxy": 0.5,
+      "domestic_table": 1.0,
+      "foreign_table_cited": 0.85
+    },
+    "grade_notes": {
+      "domestic_table": "RDA row with a domestic source label such as ('16); per-value analysed/calculated status is not exposed online, so the row is not labelled 'measured'.",
+      "foreign_table_cited": "RDA row whose source label names another national table, e.g. JAPAN('20) or USDA('18): same food, borrowed value. Pilot factor 0.85, same as 'calculated'.",
+      "measured/calculated/proxy": "Kept from verified-pilot-1 for the AFCD cross-check rows."
+    },
+    "nutrient_weight": 0.8,
+    "edible_fraction_weight": 0.1,
+    "aquaculture_weight": 0.1,
+    "primary_cohorts": [
+      {
+        "cohort_id": "rda-10.4-raw-marine-animals",
+        "criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron and zinc all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
+        "rule": {
+          "group": "어패류 및 기타 수산물",
+          "exclude_name_terms": [
+            "내장",
+            "관자",
+            "붉은살",
+            "지방육"
+          ],
+          "exclude_food_item_ids": {
+            "K0150002550a": "고등어 남해: regional sub-sample of one species",
+            "K0150002560a": "고등어 서해: regional sub-sample of one species",
+            "K0440002570a": "대구 수컷: sex sub-sample of one species",
+            "K0440002580a": "대구 암컷: sex sub-sample of one species",
+            "K1440010000a": "은어 양식: freshwater-farmed (amphidromous) fish, outside the marine scope"
+          }
+        },
+        "frozen_food_item_ids": [
+          "K0270000000a",
+          "K0390010000a",
+          "K0620000000a",
+          "K0830011130a",
+          "K0960070000a",
+          "K1070000000a",
+          "K1140000000a",
+          "K1320000000a",
+          "K1370020000a",
+          "K1620000000a",
+          "K1650010000a",
+          "K1670000000a",
+          "K4000000000a",
+          "K4000010000a",
+          "K4000040000a",
+          "K4040020000a",
+          "K4060010000a",
+          "K4130000000a",
+          "K6000020000a",
+          "K6020010000a",
+          "K6080000000a",
+          "K6100000000a",
+          "K6110000000a",
+          "K6130180000a",
+          "K6230000000a"
+        ],
+        "uncertainty": [
+          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
+          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
+          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked."
+        ]
+      },
+      {
+        "cohort_id": "rda-10.4-raw-seaweeds",
+        "criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron and zinc all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
+        "rule": {
+          "group": "해조류",
+          "exclude_name_terms": [],
+          "exclude_food_item_ids": {}
+        },
+        "frozen_food_item_ids": [
+          "L0110000000a",
+          "L0130000000a",
+          "L0270000000a"
+        ],
+        "uncertainty": [
+          "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points."
+        ]
+      }
+    ],
+    "cross_check_cohorts": [
+      {
+        "cohort_id": "afcd-r3-2008-australian-raw-oysters",
+        "criteria": "AFCD Release 3 rows F006288/F006289/F006291: three Australian aquacultured oyster species, raw shucked flesh (verified-pilot-1 primary cohort).",
+        "food_item_ids": [
+          "F006288",
+          "F006289",
+          "F006291"
+        ],
+        "note": "verified-pilot-1 result kept as a cross-check only; not averaged with the RDA result."
+      }
+    ],
+    "cross_check_source_ids": [
+      "afcd_r3_nutrients",
+      "afcd_r3_details",
+      "frdc_2008_905"
+    ]
+  },
+  "bioactivity": {
+    "minimum_compounds_per_stratum": 3,
+    "single_doi_factor": 0.75,
+    "multiple_doi_factor": 1.0,
+    "primary_aggregation": "max",
+    "sensitivity_aggregations": [
+      "median",
+      "mean"
+    ],
+    "eligible_endpoints": [
+      "IC50",
+      "XC50",
+      "EC50",
+      "AC50",
+      "Ki",
+      "Kd",
+      "Potency",
+      "ED50"
+    ]
+  },
+  "conservation": {
+    "category_scores": {
+      "LC": 10,
+      "NT": 35,
+      "VU": 60,
+      "EN": 80,
+      "CR": 100
+    },
+    "effort_adjustment": 10,
+    "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
+  },
+  "national_fact_supplement": "research/verified-indices/evidence-v3.json",
+  "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
+  "bbvi": {
+    "default_food_weight": 0.5,
+    "minimum_independent_mbpi_dois": 2,
+    "single_source_mbpi_label": "참고값(단일 논문)",
+    "sensitivity_food_weights": [
+      0.25,
+      0.5,
+      0.75
+    ]
+  },
+  "sensitivity": {
+    "mfpi_weights": [
+      {
+        "nutrient_weight": 0.7,
+        "edible_fraction_weight": 0.15,
+        "aquaculture_weight": 0.15
+      },
+      {
+        "nutrient_weight": 0.9,
+        "edible_fraction_weight": 0.05,
+        "aquaculture_weight": 0.05
+      }
+    ]
+  },
+  "unexplored_threshold": 0.5,
+  "posthoc": {
+    "calibration_cases": [],
+    "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
+    "validation_sets": {
+      "MBPI": {
+        "cases": [
+          "Conus magus (ziconotide)",
+          "Halichondria okadai (eribulin; halichondrin B)",
+          "Ecteinascidia turbinata (trabectedin)"
+        ],
+        "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+        "result": "not_computable",
+        "reason": "No origin -> compound -> assay chain was collected for these species in this snapshot and no operating candidate has an MBPI, so there is nothing to rank against."
+      },
+      "MCUI": {
+        "cases": [
+          "Apostichopus japonicus"
+        ],
+        "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
+        "result": "reproduced_n2",
+        "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation."
+      }
+    }
+  },
+  "national_red_list": {
+    "label": "한국 국가 평가 기반 시범 MCUI",
+    "applies_when_iucn_reason": [
+      "not_in_red_list",
+      "category_not_numeric"
+    ],
+    "accepted_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+    "category_scores": "same as conservation.category_scores",
+    "legal_protection": "A legal protection designation without a red-list category is shown as a fact and never scored.",
+    "taxon_rule": "Only rows whose published name resolves to the same accepted WoRMS species; subspecies and separate species are not moved.",
+    "ranking_rule": "Never ranked, pooled or plotted with IUCN-based MCUI; national and global scopes stay separate.",
+    "page_recheck": {
+      "checked_on": "2026-09-27",
+      "method": "NIBR e-catalogue page images re-read for the list page and the index page of every scored row (viewer page = printed page + 2)",
+      "rows": {
+        "836033": "list p.1371, index p.1457: 굴 Magallana gigas, LC -> LC, 유지",
+        "506159": "list p.1380, index p.1487: 홍합 Mytilus unguiculatus, LC -> LC, 유지",
+        "231750": "index p.1468: 바지락 Ruditapes philippinarum, LC -> LC, 유지, list p.1375",
+        "504357": "index p.1486: 피조개 Scapharca broughtonii, LC -> LC, 유지, list p.1380",
+        "393716": "index p.1484: 큰가리비 Mizuhopecten yessoensis, LC -> LC, 유지, list p.1379",
+        "413600": "index p.1453: 가리맛조개 Sinonovacula constricta, LC -> LC, 유지, list p.1370",
+        "1666974": "index p.1483: 참갑오징어 Sepia esculenta, LC -> LC, 유지, list p.1379"
+      }
+    }
+  },
+  "peptide_bioactivity": {
+    "cohort_file": "research/verified-indices/peptide-cohort-ahtpdb-ace-hhl.json",
+    "cohort_source_id": "ahtpdb_ic50_2026",
+    "target": "ACE",
+    "endpoint": "IC50",
+    "substrate": "HHL",
+    "minimum_peptides": 30,
+    "minimum_justification": "30 peers keep one rank step at about 3 percentile points; below that a single peer moves the score more than the 0.75 single-DOI discount.",
+    "excluded_material_kinds": [
+      "extract",
+      "hydrolysate",
+      "fraction"
+    ],
+    "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent",
+    "note": "Peptides never enter the small-molecule (ChEMBL) strata; the same single/multiple DOI factors and max aggregation apply.",
+    "cross_origin_potency": {
+      "supplement": "research/verified-indices/evidence-xo-potency.json",
+      "max_pIC50_gap": 1.0,
+      "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
+      "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper."
+    }
+  },
+  "peptide_supplements": [
+    "research/verified-indices/evidence-v3.json",
+    "research/verified-indices/peptide-raw-values-2.1.json"
+  ],
+  "reference_combination": {
+    "label": "참고 통합값 · 독립 재현 미확인",
+    "formula": "w×MFPI+(1−w)×MBPI",
+    "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking.",
+    "limits": [
+      "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+      "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+      "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+    ]
+  }
+}

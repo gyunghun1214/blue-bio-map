@@ -4,9 +4,11 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
+// 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
+const mbpiDois = x => new Set((x.independent_dois||x.original_paper_dois).map(d=>d.toLowerCase()));
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -185,14 +187,17 @@ function verifiedBioValid(a,report){
     Number.isInteger(x.peer_peptides)&&x.peer_peptides>=min&&Number.isFinite(x.pIC50);
   const compound=x=>x.stratum_kind===undefined&&!!x.compound_id&&Array.isArray(x.activity_ids)&&x.activity_ids.length>0&&
     Number.isInteger(x.peer_compounds)&&x.peer_compounds>=min;
-  if(items.some(x=>!common(x)||!(peptide(x)||compound(x))))return false;
+  const replicated=x=>x.independent_dois===undefined||Array.isArray(x.independent_dois)&&Array.isArray(x.potency_replications)&&
+    [...mbpiDois(x)].sort().join()===[...new Set([...x.original_paper_dois,...x.potency_replications.filter(r=>r.used).map(r=>r.original_paper_doi)]
+      .map(d=>d.toLowerCase()))].sort().join()&&x.potency_replications.every(r=>!r.used||report.sources?.[r.source_id]?.url&&a.source_ids.includes(r.source_id));
+  if(items.some(x=>!common(x)||!(peptide(x)||compound(x))||!replicated(x)))return false;
   if(new Set(items.map(x=>x.stratum_kind||'compound')).size!==1)return false;
   if(Math.abs(a.scores.MBPI-Math.max(...items.map(x=>x.adjusted)))>=.06)return false;
   if(singleSourceRule(report.method_version)){
     const rule=report.method?.bbvi, best=items.reduce((p,x)=>x.adjusted>p.adjusted?x:p);
     if(!Number.isInteger(rule?.minimum_independent_mbpi_dois)||rule.minimum_independent_mbpi_dois<2||
        !rule.single_source_mbpi_label)return false;
-    const papers=new Set(best.original_paper_dois.map(d=>d.toLowerCase())).size;
+    const papers=mbpiDois(best).size;
     if(a.mbpi_label!==(papers<rule.minimum_independent_mbpi_dois?rule.single_source_mbpi_label:null))return false;
   }
   return true;
@@ -216,7 +221,7 @@ function verifiedAxisErrors(a,report){
       const best=(a.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
       const minimum=report.method?.bbvi?.minimum_independent_mbpi_dois;
       return Number.isInteger(minimum)&&best&&
-        new Set(best.original_paper_dois.map(d=>d.toLowerCase())).size>=minimum;
+        mbpiDois(best).size>=minimum;
     }
     return true;
   });
@@ -599,8 +604,12 @@ function verifiedBioTrace(s){
   const top=Math.max(...items.map(x=>x.adjusted));
   // Independence is judged on the value that sets MBPI, as the BBVI rule does; other rows are other peptides or compounds.
   const best=items.find(x=>Math.abs(x.adjusted-top)<1e-9);
-  const dois=[...new Set((best.original_paper_dois||[]).map(d=>d.toLowerCase()))];
+  const dois=[...mbpiDois(best)], origin=[...new Set(best.original_paper_dois.map(d=>d.toLowerCase()))];
+  const reps=(best.potency_replications||[]).filter(r=>r.used);
   const doiLink=d=>`<a href="https://doi.org/${encodeURI(d)}" target="_blank" rel="noopener">${esc(d)}</a>`;
+  // e.g. "Do et al. 2012" from the provider line; the DOI link when the provider names no author-year.
+  const originNames=origin.map(d=>{const m=(best.measurements||[]).find(v=>v.original_paper_doi?.toLowerCase()===d),
+    ay=/\(([^()]*\d{4})\)/.exec(data.assessmentInfo?.sources?.[m?.source_id]?.provider||'');return ay?`${esc(ay[1])} (${doiLink(d)})`:doiLink(d);}).join(', ');
   const rows=[...items].sort((x,y)=>y.adjusted-x.adjusted).map(x=>{
     const used=Math.abs(x.adjusted-top)<1e-9;
     const peptide=x.stratum_kind==='peptide';
@@ -615,7 +624,11 @@ function verifiedBioTrace(s){
       (m.conditions_key?`<p class="fine">시험 조건: ${esc(m.conditions_key)}</p>`:'')+
       (peptide?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
         return `<p class="fine">원값 출처: ${verifiedSource(v.source_id,esc(src?.provider||'원논문')+' ↗')} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}</p>`;}).join(''):'')+
-      `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`;
+      `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`+
+      (x.potency_replications||[]).map(r=>{const src=data.assessmentInfo?.sources?.[r.source_id];
+        return `<div class="score-fact"><b>효능 재현 · 합성 ${esc(x.peptide_sequence)} ${esc(peptideValue(r))} · 다른 기원 ${esc(r.origin_label||r.origin_material)}</b>`+
+          `<span>pIC50 ${esc(r.pIC50)} · 차이 ${esc(r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(r.reason)}</span></div>`+
+          `<p class="fine">출처: ${verifiedSource(r.source_id,esc(src?.provider||'원논문')+' ↗')} · DOI ${doiLink(r.original_paper_doi)} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}. 효능만 재현하며 기원 근거나 점수 값이 되지 않습니다.</p>`;}).join('');
   }).join('');
   // A peptide percentile ranks against the fixed AHTPDB cohort (CC BY-NC 4.0), so the cohort is cited where the rank is shown.
   const pep=best.stratum_kind==='peptide'?data.assessmentInfo?.method?.peptide_bioactivity:null;
@@ -623,9 +636,9 @@ function verifiedBioTrace(s){
   const scope=pep?`AHTPDB에서 고른 고정 비교집단(${esc(pep.target)} ${esc(pep.endpoint)}, 기질 ${esc(pep.substrate)}, 펩타이드 ${esc(best.peer_peptides)}개) 안의 상대 순위입니다.`:
     '같은 논문·같은 시험 조건 안의 상대 순위입니다.';
   return `<h4>점수 근거 · ${esc(items.length)}개 측정값</h4>${rows}`+
-    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 원논문 ${dois.length}편`+
+    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${reps.length?`DOI ${dois.length}편(기원 ${origin.length} + 효능 재현 ${reps.length})`:`원논문 ${dois.length}편`}`+
     `${dois.length<2?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
-    `<p class="fine">한계: 백분위는 ${scope} ${dois.length<2?'독립 재현 논문이 아직 없습니다. ':''}세포 밖(효소) 시험값이며 임상 효과나 제품 가치가 아닙니다.</p>`+
+    `<p class="fine">한계: 백분위는 ${scope} ${dois.length<2?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 다른 기원의 합성 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}세포 밖(효소) 시험값이며 임상 효과나 제품 가치가 아닙니다.</p>`+
     (pep?`<p class="fine">비교집단 출처: ${verifiedSource(pep.cohort_source_id,esc(pepSrc?.provider||'AHTPDB')+' ↗')} · ${esc(pepSrc?.citation||'인용 미기재')} · 이용조건 ${esc(pepSrc?.license||'미확인')} · 행 ID와 IC50 값만 써서 백분위로 가공했습니다.</p>`:'');
 }
 // Paper values are stored in µM; values of 1000 µM and above are also shown in mM as the paper reports them.
@@ -1479,7 +1492,9 @@ function matrixBlockerText(s){
   const cons=row.scores.MCUI===null?`MCUI ${reason.MCUI==='not_in_red_list'?'IUCN 평가 검색 미확인':row.scope==='expansion_22'?'IUCN 원평가 검수 필요':'IUCN 원평가 확인 필요'}`:null;
   // Computed pilot values come first, so a held axis never hides a value the report did calculate.
   const done=['MFPI','MBPI','MCUI'].filter(k=>pilotScore(s,k)!==null).map(k=>`${k} ${pilotScore(s,k).toFixed(1)}`);
-  return [...done,food,bio,cons].filter(Boolean).join(' / ');
+  // A national MCUI is computed but never placed on the IUCN matrix; say so, or a species with every axis looks placeable.
+  const national=row.scores.MCUI!==null&&row.mcui_basis==='national'?'MCUI 한국 국가 평가 · IUCN 매트릭스 제외':null;
+  return [...done,food,bio,cons,national].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
   simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);

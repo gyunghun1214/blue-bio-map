@@ -20,11 +20,13 @@ class MatrixReadinessTests(unittest.TestCase):
         report = build(self.assessments, self.catalog, self.expansion)
         self.assertEqual(len(report["species"]), 30)
         self.assertEqual(report["matrix_points"], 0)
-        self.assertTrue(all(r["scores"]["BBVI"] is None and not r["matrix_eligible"]
-                            for r in report["species"]))
+        self.assertFalse(any(r["matrix_eligible"] for r in report["species"]))
+        self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
+                          if r["scores"]["BBVI"] is not None], [(836033, 80.9)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
-                          if r["scores"]["MBPI"] is not None], [(145721, 19.6), (836033, 72.2), (371986, 67.5)])
-        # verified-pilot-2.2: 미역·참굴 peptide MBPI rest on one paper each, so BBVI and the matrix stay empty.
+                          if r["scores"]["MBPI"] is not None], [(145721, 19.6), (836033, 96.3), (371986, 67.5)])
+        # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a
+        # national assessment and stays off the matrix; 미역 MBPI still rests on one paper, so the matrix stays empty.
         # Operating MFPI 3 + MCUI 2 (main), plus the #39 reviewed candidates: MFPI 4 (바지락·참가리비·조피볼락·방어),
         # MCUI 5 (전복·고등어·멸치·참조기·방어). Every matrix score must equal the reviewed report, species by species.
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 7)

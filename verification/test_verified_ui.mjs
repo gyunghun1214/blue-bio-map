@@ -29,14 +29,14 @@ for(const s of original.species)for(const axis of ['MFPI','MBPI','MCUI','BBVI'])
   assert.equal(ctx.score(by(s.aphia_id),axis),s.scores[axis],`${s.korean_name} ${axis}`);
 assert.equal(ctx.score(by(836033),'MFPI'),65.5);
 assert.equal(ctx.score(by(241776),'MCUI'),80);
-assert.equal(ctx.score(by(836033),'BBVI'),null,'one axis cannot become combined BBVI');
+assert.equal(ctx.score(by(836033),'BBVI'),80.9,'verified-pilot-2.3: the replicated LQP potency lets oyster BBVI through');
 ctx.next=next;
 vm.runInContext('data=globalThis.next',ctx);
 
 let html=ctx.renderScores(by(836033));
 for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','교차 점검','65.6','검증 전 시범 지표','비교하지 않습니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
-assert.match(html,/BBVI.*산출 보류/s);
+assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>80\.9 · 검증 전 시범 지표<\/b>/);
 html=ctx.renderScores(by(506159));
 assert.match(html,/아연 결측\(빈칸\)/,'blank zinc shown as missing, not zero');
 assert.match(html,/빈칸은 0이 아니라 결측/);
@@ -68,9 +68,9 @@ for(const id of [241776,342067]){
 Object.assign(by(836033),liveMeta);
 assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
 assert.notEqual(ctx.coverage(by(241776)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
-// verified-pilot-2.2: the oyster MBPI comes from the reviewed peptide trace, shown as a single-paper reference value.
+// verified-pilot-2.3: the oyster LQP potency is replicated from another origin, so the single-paper reference label is gone.
 assert.equal(ctx.coverage(by(836033)).checks[3].stage,'calculated');
-assert.match(ctx.coverage(by(836033)).checks[3].detail,/참고값\(단일 논문\).*BBVI에 쓰지 않습니다/);
+assert.doesNotMatch(ctx.coverage(by(836033)).checks[3].detail,/참고값/);
 // IUCN search miss is not an assessment: the oyster's MCUI comes only from the Korean national assessment, labelled as such.
 assert.equal(ctx.coverage(by(836033)).checks[4].stage,'calculated');
 assert.match(ctx.coverage(by(836033)).checks[4].detail,/한국 국가생물적색자료집.*IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다/);
@@ -109,13 +109,13 @@ const stages={
   342067:['verified','linked','linked','linked','calculated'],
   250680:['verified','linked','calculated','linked','unavailable'],
   241776:['verified','linked','found','linked','calculated'],
-  // 2.2: wakame's and the oyster's reviewed peptide traces give a single-paper MBPI (BBVI still withheld).
+  // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI (BBVI still withheld); 2.3 gives the oyster a BBVI.
   145721:['verified','linked','calculated','calculated','unavailable']
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
   assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
-  assert.equal(ctx.score(s,'BBVI'),null);
+  assert.equal(ctx.score(s,'BBVI'),Number(id)===836033?80.9:null);
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
@@ -315,8 +315,7 @@ assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 시범
 assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 시범 숫자 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // verified-pilot-2.2: the reviewed peptide values are scored in the AHTPDB cohort; paper values and both licences stay visible.
-for(const [id,value,texts] of [[836033,72.2,['LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0']],
-  [145721,19.6,['KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
+for(const [id,value,texts] of [[145721,19.6,['KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
   html=ctx.renderScores(by(id));
   assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: scored values are not repeated as unscored raw values`);
   const mbpi=html.slice(html.indexOf('MBPI · 생리활성'));
@@ -325,18 +324,40 @@ for(const [id,value,texts] of [[836033,72.2,['LQP','1.18 µM','10.5352/jls.2012.
   assert.equal(ctx.score(by(id),'MBPI'),value);
   assert.equal(ctx.score(by(id),'BBVI'),null,'a single-paper MBPI never becomes BBVI');
 }
+// verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
+html=ctx.renderScores(by(836033));
+{const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
+  for(const text of ['96.3 · 검증 전 시범 지표','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
+    '효능 재현','합성 LQP 2 µM','다른 기원 옥수수 α-제인','차이 0.229','독립 DOI로 셈','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다',
+    'DOI 2편(기원 1 + 효능 재현 1)','펩타이드 352개','doi:10.1093/nar/gku1141'])
+    assert.ok(mbpi.includes(text),`oyster MBPI missing ${text}`);
+  assert.match(mbpi,/기원 근거는 Do et al\. 2012 \(<a [^>]*>10\.5352\/jls\.2012\.22\.2\.220<\/a>\) 1편뿐입니다/);
+  assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
+assert.ok(!html.includes('참고 통합값'),'a real BBVI replaces the reference combination');
+assert.equal(ctx.score(by(836033),'MBPI'),96.3);
+assert.equal(ctx.summary(by(836033)),'MFPI 65.5 · MBPI 96.3 · MCUI(국가 평가) 10.0');
+// A used replication must be listed among the independent DOIs and cite a published source, or the MBPI is a fault.
+for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='LQP').independent_dois=['10.5352/jls.2012.22.2.220','10.0000/other']},
+  o=>{o.source_ids=o.source_ids.filter(id=>id!=='miyoshi_1991_zein')}]){
+  const r=report(),o=r.species.find(s=>s.aphia_id===836033);mutate(o);
+  ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});const n={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(n);
+  assert.equal(ctx.state(n.species[0],'MBPI').kind,'technical_error');
+}
+ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
+next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // Peptide partial leads render their sequence and value, not an empty compound row.
 assert.match(ctx.renderScores(by(145721)),/펩타이드 IW · ACE IC50 = 1.5 µM/);
 // Axis pairs: only species with both values; national and IUCN MCUI and different cohorts stay in separate groups.
 const pairs=ctx.axisPairs();
 assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 65\.5 · MCUI 10\.0/);
-assert.match(pairs,/MBPI × MCUI\(한국 국가 평가 기반\) · ahtpdb-ace-ic50-hhl-cushman-cheung<\/b> 1종: 참굴 MBPI 72\.2 \(참고값\(단일 논문\)\) · MCUI 10\.0<\/li>/);assert.match(pairs,/BBVI × MCUI<\/b> 0종/);
+assert.match(pairs,/MBPI × MCUI\(한국 국가 평가 기반\) · ahtpdb-ace-ic50-hhl-cushman-cheung<\/b> 1종: 참굴 MBPI 96\.3 · MCUI 10\.0<\/li>/);
+assert.match(pairs,/BBVI × MCUI\(한국 국가 평가 기반\)[^<]*<\/b> 1종: 참굴 BBVI 80\.9 · MCUI 10\.0<\/li>/);
 assert.match(pairs,/MFPI만의 쌍은 BBVI가 아닙니다/);
 assert.doesNotMatch(pairs,/IUCN 기반\) · [^<]*참굴/,'a national MCUI never joins the IUCN group');
 // Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
 const refReport=report(),refOyster=refReport.species.find(s=>s.aphia_id===836033);
 refOyster.scores.MBPI=67.5;refOyster.score_status.MBPI='산출됨';
-refOyster.mbpi_label='참고값(단일 논문)';refOyster.withheld_reasons.BBVI='mbpi_single_source';
+refOyster.mbpi_label='참고값(단일 논문)';refOyster.withheld_reasons.BBVI='mbpi_single_source';refOyster.scores.BBVI=null;refOyster.score_status.BBVI='산출 보류';
 refOyster.bioactivity_trace=original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace;
 refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:65.5,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
   mbpi_stratum:'fixture',mbpi_original_paper_dois:['10.0000/fixture'],food_weight:.5,value:66.5,sensitivity:{'0.25':67,'0.5':66.5,'0.75':66},limits:['독립 재현 미확인.'],used_for_score:false};

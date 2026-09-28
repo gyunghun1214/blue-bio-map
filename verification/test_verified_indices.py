@@ -47,6 +47,7 @@ def synthetic_assays(evidence):
 
 V2 = ROOT / "config" / "verified-indices-v2.json"  # superseded public method; its rules stay tested
 V21 = ROOT / "config" / "verified-indices-v2.1.json"  # superseded by 2.2 (peptide stratum); its rules stay tested
+V22 = ROOT / "config" / "verified-indices-v2.2.json"  # superseded by 2.3 (cross-origin potency); its rules stay tested
 NATIONAL_MCUI = {506159, 836033, 231750, 393716, 504357, 413600, 1666974}
 
 
@@ -456,7 +457,7 @@ class OysterLqpResearchScenarioTests(unittest.TestCase):
 
 
 class CrossOriginPotencyResearchTests(unittest.TestCase):
-    """Research-only rule (not public): a synthetic peptide re-measured from another origin counts as an independent DOI."""
+    """Research rule adopted as public 2.3: a synthetic peptide re-measured from another origin counts as an independent DOI."""
     CONFIG = ROOT / "config" / "verified-indices-research-xo-potency.json"
     OUT = ROOT / "research" / "verified-indices" / "assessments-research-xo-potency.json"
 
@@ -471,7 +472,7 @@ class CrossOriginPotencyResearchTests(unittest.TestCase):
 
     def test_only_oyster_changes_and_its_value_stays_its_own(self):
         self.assertEqual(self.OUT.read_text(encoding="utf-8"), render(self.report))
-        public = build(*load_inputs())
+        public = build(*load_inputs(config=V22))
         research_keys = ("independent_dois", "potency_replications")   # present on every research peptide item
         plain = lambda s: {**s, "bioactivity_trace": [{k: v for k, v in i.items() if k not in research_keys} for i in s["bioactivity_trace"]]}
         others = lambda r: {s["aphia_id"]: json.dumps(plain(s), sort_keys=True).replace(r["method_version"], "")
@@ -485,7 +486,7 @@ class CrossOriginPotencyResearchTests(unittest.TestCase):
         self.assertEqual(lqp["independent_dois"], ["10.1271/bbb1961.55.1313", "10.5352/jls.2012.22.2.220"])
         self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"], oyster["mbpi_label"]), (96.3, 80.9, None))
         self.assertIn("miyoshi_1991_zein", oyster["source_ids"])
-        self.assertEqual(species(public, 836033)["scores"]["BBVI"], None)   # the public method is unchanged
+        self.assertEqual(species(public, 836033)["scores"]["BBVI"], None)   # 2.2 without the rule withholds it
         from build_matrix_readiness import build as matrix
         dist = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
         rows = matrix(self.report, dist("candidate-catalog.json"), dist("expansion-evidence.json"))["species"]
@@ -510,15 +511,14 @@ class CrossOriginPotencyResearchTests(unittest.TestCase):
 
 
 class VerifiedPilot22Tests(unittest.TestCase):
-    """The published method: 2.1 with the v3 AHTPDB peptide stratum in place of display-only raw values."""
+    """Superseded by 2.3: 2.1 with the v3 AHTPDB peptide stratum in place of display-only raw values."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V22))
         self.v21 = build(*load_inputs(config=V21))
 
-    def test_committed_output_is_reproducible(self):
+    def test_method_version(self):
         self.assertEqual(self.report["method_version"], "verified-pilot-2.2")
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
 
     def test_only_undaria_and_oyster_gain_a_single_source_mbpi(self):
         changed = {}
@@ -560,3 +560,52 @@ class VerifiedPilot22Tests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VerifiedPilot23Tests(unittest.TestCase):
+    """The published method: 2.2 plus the cross-origin potency rule, with the research config's values."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v22 = build(*load_inputs(config=V22))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-2.3", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_oyster_scores_differ_from_22(self):
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        new, old = rows(self.report), rows(self.v22)
+        self.assertEqual(set(new), set(old))
+        self.assertEqual(len(new), 30)
+        view = lambda s: (s["scores"], s["withheld_reasons"], s.get("mbpi_label"), s["reference_combination"], s["sensitivity"])
+        changed = {a for a in new if view(new[a]) != view(old[a])}
+        self.assertEqual(changed, {836033})   # the other 29 species keep their 2.2 scores, labels and withhold codes
+        oyster, before = new[836033], old[836033]
+        self.assertEqual({k: v for k, v in oyster["scores"].items() if k not in ("MBPI", "BBVI")},
+                         {k: v for k, v in before["scores"].items() if k not in ("MBPI", "BBVI")})
+        self.assertEqual((before["scores"]["MBPI"], before["scores"]["BBVI"], before["mbpi_label"]), (72.2, None, "참고값(단일 논문)"))
+        self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"], oyster["mbpi_label"]), (96.3, 80.9, None))
+        self.assertEqual((oyster["withheld_reasons"]["BBVI"], oyster["reference_combination"]), (None, None))
+        self.assertEqual(oyster["sensitivity"]["food_weights"], {"0.25": 88.6, "0.5": 80.9, "0.75": 73.2})
+
+    def test_public_rule_matches_research_config(self):
+        research = build(*load_inputs(config=CrossOriginPotencyResearchTests.CONFIG))
+        body = lambda r: json.dumps(r["species"] + r["candidate_species"], sort_keys=True).replace(r["method_version"], "")
+        self.assertEqual(body(self.report), body(research))
+        load = lambda p: json.loads(p.read_text(encoding="utf-8"))
+        public_cfg, research_cfg = load(ROOT / "config" / "verified-indices-v2.3.json"), load(CrossOriginPotencyResearchTests.CONFIG)
+        self.assertEqual(public_cfg["peptide_bioactivity"]["cross_origin_potency"], research_cfg["peptide_bioactivity"]["cross_origin_potency"])
+        v22_cfg = load(V22)
+        strip = lambda c: {k: v for k, v in c.items() if k not in ("method_version", "status", "changes_from")}
+        pep = lambda c: {k: v for k, v in c["peptide_bioactivity"].items() if k != "cross_origin_potency"}
+        self.assertEqual({**strip(public_cfg), "peptide_bioactivity": pep(public_cfg)}, {**strip(v22_cfg), "peptide_bioactivity": pep(v22_cfg)})
+
+    def test_oyster_trace_keeps_one_origin_paper(self):
+        oyster = species(self.report, 836033)
+        lqp = max(oyster["bioactivity_trace"], key=lambda i: i["adjusted"])
+        self.assertEqual(lqp["original_paper_dois"], ["10.5352/jls.2012.22.2.220"])
+        [rep] = lqp["potency_replications"]
+        self.assertEqual((rep["used"], rep["value"], rep["origin_label"], rep["source_id"]),
+                         (True, 2.0, "옥수수 α-제인 (합성 펩타이드로 측정)", "miyoshi_1991_zein"))
+        self.assertIn("miyoshi_1991_zein", self.report["sources"])
