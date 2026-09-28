@@ -3,7 +3,8 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
 
-# Loaded from index.html with ?v= versions: bump the version whenever the file changes.
+# Loaded from index.html with ?v=<first 10 hex of sha256 of the LF-normalized file>: recompute it whenever the file changes
+# (verification/test_client_outdated.mjs fails until it matches).
 /app.js
   Cache-Control: public, max-age=31536000, immutable
 /style.css
