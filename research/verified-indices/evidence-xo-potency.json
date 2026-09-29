@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_date": "2026-09-27",
+  "snapshot_date": "2026-09-29",
   "purpose": "Input for the cross-origin potency rule: config/verified-indices-v2.3.json (public, verified-pilot-2.3) and config/verified-indices-research-xo-potency.json (research record). Synthetic peptides re-measured from another origin replicate potency only; they never become an item, a species value or an origin claim.",
   "sources": {
     "miyoshi_1991_zein": {

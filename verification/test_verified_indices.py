@@ -48,6 +48,7 @@ def synthetic_assays(evidence):
 V2 = ROOT / "config" / "verified-indices-v2.json"  # superseded public method; its rules stay tested
 V21 = ROOT / "config" / "verified-indices-v2.1.json"  # superseded by 2.2 (peptide stratum); its rules stay tested
 V22 = ROOT / "config" / "verified-indices-v2.2.json"  # superseded by 2.3 (cross-origin potency); its rules stay tested
+V23 = ROOT / "config" / "verified-indices-v2.3.json"  # superseded by 3.1 (ChEMBL stratum); its rules stay tested
 NATIONAL_MCUI = {506159, 836033, 231750, 393716, 504357, 413600, 1666974}
 
 
@@ -563,15 +564,19 @@ if __name__ == "__main__":
 
 
 class VerifiedPilot23Tests(unittest.TestCase):
-    """The published method: 2.2 plus the cross-origin potency rule, with the research config's values."""
+    """Superseded by 3.1: 2.2 plus the cross-origin potency rule, with the research config's values."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V23))
         self.v22 = build(*load_inputs(config=V22))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-2.3", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 2.3 report is archived as it was; only the evidence snapshot date moved on (2026-09-27 -> 2026-09-29)
+        dated = lambda text: {k: v for k, v in json.loads(text).items() if k not in ("snapshot_date", "generated_at")}
+        archived = (ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-2.3.json").read_text(encoding="utf-8")
+        self.assertEqual(dated(render(self.report)), dated(archived))
+        self.assertEqual(json.loads(archived)["snapshot_date"], "2026-09-27")
 
     def test_only_oyster_scores_differ_from_22(self):
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}

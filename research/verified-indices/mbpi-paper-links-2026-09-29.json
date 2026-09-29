@@ -1,0 +1,510 @@
+{
+ "snapshot_date": "2026-09-29",
+ "searched_on": "2026-09-29",
+ "purpose": "Species -> compound links from original papers for the 14 of 30 species that have no Wikidata P703 (LOTUS) link. Read by scripts/collect_mbpi_links.py; the ChEMBL activity, cohort and scoring rules are the same as for LOTUS links.",
+ "rule": "Accepted only when the title or abstract states that one defined compound was isolated or identified from the species (WoRMS accepted name or synonym), and the compound name in the paper resolves to exactly one PubChem CID whose InChIKey is stored. Rejected: extracts, hydrolysates, fractions, enzymes, unnamed peptides, compound classes, administered drugs, pollutants, and compounds of associated microbes.",
+ "method": "Three search agents (CMNPD public site search without login, PubChem taxonomy page, Europe PMC title/abstract query) and one verification agent that re-read each accepted paper record and PubChem CID independently.",
+ "sources_note": "CMNPD: the site's own no-login search endpoint used by its web page (https://www.cmnpd.org); PubChem taxonomy: PUG View JSON; Europe PMC REST search. Only IDs, the compound name and the quoted title/abstract sentence are stored.",
+ "limits": [
+  "Europe PMC hits above 25 were screened for the first 25 records by relevance only.",
+  "PubChem taxonomy compound tables (sdqagent) returned HTTP 404, so taxon sections were recorded by presence only.",
+  "(2E,4E)-hepta-2,4-dienal in Magallana sikamea is a volatile detected in flesh by HS-SPME GC-MS; it may be a lipid-oxidation product rather than a biosynthesised metabolite."
+ ],
+ "searched": [
+  {
+   "aphia_id": 219984,
+   "scientific_name": "Engraulis japonicus",
+   "names_searched": [
+    "Engraulis japonicus",
+    "Atherina japonica",
+    "Engraulis japonica",
+    "Engraulis zollingeri",
+    "Engraulus japonicus",
+    "Stolephorus celebicus",
+    "Stolephorus zollingeri"
+   ],
+   "ncbi_taxid": "42892",
+   "cmnpd": "https://www.cmnpd.org/ is a JavaScript SPA (static HTML shell only). The page's own public search API (apiPath https://www.cmnpd.org:18127, found in /static/js/app.41d8bb09e992dbb6fd0f.js) was called without login: POST JSON {search_text} to /functionPage/HomeSearch/ and {search_text,type:'All',pageNo:1,pageSize:20} to /functionPage/HomeSearchAll/. Validated with a positive control ('dysidea avara' -> organism CMNPD371430). For all 7 names: HomeSearch result [] and HomeSearchAll result {} (0 hits). The genus 'engraulis' also returned []. No compounds.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/42892/JSON (HTTP 200, 'Engraulis japonicus (Japanese anchovy)'). Top-level TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences in Literature); Patents (co-occurrence subsections); Classification. There is no 'Chemicals and Bioactivities' / Natural Products / Metabolites section, so no list of compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Engraulis japonicus\" OR TITLE_ABS:\"Atherina japonica\" OR TITLE_ABS:\"Engraulis japonica\" OR TITLE_ABS:\"Engraulis zollingeri\" OR TITLE_ABS:\"Engraulus japonicus\" OR TITLE_ABS:\"Stolephorus celebicus\" OR TITLE_ABS:\"Stolephorus zollingeri\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 13,
+   "papers_screened": 13,
+   "rejected_examples": [
+    "10.1111/ijfs.12389: antimicrobial peptide Pep39 (RLFRHAFKAVLRL) came from an anchovy hydrolysate. Hydrolysate-derived and unlikely to be PubChem-named.",
+    "10.1016/j.foodres.2012.04.013: iron-chelating oligopeptides came from trypsin hydrolysate fractions. Hydrolysate.",
+    "22757698 (10.1111/j.1750-3841.2012.02764.x): the lecithin PC/PE isolated from deoiled residues is a generic phospholipid class.",
+    "22382415: the selenium species in Niboshi extract are unnamed, and the source is an extract.",
+    "IND92027806 / 11330348: proteinases and trypsins are enzymes."
+   ]
+  },
+  {
+   "aphia_id": 274849,
+   "scientific_name": "Sebastes schlegelii",
+   "names_searched": [
+    "Sebastes schlegelii",
+    "Sebastes (Sebastichthys) schlegelii",
+    "Sebastes (Sebastocles) schlegelii",
+    "Sebastes schlegeli",
+    "Sebastichthys schlegelii"
+   ],
+   "ncbi_taxid": "214486",
+   "cmnpd": "Same no-login public API as the page (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/, JSON body), with the positive control working. For 'sebastes schlegelii', 'sebastes schlegeli' and 'sebastichthys schlegelii': HomeSearch [] and HomeSearchAll {} (0 hits). Genus 'sebastes' also returned []. No compounds.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/214486/JSON (HTTP 200, \"Sebastes schlegelii (Schlegel's black rockfish)\"). Top-level TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies, Related Substances); Cell Lines; Literature (Consolidated References, co-occurrence subsections); Patents; Classification. There is no Chemicals and Bioactivities / Natural Products / Metabolites section, so no compound list.",
+   "europepmc_query": "(TITLE_ABS:\"Sebastes schlegelii\" OR TITLE_ABS:\"Sebastes (Sebastichthys) schlegelii\" OR TITLE_ABS:\"Sebastes (Sebastocles) schlegelii\" OR TITLE_ABS:\"Sebastes schlegeli\" OR TITLE_ABS:\"Sebastichthys schlegelii\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 81,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "39452887: peptides (MP003 etc.) isolated from a Protamex hydrolysate of tail by-products. Hydrolysate.",
+    "IND609281978 / 40795758: benzimidazole anthelmintics were only tested on the fish, not isolated from it.",
+    "39647374: phthalate esters were tested as pollutants.",
+    "38467165, 33478996, 38298071: bacterial isolates or genomes (associated microbes).",
+    "40563377 / 39765781: blood orange by-product extract used as a feed additive."
+   ]
+  },
+  {
+   "aphia_id": 275816,
+   "scientific_name": "Paralichthys olivaceus",
+   "names_searched": [
+    "Paralichthys olivaceus",
+    "Hippoglossus olivaceus"
+   ],
+   "ncbi_taxid": "8255",
+   "cmnpd": "Same no-login public API (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/, JSON), with the positive control working. For 'paralichthys olivaceus' and 'hippoglossus olivaceus': HomeSearch [] and HomeSearchAll {} (0 hits). Genus 'paralichthys' also returned []. No compounds.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/8255/JSON (HTTP 200, 'Paralichthys olivaceus (Japanese flounder)'). Top-level TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records; Chemicals and Bioactivities (only subsection: Glycans, an external table 'glycosmos_glycan' linked to https://glycosmos.org/organisms/8255); Cell Lines; Literature; Patents; Classification. There is no Natural Products or Metabolites section. The only chemical subsection lists glycans, not small-molecule compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Paralichthys olivaceus\" OR TITLE_ABS:\"Hippoglossus olivaceus\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 282,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "41420688: 'histidine-related compounds (HRCs)' in muscle is a generic class with no single named compound.",
+    "42690562: doxycycline and flumequine residue depletion. The drugs were administered, not isolated.",
+    "42377116, 38189311, 39988218: bacterial isolates or genomes from the fish (associated microbes).",
+    "41006593 / 39981673: viral hemorrhagic septicemia virus isolates.",
+    "40239934 / IND609235493: exosomes and miRNAs, not small molecules."
+   ]
+  },
+  {
+   "aphia_id": 276651,
+   "scientific_name": "Seriola quinqueradiata",
+   "names_searched": [
+    "Seriola quinqueradiata",
+    "Seriola sparna"
+   ],
+   "ncbi_taxid": "8161",
+   "cmnpd": "Same no-login public API (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/, JSON), with the positive control working. For 'seriola quinqueradiata' and 'seriola sparna': HomeSearch [] and HomeSearchAll {} (0 hits). Genus 'seriola' also returned []. No compounds.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/8161/JSON (HTTP 200, 'Seriola quinqueradiata (Japanese amberjack)'). Top-level TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records; Chemicals and Bioactivities with subsections Metabolites ('Metabolites found in this organism') and Natural Products ('Natural products that originated from this organism'); Cell Lines; Literature; Patents; Classification. Both subsections point to an external table (collection=consolidatedcompoundtaxonomy, srccmpdkind=Metabolite / 'Natural Product'), so PubChem does hold compound rows for this taxon. The index JSON does not include the rows, and fetching them via https://pubchem.ncbi.nlm.nih.gov/sdq/sdqagent.cgi returned HTTP 404, so no compound names or CIDs were retrieved.",
+   "europepmc_query": "(TITLE_ABS:\"Seriola quinqueradiata\" OR TITLE_ABS:\"Seriola sparna\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 54,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "IND605890087 (10.1007/s12562-017-1157-2): 2,3-butanedione is a GC-O odor volatile in cold-stored flesh, so it may be spoilage or process-derived. The sentence naming it does not name the species.",
+    "34143181 (10.1093/bbb/zbab110): trimethylamine is a heating-dependent content in cooked muscle. The sentence does not name the species.",
+    "IND607012863: inosine monophosphate and hypoxanthine levels were only quantified in heated meat. The sentence does not name the species.",
+    "IND606275980: (E,E)-2,4-hexadienal is a lipid-oxidation volatile formed during storage.",
+    "34822517: the lipooligosaccharide came from the associated bacterium Pseudoalteromonas nigrifaciens and is a polysaccharide-type molecule."
+   ]
+  },
+  {
+   "aphia_id": 281273,
+   "scientific_name": "Larimichthys polyactis",
+   "names_searched": [
+    "Larimichthys polyactis",
+    "Argyrosomus polyactis",
+    "Collichthys polyactis",
+    "Collichthys rathbunae",
+    "Larimichthys rathbunae",
+    "Othonias brevirostris",
+    "Pseudosciaena manchurica",
+    "Pseudosciaena polyactis",
+    "Sciaena manchurica",
+    "Sciaena ogiwara"
+   ],
+   "ncbi_taxid": "334908",
+   "cmnpd": "Same no-login public API (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/, JSON), with the positive control working. For all 10 names: HomeSearch [] and HomeSearchAll {} (0 hits). Genus 'larimichthys' also returned []. No compounds.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/334908/JSON (HTTP 200, 'Larimichthys polyactis (yellow croaker)'). Top-level TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, co-occurrence subsections); Patents; Classification. There is no Chemicals and Bioactivities / Natural Products / Metabolites section, so no compound list.",
+   "europepmc_query": "(TITLE_ABS:\"Larimichthys polyactis\" OR TITLE_ABS:\"Argyrosomus polyactis\" OR TITLE_ABS:\"Collichthys polyactis\" OR TITLE_ABS:\"Collichthys rathbunae\" OR TITLE_ABS:\"Larimichthys rathbunae\" OR TITLE_ABS:\"Othonias brevirostris\" OR TITLE_ABS:\"Pseudosciaena manchurica\" OR TITLE_ABS:\"Pseudosciaena polyactis\" OR TITLE_ABS:\"Sciaena manchurica\" OR TITLE_ABS:\"Sciaena ogiwara\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 11,
+   "papers_screened": 11,
+   "rejected_examples": [
+    "41624572: bitter compounds and VOCs in sous-vide soup are generic classes from cooking.",
+    "40774547: antimicrobial peptides and NK-lysin are proteins or gene expression, not isolated small molecules.",
+    "IND606328240: spoilage volatiles come from inoculated bacteria.",
+    "41538963: organochlorine contaminants are pollutants measured in the fish, not natural products.",
+    "PPR424414 / 35752987 / IND44275255: an iridovirus isolate and microsatellite loci."
+   ]
+  },
+  {
+   "aphia_id": 342067,
+   "scientific_name": "Todarodes pacificus",
+   "names_searched": [
+    "Todarodes pacificus",
+    "Ommastrephes pacificus",
+    "Ommatostrephes pacificus",
+    "Todarodes pacificus pacificus"
+   ],
+   "ncbi_taxid": "6637",
+   "cmnpd": "www.cmnpd.org is a JavaScript single-page app, so a plain GET of https://www.cmnpd.org/ or /search?keyword=... returns only a 1448-byte HTML shell. I used the no-login search endpoints that the site's own JS bundle (/static/js/app.41d8bb09e992dbb6fd0f.js, apiPath https://www.cmnpd.org:18127) calls: POST /functionPage/HomeSearch/ {search_text} and POST /functionPage/HomeSearchAll/ {search_text,type:'All'}. Searched 'todarodes pacificus', 'ommastrephes pacificus', 'ommatostrephes pacificus', 'todarodes', 'todar' and got 0 hits every time (result [] / {}). Controls in the same session did return organism hits, so the endpoint works: 'sargassum thunbergii' gave CMNPD372620 and 'ecklonia cava' gave CMNPD372637.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/6637/JSON (HTTP 200, 'Todarodes pacificus (Japanese flying squid)'). TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies, Related Substances); Chemicals and Bioactivities (Natural Products, Glycans); Proteins (Pathway Proteins); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences); Patents (co-occurrences); Classification. There is a 'Natural Products' section ('Natural products that originated from this organism'), sourced from COCONUT (Taxon::6637) and NPASS (NPO2369). Its content is an external table (collection=consolidatedcompoundtaxonomy, srccmpdkind='Natural Product'), so the JSON index does not list the compounds. Per the index-only instruction I did not pull that table.",
+   "europepmc_query": "(TITLE_ABS:\"Todarodes pacificus\" OR TITLE_ABS:\"Ommastrephes pacificus\" OR TITLE_ABS:\"Ommatostrephes pacificus\" OR TITLE_ABS:\"Todarodes pacificus pacificus\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 29,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "PMID 21129428: the tetradecapeptide GFKDNVSNRIAHGFamide ('Todarodes tetradecapeptide') was isolated from squid brain, but PubChem name lookup returns 'No CID found' for both names.",
+    "PMID 17371043: arsenobetaine was identified (CID 47364), but no single title or abstract sentence names both the compound and the species.",
+    "PMID 11959025: gangliosides GT3/GQ1c are a lipid class with variable ceramide, and the identifying sentence does not name the species.",
+    "PMID 21535756: lecithin (a phospholipid mixture). PMID 15330541: radiolytic products formed in irradiated squid.",
+    "Bacterial isolates from the squid gut (PMIDs 29480794, 26763785, 27226032), pollutants (PBDEs, PCBs) and proteins/enzymes."
+   ]
+  },
+  {
+   "aphia_id": 372119,
+   "scientific_name": "Gelidium elegans",
+   "names_searched": [
+    "Gelidium elegans",
+    "Gelidium amansii f. elegans"
+   ],
+   "ncbi_taxid": "37200",
+   "cmnpd": "Same public no-login endpoints (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/; the www.cmnpd.org page itself is a JS-only shell). Searched 'gelidium elegans', 'gelidium amansii', 'gelidium', 'gelid' and got 0 hits every time. Controls such as 'sargassum thunbergii' did return hits.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/37200/JSON (HTTP 200). TOC: Record Description; Taxonomy Information; Names and Identifiers (Synonyms, Other Identifiers); Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, NLM Curated PubMed Citations, Organism-Chemical/Gene/Disease/Organism Co-Occurrences); Patents (co-occurrences); Classification (NCBI Taxonomy, MeSH Tree). No 'Chemicals and Bioactivities'/'Natural Products' section, and no section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Gelidium elegans\" OR TITLE_ABS:\"Gelidium amansii f. elegans\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 2,
+   "papers_screened": 2,
+   "rejected_examples": [
+    "PMID 27474672: nanocellulose (a polysaccharide material) isolated from G. elegans.",
+    "PMID 24471073: ethanol extracts; only total phenol/flavonoid content, with no single compound named."
+   ]
+  },
+  {
+   "aphia_id": 397082,
+   "scientific_name": "Haliotis discus",
+   "names_searched": [
+    "Haliotis discus"
+   ],
+   "ncbi_taxid": "36094",
+   "cmnpd": "Same public no-login endpoints (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/; the www.cmnpd.org page itself is a JS-only shell). Searched 'haliotis discus', 'haliotis discus hannai', 'haliotis', 'halioti' and got 0 hits every time.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/36094/JSON (HTTP 200). TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences); Patents (co-occurrences); Classification (NCBI Taxonomy, WoRMS Tree, ITIS, Catalogue of Life). No 'Natural Products' section, and no section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Haliotis discus\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 92,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "PMID 31022939: peptide KVEPQDPSEW (AATP) isolated from H. discus hannai, but PubChem name lookup of 'KVEPQDPSEW' returns 'No CID found'.",
+    "PMID 39590783: alcalase hydrolysate fractions of the viscera.",
+    "PMIDs 38484544 and 38581788: untargeted aroma and lipid/metabolite profiling, with no single isolated compound named.",
+    "Many results are bacteria, viruses or phages isolated from abalone (e.g. PMIDs 37805946, 36847531, 28302779) or genes/proteins (perlucin, SPARC, carbonic anhydrase)."
+   ]
+  },
+  {
+   "aphia_id": 413600,
+   "scientific_name": "Sinonovacula constricta",
+   "names_searched": [
+    "Sinonovacula constricta",
+    "Sinonovacula lamarcki",
+    "Solen constrictus",
+    "Solen novaculina"
+   ],
+   "ncbi_taxid": "98310",
+   "cmnpd": "Same public no-login endpoints (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/; the www.cmnpd.org page itself is a JS-only shell). Searched 'sinonovacula constricta', 'sinonovacula lamarcki', 'solen constrictus', 'solen novaculina', 'sinonovacula', 'sinonov' and got 0 hits every time.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/98310/JSON (HTTP 200, 'Sinonovacula constricta (Chinese razor clam)'). TOC: Record Description; Taxonomy Information; Names and Identifiers; Related Records (Related Taxonomies); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences); Patents (co-occurrences); Classification (NCBI Taxonomy, WoRMS Tree, Catalogue of Life). No 'Natural Products' section, and no section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Sinonovacula constricta\" OR TITLE_ABS:\"Sinonovacula lamarcki\" OR TITLE_ABS:\"Solen constrictus\" OR TITLE_ABS:\"Solen novaculina\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 21,
+   "papers_screened": 21,
+   "rejected_examples": [
+    "PMID 39567061: 4,5-dihydro-KmTx2 comes from the dinoflagellate Karlodinium veneficum and only accumulated in the clam.",
+    "PMID 41465052: glutamic acid, aspartic acid, GMP and AMP were quantified across six bivalves as umami contributors. They were not isolated, and the sentence does not name this species.",
+    "Record 402170: crude and refined glycosaminoglycan (a polysaccharide).",
+    "PMID 40288072: lipid-droplet proteomics/lipidomics (generic lipid classes).",
+    "Pathogenic Vibrio isolates, microsatellites and genes (PMIDs 36728415, 25729945, 23765116)."
+   ]
+  },
+  {
+   "aphia_id": 494853,
+   "scientific_name": "Sargassum horneri",
+   "names_searched": [
+    "Sargassum horneri",
+    "Fucus horneri",
+    "Sargassum fengeri",
+    "Sargassum filicinum",
+    "Sargassum horneri f. furcatodentatum",
+    "Sargassum horneri var. densum",
+    "Sargassum spathulatum",
+    "Spongocarpus horneri"
+   ],
+   "ncbi_taxid": "74089",
+   "cmnpd": "Same public no-login endpoints (POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ and /HomeSearchAll/; the www.cmnpd.org page itself is a JS-only shell). Searched 'sargassum horneri', 'fucus horneri', 'sargassum filicinum', 'sargassum fengeri', 'sargassum spathulatum', 'spongocarpus horneri' and got 0 hits every time. Sibling species did return organism records in the same session: 'sargassum' gave CMNPD361123 and others, 'sargassum thunbergii' gave CMNPD372620, 'sargassum micracanthum' gave CMNPD372607. So S. horneri is simply absent from the CMNPD organism index.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/74089/JSON (HTTP 200). TOC: Record Description; Taxonomy Information; Names and Identifiers (Synonyms, Other Identifiers); Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences); Patents (co-occurrences); Classification (NCBI Taxonomy). No 'Chemicals and Bioactivities'/'Natural Products' section, and no section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Sargassum horneri\" OR TITLE_ABS:\"Fucus horneri\" OR TITLE_ABS:\"Sargassum fengeri\" OR TITLE_ABS:\"Sargassum filicinum\" OR TITLE_ABS:\"Sargassum horneri f. furcatodentatum\" OR TITLE_ABS:\"Sargassum horneri var. densum\" OR TITLE_ABS:\"Sargassum spathulatum\" OR TITLE_ABS:\"Spongocarpus horneri\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 58,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "PMIDs 42092524 and 34833989: '(-)-Loliode' isolated from S. horneri, but PubChem name lookup of '(-)-Loliode'/'(-)-loliode' returns 'No CID found'. I did not substitute loliolide.",
+    "PMIDs 40164128, 39336079 and IND609293296: fucoidan / polysaccharides.",
+    "PMID 41372250: ethanolic extract and subfractions; only the class 'phytosterols' is named.",
+    "PMID 38929129: 89 compounds tentatively identified by HRMS, reported only as classes.",
+    "PMID 40141391: tannin/phenol extraction (generic classes)."
+   ]
+  },
+  {
+   "aphia_id": 534443,
+   "scientific_name": "Octopus sinensis",
+   "names_searched": [
+    "Octopus sinensis"
+   ],
+   "ncbi_taxid": "2607531",
+   "cmnpd": "CMNPD (https://www.cmnpd.org/) is a JavaScript SPA; its app JS exposes a public API at https://www.cmnpd.org:18127 (no login needed). I POSTed {\"search_text\":...} to https://www.cmnpd.org:18127/functionPage/HomeSearch/ and HomeSearchAll/ (type=organism). 'octopus sinensis' gave result [] (no hits). 'octopus' returned only the organisms CMNPD360481 Octopus and CMNPD371023 Octopus vulgaris, not O. sinensis.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/2607531/JSON (HTTP 200, 'Octopus sinensis (East Asian common octopus)'). TOC: Record Description; Taxonomy Information (Scientific Name, Common Name, Rank, Domain, Lineage, Create Date, Modify Date); Names and Identifiers (Synonyms, Other Identifiers: NCBI Taxonomy ID, EOL Page ID, COL ID, Wikidata); Related Records (Related Taxonomies); Literature (Organism-Chemical/Gene/Disease/Organism Co-Occurrences in Literature); Classification (NCBI Taxonomy, Catalogue of Life). No section lists natural products or compounds found in the taxon; only text-mined co-occurrences.",
+   "europepmc_query": "(TITLE_ABS:\"Octopus sinensis\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 0,
+   "papers_screened": 0,
+   "rejected_examples": [
+    "No results to screen: hitCount 0, confirmed on two separate calls (several transient HTTP 503 retries first). WoRMS lists no synonyms (HTTP 204)."
+   ]
+  },
+  {
+   "aphia_id": 836041,
+   "scientific_name": "Magallana sikamea",
+   "names_searched": [
+    "Magallana sikamea",
+    "Crassostrea (Magallana) sikamea",
+    "Crassostrea sikamea",
+    "Ostrea gigas var. sikamea"
+   ],
+   "ncbi_taxid": "2784302",
+   "cmnpd": "Public API POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ (no login). 'magallana sikamea', 'crassostrea sikamea', 'ostrea gigas' and 'crassostrea' all gave result [] (no hits). 'magallana' returned only CMNPD360464 Magallana, CMNPD371004 Magallana gigas and CMNPD371005 Magallana rivularis, so M. sikamea has no CMNPD organism entry.",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/2784302/JSON (HTTP 200, 'Magallana sikamea'). TOC: Record Description; Taxonomy Information (Scientific Name, Rank, Domain, Lineage, Modify Date); Names and Identifiers (Synonyms, Other Identifiers: NCBI Taxonomy ID, Wikidata); Related Records (Related Taxonomies); Literature (Organism-Chemical Co-Occurrences in Literature, Organism-Organism Co-Occurrences in Literature); Classification (NCBI Taxonomy). No section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Magallana sikamea\" OR TITLE_ABS:\"Crassostrea (Magallana) sikamea\" OR TITLE_ABS:\"Crassostrea sikamea\" OR TITLE_ABS:\"Ostrea gigas var. sikamea\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 4,
+   "papers_screened": 4,
+   "rejected_examples": [
+    "PMID 41465052 (umami in six bivalves): the sentence naming glutamic acid, aspartic acid, GMP and AMP does not name the species. These are primary metabolites measured across all six species.",
+    "PMID 39671009: promoter DNA sequences isolated from C. gigas; no compound.",
+    "DOI 10.1111/are.12754: probiotic bacteria isolated from other bivalves and tested on C. sikamea; no compound.",
+    "Accepted link note: PMID 34385935 names the species only by the common name 'Kumamoto oysters', which the title defines as Crassostrea sikamea. It is a GC-MS volatile (flavor) detection, not a bioactive isolation."
+   ]
+  },
+  {
+   "aphia_id": 1061762,
+   "scientific_name": "Portunus trituberculatus",
+   "names_searched": [
+    "Portunus trituberculatus",
+    "Neptunus trituberculatus",
+    "Portunus (Portunus) trituberculatus"
+   ],
+   "ncbi_taxid": "210409",
+   "cmnpd": "Public API POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ (no login). 'portunus trituberculatus', 'neptunus trituberculatus' and 'portunus' all gave result [] (no hits).",
+   "pubchem_taxonomy": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/210409/JSON (HTTP 200, 'Portunus trituberculatus (swimming crab)'). TOC: Record Description; Taxonomy Information; Names and Identifiers (Synonyms, Other Identifiers: NCBI Taxonomy ID, EOL Page ID, COL ID, UniProt Taxon ID, AphiaID, Wikidata); Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences in Literature); Patents (Organism-Chemical/Gene/Disease/Organism Co-Occurrences in Patents); Classification (NCBI Taxonomy, WoRMS Tree, Catalogue of Life). Related Substances lists only 'Japanese blue crab', a whole-organism substance and not a compound. No section lists natural products found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Portunus trituberculatus\" OR TITLE_ABS:\"Neptunus trituberculatus\" OR TITLE_ABS:\"Portunus (Portunus) trituberculatus\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 40,
+   "papers_screened": 25,
+   "rejected_examples": [
+    "PMID 39967174 (magnetic-field thawing): nonanal (CID 31289) and 2-undecanone (CID 8163) are reported as flavor retention in thawed crab meat. The sentence does not name the species.",
+    "PMID 41506582: benzo[a]pyrene traces appeared in fried crab. This is a cooking-generated contaminant, not a compound of the species.",
+    "PMID 41494428 / 41538963: PFAS and organochlorine anthropogenic contaminants, mostly generic classes, reported across food webs.",
+    "PMID 31608469 (flavor of gonad/meat): AMP, glutamate and other free amino acids and nucleotides are generic primary metabolites; the sentences give no species-specific isolation.",
+    "The other results cover pathogens isolated from the crab (Vibrio, Mesanophrys, phage), genes/proteins (Toll, A2M, WNT4, lectin), microsatellite/AFLP markers, or other crab species."
+   ]
+  },
+  {
+   "aphia_id": 1666974,
+   "scientific_name": "Acanthosepion esculentum",
+   "names_searched": [
+    "Acanthosepion esculentum",
+    "Sepia (Platysepia) esculenta",
+    "Sepia esculenta"
+   ],
+   "ncbi_taxid": "31210",
+   "cmnpd": "Public API POST https://www.cmnpd.org:18127/functionPage/HomeSearch/ (no login). 'acanthosepion esculentum', 'sepia esculenta', 'sepia' and 'acanthosepion' all gave result [] (no hits).",
+   "pubchem_taxonomy": "WoRMS AphiaExternalIDByAphiaID/1666974?type=ncbi returned HTTP 204. The NCBI taxid 31210 comes from synonym AphiaID 342131 (Sepia esculenta). https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/taxonomy/31210/JSON (HTTP 200, 'Sepia esculenta (golden cuttlefish)'). TOC: Record Description; Taxonomy Information; Names and Identifiers (Synonyms, Other Identifiers: NCBI Taxonomy ID, Deprecated NCBI Taxonomy ID, EOL Page ID, ITIS Serial Number, COL ID, UniProt Taxon ID, AphiaID, Wikidata); Related Records (Related Taxonomies, Related Substances); Literature (Consolidated References, Organism-Chemical/Gene/Disease/Organism Co-Occurrences in Literature); Patents (Co-Occurrences in Patents x4); Classification (NCBI Taxonomy, WoRMS Tree, Integrated Taxonomic Information System, Catalogue of Life). Related Substances lists only 'Sepia esculenta whole', a whole-organism substance. No section lists compounds found in the taxon.",
+   "europepmc_query": "(TITLE_ABS:\"Acanthosepion esculentum\" OR TITLE_ABS:\"Sepia (Platysepia) esculenta\" OR TITLE_ABS:\"Sepia esculenta\") AND (TITLE_ABS:isolated OR TITLE_ABS:isolation OR TITLE_ABS:\"compounds\")",
+   "europepmc_hits": 9,
+   "papers_screened": 9,
+   "rejected_examples": [
+    "DOI 10.64898/2026.04.09.716377 (preprint): SE-CTX is a venom protein. PubChem name lookups for 'SE-CTX' and 'SE-cephalotoxin' returned 404 (No CID found).",
+    "PMID 28096961 / 29597272: Sepia ink polysaccharide (SIP), a polysaccharide.",
+    "PMID 29407235: crude ink proteins (ASMT-I and others), proteins or extract.",
+    "PMID 22312309 and DOI 10.1111/j.1471-8286.2006.01518.x: microsatellite DNA markers; PMID 18275241: metalloprotease cDNA.",
+    "Microbiota study and cold-storage VOC study: bacterial isolates, and VOC classes (furans) only."
+   ]
+  }
+ ],
+ "links": [
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "fucosterol",
+   "pubchem_cid": 5281328,
+   "inchikey": "OSELKOCHBMDKEJ-JUGJNGJRSA-N",
+   "doi": "10.1016/j.intimp.2024.111851",
+   "pmid": "38492337",
+   "quote": "Fucosterol isolated from Sargassum horneri attenuates allergic responses in immunoglobulin E/bovine serum albumin-stimulated mast cells and passive cutaneous anaphylaxis in mice.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:38492337%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 38492337. The quote matches the title exactly. WoRMS 494853 is Sargassum horneri, status accepted. The abstract says fucosterol (FST) was isolated from S. horneri. PubChem CID 5281328 is 'Fucosterol' with the same InChIKey, and the name 'fucosterol' resolves only to CID 5281328."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "Fucosterol",
+   "pubchem_cid": 5281328,
+   "inchikey": "OSELKOCHBMDKEJ-JUGJNGJRSA-N",
+   "doi": "10.3390/antiox11081429",
+   "pmid": "35892631",
+   "quote": "Fucosterol Isolated from Dietary Brown Alga Sargassum horneri Protects TNF-α/IFN-γ-Stimulated Human Dermal Fibroblasts via Regulating Nrf2/HO-1 and NF-κB/MAPK Pathways.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:35892631%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 35892631. The quote matches the title once the <i> italic tags around the species name are removed. The abstract says FST was extracted from S. horneri, isolated by HPLC and its structure confirmed by NMR. PubChem CID 5281328 has the same InChIKey, and 'Fucosterol' resolves only to CID 5281328."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "Fucoxanthin",
+   "pubchem_cid": 5281239,
+   "inchikey": "SJWWTRQNNRNTPU-ABBNZJFMSA-N",
+   "doi": "10.3390/molecules26133777",
+   "pmid": "34206231",
+   "quote": "Isolation and Purification of Fucoxanthin from Brown Seaweed Sargassum horneri Using Open ODS Column Chromatography and Ethanol Precipitation.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:34206231%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34206231. The quote matches the title once the <i> italic tags are removed. The abstract reports fucoxanthin purified from S. horneri at 91.07% purity, so it is a single compound, not an extract. PubChem CID 5281239 is 'Fucoxanthin' with the same InChIKey, and 'Fucoxanthin' resolves only to CID 5281239."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "sargachromenol",
+   "pubchem_cid": 10455044,
+   "inchikey": "QKXAGRZCXAYBQX-WDZAAMDOSA-N",
+   "doi": "10.3390/md20110710",
+   "pmid": "36421988",
+   "quote": "In this study, sargachromenol (SC) was isolated from a marine brown seaweed Sargassum horneri (S. horneri) and its neuroprotective effects against glutamate-induced oxidative stress in HT22 cells were investigated.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:36421988%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 36421988. The quote matches the abstract once the <i> italic tags are removed. The title also says sargachromenol was isolated from S. horneri. PubChem CID 10455044 is 'Sargachromenol' with the same InChIKey, and 'sargachromenol' resolves only to CID 10455044. PubChem's record leaves the chromene C-2 stereocentre undefined."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "Sargachromenol",
+   "pubchem_cid": 10455044,
+   "inchikey": "QKXAGRZCXAYBQX-WDZAAMDOSA-N",
+   "doi": "10.3390/md20010028",
+   "pmid": "35049883",
+   "quote": "Sargachromenol Isolated from Sargassum horneri Inhibits Particulate Matter-Induced Inflammation in Macrophages through Toll-like Receptor-Mediated Cell Signaling Pathways.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:35049883%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 35049883. The quote matches the title once the <i> italic tags are removed. The compound is sargachromenol isolated from S. horneri. PubChem CID 10455044 has the same InChIKey, and 'Sargachromenol' resolves only to CID 10455044."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "sargachromenol",
+   "pubchem_cid": 10455044,
+   "inchikey": "QKXAGRZCXAYBQX-WDZAAMDOSA-N",
+   "doi": "10.3390/md19090497",
+   "pmid": "34564159",
+   "quote": "In this study, we isolated sargachromenol (SC) from Sargassum horneri and evaluated its anti-inflammatory effect in lipopolysaccharide (LPS)-stimulated RAW 264.7 macrophages.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:34564159%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34564159. The quote matches the abstract once the <i> italic tags are removed. The title says 'Sargachromenol Purified from Sargassum horneri'. PubChem CID 10455044 has the same InChIKey, and 'sargachromenol' resolves only to CID 10455044."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "Epiloliolide",
+   "pubchem_cid": 44511808,
+   "inchikey": "XEVQXKKKAVVSMW-RDDDGLTNSA-N",
+   "doi": "10.3390/md19070388",
+   "pmid": "34356813",
+   "quote": "The Marine-Derived Natural Product Epiloliolide Isolated from Sargassum horneri Regulates NLRP3 via PKA/CREB, Promoting Proliferation and Anti-Inflammatory Effects of Human Periodontal Ligament Cells.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:34356813%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34356813. The quote matches the title once the <i> italic tags are removed. The abstract says 'compound epiloliolide, isolated from S. horneri'. PubChem CID 44511808 is '(+)-Epiloliolide', (6R,7aR), with the same InChIKey, and 'Epiloliolide' resolves only to CID 44511808. The abstract does not state the stereochemistry, so the stereo comes from PubChem's name mapping."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "(-)-Loliolide",
+   "pubchem_cid": 100332,
+   "inchikey": "XEVQXKKKAVVSMW-WRWORJQWSA-N",
+   "doi": "10.3390/md19080435",
+   "pmid": "34436274",
+   "quote": "(-)-Loliolide Isolated from Sargassum horneri Abate UVB-Induced Oxidative Damage in Human Dermal Fibroblasts and Subside ECM Degradation.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:34436274%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34436274. The quote matches the title once the <i> italic tags are removed. The abstract names the compound HTT, (7aR)-6-hydroxy-4,4,7a-trimethyl-6,7-dihydro-5H-1-benzofuran-2-one. PubChem CID 100332 is 'Loliolide', (6S,7aR), with the same InChIKey. '(-)-Loliolide' resolves only to CID 100332, which matches the title."
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "compound_name_in_paper": "(-)-loliolide",
+   "pubchem_cid": 100332,
+   "inchikey": "XEVQXKKKAVVSMW-WRWORJQWSA-N",
+   "doi": "10.3390/antiox10060856",
+   "pmid": "34071797",
+   "quote": "The present study evaluated the effects of (-)-loliolide isolated from Sargassum horneri (S. horneri) against oxidative stress and inflammation, and its biological mechanism in interferon (IFN)-γ/tumor necrosis factor (TNF)-α-stimulated HaCaT keratinocytes.",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&query=EXT_ID:34071797%20AND%20SRC:MED",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34071797. The quote matches the abstract once the <i> italic tags are removed. The title also says (-)-loliolide was isolated from S. horneri. PubChem CID 100332 has the same InChIKey, and '(-)-loliolide' resolves only to CID 100332."
+   }
+  },
+  {
+   "aphia_id": 836041,
+   "compound_name_in_paper": "(2E,4E)-hepta-2,4-dienal",
+   "pubchem_cid": 5283321,
+   "inchikey": "SATICYYAWWYRAM-VNKDHWASSA-N",
+   "doi": "10.3389/fphys.2021.713736",
+   "pmid": "34385935",
+   "quote": "Volatile organic compounds profiles of the two species revealed a higher proportion of most aldehydes including (2<i>E</i>,4<i>E</i>)-hepta-2,4-dienal in Kumamoto oysters.",
+   "url": "https://europepmc.org/articles/PMC8353274",
+   "verification": {
+    "quote_verbatim": true,
+    "species_named": true,
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Europe PMC DOI query: 1 hit, PMID 34385935. The quote matches the abstract exactly, including the <i>E</i> tags. The quote says only 'Kumamoto oysters', but the title identifies them as Crassostrea sikamea, a WoRMS synonym of Magallana sikamea (836041, accepted). The full text (PMC8353274) says the compound was detected in C. sikamea flesh by HS-SPME GC-MS, with retention indices from C6-C26 alkanes, at 8.6-12.6% of total volatiles. PubChem CID 5283321 is (2E,4E)-hepta-2,4-dienal with the same InChIKey, and the name resolves only to that CID. Caveats: this is a volatile detected in tissue, probably a lipid-oxidation product, not a purified natural product. The (E,E) geometry rests on MS plus retention index, with no authentic standard reported."
+   }
+  }
+ ]
+}
