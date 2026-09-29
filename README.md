@@ -32,7 +32,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 - 설정: 저장소 루트 `wrangler.jsonc`. `dist/`를 빌드 없이 그대로 제공한다.
 - 자동 배포: Cloudflare Workers Builds가 이 저장소에 연결되어 있으면 `main`에 병합할 때마다 `npx wrangler deploy`로 자동 배포된다. 코드를 고치고 PR을 병합하는 것으로 충분하다.
 - 수동 배포: 저장소 루트에서 `npx wrangler deploy` (Cloudflare 로그인 필요).
-- 응답 헤더: `dist/_headers`. `app.js`·`style.css`·`pilot.css`·`live-data.js`·`vendor/*`는 1년 `immutable` 캐시이므로, 내용을 바꾸면 `index.html`의 `?v=` 버전을 반드시 올린다(`vendor/`는 파일 이름을 바꾼다). `index.html`·`*.json`은 기본 캐시.
+- 응답 헤더: `dist/_headers`. `app.js`·`style.css`·`pilot.css`·`live-data.js`·`vendor/*`는 1년 `immutable` 캐시이므로, 내용을 바꾸면 `index.html`의 `?v=` 값을 LF로 맞춘 파일 내용의 sha256 앞 10자로 다시 계산한다(`node verification/test_client_outdated.mjs`가 불일치를 잡는다. `vendor/`는 파일 이름을 바꾼다). 열려 있던 탭이나 캐시된 옛 `app.js`가 더 새 버전의 자료 파일(`assessments.json`의 `verified-pilot-*`, 각 JSON의 스키마 번호)을 받으면 파일·버전별로 한 번만 새로고침하고, 그래도 옛 코드면 "새 버전 있음"으로 표시한다. `index.html`·`*.json`은 기본 캐시.
 - 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다.
 
 ## 자료 사용
@@ -91,7 +91,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 
 `python scripts/evaluate_candidates.py tmp/curated-evidence.json`은 출처와 검수 여부가 명시된 입력을 읽어 `tmp/assessments.json`에 **검증 전** 결과를 쓴다. 기본 실행은 공개 `dist/`를 수정하지 않는다. 입력 형식과 산출 조건은 [근거 입력 문서](docs/evidence-schema.md)에 있다. `python -m unittest discover -s verification -p 'test_*.py'`로 합성 사례의 불변조건을 확인할 수 있다.
 
-별도 검토를 거쳐 공개한 `dist/assessments.json`의 시범 지표를 화면에 읽는다. `python scripts/build_verified_indices.py --config config/verified-indices-v2.1.json --check`로 30종 점수와 보류 사유를 재현한다. BBVI와 IUCN 전 지구 기반 MCUI를 모두 산출한 종만 실제 매트릭스에 배치한다. 한국 국가 평가 기반 MCUI는 별도 범위로 표시한다. 운영 요약의 영양 건수나 CMNPD 화합물 건수만으로 점수를 만들지 않는다. 감태 MBPI는 단일 원논문 안의 상대값이므로 참고값으로 표시한다.
+별도 검토를 거쳐 공개한 `dist/assessments.json`의 시범 지표를 화면에 읽는다. `python scripts/build_verified_indices.py --check`(기본 설정 `config/verified-indices-v2.3.json`)로 공개 `dist/assessments.json`의 30종 점수와 보류 사유를 재현한다. v2·v2.1·v2.2 설정은 기록용이며 커밋된 산출물이 없어 `--check` 대상이 아니다. BBVI와 IUCN 전 지구 기반 MCUI를 모두 산출한 종만 실제 매트릭스에 배치한다. 한국 국가 평가 기반 MCUI는 별도 범위로 표시한다. 운영 요약의 영양 건수나 CMNPD 화합물 건수만으로 점수를 만들지 않는다. 감태 MBPI는 단일 원논문 안의 상대값이므로 참고값으로 표시한다.
 
 ## 조사 자료 접수 (2026-09-24)
 
