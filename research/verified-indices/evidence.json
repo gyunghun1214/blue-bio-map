@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "snapshot_date": "2026-09-30",
+  "snapshot_date": "2026-09-27",
   "nutrition_cohort_criteria": "AFCD Release 3 rows F006288/F006289/F006291: three distinct Australian aquacultured oyster species, raw shucked flesh, per 100 g edible portion, linked to the same SARDI/FRDC sampling and methods program. Fixed independently of website filters. Three species are exploratory, not a statistically validated reference population.",
   "sources": {
     "afcd_r3_nutrients": {

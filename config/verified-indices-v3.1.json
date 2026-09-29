@@ -261,6 +261,13 @@
     "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
     "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
     "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
+    "paper_source_ids": [
+      "europepmc_mbpi",
+      "cmnpd_mbpi"
+    ],
+    "link_review": "research/verified-indices/mbpi-link-review-2026-09-30.json",
+    "review_rule": "Every species -> compound link behind a primary ChEMBL item was checked against the linked paper titles, abstracts and the PubChem structure (mbpi-link-review-2026-09-30.json). A link is rejected only on positive evidence of one class: structure_mismatch (the name resolved to another structure), contaminant (pollutant or reagent found in the sample), not_tissue (found in faeces, diet or symbionts, not the organism), ubiquitous_metabolite (C1 metabolites, amino-acid amines, common C16-C22 fatty acids, C6-C10 oxidation aldehydes). A rejected link enters no item in any view. Each review entry stores the link's DOI set; the build stops when the DOIs differ (stale review) or when a primary item rests on a link without a review entry.",
+    "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
     "source_ids": [
       "worms_rest_mbpi",
       "wikidata_p703_lotus",

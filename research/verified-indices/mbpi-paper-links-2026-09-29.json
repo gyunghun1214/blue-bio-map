@@ -1,9 +1,25 @@
 {
- "snapshot_date": "2026-09-30",
+ "snapshot_date": "2026-09-29",
  "searched_on": "2026-09-29",
  "purpose": "Species -> compound links from original papers for the 14 of 30 species that have no Wikidata P703 (LOTUS) link. Read by scripts/collect_mbpi_links.py; the ChEMBL activity, cohort and scoring rules are the same as for LOTUS links.",
  "rule": "Accepted only when the title or abstract states that one defined compound was isolated or identified from the species (WoRMS accepted name or synonym), and the compound name in the paper resolves to exactly one PubChem CID whose InChIKey is stored. Rejected: extracts, hydrolysates, fractions, enzymes, unnamed peptides, compound classes, administered drugs, pollutants, and compounds of associated microbes.",
  "method": "Three search agents (CMNPD public site search without login, PubChem taxonomy page, Europe PMC title/abstract query) and one verification agent that re-read each accepted paper record and PubChem CID independently.",
+ "sources": {
+  "europepmc_mbpi": {
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+   "provider": "EMBL-EBI Europe PMC",
+   "version": "REST search, live",
+   "terms": "https://europepmc.org/Copyright (metadata; only IDs, titles and quoted abstract sentences stored)",
+   "accessed": "2026-09-29"
+  },
+  "cmnpd_mbpi": {
+   "url": "https://www.cmnpd.org",
+   "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
+   "version": "public site search without login",
+   "terms": "CC BY-NC-SA 4.0",
+   "accessed": "2026-09-29"
+  }
+ },
  "sources_note": "CMNPD: the site's own no-login search endpoint used by its web page (https://www.cmnpd.org); PubChem taxonomy: PUG View JSON; Europe PMC REST search. Only IDs, the compound name and the quoted title/abstract sentence are stored.",
  "limits": [
   "Europe PMC hits above 25 were screened for the first 25 records by relevance only.",

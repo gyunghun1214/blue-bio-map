@@ -5,149 +5,60 @@
       "aphia_id": 377084,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            18136360
-          ],
-          "adjusted": 5.530266427388183,
-          "chembl_stratum": "cancer_cell_line",
-          "cohort_records": 36220,
-          "compound_id": "CHEMBL4071043",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL4028820"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "UVIVWIFUPKGWGF-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.42,
-          "original_paper_dois": [
-            "10.1002/ptr.3139"
-          ],
-          "percentile": 9.83,
-          "pubchem_cids": [
-            28813
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL392|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "암세포주(항암·세포독성)",
-          "target_chembl_id": "CHEMBL392",
-          "target_name": "A549",
-          "target_organism": "Homo sapiens",
-          "target_type": "CELL-LINE",
-          "wikidata_qids": [
-            "Q83040412"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            5125022,
-            5125024
-          ],
-          "adjusted": 26.8660307547533,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 46757,
-          "compound_id": "CHEMBL450072",
-          "compound_name": "2-NONENAL",
-          "document_chembl_ids": [
-            "CHEMBL1641553"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "BSAIUMLZVGUGKX-BQYQJAHWSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 6.235,
-          "original_paper_dois": [
-            "10.3390/molecules200712093"
-          ],
-          "percentile": 47.76,
-          "pubchem_cids": [
-            5283335
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL364|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL364",
-          "target_name": "Plasmodium falciparum",
-          "target_organism": "Plasmodium falciparum",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q4596912"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4780088
-          ],
-          "adjusted": 45.03612151648623,
-          "chembl_stratum": "protein",
-          "cohort_records": 24293,
-          "compound_id": "CHEMBL75967",
-          "compound_name": "PENTACHLOROPHENOL",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "IZUPBVBPLAPZRR-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.85,
-          "original_paper_dois": [
-            "10.1016/j.chroma.2013.02.087"
-          ],
-          "percentile": 80.06,
-          "pubchem_cids": [
-            992
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL1293255|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL1293255",
-          "target_name": "15-hydroxyprostaglandin dehydrogenase [NAD(+)]",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q423922"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 9,
           "linked": 30,
-          "scored_compounds": 3,
+          "rejected_by_review": 3,
+          "scored_compounds": 0,
           "with_reference_doi": 30
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "contaminant",
+            "compound_chembl_id": "CHEMBL75967",
+            "compound_name": "pentachlorophenol",
+            "dois": [
+              "10.1016/j.chroma.2013.02.087"
+            ],
+            "inchikey": "IZUPBVBPLAPZRR-UHFFFAOYSA-N",
+            "reason": "Industrial biocide. The cited paper (PMID 23558048) develops a method to determine alkylphenol pollutants in Laminaria japonica food samples."
+          },
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL450072",
+            "compound_name": "(E)-2-nonenal",
+            "dois": [
+              "10.3390/molecules200712093"
+            ],
+            "inchikey": "BSAIUMLZVGUGKX-BQYQJAHWSA-N",
+            "reason": "C9 aldehyde formed by oxidation of linoleic acid; found in the essential oil of L. japonica (PMID 26147582) as in most lipid-containing tissue. Not specific to the species."
+          },
+          {
+            "class": "contaminant",
+            "compound_chembl_id": "CHEMBL4071043",
+            "compound_name": "butyl isobutyl phthalate",
+            "dois": [
+              "10.1002/ptr.3139"
+            ],
+            "inchikey": "UVIVWIFUPKGWGF-UHFFFAOYSA-N",
+            "reason": "Phthalate ester plasticizer. The paper (PMID 21031613) isolated it from L. japonica rhizoid but gives no evidence of natural origin (for example radiocarbon), which is needed to tell a phthalate from laboratory or environmental contamination."
+          }
+        ],
         "rule_sensitivity": {
           "log_scale_common_fence": 52.7,
-          "minimum_cohort_10": 45.0,
-          "minimum_cohort_100": 45.0,
-          "no_approved_drug_filter": 45.0,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
           "no_common_metabolite_filter": 52.7
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -217,8 +128,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -245,11 +156,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.33
+        "mean_ratio": 0.17
       },
       "korean_name": "다시마",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -257,27 +168,21 @@
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 45.0,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 25.8,
-        "median_compound_sensitivity": 26.9,
-        "range_from_aggregation": [
-          5.5,
-          45.0
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 45.0,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
@@ -291,7 +196,7 @@
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": "food_row_not_species_specific"
       }
@@ -512,12 +417,14 @@
             "CHEMBL2390950"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "WYQMJNVMBAQVFD-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 4.88,
           "original_paper_dois": [
             "10.1016/j.bmc.2013.04.026"
@@ -552,12 +459,14 @@
             "CHEMBL1139406"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "FHYNTHBAMAEFJB-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 6.29,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -593,12 +502,14 @@
             "CHEMBL2390950"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "JLEVVQRBEATTCM-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 4.71,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -634,12 +545,14 @@
             "CHEMBL2390950"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "DUSGAYNDQIKXHD-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 4.65,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -675,12 +588,14 @@
             "CHEMBL2390950"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "PCZZRBGISTUIOA-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.09,
           "original_paper_dois": [
             "10.1002/ptr.2298",
@@ -720,12 +635,14 @@
             "CHEMBL1139406"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "HBJNTPFHQKXWOY-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.9,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -764,12 +681,14 @@
             "CHEMBL1139406"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "HBJNTPFHQKXWOY-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.97,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -808,12 +727,14 @@
             "CHEMBL2390950"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "DRZQFGYIIYNNEC-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.62,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -852,12 +773,14 @@
             "CHEMBL5725808"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "SLWPBUMYPRVYIJ-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 6.0,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -894,12 +817,14 @@
             "CHEMBL1155522"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "LBHQACSAGWCMAB-UHFFFAOYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.27,
           "original_paper_dois": [
             "10.1016/j.bmc.2013.04.026",
@@ -932,6 +857,7 @@
           "with_reference_doi": 19
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 67.5,
           "minimum_cohort_10": 67.5,
@@ -1089,6 +1015,7 @@
           "with_reference_doi": 3
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -1241,12 +1168,14 @@
             "CHEMBL4052658"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "QKXAGRZCXAYBQX-WDZAAMDOSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.03,
           "original_paper_dois": [
             "10.3390/md19090497",
@@ -1285,6 +1214,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 52.3,
           "minimum_cohort_10": 21.6,
@@ -1411,6 +1341,8 @@
       "source_ids": [
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
@@ -1438,6 +1370,7 @@
           "with_reference_doi": 9
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -1597,86 +1530,6 @@
         {
           "activity_factor": 0.75,
           "activity_ids": [
-            3892425
-          ],
-          "adjusted": 10.002374098584443,
-          "chembl_stratum": "protein",
-          "cohort_records": 33697,
-          "compound_id": "CHEMBL1231644",
-          "compound_name": "CACODYLIC ACID",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "OGGXGZAMXPVRFZ-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.65,
-          "original_paper_dois": [
-            "10.1002/aoc.590020414"
-          ],
-          "percentile": 17.78,
-          "pubchem_cids": [
-            2513
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL1293232|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL1293232",
-          "target_name": "Survival motor neuron protein",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q420680"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            25072177
-          ],
-          "adjusted": 39.62649945474372,
-          "chembl_stratum": "cancer_cell_line",
-          "cohort_records": 2751,
-          "compound_id": "CHEMBL1255",
-          "compound_name": "FORMALDEHYDE",
-          "document_chembl_ids": [
-            "CHEMBL5252518"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "WSFSSNUMVMOOMR-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 6.3,
-          "original_paper_dois": [
-            "10.1016/s0305-1978(97)00083-5"
-          ],
-          "percentile": 70.45,
-          "pubchem_cids": [
-            712
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL614725|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "암세포주(항암·세포독성)",
-          "target_chembl_id": "CHEMBL614725",
-          "target_name": "MIA PaCa-2",
-          "target_organism": "Homo sapiens",
-          "target_type": "CELL-LINE",
-          "wikidata_qids": [
-            "Q161210"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
             24977634
           ],
           "adjusted": 0.42521598272138234,
@@ -1688,12 +1541,14 @@
             "CHEMBL5223129"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "SUCKEYMKNGZJHK-ZARIWKGHSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 4.06,
           "original_paper_dois": [
             "10.1016/s0031-9422(00)90263-2"
@@ -1721,15 +1576,38 @@
           "approved_drug": 0,
           "common_metabolite": 1,
           "linked": 9,
-          "scored_compounds": 3,
+          "rejected_by_review": 2,
+          "scored_compounds": 1,
           "with_reference_doi": 9
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL1255",
+            "compound_name": "formaldehyde",
+            "dois": [
+              "10.1016/s0305-1978(97)00083-5"
+            ],
+            "inchikey": "WSFSSNUMVMOOMR-UHFFFAOYSA-N",
+            "reason": "C1 metabolite of all organisms. The cited paper ('Formaldehyde from marine algae', 10.1016/s0305-1978(97)00083-5) measures it across algae."
+          },
+          {
+            "class": "contaminant",
+            "compound_chembl_id": "CHEMBL1231644",
+            "compound_name": "cacodylic acid (dimethylarsinic acid)",
+            "dois": [
+              "10.1002/aoc.590020414"
+            ],
+            "inchikey": "OGGXGZAMXPVRFZ-UHFFFAOYSA-N",
+            "reason": "Methylated arsenic, the product of arsenate taken up from sea water (10.1002/aoc.590020414). It reflects exposure to an environmental element; cacodylic acid is also a herbicide."
+          }
+        ],
         "rule_sensitivity": {
           "log_scale_common_fence": 50.7,
-          "minimum_cohort_10": 39.6,
-          "minimum_cohort_100": 39.6,
-          "no_approved_drug_filter": 39.6,
+          "minimum_cohort_10": 0.4,
+          "minimum_cohort_100": 0.4,
+          "no_approved_drug_filter": 0.4,
           "no_common_metabolite_filter": 50.7
         },
         "sufficiency": {
@@ -1857,21 +1735,21 @@
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 39.6,
+        "MBPI": 0.4,
         "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 16.7,
-        "median_compound_sensitivity": 10.0,
+        "mean_compound_sensitivity": 0.4,
+        "median_compound_sensitivity": 0.4,
         "range_from_aggregation": [
           0.4,
-          39.6
+          0.4
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 39.6,
+        "bioactivity_only_MBPI": 0.4,
         "food_only_MFPI": null
       },
       "source_ids": [
@@ -1894,108 +1772,50 @@
       "aphia_id": 231750,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            12645423
-          ],
-          "adjusted": 14.541035173005435,
-          "chembl_stratum": "protein",
-          "cohort_records": 3497,
-          "compound_id": "CHEMBL2322191",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL2321710"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "JRMPVNVOLQJLJX-QVMRCSLBSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.82,
-          "original_paper_dois": [
-            "10.2331/suisan.44.525"
-          ],
-          "percentile": 25.85,
-          "pubchem_cids": [
-            14753570
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL335|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL335",
-          "target_name": "Tyrosine-protein phosphatase non-receptor type 1",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q105133995"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            3592316
-          ],
-          "adjusted": 23.605730016313213,
-          "chembl_stratum": "cancer_cell_line",
-          "cohort_records": 2452,
-          "compound_id": "CHEMBL63243",
-          "compound_name": "4-CHOLESTEN 3-ONE",
-          "document_chembl_ids": [
-            "CHEMBL1287727"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "NYOXRYYXRWJDKP-GYKMGIIDSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 5.21,
-          "original_paper_dois": [
-            "10.2331/suisan.44.525"
-          ],
-          "percentile": 41.97,
-          "pubchem_cids": [
-            91477
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL614335|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "암세포주(항암·세포독성)",
-          "target_chembl_id": "CHEMBL614335",
-          "target_name": "MDA-MB-468",
-          "target_organism": "Homo sapiens",
-          "target_type": "CELL-LINE",
-          "wikidata_qids": [
-            "Q27098418"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 0,
           "linked": 10,
-          "scored_compounds": 2,
+          "rejected_by_review": 2,
+          "scored_compounds": 0,
           "with_reference_doi": 10
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "not_tissue",
+            "compound_chembl_id": "CHEMBL2322191",
+            "compound_name": "ergosta-4,24(28)-dien-3-one",
+            "dois": [
+              "10.2331/suisan.44.525"
+            ],
+            "inchikey": "JRMPVNVOLQJLJX-QVMRCSLBSA-N",
+            "reason": "Same feces paper (10.2331/suisan.44.525)."
+          },
+          {
+            "class": "not_tissue",
+            "compound_chembl_id": "CHEMBL63243",
+            "compound_name": "4-cholesten-3-one",
+            "dois": [
+              "10.2331/suisan.44.525"
+            ],
+            "inchikey": "NYOXRYYXRWJDKP-GYKMGIIDSA-N",
+            "reason": "The only cited paper is 'Steroids in the feces of a marine bivalve' (10.2331/suisan.44.525): feces carry dietary and microbial sterols, not the clam's own tissue."
+          }
+        ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 23.6,
-          "minimum_cohort_10": 23.6,
-          "minimum_cohort_100": 23.6,
-          "no_approved_drug_filter": 23.6,
-          "no_common_metabolite_filter": 23.6
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -2593,8 +2413,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -2627,11 +2447,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.42
       },
       "korean_name": "바지락",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 231750,
@@ -2671,56 +2491,25 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 23.6,
-          "MFPI": 52.1
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.2331/suisan.44.525"
-        ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL614335|IC50",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 30.7,
-          "0.5": 37.9,
-          "0.75": 45.0
-        },
-        "used_for_score": false,
-        "value": 37.9
-      },
+      "reference_combination": null,
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 23.6,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": 52.1
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 19.1,
-        "median_compound_sensitivity": 19.1,
-        "range_from_aggregation": [
-          14.5,
-          23.6
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 23.6,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 52.1
       },
       "source_ids": [
@@ -2735,8 +2524,8 @@
         "worms_rest_mbpi"
       ],
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -2757,6 +2546,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -2892,7 +2682,7 @@
       "scientific_name": "Haliotis discus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -2910,6 +2700,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_haliotis_discus_2022",
         "rda_db_10_4"
@@ -2925,69 +2717,40 @@
       "aphia_id": 393716,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4745967,
-            4925819
-          ],
-          "adjusted": 54.21327642037092,
-          "chembl_stratum": "protein",
-          "cohort_records": 3397,
-          "compound_id": "CHEMBL58343",
-          "compound_name": "AGMATINE",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "QYPPJABKJHAVHS-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 8.55,
-          "original_paper_dois": [
-            "10.1021/jf60216a038"
-          ],
-          "percentile": 96.38,
-          "pubchem_cids": [
-            199
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL1293237|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL1293237",
-          "target_name": "RecQ-like DNA helicase BLM",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q394317"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 0,
           "linked": 52,
-          "scored_compounds": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 0,
           "with_reference_doi": 52
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL58343",
+            "compound_name": "agmatine",
+            "dois": [
+              "10.1021/jf60216a038"
+            ],
+            "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
+            "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
+          }
+        ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 54.2,
-          "minimum_cohort_10": 54.2,
-          "minimum_cohort_100": 54.2,
-          "no_approved_drug_filter": 54.2,
-          "no_common_metabolite_filter": 54.2
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -3569,8 +3332,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -3603,11 +3366,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.5
       },
       "korean_name": "큰가리비",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 393716,
@@ -3647,56 +3410,25 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 54.2,
-          "MFPI": 56.3
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.1021/jf60216a038"
-        ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL1293237|Potency",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 54.7,
-          "0.5": 55.3,
-          "0.75": 55.8
-        },
-        "used_for_score": false,
-        "value": 55.3
-      },
+      "reference_combination": null,
       "scientific_name": "Mizuhopecten yessoensis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 54.2,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": 56.3
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 54.2,
-        "median_compound_sensitivity": 54.2,
-        "range_from_aggregation": [
-          54.2,
-          54.2
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 54.2,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 56.3
       },
       "source_ids": [
@@ -3711,8 +3443,8 @@
         "worms_rest_mbpi"
       ],
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -3728,6 +3460,7 @@
           "approved_drug": 0,
           "common_metabolite": 0,
           "linked": 1,
+          "rejected_by_review": 1,
           "scored_compounds": 0,
           "with_reference_doi": 1
         },
@@ -3737,6 +3470,18 @@
           "papers_screened": 4,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": null,
+            "compound_name": "(2E,4E)-hepta-2,4-dienal",
+            "dois": [
+              "10.3389/fphys.2021.713736"
+            ],
+            "inchikey": "SATICYYAWWYRAM-VNKDHWASSA-N",
+            "reason": "Accepted as an original-paper link but flagged there as a likely lipid-oxidation volatile. Rejected here with 2-nonenal so that the same class gets the same decision; it gave no ChEMBL item."
+          }
+        ],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -3745,8 +3490,8 @@
           "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -3798,8 +3543,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -3826,7 +3571,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.17
+        "mean_ratio": 0.08
       },
       "korean_name": "시카메굴",
       "mbpi_label": null,
@@ -3838,7 +3583,7 @@
       "scientific_name": "Magallana sikamea",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -3858,6 +3603,8 @@
       "source_ids": [
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
@@ -3874,69 +3621,40 @@
       "aphia_id": 504357,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4745967,
-            4925819
-          ],
-          "adjusted": 54.21327642037092,
-          "chembl_stratum": "protein",
-          "cohort_records": 3397,
-          "compound_id": "CHEMBL58343",
-          "compound_name": "AGMATINE",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "QYPPJABKJHAVHS-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 8.55,
-          "original_paper_dois": [
-            "10.1021/jf60216a038"
-          ],
-          "percentile": 96.38,
-          "pubchem_cids": [
-            199
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL1293237|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL1293237",
-          "target_name": "RecQ-like DNA helicase BLM",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q394317"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 0,
           "linked": 2,
-          "scored_compounds": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 0,
           "with_reference_doi": 2
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL58343",
+            "compound_name": "agmatine",
+            "dois": [
+              "10.1021/jf60216a038"
+            ],
+            "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
+            "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
+          }
+        ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 54.2,
-          "minimum_cohort_10": 54.2,
-          "minimum_cohort_100": 54.2,
-          "no_approved_drug_filter": 54.2,
-          "no_common_metabolite_filter": 54.2
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -4010,8 +3728,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -4042,11 +3760,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.53
+        "mean_ratio": 0.28
       },
       "korean_name": "피조개",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 504357,
@@ -4092,27 +3810,21 @@
       "scientific_name": "Anadara broughtonii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 54.2,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 54.2,
-        "median_compound_sensitivity": 54.2,
-        "range_from_aggregation": [
-          54.2,
-          54.2
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 54.2,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
@@ -4127,7 +3839,7 @@
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": "component_missing_in_source"
       }
@@ -4148,6 +3860,7 @@
           "papers_screened": 21,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -4284,7 +3997,7 @@
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
@@ -4302,6 +4015,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "nibr_red_data_book_2024"
       ],
@@ -4316,155 +4031,40 @@
       "aphia_id": 127022,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            24984628
-          ],
-          "adjusted": 52.348241301059005,
-          "chembl_stratum": "cancer_cell_line",
-          "cohort_records": 6610,
-          "compound_id": "CHEMBL367149",
-          "compound_name": "DOCONEXENT",
-          "document_chembl_ids": [
-            "CHEMBL5226303"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "MBMBGCFOFBJSGT-KUBAVDMBSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 7.14,
-          "original_paper_dois": [
-            "10.1246/bcsj.59.3709"
-          ],
-          "percentile": 93.06,
-          "pubchem_cids": [
-            445580
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL613508|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "암세포주(항암·세포독성)",
-          "target_chembl_id": "CHEMBL613508",
-          "target_name": "DU-145",
-          "target_organism": "Homo sapiens",
-          "target_type": "CELL-LINE",
-          "wikidata_qids": [
-            "Q423345"
-          ]
-        },
-        {
-          "activity_factor": 1.0,
-          "activity_ids": [
-            18082851,
-            18082868,
-            19122697,
-            29107378
-          ],
-          "adjusted": 73.10883931817696,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 46757,
-          "compound_id": "CHEMBL367149",
-          "compound_name": "DOCONEXENT",
-          "document_chembl_ids": [
-            "CHEMBL4017462",
-            "CHEMBL4371072",
-            "CHEMBL6087390"
-          ],
-          "evidence_factor": 0.75,
-          "inchikeys": [
-            "MBMBGCFOFBJSGT-KUBAVDMBSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 8.885,
-          "original_paper_dois": [
-            "10.1246/bcsj.59.3709"
-          ],
-          "percentile": 97.48,
-          "pubchem_cids": [
-            445580
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL364|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL364",
-          "target_name": "Plasmodium falciparum",
-          "target_organism": "Plasmodium falciparum",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q423345"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4133444,
-            4176201,
-            4192776
-          ],
-          "adjusted": 35.3012719621737,
-          "chembl_stratum": "protein",
-          "cohort_records": 75926,
-          "compound_id": "CHEMBL367149",
-          "compound_name": "DOCONEXENT",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "MBMBGCFOFBJSGT-KUBAVDMBSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.65,
-          "original_paper_dois": [
-            "10.1246/bcsj.59.3709"
-          ],
-          "percentile": 62.76,
-          "pubchem_cids": [
-            445580
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL3577|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL3577",
-          "target_name": "Aldehyde dehydrogenase 1A1",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q423345"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 11,
           "linked": 15,
-          "scored_compounds": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 0,
           "with_reference_doi": 15
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL367149",
+            "compound_name": "docosahexaenoic acid (doconexent)",
+            "dois": [
+              "10.1246/bcsj.59.3709"
+            ],
+            "inchikey": "MBMBGCFOFBJSGT-KUBAVDMBSA-N",
+            "reason": "Docosahexaenoic acid, a common n-3 fatty acid of fish and algae. The cited paper (10.1246/bcsj.59.3709) models supercritical CO2 extraction from mackerel powder."
+          }
+        ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 73.1,
-          "minimum_cohort_10": 73.1,
-          "minimum_cohort_100": 73.1,
-          "no_approved_drug_filter": 73.1,
-          "no_common_metabolite_filter": 73.1
+          "log_scale_common_fence": 54.8,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": 54.8
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -4542,8 +4142,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -4570,11 +4170,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.42
       },
       "korean_name": "고등어",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -4582,27 +4182,21 @@
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 73.1,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 53.6,
-        "median_compound_sensitivity": 52.3,
-        "range_from_aggregation": [
-          35.3,
-          73.1
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 73.1,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
@@ -4617,7 +4211,7 @@
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": "food_row_not_species_specific"
       }
@@ -4638,6 +4232,7 @@
           "papers_screened": 13,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -4773,7 +4368,7 @@
       "scientific_name": "Engraulis japonicus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -4791,6 +4386,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_engraulis_japonicus_2018",
         "rda_db_10_4"
@@ -4818,6 +4415,7 @@
           "papers_screened": 11,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -4953,7 +4551,7 @@
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -4971,6 +4569,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_larimichthys_polyactis_2020",
         "rda_db_10_4"
@@ -4998,6 +4598,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -5124,7 +4725,7 @@
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
@@ -5142,6 +4743,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -5168,6 +4771,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -5805,7 +5409,7 @@
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
@@ -5823,6 +5427,8 @@
         "food_only_MFPI": 42.9
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
         "rda_db_10_4"
@@ -5850,6 +5456,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -6509,7 +6116,7 @@
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -6527,6 +6134,8 @@
         "food_only_MFPI": 56.3
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "fao_casp_amberjack",
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
@@ -6555,6 +6164,7 @@
           "with_reference_doi": 3
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 53.1,
           "minimum_cohort_10": null,
@@ -6730,6 +6340,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -6856,7 +6467,7 @@
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
@@ -6874,6 +6485,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -6900,6 +6513,7 @@
           "papers_screened": 0,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -7018,7 +6632,7 @@
       "scientific_name": "Octopus sinensis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -7036,6 +6650,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -7062,6 +6678,7 @@
           "papers_screened": 9,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -7250,7 +6867,7 @@
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -7268,6 +6885,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_sepia_esculenta_2012",
         "nibr_red_data_book_2024",
@@ -7451,10 +7070,17 @@
       "exclude_potential_duplicate": true,
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
+      "link_review": "research/verified-indices/mbpi-link-review-2026-09-30.json",
       "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count.",
       "minimum_cohort_records": 30,
       "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
+      "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
       "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
+      "paper_source_ids": [
+        "europepmc_mbpi",
+        "cmnpd_mbpi"
+      ],
+      "review_rule": "Every species -> compound link behind a primary ChEMBL item was checked against the linked paper titles, abstracts and the PubChem structure (mbpi-link-review-2026-09-30.json). A link is rejected only on positive evidence of one class: structure_mismatch (the name resolved to another structure), contaminant (pollutant or reagent found in the sample), not_tissue (found in faeces, diet or symbionts, not the organism), ubiquitous_metabolite (C1 metabolites, amino-acid amines, common C16-C22 fatty acids, C6-C10 oxidation aldehydes). A rejected link enters no item in any view. Each review entry stores the link's DOI set; the build stops when the DOIs differ (stale review) or when a primary item rests on a link without a review entry.",
       "sensitivity_minimum_cohort_records": [
         10,
         100
@@ -7814,7 +7440,7 @@
       }
     }
   },
-  "snapshot_date": "2026-09-30",
+  "snapshot_date": "2026-09-27",
   "sources": {
     "afcd_r3_details": {
       "accessed": "2026-09-25",
@@ -7912,6 +7538,13 @@
       "url": "https://docs.cmnpd.org/",
       "version": "CMNPD 1.0"
     },
+    "cmnpd_mbpi": {
+      "accessed": "2026-09-29",
+      "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
+      "terms": "CC BY-NC-SA 4.0",
+      "url": "https://www.cmnpd.org",
+      "version": "public site search without login"
+    },
     "do_2012_oyster_lqp": {
       "accessed": "2026-09-27",
       "doi": "10.5352/JLS.2012.22.2.220",
@@ -7921,6 +7554,13 @@
       "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
       "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
       "version": "2012"
+    },
+    "europepmc_mbpi": {
+      "accessed": "2026-09-29",
+      "provider": "EMBL-EBI Europe PMC",
+      "terms": "https://europepmc.org/Copyright (metadata; only IDs, titles and quoted abstract sentences stored)",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+      "version": "REST search, live"
     },
     "fao_casp_amberjack": {
       "accessed": "2026-09-26",
@@ -8841,47 +8481,6 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            22396346,
-            22396348
-          ],
-          "adjusted": 15.8527216856892,
-          "chembl_stratum": "protein",
-          "cohort_records": 1139,
-          "compound_id": "CHEMBL267484",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL4665678"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "YZXBAPSDXZZRGB-CGRWFSSPSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 6.12,
-          "original_paper_dois": [
-            "10.1021/jf071791s"
-          ],
-          "percentile": 28.18,
-          "pubchem_cids": [
-            5312542
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL4681|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL4681",
-          "target_name": "Aldo-keto reductase family 1 member C3",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q25496968"
-          ]
         }
       ],
       "chembl_links": {
@@ -8889,10 +8488,23 @@
           "approved_drug": 0,
           "common_metabolite": 5,
           "linked": 26,
-          "scored_compounds": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 0,
           "with_reference_doi": 26
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "ubiquitous_metabolite",
+            "compound_chembl_id": "CHEMBL267484",
+            "compound_name": "(5E,8E,11E,14E)-icosa-5,8,11,14-tetraenoic acid",
+            "dois": [
+              "10.1021/jf071791s"
+            ],
+            "inchikey": "YZXBAPSDXZZRGB-CGRWFSSPSA-N",
+            "reason": "C20:4 fatty acid (arachidonic acid skeleton), a common fatty acid of algae and animals. The paper (10.1021/jf071791s, PMID 17665931) isolates arachidonic acid, which is all-Z; the stored InChIKey is the all-E isomer."
+          }
+        ],
         "rule_sensitivity": {
           "log_scale_common_fence": 54.8,
           "minimum_cohort_10": 19.6,
@@ -8901,8 +8513,8 @@
           "no_common_metabolite_filter": 54.8
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -9221,10 +8833,10 @@
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 17.7,
-        "median_compound_sensitivity": 17.7,
+        "mean_compound_sensitivity": 19.6,
+        "median_compound_sensitivity": 19.6,
         "range_from_aggregation": [
-          15.9,
+          19.6,
           19.6
         ]
       },
@@ -9339,6 +8951,7 @@
           "with_reference_doi": 7
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 38.1,
           "minimum_cohort_10": null,
@@ -9610,12 +9223,14 @@
             "CHEMBL1159269"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "CNOIXMULOQWVGR-ABUIXNMTSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1016/0305-0491(85)90174-9",
@@ -9637,49 +9252,6 @@
           "wikidata_qids": [
             "Q63392367"
           ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4734904
-          ],
-          "adjusted": 43.39790016040442,
-          "chembl_stratum": "protein",
-          "cohort_records": 61719,
-          "compound_id": "CHEMBL859",
-          "compound_name": "OXYPURINOL",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.75,
-          "inchikeys": [
-            "HXNFUBHNUDHIGC-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "median_pchembl": 5.3,
-          "original_paper_dois": [
-            "10.1016/0305-0491(85)90174-9",
-            "10.1248/cpb.32.4309"
-          ],
-          "percentile": 57.86,
-          "pubchem_cids": [
-            4644,
-            5273533,
-            135398752
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL2026|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL2026",
-          "target_name": "Beta-lactamase",
-          "target_organism": "Escherichia coli K-12",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q410588"
-          ]
         }
       ],
       "chembl_links": {
@@ -9687,15 +9259,29 @@
           "approved_drug": 1,
           "common_metabolite": 8,
           "linked": 34,
-          "scored_compounds": 2,
+          "rejected_by_review": 1,
+          "scored_compounds": 1,
           "with_reference_doi": 34
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "structure_mismatch",
+            "compound_chembl_id": "CHEMBL859",
+            "compound_name": "oxypurinol",
+            "dois": [
+              "10.1016/0305-0491(85)90174-9",
+              "10.1248/cpb.32.4309"
+            ],
+            "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
+            "reason": "Both cited papers are carotenoid studies of sea squirts. The carotenoid alloxanthin was resolved to oxypurinol: PubChem CID 135398752 lists 'Alloxanthine' and 'Alloxanthin (VAN)' as synonyms of oxypurinol."
+          }
+        ],
         "rule_sensitivity": {
           "log_scale_common_fence": 69.7,
-          "minimum_cohort_10": 43.4,
-          "minimum_cohort_100": 43.4,
-          "no_approved_drug_filter": 43.4,
+          "minimum_cohort_10": 13.5,
+          "minimum_cohort_100": 13.5,
+          "no_approved_drug_filter": 13.5,
           "no_common_metabolite_filter": 69.7
         },
         "sufficiency": {
@@ -10328,7 +9914,7 @@
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
         "inputs": {
-          "MBPI": 43.4,
+          "MBPI": 13.5,
           "MFPI": 54.2
         },
         "label": "참고 통합값 · 독립 재현 미확인",
@@ -10339,17 +9925,18 @@
         ],
         "mbpi_original_paper_dois": [
           "10.1016/0305-0491(85)90174-9",
+          "10.1016/s0040-4039(01)83006-9",
           "10.1248/cpb.32.4309"
         ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL2026|Potency",
+        "mbpi_stratum": "ChEMBL_37:CHEMBL247|IC50",
         "mfpi_cohort": "rda-10.4-raw-marine-animals",
         "sensitivity": {
-          "0.25": 46.1,
-          "0.5": 48.8,
-          "0.75": 51.5
+          "0.25": 23.7,
+          "0.5": 33.9,
+          "0.75": 44.0
         },
         "used_for_score": false,
-        "value": 48.8
+        "value": 33.9
       },
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
@@ -10360,21 +9947,21 @@
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 43.4,
+        "MBPI": 13.5,
         "MCUI": null,
         "MFPI": 54.2
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 28.4,
-        "median_compound_sensitivity": 28.4,
+        "mean_compound_sensitivity": 13.5,
+        "median_compound_sensitivity": 13.5,
         "range_from_aggregation": [
           13.5,
-          43.4
+          13.5
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 43.4,
+        "bioactivity_only_MBPI": 13.5,
         "food_only_MFPI": 54.2
       },
       "source_ids": [
@@ -10511,6 +10098,7 @@
           "papers_screened": 25,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -10681,6 +10269,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_todarodes_2014",
         "nibr_red_data_book_2024",
@@ -10735,6 +10325,7 @@
           "papers_screened": 2,
           "searched_on": "2026-09-29"
         },
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": null,
           "minimum_cohort_10": null,
@@ -10906,6 +10497,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
+        "cmnpd_mbpi",
+        "europepmc_mbpi",
         "gelidium_2018_extract",
         "iucn_redlist_search",
         "mext_fooddb_2023",
@@ -11003,12 +10596,14 @@
             "CHEMBL1141252"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "OPGVEUGCNGNPSX-SVSQYMGHSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
+          "link_review": "accepted",
           "median_pchembl": 5.11,
           "original_paper_dois": [
             "10.1021/jf500083r",
@@ -11044,12 +10639,14 @@
             "CHEMBL1141252"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "WLNWTSOEOWZEGI-SVSQYMGHSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 5.5,
           "original_paper_dois": [
             "10.1021/jf500083r"
@@ -11084,12 +10681,14 @@
             "CHEMBL1134370"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "PGLNLCWHYQYRGQ-ZHHJOTBYSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 6.75,
           "original_paper_dois": [
             "10.2331/suisan.51.1305"
@@ -11120,6 +10719,7 @@
           "with_reference_doi": 13
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 52.3,
           "minimum_cohort_10": 45.3,
@@ -11349,46 +10949,6 @@
         {
           "activity_factor": 0.75,
           "activity_ids": [
-            216759
-          ],
-          "adjusted": 1.632882882882883,
-          "chembl_stratum": "protein",
-          "cohort_records": 2997,
-          "compound_id": "CHEMBL321248",
-          "compound_name": "7-METHYLXANTHINE",
-          "document_chembl_ids": [
-            "CHEMBL1126876"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "PFWLFWPASULGAN-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 4.48,
-          "original_paper_dois": [
-            "10.1021/np970039q"
-          ],
-          "percentile": 2.9,
-          "pubchem_cids": [
-            68374
-          ],
-          "standard_type": "Ki",
-          "stratum_id": "ChEMBL_37:CHEMBL318|Ki",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL318",
-          "target_name": "Adenosine receptor A1",
-          "target_organism": "Rattus norvegicus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q27121426"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
             2425801
           ],
           "adjusted": 10.097365869424692,
@@ -11400,12 +10960,14 @@
             "CHEMBL1159269"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "CNOIXMULOQWVGR-ABUIXNMTSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1021/np970039q"
@@ -11425,48 +10987,6 @@
           "wikidata_qids": [
             "Q63392367"
           ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            4734904
-          ],
-          "adjusted": 32.548425120303314,
-          "chembl_stratum": "protein",
-          "cohort_records": 61719,
-          "compound_id": "CHEMBL859",
-          "compound_name": "OXYPURINOL",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "inchikeys": [
-            "HXNFUBHNUDHIGC-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "median_pchembl": 5.3,
-          "original_paper_dois": [
-            "10.1021/np970039q"
-          ],
-          "percentile": 57.86,
-          "pubchem_cids": [
-            4644,
-            5273533,
-            135398752
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL2026|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL2026",
-          "target_name": "Beta-lactamase",
-          "target_organism": "Escherichia coli K-12",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q410588"
-          ]
         }
       ],
       "chembl_links": {
@@ -11474,16 +10994,39 @@
           "approved_drug": 0,
           "common_metabolite": 2,
           "linked": 20,
-          "scored_compounds": 3,
+          "rejected_by_review": 2,
+          "scored_compounds": 1,
           "with_reference_doi": 20
         },
         "paper_search": null,
+        "rejected_links": [
+          {
+            "class": "structure_mismatch",
+            "compound_chembl_id": "CHEMBL321248",
+            "compound_name": "7-methylxanthine",
+            "dois": [
+              "10.1021/np970039q"
+            ],
+            "inchikey": "PFWLFWPASULGAN-UHFFFAOYSA-N",
+            "reason": "The cited paper is a carotenoid study. The carotenoid heteroxanthin was resolved to 7-methylxanthine: PubChem CID 68374 lists 'Heteroxanthine' as a synonym."
+          },
+          {
+            "class": "structure_mismatch",
+            "compound_chembl_id": "CHEMBL859",
+            "compound_name": "oxypurinol",
+            "dois": [
+              "10.1021/np970039q"
+            ],
+            "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
+            "reason": "The cited paper is 'A New Apocarotenoid from the Marine Shellfish Mytilus coruscus'. The carotenoid alloxanthin was resolved to oxypurinol (PubChem CID 135398752 synonyms 'Alloxanthine', 'Alloxanthin (VAN)')."
+          }
+        ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 32.5,
-          "minimum_cohort_10": 32.5,
-          "minimum_cohort_100": 32.5,
-          "no_approved_drug_filter": 32.5,
-          "no_common_metabolite_filter": 32.5
+          "log_scale_common_fence": 10.1,
+          "minimum_cohort_10": 10.1,
+          "minimum_cohort_100": 10.1,
+          "no_approved_drug_filter": 10.1,
+          "no_common_metabolite_filter": 10.1
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -11710,21 +11253,21 @@
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 32.5,
+        "MBPI": 10.1,
         "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 14.8,
+        "mean_compound_sensitivity": 10.1,
         "median_compound_sensitivity": 10.1,
         "range_from_aggregation": [
-          1.6,
-          32.5
+          10.1,
+          10.1
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 32.5,
+        "bioactivity_only_MBPI": 10.1,
         "food_only_MFPI": null
       },
       "source_ids": [
@@ -11902,12 +11445,14 @@
             "CHEMBL5096200"
           ],
           "evidence_factor": 0.75,
+          "evidence_level": 2,
           "inchikeys": [
             "UYRDHEJRPVSJFM-VSWVFQEASA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 5.35,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -11945,12 +11490,14 @@
             "CHEMBL4396891"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "UYRDHEJRPVSJFM-VSWVFQEASA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 5.175,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -11985,12 +11532,14 @@
             "CHEMBL1159269"
           ],
           "evidence_factor": 0.5625,
+          "evidence_level": 2,
           "inchikeys": [
             "CNOIXMULOQWVGR-ABUIXNMTSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
+          "link_review": "accepted",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -12021,6 +11570,7 @@
           "with_reference_doi": 35
         },
         "paper_search": null,
+        "rejected_links": [],
         "rule_sensitivity": {
           "log_scale_common_fence": 96.3,
           "minimum_cohort_10": 96.3,

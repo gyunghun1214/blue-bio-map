@@ -437,27 +437,36 @@ def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, li
     single, multiple = config["bioactivity"]["single_doi_factor"], config["bioactivity"]["multiple_doi_factor"]
     factor = lambda n: single if n == 1 else multiple
     strata = {t: chembl_stratum(v, rule["strata"]) for t, v in snap["targets"].items()}
+    # link review (mbpi-link-review-*.json): a rejected species -> compound link never enters, in any view
+    review = {(r["aphia_id"], r["inchikey"]): r for r in snap.get("link_review", [])}
     activities = defaultdict(lambda: defaultdict(list))   # parent -> (target, endpoint) -> admitted rows
     for a in snap["activities"]:
         if strata[a["target_chembl_id"]]:
             activities[a["parent_molecule_chembl_id"]][(a["target_chembl_id"], a["standard_type"])].append(a)
     out, summary = [], {}
     for s in snap["species"]:
-        parents = defaultdict(lambda: {"qids": set(), "inchikeys": set(), "dois": set(), "cids": set()})
-        chains, counts = [], defaultdict(int)
+        parents = defaultdict(lambda: {"qids": set(), "inchikeys": set(), "dois": set(), "cids": set(), "reviewed": True})
+        chains, counts, rejected = [], defaultdict(int), []
         for link in s["links"]:
             dois = {snap["reference_dois"][r].lower() for st in link["statements"] for r in st["references"] if snap["reference_dois"].get(r)}
             ident = snap["compounds"][link["inchikey"]]
             common = snap["compound_taxon_counts"].get(link["compound_qid"], 0) > limit
             # LOTUS text mining attaches assay reference drugs to the paper's organism (zidovudine -> Ecklonia cava)
             drug = exclude_drugs and snap["parent_max_phase"].get(ident["parent_chembl_id"]) == rule["excluded_max_phase"]
+            verdict = review.get((s["aphia_id"], link["inchikey"]))
+            require(verdict is None or set(verdict["dois"]) == dois, f"{s['aphia_id']} {link['inchikey']}: link review is stale")
+            if verdict and verdict["decision"] == "reject":
+                counts["rejected_by_review"] += 1
+                rejected.append({k: verdict[k] for k in ("inchikey", "compound_name", "compound_chembl_id", "dois", "class", "reason")})
             counts["linked"] += 1
             counts["with_reference_doi"] += bool(dois)
             counts["common_metabolite"] += common
             counts["approved_drug"] += bool(drug)
-            chain = {"origin": bool(dois) and not common and not drug, "structure_id": bool(ident["parent_chembl_id"])}
+            chain = {"origin": bool(dois) and not common and not drug and not (verdict and verdict["decision"] == "reject"),
+                     "structure_id": bool(ident["parent_chembl_id"])}
             if chain["origin"] and chain["structure_id"]:
                 p = parents[ident["parent_chembl_id"]]
+                p["reviewed"] &= verdict is not None
                 p["qids"].add(link["compound_qid"]), p["inchikeys"].add(link["inchikey"])
                 p["dois"] |= dois
                 p["cids"] |= set(ident["pubchem_cids"])
@@ -491,10 +500,11 @@ def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, li
                     "activity_ids": sorted(a["activity_id"] for a in rows), "document_chembl_ids": docs,
                     "median_pchembl": m, "cohort_records": total, "percentile": round(rank, 2),
                     "link_factor": lf, "activity_factor": af, "evidence_factor": lf * af, "adjusted": rank * lf * af,
-                    "independent_sources": min(len(info["dois"]), len(docs)), "label": rule["label"]}))
+                    "independent_sources": min(len(info["dois"]), len(docs)), "label": rule["label"],
+                    "evidence_level": 2, "link_review": "accepted" if info["reviewed"] else "not_reviewed"}))
         counts["scored_compounds"] = len({i["compound_id"] for a, i in out if a == s["aphia_id"]})
         summary[s["aphia_id"]] = {"counts": dict(counts), "sufficiency": bio_sufficiency(chains),
-                                  "paper_search": snap.get("paper_search", {}).get(s["aphia_id"])}
+                                  "paper_search": snap.get("paper_search", {}).get(s["aphia_id"]), "rejected_links": rejected}
     return out, {"common_taxon_limit": round(limit, 3) if math.isfinite(limit) else None, "species": summary}
 
 
@@ -540,6 +550,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
     if config.get("chembl_bioactivity"):  # verified-pilot-3.1
         rule = config["chembl_bioactivity"]
         items, chembl = chembl_items(evidence, config)
+        require(not rule.get("link_review") or all(i["link_review"] == "accepted" for _, i in items),
+                "a primary ChEMBL item rests on a link without a review entry")
         variants = {f"minimum_cohort_{m}": chembl_items(evidence, config, minimum=m)[0] for m in rule["sensitivity_minimum_cohort_records"]}
         variants["no_common_metabolite_filter"] = chembl_items(evidence, config, limit=math.inf)[0]
         variants["log_scale_common_fence"] = chembl_items(evidence, config, limit=common_limit(evidence["chembl_links"], log_scale=True))[0]
@@ -655,7 +667,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
     sources = evidence.get("sources", {})
     for sid, src in sources.items():
         require(str(src.get("url", "")).startswith("https://") and src.get("provider") and src.get("version")
-                and src.get("terms") and valid_date(src.get("accessed"), not_after=evidence["snapshot_date"]),
+                and src.get("terms") and valid_date(src.get("accessed"), not_after=evidence.get("inputs_as_of", evidence["snapshot_date"])),
                 f"{sid}: incomplete source registration")
     identities = candidates.get("candidates", [])
     # Research candidates such as Ecklonia cava (371986) come from the catalog as candidate_species, never from this list.
@@ -695,7 +707,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         scores = {"MFPI": mfpi_value, "MBPI": mbpi, "MCUI": mcui, "BBVI": bbvi}
         assessed = bool(conservation_trace) and conservation_trace.get("iucn_state") == "assessed"
         status = {"MFPI": "산출됨" if mfpi_value is not None else "일부 근거 확인" if food_trace["sufficiency"]["present"] else "산출 보류",
-                  "MBPI": "산출됨" if mbpi is not None else "일부 근거 확인" if partial_bio or (links and links["counts"].get("linked")) else "산출 보류",
+                  "MBPI": "산출됨" if mbpi is not None else "일부 근거 확인" if partial_bio or (links and links["counts"].get("linked", 0) > links["counts"].get("rejected_by_review", 0))
+                          else "정보충분도 낮음" if links is not None else "산출 보류",
                   "MCUI": "산출됨" if mcui is not None else "일부 근거 확인" if assessed else "산출 보류",
                   "BBVI": "산출됨" if bbvi is not None else "산출 보류"}
         reasons = {"MFPI": food_reason, "MBPI": None if mbpi is not None else "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -740,6 +753,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if links and links["counts"].get("linked"):
             source_ids |= set(config["chembl_bioactivity"]["source_ids"])
+        if links and links.get("paper_search"):
+            source_ids |= set(config["chembl_bioactivity"]["paper_source_ids"])
         if aphia == 371986:
             source_ids.add("worms_ecklonia")
         if national and national.get("source_id"):
@@ -806,7 +821,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                  "food_item_ids": [r["food_item_id"] for r in c["rows"]], "size": len(c["rows"])} for cid, c in cross.items()]
     return {"method_version": config["method_version"], "status": config["status"],
             "snapshot_date": evidence["snapshot_date"], "candidate_snapshot_date": candidates["checked_on"],
-            "generated_at": evidence["snapshot_date"] + "T00:00:00Z", "food_weight": config["bbvi"]["default_food_weight"],
+            "generated_at": evidence.get("inputs_as_of", evidence["snapshot_date"]) + "T00:00:00Z", "food_weight": config["bbvi"]["default_food_weight"],
             "comparison_cohorts": cohorts,
             "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
             "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
@@ -866,19 +881,29 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "peptide_bioactivity": rows, "sources": {**evidence["sources"], **sources}}
     if cfg.get("chembl_bioactivity"):  # verified-pilot-3.1: species -> compound -> ChEMBL snapshot (scripts/collect_mbpi_links.py)
         snap = read(ROOT / cfg["chembl_bioactivity"]["snapshot"])
-        require(snap.get("snapshot_date") == evidence["snapshot_date"], "ChEMBL link snapshot differs from evidence")
+        require(snap.get("snapshot_date", "") >= evidence["snapshot_date"], "ChEMBL link snapshot is older than evidence")
         require(not set(snap["sources"]) & set(evidence["sources"]), "ChEMBL link snapshot redefines a source")
         require(set(cfg["chembl_bioactivity"]["source_ids"]) == set(snap["sources"]), "ChEMBL stratum source list differs from its snapshot")
         # species with no P703 link were searched in CMNPD, PubChem taxonomy and Europe PMC; the record is shown as it is
         papers = read(ROOT / cfg["chembl_bioactivity"]["paper_links"])
-        require(papers.get("snapshot_date") == evidence["snapshot_date"], "paper link record differs from evidence")
+        require(evidence["snapshot_date"] <= papers.get("snapshot_date", "") <= snap["snapshot_date"],
+                "paper link record must date between the evidence and the ChEMBL snapshot")
+        p703 = {s["aphia_id"] for s in snap["species"] for l in s["links"] for st in l["statements"] if st["taxon_qid"] != "original_paper"}
+        require(not {p["aphia_id"] for p in papers["links"]} & p703, "original-paper links are only for species without a P703 link")
+        require(set(cfg["chembl_bioactivity"]["paper_source_ids"]) == set(papers["sources"]), "paper link source list differs from its record")
+        require(not set(papers["sources"]) & (set(evidence["sources"]) | set(snap["sources"])), "paper link record redefines a source")
+        review = read(ROOT / cfg["chembl_bioactivity"]["link_review"])
+        require(review["snapshot"] == cfg["chembl_bioactivity"]["snapshot"] and review["paper_links"] == cfg["chembl_bioactivity"]["paper_links"],
+                "link review was made for another snapshot")
         accepted = defaultdict(int)
         for p in papers["links"]:
             accepted[p["aphia_id"]] += 1
         snap = {**snap, "paper_search": {s["aphia_id"]: {"searched_on": papers["searched_on"], "europepmc_hits": s["europepmc_hits"],
                                                          "papers_screened": s["papers_screened"], "accepted_links": accepted[s["aphia_id"]]}
                                          for s in papers["searched"]}}
-        evidence = {**evidence, "chembl_links": snap, "sources": {**evidence["sources"], **snap["sources"]}}
+        snap["link_review"] = review["links"]
+        evidence = {**evidence, "chembl_links": snap, "inputs_as_of": max(snap["snapshot_date"], review["reviewed_on"]),
+                    "sources": {**evidence["sources"], **snap["sources"], **papers["sources"]}}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
