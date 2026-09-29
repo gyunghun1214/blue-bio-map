@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_date": "2026-09-29",
+  "snapshot_date": "2026-09-30",
   "sources": {
     "ahtpdb_ic50_2026": {
       "provider": "AHTPDB, IIIT-Delhi (Raghava group)",

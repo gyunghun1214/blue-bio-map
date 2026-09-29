@@ -33,7 +33,7 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
   assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
-assert.equal(scored,18,'7 MFPI + 1 MBPI + 14 MCUI (7 IUCN + 7 Korean national) cover 18 species');
+assert.equal(scored,22,'7 MFPI + 13 MBPI (3.1 ChEMBL stratum) + 14 MCUI (7 IUCN + 7 Korean national) cover 22 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,7,'national MCUI stays labelled by basis');
 assert.ok(national.every(r=>r.matrix_eligible===false),'national MCUI never enters the IUCN-based matrix');

@@ -45,12 +45,14 @@ COUNT_QUERY = "SELECT ?c (COUNT(DISTINCT ?t) AS ?n) WHERE { VALUES ?c { %s } ?c 
 ACT_FIELDS = ("activity_id,assay_chembl_id,assay_type,data_validity_comment,document_chembl_id,molecule_chembl_id,"
               "parent_molecule_chembl_id,pchembl_value,potential_duplicate,standard_relation,standard_type,target_chembl_id")
 CACHE: Path | None = None
+QUERIED: set[str] = set()  # days the stored responses were fetched (cache file dates on a resumed run)
 
 
 def get(url: str, *, missing_ok: bool = False, pause: float = 0.25):
     """GET JSON with retries; a 404 is None only when the caller says absence is an answer."""
     key = CACHE and CACHE / (hashlib.sha1(url.encode()).hexdigest() + ".json")
     if key and key.exists():
+        QUERIED.add(date.fromtimestamp(key.stat().st_mtime).isoformat())
         return json.loads(key.read_text(encoding="utf-8"))
     for attempt in range(5):
         try:
@@ -71,6 +73,7 @@ def get(url: str, *, missing_ok: bool = False, pause: float = 0.25):
             if attempt == 4:
                 raise
             time.sleep(5 * (attempt + 1))
+    QUERIED.add(date.today().isoformat())
     time.sleep(pause)
     if key:
         key.write_text(json.dumps(data), encoding="utf-8")
@@ -264,14 +267,16 @@ def main() -> None:
         if str(m) not in c["below"]:
             c["below"][str(m)] = sum(chembl_count({**f, "pchembl_value__lt": m}) for f in base)
             c["equal"][str(m)] = sum(chembl_count({**f, "pchembl_value": m}) for f in base) if round(m, 2) == m else 0
+    first = min(QUERIED | {today})
+    queried = today if first == today else f"{first} to {today}"
     snapshot = {
-        "snapshot_date": today, "queried_on": today,
+        "snapshot_date": today, "queried_on": today, "queried_from": first,
         "sources": {  # registered like evidence sources (url, provider, version, terms, accessed)
             "worms_rest_mbpi": {"provider": "World Register of Marine Species", "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
-                                "version": f"queried {today}", "url": WORMS, "accessed": today, "license": "CC BY 4.0",
+                                "version": f"queried {queried}", "url": WORMS, "accessed": today, "license": "CC BY 4.0",
                                 "terms": "CC BY 4.0; the AphiaID <-> synonym map is stored per species"},
             "wikidata_p703_lotus": {"provider": "Wikidata (LOTUS natural products import)", "title": "P703 found-in-taxon statements and P248 references",
-                                    "version": f"query service, queried {today}", "url": WDQS, "accessed": today, "license": "CC0 1.0",
+                                    "version": f"query service, queried {queried}", "url": WDQS, "accessed": today, "license": "CC0 1.0",
                                     "terms": "CC0; P703 statements are mostly LOTUS imports (DOI 10.5281/zenodo.5794106)",
                                     "query": LINK_QUERY, "count_query": COUNT_QUERY, "user_agent": UA["User-Agent"]},
             "chembl_mbpi": {"provider": "EMBL-EBI ChEMBL", "title": "ChEMBL molecule, activity, target and cell-line resources",
@@ -279,10 +284,10 @@ def main() -> None:
                             "accessed": today, "license": "CC BY-SA 3.0",
                             "terms": "CC BY-SA 3.0; only IDs, pChEMBL values and cohort counts are stored"},
             "pubchem_inchikey_mbpi": {"provider": "NCBI PubChem", "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
-                                      "version": f"queried {today}", "url": PUG, "accessed": today, "license": "NCBI public access",
+                                      "version": f"queried {queried}", "url": PUG, "accessed": today, "license": "NCBI public access",
                                       "terms": "NCBI public access; taxonomy section presence only (the sdqagent compound table returned HTTP 404 on 2026-09-29)"},
             "cellosaurus_mbpi": {"provider": "SIB Cellosaurus", "title": "Cell-line category for ChEMBL CELL-LINE targets",
-                                 "version": f"API, queried {today}", "url": CELLOSAURUS, "accessed": today, "license": "CC BY 4.0",
+                                 "version": f"API, queried {queried}", "url": CELLOSAURUS, "accessed": today, "license": "CC BY 4.0",
                                  "terms": "CC BY 4.0; category field only"}},
         "filters": {k: rule[k] for k in ("standard_relation", "data_validity_comments", "exclude_potential_duplicate", "assay_types")},
         "api_filter_checks": checks, "species": out_species, "reference_dois": dois,

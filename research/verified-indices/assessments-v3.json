@@ -5500,7 +5500,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-09-29T00:00:00Z",
+  "generated_at": "2026-09-30T00:00:00Z",
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
@@ -5778,7 +5778,7 @@
       }
     }
   },
-  "snapshot_date": "2026-09-29",
+  "snapshot_date": "2026-09-30",
   "sources": {
     "afcd_r3_details": {
       "accessed": "2026-09-25",

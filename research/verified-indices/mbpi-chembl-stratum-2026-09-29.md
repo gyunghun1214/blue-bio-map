@@ -57,4 +57,4 @@ PYTHONUTF8=1 python -m unittest verification.test_mbpi_chembl           # 합성
 node verification/test_mbpi_chembl_ui.mjs                               # 화면 재검사·표시 테스트
 ```
 
-스냅숏(`research/verified-indices/snapshots/mbpi-links-2026-09-29.json`)에는 ID·이름·pChEMBL 값·코호트 수만 저장한다(ChEMBL CC BY-SA 3.0, Wikidata CC0, WoRMS·Cellosaurus CC BY 4.0). CMNPD(CC BY-NC-SA 4.0)는 찾은 논문 DOI만 기록하고 내용은 저장하지 않는다.
+스냅숏(`research/verified-indices/snapshots/mbpi-links-2026-09-30.json`, 조회 기간 2026-09-29 ~ 2026-09-30, `queried_from`·`queried_on`에 기록)에는 ID·이름·pChEMBL 값·코호트 수만 저장한다(ChEMBL CC BY-SA 3.0, Wikidata CC0, WoRMS·Cellosaurus CC BY 4.0). CMNPD(CC BY-NC-SA 4.0)는 찾은 논문 DOI만 기록하고 내용은 저장하지 않는다.

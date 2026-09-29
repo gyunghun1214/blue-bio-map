@@ -1,5 +1,5 @@
 {
- "snapshot_date": "2026-09-29",
+ "snapshot_date": "2026-09-30",
  "searched_on": "2026-09-29",
  "purpose": "Species -> compound links from original papers for the 14 of 30 species that have no Wikidata P703 (LOTUS) link. Read by scripts/collect_mbpi_links.py; the ChEMBL activity, cohort and scoring rules are the same as for LOTUS links.",
  "rule": "Accepted only when the title or abstract states that one defined compound was isolated or identified from the species (WoRMS accepted name or synonym), and the compound name in the paper resolves to exactly one PubChem CID whose InChIKey is stored. Rejected: extracts, hydrolysates, fractions, enzymes, unnamed peptides, compound classes, administered drugs, pollutants, and compounds of associated microbes.",

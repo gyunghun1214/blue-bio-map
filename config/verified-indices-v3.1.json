@@ -259,7 +259,7 @@
   },
   "chembl_bioactivity": {
     "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-    "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-29.json",
+    "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
     "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
     "source_ids": [
       "worms_rest_mbpi",
