@@ -11,8 +11,10 @@ const release=readDist('expansion-public-cells.json').species, places=e=>new Set
 const ark=release.find(e=>e.aphiaID===504357), arkPlaces=places(ark), arkOld=ark.cells.find(c=>c.historical);
 const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes(a)).length;
 const reportScores=[...report.species,...(report.candidate_species||[])].flatMap(s=>Object.values(s.scores).filter(v=>v!==null).map(v=>v.toFixed(1)));
-// A national MCUI (참굴 2.3: all four axes computed) never enters the IUCN matrix.
-const placedInMatrix=report.species.filter(s=>s.mcui_basis!=='national'&&['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
+// Up to 3.1 a national MCUI (참굴 2.3: all four axes computed) never enters the IUCN matrix; 3.2 places it with its own marker.
+const nationalPlaced=!!report.method?.matrix?.include_national_mcui, readiness=readDist('matrix-readiness.json');
+const placedInMatrix=report.species.filter(s=>(nationalPlaced||s.mcui_basis!=='national')&&['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
+const typeLabel=aphia=>Object.values(report.method.matrix.types).find(t=>t.id===readiness.species.find(r=>r.aphia_id===aphia).matrix_type)?.label;
 if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0='http://127.0.0.1:8765/';
@@ -110,7 +112,7 @@ try{
   check('Ecklonia candidate: paper-local MBPI 67.5 and five source-linked measurements without spatial or combined scores',
     eckAxes.report==='verified-pilot-3.1'&&eckAxes.scores?.MBPI===67.5&&
     eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===null&&eckAxes.scores.BBVI===null&&
-    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('승인 0곳')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('해역 판단 보류'))&&
+    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형이 없습니다')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('시범 MBPI 67.5')&&eck.includes('원논문 1편')&&
     eck.includes('phloroglucinol')&&eck.includes('eckstolonol')&&eck.includes('1.47 ± 0.04 mM'),
     JSON.stringify(eckAxes)+' | '+eck.slice(0,500));
@@ -223,15 +225,21 @@ try{
   const slider=await evaluate("({n:data.species.filter(s=>pilotScore(s,'BBVI')!==null).length,disabled:document.getElementById('bbvi-weight').disabled,status:document.getElementById('bbvi-weight-status').textContent})");
   check('BBVI 1 species (참굴): weight slider enabled',slider.n===1&&!slider.disabled&&slider.status==='BBVI 산출 종 1종',JSON.stringify(slider));
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
-  check('Oyster status card leads with computed values, MBPI 96.3 without the single-paper label, national MCUI labelled',oyCard.startsWith('MFPI 65.5 · MBPI 96.3 · MCUI(국가 평가) 10.0')&&!oyCard.includes('참고값')&&!oyCard.includes('MBPI 보류'),oyCard);
+  // verified-pilot-3.2: the oyster is placed (national MCUI, marked), so its card leads with the published matrix type
+  check('Oyster status card leads with its published matrix type, no single-paper label',!!typeLabel(836033)&&oyCard===typeLabel(836033)+' · 검증 전 시범 지표 · 근거 확인'&&!oyCard.includes('참고값'),oyCard);
   const oyCmp=await evaluate("(()=>{const keep=comparisonPage;comparisonPage=Math.floor(data.species.findIndex(s=>s.aphiaID===836033)/5);renderComparison();const q=a=>document.querySelector('#comparison [data-score-aphia=\"836033\"][data-score-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};comparisonPage=keep;renderComparison();return r})()");
   check('Comparison table: 참굴 MBPI 96.3 and BBVI 80.9 match the report, pilot label kept, no single-paper label',oyCmp.MBPI.startsWith('96.3')&&oyCmp.BBVI.startsWith('80.9')&&oyCmp.MBPI.includes('검증 전 시범 지표')&&oyCmp.BBVI.includes('검증 전 시범 지표')&&!oyCmp.MBPI.includes('참고값'),JSON.stringify(oyCmp));
-  const oyChip=await evaluate("document.querySelector('#matrix-unplaced [data-aphia=\"836033\"] small').textContent");
-  check('Oyster priority chip explains missing axes while status card shows MFPI',oyChip.includes('MBPI 96.3')&&oyChip.includes('MCUI 한국 국가 평가 · IUCN 매트릭스 제외')&&!oyChip.includes('MFPI 0'),oyChip);
+  // verified-pilot-3.2: the oyster leaves the follow-up chips and becomes a square (national) matrix point with its type
+  const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),national:!!p?.classList.contains('national'),title:p?.title||''}})()");
+  check('Oyster: placed as a marked national-MCUI point with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.national&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&n.includes('보류')})()"));
   check('Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("!document.querySelector('.version').textContent.includes('0.2')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
-  check('Empty matrix note links straight to the simulated example (still labelled not real)',inlineSim===true,String(inlineSim));
+  // verified-pilot-3.2 places real species, so the empty-matrix shortcut appears only when nothing is placed
+  const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
+  check('Empty matrix note links straight to the simulated example (still labelled not real); a placed matrix states its count instead',
+    readiness.matrix_points?inlineSim==='no button'&&matrixNote.startsWith(`시범 지표 ${readiness.matrix_points}종`)&&
+      matrixNote.includes('네모 점은 한국 국가 평가 기반 MCUI')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national'):inlineSim===true,String(inlineSim)+' | '+matrixNote);
   const effortOp=await evaluate("(()=>{const eb=[...document.querySelectorAll('.effort-key .eb')].map(e=>getComputedStyle(e).opacity);const fills=[...new Set(effortLayer.getLayers().map(l=>l.options.fillOpacity))].sort();return {eb,fills}})()");
   check('Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14)',JSON.stringify(effortOp.eb)==='["0.07","0.15","0.25","0.37"]'&&Math.max(...effortOp.fills)<=.14,JSON.stringify(effortOp));
   check('Method tab: back-test cases from the proposal, marked not yet done',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(아직 수행 안 함)')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
@@ -315,7 +323,7 @@ try{
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
-  check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('승인 0곳')"));
+  check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
   check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 기록 수\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&/지도 표시 기록\s*[\d,]+건 · 4개 격자/.test(t)&&t.includes('GBIF'),t);
@@ -334,6 +342,13 @@ try{
   let ms=await clickMode('value');
   check('Map mode button → value: pressed state, value legend, cell panel, no effort layer, hash t=value',
     ms.mode==='value'&&ms.occ==='false'&&ms.val==='true'&&!ms.occLegend&&ms.valLegend&&ms.panel&&ms.panelText.includes('선택한 공개 격자')&&ms.panelText.includes('합산 점수·우선순위는 산출하지 않았습니다')&&ms.effortDisabled&&ms.effort===0&&ms.source.startsWith('활용 × 보전')&&/(^|&)t=value/.test(ms.hash.slice(1))&&ms.shapes>0,JSON.stringify(ms));
+  // verified-pilot-3.2 (figure 5): legend in the figure's order, cells coloured by species type, sufficiency layers toggle apart
+  const layers=await evaluate(`(async()=>{const q=s=>document.querySelector(s),count=()=>document.querySelectorAll('#map path.leaflet-interactive').length,before=count(),box=q('#layer-priority');
+    box.checked=true;box.dispatchEvent(new Event('change'));const on=count();box.checked=false;box.dispatchEvent(new Event('change'));
+    return {before,on,off:count(),legend:[...q('#value-legend').querySelectorAll('[role=listitem]')].map(e=>e.textContent),judgment:q('#map-judgment').textContent,rule:q('#value-rule').textContent}})()`);
+  check('Value map (3.2): figure-5 legend, type-coloured cells, priority-survey layer toggles without recolouring',
+    JSON.stringify(layers.legend)===JSON.stringify(['기초조사·관찰 대상','지속가능 활용 후보','보전 우선·모니터링','대체생산·배양 연구'])&&
+    layers.judgment.includes('종 유형으로 칠한 공개 격자')&&layers.rule.includes('50 이상이면 높음')&&layers.on>layers.before&&layers.off===layers.before,JSON.stringify(layers));
   await pick(377084);await sleep(300);ms=await modeState();
   check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=377084/.test(ms.hash),JSON.stringify(ms));
   ms=await clickMode('occurrence');

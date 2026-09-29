@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.1.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -627,15 +627,16 @@ def bio_sufficiency(partials: list[dict]) -> dict:
     return {"required": list(steps), "best_record_steps": best, "ratio": round(best / len(steps), 2)}
 
 
-def unexplored_flag(aphia: int, output: list[dict], taxonomy: dict, threshold: float) -> dict | None:
-    """Flag a low-information species when a relative (same genus, else family) has a BBVI.
-    The relative's score is never copied."""
+def unexplored_flag(aphia: int, output: list[dict], taxonomy: dict, threshold: float, min_bbvi: float | None = None) -> dict | None:
+    """Flag a low-information species when a relative (same genus, else family) has a BBVI
+    (verified-pilot-3.2: a BBVI of at least min_bbvi). The relative's score is never copied."""
     mine = taxonomy.get(str(aphia), {})
     me = next(s for s in output if s["aphia_id"] == aphia)
     if me["information_sufficiency"]["mean_ratio"] >= threshold:
         return None
     for rank in ("genus", "family"):
         rel = [s for s in output if s["aphia_id"] != aphia and s["scores"]["BBVI"] is not None
+               and (min_bbvi is None or s["scores"]["BBVI"] >= min_bbvi)
                and mine.get(rank) and taxonomy.get(str(s["aphia_id"]), {}).get(rank) == mine[rank]]
         if rel:
             return {"rank": rank, "taxon": mine[rank], "relatives": [s["scientific_name"] for s in rel],
@@ -793,8 +794,13 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         row = assess({"aphia_id": c["aphiaID"], "scientific_name": c["name"], "korean_name": c.get("label")})
         row["candidate_label"] = "조사 후보"  # a score never promotes a research candidate to the operating list
         research.append(row)
-    for s in output:
-        s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], output, taxonomy.get("species", {}), config["unexplored_threshold"])
+    rule = config.get("unexplored_candidates")  # verified-pilot-3.2: all 30 species, relatives with a high BBVI
+    pool = output + research if rule else output
+    for s in pool:
+        s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], pool, taxonomy.get("species", {}), config["unexplored_threshold"],
+                                                    rule and rule["relative_min_bbvi"])
+        if rule:  # low information sufficiency is its own label, never a score
+            s["priority_survey"] = s["information_sufficiency"]["mean_ratio"] < config["unexplored_threshold"]
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
                 "food_item_ids": [r["food_item_id"] for r in c["rows"]],
                 "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),

@@ -182,7 +182,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -253,7 +253,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
@@ -290,7 +289,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -977,7 +975,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1030,7 +1028,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
@@ -1070,7 +1067,6 @@
         "worms_ecklonia",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -1137,7 +1133,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1190,7 +1186,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
@@ -1220,7 +1215,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -1334,7 +1328,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1387,7 +1381,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
@@ -1423,7 +1416,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -1489,7 +1481,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -1560,7 +1552,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
@@ -1591,7 +1582,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -1778,7 +1768,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -1857,7 +1847,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Codium fragile",
       "score_status": {
@@ -1894,7 +1883,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -2106,7 +2094,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2683,7 +2671,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -2747,7 +2734,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
@@ -2823,7 +2809,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Disk abalone, Raw",
@@ -2902,7 +2888,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Haliotis discus",
       "score_status": {
@@ -2929,7 +2914,6 @@
         "iucn_haliotis_discus_2022",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -3103,7 +3087,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -3663,7 +3647,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -3727,7 +3710,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
@@ -3799,7 +3781,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -3852,7 +3834,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Magallana sikamea",
       "score_status": {
@@ -3882,14 +3863,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": {
-        "note": "A relative has a calculated BBVI; this species' score is not inferred from it.",
-        "rank": "genus",
-        "relatives": [
-          "Magallana gigas"
-        ],
-        "taxon": "Magallana"
-      },
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -3998,7 +3971,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -4115,7 +4088,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Anadara broughtonii",
       "score_status": {
@@ -4153,7 +4125,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -4220,7 +4191,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -4309,7 +4280,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
@@ -4335,7 +4305,6 @@
         "iucn_redlist_search",
         "nibr_red_data_book_2024"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -4538,7 +4507,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -4609,7 +4578,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Scomber japonicus",
       "score_status": {
@@ -4647,7 +4615,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
@@ -4723,7 +4690,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -4802,7 +4769,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Engraulis japonicus",
       "score_status": {
@@ -4829,7 +4795,6 @@
         "iucn_engraulis_japonicus_2018",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -4905,7 +4870,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -4984,7 +4949,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
@@ -5011,7 +4975,6 @@
         "iucn_larimichthys_polyactis_2020",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -5078,7 +5041,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -5157,7 +5120,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
@@ -5183,7 +5145,6 @@
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -5316,7 +5277,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -5840,7 +5801,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
@@ -5867,7 +5827,6 @@
         "kosis_fish_aquaculture",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -6011,7 +5970,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -6546,7 +6505,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
@@ -6575,7 +6533,6 @@
         "mext_sfct_2020",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -6641,7 +6598,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Pacific cod, Raw",
@@ -6720,7 +6677,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
@@ -6751,7 +6707,6 @@
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -6818,7 +6773,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -6897,7 +6852,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
@@ -6923,7 +6877,6 @@
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -6990,7 +6943,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -7061,7 +7014,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Octopus sinensis",
       "score_status": {
@@ -7087,7 +7039,6 @@
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -7161,7 +7112,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Cuttle fish, Raw",
@@ -7295,7 +7246,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
@@ -7323,7 +7273,6 @@
         "nibr_red_data_book_2024",
         "rda_db_10_4"
       ],
-      "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
@@ -7483,7 +7432,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.1 (2026-09-30). Diagram stages 4-5: all 30 species get information sufficiency as its own label (priority_survey) and an unexplored-candidate flag from a same-genus/family relative with BBVI >= 50; the BBVI x MCUI matrix types (IUCN and marked national MCUI) are published and the GIS map colours each public cell by the types of species recorded there. No axis score changes. See research/verified-indices/matrix-gis-2026-09-30.md.",
+    "changes_from": "verified-pilot-2.3 (2026-09-27). Diagram stage 2-3 MBPI: adds the automated ChEMBL stratum (see chembl_bioactivity and research/verified-indices/mbpi-chembl-stratum-2026-09-29.md). Every other rule, factor, cohort and threshold equals 2.3.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -7596,41 +7545,7 @@
       "effort_adjustment": 10,
       "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
-    "matrix": {
-      "at_threshold": "high",
-      "bbvi_threshold": 50,
-      "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
-      "cell_colour_precedence": [
-        "conservation_priority",
-        "alternative_production",
-        "sustainable_use",
-        "baseline_survey"
-      ],
-      "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
-      "include_national_mcui": true,
-      "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
-      "mcui_threshold": 50,
-      "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
-      "types": {
-        "high_bbvi_high_mcui": {
-          "id": "alternative_production",
-          "label": "대체생산·배양 연구"
-        },
-        "high_bbvi_low_mcui": {
-          "id": "sustainable_use",
-          "label": "지속가능 활용 후보"
-        },
-        "low_bbvi_high_mcui": {
-          "id": "conservation_priority",
-          "label": "보전 우선·모니터링"
-        },
-        "low_bbvi_low_mcui": {
-          "id": "baseline_survey",
-          "label": "기초조사·관찰 대상"
-        }
-      }
-    },
-    "method_version": "verified-pilot-3.2",
+    "method_version": "verified-pilot-3.1",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -7845,19 +7760,9 @@
       ]
     },
     "status": "provisional_unvalidated",
-    "unexplored_candidates": {
-      "ranks": [
-        "genus",
-        "family"
-      ],
-      "relative_min_bbvi": 50,
-      "rule": "Information sufficiency below unexplored_threshold (mean ratio of required inputs) marks the species 'priority_survey' (우선 조사 대상). Such a species is an unexplored candidate (미탐색 후보) when a relative in the same WoRMS genus, else family, has a published BBVI of at least relative_min_bbvi (the matrix threshold). The relative's score is never copied.",
-      "scope": "operating_8 + expansion_22",
-      "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)"
-    },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.2",
+  "method_version": "verified-pilot-3.1",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -9075,7 +8980,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -9275,7 +9180,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -9498,7 +9402,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -9569,7 +9473,6 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
@@ -9897,7 +9800,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -10421,7 +10324,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -10661,7 +10563,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -10757,7 +10659,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Todarodes pacificus",
       "score_status": {
@@ -10878,7 +10779,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -10983,7 +10884,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": true,
       "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
@@ -11265,7 +11165,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -11369,7 +11269,6 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
@@ -11623,7 +11522,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "observed_rows": [
           {
             "english_name": "Hard shelled mussel, Raw",
@@ -11801,7 +11700,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Mytilus coruscus",
       "score_status": {
@@ -12242,7 +12140,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-3.2",
+        "method_version": "verified-pilot-3.1",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -12824,7 +12722,6 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Magallana gigas",
       "score_status": {

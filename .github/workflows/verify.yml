@@ -34,6 +34,7 @@ jobs:
           node verification/test_csv_export.mjs
           node verification/test_client_outdated.mjs
           node verification/test_mbpi_chembl_ui.mjs
+          node verification/test_matrix_map.mjs
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:

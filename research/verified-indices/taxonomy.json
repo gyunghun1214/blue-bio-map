@@ -1,14 +1,216 @@
 {
-  "source": "WoRMS AphiaClassificationByAphiaID REST",
-  "retrieved": "2026-09-25",
-  "species": {
-    "836033": {"phylum": "Mollusca", "class": "Bivalvia", "order": "Ostreida", "family": "Ostreidae", "genus": "Magallana"},
-    "506159": {"phylum": "Mollusca", "class": "Bivalvia", "order": "Mytilida", "family": "Mytilidae", "genus": "Mytilus"},
-    "494972": {"phylum": "Ochrophyta", "class": "Phaeophyceae", "order": "Fucales", "family": "Sargassaceae", "genus": "Sargassum"},
-    "372119": {"class": "Florideophyceae", "order": "Gelidiales", "family": "Gelidiaceae", "genus": "Gelidium"},
-    "342067": {"phylum": "Mollusca", "class": "Cephalopoda", "order": "Oegopsida", "family": "Ommastrephidae", "genus": "Todarodes"},
-    "250680": {"phylum": "Chordata", "class": "Ascidiacea", "order": "Stolidobranchia", "family": "Pyuridae", "genus": "Halocynthia"},
-    "241776": {"phylum": "Echinodermata", "class": "Holothuroidea", "order": "Synallactida", "family": "Stichopodidae", "genus": "Apostichopus"},
-    "145721": {"phylum": "Ochrophyta", "class": "Phaeophyceae", "order": "Laminariales", "family": "Alariaceae", "genus": "Undaria"}
+ "source": "WoRMS AphiaClassificationByAphiaID REST",
+ "retrieved": "2026-09-30",
+ "species": {
+  "145721": {
+   "phylum": "Ochrophyta",
+   "class": "Phaeophyceae",
+   "order": "Laminariales",
+   "family": "Alariaceae",
+   "genus": "Undaria"
+  },
+  "241776": {
+   "phylum": "Echinodermata",
+   "class": "Holothuroidea",
+   "order": "Synallactida",
+   "family": "Stichopodidae",
+   "genus": "Apostichopus"
+  },
+  "250680": {
+   "phylum": "Chordata",
+   "class": "Ascidiacea",
+   "order": "Stolidobranchia",
+   "family": "Pyuridae",
+   "genus": "Halocynthia"
+  },
+  "342067": {
+   "phylum": "Mollusca",
+   "class": "Cephalopoda",
+   "order": "Oegopsida",
+   "family": "Ommastrephidae",
+   "genus": "Todarodes"
+  },
+  "372119": {
+   "phylum": "Rhodophyta",
+   "class": "Florideophyceae",
+   "order": "Gelidiales",
+   "family": "Gelidiaceae",
+   "genus": "Gelidium"
+  },
+  "494972": {
+   "phylum": "Ochrophyta",
+   "class": "Phaeophyceae",
+   "order": "Fucales",
+   "family": "Sargassaceae",
+   "genus": "Sargassum"
+  },
+  "506159": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Mytilida",
+   "family": "Mytilidae",
+   "genus": "Mytilus"
+  },
+  "836033": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Ostreida",
+   "family": "Ostreidae",
+   "genus": "Magallana"
+  },
+  "377084": {
+   "phylum": "Ochrophyta",
+   "class": "Phaeophyceae",
+   "order": "Laminariales",
+   "family": "Laminariaceae",
+   "genus": "Saccharina"
+  },
+  "371986": {
+   "phylum": "Ochrophyta",
+   "class": "Phaeophyceae",
+   "order": "Laminariales",
+   "family": "Lessoniaceae",
+   "genus": "Ecklonia"
+  },
+  "234476": {
+   "phylum": "Chlorophyta",
+   "class": "Ulvophyceae",
+   "order": "Ulvales",
+   "family": "Ulvaceae",
+   "genus": "Ulva"
+  },
+  "494853": {
+   "phylum": "Ochrophyta",
+   "class": "Phaeophyceae",
+   "order": "Fucales",
+   "family": "Sargassaceae",
+   "genus": "Sargassum"
+  },
+  "236157": {
+   "phylum": "Rhodophyta",
+   "class": "Florideophyceae",
+   "order": "Gracilariales",
+   "family": "Gracilariaceae",
+   "genus": "Gracilaria"
+  },
+  "145086": {
+   "phylum": "Chlorophyta",
+   "class": "Ulvophyceae",
+   "order": "Bryopsidales",
+   "family": "Codiaceae",
+   "genus": "Codium"
+  },
+  "231750": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Venerida",
+   "family": "Veneridae",
+   "genus": "Ruditapes"
+  },
+  "397082": {
+   "phylum": "Mollusca",
+   "class": "Gastropoda",
+   "order": "Lepetellida",
+   "family": "Haliotidae",
+   "genus": "Haliotis"
+  },
+  "393716": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Pectinida",
+   "family": "Pectinidae",
+   "genus": "Mizuhopecten"
+  },
+  "836041": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Ostreida",
+   "family": "Ostreidae",
+   "genus": "Magallana"
+  },
+  "504357": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Arcida",
+   "family": "Arcidae",
+   "genus": "Anadara"
+  },
+  "413600": {
+   "phylum": "Mollusca",
+   "class": "Bivalvia",
+   "order": "Adapedonta",
+   "family": "Pharidae",
+   "genus": "Sinonovacula"
+  },
+  "127022": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Scombriformes",
+   "family": "Scombridae",
+   "genus": "Scomber"
+  },
+  "219984": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Clupeiformes",
+   "family": "Engraulidae",
+   "genus": "Engraulis"
+  },
+  "281273": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Eupercaria incertae sedis",
+   "family": "Sciaenidae",
+   "genus": "Larimichthys"
+  },
+  "275816": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Pleuronectiformes",
+   "family": "Paralichthyidae",
+   "genus": "Paralichthys"
+  },
+  "274849": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Perciformes",
+   "family": "Sebastidae",
+   "genus": "Sebastes"
+  },
+  "276651": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Carangiformes",
+   "family": "Carangidae",
+   "genus": "Seriola"
+  },
+  "254538": {
+   "phylum": "Chordata",
+   "class": "Teleostei",
+   "order": "Gadiformes",
+   "family": "Gadidae",
+   "genus": "Gadus"
+  },
+  "1061762": {
+   "phylum": "Arthropoda",
+   "class": "Malacostraca",
+   "order": "Decapoda",
+   "family": "Portunidae",
+   "genus": "Portunus"
+  },
+  "534443": {
+   "phylum": "Mollusca",
+   "class": "Cephalopoda",
+   "order": "Octopoda",
+   "family": "Octopodidae",
+   "genus": "Octopus"
+  },
+  "1666974": {
+   "phylum": "Mollusca",
+   "class": "Cephalopoda",
+   "order": "Sepiida",
+   "family": "Sepiidae",
+   "genus": "Acanthosepion"
   }
+ }
 }
