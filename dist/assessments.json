@@ -7447,7 +7447,7 @@
       ],
       "drug_rule": "Exclude compounds whose ChEMBL parent is an approved drug (max_phase 4): LOTUS text mining attaches reference drugs used as assay controls to the paper's organism (zidovudine -> Ecklonia cava, DOI 10.1016/j.bmc.2008.07.078). Natural products that are also approved drugs lose their link too. Sensitivity: no filter.",
       "evidence_level": "Reviewed original-paper strata (감태 ACE, AHTPDB peptides) are level 1; this automated stratum is level 2. The species MBPI is the max over all strata; the stratum of the best item is shown.",
-      "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. The item per species and stratum is the cohort with the highest percentile (ties: more records).",
+      "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. One item per species, parent compound and stratum: that compound's target x endpoint cohort with the highest percentile (ties: more records). The species MBPI is the highest adjusted item.",
       "exclude_potential_duplicate": true,
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",

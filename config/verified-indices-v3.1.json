@@ -279,7 +279,7 @@
       10,
       100
     ],
-    "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. The item per species and stratum is the cohort with the highest percentile (ties: more records).",
+    "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. One item per species, parent compound and stratum: that compound's target x endpoint cohort with the highest percentile (ties: more records). The species MBPI is the highest adjusted item.",
     "bbvi_rule": "bbvi.minimum_independent_mbpi_dois applies as min(link DOIs, ChEMBL documents) >= 2, so both the species link and the activity rest on two papers each.",
     "evidence_level": "Reviewed original-paper strata (감태 ACE, AHTPDB peptides) are level 1; this automated stratum is level 2. The species MBPI is the max over all strata; the stratum of the best item is shown.",
     "standard_relation": "=",
