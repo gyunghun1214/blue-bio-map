@@ -355,7 +355,7 @@ class VerifiedPilot3Tests(unittest.TestCase):
     def test_committed_v3_output_is_reproducible_and_v2_scores_unchanged(self):
         report = self.run_build()
         self.assertEqual((ROOT / "research" / "verified-indices" / "assessments-v3.json").read_text(encoding="utf-8"), render(report))
-        v2 = build(*load_inputs())
+        v2 = build(*load_inputs(config=V32))  # 3.3 adds substituted MFPI values that the research v3 config does not use
         for old in v2["species"]:
             new = species(report, old["aphia_id"])
             for axis in ("MFPI", "MCUI"):
@@ -712,18 +712,22 @@ class VerifiedPilot31Tests(unittest.TestCase):
             self.assertFalse(self.new[a]["bioactivity_partial"], a)
 
 
+V32 = ROOT / "config" / "verified-indices-v3.2.json"  # superseded by 3.3 (MFPI substitutes); its rules stay tested
+
+
 class VerifiedPilot32Tests(unittest.TestCase):
-    """3.2 (diagram stages 4-5): information sufficiency and matrix labels only; every axis equals 3.1."""
+    """Superseded by 3.3. 3.2 (diagram stages 4-5): information sufficiency and matrix labels only; every axis equals 3.1."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V32))
         self.v31 = build(*load_inputs(config=V31))
         self.rows = {s["aphia_id"]: s for s in self.report["species"] + self.report["candidate_species"]}
         self.taxonomy = json.loads((ROOT / "research" / "verified-indices" / "taxonomy.json").read_text(encoding="utf-8"))["species"]
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.2", "provisional_unvalidated"))
-        self.assertEqual((ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"), render(self.report))
+        archived32 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.2.json"
+        self.assertEqual(archived32.read_text(encoding="utf-8"), render(self.report))
         # the published 3.1 report is archived as it was
         archived = (ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.1.json").read_text(encoding="utf-8")
         self.assertEqual(render(self.v31), archived)
@@ -822,6 +826,89 @@ class VerifiedPilot32Tests(unittest.TestCase):
         self.assertEqual((flag["rank"], flag["taxon"], flag["relatives"]), ("family", "F", ["S2"]))
         self.assertIsNone(unexplored_flag(1, [row(1, None, 0.2), row(2, 49.9, 1.0)], taxonomy, 0.5, 50))
         self.assertIsNone(unexplored_flag(1, [row(1, None, 0.5), row(2, 80.0, 1.0)], taxonomy, 0.5, 50))  # 0.5 is not low
+
+
+# 3.3 fills a missing RDA zinc value from uFiSh: aphia -> (3.2 MFPI, 3.3 MFPI, uFiSh item, level, grade).
+CHANGED_33 = {506159: (None, 60.1, "093015", "species", "measured"), 397082: (None, 48.0, "093001", "genus", "proxy"),
+              254538: (None, 28.9, "091053", "species", "measured"), 1666974: (None, 45.9, "093035", "family", "proxy")}
+
+
+class VerifiedPilot33Tests(unittest.TestCase):
+    """Public method: 3.2 plus uFiSh substitutes for missing RDA components and five reviewed aquaculture records."""
+
+    def setUp(self):
+        self.evidence, *self.rest = load_inputs()
+        self.report = build(self.evidence, *self.rest)
+        self.v32 = build(*load_inputs(config=V32))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v32)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.3", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_mfpi_moves_and_the_cohorts_stay_fixed(self):
+        self.assertEqual(self.report["comparison_cohorts"], self.v32["comparison_cohorts"])
+        changed = {}
+        for aphia, s in self.new.items():
+            before = self.old[aphia]
+            for axis in ("MBPI", "MCUI", "BBVI"):
+                self.assertEqual(s["scores"][axis], before["scores"][axis], (aphia, axis))
+            if s["scores"]["MFPI"] != before["scores"]["MFPI"]:
+                subs = [(n["substitute"]["food_item_id"], n["substitute"]["taxon_level"], n["grade"])
+                        for n in s["food_trace"]["nutrients"].values() if n.get("substitute")]
+                changed[aphia] = (before["scores"]["MFPI"], s["scores"]["MFPI"], *subs[0])
+                self.assertEqual(len(subs), 1, aphia)
+        self.assertEqual(changed, CHANGED_33)
+
+    def test_substitutes_follow_the_rule(self):
+        rule = self.report["method"]["nutrition"]["substitutes"]
+        items = {i["food_item_id"]: i for i in self.evidence["mfpi_substitutes"]["items"]}
+        for aphia, s in self.new.items():
+            f = s["food_trace"]
+            subs = {k: n for k, n in (f.get("nutrients") or {}).items() if n.get("substitute")}
+            self.assertEqual(bool(subs), bool(f.get("outside_cohort")), aphia)
+            if not subs:
+                continue
+            self.assertNotIn(f["source_food_item_id"], f["cohort_food_item_ids"], aphia)   # never joins the cohort
+            self.assertLess(len(subs), len(f["nutrients"]), aphia)                          # at least one own RDA value
+            for name, n in subs.items():
+                src = items[n["substitute"]["food_item_id"]]
+                level = src["matches"][str(aphia)]
+                self.assertEqual((n["value"], n["substitute"]["taxon_level"], n["substitute"]["part"] in rule["parts"]),
+                                 (src["components"][name]["value"], level, True), aphia)
+                self.assertEqual(n["grade"], rule["species_grade_by_doc"].get(src["components"][name]["doc"], "proxy")
+                                 if level == "species" else "proxy", aphia)
+                self.assertEqual(n["substitute"]["label"], rule["labels"][level])
+                # ranked against the cohort plus itself
+                self.assertEqual([p["food_item_id"] for p in n["peer_values"]], f["cohort_food_item_ids"] + [f["source_food_item_id"]])
+
+    def test_aquaculture_records_are_reviewed_and_cod_is_not_feasible(self):
+        added = [r for r in self.evidence["food_support"] if r["source_id"] in self.evidence["sources"] and r.get("quote")]
+        self.assertEqual({r["aphia_id"]: r["feasible"] for r in added},
+                         {506159: True, 504357: True, 397082: True, 1666974: True, 254538: False})
+        self.assertEqual(self.new[254538]["food_trace"]["components"]["aquaculture_contribution"], 0)
+
+    def test_withheld_reason_names_what_still_holds_the_score(self):
+        # a substitute that fills every missing component leaves the next blocker as the reason; otherwise the component stays missing
+        for aphia, s in self.new.items():
+            search = s["food_trace"].get("substitute_search")
+            if s["scores"]["MFPI"] is not None or not search:
+                continue
+            expected = "component_missing_in_source" if not all(search.values()) else s["withheld_reasons"]["MFPI"]
+            self.assertEqual(s["withheld_reasons"]["MFPI"], expected, aphia)
+            self.assertNotEqual(s["withheld_reasons"]["MFPI"] == "component_missing_in_source", all(search.values()), aphia)
+        self.assertEqual((self.new[342067]["food_trace"]["substitute_search"], self.new[342067]["withheld_reasons"]["MFPI"]),
+                         ({"zinc_mg": "093033"}, "aquaculture_method_unverified"))  # 살오징어: zinc found, no aquaculture record
+        self.assertEqual(self.old[342067]["withheld_reasons"]["MFPI"], "component_missing_in_source")
+
+    def test_substituted_components_do_not_count_as_own_information(self):
+        # information sufficiency counts the species' own RDA values; a substitute enables the score but fills no gap
+        for aphia, s in self.new.items():
+            subs = [k for k, n in (s["food_trace"].get("nutrients") or {}).items() if n.get("substitute")]
+            for k in subs:
+                self.assertNotIn(k, s["food_trace"]["sufficiency"]["present"], aphia)
+        self.assertTrue(self.new[254538]["priority_survey"])  # 대구: MFPI 28.9 from a substituted zinc, still low information
 
 
 if __name__ == "__main__":

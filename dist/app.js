@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -130,6 +130,9 @@ function verifiedFoodValid(a,report){
   const f=a.food_trace, config=report.method?.nutrition, sources=report.sources||{};
   // The trace must name one fixed primary cohort, and its size must match the published cohort.
   const cohort=(report.comparison_cohorts||[]).find(c=>c.cohort_id===f?.cohort_id&&c.role==='primary');
+  // 3.3: a species whose RDA row misses a component is ranked against the fixed cohort plus itself and never joins it.
+  const sub=config?.substitutes, outside=f?.outside_cohort===true;
+  if(outside&&!sub)return false;
   if(!f||!config||!cohort||!Number.isInteger(cohort.size)||cohort.size<3||f.cohort_species!==cohort.size||
      !['nutrient_weight','edible_fraction_weight','aquaculture_weight'].every(k=>
        Number.isFinite(config[k])&&config[k]>=0&&config[k]<=1)||
@@ -137,18 +140,22 @@ function verifiedFoodValid(a,report){
      !Array.isArray(cohort.food_item_ids)||!Array.isArray(f.cohort_food_item_ids)||
      f.cohort_food_item_ids.length!==cohort.size||
      f.cohort_food_item_ids.some((id,i)=>id!==cohort.food_item_ids[i])||
-     !f.cohort_food_item_ids.includes(f.source_food_item_id)||
+     f.cohort_food_item_ids.includes(f.source_food_item_id)===outside||
      f.sample_state!=='raw'||f.basis!=='100 g edible portion'||!sources[f.source_id]||
      f.edible_fraction?.reviewed!==true||f.aquaculture?.reviewed!==true||
      typeof f.aquaculture.feasible!=='boolean')return false;
-  let nutrient=0;
+  let nutrient=0, own=0;
+  const peers=outside?[...cohort.food_item_ids,f.source_food_item_id]:cohort.food_item_ids;
   for(const [name,unit] of Object.entries(config.components||{})){
-    const n=f.nutrients?.[name];
+    const n=f.nutrients?.[name], s=n?.substitute;
+    if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||!sub.parts?.includes(s.part)||s.label!==sub.labels?.[s.taxon_level]||
+       !sources[s.source_id]||n.grade!==(s.taxon_level==='species'?sub.species_grade_by_doc?.[s.doc_code]||'proxy':'proxy')))return false;
+    own+=!s;
     if(!n||!Number.isFinite(n.value)||n.value<0||n.unit!==unit||
         !Number.isFinite(n.percentile)||!Number.isFinite(n.percentile_unrounded)||n.percentile_unrounded<0||n.percentile_unrounded>100||
         !Number.isFinite(n.evidence_factor)||!n.method||!Array.isArray(n.peer_values)||
-        n.peer_values.length!==f.cohort_species||!n.peer_values.every((p,i)=>
-          p?.food_item_id===cohort.food_item_ids[i]&&Number.isFinite(p.value)&&p.value>=0)||
+        n.peer_values.length!==peers.length||!n.peer_values.every((p,i)=>
+          p?.food_item_id===peers[i]&&Number.isFinite(p.value)&&p.value>=0)||
         n.peer_values.find(p=>p.food_item_id===f.source_food_item_id)?.value!==n.value||
         n.evidence_factor!==config.grade_factors?.[n.grade])return false;
     const values=n.peer_values.map(p=>p.value);
@@ -157,6 +164,7 @@ function verifiedFoodValid(a,report){
        Math.abs(n.percentile-Math.round(rank*100)/100)>1e-8)return false;
     nutrient+=n.percentile_unrounded*n.evidence_factor;
   }
+  if(!own)return false;  // a score never rests only on other foods' values
   const fraction=f.edible_fraction;
   if(!Number.isFinite(fraction.value)||fraction.value<0||fraction.value>1||!sources[fraction.source_id]||
      !sources[f.aquaculture.source_id])return false;
@@ -645,14 +653,18 @@ function verifiedFoodDetail(s){
       `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`).join('');
   const raw=Object.entries(f.nutrients||{}).map(([key,n])=>
     `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(n.value)} ${esc(n.unit)} / 100 g 가식부</b>`+
-    `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`).join('');
+    `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`+
+    (n.substitute?`<p class="fine"><b>${esc(n.substitute.label)}</b>: 이 종의 RDA 행에 값이 없어 FAO/INFOODS uFiSh1.0 ${esc(n.substitute.food_item_id)} `+
+      `${esc(n.substitute.food_name)}(${esc(n.substitute.taxon_label)}, 섭취 부위 ${esc(n.substitute.part)}, 문서 코드 ${esc(n.substitute.doc_code||'없음')}, n ${esc(n.substitute.n??'미기재')})의 값을 썼습니다. `+
+      `${verifiedSource(n.substitute.source_id,'uFiSh ↗')}</p>`:'')).join('');
+  const outside=f.outside_cohort?`<p class="fine">대체치가 있어 이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
   const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
   const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);
-  return `<p>${esc(f.reported_food_name)} (${esc(f.english_name)}) · 식품코드 ${esc(f.source_food_item_id)} · 출처 표기 ${esc(f.row_source)} · ${verifiedSource(f.source_id,'원자료 ↗')}</p>`+raw+
+  return `<p>${esc(f.reported_food_name)} (${esc(f.english_name)}) · 식품코드 ${esc(f.source_food_item_id)} · 출처 표기 ${esc(f.row_source)} · ${verifiedSource(f.source_id,'원자료 ↗')}</p>`+raw+outside+
     `<p><b>점수 구성</b> 영양값 ${esc(c.nutrient_value_contribution)} − 자료 신뢰도 감점 ${esc(c.evidence_grade_deduction)} + 가식부 ${esc(c.edible_fraction_contribution)} + 양식 ${esc(c.aquaculture_contribution)} = ${esc(s.assessment.scores.MFPI)}</p>`+
     `<p class="fine">고정 비교집단 ${esc(f.cohort_id)} · ${esc(f.cohort_species)}개 식품${cohort?' ('+esc(cohort.foods.join(', '))+')':''}. ${esc(f.cohort_criteria)} 비교집단이 다른 종의 MFPI끼리는 비교하지 않습니다.</p>`+
     `<p>가식부 ${esc((e.value*100).toFixed(1))}% · ${esc(e.method)} · ${verifiedSource(e.source_id,'원자료 ↗')}</p>`+
-    `<p>양식 방법: ${esc(q.method)}. 적용 범위: ${esc(q.region)} (${esc(q.year)}). 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
+    `<p>${q.feasible?'양식 방법':'양식 가능 근거 없음(양식 점수 0) · 확인한 시도'}: ${esc(q.method)}. 적용 범위: ${esc(q.region)} (${esc(q.year)}). 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
     (f.yield_sensitivity||[]).map(y=>`<p class="fine">가식부 ${esc((y.fraction*100).toFixed(2))}% (${esc(y.region||'')}) 대입 시 MFPI ${esc(Number(y.mfpi_at_same_nutrients).toFixed(1))} · ${verifiedSource(y.source_id,'독립 자료 ↗')}</p>`).join('')+
     (f.weight_sensitivity||[]).map(w=>`<p class="fine">가중치 ${w.nutrient_weight}/${w.edible_fraction_weight}/${w.aquaculture_weight} 적용 시 MFPI ${esc(Number(w.mfpi).toFixed(1))}</p>`).join('')+
     (f.grade_sensitivity?`<p class="fine">신뢰도 계수를 모두 1로 두면 MFPI ${esc(Number(f.grade_sensitivity.all_grade_factors_1).toFixed(1))}</p>`:'')+

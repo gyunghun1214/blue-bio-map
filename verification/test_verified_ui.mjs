@@ -37,9 +37,15 @@ let html=ctx.renderScores(by(836033));
 for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','교차 점검','65.6','검증 전 시범 지표','비교하지 않습니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
 assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>80\.9 · 검증 전 시범 지표<\/b>/);
-html=ctx.renderScores(by(506159));
+// 3.3 fills 홍합 zinc from uFiSh; 톳 (a seaweed; uFiSh covers fish and shellfish only) keeps a blank zinc and the missing-component reason
+html=ctx.renderScores(by(494972));
 assert.match(html,/아연 결측\(빈칸\)/,'blank zinc shown as missing, not zero');
 assert.match(html,/빈칸은 0이 아니라 결측/);
+// 살오징어: uFiSh fills its zinc, so the RDA blank is still shown but the missing aquaculture record is what holds MFPI
+html=ctx.renderScores(by(342067));
+assert.match(html,/아연 결측\(빈칸\)/,'the RDA blank is still shown as missing');
+assert.match(html,/지역·시기·방법이 확인된 양식 근거가 부족합니다/);
+assert.doesNotMatch(html,/필수 성분\(단백질·철·아연\) 중 일부가 비어 있습니다/);
 html=ctx.renderScores(by(241776));
 for(const text of ['EN A2bd','2025-09-30','EN -&gt; 80','IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료','이전 평가'])
   assert.ok(html.includes(text),`missing conservation fact: ${text}`);
@@ -105,7 +111,8 @@ await ctx.attach(published);
 const stages={
   836033:['verified','linked','calculated','calculated','calculated'],
   // 3.1: the ChEMBL stratum gives mussel, hijiki and sea squirt a single-paper MBPI (BBVI withheld).
-  506159:['verified','linked','linked','calculated','calculated'],
+  // 3.3: mussel MFPI is calculated with its species-level uFiSh zinc (the RDA row leaves zinc blank).
+  506159:['verified','linked','calculated','calculated','calculated'],
   494972:['verified','linked','linked','calculated','unavailable'],
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
@@ -153,7 +160,9 @@ assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/>65\.5<small>검증 전 시범 지표/);
 assert.doesNotMatch(dom.comparison.innerHTML,/해조류 3개 식품/,'no seaweed MFPI on page 2');
-assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>필수 성분 결측 · 보기/,'unscored species stay withheld, not zero');
+// 3.3: 홍합 zinc comes from uFiSh, so the withheld example is 톳 (a seaweed; uFiSh covers fish and shellfish only).
+assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>필수 성분 결측 · 보기/,'unscored species stay withheld, not zero');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.1<small>검증 전 시범 지표/,'substituted zinc gives a scored MFPI');
 dom['comparison-next'].click();
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
 dom['comparison-prev'].click();

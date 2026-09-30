@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.2.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.3.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -192,6 +192,29 @@ def mfpi(row: dict, cohort: list[dict], fraction: dict, aqua: dict, settings: di
     return score, {"nutrients": nutrients, "components": parts, "weights": weights}
 
 
+def substitute(aphia: int, name: str, evidence: dict, settings: dict) -> dict | None:
+    """verified-pilot-3.3: a component missing from a species' RDA row, taken from the closest uFiSh raw item of the
+    same consumed part: species (measured > calculated) > same genus > same family (proxy). Never a pooled entry above
+    family level (scripts/collect_mfpi_substitutes.py). The relative's value is labelled as a substitute on screen."""
+    rule = settings["substitutes"]
+    found = []
+    for item in evidence["mfpi_substitutes"]["items"]:
+        level, c = item["matches"].get(str(aphia)), item["components"][name]
+        if level in rule["levels"] and item["part"] in rule["parts"] and c["value"] is not None:
+            grade = rule["species_grade_by_doc"].get(c["doc"], "proxy") if level == "species" else "proxy"
+            found.append(((rule["levels"].index(level), -settings["grade_factors"][grade], -(c["n"] or 0), item["food_item_id"]),
+                          item, level, grade))
+    if not found:
+        return None
+    _, item, level, grade = min(found, key=lambda x: x[0])
+    c = item["components"][name]
+    return {"value": c["value"], "unit": settings["components"][name], "grade": grade,
+            "method": f"uFiSh1.0 {item['food_item_id']} {item['food_name']}: {level}-level value, documentation '{c['doc']}', n {c['n'] or 'not given'}",
+            "substitute": {"food_item_id": item["food_item_id"], "food_name": item["food_name"], "taxon_label": item["taxon_label"],
+                           "taxon_level": level, "part": item["part"], "doc_code": c["doc"], "n": c["n"],
+                           "source_id": rule["source_id"], "label": rule["labels"][level]}}
+
+
 def support_for(aphia: int, evidence: dict, kind: str) -> list[dict]:
     return [r for r in evidence.get("food_support", []) if r.get("aphia_id") == aphia and r.get("kind") == kind]
 
@@ -230,16 +253,36 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
     trace["sufficiency"] = {"required": list(have), "present": [k for k, ok in have.items() if ok],
                             "ratio": round(sum(have.values()) / len(have), 2)}
 
+    def completed(cohort: dict) -> dict | None:
+        """3.3: the species' own RDA row of the cohort's group with its missing components substituted. It is ranked
+        against the fixed cohort plus itself (as cohort members are) and never joins the cohort."""
+        group = cohort["spec"].get("rule", {}).get("group")
+        for r in sorted((r for r in rows.values() if r["aphia_id"] == aphia and r["group"] == group), key=lambda r: r["food_item_id"]):
+            missing = [k for k, n in r["nutrients"].items() if n is None]
+            if len(missing) == len(r["nutrients"]):  # a score never rests only on other foods' values
+                continue
+            filled = {k: substitute(aphia, k, evidence, settings) for k in missing}
+            trace.setdefault("substitute_search", {}).update({k: v and v["substitute"]["food_item_id"] for k, v in filled.items()})
+            if all(filled.values()):
+                return {**r, "nutrients": {**r["nutrients"], **filled}}
+        return None
+
     def scored(cohort_id: str, cohort: dict):
         row = next((r for r in cohort["rows"] if r.get("aphia_id") == aphia), None)
+        peers = cohort["rows"]
+        if not row and settings.get("substitutes") and "rule" in cohort["spec"]:
+            row = completed(cohort)
+            peers = cohort["rows"] + [row] if row else peers
         if not row or not aqua:
             return None
         fraction = row.get("edible_fraction") or next((r for r in support_for(aphia, evidence, "edible_fraction")
                                                        if r.get("reviewed") is True), None)
         if not fraction:
             return None
-        score, detail = mfpi(row, cohort["rows"], fraction, aqua, settings)
-        return score, {"cohort_id": cohort_id, "cohort_species": len(cohort["rows"]), "row": row, "fraction": fraction, **detail}
+        score, detail = mfpi(row, peers, fraction, aqua, settings)
+        extra = ({"outside_cohort": True, "substituted_components": [k for k, n in row["nutrients"].items() if n.get("substitute")]}
+                 if peers is not cohort["rows"] else {})
+        return score, {"cohort_id": cohort_id, "cohort_species": len(cohort["rows"]), "row": row, "fraction": fraction, **detail, **extra}
 
     for cid, cohort in cross.items():
         hit = scored(cid, cohort)
@@ -265,9 +308,10 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                                        "region": r.get("region"),
                                        "mfpi_at_same_nutrients": round1(score + 100 * settings["edible_fraction_weight"] * (r["value"] - fraction["value"]))}
                                       for r in others]
-        trace["weight_sensitivity"] = [{**alt, "mfpi": round1(mfpi(row, cohort["rows"], fraction, aqua, settings, weights=alt)[0])}
+        peers = cohort["rows"] + [row] if d.get("outside_cohort") else cohort["rows"]
+        trace["weight_sensitivity"] = [{**alt, "mfpi": round1(mfpi(row, peers, fraction, aqua, settings, weights=alt)[0])}
                                        for alt in config["sensitivity"]["mfpi_weights"]]
-        trace["grade_sensitivity"] = {"all_grade_factors_1": round1(mfpi(row, cohort["rows"], fraction, aqua, settings,
+        trace["grade_sensitivity"] = {"all_grade_factors_1": round1(mfpi(row, peers, fraction, aqua, settings,
                                                                          factors={k: 1.0 for k in settings["grade_factors"]})[0])}
         step = round(100 / len(cohort["rows"]), 1)
         trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + [
@@ -279,7 +323,9 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         return None, trace, "comparable_nutrition_missing"
     if not linked:
         return None, trace, "food_row_not_species_specific"
-    if all(o["missing"] for o in linked):
+    # 3.3: once substitutes fill every missing component, the missing component is no longer what holds the score
+    filled = bool(trace.get("substitute_search")) and all(trace["substitute_search"].values())
+    if all(o["missing"] for o in linked) and not filled:
         return None, trace, "component_missing_in_source"
     if not aqua:
         return None, trace, "aquaculture_method_unverified"
@@ -924,6 +970,20 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         snap["link_review"] = review["links"]
         evidence = {**evidence, "chembl_links": snap, "inputs_as_of": max(snap["snapshot_date"], review["reviewed_on"]),
                     "sources": {**evidence["sources"], **snap["sources"], **papers["sources"]}}
+    sub = cfg["nutrition"].get("substitutes")
+    if sub:  # verified-pilot-3.3: uFiSh substitutes (scripts/collect_mfpi_substitutes.py) and reviewed aquaculture records
+        snap = read(ROOT / sub["snapshot"])
+        aqua = read(ROOT / sub["aquaculture_supplement"])
+        for extra, what in ((snap, "uFiSh substitute snapshot"), (aqua, "aquaculture supplement")):
+            require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], f"{what} is older than evidence")
+            require(not set(extra["sources"]) & set(evidence["sources"]), f"{what} redefines a source")
+        require(set(snap["sources"]) == {sub["source_id"]}, "uFiSh substitute source differs from the rule")
+        have = {r["aphia_id"] for r in evidence["food_support"] if r.get("kind") == "aquaculture"}
+        require(all(r["kind"] == "aquaculture" and r["aphia_id"] not in have for r in aqua["food_support"]),
+                "aquaculture supplement repeats a species or adds another kind")
+        evidence = {**evidence, "mfpi_substitutes": snap, "food_support": evidence["food_support"] + aqua["food_support"],
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], aqua["snapshot_date"]),
+                    "sources": {**evidence["sources"], **snap["sources"], **aqua["sources"]}}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
