@@ -5,6 +5,7 @@ import math
 import sys
 import tempfile
 import unittest
+from datetime import date, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -145,7 +146,19 @@ class SnapshotGuards(unittest.TestCase):
         return str(caught.exception)
 
     def test_date_mismatch(self):
-        self.assertIn("differs from evidence", self.attempt(snapshot_date="2026-09-28"))
+        self.assertIn("older than evidence", self.attempt(snapshot_date="2000-01-01"))
+
+    def test_paper_record_must_not_postdate_the_snapshot(self):
+        papers = json.loads((ROOT / CONFIG["chembl_bioactivity"]["paper_links"]).read_text(encoding="utf-8"))
+        before = str(date.fromisoformat(papers["snapshot_date"]) - timedelta(days=1))
+        self.assertIn("must date between", self.attempt(snapshot_date=before))
+
+    def test_original_paper_links_only_for_species_without_p703(self):
+        papers = json.loads((ROOT / CONFIG["chembl_bioactivity"]["paper_links"]).read_text(encoding="utf-8"))
+        aphia = papers["links"][0]["aphia_id"]
+        species = [{"aphia_id": aphia, "links": [{"statements": [{"taxon_qid": "Q1"}]}]}]
+        self.assertIn("only for species without a P703 link",
+                      self.attempt(snapshot_date=papers["snapshot_date"], species=species))
 
     def test_source_redefinition(self):
         evidence = json.loads((ROOT / "research" / "verified-indices" / "evidence.json").read_text(encoding="utf-8"))
@@ -156,6 +169,33 @@ class SnapshotGuards(unittest.TestCase):
     def test_source_list_mismatch(self):
         sources = {k: {} for k in CONFIG["chembl_bioactivity"]["source_ids"][1:]}
         self.assertIn("source list differs", self.attempt(sources=sources))
+
+
+def reviewed(*entries):
+    snap = snapshot()
+    snap["link_review"] = [{"aphia_id": a, "inchikey": ik, "dois": dois, "decision": d, "compound_name": ik,
+                            "compound_chembl_id": None, "class": cls, "reason": "synthetic"} for a, ik, dois, d, cls in entries]
+    return chembl_items({"chembl_links": snap}, CONFIG)
+
+
+class LinkReview(unittest.TestCase):
+    """mbpi-link-review: a rejected link never scores, a stale review stops the build, an unreviewed link is marked."""
+
+    def test_rejected_link_is_removed_and_listed(self):
+        items, info = reviewed((1, "IK1", ["10.1/a", "10.1/b"], "reject", "contaminant"), (2, "IK4", ["10.1/c"], "accept", None))
+        self.assertEqual([(a, i["compound_id"]) for a, i in items], [(2, "P4")])
+        self.assertEqual(info["species"][1]["counts"]["rejected_by_review"], 1)
+        self.assertEqual([(r["inchikey"], r["class"]) for r in info["species"][1]["rejected_links"]], [("IK1", "contaminant")])
+        self.assertEqual(info["species"][1]["counts"]["scored_compounds"], 0)
+
+    def test_stale_review_stops_the_build(self):
+        with self.assertRaisesRegex(ValueError, "link review is stale"):
+            reviewed((1, "IK1", ["10.1/a"], "accept", None))
+
+    def test_unreviewed_link_is_marked(self):
+        items, _ = reviewed((1, "IK1", ["10.1/a", "10.1/b"], "accept", None))
+        self.assertEqual({a: i["link_review"] for a, i in items}, {1: "accepted", 2: "not_reviewed"})
+        self.assertEqual({i["evidence_level"] for _, i in items}, {2})
 
 
 if __name__ == "__main__":

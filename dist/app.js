@@ -205,7 +205,8 @@ function verifiedBioValid(a,report){
     Array.isArray(x.document_chembl_ids)&&x.document_chembl_ids.length>0&&Number.isInteger(x.cohort_records)&&x.cohort_records>=rule3.minimum_cohort_records&&
     x.link_factor===docFactor(mbpiDois(x).size)&&x.activity_factor===docFactor(new Set(x.document_chembl_ids).size)&&
     Math.abs(x.link_factor*x.activity_factor-x.evidence_factor)<1e-9&&
-    x.independent_sources===Math.min(mbpiDois(x).size,new Set(x.document_chembl_ids).size)&&rule3.source_ids.every(id=>a.source_ids.includes(id));
+    x.independent_sources===Math.min(mbpiDois(x).size,new Set(x.document_chembl_ids).size)&&rule3.source_ids.every(id=>a.source_ids.includes(id))&&
+    (!rule3.link_review||x.link_review==='accepted');
   if(items.some(x=>!common(x)||!(peptide(x)||compound(x)||chembl(x))||!replicated(x)))return false;
   // Peptides and reviewed compounds never share a trace; 3.1 adds the ChEMBL stratum beside either, and MBPI is the max over strata.
   if(new Set(items.filter(x=>x.stratum_kind!=='chembl').map(x=>x.stratum_kind||'compound')).size>1)return false;
@@ -692,7 +693,7 @@ function verifiedBioTrace(s){
   const independence=ch?`종 연결 논문 ${dois.length}편 · ChEMBL 문서 ${esc(new Set(best.document_chembl_ids).size)}건 → 약한 쪽 ${esc(best.independent_sources)}편`:
     reps.length?`DOI ${dois.length}편(기원 ${origin.length} + 효능 재현 ${reps.length})`:`원논문 ${dois.length}편`;
   const single=mbpiSources(best)<2;
-  const chemblLimit=ch?`${esc(best.label)}. 종→화합물 연결은 위키데이터 P703(LOTUS 자동 추출) 또는 검수한 원논문이며 함량·추출 조건은 알 수 없습니다. 분류군 ${esc(data.assessmentInfo?.chemblCommonLimit)}개를 넘는 흔한 대사물과 승인 약물(max_phase 4) 연결은 뺐습니다. `:'';
+  const chemblLimit=ch?`${esc(best.label)}. 종→화합물 연결은 위키데이터 P703(LOTUS 자동 추출) 또는 검수한 원논문이며 함량·추출 조건은 알 수 없습니다. 분류군 ${esc(data.assessmentInfo?.chemblCommonLimit)}개를 넘는 흔한 대사물과 승인 약물(max_phase 4) 연결은 뺐습니다. 분류군 수는 위키데이터에 정리된 문헌 양이라 흔한 물질을 다 거르지 못하므로, 점수에 쓰는 연결은 원문 제목·초록과 PubChem 기록으로 검수했습니다. `:'';
   return `<h4>점수 근거 · ${esc(items.length)}개 측정값${items.length>SHOWN?` (상위 ${SHOWN}개 표시, 전체는 공개 JSON)`:''}</h4>${rows}`+
     `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${independence}`+
     `${single&&!ch?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
@@ -702,6 +703,7 @@ function verifiedBioTrace(s){
 }
 // Paper values are stored in µM; values of 1000 µM and above are also shown in mM as the paper reports them.
 const peptideValue = r => r.unit==='uM'?(r.value>=1000?`${r.value/1000} mM (${r.value} µM)`:`${r.value} µM`):`${r.value} ${r.unit||''}`;
+const REVIEW_CLASS={structure_mismatch:'구조 불일치',contaminant:'오염물',not_tissue:'종 조직 아님',ubiquitous_metabolite:'보편 대사물'};
 function verifiedBioDetail(s){
   const items=s.assessment.bioactivity_partial||[];
   const trace=verifiedBioTrace(s);
@@ -728,12 +730,15 @@ function verifiedBioDetail(s){
       `<p class="fine">${verifiedSource(r.source_id,esc(src?.provider||'원논문')+' ↗')} · DOI ${esc(r.original_paper_doi)} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}. `+
       '같은 조건의 공개 비교집단이 없어 백분위·점수를 내지 않습니다. MBPI·BBVI에 쓰지 않습니다.</p>';}).join('');
   const rawHtml=raw?'<h4>원값·출처 · 점수 미사용</h4>'+raw:'';
-  if(trace)return trace+rawHtml+partial;
-  // 3.1: what the automated species -> compound -> ChEMBL chain found, and the original-paper search for species without a P703 link.
+  // 3.1 link review (mbpi-link-review-*.json): rejected species -> compound links, shown whether or not the species has a score.
   const cl=s.assessment.chembl_links, n=cl?.counts||{}, ps=cl?.paper_search, rule3=data.assessmentInfo?.method?.chembl_bioactivity;
-  const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${esc(n.linked||0)}건 · 참고문헌 DOI 있음 ${esc(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${esc(n.common_metabolite||0)}건 · 승인 약물 제외 ${esc(n.approved_drug||0)}건 → ChEMBL 비교 코호트(활성 기록 ${esc(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${esc(n.scored_compounds||0)}개.`+
+  const rej=cl?.rejected_links||[];
+  const rejected=rej.length?`<p class="fine">연결 검수 제외 ${esc(rej.length)}건: ${rej.map(r=>`${esc(r.compound_name)}(${esc(REVIEW_CLASS[r.class]||r.class)})`).join(' · ')}. 원문 제목·초록과 PubChem 기록으로 판단했고 어떤 점수에도 쓰지 않습니다.</p>`:'';
+  if(trace)return trace+rejected+rawHtml+partial;
+  // 3.1: what the automated species -> compound -> ChEMBL chain found, and the original-paper search for species without a P703 link.
+  const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${esc(n.linked||0)}건 · 참고문헌 DOI 있음 ${esc(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${esc(n.common_metabolite||0)}건 · 승인 약물 제외 ${esc(n.approved_drug||0)}건 · 검수 제외 ${esc(n.rejected_by_review||0)}건 → ChEMBL 비교 코호트(활성 기록 ${esc(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${esc(n.scored_compounds||0)}개.`+
     (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${esc(ps.searched_on)}, Europe PMC ${esc(ps.europepmc_hits)}건 중 ${esc(ps.papers_screened)}건 선별, 인정 연결 ${esc(ps.accepted_links)}건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
-  return '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>'+rawHtml+partial+linkChain+
+  return '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>'+rawHtml+partial+linkChain+rejected+
     (!cl&&s.assessment.candidate_label&&!items.length?'<p class="fine">조사 후보 검색 범위: Wikidata/LOTUS 기원종 기록과 ChEMBL 37 정량값(2026-09-26)에서 미발견. PubChem·CMNPD·문헌 전수는 아직 조사하지 않았습니다.</p>':'');
 }
 function verifiedNationalFact(s){

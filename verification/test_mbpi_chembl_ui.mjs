@@ -35,6 +35,7 @@ assert.equal(broken((a,x)=>{x.cohort_records=rule.minimum_cohort_records-1;}),fa
 assert.equal(broken((a,x)=>{x.chembl_stratum='admet';}),false,'unknown stratum');
 assert.equal(broken((a,x)=>{x.activity_ids=[];}),false,'no activity rows');
 assert.equal(broken((a,x)=>{x.document_chembl_ids=[];}),false,'no ChEMBL document');
+assert.equal(broken((a,x)=>{x.link_review='not_reviewed';}),false,'a primary item needs an accepted link review');
 assert.equal(broken(a=>{a.source_ids=a.source_ids.filter(id=>id!==rule.source_ids[0]);}),false,'ChEMBL source missing from the species');
 const noRule=structuredClone(original);delete noRule.method.chembl_bioactivity;
 assert.equal(broken(()=>{},noRule),false,'a ChEMBL row without the published rule');
@@ -64,6 +65,13 @@ const empty=rows.find(a=>a.chembl_links&&!(a.bioactivity_trace||[]).length&&a.ch
 if(empty){
   const html=ctx.detail({assessment:empty});
   assert.ok(html.includes('Europe PMC')&&html.includes(`인정 연결 ${empty.chembl_links.paper_search.accepted_links}건`),'paper search shown');
+  assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
+}
+// Links rejected by the review are listed with their class, for species with and without a score.
+for(const a of rows.filter(a=>a.chembl_links?.rejected_links?.length)){
+  const html=ctx.detail({assessment:a});
+  assert.ok(html.includes(`연결 검수 제외 ${a.chembl_links.rejected_links.length}건`),`${a.korean_name} lists rejected links`);
+  assert.ok(!a.chembl_links.rejected_links.some(r=>html.includes(`(${r.class})`)),`${a.korean_name} class shown in Korean`);
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
 console.log(`ok ChEMBL stratum UI (${withChembl.length} species)`);

@@ -35,10 +35,12 @@ WDAPI = "https://www.wikidata.org/w/api.php"
 CHEMBL = "https://www.ebi.ac.uk/chembl/api/data/"
 PUG = "https://pubchem.ncbi.nlm.nih.gov/rest/"
 CELLOSAURUS = "https://api.cellosaurus.org/cell-line/"
+# deprecated P703 statements are left out, as wdt:P703 in COUNT_QUERY leaves them out (none on the 21 linked taxa, 2026-09-30)
 LINK_QUERY = """SELECT ?taxon ?name ?c ?ik ?st ?ref WHERE {
   VALUES ?name { %s }
   ?taxon wdt:P225 ?name .
-  OPTIONAL { ?c p:P703 ?st . ?st ps:P703 ?taxon . ?c wdt:P235 ?ik .
+  OPTIONAL { ?c p:P703 ?st . ?st ps:P703 ?taxon ; wikibase:rank ?rank . ?c wdt:P235 ?ik .
+             FILTER(?rank != wikibase:DeprecatedRank)
              OPTIONAL { ?st prov:wasDerivedFrom/pr:P248 ?ref } }
 }"""
 COUNT_QUERY = "SELECT ?c (COUNT(DISTINCT ?t) AS ?n) WHERE { VALUES ?c { %s } ?c wdt:P703 ?t } GROUP BY ?c"

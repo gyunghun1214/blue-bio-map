@@ -615,10 +615,10 @@ class VerifiedPilot23Tests(unittest.TestCase):
 
 # 3.1 adds ChEMBL MBPI to these species: aphia -> (2.3 MBPI, 3.1 MBPI, 2.3 BBVI, 3.1 BBVI).
 # Every new value rests on one linking paper, so each is a single-source reference value and BBVI stays withheld.
-CHANGED_31 = {250680: (None, 43.4, None, None), 494972: (None, 45.3, None, None), 506159: (None, 32.5, None, None),
-              377084: (None, 45.0, None, None), 494853: (None, 21.6, None, None), 145086: (None, 39.6, None, None),
-              231750: (None, 23.6, None, None), 393716: (None, 54.2, None, None), 504357: (None, 54.2, None, None),
-              127022: (None, 73.1, None, None)}
+# The link review (mbpi-link-review-2026-09-30.json) removed the contaminant, drug-metabolite and ubiquitous links,
+# so 다시마·바지락·큰가리비·피조개·고등어 have no ChEMBL item left and 멍게·홍합·청각 drop.
+CHANGED_31 = {250680: (None, 13.5, None, None), 494972: (None, 45.3, None, None), 506159: (None, 10.1, None, None),
+              494853: (None, 21.6, None, None), 145086: (None, 0.4, None, None)}
 
 
 
@@ -690,6 +690,25 @@ class VerifiedPilot31Tests(unittest.TestCase):
             self.assertEqual(s["mbpi_label"], "참고값(단일 논문)" if single else None, aphia)
             if single:
                 self.assertIsNone(s["scores"]["BBVI"], aphia)
+
+    def test_primary_item_needs_a_review_entry(self):
+        evidence, *rest = load_inputs()
+        top = max((i for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "chembl"),
+                  key=lambda i: i["adjusted"])
+        links = evidence["chembl_links"]
+        evidence = {**evidence, "chembl_links": {**links, "link_review": [r for r in links["link_review"]
+                                                                            if r["inchikey"] not in top["inchikeys"]]}}
+        with self.assertRaisesRegex(ValueError, "without a review entry"):
+            build(evidence, *rest)
+
+    def test_species_left_without_links_are_low_information(self):
+        # no P703 link and no accepted original-paper link, or every link rejected by the review
+        low = {a for a, s in self.new.items() if s["score_status"]["MBPI"] == "정보충분도 낮음"}
+        self.assertEqual(low, {397082, 836041, 413600, 219984, 281273, 275816, 274849, 276651, 1061762, 534443, 1666974})
+        for a in low:
+            counts = self.new[a]["chembl_links"]["counts"]
+            self.assertEqual(counts.get("linked", 0), counts.get("rejected_by_review", 0), a)
+            self.assertFalse(self.new[a]["bioactivity_partial"], a)
 
 
 if __name__ == "__main__":
