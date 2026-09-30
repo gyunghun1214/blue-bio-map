@@ -613,6 +613,7 @@ class VerifiedPilot23Tests(unittest.TestCase):
         self.assertIn("miyoshi_1991_zein", self.report["sources"])
 
 
+V31 = ROOT / "config" / "verified-indices-v3.1.json"  # superseded by 3.2 (matrix types and map layers); its rules stay tested
 # 3.1 adds ChEMBL MBPI to these species: aphia -> (2.3 MBPI, 3.1 MBPI, 2.3 BBVI, 3.1 BBVI).
 # Every new value rests on one linking paper, so each is a single-source reference value and BBVI stays withheld.
 # The link review (mbpi-link-review-2026-09-30.json) removed the contaminant, drug-metabolite and ubiquitous links,
@@ -621,20 +622,20 @@ CHANGED_31 = {250680: (None, 13.5, None, None), 494972: (None, 45.3, None, None)
               494853: (None, 21.6, None, None), 145086: (None, 0.4, None, None)}
 
 
-
-
 class VerifiedPilot31Tests(unittest.TestCase):
-    """Public method: 2.3 plus the automatic ChEMBL stratum (species -> P703 compound -> pChEMBL cohort percentile)."""
+    """Superseded by 3.2: 2.3 plus the automatic ChEMBL stratum (species -> P703 compound -> pChEMBL cohort percentile)."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V31))
         self.v23 = build(*load_inputs(config=V23))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.v23)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.1", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.1 report is archived as it was
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.1.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
 
     def test_only_mbpi_moves_and_the_changed_species_are_listed(self):
         self.assertEqual(set(self.new), set(self.old))
@@ -709,6 +710,63 @@ class VerifiedPilot31Tests(unittest.TestCase):
             counts = self.new[a]["chembl_links"]["counts"]
             self.assertEqual(counts.get("linked", 0), counts.get("rejected_by_review", 0), a)
             self.assertFalse(self.new[a]["bioactivity_partial"], a)
+
+
+class VerifiedPilot32Tests(unittest.TestCase):
+    """3.2 (diagram stages 4-5): information sufficiency and matrix labels only; every axis equals 3.1."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v31 = build(*load_inputs(config=V31))
+        self.rows = {s["aphia_id"]: s for s in self.report["species"] + self.report["candidate_species"]}
+        self.taxonomy = json.loads((ROOT / "research" / "verified-indices" / "taxonomy.json").read_text(encoding="utf-8"))["species"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.2", "provisional_unvalidated"))
+        self.assertEqual((ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"), render(self.report))
+        # the published 3.1 report is archived as it was
+        archived = (ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.1.json").read_text(encoding="utf-8")
+        self.assertEqual(render(self.v31), archived)
+
+    def test_no_axis_moves_from_31(self):
+        old = {s["aphia_id"]: s for s in self.v31["species"] + self.v31["candidate_species"]}
+        self.assertEqual(set(self.rows), set(old))
+        self.assertEqual(len(self.rows), 30)
+        view = lambda s: (s["scores"], s["withheld_reasons"], s.get("mbpi_label"), s["reference_combination"], s["sensitivity"],
+                          s["information_sufficiency"])
+        self.assertEqual({a: view(s) for a, s in self.rows.items()}, {a: view(s) for a, s in old.items()})
+
+    def test_priority_survey_is_the_sufficiency_label(self):
+        threshold = self.report["method"]["unexplored_threshold"]
+        for aphia, s in self.rows.items():
+            self.assertIs(s["priority_survey"], s["information_sufficiency"]["mean_ratio"] < threshold, aphia)
+        self.assertTrue(any(s["priority_survey"] for s in self.rows.values()))
+
+    def test_unexplored_candidate_needs_a_high_bbvi_relative(self):
+        rule = self.report["method"]["unexplored_candidates"]
+        self.assertEqual((rule["relative_min_bbvi"], rule["ranks"]), (50, ["genus", "family"]))
+        high = [s for s in self.rows.values() if s["scores"]["BBVI"] is not None and s["scores"]["BBVI"] >= rule["relative_min_bbvi"]]
+        for aphia, s in self.rows.items():
+            mine = self.taxonomy.get(str(aphia), {})
+            relatives = {rank: [r["scientific_name"] for r in high if r["aphia_id"] != aphia and mine.get(rank)
+                                and self.taxonomy.get(str(r["aphia_id"]), {}).get(rank) == mine[rank]] for rank in rule["ranks"]}
+            flag = s["unexplored_candidate"]
+            if not s["priority_survey"] or not any(relatives.values()):
+                self.assertIsNone(flag, aphia)
+                continue
+            rank = next(r for r in rule["ranks"] if relatives[r])  # genus first, else family
+            self.assertEqual((flag["rank"], flag["taxon"], flag["relatives"]), (rank, mine[rank], relatives[rank]), aphia)
+            self.assertIsNone(s["scores"]["BBVI"], aphia)  # the relative's score is never copied
+
+    def test_every_species_has_a_classification(self):
+        for aphia in self.rows:
+            self.assertTrue(self.taxonomy[str(aphia)].get("family"), aphia)
+
+    def test_matrix_rule_is_published(self):
+        rule = self.report["method"]["matrix"]
+        self.assertEqual((rule["bbvi_threshold"], rule["mcui_threshold"], rule["include_national_mcui"]), (50, 50, True))
+        self.assertEqual(sorted(rule["cell_colour_precedence"]), sorted(t["id"] for t in rule["types"].values()))
+        self.assertEqual(rule["cell_colour_precedence"][0], rule["types"]["low_bbvi_high_mcui"]["id"])  # conservation first
 
 
 if __name__ == "__main__":

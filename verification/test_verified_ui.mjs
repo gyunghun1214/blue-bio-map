@@ -301,13 +301,13 @@ oyster=await oysterOnly(withNational('national',35));
 assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','national score must equal its category mapping');
 oyster=await oysterOnly(withNational(undefined,10));
 assert.equal(ctx.state(oyster,'MCUI').kind,'technical_error','a national fact cannot pass as a global IUCN MCUI');
-// verified-pilot-2.1 on the real report: national MCUI stays out of the matrix; paper peptide values are raw, never scored.
+// verified-pilot-3.2 on the real report: a national MCUI enters the matrix only with all four axes (marked apart); paper peptide values are raw, never scored.
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 for(const s of original.species.filter(s=>s.mcui_basis==='national')){
   assert.equal(ctx.score(by(s.aphia_id),'MCUI'),10,`${s.korean_name}: national LC -> 10`);
   assert.equal(ctx.nationalMcui(by(s.aphia_id)),true);
-  assert.equal(ctx.assessedForMatrix(by(s.aphia_id)),false,`${s.korean_name}: national MCUI never enters the IUCN matrix`);
+  assert.equal(ctx.assessedForMatrix(by(s.aphia_id)),s.scores.BBVI!==null,`${s.korean_name}: national MCUI is placed only with a BBVI`);
 }
 // a national MCUI that stands in for an IUCN DD (갑오징어 1666974, DD 2009) must not claim the IUCN assessment is missing
 assert.equal(ctx.iucnGlobalNote(by(836033)),'IUCN 전 지구 평가 미확인');
