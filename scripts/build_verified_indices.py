@@ -716,15 +716,20 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                    "MCUI": conservation_reason,
                    "BBVI": None if bbvi is not None else "mbpi_single_source" if both else "requires_MFPI_and_MBPI"}
         c = conservation_trace or {}
-        c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
-                   c.get("category") in config["conservation"]["category_scores"],
-                   bool(c.get("current_status_check"))]
+        national_steps = mcui_basis == "national" and bool((config.get("unexplored_candidates") or {}).get("national_mcui_sufficiency"))
+        if national_steps:  # verified-pilot-3.2: the national assessment that gives the MCUI is the record counted
+            c_steps = [True, national["category"] in config["conservation"]["category_scores"],
+                       str(aphia) in config["national_red_list"].get("page_recheck", {}).get("rows", {})]
+        else:
+            c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
+                       c.get("category") in config["conservation"]["category_scores"],
+                       bool(c.get("current_status_check"))]
         sufficiency = {"MFPI": food_trace["sufficiency"], "MBPI":
                        {"required": ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"],
                         "best_record_steps": 4, "ratio": 1.0} if mbpi is not None else
                        max([bio_sufficiency(partial_bio)] + ([links["sufficiency"]] if links else []), key=lambda x: x["best_record_steps"]),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
-                                "ratio": round(sum(c_steps) / 3, 2)}}
+                                "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {})}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
         sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
                                         for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
@@ -810,12 +815,21 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         row["candidate_label"] = "조사 후보"  # a score never promotes a research candidate to the operating list
         research.append(row)
     rule = config.get("unexplored_candidates")  # verified-pilot-3.2: all 30 species, relatives with a high BBVI
+    if rule:
+        require(rule["relative_min_bbvi"] == config["matrix"]["bbvi_threshold"], "unexplored-candidate BBVI must be the matrix threshold")
+        reg = rule["source"]
+        require(reg["accessed"] == taxonomy.get("retrieved") and str(reg.get("url", "")).startswith("https://")
+                and all(reg.get(k) for k in ("provider", "version", "terms", "license")) and reg["id"] not in sources,
+                "taxonomy source registration must match taxonomy.json")
+        sources = {**sources, reg["id"]: {k: v for k, v in reg.items() if k != "id"}}
     pool = output + research if rule else output
     for s in pool:
         s["unexplored_candidate"] = unexplored_flag(s["aphia_id"], pool, taxonomy.get("species", {}), config["unexplored_threshold"],
                                                     rule and rule["relative_min_bbvi"])
         if rule:  # low information sufficiency is its own label, never a score
             s["priority_survey"] = s["information_sufficiency"]["mean_ratio"] < config["unexplored_threshold"]
+            if s["unexplored_candidate"]:
+                s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
                 "food_item_ids": [r["food_item_id"] for r in c["rows"]],
                 "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),

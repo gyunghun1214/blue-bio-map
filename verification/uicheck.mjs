@@ -209,7 +209,8 @@ try{
   check('Mode selector: plain names and a closed "why maps differ" disclosure',await evaluate("(()=>{const o=[...document.querySelectorAll('#collection option')].map(x=>x.textContent).join('|');const w=document.querySelector('.mode-why');return o.includes('공개 기준 적용 자료')&&o.includes('추가 수집 자료')&&!/검증 완료/.test(o)&&!!w&&!w.open&&w.textContent.includes('더 좁은 지역·기간과 별도 공개 기준')&&w.textContent.includes('CC BY-NC')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
   const unplacedN=expPub+expCand-placedInMatrix;
-  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplaced.includes(`정보 부족 · 후속조사 대상 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종)`)&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
+  // verified-pilot-3.2: renamed so it is not confused with the information-sufficiency label '우선 조사 대상'
+  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplaced.includes(`매트릭스 미배치 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종) (BBVI·MCUI 한 쌍 없음)`)&&unplaced.includes('우선 조사 대상’과는 다른 목록')&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   const pairs=await evaluate("(()=>{toggleSimulation(false);const li=[...document.querySelectorAll('#axis-pairs li')].map(x=>x.innerText);toggleSimulation(true);const hid=document.getElementById('axis-pairs').innerHTML==='';toggleSimulation(false);return {li,hid,intro:document.getElementById('axis-pairs').innerText}})()");
@@ -344,12 +345,20 @@ try{
   check('Map mode button → value: pressed state, value legend, cell panel, no effort layer, hash t=value',
     ms.mode==='value'&&ms.occ==='false'&&ms.val==='true'&&!ms.occLegend&&ms.valLegend&&ms.panel&&ms.panelText.includes('선택한 공개 격자')&&ms.panelText.includes('합산 점수·우선순위는 산출하지 않았습니다')&&ms.effortDisabled&&ms.effort===0&&ms.source.startsWith('활용 × 보전')&&/(^|&)t=value/.test(ms.hash.slice(1))&&ms.shapes>0,JSON.stringify(ms));
   // verified-pilot-3.2 (figure 5): legend in the figure's order, cells coloured by species type, sufficiency layers toggle apart
-  const layers=await evaluate(`(async()=>{const q=s=>document.querySelector(s),count=()=>document.querySelectorAll('#map path.leaflet-interactive').length,before=count(),box=q('#layer-priority');
-    box.checked=true;box.dispatchEvent(new Event('change'));const on=count();box.checked=false;box.dispatchEvent(new Event('change'));
-    return {before,on,off:count(),legend:[...q('#value-legend').querySelectorAll('[role=listitem]')].map(e=>e.textContent),judgment:q('#map-judgment').textContent,rule:q('#value-rule').textContent}})()`);
-  check('Value map (3.2): figure-5 legend, type-coloured cells, priority-survey layer toggles without recolouring',
+  // sufficiency markers are not interactive (the cell keeps the click), so count overlay layers rather than clickable paths
+  const layers=await evaluate(`(async()=>{const q=s=>document.querySelector(s),count=()=>overlay.getLayers().length,clickable=()=>document.querySelectorAll('#map path.leaflet-interactive').length,before=count(),hits=clickable(),box=q('#layer-priority');
+    box.checked=true;box.dispatchEvent(new Event('change'));const on=count(),hitsOn=clickable(),markers=overlay.getLayers().filter(l=>l instanceof L.CircleMarker);box.checked=false;box.dispatchEvent(new Event('change'));
+    return {before,on,off:count(),hits,hitsOn,markersInteractive:markers.some(l=>l.options.interactive!==false),markers:markers.length,legend:[...q('#value-legend').querySelectorAll('[role=listitem]')].map(e=>e.textContent),judgment:q('#map-judgment').textContent,rule:q('#value-rule').textContent,
+      pCount:q('#layer-priority-count').textContent,uCount:q('#layer-unexplored-count').textContent,noCell:q('#layer-nocell').textContent,legendText:q('#value-legend').innerText}})()`);
+  const rep=JSON.parse(fs.readFileSync(new URL('../dist/assessments.json',import.meta.url),'utf8')),flagged=[...rep.species,...rep.candidate_species];
+  const nP=flagged.filter(s=>s.priority_survey).length,nU=flagged.filter(s=>s.unexplored_candidate).length;
+  check('Value map (3.2): figure-5 legend, type-coloured cells, priority-survey layer toggles without recolouring or taking clicks',
     JSON.stringify(layers.legend)===JSON.stringify(['기초조사·관찰 대상','지속가능 활용 후보','보전 우선·모니터링','대체생산·배양 연구'])&&
-    layers.judgment.includes('종 유형으로 칠한 공개 격자')&&layers.rule.includes('50 이상이면 높음')&&layers.on>layers.before&&layers.off===layers.before,JSON.stringify(layers));
+    layers.judgment.includes('종 유형으로 칠한 공개 격자')&&layers.rule.includes('50 이상이면 높음')&&layers.rule.includes('소수 한 자리')&&layers.rule.includes('50% 미만')&&
+    layers.on>layers.before&&layers.off===layers.before&&layers.markers>0&&!layers.markersInteractive&&layers.hitsOn===layers.hits&&!layers.legendText.includes('빗금'),JSON.stringify(layers));
+  check('Value map (3.2): layer labels count flagged species and those on the map; flagged species without a cell are listed',
+    layers.pCount.startsWith(nP+'종 · 지도 표시 ')&&layers.uCount.startsWith(nU+'종 · 지도 표시 ')&&
+    (layers.uCount===nU+'종 · 지도 표시 0종'?layers.noCell.includes('미탐색 후보 중 공개 출현 셀이 없어'):true)&&layers.noCell.includes('종 부재나 분포 없음을 뜻하지 않습니다'),JSON.stringify(layers));
   await pick(377084);await sleep(300);ms=await modeState();
   check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=377084/.test(ms.hash),JSON.stringify(ms));
   ms=await clickMode('occurrence');

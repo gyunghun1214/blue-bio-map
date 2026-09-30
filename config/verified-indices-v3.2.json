@@ -1,7 +1,7 @@
 {
   "method_version": "verified-pilot-3.2",
   "status": "provisional_unvalidated",
-  "changes_from": "verified-pilot-3.1 (2026-09-30). Diagram stages 4-5: all 30 species get information sufficiency as its own label (priority_survey) and an unexplored-candidate flag from a same-genus/family relative with BBVI >= 50; the BBVI x MCUI matrix types (IUCN and marked national MCUI) are published and the GIS map colours each public cell by the types of species recorded there. No axis score changes. See research/verified-indices/matrix-gis-2026-09-30.md.",
+  "changes_from": "verified-pilot-3.1 (2026-09-30). Diagram stages 4-5: all 30 species get information sufficiency as its own label (priority_survey) and an unexplored-candidate flag from a same-genus/family relative with BBVI >= 50; the BBVI x MCUI matrix types (IUCN and marked national MCUI) are published and the GIS map colours each public cell by the types of species recorded there. No axis score changes. Information sufficiency changes in one place: a species whose MCUI comes from a reviewed national assessment counts that assessment for the three MCUI steps (3.1 counted only an IUCN record). See research/verified-indices/matrix-gis-2026-09-30.md.",
   "nutrition": {
     "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-09-25.json",
     "components": {
@@ -373,12 +373,25 @@
     ],
     "scope": "operating_8 + expansion_22",
     "rule": "Information sufficiency below unexplored_threshold (mean ratio of required inputs) marks the species 'priority_survey' (우선 조사 대상). Such a species is an unexplored candidate (미탐색 후보) when a relative in the same WoRMS genus, else family, has a published BBVI of at least relative_min_bbvi (the matrix threshold). The relative's score is never copied.",
-    "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)"
+    "national_mcui_sufficiency": "When mcui_basis is national, the MCUI steps are read from the national assessment that gives the MCUI: assessment_record = the reviewed national record, numeric_category = its category is in conservation.category_scores, current_check = its list and index pages were re-read (national_red_list.page_recheck). Otherwise the IUCN steps apply.",
+    "weight_note": "Relatives are judged at the published default BBVI weight (w = 0.5); the screen slider does not move this flag.",
+    "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)",
+    "source": {
+      "id": "worms_classification",
+      "title": "WoRMS AphiaClassificationByAphiaID (genus and family of the 30 species)",
+      "provider": "WoRMS Editorial Board, World Register of Marine Species (VLIZ)",
+      "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
+      "version": "queried 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0",
+      "license_url": "https://www.marinespecies.org/about.php",
+      "terms": "Text open access under CC BY; cite WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170. Re-distribution of the entire database is not permitted; only genus and family of the 30 species are stored."
+    }
   },
   "matrix": {
     "bbvi_threshold": 50,
     "mcui_threshold": 50,
-    "at_threshold": "high",
+    "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
     "include_national_mcui": true,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",

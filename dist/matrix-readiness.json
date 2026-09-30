@@ -3,7 +3,6 @@
   "candidate_snapshot": "2026-09-25",
   "matrix_points": 1,
   "matrix_rule": {
-    "at_threshold": "high",
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
     "cell_colour_precedence": [
@@ -17,6 +16,7 @@
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
+    "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "types": {
       "high_bbvi_high_mcui": {
         "id": "alternative_production",
@@ -881,7 +881,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": "national",
-      "priority_survey": true,
+      "priority_survey": false,
       "scientific_name": "Ruditapes philippinarum",
       "scope": "expansion_22",
       "scores": {
@@ -1028,7 +1028,8 @@
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836041",
-        "https://www.marinespecies.org/rest/"
+        "https://www.marinespecies.org/rest/",
+        "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/"
       ],
       "unexplored_candidate": {
         "note": "A relative has a calculated BBVI; this species' score is not inferred from it.",
@@ -1058,7 +1059,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": "national",
-      "priority_survey": true,
+      "priority_survey": false,
       "scientific_name": "Anadara broughtonii",
       "scope": "expansion_22",
       "scores": {
@@ -1504,7 +1505,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": "national",
-      "priority_survey": true,
+      "priority_survey": false,
       "scientific_name": "Acanthosepion esculentum",
       "scope": "expansion_22",
       "scores": {

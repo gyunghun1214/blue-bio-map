@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_verified_indices import build, independent_sources, load_inputs, render, round1  # noqa: E402
+from build_verified_indices import build, independent_sources, load_inputs, render, round1, unexplored_flag  # noqa: E402
 
 
 def species(report, aphia):
@@ -733,8 +733,31 @@ class VerifiedPilot32Tests(unittest.TestCase):
         self.assertEqual(set(self.rows), set(old))
         self.assertEqual(len(self.rows), 30)
         view = lambda s: (s["scores"], s["withheld_reasons"], s.get("mbpi_label"), s["reference_combination"], s["sensitivity"],
-                          s["information_sufficiency"])
+                          {k: v for k, v in s["information_sufficiency"].items() if k not in ("MCUI", "mean_ratio")})
         self.assertEqual({a: view(s) for a, s in self.rows.items()}, {a: view(s) for a, s in old.items()})
+        # 3.2 changes information sufficiency in one place only: a national-basis MCUI counts its national assessment
+        moved = {a for a, s in self.rows.items() if s["information_sufficiency"] != old[a]["information_sufficiency"]}
+        self.assertEqual(moved, {a for a, s in self.rows.items() if s["mcui_basis"] == "national"})
+        self.assertEqual(moved, {506159, 836033, 231750, 393716, 504357, 413600, 1666974})
+
+    def test_national_mcui_counts_its_national_assessment(self):
+        rechecked = self.report["method"]["national_red_list"]["page_recheck"]["rows"]
+        for aphia, s in self.rows.items():
+            mcui = s["information_sufficiency"]["MCUI"]
+            if s["mcui_basis"] != "national":
+                self.assertNotIn("basis", mcui, aphia)
+                continue
+            steps = [s["national_assessment"]["reviewed"] is True,
+                     s["national_assessment"]["category"] in self.report["method"]["conservation"]["category_scores"],
+                     str(aphia) in rechecked]
+            self.assertEqual((mcui["basis"], mcui["ratio"]), ("national", round(sum(steps) / 3, 2)), aphia)
+        # the three species whose priority-survey label depended on the IUCN-only count
+        old = {s["aphia_id"]: s for s in self.v31["species"] + self.v31["candidate_species"]}
+        for aphia in (231750, 504357, 1666974):
+            self.assertLess(old[aphia]["information_sufficiency"]["mean_ratio"], 0.5)
+            self.assertFalse(self.rows[aphia]["priority_survey"], aphia)
+        self.assertEqual(sum(s["priority_survey"] for s in self.rows.values()), 14)
+        self.assertTrue(self.rows[413600]["priority_survey"])  # 맛조개: MFPI and MBPI inputs are still missing
 
     def test_priority_survey_is_the_sufficiency_label(self):
         threshold = self.report["method"]["unexplored_threshold"]
@@ -767,6 +790,38 @@ class VerifiedPilot32Tests(unittest.TestCase):
         self.assertEqual((rule["bbvi_threshold"], rule["mcui_threshold"], rule["include_national_mcui"]), (50, 50, True))
         self.assertEqual(sorted(rule["cell_colour_precedence"]), sorted(t["id"] for t in rule["types"].values()))
         self.assertEqual(rule["cell_colour_precedence"][0], rule["types"]["low_bbvi_high_mcui"]["id"])  # conservation first
+        # no unread knob: the boundary rule is stated as text and the builders compare with >=
+        self.assertNotIn("at_threshold", rule)
+        self.assertIn("one decimal", rule["threshold_rule"])
+
+    def test_unexplored_threshold_is_the_matrix_threshold(self):
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        config = {**config, "unexplored_candidates": {**config["unexplored_candidates"], "relative_min_bbvi": 40}}
+        with self.assertRaisesRegex(ValueError, "matrix threshold"):
+            build(evidence, candidates, config, snapshot, taxonomy)
+
+    def test_classification_source_is_registered(self):
+        reg = self.report["method"]["unexplored_candidates"]["source"]
+        src = self.report["sources"][reg["id"]]
+        self.assertEqual((src["accessed"], src["license"]), (self.taxonomy_retrieved(), "CC BY 4.0"))
+        for s in self.rows.values():
+            self.assertIs(reg["id"] in s["source_ids"], s["unexplored_candidate"] is not None, s["aphia_id"])
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        with self.assertRaisesRegex(ValueError, "taxonomy source registration"):
+            build(evidence, candidates, config, snapshot, {**taxonomy, "retrieved": "2026-10-01"})
+
+    def taxonomy_retrieved(self):
+        return json.loads((ROOT / "research" / "verified-indices" / "taxonomy.json").read_text(encoding="utf-8"))["retrieved"]
+
+    def test_unexplored_flag_falls_back_to_family(self):
+        # synthetic: no same-genus relative, a same-family relative at the threshold flags at family; 49.9 does not
+        row = lambda aphia, bbvi, ratio: {"aphia_id": aphia, "scientific_name": f"S{aphia}", "scores": {"BBVI": bbvi},
+                                          "information_sufficiency": {"mean_ratio": ratio}}
+        taxonomy = {"1": {"genus": "G1", "family": "F"}, "2": {"genus": "G2", "family": "F"}, "3": {"genus": "G3", "family": "X"}}
+        flag = unexplored_flag(1, [row(1, None, 0.2), row(2, 50.0, 1.0), row(3, 90.0, 1.0)], taxonomy, 0.5, 50)
+        self.assertEqual((flag["rank"], flag["taxon"], flag["relatives"]), ("family", "F", ["S2"]))
+        self.assertIsNone(unexplored_flag(1, [row(1, None, 0.2), row(2, 49.9, 1.0)], taxonomy, 0.5, 50))
+        self.assertIsNone(unexplored_flag(1, [row(1, None, 0.5), row(2, 80.0, 1.0)], taxonomy, 0.5, 50))  # 0.5 is not low
 
 
 if __name__ == "__main__":

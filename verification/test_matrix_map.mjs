@@ -11,7 +11,8 @@ vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
-  'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour});globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};',ctx);
+  'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped});'+
+  'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};',ctx);
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
@@ -71,4 +72,41 @@ ctx.setWeight(1);
 const food=placed.assessment.scores.MFPI,need=placed.assessment.scores.MCUI;
 assert.equal(ctx.matrixType(placed),rule.types[(food>=50?'high':'low')+'_bbvi_'+(need>=50?'high':'low')+'_mcui'].id);
 ctx.setWeight(.5);
+// A published 3.2 BBVI that crosses 50 with the weight (MFPI 40, MBPI 60) really is re-typed by the slider.
+const crossing={live:true,assessment:{report_version:'verified-pilot-3.2',score_status:{BBVI:'산출됨'},scores:{MFPI:40,MBPI:60,BBVI:50,MCUI:10},mcui_basis:'iucn'}};
+ctx.setWeight(0);assert.equal(ctx.matrixType(crossing),'sustainable_use','w = 0: BBVI 60');
+ctx.setWeight(1);assert.equal(ctx.matrixType(crossing),'baseline_survey','w = 1: BBVI 40');
+ctx.setWeight(.5);assert.equal(ctx.matrixType(crossing),'sustainable_use','w = 0.5: BBVI 50 on the threshold is high');
+assert.equal(ctx.matrixType(fake(80,null)),null,'no MCUI, no type');
+
+// (7) National MCUI switched off: the cell is held and the card says why, instead of 'pair not computed'.
+ctx.setData({...next,assessmentInfo:{...next.assessmentInfo,method:{...next.assessmentInfo.method,matrix:{...rule,include_national_mcui:false}}}});
+assert.equal(ctx.cellMatrixType(cell(fake(80,10,'national'))).type,null);
+assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외/);
+ctx.setData(next);
+assert.equal(ctx.nationalTyped(cell(fake(80,10,'national'),fake(80,10),fake(null,80,'national'))),1,'only typed national species count');
+
+// (8) Cell style: a mixed cell gets the dark dashed border, a held cell stays grey and dashed.
+const mixedStyle=ctx.valueCellStyle(cell(fake(80,10),fake(10,80)),false),oneStyle=ctx.valueCellStyle(cell(fake(80,10)),false),held=ctx.valueCellStyle(cell(fake(null,80)),false);
+assert.deepEqual([mixedStyle.dashArray,mixedStyle.color,mixedStyle.fillColor],['2 3','#102e45',ctx.matrixTypeColour.conservation_priority]);
+assert.deepEqual([oneStyle.dashArray,oneStyle.fillColor],[null,ctx.matrixTypeColour.sustainable_use]);
+assert.deepEqual([held.dashArray,held.fillColor],['5 4','#b7c0ca']);
+
+// (9) Draw order: a held 4° extent is drawn before the typed 1° cell inside it, so it never covers that cell or its click.
+const g=(size,...species)=>({size,species:new Map(species.map((s,i)=>[i,s]))});
+const order=Array.from(ctx.valueCellOrder(new Map([['typed1',g(1,fake(80,10))],['held4',g(4,fake(null,80))],['held1',g(1,fake(null,80))]])),([k])=>k);
+assert.deepEqual(order,['held4','held1','typed1']);
+
+// (10) Layer counts come from the report; a flagged species without a public cell is listed, never silently dropped.
+const flagged=flag=>next.species.filter(s=>s.assessment?.[flag]);
+const oyster=next.species.find(s=>s.aphiaID===836033);
+const counts=ctx.sufficiencyCounts(new Map([['c',{size:1,species:new Map([[836033,oyster]])}]]));
+assert.equal(counts.priority.n,flagged('priority_survey').length);
+assert.equal(counts.unexplored.n,flagged('unexplored_candidate').length);
+assert.equal(counts.unexplored.shown+counts.unexplored.missing.length,counts.unexplored.n);
+assert.deepEqual([...counts.unexplored.missing],flagged('unexplored_candidate').filter(s=>s.aphiaID!==836033).map(s=>s.label));
+// (11) The candidate sentence uses Korean rank words and the relative's Korean name.
+const magallana=flagged('unexplored_candidate').find(s=>s.aphiaID===836041);
+assert.equal(ctx.unexploredLine(magallana.assessment.unexplored_candidate),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
+assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 근연종(Nomen novum)이 있습니다');
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');
