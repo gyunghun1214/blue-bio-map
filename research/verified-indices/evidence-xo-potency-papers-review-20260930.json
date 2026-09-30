@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-30",
+  "purpose": "Input for the cross-origin potency rule: config/verified-indices-v2.3.json (public, verified-pilot-2.3) and config/verified-indices-research-xo-potency.json (research record). Synthetic peptides re-measured from another origin replicate potency only; they never become an item, a species value or an origin claim.",
+  "sources": {
+    "miyoshi_1991_zein": {
+      "provider": "Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF)",
+      "title": "Structures and activity of angiotensin-converting enzyme inhibitors in an alpha-zein hydrolysate",
+      "version": "1991",
+      "doi": "10.1271/bbb1961.55.1313",
+      "alternate_doi": "10.1080/00021369.1991.10870760",
+      "url": "https://doi.org/10.1271/bbb1961.55.1313",
+      "accessed": "2026-09-27",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "license": "Publisher copyright (JSBBA; free access on J-STAGE, no CC licence stated)"
+    }
+  },
+  "potency_replications": [
+    {
+      "record_id": "10.1271/bbb1961.55.1313:TableIII:LQP-synthetic",
+      "sequence": "LQP",
+      "origin_material": "alpha-zein (maize, Sigma) thermolysin hydrolysate; the scored value is the synthetic peptide",
+      "origin_label": "옥수수 α-제인 (합성 펩타이드로 측정)",
+      "synthetic": true,
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 2,
+      "unit": "uM",
+      "substrate": "HHL",
+      "value_in_text": true,
+      "location": "Table III (synthetic L-Leu-L-Gln-L-Pro 2.0 uM); isolated peptide 1.9 uM in Table II and Discussion",
+      "assay": "Modified Cushman-Cheung: Hip-His-Leu 5 mM, 100 mM borate pH 8.3 with 300 mM NaCl, 8 mU ACE (rabbit lung acetone powder, Sigma), 37 C 30 min",
+      "source_id": "miyoshi_1991_zein",
+      "original_paper_doi": "10.1271/bbb1961.55.1313",
+      "reviewed": true,
+      "verification": "Full text read 2026-09-27 (J-STAGE PDF). Solid-phase synthesis, HPLC-purified, FAB-MS 357 (M+H)+. Different group (Showa Sangyo / Fermentation Research Institute) and different origin from Do et al. 2012 (oyster, 1.18 uM). Assay conditions match Do 2012 (5 mM HHL, borate pH 8.3, 300 mM NaCl, 37 C 30 min, rabbit-lung ACE)."
+    }
+  ]
+}
