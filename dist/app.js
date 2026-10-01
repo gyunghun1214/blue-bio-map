@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -184,9 +184,54 @@ function verifiedFoodValid(a,report){
     100*config.edible_fraction_weight*fraction.value+100*config.aquaculture_weight*Number(f.aquaculture.feasible);
   return Math.abs(expected-a.scores.MFPI)<.06;
 }
+// 3.4: an OBIS decline signal adds the published adjustment to a computed MCUI; the class is re-derived from its counts.
+function rateRatio(n,e,rule){
+  const k=rule.continuity,ratio=((n.recent+k)/e.recent)/((n.past+k)/e.past),spread=Math.exp(rule.z*Math.sqrt(1/(n.past+k)+1/(n.recent+k)));
+  return [ratio,ratio/spread,ratio*spread];
+}
+const near=(x,y)=>Number.isFinite(x)&&Math.abs(x-y)<=.0006;
+function trendAdjustment(a,report){
+  const t=a.occurrence_trend,rule=report.method?.conservation?.trend;
+  if(!t)return rule?null:0;
+  if(!rule)return null;
+  const n=t.species_records,e=t.effort_records,counts=x=>[x?.species_records?.past,x?.species_records?.recent,x?.effort_records?.past,x?.effort_records?.recent];
+  if(!counts(t).every(Number.isFinite))return null;
+  let cls='undetermined';
+  if(t.cells_compared>0&&n.past>=rule.min_past_records){
+    const [ratio,low,high]=rateRatio(n,e,rule),all=t.all_taxa_sensitivity;
+    if(!near(t.reporting_rate_ratio,ratio)||!near(t.ci?.[0],low)||!near(t.ci?.[1],high)||!near(t.effort_ratio,e.recent/e.past)||
+       !counts(all).slice(2).every(Number.isFinite)||!near(all.reporting_rate_ratio,rateRatio(n,all.effort_records,rule)[0]))return null;
+    // the dominant-dataset check: same formula on that dataset's species and class records
+    const d=t.dataset_check;
+    let confirms=false;
+    if(d){
+      const dn=d.species_records,de=d.effort_records;
+      if(d.cells_compared>0&&dn?.past>=rule.min_past_records){
+        if(!counts(d).every(Number.isFinite))return null;
+        const [dr,dl,dh]=rateRatio(dn,de,rule);
+        if(!near(d.reporting_rate_ratio,dr)||!near(d.ci?.[0],dl)||!near(d.ci?.[1],dh))return null;
+        confirms=dr<=rule.decline_ratio&&dh<1;
+      }
+      if(d.confirms_decline!==confirms)return null;
+    }
+    cls=ratio<=rule.decline_ratio?(high<1&&confirms?'decline_signal':'undetermined')
+      :high<1?'decline_below_threshold':n.recent<n.past&&e.recent<e.past?'survey_gap':'no_clear_decline';
+  }
+  if(cls!==t.class||t.label!==rule.labels?.[cls])return null;
+  // the base is the published MCUI before the trend, so the shown '+10' always matches the score
+  const adjust=cls==='decline_signal'&&t.mcui_base!==null?report.method.conservation.effort_adjustment:0;
+  if(t.mcui_adjustment!==adjust)return null;
+  if(t.mcui_base===null?a.scores.MCUI!==null:a.scores.MCUI!==Math.min(100,t.mcui_base+adjust))return null;
+  return adjust;
+}
 function verifiedConservationValid(a,report){
+  const adjust=trendAdjustment(a,report);
+  if(adjust===null)return false;
   if(a.scores.MCUI===null)return true;
-  const scores=report.method?.conservation?.category_scores||{};
+  const raw=report.method?.conservation?.category_scores||{};
+  const scores=Object.fromEntries(Object.entries(raw).map(([k,v])=>[k,Math.min(100,v+adjust)]));
+  const category=a.mcui_basis==='national'?a.national_assessment?.category:a.conservation_trace?.category;
+  if(a.occurrence_trend&&a.occurrence_trend.mcui_base!==raw[category])return false;
   // National branch: a Korean national assessment is its own stratum, never mixed with global IUCN.
   if(a.mcui_basis==='national'){
     const n=a.national_assessment;
@@ -815,7 +860,31 @@ function verifiedConservationDetail(s){
     (c.pilot_mapping?`<p>원래 등급과 시범 숫자: ${esc(c.pilot_mapping)} · ${esc(c.label)}</p>`:'')+
     `<p class="fine">현행 확인: ${check?.is_current?'현행 평가 ('+esc(check.red_list_version)+', '+esc(check.checked_on)+')':'확인 보류'} · ${verifiedSource(check?.source_id,'확인 근거 ↗')}. ${esc(c.verification)}</p>`+
     (c.previous_assessments||[]).map(p=>`<p class="fine">이전 평가 ${esc(p.record_id)} · ${esc(p.category)} ${esc(p.criteria||'')} · ${esc(p.assessment_date)} 평가 · ${esc(p.status)}</p>`).join('')+
-    '<p class="fine">OBIS·GBIF 원시 출현 건수는 개체군 추세로 쓰지 않았고, MCUI에 가감하지 않았습니다. 종 단위 평가를 출현 셀의 해역 등급으로 옮기지 않습니다.</p>';
+    (s.assessment.occurrence_trend?'':'<p class="fine">OBIS·GBIF 원시 출현 건수는 개체군 추세로 쓰지 않았고, MCUI에 가감하지 않았습니다. 종 단위 평가를 출현 셀의 해역 등급으로 옮기지 않습니다.</p>');
+}
+// 3.4: OBIS reporting-rate check beside MCUI (figure stage 3: distribution recency, decline vs survey gap)
+function occurrenceTrendDetail(s){
+  const t=s.assessment?.occurrence_trend,rule=data.assessmentInfo?.method?.conservation?.trend;
+  if(!t||!rule)return '';
+  const p=rule.periods,n=t.species_records,e=t.effort_records,yr=x=>x.slice(0,4),f2=x=>Number(x).toFixed(2);
+  const ratio=Number.isFinite(t.reporting_rate_ratio)?` · 보고율 비 ${f2(t.reporting_rate_ratio)} (95% 구간 ${f2(t.ci[0])}–${f2(t.ci[1])}) · 같은 강 기록 변화 ×${f2(t.effort_ratio)} · 전체 분류군 기준 민감도 ${f2(t.all_taxa_sensitivity?.reporting_rate_ratio)}`:'';
+  const gain=t.mcui_base===null?0:Math.min(100,t.mcui_base+t.mcui_adjustment)-t.mcui_base;
+  const effect=t.mcui_adjustment?(gain?`감소 신호라 MCUI ${t.mcui_base.toFixed(1)}에 +${gain}을 더했습니다.`:`감소 신호이지만 MCUI가 이미 상한 100이라 바뀌지 않았습니다.`)
+    :t.mcui_base===null?'MCUI 기반 평가가 없어 이 결과로 MCUI를 만들지 않습니다.':'MCUI에 더하거나 빼지 않았습니다.';
+  const d=t.dataset_check;
+  const dataset=d?`<p class="fine">과거 기록이 가장 많은 데이터셋(${esc(String(d.dataset_id).slice(0,8))}…, 과거 기록의 ${Math.round(d.past_share*100)}%) 안에서만 다시 계산: `+
+    (Number.isFinite(d.reporting_rate_ratio)?`${esc(d.species_records.past)}건 → ${esc(d.species_records.recent)}건, 보고율 비 ${f2(d.reporting_rate_ratio)} (${f2(d.ci[0])}–${f2(d.ci[1])})`:'두 기간 비교 불가')+
+    ` · ${d.confirms_decline?'감소 확인':'감소 확인 안 됨'}. 감소 신호는 이 데이터셋 안에서도 같은 기준을 넘을 때만 인정합니다(조사 사업 종료를 감소로 읽지 않기 위해).</p>`:'';
+  // IUCN's own population trend is the only independent direction; say so when it disagrees
+  const pop=s.assessment.conservation_trace?.population_trend, falling=['decline_signal','decline_below_threshold'].includes(t.class);
+  const iucn=(pop==='Decreasing'&&!falling)||(['Stable','Increasing'].includes(pop)&&falling)
+    ?`<p class="fine">IUCN 개체군 추세(${esc(pop)})와 OBIS 보고율 결과가 다릅니다. 보고율은 개체수가 아니며, 이 차이는 이 방법이 아직 검증되지 않았음을 보여 줍니다.</p>`:'';
+  return `<h4>OBIS 출현 추세 · 보조 요소 · <b>${esc(t.label)}</b></h4>`+
+    `<p>비교 셀 ${esc(t.cells_compared)}개(1°)의 기록 ${esc(yr(p.past[0]))}–${esc(yr(p.past[1]))} ${esc(n.past)}건 → ${esc(yr(p.recent[0]))}–${esc(yr(p.recent[1]))} ${esc(n.recent)}건`+
+    ` (지도 범위 전체 ${esc(t.records_in_map_extent?.past)} → ${esc(t.records_in_map_extent?.recent)}건) · 같은 셀의 ${esc(t.effort_group)} 전체 기록 ${esc(e.past)} → ${esc(e.recent)}건${ratio}. `+
+    `분포 최신성: 과거에만 기록된 셀 ${esc(t.cells_past_only)}개 · 최근에만 기록된 셀 ${esc(t.cells_recent_only)}개 · 최근 기록 연도 ${esc(t.latest_record_year??'없음')}. ${esc(effect)} ${verifiedSource(t.source_id,'OBIS ↗')}</p>`+
+    dataset+iucn+
+    `<p class="fine">보고율 = 종 기록 ÷ 같은 셀·기간의 같은 강 기록(지도의 회색 조사 노력 음영과 다른 척도). 감소 신호는 보고율이 30% 이상 줄고 95% 구간이 1 아래이며, 과거 최대 데이터셋 안에서도 같을 때입니다. 보고율은 개체수·자원량이 아닙니다. 95% 구간은 기록을 서로 독립으로 보므로 같은 조사에서 나온 기록이 몰리면 실제보다 좁습니다. 종 단위 결과를 해역 등급으로 옮기지 않습니다.</p>`;
 }
 function sufficiencyText(a){
   const i=a.information_sufficiency;
@@ -851,6 +920,12 @@ function axisPairsHtml(){
   return `<b>축 쌍 보기 · 두 값이 모두 있는 종만</b><span>MFPI만의 쌍은 BBVI가 아닙니다. IUCN 기반과 한국 국가 평가 기반 MCUI, 서로 다른 비교집단은 합치거나 순위를 매기지 않습니다. 종 단위 값이며 해역·셀 값이 아닙니다. 나열 순서는 카탈로그 순서입니다.</span>`+
     `<ul>${[...groups].map(([k,v])=>`<li><b>${esc(k)}</b> ${v.length}종: ${esc(v.join(' / '))}</li>`).join('')}${zero.map(k=>`<li><b>${k} × MCUI</b> 0종 · 두 값을 함께 가진 종 없음</li>`).join('')}</ul>`;
 }
+// 3.4 priority reasons beside information sufficiency (labels published with the rule)
+const surveyLabels=()=>data?.assessmentInfo?.method?.conservation?.no_assessment?.labels||{};
+function surveyReasonText(a){
+  return (a.priority_survey_reasons||['low_information_sufficiency']).map(w=>w==='low_information_sufficiency'?`정보충분도 낮음(필수 입력 평균 ${sufficiencyCut(a)})`:
+    (surveyLabels()[w]||w)+(w==='no_conservation_assessment'?'(IUCN·국가 평가 모두 없어 MCUI 미산출)':w==='conservation_data_deficient'?' · 국가 평가도 없어 MCUI 미산출':'')).join(' · ');
+}
 const rankKo={genus:'속',family:'과'};
 const relativeLabel=n=>data?.species?.find(x=>x.name===n)?.label||n;
 function unexploredLine(u){
@@ -864,9 +939,10 @@ function sufficiencyCut(a){
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
-  const bodies={MFPI:verifiedFoodDetail(s),MBPI:verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s),
+  const bodies={MFPI:verifiedFoodDetail(s),MBPI:verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s)+occurrenceTrendDetail(s),
     BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'+referenceCombination(s)};
-  const unexplored=(a.priority_survey?`<p class="pending">우선 조사 대상 · 정보충분도 낮음(필수 입력 평균 ${sufficiencyCut(a)}). 점수와 섞지 않는 별도 표시입니다.</p>`:'')+
+  const surveyWhy=surveyReasonText(a);
+  const unexplored=(a.priority_survey?`<p class="pending">우선 조사 대상 · ${surveyWhy}. 점수와 섞지 않는 별도 표시입니다.</p>`:'')+
     (a.unexplored_candidate?`<p class="pending">미탐색 후보: ${esc(unexploredLine(a.unexplored_candidate))}. 기본 가중치 w = 0.5 기준이며, 이 종의 점수는 추정하지 않습니다.</p>`:'');
   return `<section class="verified-scores"><h3>실제 원자료 기반 지표 · 검증 전 시범 지표</h3>`+
     `<p class="fine">자료 스냅샷 ${esc(data.assessmentInfo?.generatedAt?.slice(0,10))} · 방법론 ${esc(data.assessmentInfo?.version)} · MFPI·MBPI·MCUI는 각각 독립적으로 판정합니다. `+
@@ -1394,7 +1470,11 @@ function valueSpeciesType(s){
   const type=t?`매트릭스 유형 <b>${esc(matrixTypeLabel(t))}</b> · BBVI ${pilotScore(s,'BBVI').toFixed(1)}(현재 가중치) × MCUI ${pilotScore(s,'MCUI').toFixed(1)}${nationalMcui(s)?'(한국 국가 평가 기반)':''}`
     :nationalOff?'매트릭스 유형 없음 · 국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외(두 값은 산출됨)'
     :'매트릭스 유형 없음 · BBVI·MCUI 한 쌍 미산출(낮은 가치라는 뜻이 아님)';
-  const info=i?` · 정보충분도 ${a.priority_survey?sufficiencyCut(a)+' · 우선 조사 대상':Math.round(i.mean_ratio*100)+'%'}${a.unexplored_candidate?' · 미탐색 후보(같은 '+esc(rankKo[a.unexplored_candidate.rank]||a.unexplored_candidate.rank)+' '+esc(a.unexplored_candidate.taxon)+')':''} (점수와 별도)`:'';
+  // 3.4: the label has two reasons; only the sufficiency reason quotes the 50% cut
+  const why=a?.priority_survey_reasons||['low_information_sufficiency'];
+  const survey=!a?.priority_survey?Math.round(i?.mean_ratio*100)+'%'
+    :(why.includes('low_information_sufficiency')?sufficiencyCut(a):Math.round(i.mean_ratio*100)+'%')+' · 우선 조사 대상('+why.map(w=>w==='low_information_sufficiency'?'정보충분도':surveyLabels()[w]||w).join(' · ')+')';
+  const info=i?` · 정보충분도 ${survey}${a.unexplored_candidate?' · 미탐색 후보(같은 '+esc(rankKo[a.unexplored_candidate.rank]||a.unexplored_candidate.rank)+' '+esc(a.unexplored_candidate.taxon)+')':''} (점수와 별도)`:'';
   return '<p class="value-type">'+type+info+'</p>';
 }
 // Larger extents first and typed cells last, so a held 4° extent never covers a coloured 1° cell or takes its click.
@@ -1463,7 +1543,7 @@ function cellTypeLine(g){
 const cellCentre=g=>[g.lat+g.size/2,g.lon+g.size/2];
 function drawSufficiency(g){
   const names=flag=>[...g.species.values()].filter(s=>s.assessment?.[flag]).map(s=>s.label);
-  const layers=[['priority','priority_survey','우선 조사 대상(정보충분도 낮음)',{color:'#102e45',fillColor:'#ffffff',radius:7,weight:2,dashArray:null}],
+  const layers=[['priority','priority_survey','우선 조사 대상(정보충분도 낮음 또는 보전 평가 없음)',{color:'#102e45',fillColor:'#ffffff',radius:7,weight:2,dashArray:null}],
     ['unexplored','unexplored_candidate','미탐색 후보(근연종 BBVI 높음)',{color:'#6b3fa0',fillColor:'#efe6fa',radius:4,weight:2,dashArray:'2 2'}]];
   for(const [layer,flag,label,style] of layers){
     const list=names(flag);
@@ -1484,7 +1564,7 @@ function renderValueMap(){
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
   $('map-source').textContent=data.live?'활용 × 보전 · GBIF 공개 격자':'활용 × 보전 · OBIS 추가 수집 격자';
   const cut=data.assessmentInfo?.method?.unexplored_threshold;
-  $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
+  $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종':''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 보류 사유를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
   const layerCounts=sufficiencyCounts(groups);

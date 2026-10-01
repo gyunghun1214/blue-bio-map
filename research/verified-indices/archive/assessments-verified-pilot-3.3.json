@@ -71,7 +71,7 @@
         "aphia_id": 377084,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Saccharina japonica",
         "search": {
@@ -93,7 +93,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -164,83 +164,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 273226,
-            "recent": 134382
-          },
-          "reporting_rate_ratio": 0.459
-        },
-        "cells_compared": 13,
-        "cells_past_only": 7,
-        "cells_recent_only": 2,
-        "ci": [
-          0.612,
-          1.025
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 12,
-          "ci": [
-            0.604,
-            1.017
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 16896,
-            "recent": 4841
-          },
-          "past_share": 0.978,
-          "reporting_rate_ratio": 0.784,
-          "species_records": {
-            "past": 309,
-            "recent": 69
-          }
-        },
-        "datasets": {
-          "past": 2,
-          "recent": 2
-        },
-        "effort_group": "Phaeophyceae",
-        "effort_ratio": 0.285,
-        "effort_records": {
-          "past": 17164,
-          "recent": 4890
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2023,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 399,
-        "records_in_map_extent": {
-          "past": 321,
-          "recent": 70
-        },
-        "reporting_rate_ratio": 0.792,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 312,
-          "recent": 70
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
@@ -266,7 +190,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -959,7 +882,7 @@
         "aphia_id": 371986,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Ecklonia cava",
         "search": {
@@ -980,7 +903,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1033,83 +956,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 257632,
-            "recent": 150470
-          },
-          "reporting_rate_ratio": 0.528
-        },
-        "cells_compared": 15,
-        "cells_past_only": 4,
-        "cells_recent_only": 0,
-        "ci": [
-          0.751,
-          1.079
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 12,
-          "ci": [
-            1.082,
-            1.623
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 16454,
-            "recent": 5618
-          },
-          "past_share": 0.602,
-          "reporting_rate_ratio": 1.325,
-          "species_records": {
-            "past": 299,
-            "recent": 135
-          }
-        },
-        "datasets": {
-          "past": 4,
-          "recent": 2
-        },
-        "effort_group": "Phaeophyceae",
-        "effort_ratio": 0.343,
-        "effort_records": {
-          "past": 19425,
-          "recent": 6659
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1574,
-        "records_in_map_extent": {
-          "past": 497,
-          "recent": 153
-        },
-        "reporting_rate_ratio": 0.9,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 497,
-          "recent": 153
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
@@ -1141,7 +988,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "park_2013_dieckol",
         "pubchem_ecklonia_structures",
         "pubchem_inchikey_mbpi",
@@ -1196,7 +1042,7 @@
         "aphia_id": 234476,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Ulva prolifera",
         "search": {
@@ -1218,7 +1064,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1271,83 +1117,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 311817,
-            "recent": 151007
-          },
-          "reporting_rate_ratio": 0.601
-        },
-        "cells_compared": 14,
-        "cells_past_only": 9,
-        "cells_recent_only": 1,
-        "ci": [
-          0.939,
-          1.737
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 12,
-          "ci": [
-            0.808,
-            1.634
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 13475,
-            "recent": 2831
-          },
-          "past_share": 0.885,
-          "reporting_rate_ratio": 1.149,
-          "species_records": {
-            "past": 159,
-            "recent": 38
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 4
-        },
-        "effort_group": "Ulvophyceae",
-        "effort_ratio": 0.228,
-        "effort_records": {
-          "past": 14994,
-          "recent": 3415
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 269,
-        "records_in_map_extent": {
-          "past": 183,
-          "recent": 52
-        },
-        "reporting_rate_ratio": 1.277,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 180,
-          "recent": 52
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
@@ -1373,7 +1143,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
@@ -1474,7 +1243,7 @@
         "aphia_id": 494853,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Sargassum horneri",
         "search": {
@@ -1495,7 +1264,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1548,83 +1317,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 329031,
-            "recent": 164748
-          },
-          "reporting_rate_ratio": 0.803
-        },
-        "cells_compared": 19,
-        "cells_past_only": 5,
-        "cells_recent_only": 5,
-        "ci": [
-          1.029,
-          1.386
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 16,
-          "ci": [
-            1.112,
-            1.545
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 17668,
-            "recent": 5950
-          },
-          "past_share": 0.769,
-          "reporting_rate_ratio": 1.311,
-          "species_records": {
-            "past": 465,
-            "recent": 205
-          }
-        },
-        "datasets": {
-          "past": 4,
-          "recent": 3
-        },
-        "effort_group": "Phaeophyceae",
-        "effort_ratio": 0.336,
-        "effort_records": {
-          "past": 20784,
-          "recent": 6992
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1994,
-        "records_in_map_extent": {
-          "past": 606,
-          "recent": 250
-        },
-        "reporting_rate_ratio": 1.194,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 603,
-          "recent": 242
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
@@ -1658,7 +1351,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
@@ -1709,7 +1401,7 @@
         "aphia_id": 236157,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Gracilaria vermiculophylla",
         "search": {
@@ -1730,7 +1422,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -1801,83 +1493,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 345501,
-            "recent": 161515
-          },
-          "reporting_rate_ratio": 0.53
-        },
-        "cells_compared": 15,
-        "cells_past_only": 3,
-        "cells_recent_only": 3,
-        "ci": [
-          0.999,
-          1.397
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 14,
-          "ci": [
-            0.99,
-            1.438
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 31433,
-            "recent": 5351
-          },
-          "past_share": 0.948,
-          "reporting_rate_ratio": 1.193,
-          "species_records": {
-            "past": 652,
-            "recent": 132
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 6
-        },
-        "effort_group": "Florideophyceae",
-        "effort_ratio": 0.21,
-        "effort_records": {
-          "past": 36006,
-          "recent": 7550
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1014,
-        "records_in_map_extent": {
-          "past": 688,
-          "recent": 170
-        },
-        "reporting_rate_ratio": 1.181,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 688,
-          "recent": 170
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
@@ -1903,7 +1519,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -2020,7 +1635,7 @@
         "aphia_id": 145086,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Codium fragile",
         "search": {
@@ -2041,7 +1656,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -2123,82 +1738,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 358274,
-            "recent": 171805
-          },
-          "reporting_rate_ratio": 0.949
-        },
-        "cells_compared": 21,
-        "cells_past_only": 3,
-        "cells_recent_only": 9,
-        "ci": [
-          1.659,
-          2.143
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 19,
-          "ci": [
-            1.764,
-            2.297
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 14238,
-            "recent": 3214
-          },
-          "past_share": 0.941,
-          "reporting_rate_ratio": 2.013,
-          "species_records": {
-            "past": 707,
-            "recent": 321
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 3
-        },
-        "effort_group": "Ulvophyceae",
-        "effort_ratio": 0.241,
-        "effort_records": {
-          "past": 15516,
-          "recent": 3744
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1400,
-        "records_in_map_extent": {
-          "past": 752,
-          "recent": 351
-        },
-        "reporting_rate_ratio": 1.886,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 750,
-          "recent": 341
-        }
-      },
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Codium fragile",
       "score_status": {
@@ -2230,7 +1770,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -2304,7 +1843,7 @@
         "aphia_id": 231750,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Ruditapes philippinarum",
         "search": {
@@ -2390,7 +1929,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2968,80 +2507,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 399204,
-            "recent": 182424
-          },
-          "reporting_rate_ratio": 1.111
-        },
-        "cells_compared": 28,
-        "cells_past_only": 5,
-        "cells_recent_only": 13,
-        "ci": [
-          2.072,
-          2.726
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 14,
-          "ci": [
-            1.508,
-            2.405
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 15062,
-            "recent": 1888
-          },
-          "past_share": 0.605,
-          "reporting_rate_ratio": 1.905,
-          "species_records": {
-            "past": 366,
-            "recent": 87
-          }
-        },
-        "datasets": {
-          "past": 6,
-          "recent": 8
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.214,
-        "effort_records": {
-          "past": 23314,
-          "recent": 4982
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1006,
-        "records_in_map_extent": {
-          "past": 605,
-          "recent": 308
-        },
-        "reporting_rate_ratio": 2.377,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 605,
-          "recent": 307
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
@@ -3069,7 +2535,6 @@
         "fao_casp_ruditapes",
         "iucn_redlist_search",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -3136,7 +2601,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "78764186",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "EN -> 80 (team pilot rule, not an IUCN score)",
         "population_trend": "Decreasing",
@@ -3218,7 +2683,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 53.9
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -3777,80 +3242,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 346345,
-            "recent": 170783
-          },
-          "reporting_rate_ratio": 1.395
-        },
-        "cells_compared": 19,
-        "cells_past_only": 0,
-        "cells_recent_only": 10,
-        "ci": [
-          1.037,
-          1.903
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 14,
-          "ci": [
-            1.204,
-            2.535
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 17577,
-            "recent": 6830
-          },
-          "past_share": 0.667,
-          "reporting_rate_ratio": 1.747,
-          "species_records": {
-            "past": 68,
-            "recent": 46
-          }
-        },
-        "datasets": {
-          "past": 2,
-          "recent": 3
-        },
-        "effort_group": "Gastropoda",
-        "effort_ratio": 0.49,
-        "effort_records": {
-          "past": 29362,
-          "recent": 14375
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": 80.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 260,
-        "records_in_map_extent": {
-          "past": 102,
-          "recent": 70
-        },
-        "reporting_rate_ratio": 1.405,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 102,
-          "recent": 70
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Haliotis discus",
       "score_status": {
@@ -3878,7 +3270,6 @@
         "gbif_iucn_checklist",
         "iucn_haliotis_discus_2022",
         "kang_2019_haliotis_wando",
-        "obis_trend",
         "rda_db_10_4",
         "ufish_1_workbook"
       ],
@@ -3940,7 +3331,7 @@
         "aphia_id": 393716,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Mizuhopecten yessoensis",
         "search": {
@@ -4027,7 +3418,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -4588,80 +3979,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 135959,
-            "recent": 37439
-          },
-          "reporting_rate_ratio": 3.387
-        },
-        "cells_compared": 9,
-        "cells_past_only": 2,
-        "cells_recent_only": 2,
-        "ci": [
-          3.853,
-          8.007
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 4,
-          "ci": [
-            0.286,
-            1.955
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 3173,
-            "recent": 344
-          },
-          "past_share": 0.932,
-          "reporting_rate_ratio": 0.748,
-          "species_records": {
-            "past": 55,
-            "recent": 4
-          }
-        },
-        "datasets": {
-          "past": 2,
-          "recent": 2
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.168,
-        "effort_records": {
-          "past": 8837,
-          "recent": 1484
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 119,
-        "records_in_map_extent": {
-          "past": 59,
-          "recent": 55
-        },
-        "reporting_rate_ratio": 5.555,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 59,
-          "recent": 55
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Mizuhopecten yessoensis",
       "score_status": {
@@ -4689,7 +4007,6 @@
         "fao_casp_yesso_scallop",
         "iucn_redlist_search",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -4758,7 +4075,7 @@
         "aphia_id": 836041,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Magallana sikamea",
         "search": {
@@ -4780,7 +4097,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -4833,51 +4150,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "cells_compared": 0,
-        "cells_past_only": 0,
-        "cells_recent_only": 0,
-        "class": "undetermined",
-        "datasets": {
-          "past": 0,
-          "recent": 0
-        },
-        "effort_group": "Bivalvia",
-        "effort_records": {
-          "past": 0,
-          "recent": 0
-        },
-        "label": "판단 불가",
-        "latest_record_year": null,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "no_comparable_cells",
-        "records_all_years": 0,
-        "records_in_map_extent": {
-          "past": 0,
-          "recent": 0
-        },
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 0,
-          "recent": 0
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Magallana sikamea",
       "score_status": {
@@ -4905,7 +4178,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
         "worms_classification",
@@ -4976,7 +4248,7 @@
         "aphia_id": 504357,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Anadara broughtonii",
         "search": {
@@ -5010,7 +4282,7 @@
           "year": "1986 publication; culture from March 1982 to harvest in December 1983"
         },
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -5133,80 +4405,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 217302,
-            "recent": 107233
-          },
-          "reporting_rate_ratio": 0.396
-        },
-        "cells_compared": 14,
-        "cells_past_only": 12,
-        "cells_recent_only": 4,
-        "ci": [
-          0.981,
-          2.081
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 10,
-          "ci": [
-            0.805,
-            2.06
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 12912,
-            "recent": 1203
-          },
-          "past_share": 0.964,
-          "reporting_rate_ratio": 1.288,
-          "species_records": {
-            "past": 162,
-            "recent": 19
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 2
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.137,
-        "effort_records": {
-          "past": 14373,
-          "recent": 1963
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 220,
-        "records_in_map_extent": {
-          "past": 169,
-          "recent": 33
-        },
-        "reporting_rate_ratio": 1.429,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 166,
-          "recent": 32
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Anadara broughtonii",
       "score_status": {
@@ -5234,7 +4433,6 @@
         "iucn_redlist_search",
         "kwon_cho_1986_anadara",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -5287,7 +4485,7 @@
         "aphia_id": 413600,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Sinonovacula constricta",
         "search": {
@@ -5308,7 +4506,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -5398,82 +4596,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 133740,
-            "recent": 30322
-          },
-          "reporting_rate_ratio": 0.178
-        },
-        "cells_compared": 6,
-        "cells_past_only": 3,
-        "cells_recent_only": 2,
-        "ci": [
-          0.128,
-          0.615
-        ],
-        "class": "decline_signal",
-        "dataset_check": {
-          "cells_compared": 5,
-          "ci": [
-            0.046,
-            0.558
-          ],
-          "confirms_decline": true,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 9022,
-            "recent": 873
-          },
-          "past_share": 1.0,
-          "reporting_rate_ratio": 0.16,
-          "species_records": {
-            "past": 161,
-            "recent": 2
-          }
-        },
-        "datasets": {
-          "past": 1,
-          "recent": 3
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.143,
-        "effort_records": {
-          "past": 9940,
-          "recent": 1425
-        },
-        "label": "감소 신호",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 10,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_fell_beyond_threshold_within_dominant_dataset_too",
-        "records_all_years": 174,
-        "records_in_map_extent": {
-          "past": 161,
-          "recent": 8
-        },
-        "reporting_rate_ratio": 0.281,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 161,
-          "recent": 6
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency"
-      ],
       "reference_combination": null,
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
@@ -5485,7 +4608,7 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -5499,8 +4622,7 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "nibr_red_data_book_2024",
-        "obis_trend"
+        "nibr_red_data_book_2024"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -5574,7 +4696,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "170306",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Stable",
@@ -5590,7 +4712,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -5661,82 +4783,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 400018,
-            "recent": 183586
-          },
-          "reporting_rate_ratio": 0.519
-        },
-        "cells_compared": 36,
-        "cells_past_only": 22,
-        "cells_recent_only": 10,
-        "ci": [
-          0.561,
-          0.902
-        ],
-        "class": "decline_below_threshold",
-        "dataset_check": {
-          "cells_compared": 26,
-          "ci": [
-            0.183,
-            0.492
-          ],
-          "confirms_decline": true,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 28457,
-            "recent": 4578
-          },
-          "past_share": 0.968,
-          "reporting_rate_ratio": 0.3,
-          "species_records": {
-            "past": 341,
-            "recent": 16
-          }
-        },
-        "datasets": {
-          "past": 4,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.335,
-        "effort_records": {
-          "past": 33228,
-          "recent": 11134
-        },
-        "label": "감소 경향(30% 미만)",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_fell_less_than_threshold",
-        "records_all_years": 536,
-        "records_in_map_extent": {
-          "past": 339,
-          "recent": 90
-        },
-        "reporting_rate_ratio": 0.711,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 354,
-          "recent": 84
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency"
-      ],
       "reference_combination": null,
       "scientific_name": "Scomber japonicus",
       "score_status": {
@@ -5763,7 +4810,6 @@
         "chembl_mbpi",
         "gbif_iucn_checklist",
         "iucn_scomber_japonicus_2023",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -5830,7 +4876,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "98969433",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
@@ -5846,7 +4892,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -5928,80 +4974,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 340852,
-            "recent": 154317
-          },
-          "reporting_rate_ratio": 0.239
-        },
-        "cells_compared": 28,
-        "cells_past_only": 21,
-        "cells_recent_only": 6,
-        "ci": [
-          0.235,
-          0.41
-        ],
-        "class": "decline_signal",
-        "dataset_check": {
-          "cells_compared": 20,
-          "ci": [
-            0.115,
-            0.356
-          ],
-          "confirms_decline": true,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 22944,
-            "recent": 3978
-          },
-          "past_share": 0.718,
-          "reporting_rate_ratio": 0.203,
-          "species_records": {
-            "past": 355,
-            "recent": 12
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.349,
-        "effort_records": {
-          "past": 26898,
-          "recent": 9382
-        },
-        "label": "감소 신호",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 10,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_fell_beyond_threshold_within_dominant_dataset_too",
-        "records_all_years": 806,
-        "records_in_map_extent": {
-          "past": 503,
-          "recent": 56
-        },
-        "reporting_rate_ratio": 0.31,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 503,
-          "recent": 54
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Engraulis japonicus",
       "score_status": {
@@ -6013,7 +4986,7 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -6028,7 +5001,6 @@
         "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_engraulis_japonicus_2018",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -6092,7 +5064,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "49182929",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
@@ -6108,7 +5080,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -6187,80 +5159,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 311326,
-            "recent": 139522
-          },
-          "reporting_rate_ratio": 0.248
-        },
-        "cells_compared": 29,
-        "cells_past_only": 27,
-        "cells_recent_only": 2,
-        "ci": [
-          0.3,
-          0.669
-        ],
-        "class": "decline_signal",
-        "dataset_check": {
-          "cells_compared": 26,
-          "ci": [
-            0.115,
-            0.493
-          ],
-          "confirms_decline": true,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 25995,
-            "recent": 3972
-          },
-          "past_share": 0.907,
-          "reporting_rate_ratio": 0.238,
-          "species_records": {
-            "past": 206,
-            "recent": 7
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.248,
-        "effort_records": {
-          "past": 27491,
-          "recent": 6825
-        },
-        "label": "감소 신호",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 10,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_fell_beyond_threshold_within_dominant_dataset_too",
-        "records_all_years": 348,
-        "records_in_map_extent": {
-          "past": 237,
-          "recent": 26
-        },
-        "reporting_rate_ratio": 0.448,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 238,
-          "recent": 26
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
@@ -6272,7 +5171,7 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -6287,7 +5186,6 @@
         "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_larimichthys_polyactis_2020",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -6337,7 +5235,7 @@
         "aphia_id": 275816,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Paralichthys olivaceus",
         "search": {
@@ -6358,7 +5256,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -6437,83 +5335,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 324984,
-            "recent": 145836
-          },
-          "reporting_rate_ratio": 0.626
-        },
-        "cells_compared": 30,
-        "cells_past_only": 16,
-        "cells_recent_only": 4,
-        "ci": [
-          0.649,
-          1.178
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 24,
-          "ci": [
-            0.567,
-            1.32
-          ],
-          "confirms_decline": false,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 28062,
-            "recent": 4427
-          },
-          "past_share": 0.912,
-          "reporting_rate_ratio": 0.865,
-          "species_records": {
-            "past": 179,
-            "recent": 24
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.321,
-        "effort_records": {
-          "past": 29663,
-          "recent": 9530
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 309,
-        "records_in_map_extent": {
-          "past": 194,
-          "recent": 55
-        },
-        "reporting_rate_ratio": 0.875,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 197,
-          "recent": 55
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
@@ -6539,7 +5361,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -6589,7 +5410,7 @@
         "aphia_id": 274849,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Sebastes schlegelii",
         "search": {
@@ -6676,7 +5497,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -7200,83 +6021,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 371583,
-            "recent": 165840
-          },
-          "reporting_rate_ratio": 0.583
-        },
-        "cells_compared": 28,
-        "cells_past_only": 15,
-        "cells_recent_only": 3,
-        "ci": [
-          0.625,
-          1.041
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 25,
-          "ci": [
-            0.733,
-            1.45
-          ],
-          "confirms_decline": false,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 28339,
-            "recent": 4573
-          },
-          "past_share": 0.814,
-          "reporting_rate_ratio": 1.031,
-          "species_records": {
-            "past": 231,
-            "recent": 38
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 4
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.322,
-        "effort_records": {
-          "past": 31991,
-          "recent": 10316
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 439,
-        "records_in_map_extent": {
-          "past": 285,
-          "recent": 75
-        },
-        "reporting_rate_ratio": 0.806,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 286,
-          "recent": 74
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
@@ -7303,7 +6048,6 @@
         "europepmc_mbpi",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -7367,7 +6111,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "20435860",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
@@ -7451,7 +6195,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -7986,80 +6730,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 286645,
-            "recent": 137729
-          },
-          "reporting_rate_ratio": 0.803
-        },
-        "cells_compared": 17,
-        "cells_past_only": 7,
-        "cells_recent_only": 5,
-        "ci": [
-          0.846,
-          1.341
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 15,
-          "ci": [
-            0.102,
-            0.374
-          ],
-          "confirms_decline": true,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 22599,
-            "recent": 4262
-          },
-          "past_share": 0.986,
-          "reporting_rate_ratio": 0.196,
-          "species_records": {
-            "past": 257,
-            "recent": 9
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.362,
-        "effort_records": {
-          "past": 24327,
-          "recent": 8810
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 359,
-        "records_in_map_extent": {
-          "past": 208,
-          "recent": 101
-        },
-        "reporting_rate_ratio": 1.065,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 260,
-          "recent": 100
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
@@ -8088,7 +6759,6 @@
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
         "mext_sfct_2020",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -8137,7 +6807,7 @@
         "aphia_id": 254538,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Gadus macrocephalus",
         "search": {
@@ -8224,7 +6894,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 34.0
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -8787,83 +7457,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 319445,
-            "recent": 145020
-          },
-          "reporting_rate_ratio": 0.503
-        },
-        "cells_compared": 31,
-        "cells_past_only": 31,
-        "cells_recent_only": 2,
-        "ci": [
-          0.542,
-          1.072
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 26,
-          "ci": [
-            0.51,
-            1.275
-          ],
-          "confirms_decline": false,
-          "dataset_id": "d5303d4b-e154-49a9-a2df-ebef09fbc166",
-          "effort_records": {
-            "past": 27142,
-            "recent": 4072
-          },
-          "past_share": 0.962,
-          "reporting_rate_ratio": 0.806,
-          "species_records": {
-            "past": 169,
-            "recent": 20
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 3
-        },
-        "effort_group": "Teleostei",
-        "effort_ratio": 0.299,
-        "effort_records": {
-          "past": 29382,
-          "recent": 8797
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 231,
-        "records_in_map_extent": {
-          "past": 186,
-          "recent": 41
-        },
-        "reporting_rate_ratio": 0.762,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 177,
-          "recent": 40
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
@@ -8890,7 +7484,6 @@
         "chembl_mbpi",
         "iucn_redlist_search",
         "kordi_2010_pacific_cod",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -8943,7 +7536,7 @@
         "aphia_id": 1061762,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Portunus trituberculatus",
         "search": {
@@ -8964,7 +7557,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -9043,83 +7636,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 334871,
-            "recent": 148554
-          },
-          "reporting_rate_ratio": 0.501
-        },
-        "cells_compared": 31,
-        "cells_past_only": 11,
-        "cells_recent_only": 7,
-        "ci": [
-          1.126,
-          1.836
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 26,
-          "ci": [
-            0.775,
-            1.432
-          ],
-          "confirms_decline": false,
-          "dataset_id": "1058cb10-c377-4fa0-984f-4fa9a2e92baf",
-          "effort_records": {
-            "past": 46797,
-            "recent": 6232
-          },
-          "past_share": 0.936,
-          "reporting_rate_ratio": 1.053,
-          "species_records": {
-            "past": 331,
-            "recent": 46
-          }
-        },
-        "datasets": {
-          "past": 4,
-          "recent": 3
-        },
-        "effort_group": "Malacostraca",
-        "effort_ratio": 0.154,
-        "effort_records": {
-          "past": 50525,
-          "recent": 7805
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 550,
-        "records_in_map_extent": {
-          "past": 362,
-          "recent": 78
-        },
-        "reporting_rate_ratio": 1.438,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 353,
-          "recent": 78
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
@@ -9145,7 +7662,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -9195,7 +7711,7 @@
         "aphia_id": 534443,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Octopus sinensis",
         "search": {
@@ -9216,7 +7732,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -9287,83 +7803,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 116235,
-            "recent": 103586
-          },
-          "reporting_rate_ratio": 0.764
-        },
-        "cells_compared": 3,
-        "cells_past_only": 1,
-        "cells_recent_only": 7,
-        "ci": [
-          1.86,
-          5.307
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 1,
-          "ci": [
-            0.576,
-            1.782
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b1a2d0ab-9b94-4a59-9371-432738a3cc36",
-          "effort_records": {
-            "past": 102,
-            "recent": 54
-          },
-          "past_share": 0.971,
-          "reporting_rate_ratio": 1.013,
-          "species_records": {
-            "past": 34,
-            "recent": 18
-          }
-        },
-        "datasets": {
-          "past": 2,
-          "recent": 2
-        },
-        "effort_group": "Cephalopoda",
-        "effort_ratio": 0.217,
-        "effort_records": {
-          "past": 452,
-          "recent": 98
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 126,
-        "records_in_map_extent": {
-          "past": 35,
-          "recent": 32
-        },
-        "reporting_rate_ratio": 3.142,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 34,
-          "recent": 23
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Octopus sinensis",
       "score_status": {
@@ -9389,7 +7829,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -9452,7 +7891,7 @@
         },
         "iucn_state": "data_deficient",
         "iucn_taxon_id": "162666",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "population_trend": "Unknown",
         "publication_year": 2012,
         "record_id": "IUCN:e.T162666A940677",
@@ -9533,7 +7972,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.4
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -10148,80 +8587,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 269207,
-            "recent": 130497
-          },
-          "reporting_rate_ratio": 0.35
-        },
-        "cells_compared": 14,
-        "cells_past_only": 15,
-        "cells_recent_only": 1,
-        "ci": [
-          0.808,
-          1.871
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 12,
-          "ci": [
-            0.715,
-            2.05
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 1264,
-            "recent": 124
-          },
-          "past_share": 0.933,
-          "reporting_rate_ratio": 1.211,
-          "species_records": {
-            "past": 130,
-            "recent": 15
-          }
-        },
-        "datasets": {
-          "past": 3,
-          "recent": 3
-        },
-        "effort_group": "Cephalopoda",
-        "effort_ratio": 0.138,
-        "effort_records": {
-          "past": 1379,
-          "recent": 190
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 207,
-        "records_in_map_extent": {
-          "past": 180,
-          "recent": 25
-        },
-        "reporting_rate_ratio": 1.23,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 150,
-          "recent": 25
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
@@ -10249,7 +8615,6 @@
         "gbif_iucn_checklist",
         "iucn_sepia_esculenta_2012",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "rda_db_10_4",
         "ufish_1_workbook",
         "yoo_2023_sepia_esculenta"
@@ -10382,7 +8747,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-10-01T00:00:00Z",
+  "generated_at": "2026-09-30T00:00:00Z",
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
@@ -10414,7 +8779,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.3 (2026-09-30). Diagram stage 3 MCUI, 'OBIS 출현기록 등 분포 최신성 검증, 개체수 감소 vs 조사 부족 구분': an OBIS reporting-rate check (species records / records of the same WoRMS class in the same 1-degree cells, 2006-2015 vs 2016-2025, edge records in every cell that holds them) classifies each species as decline signal, decline below threshold, survey gap, no clear decline or undetermined. A decline signal must also hold inside the dataset with most past records; it raises a computed IUCN or national MCUI by conservation.effort_adjustment and never creates or lowers one. A species without a national category whose IUCN search found no assessment, or whose assessment is DD, is labelled priority_survey with that reason (figure: 우선 조사 대상). See research/verified-indices/mcui-trend-2026-10-01.md.",
+    "changes_from": "verified-pilot-3.2 (2026-09-30). Diagram stage 3 MFPI, '섭취위치 / 유사종 대체치 구분': a component missing from a species' own RDA row is filled from FAO/INFOODS uFiSh1.0, species (measured > calculated) > same genus > same family (proxy), same consumed part, and is labelled; five species-level aquaculture records read in the original source are added. The fixed RDA cohorts are re-confirmed unchanged. See research/verified-indices/mfpi-substitutes-2026-09-30.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -10532,52 +8897,7 @@
         "VU": 60
       },
       "effort_adjustment": 10,
-      "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-      "no_assessment": {
-        "labels": {
-          "conservation_data_deficient": "IUCN 자료 부족(DD)",
-          "no_conservation_assessment": "보전 평가 없음"
-        },
-        "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
-      },
-      "trend": {
-        "cell_rule": "A record on a cell edge counts in every cell whose closed polygon holds it, as the OBIS statistics endpoint counts the effort; numerator and denominator use the same cells.",
-        "cells": "1-degree cells where the species has a record in either period and its class has records in both periods",
-        "classes": [
-          "undetermined: no comparable cell, fewer than min_past_records past records, a fall to ratio <= decline_ratio whose interval reaches 1, or a decline not confirmed within the dominant dataset",
-          "decline_signal: ratio <= decline_ratio (a 30% fall, IUCN criterion A2 VU threshold), interval below 1, and the same within the dominant dataset",
-          "decline_below_threshold: interval below 1 but the fall smaller than the threshold",
-          "survey_gap: fewer species records while class effort in the same cells also fell, and the reporting rate is not clearly lower",
-          "no_clear_decline: a reporting rate not lower"
-        ],
-        "continuity": 0.5,
-        "dataset_check": "A decline signal must also hold inside the dataset with most past records of the species (species and class records of that dataset only, same cells rule, same thresholds). Otherwise the fall may be a survey programme ending, and the class is undetermined. This is the reviewed-trend condition of docs/verified-indices-design.md, applied by rule to every species.",
-        "decline_ratio": 0.7,
-        "effort": "target group: OBIS records of the species' WoRMS class in the same cell and period; all-taxa records are a sensitivity",
-        "formula": "ratio = ((n_recent + 0.5) / E_recent) / ((n_past + 0.5) / E_past); 95% interval = ratio x/÷ exp(1.96 x sqrt(1/(n_past+0.5) + 1/(n_recent+0.5)))",
-        "labels": {
-          "decline_below_threshold": "감소 경향(30% 미만)",
-          "decline_signal": "감소 신호",
-          "no_clear_decline": "보고율 감소 없음",
-          "survey_gap": "조사 부족",
-          "undetermined": "판단 불가"
-        },
-        "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI for a species without an IUCN or national category, and none lowers one.",
-        "min_past_records": 20,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "snapshot": "research/verified-indices/snapshots/obis-trend-2026-10-01.json",
-        "source_id": "obis_trend",
-        "z": 1.96
-      }
+      "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
     "matrix": {
       "bbvi_threshold": 50,
@@ -10613,7 +8933,7 @@
         }
       }
     },
-    "method_version": "verified-pilot-3.4",
+    "method_version": "verified-pilot-3.3",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -10901,7 +9221,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.4",
+  "method_version": "verified-pilot-3.3",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -11448,16 +9768,6 @@
       "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
       "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
       "version": "2024 integrated edition; mollusc revision (vol. 6) 2022"
-    },
-    "obis_trend": {
-      "accessed": "2026-10-01",
-      "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
-      "license_url": "https://manual.obis.org/policy.html",
-      "provider": "Ocean Biodiversity Information System (OBIS), IOC-UNESCO",
-      "terms": "OBIS data policy: datasets carry CC0, CC BY or CC BY-NC, and use should be cited as 'OBIS (2026) Ocean Biodiversity Information System. Intergovernmental Oceanographic Commission of UNESCO. obis.org.' with the underlying datasets, respecting each dataset's licence. The dataset IDs behind each species' counts are listed per period in the repository snapshot research/verified-indices/snapshots/obis-trend-<date>.json; no record, coordinate or media is redistributed.",
-      "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
-      "url": "https://api.obis.org/v3/",
-      "version": "queried 2026-10-01"
     },
     "park_2013_dieckol": {
       "accessed": "2026-09-26",
@@ -12122,7 +10432,7 @@
         "aphia_id": 145721,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Undaria pinnatifida",
         "search": {
@@ -12187,7 +10497,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -12387,82 +10697,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 329228,
-            "recent": 167071
-          },
-          "reporting_rate_ratio": 0.837
-        },
-        "cells_compared": 20,
-        "cells_past_only": 5,
-        "cells_recent_only": 5,
-        "ci": [
-          1.106,
-          1.433
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 16,
-          "ci": [
-            1.102,
-            1.469
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 17668,
-            "recent": 5950
-          },
-          "past_share": 0.806,
-          "reporting_rate_ratio": 1.273,
-          "species_records": {
-            "past": 619,
-            "recent": 265
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 3
-        },
-        "effort_group": "Phaeophyceae",
-        "effort_ratio": 0.337,
-        "effort_records": {
-          "past": 20785,
-          "recent": 7014
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1434,
-        "records_in_map_extent": {
-          "past": 772,
-          "recent": 334
-        },
-        "reporting_rate_ratio": 1.259,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 768,
-          "recent": 326
-        }
-      },
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -12523,7 +10758,6 @@
         "feng_2021_knfl",
         "iucn_redlist_search",
         "mext_sfct_2020",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "sato_2002_wakame",
@@ -12660,7 +10894,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "180424",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "EN -> 80 (team pilot rule, not an IUCN score)",
         "population_trend": "Decreasing",
@@ -12687,7 +10921,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -12758,80 +10992,7 @@
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 363688,
-            "recent": 175325
-          },
-          "reporting_rate_ratio": 3.017
-        },
-        "cells_compared": 25,
-        "cells_past_only": 3,
-        "cells_recent_only": 10,
-        "ci": [
-          1.44,
-          2.104
-        ],
-        "class": "no_clear_decline",
-        "dataset_check": {
-          "cells_compared": 17,
-          "ci": [
-            0.811,
-            1.315
-          ],
-          "confirms_decline": false,
-          "dataset_id": "cb2f31bf-83da-438e-bc48-776ee2573f77",
-          "effort_records": {
-            "past": 389,
-            "recent": 319
-          },
-          "past_share": 0.788,
-          "reporting_rate_ratio": 1.032,
-          "species_records": {
-            "past": 143,
-            "recent": 121
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 4
-        },
-        "effort_group": "Holothuroidea",
-        "effort_ratio": 0.835,
-        "effort_records": {
-          "past": 717,
-          "recent": 599
-        },
-        "label": "보고율 감소 없음",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 80.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_not_lower",
-        "records_all_years": 508,
-        "records_in_map_extent": {
-          "past": 179,
-          "recent": 265
-        },
-        "reporting_rate_ratio": 1.741,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 180,
-          "recent": 262
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
@@ -12860,7 +11021,6 @@
         "gbif_iucn_checklist",
         "iucn_japonicus_2013",
         "iucn_japonicus_2026",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -13046,7 +11206,7 @@
         "aphia_id": 250680,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Halocynthia roretzi",
         "search": {
@@ -13133,7 +11293,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -13657,82 +11817,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 231519,
-            "recent": 135696
-          },
-          "reporting_rate_ratio": 0.483
-        },
-        "cells_compared": 10,
-        "cells_past_only": 2,
-        "cells_recent_only": 2,
-        "ci": [
-          0.485,
-          0.884
-        ],
-        "class": "undetermined",
-        "dataset_check": {
-          "cells_compared": 9,
-          "ci": [
-            0.563,
-            1.19
-          ],
-          "confirms_decline": false,
-          "dataset_id": "cb2f31bf-83da-438e-bc48-776ee2573f77",
-          "effort_records": {
-            "past": 939,
-            "recent": 252
-          },
-          "past_share": 0.8,
-          "reporting_rate_ratio": 0.819,
-          "species_records": {
-            "past": 152,
-            "recent": 33
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 3
-        },
-        "effort_group": "Ascidiacea",
-        "effort_ratio": 0.433,
-        "effort_records": {
-          "past": 2557,
-          "recent": 1106
-        },
-        "label": "판단 불가",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "decline_not_confirmed_within_dominant_dataset",
-        "records_all_years": 317,
-        "records_in_map_extent": {
-          "past": 200,
-          "recent": 54
-        },
-        "reporting_rate_ratio": 0.655,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 192,
-          "recent": 54
-        }
-      },
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "priority_survey": false,
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -13793,7 +11878,6 @@
         "halocynthia_2006_paper",
         "halorotetin_b_2026",
         "iucn_redlist_search",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "shin_2011_seasquirt",
@@ -13959,7 +12043,7 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "176085",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "occurrence_trend_adjustment": null,
         "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
@@ -13975,7 +12059,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -14075,80 +12159,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 317439,
-            "recent": 143080
-          },
-          "reporting_rate_ratio": 0.199
-        },
-        "cells_compared": 20,
-        "cells_past_only": 26,
-        "cells_recent_only": 5,
-        "ci": [
-          0.292,
-          0.89
-        ],
-        "class": "decline_signal",
-        "dataset_check": {
-          "cells_compared": 14,
-          "ci": [
-            0.175,
-            0.847
-          ],
-          "confirms_decline": true,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 1092,
-            "recent": 138
-          },
-          "past_share": 0.92,
-          "reporting_rate_ratio": 0.385,
-          "species_records": {
-            "past": 133,
-            "recent": 6
-          }
-        },
-        "datasets": {
-          "past": 2,
-          "recent": 3
-        },
-        "effort_group": "Cephalopoda",
-        "effort_ratio": 0.176,
-        "effort_records": {
-          "past": 1591,
-          "recent": 280
-        },
-        "label": "감소 신호",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 10,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "reporting_rate_fell_beyond_threshold_within_dominant_dataset_too",
-        "records_all_years": 232,
-        "records_in_map_extent": {
-          "past": 200,
-          "recent": 20
-        },
-        "reporting_rate_ratio": 0.51,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 150,
-          "recent": 13
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Todarodes pacificus",
       "score_status": {
@@ -14160,7 +12171,7 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
@@ -14176,7 +12187,6 @@
         "gbif_iucn_checklist",
         "iucn_todarodes_2014",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "rda_db_10_4",
         "todarodes_2011_peptide",
         "yu_2019_todarodes"
@@ -14251,7 +12261,7 @@
         "aphia_id": 372119,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Gelidium elegans",
         "search": {
@@ -14273,7 +12283,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -14378,83 +12388,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 344415,
-            "recent": 168205
-          },
-          "reporting_rate_ratio": 0.738
-        },
-        "cells_compared": 20,
-        "cells_past_only": 6,
-        "cells_recent_only": 3,
-        "ci": [
-          1.353,
-          1.829
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 15,
-          "ci": [
-            2.197,
-            3.063
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 30981,
-            "recent": 6214
-          },
-          "past_share": 0.632,
-          "reporting_rate_ratio": 2.594,
-          "species_records": {
-            "past": 406,
-            "recent": 211
-          }
-        },
-        "datasets": {
-          "past": 6,
-          "recent": 3
-        },
-        "effort_group": "Florideophyceae",
-        "effort_ratio": 0.229,
-        "effort_records": {
-          "past": 38078,
-          "recent": 8723
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1417,
-        "records_in_map_extent": {
-          "past": 649,
-          "recent": 230
-        },
-        "reporting_rate_ratio": 1.573,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 639,
-          "recent": 230
-        }
-      },
       "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
       "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
@@ -14482,7 +12416,6 @@
         "gelidium_2018_extract",
         "iucn_redlist_search",
         "mext_fooddb_2023",
-        "obis_trend",
         "rda_db_10_4"
       ],
       "unexplored_candidate": null,
@@ -14723,7 +12656,7 @@
         "aphia_id": 494972,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Sargassum fusiforme",
         "search": {
@@ -14746,7 +12679,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -14853,82 +12786,7 @@
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 341118,
-            "recent": 165741
-          },
-          "reporting_rate_ratio": 0.993
-        },
-        "cells_compared": 19,
-        "cells_past_only": 7,
-        "cells_recent_only": 2,
-        "ci": [
-          1.283,
-          1.655
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 15,
-          "ci": [
-            1.212,
-            1.596
-          ],
-          "confirms_decline": false,
-          "dataset_id": "b69f0512-c185-4adc-bf8b-0239fab76c69",
-          "effort_records": {
-            "past": 17142,
-            "recent": 5580
-          },
-          "past_share": 0.891,
-          "reporting_rate_ratio": 1.391,
-          "species_records": {
-            "past": 650,
-            "recent": 294
-          }
-        },
-        "datasets": {
-          "past": 8,
-          "recent": 3
-        },
-        "effort_group": "Phaeophyceae",
-        "effort_ratio": 0.331,
-        "effort_records": {
-          "past": 20068,
-          "recent": 6645
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": null,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1683,
-        "records_in_map_extent": {
-          "past": 735,
-          "recent": 352
-        },
-        "reporting_rate_ratio": 1.457,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 730,
-          "recent": 352
-        }
-      },
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "priority_survey": false,
       "reference_combination": null,
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
@@ -14962,7 +12820,6 @@
         "iucn_redlist_search",
         "lee_2024_sargassum_nutrition",
         "li_2022_saringosterol_acetate",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "sargassum_2024_fractions",
@@ -15104,7 +12961,7 @@
         "aphia_id": 506159,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Mytilus coruscus",
         "search": {
@@ -15192,7 +13049,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.1
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -15689,7 +13546,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.4 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.3 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -15852,80 +13709,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 380081,
-            "recent": 178127
-          },
-          "reporting_rate_ratio": 1.562
-        },
-        "cells_compared": 27,
-        "cells_past_only": 6,
-        "cells_recent_only": 7,
-        "ci": [
-          2.938,
-          4.493
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 21,
-          "ci": [
-            4.277,
-            6.892
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 17285,
-            "recent": 2311
-          },
-          "past_share": 0.789,
-          "reporting_rate_ratio": 5.429,
-          "species_records": {
-            "past": 160,
-            "recent": 116
-          }
-        },
-        "datasets": {
-          "past": 5,
-          "recent": 3
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.201,
-        "effort_records": {
-          "past": 23113,
-          "recent": 4657
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2025,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 423,
-        "records_in_map_extent": {
-          "past": 194,
-          "recent": 148
-        },
-        "reporting_rate_ratio": 3.633,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 201,
-          "recent": 147
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": {
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
@@ -15985,7 +13769,6 @@
         "iucn_redlist_search",
         "mytilus_2020_myticusin",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "scienceon_mytilus_coruscus_2016",
@@ -16304,7 +14087,7 @@
         "aphia_id": 836033,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료",
         "reviewed": true,
         "scientific_name": "Magallana gigas",
         "search": {
@@ -16401,7 +14184,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-3.4",
+        "method_version": "verified-pilot-3.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -16984,80 +14767,7 @@
         "taxon_group": "연체동물",
         "used_for_score": false
       },
-      "occurrence_trend": {
-        "all_taxa_sensitivity": {
-          "effort_records": {
-            "past": 407946,
-            "recent": 187948
-          },
-          "reporting_rate_ratio": 1.357
-        },
-        "cells_compared": 31,
-        "cells_past_only": 4,
-        "cells_recent_only": 13,
-        "ci": [
-          2.433,
-          3.386
-        ],
-        "class": "survey_gap",
-        "dataset_check": {
-          "cells_compared": 17,
-          "ci": [
-            2.208,
-            3.7
-          ],
-          "confirms_decline": false,
-          "dataset_id": "86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265",
-          "effort_records": {
-            "past": 16948,
-            "recent": 2150
-          },
-          "past_share": 0.583,
-          "reporting_rate_ratio": 2.858,
-          "species_records": {
-            "past": 216,
-            "recent": 78
-          }
-        },
-        "datasets": {
-          "past": 8,
-          "recent": 6
-        },
-        "effort_group": "Bivalvia",
-        "effort_ratio": 0.218,
-        "effort_records": {
-          "past": 23539,
-          "recent": 5127
-        },
-        "label": "조사 부족",
-        "latest_record_year": 2026,
-        "mcui_adjustment": 0,
-        "mcui_base": 10.0,
-        "periods": {
-          "past": [
-            "2006-01-01",
-            "2015-12-31"
-          ],
-          "recent": [
-            "2016-01-01",
-            "2025-12-31"
-          ]
-        },
-        "reason": "fewer_records_explained_by_less_effort",
-        "records_all_years": 1020,
-        "records_in_map_extent": {
-          "past": 357,
-          "recent": 229
-        },
-        "reporting_rate_ratio": 2.87,
-        "source_id": "obis_trend",
-        "species_records": {
-          "past": 365,
-          "recent": 228
-        }
-      },
       "priority_survey": false,
-      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Magallana gigas",
       "score_status": {
@@ -17105,7 +14815,6 @@
         "magallana_2013_peptide",
         "miyoshi_1991_zein",
         "nibr_red_data_book_2024",
-        "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "valenzuela_2022_yield",
