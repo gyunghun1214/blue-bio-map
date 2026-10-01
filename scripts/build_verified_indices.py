@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.13.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.14.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -529,13 +529,16 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
 
 
 def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
-    """Research rule: a synthetic peptide re-measured from another origin replicates potency, never origin or value."""
+    """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
+    # 3.14: a config may also accept sequence-confirmed purified peptides; older configs stay synthetic-only
+    accepted = settings["cross_origin_potency"].get("accepted_materials", ["synthetic"])
     out = []
     for r in evidence.get("potency_replications", []):
         if r.get("sequence") != sequence:
             continue
-        require(r.get("reviewed") is True and r.get("synthetic") is True and r.get("value_in_text") is True
+        material = "synthetic" if r.get("synthetic") is True else r.get("material")
+        require(r.get("reviewed") is True and material in accepted and r.get("value_in_text") is True
                 and r.get("target") == settings["target"] and r.get("endpoint") == settings["endpoint"]
                 and r.get("substrate") == settings["substrate"] and r.get("relation") == "=" and r.get("unit") == "uM"
                 and r.get("source_id") in evidence["sources"] and r.get("original_paper_doi"),
@@ -544,7 +547,8 @@ def potency_replications(evidence: dict, settings: dict, sequence: str, value: f
         same_paper = r["original_paper_doi"].lower() in dois
         agrees = abs(p - value) <= gap
         out.append({"record_id": r["record_id"], "original_paper_doi": r["original_paper_doi"], "source_id": r["source_id"],
-                    "origin_material": r["origin_material"], "origin_label": r.get("origin_label"), "value": r["value"], "unit": r["unit"], "pIC50": round(p, 3),
+                    "origin_material": r["origin_material"], "origin_label": r.get("origin_label"), **({"material": material} if "material" in r else {}),
+                    "value": r["value"], "unit": r["unit"], "pIC50": round(p, 3),
                     "pIC50_gap": round(abs(p - value), 3), "used": agrees and not same_paper,
                     "reason": "same paper as the origin measurement" if same_paper else None if agrees else f"pIC50 gap above {gap}"})
     return out
