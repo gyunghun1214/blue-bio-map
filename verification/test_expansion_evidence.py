@@ -69,7 +69,8 @@ class ExpansionReleaseGate(unittest.TestCase):
         self.assertEqual({s["aphiaID"] for s in evidence["species"]}, ids)
         self.assertEqual(len(evidence["species"]), 22)
         self.assertFalse(ids & {int(p["aphia_id"]) for p in snapshot["profiles"]})
-        self.assertEqual((len(snapshot["profiles"]), len(snapshot["cells"])), (8, 19))  # pilot map unchanged
+        # operating map: map-3 (2026-10-01, CC BY-NC 4.0 + 1 km buffer) replaced the 19 map-1/map-2 cells with 210
+        self.assertEqual((len(snapshot["profiles"]), len(snapshot["cells"])), (8, 210))
         for item in evidence["species"]:
             self.assertTrue(all(v is None for v in item["scores"].values()))
             self.assertNotIn("sensitivity", item)
