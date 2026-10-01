@@ -46,7 +46,7 @@ MBPI 칸(2단계에서 나눔)
 | 감태 | *Ecklonia cava* | 371986 | 후보 22 | 후보 1° 셀 2개 | — · 검색·미발견 | 67.5 · 공개 반영 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
 | 가시파래 | *Ulva prolifera* | 234476 | 후보 22 | 공개 셀 없음(기준 통과 0건) | — · 검색·미발견 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
 | 괭생이모자반 | *Sargassum horneri* | 494853 | 후보 22 | 후보 1° 셀 5개 | — · 검색·미발견 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
-| Gracilaria vermiculophylla | *Gracilaria vermiculophylla* | 236157 | 후보 22 | 후보 1° 셀 4개 | — · 자료有·조건 미충족 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
+| 꼬시래기 | *Gracilaria vermiculophylla* | 236157 | 후보 22 | 후보 1° 셀 4개 | — · 자료有·조건 미충족 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
 | 청각 | *Codium fragile* | 145086 | 후보 22 | 후보 1° 셀 3개 | — · 자료有·조건 미충족 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | — | — · 산출 불가(두 축 필요) |
 | 바지락 | *Ruditapes philippinarum* | 231750 | 후보 22 | 후보 1° 셀 9개 | 52.1 · 공개 반영 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | — · 검색·미발견 | 국가 LC(NIBR 2024) · 공개 반영(사실) | — · 산출 불가(두 축 필요) |
 | 전복(종 수준) | *Haliotis discus* | 397082 | 후보 22 | 후보 4° 셀 1개 | — · 자료有·조건 미충족 | — · 검색·미발견(Wikidata/LOTUS·ChEMBL 37) / PubChem·CMNPD·문헌 미조사 | 80.0 · 공개 반영 | — | — · 산출 불가(두 축 필요) |
