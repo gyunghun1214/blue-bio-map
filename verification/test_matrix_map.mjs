@@ -5,7 +5,7 @@ import vm from 'node:vm';
 // verified-pilot-3.2 (diagram stages 4-5): BBVI x MCUI types, the map's cell colour rule and the information-sufficiency layers.
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'),report=JSON.parse(read('assessments.json')),readiness=JSON.parse(read('matrix-readiness.json'));
-const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v3.7.json',import.meta.url),'utf8'));
+const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v3.9.json',import.meta.url),'utf8'));
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>structuredClone(report)})};
 vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
@@ -16,7 +16,7 @@ vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(glob
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-pilot-3.7');  // 3.3/3.6/3.7 change MFPI, 3.4 MCUI, 3.5 adds evidence rows; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-pilot-3.9');  // 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8 add evidence rows; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);

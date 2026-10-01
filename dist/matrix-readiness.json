@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.7",
+  "method_version": "verified-pilot-3.9",
   "schema_version": 1,
   "species": [
     {
@@ -838,18 +838,13 @@
     {
       "aphia_id": 231750,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "바지락",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -860,7 +855,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 39.5,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
@@ -868,11 +863,14 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.5657/fas.2005.8.2.109",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm",
         "https://www.iucnredlist.org/search",
+        "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
         "https://www.marinespecies.org/rest/",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
@@ -1073,10 +1071,10 @@
     {
       "aphia_id": 413600,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
-        "MFPI": "comparable_nutrition_missing"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
@@ -1092,19 +1090,22 @@
         "BBVI": null,
         "MBPI": 56.9,
         "MCUI": 20.0,
-        "MFPI": null
+        "MFPI": 57.7
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sinonovacula+constricta&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3389/fmars.2021.747891",
         "https://doi.org/10.3390/md14060110",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
     },
@@ -1114,7 +1115,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1127,22 +1128,21 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": "iucn",
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency"
-      ],
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Scomber japonicus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
         "MCUI": 10.0,
-        "MFPI": null
+        "MFPI": 48.0
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species/176707342",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.5657/kfas.2010.43.6.589",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -1150,6 +1150,7 @@
         "https://www.iucnredlist.org/species/170306/170083106",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=127022",
         "https://www.marinespecies.org/rest/",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
@@ -1471,7 +1472,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1495,15 +1496,17 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 36.9
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
         "https://api.obis.org/v3/",
+        "https://opac-t.time.u-tokai.ac.jp/iwjs0018opc/TD00000555",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],

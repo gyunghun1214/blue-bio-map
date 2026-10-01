@@ -93,7 +93,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -983,7 +983,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1256,7 +1256,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1543,7 +1543,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1780,7 +1780,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -2138,7 +2138,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2510,193 +2510,8 @@
     {
       "aphia_id": 231750,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": true,
-            "origin": false,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "IC50",
-          "material_kind": "single_peptide",
-          "missing": [
-            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
-          ],
-          "origin_aphia_id": 231750,
-          "origin_scientific_name": "Ruditapes philippinarum",
-          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
-          "record_id": "10.1046/j.1444-2906.2002.00415.x:AEL",
-          "relation": "=",
-          "reviewed": true,
-          "sequence": "AEL",
-          "sequence_confirmed": true,
-          "source_id": "suetsuna_2002_clam",
-          "status": "partial_only",
-          "substrate": "HHL",
-          "target": "ACE",
-          "unit": "uM",
-          "value": 57.1,
-          "value_in_text": true,
-          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
-        },
-        {
-          "chain": {
-            "comparable_cohort": true,
-            "origin": false,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "IC50",
-          "material_kind": "single_peptide",
-          "missing": [
-            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
-          ],
-          "origin_aphia_id": 231750,
-          "origin_scientific_name": "Ruditapes philippinarum",
-          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
-          "record_id": "10.1046/j.1444-2906.2002.00415.x:LVE",
-          "relation": "=",
-          "reviewed": true,
-          "sequence": "LVE",
-          "sequence_confirmed": true,
-          "source_id": "suetsuna_2002_clam",
-          "status": "partial_only",
-          "substrate": "HHL",
-          "target": "ACE",
-          "unit": "uM",
-          "value": 14.2,
-          "value_in_text": true,
-          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
-        },
-        {
-          "chain": {
-            "comparable_cohort": true,
-            "origin": false,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "IC50",
-          "material_kind": "single_peptide",
-          "missing": [
-            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
-          ],
-          "origin_aphia_id": 231750,
-          "origin_scientific_name": "Ruditapes philippinarum",
-          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
-          "record_id": "10.1046/j.1444-2906.2002.00415.x:IELPLG",
-          "relation": "=",
-          "reviewed": true,
-          "sequence": "IELPLG",
-          "sequence_confirmed": true,
-          "source_id": "suetsuna_2002_clam",
-          "status": "partial_only",
-          "substrate": "HHL",
-          "target": "ACE",
-          "unit": "uM",
-          "value": 72.1,
-          "value_in_text": true,
-          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
-        }
-      ],
-      "bioactivity_trace": [
-        {
-          "adjusted": 39.52414772727273,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1046/j.1444-2906.2002.00415.x"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
-              "relation": "=",
-              "source_id": "suetsuna_2002_clam",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 34.7
-            }
-          ],
-          "original_paper_dois": [
-            "10.1046/j.1444-2906.2002.00415.x"
-          ],
-          "pIC50": 4.46,
-          "peer_peptides": 352,
-          "peptide_sequence": "IAE",
-          "percentile": 52.7,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1046/j.1444-2906.2002.00415.x:IAE"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 26.420454545454547,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1046/j.1444-2906.2002.00415.x"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
-              "relation": "=",
-              "source_id": "suetsuna_2002_clam",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 95.6
-            }
-          ],
-          "original_paper_dois": [
-            "10.1046/j.1444-2906.2002.00415.x"
-          ],
-          "pIC50": 4.02,
-          "peer_peptides": 352,
-          "peptide_sequence": "IVE",
-          "percentile": 35.23,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1046/j.1444-2906.2002.00415.x:IVE"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 23.011363636363637,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.5657/fas.2005.8.2.109"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.5657/fas.2005.8.2.109",
-              "relation": "=",
-              "source_id": "lee_2005_clam",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 158
-            }
-          ],
-          "original_paper_dois": [
-            "10.5657/fas.2005.8.2.109"
-          ],
-          "pIC50": 3.801,
-          "peer_peptides": 352,
-          "peptide_sequence": "LLP",
-          "percentile": 30.68,
-          "potency_replications": [],
-          "record_ids": [
-            "10.5657/fas.2005.8.2.109:LLP"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        }
-      ],
+      "bioactivity_partial": [],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -2731,11 +2546,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 39.5,
-          "minimum_cohort_10": 39.5,
-          "minimum_cohort_100": 39.5,
-          "no_approved_drug_filter": 39.5,
-          "no_common_metabolite_filter": 39.5
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 1,
@@ -2838,7 +2653,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3477,8 +3292,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -3514,11 +3329,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.75
       },
       "korean_name": "바지락",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "peptide",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 231750,
@@ -3632,77 +3447,43 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 39.5,
-          "MFPI": 60.4
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.1046/j.1444-2906.2002.00415.x"
-        ],
-        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 44.7,
-          "0.5": 50.0,
-          "0.75": 55.2
-        },
-        "used_for_score": false,
-        "value": 50.0
-      },
+      "reference_combination": null,
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 39.5,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 29.7,
-        "median_compound_sensitivity": 26.4,
-        "range_from_aggregation": [
-          23.0,
-          39.5
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 39.5,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 60.4
       },
       "source_ids": [
-        "ahtpdb_ic50_2026",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "fao_casp_ruditapes",
         "iucn_redlist_search",
-        "lee_2005_clam",
         "nibr_red_data_book_2024",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "suetsuna_2002_clam",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -3842,7 +3623,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4830,7 +4611,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5757,7 +5538,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -6043,7 +5824,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6614,7 +6395,7 @@
               "link_evidence": "MEXT 식품명 「あかがい」의 표준 일본명 アカガイ는 WoRMS 504357 Anadara broughtonii의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 「あかがい」 성분값은 분석값과 4정판 수록값에 기초한다(第3章 10 魚介類). 근연 さるぼう는 별도 항목 10318이다.",
               "n": null,
               "part": "edible portion",
-              "source_id": "mext_sfct_2020_items",
+              "source_id": "mext_sfct_2020_zinc",
               "table": "MEXT",
               "taxon_label": "Anadara broughtonii (アカガイ)",
               "taxon_level": "mext"
@@ -6889,7 +6670,7 @@
         "chembl_mbpi",
         "iucn_redlist_search",
         "kwon_cho_1986_anadara",
-        "mext_sfct_2020_items",
+        "mext_sfct_2020_zinc",
         "nibr_red_data_book_2024",
         "obis_trend",
         "pubchem_inchikey_mbpi",
@@ -6996,678 +6777,13 @@
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 413600,
-          "feasible": true,
-          "kind": "aquaculture",
-          "limitations": "China, not Korea (the blue-crab record has the same limit). A carrying-capacity model study: harvest weight and yield of the clam are not tabulated in the text read. Polyculture, one season.",
-          "method": "Integrated pond polyculture with swimming crab and kuruma shrimp: razor clam seed (shell length 18.5 mm, 0.32 g) stocked at 37.5 kg/ha in a 1.33 ha pond and grown for 240 days; biomass from initial and harvesting weights",
-          "quote": "The experiment lasted 240 days from June 2020 to January 2021.",
-          "record_id": "10.3389/fmars.2021.747891: Materials and Methods; Table 1",
-          "region": "Zhoushan, Zhejiang Province, China (the coordinates printed in the paper, 24°35'N 112°7'E, do not match Zhoushan)",
-          "reviewed": true,
-          "source_id": "dong_2021_pond_razor_clam",
-          "year": "2020-2021"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
-        "cohort_food_item_ids": [
-          "K0270000000a",
-          "K0390010000a",
-          "K0620000000a",
-          "K0830011130a",
-          "K0960070000a",
-          "K1070000000a",
-          "K1140000000a",
-          "K1320000000a",
-          "K1370020000a",
-          "K1620000000a",
-          "K1650010000a",
-          "K1670000000a",
-          "K4000000000a",
-          "K4000010000a",
-          "K4000040000a",
-          "K4040020000a",
-          "K4060010000a",
-          "K4130000000a",
-          "K6000020000a",
-          "K6020010000a",
-          "K6080000000a",
-          "K6100000000a",
-          "K6110000000a",
-          "K6130180000a",
-          "K6230000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-marine-animals",
-        "cohort_species": 25,
-        "components": {
-          "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 6.5,
-          "evidence_grade_deduction": 7.27,
-          "nutrient_value_contribution": 48.46
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "Refuse share of the food as purchased in the Japanese table; size and origin of the sample differ from Korean catches.",
-          "method": "1 - refuse (35%) / 100 from the same MEXT item",
-          "record_id": "MEXT-2020:10280:refuse",
-          "region": "Japan (MEXT 2020 national table)",
-          "reviewed": true,
-          "sample_period": "輸入品の分析値",
-          "source_id": "mext_sfct_2020_items",
-          "unit": "edible share of food as purchased",
-          "value": 0.65
-        },
-        "english_name": "Sinonovacula constricta (アゲマキガイ)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 65.0
-        },
-        "method_version": "verified-pilot-3.9",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10280 ＜貝類＞ あげまき 生: same-species raw item, 輸入品の分析値",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 61.0
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 13.0
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 44.0
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 35.0
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 41.0
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 10.0
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 24.0
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 65.0
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 48.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 31.0
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 428.0
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 68.0
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 70.0
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 127.0
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 26.0
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 32.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.0
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 49.0
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 11.0
-              },
-              {
-                "food_item_id": "MEXT:10280",
-                "name": "＜貝類＞ あげまき 生",
-                "value": 66.0
-              }
-            ],
-            "percentile": 82.69,
-            "percentile_unrounded": 82.6923076923077,
-            "unit": "mg",
-            "value": 66.0
-          },
-          "iron_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10280 ＜貝類＞ あげまき 生: same-species raw item, 輸入品の分析値",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 1.98
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.7
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 1.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.44
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.1
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.4
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.43
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 1.17
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.95
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 2.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 0.92
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 8.72
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 3.75
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 2.68
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 0.84
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 0.74
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 1.48
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.7
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 0.89
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 0.18
-              },
-              {
-                "food_item_id": "MEXT:10280",
-                "name": "＜貝類＞ あげまき 生",
-                "value": 4.1
-              }
-            ],
-            "percentile": 90.38,
-            "percentile_unrounded": 90.38461538461539,
-            "unit": "mg",
-            "value": 4.1
-          },
-          "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10280 ＜貝類＞ あげまき 生: same-species raw item, 輸入品の分析値",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 22.36
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 23.99
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 21.3
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 20.7
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 18.41
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 20.08
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 19.5
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 18.9
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 22.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.02
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 17.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 23.1
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 15.18
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 10.8
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 12.3
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 9.66
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 12.29
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 12.27
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 15.97
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 16.19
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 16.3
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.4
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 21.17
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 18.84
-              },
-              {
-                "food_item_id": "MEXT:10280",
-                "name": "＜貝類＞ あげまき 生",
-                "value": 8.1
-              }
-            ],
-            "percentile": 5.77,
-            "percentile_unrounded": 5.769230769230769,
-            "unit": "g",
-            "value": 8.1
-          },
-          "zinc_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10280 ＜貝類＞ あげまき 生: same-species raw item, 輸入品の分析値",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.52
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 0.8
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.78
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.56
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.56
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 6.1
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 2.15
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 15.9
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 1.1
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 1.22
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 2.05
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 2.02
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.3
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 1.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 2.26
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 1.4
-              },
-              {
-                "food_item_id": "MEXT:10280",
-                "name": "＜貝類＞ あげまき 生",
-                "value": 1.5
-              }
-            ],
-            "percentile": 63.46,
-            "percentile_unrounded": 63.46153846153846,
-            "unit": "mg",
-            "value": 1.5
-          }
-        },
-        "observed_rows": [
-          {
-            "english_name": "Sinonovacula constricta (アゲマキガイ)",
-            "food_item_id": "MEXT:10280",
-            "link_evidence": "MEXT 식품명 「あげまき」(揚巻)는 WoRMS 413600 Sinonovacula constricta의 일본어 일반명 アゲマキガイ에서 끝의 ガイ(貝)를 뗀 이름과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 10 魚介類 해설은 「あげまき」를 殻長 약 10 cm·殻幅 약 2.5 cm의 ナタマメガイ科 이매패로, 有明海 등의 진흙에 수직 굴을 파고 산다고 적는다(이 종의 형태·서식과 일치). 성분값은 수입품의 분석값이다.",
-            "linked": true,
-            "missing": [],
-            "refuse_pct": 35.0,
-            "reported_food_name": "＜貝類＞ あげまき 生",
-            "row_source": "MEXT 2020 (8th)",
-            "source_id": "mext_sfct_2020_items",
-            "values": {
-              "calcium_mg": 66.0,
-              "iron_mg": 4.1,
-              "protein_g": 8.1,
-              "zinc_mg": 1.5
-            }
-          }
-        ],
-        "outside_cohort": true,
-        "reported_food_name": "＜貝類＞ あげまき 生",
-        "row_source": "MEXT 2020 (8th)",
-        "row_table": "mext",
-        "sample_state": "raw",
-        "source_food_item_id": "MEXT:10280",
-        "source_id": "mext_sfct_2020_items",
-        "substituted_components": [],
+        "method_version": "verified-pilot-3.7",
+        "observed_rows": [],
         "sufficiency": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -7677,36 +6793,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
-          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
-          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "Ranked against the 25-food cohort plus itself because the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species).",
-          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 57.69230769230769,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 60.8,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 54.6,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -7729,15 +6816,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -7747,7 +6827,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.67
       },
       "korean_name": "맛조개",
       "mbpi_label": "참고값(단일 논문)",
@@ -7865,44 +6945,19 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 56.9,
-          "MFPI": 57.7
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.3390/md14060110"
-        ],
-        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 57.1,
-          "0.5": 57.3,
-          "0.75": 57.5
-        },
-        "used_for_score": false,
-        "value": 57.3
-      },
+      "reference_combination": null,
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 56.9,
         "MCUI": 20.0,
-        "MFPI": 57.7
+        "MFPI": null
       },
       "sensitivity": {
         "food_weights": {},
@@ -7915,26 +6970,23 @@
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": 56.9,
-        "food_only_MFPI": 57.7
+        "food_only_MFPI": null
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
         "cmnpd_mbpi",
-        "dong_2021_pond_razor_clam",
         "europepmc_mbpi",
         "iucn_redlist_search",
         "li_2016_sinonovacula_vqy",
-        "mext_sfct_2020_items",
         "nibr_red_data_book_2024",
-        "obis_trend",
-        "rda_db_10_4"
+        "obis_trend"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
+        "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": "comparable_nutrition_missing"
       }
     },
     {
@@ -8015,641 +7067,9 @@
         "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 01 June 2022, published 2023, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 170306 with the same category."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 127022,
-          "feasible": true,
-          "kind": "aquaculture",
-          "limitations": "Capture-based culture: seed are wild juveniles, not hatchery seed. One farm, one season. The paper cites national cultured-mackerel production (5 t in 2003, 184 t in 2006, 249 t in 2009, KOSIS) as context only.",
-          "method": "Sea net-cage grow-out (해상가두리): wild juveniles of about 147 g caught by set net off Yokjido were stocked in October 2007 and grown to about 405 g by September 2008, sampled monthly",
-          "quote": "2007년 10월 통영시 욕지도 연안에서 정치망으로 포획한 체중 약 147 g의 치어를 인접 해역의 해상가두리에 입식한 후 2008년 9월까지 양성",
-          "record_id": "10.5657/kfas.2010.43.6.589: 재료 및 방법, 시료",
-          "region": "Yokjido, Tongyeong, Gyeongsangnam-do, Republic of Korea (adjacent sea cages)",
-          "reviewed": true,
-          "source_id": "moon_2010_mackerel_cage",
-          "year": "2007-2008"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
-        "cohort_food_item_ids": [
-          "K0270000000a",
-          "K0390010000a",
-          "K0620000000a",
-          "K0830011130a",
-          "K0960070000a",
-          "K1070000000a",
-          "K1140000000a",
-          "K1320000000a",
-          "K1370020000a",
-          "K1620000000a",
-          "K1650010000a",
-          "K1670000000a",
-          "K4000000000a",
-          "K4000010000a",
-          "K4000040000a",
-          "K4040020000a",
-          "K4060010000a",
-          "K4130000000a",
-          "K6000020000a",
-          "K6020010000a",
-          "K6080000000a",
-          "K6100000000a",
-          "K6110000000a",
-          "K6130180000a",
-          "K6230000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-marine-animals",
-        "cohort_species": 25,
-        "components": {
-          "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 5.0,
-          "evidence_grade_deduction": 5.83,
-          "nutrient_value_contribution": 38.85
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "Refuse share of the food as purchased in the Japanese table; size and origin of the sample differ from Korean catches.",
-          "method": "1 - refuse (50%) / 100 from the same MEXT item",
-          "record_id": "MEXT-2020:10154:refuse",
-          "region": "Japan (MEXT 2020 national table)",
-          "reviewed": true,
-          "sample_period": "분석값",
-          "source_id": "mext_sfct_2020_items",
-          "unit": "edible share of food as purchased",
-          "value": 0.5
-        },
-        "english_name": "Scomber japonicus (マサバ)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 53.8
-        },
-        "method_version": "verified-pilot-3.9",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10154 ＜魚類＞ （さば類） まさば 生: same-species raw item, 분석값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 61.0
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 13.0
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 44.0
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 35.0
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 41.0
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 10.0
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 24.0
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 65.0
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 48.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 31.0
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 428.0
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 68.0
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 70.0
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 127.0
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 26.0
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 32.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.0
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 49.0
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 11.0
-              },
-              {
-                "food_item_id": "MEXT:10154",
-                "name": "＜魚類＞ （さば類） まさば 生",
-                "value": 6.0
-              }
-            ],
-            "percentile": 9.62,
-            "percentile_unrounded": 9.615384615384615,
-            "unit": "mg",
-            "value": 6.0
-          },
-          "iron_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10154 ＜魚類＞ （さば類） まさば 生: same-species raw item, 분석값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 1.98
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.7
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 1.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.44
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.1
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.4
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.43
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 1.17
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.95
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 2.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 0.92
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 8.72
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 3.75
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 2.68
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 0.84
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 0.74
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 1.48
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.7
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 0.89
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 0.18
-              },
-              {
-                "food_item_id": "MEXT:10154",
-                "name": "＜魚類＞ （さば類） まさば 生",
-                "value": 1.2
-              }
-            ],
-            "percentile": 67.31,
-            "percentile_unrounded": 67.3076923076923,
-            "unit": "mg",
-            "value": 1.2
-          },
-          "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10154 ＜魚類＞ （さば類） まさば 生: same-species raw item, 분석값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 22.36
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 23.99
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 21.3
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 20.7
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 18.41
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 20.08
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 19.5
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 18.9
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 22.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.02
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 17.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 23.1
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 15.18
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 10.8
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 12.3
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 9.66
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 12.29
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 12.27
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 15.97
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 16.19
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 16.3
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.4
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 21.17
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 18.84
-              },
-              {
-                "food_item_id": "MEXT:10154",
-                "name": "＜魚類＞ （さば類） まさば 生",
-                "value": 20.6
-              }
-            ],
-            "percentile": 71.15,
-            "percentile_unrounded": 71.15384615384616,
-            "unit": "g",
-            "value": 20.6
-          },
-          "zinc_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10154 ＜魚類＞ （さば類） まさば 生: same-species raw item, 분석값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.52
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 0.8
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.78
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.56
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.56
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 6.1
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 2.15
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 15.9
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 1.1
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 1.22
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 2.05
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 2.02
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.3
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 1.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 2.26
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 1.4
-              },
-              {
-                "food_item_id": "MEXT:10154",
-                "name": "＜魚類＞ （さば類） まさば 生",
-                "value": 1.1
-              }
-            ],
-            "percentile": 46.15,
-            "percentile_unrounded": 46.15384615384615,
-            "unit": "mg",
-            "value": 1.1
-          }
-        },
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -8668,43 +7088,11 @@
               "protein_g": 20.2,
               "zinc_mg": null
             }
-          },
-          {
-            "english_name": "Scomber japonicus (マサバ)",
-            "food_item_id": "MEXT:10154",
-            "link_evidence": "MEXT 식품명 「まさば」의 표준 일본명 マサバ는 WoRMS 127022 Scomber japonicus의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 해설: 일본 근해에서 어획, 「生」은 분석값. 근연 ごまさば(10404)와 たいせいようさば(10158)는 별도 항목이다.",
-            "linked": true,
-            "missing": [],
-            "refuse_pct": 50.0,
-            "reported_food_name": "＜魚類＞ （さば類） まさば 生",
-            "row_source": "MEXT 2020 (8th)",
-            "source_id": "mext_sfct_2020_items",
-            "values": {
-              "calcium_mg": 6.0,
-              "iron_mg": 1.2,
-              "protein_g": 20.6,
-              "zinc_mg": 1.1
-            }
           }
         ],
-        "outside_cohort": true,
-        "reported_food_name": "＜魚類＞ （さば類） まさば 生",
-        "row_source": "MEXT 2020 (8th)",
-        "row_table": "mext",
-        "sample_state": "raw",
-        "source_food_item_id": "MEXT:10154",
-        "source_id": "mext_sfct_2020_items",
-        "substituted_components": [],
         "sufficiency": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -8714,36 +7102,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
-          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
-          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "Ranked against the 25-food cohort plus itself because the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species).",
-          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 48.01923076923077,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 51.4,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 44.6,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -8765,15 +7124,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -8783,7 +7135,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.75
+        "mean_ratio": 0.42
       },
       "korean_name": "고등어",
       "mbpi_label": null,
@@ -8863,36 +7215,36 @@
           "recent": 84
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency"
+      ],
       "reference_combination": null,
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
         "MCUI": 10.0,
-        "MFPI": 48.0
+        "MFPI": null
       },
       "sensitivity": {
         "food_weights": {}
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": null,
-        "food_only_MFPI": 48.0
+        "food_only_MFPI": null
       },
       "source_ids": [
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "gbif_iucn_checklist",
         "iucn_scomber_japonicus_2023",
-        "mext_sfct_2020_items",
-        "moon_2010_mackerel_cage",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
@@ -8904,7 +7256,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
-        "MFPI": null
+        "MFPI": "food_row_not_species_specific"
       }
     },
     {
@@ -9042,7 +7394,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9613,7 +7965,7 @@
               "link_evidence": "MEXT 식품명 「かたくちいわし」의 표준 일본명 カタクチイワシ는 WoRMS 219984 Engraulis japonicus의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 「かたくちいわし」(しこいわし·ひしこ·せぐろ) 생것 성분값은 분석값과 4정판 수록값에 기초한다(第3章 10 魚介類).",
               "n": null,
               "part": "edible portion",
-              "source_id": "mext_sfct_2020_items",
+              "source_id": "mext_sfct_2020_zinc",
               "table": "MEXT",
               "taxon_label": "Engraulis japonicus (カタクチイワシ)",
               "taxon_level": "mext"
@@ -9849,7 +8201,7 @@
         "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_engraulis_japonicus_2018",
-        "mext_sfct_2020_items",
+        "mext_sfct_2020_zinc",
         "obis_trend",
         "rda_db_10_4",
         "yoneda_2025_engraulis_rearing"
@@ -9996,7 +8348,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10963,7 +9315,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11900,7 +10252,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12816,7 +11168,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -13730,7 +12082,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14681,7 +13033,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15518,641 +13870,9 @@
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 534443,
-          "feasible": false,
-          "kind": "aquaculture",
-          "limitations": "Rearing stopped at settlement; no grow-out of reared animals to market size or to maturity is reported in the abstract, so feasible = false under the 3.3/3.7 rule. Abstract level only.",
-          "method": "Paralarvae reared in upwelling cages and 500 L tanks settled as benthic juveniles at about 20 days after hatching; separate feeding and shelter trials used adult octopuses of unstated origin",
-          "quote": "octopus paralarvae were observed to settle on the bottom of the upwelling cage at around 20 days of age after hatching",
-          "record_id": "OpenAlex W7146337831: abstract",
-          "region": "Tokai University, Japan",
-          "reviewed": true,
-          "source_id": "suzumura_2024_octopus_thesis",
-          "year": "not stated in the abstract (thesis 2024)"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
-        "cohort_food_item_ids": [
-          "K0270000000a",
-          "K0390010000a",
-          "K0620000000a",
-          "K0830011130a",
-          "K0960070000a",
-          "K1070000000a",
-          "K1140000000a",
-          "K1320000000a",
-          "K1370020000a",
-          "K1620000000a",
-          "K1650010000a",
-          "K1670000000a",
-          "K4000000000a",
-          "K4000010000a",
-          "K4000040000a",
-          "K4040020000a",
-          "K4060010000a",
-          "K4130000000a",
-          "K6000020000a",
-          "K6020010000a",
-          "K6080000000a",
-          "K6100000000a",
-          "K6110000000a",
-          "K6130180000a",
-          "K6230000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-marine-animals",
-        "cohort_species": 25,
-        "components": {
-          "aquaculture_contribution": 0.0,
-          "edible_fraction_contribution": 8.5,
-          "evidence_grade_deduction": 5.02,
-          "nutrient_value_contribution": 33.46
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "Refuse share of the food as purchased in the Japanese table; size and origin of the sample differ from Korean catches.",
-          "method": "1 - refuse (15%) / 100 from the same MEXT item",
-          "record_id": "MEXT-2020:10361:refuse",
-          "region": "Japan (MEXT 2020 national table)",
-          "reviewed": true,
-          "sample_period": "분석값·4정판 수록값",
-          "source_id": "mext_sfct_2020_items",
-          "unit": "edible share of food as purchased",
-          "value": 0.85
-        },
-        "english_name": "Octopus sinensis (マダコ)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 42.0
-        },
-        "method_version": "verified-pilot-3.9",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10361 ＜いか・たこ類＞ （たこ類） まだこ 生: same-species raw item, 분석값·4정판 수록값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 61.0
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 13.0
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 44.0
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 35.0
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 41.0
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 10.0
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.0
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 24.0
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 65.0
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 48.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 31.0
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 428.0
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 68.0
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 70.0
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 27.0
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 127.0
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 26.0
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 32.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.0
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 49.0
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 11.0
-              },
-              {
-                "food_item_id": "MEXT:10361",
-                "name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-                "value": 16.0
-              }
-            ],
-            "percentile": 23.08,
-            "percentile_unrounded": 23.076923076923077,
-            "unit": "mg",
-            "value": 16.0
-          },
-          "iron_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10361 ＜いか・たこ類＞ （たこ類） まだこ 生: same-species raw item, 분석값·4정판 수록값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 1.98
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.7
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 1.0
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.44
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.1
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.4
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.43
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 1.17
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.95
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 2.0
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 0.92
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 8.72
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 3.75
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 2.68
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 0.84
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 0.74
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 1.48
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.7
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 0.89
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 0.18
-              },
-              {
-                "food_item_id": "MEXT:10361",
-                "name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-                "value": 0.6
-              }
-            ],
-            "percentile": 36.54,
-            "percentile_unrounded": 36.53846153846154,
-            "unit": "mg",
-            "value": 0.6
-          },
-          "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10361 ＜いか・たこ類＞ （たこ類） まだこ 生: same-species raw item, 분석값·4정판 수록값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 22.36
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 23.99
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 21.3
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 20.7
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 18.41
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 20.08
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 19.5
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 18.9
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 22.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 19.02
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 17.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 23.1
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 15.18
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 10.8
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 12.3
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 9.66
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 12.29
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 12.27
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 15.97
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 16.19
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 16.3
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.0
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 16.4
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 21.17
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 18.84
-              },
-              {
-                "food_item_id": "MEXT:10361",
-                "name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-                "value": 16.4
-              }
-            ],
-            "percentile": 42.31,
-            "percentile_unrounded": 42.30769230769231,
-            "unit": "g",
-            "value": 16.4
-          },
-          "zinc_mg": {
-            "evidence_factor": 0.85,
-            "grade": "foreign_table_cited",
-            "method": "MEXT 2020 (8th) 10361 ＜いか・たこ類＞ （たこ類） まだこ 生: same-species raw item, 분석값·4정판 수록값",
-            "peer_values": [
-              {
-                "food_item_id": "K0270000000a",
-                "name": "넙치(광어), 생것",
-                "value": 0.52
-              },
-              {
-                "food_item_id": "K0390010000a",
-                "name": "다랑어, 참다랑어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0620000000a",
-                "name": "만새기, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K0830011130a",
-                "name": "방어, 양식, 어린것, 생것",
-                "value": 0.8
-              },
-              {
-                "food_item_id": "K0960070000a",
-                "name": "볼락, 조피볼락(우럭), 생것",
-                "value": 0.78
-              },
-              {
-                "food_item_id": "K1070000000a",
-                "name": "삼치, 생것",
-                "value": 0.56
-              },
-              {
-                "food_item_id": "K1140000000a",
-                "name": "샛멸, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K1320000000a",
-                "name": "애꼬치, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1370020000a",
-                "name": "연어, 홍연어, 생것",
-                "value": 0.5
-              },
-              {
-                "food_item_id": "K1620000000a",
-                "name": "조기(참조기), 생것",
-                "value": 0.45
-              },
-              {
-                "food_item_id": "K1650010000a",
-                "name": "쥐치, 말쥐치, 생것",
-                "value": 0.3
-              },
-              {
-                "food_item_id": "K1670000000a",
-                "name": "청새치, 생것",
-                "value": 0.6
-              },
-              {
-                "food_item_id": "K4000000000a",
-                "name": "가리비, 생것",
-                "value": 2.56
-              },
-              {
-                "food_item_id": "K4000010000a",
-                "name": "가리비, 국자가리비, 생것",
-                "value": 6.1
-              },
-              {
-                "food_item_id": "K4000040000a",
-                "name": "가리비, 큰가리비, 생것",
-                "value": 2.15
-              },
-              {
-                "food_item_id": "K4040020000a",
-                "name": "굴, 참굴, 생것",
-                "value": 15.9
-              },
-              {
-                "food_item_id": "K4060010000a",
-                "name": "꼬막, 새꼬막, 생것",
-                "value": 1.1
-              },
-              {
-                "food_item_id": "K4130000000a",
-                "name": "바지락, 생것",
-                "value": 1.22
-              },
-              {
-                "food_item_id": "K6000020000a",
-                "name": "가재, 바닷가재, 생것",
-                "value": 1.3
-              },
-              {
-                "food_item_id": "K6020010000a",
-                "name": "게, 꽃게, 생것",
-                "value": 2.05
-              },
-              {
-                "food_item_id": "K6080000000a",
-                "name": "낙지, 생것",
-                "value": 2.02
-              },
-              {
-                "food_item_id": "K6100000000a",
-                "name": "멍게(우렁쉥이), 생것",
-                "value": 5.3
-              },
-              {
-                "food_item_id": "K6110000000a",
-                "name": "문어, 생것",
-                "value": 1.6
-              },
-              {
-                "food_item_id": "K6130180000a",
-                "name": "새우, 흰다리새우, 생것",
-                "value": 2.26
-              },
-              {
-                "food_item_id": "K6230000000a",
-                "name": "오징어, 생것",
-                "value": 1.4
-              },
-              {
-                "food_item_id": "MEXT:10361",
-                "name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-                "value": 1.6
-              }
-            ],
-            "percentile": 65.38,
-            "percentile_unrounded": 65.38461538461539,
-            "unit": "mg",
-            "value": 1.6
-          }
-        },
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -16171,43 +13891,11 @@
               "protein_g": 12.7,
               "zinc_mg": null
             }
-          },
-          {
-            "english_name": "Octopus sinensis (マダコ)",
-            "food_item_id": "MEXT:10361",
-            "link_evidence": "MEXT 식품명 「まだこ」의 표준 일본명 マダコ는 WoRMS 534443 Octopus sinensis의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 해설: 국산 외에 수입품도 대량 유통되며 「生」은 내장 등을 뺀 시료, 성분값은 분석값과 4정판 수록값. 수입 시료의 종 구성(O. vulgaris 등)은 해설에 없다. 근연 みずだこ(10432)·いいだこ(10360)는 별도 항목이다.",
-            "linked": true,
-            "missing": [],
-            "refuse_pct": 15.0,
-            "reported_food_name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-            "row_source": "MEXT 2020 (8th)",
-            "source_id": "mext_sfct_2020_items",
-            "values": {
-              "calcium_mg": 16.0,
-              "iron_mg": 0.6,
-              "protein_g": 16.4,
-              "zinc_mg": 1.6
-            }
           }
         ],
-        "outside_cohort": true,
-        "reported_food_name": "＜いか・たこ類＞ （たこ類） まだこ 生",
-        "row_source": "MEXT 2020 (8th)",
-        "row_table": "mext",
-        "sample_state": "raw",
-        "source_food_item_id": "MEXT:10361",
-        "source_id": "mext_sfct_2020_items",
-        "substituted_components": [],
         "sufficiency": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -16217,36 +13905,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
-          "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
-          "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "Ranked against the 25-food cohort plus itself because the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species).",
-          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 36.94230769230769,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 37.6,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 36.2,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -16268,15 +13927,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 1.0,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -16286,7 +13938,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.33
+        "mean_ratio": 0.0
       },
       "korean_name": "참문어(동아시아 종)",
       "mbpi_label": null,
@@ -16377,36 +14029,34 @@
         "BBVI": "산출 보류",
         "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": 36.9
+        "MFPI": null
       },
       "sensitivity": {
         "food_weights": {}
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": null,
-        "food_only_MFPI": 36.9
+        "food_only_MFPI": null
       },
       "source_ids": [
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
-        "mext_sfct_2020_items",
         "obis_trend",
-        "rda_db_10_4",
-        "suzumura_2024_octopus_thesis"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
-        "MFPI": null
+        "MFPI": "food_row_not_species_specific"
       }
     },
     {
@@ -16542,7 +14192,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17559,7 +15209,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.8 (2026-10-01). MFPI: the MEXT 2020 (8th) same-species raw item now covers protein, iron, zinc and calcium (research/verified-indices/snapshots/mext-2026-10-01.json). When RDA DB 10.4 has no row linked to a species, a reviewed MEXT item marked species_row is that species' own nutrition row and edible fraction (graded foreign_table_cited 0.85, ranked against the fixed cohort plus itself, never a cohort member): あげまき 10280 (맛조개), まさば 10154 (고등어), まだこ 10361 (참문어). Name link: the MEXT standard Japanese name equals the WoRMS Japanese vernacular, or equals it without a final ガイ (貝) when the MEXT description matches the taxon. Three aquaculture records (research/verified-indices/mfpi-aquaculture-3.9-2026-10-01.json): 고등어 Tongyeong sea cages 2007-08, 맛조개 Zhoushan polyculture pond 2020-21, 참문어 rearing stopped at settlement (feasible false). Team-lead decisions of 2026-10-01. See research/verified-indices/mext-rows-2026-10-01.md.",
+    "changes_from": "verified-pilot-3.6 (2026-10-01). Diagram stage 3 MFPI, nutrient components: calcium is added to protein, iron and zinc (RDA DB 10.4 reports calcium for 407 of 410 raw marine-animal rows and all 15 raw seaweed rows; zinc for 36 and 3). A species whose own RDA row still misses a component after the 3.3/3.6 substitutes (RDA sub-sample, uFiSh, MEXT) is scored when it reports at least nutrition.minimum_components (3) of the 4; the missing component is left out of the mean, never scored 0, and the species is ranked against the fixed cohort plus itself. The fixed cohorts are the same 28 foods (all report calcium). The AFCD oyster cross-check is paused because its rows carry no reviewed calcium value. Three aquaculture records are added (톳 Wando 1993-94, 청각 Wando 2004-05, 멸치 research rearing from egg to maturity). See research/verified-indices/mfpi-calcium-2026-10-01.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -17758,7 +15408,7 @@
         }
       }
     },
-    "method_version": "verified-pilot-3.9",
+    "method_version": "verified-pilot-3.7",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -17891,7 +15541,7 @@
       ],
       "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
       "substitutes": {
-        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-3.9-2026-10-01.json",
+        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-3.7-2026-10-01.json",
         "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
         "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
         "labels": {
@@ -17910,20 +15560,12 @@
         ],
         "mext": {
           "components": [
-            "protein_g",
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg"
+            "zinc_mg"
           ],
           "grade": "foreign_table_cited",
-          "link_rule": "The MEXT standard Japanese name (food name, or the name the chapter 3 notes give) equals the Japanese vernacular WoRMS lists for the AphiaID, or equals it without a final ガイ (貝) when the chapter 3 description (family, form, habitat) matches the taxon. Generic names (なまこ, かき) are never linked to one species.",
-          "rule": "A reviewed MEXT item is used only for the AphiaID it is linked to, only for a component listed here; as a substitute only when the species' own RDA row is blank for it and no RDA sub-sample or uFiSh species-level value exists, and only for a raw item per 100 g edible portion with a printed analytical or calculated value (estimates in parentheses, Tr and '-' are never used). It ranks above any genus or family proxy. 3.9: an item marked species_row is the species' own nutrition row (all listed components and the refuse share) only when RDA DB 10.4 has no row linked to the species; it is ranked against the fixed cohort of its RDA group plus itself and never joins the cohort.",
-          "snapshot": "research/verified-indices/snapshots/mext-2026-10-01.json",
-          "source_id": "mext_sfct_2020_items",
-          "species_row_groups": {
-            "09": "해조류",
-            "10": "어패류 및 기타 수산물"
-          }
+          "rule": "A reviewed MEXT item is used only for the AphiaID it is linked to, only for a component listed here, only when the species' own RDA row is blank for it and no RDA sub-sample or uFiSh species-level value exists, and only for a raw item per 100 g edible portion with a printed analytical or calculated value (estimates in parentheses, Tr and '-' are never used). It ranks above any genus or family proxy.",
+          "snapshot": "research/verified-indices/snapshots/mext-zinc-2026-10-01.json",
+          "source_id": "mext_sfct_2020_zinc"
         },
         "not_used": "AFCD Release 3 (FSANZ) food details carry no scientific names, so no AFCD row is matched to a genus or family; AFCD stays the oyster cross-check cohort.",
         "parts": [
@@ -17982,8 +15624,7 @@
     },
     "peptide_supplements": [
       "research/verified-indices/evidence-v3.5.json",
-      "research/verified-indices/peptide-raw-values-2.1.json",
-      "research/verified-indices/evidence-clam-2026-10-01.json"
+      "research/verified-indices/peptide-raw-values-2.1.json"
     ],
     "posthoc": {
       "calibration_cases": [],
@@ -18059,7 +15700,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.9",
+  "method_version": "verified-pilot-3.7",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -18225,15 +15866,6 @@
       "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
       "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
       "version": "2012"
-    },
-    "dong_2021_pond_razor_clam": {
-      "accessed": "2026-10-01",
-      "license": "CC BY 4.0",
-      "provider": "Frontiers in Marine Science 8:747891, full text (publisher PDF)",
-      "terms": "Open access, Creative Commons Attribution; fact, method summary and a short quotation only",
-      "title": "Assessment of the Carrying Capacity of Integrated Pond Aquaculture of Portunus trituberculatus at the Ecosystem Level (Dong S, Wang F, Zhang D, Yu L, Pu W, Xu X, Xie Y), doi:10.3389/fmars.2021.747891",
-      "url": "https://doi.org/10.3389/fmars.2021.747891",
-      "version": "full text checked 2026-10-01"
     },
     "europepmc_mbpi": {
       "accessed": "2026-09-29",
@@ -18563,16 +16195,6 @@
       "url": "https://www.koreascience.kr/article/JAKO198622105902972.page",
       "version": "page checked 2026-09-30"
     },
-    "lee_2005_clam": {
-      "accessed": "2026-10-01",
-      "doi": "10.5657/fas.2005.8.2.109",
-      "license": "Publisher copyright",
-      "provider": "Journal of Fisheries Science and Technology 8:109 (Lee et al. 2005), full text via KoreaScience",
-      "terms": "Bibliographic record and numeric values only; no text or tables copied",
-      "title": "Peptide inhibitor for angiotensin-converting enzyme from thermolysin hydrolysate of Manila clam proteins",
-      "url": "https://doi.org/10.5657/fas.2005.8.2.109",
-      "version": "2005"
-    },
     "lee_2024_sargassum_nutrition": {
       "accessed": "2026-09-25",
       "doi": "10.11002/fsp.2024.31.2.324",
@@ -18668,12 +16290,12 @@
       "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
       "version": "2020 (8th revision); Excel 20201225-mxt_kagsei-mext_01110_012.xlsx, sha256 ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d"
     },
-    "mext_sfct_2020_items": {
+    "mext_sfct_2020_zinc": {
       "accessed": "2026-10-01",
       "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
       "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
       "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
-      "terms": "Values of four components for six items quoted per 100 g edible portion with attribution; no table is redistributed",
+      "terms": "Three zinc values quoted per 100 g edible portion with attribution; no table is redistributed",
       "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
       "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
       "version": "2020 (8th revised edition), files dated 2020-12-25"
@@ -18688,15 +16310,6 @@
       "title": "Structures and activity of angiotensin-converting enzyme inhibitors in an alpha-zein hydrolysate",
       "url": "https://doi.org/10.1271/bbb1961.55.1313",
       "version": "1991"
-    },
-    "moon_2010_mackerel_cage": {
-      "accessed": "2026-10-01",
-      "license": "Publisher copyright (free full text on KoreaScience)",
-      "provider": "Journal of the Korean Society of Fisheries and Aquatic Sciences (Korean J Fish Aquat Sci) 43(6):589-597, full text via KoreaScience",
-      "terms": "Fact, method summary and a short quotation only",
-      "title": "Changes in the Proximate and Fatty Acid Compositions of Chub Mackerel, Scomber japonicus Muscle during Cultivation (Moon SK, Kim IS, Hong SN, Lim DH, Jeong BY), doi:10.5657/kfas.2010.43.6.589",
-      "url": "https://doi.org/10.5657/kfas.2010.43.6.589",
-      "version": "full text checked 2026-10-01"
     },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",
@@ -18847,25 +16460,6 @@
       "title": "Identification of an antihypertensive peptide from peptic digest of wakame",
       "url": "https://doi.org/10.1016/s0955-2863(00)00110-8",
       "version": "2000"
-    },
-    "suetsuna_2002_clam": {
-      "accessed": "2026-10-01",
-      "doi": "10.1046/j.1444-2906.2002.00415.x",
-      "license": "Publisher copyright",
-      "provider": "Fisheries Science 68:233 (Suetsuna 2002), full text via J-STAGE",
-      "terms": "Bibliographic record and numeric values only; no text or tables copied",
-      "title": "Identification of antihypertensive peptides from peptic digest of the short-necked clam Tapes philippinarum and the pearl oyster Pinctada fucata martensii",
-      "url": "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article",
-      "version": "2002"
-    },
-    "suzumura_2024_octopus_thesis": {
-      "accessed": "2026-10-01",
-      "license": "University repository terms",
-      "provider": "Tokai University doctoral thesis, abstract via the university repository record (OpenAlex W7146337831)",
-      "terms": "Fact and method summary from the abstract only",
-      "title": "マダコOctopus sinensisの養殖に関する基礎研究 (Suzumura Y, 2024)",
-      "url": "https://opac-t.time.u-tokai.ac.jp/iwjs0018opc/TD00000555",
-      "version": "abstract checked 2026-10-01 (the full-text PDF did not download)"
     },
     "todarodes_2011_peptide": {
       "accessed": "2026-09-25",
@@ -19550,7 +17144,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20114,7 +17708,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -20571,7 +18165,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -21554,7 +19148,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -21857,7 +19451,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -22377,7 +19971,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22989,7 +20583,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23630,7 +21224,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.9 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.7 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -24336,7 +21930,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.9",
+        "method_version": "verified-pilot-3.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

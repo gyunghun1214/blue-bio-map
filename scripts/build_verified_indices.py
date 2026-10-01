@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.7.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.9.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -248,6 +248,34 @@ def substitute(aphia: int, name: str, evidence: dict, settings: dict, rows: dict
                            "source_id": rule["source_id"], "label": rule["labels"][level]}}
 
 
+def mext_species_row(aphia: int, evidence: dict, settings: dict) -> dict | None:
+    """verified-pilot-3.9: a reviewed MEXT 2020 same-species raw item as the species' own nutrition row, used only when
+    RDA DB 10.4 has no row linked to the species. Graded like an RDA row that cites the Japanese table; it is ranked
+    against a fixed cohort plus itself and never joins one."""
+    mext = (settings.get("substitutes") or {}).get("mext") or {}
+    groups = mext.get("species_row_groups")
+    item = groups and next((i for i in evidence["mfpi_mext"]["items"] if i["aphia_id"] == aphia and i.get("species_row")), None)
+    if not item:
+        return None
+    require(item["sample_state"] == "raw" and item["basis"] == "100 g edible portion" and item.get("food_group") in groups
+            and all(c["unit"] == settings["components"][k] for k, c in item["components"].items()),
+            f"{aphia}: MEXT species row is not a raw 100 g edible-portion item of a configured group")
+    refuse = finite(item["refuse_pct"], f"{aphia}: MEXT refuse", 0, 99)
+    method = f"MEXT 2020 (8th) {item['food_item_id']} {item['food_name']}: same-species raw item, {item['value_basis']}"
+    return {"food_item_id": f"MEXT:{item['food_item_id']}", "reported_food_name": item["food_name"], "english_name": item["taxon_label"],
+            "group": groups[item["food_group"]], "row_source": "MEXT 2020 (8th)", "aphia_id": aphia,
+            "taxon_link": {"link_evidence": item["link_evidence"]}, "source_id": mext["source_id"], "reviewed": True,
+            "sample_state": "raw", "basis": "100 g edible portion", "refuse_not_accepted": None,
+            "nutrients": {k: None if item["components"].get(k) is None else
+                          {"value": item["components"][k]["value"], "unit": unit, "grade": mext["grade"], "method": method}
+                          for k, unit in settings["components"].items()},
+            "edible_fraction": {"kind": "edible_fraction", "value": round(1 - refuse / 100, 4), "unit": "edible share of food as purchased",
+                                "method": f"1 - refuse ({refuse:g}%) / 100 from the same MEXT item", "source_id": mext["source_id"],
+                                "record_id": f"MEXT-2020:{item['food_item_id']}:refuse", "region": "Japan (MEXT 2020 national table)",
+                                "sample_period": item["value_basis"], "reviewed": True,
+                                "limitations": "Refuse share of the food as purchased in the Japanese table; size and origin of the sample differ from Korean catches."}}
+
+
 def support_for(aphia: int, evidence: dict, kind: str) -> list[dict]:
     return [r for r in evidence.get("food_support", []) if r.get("aphia_id") == aphia and r.get("kind") == kind]
 
@@ -274,6 +302,14 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                 "missing": [k for k, n in r["nutrients"].items() if n is None],
                 "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4),
                 **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {})})
+    mrow = None if any(r["aphia_id"] == aphia for r in rows.values()) else mext_species_row(aphia, evidence, settings)
+    if mrow:  # 3.9: the MEXT row is this species' own row, shown with the RDA observations it stands in for
+        trace["observed_rows"].append({
+            "food_item_id": mrow["food_item_id"], "reported_food_name": mrow["reported_food_name"], "english_name": mrow["english_name"],
+            "row_source": mrow["row_source"], "linked": True, "link_evidence": mrow["taxon_link"]["link_evidence"],
+            "values": {k: (n or {}).get("value") for k, n in mrow["nutrients"].items()},
+            "missing": [k for k, n in mrow["nutrients"].items() if n is None],
+            "refuse_pct": round(100 * (1 - mrow["edible_fraction"]["value"]), 4), "source_id": mrow["source_id"]})
     trace["observed_rows"].sort(key=lambda x: x["food_item_id"])
     have = {**{k: False for k in settings["components"]},
             "edible_fraction": any(r.get("reviewed") is True for r in support_for(aphia, evidence, "edible_fraction")),
@@ -316,6 +352,8 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         if not row and settings.get("substitutes") and "rule" in cohort["spec"]:
             row = completed(cohort)
             peers = cohort["rows"] + [row] if row else peers
+        if not row and mrow and mrow["group"] == cohort["spec"].get("rule", {}).get("group"):
+            row, peers = mrow, cohort["rows"] + [mrow]
         if not row or not aqua:
             return None
         fraction = row.get("edible_fraction") or next((r for r in support_for(aphia, evidence, "edible_fraction")
@@ -325,9 +363,11 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         score, detail = mfpi(row, peers, fraction, aqua, settings)
         omitted = [k for k, n in row["nutrients"].items() if n is None]
         extra = ({"outside_cohort": True, "substituted_components": [k for k, n in row["nutrients"].items() if n and n.get("substitute")],
-                  **({"omitted_components": omitted} if omitted else {})}  # key only in 3.7+, so older reports reproduce
+                  **({"omitted_components": omitted} if omitted else {}),  # key only in 3.7+, so older reports reproduce
+                  **({"row_table": "mext"} if row is mrow else {})}  # 3.9+
                  if peers is not cohort["rows"] else {})
-        require(not extra or extra["substituted_components"] or extra.get("omitted_components"), f"{aphia}: a row outside the cohort must carry a substitute or an omitted component")
+        require(not extra or extra["substituted_components"] or extra.get("omitted_components") or extra.get("row_table"),
+                f"{aphia}: a row outside the cohort must carry a substitute, an omitted component or a MEXT species row")
         return score, {"cohort_id": cohort_id, "cohort_species": len(cohort["rows"]), "row": row, "fraction": fraction, **detail, **extra}
 
     for cid, cohort in cross.items():
@@ -367,7 +407,8 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         step = round(100 / len(peers), 1)
         why = ([f"{k} is a substitute ({row['nutrients'][k]['substitute']['label']}, {row['nutrients'][k]['substitute']['food_item_id']})"
                 for k in d.get("substituted_components", [])]
-               + [f"{k} is not reported in the species' own row and is left out of the mean (not scored 0)" for k in d.get("omitted_components", [])])
+               + [f"{k} is not reported in the species' own row and is left out of the mean (not scored 0)" for k in d.get("omitted_components", [])]
+               + (["the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species)"] if d.get("row_table") else []))
         outside = [f"Ranked against the {len(cohort['rows'])}-food cohort plus itself because " + ", ".join(why)
                    + ("; a substitute comes from another sample, region or table, not from this species' own row." if d.get("substituted_components") else ".")
                    ] if d.get("outside_cohort") else []

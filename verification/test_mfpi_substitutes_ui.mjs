@@ -16,7 +16,8 @@ const rows=[...report.species,...report.candidate_species];
 for(const a of rows)assert.ok(ctx.valid(a,report),`${a.korean_name} passes the browser re-check`);
 const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
 // 3.6: 피조개 and 멸치 zinc from MEXT. 3.7: 톳·청각 leave a blank zinc out of the mean (no substitute); 멸치 now scores.
-assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[145086,219984,254538,397082,494972,504357,506159,1666974]);
+// 3.9: 고등어·맛조개·참문어 have no linked RDA row; a MEXT same-species raw item is their own row.
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[127022,145086,219984,254538,397082,413600,494972,504357,506159,534443,1666974]);
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
 const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);
@@ -56,6 +57,19 @@ assert.equal(tamper(504357,f=>{f.nutrients.zinc_mg.substitute.source_id='ufish_1
 const noMext=structuredClone(report);delete noMext.method.nutrition.substitutes.mext;
 assert.equal(ctx.valid(ark,noMext),false,'a MEXT substitute without the published MEXT rule');
 
+// verified-pilot-3.9: a MEXT row stands in for a missing RDA row, at the MEXT grade, as the species' only linked row
+const razor=withSub.find(a=>a.aphia_id===413600);
+assert.deepEqual([razor.food_trace.row_table,razor.food_trace.source_food_item_id,razor.food_trace.edible_fraction.value],['mext','MEXT:10280',0.65]);
+const mextRow=(change,r=report)=>{const a=structuredClone(razor);change(a.food_trace);return ctx.valid(a,r);};
+assert.ok(mextRow(()=>{}),'unchanged MEXT row passes');
+assert.equal(mextRow(f=>{delete f.row_table;}),false,'outside the cohort only with a substitute, an omission or a MEXT row');
+assert.equal(mextRow(f=>{f.nutrients.iron_mg.grade='measured';f.nutrients.iron_mg.evidence_factor=1;}),false,'a MEXT row keeps the rule grade');
+assert.equal(mextRow(f=>{f.observed_rows.push({...f.observed_rows[0],food_item_id:'K9999999999a'});}),false,'a species with a linked RDA row never takes a MEXT row');
+assert.equal(mextRow(f=>{f.edible_fraction.source_id='rda_db_10_4';}),false,'the refuse share comes from the same MEXT item');
+assert.equal(mextRow(f=>{f.row_table='rda';}),false,'only the MEXT row table is published');
+const noRows=structuredClone(report);delete noRows.method.nutrition.substitutes.mext.species_row_groups;
+assert.equal(ctx.valid(razor,noRows),false,'a MEXT row without the published 3.9 rule');
+assert.ok(ctx.detail({assessment:razor}).includes('일본 식품성분표 2020(8정판) 10280 ＜貝類＞ あげまき 生(같은 종 생것, 가식부 100 g)을 이 종의 영양 행과 폐기율로 썼습니다'),'the screen says why the MEXT row is used');
 // Screen: every substituted component says so, with its source item and level label (and the consumed part for uFiSh).
 for(const a of withSub){
   const html=ctx.detail({assessment:a});
