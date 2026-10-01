@@ -119,7 +119,7 @@ assert.equal(ctx.releaseMissing(loaded.species[0]),'검수 자료 확인 실패'
 // (8) ?v= is the first 10 hex characters of sha256 over the LF-normalized file, so every change busts the
 // one-year immutable cache (dist/_headers) and the value is the same on Windows (CRLF checkout) and Linux.
 const html=read('index.html');
-for(const file of ['app.js','live-data.js','style.css','pilot.css']){
+for(const file of ['app.js','live-data.js','style.css','pilot.css','theme.css']){
   const expected=crypto.createHash('sha256').update(read(file).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
   const found=[...html.matchAll(new RegExp(`["/]${file.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]);
   assert.deepEqual(found,[expected],`${file}?v= must be ${expected}`);

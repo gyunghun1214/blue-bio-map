@@ -11,6 +11,8 @@
   Cache-Control: public, max-age=31536000, immutable
 /pilot.css
   Cache-Control: public, max-age=31536000, immutable
+/theme.css
+  Cache-Control: public, max-age=31536000, immutable
 /live-data.js
   Cache-Control: public, max-age=31536000, immutable
 /vendor/*
