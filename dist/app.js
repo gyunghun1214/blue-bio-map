@@ -146,10 +146,21 @@ function verifiedFoodValid(a,report){
      typeof f.aquaculture.feasible!=='boolean')return false;
   let nutrient=0, own=0;
   const peers=outside?[...cohort.food_item_ids,f.source_food_item_id]:cohort.food_item_ids;
+  // the species' own linked RDA row: a substitute only where that row is blank, its own value everywhere else
+  const ownRow=outside?(f.observed_rows||[]).find(o=>o.linked&&o.food_item_id===f.source_food_item_id):null;
+  if(outside&&!ownRow)return false;
   for(const [name,unit] of Object.entries(config.components||{})){
-    const n=f.nutrients?.[name], s=n?.substitute;
-    if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||!sub.parts?.includes(s.part)||s.label!==sub.labels?.[s.taxon_level]||
-       !sources[s.source_id]||n.grade!==(s.taxon_level==='species'?sub.species_grade_by_doc?.[s.doc_code]||'proxy':'proxy')))return false;
+    const n=f.nutrients?.[name], s=n?.substitute, sample=s?.taxon_level==='subsample';
+    if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||(!sample&&!sub.parts?.includes(s.part))||s.label!==sub.labels?.[s.taxon_level]||
+       !sources[s.source_id]||(sample?!['domestic_table','foreign_table_cited'].includes(n.grade)
+         :n.grade!==(s.taxon_level==='species'?sub.species_grade_by_doc?.[s.doc_code]||'proxy':'proxy'))))return false;
+    // a sub-sample value is the mean of reviewed same-species rows of the same table
+    if(sample){
+      const ids=String(s.food_item_id).split('+'),vals=ids.map(id=>s.values?.[id]);
+      if(!ids.every(id=>(sub.subsample_links||[]).some(l=>l.food_item_id===id&&l.aphia_id===a.aphia_id&&l.reviewed===true))||
+         !vals.every(Number.isFinite)||Math.abs(vals.reduce((x,y)=>x+y,0)/vals.length-n.value)>1e-4)return false;
+    }
+    if(outside&&(s?ownRow.values?.[name]!==null:ownRow.values?.[name]!==n?.value))return false;
     own+=!s;
     if(!n||!Number.isFinite(n.value)||n.value<0||n.unit!==unit||
         !Number.isFinite(n.percentile)||!Number.isFinite(n.percentile_unrounded)||n.percentile_unrounded<0||n.percentile_unrounded>100||
@@ -165,6 +176,7 @@ function verifiedFoodValid(a,report){
     nutrient+=n.percentile_unrounded*n.evidence_factor;
   }
   if(!own)return false;  // a score never rests only on other foods' values
+  if(outside&&own===Object.keys(config.components||{}).length)return false;  // outside the cohort only because of a substitute
   const fraction=f.edible_fraction;
   if(!Number.isFinite(fraction.value)||fraction.value<0||fraction.value>1||!sources[fraction.source_id]||
      !sources[f.aquaculture.source_id])return false;
@@ -555,7 +567,7 @@ function showDecision(s){
     if(f){
       html+='<h4>MFPI 구성</h4><ul>';
       for(const [key,n] of Object.entries(f.nutrients||{})){
-        html+=`<li>${esc(key)}: 가식부 100 g당 ${esc(n.value)} ${esc(n.unit)} · ${esc(n.grade)} · 동기준 비교 ${esc((n.peer_values||n.peers)?.length)}종 · 백분위 ${esc(n.percentile??'미기재')} · ${esc(n.source_id)}</li>`;
+        html+=`<li>${esc(key)}: 가식부 100 g당 ${esc(num(n.value))} ${esc(n.unit)} · ${esc(n.grade)}${n.substitute?' · '+esc(n.substitute.label)+' '+esc(substituteRef(n.substitute)):''} · 동기준 비교 ${esc((n.peer_values||n.peers)?.length)}개 식품 · 백분위 ${esc(n.percentile??'미기재')} · ${esc(n.substitute?.source_id||n.source_id||f.source_id)}</li>`;
       }
       html+=`<li>가식부 비율 ${esc(f.edible_fraction?.value)} (${esc(f.edible_fraction?.source_id)}) · 양식 근거 ${f.aquaculture?.feasible?'가능성 검토됨':'불충분'} (${esc(f.aquaculture?.source_id)})</li></ul>`;
     }
@@ -645,18 +657,31 @@ function observedRows(f){
     ` / 100 g 가식부 · 폐기율 ${o.refuse_pct===null?'결측':esc(o.refuse_pct)+'%'} · 출처 표기 ${esc(o.row_source||'없음')}</span></div>`+
     `<p class="fine">${esc(o.link_evidence||'')} ${verifiedSource('rda_db_10_4','RDA 식품성분 DB 10.4 ↗')}</p>`).join('');
 }
+// Display only: four significant digits (the trace keeps the source value).
+const num=v=>Number.isFinite(v)?String(Number(v.toPrecision(4))):v;
+const substituteRef=s=>(s.taxon_level==='subsample'?'RDA ':'uFiSh1.0 ')+s.food_item_id;
+function substituteText(s){
+  return s.taxon_level==='subsample'
+    ?`<b>${esc(s.label)}</b>: 이 종의 연결 RDA 행에 값이 없어, 같은 표에서 같은 종의 부표본 행 ${esc(Object.entries(s.values||{}).map(([id,v])=>id+' '+num(v)).join(', '))}`+
+      `(${esc(s.food_name)})의 ${s.n>1?'평균':'값'}을 썼습니다. 이 부표본 행들은 고정 비교집단에 넣지 않습니다. ${verifiedSource(s.source_id,'RDA ↗')}`
+    :`<b>${esc(s.label)}</b>: 이 종의 연결 RDA 행에 값이 없어 FAO/INFOODS uFiSh1.0 ${esc(s.food_item_id)} `+
+      `${esc(s.food_name)}(${esc(s.taxon_label)}, 섭취 부위 ${esc(s.part)}, 문서 코드 ${esc(s.doc_code||'없음')}, n ${esc(s.n??'미기재')})의 값을 썼습니다. `+
+      `${verifiedSource(s.source_id,'uFiSh ↗')}`;
+}
 function verifiedFoodDetail(s){
   const f=s.assessment.food_trace||{};
+  const search=Object.entries(f.substitute_search||{});
   if(!Number.isFinite(s.assessment.scores.MFPI))return observedRows(f)+
+    (search.length?`<p class="fine">빠진 성분의 대체치 후보: ${esc(search.map(([k,v])=>(nutrientNames[k]||k)+' '+(v?(String(v).startsWith('K')?'RDA ':'uFiSh1.0 ')+v:'후보 없음')).join(' · '))}. `+
+      `${f.substitute_row?'빠진 성분은 채울 수 있지만 아래 다른 이유로 보류합니다.':'채울 후보가 없는 성분이 있어 보류합니다.'}</p>`:'')+
     (f.supplemental_nutrition||[]).map(o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
       `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
       `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`).join('');
   const raw=Object.entries(f.nutrients||{}).map(([key,n])=>
-    `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(n.value)} ${esc(n.unit)} / 100 g 가식부</b>`+
+    `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(num(n.value))} ${esc(n.unit)} / 100 g 가식부</b>`+
     `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`+
-    (n.substitute?`<p class="fine"><b>${esc(n.substitute.label)}</b>: 이 종의 RDA 행에 값이 없어 FAO/INFOODS uFiSh1.0 ${esc(n.substitute.food_item_id)} `+
-      `${esc(n.substitute.food_name)}(${esc(n.substitute.taxon_label)}, 섭취 부위 ${esc(n.substitute.part)}, 문서 코드 ${esc(n.substitute.doc_code||'없음')}, n ${esc(n.substitute.n??'미기재')})의 값을 썼습니다. `+
-      `${verifiedSource(n.substitute.source_id,'uFiSh ↗')}</p>`:'')).join('');
+    (n.substitute?`<p class="fine">${substituteText(n.substitute)}</p>`:'')).join('')+
+    (f.supplemental_nutrition||[]).filter(o=>o.substitute_use).map(o=>`<p class="fine">별도 원값 기록 ${esc(o.record_id)}: ${esc(o.substitute_use)}.</p>`).join('');
   const outside=f.outside_cohort?`<p class="fine">대체치가 있어 이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
   const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
   const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);
@@ -1402,7 +1427,7 @@ function valueSpeciesCard(s,records){
   const sources=sourceIds.map(id=>report.sources?.[id]).filter(Boolean);
   const links=sources.map(src=>'<li>'+sourceLink(src.url,src.title||src.name||'지표 근거')+' · '+esc(src.license||'이용조건 미기재')+' · 조회 '+esc(src.accessed||'미기재')+'</li>').join('');
   const raw=s.assessment?.food_trace?.nutrients;
-  const rawText=raw?Object.entries(raw).map(([k,v])=>k+' '+v.value+' '+(v.unit||'단위 미확인')+' / '+(v.sample_state||s.assessment.food_trace.sample_state||'시료 상태 미기재')).join(' · '):'원값은 종별 지표 상세에서 확인';
+  const rawText=raw?Object.entries(raw).map(([k,v])=>k+' '+(v.substitute?'원자료 결측 → '+v.substitute.label+' '+substituteRef(v.substitute)+' '+num(v.value):num(v.value))+' '+(v.unit||'단위 미확인')+' / '+(v.sample_state||s.assessment.food_trace.sample_state||'시료 상태 미기재')).join(' · '):'원값은 종별 지표 상세에서 확인';
   const cons=s.assessment?.conservation_trace;
   return '<article class="value-species"><h4>'+esc(s.label)+' <small>'+esc(s.name)+'</small></h4>'+
     '<p>종 단위 근거 · AphiaID '+esc(s.aphiaID)+' · '+esc(stage)+(Number.isFinite(records)?' · 이 셀 출현 기록 '+records.toLocaleString()+'건':'')+'</p>'+valueSpeciesType(s)+

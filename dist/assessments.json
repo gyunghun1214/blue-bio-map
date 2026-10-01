@@ -3145,6 +3145,7 @@
         "sample_state": "raw",
         "source_food_item_id": "K4220010000a",
         "source_id": "rda_db_10_4",
+        "substitute_row": "K4220010000a",
         "substitute_search": {
           "zinc_mg": "093001"
         },
@@ -3172,7 +3173,8 @@
           "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
           "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
           "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Ranked against the 25-food cohort plus itself because zinc_mg is a substitute (유사종 대체치(같은 속), 093001); a substitute comes from another sample, region or table, not from this species' own row.",
+          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
         "unrounded": 47.97692307692308,
@@ -3268,7 +3270,8 @@
         "gbif_iucn_checklist",
         "iucn_haliotis_discus_2022",
         "kang_2019_haliotis_wando",
-        "rda_db_10_4"
+        "rda_db_10_4",
+        "ufish_1_workbook"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -6871,7 +6874,7 @@
           "aquaculture_contribution": 0.0,
           "edible_fraction_contribution": 4.8,
           "evidence_grade_deduction": 0.0,
-          "nutrient_value_contribution": 24.1
+          "nutrient_value_contribution": 29.23
         },
         "cross_checks": [],
         "edible_fraction": {
@@ -6889,7 +6892,7 @@
         "english_name": "Pacific cod, Raw",
         "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
         "grade_sensitivity": {
-          "all_grade_factors_1": 28.9
+          "all_grade_factors_1": 34.0
         },
         "method_version": "verified-pilot-3.3",
         "nutrients": {
@@ -7177,8 +7180,8 @@
           },
           "zinc_mg": {
             "evidence_factor": 1.0,
-            "grade": "measured",
-            "method": "uFiSh1.0 091053 Pacific cod, wild, fillet, raw (Northeast Pacific): species-level value, documentation 'a', n 3",
+            "grade": "domestic_table",
+            "method": "RDA DB 10.4 same-species sub-sample rows K0440002570a, K0440002580a: mean of 대구, 수컷, 생것 0.55, 대구, 암컷, 생것 0.47",
             "peer_values": [
               {
                 "food_item_id": "K0270000000a",
@@ -7308,24 +7311,28 @@
               {
                 "food_item_id": "K0440000000a",
                 "name": "대구, 생것",
-                "value": 0.3839333333333333
+                "value": 0.51
               }
             ],
-            "percentile": 5.77,
-            "percentile_unrounded": 5.769230769230769,
+            "percentile": 25.0,
+            "percentile_unrounded": 25.0,
             "substitute": {
-              "doc_code": "a",
-              "food_item_id": "091053",
-              "food_name": "Pacific cod, wild, fillet, raw (Northeast Pacific)",
-              "label": "종 수준 대체치(다른 성분표)",
-              "n": 3,
-              "part": "fillet",
-              "source_id": "ufish_1_workbook",
-              "taxon_label": "Gadus macrocephalus, Tilesius 1810",
-              "taxon_level": "species"
+              "doc_code": null,
+              "food_item_id": "K0440002570a+K0440002580a",
+              "food_name": "대구, 수컷, 생것 / 대구, 암컷, 생것",
+              "label": "같은 종 국내 부표본(RDA)",
+              "n": 2,
+              "part": "edible portion",
+              "source_id": "rda_db_10_4",
+              "taxon_label": "Pacific cod, Male, Raw",
+              "taxon_level": "subsample",
+              "values": {
+                "K0440002570a": 0.55,
+                "K0440002580a": 0.47
+              }
             },
             "unit": "mg",
-            "value": 0.3839333333333333
+            "value": 0.51
           }
         },
         "observed_rows": [
@@ -7353,8 +7360,9 @@
         "sample_state": "raw",
         "source_food_item_id": "K0440000000a",
         "source_id": "rda_db_10_4",
+        "substitute_row": "K0440000000a",
         "substitute_search": {
-          "zinc_mg": "091053"
+          "zinc_mg": "K0440002570a+K0440002580a"
         },
         "substituted_components": [
           "zinc_mg"
@@ -7380,21 +7388,22 @@
           "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
           "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
           "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Ranked against the 25-food cohort plus itself because zinc_mg is a substitute (같은 종 국내 부표본(RDA), K0440002570a+K0440002580a); a substitute comes from another sample, region or table, not from this species' own row.",
+          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
-        "unrounded": 28.902564102564103,
+        "unrounded": 34.03076923076923,
         "weight_sensitivity": [
           {
             "aquaculture_weight": 0.15,
             "edible_fraction_weight": 0.15,
-            "mfpi": 28.3,
+            "mfpi": 32.8,
             "nutrient_weight": 0.7
           },
           {
             "aquaculture_weight": 0.05,
             "edible_fraction_weight": 0.05,
-            "mfpi": 29.5,
+            "mfpi": 35.3,
             "nutrient_weight": 0.9
           }
         ],
@@ -7461,14 +7470,14 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": 28.9
+        "MFPI": 34.0
       },
       "sensitivity": {
         "food_weights": {}
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": null,
-        "food_only_MFPI": 28.9
+        "food_only_MFPI": 34.0
       },
       "source_ids": [
         "cellosaurus_mbpi",
@@ -8442,6 +8451,7 @@
         "sample_state": "raw",
         "source_food_item_id": "K6230040000a",
         "source_id": "rda_db_10_4",
+        "substitute_row": "K6230040000a",
         "substitute_search": {
           "zinc_mg": "093035"
         },
@@ -8469,7 +8479,8 @@
           "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
           "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
           "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Ranked against the 25-food cohort plus itself because zinc_mg is a substitute (유사종 대체치(같은 과), 093035); a substitute comes from another sample, region or table, not from this species' own row.",
+          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
         "unrounded": 45.87435897435898,
@@ -8605,6 +8616,7 @@
         "iucn_sepia_esculenta_2012",
         "nibr_red_data_book_2024",
         "rda_db_10_4",
+        "ufish_1_workbook",
         "yoo_2023_sepia_esculenta"
       ],
       "unexplored_candidate": null,
@@ -9063,12 +9075,15 @@
       "substitutes": {
         "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-2026-09-30.json",
         "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
+        "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
         "labels": {
           "family": "유사종 대체치(같은 과)",
           "genus": "유사종 대체치(같은 속)",
-          "species": "종 수준 대체치(다른 성분표)"
+          "species": "종 수준 대체치(다른 성분표)",
+          "subsample": "같은 종 국내 부표본(RDA)"
         },
         "levels": [
+          "subsample",
           "species",
           "genus",
           "family"
@@ -9079,7 +9094,7 @@
           "flesh",
           "muscle"
         ],
-        "rule": "Only a component missing from the species' own linked RDA row is filled, and only when that row reports at least one component. Candidates are uFiSh raw items of the consumed part fillet, flesh or muscle (not whole animal, organ or roe), per 100 g edible portion. Order: WoRMS species or synonym, then same genus, then same family; within a level the higher grade factor, then larger n, then the lower item ID. A species-level value takes its grade from the uFiSh documentation code (a = measured 1.0; c, r, ar = calculated 0.85; e = proxy 0.5); every genus or family value is a proxy (0.5). Pooled entries spanning several families are never used.",
+        "rule": "Only a component missing from the species' own linked RDA row is filled, and only when that row reports at least one component. Candidates are uFiSh raw items of the consumed part fillet, flesh or muscle (not whole animal, organ or roe), per 100 g edible portion. Order: same-species RDA sub-sample rows (subsample_rule), then uFiSh WoRMS species or synonym, then same genus, then same family; within a level the higher grade factor, then larger n, then the lower item ID. A species-level value takes its grade from the uFiSh documentation code (a = measured 1.0; c, r, ar = calculated 0.85; e = proxy 0.5); every genus or family value is a proxy (0.5). Pooled entries spanning several families are never used.",
         "snapshot": "research/verified-indices/snapshots/ufish-substitutes-2026-09-30.json",
         "source_id": "ufish_1_workbook",
         "species_grade_by_doc": {
@@ -9088,7 +9103,22 @@
           "c": "calculated",
           "e": "proxy",
           "r": "calculated"
-        }
+        },
+        "subsample_links": [
+          {
+            "aphia_id": 254538,
+            "food_item_id": "K0440002570a",
+            "link_evidence": "RDA '대구, 수컷, 생것' / 'Pacific cod, Male, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species.",
+            "reviewed": true
+          },
+          {
+            "aphia_id": 254538,
+            "food_item_id": "K0440002580a",
+            "link_evidence": "RDA '대구, 암컷, 생것' / 'Pacific cod, Female, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species.",
+            "reviewed": true
+          }
+        ],
+        "subsample_rule": "Before any uFiSh value, a missing component is taken from other rows of the same RDA table that a review links to the same species and that the cohort rule excludes as sex or regional sub-samples (they never join the cohort). Several such rows give their arithmetic mean (equal weights; n is not published). The value keeps the rows' grade (domestic_table 1.0 or foreign_table_cited 0.85). Rows whose main row is not species-specific (e.g. 고등어 남해/서해 under the generic 고등어 row) are not linked."
       }
     },
     "peptide_bioactivity": {
@@ -9870,10 +9900,10 @@
       },
       "license": "FAO copyright; non-commercial research and education use with attribution",
       "provider": "FAO/INFOODS",
-      "terms": "© FAO 2016. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored; no FAO endorsement is implied.",
+      "terms": "© FAO 2016 (user guide i6655en.pdf p.4, read 2026-10-01): material may be copied, downloaded and printed for private study, research and teaching purposes, or for use in non-commercial products or services, provided that appropriate acknowledgement of FAO as the source and copyright holder is given and that FAO's endorsement is not implied; translation, adaptation, resale and other commercial use rights must be requested from FAO. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored.",
       "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
       "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
-      "user_guide": "https://www.fao.org/3/a-i6655e.pdf",
+      "user_guide": "https://www.fao.org/3/I6655EN/i6655en.pdf",
       "version": "uFiSh1.0 (December 2016); workbook sha256 66ce0037ce1f9296102d190e4aafc08aa30d658fd843a7591a9abdcdc787be12"
     },
     "undaria_2018_paper": {
@@ -12049,6 +12079,7 @@
             }
           }
         ],
+        "substitute_row": "K6230020000a",
         "substitute_search": {
           "zinc_mg": "093033"
         },
@@ -13480,6 +13511,7 @@
         "sample_state": "raw",
         "source_food_item_id": "K4270000000a",
         "source_id": "rda_db_10_4",
+        "substitute_row": "K4270000000a",
         "substitute_search": {
           "zinc_mg": "093015"
         },
@@ -13514,6 +13546,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.3 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -13568,7 +13601,8 @@
           "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
           "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
           "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked.",
-          "25-food fixed cohort: one rank step moves a nutrient percentile by about 4.0 points.",
+          "Ranked against the 25-food cohort plus itself because zinc_mg is a substitute (종 수준 대체치(다른 성분표), 093015); a substitute comes from another sample, region or table, not from this species' own row.",
+          "26-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 3.8 points.",
           "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
         ],
         "unrounded": 60.09230769230769,
@@ -13739,6 +13773,7 @@
         "rda_db_10_4",
         "scienceon_mytilus_coruscus_2016",
         "ufish_1",
+        "ufish_1_workbook",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],

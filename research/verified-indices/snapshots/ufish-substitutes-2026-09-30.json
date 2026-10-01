@@ -1473,7 +1473,7 @@
    "taxon_level": "species"
   }
  ],
- "match_rule": "WoRMS accepted name or synonym (species), same WoRMS genus (genus), same WoRMS family (family); pooled entries spanning several families are never matched",
+ "match_rule": "species: the uFiSh scientific name equals the WoRMS accepted name or a WoRMS synonym; genus: the first word of the uFiSh scientific name as published equals the WoRMS genus of the species (not resolved to the accepted combination, so uFiSh 'Crassostrea gigas' does not match genus Magallana); family: the uFiSh FAMILY column equals the WoRMS family; pooled entries spanning several families (e.g. 093034 'Sepiidae, Sepiolidae') are never matched",
  "snapshot_date": "2026-09-30",
  "sources": {
   "ufish_1_workbook": {
@@ -1487,10 +1487,10 @@
    },
    "license": "FAO copyright; non-commercial research and education use with attribution",
    "provider": "FAO/INFOODS",
-   "terms": "© FAO 2016. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored; no FAO endorsement is implied.",
+   "terms": "© FAO 2016 (user guide i6655en.pdf p.4, read 2026-10-01): material may be copied, downloaded and printed for private study, research and teaching purposes, or for use in non-commercial products or services, provided that appropriate acknowledgement of FAO as the source and copyright holder is given and that FAO's endorsement is not implied; translation, adaptation, resale and other commercial use rights must be requested from FAO. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored.",
    "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
    "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
-   "user_guide": "https://www.fao.org/3/a-i6655e.pdf",
+   "user_guide": "https://www.fao.org/3/I6655EN/i6655en.pdf",
    "version": "uFiSh1.0 (December 2016); workbook sha256 66ce0037ce1f9296102d190e4aafc08aa30d658fd843a7591a9abdcdc787be12"
   }
  }

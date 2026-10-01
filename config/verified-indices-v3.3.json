@@ -118,6 +118,7 @@
       "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-2026-09-30.json",
       "source_id": "ufish_1_workbook",
       "levels": [
+        "subsample",
         "species",
         "genus",
         "family"
@@ -135,13 +136,30 @@
         "e": "proxy"
       },
       "labels": {
+        "subsample": "같은 종 국내 부표본(RDA)",
         "species": "종 수준 대체치(다른 성분표)",
         "genus": "유사종 대체치(같은 속)",
         "family": "유사종 대체치(같은 과)"
       },
-      "rule": "Only a component missing from the species' own linked RDA row is filled, and only when that row reports at least one component. Candidates are uFiSh raw items of the consumed part fillet, flesh or muscle (not whole animal, organ or roe), per 100 g edible portion. Order: WoRMS species or synonym, then same genus, then same family; within a level the higher grade factor, then larger n, then the lower item ID. A species-level value takes its grade from the uFiSh documentation code (a = measured 1.0; c, r, ar = calculated 0.85; e = proxy 0.5); every genus or family value is a proxy (0.5). Pooled entries spanning several families are never used.",
+      "rule": "Only a component missing from the species' own linked RDA row is filled, and only when that row reports at least one component. Candidates are uFiSh raw items of the consumed part fillet, flesh or muscle (not whole animal, organ or roe), per 100 g edible portion. Order: same-species RDA sub-sample rows (subsample_rule), then uFiSh WoRMS species or synonym, then same genus, then same family; within a level the higher grade factor, then larger n, then the lower item ID. A species-level value takes its grade from the uFiSh documentation code (a = measured 1.0; c, r, ar = calculated 0.85; e = proxy 0.5); every genus or family value is a proxy (0.5). Pooled entries spanning several families are never used.",
       "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
-      "not_used": "AFCD Release 3 (FSANZ) food details carry no scientific names, so no AFCD row is matched to a genus or family; AFCD stays the oyster cross-check cohort."
+      "not_used": "AFCD Release 3 (FSANZ) food details carry no scientific names, so no AFCD row is matched to a genus or family; AFCD stays the oyster cross-check cohort.",
+      "subsample_links": [
+        {
+          "food_item_id": "K0440002570a",
+          "aphia_id": 254538,
+          "reviewed": true,
+          "link_evidence": "RDA '대구, 수컷, 생것' / 'Pacific cod, Male, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species."
+        },
+        {
+          "food_item_id": "K0440002580a",
+          "aphia_id": 254538,
+          "reviewed": true,
+          "link_evidence": "RDA '대구, 암컷, 생것' / 'Pacific cod, Female, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species."
+        }
+      ],
+      "subsample_rule": "Before any uFiSh value, a missing component is taken from other rows of the same RDA table that a review links to the same species and that the cohort rule excludes as sex or regional sub-samples (they never join the cohort). Several such rows give their arithmetic mean (equal weights; n is not published). The value keeps the rows' grade (domestic_table 1.0 or foreign_table_cited 0.85). Rows whose main row is not species-specific (e.g. 고등어 남해/서해 under the generic 고등어 row) are not linked.",
+      "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity."
     }
   },
   "bioactivity": {

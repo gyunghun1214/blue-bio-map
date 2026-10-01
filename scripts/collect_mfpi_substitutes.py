@@ -120,14 +120,13 @@ def main() -> None:
             "provider": "FAO/INFOODS", "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
             "version": f"uFiSh1.0 (December 2016); workbook sha256 {UFISH_SHA256}", "url": UFISH_URL, "accessed": today,
             "license": "FAO copyright; non-commercial research and education use with attribution",
-            "terms": "© FAO 2016. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. "
-                     "Only matched item IDs, three values, documentation codes and n are stored; no FAO endorsement is implied.",
-            "user_guide": "https://www.fao.org/3/a-i6655e.pdf",
+            "terms": "© FAO 2016 (user guide i6655en.pdf p.4, read 2026-10-01): material may be copied, downloaded and printed for private study, research and teaching purposes, or for use in non-commercial products or services, provided that appropriate acknowledgement of FAO as the source and copyright holder is given and that FAO's endorsement is not implied; translation, adaptation, resale and other commercial use rights must be requested from FAO. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored.",
+            "user_guide": "https://www.fao.org/3/I6655EN/i6655en.pdf",
             "documentation_codes": {"a": "analytical value", "r": "value taken from a reference food composition dataset",
                                     "ar": "mix of analytical and reference-dataset values", "c": "calculated in the datasheet (e.g. protein from nitrogen)",
                                     "e": "estimated or borrowed from a similar food"}}},
         "basis": "per 100 g edible portion, raw", "components": COMPONENTS,
-        "match_rule": "WoRMS accepted name or synonym (species), same WoRMS genus (genus), same WoRMS family (family); pooled entries spanning several families are never matched",
+        "match_rule": "species: the uFiSh scientific name equals the WoRMS accepted name or a WoRMS synonym; genus: the first word of the uFiSh scientific name as published equals the WoRMS genus of the species (not resolved to the accepted combination, so uFiSh 'Crassostrea gigas' does not match genus Magallana); family: the uFiSh FAMILY column equals the WoRMS family; pooled entries spanning several families (e.g. 093034 'Sepiidae, Sepiolidae') are never matched",
         "items": items}
     out = args.out or ROOT / f"research/verified-indices/snapshots/ufish-substitutes-{today}.json"
     out.write_text(json.dumps(snapshot, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")

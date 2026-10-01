@@ -829,8 +829,13 @@ class VerifiedPilot32Tests(unittest.TestCase):
 
 
 # 3.3 fills a missing RDA zinc value from uFiSh: aphia -> (3.2 MFPI, 3.3 MFPI, uFiSh item, level, grade).
+# 대구 zinc comes from the mean of its two RDA sex sub-sample rows before any uFiSh value (independent review, wf_649e5916-f04).
 CHANGED_33 = {506159: (None, 60.1, "093015", "species", "measured"), 397082: (None, 48.0, "093001", "genus", "proxy"),
-              254538: (None, 28.9, "091053", "species", "measured"), 1666974: (None, 45.9, "093035", "family", "proxy")}
+              254538: (None, 34.0, "K0440002570a+K0440002580a", "subsample", "domestic_table"),
+              1666974: (None, 45.9, "093035", "family", "proxy")}
+
+
+V33 = ROOT / "config" / "verified-indices-v3.3.json"
 
 
 class VerifiedPilot33Tests(unittest.TestCase):
@@ -873,6 +878,9 @@ class VerifiedPilot33Tests(unittest.TestCase):
             self.assertNotIn(f["source_food_item_id"], f["cohort_food_item_ids"], aphia)   # never joins the cohort
             self.assertLess(len(subs), len(f["nutrients"]), aphia)                          # at least one own RDA value
             for name, n in subs.items():
+                self.assertIsNone(next(o for o in f["observed_rows"] if o["food_item_id"] == f["source_food_item_id"])["values"][name], aphia)
+                if n["substitute"]["taxon_level"] == "subsample":  # same-species rows of the same RDA table, checked below
+                    continue
                 src = items[n["substitute"]["food_item_id"]]
                 level = src["matches"][str(aphia)]
                 self.assertEqual((n["value"], n["substitute"]["taxon_level"], n["substitute"]["part"] in rule["parts"]),
@@ -908,7 +916,47 @@ class VerifiedPilot33Tests(unittest.TestCase):
             subs = [k for k, n in (s["food_trace"].get("nutrients") or {}).items() if n.get("substitute")]
             for k in subs:
                 self.assertNotIn(k, s["food_trace"]["sufficiency"]["present"], aphia)
-        self.assertTrue(self.new[254538]["priority_survey"])  # 대구: MFPI 28.9 from a substituted zinc, still low information
+        self.assertTrue(self.new[254538]["priority_survey"])  # 대구: MFPI 34.0 from a substituted zinc, still low information
+
+    def test_same_species_subsample_comes_first(self):
+        # 대구: the RDA sex sub-sample rows (zinc 0.55 and 0.47) come before uFiSh 091053 (NE Pacific, 0.384)
+        zinc = self.new[254538]["food_trace"]["nutrients"]["zinc_mg"]
+        self.assertEqual((zinc["value"], zinc["grade"], zinc["substitute"]["values"]),
+                         (0.51, "domestic_table", {"K0440002570a": 0.55, "K0440002580a": 0.47}))
+        rule = self.report["method"]["nutrition"]["substitutes"]
+        excluded = self.report["method"]["nutrition"]["primary_cohorts"][0]["rule"]["exclude_food_item_ids"]
+        for link in rule["subsample_links"]:
+            self.assertIn(link["food_item_id"], excluded)          # a linked sub-sample never joins the cohort
+            self.assertNotIn(link["food_item_id"], self.new[254538]["food_trace"]["cohort_food_item_ids"])
+        # without the reviewed links the uFiSh species value is used, as before
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V33)
+        sub = {**config["nutrition"]["substitutes"], "subsample_links": []}
+        alt = build(evidence, candidates, {**config, "nutrition": {**config["nutrition"], "substitutes": sub}}, snapshot, taxonomy)
+        cod = next(s for s in alt["candidate_species"] if s["aphia_id"] == 254538)
+        self.assertEqual((cod["scores"]["MFPI"], cod["food_trace"]["nutrients"]["zinc_mg"]["substitute"]["food_item_id"]), (28.9, "091053"))
+
+    def test_rows_the_cohort_rule_excludes_are_never_ranked_outside_it(self):
+        # link a cohort-excluded complete row (은어 양식) and an organ row to a species: neither may score through completed()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V33)
+        rda = {r["code"]: r for r in snapshot["rows"]}
+        organ = next(c for c, r in rda.items() if r["group"] == "어패류 및 기타 수산물" and "내장" in r["name"])
+        # 전복 has a reviewed aquaculture record and edible fraction, so only the row rule can stop a score
+        for code in ("K1440010000a", organ):
+            links = [l for l in evidence["rda_taxon_links"] if l.get("aphia_id") != 397082] + [
+                {"food_item_id": code, "reported_food_name": rda[code]["name"], "english_name": rda[code]["english_name"],
+                 "aphia_id": 397082, "scientific_name": "Haliotis discus", "reviewed": True, "link_evidence": "synthetic"}]
+            report = build({**evidence, "rda_taxon_links": links}, candidates, config, snapshot, taxonomy)
+            abalone = next(s for s in report["candidate_species"] if s["aphia_id"] == 397082)
+            self.assertIsNone(abalone["scores"]["MFPI"], code)
+            self.assertNotIn("substitute_row", abalone["food_trace"], code)
+
+    def test_substitute_sources_are_registered_on_the_species(self):
+        for aphia, s in self.new.items():
+            for n in (s["food_trace"].get("nutrients") or {}).values():
+                if n.get("substitute"):
+                    self.assertIn(n["substitute"]["source_id"], s["source_ids"], aphia)
+        mussel = [r for r in self.new[506159]["food_trace"]["supplemental_nutrition"] if r["record_id"] == "uFiSh1.0:093015"]
+        self.assertIn("zinc_mg is used as a verified-pilot-3.3 substitute", mussel[0]["substitute_use"])
 
 
 if __name__ == "__main__":
