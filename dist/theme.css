@@ -232,6 +232,11 @@ footer{max-width:none;padding:16px 20px;background:#fff}
   .basemap-switch button{padding:4px 8px;font-size:12px}
   .map-title #copy-link,.map-title #reset-map{display:none}
   .map-ui-bl .map-key{padding:9px 11px;gap:5px;font-size:12px}
+  /* Narrow phones (360–390px): legend caption on one line; "조사 노력" never splits, the source date wraps whole */
+  .map-ui-bl #map-symbol-label{font-size:11.5px}
+  .map-ui-bl .effort-key{flex-wrap:wrap;row-gap:2px}
+  .map-ui-bl .effort-key label,.map-ui-bl .effort-key small{white-space:nowrap}
+  .map-ui-bl .effort-key label{margin-right:4px}.map-ui-bl .effort-key small{margin-left:4px;font-size:10.5px}
   .map-ui-bl .value-legend{width:auto;max-height:240px}
   .leaflet-bottom.leaflet-right .leaflet-control-zoom{margin:0 10px 24px 0}
   #compare,#method{padding:20px 14px 40px}
