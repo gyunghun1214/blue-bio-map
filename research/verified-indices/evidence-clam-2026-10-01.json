@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "sources": {
+    "suetsuna_2002_clam": {
+      "provider": "Fisheries Science 68:233 (Suetsuna 2002), full text via J-STAGE",
+      "title": "Identification of antihypertensive peptides from peptic digest of the short-necked clam Tapes philippinarum and the pearl oyster Pinctada fucata martensii",
+      "version": "2002",
+      "doi": "10.1046/j.1444-2906.2002.00415.x",
+      "url": "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    },
+    "lee_2005_clam": {
+      "provider": "Journal of Fisheries Science and Technology 8:109 (Lee et al. 2005), full text via KoreaScience",
+      "title": "Peptide inhibitor for angiotensin-converting enzyme from thermolysin hydrolysate of Manila clam proteins",
+      "version": "2005",
+      "doi": "10.5657/fas.2005.8.2.109",
+      "url": "https://doi.org/10.5657/fas.2005.8.2.109",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.1046/j.1444-2906.2002.00415.x:IAE",
+      "source_id": "suetsuna_2002_clam",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IAE",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 34.7,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+      "verification": "Full text (J-STAGE, free): peptic digest of short-necked clam Tapes philippinarum (= R. philippinarum); peptides synthesized by solid phase (Applied Biosystems 430A); HHL (Peptide Institute), rabbit-lung ACE (Sigma), modified Cheung & Cushman; Table 1 and text give IC50 in uM. The text's peak-by-peak IC50 list swaps clam and pearl oyster relative to the sequence sentence and Table 1; IAE belongs to the clam under both readings, so it is kept."
+    },
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.1046/j.1444-2906.2002.00415.x:IVE",
+      "source_id": "suetsuna_2002_clam",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IVE",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 95.6,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+      "verification": "Full text (J-STAGE, free): peptic digest of short-necked clam Tapes philippinarum (= R. philippinarum); peptides synthesized by solid phase (Applied Biosystems 430A); HHL (Peptide Institute), rabbit-lung ACE (Sigma), modified Cheung & Cushman; Table 1 and text give IC50 in uM. The text's peak-by-peak IC50 list swaps clam and pearl oyster relative to the sequence sentence and Table 1; IVE belongs to the clam under both readings, so it is kept."
+    },
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.5657/fas.2005.8.2.109:LLP",
+      "source_id": "lee_2005_clam",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "LLP",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 158,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.5657/fas.2005.8.2.109",
+      "verification": "Full text (KoreaScience, free): thermolysin hydrolysate of Manila clam (R. philippinarum, southwestern coast of Korea); Leu-Leu-Pro sequenced by Edman, custom-synthesized (KBSI); HHL and ACE from Sigma; IC50 158 uM in text and Table 1."
+    },
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.1046/j.1444-2906.2002.00415.x:AEL",
+      "source_id": "suetsuna_2002_clam",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "AEL",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 57.1,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+      "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1.",
+      "missing": [
+        "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+      ],
+      "chain": {
+        "origin": false,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": true
+      }
+    },
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.1046/j.1444-2906.2002.00415.x:LVE",
+      "source_id": "suetsuna_2002_clam",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "LVE",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 14.2,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+      "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1.",
+      "missing": [
+        "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+      ],
+      "chain": {
+        "origin": false,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": true
+      }
+    },
+    {
+      "origin_aphia_id": 231750,
+      "origin_scientific_name": "Ruditapes philippinarum",
+      "record_id": "10.1046/j.1444-2906.2002.00415.x:IELPLG",
+      "source_id": "suetsuna_2002_clam",
+      "status": "partial_only",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "IELPLG",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 72.1,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+      "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1.",
+      "missing": [
+        "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+      ],
+      "chain": {
+        "origin": false,
+        "structure_id": true,
+        "quantitative_endpoint": true,
+        "comparable_cohort": true
+      }
+    }
+  ]
+}
