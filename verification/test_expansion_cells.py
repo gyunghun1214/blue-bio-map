@@ -1,6 +1,7 @@
 """Record rules of scripts/build_expansion_cells.py on synthetic records (no network, no cache)."""
 import datetime
 import json
+import math
 import sys
 import unittest
 from unittest import mock
@@ -69,6 +70,35 @@ class CellRules(unittest.TestCase):
         text = json.dumps(e)
         self.assertNotIn("35.2", text)  # exact coordinates stay in memory
         self.assertNotIn("129.1", text)
+
+    def test_nibr_holder_points(self):
+        # 2026-10-01: NIBR specimens have no GBIF coordinates; NIBR's portal point and date join by catalogue number.
+        def point(lon, lat, day="2011-01-20", name="Genus species (Author, 1900)"):
+            x = math.radians(lon) * 6378137
+            y = math.log(math.tan(math.pi / 4 + math.radians(lat) / 2)) * 6378137
+            return [{"geom": f"POINT({x} {y})", "coll_sdate": day, "taxon_full_nm": name}]
+        nibr = {"records": [gbif(k, decimalLatitude=None, decimalLongitude=None, year=2014, eventDate="2014-03-08",
+                                 catalogNumber=f"NIBRIV{k}", institutionCode="NIBR",
+                                 license="http://creativecommons.org/licenses/by-nc/4.0/legalcode") for k in range(11, 16)],
+                "points": {"NIBRIV11": point(127.52, 34.85), "NIBRIV12": point(127.52, 34.85, name="Other species"),
+                           "NIBRIV13": point(140.0, 35.0), "NIBRIV14": [], "NIBRIV15": point(127.52, 34.85, day="")}}
+        held = b.nibr_records(nibr)
+        self.assertEqual([r["catalogNumber"] for r in held], ["NIBRIV11", "NIBRIV12", "NIBRIV15"])  # in-box points only
+        self.assertAlmostEqual(held[0]["decimalLatitude"], 34.85, places=6)
+        self.assertEqual(held[0]["year"], 2011)  # the portal's collection date, not GBIF's
+        g = {"keys": [9], "genusFallback": None, "records": held, "nibr": {"specimens": 5, "pointsInBox": 3}}
+        o = {"total": 0, "datasets": [], "records": []}
+        with mock.patch.object(b, "resolves", lambda name, s: name == s["name"]), \
+                mock.patch.object(b, "xylookup", xy), mock.patch.object(b, "dataset_meta", meta):
+            e = b.review(SPECIES, g, o)
+        rv = e["review"]["gbif"]
+        self.assertEqual(rv["excluded"], {"taxon_not_verified": 1, "no_year": 1})  # portal name must resolve too
+        self.assertEqual((rv["nibrPoints"]["specimens"], rv["nibrPoints"]["pointsInBox"], rv["nibrPoints"]["accepted"]),
+                         (5, 3, 1))
+        (cell,) = e["cells"]
+        self.assertEqual(cell["licenses"], ["CC BY-NC 4.0"])
+        self.assertEqual(sorted(c["source"] for c in cell["citations"]), ["GBIF", "NIBR"])
+        self.assertNotIn("34.85", json.dumps(e))
 
     def test_licence_terms(self):
         for text, want in (("http://creativecommons.org/licenses/by-nc/4.0/legalcode", "CC BY-NC 4.0"),

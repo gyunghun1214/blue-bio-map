@@ -76,8 +76,13 @@ async function loadPublishedProfiles() {
   }catch{/* Keep taxonomy catalog available if the independent audit file is unavailable. */}
   // Reviewed candidate cells (scripts/build_expansion_cells.py). An entry failing any identity, grid, licence
   // or citation check releases no cells for that species (fail closed); the other species stay available.
-  const asSource=(x,changes,accessed)=>({id:x.id||x.url,title:x.title,url:x.url,citation:`${x.title}. ${x.source==='OBIS'?'OBIS':'GBIF.org'}를 통해 접근.`,
-    licenseUrl:licenseUrl[x.licenses?.[0]],license:(x.licenses||[]).join(' · '),changes,accessed});
+  // 2026-10-01: NIBR specimens (no coordinates on GBIF) take their point and date from NIBR's geography service,
+  // credited under the portal's own terms. Only this exact citation is accepted besides GBIF/OBIS datasets.
+  const NIBR_POINTS={url:'https://species.nibr.go.kr/geo/html/index.do',terms:'공공누리 제3유형',termsUrl:'https://www.kogl.or.kr/info/licenseType3.do'};
+  const nibrPoints=x=>x.url===NIBR_POINTS.url&&x.source==='NIBR'&&x.licenses?.length===1&&x.licenses[0]===NIBR_POINTS.terms;
+  const asSource=(x,changes,accessed)=>({id:x.id||x.url,title:x.title,url:x.url,
+    citation:nibrPoints(x)?`${x.title}. 국립생물자원관 누리집에서 표본번호로 조회.`:`${x.title}. ${x.source==='OBIS'?'OBIS':'GBIF.org'}를 통해 접근.`,
+    licenseUrl:nibrPoints(x)?NIBR_POINTS.termsUrl:licenseUrl[x.licenses?.[0]],license:(x.licenses||[]).join(' · '),changes,accessed});
   const openLicences=l=>Array.isArray(l)&&l.length>0&&l.every(x=>licenseUrl[x]);
   const validCell=(c,size)=>c.sizeDeg===size&&Number.isInteger(c.lat0/size)&&Number.isInteger(c.lon0/size)
     &&c.lat0+size>33&&c.lat0<=38.7&&c.lon0+size>124&&c.lon0<=132
@@ -85,7 +90,7 @@ async function loadPublishedProfiles() {
     &&Number.isSafeInteger(c.yearStart)&&Number.isSafeInteger(c.yearEnd)&&c.yearStart<=c.yearEnd&&c.historical===(c.yearEnd<2000)
     &&typeof c.outsideKoreanEEZ==='boolean'&&typeof c.period==='string'&&Array.isArray(c.seaAreas)&&openLicences(c.licenses)
     &&Array.isArray(c.citations)&&c.citations.length>0
-    &&c.citations.every(x=>/^https:\/\/(www\.gbif\.org|obis\.org)\/dataset\/[\w-]+$/.test(x.url)&&openLicences(x.licenses));
+    &&c.citations.every(x=>/^https:\/\/(www\.gbif\.org|obis\.org)\/dataset\/[\w-]+$/.test(x.url)&&openLicences(x.licenses)||nibrPoints(x));
   let releaseById=new Map(), releaseOutdated=false;
   try{
     const res=await fetch('expansion-public-cells.json',{cache:'no-store'});
@@ -132,7 +137,7 @@ async function loadPublishedProfiles() {
     const records=cells.reduce((a,x)=>a+x.records,0), outdatedRelease=!entry&&releaseOutdated;
     // Reviewed occurrence cells are not a current distribution, abundance or a verified score.
     const info={summary_version:2,occurrence_status:cells.length?'reviewed_public_cells':entry?'no_eligible_records':outdatedRelease?'client_outdated':'release_unverified',record_count:cells.length?records:null,
-      map:cells.length?{source:`${[...new Set(cells.flatMap(x=>x.sources))].join("·")} 검수 기록 · ${[...new Set(cells.flatMap(x=>x.licenses))].join("·")}${cells.some(x=>x.licenses.includes("CC BY-NC 4.0"))?" (비상업 연구용)":""}`}:null,
+      map:cells.length?{source:`${[...new Set(cells.flatMap(x=>x.sources))].join("·")} 검수 기록 · ${[...new Set(cells.flatMap(x=>x.licenses))].join("·")}${cells.some(x=>x.licenses.includes("CC BY-NC 4.0"))?" (비상업 연구용)":""}${cells.some(x=>x.citations.some(nibrPoints))?" · 채집 지점 국립생물자원관":""}`}:null,
       conservation:{status:audit?.iucn?.record?.category?'checklist_record':'not_reviewed'},
       nutrition:{status:audit?.nutrition?.foodCode?'candidate_row':'not_collected'},
       compounds:{status:'not_collected'},production:{},
