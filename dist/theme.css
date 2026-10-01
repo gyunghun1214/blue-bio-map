@@ -282,15 +282,15 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .axis-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 12px}
 .gauge{position:relative;margin:0;text-align:center}
 .gauge svg{display:block;width:100%;height:auto}
-.gauge .g-track{fill:none;stroke:#e9eff3;stroke-width:9;stroke-linecap:round}
-.gauge .g-fill{fill:none;stroke-width:9;stroke-linecap:round}
-.gauge b{position:absolute;top:38%;left:0;right:0;font-size:19px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.gauge .g-track{fill:none;stroke:#e9eff3;stroke-width:7;stroke-linecap:round}
+.gauge .g-fill{fill:none;stroke-width:7;stroke-linecap:round}
+.gauge text{font-size:21px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
 .gauge figcaption{display:grid;margin-top:-2px;font-size:12px;font-weight:700;color:var(--ink2)}
 .gauge figcaption small{font-size:11px;font-weight:500;color:var(--muted)}
-.gauge.held b{color:#9aa8b4;font-weight:500}
+.gauge.held text{fill:#9aa8b4;font-weight:500}
 .gauge.held .g-track{stroke-dasharray:3 4}
 
 /* Value map: soft glow under typed cells (figure 5 heat-map look); the crisp cell above keeps the meaning and the click */
 .leaflet-valueGlow-pane{filter:blur(14px);opacity:.85;pointer-events:none}
 @media (prefers-reduced-motion:no-preference){.leaflet-valueGlow-pane{transition:opacity .3s}}
-@media (max-width:740px){.axis-gauges{gap:2px}.gauge b{font-size:16px}.species-card .card-scores{grid-column:1/-1}}
+@media (max-width:740px){.axis-gauges{gap:2px}.species-card .card-scores{grid-column:1/-1}}
