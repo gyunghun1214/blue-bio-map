@@ -1684,20 +1684,26 @@ class VerifiedPilot315Tests(unittest.TestCase):
                 self.assertNotIn(path, text)
 
 
+V316 = ROOT / "config" / "verified-indices-v3.16.json"  # superseded by 3.17 (display-only EPA/DHA); its rows stay tested
+FATTY = "research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json"
+
+
 class VerifiedPilot316Tests(unittest.TestCase):
-    """Public method: 3.15 plus one more range-state MCUI. The Russian Red Data Book (Order No. 320 of 23.05.2023, Section 5
+    """Superseded by 3.17. Public method: 3.15 plus one more range-state MCUI. The Russian Red Data Book (Order No. 320 of 23.05.2023, Section 5
     ВОДОРОСЛИ row 594) gives Gelidium elegans the threat status 'У' = VU, so 우뭇가사리 gets a labelled range-state MCUI 60
     where 3.15 had none. Russia is the northern edge of the range, so the row carries that limitation. Every other rule,
     coefficient, cohort and threshold is 3.15's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V316))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V315)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.16", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.16 report is archived as it was
+        archived316 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.16.json"
+        self.assertEqual(render(self.report), archived316.read_text(encoding="utf-8"))
 
     def test_only_the_one_cell_changes(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1729,6 +1735,63 @@ class VerifiedPilot316Tests(unittest.TestCase):
     def test_older_configs_do_not_read_the_new_file(self):
         for old in (V312, V313, V314, V315):
             self.assertNotIn(MCUI316, Path(old).read_text(encoding="utf-8"))
+
+
+class VerifiedPilot317Tests(unittest.TestCase):
+    """Public method: 3.16 plus display-only EPA and DHA. The species' own RDA DB 10.4 row carries the two fatty acids per
+    100 g (scripts/collect_rda_fatty_acids.py, same 425 rows), shown beside the species with its share of the 330 mg daily
+    reference value. Korea has no omega-3 content claim, so no claim word is used. No score, cohort, percentile or weight
+    changes: MFPI keeps protein, calcium, iron and zinc."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V316)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.17", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_no_score_moves(self):
+        for a, s in self.new.items():
+            self.assertEqual(s["scores"], self.old[a]["scores"], a)
+            for key in ("nutrients", "cohort_id", "cohort_food_item_ids", "unrounded", "formula", "edible_fraction"):
+                self.assertEqual((s["food_trace"] or {}).get(key), (self.old[a]["food_trace"] or {}).get(key), (a, key))
+        self.assertEqual(self.report["method"]["nutrition"]["components"],
+                         {"protein_g": "g", "iron_mg": "mg", "zinc_mg": "mg", "calcium_mg": "mg"})
+
+    def test_fatty_acids_are_display_only(self):
+        shown = {a: s["food_trace"]["display_fatty_acids"] for a, s in self.new.items()
+                 if (s["food_trace"] or {}).get("display_fatty_acids")}
+        self.assertEqual({a: fa["sum_mg"] for a, fa in shown.items()},
+                         {145721: 16.7, 250680: 185.0, 836033: 149.1, 231750: 212.25, 393716: 221.35,
+                          281273: 850.9, 275816: 622.6, 274849: 562.0, 276651: 1360.0, 1061762: 276.3})
+        rule = self.report["method"]["nutrition"]["display_fatty_acids"]
+        for a, fa in shown.items():
+            self.assertEqual(fa["use"], "display_only")
+            self.assertEqual(round(fa["epa_mg"] + fa["dha_mg"], 2), fa["sum_mg"], a)
+            self.assertEqual((fa["reference_mg"], fa["source_id"]), (330, rule["display_source_id"]), a)
+            # the pair must come from the same published row as the nutrition values
+            self.assertEqual(fa["row_source"], self.new[a]["food_trace"]["row_source"], a)
+        self.assertIn(rule["display_source_id"], self.report["sources"])
+        # a species whose scored row is not its own RDA row never gets the line (MEXT and literature rows)
+        for a in (413600, 836041):
+            self.assertNotIn("display_fatty_acids", self.new[a]["food_trace"])
+
+    def test_snapshot_matches_the_nutrition_rows(self):
+        rule = self.report["method"]["nutrition"]["display_fatty_acids"]
+        fa = json.loads((ROOT / rule["snapshot"]).read_text(encoding="utf-8"))
+        nutrition = json.loads((ROOT / self.report["method"]["nutrition"]["snapshot"]).read_text(encoding="utf-8"))
+        self.assertEqual([r["code"] for r in fa["rows"]], [r["code"] for r in nutrition["rows"]])
+        for a, b in zip(fa["rows"], nutrition["rows"]):
+            self.assertEqual(a["row_source"], b["values"].get("row_source"), a["code"])
+            # EPA and DHA are reported as a pair or not at all, and a blank is never 0
+            self.assertEqual(a["epa_mg"] is None, a["dha_mg"] is None, a["code"])
+        self.assertEqual(sum(r["epa_mg"] is not None for r in fa["rows"]), 39)
+
+    def test_older_configs_do_not_read_it(self):
+        for old in (V313, V314, V315, V316):
+            self.assertNotIn(FATTY, Path(old).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

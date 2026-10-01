@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.16.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.17.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -448,6 +448,16 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         outside = [f"Ranked against the {len(cohort['rows'])}-food cohort plus itself because " + ", ".join(why)
                    + ("; a substitute comes from another sample, region or table, not from this species' own row." if d.get("substituted_components") else ".")
                    ] if d.get("outside_cohort") else []
+        fa = settings.get("display_fatty_acids")
+        if fa and row.get("source_id") == fa["source_id"]:
+            snap = json.loads((ROOT / fa["snapshot"]).read_text(encoding="utf-8"))
+            hit = next((r for r in snap["rows"] if r["code"] == row["food_item_id"]), None)
+            if hit and hit.get("epa_mg") is not None and hit.get("dha_mg") is not None:
+                require(hit["row_source"] == row.get("row_source"), f"{aphia}: fatty-acid row source differs from the nutrition row")
+                trace["display_fatty_acids"] = {"epa_mg": hit["epa_mg"], "dha_mg": hit["dha_mg"],
+                                                "sum_mg": round(hit["epa_mg"] + hit["dha_mg"], 2),
+                                                "reference_mg": fa["daily_reference_mg"], "row_source": hit["row_source"],
+                                                "source_id": fa["display_source_id"], "use": "display_only"}
         trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
@@ -1303,6 +1313,14 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "rda_taxon_links": [new.get(l["food_item_id"], l) for l in evidence["rda_taxon_links"]],
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"]),
                     "sources": {**evidence["sources"], **extra["sources"]}}
+    fa = cfg["nutrition"].get("display_fatty_acids")
+    if fa:  # 3.17: EPA/DHA of the same RDA rows, display only (scripts/collect_rda_fatty_acids.py)
+        extra = read(ROOT / fa["snapshot"])
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "fatty-acid snapshot is older than evidence")
+        require(set(extra["sources"]) == {fa["display_source_id"]} and fa["display_source_id"] not in evidence["sources"],
+                "the fatty-acid snapshot must register its own display source and redefine none")
+        evidence = {**evidence, "sources": {**evidence["sources"], **extra["sources"]},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     subs = cfg.get("mcui_substitutes")
     if subs:  # after 3.14: range-state national lists and the Rapid LC snapshot (scripts/collect_mcui_rapid_lc.py)
         extra, lc = read(ROOT / subs["snapshot"]), read(ROOT / subs["rapid_lc_snapshot"])
