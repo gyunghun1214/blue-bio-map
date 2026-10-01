@@ -81,6 +81,8 @@ async function shot(name,full=true){
   const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:full,clip:full?{x:0,y:0,width:m.w,height:Math.min(m.h,6000),scale:1}:undefined});
   fs.writeFileSync(path.join(OUT,name+'.png'),Buffer.from(r.data,'base64'));}
 const pick=aphia=>evaluate(`document.querySelector('[data-species="${aphia}"]').click();document.querySelectorAll('#detail details.detail-more').forEach(d=>d.open=true);document.getElementById('detail').innerText`);
+// Operating cells come from the live API (map-3 since 2026-10-01): counts are read from the loaded rows, never typed in.
+const liveMap=aphia=>evaluate(`(()=>{const s=data.species.find(x=>x.aphiaID===${aphia});return {records:cellRecords(s),recordsText:cellRecords(s).toLocaleString(),cells:spatialCells(s).length,rows:s.cells.length,years:cellYears(s)}})()`);
 const detailEl=()=>evaluate(`document.getElementById('detail').scrollIntoView();1`);
 // Every comparison page (5 species each): text, coverage bars and species columns, then back to page 1.
 const walkComparison=()=>evaluate("(()=>{const out=[];comparisonPage=0;renderComparison();for(;;){out.push({label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,cols:document.querySelectorAll('#comparison thead th').length-1,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth});if(document.getElementById('comparison-next').disabled)break;document.getElementById('comparison-next').click();}comparisonPage=0;renderComparison();return out})()");
@@ -105,7 +107,8 @@ try{
   const note=await evaluate("document.getElementById('collection-note').textContent");
   check('Live note uses the same published/candidate counts (not a fixed 2종)',note.includes(`운영 발행 ${expPub}종과 조사 후보 ${expCand}종`)&&!/(^|[^\d])2종/.test(note),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
-  check('List: sea cucumber card shows map records and cells (same numbers as panel)',cards.some(c=>c.includes('해삼')&&c.includes('지도 표시 기록 2건 · 2셀')),JSON.stringify(cards));
+  const cucMap=await liveMap(241776);
+  check('List: sea cucumber card shows map records and cells (same numbers as panel)',cards.some(c=>c.includes('해삼')&&c.includes(`지도 표시 기록 ${cucMap.recordsText}건 · ${cucMap.cells}셀`)),JSON.stringify(cards));
 
   const eck=await pick(371986);
   const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent}})()");
@@ -137,11 +140,11 @@ try{
   check('Sea cucumber: 122 compounds, no quantitative activity',/보고 화합물\s*122개/.test(t)&&/정량 활성 자료\s*확인한 자료에서 없음/.test(t),t);
   check('Sea cucumber: no efficacy claim',!/입증|효능|효과가 있/.test(t),t);
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
-  check('Sea cucumber: two occurrence records, 4-degree generalization',/지도 표시 기록\s*2건 · 2개 격자\(4°\)/.test(t)&&t.includes('GBIF')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
+  check('Sea cucumber: published occurrence records, 4-degree generalization',new RegExp(`지도 표시 기록\\s*${cucMap.recordsText}건 · ${cucMap.cells}개 격자\\(4°\\)`).test(t)&&t.includes('GBIF')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   check('Sea cucumber: conservation MCUI 80.0 and nutrition 산출 보류 from the index report, no stale 미수집/보류',/보전평가\s*지표 보고서에서 검토 · MCUI 80\.0/.test(t)&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&!t.includes('근거 부족으로 보류')&&!/영양 기록 수\s*미수집/.test(t),t);
   check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 · 검증 전 시범 지표/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 검증 전 시범 지표')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
+  check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
@@ -183,8 +186,8 @@ try{
   await evaluate("{const s=document.getElementById('collection');s.value='live';s.dispatchEvent(new Event('change'));}1");
   for(let i=0;i<40;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state').textContent")).includes('공개 기준'))break;}
   const shapes=()=>evaluate("document.querySelectorAll('#map path.leaflet-interactive').length");
-  // Spatial cells (one hit area each): 미역 4 period rows -> 3 cells, 우뭇가사리 3 -> 2 (N33E126 has two periods).
-  const expectCells={836033:1,342067:1,241776:2,494972:4,145721:3,372119:2,506159:2,250680:2};
+  // Spatial cells (one hit area each; period rows of one place share a cell), from the published rows of each operating species.
+  const expectCells={};for(const a of [836033,342067,241776,494972,145721,372119,506159,250680])expectCells[a]=(await liveMap(a)).cells;
   const drawn={};for(const a of Object.keys(expectCells)){await pick(a);await sleep(150);drawn[a]=await shapes();}
   // Back-to-back selection used to drop the fit mid-animation (sea cucumber 4° cells cropped at max zoom).
   const fits=await evaluate("[241776,494972,145721,836033,241776].map(a=>{selectSpecies(a);return map.getBounds().contains(L.latLngBounds(selected.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]])))})");
@@ -200,8 +203,9 @@ try{
   const cucT=await pick(241776);
   check('Sea cucumber detail: checked bioactivity case shown, marked not an index input',cucT.includes('별도 원문 조사 · 지표 입력 아님')&&cucT.includes('Holotoxin'),cucT.slice(cucT.indexOf('화합물'),cucT.indexOf('화합물')+400));
   t=await pick(836033);
+  const oyMap=await liveMap(836033);
   const oyTop=await evaluate("(()=>{selectSpecies(836033);const d=document.getElementById('detail');const more=[...d.querySelectorAll('details.detail-more')];return {top:d.querySelector('.detail-summary').innerText,closed:more.length===3&&more.every(x=>!x.open),summaries:more.map(x=>x.querySelector('summary').innerText),kb:more.every(x=>x.querySelector('summary').tabIndex===0)}})()");
-  check('Core regression: oyster top = map GBIF 3건 · 1개 격자 · 2025 only; OBIS 26건/2008–2014 not mixed in',/지도 표시 기록\s*3건 · 1개 격자\(1°\)/.test(oyTop.top)&&/기록 연도\s*2025/.test(oyTop.top)&&oyTop.top.includes('GBIF')&&!oyTop.top.split('제외 사유')[0].includes('26')&&!oyTop.top.includes('2008')&&/제외 사유\s*.*운영 DB에서 검토 중인 기존 기록 26건/.test(oyTop.top)&&!oyTop.top.includes('AphiaID'),oyTop.top);
+  check('Core regression: oyster top = map GBIF records · cells · years of the published cells; OBIS 26건/2008–2014 not mixed in',new RegExp(`지도 표시 기록\\s*${oyMap.recordsText}건 · ${oyMap.cells}개 격자\\(1°\\)`).test(oyTop.top)&&oyTop.top.includes(`기록 연도\n${oyMap.years}`)&&oyTop.top.includes('GBIF')&&!/26건/.test(oyTop.top.split('제외 사유')[0])&&!oyTop.top.includes('2008')&&/제외 사유\s*.*운영 DB에서 검토 중인 기존 기록 26건/.test(oyTop.top)&&!oyTop.top.includes('AphiaID'),oyTop.top);
   check('Oyster top explains why 1 published cell differs from 33 separate OBIS cells',oyTop.top.includes('별도 OBIS 수집은 33셀')&&oyTop.top.includes('지역·기간·선별 기준이 달라 두 지도는 합산하지 않습니다'),oyTop.top);
   await shot('desktop-oyster-collapsed');
   check('Detail: three disclosures closed by default, keyboard-focusable summaries',oyTop.closed&&oyTop.kb&&JSON.stringify(oyTop.summaries)===JSON.stringify(['근거 자세히 보기','수집·선별 기준','출처와 이용조건']),JSON.stringify(oyTop));
@@ -251,7 +255,9 @@ try{
   check('Method tab: no outdated grid-centre wording',await evaluate("!document.getElementById('method').textContent.includes('격자 중심')&&document.getElementById('method').textContent.includes('실제 발견·채집 좌표가 아닙니다')"));
   check('Merged PR #1: evidence coverage row and map section both reachable; pilot values carry a caution box',t.includes('자료 연결 현황')&&t.includes('품질 점수 아님')&&t.includes('시범 분석 주의')&&t.includes('지도 셀'),t);
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
-  check('Cell popup: period, sea area, source, licence, spatial resolution',['공개 집계 기간 2016–2026 · 기록 연도 2025','LME Yellow Sea','1°×1°','가장 짧은 변 약 88 km','선별 기록 3건 · 조사 지점 2곳','kbif','CC0 1.0','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
+  // The popup of one published cell lists each of its period rows with counts and licences (taken from the loaded rows).
+  const popCells=await evaluate("spatialCells(selected).map(rows=>[...rows.map(r=>'공개 집계 기간 '+r.period),...rows.map(r=>'선별 기록 '+r.records+'건 · 조사 지점 '+r.sites+'곳'),...rows.flatMap(r=>r.licenses)])");
+  check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
   // The popup opened above auto-pans the map; measure the dot only after that pan and the scroll have settled.
@@ -264,11 +270,12 @@ try{
   if(!dotOk)await shot('dot-popup-failure',false).catch(()=>{});
   check('Clicking on a dot opens the cell evidence popup (not blocked by dots)',dotOk,JSON.stringify(dotXY)+' '+clicked.slice(0,200));
   // Same location, two periods (synthetic second row injected in-page; live data has none today): one hit area, both periods reachable by a real click.
-  const twoXY=await evaluate("(()=>{const c=selected.cells[0];selected.cells.push({...c,period:'2099–2100',yearStart:2099,yearEnd:2099,records:7,sites:5,citations:[{title:'Synthetic second provider',url:'https://example.org/second',licenses:['CC0 1.0']}]});map.closePopup();renderMap();map.setView([c.lat0+c.sizeDeg/2,c.lon0+c.sizeDeg/2],7,{animate:false});document.getElementById('map').scrollIntoView({block:'center'});const p=map.latLngToContainerPoint([c.lat0+c.sizeDeg*.5,c.lon0+c.sizeDeg*.93]);const r=document.getElementById('map').getBoundingClientRect();return {x:r.left+p.x,y:r.top+p.y,hits:overlay.getLayers().filter(l=>!l._schematicDot).length,cells:document.getElementById('map-cells').textContent}})()");
+  const twoXY=await evaluate("(()=>{const c=spatialCells(selected).find(rows=>rows.length===1)[0];selected.cells.push({...c,period:'2099–2100',yearStart:2099,yearEnd:2099,records:7,sites:5,citations:[{title:'Synthetic second provider',url:'https://example.org/second',licenses:['CC0 1.0']}]});map.closePopup();renderMap();map.setView([c.lat0+c.sizeDeg/2,c.lon0+c.sizeDeg/2],7,{animate:false});document.getElementById('map').scrollIntoView({block:'center'});const p=map.latLngToContainerPoint([c.lat0+c.sizeDeg*.5,c.lon0+c.sizeDeg*.93]);const r=document.getElementById('map').getBoundingClientRect();return {x:r.left+p.x,y:r.top+p.y,hits:overlay.getLayers().filter(l=>!l._schematicDot).length,cells:document.getElementById('map-cells').textContent,spatial:spatialCells(selected).length,period:c.period}})()");
   await sleep(400);
   for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:twoXY.x,y:twoXY.y,button:'left',clickCount:1});
-  const two=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>t.includes(x)));
-  check('Two periods in one cell: one hit area, click shows both periods with counts, sites and sources',twoXY.hits===1&&twoXY.cells==='1'&&['공개 집계 기간 2016–2026','공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'].every(x=>two.includes(x)),JSON.stringify(twoXY)+' '+two.slice(0,300));
+  const twoNeed=[`공개 집계 기간 ${twoXY.period}`,'공개 집계 기간 2099–2100','선별 기록 7건 · 조사 지점 5곳','Synthetic second provider','기간 2개'];
+  const two=await waitForText("document.querySelector('.leaflet-popup-content')?.innerText||''",t=>twoNeed.every(x=>t.includes(x)));
+  check('Two periods in one cell: one hit area, click shows both periods with counts, sites and sources',twoXY.hits===twoXY.spatial&&twoXY.cells===String(twoXY.spatial)&&twoNeed.every(x=>two.includes(x)),JSON.stringify(twoXY)+' '+two.slice(0,300));
   await shot('desktop-two-period-popup',false);
   await evaluate("selected.cells.pop();map.closePopup();1");
   await pick(145721);await sleep(200);
@@ -288,7 +295,7 @@ try{
   // Keyboard / screen-reader path to the same cell evidence.
   await pick(145721);await sleep(300);
   const tbl=await evaluate("(()=>{const b=document.getElementById('cell-table');b.querySelector('details').open=true;return {rows:b.querySelectorAll('tbody tr').length,text:b.innerText}})()");
-  check('Cell table: one row per spatial cell, both periods of the shared cell listed',tbl.rows===3&&tbl.text.includes('33–34°N · 126–127°E')&&/2000–\d{4}/.test(tbl.text)&&/2016–\d{4}/.test(tbl.text)&&tbl.text.includes('CC0 1.0'),JSON.stringify(tbl).slice(0,400));
+  check('Cell table: one row per spatial cell, both periods of the shared cell listed',tbl.rows===(await liveMap(145721)).cells&&tbl.text.includes('33–34°N · 126–127°E')&&/2000–\d{4}/.test(tbl.text)&&/2016–\d{4}/.test(tbl.text)&&tbl.text.includes('CC0 1.0'),JSON.stringify(tbl).slice(0,400));
   await evaluate("map.closePopup();document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
   for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});
   await sleep(500);
@@ -331,10 +338,11 @@ try{
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
-  check('톳 live: new profile with 4 cells, nutrition/compounds/conservation from the index report',(await shapes())===4&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 45\.3/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 산출 보류/.test(t)&&/지도 표시 기록\s*[\d,]+건 · 4개 격자/.test(t)&&t.includes('GBIF'),t);
+  const hijMap=await liveMap(494972);
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 45\.3/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 산출 보류/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
-  check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
+  check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
   // ---------- Map mode buttons: occurrence <-> utilization × conservation ----------
@@ -413,17 +421,17 @@ try{
   // screenshots only after every visible tile finished (GEBCO WMS is slow)
   const settle=async()=>{for(let i=0;i<60;i++){if(!(await evaluate("document.querySelectorAll('#map img.leaflet-tile:not(.leaflet-tile-loaded)').length")))break;await sleep(500);}await sleep(500);};
   await evaluate("document.querySelector('[data-basemap=satellite]').click();1");
-  check('Satellite basemap: NASA GIBS tiles load, cells kept, bright style',await waitTiles('gibs.earthdata.nasa.gov')&&(await shapes())===4&&await evaluate("document.getElementById('map').classList.contains('map-dark')&&document.querySelector('[data-basemap=satellite]').getAttribute('aria-pressed')==='true'"));
+  check('Satellite basemap: NASA GIBS tiles load, cells kept, bright style',await waitTiles('gibs.earthdata.nasa.gov')&&(await shapes())===hijMap.cells&&await evaluate("document.getElementById('map').classList.contains('map-dark')&&document.querySelector('[data-basemap=satellite]').getAttribute('aria-pressed')==='true'"));
   await settle();await shot('desktop-basemap-satellite');
   await evaluate("document.querySelector('[data-basemap=depth]').click();1");
-  check('Depth basemap: GEBCO tiles load, cells kept',await waitTiles('wms.gebco.net')&&(await shapes())===4&&(await tiles('gibs.earthdata.nasa.gov'))===0);
+  check('Depth basemap: GEBCO tiles load, cells kept',await waitTiles('wms.gebco.net')&&(await shapes())===hijMap.cells&&(await tiles('gibs.earthdata.nasa.gov'))===0);
   await settle();await shot('desktop-basemap-depth');
   await evaluate("document.querySelector('[data-basemap=basic]').click();1");await sleep(300);
-  check('Basic basemap: 1:10m outline, no external tiles',(await evaluate("document.querySelectorAll('#map img.leaflet-tile').length"))===0&&!(await evaluate("document.getElementById('map').classList.contains('map-dark')"))&&(await shapes())===4);
+  check('Basic basemap: 1:10m outline, no external tiles',(await evaluate("document.querySelectorAll('#map img.leaflet-tile').length"))===0&&!(await evaluate("document.getElementById('map').classList.contains('map-dark')"))&&(await shapes())===hijMap.cells);
   await send('Network.enable');await send('Network.setCacheDisabled',{cacheDisabled:true});await send('Network.setBlockedURLs',{urls:['*gibs.earthdata.nasa.gov*']});
   await evaluate("document.querySelector('[data-basemap=satellite]').click();1");
   let fell='';for(let i=0;i<40;i++){await sleep(250);fell=await evaluate("document.getElementById('basemap-status').textContent");if(fell)break;}
-  check('Tile failure falls back to basic with a message',fell.includes('기본 지도로 바꿨습니다')&&(await evaluate("document.querySelector('[data-basemap=basic]').getAttribute('aria-pressed')"))==='true'&&(await shapes())===4,fell);
+  check('Tile failure falls back to basic with a message',fell.includes('기본 지도로 바꿨습니다')&&(await evaluate("document.querySelector('[data-basemap=basic]').getAttribute('aria-pressed')"))==='true'&&(await shapes())===hijMap.cells,fell);
   await send('Network.setBlockedURLs',{urls:[]});await send('Network.setCacheDisabled',{cacheDisabled:false});
   await evaluate("try{localStorage.removeItem('basemap')}catch{};1");
 
@@ -445,7 +453,7 @@ try{
     check(`Flow 1 ${tag}: 참굴 MFPI 65.5 above the map and in the panel`,f.sel.includes('참굴')&&f.sel.includes('운영 발행')&&f.sel.includes('MFPI 65.5')&&f.detail.includes('65.5 · 검증 전 시범 지표'),f.sel);
     await mapShot('1-oyster');
     f=await flow(241776);
-    check(`Flow 2 ${tag}: 해삼 MCUI 80, IUCN EN, two 4° cells`,f.sel.includes('MCUI 80')&&f.detail.includes('EN A2bd')&&f.shapes===2&&f.src.includes('4° 셀'),f.sel+' | '+f.src);
+    check(`Flow 2 ${tag}: 해삼 MCUI 80, IUCN EN, published 4° cells`,f.sel.includes('MCUI 80')&&f.detail.includes('EN A2bd')&&f.shapes===cucMap.cells&&f.src.includes('4° 셀'),f.sel+' | '+f.src);
     await mapShot('2-sea-cucumber');
     f=await flow(504357);
     check(`Flow 3 ${tag}: 피조개 reviewed 4° cells labelled not a current distribution, pre-2000 records flagged`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='조사 후보 · 검수 기록 공개 4° 셀'&&f.shapes===arkPlaces&&f.note.includes('현재 분포')&&f.note.includes('2000년 이전'),f.sel+' | '+f.src);
