@@ -1317,12 +1317,12 @@ function dotsPerDegree(records){
 // One red for every species so the pattern reads at a glance; the edge adapts to the basemap.
 const DOT_RED='#d7263d';
 const dotStyle=()=>basemap==='basic'
-  ? {color:'#7a0f1d',weight:.6,opacity:.55,fillColor:DOT_RED,fillOpacity:.78}
-  : {color:'#ffffff',weight:1,opacity:.95,fillColor:DOT_RED,fillOpacity:.92};
-// Radius grows with zoom but never beyond ~40% of the dot spacing, so dots stay separate marks.
+  ? {color:'#7a0f1d',weight:.4,opacity:.55,fillColor:DOT_RED,fillOpacity:.8}
+  : {color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88};
+// Smaller schematic marks reveal the grid pattern; zoom caps and cell click areas stay independent.
 function dotRadius(spacingDeg){
   const z=map.getZoom(), pxPerDeg=256*2**z/360;
-  return Math.max(1.6,Math.min([2.4,2.4,3,3.8,4.6,5.4][Math.max(0,Math.min(5,z-3))],spacingDeg*pxPerDeg*.4));
+  return Math.max(1.1,Math.min([1.5,1.5,1.8,2.2,2.6,3][Math.max(0,Math.min(5,z-3))],spacingDeg*pxPerDeg*.27));
 }
 let dotCells=[]; // cells whose dot pattern is redrawn on zoom (reset with the overlay in renderMap)
 function addCellDots(lat0,lon0,size,records){
