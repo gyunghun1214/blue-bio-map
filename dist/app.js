@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -788,7 +788,11 @@ function verifiedFoodDetail(s){
     (search.length?`<p class="fine">빠진 성분의 대체치 후보: ${esc(search.map(([k,v])=>(nutrientNames[k]||k)+' '+(v?(String(v).startsWith('MEXT:')?'MEXT 8정판 '+String(v).slice(5):(String(v).startsWith('K')?'RDA ':'uFiSh1.0 ')+v):'후보 없음')).join(' · '))}. `+
       `${f.substitute_row?'빠진 성분은 채울 수 있지만 아래 다른 이유로 보류합니다.':'채울 후보가 없는 성분이 있어 보류합니다.'}</p>`:'')+
     (f.supplemental_nutrition||[]).map(supplementalRecord).join('');
-  const raw=Object.entries(f.nutrients||{}).map(([key,n])=>
+  // 3.17: EPA and DHA ride beside the scored components, clearly outside the score
+  const fatty=f.display_fatty_acids?`<div class="score-fact"><b>EPA + DHA ${esc(num(f.display_fatty_acids.sum_mg))} mg / 100 g 가식부 · 점수 아님</b>`+
+    `<span>EPA ${esc(num(f.display_fatty_acids.epa_mg))} · DHA ${esc(num(f.display_fatty_acids.dha_mg))} mg · 1일 영양성분 기준치 ${esc(f.display_fatty_acids.reference_mg)} mg의 ${Math.round(f.display_fatty_acids.sum_mg/f.display_fatty_acids.reference_mg*100)}% · 출처 표기 ${esc(f.display_fatty_acids.row_source)}</span></div>`+
+    `<p class="fine">MFPI는 단백질·칼슘·철·아연 네 성분으로만 산출합니다. EPA·DHA는 표시 전용이며 점수·백분위·비교집단에 들어가지 않습니다. 오메가-3에는 식약처 함량강조표시 기준이 없어 ‘풍부’ 같은 표현 대신 수치와 기준치 대비 비율만 적습니다.</p>`:'';
+  const raw=fatty+Object.entries(f.nutrients||{}).map(([key,n])=>
     `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(num(n.value))} ${esc(n.unit)} / 100 g 가식부</b>`+
     `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`+
     (n.substitute?`<p class="fine">${substituteText(n.substitute)}</p>`:'')).join('')+
@@ -1104,12 +1108,18 @@ const USE_CHIPS=[
   {id:'calcium_mg',group:'식량',label:'칼슘',syn:['칼슘','뼈','미네랄','무기질']},
   {id:'iron_mg',group:'식량',label:'철',syn:['철','철분','빈혈','미네랄','무기질']},
   {id:'zinc_mg',group:'식량',label:'아연',syn:['아연','미네랄','무기질']},
-  {id:'omega3',group:'식량',label:'오메가-3',syn:['dha','epa','오메가','omega','불포화지방'],gap:'MFPI 수집 성분이 아닙니다(단백질·칼슘·철·아연만 수집)'},
+  {id:'omega3',group:'식량',label:'오메가-3',syn:['dha','epa','오메가','omega','불포화지방']},
 ];
 let activeUse=null;
 // Evidence line for one species and one use, or null. Values are the species' adopted items, never a relative's.
 function useEvidence(s,id){
   const a=s.assessment;if(!a)return null;
+  if(id==='omega3'){
+    const fa=a.food_trace?.display_fatty_acids;
+    if(!fa)return null;
+    const pct=Math.round(fa.sum_mg/fa.reference_mg*100);
+    return pct>=30?{text:`EPA+DHA ${num(fa.sum_mg)} mg/100 g · 1일 기준치 ${fa.reference_mg} mg의 ${pct}%${/JAPAN|USDA/.test(fa.row_source||'')?' · '+fa.row_source+' 차용값':''}`,score:pilotScore(s,'MFPI')}:null;
+  }
   if(id in CLAIM_REF){
     const v=a.food_trace?.nutrients?.[id];if(!v||!Number.isFinite(v.value))return null;
     const cut=CLAIM_REF[id]*CLAIM_SHARE[id];
@@ -1148,7 +1158,8 @@ function useSuggestion(query){
 function useNote(shown){
   if(!activeUse)return '';
   const c=USE_CHIPS.find(c=>c.id===activeUse), hidden=(data?.species.length||0)-shown;
-  const rule=c.id in CLAIM_REF?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%)`:'보고서에 채택된 MBPI 근거의 표적';
+  const rule=c.id==='omega3'?'EPA+DHA가 1일 기준치(330 mg)의 30% 이상인 종. 오메가-3에는 식약처 함량강조표시 기준이 없어 수치와 비율만 표시하는 팀 규칙입니다'
+    :c.id in CLAIM_REF?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%)`:'보고서에 채택된 MBPI 근거의 표적';
   return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 근거 미확인 ${hidden}종은 숨김(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
 }
 // Result cards always carry conservation and the matrix type, so a use filter never shows use alone.

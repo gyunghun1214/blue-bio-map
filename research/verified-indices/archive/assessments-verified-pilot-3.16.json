@@ -137,7 +137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1247,7 +1247,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1576,7 +1576,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1935,7 +1935,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2286,7 +2286,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2865,7 +2865,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3748,15 +3748,6 @@
           "nutrient_value_contribution": 47.2
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 139.75,
-          "epa_mg": 72.5,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 212.25,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -3774,7 +3765,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4818,7 +4809,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5852,15 +5843,6 @@
           "nutrient_value_contribution": 41.6
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 143.3,
-          "epa_mg": 78.05,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 221.35,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -5878,7 +5860,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6872,7 +6854,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7675,7 +7657,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8697,7 +8679,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -9846,7 +9828,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10938,7 +10920,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11909,15 +11891,6 @@
           "nutrient_value_contribution": 23.6
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 534.6,
-          "epa_mg": 316.3,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 850.9,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -11935,7 +11908,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12886,15 +12859,6 @@
           "nutrient_value_contribution": 44.0
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 475.9,
-          "epa_mg": 146.7,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 622.6,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -12912,7 +12876,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13903,15 +13867,6 @@
           "nutrient_value_contribution": 36.0
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 371.2,
-          "epa_mg": 190.8,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 562.0,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -13929,7 +13884,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14896,15 +14851,6 @@
           "nutrient_value_contribution": 41.2
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 910.0,
-          "epa_mg": 450.0,
-          "reference_mg": 330,
-          "row_source": "JAPAN('20)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 1360.0,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "aphia_id": 276651,
           "kind": "edible_fraction",
@@ -14924,7 +14870,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -15904,7 +15850,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16940,15 +16886,6 @@
           "nutrient_value_contribution": 49.6
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 118.7,
-          "epa_mg": 157.6,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 276.3,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -16966,7 +16903,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17943,7 +17880,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18944,7 +18881,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19962,7 +19899,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.16 (2026-10-02). Display only, no score changes: the species' own RDA DB 10.4 row also carries EPA and DHA per 100 g (research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json, collected by scripts/collect_rda_fatty_acids.py from the same 425 rows), shown beside the species with its share of the 330 mg daily reference value for EPA + DHA (식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5]). Korea has no omega-3 content claim, so no claim word is used. MFPI keeps its four components, its weights and its cohorts; nothing enters any score. See research/verified-indices/omega3-display-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.15 (2026-10-02). MCUI: the range-state step gains the Russian Red Data Book (Order No. 320 of 23.05.2023) row for Gelidium elegans (우뭇가사리), threat status 'У' = VU -> 60, labelled as a peripheral (northern-limit) population; the ladder order (range state before the preliminary check) is 3.15's. Every other rule, coefficient, cohort and threshold equals 3.15. See research/verified-indices/gap-closing-3.16-2026-10-02.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -20192,7 +20129,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.17",
+    "method_version": "verified-pilot-3.16",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -20236,20 +20173,6 @@
         "afcd_r3_details",
         "frdc_2008_905"
       ],
-      "display_fatty_acids": {
-        "claim_note": "식품등의 표시기준 [별지 1] 영양성분 함량강조표시 세부기준에는 오메가-3 항목이 없다. 그래서 '풍부' 같은 법정 강조표시 용어를 쓰지 않고 수치와 1일 기준치 대비 비율만 보여 준다.",
-        "collector": "scripts/collect_rda_fatty_acids.py",
-        "components": {
-          "dha_mg": "도코사헥사에노산(22:6(n-3)) mg/100 g",
-          "epa_mg": "에이코사펜타에노산(20:5(n-3)) mg/100 g"
-        },
-        "daily_reference_mg": 330,
-        "daily_reference_source": "식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5] 1일 영양성분 기준치, 'EPA와 DHA의 합 330 ㎎'",
-        "display_source_id": "rda_db_10_4_fatty_acids",
-        "rule": "Shown only when the species' own scored row is its RDA row and that row reports both EPA and DHA. The pair is read from the separate snapshot, the row source label must match the nutrition row, and the value is display only: it is never a cohort member, never a percentile and never part of MFPI.",
-        "snapshot": "research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json",
-        "source_id": "rda_db_10_4"
-      },
       "edible_fraction_weight": 0.1,
       "grade_factors": {
         "calculated": 0.85,
@@ -20564,7 +20487,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.17",
+  "method_version": "verified-pilot-3.16",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21460,17 +21383,6 @@
       "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
       "version": "10.4 (2026), online detail view"
     },
-    "rda_db_10_4_fatty_acids": {
-      "accessed": "2026-10-02",
-      "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
-      "license_url": "https://www.kogl.or.kr/info/license.do",
-      "notice": "Only 39 of the 425 marine rows report EPA and DHA, always as a pair; a blank is a missing value, never 0. The daily reference value for EPA + DHA (330 mg) is 식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5]. Korea has no nutrient-content claim for omega-3, so the site shows the amount and its share of that reference value, not a claim word.",
-      "provider": "Rural Development Administration (RDA), National Institute of Crop and Food Science",
-      "terms": "KOGL Type 1 (attribution). Display only: shown beside a species, never scored and never an MFPI input.",
-      "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
-      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
-      "version": "10.4 (2026), online detail view; the same 425 marine rows as the nutrition snapshot"
-    },
     "roh_2000_hizikia_wando": {
       "accessed": "2026-10-01",
       "license": "No open licence shown; fact, method summary and a short quotation only",
@@ -22347,15 +22259,6 @@
           "nutrient_value_contribution": 26.67
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 0.0,
-          "epa_mg": 16.7,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 16.7,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -22373,7 +22276,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23055,7 +22958,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24004,15 +23907,6 @@
           "nutrient_value_contribution": 48.0
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 55.0,
-          "epa_mg": 130.0,
-          "reference_mg": 330,
-          "row_source": "JAPAN('20)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 185.0,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -24030,7 +23924,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -25150,7 +25044,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26119,7 +26013,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26911,7 +26805,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27594,7 +27488,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28235,7 +28129,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.17 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.16 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -28925,15 +28819,6 @@
           "nutrient_value_contribution": 60.0
         },
         "cross_checks": [],
-        "display_fatty_acids": {
-          "dha_mg": 46.7,
-          "epa_mg": 102.4,
-          "reference_mg": 330,
-          "row_source": "('16)",
-          "source_id": "rda_db_10_4_fatty_acids",
-          "sum_mg": 149.1,
-          "use": "display_only"
-        },
         "edible_fraction": {
           "kind": "edible_fraction",
           "limitations": "Refuse share of the food as purchased; shell/tunic share varies with season, size and origin.",
@@ -28951,7 +28836,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.17",
+        "method_version": "verified-pilot-3.16",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
