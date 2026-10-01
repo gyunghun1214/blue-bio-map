@@ -8,7 +8,7 @@
 | 감태 | *Ecklonia cava* | [371986](https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986) | 해조류 | 해조류 유래 성분·식품 근거 조사 후보 |
 | 가시파래 | *Ulva prolifera* | [234476](https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476) | 해조류 | 해조류 식량·대량발생 영향 조사 후보 |
 | 괭생이모자반 | *Sargassum horneri* | [494853](https://www.marinespecies.org/aphia.php?p=taxdetails&id=494853) | 해조류 | 해조류 유래 성분·자원화 근거 조사 후보 |
-| 꼬시래기류(학명 기준) | *Gracilaria vermiculophylla* | [236157](https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157) | 해조류 | 한천 원료·식품 가능성 조사 후보; 국명 일치 재검토 |
+| 꼬시래기 | *Gracilaria vermiculophylla* | [236157](https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157) | 해조류 | 한천 원료·식품 가능성 조사 후보 |
 | 청각 | *Codium fragile* | [145086](https://www.marinespecies.org/aphia.php?p=taxdetails&id=145086) | 해조류 | 식품 원료·종내 아종 구분 조사 후보 |
 | 바지락 | *Ruditapes philippinarum* | [231750](https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750) | 패류 | 식품 영양·양식 근거 조사 후보 |
 | 전복(종 수준) | *Haliotis discus* | [397082](https://www.marinespecies.org/aphia.php?p=taxdetails&id=397082) | 패류 | 종/아종 식별과 양식·보전 근거 조사 후보 |
