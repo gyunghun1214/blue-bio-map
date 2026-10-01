@@ -65,9 +65,10 @@ class MatrixReadinessTests(unittest.TestCase):
         # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list. 3.15 (team-lead decision
         # 2026-10-02): the 14 species with a met Rapid LC keep it as reference only, so none has a preliminary MCUI.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 8)
-        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 1)
+        # verified-pilot-3.16: 우뭇가사리 joins through Russia's Red Data Book (VU, peripheral population)
+        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 2)
         self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 0)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 16)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 17)
         self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}

@@ -1557,21 +1557,27 @@ GAP = {"rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.js
 RAPID_LC_REFERENCE = {145721, 250680, 372119, 494972, 377084, 371986, 234476, 494853, 236157, 145086, 275816, 274849, 254538, 1061762}
 
 
+V315 = ROOT / "config" / "verified-indices-v3.15.json"  # superseded by 3.16 (one more range-state MCUI); its rows stay tested
+MCUI316 = "research/verified-indices/mcui-substitutes-3.16-2026-10-02.json"
+
+
 class VerifiedPilot315Tests(unittest.TestCase):
-    """Public method: 3.14 plus the team-lead decisions of 2026-10-01 on closing the site's gaps
+    """Superseded by 3.16. Public method: 3.14 plus the team-lead decisions of 2026-10-01 on closing the site's gaps
     (research/verified-indices/gap-closing-2026-10-02.md): RDA rows linked by a Korean national name authority, six aquaculture
     records, a literature nutrition row, ug/mL -> uM for synthetic peptides, MCUI substitutes (Korean crosswalk, another range
     state's list) and labels read from the post-hoc validation. The preliminary Rapid LC failed its back-test and is reference
     information only (team-lead decision 2026-10-02), never an MCUI. Coefficients and cohorts are 3.14's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V315))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V314)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.15", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.15 report is archived as it was
+        archived315 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.15.json"
+        self.assertEqual(render(self.report), archived315.read_text(encoding="utf-8"))
 
     def test_changes(self):
         # MFPI, MBPI and BBVI; the 2 MCUI changes (시카메굴 range state, 참문어 national) are checked in test_mcui_substitutes
@@ -1676,6 +1682,53 @@ class VerifiedPilot315Tests(unittest.TestCase):
             self.assertNotIn("unit_conversion", c["peptide_bioactivity"])
             for path in GAP.values():
                 self.assertNotIn(path, text)
+
+
+class VerifiedPilot316Tests(unittest.TestCase):
+    """Public method: 3.15 plus one more range-state MCUI. The Russian Red Data Book (Order No. 320 of 23.05.2023, Section 5
+    ВОДОРОСЛИ row 594) gives Gelidium elegans the threat status 'У' = VU, so 우뭇가사리 gets a labelled range-state MCUI 60
+    where 3.15 had none. Russia is the northern edge of the range, so the row carries that limitation. Every other rule,
+    coefficient, cohort and threshold is 3.15's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V315)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.16", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_the_one_cell_changes(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(372119, "MCUI"): 60.0})
+        filled = {axis: sum(s["scores"][axis] is not None for s in self.new.values()) for axis in ("MFPI", "MBPI", "MCUI", "BBVI")}
+        self.assertEqual(filled, {"MFPI": 27, "MBPI": 18, "MCUI": 17, "BBVI": 2})
+        self.assertEqual(sum(filled.values()), 64)
+
+    def test_russian_row(self):
+        s = self.new[372119]
+        sub = s["mcui_substitute"]
+        self.assertEqual((s["mcui_basis"], s["scores"]["MCUI"]), ("range_state", 60.0))
+        self.assertEqual((sub["category"], sub["record"]["country"], sub["record"]["scope"]), ("VU", "Russia", "national (Russia)"))
+        self.assertEqual(sub["record"]["name_as_published"], "Гелидиум изящный - Gelidium elegans")
+        # the rarity column (3 = rare) is a Russian scale and is never mapped; only the threat-status column is
+        self.assertIn("Угроза исчезновения: У", sub["record"]["category_as_published"])
+        self.assertIn("northern edge of the range", sub["record"]["limitations"])
+        self.assertIn(sub["record"]["source_id"], self.report["sources"])
+        # a peripheral VU must not be ranked with IUCN-based MCUI, and 우뭇가사리 has no BBVI, so it reaches no matrix quadrant
+        self.assertIsNone(s["scores"]["BBVI"])
+        self.assertEqual({a for a, r in self.new.items() if r["mcui_basis"] == "range_state"}, {836041, 372119})
+
+    def test_rapid_lc_stays_reference_only(self):
+        self.assertEqual({a for a, s in self.new.items() if (s["mcui_substitute"] or {}).get("use") == "reference_only"},
+                         RAPID_LC_REFERENCE - {372119})
+        self.assertNotIn("use", self.new[372119]["mcui_substitute"])
+
+    def test_older_configs_do_not_read_the_new_file(self):
+        for old in (V312, V313, V314, V315):
+            self.assertNotIn(MCUI316, Path(old).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

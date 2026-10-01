@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.15",
+  "method_version": "verified-pilot-3.16",
   "schema_version": 1,
   "species": [
     {
@@ -350,7 +350,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [
@@ -375,27 +375,23 @@
       "korean_name": "우뭇가사리",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
+      "mcui_basis": "range_state",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Gelidium elegans",
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": 60.0,
         "MFPI": 76.7
       },
       "source_urls": [
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1007/s10811-024-03342-7",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
         "https://pubmed.ncbi.nlm.nih.gov/29316644/",
+        "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
