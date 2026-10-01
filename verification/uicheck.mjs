@@ -118,7 +118,7 @@ try{
   const eck=await pick(371986);
   const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent}})()");
   check('Ecklonia candidate: paper-local MBPI 67.5 and five source-linked measurements without spatial or combined scores',
-    eckAxes.report==='verified-pilot-3.11'&&eckAxes.scores?.MBPI===67.5&&
+    eckAxes.report==='verified-pilot-3.12'&&eckAxes.scores?.MBPI===67.5&&
     eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===null&&eckAxes.scores.BBVI===null&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형이 없습니다')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('시범 MBPI 67.5')&&eck.includes('원논문 1편')&&
@@ -136,7 +136,7 @@ try{
   // verified-pilot-2.1: with no IUCN global record, the oyster MCUI is the separately labelled Korean national assessment.
   check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 시범 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, 매트릭스에도 놓지 않습니다')&&!nat.includes('IUCN LC'),nat);
   // verified-pilot-2.3: peptide LQP scored in the AHTPDB cohort; a synthetic LQP from another origin replicates the potency, so BBVI is computed (80.9 in 2.3, 83.9 with the 3.6 calcium MFPI).
-  check('Oyster: MBPI 96.3 with origin paper, potency replication (Miyoshi 1991, synthetic, other origin) and its one-origin-paper limit',!nat.includes('참고값(단일 논문)')&&!nat.includes('참고 통합값')&&['83.9 · 검증 전 시범 지표','효능 재현 · 합성 LQP 2 µM · 다른 기원 옥수수 α-제인','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다','독립 DOI 2편(기원 1 + 효능 재현 1)','이 종에서 LQP가 나온다는 기원 근거는 Do et al. 2012 (10.5352/jls.2012.22.2.220) 1편뿐입니다'].every(x=>nat.includes(x)),nat);
+  check('Oyster: MBPI 96.3 with origin paper, potency replication (Miyoshi 1991, synthetic, other origin) and its one-origin-paper limit',!nat.includes('참고값(단일 논문)')&&!nat.includes('참고 통합값')&&['83.9 · 검증 전 시범 지표','효능 재현 · 합성 LQP 2 µM · 재현 시료 옥수수 α-제인','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다','독립 DOI 2편(기원 1 + 효능 재현 1)','이 종에서 LQP가 나온다는 기원 근거는 Do et al. 2012 (10.5352/jls.2012.22.2.220) 1편뿐입니다'].every(x=>nat.includes(x)),nat);
   check('Oyster: MBPI 96.3 with paper value and AHTPDB attribution (developer-confirmed public database)',['96.3 · 검증 전 시범 지표','LQP','1.18 µM','10.5352/jls.2012.22.2.220','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'].every(x=>nat.includes(x)),nat);
   await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=false)");
   await detailEl();await shot('desktop-oyster');
@@ -239,13 +239,14 @@ try{
   // 3.6: 톳 and 청각 get an MFPI (calcium, 3 of 4 components) beside their single-paper ChEMBL MBPI.
   // 3.8: 바지락 gets a single-paper peptide MBPI 39.5 (Suetsuna 2002) beside its MFPI 60.4.
   // 3.11: 고등어 gets a single-paper peptide MBPI 34.9 (PLITT, Wang 2024) beside its MFPI 48.0.
-  check('Reference combination: shown only where MFPI meets a single-paper MBPI (고등어·청각·미역·바지락·멍게·넙치·큰가리비·맛조개·톳·홍합; 3.9 adds 맛조개, 3.11 고등어); 참굴 has a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[127022,145086,145721,231750,250680,275816,393716,413600,494972,506159]',JSON.stringify(refN));
+  // 3.12: 미역 IY is replicated (Suetsuna 2000), so 미역 has a computed BBVI 63.9 and leaves the reference list.
+  check('Reference combination: shown only where MFPI meets a single-paper MBPI (고등어·청각·바지락·멍게·넙치·큰가리비·맛조개·톳·홍합; 3.9 adds 맛조개, 3.11 고등어); 참굴 and 미역 (3.12) have a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[127022,145086,231750,250680,275816,393716,413600,494972,506159]',JSON.stringify(refN));
   check('Axis pairs: national and IUCN MCUI groups kept apart, oyster MBPI 96.3 and BBVI 83.9 only in the national group, hidden in simulation, MFPI-only is not BBVI',natPair.includes('참굴 MFPI 71.6 · MCUI 10.0')&&!iucnPair.includes('참굴')&&pairs.li.includes('MBPI × MCUI(한국 국가 평가 기반) · ahtpdb-ace-ic50-hhl-cushman-cheung 4종: 참굴 MBPI 96.3 · MCUI 10.0 / 바지락 MBPI 39.5 (참고값(단일 논문)) · MCUI 10.0 / 큰가리비 MBPI 27.3 (참고값(단일 논문)) · MCUI 10.0 / 맛조개 MBPI 56.9 (참고값(단일 논문)) · MCUI 20.0')&&pairs.li.some(x=>x.startsWith('BBVI × MCUI(한국 국가 평가 기반)')&&x.endsWith('1종: 참굴 BBVI 83.9 · MCUI 10.0'))&&!pairs.li.some(x=>x.startsWith('BBVI × MCUI(IUCN 기반)')&&x.includes('참굴'))&&pairs.hid&&pairs.intro.includes('MFPI만의 쌍은 BBVI가 아닙니다'),JSON.stringify(pairs).slice(0,600));
   // ---- Presentation polish (2026-09-25) ----
   const og=await evaluate("(async()=>{const m=p=>document.querySelector(`meta[${p}]`)?.content||'';const img=m('property=\"og:image\"');const r=await fetch('og.png');const b=await r.blob();return {title:m('property=\"og:title\"'),desc:m('property=\"og:description\"'),type:m('property=\"og:type\"'),url:m('property=\"og:url\"'),locale:m('property=\"og:locale\"'),card:m('name=\"twitter:card\"'),img,ok:r.ok,type2:b.type,size:b.size,dims:await createImageBitmap(b).then(i=>i.width+'x'+i.height)}})()");
   check('OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB',!!og.title&&!!og.desc&&og.type==='website'&&og.url==='https://blue-bio-map.blue-bio-map.workers.dev/'&&og.locale==='ko_KR'&&og.card==='summary_large_image'&&og.img==='https://blue-bio-map.blue-bio-map.workers.dev/og.png'&&og.ok&&og.dims==='1200x630'&&og.size<=300*1024,JSON.stringify(og));
   const slider=await evaluate("({n:data.species.filter(s=>pilotScore(s,'BBVI')!==null).length,disabled:document.getElementById('bbvi-weight').disabled,status:document.getElementById('bbvi-weight-status').textContent})");
-  check('BBVI 1 species (참굴): weight slider enabled',slider.n===1&&!slider.disabled&&slider.status==='BBVI 산출 종 1종',JSON.stringify(slider));
+  check('BBVI 2 species (참굴, 미역 since 3.12): weight slider enabled',slider.n===2&&!slider.disabled&&slider.status==='BBVI 산출 종 2종',JSON.stringify(slider));
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
   // verified-pilot-3.2: the oyster is placed (national MCUI, marked), so its card leads with the published matrix type
   check('Oyster status card leads with its published matrix type, no single-paper label',!!typeLabel(836033)&&oyCard===typeLabel(836033)+' · 검증 전 시범 지표 · 근거 확인'&&!oyCard.includes('참고값'),oyCard);
