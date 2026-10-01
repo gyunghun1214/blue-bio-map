@@ -1032,12 +1032,12 @@ function sufficiencyCut(a){
 // Half-circle gauges at the top of the species evidence (same values as the disclosures below; visual only).
 const GAUGE_COLOUR={MFPI:'#0b7a74',MBPI:'#1f9fb8',MCUI:'#e07a3f',BBVI:'#173f62'}, GAUGE_NAME={MFPI:'식량',MBPI:'생리활성',MCUI:'보전 시급성',BBVI:'통합 활용'};
 function axisGauges(s){
-  const len=Math.PI*40;
+  const len=Math.PI*38;
   return '<div class="axis-gauges" aria-hidden="true">'+Object.keys(GAUGE_COLOUR).map(k=>{
     const n=axisState(s,k).value, v=n===null?0:Math.max(0,Math.min(100,n)), ref=k==='BBVI'&&n===null?bbviReference(s):null;
-    return `<figure class="gauge${n===null?' held':''}"><svg viewBox="0 0 100 56"><path d="M10 50a40 40 0 0 1 80 0" class="g-track"/>`+
-      `<path d="M10 50a40 40 0 0 1 80 0" class="g-fill" style="stroke:${GAUGE_COLOUR[k]};stroke-dasharray:${(v/100*len).toFixed(1)} ${len.toFixed(1)}"/></svg>`+
-      `<b>${n===null?'–':n.toFixed(1)}</b><figcaption>${k}<small>${n===null?(ref!==null?'참고값 '+ref.toFixed(1):'산출 보류'):GAUGE_NAME[k]}</small></figcaption></figure>`;}).join('')+'</div>';
+    return `<figure class="gauge${n===null?' held':''}"><svg viewBox="0 0 100 58"><path d="M12 52a38 38 0 0 1 76 0" class="g-track"/>`+
+      `<path d="M12 52a38 38 0 0 1 76 0" class="g-fill" style="stroke:${GAUGE_COLOUR[k]};stroke-dasharray:${(v/100*len).toFixed(1)} ${len.toFixed(1)}"/>`+
+      `<text x="50" y="51" text-anchor="middle">${n===null?'–':n.toFixed(1)}</text></svg><figcaption>${k}<small>${n===null?(ref!==null?'참고값 '+ref.toFixed(1):'산출 보류'):GAUGE_NAME[k]}</small></figcaption></figure>`;}).join('')+'</div>';
 }
 
 function renderVerifiedIndices(s){
@@ -1050,7 +1050,7 @@ function renderVerifiedIndices(s){
   const surveyWhy=surveyReasonText(a);
   const unexplored=(a.priority_survey?`<p class="pending">우선 조사 대상 · ${surveyWhy}. 점수와 섞지 않는 별도 표시입니다.</p>`:'')+
     (a.unexplored_candidate?`<p class="pending">미탐색 후보: ${esc(unexploredLine(a.unexplored_candidate))}. 기본 가중치 w = 0.5 기준이며, 이 종의 점수는 추정하지 않습니다.</p>`:'');
-  return `<section class="verified-scores"><h3>실제 원자료 기반 시범 지표${esc(validationNote(data.assessmentInfo))}</h3>${axisGauges(s)}`+
+  return `<section class="verified-scores"><h3>실제 원자료 기반 시범 지표${esc(validationNote(data.assessmentInfo))}</h3>`+
     `<p class="fine">자료 스냅샷 ${esc(data.assessmentInfo?.generatedAt?.slice(0,10))} · 방법론 ${esc(data.assessmentInfo?.version)} · MFPI·MBPI·MCUI는 각각 독립적으로 판정합니다. `+
     `숫자는 종 단위 연구용 지표이며 지도 셀이나 해역에 전가하지 않습니다.</p>`+
     ` ${Object.keys(names).map(key=>{
@@ -1200,8 +1200,10 @@ function selectSpecies(id) {
 
 function renderDetail() {
   const s=selected;
-  if(s.catalog){renderCandidateDetail(s);appendFollowupBrief(s);return;}
-  renderLiveDetail(s);appendFollowupBrief(s);
+  if(s.catalog)renderCandidateDetail(s);else renderLiveDetail(s);
+  // The four values first, as gauges under the name; the evidence below stays the reference.
+  if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisGauges(s));
+  appendFollowupBrief(s);
 }
 
 // Counts come from the published evidence_summary. A missing key is "정보 없음", never 0.
