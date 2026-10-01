@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -184,7 +184,12 @@ function verifiedFoodValid(a,report){
     nutrient+=n.percentile_unrounded*n.evidence_factor;
   }
   if(!own)return false;  // a score never rests only on other foods' values
-  if(outside&&!omitted.length&&own===Object.keys(config.components||{}).length)return false;  // outside the cohort only because of a substitute or an omission
+  // 3.9: a MEXT 2020 same-species raw item is the species' own row only when no RDA row is linked to it, at the MEXT grade
+  const mextRow=f.row_table==='mext'&&!!sub?.mext?.species_row_groups&&f.source_id===sub.mext.source_id&&String(f.source_food_item_id).startsWith('MEXT:')&&
+    (f.observed_rows||[]).filter(o=>o.linked).length===1&&f.edible_fraction?.source_id===sub.mext.source_id&&
+    Object.values(f.nutrients||{}).every(n=>n.grade===sub.mext.grade&&!n.substitute);
+  if(f.row_table!==undefined&&!mextRow)return false;
+  if(outside&&!omitted.length&&own===Object.keys(config.components||{}).length&&!mextRow)return false;  // outside the cohort only because of a substitute, an omission or a MEXT row
   const fraction=f.edible_fraction;
   if(!Number.isFinite(fraction.value)||fraction.value<0||fraction.value>1||!sources[fraction.source_id]||
      !sources[f.aquaculture.source_id])return false;
@@ -708,7 +713,7 @@ function observedRows(f){
   return (f.observed_rows||[]).map(o=>`<div class="score-fact"><b>${esc(o.reported_food_name)} · ${esc(o.food_item_id)}${o.linked?'':' · 종 연결 안 함'}</b>`+
     `<span>${Object.entries(nutrientNames).map(([k,label])=>`${label} ${o.values[k]===null?'결측(빈칸)':esc(o.values[k])+' '+(k==='protein_g'?'g':'mg')}`).join(' · ')}`+
     ` / 100 g 가식부 · 폐기율 ${o.refuse_pct===null?'결측':esc(o.refuse_pct)+'%'} · 출처 표기 ${esc(o.row_source||'없음')}</span></div>`+
-    `<p class="fine">${esc(o.link_evidence||'')} ${verifiedSource('rda_db_10_4','RDA 식품성분 DB 10.4 ↗')}</p>`).join('');
+    `<p class="fine">${esc(o.link_evidence||'')} ${o.source_id?verifiedSource(o.source_id,'일본 식품성분표 2020(8정판) ↗'):verifiedSource('rda_db_10_4','RDA 식품성분 DB 10.4 ↗')}</p>`).join('');
 }
 // Display only: four significant digits (the trace keeps the source value).
 const num=v=>Number.isFinite(v)?String(Number(v.toPrecision(4))):v;
@@ -741,7 +746,7 @@ function verifiedFoodDetail(s){
     // 3.7: a scored species can still carry unused records (e.g. 톳 freeze-dried zinc); they stay visible with their reason
     (f.supplemental_nutrition||[]).map(o=>o.substitute_use?`<p class="fine">별도 원값 기록 ${esc(o.record_id)}: ${esc(o.substitute_use)}.</p>`:supplementalRecord(o)).join('');
   const omitted=f.omitted_components||[];
-  const outside=f.outside_cohort?`<p class="fine">${omitted.length?`원자료에 ${esc(omitted.map(k=>nutrientNames[k]||k).join('·'))} 값이 비어 있어 평균에서 뺐습니다(0점 아님, 사용 성분 ${Object.keys(f.nutrients||{}).length}/${Object.keys(f.nutrients||{}).length+omitted.length}). `:''}`+
+  const outside=f.outside_cohort?`<p class="fine">${f.row_table==='mext'?`RDA 식품성분 DB에 이 종으로 연결된 행이 없어 일본 식품성분표 2020(8정판) ${esc(String(f.source_food_item_id).slice(5))} ${esc(f.reported_food_name)}(같은 종 생것, 가식부 100 g)을 이 종의 영양 행과 폐기율로 썼습니다(신뢰도 계수 0.85). `:''}${omitted.length?`원자료에 ${esc(omitted.map(k=>nutrientNames[k]||k).join('·'))} 값이 비어 있어 평균에서 뺐습니다(0점 아님, 사용 성분 ${Object.keys(f.nutrients||{}).length}/${Object.keys(f.nutrients||{}).length+omitted.length}). `:''}`+
     `${(f.substituted_components||[]).length?'대체치가 있어 ':''}이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
   const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
   const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);

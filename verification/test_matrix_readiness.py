@@ -42,7 +42,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.6 fills 피조개 zinc from the MEXT 2020 same-species raw item (あかがい 10279): MFPI 14 -> 15.
         # verified-pilot-3.7 adds calcium (3 of 4 components) and three aquaculture records: 톳·청각·멸치 MFPI, 참굴 BBVI 80.9 -> 83.9.
         # verified-pilot-3.8 adds the reviewed 바지락 peptide rows (single paper): 바지락 MBPI 39.5, BBVI withheld.
-        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 18)
+        # verified-pilot-3.9 uses a MEXT same-species raw item as the own row where RDA has none: 맛조개·고등어·참문어 MFPI, 18 -> 21.
+        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 21)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 7)

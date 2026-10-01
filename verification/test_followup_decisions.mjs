@@ -33,7 +33,7 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
   assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
-assert.equal(scored,25,'14 MFPI (3.5 adds 참조기·넙치·꽃게 aquaculture records) + 13 MBPI (3.5 adds 가시파래·가리맛조개·큰가리비·해삼·넙치 peptides) + 14 MCUI (7 IUCN + 7 Korean national) cover 25 species; 가시파래·넙치·꽃게 had no score before');
+assert.equal(scored,26,'21 MFPI (3.5 aquaculture records, 3.7 calcium, 3.9 MEXT rows for 맛조개·고등어·참문어) + 14 MBPI + 14 MCUI (7 IUCN + 7 Korean national) cover 26 species; 참문어 has its first score in 3.9 (MFPI 36.9)');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,7,'national MCUI stays labelled by basis');
 assert.ok(national.every(r=>r.matrix_eligible===(r.scores.BBVI!==null)),'verified-pilot-3.2: national MCUI is placed only with a BBVI, labelled by mcui_basis');

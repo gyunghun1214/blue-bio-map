@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "reviewed_on": "2026-10-01",
+  "purpose": "verified-pilot-3.9 MFPI: same-species raw items of the Standard Tables of Food Composition in Japan 2020 (8th revised edition) for protein, iron, zinc and calcium. Items with species_row = true are the species' own nutrition row when RDA DB 10.4 has no row linked to the species; the others only fill a component blank in the species' own RDA row (3.6 rule). Team-lead decision of 2026-10-01.",
+  "files": {
+    "20201225-mxt_kagsei-mext_01110_012.xlsx": "ae54da2f99900300f9c9834947bb952690c3798d411b9ed5ba95711019410c4d",
+    "20201225-mxt_kagsei-mext_01110_101.xlsx": "938a07970b17ee446e88d4e16c64d65b67cd162e5573b27ce2281c644633b553"
+  },
+  "not_used": "ひじき (톳) has only dried, boiled and fried items, no raw item; みる (청각, Codium fragile) has no item (みるがい is a clam). Neither is substituted. 감태 (カジメ), 가시파래 (スジアオノリ; あおのり is a dried mixed item) and 괭생이모자반 (アカモク) have no raw item. なまこ 生 (10372) is not linked: WoRMS lists アカナマコ for 241776. かき 養殖 生 is マガキ, not シカメガキ.",
+  "sources": {
+    "mext_sfct_2020_items": {
+      "provider": "Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan",
+      "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+      "version": "2020 (8th revised edition), files dated 2020-12-25",
+      "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
+      "accessed": "2026-10-01",
+      "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+      "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "terms": "Values of four components for six items quoted per 100 g edible portion with attribution; no table is redistributed"
+    }
+  },
+  "items": [
+    {
+      "food_item_id": "10279",
+      "food_name": "＜貝類＞ あかがい 生",
+      "aphia_id": 504357,
+      "taxon_label": "Anadara broughtonii (アカガイ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 75,
+      "value_basis": "분석값·4정판 수록값",
+      "components": {
+        "protein_g": {
+          "value": 13.5,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 5.0,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.5,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 40.0,
+          "unit": "mg"
+        }
+      },
+      "link_evidence": "MEXT 식품명 「あかがい」의 표준 일본명 アカガイ는 WoRMS 504357 Anadara broughtonii의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 「あかがい」 성분값은 분석값과 4정판 수록값에 기초한다(第3章 10 魚介類). 근연 さるぼう는 별도 항목 10318이다.",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음",
+      "food_group": "10",
+      "species_row": false
+    },
+    {
+      "food_item_id": "10044",
+      "food_name": "＜魚類＞ （いわし類） かたくちいわし 生",
+      "aphia_id": 219984,
+      "taxon_label": "Engraulis japonicus (カタクチイワシ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 45,
+      "value_basis": "분석값·4정판 수록값",
+      "components": {
+        "protein_g": {
+          "value": 18.2,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 0.9,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.0,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 60.0,
+          "unit": "mg"
+        }
+      },
+      "link_evidence": "MEXT 식품명 「かたくちいわし」의 표준 일본명 カタクチイワシ는 WoRMS 219984 Engraulis japonicus의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 「かたくちいわし」(しこいわし·ひしこ·せぐろ) 생것 성분값은 분석값과 4정판 수록값에 기초한다(第3章 10 魚介類).",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음",
+      "food_group": "10",
+      "species_row": false
+    },
+    {
+      "food_item_id": "10345",
+      "food_name": "＜いか・たこ類＞ （いか類） するめいか 生",
+      "aphia_id": 342067,
+      "taxon_label": "Todarodes pacificus (スルメイカ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 30,
+      "value_basis": "분석값에서 계산",
+      "components": {
+        "protein_g": {
+          "value": 17.9,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 0.1,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.5,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 11.0,
+          "unit": "mg"
+        }
+      },
+      "link_evidence": "MEXT 식품명 「するめいか」의 표준 일본명 スルメイカ는 WoRMS 342067 Todarodes pacificus의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 「するめいか」 생것 성분값은 「胴、皮つき、生」과 「耳・足、生」의 분석값으로 계산했다(第3章 10 魚介類).",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음",
+      "food_group": "10",
+      "species_row": false
+    },
+    {
+      "food_item_id": "10280",
+      "food_name": "＜貝類＞ あげまき 生",
+      "aphia_id": 413600,
+      "taxon_label": "Sinonovacula constricta (アゲマキガイ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 35,
+      "value_basis": "輸入品の分析値",
+      "food_group": "10",
+      "components": {
+        "protein_g": {
+          "value": 8.1,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 4.1,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.5,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 66.0,
+          "unit": "mg"
+        }
+      },
+      "species_row": true,
+      "link_evidence": "MEXT 식품명 「あげまき」(揚巻)는 WoRMS 413600 Sinonovacula constricta의 일본어 일반명 アゲマキガイ에서 끝의 ガイ(貝)를 뗀 이름과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 10 魚介類 해설은 「あげまき」를 殻長 약 10 cm·殻幅 약 2.5 cm의 ナタマメガイ科 이매패로, 有明海 등의 진흙에 수직 굴을 파고 산다고 적는다(이 종의 형태·서식과 일치). 성분값은 수입품의 분석값이다.",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음"
+    },
+    {
+      "food_item_id": "10154",
+      "food_name": "＜魚類＞ （さば類） まさば 生",
+      "aphia_id": 127022,
+      "taxon_label": "Scomber japonicus (マサバ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 50,
+      "value_basis": "분석값",
+      "food_group": "10",
+      "components": {
+        "protein_g": {
+          "value": 20.6,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 1.2,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.1,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 6.0,
+          "unit": "mg"
+        }
+      },
+      "species_row": true,
+      "link_evidence": "MEXT 식품명 「まさば」의 표준 일본명 マサバ는 WoRMS 127022 Scomber japonicus의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 해설: 일본 근해에서 어획, 「生」은 분석값. 근연 ごまさば(10404)와 たいせいようさば(10158)는 별도 항목이다.",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음"
+    },
+    {
+      "food_item_id": "10361",
+      "food_name": "＜いか・たこ類＞ （たこ類） まだこ 生",
+      "aphia_id": 534443,
+      "taxon_label": "Octopus sinensis (マダコ)",
+      "part": "edible portion",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "refuse_pct": 15,
+      "value_basis": "분석값·4정판 수록값",
+      "food_group": "10",
+      "components": {
+        "protein_g": {
+          "value": 16.4,
+          "unit": "g"
+        },
+        "iron_mg": {
+          "value": 0.6,
+          "unit": "mg"
+        },
+        "zinc_mg": {
+          "value": 1.6,
+          "unit": "mg"
+        },
+        "calcium_mg": {
+          "value": 16.0,
+          "unit": "mg"
+        }
+      },
+      "species_row": true,
+      "link_evidence": "MEXT 식품명 「まだこ」의 표준 일본명 マダコ는 WoRMS 534443 Octopus sinensis의 일본어 일반명과 같다(AphiaVernacularsByAphiaID, 2026-10-01 조회). 第3章 해설: 국산 외에 수입품도 대량 유통되며 「生」은 내장 등을 뺀 시료, 성분값은 분석값과 4정판 수록값. 수입 시료의 종 구성(O. vulgaris 등)은 해설에 없다. 근연 みずだこ(10432)·いいだこ(10360)는 별도 항목이다.",
+      "errata": "정오표(데이터) 20201225-mxt_kagsei-mext_01110_101.xlsx에 이 항목의 정정 없음"
+    }
+  ]
+}

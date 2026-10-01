@@ -1223,20 +1223,23 @@ class VerifiedPilot37Tests(unittest.TestCase):
 
 
 CLAM = "research/verified-indices/evidence-clam-2026-10-01.json"
+V38 = ROOT / "config" / "verified-indices-v3.8.json"  # superseded by 3.9 (MEXT species rows); its rows stay tested
 
 
 class VerifiedPilot38Tests(unittest.TestCase):
-    """Public method: 3.7 plus the reviewed 바지락 peptide rows (research/verified-indices/evidence-clam-2026-10-01.md).
+    """Superseded by 3.9. 3.8: 3.7 plus the reviewed 바지락 peptide rows (research/verified-indices/evidence-clam-2026-10-01.md).
     Evidence rows only: rules, coefficients and cohorts are 3.7's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V38))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V37)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.8", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.8 report is archived as it was
+        archived38 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.8.json"
+        self.assertEqual(render(self.report), archived38.read_text(encoding="utf-8"))
 
     def test_only_clam_mbpi_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1258,6 +1261,61 @@ class VerifiedPilot38Tests(unittest.TestCase):
         for old in (V33, V34, V35, V36, V37):
             self.assertNotIn(CLAM, cfg(old)["peptide_supplements"])
 
+
+MEXT_ROWS = {413600: ("MEXT:10280", 0.65, True), 127022: ("MEXT:10154", 0.5, True), 534443: ("MEXT:10361", 0.85, False)}
+
+
+class VerifiedPilot39Tests(unittest.TestCase):
+    """Public method: 3.8 plus MEXT 2020 same-species raw items as the species' own nutrition row where RDA DB 10.4 has
+    no row linked to the species, MEXT components widened to all four, and three aquaculture records
+    (research/verified-indices/mext-rows-2026-10-01.md)."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V38)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.9", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_three_mfpi_move(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(413600, "MFPI"): 57.7, (127022, "MFPI"): 48.0, (534443, "MFPI"): 36.9})
+        self.assertEqual(sum(s["scores"]["MFPI"] is not None for s in self.new.values()), 21)
+        self.assertEqual(self.new[413600]["withheld_reasons"]["BBVI"], "mbpi_single_source")  # 맛조개 MBPI rests on one paper
+
+    def test_mext_row_is_the_species_own_row(self):
+        cohort = next(c for c in self.report["comparison_cohorts"] if c["cohort_id"] == "rda-10.4-raw-marine-animals")
+        for aphia, (item, fraction, feasible) in MEXT_ROWS.items():
+            f = self.new[aphia]["food_trace"]
+            self.assertEqual((f["source_food_item_id"], f["row_table"], f["outside_cohort"], f["cohort_id"]),
+                             (item, "mext", True, "rda-10.4-raw-marine-animals"), aphia)
+            self.assertNotIn(item, cohort["food_item_ids"])
+            self.assertEqual((f["edible_fraction"]["value"], f["edible_fraction"]["source_id"]), (fraction, "mext_sfct_2020_items"))
+            self.assertEqual({k: (n["grade"], "substitute" in n) for k, n in f["nutrients"].items()},
+                             {k: ("foreign_table_cited", False) for k in self.report["method"]["nutrition"]["components"]})
+            self.assertFalse(f["substituted_components"])
+            own = [o for o in f["observed_rows"] if o["linked"]]
+            self.assertEqual([o["food_item_id"] for o in own], [item])  # no RDA row is linked to these species
+            self.assertIs(f["aquaculture"]["feasible"], feasible)
+        self.assertEqual(self.new[534443]["food_trace"]["components"]["aquaculture_contribution"], 0)  # 참문어: settlement only
+
+    def test_species_with_an_rda_row_never_take_a_mext_row(self):
+        for aphia in (504357, 219984, 342067):  # 피조개·멸치·살오징어 keep their RDA rows (MEXT fills blanks only)
+            f = self.new[aphia]["food_trace"]
+            self.assertNotIn("row_table", f, aphia)
+            self.assertFalse(any(o["food_item_id"].startswith("MEXT:") for o in f["observed_rows"]), aphia)
+        # a generic MEXT name (なまこ) is never linked: 해삼 stays withheld
+        self.assertEqual(self.new[241776]["withheld_reasons"]["MFPI"], "food_row_not_species_specific")
+
+    def test_new_inputs_are_read_by_3_9_only(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V36, V37, V38):
+            m = cfg(old)["nutrition"]["substitutes"]["mext"]
+            self.assertNotIn("species_row_groups", m)
+            self.assertEqual(m["components"], ["zinc_mg"])
 
 if __name__ == "__main__":
     unittest.main()
