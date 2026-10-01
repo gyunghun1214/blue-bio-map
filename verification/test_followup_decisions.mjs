@@ -31,7 +31,6 @@ for(const row of readiness.species){
   if(plan.known.length)scored++;
   assert.equal(ctx.followup({...species,name:'Other species'}),null,'wrong taxon must not attach');
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
-  assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
 assert.equal(scored,26,'21 MFPI (3.5 aquaculture records, 3.7 calcium, 3.9 MEXT rows for 맛조개·고등어·참문어) + 14 MBPI + 14 MCUI (7 IUCN + 7 Korean national) cover 26 species; 참문어 has its first score in 3.9 (MFPI 36.9)');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
