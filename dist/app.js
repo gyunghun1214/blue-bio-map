@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -149,7 +149,13 @@ function verifiedFoodValid(a,report){
   // the species' own linked RDA row: a substitute only where that row is blank, its own value everywhere else
   const ownRow=outside?(f.observed_rows||[]).find(o=>o.linked&&o.food_item_id===f.source_food_item_id):null;
   if(outside&&!ownRow)return false;
+  // 3.7: a component blank in the species' own row may be left out of the mean (listed, never 0) when enough remain
+  const omitted=f.omitted_components||[];
+  if(omitted.length&&(!outside||!Number.isInteger(config.minimum_components)||
+     Object.keys(config.components||{}).length-omitted.length<config.minimum_components||
+     omitted.some(k=>!(k in (config.components||{}))||f.nutrients?.[k]!==undefined||ownRow.values?.[k]!==null)))return false;
   for(const [name,unit] of Object.entries(config.components||{})){
+    if(omitted.includes(name))continue;
     const n=f.nutrients?.[name], s=n?.substitute, sample=s?.taxon_level==='subsample', mext=s?.taxon_level==='mext';
     // 3.6: a MEXT 2020 same-species raw item (edible portion), only for the components the rule lists, at the rule's grade
     if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||(!sample&&!mext&&!sub.parts?.includes(s.part))||s.label!==sub.labels?.[s.taxon_level]||
@@ -178,11 +184,11 @@ function verifiedFoodValid(a,report){
     nutrient+=n.percentile_unrounded*n.evidence_factor;
   }
   if(!own)return false;  // a score never rests only on other foods' values
-  if(outside&&own===Object.keys(config.components||{}).length)return false;  // outside the cohort only because of a substitute
+  if(outside&&!omitted.length&&own===Object.keys(config.components||{}).length)return false;  // outside the cohort only because of a substitute or an omission
   const fraction=f.edible_fraction;
   if(!Number.isFinite(fraction.value)||fraction.value<0||fraction.value>1||!sources[fraction.source_id]||
      !sources[f.aquaculture.source_id])return false;
-  const expected=config.nutrient_weight*nutrient/Object.keys(config.components).length+
+  const expected=config.nutrient_weight*nutrient/(Object.keys(config.components).length-omitted.length)+
     100*config.edible_fraction_weight*fraction.value+100*config.aquaculture_weight*Number(f.aquaculture.feasible);
   return Math.abs(expected-a.scores.MFPI)<.06;
 }
@@ -690,7 +696,7 @@ const reportConservation=s=>{
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
   food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
-  component_missing_in_source:'원자료에 필수 성분(단백질·철·아연) 중 일부가 비어 있습니다. 빈칸은 0이 아니라 결측입니다.',
+  component_missing_in_source:'원자료에 필수 성분이 모자랍니다(3.6까지 단백질·철·아연 모두, 3.7부터 칼슘을 더한 4개 중 3개 이상). 빈칸은 0이 아니라 결측입니다.',
   species_edible_yield_unverified:'이 종의 원자료 가식부 비율을 검증하지 못했습니다.',
   aquaculture_method_unverified:'지역·시기·방법이 확인된 양식 근거가 부족합니다.',
   compound_origin_assay_chain_or_fixed_cohort_missing:'기원종·구조·시험값·원논문을 완결해 연결한 비교집단이 없습니다.',
@@ -703,7 +709,7 @@ const scoreReason={
   requires_MFPI_and_MBPI:'기본 통합 BBVI에는 MFPI와 MBPI 두 축이 모두 필요합니다.',
   mbpi_single_source:'MBPI 최고 항목을 뒷받침하는 독립 원논문이 두 편 미만이라 BBVI 통합을 보류합니다. 다른 DOI라도 같은 실험의 재사용인지 원문에서 확인해야 합니다.'
 };
-const nutrientNames={protein_g:'단백질',iron_mg:'철',zinc_mg:'아연'};
+const nutrientNames={protein_g:'단백질',iron_mg:'철',zinc_mg:'아연',calcium_mg:'칼슘'};
 function verifiedSource(id,label){
   const src=data?.assessmentInfo?.sources?.[id];
   return src?sourceLink(src.url,label||src.title||id):esc(label||id||'출처 미확인');
@@ -728,21 +734,25 @@ function substituteText(s){
       `${esc(s.food_name)}(${esc(s.taxon_label)}, 섭취 부위 ${esc(s.part)}, 문서 코드 ${esc(s.doc_code||'없음')}, n ${esc(s.n??'미기재')})의 값을 썼습니다. `+
       `${verifiedSource(s.source_id,'uFiSh ↗')}`;
 }
+const supplementalRecord=o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
+  `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
+  `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`;
 function verifiedFoodDetail(s){
   const f=s.assessment.food_trace||{};
   const search=Object.entries(f.substitute_search||{});
   if(!Number.isFinite(s.assessment.scores.MFPI))return observedRows(f)+
     (search.length?`<p class="fine">빠진 성분의 대체치 후보: ${esc(search.map(([k,v])=>(nutrientNames[k]||k)+' '+(v?(String(v).startsWith('MEXT:')?'MEXT 8정판 '+String(v).slice(5):(String(v).startsWith('K')?'RDA ':'uFiSh1.0 ')+v):'후보 없음')).join(' · '))}. `+
       `${f.substitute_row?'빠진 성분은 채울 수 있지만 아래 다른 이유로 보류합니다.':'채울 후보가 없는 성분이 있어 보류합니다.'}</p>`:'')+
-    (f.supplemental_nutrition||[]).map(o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
-      `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
-      `${esc(o.exclusion_reason)} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`).join('');
+    (f.supplemental_nutrition||[]).map(supplementalRecord).join('');
   const raw=Object.entries(f.nutrients||{}).map(([key,n])=>
     `<div class="score-fact"><b>${esc(nutrientNames[key]||key)} ${esc(num(n.value))} ${esc(n.unit)} / 100 g 가식부</b>`+
     `<span>${esc(n.grade)} · 고정 비교집단 백분위 ${esc(n.percentile)} · 신뢰도 계수 ${esc(n.evidence_factor)}</span></div>`+
     (n.substitute?`<p class="fine">${substituteText(n.substitute)}</p>`:'')).join('')+
-    (f.supplemental_nutrition||[]).filter(o=>o.substitute_use).map(o=>`<p class="fine">별도 원값 기록 ${esc(o.record_id)}: ${esc(o.substitute_use)}.</p>`).join('');
-  const outside=f.outside_cohort?`<p class="fine">대체치가 있어 이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
+    // 3.7: a scored species can still carry unused records (e.g. 톳 freeze-dried zinc); they stay visible with their reason
+    (f.supplemental_nutrition||[]).map(o=>o.substitute_use?`<p class="fine">별도 원값 기록 ${esc(o.record_id)}: ${esc(o.substitute_use)}.</p>`:supplementalRecord(o)).join('');
+  const omitted=f.omitted_components||[];
+  const outside=f.outside_cohort?`<p class="fine">${omitted.length?`원자료에 ${esc(omitted.map(k=>nutrientNames[k]||k).join('·'))} 값이 비어 있어 평균에서 뺐습니다(0점 아님, 사용 성분 ${Object.keys(f.nutrients||{}).length}/${Object.keys(f.nutrients||{}).length+omitted.length}). `:''}`+
+    `${(f.substituted_components||[]).length?'대체치가 있어 ':''}이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
   const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
   const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);
   return `<p>${esc(f.reported_food_name)} (${esc(f.english_name)}) · 식품코드 ${esc(f.source_food_item_id)} · 출처 표기 ${esc(f.row_source)} · ${verifiedSource(f.source_id,'원자료 ↗')}</p>`+raw+outside+

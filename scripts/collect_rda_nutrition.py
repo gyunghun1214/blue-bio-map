@@ -23,7 +23,7 @@ from pathlib import Path
 BASE = "https://www.nics.go.kr/food"
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "research" / "verified-indices" / "snapshots" / f"rda-db-10.4-marine-raw-{date.today()}.json"
-FIELDS = {"단백질 (g)": "protein_g", "철 (㎎)": "iron_mg", "아연 (㎎)": "zinc_mg",
+FIELDS = {"단백질 (g)": "protein_g", "철 (㎎)": "iron_mg", "아연 (㎎)": "zinc_mg", "칼슘 (㎎)": "calcium_mg",
           "수분 (g)": "water_g", "폐기율 (%)": "refuse_pct", "출처": "row_source"}
 GROUPS = ("어패류 및 기타 수산물", "해조류")
 
