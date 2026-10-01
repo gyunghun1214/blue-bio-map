@@ -80,12 +80,12 @@
       }
     },
     {
-      "label": "Gracilaria vermiculophylla",
+      "label": "꼬시래기",
       "name": "Gracilaria vermiculophylla",
       "aphiaID": 236157,
       "group": "해조류",
-      "reason": "한천 원료·식품 가능성 조사 후보; 국명 일치 재검토",
-      "taxonNote": "국명은 이 학명에 대해 별도 검증 전. 상용명 꼬시래기류로 동일시하지 않음.",
+      "reason": "한천 원료·식품 가능성 조사 후보",
+      "taxonNote": "국명은 국내 해조류 목록 기준. 과거 국내에서 G. verrucosa로 표기된 '꼬시래기' 식품 성분 행은 이 종에 연결하지 않음.",
       "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157",
       "taxonomyReviewedOn": "2026-09-25",
       "nutritionStatus": "food_name_candidate_unverified",
