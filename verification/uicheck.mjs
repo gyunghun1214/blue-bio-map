@@ -110,7 +110,7 @@ try{
   const eck=await pick(371986);
   const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent}})()");
   check('Ecklonia candidate: paper-local MBPI 67.5 and five source-linked measurements without spatial or combined scores',
-    eckAxes.report==='verified-pilot-3.4'&&eckAxes.scores?.MBPI===67.5&&
+    eckAxes.report==='verified-pilot-3.5'&&eckAxes.scores?.MBPI===67.5&&
     eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===null&&eckAxes.scores.BBVI===null&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형이 없습니다')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('시범 MBPI 67.5')&&eck.includes('원논문 1편')&&
@@ -221,8 +221,9 @@ try{
   // 3.1: the ChEMBL stratum gives 멍게 a single-paper MBPI beside its MFPI, so the same rule shows it too;
   // the link review left 바지락·큰가리비 without a ChEMBL item (feces-study sterols, agmatine), so they have no MBPI.
   // 3.3: 홍합 gets an MFPI (60.1, uFiSh zinc) beside its single-paper MBPI 10.1, so the same rule shows it too.
-  check('Reference combination: shown only where MFPI meets a single-paper MBPI (미역·멍게·홍합); 참굴 has a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[145721,250680,506159]',JSON.stringify(refN));
-  check('Axis pairs: national and IUCN MCUI groups kept apart, oyster MBPI 96.3 and BBVI 80.9 only in the national group, hidden in simulation, MFPI-only is not BBVI',natPair.includes('참굴 MFPI 65.5 · MCUI 10.0')&&!iucnPair.includes('참굴')&&pairs.li.includes('MBPI × MCUI(한국 국가 평가 기반) · ahtpdb-ace-ic50-hhl-cushman-cheung 1종: 참굴 MBPI 96.3 · MCUI 10.0')&&pairs.li.some(x=>x.startsWith('BBVI × MCUI(한국 국가 평가 기반)')&&x.endsWith('1종: 참굴 BBVI 80.9 · MCUI 10.0'))&&!pairs.li.some(x=>x.startsWith('BBVI × MCUI(IUCN 기반)')&&x.includes('참굴'))&&pairs.hid&&pairs.intro.includes('MFPI만의 쌍은 BBVI가 아닙니다'),JSON.stringify(pairs).slice(0,600));
+  // 3.5: 넙치 (MFPI 53.3, Ko 2016 MBPI 29.2) and 큰가리비 (MFPI 56.3, VW MBPI 27.3) join under the same rule.
+  check('Reference combination: shown only where MFPI meets a single-paper MBPI (미역·멍게·넙치·큰가리비·홍합); 참굴 has a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[145721,250680,275816,393716,506159]',JSON.stringify(refN));
+  check('Axis pairs: national and IUCN MCUI groups kept apart, oyster MBPI 96.3 and BBVI 80.9 only in the national group, hidden in simulation, MFPI-only is not BBVI',natPair.includes('참굴 MFPI 65.5 · MCUI 10.0')&&!iucnPair.includes('참굴')&&pairs.li.includes('MBPI × MCUI(한국 국가 평가 기반) · ahtpdb-ace-ic50-hhl-cushman-cheung 3종: 참굴 MBPI 96.3 · MCUI 10.0 / 큰가리비 MBPI 27.3 (참고값(단일 논문)) · MCUI 10.0 / 맛조개 MBPI 56.9 (참고값(단일 논문)) · MCUI 20.0')&&pairs.li.some(x=>x.startsWith('BBVI × MCUI(한국 국가 평가 기반)')&&x.endsWith('1종: 참굴 BBVI 80.9 · MCUI 10.0'))&&!pairs.li.some(x=>x.startsWith('BBVI × MCUI(IUCN 기반)')&&x.includes('참굴'))&&pairs.hid&&pairs.intro.includes('MFPI만의 쌍은 BBVI가 아닙니다'),JSON.stringify(pairs).slice(0,600));
   // ---- Presentation polish (2026-09-25) ----
   const og=await evaluate("(async()=>{const m=p=>document.querySelector(`meta[${p}]`)?.content||'';const img=m('property=\"og:image\"');const r=await fetch('og.png');const b=await r.blob();return {title:m('property=\"og:title\"'),desc:m('property=\"og:description\"'),type:m('property=\"og:type\"'),url:m('property=\"og:url\"'),locale:m('property=\"og:locale\"'),card:m('name=\"twitter:card\"'),img,ok:r.ok,type2:b.type,size:b.size,dims:await createImageBitmap(b).then(i=>i.width+'x'+i.height)}})()");
   check('OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB',!!og.title&&!!og.desc&&og.type==='website'&&og.url==='https://blue-bio-map.blue-bio-map.workers.dev/'&&og.locale==='ko_KR'&&og.card==='summary_large_image'&&og.img==='https://blue-bio-map.blue-bio-map.workers.dev/og.png'&&og.ok&&og.dims==='1200x630'&&og.size<=300*1024,JSON.stringify(og));

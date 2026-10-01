@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "reviewed_on": "2026-10-01",
+  "purpose": "verified-pilot-3.5 MFPI: the five 3.3 records unchanged, plus three records reviewed on 2026-09-28 by three independent verifiers who re-opened each paper (2 of 3 or more passed; branch sunny/bbvm-0928-pr2-evidence) and checked against the rule below on 2026-10-01. One primary record per species.",
+  "rule": "feasible = grow-out of this species documented from seed or juvenile to harvest, or through a full culture season, in a named system, region and period. A record whose trials stopped before grow-out is kept with feasible = false. Production counts alone are not proof. Flounder (71 land-based tank farms, Wando and Jeju, 2023), blue crab (commercial ponds in China, not Korea) and small yellow croaker (second-generation cultured broodstock; commercial culture rests on one uncited sentence) were added in 3.5 with those limits in each record.",
+  "sources": {
+    "scienceon_mytilus_coruscus_2016": {
+      "provider": "KISTI ScienceON (Korean national R&D report registry)",
+      "title": "참담치 양식산업화를 위한 기술개발 (Development of optimal technology for aquacultural industry in the hard mussel, Mytilus coruscus)",
+      "url": "https://scienceon.kisti.re.kr/srch/selectPORSrchReport.do?cn=TRKO201800002340",
+      "version": "page checked 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "No open licence shown; fact, method summary and a short quotation only",
+      "terms": "The record page shows no licence for the report. General ScienceON/KISTI copyright-management terms apply. The page links to '저작권 관리 안내' and has the footer 'Copyright KISTI. All Rights Reserved.'"
+    },
+    "kwon_cho_1986_anadara": {
+      "provider": "KoreaScience (KISTI)",
+      "title": "Culture of the Ark Shell, Anadara broughtonii in Yoja Bay (여자만에서의 피조개 양성). Kwon Woo-Seop and Cho Chang-Hwan, Tongyeong Fisheries Technical College",
+      "url": "https://www.koreascience.kr/article/JAKO198622105902972.page",
+      "version": "page checked 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "No open licence shown; fact, method summary and a short quotation only",
+      "terms": "No article-specific licence. KoreaScience terms of use, Art. 13 (홈페이지 저작권): copyright stays with the original authors, and KISTI holds reproduction, distribution and transmission rights. Fair quotation for reporting, criticism, education and research is permitted. Commercial reuse needs KISTI permission."
+    },
+    "kang_2019_haliotis_wando": {
+      "provider": "Scientific Reports (Nature Portfolio)",
+      "title": "Physiological responses of the abalone Haliotis discus hannai to daily and seasonal temperature variations (Kang HY, Lee Y-J, Song W-Y, Kim T-I, Lee W-C, Kim TY, Kang C-K), Sci Rep 9:8019, doi:10.1038/s41598-019-44526-3",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6541628/",
+      "version": "page checked 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0",
+      "terms": "Open Access, Creative Commons Attribution 4.0 International License (© The Author(s) 2019)"
+    },
+    "yoo_2023_sepia_esculenta": {
+      "provider": "Journal of Fisheries and Marine Sciences Education (한국수산해양교육학회)",
+      "title": "First Report in Korea on Trial Aquaculture of Cuttlefish (Sepia esculenta) Using in the Open Tank (육상호지를 이용한 참갑오징어(Sepia esculenta) 시험양식 국내 첫 보고), Yoo HK, Lee KW, Kim DH, Kim GS, Kim WJ, Lim HJ, Jung MM; 35(6):1131-1136; doi:10.13000/JFMSE.2023.12.35.6.1131",
+      "url": "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",
+      "version": "page checked 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "No open licence shown; fact, method summary and a short quotation only",
+      "terms": "No licence, Creative Commons or copyright notice is shown on the page (re-checked 2026-09-30)."
+    },
+    "kordi_2010_pacific_cod": {
+      "provider": "Korea Ocean Research and Development Institute (KORDI, now KIOST), with NIFS Future Aquaculture Research Center (국립수산과학원 미래양식연구센터) as cooperating institute",
+      "title": "외해 심층가두리를 이용한 대구·참치 등 양식기술개발 (Developments of the aquaculture techniques for Pacific Cod and BlueFin Tuna applying to offshore submerged cage system)",
+      "url": "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255",
+      "version": "page checked 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "No open licence shown; fact, method summary and a short quotation only",
+      "terms": "\"Items in ScienceWatch@KIOST are protected by copyright, with all rights reserved, unless otherwise indicated.\" / \"Copyright (c) 2020 KIOST ALL RIGHTS RESERVED.\" No open licence is shown."
+    },
+    "hwang_2025_croaker": {
+      "provider": "Development & Reproduction 29(1):13-18 (Hwang & Kang 2025), full text via Europe PMC PMC12004011",
+      "title": "Morphometric assessment of egg quality for second generation of cultured small yellow croaker, Larimichthys polyactis broodstock",
+      "version": "Short communication, published online 2025-03-31",
+      "doi": "10.12717/DR.2025.29.1.13",
+      "pmid": "40256123",
+      "url": "https://doi.org/10.12717/DR.2025.29.1.13",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY-NC 4.0"
+    },
+    "oh_2024_flounder": {
+      "provider": "Animals 14(11):1693 (Oh & Lee 2024), full text via PMC PMC11171225",
+      "title": "Fish welfare-related issues and their relevance in land-based olive flounder (Paralichthys olivaceus) farms in Korea",
+      "version": "2024 (published 2024-06-05)",
+      "doi": "10.3390/ani14111693",
+      "pmid": "38891740",
+      "url": "https://doi.org/10.3390/ani14111693",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY 4.0"
+    },
+    "jiang_2025_crab": {
+      "provider": "Biology 14(12):1682 (Jiang et al. 2025), full text via Europe PMC PMC12730681",
+      "title": "A dynamic energy budget model for the non-continuous and biphasic growth of the pond-cultured swimming crab, Portunus trituberculatus",
+      "version": "2025 (published 2025-11-26)",
+      "doi": "10.3390/biology14121682",
+      "pmid": "41463455",
+      "url": "https://doi.org/10.3390/biology14121682",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY 4.0"
+    }
+  },
+  "food_support": [
+    {
+      "aphia_id": 254538,
+      "kind": "aquaculture",
+      "record_id": "Report No. BSPM55350-2205-3 (제출문 dated 2010. 10). The quote is from the 요약문 (PDF p.vi region). Also cited: the section on larval rearing from Geoje eggs in a 12 m³ PP tank at 강원도립대학, followed to 33 days post-hatch; the conditioning section (4 m PP circular tanks (10 t), deep ocean water at 5-6 °C); and PDF p.x (offshore cage and economics).",
+      "source_id": "kordi_2010_pacific_cod",
+      "reviewed": true,
+      "feasible": false,
+      "method": "Experimental land-based flow-through tank rearing of wild-caught Pacific cod juveniles from set nets. The fish were weaned on frozen krill, then moved to formulated/moist feeds, in 4 m PP circular tanks (10 t) and 2 m³ tanks supplied with deep ocean water held at 5-6 °C. Larvae were also reared in a 12 m³ PP tank to 33 days post-hatch from eggs stripped from wild broodstock landed at Geoje. The planned offshore submerged-cage grow-out was never stocked with cod.",
+      "region": "Republic of Korea, East Sea coast: Goseong-gun, Gangwon-do (KORDI Deep Ocean Water Research Center), with juveniles from set nets off Ohori. Eggs came from Geoje (Gyeongsangnam-do), and larval rearing was done at the Gangwon Provincial College fish-culture facility.",
+      "year": "2010 (project 2007-2010; cod rearing trials Jan 2009 - Feb 2010)",
+      "limitations": "Recorded as not feasible: the only Korean record is a 2007-2010 pilot that reared wild-caught juveniles in land tanks; no fish reached market size, the planned offshore-cage grow-out was never stocked, and the economic analysis found NPV < 0. This was a pilot/experimental study with capture-based seed. The January batch grew from about 57 g to 154 g in 130 days with 46% survival. The March batch lost biomass. No fish reached market size. The offshore cage (installed at 24 m depth) was trial-stocked with yellowtail (방어) in October 2009; that stock died off in January 2010 from a sudden temperature drop and the cage panels were damaged, so the cod stocking planned for May 2010 was cancelled. The economic analysis of offshore-cage cod culture found NPV < 0 and B/C < 1 in the scenarios. There is no evidence of commercial production.",
+      "quote": "자연산 대구를 인공적인 환경에서 안정적인 사육기술개발을 위해 연중 10℃이하로 유지가 가능한 해양심층수를 이용하여 자연의 주 먹이인 크릴새우를 대상으로 육상 수조에서 먹이붙임 실험을 실시하였고"
+    },
+    {
+      "aphia_id": 397082,
+      "kind": "aquaculture",
+      "record_id": "The Introduction gives the Wando aquaculture history and production. The Abstract and Methods describe suspended cages in a 'submerged culture facility' off Wando Island (34°18′N), with sampling in May, August and November 2017 and February 2018.",
+      "source_id": "kang_2019_haliotis_wando",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Sea-based suspended (hanging) net-cage grow-out of H. discus hannai in a submerged culture facility",
+      "region": "Wando Island, off the southwestern coast of the Korean Peninsula",
+      "year": "Culture expanding since 1970; 12,000 t in 2016; field sampling 2017-2018; published 2019",
+      "limitations": "This is a physiology study, not a culture-method paper. The method (suspended cage nets) and history are given as context. The production figure cites the MOF statistics portal. Subspecies hannai is an accepted subspecies of H. discus in WoRMS (re-checked 2026-09-30).",
+      "quote": "Abalone aquaculture in the shallow coastal seas around Wando Island ... has been expanding since 1970, and the annual production reached 12,000 tonnes in 2016 ... abalone cultivated in suspended cage nets are exposed"
+    },
+    {
+      "aphia_id": 504357,
+      "kind": "aquaculture",
+      "record_id": "Vol. 19, Issue 4, pp. 375-379 (published 1986-07-01). Korean abstract, opening sentence. The English abstract says seed shells 'were planted on bottom mud with a density 20 to 40 shells per square meter on March 10 and 11, 1982'.",
+      "source_id": "kwon_cho_1986_anadara",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Bottom culture (바닥식 양성): seed shells (mean 2.5 cm, 2.5 g) planted on bottom mud at 20-40 per m² in March 1982 and grown out to harvest in December 1983",
+      "region": "Yoja Bay (여자만), western part of the south coast of Korea (남해 서부해역)",
+      "year": "1986 publication; culture from March 1982 to harvest in December 1983",
+      "limitations": "This is a single-site field culture experiment. Growth was favourable (6.1 cm and 63.0 g after one year), but final survival was only about 10% at harvest, mainly because of starfish (Asterias spp.) predation. It shows technical feasibility with a large mortality constraint. The page does not say where the seed came from, so the earlier 'hatchery-size' wording was removed.",
+      "quote": "남해 서부해역에 위치한 여자만에서 바닥식으로 양성한 피조개, Anadara broughtonii에 관한 성장과 폐사에 관해 1982년 8월부터 6개월간 조사한 결과는 다음과 같다."
+    },
+    {
+      "aphia_id": 506159,
+      "kind": "aquaculture",
+      "record_id": "Final report TRKO201800002340, project no. 1525005011, DOI 10.23000/TRKO201800002340. The quote is in the Korean 초록 (cited as '출처 : 보고서 요약서 3p'). The table list includes '로프수하식 양성 시설 전경', '참담치 로프수하식 양성 전경', '로프수하식 양성시 수심에 따른 성장과 생존율' and '로프수하식 양성시 사육기간에 따른 생존율 변화'. The previously cited table name '로프수하식 로프 간양성장에서 참담치의 월별 생존율' does not appear on the page.",
+      "source_id": "scienceon_mytilus_coruscus_2016",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Rope hanging (suspended) grow-out culture (로프수하식). It outperformed basket hanging culture (채롱수하식). Raft-type intermediate nursery (the page writes '멧목식', a typo for 뗏목식) cut the nursery period by about 50% compared with 채롱수하식. Hatchery seed production used freshwater spawning stimulation. Horizontal-net culture (수평망식) on west-coast tidal flats was judged unsuitable.",
+      "region": "South coast of Korea (남해안) for rope hanging grow-out. Grow-out sites in the table list are Geomundo and Dolsan-do, Yeosu (여수 거문도 / 돌산도 양성해역). The unsuccessful horizontal-net trial was on the west coast (Gunsan).",
+      "year": "2016 (report published 2016-10; project started 2015)",
+      "limitations": "This is an R&D pilot and demonstration project, not proof of commercial-scale farming. The report says industrialisation would be effective 'if suitable sea areas are selected'. Only the ScienceON record page (Korean and English summaries plus table list) was verified. The full-text PDF was not opened.",
+      "quote": "남해안에서는 로프수하식 양성이 채롱수하식 양성보다 참담치 양성에 효율적인 것으로 나타났으며 참담치 양성에 적합한 해역이 선정된다면 산업화에 매우 효과적인 것으로 나타났다."
+    },
+    {
+      "aphia_id": 1666974,
+      "kind": "aquaculture",
+      "record_id": "Abstract. Methods section II.2 (육상호지 양식장: Taean, Chungcheongnam-do, 500 tons, 17 × 30 m, depth 1 m). Results: at the end of the trial on 16 Nov, 440 individuals remained.",
+      "source_id": "yoo_2023_sepia_esculenta",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Land-based outdoor open tank/pond (육상호지) grow-out managed as flow-through (유수식), with no heating after early-season plastic covering. Broodstock were spawned in indoor tanks at the East Sea Fisheries Research Institute. About 50,000 attached eggs were stocked in May 2021: the English abstract says early May and the Korean Methods say mid-May (5월 중순). Hatchlings were fed live opossum shrimps (mysids), and frozen shrimp were fed from August.",
+      "region": "Taean, Chungcheongnam-do, Korea (broodstock from Sacheon port, South Sea)",
+      "year": "Trial April-November 2021; accepted 1 Dec 2023; published December 2023",
+      "limitations": "This is a single experimental trial and the first Korean report. Survival was low (440 of about 50,000 eggs at the end), and growth varied widely between individuals. The authors frame it as an 'aquaculture possibility', not commercial practice. The species is listed as Sepia esculenta, a superseded combination of Acanthosepion esculentum in WoRMS (re-checked 2026-09-30).",
+      "quote": "Approximately 50,000 eggs were transferred to the open tank in early May ... the confirmation of fast-growing cuttlefish suggests the aquaculture possibility of cuttlefish in the open tank"
+    },
+    {
+      "aphia_id": 281273,
+      "kind": "aquaculture",
+      "record_id": "10.12717/DR.2025.29.1.13:Introduction+Methods",
+      "source_id": "hwang_2025_croaker",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Net-cage and indoor-tank culture based on artificial seed production (Introduction); the study stock is second-generation cultured broodstock (the authors' term) produced from wild broodstock caught off Younggwang, 600 fish reared 3 years in circular concrete indoor tanks (30 t)",
+      "region": "Republic of Korea: commercial culture in the southern regions, Jeollanam-do and Jeju Island",
+      "year": "published 2025; spawning 7-30 May, calendar year not stated",
+      "limitations": "Commercial culture rests on one uncited Introduction sentence, with no farm count or production volume. The paper's own data are one research broodstock (egg-quality morphometrics, one 23-day spawning season), not grow-out production. The tank location is not stated; only the authors' affiliation (NIFS West Sea Fisheries Research Institute) is known. 'Second generation' bred from wild parents may be F1 by the usual convention."
+    },
+    {
+      "aphia_id": 275816,
+      "kind": "aquaculture",
+      "record_id": "10.3390/ani14111693:Title+2.1+AppendixA",
+      "source_id": "oh_2024_flounder",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Land-based tank farms (per the title and the Appendix A questionnaire item on fingerlings stocked in tanks; the water-supply system is not described)",
+      "region": "Republic of Korea: 71 commercial farms surveyed, 36 in Wando and 35 in Jeju-do",
+      "year": "survey 1-15 September 2023; 2022 production 46,000 t, 50.5% of the total among farmed species in Korea (cited from KOSIS, not measured by the authors); published 2024",
+      "limitations": "Fish-welfare interview and questionnaire study (self-reported answers, site visits); it does not describe the culture cycle or production system. Only Jeju-do and Wando are covered. Margin of error ±11.63% at 95% because the number of farms is unknown."
+    },
+    {
+      "aphia_id": 1061762,
+      "kind": "aquaculture",
+      "record_id": "10.3390/biology14121682:Introduction+2.2+Table1",
+      "source_id": "jiang_2025_crab",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Intensive pond culture in commercial culture ponds (pond type, size and stocking density not described)",
+      "region": "China: Weifang, Shandong and Ningbo, Zhejiang. Korea is not mentioned in the paper",
+      "year": "2023 national production 101,000 t (cited from the China Fishery Statistical Yearbook 2024; called production, not labelled aquaculture); published 2025",
+      "limitations": "Chinese pond-culture evidence, not Korean culture. The paper is a dynamic energy budget growth model; its own measurements are lab trials in 20 L tanks on crabs taken from commercial ponds, so it does not describe a production cycle. Korean siting, seed supply and cost need local review."
+    }
+  ]
+}

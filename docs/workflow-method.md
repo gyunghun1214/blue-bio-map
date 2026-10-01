@@ -1,8 +1,8 @@
-# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.4`
+# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.5`
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
-- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.4`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
+- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.5`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
 - 모든 지표는 **검증 전 시범 지표**다. 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
 
 ## 0. 한눈에 보기
@@ -110,39 +110,40 @@
 | `verified-pilot-3.2` | verified-pilot-3.1 (2026-09-30). Diagram stages 4-5: all 30 species get information sufficiency as its own label (priority_survey) and an unexplored-candidate flag from a same-genus/family relative with BBVI >= 50; the BBVI x MCUI matrix types (IUCN and marked national MCUI) are published and the GIS map colours each public cell by the types of species recorded there. No axis score changes. Information sufficiency changes in one place: a species whose MCUI comes from a reviewed national assessment counts that assessment for the three MCUI steps (3.1 counted only an IUCN record). See research/verified-indices/matrix-gis-2026-09-30.md. |
 | `verified-pilot-3.3` | verified-pilot-3.2 (2026-09-30). Diagram stage 3 MFPI, '섭취위치 / 유사종 대체치 구분': a component missing from a species' own RDA row is filled from FAO/INFOODS uFiSh1.0, species (measured > calculated) > same genus > same family (proxy), same consumed part, and is labelled; five species-level aquaculture records read in the original source are added. The fixed RDA cohorts are re-confirmed unchanged. See research/verified-indices/mfpi-substitutes-2026-09-30.md. |
 | `verified-pilot-3.4` | verified-pilot-3.3 (2026-09-30). Diagram stage 3 MCUI, 'OBIS 출현기록 등 분포 최신성 검증, 개체수 감소 vs 조사 부족 구분': an OBIS reporting-rate check (species records / records of the same WoRMS class in the same 1-degree cells, 2006-2015 vs 2016-2025, edge records in every cell that holds them) classifies each species as decline signal, decline below threshold, survey gap, no clear decline or undetermined. A decline signal must also hold inside the dataset with most past records; it raises a computed IUCN or national MCUI by conservation.effort_adjustment and never creates or lowers one. A species without a national category whose IUCN search found no assessment, or whose assessment is DD, is labelled priority_survey with that reason (figure: 우선 조사 대상). See research/verified-indices/mcui-trend-2026-10-01.md. |
+| `verified-pilot-3.5` | verified-pilot-3.4 (2026-10-01). Rules, thresholds, cohorts and weights unchanged; only reviewed evidence rows are added, in files read by 3.5 alone so 3.4 and earlier stay reproducible. Peptide rows (research/verified-indices/evidence-v3.5.json): synthetic ACE/HHL single peptides for 가시파래 KAF, 가리맛조개 VQY, 큰가리비 VW and 해삼 HDWWKER (branch sunny/bbvm-0928-pr2-evidence, 2 of 3 or more independent verifiers), 넙치 MEVFVP and VSQLTR (Ko 2016) and the seven Sato 2002 미역 dipeptides moved from partial to approved after the full text confirmed synthetic peptides and HHL (PR #65). Aquaculture records (research/verified-indices/mfpi-aquaculture-2026-10-01.json): 참조기, 넙치, 꽃게. See research/verified-indices/evidence-additions-2026-10-01.md. |
 
 | 축 | 2.3 | 현재 |
 |---|---|---|
-| MFPI 산출 종 수 | 7 | 11 |
-| MBPI 산출 종 수 | 3 | 8 |
+| MFPI 산출 종 수 | 7 | 14 |
+| MBPI 산출 종 수 | 3 | 13 |
 | MCUI 산출 종 수 | 14 | 14 |
 | BBVI 산출 종 수 | 1 | 1 |
 
-## 7. 30종 값 변화 (2.3 → `verified-pilot-3.4`)
+## 7. 30종 값 변화 (2.3 → `verified-pilot-3.5`)
 
 굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다.
 
 | 종 (AphiaID) | 범위 | MFPI | MBPI | MCUI | BBVI | 정보충분도 2.3 → 현재 | 우선 조사 대상 (사유) | 미탐색 후보 | 매트릭스 유형 | OBIS 추세 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 멍게 (250680) | 운영 8종 | 54.2 | – → **13.5** | – | – | 42% → 67% | 예 (보전 평가 없음) | – | – | 판단 불가 |
-| 미역 (145721) | 운영 8종 | 42.2 | 19.6 | – | – | 67% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 미역 (145721) | 운영 8종 | 42.2 | 19.6 → **71.5** | – | – | 67% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 살오징어 (342067) | 운영 8종 | – | – | 10.0 → **20.0** (IUCN) | – | 78% → 78% | – | – | – | 감소 신호 |
 | 우뭇가사리 (372119) | 운영 8종 | – | – | – | – | 0% → 0% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 참굴 (836033) | 운영 8종 | 65.5 | 96.3 | 10.0 (국가 평가) | 80.9 | 67% → 100% | – | – | 지속가능 활용 후보 | 조사 부족 |
 | 톳 (494972) | 운영 8종 | – | – → **45.3** | – | – | 28% → 53% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 해삼 (241776) | 운영 8종 | – | – | 80.0 (IUCN) | – | 50% → 50% | – | – | – | 보고율 감소 없음 |
+| 해삼 (241776) | 운영 8종 | – | – → **8.7** | 80.0 (IUCN) | – | 50% → 67% | – | – | – | 보고율 감소 없음 |
 | 홍합(참담치) (506159) | 운영 8종 | – → **60.1** | – → **10.1** | 10.0 (국가 평가) | – | 28% → 93% | – | – | – | 조사 부족 |
 | Gracilaria vermiculophylla (236157) | 조사 후보 | – | – | – | – | 0% → 8% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 가시파래 (234476) | 조사 후보 | – | – | – | – | 0% → 8% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 가시파래 (234476) | 조사 후보 | – | – → **73.3** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 감태 (371986) | 조사 후보 | – | 67.5 | – | – | 33% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 갑오징어 (1666974) | 조사 후보 | – → **45.9** | – | 10.0 (국가 평가) | – | 42% → 60% | – | – | – | 조사 부족 |
 | 고등어 (127022) | 조사 후보 | – | – | 10.0 (IUCN) | – | 33% → 42% | 예 (정보충분도) | – | – | 감소 경향(30% 미만) |
 | 괭생이모자반 (494853) | 조사 후보 | – | – → **21.6** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 꽃게 (1061762) | 조사 후보 | – | – | – | – | 27% → 27% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 넙치 (275816) | 조사 후보 | – | – | – | – | 27% → 27% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 꽃게 (1061762) | 조사 후보 | – → **53.5** | – | – | – | 27% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 넙치 (275816) | 조사 후보 | – → **53.3** | – → **29.2** | – | – | 27% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 다시마 (377084) | 조사 후보 | – | – | – | – | 0% → 17% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 대구 (254538) | 조사 후보 | – → **34.0** | – | – | – | 20% → 35% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 맛조개 (413600) | 조사 후보 | – | – | 10.0 → **20.0** (국가 평가) | – | 0% → 33% | 예 (정보충분도) | – | – | 감소 신호 |
+| 맛조개 (413600) | 조사 후보 | – | – → **56.9** | 10.0 → **20.0** (국가 평가) | – | 0% → 67% | – | – | – | 감소 신호 |
 | 멸치 (219984) | 조사 후보 | – | – | 10.0 → **20.0** (IUCN) | – | 53% → 53% | – | – | – | 감소 신호 |
 | 바지락 (231750) | 조사 후보 | 52.1 | – | 10.0 (국가 평가) | – | 33% → 75% | – | – | – | 조사 부족 |
 | 방어 (276651) | 조사 후보 | 56.3 | – | 10.0 (IUCN) | – | 67% → 67% | – | – | – | 조사 부족 |
@@ -150,9 +151,9 @@
 | 전복(종 수준) (397082) | 조사 후보 | – → **48.0** | – | 80.0 (IUCN) | – | 53% → 60% | – | – | – | 조사 부족 |
 | 조피볼락 (274849) | 조사 후보 | 42.9 | – | – | – | 33% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 참문어(동아시아 종) (534443) | 조사 후보 | – | – | – | – | 0% → 0% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 참조기 (281273) | 조사 후보 | – | – | 10.0 → **20.0** (IUCN) | – | 60% → 60% | – | – | – | 감소 신호 |
+| 참조기 (281273) | 조사 후보 | – → **39.8** | – | 10.0 → **20.0** (IUCN) | – | 60% → 67% | – | – | – | 감소 신호 |
 | 청각 (145086) | 조사 후보 | – | – → **0.4** | – | – | 20% → 53% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 큰가리비 (393716) | 조사 후보 | 56.3 | – | 10.0 (국가 평가) | – | 33% → 83% | – | – | – | 조사 부족 |
+| 큰가리비 (393716) | 조사 후보 | 56.3 | – → **27.3** | 10.0 (국가 평가) | – | 33% → 100% | – | – | – | 조사 부족 |
 | 피조개 (504357) | 조사 후보 | – | – | 10.0 (국가 평가) | – | 20% → 68% | – | – | – | 조사 부족 |
 
 ## 8. 남은 한계

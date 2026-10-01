@@ -75,7 +75,8 @@ for(const id of [241776,342067]){
 }
 Object.assign(by(836033),liveMeta);
 assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
-assert.notEqual(ctx.coverage(by(241776)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
+// 3.5: 해삼 has a reviewed peptide MBPI (HDWWKER), so the inventory guard is checked on 살오징어, which has none
+assert.notEqual(ctx.coverage(by(342067)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
 // verified-pilot-2.3: the oyster LQP potency is replicated from another origin, so the single-paper reference label is gone.
 assert.equal(ctx.coverage(by(836033)).checks[3].stage,'calculated');
 assert.doesNotMatch(ctx.coverage(by(836033)).checks[3].detail,/참고값/);
@@ -118,7 +119,8 @@ const stages={
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
   250680:['verified','linked','calculated','calculated','unavailable'],
-  241776:['verified','linked','found','linked','calculated'],
+  // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
+  241776:['verified','linked','found','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI (BBVI still withheld); 2.3 gives the oyster a BBVI.
   145721:['verified','linked','calculated','calculated','unavailable']
 };
@@ -328,7 +330,8 @@ assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 시범
 assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 시범 숫자 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // verified-pilot-2.2: the reviewed peptide values are scored in the AHTPDB cohort; paper values and both licences stay visible.
-for(const [id,value,texts] of [[145721,19.6,['KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
+// 3.5: Sato 2002 dipeptides are scored after the full-text review (IW 1.5 µM is the top item); KNFL stays listed.
+for(const [id,value,texts] of [[145721,71.5,['IW','1.5 µM','10.1021/jf020482t','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
   html=ctx.renderScores(by(id));
   assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: scored values are not repeated as unscored raw values`);
   const mbpi=html.slice(html.indexOf('MBPI · 생리활성'));
@@ -359,7 +362,7 @@ for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='LQP')
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // Peptide partial leads render their sequence and value, not an empty compound row.
-assert.match(ctx.renderScores(by(145721)),/펩타이드 IW · ACE IC50 = 1.5 µM/);
+assert.match(ctx.renderScores(by(145721)),/펩타이드 YNKL · ACE IC50 = 21 µM/);
 // Axis pairs: only species with both values; national and IUCN MCUI and different cohorts stay in separate groups.
 const pairs=ctx.axisPairs();
 assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 65\.5 · MCUI 10\.0/);
