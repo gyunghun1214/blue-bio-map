@@ -5,7 +5,7 @@ import vm from 'node:vm';
 // verified-pilot-3.2 (diagram stages 4-5): BBVI x MCUI types, the map's cell colour rule and the information-sufficiency layers.
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'),report=JSON.parse(read('assessments.json')),readiness=JSON.parse(read('matrix-readiness.json'));
-const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v3.14.json',import.meta.url),'utf8'));
+const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v3.15.json',import.meta.url),'utf8'));
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>structuredClone(report)})};
 vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
@@ -16,7 +16,7 @@ vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(glob
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-pilot-3.14');  // 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14 add evidence rows; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-pilot-3.15');  // 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14 add evidence rows, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);
@@ -106,7 +106,8 @@ assert.equal(counts.unexplored.n,flagged('unexplored_candidate').length);
 assert.equal(counts.unexplored.shown+counts.unexplored.missing.length,counts.unexplored.n);
 assert.deepEqual([...counts.unexplored.missing],flagged('unexplored_candidate').filter(s=>s.aphiaID!==836033).map(s=>s.label));
 // (11) The candidate sentence uses Korean rank words and the relative's Korean name.
-const magallana=flagged('unexplored_candidate').find(s=>s.aphiaID===836041);
-assert.equal(ctx.unexploredLine(magallana.assessment.unexplored_candidate),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
+// 3.15: 시카메굴 now has an MFPI (literature row) and a range-state MCUI, so its information sufficiency passes and no species is an unexplored candidate.
+assert.equal(flagged('unexplored_candidate').length,0);
+assert.equal(ctx.unexploredLine({rank:'genus',taxon:'Magallana',relatives:['참굴']}),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
 assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 근연종(Nomen novum)이 있습니다');
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');

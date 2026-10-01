@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "sources": {
+    "wu_2015_abalone_gonad": {
+      "provider": "European Food Research and Technology 240(1):137-145 (Springer), full text read through the Dongguk University library",
+      "title": "Purification and characterization of a novel angiotensin I-converting enzyme inhibitory peptide derived from abalone (Haliotis discus hannai Ino) gonads (Wu Q, Cai QF, Tao ZP, Sun LC, Shen JD, Zhang LJ, Liu GM, Cao MJ)",
+      "version": "2015 (published online 2014-08-27)",
+      "doi": "10.1007/s00217-014-2315-8",
+      "url": "https://doi.org/10.1007/s00217-014-2315-8",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 397082,
+      "origin_scientific_name": "Haliotis discus",
+      "record_id": "10.1007/s00217-014-2315-8:AMN",
+      "source_id": "wu_2015_abalone_gonad",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "AMN",
+      "synthetic": true,
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 106.24,
+      "unit": "ug/mL",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1007/s00217-014-2315-8",
+      "verification": "Full text (library PDF): gonads of live Pacific abalone Haliotis discus hannai Ino (80-90 g, local market, Xiamen; WoRMS accepted subspecies of H. discus 397082) hydrolysed with alcalase then papain; the active peptide was purified by gel filtration and RP-HPLC and sequenced by automated Edman degradation (PPSQ-33A) as Ala-Met-Asn. A peptide of the same sequence was synthesized and assayed with 6.5 mM HHL in borate buffer pH 8.3 with 0.3 M NaCl, 37 °C for 60 min (Methods); the abstract and Results give IC50 106.24 ug/mL. The paper gives no uM value, so 3.14 and earlier did not score it (evidence-mackerel-2026-10-01.md section 2). The unit-conversion rule converts it with the free-peptide mass of AMN."
+    }
+  ]
+}

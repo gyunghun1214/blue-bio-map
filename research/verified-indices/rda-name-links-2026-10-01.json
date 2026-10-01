@@ -3,7 +3,7 @@
   "snapshot_date": "2026-10-01",
   "reviewed_on": "2026-10-01",
   "purpose": "MFPI after verified-pilot-3.12: RDA DB 10.4 rows of candidate species linked through a Korean national name authority (team-lead decision 2026-10-01). Read only by configs that name this file, so 3.12 and earlier reproduce.",
-  "rule": "The RDA food name's species token (the part before the state, e.g. '다시마' in '다시마, 생것', or '살오징어' in '오징어, 살오징어, 생것') is linked to the candidate when (a) it is the Korean standard name (국명, 정명 row) of exactly one species in the MABIK national marine species list and that species resolves in WoRMS to the candidate's accepted AphiaID, or (b) it is not a MABIK 국명 and the MFDS food raw-material record of that exact name gives a 성분학명 that resolves in WoRMS to exactly one accepted species, the candidate. MABIK, the national list of species recorded in Korean waters, comes first because RDA samples are Korean products; an MFDS name list that also names other species is recorded, not used. The rule is applied to every unlinked candidate row of the RDA snapshot; rows it does not resolve stay unlinked (not_linked).",
+  "rule": "The RDA food name's species token (the part before the state, e.g. '다시마' in '다시마, 생것', or '살오징어' in '오징어, 살오징어, 생것') is linked to the candidate when (a) it is the Korean standard name (국명, 정명 row) of exactly one species in the MABIK national marine species list and that species resolves in WoRMS to the candidate's accepted AphiaID, or (b) it is not a MABIK 국명 and the MFDS food raw-material record of that exact name gives a 성분학명 that resolves in WoRMS to exactly one accepted species, the candidate. MABIK, the national list of species recorded in Korean waters, comes first because RDA samples are Korean products; an MFDS name list that also names other species is recorded, not used. Crosswalk: when the authority's scientific name is an accepted WoRMS species with no WoRMS distribution record in the northwest Pacific, the Korean name denotes the Korean population, and it is linked to the candidate that carries that Korean name and that WoRMS accepts for the East Asian population (the same crosswalk is used for the national red-list row of that name). The rule is applied to every unlinked candidate row of the RDA snapshot; rows it does not resolve stay unlinked (not_linked).",
   "sources": {
     "mabik_national_species_list": {
       "provider": "National Marine Biodiversity Institute of Korea (MABIK), MBRIS 해양수산생물종 (국가 해양수산생물종 목록)",
@@ -118,15 +118,28 @@
         "reviewed": false,
         "link_evidence": "Generic 'Mackerel' row; Korean market 고등어 can include Scomber australasicus (망치고등어). Not assigned to S. japonicus."
       }
-    }
-  ],
-  "not_linked": [
+    },
     {
       "food_item_id": "K6110030000a",
       "reported_food_name": "문어, 참문어, 생것",
-      "candidate_aphia_id": 534443,
-      "reason": "MABIK 국명 '참문어' = Octopus vulgaris Cuvier, 1797 (WoRMS 140605), not the candidate Octopus sinensis (534443); the rule does not move a name across accepted species."
-    },
+      "english_name": "Common octopus, Raw",
+      "aphia_id": 534443,
+      "scientific_name": "Octopus sinensis",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "Crosswalk: MABIK national list gives 국명 '참문어' = Octopus vulgaris Cuvier, 1797, the only 정명 row named 참문어. WoRMS keeps O. vulgaris (140605) for the Atlantic, Mediterranean and western Indian Ocean species: its 38 WoRMS distribution records (AphiaDistributionsByAphiaID, read 2026-10-01) include none in the northwest Pacific, and WoRMS accepts Octopus sinensis d'Orbigny (534443) for the East Asian common octopus. The Korean name 참문어 therefore denotes the Korean population, O. sinensis; the same crosswalk assigns the NIBR national row 참문어. This RDA row replaces the 3.9 MEXT まだこ row as the species' own row (the MEXT row is used only when no RDA row is linked).",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=참문어",
+        "worms_o_vulgaris_distribution": "https://www.marinespecies.org/rest/AphiaDistributionsByAphiaID/140605",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "'Common octopus' is Octopus vulgaris; the East Asian population is now O. sinensis, but the row does not state which. Not assigned."
+      }
+    }
+  ],
+  "not_linked": [
     {
       "food_item_id": "K6230010000a",
       "reported_food_name": "오징어, 갑오징어, 생것",

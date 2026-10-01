@@ -1,7 +1,7 @@
 {
     "method_version": "verified-pilot-3.15",
     "status": "provisional_unvalidated",
-    "changes_from": "verified-pilot-3.13 (2026-10-01). Peptide material rule (team-lead decision 2026-10-01): a sequence-confirmed purified single peptide counts like a synthetic one, for origin rows and for potency replications (peptide_bioactivity.cross_origin_potency.accepted_materials). New origin rows: 대구 GASSGMPG 6.9 and LAYA 14.5 uM (Ngo 2016, Process Biochem 51:1622) and 바지락 VISDEDGVTH 8.16 uM and three more (Chen 2018, Food Funct 9:5230). New replications: Lin 2018 (Nutrients 10:1397) purified IW 0.50 and VW 0.58 uM and Kapel 2006 (Process Biochem 41:1961) purified VW 1.1 uM. Coefficients, cohorts and the pIC50 gap are unchanged. See research/verified-indices/evidence-isolates-2026-10-01.md.",
+    "changes_from": "verified-pilot-3.14 (2026-10-01). Gap closing (team-lead decisions 2026-10-01; research/verified-indices/gap-closing-2026-10-02.md). MFPI: an RDA DB 10.4 row is linked to a species by its MABIK national species list Korean name, else by its MFDS food-material scientific name, with a misapplied-name crosswalk (다시마, 우뭇가사리, 꼬시래기 and 해삼 join; 고등어 and 참문어 move from their MEXT item to their RDA row); a reviewed paper's own analysis, converted to fresh weight with the moisture of the same sample, is a species row graded literature_converted 0.85 (시카메굴, Liu 2021); six aquaculture records are added (살오징어 false). MBPI: a synthetic, sequence-confirmed peptide reported only in ug/mL is converted to uM with its average-residue molecular weight (전복 AMN, Wu 2015: 317.71 uM, MBPI 15.6). MCUI: when IUCN and the Korean list have no assessment, another range state's official national list (시카메굴, Japan NT) and then a preliminary Rapid LC check (Bachman et al. 2020; 14 species likely LC) give a separately labelled MCUI, and the Korean 참문어 row is assigned to Octopus sinensis by the crosswalk. Post-hoc validation with criteria fixed before the run: MFPI passed (MEXT cross-table, 11 species, rho 0.873); the Rapid LC back-test failed (EN 해삼 and 전복 called LC), so a preliminary MCUI stays off the matrix and the map colours. BBVI rules, coefficients, cohorts and weights are unchanged; the site shows a single-paper BBVI reference value beside a withheld BBVI.",
     "nutrition": {
         "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
         "components": {
@@ -261,12 +261,13 @@
         "no_assessment": {
             "labels": {
                 "no_conservation_assessment": "보전 평가 없음",
-                "conservation_data_deficient": "IUCN 자료 부족(DD)"
+                "conservation_data_deficient": "IUCN 자료 부족(DD)",
+                "preliminary_assessment_only": "공식 평가 없음(예비 평가만)"
             },
             "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
         }
     },
-    "national_fact_supplement": "research/verified-indices/evidence-v3.json",
+    "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "bbvi": {
         "default_food_weight": 0.5,
@@ -314,6 +315,30 @@
                 "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
                 "result": "reproduced_n2",
                 "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation."
+            },
+            "MFPI": {
+                "cases": "11 species scored from their own RDA DB 10.4 row that also have a same-species raw item in the MEXT 2020 table (WoRMS Japanese name link, 3.6 rule)",
+                "criterion": "Cross-table check fixed before the run: the nutrient part of MFPI (mean cohort percentile of the components the RDA row reports itself, substitutes excluded) recomputed with the MEXT values against the same fixed cohort must keep the order: Spearman rho >= 0.6 with a one-sided permutation p < 0.05 (at least 8 species, 2 shared components each).",
+                "result": "passed",
+                "spearman_rho": 0.873,
+                "permutation_p_one_sided": 0.0004,
+                "mean_absolute_difference": 10.8,
+                "n": 11,
+                "reason": "It tests whether MFPI ranks depend on which national table supplies the values; it does not test the weights or the formula.",
+                "record": "research/verified-indices/posthoc-validation-2026-10-02.json"
+            },
+            "MCUI_preliminary": {
+                "cases": "14 species that already have an IUCN or Korean national category, run through the Rapid LC step as if unassessed",
+                "criterion": "Fixed before the run: no species assessed VU, EN or CR may be called likely Least Concern.",
+                "result": "failed",
+                "agreement": 11,
+                "n": 14,
+                "false_lc_for_threatened": [
+                    "해삼",
+                    "전복(종 수준)"
+                ],
+                "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가 MCUI는 매트릭스·지도 색에 쓰지 않고 이 한계를 함께 표시합니다.",
+                "record": "research/verified-indices/posthoc-validation-2026-10-02.json"
             }
         }
     },
@@ -340,7 +365,8 @@
                 "413600": "index p.1453: 가리맛조개 Sinonovacula constricta, LC -> LC, 유지, list p.1370",
                 "1666974": "index p.1483: 참갑오징어 Sepia esculenta, LC -> LC, 유지, list p.1379"
             }
-        }
+        },
+        "crosswalk_rule": "After 3.14: a national row whose published scientific name is an accepted WoRMS species with no WoRMS distribution record in the northwest Pacific assesses the Korean population named by its Korean name, and is assigned to the candidate with that Korean name that WoRMS accepts for the East Asian population (참문어: Octopus vulgaris -> O. sinensis). The same crosswalk links the RDA row."
     },
     "peptide_bioactivity": {
         "cohort_file": "research/verified-indices/peptide-cohort-ahtpdb-ace-hhl.json",
@@ -367,7 +393,12 @@
                 "purified_isolate"
             ]
         },
-        "origin_material_rule": "Origin rows: a synthetic peptide or, from 3.14, a sequence-confirmed purified single peptide of the species' own material, with an ACE IC50 in uM in the text and HHL as substrate (team-lead decision 2026-10-01)."
+        "origin_material_rule": "Origin rows: a synthetic peptide or, from 3.14, a sequence-confirmed purified single peptide of the species' own material, with an ACE IC50 in uM in the text and HHL as substrate (team-lead decision 2026-10-01).",
+        "unit_conversion": {
+            "from_unit": "ug/mL",
+            "masses": "average residue masses (ExPASy Compute pI/Mw) plus one water; free peptide, no counter-ion",
+            "rule": "A paper value in ug/mL is converted to uM only for a synthetic peptide whose sequence the paper confirmed: uM = (ug/mL) / (molecular weight in g/mol) x 1000, rounded to 0.01 uM. The paper's own value, unit and the mass used are kept beside the converted value. Hydrolysates, fractions and unsequenced or non-synthetic material are never converted. Team-lead decision 2026-10-01."
+        }
     },
     "peptide_supplements": [
         "research/verified-indices/evidence-v3.5.json",
@@ -376,7 +407,8 @@
         "research/verified-indices/evidence-hijiki-2026-10-01.json",
         "research/verified-indices/evidence-mackerel-2026-10-01.json",
         "research/verified-indices/evidence-anchovy-2026-10-01.json",
-        "research/verified-indices/evidence-isolates-2026-10-01.json"
+        "research/verified-indices/evidence-isolates-2026-10-01.json",
+        "research/verified-indices/evidence-abalone-2026-10-01.json"
     ],
     "reference_combination": {
         "label": "참고 통합값 · 독립 재현 미확인",
@@ -517,7 +549,8 @@
             "license": "CC BY 4.0",
             "license_url": "https://www.marinespecies.org/about.php",
             "terms": "Text open access under CC BY; cite WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170. Re-distribution of the entire database is not permitted; only genus and family of the 30 species are stored."
-        }
+        },
+        "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record. An official national list of another range state counts all three (assessment_record = the list row). A preliminary Rapid LC check is not an assessment, so assessment_record is false and only numeric_category and current_check count (2 of 3)."
     },
     "matrix": {
         "bbvi_threshold": 50,
@@ -551,6 +584,37 @@
             "baseline_survey"
         ],
         "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
-        "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님."
+        "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
+        "include_substitute_mcui": [
+            "range_state"
+        ],
+        "substitute_mcui_note": "An official national red list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary (Rapid LC) MCUI is shown on the species but kept off the matrix and the map colours: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is not used where a type would follow from it."
+    },
+    "mcui_substitutes": {
+        "snapshot": "research/verified-indices/mcui-substitutes-2026-10-02.json",
+        "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
+        "snapshot_source_id": "gbif_rapid_lc",
+        "method_source_id": "bachman_2020_rapid_lc",
+        "applies_when_reason": [
+            "not_in_red_list"
+        ],
+        "order": [
+            "range_state",
+            "preliminary"
+        ],
+        "labels": {
+            "range_state": "서식국 국가 평가 기반 시범 MCUI",
+            "preliminary": "예비 평가(Rapid LC) 기반 시범 MCUI"
+        },
+        "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI.",
+        "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so the species stays a survey priority ('preliminary_assessment_only'). When a test fails, MCUI stays withheld.",
+        "preliminary_category": "LC",
+        "thresholds": {
+            "eoo_km2": 30000,
+            "aoo_km2": 3000,
+            "aoo_cell_km": 10,
+            "records": 75
+        },
+        "ranking_rule": "Each basis is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI."
     }
 }

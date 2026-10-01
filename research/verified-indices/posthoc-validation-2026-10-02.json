@@ -1,0 +1,601 @@
+{
+  "generated_on": "2026-10-02",
+  "report_version": "verified-pilot-3.15",
+  "criteria": {
+    "MFPI": {
+      "min_rho": 0.6,
+      "max_p": 0.05,
+      "min_species": 8,
+      "min_shared_components": 2
+    },
+    "MCUI": {
+      "threatened": [
+        "VU",
+        "EN",
+        "CR"
+      ]
+    }
+  },
+  "MFPI": {
+    "result": "passed",
+    "n": 11,
+    "spearman_rho": 0.873,
+    "permutation_p_one_sided": 0.0004,
+    "mean_absolute_difference": 10.8,
+    "criterion": {
+      "min_rho": 0.6,
+      "max_p": 0.05,
+      "min_species": 8,
+      "min_shared_components": 2
+    },
+    "rows": [
+      {
+        "aphia_id": 145721,
+        "korean_name": "미역",
+        "worms_japanese": [],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 241776,
+        "korean_name": "해삼",
+        "worms_japanese": [
+          "あかなまこ"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 250680,
+        "korean_name": "멍게",
+        "worms_japanese": [
+          "まぼや"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 342067,
+        "korean_name": "살오징어",
+        "rda_food_item_id": "K6230020000a",
+        "mext_item": "10345",
+        "mext_name": "＜いか・たこ類＞　（いか類）　するめいか　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 25.0,
+          "iron_mg": 1.6,
+          "protein_g": 15.7
+        },
+        "mext_values": {
+          "calcium_mg": 11.0,
+          "iron_mg": 0.1,
+          "protein_g": 17.9
+        },
+        "nutrient_score_rda": 45.33,
+        "nutrient_score_mext": 21.33,
+        "difference": -24.0
+      },
+      {
+        "aphia_id": 372119,
+        "korean_name": "우뭇가사리",
+        "worms_japanese": [
+          "まくさ"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 494972,
+        "korean_name": "톳",
+        "worms_japanese": [
+          "ひじき"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 506159,
+        "korean_name": "홍합(참담치)",
+        "rda_food_item_id": "K4270000000a",
+        "mext_item": "10289",
+        "mext_name": "＜貝類＞　いがい　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 43.0,
+          "iron_mg": 6.1,
+          "protein_g": 13.8
+        },
+        "mext_values": {
+          "calcium_mg": 43.0,
+          "iron_mg": 3.5,
+          "protein_g": 10.3
+        },
+        "nutrient_score_rda": 61.33,
+        "nutrient_score_mext": 53.33,
+        "difference": -8.0
+      },
+      {
+        "aphia_id": 836033,
+        "korean_name": "참굴",
+        "worms_japanese": [],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 377084,
+        "korean_name": "다시마",
+        "worms_japanese": [],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 236157,
+        "korean_name": "꼬시래기",
+        "worms_japanese": [
+          "おごのり"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 145086,
+        "korean_name": "청각",
+        "worms_japanese": [
+          "みる"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 231750,
+        "korean_name": "바지락",
+        "rda_food_item_id": "K4130000000a",
+        "mext_item": "10281",
+        "mext_name": "＜貝類＞　あさり　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg"
+        ],
+        "rda_values": {
+          "calcium_mg": 70.0,
+          "iron_mg": 2.68
+        },
+        "mext_values": {
+          "calcium_mg": 66.0,
+          "iron_mg": 3.8
+        },
+        "nutrient_score_rda": 87.5,
+        "nutrient_score_mext": 89.58,
+        "difference": 2.08
+      },
+      {
+        "aphia_id": 397082,
+        "korean_name": "전복(종 수준)",
+        "worms_japanese": [],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 393716,
+        "korean_name": "큰가리비",
+        "rda_food_item_id": "K4000040000a",
+        "mext_item": "10311",
+        "mext_name": "＜貝類＞　ほたてがい　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g",
+          "zinc_mg"
+        ],
+        "rda_values": {
+          "calcium_mg": 31.0,
+          "iron_mg": 0.92,
+          "protein_g": 12.3,
+          "zinc_mg": 2.15
+        },
+        "mext_values": {
+          "calcium_mg": 22.0,
+          "iron_mg": 2.2,
+          "protein_g": 13.5,
+          "zinc_mg": 2.7
+        },
+        "nutrient_score_rda": 52.08,
+        "nutrient_score_mext": 55.21,
+        "difference": 3.12
+      },
+      {
+        "aphia_id": 504357,
+        "korean_name": "피조개",
+        "rda_food_item_id": "K4250170000a",
+        "mext_item": "10279",
+        "mext_name": "＜貝類＞　あかがい　生",
+        "shared": [
+          "calcium_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 60.0,
+          "protein_g": 11.8
+        },
+        "mext_values": {
+          "calcium_mg": 40.0,
+          "protein_g": 13.5
+        },
+        "nutrient_score_rda": 44.0,
+        "nutrient_score_mext": 42.0,
+        "difference": -2.0
+      },
+      {
+        "aphia_id": 127022,
+        "korean_name": "고등어",
+        "rda_food_item_id": "K0150000000a",
+        "mext_item": "10154",
+        "mext_name": "＜魚類＞　（さば類）　まさば　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 26.0,
+          "iron_mg": 1.6,
+          "protein_g": 20.2
+        },
+        "mext_values": {
+          "calcium_mg": 6.0,
+          "iron_mg": 1.2,
+          "protein_g": 20.6
+        },
+        "nutrient_score_rda": 60.67,
+        "nutrient_score_mext": 49.33,
+        "difference": -11.33
+      },
+      {
+        "aphia_id": 219984,
+        "korean_name": "멸치",
+        "rda_food_item_id": "K0660000000a",
+        "mext_item": "10044",
+        "mext_name": "＜魚類＞　（いわし類）　かたくちいわし　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 496.0,
+          "iron_mg": 3.6,
+          "protein_g": 17.7
+        },
+        "mext_values": {
+          "calcium_mg": 60.0,
+          "iron_mg": 0.9,
+          "protein_g": 18.2
+        },
+        "nutrient_score_rda": 78.67,
+        "nutrient_score_mext": 60.0,
+        "difference": -18.67
+      },
+      {
+        "aphia_id": 281273,
+        "korean_name": "참조기",
+        "worms_japanese": [
+          "きぐち"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 275816,
+        "korean_name": "넙치",
+        "rda_food_item_id": "K0270000000a",
+        "mext_item": "10234",
+        "mext_name": "＜魚類＞　ひらめ　天然　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "zinc_mg"
+        ],
+        "rda_values": {
+          "calcium_mg": 61.0,
+          "iron_mg": 0.45,
+          "zinc_mg": 0.52
+        },
+        "mext_values": {
+          "calcium_mg": 22.0,
+          "iron_mg": 0.1,
+          "zinc_mg": 0.4
+        },
+        "nutrient_score_rda": 44.44,
+        "nutrient_score_mext": 13.19,
+        "difference": -31.25
+      },
+      {
+        "aphia_id": 274849,
+        "korean_name": "조피볼락",
+        "worms_japanese": [
+          "くろそい"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 276651,
+        "korean_name": "방어",
+        "rda_food_item_id": "K0830011130a",
+        "mext_item": "10241",
+        "mext_name": "＜魚類＞　ぶり　成魚　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g",
+          "zinc_mg"
+        ],
+        "rda_values": {
+          "calcium_mg": 19.0,
+          "iron_mg": 1.0,
+          "protein_g": 20.7,
+          "zinc_mg": 0.8
+        },
+        "mext_values": {
+          "calcium_mg": 5.0,
+          "iron_mg": 1.3,
+          "protein_g": 21.4,
+          "zinc_mg": 0.7
+        },
+        "nutrient_score_rda": 51.56,
+        "nutrient_score_mext": 47.92,
+        "difference": -3.65
+      },
+      {
+        "aphia_id": 254538,
+        "korean_name": "대구",
+        "rda_food_item_id": "K0440000000a",
+        "mext_item": "10205",
+        "mext_name": "＜魚類＞　（たら類）　まだら　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 35.0,
+          "iron_mg": 0.4,
+          "protein_g": 19.5
+        },
+        "mext_values": {
+          "calcium_mg": 32.0,
+          "iron_mg": 0.2,
+          "protein_g": 17.6
+        },
+        "nutrient_score_rda": 47.33,
+        "nutrient_score_mext": 36.67,
+        "difference": -10.67
+      },
+      {
+        "aphia_id": 1061762,
+        "korean_name": "꽃게",
+        "worms_japanese": [
+          "がざみ／わたりがに"
+        ],
+        "mext_item": null
+      },
+      {
+        "aphia_id": 534443,
+        "korean_name": "참문어(동아시아 종)",
+        "rda_food_item_id": "K6110030000a",
+        "mext_item": "10361",
+        "mext_name": "＜いか・たこ類＞　（たこ類）　まだこ　生",
+        "shared": [
+          "calcium_mg",
+          "iron_mg",
+          "protein_g"
+        ],
+        "rda_values": {
+          "calcium_mg": 23.0,
+          "iron_mg": 0.5,
+          "protein_g": 12.7
+        },
+        "mext_values": {
+          "calcium_mg": 16.0,
+          "iron_mg": 0.6,
+          "protein_g": 16.4
+        },
+        "nutrient_score_rda": 29.33,
+        "nutrient_score_mext": 33.33,
+        "difference": 4.0
+      },
+      {
+        "aphia_id": 1666974,
+        "korean_name": "갑오징어",
+        "worms_japanese": [],
+        "mext_item": null
+      }
+    ]
+  },
+  "MCUI": {
+    "result": "failed",
+    "n": 14,
+    "agreement": 11,
+    "false_lc_for_threatened": [
+      "해삼",
+      "전복(종 수준)"
+    ],
+    "criterion": {
+      "threatened": [
+        "VU",
+        "EN",
+        "CR"
+      ]
+    },
+    "rows": [
+      {
+        "aphia_id": 241776,
+        "korean_name": "해삼",
+        "basis": "iucn",
+        "category": "EN",
+        "rapid_lc": true,
+        "eoo_km2": 1228609,
+        "aoo_km2": 8800,
+        "records": 291,
+        "agrees": false,
+        "false_lc_for_threatened": true
+      },
+      {
+        "aphia_id": 342067,
+        "korean_name": "살오징어",
+        "basis": "iucn",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 4409933,
+        "aoo_km2": 13100,
+        "records": 172,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 506159,
+        "korean_name": "홍합(참담치)",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 2518994,
+        "aoo_km2": 12700,
+        "records": 311,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 836033,
+        "korean_name": "참굴",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 6297161,
+        "aoo_km2": 28200,
+        "records": 1056,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 231750,
+        "korean_name": "바지락",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 6215703,
+        "aoo_km2": 29200,
+        "records": 1168,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 397082,
+        "korean_name": "전복(종 수준)",
+        "basis": "iucn",
+        "category": "EN",
+        "rapid_lc": true,
+        "eoo_km2": 3172947,
+        "aoo_km2": 8700,
+        "records": 208,
+        "agrees": false,
+        "false_lc_for_threatened": true
+      },
+      {
+        "aphia_id": 393716,
+        "korean_name": "큰가리비",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 2493138,
+        "aoo_km2": 7200,
+        "records": 142,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 504357,
+        "korean_name": "피조개",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 2766399,
+        "aoo_km2": 7200,
+        "records": 100,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 413600,
+        "korean_name": "맛조개",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": false,
+        "eoo_km2": 1317827,
+        "aoo_km2": 2700,
+        "records": 82,
+        "agrees": false,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 127022,
+        "korean_name": "고등어",
+        "basis": "iucn",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 5253818,
+        "aoo_km2": 29800,
+        "records": 426,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 219984,
+        "korean_name": "멸치",
+        "basis": "iucn",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 5520517,
+        "aoo_km2": 30900,
+        "records": 462,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 281273,
+        "korean_name": "참조기",
+        "basis": "iucn",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 1967046,
+        "aoo_km2": 16000,
+        "records": 209,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 276651,
+        "korean_name": "방어",
+        "basis": "iucn",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 2794815,
+        "aoo_km2": 8600,
+        "records": 129,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      },
+      {
+        "aphia_id": 1666974,
+        "korean_name": "갑오징어",
+        "basis": "national",
+        "category": "LC",
+        "rapid_lc": true,
+        "eoo_km2": 7197807,
+        "aoo_km2": 14400,
+        "records": 213,
+        "agrees": true,
+        "false_lc_for_threatened": false
+      }
+    ]
+  },
+  "MBPI": {
+    "result": "not_computable",
+    "reason": "The drug-origin validation species need species -> compound -> assay chains that this run does not collect; the 3.1 config states the same."
+  }
+}

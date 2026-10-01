@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.14.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.15.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -517,6 +517,22 @@ def _approved_assays(evidence: dict, config: dict, candidates_by_id: dict[int, d
 
 
 PEPTIDE = re.compile(r"^[ACDEFGHIKLMNPQRSTVWY]{2,}$")
+# Average residue masses (ExPASy Compute pI/Mw, average isotopic composition); a free peptide adds one water.
+RESIDUE_MASS = {"G": 57.0519, "A": 71.0788, "S": 87.0782, "P": 97.1167, "V": 99.1326, "T": 101.1051, "C": 103.1388, "L": 113.1594,
+                "I": 113.1594, "N": 114.1038, "D": 115.0886, "Q": 128.1307, "K": 128.1741, "E": 129.1155, "M": 131.1926, "H": 137.1411,
+                "F": 147.1766, "R": 156.1875, "Y": 163.1760, "W": 186.2132}
+WATER_MASS = 18.01524
+
+
+def converted_peptide(r: dict) -> dict:
+    """ug/mL -> uM for a synthetic peptide whose sequence the paper confirmed: uM = ug/mL / (g/mol) x 1000 (free peptide,
+    no counter-ion). The paper's own value and unit stay beside the converted one (team-lead decision 2026-10-01)."""
+    require(r.get("synthetic") is True and r.get("sequence_confirmed") is True and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None,
+            f"{r.get('record_id')}: only a synthetic, sequence-confirmed peptide is converted to uM")
+    mass = sum(RESIDUE_MASS[a] for a in r["sequence"]) + WATER_MASS
+    value = finite(r.get("value"), "peptide IC50", 0.0000001)
+    return {**r, "value": round(value / mass * 1000, 2), "unit": "uM",
+            "converted_from": {"value": value, "unit": r["unit"], "molecular_weight": round(mass, 2)}}
 
 
 def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
@@ -532,6 +548,9 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         require(r.get("material_kind") not in settings["excluded_material_kinds"],
                 f"{r.get('record_id')}: extracts, hydrolysates and fractions cannot enter the peptide stratum")
     approved = [r for r in evidence.get("peptide_bioactivity", []) if r.get("status") == "approved_for_score"]
+    conv = settings.get("unit_conversion")
+    if conv:  # after 3.14: a synthetic, sequence-confirmed peptide reported only in ug/mL becomes uM by its sequence mass
+        approved = [r if r.get("unit") != conv["from_unit"] else converted_peptide(r) for r in approved]
     groups = defaultdict(list)
     for r in approved:
         require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
@@ -557,8 +576,9 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                              "peer_peptides": len(peers), "pIC50": round(value, 3), "percentile": round(rank, 2),
                              "evidence_factor": factor, "adjusted": rank * factor,
                              # the paper values behind pIC50, so the page can show the original number and its source
-                             "measurements": [{k: r[k] for k in ("target", "endpoint", "relation", "value", "unit", "substrate",
-                                                                 "source_id", "original_paper_doi")} for r in own],
+                             "measurements": [{**{k: r[k] for k in ("target", "endpoint", "relation", "value", "unit", "substrate",
+                                                                    "source_id", "original_paper_doi")},
+                                               **({"converted_from": r["converted_from"]} if "converted_from" in r else {})} for r in own],
                              # research-only: same synthetic sequence measured from another origin counts toward DOIs, not value
                              **({"independent_dois": sorted(independent), "potency_replications": replications} if xo else {})}))
     return out
@@ -817,6 +837,38 @@ def _rate_ratio(n1: int, n2: int, e1: int, e2: int, rule: dict) -> tuple[float, 
     return ratio, ratio / spread, ratio * spread
 
 
+def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None) -> dict | None:
+    """After 3.14 (team-lead decision 2026-10-01): when neither IUCN nor the Korean national list gives a category, the
+    national red list of another range state, else a preliminary Rapid Least Concern check of GBIF and OBIS occurrences
+    (Bachman et al. 2020). Each basis is its own stratum: labelled, never pooled or ranked with IUCN-based MCUI. A Rapid LC
+    is not accepted when the OBIS reporting rate shows a decline signal (criterion A must be considered)."""
+    rule, scores = config["mcui_substitutes"], config["conservation"]["category_scores"]
+    row = next((r for r in evidence["mcui_substitutes"]["range_state"] if r["aphia_id"] == aphia), None)
+    if row:
+        require(row.get("reviewed") is True and row.get("source_id") in evidence["sources"] and row.get("country")
+                and row.get("name_as_published") and row.get("category") in scores, f"{aphia}: range-state assessment incomplete")
+        return {"basis": "range_state", "label": rule["labels"]["range_state"], "category": row["category"],
+                "value": float(scores[row["category"]]), "record": row, "source_ids": [row["source_id"]],
+                "pilot_mapping": f"{row['category']} -> {scores[row['category']]} ({row['country']} national red list, team pilot rule)"}
+    lc = evidence["mcui_rapid_lc"]["species"].get(str(aphia))
+    if lc is None:
+        return None
+    t = rule["thresholds"]
+    met = lc["eoo_km2"] > t["eoo_km2"] and lc["aoo_km2"] > t["aoo_km2"] and lc["records"] >= t["records"]
+    require(met == lc["likely_least_concern"] and lc["aoo_km2"] == lc["aoo_cells"] * t["aoo_cell_km"] ** 2,
+            f"{aphia}: Rapid LC flag differs from the published thresholds")
+    decline = bool(trend and trend["class"] == "decline_signal")
+    record = {**{k: lc[k] for k in ("records", "eoo_km2", "aoo_km2", "aoo_cells", "native_box", "countries_gbif", "gbif", "obis")},
+              "thresholds": t, "trend_class": trend and trend["class"], "method_source_id": rule["method_source_id"]}
+    out = {"label": rule["labels"]["preliminary"], "record": record, "source_ids": [rule["snapshot_source_id"], rule["method_source_id"]]}
+    if not met or decline:
+        return {**out, "basis": None, "category": None, "value": None,
+                "result": "decline_signal" if decline else "thresholds_not_met"}
+    category = rule["preliminary_category"]
+    return {**out, "basis": "preliminary", "category": category, "value": float(scores[category]), "result": "likely_least_concern",
+            "pilot_mapping": f"Rapid LC met -> {category} -> {scores[category]} (preliminary, not an IUCN assessment; team pilot rule)"}
+
+
 def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
     """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods. Reporting rate = species records /
     records of the species' WoRMS class (target-group effort) in the same 1-degree cells and period; only cells with
@@ -945,6 +997,12 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 mcui, conservation_reason, mcui_basis = national_value, None, "national"
         trend_rule = config["conservation"].get("trend")
         trend = occurrence_trend(aphia, evidence["obis_trend"], trend_rule) if trend_rule else None
+        substitute = None
+        subs = config.get("mcui_substitutes")
+        if subs and mcui is None and conservation_reason in subs["applies_when_reason"]:  # after 3.14: range state, then Rapid LC
+            substitute = mcui_substitute(aphia, evidence, config, trend)
+            if substitute and substitute["basis"]:
+                mcui, conservation_reason, mcui_basis = substitute["value"], None, substitute["basis"]
         if trend:  # verified-pilot-3.4: an auxiliary MCUI element; it raises a computed MCUI, never creates or lowers one
             adjust = config["conservation"]["effort_adjustment"] if mcui is not None and trend["class"] == "decline_signal" else 0
             trend.update({"label": trend_rule["labels"][trend["class"]], "mcui_base": mcui, "mcui_adjustment": adjust})
@@ -975,6 +1033,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if national_steps:  # verified-pilot-3.2: the national assessment that gives the MCUI is the record counted
             c_steps = [True, national["category"] in config["conservation"]["category_scores"],
                        str(aphia) in config["national_red_list"].get("page_recheck", {}).get("rows", {})]
+        elif mcui_basis in ("range_state", "preliminary"):  # after 3.14: the substitute record is the one counted, read at the snapshot;
+            # a preliminary Rapid LC is not an assessment record (unexplored_candidates.substitute_mcui_sufficiency)
+            c_steps = [mcui_basis == "range_state", substitute["category"] in config["conservation"]["category_scores"], True]
         else:
             c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
                        c.get("category") in config["conservation"]["category_scores"],
@@ -984,7 +1045,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                         "best_record_steps": 4, "ratio": 1.0} if mbpi is not None else
                        max([bio_sufficiency(partial_bio)] + ([links["sufficiency"]] if links else []), key=lambda x: x["best_record_steps"]),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
-                                "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {})}}
+                                "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {}),
+                                **({"basis": mcui_basis} if mcui_basis in ("range_state", "preliminary") else {})}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
         sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
                                         for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
@@ -1022,6 +1084,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids.add("worms_ecklonia")
         if national and national.get("source_id"):
             source_ids.add(national["source_id"])
+        if substitute:
+            source_ids |= set(substitute["source_ids"])
         if trend:
             source_ids.add(trend["source_id"])
         if bio_trace and config.get("peptide_bioactivity") and any(i.get("stratum_kind") == "peptide" for i in bio_trace):
@@ -1045,6 +1109,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if config.get("national_red_list"):
             row["national_assessment"] = national
             row["mcui_basis"] = mcui_basis
+        if subs:
+            row["mcui_substitute"] = substitute
         if trend:
             row["occurrence_trend"] = trend
         if config.get("reference_combination"):  # verified-pilot-2.1: beside the scores, never in scores.BBVI, the matrix or rankings
@@ -1094,6 +1160,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 # not 'no MCUI': a failed lookup or a not-current assessment is a data problem, not a missing assessment
                 gap = {"not_in_red_list": "no_conservation_assessment", "category_not_numeric": "conservation_data_deficient"}
                 why += [gap[s["withheld_reasons"]["MCUI"]]] if s["scores"]["MCUI"] is None and s["withheld_reasons"]["MCUI"] in gap else []
+                # after 3.14: a preliminary Rapid LC is not an official assessment, so the species stays a survey priority
+                why += ["preliminary_assessment_only"] if s.get("mcui_basis") == "preliminary" else []
                 s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
@@ -1238,6 +1306,17 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "rda_taxon_links": [new.get(l["food_item_id"], l) for l in evidence["rda_taxon_links"]],
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"]),
                     "sources": {**evidence["sources"], **extra["sources"]}}
+    subs = cfg.get("mcui_substitutes")
+    if subs:  # after 3.14: range-state national lists and the Rapid LC snapshot (scripts/collect_mcui_rapid_lc.py)
+        extra, lc = read(ROOT / subs["snapshot"]), read(ROOT / subs["rapid_lc_snapshot"])
+        for x, what in ((extra, "MCUI substitute record"), (lc, "Rapid LC snapshot")):
+            require(x.get("snapshot_date", "") >= evidence["snapshot_date"], f"{what} is older than evidence")
+            require(not set(x["sources"]) & set(evidence["sources"]), f"{what} redefines a source")
+        require(set(lc["sources"]) == {subs["snapshot_source_id"]} and lc["thresholds"] == subs["thresholds"]
+                and subs["method_source_id"] in extra["sources"], "Rapid LC snapshot or method source differs from the rule")
+        evidence = {**evidence, "mcui_substitutes": extra, "mcui_rapid_lc": lc,
+                    "sources": {**evidence["sources"], **extra["sources"], **lc["sources"]},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"], lc["snapshot_date"])}
     trend = cfg["conservation"].get("trend")
     if trend:  # verified-pilot-3.4: OBIS per-cell counts (scripts/collect_mcui_trend.py)
         snap = read(ROOT / trend["snapshot"])

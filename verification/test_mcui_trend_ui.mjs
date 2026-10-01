@@ -72,10 +72,12 @@ const cucumber=rows.find(a=>a.aphia_id===241776);
 if(!['decline_signal','decline_below_threshold'].includes(cucumber.occurrence_trend.class))
   assert.match(ctx.trendDetail({assessment:cucumber}),/IUCN 개체군 추세\(Decreasing\)와 OBIS 보고율 결과가 다릅니다/);
 // priority reasons are named, both when a species has both
-const both=rows.find(a=>a.priority_survey_reasons.length===2);
-assert.match(ctx.reasons(both),/^정보충분도 낮음\(필수 입력 평균 \d+%, 기준 50% 미만\) · 보전 평가 없음\(IUCN·국가 평가 모두 없어 MCUI 미산출\)$/);
-const onlyNoAssessment=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
-assert.equal(ctx.reasons(onlyNoAssessment),'보전 평가 없음(IUCN·국가 평가 모두 없어 MCUI 미산출)');
-assert.equal(ctx.reasons({...onlyNoAssessment,priority_survey_reasons:['conservation_data_deficient']}),'IUCN 자료 부족(DD) · 국가 평가도 없어 MCUI 미산출');
+// 3.15: every species without an IUCN or national category now has a substitute MCUI, so the built rows carry only the
+// preliminary reason; the other reason texts are checked on that row with the reason list swapped.
+const prelim=rows.find(a=>a.priority_survey_reasons.join()==='preliminary_assessment_only');
+assert.equal(ctx.reasons(prelim),'공식 평가 없음(예비 평가만)');
+assert.match(ctx.reasons({...prelim,priority_survey_reasons:['low_information_sufficiency','no_conservation_assessment']}),/^정보충분도 낮음\(필수 입력 평균 \d+%, 기준 50% 미만\) · 보전 평가 없음\(IUCN·국가 평가 모두 없어 MCUI 미산출\)$/);
+assert.equal(ctx.reasons({...prelim,priority_survey_reasons:['no_conservation_assessment']}),'보전 평가 없음(IUCN·국가 평가 모두 없어 MCUI 미산출)');
+assert.equal(ctx.reasons({...prelim,priority_survey_reasons:['conservation_data_deficient']}),'IUCN 자료 부족(DD) · 국가 평가도 없어 MCUI 미산출');
 assert.equal(rows.filter(a=>a.priority_survey).length,rows.filter(a=>a.priority_survey_reasons.length).length);
 console.log(`ok MCUI trend UI (${rows.length} species)`);

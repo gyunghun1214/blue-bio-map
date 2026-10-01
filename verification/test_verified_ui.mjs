@@ -42,10 +42,11 @@ assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/spa
 html=ctx.renderScores(by(494972));
 assert.match(html,/아연 값이 비어 있어 평균에서 뺐습니다\(0점 아님/,'blank zinc shown as omitted, not zero');
 assert.ok(!html.includes('아연 0 mg'));
-// 살오징어: uFiSh fills its zinc, so the RDA blank is still shown but the missing aquaculture record is what holds MFPI
+// 3.15: 살오징어's missing aquaculture record is now a reviewed 'not feasible' record (Puneeta 2015), so MFPI scores with the
+// MEXT zinc substitute and an aquaculture part of 0; MFPI carries its post-hoc validation result (cross-table check passed)
 html=ctx.renderScores(by(342067));
-assert.match(html,/아연 결측\(빈칸\)/,'the RDA blank is still shown as missing');
-assert.match(html,/지역·시기·방법이 확인된 양식 근거가 부족합니다/);
+assert.match(html,/<b>46\.1 · 시범 지표 · 사후 검증 통과<\/b>/);
+assert.match(html,/양식 가능 근거 없음\(양식 점수 0\)/);
 assert.doesNotMatch(html,/필수 성분이 모자랍니다/);
 html=ctx.renderScores(by(241776));
 // 3.4: the MCUI label says the OBIS trend is now an auxiliary element, and the trend is shown beside the IUCN facts
@@ -55,7 +56,10 @@ html=ctx.renderScores(by(342067));
 assert.match(html,/Needs updating/);assert.match(html,/10년 넘은 평가/);
 assert.match(html,/구조 ID ✗/,'bioactivity chain step shown');
 html=ctx.renderScores(by(145721));
-assert.match(html,/공식 NE 범주나 낮은 점수가 아닙니다/);
+// 3.15: no IUCN or Korean category, so a preliminary Rapid LC gives MCUI 10; the IUCN 0-result search stays shown beside it
+assert.match(html,/<b>10\.0 · 검증 전 시범 지표 · 예비 평가\(Rapid LC, 역검증 미통과\) 기반<\/b>/);
+assert.match(html,/예비 평가\(Rapid LC\) 기반 시범 MCUI<\/b>: LC · EOO 2,122,193 km²/);
+assert.match(html,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미통과/);
 assert.match(html,/결과 0건/);
 html=ctx.renderScores(by(494972));
 for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문에서 미확인','Publisher terms'])
@@ -76,7 +80,8 @@ for(const id of [241776,342067]){
   assert.equal(ctx.coverage(by(id)).checks[4].stage,'calculated',`MCUI for ${id} must count despite old summary`);
 }
 Object.assign(by(836033),liveMeta);
-assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
+// 3.15: MFPI passed its post-hoc cross-table check, so a scored MFPI shows the fifth stage
+assert.equal(ctx.coverage(by(836033)).checks[2].stage,'validated','reviewed MFPI is independent of inventory counts');
 // 3.5: 해삼 has a reviewed peptide MBPI (HDWWKER), so the inventory guard is checked on 살오징어, which has none
 assert.notEqual(ctx.coverage(by(342067)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
 // verified-pilot-2.3: the oyster LQP potency is replicated from another origin, so the single-paper reference label is gone.
@@ -90,10 +95,11 @@ assert.match(ctx.coverageBar(by(836033)),/종 연결/);
 assert.doesNotMatch(ctx.coverageBar(by(836033)),/3\/5|점수 3/);
 for(const id of [372119,494972]){
   Object.assign(by(id),liveMeta);
-  // 3.6: 톳 scores from its own raw row (3 of 4); the dried zinc value still never fills the blank
-  assert.equal(ctx.score(by(id),'MFPI'),{372119:null,494972:63.3}[id],'dried values cannot enter fresh cohort');
-  if(id===494972)assert.equal(by(id).assessment.food_trace.nutrients.zinc_mg,undefined);
-  assert.equal(ctx.coverage(by(id)).checks[2].stage,{372119:'linked',494972:'calculated'}[id],'verified source taxon labels retain partial raw values');
+  // 3.6: 톳 scores from its own raw row (3 of 4); the dried zinc value still never fills the blank.
+  // 3.15: 우뭇가사리's raw RDA row is linked by its MABIK 국명 and scores 3 of 4 the same way; the dried MEXT tengusa value stays unused.
+  assert.equal(ctx.score(by(id),'MFPI'),{372119:76.7,494972:63.3}[id],'dried values cannot enter fresh cohort');
+  assert.equal(by(id).assessment.food_trace.nutrients.zinc_mg,undefined);
+  assert.equal(ctx.coverage(by(id)).checks[2].stage,'validated','verified source taxon labels retain partial raw values');
 }
 html=ctx.renderScores(by(372119));
 for(const fact of ['MEXT:2023:09025','16.1 g','6 mg','3 mg','dried tengusa'])
@@ -115,19 +121,21 @@ const published={live:true,species:snapshot.profiles.map(p=>({
 await ctx.attach(published);
 // 2.1: oyster and mussel MCUI come from the Korean national assessment (labelled apart; see coverage detail test above).
 const stages={
-  836033:['verified','linked','calculated','calculated','calculated'],
+  836033:['verified','linked','validated','calculated','calculated'],
   // 3.1: the ChEMBL stratum gives mussel, hijiki and sea squirt a single-paper MBPI (BBVI withheld).
   // 3.3: mussel MFPI is calculated with its species-level uFiSh zinc (the RDA row leaves zinc blank).
-  506159:['verified','linked','calculated','calculated','calculated'],
+  506159:['verified','linked','validated','calculated','calculated'],
   // 3.6: hijiki MFPI is calculated from 3 of 4 components (zinc blank and omitted, calcium added).
-  494972:['verified','linked','calculated','calculated','unavailable'],
-  372119:['verified','linked','linked','found','unavailable'],
-  342067:['verified','linked','linked','linked','calculated'],
-  250680:['verified','linked','calculated','calculated','unavailable'],
+  // 3.15: MFPI shows 'validated' (cross-table check passed); every species without an IUCN or national category has a
+  // substitute MCUI (preliminary Rapid LC), and 우뭇가사리·살오징어·해삼 gain an MFPI.
+  494972:['verified','linked','validated','calculated','calculated'],
+  372119:['verified','linked','validated','found','calculated'],
+  342067:['verified','linked','validated','linked','calculated'],
+  250680:['verified','linked','validated','calculated','calculated'],
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
-  241776:['verified','linked','found','calculated','calculated'],
+  241776:['verified','linked','validated','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI; 2.3 gives the oyster a BBVI; 3.12 replicates wakame IY, 3.14 IW (BBVI 71.0).
-  145721:['verified','linked','calculated','calculated','unavailable']
+  145721:['verified','linked','validated','calculated','calculated']
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
@@ -157,7 +165,7 @@ assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 �
 assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>46\.7<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
+assert.match(dom.comparison.innerHTML,/>46\.7<small>시범 지표 · 사후 검증 통과/);  // 3.15: MFPI labels read the cross-table resultassert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/71\.6/,'page 2 species must not leak into page 1');
@@ -167,10 +175,10 @@ assert.deepEqual(headers(),labels.slice(5),'next page shows species 6-8');
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종');
 assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison-next'].disabled,true);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>71\.6<small>검증 전 시범 지표/);
+assert.match(dom.comparison.innerHTML,/>71\.6<small>시범 지표 · 사후 검증 통과/);
 // 3.3: 홍합 zinc comes from uFiSh. 3.6: 톳 (a seaweed; uFiSh covers fish and shellfish only) leaves its blank zinc out of the mean.
-assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>검증 전 시범 지표/,'3 of 4 components score');
-assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.9<small>검증 전 시범 지표/,'substituted zinc gives a scored MFPI');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>시범 지표 · 사후 검증 통과/,'3 of 4 components score');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.9<small>시범 지표 · 사후 검증 통과/,'substituted zinc gives a scored MFPI');
 dom['comparison-next'].click();
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
 dom['comparison-prev'].click();
@@ -235,10 +243,12 @@ const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:
 next={live:true,species:[cand(231750,'Ruditapes philippinarum','바지락'),cand(275816,'Paralichthys olivaceus','넙치'),sp(397082,'Haliotis discus','전복(종 수준)')]};
 await ctx.attach(next);
 assert.equal(ctx.score(next.species[0],'MFPI'),60.4);
-assert.equal(ctx.score(next.species[1],'MCUI'),null,'not in Red List is never a low score');
-assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
+// 3.15: not in the Red List and no national row; the number comes from the preliminary Rapid LC basis, never from the absence itself
+assert.equal(ctx.score(next.species[1],'MCUI'),10);
+assert.equal(next.species[1].assessment.mcui_basis,'preliminary');
+assert.equal(next.species[1].assessment.conservation_trace.iucn_state,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
-assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'calculated');
+assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'validated');
 
 // All 30 published rows (8 operating + 22 candidates) attach without a technical or lookup fault.
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});

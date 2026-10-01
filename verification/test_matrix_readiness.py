@@ -20,16 +20,22 @@ class MatrixReadinessTests(unittest.TestCase):
         report = build(self.assessments, self.catalog, self.expansion)
         self.assertEqual(len(report["species"]), 30)
         # verified-pilot-3.2: a national MCUI is placed too (marked apart), so a point is any species with both BBVI and MCUI.
+        # verified-pilot-3.15: a substitute MCUI joins only for the bases the rule lists (the preliminary Rapid LC failed its
+        # back-test), so 미역 (BBVI 71.0, preliminary MCUI) stays off.
+        allowed = report["matrix_rule"].get("include_substitute_mcui", [])
         placed = [r["aphia_id"] for r in report["species"] if r["matrix_eligible"]]
         self.assertEqual(placed, [r["aphia_id"] for r in report["species"]
-                                  if r["scores"]["BBVI"] is not None and r["scores"]["MCUI"] is not None])
+                                  if r["scores"]["BBVI"] is not None and r["scores"]["MCUI"] is not None
+                                  and (r["mcui_basis"] not in ("range_state", "preliminary") or r["mcui_basis"] in allowed)])
+        self.assertEqual(placed, [836033])
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None], [(145721, 71.0), (836033, 83.9)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 95.3), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
-                          (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 58.6), (393716, 27.3), (413600, 56.9),
+                          (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 58.6), (397082, 15.6), (393716, 27.3),
+                          (413600, 56.9),
                           (127022, 34.9), (219984, 22.6), (275816, 29.2),
                           (254538, 59.9)])
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
@@ -51,10 +57,15 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.13 adds the reviewed 멸치 peptide rows (Kim 2016, anchovy sauce, single paper): 멸치 MBPI 22.6.
         # verified-pilot-3.14 accepts sequence-confirmed purified peptides: 미역 IW replicated (Lin 2018) -> MBPI 95.3, BBVI 71.0;
         # 바지락 VISDEDGVTH (Chen 2018) 39.5 -> 58.6; 대구 GASSGMPG (Ngo 2016) 59.9, all single-paper except 미역.
-        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 21)
+        # verified-pilot-3.15 links RDA rows by name (다시마·우뭇가사리·꼬시래기·해삼), reads 시카메굴 from a paper, adds six
+        # aquaculture records (살오징어 false) and converts the synthetic 전복 AMN to uM: MFPI 21 -> 27, 전복 MBPI 15.6.
+        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 27)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 7)
+        # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list; 14 species get a preliminary Rapid LC.
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 8)
+        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 1)
+        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 14)
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
@@ -98,6 +109,11 @@ class MatrixReadinessTests(unittest.TestCase):
             if row["mcui_basis"] == "national":
                 national = reviewed[row["aphia_id"]]["national_assessment"]
                 self.assertTrue(national["source_id"] and national["category"], row["aphia_id"])
+                continue
+            if row["mcui_basis"] in ("range_state", "preliminary"):
+                # after 3.14: a substitute MCUI cites its own record (another state's list or the Rapid LC run), never the checklist
+                sub = reviewed[row["aphia_id"]]["mcui_substitute"]
+                self.assertTrue(sub["record"] and set(sub["source_ids"]) <= set(self.assessments["sources"]), row["aphia_id"])
                 continue
             trace = reviewed[row["aphia_id"]]["conservation_trace"]
             self.assertTrue(trace["assessment_date"] and trace["criteria_version"], row["aphia_id"])
