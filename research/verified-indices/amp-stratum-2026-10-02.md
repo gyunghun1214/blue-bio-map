@@ -98,6 +98,37 @@ DBAASP는 **시험한 물질이 합성인지 재조합인지 기록하지 않는
 - 해조류 8종은 '펩타이드 + 수치' 논문이 0건이다. 이 층은 사실상 동물 쪽만 덮는다.
 - MIC는 세균 배양 억제 농도다. 임상 효과나 제품 가치가 아니다.
 
+
+### 3.19 후보 — 참굴 Cg-BigDef1 (점수는 바뀌지 않음)
+
+같은 조사에서 **참굴** *Magallana gigas*의 Cg-BigDef1 (DBAASPR_17382)이 다섯 요소를 거의 다 채우는 것을 확인했다.
+
+- 기원: Rosa et al. 2011 *PLoS One* 6:e25594 (PMC3182236, OA) — 참굴 자체 전사체·유전체에서 동정하고, 감염 개체에서 성숙 펩타이드를 HPLC·질량분석으로 검출했다.
+- 시험 물질: Loth et al. 2019 *mBio* (10.1128/mBio.01821-19, PMC6805989, OA) — native chemical ligation으로 **전합성**한 뒤 산화적 폴딩, LC-MS로 확인했다. 재조합도 조추출물도 아니다.
+- 값: *S. aureus* SG511 **1.25 µM**. 이 저장소의 *S. aureus* 코호트(6,158)에서 백분위 **93.42**, 조정값 70.1이다. *Micrococcus luteus* CIP 5345 0.3 µM도 있다.
+- **참굴 MBPI는 바뀌지 않는다**: 현재 최고 항목인 LQP(96.3)가 더 높다. 바뀌는 것은 '항균' 칩이 2종 → 3종이 되는 것뿐이다.
+- **남은 확인**: 시험법이 "liquid growth inhibition assay (Hétru & Bulet)"이고 배지가 Poor Broth·Zobell이다. 액체배지 연속희석이지만 논문이 'broth microdilution'이라고 적지는 않는다. 이 표현을 우리 규칙의 `broth_microdilution`으로 읽을지, 그리고 *M. luteus* 코호트(62)를 담을지는 정하고 넣어야 한다. 그래서 이번 버전에는 넣지 않았다.
+
+### 보류 — 참굴 Cg-Def / Cg-Defh1 / Cg-Defh2
+
+수치는 가장 좋다(Cg-Defh2의 *S. aureus* SG511 0.12 µM은 그 코호트 상위 끝). 그러나 시험 물질이 *E. coli*에서 발현한 His6 융합단백질을 CNBr로 잘라 정제한 것이라 **화학 합성품이 아니다**. 3.14가 받아들인 '서열 확인 정제 단일 펩타이드'에 해당하는지는 판단이 필요하다(그 조항은 천연 시료에서 정제한 펩타이드를 염두에 둔 것이고, 이쪽은 이종 발현 산물이다). 규칙을 넓히지 않고 보류했다.
+
+### DBAASP 자료 오류 3건 (기록)
+
+- **cgMolluscidin** 6행이 MIC로 저장돼 있으나 원논문(Seo et al. 2013)은 같은 수치를 **MEC**로 보고한다. 배지도 TSA(한천)라 이중으로 제외 대상이다. 라벨만 믿으면 안 된다는 사례다.
+- **Octopromycin**의 `sourceGenes`에 *Octopus vulgaris*와 *Octopus minor*가 함께 적혀 있으나 논문과 저자의 GenBank 등록(QTW43735.1)은 *O. minor* 단독이다. 우리 후보종 참문어(*O. sinensis*)와는 무관하다.
+- **Cg-Def**의 *M. luteus* 0.01 µM 행이 중복되고 사본 쪽은 NaCl 600 mM 고염 조건이다.
+
+### 바지락·전복·홍합 — 정직한 빈 결과
+
+- 바지락: MCdef 7행·VpDef 9행이 전부 범위값이거나 `>`값이고, 두 논문 모두 **재조합체**(rMCdef, rVpDef)로 쟀다.
+- 전복: hdMolluscidin 11행이 전부 **MEC**이고 배지가 한천(TSA/SDA)이다.
+- 홍합: Myticusin-alpha 9행이 전부 범위값이다.
+
+### 재현 논문
+
+25,542건 전수에서 우리 13개 서열을 공유하는 다른 레코드는 **0건**이다. 어느 종도 AMP 층으로 BBVI를 열 수 없다.
+
 ## 5. 아직 못 한 것
 
 - **항암 층**: CancerPPD 2.0으로 주요 세포주 코호트(MCF-7 120, HeLa 95, A-549 77 등)를 만들 수 있음을 확인했다. 다만 사이트에 라이선스 문구가 없어 재배포 조건을 확인하지 못했다. 피조개 항암 펩타이드 P6(`WYIRKIRRFFKWLKKKLKKK`, DLD-1 IC50 2.14 µg/mL)가 후보다.
