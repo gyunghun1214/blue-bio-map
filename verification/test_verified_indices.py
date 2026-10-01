@@ -1498,17 +1498,19 @@ XO314 = "research/verified-indices/evidence-xo-potency-3.14.json"
 
 
 class VerifiedPilot314Tests(unittest.TestCase):
-    """Public method: 3.13 with sequence-confirmed purified peptides accepted for origin rows and potency replications
+    """Superseded by 3.15. 3.14: 3.13 with sequence-confirmed purified peptides accepted for origin rows and potency replications
     (research/verified-indices/evidence-isolates-2026-10-01.md). Coefficients, cohorts and the pIC50 gap are 3.13's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V314))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V313)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.14", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.14 report is archived as it was
+        archived314 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.14.json"
+        self.assertEqual(render(self.report), archived314.read_text(encoding="utf-8"))
 
     def test_changes(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1542,6 +1544,138 @@ class VerifiedPilot314Tests(unittest.TestCase):
             xo = c.get("peptide_bioactivity", {}).get("cross_origin_potency", {})
             self.assertNotEqual(xo.get("supplement"), XO314)
             self.assertNotIn("accepted_materials", xo)
+
+
+V314 = ROOT / "config" / "verified-indices-v3.14.json"  # superseded by 3.15 (gap closing); its rows stay tested
+GAP = {"rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.json",
+       "aquaculture": "research/verified-indices/mfpi-aquaculture-names-2026-10-01.json",
+       "literature": "research/verified-indices/mfpi-literature-rows-2026-10-01.json",
+       "abalone": "research/verified-indices/evidence-abalone-2026-10-01.json",
+       "national": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
+       "mcui": "research/verified-indices/mcui-substitutes-2026-10-02.json"}
+# Rapid LC met, shown as reference information only (team-lead decision 2026-10-02: the back-test failed, so no MCUI)
+RAPID_LC_REFERENCE = {145721, 250680, 372119, 494972, 377084, 371986, 234476, 494853, 236157, 145086, 275816, 274849, 254538, 1061762}
+
+
+class VerifiedPilot315Tests(unittest.TestCase):
+    """Public method: 3.14 plus the team-lead decisions of 2026-10-01 on closing the site's gaps
+    (research/verified-indices/gap-closing-2026-10-02.md): RDA rows linked by a Korean national name authority, six aquaculture
+    records, a literature nutrition row, ug/mL -> uM for synthetic peptides, MCUI substitutes (Korean crosswalk, another range
+    state's list) and labels read from the post-hoc validation. The preliminary Rapid LC failed its back-test and is reference
+    information only (team-lead decision 2026-10-02), never an MCUI. Coefficients and cohorts are 3.14's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V314)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.15", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_changes(self):
+        # MFPI, MBPI and BBVI; the 2 MCUI changes (시카메굴 range state, 참문어 national) are checked in test_mcui_substitutes
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(241776, "MFPI"): 63.5, (342067, "MFPI"): 46.1, (372119, "MFPI"): 76.7, (377084, "MFPI"): 56.7,
+                                   (236157, "MFPI"): 70.0, (836041, "MFPI"): 56.1, (127022, "MFPI"): 59.9, (534443, "MFPI"): 37.8,
+                                   (397082, "MBPI"): 15.6})
+        # MCUI 16 = IUCN 7 + Korean national 8 + range state 1; a reference-only Rapid LC fills nothing (63 of 120)
+        filled = {axis: sum(s["scores"][axis] is not None for s in self.new.values()) for axis in ("MFPI", "MBPI", "MCUI", "BBVI")}
+        self.assertEqual(filled, {"MFPI": 27, "MBPI": 18, "MCUI": 16, "BBVI": 2})
+        self.assertEqual(sum(filled.values()), 63)
+
+    def test_name_links(self):
+        for aphia, code in {377084: "L0050000000a", 372119: "L0190000000a", 236157: "L0040000000a", 241776: "K6340000000a",
+                            127022: "K0150000000a", 534443: "K6110030000a"}.items():
+            f = self.new[aphia]["food_trace"]
+            self.assertEqual(f["source_food_item_id"], code, aphia)
+            self.assertNotIn("row_table", f)
+            own = [o for o in f["observed_rows"] if o["linked"]]
+            self.assertEqual([(o["food_item_id"], bool(o.get("link_source_id"))) for o in own], [(code, True)])
+        self.assertEqual(self.new[241776]["food_trace"]["observed_rows"][0]["link_source_id"], "mfds_food_raw_material_codes")
+        # the generic 갑오징어 row stays unlinked (no exact 국명)
+        self.assertFalse(any(o["linked"] and o["food_item_id"] == "K6230010000a" for o in self.new[1666974]["food_trace"]["observed_rows"]))
+
+    def test_literature_row(self):
+        f = self.new[836041]["food_trace"]
+        self.assertEqual((f["source_food_item_id"], f["row_table"], f["outside_cohort"]), ("LIT:liu2021-csikamea-table1", "literature", True))
+        self.assertEqual({k: (n["value"], n["grade"]) for k, n in f["nutrients"].items()},
+                         {"protein_g": (5.96, "literature_converted"), "iron_mg": (8.2, "literature_converted"),
+                          "calcium_mg": (141.44, "literature_converted")})
+        self.assertEqual(f["omitted_components"], ["zinc_mg"])
+        self.assertEqual(f["edible_fraction"]["value"], 0.2055)
+        self.assertEqual(self.report["method"]["nutrition"]["grade_factors"]["literature_converted"], 0.85)
+
+    def test_aquaculture_records(self):
+        feasible = {a: self.new[a]["food_trace"]["aquaculture"]["feasible"] for a in (342067, 377084, 372119, 236157, 241776, 836041)}
+        self.assertEqual(feasible, {342067: False, 377084: True, 372119: True, 236157: True, 241776: True, 836041: True})
+
+    def test_unit_conversion(self):
+        item = [i for i in self.new[397082]["bioactivity_trace"] if i.get("peptide_sequence") == "AMN"][0]
+        m = item["measurements"][0]
+        self.assertEqual((m["value"], m["unit"], m["converted_from"]),
+                         (317.71, "uM", {"value": 106.24, "unit": "ug/mL", "molecular_weight": 334.39}))
+        self.assertEqual(self.new[397082]["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_mcui_substitutes(self):
+        # only another range state's list gives a substitute MCUI; it stays on the matrix as before
+        self.assertEqual({a for a, s in self.new.items() if s["mcui_basis"] in ("range_state", "preliminary")}, {836041})
+        oyster = self.new[836041]
+        self.assertEqual((oyster["mcui_basis"], oyster["scores"]["MCUI"], oyster["mcui_substitute"]["record"]["country"]),
+                         ("range_state", 35.0, "Japan"))
+        self.assertEqual(self.report["method"]["matrix"]["include_substitute_mcui"], ["range_state"])
+        octopus = self.new[534443]
+        self.assertEqual((octopus["mcui_basis"], octopus["scores"]["MCUI"], octopus["national_assessment"]["name_as_published"]),
+                         ("national", 35.0, "참문어 Octopus vulgaris"))
+        self.assertEqual({a: s["scores"]["MCUI"] for a, s in self.new.items() if s["scores"]["MCUI"] != self.old[a]["scores"]["MCUI"]},
+                         {836041: 35.0, 534443: 35.0})
+        # team-lead decision 2026-10-02: a met Rapid LC is reference information only, shown beside the withheld MCUI
+        t, sources = self.report["method"]["mcui_substitutes"]["thresholds"], self.report["sources"]
+        self.assertEqual({a for a, s in self.new.items() if (s["mcui_substitute"] or {}).get("use") == "reference_only"},
+                         RAPID_LC_REFERENCE)
+        for a in RAPID_LC_REFERENCE:
+            s, sub = self.new[a], self.new[a]["mcui_substitute"]
+            rec = sub["record"]
+            self.assertEqual((s["scores"]["MCUI"], s["withheld_reasons"]["MCUI"], s["mcui_basis"]), (None, "not_in_red_list", None), a)
+            self.assertEqual((sub["value"], sub["category"], sub["result"]), (None, "LC", "likely_least_concern"), a)
+            self.assertNotIn("pilot_mapping", sub)
+            self.assertIn("점수 아님", sub["label"])
+            self.assertEqual(rec["thresholds"], t)
+            self.assertTrue(rec["eoo_km2"] > t["eoo_km2"] and rec["aoo_km2"] > t["aoo_km2"] and rec["records"] >= t["records"], a)
+            self.assertNotEqual(rec["trend_class"], "decline_signal", a)
+            self.assertTrue(set(sub["source_ids"]) <= set(sources) and set(sub["source_ids"]) <= set(s["source_ids"]), a)
+            self.assertIn("no_conservation_assessment", s["priority_survey_reasons"])
+            # the reference changes nothing 3.14 published for the species' MCUI, sufficiency or survey priority
+            for key in ("priority_survey_reasons", "priority_survey"):
+                self.assertEqual(s[key], self.old[a][key], (a, key))
+            self.assertEqual(s["information_sufficiency"]["MCUI"], self.old[a]["information_sufficiency"]["MCUI"], a)
+        self.assertEqual({a for a, s in self.new.items() if s["priority_survey"]}, RAPID_LC_REFERENCE)
+        for a, s in self.new.items():
+            self.assertNotEqual(s["mcui_basis"], "preliminary", a)
+            self.assertNotIn("preliminary_assessment_only", s["priority_survey_reasons"], a)
+        self.assertNotIn("preliminary_assessment_only", self.report["method"]["conservation"]["no_assessment"]["labels"])
+        check = self.report["method"]["posthoc"]["validation_sets"]["MCUI_preliminary"]
+        self.assertEqual((check["result"], check["agreement"], check["n"], check["false_lc_for_threatened"]),
+                         ("failed", 11, 14, ["해삼", "전복(종 수준)"]))
+
+    def test_preliminary_needs_every_threshold(self):
+        rule = self.report["method"]["mcui_substitutes"]
+        lc = json.loads((ROOT / rule["rapid_lc_snapshot"]).read_text(encoding="utf-8"))
+        t = rule["thresholds"]
+        for row in lc["species"].values():
+            self.assertEqual(row["likely_least_concern"],
+                             row["eoo_km2"] > t["eoo_km2"] and row["aoo_km2"] > t["aoo_km2"] and row["records"] >= t["records"])
+            self.assertEqual(row["aoo_km2"], row["aoo_cells"] * t["aoo_cell_km"] ** 2)
+
+    def test_older_configs_read_none_of_it(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V312, V313, V314):
+            c, text = cfg(old), Path(old).read_text(encoding="utf-8")
+            self.assertNotIn("mcui_substitutes", c)
+            self.assertNotIn("unit_conversion", c["peptide_bioactivity"])
+            for path in GAP.values():
+                self.assertNotIn(path, text)
 
 
 if __name__ == "__main__":

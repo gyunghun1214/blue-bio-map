@@ -13,9 +13,13 @@
     ],
     "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
     "include_national_mcui": true,
+    "include_substitute_mcui": [
+      "range_state"
+    ],
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
+    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
     "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "types": {
       "high_bbvi_high_mcui": {
@@ -36,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.14",
+  "method_version": "verified-pilot-3.15",
   "schema_version": 1,
   "species": [
     {
@@ -123,6 +127,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
@@ -131,6 +136,7 @@
         "https://doi.org/10.1021/jf020482t",
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
@@ -146,10 +152,10 @@
     {
       "aphia_id": 241776,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [
         {
@@ -177,14 +183,16 @@
         "BBVI": null,
         "MBPI": 8.7,
         "MCUI": 80.0,
-        "MFPI": null
+        "MFPI": 63.5
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.obis.org/v3/",
+        "https://coastfish.spc.int/News/BDM/18/Chen.pdf",
         "https://doi.org/10.1111/bph.16333",
         "https://doi.org/10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
         "https://doi.org/10.3390/md22020090",
+        "https://impfood.mfds.go.kr/CFCJJ01F01",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
@@ -247,7 +255,9 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://europepmc.org/article/PMC/PMC12948284",
         "https://koreascience.kr/article/JAKO201127250032645.page",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -266,7 +276,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
-        "MFPI": "aquaculture_method_unverified"
+        "MFPI": null
       },
       "bioactivity_leads": [
         {
@@ -318,16 +328,18 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": 20.0,
-        "MFPI": null
+        "MFPI": 46.1
       },
       "source_urls": [
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1242/jeb.127670",
         "https://doi.org/10.3390/ijms20174159",
         "https://www.cmnpd.org",
         "https://www.e-kfas.org/Upload/files/kfas/KSSHBC_2011_v44n2_118.pdf",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/176085/1428473",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
@@ -339,7 +351,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [
         {
@@ -375,15 +387,19 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 76.7
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1007/s10811-024-03342-7",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
         "https://pubmed.ncbi.nlm.nih.gov/29316644/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
+        "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -439,7 +455,9 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://koreascience.kr/article/JAKO200011921114207.page",
         "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
@@ -583,7 +601,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -607,18 +625,22 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 56.7
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Saccharina+japonica&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://www.e-algae.org/upload/pdf/algae-2018-33-2-4.pdf",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=377084",
         "https://www.marinespecies.org/rest/",
+        "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
@@ -653,9 +675,11 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ecklonia+cava&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.bmc.2013.04.026",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
         "https://pubchem.ncbi.nlm.nih.gov/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -696,9 +720,11 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ulva+prolifera&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.3390/md22090398",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
@@ -738,8 +764,10 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sargassum+horneri&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cmnpd.org",
@@ -757,7 +785,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
-        "MFPI": "food_row_not_species_specific"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -781,18 +809,22 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 70.0
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gracilaria+vermiculophylla&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1007/s10126-017-9746-8",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157",
         "https://www.marinespecies.org/rest/",
+        "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
@@ -826,9 +858,11 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Codium+fragile&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1007/s10811-007-9265-5",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -888,18 +922,13 @@
     {
       "aphia_id": 397082,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "전복(종 수준)",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -910,14 +939,16 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 15.6,
         "MCUI": 80.0,
         "MFPI": 54.7
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/258065905",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1007/s00217-014-2315-8",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC6541628/",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
@@ -977,8 +1008,8 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
-        "MFPI": "comparable_nutrition_missing"
+        "MCUI": null,
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -990,24 +1021,24 @@
       "korean_name": "시카메굴",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
+      "mcui_basis": "range_state",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Magallana sikamea",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
-        "MFPI": null
+        "MCUI": 35.0,
+        "MFPI": 56.1
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Magallana+sikamea&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1111/are.13549",
+        "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8353274/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cmnpd.org",
@@ -1016,16 +1047,9 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836041",
         "https://www.marinespecies.org/rest/",
-        "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
-      "unexplored_candidate": {
-        "note": "A relative has a calculated BBVI; this species' score is not inferred from it.",
-        "rank": "genus",
-        "relatives": [
-          "Magallana gigas"
-        ],
-        "taxon": "Magallana"
-      }
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 504357,
@@ -1137,7 +1161,7 @@
         "BBVI": null,
         "MBPI": 34.9,
         "MCUI": 10.0,
-        "MFPI": 48.0
+        "MFPI": 59.9
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
@@ -1154,6 +1178,7 @@
         "https://www.iucnredlist.org/species/170306/170083106",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=127022",
         "https://www.marinespecies.org/rest/",
+        "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
@@ -1271,10 +1296,12 @@
         "MFPI": 59.4
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Paralichthys+olivaceus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.procbio.2016.01.009",
         "https://doi.org/10.3390/ani14111693",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1318,8 +1345,10 @@
         "MFPI": 48.5
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1402,9 +1431,11 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.procbio.2016.07.006",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255",
@@ -1451,9 +1482,11 @@
         "MFPI": 62.0
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.3390/biology14121682",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
@@ -1468,7 +1501,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -1481,19 +1514,16 @@
       "korean_name": "참문어(동아시아 종)",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "low_information_sufficiency",
-        "no_conservation_assessment"
-      ],
+      "mcui_basis": "national",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Octopus sinensis",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
-        "MFPI": 36.9
+        "MCUI": 35.0,
+        "MFPI": 37.8
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
@@ -1503,7 +1533,9 @@
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443",
+        "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
+        "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],

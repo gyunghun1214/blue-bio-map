@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "reviewed_on": "2026-10-01",
+  "purpose": "MFPI after verified-pilot-3.12: RDA DB 10.4 rows of candidate species linked through a Korean national name authority (team-lead decision 2026-10-01). Read only by configs that name this file, so 3.12 and earlier reproduce.",
+  "rule": "The RDA food name's species token (the part before the state, e.g. '다시마' in '다시마, 생것', or '살오징어' in '오징어, 살오징어, 생것') is linked to the candidate when (a) it is the Korean standard name (국명, 정명 row) of exactly one species in the MABIK national marine species list and that species resolves in WoRMS to the candidate's accepted AphiaID, or (b) it is not a MABIK 국명 and the MFDS food raw-material record of that exact name gives a 성분학명 that resolves in WoRMS to exactly one accepted species, the candidate. MABIK, the national list of species recorded in Korean waters, comes first because RDA samples are Korean products; an MFDS name list that also names other species is recorded, not used. Crosswalk: when the authority's scientific name is an accepted WoRMS species with no WoRMS distribution record in the northwest Pacific, the Korean name denotes the Korean population, and it is linked to the candidate that carries that Korean name and that WoRMS accepts for the East Asian population (the same crosswalk is used for the national red-list row of that name). The rule is applied to every unlinked candidate row of the RDA snapshot; rows it does not resolve stay unlinked (not_linked).",
+  "sources": {
+    "mabik_national_species_list": {
+      "provider": "National Marine Biodiversity Institute of Korea (MABIK), MBRIS 해양수산생물종 (국가 해양수산생물종 목록)",
+      "title": "국가 해양수산생물종 목록 (national list of marine and fishery species; 국명 = Korean standard name, 정명 rows)",
+      "url": "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
+      "version": "online list searched 2026-10-01 (public data file 국가 해양수산생물종 목록집_20240814, data.go.kr 15063771, updated 2026-08-07)",
+      "accessed": "2026-10-01",
+      "license": "공공데이터포털 이용허락범위 제한 없음 (data.go.kr 15063771)",
+      "terms": "Korean name and scientific name of the searched species only; the list is not redistributed"
+    },
+    "mfds_food_raw_material_codes": {
+      "provider": "Ministry of Food and Drug Safety (MFDS), 수입식품정보마루 성분코드 조회 (food raw-material code list)",
+      "title": "성분코드 조회: 식품원료 성분명(한글), 성분학명",
+      "url": "https://impfood.mfds.go.kr/CFCJJ01F01",
+      "version": "records read 2026-10-01",
+      "accessed": "2026-10-01",
+      "license": "Government web page (no reuse licence stated); name and scientific name facts only",
+      "terms": "Record code, Korean name and scientific name of the searched raw materials only"
+    }
+  },
+  "rda_taxon_links": [
+    {
+      "food_item_id": "L0050000000a",
+      "reported_food_name": "다시마, 생것",
+      "english_name": "Brown Kelp, Raw",
+      "aphia_id": 377084,
+      "scientific_name": "Saccharina japonica",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "MABIK national list: 국명 '다시마' = Saccharina japonica (J.E.Areschoug) C.E.Lane et al., the only 정명 row named exactly 다시마 (북방다시마 and 애기다시마 are separately named varieties); WoRMS 377084 accepted. The MFDS raw material 다시마 (A3000864000000) lists Saccharina japonica / Saccharina angustata / Laminaria japonica; S. angustata (WoRMS 377078) is a Hokkaido kelp, recorded and not used.",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=다시마",
+        "mfds": "https://impfood.mfds.go.kr/CFCJJ01F03?cvaaClsNo=1470000999101&tblTy=MASTER&seq=A3000864000000",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=377084"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "Generic 'Brown kelp' label; not assigned to Saccharina japonica without specimen identification."
+      }
+    },
+    {
+      "food_item_id": "L0190000000a",
+      "reported_food_name": "우뭇가사리, 생것",
+      "english_name": "Ceylon moss, Raw",
+      "aphia_id": 372119,
+      "scientific_name": "Gelidium elegans",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "MABIK national list: 국명 '우뭇가사리' = Gelidium elegans Kützing, 1868, the only 정명 row named exactly 우뭇가사리 (17 other Gelidium names such as 참우뭇가사리 G. coreanum are separate); WoRMS 372119 accepted. The MFDS raw material 우뭇가사리 (A3000880000000) lists Gelidium elegans / Gelidium amansii; G. amansii (WoRMS 212186) is recorded and not used.",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=우뭇가사리",
+        "mfds": "https://impfood.mfds.go.kr/CFCJJ01F03?cvaaClsNo=1470000999101&tblTy=MASTER&seq=A3000880000000",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=372119"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "Korean name and English 'Ceylon moss' are agar-weed labels without species identification; not assigned to Gelidium elegans 372119."
+      }
+    },
+    {
+      "food_item_id": "L0040000000a",
+      "reported_food_name": "꼬시래기, 생것",
+      "english_name": "Sea string, Raw",
+      "aphia_id": 236157,
+      "scientific_name": "Gracilaria vermiculophylla",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "MABIK national list: 국명 '꼬시래기' = Gracilaria vermiculophylla (Ohmi) Papenfuss 1967, the only 정명 row named exactly 꼬시래기 (개꼬시래기 Gracilariopsis chorda and others are separate); WoRMS 236157. The MFDS raw material 꼬시래기 (A3000862000000) gives Gracilaria verrucosa, which WoRMS resolves to Gracilariopsis longissima (146960); that name was formerly applied to Korean 꼬시래기 and is recorded, not used.",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=꼬시래기",
+        "mfds": "https://impfood.mfds.go.kr/CFCJJ01F03?cvaaClsNo=1470000999101&tblTy=MASTER&seq=A3000862000000",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "꼬시래기 was historically labelled Gracilaria verrucosa in Korea; not assigned to G. vermiculophylla without specimen identification."
+      }
+    },
+    {
+      "food_item_id": "K6340000000a",
+      "reported_food_name": "해삼, 생것",
+      "english_name": "Sea cucumber, Raw",
+      "aphia_id": 241776,
+      "scientific_name": "Apostichopus japonicus",
+      "reviewed": true,
+      "source_id": "mfds_food_raw_material_codes",
+      "link_evidence": "해삼 is not a MABIK 국명 (MABIK names Apostichopus japonicus 돌기해삼, and 37 other names only contain 해삼). The MFDS raw material 해삼 (A3000788000000, 수산물) gives 성분학명 Stichopus japonicus, which WoRMS resolves to Apostichopus japonicus (241776) only.",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=해삼",
+        "mfds": "https://impfood.mfds.go.kr/CFCJJ01F03?cvaaClsNo=1470000999101&tblTy=MASTER&seq=A3000788000000",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=530294"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "Generic 'sea cucumber' row; not assignable to Apostichopus japonicus 241776 without specimen identification."
+      }
+    },
+    {
+      "food_item_id": "K0150000000a",
+      "reported_food_name": "고등어, 생것",
+      "english_name": "Mackerel, Raw",
+      "aphia_id": 127022,
+      "scientific_name": "Scomber japonicus",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "MABIK national list: 국명 '고등어' = Scomber japonicus Houttuyn, 1782, the only 정명 row named exactly 고등어 (망치고등어 S. australasicus and 갈고등어 Decapterus muroadsi are separate); WoRMS 127022. This replaces the 3.9 MEXT まさば row as 고등어's own nutrition row, because the MEXT row is used only when no RDA row is linked.",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=고등어",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=127022"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "Generic 'Mackerel' row; Korean market 고등어 can include Scomber australasicus (망치고등어). Not assigned to S. japonicus."
+      }
+    },
+    {
+      "food_item_id": "K6110030000a",
+      "reported_food_name": "문어, 참문어, 생것",
+      "english_name": "Common octopus, Raw",
+      "aphia_id": 534443,
+      "scientific_name": "Octopus sinensis",
+      "reviewed": true,
+      "source_id": "mabik_national_species_list",
+      "link_evidence": "Crosswalk: MABIK national list gives 국명 '참문어' = Octopus vulgaris Cuvier, 1797, the only 정명 row named 참문어. WoRMS keeps O. vulgaris (140605) for the Atlantic, Mediterranean and western Indian Ocean species: its 38 WoRMS distribution records (AphiaDistributionsByAphiaID, read 2026-10-01) include none in the northwest Pacific, and WoRMS accepts Octopus sinensis d'Orbigny (534443) for the East Asian common octopus. The Korean name 참문어 therefore denotes the Korean population, O. sinensis; the same crosswalk assigns the NIBR national row 참문어. This RDA row replaces the 3.9 MEXT まだこ row as the species' own row (the MEXT row is used only when no RDA row is linked).",
+      "authority_query": {
+        "mabik": "https://www.mbris.kr/pub/marine/natilist/nationalist.do?pageIndex=1&pageUnit=30&searchWrd=참문어",
+        "worms_o_vulgaris_distribution": "https://www.marinespecies.org/rest/AphiaDistributionsByAphiaID/140605",
+        "worms": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443"
+      },
+      "replaces": {
+        "reviewed": false,
+        "link_evidence": "'Common octopus' is Octopus vulgaris; the East Asian population is now O. sinensis, but the row does not state which. Not assigned."
+      }
+    }
+  ],
+  "not_linked": [
+    {
+      "food_item_id": "K6230010000a",
+      "reported_food_name": "오징어, 갑오징어, 생것",
+      "candidate_aphia_id": 1666974,
+      "reason": "No MABIK 정명 row is named exactly 갑오징어 (14 compound names such as 참갑오징어 Acanthosepion esculentum); the species-specific 참갑오징어 row stays the linked row."
+    }
+  ]
+}

@@ -29,7 +29,11 @@ def _eligible(scores, mcui_basis, rule=None):
     # verified-pilot-2.1 to 3.1: a Korean national-assessment MCUI is a separate stratum and never shares the IUCN-based matrix.
     # verified-pilot-3.2: it is placed with its own marker (method.matrix.national_mcui) and stays labelled as national.
     national_ok = bool(rule and rule.get("include_national_mcui"))
-    return scores["BBVI"] is not None and scores["MCUI"] is not None and (national_ok or mcui_basis != "national")
+    # after 3.14: a substitute MCUI joins (separate marker) only for the bases the rule lists; 3.15 lists the range-state
+    # national list and keeps the preliminary Rapid LC off, since its back-test failed
+    substitutes = (rule or {}).get("include_substitute_mcui") or []
+    return (scores["BBVI"] is not None and scores["MCUI"] is not None and (national_ok or mcui_basis != "national")
+            and (mcui_basis not in ("range_state", "preliminary") or mcui_basis in substitutes))
 
 
 def matrix_type(scores, rule):
