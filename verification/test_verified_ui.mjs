@@ -60,8 +60,9 @@ assert.match(html,/결과 0건/);
 html=ctx.renderScores(by(494972));
 for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문에서 미확인','Publisher terms'])
   assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
-// verified-pilot-3.1: the ChEMBL stratum scores 톳 (one linking paper); the paper-local MCF-7 result stays unscored
-assert.equal(ctx.score(by(494972),'MBPI'),45.3);
+// verified-pilot-3.1: the ChEMBL stratum scored 톳 (45.3, one linking paper); 3.10: the synthetic GKY peptide (Suetsuna 1998)
+// outranks it at 65.0. The paper-local MCF-7 result stays unscored.
+assert.equal(ctx.score(by(494972),'MBPI'),65.0);
 assert.equal(ctx.score(by(494972),'BBVI'),null);
 
 // The old operational summary has no IUCN assessment count, despite a separately

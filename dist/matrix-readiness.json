@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.9",
+  "method_version": "verified-pilot-3.10",
   "schema_version": 1,
   "species": [
     {
@@ -430,7 +430,7 @@
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
-        "MBPI": 45.3,
+        "MBPI": 65.0,
         "MCUI": null,
         "MFPI": 63.3
       },
@@ -442,9 +442,11 @@
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.ekosfop.or.kr/archive/view_article_pubreader?doi=10.11002/fsp.2024.31.2.324",
         "https://www.iucnredlist.org/search",
+        "https://www.jstage.jst.go.jp/article/suisan1932/64/5/64_5_862/_article/-char/en",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
