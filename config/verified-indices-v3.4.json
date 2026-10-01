@@ -212,23 +212,30 @@
       "z": 1.96,
       "decline_ratio": 0.7,
       "formula": "ratio = ((n_recent + 0.5) / E_recent) / ((n_past + 0.5) / E_past); 95% interval = ratio x/÷ exp(1.96 x sqrt(1/(n_past+0.5) + 1/(n_recent+0.5)))",
+      "cell_rule": "A record on a cell edge counts in every cell whose closed polygon holds it, as the OBIS statistics endpoint counts the effort; numerator and denominator use the same cells.",
+      "dataset_check": "A decline signal must also hold inside the dataset with most past records of the species (species and class records of that dataset only, same cells rule, same thresholds). Otherwise the fall may be a survey programme ending, and the class is undetermined. This is the reviewed-trend condition of docs/verified-indices-design.md, applied by rule to every species.",
       "classes": [
-        "undetermined: fewer than min_past_records past records, or ratio <= decline_ratio with the interval reaching 1",
-        "decline_signal: ratio <= decline_ratio (a 30% fall, IUCN criterion A2 VU threshold) and the interval below 1",
-        "no_clear_decline: the interval below 1 but the fall smaller than the threshold, or a reporting rate not lower",
-        "survey_gap: fewer species records while class effort in the same cells also fell, and the reporting rate is not clearly lower"
+        "undetermined: no comparable cell, fewer than min_past_records past records, a fall to ratio <= decline_ratio whose interval reaches 1, or a decline not confirmed within the dominant dataset",
+        "decline_signal: ratio <= decline_ratio (a 30% fall, IUCN criterion A2 VU threshold), interval below 1, and the same within the dominant dataset",
+        "decline_below_threshold: interval below 1 but the fall smaller than the threshold",
+        "survey_gap: fewer species records while class effort in the same cells also fell, and the reporting rate is not clearly lower",
+        "no_clear_decline: a reporting rate not lower"
       ],
       "labels": {
         "decline_signal": "감소 신호",
+        "decline_below_threshold": "감소 경향(30% 미만)",
         "survey_gap": "조사 부족",
-        "no_clear_decline": "뚜렷한 감소 신호 없음",
+        "no_clear_decline": "보고율 감소 없음",
         "undetermined": "판단 불가"
       },
       "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI for a species without an IUCN or national category, and none lowers one."
     },
     "no_assessment": {
-      "label": "우선 조사 대상 · 보전 평가 없음",
-      "rule": "A species with neither a numeric current IUCN category nor a reviewed national category gets no MCUI and is labelled priority_survey with reason no_conservation_assessment, beside the information-sufficiency reason."
+      "labels": {
+        "no_conservation_assessment": "보전 평가 없음",
+        "conservation_data_deficient": "IUCN 자료 부족(DD)"
+      },
+      "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
     }
   },
   "national_fact_supplement": "research/verified-indices/evidence-v3.json",

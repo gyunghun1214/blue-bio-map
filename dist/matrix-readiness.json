@@ -187,6 +187,9 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
@@ -244,6 +247,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Apostichopus japonicus",
       "scope": "operating_8",
       "scores": {
@@ -305,6 +309,9 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
@@ -379,6 +386,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Todarodes pacificus",
       "scope": "operating_8",
       "scores": {
@@ -432,6 +440,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Gelidium elegans",
       "scope": "operating_8",
       "scores": {
@@ -489,6 +501,9 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
@@ -539,6 +554,7 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Mytilus coruscus",
       "scope": "operating_8",
       "scores": {
@@ -602,6 +618,7 @@
       "matrix_type": "sustainable_use",
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Magallana gigas",
       "scope": "operating_8",
       "scores": {
@@ -655,6 +672,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Saccharina japonica",
       "scope": "expansion_22",
       "scores": {
@@ -693,6 +714,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
@@ -737,6 +762,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Ulva prolifera",
       "scope": "expansion_22",
       "scores": {
@@ -773,6 +802,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Sargassum horneri",
       "scope": "expansion_22",
       "scores": {
@@ -816,6 +849,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Gracilaria vermiculophylla",
       "scope": "expansion_22",
       "scores": {
@@ -854,6 +891,9 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
@@ -897,6 +937,7 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Ruditapes philippinarum",
       "scope": "expansion_22",
       "scores": {
@@ -942,6 +983,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Haliotis discus",
       "scope": "expansion_22",
       "scores": {
@@ -985,6 +1027,7 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Mizuhopecten yessoensis",
       "scope": "expansion_22",
       "scores": {
@@ -1030,6 +1073,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Magallana sikamea",
       "scope": "expansion_22",
       "scores": {
@@ -1081,6 +1128,7 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Anadara broughtonii",
       "scope": "expansion_22",
       "scores": {
@@ -1126,6 +1174,9 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency"
+      ],
       "scientific_name": "Sinonovacula constricta",
       "scope": "expansion_22",
       "scores": {
@@ -1166,6 +1217,9 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency"
+      ],
       "scientific_name": "Scomber japonicus",
       "scope": "expansion_22",
       "scores": {
@@ -1210,6 +1264,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Engraulis japonicus",
       "scope": "expansion_22",
       "scores": {
@@ -1251,6 +1306,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Larimichthys polyactis",
       "scope": "expansion_22",
       "scores": {
@@ -1292,6 +1348,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
@@ -1332,6 +1392,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Sebastes schlegelii",
       "scope": "expansion_22",
       "scores": {
@@ -1373,6 +1437,7 @@
       "matrix_type": null,
       "mcui_basis": "iucn",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Seriola quinqueradiata",
       "scope": "expansion_22",
       "scores": {
@@ -1416,6 +1481,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
@@ -1460,6 +1529,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
@@ -1500,6 +1573,10 @@
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Octopus sinensis",
       "scope": "expansion_22",
       "scores": {
@@ -1540,6 +1617,7 @@
       "matrix_type": null,
       "mcui_basis": "national",
       "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Acanthosepion esculentum",
       "scope": "expansion_22",
       "scores": {

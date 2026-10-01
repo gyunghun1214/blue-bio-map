@@ -1000,9 +1000,13 @@ class VerifiedPilot34Tests(unittest.TestCase):
         for aphia, s in self.new.items():
             t, sp = s["occurrence_trend"], snap["species"][str(aphia)]
             self.assertEqual(t["effort_group"], sp["class"], aphia)
-            self.assertLessEqual(t["species_records"]["past"], sp["past"]["records"], aphia)
-            self.assertEqual(t["species_records"]["past"] + t["records_outside_compared_cells"]["past"],
-                             sp["past"]["records"] + sp["past"]["outside_grid"], aphia)
+            self.assertEqual(t["records_in_map_extent"], {p: sp[p]["records"] + sp[p]["outside_grid"] for p in ("past", "recent")}, aphia)
+            # numerator and denominator count the same compared cells (edge records in every cell that holds them)
+            group = snap["group_effort"][sp["class"]]["cells"]
+            cells = [c for c in set(sp["past"]["cells"]) | set(sp["recent"]["cells"]) if all(group.get(c, {}).get(p, 0) for p in ("past", "recent"))]
+            self.assertEqual((t["cells_compared"], t["species_records"]["past"]), (len(cells), sum(sp["past"]["cells"].get(c, 0) for c in cells)), aphia)
+            if t["class"] == "decline_signal":  # a decline signal is confirmed inside the dominant dataset
+                self.assertTrue(t["dataset_check"]["confirms_decline"], aphia)
             self.assertEqual(t["label"], self.rule["trend"]["labels"][t["class"]])
             self.assertIn("obis_trend", s["source_ids"], aphia)
 
@@ -1010,11 +1014,24 @@ class VerifiedPilot34Tests(unittest.TestCase):
         for aphia, s in self.new.items():
             why = s["priority_survey_reasons"]
             self.assertIs(s["priority_survey"], bool(why), aphia)
-            self.assertIs("no_conservation_assessment" in why, s["scores"]["MCUI"] is None, aphia)
+            self.assertIs("no_conservation_assessment" in why, s["scores"]["MCUI"] is None and s["withheld_reasons"]["MCUI"] == "not_in_red_list", aphia)
             self.assertIs("low_information_sufficiency" in why, s["information_sufficiency"]["mean_ratio"] < 0.5, aphia)
         added = {a for a, s in self.new.items() if s["priority_survey"] and not self.old[a]["priority_survey"]}
         self.assertEqual(added, {145721, 250680, 494972, 145086})  # 미역·멍게·톳·청각: no IUCN or national category
         self.assertFalse({a for a, s in self.old.items() if s["priority_survey"] and not self.new[a]["priority_survey"]})
+
+    def test_only_a_missing_or_dd_assessment_is_a_priority_reason(self):
+        # a failed IUCN lookup is a data problem, a DD category is 'IUCN 자료 부족', neither is 'no assessment'
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        rows = [r for r in evidence["conservation"] if r["aphia_id"] == 145721]
+        for state, reason in (("lookup_failed", None), ("data_deficient", "conservation_data_deficient")):
+            changed = [{**r, "iucn_state": state, "reviewed": True, "category": "DD"} if r["aphia_id"] == 145721 else r for r in evidence["conservation"]]
+            report = build({**evidence, "conservation": changed}, candidates, config, snapshot, taxonomy)
+            s = next(x for x in report["species"] if x["aphia_id"] == 145721)
+            self.assertIsNone(s["scores"]["MCUI"], state)
+            self.assertNotIn("no_conservation_assessment", s["priority_survey_reasons"], state)
+            self.assertIs(reason in s["priority_survey_reasons"] if reason else True, True, state)
+        self.assertTrue(rows)
 
     def test_trend_snapshot_guards(self):
         evidence, candidates, config, snapshot, taxonomy = load_inputs()

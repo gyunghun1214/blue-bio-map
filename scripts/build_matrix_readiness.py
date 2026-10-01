@@ -41,12 +41,14 @@ def matrix_type(scores, rule):
 
 
 def _layers(s, rule):
-    """verified-pilot-3.2 map fields: the matrix type and the information-sufficiency labels, never a score."""
+    """verified-pilot-3.2 map fields: the matrix type and the priority-survey and unexplored-candidate labels, never a score.
+    From 3.4 the priority label carries its reasons (low information sufficiency, no conservation assessment)."""
     if not rule:
         return {}
     eligible = _eligible(s["scores"], s.get("mcui_basis"), rule)
     return {"matrix_type": matrix_type(s["scores"], rule) if eligible else None,
-            "priority_survey": s.get("priority_survey", False), "unexplored_candidate": s.get("unexplored_candidate")}
+            "priority_survey": s.get("priority_survey", False), "unexplored_candidate": s.get("unexplored_candidate"),
+            **({"priority_survey_reasons": s["priority_survey_reasons"]} if "priority_survey_reasons" in s else {})}
 
 
 def build(assessments, catalog, expansion):

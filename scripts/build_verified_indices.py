@@ -700,37 +700,64 @@ def national_axis(aphia: int, evidence: dict, config: dict) -> tuple:
                           "legal_protection_facts": facts}
 
 
-def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
-    """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods, controlled for survey effort.
-    Reporting rate = species records / all-taxa records in the same 1-degree cells and period; only cells with
-    effort in both periods count. A reporting rate is not abundance; the class is a screen for review."""
-    sp = snap["species"].get(str(aphia))
-    require(sp is not None, f"{aphia}: no OBIS trend record")
-    group = snap["group_effort"][sp["class"]]["cells"]  # target group: the species' WoRMS class
-    past, recent, k = sp["past"]["cells"], sp["recent"]["cells"], rule["continuity"]
-    cells = sorted(c for c in set(past) | set(recent) if all(group.get(c, {}).get(p, 0) > 0 for p in ("past", "recent")))
-    n1, n2 = sum(past.get(c, 0) for c in cells), sum(recent.get(c, 0) for c in cells)
-    e1, e2 = sum(group[c]["past"] for c in cells), sum(group[c]["recent"] for c in cells)
-    a1, a2 = sum(snap["effort"][c]["past"] for c in cells), sum(snap["effort"][c]["recent"] for c in cells)
-    out = {"source_id": rule["source_id"], "periods": rule["periods"], "effort_group": sp["class"], "cells_compared": len(cells),
-           "species_records": {"past": n1, "recent": n2}, "effort_records": {"past": e1, "recent": e2},
-           "records_outside_compared_cells": {p: sp[p]["records"] + sp[p]["outside_grid"] - n for p, n in (("past", n1), ("recent", n2))},
-           "latest_record_year": (sp.get("yearrange") or [None, None])[1], "records_all_years": sp["records_all_years"],
-           "datasets": {p: len(sp[p]["datasets"]) for p in ("past", "recent")}}
-    if n1 < rule["min_past_records"]:
-        return {**out, "class": "undetermined", "reason": "past_records_below_minimum"}
+def _rate_ratio(n1: int, n2: int, e1: int, e2: int, rule: dict) -> tuple[float, float, float]:
+    k = rule["continuity"]
     ratio = ((n2 + k) / e2) / ((n1 + k) / e1)
     spread = math.exp(rule["z"] * math.sqrt(1 / (n1 + k) + 1 / (n2 + k)))
-    low, high = ratio / spread, ratio * spread
+    return ratio, ratio / spread, ratio * spread
+
+
+def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
+    """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods. Reporting rate = species records /
+    records of the species' WoRMS class (target-group effort) in the same 1-degree cells and period; only cells with
+    class records in both periods count. A decline signal must also hold inside the dataset that holds most past
+    records, so a survey programme ending is not read as a decline. A reporting rate is not abundance."""
+    sp = snap["species"].get(str(aphia))
+    require(sp is not None, f"{aphia}: no OBIS trend record")
+    group = snap["group_effort"][sp["class"]]["cells"]
+    past, recent = sp["past"]["cells"], sp["recent"]["cells"]
+    both = lambda effort, c: all(effort.get(c, {}).get(p, 0) > 0 for p in ("past", "recent"))
+    cells = sorted(c for c in set(past) | set(recent) if both(group, c))
+    n1, n2 = sum(past.get(c, 0) for c in cells), sum(recent.get(c, 0) for c in cells)
+    e1, e2 = sum(group[c]["past"] for c in cells), sum(group[c]["recent"] for c in cells)
+    out = {"source_id": rule["source_id"], "periods": rule["periods"], "effort_group": sp["class"], "cells_compared": len(cells),
+           "species_records": {"past": n1, "recent": n2}, "effort_records": {"past": e1, "recent": e2},
+           "records_in_map_extent": {p: sp[p]["records"] + sp[p]["outside_grid"] for p in ("past", "recent")},
+           # distribution recency: cells with records in one period only (all cells of the species, effort aside)
+           "cells_past_only": sum(1 for c in past if c not in recent), "cells_recent_only": sum(1 for c in recent if c not in past),
+           "latest_record_year": (sp.get("yearrange") or [None, None])[1], "records_all_years": sp["records_all_years"],
+           "datasets": {p: len(sp[p]["datasets"]) for p in ("past", "recent")}}
+    if not cells:
+        return {**out, "class": "undetermined", "reason": "no_comparable_cells"}
+    if n1 < rule["min_past_records"]:
+        return {**out, "class": "undetermined", "reason": "past_records_below_minimum"}
+    ratio, low, high = _rate_ratio(n1, n2, e1, e2, rule)
+    a1, a2 = sum(snap["effort"][c]["past"] for c in cells), sum(snap["effort"][c]["recent"] for c in cells)
     out.update({"reporting_rate_ratio": round(ratio, 3), "ci": [round(low, 3), round(high, 3)], "effort_ratio": round(e2 / e1, 3),
                 "all_taxa_sensitivity": {"effort_records": {"past": a1, "recent": a2},
-                                         "reporting_rate_ratio": round(((n2 + k) / a2) / ((n1 + k) / a1), 3)}})
+                                         "reporting_rate_ratio": round(_rate_ratio(n1, n2, a1, a2, rule)[0], 3)}})
+    top = sp.get("dominant_dataset")
+    if top:
+        ce = top["class_effort"]
+        dcells = sorted(c for c in set(top["past"]) | set(top["recent"]) if both(ce, c))
+        d = [sum(top[p].get(c, 0) for c in dcells) for p in ("past", "recent")] + [sum(ce[c][p] for c in dcells) for p in ("past", "recent")]
+        check = {"dataset_id": top["dataset_id"], "past_share": top["past_share"], "cells_compared": len(dcells),
+                 "species_records": {"past": d[0], "recent": d[1]}, "effort_records": {"past": d[2], "recent": d[3]}}
+        if dcells and d[0] >= rule["min_past_records"]:
+            r, lo, hi = _rate_ratio(*d, rule)
+            check.update({"reporting_rate_ratio": round(r, 3), "ci": [round(lo, 3), round(hi, 3)]})
+            check["confirms_decline"] = r <= rule["decline_ratio"] and hi < 1
+        else:
+            check["confirms_decline"] = False
+        out["dataset_check"] = check
     if ratio <= rule["decline_ratio"] and high < 1:
-        return {**out, "class": "decline_signal", "reason": "reporting_rate_fell_beyond_threshold"}
+        if out.get("dataset_check", {}).get("confirms_decline"):
+            return {**out, "class": "decline_signal", "reason": "reporting_rate_fell_beyond_threshold_within_dominant_dataset_too"}
+        return {**out, "class": "undetermined", "reason": "decline_not_confirmed_within_dominant_dataset"}
     if ratio <= rule["decline_ratio"]:
         return {**out, "class": "undetermined", "reason": "decline_uncertain"}
-    if high < 1:  # a clear fall smaller than the threshold: neither a decline signal nor explained by effort
-        return {**out, "class": "no_clear_decline", "reason": "reporting_rate_fell_less_than_threshold"}
+    if high < 1:  # a clear fall smaller than the threshold: shown as such, never a decline signal
+        return {**out, "class": "decline_below_threshold", "reason": "reporting_rate_fell_less_than_threshold"}
     if n2 < n1 and e2 < e1:
         return {**out, "class": "survey_gap", "reason": "fewer_records_explained_by_less_effort"}
     return {**out, "class": "no_clear_decline", "reason": "reporting_rate_not_lower"}
@@ -953,7 +980,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             s["priority_survey"] = s["information_sufficiency"]["mean_ratio"] < config["unexplored_threshold"]
             if config["conservation"].get("no_assessment"):  # verified-pilot-3.4: figure stage 3, no IUCN or national MCUI
                 why = ["low_information_sufficiency"] if s["priority_survey"] else []
-                why += ["no_conservation_assessment"] if s["scores"]["MCUI"] is None else []
+                # not 'no MCUI': a failed lookup or a not-current assessment is a data problem, not a missing assessment
+                gap = {"not_in_red_list": "no_conservation_assessment", "category_not_numeric": "conservation_data_deficient"}
+                why += [gap[s["withheld_reasons"]["MCUI"]]] if s["scores"]["MCUI"] is None and s["withheld_reasons"]["MCUI"] in gap else []
                 s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
