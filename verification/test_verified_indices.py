@@ -1553,14 +1553,16 @@ GAP = {"rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.js
        "abalone": "research/verified-indices/evidence-abalone-2026-10-01.json",
        "national": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
        "mcui": "research/verified-indices/mcui-substitutes-2026-10-02.json"}
-PRELIMINARY_MCUI = {145721, 250680, 372119, 494972, 377084, 371986, 234476, 494853, 236157, 145086, 275816, 274849, 254538, 1061762}
+# Rapid LC met, shown as reference information only (team-lead decision 2026-10-02: the back-test failed, so no MCUI)
+RAPID_LC_REFERENCE = {145721, 250680, 372119, 494972, 377084, 371986, 234476, 494853, 236157, 145086, 275816, 274849, 254538, 1061762}
 
 
 class VerifiedPilot315Tests(unittest.TestCase):
     """Public method: 3.14 plus the team-lead decisions of 2026-10-01 on closing the site's gaps
     (research/verified-indices/gap-closing-2026-10-02.md): RDA rows linked by a Korean national name authority, six aquaculture
     records, a literature nutrition row, ug/mL -> uM for synthetic peptides, MCUI substitutes (Korean crosswalk, another range
-    state's list, preliminary Rapid LC) and labels read from the post-hoc validation. Coefficients and cohorts are 3.14's."""
+    state's list) and labels read from the post-hoc validation. The preliminary Rapid LC failed its back-test and is reference
+    information only (team-lead decision 2026-10-02), never an MCUI. Coefficients and cohorts are 3.14's."""
 
     def setUp(self):
         self.report = build(*load_inputs())
@@ -1572,14 +1574,16 @@ class VerifiedPilot315Tests(unittest.TestCase):
         self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
 
     def test_changes(self):
-        # MFPI, MBPI and BBVI; the 16 MCUI changes are checked in test_mcui_substitutes
+        # MFPI, MBPI and BBVI; the 2 MCUI changes (시카메굴 range state, 참문어 national) are checked in test_mcui_substitutes
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "BBVI")
                    if s["scores"][axis] != self.old[a]["scores"][axis]}
         self.assertEqual(changed, {(241776, "MFPI"): 63.5, (342067, "MFPI"): 46.1, (372119, "MFPI"): 76.7, (377084, "MFPI"): 56.7,
                                    (236157, "MFPI"): 70.0, (836041, "MFPI"): 56.1, (127022, "MFPI"): 59.9, (534443, "MFPI"): 37.8,
                                    (397082, "MBPI"): 15.6})
+        # MCUI 16 = IUCN 7 + Korean national 8 + range state 1; a reference-only Rapid LC fills nothing (63 of 120)
         filled = {axis: sum(s["scores"][axis] is not None for s in self.new.values()) for axis in ("MFPI", "MBPI", "MCUI", "BBVI")}
-        self.assertEqual(filled, {"MFPI": 27, "MBPI": 18, "MCUI": 30, "BBVI": 2})
+        self.assertEqual(filled, {"MFPI": 27, "MBPI": 18, "MCUI": 16, "BBVI": 2})
+        self.assertEqual(sum(filled.values()), 63)
 
     def test_name_links(self):
         for aphia, code in {377084: "L0050000000a", 372119: "L0190000000a", 236157: "L0040000000a", 241776: "K6340000000a",
@@ -1615,17 +1619,45 @@ class VerifiedPilot315Tests(unittest.TestCase):
         self.assertEqual(self.new[397082]["withheld_reasons"]["BBVI"], "mbpi_single_source")
 
     def test_mcui_substitutes(self):
-        basis = {a: s["mcui_basis"] for a, s in self.new.items() if s["mcui_basis"] in ("range_state", "preliminary")}
-        self.assertEqual({a for a, b in basis.items() if b == "preliminary"}, PRELIMINARY_MCUI)
-        self.assertEqual({a for a, b in basis.items() if b == "range_state"}, {836041})
-        self.assertEqual((self.new[836041]["scores"]["MCUI"], self.new[836041]["mcui_substitute"]["record"]["country"]), (35.0, "Japan"))
+        # only another range state's list gives a substitute MCUI; it stays on the matrix as before
+        self.assertEqual({a for a, s in self.new.items() if s["mcui_basis"] in ("range_state", "preliminary")}, {836041})
+        oyster = self.new[836041]
+        self.assertEqual((oyster["mcui_basis"], oyster["scores"]["MCUI"], oyster["mcui_substitute"]["record"]["country"]),
+                         ("range_state", 35.0, "Japan"))
+        self.assertEqual(self.report["method"]["matrix"]["include_substitute_mcui"], ["range_state"])
         octopus = self.new[534443]
         self.assertEqual((octopus["mcui_basis"], octopus["scores"]["MCUI"], octopus["national_assessment"]["name_as_published"]),
                          ("national", 35.0, "참문어 Octopus vulgaris"))
-        for a in PRELIMINARY_MCUI:
-            s = self.new[a]
-            self.assertEqual((s["scores"]["MCUI"], s["mcui_substitute"]["result"]), (10.0, "likely_least_concern"), a)
-            self.assertIn("preliminary_assessment_only", s["priority_survey_reasons"])
+        self.assertEqual({a: s["scores"]["MCUI"] for a, s in self.new.items() if s["scores"]["MCUI"] != self.old[a]["scores"]["MCUI"]},
+                         {836041: 35.0, 534443: 35.0})
+        # team-lead decision 2026-10-02: a met Rapid LC is reference information only, shown beside the withheld MCUI
+        t, sources = self.report["method"]["mcui_substitutes"]["thresholds"], self.report["sources"]
+        self.assertEqual({a for a, s in self.new.items() if (s["mcui_substitute"] or {}).get("use") == "reference_only"},
+                         RAPID_LC_REFERENCE)
+        for a in RAPID_LC_REFERENCE:
+            s, sub = self.new[a], self.new[a]["mcui_substitute"]
+            rec = sub["record"]
+            self.assertEqual((s["scores"]["MCUI"], s["withheld_reasons"]["MCUI"], s["mcui_basis"]), (None, "not_in_red_list", None), a)
+            self.assertEqual((sub["value"], sub["category"], sub["result"]), (None, "LC", "likely_least_concern"), a)
+            self.assertNotIn("pilot_mapping", sub)
+            self.assertIn("점수 아님", sub["label"])
+            self.assertEqual(rec["thresholds"], t)
+            self.assertTrue(rec["eoo_km2"] > t["eoo_km2"] and rec["aoo_km2"] > t["aoo_km2"] and rec["records"] >= t["records"], a)
+            self.assertNotEqual(rec["trend_class"], "decline_signal", a)
+            self.assertTrue(set(sub["source_ids"]) <= set(sources) and set(sub["source_ids"]) <= set(s["source_ids"]), a)
+            self.assertIn("no_conservation_assessment", s["priority_survey_reasons"])
+            # the reference changes nothing 3.14 published for the species' MCUI, sufficiency or survey priority
+            for key in ("priority_survey_reasons", "priority_survey"):
+                self.assertEqual(s[key], self.old[a][key], (a, key))
+            self.assertEqual(s["information_sufficiency"]["MCUI"], self.old[a]["information_sufficiency"]["MCUI"], a)
+        self.assertEqual({a for a, s in self.new.items() if s["priority_survey"]}, RAPID_LC_REFERENCE)
+        for a, s in self.new.items():
+            self.assertNotEqual(s["mcui_basis"], "preliminary", a)
+            self.assertNotIn("preliminary_assessment_only", s["priority_survey_reasons"], a)
+        self.assertNotIn("preliminary_assessment_only", self.report["method"]["conservation"]["no_assessment"]["labels"])
+        check = self.report["method"]["posthoc"]["validation_sets"]["MCUI_preliminary"]
+        self.assertEqual((check["result"], check["agreement"], check["n"], check["false_lc_for_threatened"]),
+                         ("failed", 11, 14, ["해삼", "전복(종 수준)"]))
 
     def test_preliminary_needs_every_threshold(self):
         rule = self.report["method"]["mcui_substitutes"]

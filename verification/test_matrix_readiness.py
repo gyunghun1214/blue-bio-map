@@ -20,8 +20,8 @@ class MatrixReadinessTests(unittest.TestCase):
         report = build(self.assessments, self.catalog, self.expansion)
         self.assertEqual(len(report["species"]), 30)
         # verified-pilot-3.2: a national MCUI is placed too (marked apart), so a point is any species with both BBVI and MCUI.
-        # verified-pilot-3.15: a substitute MCUI joins only for the bases the rule lists (the preliminary Rapid LC failed its
-        # back-test), so 미역 (BBVI 71.0, preliminary MCUI) stays off.
+        # verified-pilot-3.15: a substitute MCUI joins only for the bases the rule lists (range_state). 3.15 (team-lead decision
+        # 2026-10-02): a Rapid LC is reference only, so 미역 has BBVI 71.0 but no MCUI and stays off.
         allowed = report["matrix_rule"].get("include_substitute_mcui", [])
         placed = [r["aphia_id"] for r in report["species"] if r["matrix_eligible"]]
         self.assertEqual(placed, [r["aphia_id"] for r in report["species"]
@@ -62,10 +62,13 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 27)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
-        # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list; 14 species get a preliminary Rapid LC.
+        # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list. 3.15 (team-lead decision
+        # 2026-10-02): the 14 species with a met Rapid LC keep it as reference only, so none has a preliminary MCUI.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 8)
         self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 1)
-        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 14)
+        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 0)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 16)
+        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:

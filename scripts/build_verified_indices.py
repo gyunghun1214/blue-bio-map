@@ -864,9 +864,9 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
     if not met or decline:
         return {**out, "basis": None, "category": None, "value": None,
                 "result": "decline_signal" if decline else "thresholds_not_met"}
-    category = rule["preliminary_category"]
-    return {**out, "basis": "preliminary", "category": category, "value": float(scores[category]), "result": "likely_least_concern",
-            "pilot_mapping": f"Rapid LC met -> {category} -> {scores[category]} (preliminary, not an IUCN assessment; team pilot rule)"}
+    # team-lead decision 2026-10-02: the back-test failed, so a met check is reference information only, never an MCUI
+    return {**out, "basis": "preliminary", "category": rule["preliminary_category"], "value": None, "use": "reference_only",
+            "result": "likely_least_concern"}
 
 
 def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
@@ -1001,7 +1001,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         subs = config.get("mcui_substitutes")
         if subs and mcui is None and conservation_reason in subs["applies_when_reason"]:  # after 3.14: range state, then Rapid LC
             substitute = mcui_substitute(aphia, evidence, config, trend)
-            if substitute and substitute["basis"]:
+            if substitute and substitute["value"] is not None:
                 mcui, conservation_reason, mcui_basis = substitute["value"], None, substitute["basis"]
         if trend:  # verified-pilot-3.4: an auxiliary MCUI element; it raises a computed MCUI, never creates or lowers one
             adjust = config["conservation"]["effort_adjustment"] if mcui is not None and trend["class"] == "decline_signal" else 0
@@ -1033,9 +1033,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if national_steps:  # verified-pilot-3.2: the national assessment that gives the MCUI is the record counted
             c_steps = [True, national["category"] in config["conservation"]["category_scores"],
                        str(aphia) in config["national_red_list"].get("page_recheck", {}).get("rows", {})]
-        elif mcui_basis in ("range_state", "preliminary"):  # after 3.14: the substitute record is the one counted, read at the snapshot;
-            # a preliminary Rapid LC is not an assessment record (unexplored_candidates.substitute_mcui_sufficiency)
-            c_steps = [mcui_basis == "range_state", substitute["category"] in config["conservation"]["category_scores"], True]
+        elif mcui_basis == "range_state":  # after 3.14: the other state's list row is the record counted, read at the snapshot
+            c_steps = [True, substitute["category"] in config["conservation"]["category_scores"], True]
         else:
             c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
                        c.get("category") in config["conservation"]["category_scores"],
@@ -1046,7 +1045,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                        max([bio_sufficiency(partial_bio)] + ([links["sufficiency"]] if links else []), key=lambda x: x["best_record_steps"]),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
                                 "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {}),
-                                **({"basis": mcui_basis} if mcui_basis in ("range_state", "preliminary") else {})}}
+                                **({"basis": mcui_basis} if mcui_basis == "range_state" else {})}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
         sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
                                         for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
@@ -1160,8 +1159,6 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 # not 'no MCUI': a failed lookup or a not-current assessment is a data problem, not a missing assessment
                 gap = {"not_in_red_list": "no_conservation_assessment", "category_not_numeric": "conservation_data_deficient"}
                 why += [gap[s["withheld_reasons"]["MCUI"]]] if s["scores"]["MCUI"] is None and s["withheld_reasons"]["MCUI"] in gap else []
-                # after 3.14: a preliminary Rapid LC is not an official assessment, so the species stays a survey priority
-                why += ["preliminary_assessment_only"] if s.get("mcui_basis") == "preliminary" else []
                 s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})

@@ -19,7 +19,7 @@
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
-    "substitute_mcui_note": "An official national red list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary (Rapid LC) MCUI is shown on the species but kept off the matrix and the map colours: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is not used where a type would follow from it.",
+    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
     "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "types": {
       "high_bbvi_high_mcui": {
@@ -48,7 +48,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [
@@ -112,17 +112,17 @@
       "korean_name": "미역",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
         "BBVI": 71.0,
         "MBPI": 95.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 46.7
       },
       "source_urls": [
@@ -209,7 +209,7 @@
       "axis_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [
@@ -240,17 +240,17 @@
       "korean_name": "멍게",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
         "MBPI": 13.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 52.8
       },
       "source_urls": [
@@ -350,7 +350,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [
@@ -375,17 +375,18 @@
       "korean_name": "우뭇가사리",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Gelidium elegans",
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 76.7
       },
       "source_urls": [
@@ -408,7 +409,7 @@
       "axis_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [
@@ -439,17 +440,17 @@
       "korean_name": "톳",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
         "BBVI": null,
         "MBPI": 65.0,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 63.3
       },
       "source_urls": [
@@ -599,7 +600,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -612,17 +613,18 @@
       "korean_name": "다시마",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Saccharina japonica",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 56.7
       },
       "source_urls": [
@@ -649,7 +651,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
@@ -657,17 +659,18 @@
       "korean_name": "감태",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 67.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "source_urls": [
@@ -693,7 +696,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
@@ -701,17 +704,18 @@
       "korean_name": "가시파래",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Ulva prolifera",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 73.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "source_urls": [
@@ -736,7 +740,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       },
       "bioactivity_leads": [],
@@ -744,17 +748,18 @@
       "korean_name": "괭생이모자반",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Sargassum horneri",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 21.6,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "source_urls": [
@@ -779,7 +784,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -792,17 +797,18 @@
       "korean_name": "꼬시래기",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Gracilaria vermiculophylla",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 70.0
       },
       "source_urls": [
@@ -829,7 +835,7 @@
       "axis_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -837,17 +843,17 @@
       "korean_name": "청각",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 0.4,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 36.7
       },
       "source_urls": [
@@ -1268,7 +1274,7 @@
       "axis_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -1276,17 +1282,17 @@
       "korean_name": "넙치",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 29.2,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 59.4
       },
       "source_urls": [
@@ -1311,7 +1317,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -1324,17 +1330,18 @@
       "korean_name": "조피볼락",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Sebastes schlegelii",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 48.5
       },
       "source_urls": [
@@ -1401,7 +1408,7 @@
       "axis_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -1409,17 +1416,17 @@
       "korean_name": "대구",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": 59.9,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 38.3
       },
       "source_urls": [
@@ -1447,7 +1454,7 @@
       "axis_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
@@ -1460,17 +1467,18 @@
       "korean_name": "꽃게",
       "matrix_eligible": false,
       "matrix_type": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 62.0
       },
       "source_urls": [

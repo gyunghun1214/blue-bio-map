@@ -327,8 +327,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -353,17 +352,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.44
       },
       "korean_name": "다시마",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 181,
           "aoo_km2": 18100,
@@ -424,7 +422,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -476,7 +475,7 @@
         "label": "조사 부족",
         "latest_record_year": 2023,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -502,20 +501,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 56.7
       },
       "sensitivity": {
@@ -543,7 +543,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -1275,8 +1275,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -1295,17 +1294,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.56
+        "mean_ratio": 0.33
       },
       "korean_name": "감태",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "small_molecule",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 346,
           "aoo_km2": 34600,
@@ -1353,7 +1351,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1405,7 +1404,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -1431,20 +1430,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 67.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
@@ -1479,7 +1479,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       }
     },
@@ -1604,8 +1604,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -1624,17 +1623,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.56
+        "mean_ratio": 0.33
       },
       "korean_name": "가시파래",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 101,
           "aoo_km2": 10100,
@@ -1698,7 +1696,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1750,7 +1749,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -1776,20 +1775,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 73.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
@@ -1822,7 +1822,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       }
     },
@@ -1963,8 +1963,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -1983,17 +1982,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.56
+        "mean_ratio": 0.33
       },
       "korean_name": "괭생이모자반",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 392,
           "aoo_km2": 39200,
@@ -2055,7 +2053,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -2107,7 +2106,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -2133,20 +2132,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 21.6,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
@@ -2179,7 +2179,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       }
     },
@@ -2476,8 +2476,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -2502,17 +2501,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.58
+        "mean_ratio": 0.36
       },
       "korean_name": "꼬시래기",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 172,
           "aoo_km2": 17200,
@@ -2574,7 +2572,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -2626,7 +2625,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -2652,20 +2651,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 70.0
       },
       "sensitivity": {
@@ -2693,7 +2693,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -3054,8 +3054,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -3080,17 +3079,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.83
+        "mean_ratio": 0.61
       },
       "korean_name": "청각",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 217,
           "aoo_km2": 21700,
@@ -3154,7 +3152,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -3206,7 +3205,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -3232,7 +3231,7 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": {
         "food_weight": 0.5,
@@ -3264,13 +3263,13 @@
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 0.4,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 36.7
       },
       "sensitivity": {
@@ -3303,7 +3302,7 @@
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -13508,8 +13507,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -13535,17 +13533,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.89
+        "mean_ratio": 0.67
       },
       "korean_name": "넙치",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 201,
           "aoo_km2": 20100,
@@ -13608,7 +13605,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -13660,7 +13658,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -13686,7 +13684,7 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": {
         "food_weight": 0.5,
@@ -13718,13 +13716,13 @@
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 29.2,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 59.4
       },
       "sensitivity": {
@@ -13756,7 +13754,7 @@
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -14517,8 +14515,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -14544,17 +14541,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.56
+        "mean_ratio": 0.33
       },
       "korean_name": "조피볼락",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 186,
           "aoo_km2": 18600,
@@ -14616,7 +14612,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -14668,7 +14665,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -14694,20 +14691,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "정보충분도 낮음",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 48.5
       },
       "sensitivity": {
@@ -14731,7 +14729,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -16528,8 +16526,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -16554,17 +16551,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.83
+        "mean_ratio": 0.61
       },
       "korean_name": "대구",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 140,
           "aoo_km2": 14000,
@@ -16626,7 +16622,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -16678,7 +16675,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -16704,7 +16701,7 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": {
         "food_weight": 0.5,
@@ -16736,13 +16733,13 @@
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 59.9,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 38.3
       },
       "sensitivity": {
@@ -16777,7 +16774,7 @@
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -17537,8 +17534,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -17564,17 +17560,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.56
+        "mean_ratio": 0.33
       },
       "korean_name": "꽃게",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 240,
           "aoo_km2": 24000,
@@ -17638,7 +17633,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -17690,7 +17686,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -17716,20 +17712,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "정보충분도 낮음",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 62.0
       },
       "sensitivity": {
@@ -17753,7 +17750,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -19902,7 +19899,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.14 (2026-10-01). Gap closing (team-lead decisions 2026-10-01; research/verified-indices/gap-closing-2026-10-02.md). MFPI: an RDA DB 10.4 row is linked to a species by its MABIK national species list Korean name, else by its MFDS food-material scientific name, with a misapplied-name crosswalk (다시마, 우뭇가사리, 꼬시래기 and 해삼 join; 고등어 and 참문어 move from their MEXT item to their RDA row); a reviewed paper's own analysis, converted to fresh weight with the moisture of the same sample, is a species row graded literature_converted 0.85 (시카메굴, Liu 2021); six aquaculture records are added (살오징어 false). MBPI: a synthetic, sequence-confirmed peptide reported only in ug/mL is converted to uM with its average-residue molecular weight (전복 AMN, Wu 2015: 317.71 uM, MBPI 15.6). MCUI: when IUCN and the Korean list have no assessment, another range state's official national list (시카메굴, Japan NT) and then a preliminary Rapid LC check (Bachman et al. 2020; 14 species likely LC) give a separately labelled MCUI, and the Korean 참문어 row is assigned to Octopus sinensis by the crosswalk. Post-hoc validation with criteria fixed before the run: MFPI passed (MEXT cross-table, 11 species, rho 0.873); the Rapid LC back-test failed (EN 해삼 and 전복 called LC), so a preliminary MCUI stays off the matrix and the map colours. BBVI rules, coefficients, cohorts and weights are unchanged; the site shows a single-paper BBVI reference value beside a withheld BBVI.",
+    "changes_from": "verified-pilot-3.14 (2026-10-01). Gap closing (team-lead decisions 2026-10-01; research/verified-indices/gap-closing-2026-10-02.md). MFPI: an RDA DB 10.4 row is linked to a species by its MABIK national species list Korean name, else by its MFDS food-material scientific name, with a misapplied-name crosswalk (다시마, 우뭇가사리, 꼬시래기 and 해삼 join; 고등어 and 참문어 move from their MEXT item to their RDA row); a reviewed paper's own analysis, converted to fresh weight with the moisture of the same sample, is a species row graded literature_converted 0.85 (시카메굴, Liu 2021); six aquaculture records are added (살오징어 false). MBPI: a synthetic, sequence-confirmed peptide reported only in ug/mL is converted to uM with its average-residue molecular weight (전복 AMN, Wu 2015: 317.71 uM, MBPI 15.6). MCUI: when IUCN and the Korean list have no assessment, another range state's official national list (시카메굴, Japan NT) gives a separately labelled MCUI, and the Korean 참문어 row is assigned to Octopus sinensis by the crosswalk. Post-hoc validation with criteria fixed before the run: MFPI passed (MEXT cross-table, 11 species, rho 0.873); the preliminary Rapid LC check (Bachman et al. 2020; 14 species likely LC) failed its back-test (EN 해삼 and 전복 called LC), so it is shown as reference information only and gives no MCUI (team-lead decision 2026-10-02). BBVI rules, coefficients, cohorts and weights are unchanged; the site shows a single-paper BBVI reference value beside a withheld BBVI.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -20024,8 +20021,7 @@
       "no_assessment": {
         "labels": {
           "conservation_data_deficient": "IUCN 자료 부족(DD)",
-          "no_conservation_assessment": "보전 평가 없음",
-          "preliminary_assessment_only": "공식 평가 없음(예비 평가만)"
+          "no_conservation_assessment": "보전 평가 없음"
         },
         "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
       },
@@ -20085,7 +20081,7 @@
       "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
       "mcui_threshold": 50,
       "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
-      "substitute_mcui_note": "An official national red list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary (Rapid LC) MCUI is shown on the species but kept off the matrix and the map colours: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is not used where a type would follow from it.",
+      "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
       "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
       "types": {
         "high_bbvi_high_mcui": {
@@ -20111,7 +20107,7 @@
         "not_in_red_list"
       ],
       "labels": {
-        "preliminary": "예비 평가(Rapid LC) 기반 시범 MCUI",
+        "preliminary": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "range_state": "서식국 국가 평가 기반 시범 MCUI"
       },
       "method_source_id": "bachman_2020_rapid_lc",
@@ -20120,9 +20116,9 @@
         "preliminary"
       ],
       "preliminary_category": "LC",
-      "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so the species stays a survey priority ('preliminary_assessment_only'). When a test fails, MCUI stays withheld.",
+      "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so a met check is never an official assessment. When a test fails, nothing is shown as met. Since the team-lead decision of 2026-10-02 (the back-test failed) a met check is not an MCUI either: the record (EOO, AOO, records, back-test result) is shown beside the withheld MCUI as reference information, and the species keeps its no-assessment reason.",
       "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI.",
-      "ranking_rule": "Each basis is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI.",
+      "ranking_rule": "Each basis that gives an MCUI is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
       "snapshot": "research/verified-indices/mcui-substitutes-2026-10-02.json",
       "snapshot_source_id": "gbif_rapid_lc",
@@ -20411,7 +20407,7 @@
             "Apostichopus japonicus"
           ],
           "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
-          "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation.",
+          "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species were compared (the check was written when only these two had an MCUI), so this is a consistency check, not validation.",
           "result": "reproduced_n2"
         },
         "MCUI_preliminary": {
@@ -20423,7 +20419,7 @@
             "전복(종 수준)"
           ],
           "n": 14,
-          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가 MCUI는 매트릭스·지도 색에 쓰지 않고 이 한계를 함께 표시합니다.",
+          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
           "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
           "result": "failed"
         },
@@ -20485,7 +20481,7 @@
         "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
         "version": "queried 2026-09-30"
       },
-      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record. An official national list of another range state counts all three (assessment_record = the list row). A preliminary Rapid LC check is not an assessment, so assessment_record is false and only numeric_category and current_check count (2 of 3).",
+      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). A Rapid LC gives no MCUI (reference only), so the IUCN steps apply as for any species without an assessment.",
       "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)",
       "weight_note": "Relatives are judged at the published default BBVI weight (w = 0.5); the screen slider does not move this flag."
     },
@@ -20533,7 +20529,7 @@
           "Apostichopus japonicus"
         ],
         "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
-        "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species have an MCUI, so this is a consistency check, not validation.",
+        "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species were compared (the check was written when only these two had an MCUI), so this is a consistency check, not validation.",
         "result": "reproduced_n2"
       },
       "MCUI_preliminary": {
@@ -20545,7 +20541,7 @@
           "전복(종 수준)"
         ],
         "n": 14,
-        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가 MCUI는 매트릭스·지도 색에 쓰지 않고 이 한계를 함께 표시합니다.",
+        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
         "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
         "result": "failed"
       },
@@ -22468,8 +22464,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -22495,17 +22490,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.89
+        "mean_ratio": 0.67
       },
       "korean_name": "미역",
       "mbpi_label": null,
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 305,
           "aoo_km2": 30500,
@@ -22567,7 +22561,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -22619,7 +22614,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -22645,20 +22640,20 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 71.0,
         "MBPI": 95.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 46.7
       },
       "sensitivity": {
@@ -22704,7 +22699,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -24551,8 +24546,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -24578,17 +24572,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.89
+        "mean_ratio": 0.67
       },
       "korean_name": "멍게",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 46,
           "aoo_km2": 4600,
@@ -24651,7 +24644,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -24703,7 +24697,7 @@
         "label": "판단 불가",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -24729,7 +24723,7 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": {
         "food_weight": 0.5,
@@ -24763,13 +24757,13 @@
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 13.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 52.8
       },
       "sensitivity": {
@@ -24804,7 +24798,7 @@
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -26234,8 +26228,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -26260,17 +26253,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.5
+        "mean_ratio": 0.28
       },
       "korean_name": "우뭇가사리",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 344,
           "aoo_km2": 34400,
@@ -26331,7 +26323,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -26383,7 +26376,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -26409,20 +26402,21 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "low_information_sufficiency",
+        "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 76.7
       },
       "sensitivity": {
@@ -26449,7 +26443,7 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -27060,8 +27054,7 @@
           ]
         },
         "MCUI": {
-          "basis": "preliminary",
-          "ratio": 0.67,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -27086,17 +27079,16 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.83
+        "mean_ratio": 0.61
       },
       "korean_name": "톳",
       "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
+      "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
         "category": "LC",
-        "label": "예비 평가(Rapid LC) 기반 시범 MCUI",
-        "pilot_mapping": "Rapid LC met -> LC -> 10 (preliminary, not an IUCN assessment; team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
           "aoo_cells": 297,
           "aoo_km2": 29700,
@@ -27157,7 +27149,8 @@
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -27209,7 +27202,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -27235,7 +27228,7 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
-        "preliminary_assessment_only"
+        "no_conservation_assessment"
       ],
       "reference_combination": {
         "food_weight": 0.5,
@@ -27267,13 +27260,13 @@
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 65.0,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 63.3
       },
       "sensitivity": {
@@ -27311,7 +27304,7 @@
       "withheld_reasons": {
         "BBVI": "mbpi_single_source",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },

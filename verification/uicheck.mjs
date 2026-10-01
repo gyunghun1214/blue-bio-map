@@ -16,9 +16,10 @@ const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes
 const reportScores=[...report.species,...(report.candidate_species||[])].flatMap(s=>Object.values(s.scores).filter(v=>v!==null).map(v=>v.toFixed(1)));
 // Up to 3.1 a national MCUI (참굴 2.3: all four axes computed) never enters the IUCN matrix; 3.2 places it with its own marker.
 const nationalPlaced=!!report.method?.matrix?.include_national_mcui, readiness=readDist('matrix-readiness.json');
-// 3.15: a substitute MCUI (another range state's list, preliminary Rapid LC) is placed only for the bases the rule lists.
+// 3.15: a substitute MCUI (another range state's list) is placed only when the rule lists its basis. 3.15 (team-lead decision
+// 2026-10-02): reference only, so a Rapid LC check gives no MCUI and never reaches the matrix.
 const substitutesPlaced=report.method?.matrix?.include_substitute_mcui||[];
-const placedInMatrix=report.species.filter(s=>(nationalPlaced||s.mcui_basis!=='national')&&(!['range_state','preliminary'].includes(s.mcui_basis)||substitutesPlaced.includes(s.mcui_basis))&&['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
+const placedInMatrix=report.species.filter(s=>(nationalPlaced||s.mcui_basis!=='national')&&(s.mcui_basis!=='range_state'||substitutesPlaced.includes(s.mcui_basis))&&['MFPI','MBPI','MCUI','BBVI'].every(k=>s.scores[k]!==null)).length;
 const typeLabel=aphia=>Object.values(report.method.matrix.types).find(t=>t.id===readiness.species.find(r=>r.aphia_id===aphia).matrix_type)?.label;
 if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
@@ -122,11 +123,12 @@ try{
   check('3.9 MEXT row (맛조개) and 3.15 name-linked RDA rows (고등어·참문어) pass the browser re-check (no 기술 오류)',
     JSON.stringify(mextRows)===JSON.stringify([[413600,'scored',57.7,'MEXT:10280'],[127022,'scored',59.9,'K0150000000a'],[534443,'scored',37.8,'K6110030000a']]),JSON.stringify(mextRows));
   const eck=await pick(371986);
-  const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent}})()");
+  const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent,mcui:document.querySelector('#detail details[data-axis=MCUI]')?.textContent||''}})()");
   check('Ecklonia candidate: paper-local MBPI 67.5 and five source-linked measurements without spatial or combined scores',
     eckAxes.report===report.method_version&&eckAxes.scores?.MBPI===67.5&&
-    // 3.15: a preliminary Rapid LC MCUI, labelled with its failed back-test
-    eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===10&&eck.includes('예비 평가(Rapid LC, 역검증 미통과) 기반')&&eckAxes.scores.BBVI===null&&
+    // 3.15 (team-lead decision 2026-10-02): reference only. MCUI stays withheld; the Rapid LC check is shown beside it with its failed back-test
+    eckAxes.scores.MFPI===null&&eckAxes.scores.MCUI===null&&eck.includes('산출 보류 · 예비 평가 참고 LC 가능성(역검증 미통과) · 점수 아님')&&
+    eckAxes.mcui.includes('예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님')&&eckAxes.mcui.includes('MCUI 점수·매트릭스·지도 색·순위에 쓰지 않습니다')&&eckAxes.scores.BBVI===null&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형이 없습니다')&&!eckAxes.map.includes('67.5'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('시범 MBPI 67.5')&&eck.includes('원논문 1편')&&
     eck.includes('phloroglucinol')&&eck.includes('eckstolonol')&&eck.includes('1.47 ± 0.04 mM'),
@@ -134,7 +136,7 @@ try{
 
   let t=await pick(836033);
   check('Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) kept apart from the verified-pilot-2 MFPI trace',
-    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','MFPI · 식량 가능성','71.6 · 시범 지표 · 사후 검증 통과'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
+    ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','MFPI · 식량 가능성','71.6 · 시범 지표 · 방법 검증 통과(11종 비교)'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
   check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
   // The operating profile predates the index report: reviewed axes show the report result, not the profile's old status.
   check('Oyster: conservation follows the index report (MCUI 10.0), not the older profile 보류',/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0/.test(t)&&!t.includes('근거 부족으로 보류')&&t.includes('지표 보고서보다 먼저 작성'),t);
@@ -167,15 +169,17 @@ try{
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
   // The cell line and the withheld reasons read the index report too, not the profile's older 미검토/미수집.
-  // 3.15 fills 미역 MCUI (preliminary Rapid LC) and 해삼 MFPI, so the withheld reasons are read from 살오징어 (MBPI) and 해삼 (BBVI).
+  // 3.15 fills 해삼 MFPI, so its withheld reason is read from BBVI and 살오징어 adds MBPI. 3.15 (team-lead decision 2026-10-02):
+  // reference only, so 미역 MCUI stays withheld (IUCN 0 results) beside its Rapid LC reference.
   const stale=await evaluate("(()=>{const s=id=>data.species.find(x=>x.aphiaID===id);return {line:speciesAxesLine(s(145721)),cuc:assessmentBlockers(s(241776)),sq:assessmentBlockers(s(342067)),wak:assessmentBlockers(s(145721))}})()");
   check('Wakame/Sea cucumber/Squid: cell line and withheld reasons follow the index report, not the older profile 미검토/미수집',
-    stale.line.includes('보전 시범 MCUI(예비 평가) 10.0(지표 보고서)')&&!stale.line.includes('미검토')&&JSON.stringify(stale.wak)==='{}'&&
+    stale.line.includes('보전 IUCN 검색 0건 · 낮은 점수 아님(지표 보고서)')&&!stale.line.includes('미검토')&&
+    Object.keys(stale.wak).join()==='MCUI'&&stale.wak.MCUI.startsWith('IUCN 적색목록 2026-1에서')&&
     stale.cuc.BBVI.startsWith('MBPI 최고 항목을 뒷받침하는 독립 원논문이 두 편 미만')&&stale.sq.MBPI.startsWith('기원종·구조·시험값·원논문을')&&!JSON.stringify(stale).includes('검수된 영양 값 미확인'),JSON.stringify(stale));
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
   const cmp=(await walkComparison()).map(p=>p.text).join('\n');
-  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','시범 지표 · 사후 검증 통과 · 근거 보기','MFPI·MBPI 둘 다 필요 · 보기','예비 평가(Rapid LC, 역검증 미통과) 기반','BBVI 참고값 · 참고값(단일 논문) · 점수·매트릭스 미사용'].every(x=>cmp.includes(x)),cmp);
+  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'일부 근거 확인','산출 보류','검증 전 시범 지표 · 근거 보기','시범 지표 · 방법 검증 통과(11종 비교) · 근거 보기','MFPI·MBPI 둘 다 필요 · 보기','IUCN 검색 0건 · 낮은 점수 아님 · 보기','예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님','BBVI 참고값 · 참고값(단일 논문) · 점수·매트릭스 미사용'].every(x=>cmp.includes(x)),cmp);
   const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),g=c.querySelector('.coverage-guide');c.scrollLeft=c.scrollWidth;const guideSticks=Math.abs(g.getBoundingClientRect().left-c.getBoundingClientRect().left)<4;c.scrollLeft=0;const badge=c.querySelector('.seg.calculated'),small=badge.querySelector('small');const contrast=getComputedStyle(small).color==='rgb(255, 255, 255)'&&getComputedStyle(badge).backgroundColor==='rgb(15, 112, 100)';const currentGuide=!g.textContent.includes('종전 2/5')&&g.textContent.includes('완성률이나 근거 품질 점수가 아닙니다');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {guideSticks,contrast,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
   check('Comparison guide, badge contrast and keyboard return',Object.values(compareUx).every(Boolean),JSON.stringify(compareUx));
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
@@ -213,10 +217,8 @@ try{
   check('Counts agree: footer, list card and panel show the same map record total',await evaluate("(()=>{const n=cellRecords(selected);const card=document.querySelector('[data-species=\"836033\"]').innerText.replace(/\\s+/g,' ');return document.getElementById('map-count').textContent===n.toLocaleString()&&card.includes(n+'건 · '+spatialCells(selected).length+'셀')&&document.querySelector('#detail-map-summary').innerText.includes(n+'건')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
   const unplacedN=expPub+expCand-placedInMatrix;
-  // 3.15: species with both values whose MCUI basis the rule keeps off (미역, preliminary Rapid LC) are counted apart
-  const heldN=[...report.species,...(report.candidate_species||[])].filter(s=>s.scores.BBVI!==null&&s.scores.MCUI!==null).length-placedInMatrix;
   // verified-pilot-3.2: renamed so it is not confused with the information-sufficiency label '우선 조사 대상'
-  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplaced.includes(`매트릭스 미배치 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종) ${heldN?`(BBVI·MCUI 한 쌍 없음 ${unplacedN-heldN}종 · MCUI 근거로 제외 ${heldN}종)`:'(BBVI·MCUI 한 쌍 없음)'}`)&&unplaced.includes('우선 조사 대상’과는 다른 목록')&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
+  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplaced.includes(`매트릭스 미배치 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand}종) (BBVI·MCUI 한 쌍 없음)`)&&unplaced.includes('우선 조사 대상’과는 다른 목록')&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
   const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
   check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
   const pairs=await evaluate("(()=>{toggleSimulation(false);const li=[...document.querySelectorAll('#axis-pairs li')].map(x=>x.innerText);toggleSimulation(true);const hid=document.getElementById('axis-pairs').innerHTML==='';toggleSimulation(false);return {li,hid,intro:document.getElementById('axis-pairs').innerText}})()");
@@ -347,7 +349,7 @@ try{
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
   const hijMap=await liveMap(494972);
-  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65\.0/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0 \(예비 평가\)/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65\.0/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 산출 보류/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
@@ -454,7 +456,7 @@ try{
     const mapShot=async name=>{await evaluate(`document.getElementById('map').scrollIntoView({block:'${mobile?'start':'center'}'});1`);await sleep(600);await shot(`${tag}-flow-${name}`,false);};
     const flow=async aphia=>{await pick(aphia);await sleep(300);return evaluate("({sel:document.getElementById('map-selected').innerText,src:document.getElementById('map-source').textContent,note:document.getElementById('map-review-note').textContent,shapes:document.querySelectorAll('#map path.leaflet-interactive').length,detail:document.getElementById('detail').innerText})");};
     let f=await flow(836033);
-    check(`Flow 1 ${tag}: 참굴 MFPI 71.6 above the map and in the panel`,f.sel.includes('참굴')&&f.sel.includes('운영 발행')&&f.sel.includes('MFPI 71.6')&&f.detail.includes('71.6 · 시범 지표 · 사후 검증 통과'),f.sel);
+    check(`Flow 1 ${tag}: 참굴 MFPI 71.6 above the map and in the panel`,f.sel.includes('참굴')&&f.sel.includes('운영 발행')&&f.sel.includes('MFPI 71.6')&&f.detail.includes('71.6 · 시범 지표 · 방법 검증 통과(11종 비교)'),f.sel);
     await mapShot('1-oyster');
     f=await flow(241776);
     check(`Flow 2 ${tag}: 해삼 MCUI 80, IUCN EN, published 4° cells`,f.sel.includes('MCUI 80')&&f.detail.includes('EN A2bd')&&f.shapes===cucMap.cells&&f.src.includes('4° 셀'),f.sel+' | '+f.src);
