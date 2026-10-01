@@ -117,7 +117,7 @@ async function loadPublishedProfiles() {
     const recordCount=Number.isSafeInteger(info.record_count) && info.record_count>=0
       ? info.record_count : null;
     return {aphiaID:Number(p.aphia_id),label:p.korean_name||p.scientific_name,name:p.scientific_name,
-      group:({836033:'패류',506159:'패류',494972:'해조류',372119:'해조류',342067:'기타 무척추동물',250680:'기타 무척추동물',241776:'기타 무척추동물',145721:'해조류'})[p.aphia_id]||'기타 무척추동물',live:true,recordCount:noOccurrences?null:recordCount,
+      group:({836033:'패류',506159:'패류',494972:'해조류',372119:'해조류',342067:'기타 무척추동물',250680:'기타 무척추동물',241776:'기타 무척추동물',145721:'해조류'})[p.aphia_id]||'기타 무척추동물',recordCount:noOccurrences?null:recordCount,
       yearStart:info.period_start?Number(info.period_start.slice(0,4)):null,
       yearEnd:info.period_end?Number(info.period_end.slice(0,4)):null,
       summary:p.summary,info,productionSummary:p.production_summary,
@@ -142,7 +142,7 @@ async function loadPublishedProfiles() {
       nutrition:{status:audit?.nutrition?.foodCode?'candidate_row':'not_collected'},
       compounds:{status:'not_collected'},production:{},
       limitations:entry?'출현 셀은 검수 통과 기록의 집계입니다. 조사 노력·양식/방류 여부(원자료 표시가 없으면 구분 불가)는 보정하지 않았습니다.':outdatedRelease?'출현 검수 파일이 이 화면 코드보다 새 버전입니다. 새로고침(F5)하면 셀이 표시됩니다.':'출현 검수 파일을 확인하지 못해 이 종의 셀을 공개하지 않습니다.'};
-    species.push({aphiaID:c.aphiaID,label:c.label,name:c.name,group:c.group,live:true,catalog:true,
+    species.push({aphiaID:c.aphiaID,label:c.label,name:c.name,group:c.group,catalog:true,
       reason:c.reason,taxonNote:c.taxonNote,audit,releaseOutdated:outdatedRelease,review:entry?.review,sensitivity:entry?.sensitivity,reviewedOn:entry?.reviewedOn,
       recordCount:cells.length?records:null,yearStart:cells.length?Math.min(...cells.map(x=>x.yearStart)):null,yearEnd:cells.length?Math.max(...cells.map(x=>x.yearEnd)):null,cells,
       summary:'종 후보 선정 이유: '+c.reason+'. '+(cells.length?`검수 통과 출현기록 ${records}건을 ${entry.sizeDeg}° 셀로 공개. 현재 분포·개체수 아님.`:entry?'공개 기준을 통과한 출현기록 없음 · 종 부재 아님.':outdatedRelease?'출현 검수 자료 새 버전 있음 · 새로고침(F5).':'출현 검수 자료 확인 실패.'),
@@ -156,5 +156,5 @@ async function loadPublishedProfiles() {
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
   // The only place the two groups are counted; status texts read these values and never add them into one "N종 연결".
   const publishedCount=rows.length, candidateCount=species.length-rows.length;
-  return {live:true,snapshotAt,outdated,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:releaseOutdated?'조사 후보의 출현 검수 파일이 이 화면 코드보다 새 버전이라 새로고침(F5) 전에는 후보 종의 셀을 표시하지 않습니다.':'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표는 별도 검수 보고서를 통과한 항목(예: 감태 ACE 원논문 기반 시범 MBPI)만 표시하며 나머지는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 추가 수집 자료(OBIS)와 합산하지 않습니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
+  return {snapshotAt,outdated,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:releaseOutdated?'조사 후보의 출현 검수 파일이 이 화면 코드보다 새 버전이라 새로고침(F5) 전에는 후보 종의 셀을 표시하지 않습니다.':'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표는 별도 검수 보고서를 통과한 항목(예: 감태 ACE 원논문 기반 시범 MBPI)만 표시하며 나머지는 보류입니다. IUCN 체크리스트와 RDA 식품명 후보는 원평가·종 연결 검수 전입니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 검증 전 시범 지표는 별도 보고서(assessments.json)에서 불러오며, 산출되지 않은 항목은 0점이 아니라 보류로 표시합니다.`};
 }
