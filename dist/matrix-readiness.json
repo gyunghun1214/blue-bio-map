@@ -1,8 +1,42 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 0,
-  "method_version": "verified-pilot-3.1",
+  "matrix_points": 1,
+  "matrix_rule": {
+    "bbvi_threshold": 50,
+    "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
+    "cell_colour_precedence": [
+      "conservation_priority",
+      "alternative_production",
+      "sustainable_use",
+      "baseline_survey"
+    ],
+    "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
+    "include_national_mcui": true,
+    "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
+    "mcui_threshold": 50,
+    "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
+    "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
+    "types": {
+      "high_bbvi_high_mcui": {
+        "id": "alternative_production",
+        "label": "대체생산·배양 연구"
+      },
+      "high_bbvi_low_mcui": {
+        "id": "sustainable_use",
+        "label": "지속가능 활용 후보"
+      },
+      "low_bbvi_high_mcui": {
+        "id": "conservation_priority",
+        "label": "보전 우선·모니터링"
+      },
+      "low_bbvi_low_mcui": {
+        "id": "baseline_survey",
+        "label": "기초조사·관찰 대상"
+      }
+    }
+  },
+  "method_version": "verified-pilot-3.2",
   "schema_version": 1,
   "species": [
     {
@@ -150,7 +184,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "미역",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": false,
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
@@ -174,7 +210,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 241776,
@@ -203,7 +240,9 @@
       ],
       "korean_name": "해삼",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Apostichopus japonicus",
       "scope": "operating_8",
       "scores": {
@@ -223,7 +262,8 @@
         "https://www.iucnredlist.org/species/180424/272708369",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 250680,
@@ -260,7 +300,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "멍게",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": false,
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
@@ -280,7 +322,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 342067,
@@ -330,7 +373,9 @@
       ],
       "korean_name": "살오징어",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Todarodes pacificus",
       "scope": "operating_8",
       "scores": {
@@ -348,7 +393,8 @@
         "https://www.iucnredlist.org/species/176085/1428473",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 372119,
@@ -379,7 +425,9 @@
       ],
       "korean_name": "우뭇가사리",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Gelidium elegans",
       "scope": "operating_8",
       "scores": {
@@ -395,7 +443,8 @@
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 494972,
@@ -432,7 +481,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "톳",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": false,
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
@@ -452,7 +503,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 506159,
@@ -478,7 +530,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "홍합(참담치)",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Mytilus coruscus",
       "scope": "operating_8",
       "scores": {
@@ -499,7 +553,8 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 836033,
@@ -535,8 +590,10 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "참굴",
-      "matrix_eligible": false,
+      "matrix_eligible": true,
+      "matrix_type": "sustainable_use",
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Magallana gigas",
       "scope": "operating_8",
       "scores": {
@@ -566,7 +623,8 @@
         "https://www.mdpi.com/2304-8158/14/9/1595",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 377084,
@@ -585,7 +643,9 @@
       ],
       "korean_name": "다시마",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Saccharina japonica",
       "scope": "expansion_22",
       "scores": {
@@ -605,7 +665,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 371986,
@@ -619,7 +680,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "감태",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
@@ -640,7 +703,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
         "https://www.marinespecies.org/rest/"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 234476,
@@ -659,7 +723,9 @@
       ],
       "korean_name": "가시파래",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Ulva prolifera",
       "scope": "expansion_22",
       "scores": {
@@ -677,7 +743,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476",
         "https://www.marinespecies.org/rest/"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 494853,
@@ -691,7 +758,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "괭생이모자반",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Sargassum horneri",
       "scope": "expansion_22",
       "scores": {
@@ -711,7 +780,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=494853",
         "https://www.marinespecies.org/rest/"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 236157,
@@ -730,7 +800,9 @@
       ],
       "korean_name": "Gracilaria vermiculophylla",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Gracilaria vermiculophylla",
       "scope": "expansion_22",
       "scores": {
@@ -750,7 +822,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 145086,
@@ -764,7 +837,9 @@
       "bioactivity_missing_steps": [],
       "korean_name": "청각",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": false,
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
@@ -784,7 +859,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 231750,
@@ -803,7 +879,9 @@
       ],
       "korean_name": "바지락",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Ruditapes philippinarum",
       "scope": "expansion_22",
       "scores": {
@@ -825,7 +903,8 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 397082,
@@ -844,7 +923,9 @@
       ],
       "korean_name": "전복(종 수준)",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Haliotis discus",
       "scope": "expansion_22",
       "scores": {
@@ -862,7 +943,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=397082",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 393716,
@@ -881,7 +963,9 @@
       ],
       "korean_name": "큰가리비",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Mizuhopecten yessoensis",
       "scope": "expansion_22",
       "scores": {
@@ -903,7 +987,8 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 836041,
@@ -922,7 +1007,9 @@
       ],
       "korean_name": "시카메굴",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Magallana sikamea",
       "scope": "expansion_22",
       "scores": {
@@ -941,8 +1028,17 @@
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836041",
-        "https://www.marinespecies.org/rest/"
-      ]
+        "https://www.marinespecies.org/rest/",
+        "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/"
+      ],
+      "unexplored_candidate": {
+        "note": "A relative has a calculated BBVI; this species' score is not inferred from it.",
+        "rank": "genus",
+        "relatives": [
+          "Magallana gigas"
+        ],
+        "taxon": "Magallana"
+      }
     },
     {
       "aphia_id": 504357,
@@ -961,7 +1057,9 @@
       ],
       "korean_name": "피조개",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Anadara broughtonii",
       "scope": "expansion_22",
       "scores": {
@@ -982,7 +1080,8 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 413600,
@@ -1001,7 +1100,9 @@
       ],
       "korean_name": "맛조개",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": true,
       "scientific_name": "Sinonovacula constricta",
       "scope": "expansion_22",
       "scores": {
@@ -1018,7 +1119,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 127022,
@@ -1037,7 +1139,9 @@
       ],
       "korean_name": "고등어",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": true,
       "scientific_name": "Scomber japonicus",
       "scope": "expansion_22",
       "scores": {
@@ -1058,7 +1162,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 219984,
@@ -1077,7 +1182,9 @@
       ],
       "korean_name": "멸치",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Engraulis japonicus",
       "scope": "expansion_22",
       "scores": {
@@ -1095,7 +1202,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=219984",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 281273,
@@ -1114,7 +1222,9 @@
       ],
       "korean_name": "참조기",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Larimichthys polyactis",
       "scope": "expansion_22",
       "scores": {
@@ -1132,7 +1242,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=281273",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 275816,
@@ -1151,7 +1262,9 @@
       ],
       "korean_name": "넙치",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
@@ -1168,7 +1281,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=275816",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 274849,
@@ -1187,7 +1301,9 @@
       ],
       "korean_name": "조피볼락",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Sebastes schlegelii",
       "scope": "expansion_22",
       "scores": {
@@ -1205,7 +1321,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=274849",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 276651,
@@ -1224,7 +1341,9 @@
       ],
       "korean_name": "방어",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "iucn",
+      "priority_survey": false,
       "scientific_name": "Seriola quinqueradiata",
       "scope": "expansion_22",
       "scores": {
@@ -1244,7 +1363,8 @@
         "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 254538,
@@ -1263,7 +1383,9 @@
       ],
       "korean_name": "대구",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
@@ -1283,7 +1405,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 1061762,
@@ -1302,7 +1425,9 @@
       ],
       "korean_name": "꽃게",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
@@ -1319,7 +1444,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1061762",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 534443,
@@ -1338,7 +1464,9 @@
       ],
       "korean_name": "참문어(동아시아 종)",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": null,
+      "priority_survey": true,
       "scientific_name": "Octopus sinensis",
       "scope": "expansion_22",
       "scores": {
@@ -1355,7 +1483,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=534443",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     },
     {
       "aphia_id": 1666974,
@@ -1374,7 +1503,9 @@
       ],
       "korean_name": "갑오징어",
       "matrix_eligible": false,
+      "matrix_type": null,
       "mcui_basis": "national",
+      "priority_survey": false,
       "scientific_name": "Acanthosepion esculentum",
       "scope": "expansion_22",
       "scores": {
@@ -1393,7 +1524,8 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-      ]
+      ],
+      "unexplored_candidate": null
     }
   ]
 }

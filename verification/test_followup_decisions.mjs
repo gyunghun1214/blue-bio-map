@@ -36,7 +36,7 @@ for(const row of readiness.species){
 assert.equal(scored,21,'7 MFPI + 8 MBPI (3.1 ChEMBL stratum after the link review) + 14 MCUI (7 IUCN + 7 Korean national) cover 21 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,7,'national MCUI stays labelled by basis');
-assert.ok(national.every(r=>r.matrix_eligible===false),'national MCUI never enters the IUCN-based matrix');
+assert.ok(national.every(r=>r.matrix_eligible===(r.scores.BBVI!==null)),'verified-pilot-3.2: national MCUI is placed only with a BBVI, labelled by mcui_basis');
 const oyster=readiness.species.find(r=>r.aphia_id===836033);
 assert.equal(ctx.followup({...make(oyster),assessment:{...byId.get(836033),scores:{...byId.get(836033).scores,MFPI:0}}}),null,
   'forged zero or changed published score cannot attach a follow-up row');
@@ -44,5 +44,6 @@ const kelp=readiness.species.find(r=>r.aphia_id===371986);
 assert.match(ctx.followup(make(kelp)).research.join(' '),/독립 문헌/);
 assert.equal(ctx.followup(make(kelp)).known.join(','),'MBPI');
 assert.equal(ctx.followup(make(kelp)).blocked.includes('BBVI'),true);
-assert.ok(readiness.species.every(r=>r.matrix_eligible===false),'no real matrix point yet');
+// verified-pilot-3.2: a real point needs both BBVI and MCUI (a national MCUI included, marked by mcui_basis); nothing else is placed.
+assert.ok(readiness.species.every(r=>r.matrix_eligible===(r.scores.BBVI!==null&&r.scores.MCUI!==null)),'a real matrix point needs BBVI and MCUI');
 console.log('PASS: 30 unranked follow-up paths, gate by taxon/scope/score, missing stays missing, no spatial recommendation');

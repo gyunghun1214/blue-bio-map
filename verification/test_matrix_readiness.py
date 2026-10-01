@@ -19,8 +19,11 @@ class MatrixReadinessTests(unittest.TestCase):
     def test_30_species_missing_remains_missing(self):
         report = build(self.assessments, self.catalog, self.expansion)
         self.assertEqual(len(report["species"]), 30)
-        self.assertEqual(report["matrix_points"], 0)
-        self.assertFalse(any(r["matrix_eligible"] for r in report["species"]))
+        # verified-pilot-3.2: a national MCUI is placed too (marked apart), so a point is any species with both BBVI and MCUI.
+        placed = [r["aphia_id"] for r in report["species"] if r["matrix_eligible"]]
+        self.assertEqual(placed, [r["aphia_id"] for r in report["species"]
+                                  if r["scores"]["BBVI"] is not None and r["scores"]["MCUI"] is not None])
+        self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None], [(836033, 80.9)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
@@ -43,6 +46,31 @@ class MatrixReadinessTests(unittest.TestCase):
                 self.assertEqual(row["scores"][axis], reviewed.get(row["aphia_id"], {}).get(axis), (row["aphia_id"], axis))
         published = json.loads((ROOT / "dist/matrix-readiness.json").read_text())
         self.assertEqual(report, published)
+
+    def test_matrix_type_and_sufficiency_layers(self):
+        report = build(self.assessments, self.catalog, self.expansion)
+        rule = self.assessments["method"]["matrix"]
+        self.assertEqual(report["matrix_rule"], rule)
+        reviewed = {s["aphia_id"]: s for s in self.assessments["species"] + self.assessments["candidate_species"]}
+        for row in report["species"]:
+            s = reviewed[row["aphia_id"]]
+            self.assertEqual((row["priority_survey"], row["unexplored_candidate"]),
+                             (s["priority_survey"], s["unexplored_candidate"]), row["aphia_id"])
+            if not row["matrix_eligible"]:
+                self.assertIsNone(row["matrix_type"], row["aphia_id"])
+                continue
+            key = ("high" if row["scores"]["BBVI"] >= 50 else "low") + "_bbvi_" + ("high" if row["scores"]["MCUI"] >= 50 else "low") + "_mcui"
+            self.assertEqual(row["matrix_type"], rule["types"][key]["id"], row["aphia_id"])
+        # the national stratum leaves the matrix again when the rule says so; nothing else moves
+        off = copy.deepcopy(self.assessments)
+        off["method"]["matrix"]["include_national_mcui"] = False
+        rows = build(off, self.catalog, self.expansion)["species"]
+        self.assertFalse(any(r["matrix_eligible"] or r["matrix_type"] for r in rows if r["mcui_basis"] == "national"))
+        self.assertEqual([r["scores"] for r in rows], [r["scores"] for r in report["species"]])
+        # an older report without a matrix rule publishes no type fields
+        older = copy.deepcopy(self.assessments)
+        del older["method"]["matrix"]
+        self.assertFalse(any("matrix_type" in r for r in build(older, self.catalog, self.expansion)["species"]))
 
     def test_candidate_checklist_is_not_an_original_iucn_assessment(self):
         rows = build(self.assessments, self.catalog, self.expansion)["species"]
