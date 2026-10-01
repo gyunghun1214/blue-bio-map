@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.6.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.7.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -175,6 +175,8 @@ def mfpi(row: dict, cohort: list[dict], fraction: dict, aqua: dict, settings: di
     nutrients = {}
     for name in settings["components"]:
         n = row["nutrients"][name]
+        if n is None:  # 3.7: a component missing from the species' own row is left out of the mean, never scored 0
+            continue
         rank = percentile(n["value"], [r["nutrients"][name]["value"] for r in cohort])
         nutrients[name] = {**n, "percentile": round(rank, 2), "percentile_unrounded": rank,
                            "evidence_factor": factors[n["grade"]],
@@ -213,7 +215,9 @@ def substitute(aphia: int, name: str, evidence: dict, settings: dict, rows: dict
                                "values": {r["food_item_id"]: r["nutrients"][name]["value"] for r in picked}}}
     found = []
     for item in evidence["mfpi_substitutes"]["items"]:
-        level, c = item["matches"].get(str(aphia)), item["components"][name]
+        level, c = item["matches"].get(str(aphia)), item["components"].get(name)
+        if c is None:
+            continue
         if level in rule["levels"] and item["part"] in rule["parts"] and c["value"] is not None:
             grade = rule["species_grade_by_doc"].get(c["doc"], "proxy") if level == "species" else "proxy"
             found.append(((rule["levels"].index(level), -settings["grade_factors"][grade], -(c["n"] or 0), item["food_item_id"]),
@@ -271,7 +275,7 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                 "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4),
                 **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {})})
     trace["observed_rows"].sort(key=lambda x: x["food_item_id"])
-    have = {"protein_g": False, "iron_mg": False, "zinc_mg": False,
+    have = {**{k: False for k in settings["components"]},
             "edible_fraction": any(r.get("reviewed") is True for r in support_for(aphia, evidence, "edible_fraction")),
             "aquaculture": aqua is not None}
     for obs in trace["observed_rows"]:
@@ -299,6 +303,11 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
             if all(filled.values()):
                 trace["substitute_row"] = r["food_item_id"]
                 return {**r, "nutrients": {**r["nutrients"], **filled}}
+            # 3.7: with no substitute for some component, the row still scores when it reports minimum_components
+            nutrients = {**r["nutrients"], **{k: v for k, v in filled.items() if v}}
+            if sum(v is not None for v in nutrients.values()) >= settings.get("minimum_components", len(nutrients)):
+                trace["substitute_row"] = r["food_item_id"]
+                return {**r, "nutrients": nutrients}
         return None
 
     def scored(cohort_id: str, cohort: dict):
@@ -314,9 +323,11 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         if not fraction:
             return None
         score, detail = mfpi(row, peers, fraction, aqua, settings)
-        extra = ({"outside_cohort": True, "substituted_components": [k for k, n in row["nutrients"].items() if n.get("substitute")]}
+        omitted = [k for k, n in row["nutrients"].items() if n is None]
+        extra = ({"outside_cohort": True, "substituted_components": [k for k, n in row["nutrients"].items() if n and n.get("substitute")],
+                  **({"omitted_components": omitted} if omitted else {})}  # key only in 3.7+, so older reports reproduce
                  if peers is not cohort["rows"] else {})
-        require(not extra or extra["substituted_components"], f"{aphia}: a row outside the cohort must carry a substitute")
+        require(not extra or extra["substituted_components"] or extra.get("omitted_components"), f"{aphia}: a row outside the cohort must carry a substitute or an omitted component")
         return score, {"cohort_id": cohort_id, "cohort_species": len(cohort["rows"]), "row": row, "fraction": fraction, **detail, **extra}
 
     for cid, cohort in cross.items():
@@ -354,10 +365,12 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         trace["grade_sensitivity"] = {"all_grade_factors_1": round1(mfpi(row, peers, fraction, aqua, settings,
                                                                          factors={k: 1.0 for k in settings["grade_factors"]})[0])}
         step = round(100 / len(peers), 1)
-        outside = [f"Ranked against the {len(cohort['rows'])}-food cohort plus itself because "
-                   + ", ".join(f"{k} is a substitute ({row['nutrients'][k]['substitute']['label']}, {row['nutrients'][k]['substitute']['food_item_id']})"
-                               for k in d["substituted_components"])
-                   + "; a substitute comes from another sample, region or table, not from this species' own row."] if d.get("outside_cohort") else []
+        why = ([f"{k} is a substitute ({row['nutrients'][k]['substitute']['label']}, {row['nutrients'][k]['substitute']['food_item_id']})"
+                for k in d.get("substituted_components", [])]
+               + [f"{k} is not reported in the species' own row and is left out of the mean (not scored 0)" for k in d.get("omitted_components", [])])
+        outside = [f"Ranked against the {len(cohort['rows'])}-food cohort plus itself because " + ", ".join(why)
+                   + ("; a substitute comes from another sample, region or table, not from this species' own row." if d.get("substituted_components") else ".")
+                   ] if d.get("outside_cohort") else []
         trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
