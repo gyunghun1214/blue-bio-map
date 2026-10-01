@@ -27,25 +27,26 @@ const by=aphia=>next.species.find(s=>s.aphiaID===aphia);
 // Every value shown in the browser equals the reproducible report (score trace <-> screen match).
 for(const s of original.species)for(const axis of ['MFPI','MBPI','MCUI','BBVI'])
   assert.equal(ctx.score(by(s.aphia_id),axis),s.scores[axis],`${s.korean_name} ${axis}`);
-assert.equal(ctx.score(by(836033),'MFPI'),65.5);
+assert.equal(ctx.score(by(836033),'MFPI'),71.6);  // 3.6: calcium joins protein, iron and zinc
 assert.equal(ctx.score(by(241776),'MCUI'),80);
-assert.equal(ctx.score(by(836033),'BBVI'),80.9,'verified-pilot-2.3: the replicated LQP potency lets oyster BBVI through');
+assert.equal(ctx.score(by(836033),'BBVI'),83.9,'verified-pilot-2.3: the replicated LQP potency lets oyster BBVI through');
 ctx.next=next;
 vm.runInContext('data=globalThis.next',ctx);
 
 let html=ctx.renderScores(by(836033));
-for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','교차 점검','65.6','검증 전 시범 지표','비교하지 않습니다'])
+for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','검증 전 시범 지표','비교하지 않습니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
-assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>80\.9 · 검증 전 시범 지표<\/b>/);
-// 3.3 fills 홍합 zinc from uFiSh; 톳 (a seaweed; uFiSh covers fish and shellfish only) keeps a blank zinc and the missing-component reason
+assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>83\.9 · 검증 전 시범 지표<\/b>/);
+// 3.3 fills 홍합 zinc from uFiSh; 톳 (a seaweed; uFiSh covers fish and shellfish only) keeps a blank zinc.
+// 3.6: that blank is left out of the mean (3 of 4 components) and said so, never scored 0
 html=ctx.renderScores(by(494972));
-assert.match(html,/아연 결측\(빈칸\)/,'blank zinc shown as missing, not zero');
-assert.match(html,/빈칸은 0이 아니라 결측/);
+assert.match(html,/아연 값이 비어 있어 평균에서 뺐습니다\(0점 아님/,'blank zinc shown as omitted, not zero');
+assert.ok(!html.includes('아연 0 mg'));
 // 살오징어: uFiSh fills its zinc, so the RDA blank is still shown but the missing aquaculture record is what holds MFPI
 html=ctx.renderScores(by(342067));
 assert.match(html,/아연 결측\(빈칸\)/,'the RDA blank is still shown as missing');
 assert.match(html,/지역·시기·방법이 확인된 양식 근거가 부족합니다/);
-assert.doesNotMatch(html,/필수 성분\(단백질·철·아연\) 중 일부가 비어 있습니다/);
+assert.doesNotMatch(html,/필수 성분이 모자랍니다/);
 html=ctx.renderScores(by(241776));
 // 3.4: the MCUI label says the OBIS trend is now an auxiliary element, and the trend is shown beside the IUCN facts
 for(const text of ['EN A2bd','2025-09-30','EN -&gt; 80','IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영','이전 평가','OBIS 출현 추세 · 보조 요소'])
@@ -88,8 +89,10 @@ assert.match(ctx.coverageBar(by(836033)),/종 연결/);
 assert.doesNotMatch(ctx.coverageBar(by(836033)),/3\/5|점수 3/);
 for(const id of [372119,494972]){
   Object.assign(by(id),liveMeta);
-  assert.equal(ctx.score(by(id),'MFPI'),null,'dried values cannot enter fresh cohort');
-  assert.equal(ctx.coverage(by(id)).checks[2].stage,'linked','verified source taxon labels retain partial raw values');
+  // 3.6: 톳 scores from its own raw row (3 of 4); the dried zinc value still never fills the blank
+  assert.equal(ctx.score(by(id),'MFPI'),{372119:null,494972:63.3}[id],'dried values cannot enter fresh cohort');
+  if(id===494972)assert.equal(by(id).assessment.food_trace.nutrients.zinc_mg,undefined);
+  assert.equal(ctx.coverage(by(id)).checks[2].stage,{372119:'linked',494972:'calculated'}[id],'verified source taxon labels retain partial raw values');
 }
 html=ctx.renderScores(by(372119));
 for(const fact of ['MEXT:2023:09025','16.1 g','6 mg','3 mg','dried tengusa'])
@@ -115,7 +118,8 @@ const stages={
   // 3.1: the ChEMBL stratum gives mussel, hijiki and sea squirt a single-paper MBPI (BBVI withheld).
   // 3.3: mussel MFPI is calculated with its species-level uFiSh zinc (the RDA row leaves zinc blank).
   506159:['verified','linked','calculated','calculated','calculated'],
-  494972:['verified','linked','linked','calculated','unavailable'],
+  // 3.6: hijiki MFPI is calculated from 3 of 4 components (zinc blank and omitted, calcium added).
+  494972:['verified','linked','calculated','calculated','unavailable'],
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
   250680:['verified','linked','calculated','calculated','unavailable'],
@@ -127,7 +131,7 @@ const stages={
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
   assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
-  assert.equal(ctx.score(s,'BBVI'),Number(id)===836033?80.9:null);
+  assert.equal(ctx.score(s,'BBVI'),Number(id)===836033?83.9:null);
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
@@ -152,21 +156,20 @@ assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 �
 assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>42\.2<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>54\.2<small>/);
+assert.match(dom.comparison.innerHTML,/>46\.7<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
-assert.doesNotMatch(dom.comparison.innerHTML,/65\.5/,'page 2 species must not leak into page 1');
+assert.doesNotMatch(dom.comparison.innerHTML,/71\.6/,'page 2 species must not leak into page 1');
 for(const s of next.species.slice(0,5))assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 dom['comparison-next'].click();
 assert.deepEqual(headers(),labels.slice(5),'next page shows species 6-8');
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종');
 assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison-next'].disabled,true);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>65\.5<small>검증 전 시범 지표/);
-assert.doesNotMatch(dom.comparison.innerHTML,/해조류 3개 식품/,'no seaweed MFPI on page 2');
-// 3.3: 홍합 zinc comes from uFiSh, so the withheld example is 톳 (a seaweed; uFiSh covers fish and shellfish only).
-assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*>일부 근거 확인<small>필수 성분 결측 · 보기/,'unscored species stay withheld, not zero');
-assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.1<small>검증 전 시범 지표/,'substituted zinc gives a scored MFPI');
+assert.match(dom.comparison.innerHTML,/>71\.6<small>검증 전 시범 지표/);
+// 3.3: 홍합 zinc comes from uFiSh. 3.6: 톳 (a seaweed; uFiSh covers fish and shellfish only) leaves its blank zinc out of the mean.
+assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>검증 전 시범 지표/,'3 of 4 components score');
+assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.9<small>검증 전 시범 지표/,'substituted zinc gives a scored MFPI');
 dom['comparison-next'].click();
 assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
 dom['comparison-prev'].click();
@@ -230,7 +233,7 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:{gbif:{retrievedCount:0},nutrition:{},iucn:{}},cells:[]});
 next={live:true,species:[cand(231750,'Ruditapes philippinarum','바지락'),cand(275816,'Paralichthys olivaceus','넙치'),sp(397082,'Haliotis discus','전복(종 수준)')]};
 await ctx.attach(next);
-assert.equal(ctx.score(next.species[0],'MFPI'),52.1);
+assert.equal(ctx.score(next.species[0],'MFPI'),60.4);
 assert.equal(ctx.score(next.species[1],'MCUI'),null,'not in Red List is never a low score');
 assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
@@ -277,12 +280,12 @@ const withBio=(status,bbvi,independent=false)=>{const r=report(),o=r.species.fin
     o.scores.MBPI=best.adjusted;o.mbpi_label=null;}
   o.scores.BBVI=bbvi;o.score_status.BBVI=status;return r;};
 const oysterOnly=async r=>{ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});next={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(next);return next.species[0];};
-oyster=await oysterOnly(withBio('산출됨',66.5));
+oyster=await oysterOnly(withBio('산출됨',69.6));  // 3.6: 0.5 x MFPI 71.6 + 0.5 x 67.5
 assert.equal(ctx.state(oyster,'BBVI').kind,'technical_error','a single-paper MBPI cannot enter BBVI even when the arithmetic matches');
-oyster=await oysterOnly(withBio('산출됨',77.8,true));
-assert.equal(ctx.score(oyster,'BBVI'),77.8);
+oyster=await oysterOnly(withBio('산출됨',80.8,true));
+assert.equal(ctx.score(oyster,'BBVI'),80.8);
 vm.runInContext('bbviWeight=.8',ctx);
-assert.equal(ctx.score(oyster,'BBVI'),70.4,'weight updates an eligible BBVI');
+assert.equal(ctx.score(oyster,'BBVI'),75.3,'weight updates an eligible BBVI');
 oyster=await oysterOnly(withBio('산출 보류',null));
 assert.equal(ctx.score(oyster,'MBPI'),67.5);
 assert.equal(ctx.score(oyster,'BBVI'),null,'a single-paper hold is not bypassed by pilotScore');
@@ -301,7 +304,7 @@ oyster=await oysterOnly(withPeptide([{...peptide(),stratum_kind:undefined,compou
 assert.equal(ctx.state(oyster,'MBPI').kind,'technical_error','a peptide row cannot pass as a small molecule');
 oyster=await oysterOnly(withPeptide([peptide(),{...original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace[0],adjusted:1.0,percentile:1.3333333}]));
 assert.equal(ctx.state(oyster,'MBPI').kind,'technical_error','peptide and compound strata never mix');
-assert.equal(ctx.score(oyster,'MFPI'),65.5,'an MBPI fault leaves MFPI');
+assert.equal(ctx.score(oyster,'MFPI'),71.6,'an MBPI fault leaves MFPI');
 
 // National MCUI is its own branch and never passes as a global IUCN value.
 const withNational=(basis,score)=>{const r=report(),o=r.species.find(s=>s.aphia_id===836033);
@@ -351,7 +354,7 @@ html=ctx.renderScores(by(836033));
   assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
 assert.ok(!html.includes('참고 통합값'),'a real BBVI replaces the reference combination');
 assert.equal(ctx.score(by(836033),'MBPI'),96.3);
-assert.equal(ctx.summary(by(836033)),'MFPI 65.5 · MBPI 96.3 · MCUI(국가 평가) 10.0');
+assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 96.3 · MCUI(국가 평가) 10.0');
 // A used replication must be listed among the independent DOIs and cite a published source, or the MBPI is a fault.
 for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='LQP').independent_dois=['10.5352/jls.2012.22.2.220','10.0000/other']},
   o=>{o.source_ids=o.source_ids.filter(id=>id!=='miyoshi_1991_zein')}]){
@@ -365,9 +368,9 @@ next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInCont
 assert.match(ctx.renderScores(by(145721)),/펩타이드 YNKL · ACE IC50 = 21 µM/);
 // Axis pairs: only species with both values; national and IUCN MCUI and different cohorts stay in separate groups.
 const pairs=ctx.axisPairs();
-assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 65\.5 · MCUI 10\.0/);
+assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 71\.6 · MCUI 10\.0/);
 assert.match(pairs,/MBPI × MCUI\(한국 국가 평가 기반\) · ahtpdb-ace-ic50-hhl-cushman-cheung<\/b> 1종: 참굴 MBPI 96\.3 · MCUI 10\.0<\/li>/);
-assert.match(pairs,/BBVI × MCUI\(한국 국가 평가 기반\)[^<]*<\/b> 1종: 참굴 BBVI 80\.9 · MCUI 10\.0<\/li>/);
+assert.match(pairs,/BBVI × MCUI\(한국 국가 평가 기반\)[^<]*<\/b> 1종: 참굴 BBVI 83\.9 · MCUI 10\.0<\/li>/);
 assert.match(pairs,/MFPI만의 쌍은 BBVI가 아닙니다/);
 assert.doesNotMatch(pairs,/IUCN 기반\) · [^<]*참굴/,'a national MCUI never joins the IUCN group');
 // Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
@@ -375,12 +378,12 @@ const refReport=report(),refOyster=refReport.species.find(s=>s.aphia_id===836033
 refOyster.scores.MBPI=67.5;refOyster.score_status.MBPI='산출됨';
 refOyster.mbpi_label='참고값(단일 논문)';refOyster.withheld_reasons.BBVI='mbpi_single_source';refOyster.scores.BBVI=null;refOyster.score_status.BBVI='산출 보류';
 refOyster.bioactivity_trace=original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace;
-refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:65.5,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
-  mbpi_stratum:'fixture',mbpi_original_paper_dois:['10.0000/fixture'],food_weight:.5,value:66.5,sensitivity:{'0.25':67,'0.5':66.5,'0.75':66},limits:['독립 재현 미확인.'],used_for_score:false};
+refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:71.6,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
+  mbpi_stratum:'fixture',mbpi_original_paper_dois:['10.0000/fixture'],food_weight:.5,value:69.6,sensitivity:{'0.25':68.5,'0.5':69.6,'0.75':70.6},limits:['독립 재현 미확인.'],used_for_score:false};
 let refOy=await oysterOnly(refReport);vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
 assert.equal(ctx.score(refOy,'MBPI'),67.5,'fixture MBPI must attach');{
   html=ctx.renderScores(refOy);
-  for(const text of ['참고 통합값 · 독립 재현 미확인','참고값 66.5 · 점수 아님','w 0.75 → 66','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
+  for(const text of ['참고 통합값 · 독립 재현 미확인','참고값 69.6 · 점수 아님','w 0.75 → 70.6','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
   assert.equal(ctx.score(refOy,'BBVI'),null,'a reference combination never becomes BBVI');
 }
 refOyster.reference_combination.inputs.MFPI=70;

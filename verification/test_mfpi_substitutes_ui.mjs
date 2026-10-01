@@ -15,7 +15,8 @@ vm.runInContext('data={assessmentInfo:globalThis.info}',ctx);
 const rows=[...report.species,...report.candidate_species];
 for(const a of rows)assert.ok(ctx.valid(a,report),`${a.korean_name} passes the browser re-check`);
 const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
-assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[254538,397082,504357,506159,1666974]);  // 3.6: 피조개 zinc from MEXT
+// 3.6: 피조개 and 멸치 zinc from MEXT. 3.7: 톳·청각 leave a blank zinc out of the mean (no substitute); 멸치 now scores.
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[145086,219984,254538,397082,494972,504357,506159,1666974]);
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
 const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);
@@ -60,10 +61,10 @@ for(const a of withSub){
   const html=ctx.detail({assessment:a});
   for(const n of Object.values(a.food_trace.nutrients).filter(n=>n.substitute))
     for(const text of n.substitute.taxon_level==='subsample'?[n.substitute.label,'같은 종의 부표본 행','K0440002570a 0.55','K0440002580a 0.47','평균']
-        :n.substitute.taxon_level==='mext'?[n.substitute.label,`일본 식품성분표 2020(8정판) ${n.substitute.food_item_id}`,'가식부 100 g','종 연결:','アカガイ']
+        :n.substitute.taxon_level==='mext'?[n.substitute.label,`일본 식품성분표 2020(8정판) ${n.substitute.food_item_id}`,'가식부 100 g','종 연결:',n.substitute.taxon_label.match(/\((.+)\)/)[1]]  // standard Japanese name (アカガイ, カタクチイワシ)
         :[n.substitute.label,`uFiSh1.0 ${n.substitute.food_item_id}`,`섭취 부위 ${n.substitute.part}`])
       assert.ok(html.includes(text),`${a.korean_name} shows ${text}`);
-  assert.ok(!/\d\.\d{5,}/.test(html),`${a.korean_name}: values shown with at most four significant digits`);
+  assert.ok(!/\d\.\d{5,}/.test(html.replace(/10\.\d{4,9}\/[^\s<]+/g,'')),`${a.korean_name}: values shown with at most four significant digits (DOIs aside)`);
   assert.ok(html.includes('고정 비교집단에 넣지 않고'),`${a.korean_name} says it is ranked outside the cohort`);
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
@@ -71,8 +72,15 @@ assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}).includes('�
 // a withheld species whose missing component could be filled says so (살오징어: zinc found, aquaculture missing).
 // 3.6: the same-species MEXT item (するめいか 10345) now outranks the 3.3 family-level uFiSh proxy 093033.
 assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/대체치 후보: 아연 MEXT 8정판 10345[^]*다른 이유로 보류/);
-assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===219984)}),/대체치 후보: 아연 MEXT 8정판 10044[^]*다른 이유로 보류/);
-assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 후보 없음[^]*채울 후보가 없는 성분/);
+// 3.7: 톳 has no zinc candidate, so zinc is left out of the mean (shown, never 0) and 3 of 4 components score
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 값이 비어 있어 평균에서 뺐습니다\(0점 아님, 사용 성분 3\/4\)/);
+const hijiki=rows.find(a=>a.aphia_id===494972);
+const omit=change=>{const a=structuredClone(hijiki);change(a.food_trace);return ctx.valid(a,report);};
+assert.equal(omit(f=>{f.omitted_components=['zinc_mg','iron_mg'];delete f.nutrients.iron_mg;}),false,'below minimum_components never scores');
+assert.equal(omit(f=>{f.omitted_components=['zinc_mg','protein_g'];delete f.nutrients.protein_g;}),false,'a component the own row reports is never omitted');
+assert.equal(omit(f=>{f.nutrients.zinc_mg={...f.nutrients.iron_mg,value:0};}),false,'an omitted component is never scored as 0');
+const old=structuredClone(report);delete old.method.nutrition.minimum_components;
+assert.equal(ctx.valid(hijiki,old),false,'omission needs the published minimum_components rule');
 // the 홍합 uFiSh observation record now states which component is used
 assert.ok(ctx.detail({assessment:withSub.find(a=>a.aphia_id===506159)}).includes(`uFiSh1.0:093015: zinc_mg is used as a ${report.method_version} substitute`));
 console.log(`ok MFPI substitutes UI (${withSub.length} species)`);

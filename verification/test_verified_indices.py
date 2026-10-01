@@ -1095,11 +1095,14 @@ class VerifiedPilot35Tests(unittest.TestCase):
 
 
 
+V36 = ROOT / "config" / "verified-indices-v3.6.json"  # superseded by 3.7 (MFPI calcium); its rules stay tested
+
+
 class VerifiedPilot36Tests(unittest.TestCase):
-    """Public method: 3.5 plus a MEXT 2020 same-species raw item for zinc missing from a species' own RDA row."""
+    """Superseded by 3.7. 3.6: 3.5 plus a MEXT 2020 same-species raw item for zinc missing from a species' own RDA row."""
 
     def setUp(self):
-        self.evidence, *self.rest = load_inputs()
+        self.evidence, *self.rest = load_inputs(config=V36)
         self.report = build(self.evidence, *self.rest)
         self.v35 = build(*load_inputs(config=V35))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
@@ -1108,7 +1111,9 @@ class VerifiedPilot36Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.6", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.6 report is archived as it was
+        archived36 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.6.json"
+        self.assertEqual(render(self.report), archived36.read_text(encoding="utf-8"))
 
     def test_only_ark_shell_mfpi_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1139,10 +1144,77 @@ class VerifiedPilot36Tests(unittest.TestCase):
             self.assertEqual((item["sample_state"], item["basis"], item["part"]), ("raw", "100 g edible portion", "edible portion"))
             self.assertEqual(set(item["components"]), set(self.rule["mext"]["components"]))
         for name in ("protein_g", "iron_mg"):  # only the listed component is ever taken from MEXT
-            evidence, candidates, config, snapshot, taxonomy = load_inputs()
+            evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V36)
             config["nutrition"]["substitutes"]["mext"]["components"] = [name]
             report = build(evidence, candidates, config, snapshot, taxonomy)
             self.assertIsNone(next(s for s in report["candidate_species"] if s["aphia_id"] == 504357)["scores"]["MFPI"], name)
+
+
+# verified-pilot-3.7: calcium joins the MFPI components and a row reporting 3 of 4 scores; three aquaculture records.
+# (aphia, axis) -> new value; every other value of 3.6 stays.
+CHANGED_37 = {(145721, "MFPI"): 46.7, (250680, "MFPI"): 52.8, (494972, "MFPI"): 63.3, (506159, "MFPI"): 60.9,
+              (836033, "MFPI"): 71.6, (836033, "BBVI"): 83.9, (145086, "MFPI"): 36.7, (231750, "MFPI"): 60.4,
+              (397082, "MFPI"): 54.7, (393716, "MFPI"): 55.8, (504357, "MFPI"): 61.9, (219984, "MFPI"): 74.1,
+              (281273, "MFPI"): 39.4, (275816, "MFPI"): 59.4, (274849, "MFPI"): 48.5, (276651, "MFPI"): 51.0,
+              (254538, "MFPI"): 38.3, (1061762, "MFPI"): 62.0, (1666974, "MFPI"): 42.5}
+
+
+class VerifiedPilot37Tests(unittest.TestCase):
+    """Public method: 3.6 plus calcium as a fourth MFPI component (3 of 4 required) and three aquaculture records."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v36 = build(*load_inputs(config=V36))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v36)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.7", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_mfpi_and_its_bbvi_move(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, CHANGED_37)
+        self.assertEqual(sum(s["scores"]["MFPI"] is not None for s in self.new.values()), 18)
+        self.assertEqual([a for a, s in self.new.items() if s["scores"]["BBVI"] is not None], [836033])
+
+    def test_cohorts_keep_their_members(self):
+        ids = lambda r: {c["cohort_id"]: c.get("food_item_ids") for c in r["comparison_cohorts"] if c.get("role") == "primary"}
+        self.assertEqual(ids(self.report), ids(self.v36))
+
+    def test_a_missing_component_is_omitted_never_zero(self):
+        components = self.report["method"]["nutrition"]["components"]
+        for aphia, s in self.new.items():
+            if s["scores"]["MFPI"] is None:
+                continue
+            f = s["food_trace"]
+            used, omitted = set(f["nutrients"]), set(f.get("omitted_components", []))
+            self.assertEqual(used | omitted, set(components), aphia)
+            self.assertGreaterEqual(len(used), self.report["method"]["nutrition"]["minimum_components"], aphia)
+            self.assertIs(f.get("outside_cohort") is True, bool(omitted) or bool(f.get("substituted_components")), aphia)
+            for k in omitted:  # the species' own linked row really leaves it blank
+                own = next(o for o in f["observed_rows"] if o["food_item_id"] == f["source_food_item_id"])
+                self.assertIsNone(own["values"][k], (aphia, k))
+        self.assertEqual({a for a, s in self.new.items() if s["food_trace"].get("omitted_components")},
+                         {494972, 145086})  # 톳·청각: zinc blank, no uFiSh or raw MEXT item (피조개·멸치 take MEXT zinc, 3.6)
+
+    def test_two_of_four_does_not_score(self):
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        rows = copy.deepcopy(snapshot)
+        for r in rows["rows"]:
+            if r["code"] == "L0260000000a":  # 톳: zinc blank with no substitute, drop calcium too
+                r["values"]["calcium_mg"] = None
+        s = species(build(evidence, candidates, config, rows, taxonomy), 494972)
+        self.assertIsNone(s["scores"]["MFPI"])
+        self.assertEqual(s["withheld_reasons"]["MFPI"], "component_missing_in_source")
+
+    def test_new_inputs_are_read_by_3_7_only(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36):
+            n = cfg(old)["nutrition"]
+            self.assertNotIn("calcium_mg", n["components"])
+            self.assertNotEqual(n["substitutes"]["aquaculture_supplement"], "research/verified-indices/mfpi-aquaculture-3.7-2026-10-01.json")
 
 
 if __name__ == "__main__":
