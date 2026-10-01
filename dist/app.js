@@ -574,14 +574,14 @@ function foodEvidencePanel(s) {
 }
 
 // Short table labels; the full sentence is in scoreReason. Unconfirmed is a reason, never a low value.
-const shortReason={comparable_nutrition_missing:'고정 비교집단에 종 행 없음',food_row_not_species_specific:'식품 행이 종 수준 아님',
+const shortReason={comparable_nutrition_missing:'고정 비교집단에 종 행 없음',food_row_not_species_specific:'식품 행이 이 종으로 확인 안 됨',
   component_missing_in_source:'필수 성분 결측',aquaculture_method_unverified:'양식 근거 부족',
   compound_origin_assay_chain_or_fixed_cohort_missing:'기원종→물질→시험 비교집단 없음',not_in_red_list:'IUCN 검색 0건 · 낮은 점수 아님',
   assessment_lookup_failed:'IUCN 조회 실패',category_not_numeric:'IUCN DD · 숫자 없음',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요',
   mbpi_single_source:'MBPI 단일 논문 · BBVI 보류'};
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
-  food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
+  food_row_not_species_specific:'식품성분표 행이 이 종의 행으로 확인되지 않아(일반명 행이거나 다른 종의 행, 예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
   component_missing_in_source:'원자료에 필수 성분(단백질·철·아연) 중 일부가 비어 있습니다. 빈칸은 0이 아니라 결측입니다.',
   species_edible_yield_unverified:'이 종의 원자료 가식부 비율을 검증하지 못했습니다.',
   aquaculture_method_unverified:'지역·시기·방법이 확인된 양식 근거가 부족합니다.',

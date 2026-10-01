@@ -67,7 +67,9 @@ for(const id of [241776,342067]){
 }
 Object.assign(by(836033),liveMeta);
 assert.equal(ctx.coverage(by(836033)).checks[2].stage,'calculated','reviewed MFPI is independent of inventory counts');
-assert.notEqual(ctx.coverage(by(241776)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
+assert.notEqual(ctx.coverage(by(342067)).checks[3].stage,'calculated','500 inventory entries cannot become MBPI');
+// 2026-09-28: the sea cucumber MBPI comes from one reviewed paper (HDWWKER), not from the 500 inventory entries.
+assert.equal(ctx.score(by(241776),'MBPI'),8.7);
 // verified-pilot-2.3: the oyster LQP potency is replicated from another origin, so the single-paper reference label is gone.
 assert.equal(ctx.coverage(by(836033)).checks[3].stage,'calculated');
 assert.doesNotMatch(ctx.coverage(by(836033)).checks[3].detail,/참고값/);
@@ -108,7 +110,7 @@ const stages={
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
   250680:['verified','linked','calculated','linked','unavailable'],
-  241776:['verified','linked','found','linked','calculated'],
+  241776:['verified','linked','found','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI (BBVI still withheld); 2.3 gives the oyster a BBVI.
   145721:['verified','linked','calculated','calculated','unavailable']
 };
@@ -315,7 +317,8 @@ assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 시범
 assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 시범 숫자 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // verified-pilot-2.2: the reviewed peptide values are scored in the AHTPDB cohort; paper values and both licences stay visible.
-for(const [id,value,texts] of [[145721,19.6,['KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
+for(const [id,value,texts] of [[145721,19.6,['KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']],
+  [241776,8.7,['HDWWKER','583.6 µM','10.3390/md22020090','CC BY 4.0']]]){
   html=ctx.renderScores(by(id));
   assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: scored values are not repeated as unscored raw values`);
   const mbpi=html.slice(html.indexOf('MBPI · 생리활성'));

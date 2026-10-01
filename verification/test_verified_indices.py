@@ -301,9 +301,14 @@ class VerifiedPilot21Tests(unittest.TestCase):
     def test_peptide_raw_values_never_score_or_rank(self):
         raw = {s["aphia_id"]: s.get("peptide_raw_values") for s in self.report["species"] + self.report["candidate_species"]
                if s.get("peptide_raw_values")}
-        self.assertEqual({k: [r["sequence"] for r in v] for k, v in raw.items()}, {145721: ["KNFL"], 836033: ["AEYLCEAC", "LQP"]})
+        # 2026-09-28 evidence (read from evidence-v3.json) also shows here as display-only raw values
+        self.assertEqual({k: [r["sequence"] for r in v] for k, v in raw.items()},
+                         {145721: ["KNFL"], 836033: ["AEYLCEAC", "LQP"], 241776: ["HDWWKER"], 234476: ["KAF"],
+                          393716: ["VW"], 413600: ["VQY"]})
         licences = {"feng_2021_knfl": "CC BY 4.0", "chen_2022_oyster": "CC BY 4.0",
-                    "do_2012_oyster_lqp": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)"}
+                    "do_2012_oyster_lqp": "Publisher copyright (KoreaScience/KISTI terms; no CC licence stated)",
+                    "wang_2024_apostichopus": "CC BY 4.0", "li_2024_ulva_kaf": "CC BY 4.0", "li_2016_sinonovacula_vqy": "CC BY 4.0",
+                    "li_2018_scallop_vw": "Publisher copyright (版权所有 © 《大连海洋大学学报》编辑部; free to read, no CC licence stated)"}
         for rows in raw.values():
             for r in rows:
                 self.assertIs(r["used_for_score"], False)
@@ -312,7 +317,8 @@ class VerifiedPilot21Tests(unittest.TestCase):
                 self.assertEqual(self.report["sources"][r["source_id"]]["license"], licences[r["source_id"]])
                 self.assertIn("numeric values only", self.report["sources"][r["source_id"]]["terms"])
         self.assertEqual({(k, r["sequence"]): r["value"] for k, v in raw.items() for r in v},
-                         {(145721, "KNFL"): 225.87, (836033, "AEYLCEAC"): 4287, (836033, "LQP"): 1.18})
+                         {(145721, "KNFL"): 225.87, (836033, "AEYLCEAC"): 4287, (836033, "LQP"): 1.18, (241776, "HDWWKER"): 583.6,
+                          (234476, "KAF"): 0.63, (393716, "VW"): 86.9, (413600, "VQY"): 9.8})
         # the 2.1-only raw value never reaches the v3 research supplement or its AHTPDB peptide stratum
         v3 = json.loads((ROOT / "research" / "verified-indices" / "evidence-v3.json").read_text(encoding="utf-8"))
         self.assertNotIn("do_2012_oyster_lqp", v3["sources"])
@@ -520,7 +526,7 @@ class VerifiedPilot22Tests(unittest.TestCase):
     def test_method_version(self):
         self.assertEqual(self.report["method_version"], "verified-pilot-2.2")
 
-    def test_only_undaria_and_oyster_gain_a_single_source_mbpi(self):
+    def test_only_peptide_species_gain_a_single_source_mbpi(self):
         changed = {}
         for old in self.v21["species"] + self.v21["candidate_species"]:
             new = species(self.report, old["aphia_id"])
@@ -529,7 +535,12 @@ class VerifiedPilot22Tests(unittest.TestCase):
             if new["scores"]["MBPI"] != old["scores"]["MBPI"]:
                 changed[old["aphia_id"]] = (old["scores"]["MBPI"], new["scores"]["MBPI"], new["withheld_reasons"]["BBVI"], new["mbpi_label"])
         self.assertEqual(changed, {145721: (None, 19.6, "mbpi_single_source", "참고값(단일 논문)"),
-                                   836033: (None, 72.2, "mbpi_single_source", "참고값(단일 논문)")})
+                                   836033: (None, 72.2, "mbpi_single_source", "참고값(단일 논문)"),
+                                   # 2026-09-28 evidence: one synthetic peptide per paper, so all stay single-source
+                                   241776: (None, 8.7, "requires_MFPI_and_MBPI", "참고값(단일 논문)"),
+                                   234476: (None, 73.3, "requires_MFPI_and_MBPI", "참고값(단일 논문)"),
+                                   393716: (None, 27.3, "mbpi_single_source", "참고값(단일 논문)"),
+                                   413600: (None, 56.9, "requires_MFPI_and_MBPI", "참고값(단일 논문)")})
         research = build(*load_inputs(config=OysterLqpResearchScenarioTests.CONFIG))
         for aphia in changed:   # same peptide rows and rules as the research scenario
             self.assertEqual(species(self.report, aphia)["bioactivity_trace"], species(research, aphia)["bioactivity_trace"])
@@ -540,7 +551,8 @@ class VerifiedPilot22Tests(unittest.TestCase):
                   for s in self.report["species"] for i in s["bioactivity_trace"] if i.get("stratum_kind") == "peptide"}
         self.assertEqual(values, {(145721, "KNFL"): [(225.87, "uM", "HHL", "feng_2021_knfl")],
                                   (836033, "AEYLCEAC"): [(4287, "uM", "HHL", "chen_2022_oyster")],
-                                  (836033, "LQP"): [(1.18, "uM", "HHL", "do_2012_oyster_lqp")]})
+                                  (836033, "LQP"): [(1.18, "uM", "HHL", "do_2012_oyster_lqp")],
+                                  (241776, "HDWWKER"): [(583.6, "uM", "HHL", "wang_2024_apostichopus")]})
         ahtpdb = self.report["sources"]["ahtpdb_ic50_2026"]
         self.assertEqual(ahtpdb["license"], "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능")
         self.assertEqual(ahtpdb["permission"]["date"], "2026-09-27")
@@ -609,3 +621,60 @@ class VerifiedPilot23Tests(unittest.TestCase):
         self.assertEqual((rep["used"], rep["value"], rep["origin_label"], rep["source_id"]),
                          (True, 2.0, "옥수수 α-제인 (합성 펩타이드로 측정)", "miyoshi_1991_zein"))
         self.assertIn("miyoshi_1991_zein", self.report["sources"])
+
+class Evidence20260928Tests(unittest.TestCase):
+    """2026-09-28 evidence under the unchanged 2.3 rules. All 30 species are pinned, so a new row cannot move another species."""
+    SCORES = {   # (MFPI, MBPI, MCUI, BBVI); comments mark the values this evidence changed
+        145721: (42.2, 19.6, None, None), 241776: (None, 8.7, 80.0, None),   # 해삼 MBPI
+        250680: (54.2, None, None, None), 342067: (None, None, 10.0, None), 372119: (None, None, None, None),
+        494972: (None, None, None, None), 506159: (None, None, 10.0, None), 836033: (65.5, 96.3, 10.0, 80.9),
+        377084: (None, None, None, None), 371986: (None, 67.5, None, None),
+        234476: (None, 73.3, None, None),   # 가시파래 MBPI
+        494853: (None, None, None, None), 236157: (None, None, None, None), 145086: (None, None, None, None),
+        231750: (52.1, None, 10.0, None), 397082: (None, None, 80.0, None),
+        393716: (56.3, 27.3, 10.0, None),   # 큰가리비 MBPI
+        836041: (None, None, None, None), 504357: (None, None, 10.0, None),
+        413600: (None, 56.9, 10.0, None),   # 가리맛조개 MBPI
+        127022: (None, None, 10.0, None), 219984: (None, None, 10.0, None),
+        281273: (39.8, None, 10.0, None),   # 참조기 MFPI
+        275816: (53.3, None, None, None),   # 넙치 MFPI
+        274849: (42.9, None, None, None), 276651: (56.3, None, 10.0, None), 254538: (None, None, None, None),
+        1061762: (53.5, None, None, None),   # 꽃게 MFPI
+        534443: (None, None, None, None), 1666974: (None, None, 10.0, None),
+    }
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+
+    def test_all_30_scores_are_pinned(self):
+        got = {s["aphia_id"]: tuple(s["scores"][a] for a in ("MFPI", "MBPI", "MCUI", "BBVI"))
+               for s in self.report["species"] + self.report["candidate_species"]}
+        self.assertEqual(got, self.SCORES)
+        self.assertEqual((self.report["method_version"], self.report["snapshot_date"]), ("verified-pilot-2.3", "2026-09-28"))
+
+    def test_new_peptides_are_single_paper_reference_values(self):
+        for aphia, item in ((241776, ("HDWWKER", 3.234, 11.65, 0.75)), (234476, ("KAF", 6.201, 97.73, 0.75)),
+                            (393716, ("VW", 4.061, 36.36, 0.75)), (413600, ("VQY", 5.009, 75.85, 0.75))):
+            s = species(self.report, aphia)
+            self.assertEqual([(i["peptide_sequence"], i["pIC50"], i["percentile"], i["evidence_factor"])
+                              for i in s["bioactivity_trace"]], [item], aphia)
+            self.assertEqual((s["mbpi_label"], s["scores"]["BBVI"]), ("참고값(단일 논문)", None))
+        scallop = species(self.report, 393716)   # both axes but one paper: a reference combination, never a BBVI
+        ref = scallop["reference_combination"]
+        self.assertEqual((scallop["withheld_reasons"]["BBVI"], ref["value"], ref["used_for_score"], ref["sensitivity"]),
+                         ("mbpi_single_source", 41.8, False, {"0.25": 34.6, "0.5": 41.8, "0.75": 49.1}))
+
+    def test_new_aquaculture_rows_keep_their_limits(self):
+        for aphia, source, mfpi in ((281273, "hwang_2025_croaker", 39.8), (275816, "oh_2024_flounder", 53.3),
+                                    (1061762, "jiang_2025_crab", 53.5)):
+            s = species(self.report, aphia)
+            aquaculture = s["food_trace"]["aquaculture"]
+            self.assertEqual((s["scores"]["MFPI"], aquaculture["source_id"], aquaculture["feasible"]), (mfpi, source, True))
+        self.assertIn("Korea is not mentioned", species(self.report, 1061762)["food_trace"]["aquaculture"]["region"])
+
+    def test_razor_clam_food_row_is_another_species(self):
+        clam = species(self.report, 413600)
+        self.assertEqual((clam["korean_name"], clam["withheld_reasons"]["MFPI"]), ("가리맛조개", "food_row_not_species_specific"))
+        [row] = clam["food_trace"]["observed_rows"]   # shown, never linked
+        self.assertEqual((row["food_item_id"], row["linked"]), ("K4250050000a", False))
+        self.assertIn("Solen strictus", row["link_evidence"])

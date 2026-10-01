@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "snapshot_date": "2026-09-27",
+  "snapshot_date": "2026-09-28",
   "nutrition_cohort_criteria": "AFCD Release 3 rows F006288/F006289/F006291: three distinct Australian aquacultured oyster species, raw shucked flesh, per 100 g edible portion, linked to the same SARDI/FRDC sampling and methods program. Fixed independently of website filters. Three species are exploratory, not a statistically validated reference population.",
   "sources": {
     "afcd_r3_nutrients": {
@@ -495,6 +495,39 @@
       "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
       "license_url": "https://www.mext.go.jp/b_menu/1351168.htm",
       "notice": "Read only for the sample remark and refuse of rows that RDA cites as JAPAN('20), and for the refuse of food 09039 (wakame, raw) used as an edible-fraction sensitivity for 미역. Remarks and refuse values are quoted with attribution; no table data are redistributed."
+    },
+    "hwang_2025_croaker": {
+      "provider": "Development & Reproduction 29(1):13-18 (Hwang & Kang 2025), full text via Europe PMC PMC12004011",
+      "title": "Morphometric assessment of egg quality for second generation of cultured small yellow croaker, Larimichthys polyactis broodstock",
+      "version": "Short communication, published online 2025-03-31",
+      "doi": "10.12717/DR.2025.29.1.13",
+      "pmid": "40256123",
+      "url": "https://doi.org/10.12717/DR.2025.29.1.13",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY-NC 4.0"
+    },
+    "oh_2024_flounder": {
+      "provider": "Animals 14(11):1693 (Oh & Lee 2024), full text via PMC PMC11171225",
+      "title": "Fish welfare-related issues and their relevance in land-based olive flounder (Paralichthys olivaceus) farms in Korea",
+      "version": "2024 (published 2024-06-05)",
+      "doi": "10.3390/ani14111693",
+      "pmid": "38891740",
+      "url": "https://doi.org/10.3390/ani14111693",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY 4.0"
+    },
+    "jiang_2025_crab": {
+      "provider": "Biology 14(12):1682 (Jiang et al. 2025), full text via Europe PMC PMC12730681",
+      "title": "A dynamic energy budget model for the non-continuous and biphasic growth of the pond-cultured swimming crab, Portunus trituberculatus",
+      "version": "2025 (published 2025-11-26)",
+      "doi": "10.3390/biology14121682",
+      "pmid": "41463455",
+      "url": "https://doi.org/10.3390/biology14121682",
+      "accessed": "2026-09-28",
+      "terms": "Bibliographic record and culture facts only; no text or tables copied",
+      "license": "CC BY 4.0"
     }
   },
   "nutrition_rows": [
@@ -792,6 +825,42 @@
       "sample_period": "2020 table (8th revision)",
       "publication_year": 2020,
       "limitations": "Official table value for preparing the whole farmed young fish (head, viscera, bones and fins discarded); not a measured yield of Korean farmed fish. RDA rows K0830000000a ('09, refuse 41%) and K0830021130a ('82, wild young, refuse 45%) are different samples and are not used."
+    },
+    {
+      "aphia_id": 281273,
+      "kind": "aquaculture",
+      "record_id": "10.12717/DR.2025.29.1.13:Introduction+Methods",
+      "source_id": "hwang_2025_croaker",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Net-cage and indoor-tank culture based on artificial seed production (Introduction); the study stock is second-generation cultured broodstock (the authors' term) produced from wild broodstock caught off Younggwang, 600 fish reared 3 years in circular concrete indoor tanks (30 t)",
+      "region": "Republic of Korea: commercial culture in the southern regions, Jeollanam-do and Jeju Island",
+      "year": "published 2025; spawning 7-30 May, calendar year not stated",
+      "limitations": "Commercial culture rests on one uncited Introduction sentence, with no farm count or production volume. The paper's own data are one research broodstock (egg-quality morphometrics, one 23-day spawning season), not grow-out production. The tank location is not stated; only the authors' affiliation (NIFS West Sea Fisheries Research Institute) is known. 'Second generation' bred from wild parents may be F1 by the usual convention."
+    },
+    {
+      "aphia_id": 275816,
+      "kind": "aquaculture",
+      "record_id": "10.3390/ani14111693:Title+2.1+AppendixA",
+      "source_id": "oh_2024_flounder",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Land-based tank farms (per the title and the Appendix A questionnaire item on fingerlings stocked in tanks; the water-supply system is not described)",
+      "region": "Republic of Korea: 71 commercial farms surveyed, 36 in Wando and 35 in Jeju-do",
+      "year": "survey 1-15 September 2023; 2022 production 46,000 t, 50.5% of the total among farmed species in Korea (cited from KOSIS, not measured by the authors); published 2024",
+      "limitations": "Fish-welfare interview and questionnaire study (self-reported answers, site visits); it does not describe the culture cycle or production system. Only Jeju-do and Wando are covered. Margin of error ±11.63% at 95% because the number of farms is unknown."
+    },
+    {
+      "aphia_id": 1061762,
+      "kind": "aquaculture",
+      "record_id": "10.3390/biology14121682:Introduction+2.2+Table1",
+      "source_id": "jiang_2025_crab",
+      "reviewed": true,
+      "feasible": true,
+      "method": "Intensive pond culture in commercial culture ponds (pond type, size and stocking density not described)",
+      "region": "China: Weifang, Shandong and Ningbo, Zhejiang. Korea is not mentioned in the paper",
+      "year": "2023 national production 101,000 t (cited from the China Fishery Statistical Yearbook 2024; called production, not labelled aquaculture); published 2025",
+      "limitations": "Chinese pond-culture evidence, not Korean culture. The paper is a dynamic energy budget growth model; its own measurements are lab trials in 20 L tanks on crabs taken from commercial ponds, so it does not describe a production cycle. Korean siting, seed supply and cost need local review."
     }
   ],
   "nutrition_observations": [
@@ -2463,6 +2532,16 @@
       "reviewed": false,
       "link_evidence": "Generic 'Cuttle fish' row; the species-specific 참갑오징어 row is linked instead.",
       "candidate_aphia_id": 1666974
+    },
+    {
+      "food_item_id": "K4250050000a",
+      "reported_food_name": "조개, 맛조개, 생것",
+      "english_name": "Gould's razor shell, Raw",
+      "aphia_id": null,
+      "scientific_name": null,
+      "reviewed": false,
+      "link_evidence": "'Gould's razor shell' is Solen strictus A. A. Gould, 1861 (WoRMS 367772, Solenidae). The candidate Sinonovacula constricta (Pharidae) is published as 가리맛조개 in the NIBR red data book 2024, so this 맛조개 row is another species. Not assigned; shown only as an observed row.",
+      "candidate_aphia_id": 413600
     }
   ],
   "bioactivity_chain_definition": {

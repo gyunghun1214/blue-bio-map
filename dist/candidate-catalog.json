@@ -213,12 +213,12 @@
       }
     },
     {
-      "label": "맛조개",
+      "label": "가리맛조개",
       "name": "Sinonovacula constricta",
       "aphiaID": 413600,
       "group": "패류",
       "reason": "식품 영양·양식 조사 후보",
-      "taxonNote": "국가생물적색자료집 2024 게재명은 가리맛조개. 맛조개(Solen strictus)와 다른 종이며 근거를 옮기지 않음.",
+      "taxonNote": "국가생물적색자료집 2024 게재명 가리맛조개로 표시(2026-09-28). RDA \"조개, 맛조개\" 행(Gould's razor shell, Solen strictus)과 다른 종이며 근거를 옮기지 않음. 맛조개로 검색해도 찾음.",
       "wormsUrl": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
       "taxonomyReviewedOn": "2026-09-25",
       "nutritionStatus": "food_name_candidate_unverified",
