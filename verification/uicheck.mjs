@@ -30,7 +30,8 @@ chrome.stderr.on('data',chunk=>{chromeStderr=(chromeStderr+chunk.toString()).sli
 chrome.on('error',error=>{chromeFailure=error;failPending(error);});
 chrome.on('exit',(code,signal)=>{chromeFailure=Error(`exited ${code??signal}`);failPending(Error(diagnostic()));});
 async function connect(){
-  for(let i=0;i<75;i++){
+  // ponytail: fixed 60 s wait; GitHub's Windows runner often needs >15 s for Chrome's first DevTools port (2026-10-01)
+  for(let i=0;i<300;i++){
     if(chromeFailure)throw Error(diagnostic());
     try{
       const port=Number(fs.readFileSync(path.join(profile,'DevToolsActivePort'),'utf8').split(/\r?\n/)[0]);
