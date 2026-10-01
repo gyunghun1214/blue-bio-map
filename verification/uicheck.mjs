@@ -153,10 +153,10 @@ try{
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
   // The cell line and the withheld reasons read the index report too, not the profile's older 미검토/미수집.
-  const stale=await evaluate("(()=>{const s=id=>data.species.find(x=>x.aphiaID===id);return {line:speciesAxesLine(s(145721)),tot:assessmentBlockers(s(494972)),wak:assessmentBlockers(s(145721))}})()");
-  check('Wakame/Hijiki: cell line and withheld reasons follow the index report, not the older profile 미검토/미수집',
+  const stale=await evaluate("(()=>{const s=id=>data.species.find(x=>x.aphiaID===id);return {line:speciesAxesLine(s(145721)),cuc:assessmentBlockers(s(241776)),wak:assessmentBlockers(s(145721))}})()");
+  check('Wakame/Sea cucumber: cell line and withheld reasons follow the index report, not the older profile 미검토/미수집',
     stale.line.includes('보전 IUCN 검색 0건 · 낮은 점수 아님(지표 보고서)')&&!stale.line.includes('미검토')&&
-    stale.tot.MFPI.startsWith('원자료에 필수 성분')&&stale.wak.MCUI.startsWith('IUCN 적색목록 2026-1에서')&&!JSON.stringify(stale).includes('검수된 영양 값 미확인'),JSON.stringify(stale));
+    stale.cuc.MFPI.startsWith('식품성분표 행이 종 수준으로')&&stale.wak.MCUI.startsWith('IUCN 적색목록 2026-1에서')&&!JSON.stringify(stale).includes('검수된 영양 값 미확인'),JSON.stringify(stale));
 
   await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
   const cmp=(await walkComparison()).map(p=>p.text).join('\n');
