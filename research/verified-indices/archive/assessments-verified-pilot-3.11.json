@@ -93,7 +93,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -983,7 +983,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1256,7 +1256,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1543,7 +1543,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1780,7 +1780,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -2138,7 +2138,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2838,7 +2838,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3842,7 +3842,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4830,7 +4830,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5757,7 +5757,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -6043,7 +6043,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7064,7 +7064,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8212,7 +8212,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 53.8
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -9205,7 +9205,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10159,7 +10159,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11126,7 +11126,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12063,7 +12063,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12979,7 +12979,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -13893,7 +13893,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14844,7 +14844,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15749,7 +15749,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.0
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16705,7 +16705,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17722,7 +17722,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.11 (2026-10-01). Evidence rows only: the cross-origin potency supplement becomes research/verified-indices/evidence-xo-potency-3.12.json, which keeps the 2.3 row (Miyoshi 1991 zein LQP 2.0 uM) and adds the synthetic IY 2.65 uM of Suetsuna 2000 (J Nutr Biochem 11:450; HHL). It replicates the potency of the 미역 IY item (Sato 2002, 6.1 uM; pIC50 gap 0.36). Takahisa Nakano co-authored both papers; the team lead counted them as independent (2026-10-01). Rules, coefficients and cohorts are unchanged. 미역 IY becomes a two-DOI item, so 미역 MBPI moves from the single-paper IW value to IY and BBVI is computed. See research/verified-indices/evidence-wakame-iy-2026-10-01.md.",
+    "changes_from": "verified-pilot-3.10 (2026-10-01). Evidence rows only: the reviewed 고등어 (Scomber japonicus) peptide rows PLITT 48.73 uM (Wang 2024, Food Chem 447:138873) and APFLAG 69.45, FDHKKFF 212.85 and LFPKFA 259.05 uM (Zhang 2025, J Food Sci e70767), all synthetic peptides identified by LC-MS/MS in mackerel muscle hydrolysates and assayed with HHL, join peptide_supplements. Rules, coefficients and cohorts are unchanged. 고등어 gains an MBPI from the PLITT item (single-paper reference); BBVI stays withheld (no second paper for PLITT). See research/verified-indices/evidence-mackerel-2026-10-01.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -17921,7 +17921,7 @@
         }
       }
     },
-    "method_version": "verified-pilot-3.12",
+    "method_version": "verified-pilot-3.11",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -18128,7 +18128,7 @@
         "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
         "max_pIC50_gap": 1.0,
         "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper.",
-        "supplement": "research/verified-indices/evidence-xo-potency-3.12.json"
+        "supplement": "research/verified-indices/evidence-xo-potency.json"
       },
       "endpoint": "IC50",
       "excluded_material_kinds": [
@@ -18224,7 +18224,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.12",
+  "method_version": "verified-pilot-3.11",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -19023,17 +19023,6 @@
       "url": "https://doi.org/10.1016/s0955-2863(00)00110-8",
       "version": "2000"
     },
-    "suetsuna_2000_wakame_fulltext": {
-      "accessed": "2026-10-01",
-      "doi": "10.1016/S0955-2863(00)00110-8",
-      "license": "Publisher copyright",
-      "pmid": "11091100",
-      "provider": "J Nutr Biochem 11(9):450-454 (Suetsuna & Nakano 2000), full text (ScienceDirect HTML, Dongguk University institutional access)",
-      "terms": "Bibliographic record and numeric values only; no text or tables copied",
-      "title": "Identification of an antihypertensive peptide from peptic digest of wakame (Undaria pinnatifida)",
-      "url": "https://doi.org/10.1016/S0955-2863(00)00110-8",
-      "version": "2000"
-    },
     "suetsuna_2002_clam": {
       "accessed": "2026-10-01",
       "doi": "10.1046/j.1444-2906.2002.00415.x",
@@ -19244,7 +19233,7 @@
   "species": [
     {
       "aphia_id": 145721,
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -19487,10 +19476,9 @@
           "stratum_kind": "peptide"
         },
         {
-          "adjusted": 80.9659090909091,
-          "evidence_factor": 1.0,
+          "adjusted": 60.72443181818182,
+          "evidence_factor": 0.75,
           "independent_dois": [
-            "10.1016/s0955-2863(00)00110-8",
             "10.1021/jf020482t"
           ],
           "measurements": [
@@ -19512,21 +19500,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "IY",
           "percentile": 80.97,
-          "potency_replications": [
-            {
-              "origin_label": "미역 펩신 소화물 테트라펩타이드 AIYK의 단편 (합성 펩타이드로 측정)",
-              "origin_material": "wakame (Undaria pinnatifida, Kitagami, Miyagi, 1996) pepsin digest; IY is a synthetic fragment of the isolated tetrapeptide AIYK, so the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1016/S0955-2863(00)00110-8",
-              "pIC50": 5.577,
-              "pIC50_gap": 0.362,
-              "reason": null,
-              "record_id": "10.1016/S0955-2863(00)00110-8:Table2:IY-synthetic",
-              "source_id": "suetsuna_2000_wakame_fulltext",
-              "unit": "uM",
-              "used": true,
-              "value": 2.65
-            }
-          ],
+          "potency_replications": [],
           "record_ids": [
             "10.1021/jf020482t:IY"
           ],
@@ -19685,11 +19659,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 81.0,
-          "minimum_cohort_10": 81.0,
-          "minimum_cohort_100": 81.0,
-          "no_approved_drug_filter": 81.0,
-          "no_common_metabolite_filter": 81.0
+          "log_scale_common_fence": 71.5,
+          "minimum_cohort_10": 71.5,
+          "minimum_cohort_100": 71.5,
+          "no_approved_drug_filter": 71.5,
+          "no_common_metabolite_filter": 71.5
         },
         "sufficiency": {
           "best_record_steps": 2,
@@ -19771,7 +19745,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19997,7 +19971,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "미역",
-      "mbpi_label": null,
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "national_assessment": null,
@@ -20078,35 +20052,56 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 71.5,
+          "MFPI": 46.7
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1021/jf020482t"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-seaweeds",
+        "sensitivity": {
+          "0.25": 65.3,
+          "0.5": 59.1,
+          "0.75": 52.9
+        },
+        "used_for_score": false,
+        "value": 59.1
+      },
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 63.9,
-        "MBPI": 81.0,
+        "BBVI": null,
+        "MBPI": 71.5,
         "MCUI": null,
         "MFPI": 46.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 72.4,
-          "0.5": 63.9,
-          "0.75": 55.3
-        },
-        "mean_compound_sensitivity": 51.0,
+        "food_weights": {},
+        "mean_compound_sensitivity": 48.4,
         "median_compound_sensitivity": 46.1,
         "range_from_aggregation": [
           19.6,
-          81.0
+          71.5
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 81.0,
+        "bioactivity_only_MBPI": 71.5,
         "food_only_MFPI": 46.7
       },
       "source_ids": [
@@ -20122,14 +20117,13 @@
         "rda_db_10_4",
         "sato_2002_wakame",
         "suetsuna_2000_wakame",
-        "suetsuna_2000_wakame_fulltext",
         "undaria_2018_paper",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -20315,7 +20309,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -20772,7 +20766,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -21755,7 +21749,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -22058,7 +22052,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -22674,7 +22668,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23288,7 +23282,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23929,7 +23923,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.12 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.11 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -24635,7 +24629,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.12",
+        "method_version": "verified-pilot-3.11",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

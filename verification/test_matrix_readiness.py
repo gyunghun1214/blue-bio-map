@@ -25,10 +25,10 @@ class MatrixReadinessTests(unittest.TestCase):
                                   if r["scores"]["BBVI"] is not None and r["scores"]["MCUI"] is not None])
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
-                          if r["scores"]["BBVI"] is not None], [(836033, 83.9)])
+                          if r["scores"]["BBVI"] is not None], [(145721, 63.9), (836033, 83.9)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
-                         [(145721, 71.5), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
+                         [(145721, 81.0), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
                           (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 39.5), (393716, 27.3), (413600, 56.9),
                           (127022, 34.9), (275816, 29.2)])
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
@@ -45,6 +45,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.9 uses a MEXT same-species raw item as the own row where RDA has none: 맛조개·고등어·참문어 MFPI, 18 -> 21.
         # verified-pilot-3.10 adds the reviewed 톳 peptide rows (Suetsuna 1998, single paper): 톳 MBPI 45.3 -> 65.0, BBVI withheld.
         # verified-pilot-3.11 adds the reviewed 고등어 peptide rows (Wang 2024, Zhang 2025; one paper per sequence): 고등어 MBPI 34.9.
+        # verified-pilot-3.12 counts Suetsuna 2000's synthetic IY as a potency replication of 미역 IY: MBPI 71.5 -> 81.0, BBVI 63.9
+        # (no MCUI, so the matrix keeps one point).
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 21)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
@@ -108,7 +110,8 @@ class MatrixReadinessTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.assessments, self.catalog, mismatched)
         counterfeit = copy.deepcopy(self.assessments)
-        counterfeit["species"][0]["scores"]["BBVI"] = 50
+        # a species whose BBVI is withheld (3.12 gives the first species, 미역, an earned BBVI)
+        next(s for s in counterfeit["species"] if s["scores"]["BBVI"] is None)["scores"]["BBVI"] = 50
         with self.assertRaises(ValueError):
             build(counterfeit, self.catalog, self.expansion)
 

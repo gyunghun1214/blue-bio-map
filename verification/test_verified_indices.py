@@ -1367,17 +1367,19 @@ MACKEREL = "research/verified-indices/evidence-mackerel-2026-10-01.json"
 
 
 class VerifiedPilot311Tests(unittest.TestCase):
-    """Public method: 3.10 plus the reviewed 고등어 peptide rows (research/verified-indices/evidence-mackerel-2026-10-01.md).
+    """Superseded by 3.12. 3.11: 3.10 plus the reviewed 고등어 peptide rows (research/verified-indices/evidence-mackerel-2026-10-01.md).
     Evidence rows only: rules, coefficients and cohorts are 3.10's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V311))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V310)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.11", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.11 report is archived as it was
+        archived311 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.11.json"
+        self.assertEqual(render(self.report), archived311.read_text(encoding="utf-8"))
 
     def test_only_mackerel_mbpi_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1401,6 +1403,50 @@ class VerifiedPilot311Tests(unittest.TestCase):
         cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
         for old in (V33, V34, V35, V36, V37, V38, V39, V310):
             self.assertNotIn(MACKEREL, cfg(old)["peptide_supplements"])
+
+
+
+V311 = ROOT / "config" / "verified-indices-v3.11.json"  # superseded by 3.12 (미역 IY potency replication); its rows stay tested
+XO312 = "research/verified-indices/evidence-xo-potency-3.12.json"
+
+
+class VerifiedPilot312Tests(unittest.TestCase):
+    """Public method: 3.11 with the cross-origin potency supplement widened to Suetsuna 2000's synthetic IY
+    (research/verified-indices/evidence-wakame-iy-2026-10-01.md). Rules, coefficients and cohorts are 3.11's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V311)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.12", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_wakame_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(145721, "MBPI"): 81.0, (145721, "BBVI"): 63.9})
+
+    def test_iy_replication(self):
+        w = self.new[145721]
+        iy = [i for i in w["bioactivity_trace"] if i.get("peptide_sequence") == "IY"][0]
+        self.assertEqual(iy["independent_dois"], ["10.1016/s0955-2863(00)00110-8", "10.1021/jf020482t"])
+        self.assertEqual([(r["source_id"], r["used"], r["pIC50_gap"]) for r in iy["potency_replications"]],
+                         [("suetsuna_2000_wakame_fulltext", True, 0.362)])
+        self.assertEqual(iy["evidence_factor"], 1.0)
+        # IW (single paper, 71.5) is no longer the top item; BBVI = 0.5 x MFPI 46.7 + 0.5 x MBPI 81.0
+        self.assertIsNone(w["withheld_reasons"]["BBVI"])
+        # the new row attaches to no other species
+        others = [(a, i["peptide_sequence"]) for a, s in self.new.items() if a != 145721 for i in s["bioactivity_trace"]
+                  if any(r["source_id"] == "suetsuna_2000_wakame_fulltext" for r in i.get("potency_replications") or [])]
+        self.assertEqual(others, [])
+
+    def test_supplement_is_read_from_3_12_on(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36, V37, V38, V39, V310, V311):
+            xo = cfg(old).get("peptide_bioactivity", {}).get("cross_origin_potency", {})
+            self.assertNotEqual(xo.get("supplement"), XO312)
 
 
 if __name__ == "__main__":
