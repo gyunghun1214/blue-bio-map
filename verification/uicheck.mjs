@@ -9,6 +9,9 @@ const catalogIds=readDist('candidate-catalog.json').species.map(s=>s.aphiaID), s
 // Expected candidate cells come from the reviewed release file, not from constants.
 const release=readDist('expansion-public-cells.json').species, places=e=>new Set(e.cells.map(c=>c.lat0+','+c.lon0)).size;
 const ark=release.find(e=>e.aphiaID===504357), arkPlaces=places(ark), arkOld=ark.cells.find(c=>c.historical);
+// 2026-10-01: NIBR specimen points gave 시카메굴 its cells. The no-cell branch uses whichever candidate still has
+// none; when every candidate has cells, the same checks run on 시카메굴 and expect its cells instead.
+const noCell=release.find(e=>!e.cells.length)?.aphiaID, emptyPick=noCell||836041, emptyPlaces=noCell?0:places(release.find(e=>e.aphiaID===836041));
 const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes(a)).length;
 const reportScores=[...report.species,...(report.candidate_species||[])].flatMap(s=>Object.values(s.scores).filter(v=>v!==null).map(v=>v.toFixed(1)));
 // Up to 3.1 a national MCUI (참굴 2.3: all four axes computed) never enters the IUCN matrix; 3.2 places it with its own marker.
@@ -364,13 +367,15 @@ try{
     layers.on>layers.before&&layers.off===layers.before&&layers.markers>0&&!layers.markersInteractive&&layers.hitsOn===layers.hits&&!layers.legendText.includes('빗금'),JSON.stringify(layers));
   check('Value map (3.2): layer labels count flagged species and those on the map; flagged species without a cell are listed',
     layers.pCount.startsWith(nP+'종 · 지도 표시 ')&&layers.uCount.startsWith(nU+'종 · 지도 표시 ')&&
-    (layers.uCount===nU+'종 · 지도 표시 0종'?layers.noCell.includes('미탐색 후보 중 공개 출현 셀이 없어'):true)&&layers.noCell.includes('종 부재나 분포 없음을 뜻하지 않습니다'),JSON.stringify(layers));
-  // 2026-10-01: 다시마 now has CC BY-NC cells; 시카메굴 (all five records over 1 km inland) is the candidate without cells.
-  await pick(836041);await sleep(300);ms=await modeState();
-  check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=836041/.test(ms.hash),JSON.stringify(ms));
+    (layers.uCount===nU+'종 · 지도 표시 0종'?layers.noCell.includes('미탐색 후보 중 공개 출현 셀이 없어'):true)&&
+    // Once every flagged species has a cell (시카메굴, NIBR points 2026-10-01) there is nothing to list.
+    (layers.pCount===nP+'종 · 지도 표시 '+nP+'종'&&layers.uCount===nU+'종 · 지도 표시 '+nU+'종'?layers.noCell==='':layers.noCell.includes('종 부재나 분포 없음을 뜻하지 않습니다')),JSON.stringify(layers));
+  await pick(emptyPick);await sleep(300);ms=await modeState();
+  check(`Value mode + candidate ${noCell?'without public cells: stays in value mode, explains no link':'시카메굴 with NIBR-point cells: stays in value mode, no no-cell alert'}`,
+    ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')===!!noCell&&new RegExp('s='+emptyPick).test(ms.hash),JSON.stringify(ms));
   ms=await clickMode('occurrence');
-  check('Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, no fake cell for candidate',
-    ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===0,JSON.stringify(ms));
+  check(`Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, ${noCell?'no fake cell for candidate':'시카메굴 cells drawn once'}`,
+    ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===emptyPlaces,JSON.stringify(ms));
   await pick(836033);await sleep(300);ms=await modeState();
   check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
   await pick(504357);await sleep(300);ms=await modeState();
@@ -447,9 +452,11 @@ try{
     f=await flow(504357);
     check(`Flow 3 ${tag}: 피조개 reviewed 4° cells labelled not a current distribution, pre-2000 records flagged`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='조사 후보 · 검수 기록 공개 4° 셀'&&f.shapes===arkPlaces&&f.note.includes('현재 분포')&&f.note.includes('2000년 이전'),f.sel+' | '+f.src);
     await mapShot('3-ark-shell');
-    f=await flow(836041);
-    check(`Flow 4 ${tag}: candidate without public cells draws no cell and says so`,f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.note.includes('제외 사유')&&f.note.includes('종 부재'),f.sel+' | '+f.note.slice(0,120));
-    await mapShot('4-candidate-no-cells');
+    f=await flow(emptyPick);
+    check(noCell?`Flow 4 ${tag}: candidate without public cells draws no cell and says so`:`Flow 4 ${tag}: 시카메굴 draws its NIBR-point cells and credits NIBR`,
+      noCell?f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.note.includes('제외 사유')&&f.note.includes('종 부재')
+        :f.shapes===emptyPlaces&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.detail.includes('채집 지점 국립생물자원관')&&f.detail.includes('공공누리 제3유형'),f.sel+' | '+f.src+' | '+f.note.slice(0,120));
+    await mapShot(noCell?'4-candidate-no-cells':'4-candidate-nibr-cells');
     const walk=await walkComparison();
     check(`Flow 5 ${tag}: comparison walks ${Math.ceil(total/5)} pages of ≤5, page never overflows`,walk.length===Math.ceil(total/5)&&walk.reduce((a,p)=>a+p.cols,0)===total&&walk.every(p=>p.page),JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
     await evaluate("setView('compare');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");

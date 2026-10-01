@@ -24,6 +24,10 @@ with the candidate additions of 2026-09-27:
   Periods 2000–2015 and 2016–present; pre-2000 records form a separate historical period. A cell whose
   records all lie outside the South and North Korean EEZs (OBIS areas) is flagged. Record counts are not
   abundance and cells carry no species score.
+- Holder points (2026-10-01, proposed): NIBR publishes its specimens to GBIF without coordinates (flora & fauna(NIBR),
+  CC BY-NC 4.0). NIBR's own geography service (species.nibr.go.kr/geo) serves each specimen's collection point
+  and date by catalogue number. A specimen whose point lies in the box joins the GBIF review with that point and
+  date, and its portal name must also resolve to the candidate. All other rules apply unchanged.
 Responses are cached in the ignored tmp/expansion-30/cells/ (exact coordinates and record IDs stay there);
 delete that folder to re-fetch. Only generalized cells and per-reason counts reach dist/.
 """
@@ -55,6 +59,11 @@ SPECIES_RANKS = {"SPECIES", "SUBSPECIES", "VARIETY", "FORM"}
 KOREAN_EEZ = {"South Korea", "North Korea"}
 MARKET = re.compile(r"\bmarket\b", re.I)
 OUTSIDE_BOX_PLACES = re.compile(r"Miyake-jima")  # Izu Islands near 139.5°E; one record carries 129.5°E
+NIBR_DATASET = "9aa00786-772a-46d4-8fe1-ac6d8926a040"  # flora & fauna(NIBR): no record carries coordinates on GBIF
+NIBR_POINT = "https://species.nibr.go.kr/geo/html/search.do?type=collection_ktsn&filter_query=&col_id="
+NIBR_CITATION = {"title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)", "url": "https://species.nibr.go.kr/geo/html/index.do",
+                 "source": "NIBR"}
+NIBR_TERMS = "공공누리 제3유형"  # portal terms; the record licence stays the GBIF dataset's
 # Sedentary, high-value or threatened stocks: released only at 4 degrees (sea-cucumber precedent, map-2).
 FOUR_DEGREE = {397082: "IUCN 체크리스트 EN · 채취 압력이 큰 전복: 4°로만 공개",
                504357: "채취 대상 패류: 2026-09-25 4° 공개 결정 유지"}
@@ -183,6 +192,42 @@ def fetch_obis(species):
     return {"total": total, "datasets": datasets, "records": rows}
 
 
+def fetch_nibr(gbif):
+    """NIBR specimens of the candidate's GBIF keys and NIBR's point for each catalogue number."""
+    rows = []
+    for key in gbif["keys"]:
+        if key == gbif["genusFallback"]:  # a genus key would pull the whole genus
+            continue
+        for offset in range(0, 100000, 300):
+            page = get(GBIF + "occurrence/search?" + urllib.parse.urlencode(
+                {"taxonKey": key, "datasetKey": NIBR_DATASET, "hasCoordinate": "false", "limit": 300, "offset": offset}))
+            rows += page["results"]
+            if page["endOfRecords"]:
+                break
+    points = {}
+    for cat in sorted({r["catalogNumber"] for r in rows if r.get("catalogNumber")}):
+        points[cat] = (get(NIBR_POINT + urllib.parse.quote(cat)) or {}).get("data") or []
+    return {"records": rows, "points": points}
+
+
+def nibr_records(nibr):
+    """NIBR specimens whose portal point lies in the query box, carrying that point and collection date."""
+    out = []
+    for r in nibr["records"]:
+        p = (nibr["points"].get(r.get("catalogNumber")) or [None])[0] or {}
+        m = re.fullmatch(r"POINT\(([-\d.]+) ([-\d.]+)\)", p.get("geom") or "")
+        if not m:
+            continue
+        x, y = float(m[1]), float(m[2])  # EPSG:3857
+        lon, lat = math.degrees(x / 6378137), math.degrees(2 * math.atan(math.exp(y / 6378137)) - math.pi / 2)
+        if not (124 <= lon <= 132 and 33 <= lat <= 38.7):
+            continue
+        day = p.get("coll_sdate") or ""
+        out.append({**r, "decimalLatitude": lat, "decimalLongitude": lon, "eventDate": day,
+                    "year": int(day[:4]) if re.match(r"\d{4}-\d{2}-\d{2}$", day) else None, "_nibr": p})
+    return out
+
+
 def year_of(ms):  # fromtimestamp() rejects pre-1970 values on Windows
     return (datetime.datetime(1970, 1, 1) + datetime.timedelta(milliseconds=ms)).year if ms is not None else None
 
@@ -213,8 +258,10 @@ def normalize(species, gbif, obis):
     for r in sorted(gbif["records"], key=lambda r: r["key"]):
         name = r.get("species") if r.get("taxonRank") in SPECIES_RANKS else canonical(r.get("_verbatim"))
         est = {str(r.get(k) or "").lower() for k in ("degreeOfEstablishment", "establishmentMeans")}
+        holder = r.get("_nibr")
         out.append({
-            "src": "GBIF", "taxon": resolves(name, species) and "UNVERIFIED" not in (r.get("occurrenceRemarks") or ""),
+            "src": "GBIF", "taxon": resolves(name, species) and "UNVERIFIED" not in (r.get("occurrenceRemarks") or "")
+            and (holder is None or resolves(canonical(holder.get("taxon_full_nm")), species)), "nibr": bool(holder),
             "present": r.get("occurrenceStatus") == "PRESENT",
             "fossil": r.get("basisOfRecord") == "FOSSIL_SPECIMEN", "licence": licence(r.get("license")),
             "year": r.get("year"), "range": "/" in (r.get("eventDate") or ""),
@@ -358,6 +405,8 @@ def review(species, gbif, obis):
         for r in rows:
             meta = dataset_meta(*r["dataset"], titles)
             cites.setdefault(meta["url"], {**{k: v for k, v in meta.items() if v}, "licenses": set()})["licenses"].add(r["licence"])
+            if r.get("nibr"):
+                cites.setdefault(NIBR_CITATION["url"], {**NIBR_CITATION, "licenses": {NIBR_TERMS}})
         cells.append({
             "lat0": lat0, "lon0": lon0, "sizeDeg": size,
             "resolutionM": math.floor(min(size * 111320 * math.cos(math.radians(lat0 + size)), size * 110574)),
@@ -382,7 +431,12 @@ def review(species, gbif, obis):
             "gbif": {"queried": queried["GBIF"], "accepted": sum(r["src"] == "GBIF" for r in accepted),
                      "excluded": excluded["GBIF"], "genusFallback": bool(gbif["genusFallback"]),
                      "query": "https://www.gbif.org/occurrence/search?" + urllib.parse.urlencode(
-                         {"taxon_key": gbif["keys"], "geometry": BOX, "has_coordinate": "true"}, doseq=True)},
+                         {"taxon_key": gbif["keys"], "geometry": BOX, "has_coordinate": "true"}, doseq=True),
+                     **({"nibrPoints": {
+                         **gbif["nibr"], "accepted": sum(r.get("nibr", False) for r in accepted),
+                         "query": "https://www.gbif.org/occurrence/search?" + urllib.parse.urlencode(
+                             {"taxon_key": gbif["keys"], "dataset_key": NIBR_DATASET, "has_coordinate": "false"}, doseq=True),
+                         "points": NIBR_CITATION["url"]}} if gbif.get("nibr", {}).get("specimens") else {})},
             "obis": {"queried": queried["OBIS"], "accepted": sum(r["src"] == "OBIS" for r in accepted),
                      "excluded": excluded["OBIS"], "datasets": len(obis["datasets"]),
                      "openDatasets": sum(bool(d["licence"]) for d in obis["datasets"]),
@@ -397,15 +451,18 @@ def main():
     for s in json.loads(CATALOG.read_text(encoding="utf-8"))["species"]:
         gbif = cached(f'{s["aphiaID"]}-gbif.json', lambda: fetch_gbif(s))
         obis = cached(f'{s["aphiaID"]}-obis.json', lambda: fetch_obis(s))
-        entry = review(s, gbif, obis)
+        nibr = cached(f'{s["aphiaID"]}-nibr.json', lambda: fetch_nibr(gbif))
+        held = nibr_records(nibr)
+        entry = review(s, {**gbif, "records": gbif["records"] + held,
+                           "nibr": {"specimens": len(nibr["records"]), "pointsInBox": len(held)}}, obis)
         result.append(entry)
         rv = entry["review"]
         print(f'{s["label"]}\t{len(entry["cells"])} cells\taccepted {rv["accepted"]} (hist {rv["historical"]}, '
               f'outside KR/KP EEZ {rv["outsideKoreanEEZ"]})\tGBIF {rv["gbif"]["queried"]} {rv["gbif"]["excluded"]}\t'
-              f'OBIS {rv["obis"]["queried"]} {rv["obis"]["excluded"]}', flush=True)
+              f'OBIS {rv["obis"]["queried"]} {rv["obis"]["excluded"]}	NIBR {rv["gbif"].get("nibrPoints")}', flush=True)
     OUT.write_text(json.dumps({
         "schemaVersion": "candidate-public-cells-2", "reviewedOn": REVIEWED,
-        "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01): scripts/build_expansion_cells.py",
+        "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01) + NIBR holder points (2026-10-01): scripts/build_expansion_cells.py",
         "scope": ("Generalized occurrence cells from reviewed GBIF and OBIS records. Not current distribution, "
                   "abundance, stock size or regional value. Pre-2000 records are a separate historical period."),
         "queryBox": "124–132°E · 33–38.7°N",

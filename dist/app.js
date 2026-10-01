@@ -436,7 +436,8 @@ function cellAssessmentStatus(s,c) {
 function occurrenceCitationLinks(c) {
   return (c.citations||[]).map(x=>{
     const terms=(x.licenses||[]).map(l=>sourceLink({'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/',
-      'CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/'}[l],l)).join(' · ')||'이용조건 미확인';
+      'CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/',
+      '공공누리 제3유형':'https://www.kogl.or.kr/info/licenseType3.do'}[l],l)).join(' · ')||'이용조건 미확인';
     return `<li>${sourceLink(x.url,x.title||'제공처 원문')} · ${terms}</li>`;
   }).join('');
 }
@@ -1141,9 +1142,9 @@ function renderCandidateDetail(s){
         (pilot?'':row('보전',conservation,'pending'))+
         (pilot?'':row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
         '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'))+
-      more('수집·선별 기준',(r?sourceRow('GBIF',r.gbif)+sourceRow('OBIS',r.obis)+row('제외 사유',withheldLine(r))+
+      more('수집·선별 기준',(r?sourceRow('GBIF',r.gbif)+sourceRow('OBIS',r.obis)+(r.gbif.nibrPoints?row('국립생물자원관 표본',`GBIF에 좌표 없는 표본 ${r.gbif.nibrPoints.specimens.toLocaleString()}건 · 생물지리정보 채집 지점이 조회 범위 안 ${r.gbif.nibrPoints.pointsInBox.toLocaleString()}건(GBIF 조회 수에 포함) · 통과 ${r.gbif.nibrPoints.accepted.toLocaleString()}건`):'')+row('제외 사유',withheldLine(r))+
           row('통과 기록의 원자료 학명',r.names.join(', ')||'없음')+row('공개 해상도',s.sensitivity||'미기재')+
-          '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0·CC BY-NC 4.0 기록만(비상업 연구용, 2026-10-01부터 BY-NC 포함) · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선에서 1 km보다 안쪽 육상 좌표 제외(조간대 기록 보존) · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다. 양식·방류 여부는 원자료 표시가 없으면 구분하지 못합니다.</p>'
+          '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0·CC BY-NC 4.0 기록만(비상업 연구용, 2026-10-01부터 BY-NC 포함) · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선에서 1 km보다 안쪽 육상 좌표 제외(조간대 기록 보존) · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 국립생물자원관 표본은 GBIF에 좌표가 없어 같은 표본번호로 국립생물자원관 생물지리정보의 채집 지점·일자를 씁니다(2026-10-01). 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다. 양식·방류 여부는 원자료 표시가 없으면 구분하지 못합니다.</p>'
           :row('출현 검수',releaseMissing(s),'pending'))+
         '<p class="fine">다음 단계: 식품명의 종 동정과 IUCN 원평가 기준·시점을 확인한 뒤 축별 지표를 다시 심사합니다.</p>')+
       more('출처와 이용조건','<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+

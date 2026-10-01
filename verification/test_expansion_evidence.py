@@ -9,6 +9,9 @@ PRIVATE = re.compile(r'"(?:decimalLatitude|decimalLongitude|gbifID|occurrenceID|
                      r'catalogNumber|eventDate)"\s*:')  # IUCN "locality" is the assessment scope, not a record
 OPEN = {"CC0 1.0", "CC BY 4.0", "CC BY-NC 4.0"}  # CC BY-NC 4.0 allowed for candidate cells (2026-10-01), labelled on screen
 CITATION = re.compile(r"^https://(www\.gbif\.org|obis\.org)/dataset/[\w-]+$")
+# 2026-10-01: NIBR specimens take their point from NIBR's geography service, credited under its portal terms.
+NIBR_POINTS = {"url": "https://species.nibr.go.kr/geo/html/index.do", "licenses": ["공공누리 제3유형"]}
+NIBR_DATASET = "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
 
 
 def load(name):
@@ -56,9 +59,13 @@ class ExpansionReleaseGate(unittest.TestCase):
                     self.assertTrue(lo <= c["yearStart"] and c["yearEnd"] <= hi, (e["name"], c["period"]))
                 self.assertTrue(c["licenses"] and set(c["licenses"]) <= OPEN)
                 self.assertTrue(set(c["sources"]) <= {"GBIF", "OBIS"} and c["citations"])
-                for x in c["citations"]:
+                datasets = [x for x in c["citations"] if x["url"] != NIBR_POINTS["url"]]
+                for x in datasets:
                     self.assertRegex(x["url"], CITATION)
-                self.assertEqual({l for x in c["citations"] for l in x["licenses"]}, set(c["licenses"]))
+                self.assertEqual({l for x in datasets for l in x["licenses"]}, set(c["licenses"]))
+                points = [x for x in c["citations"] if x["url"] == NIBR_POINTS["url"]]
+                self.assertEqual(bool(points), any(x["url"] == NIBR_DATASET for x in datasets))
+                self.assertTrue(all(x["licenses"] == NIBR_POINTS["licenses"] for x in points))
 
     def test_audits_stay_dated_and_unscored(self):
         evidence_text, evidence = load("expansion-evidence.json")
