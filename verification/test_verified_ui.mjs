@@ -47,7 +47,8 @@ assert.match(html,/아연 결측\(빈칸\)/,'the RDA blank is still shown as mis
 assert.match(html,/지역·시기·방법이 확인된 양식 근거가 부족합니다/);
 assert.doesNotMatch(html,/필수 성분\(단백질·철·아연\) 중 일부가 비어 있습니다/);
 html=ctx.renderScores(by(241776));
-for(const text of ['EN A2bd','2025-09-30','EN -&gt; 80','IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료','이전 평가'])
+// 3.4: the MCUI label says the OBIS trend is now an auxiliary element, and the trend is shown beside the IUCN facts
+for(const text of ['EN A2bd','2025-09-30','EN -&gt; 80','IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영','이전 평가','OBIS 출현 추세 · 보조 요소'])
   assert.ok(html.includes(text),`missing conservation fact: ${text}`);
 html=ctx.renderScores(by(342067));
 assert.match(html,/Needs updating/);assert.match(html,/10년 넘은 평가/);
@@ -150,7 +151,8 @@ assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/>42\.2<small>검증 전 시범 지표/);assert.match(dom.comparison.innerHTML,/>54\.2<small>/);
-assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/>10\.0<small>/);
+// 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
+assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/65\.5/,'page 2 species must not leak into page 1');
 for(const s of next.species.slice(0,5))assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 dom['comparison-next'].click();

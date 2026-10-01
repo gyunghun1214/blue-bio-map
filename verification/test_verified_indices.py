@@ -835,14 +835,14 @@ CHANGED_33 = {506159: (None, 60.1, "093015", "species", "measured"), 397082: (No
               1666974: (None, 45.9, "093035", "family", "proxy")}
 
 
-V33 = ROOT / "config" / "verified-indices-v3.3.json"
+V33 = ROOT / "config" / "verified-indices-v3.3.json"  # superseded by 3.4 (MCUI occurrence trend); its rules stay tested
 
 
 class VerifiedPilot33Tests(unittest.TestCase):
-    """Public method: 3.2 plus uFiSh substitutes for missing RDA components and five reviewed aquaculture records."""
+    """Superseded by 3.4. 3.3: 3.2 plus uFiSh substitutes for missing RDA components and five reviewed aquaculture records."""
 
     def setUp(self):
-        self.evidence, *self.rest = load_inputs()
+        self.evidence, *self.rest = load_inputs(config=V33)
         self.report = build(self.evidence, *self.rest)
         self.v32 = build(*load_inputs(config=V32))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
@@ -850,7 +850,9 @@ class VerifiedPilot33Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.3", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.3 report is archived as it was
+        archived33 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.3.json"
+        self.assertEqual(render(self.report), archived33.read_text(encoding="utf-8"))
 
     def test_only_mfpi_moves_and_the_cohorts_stay_fixed(self):
         self.assertEqual(self.report["comparison_cohorts"], self.v32["comparison_cohorts"])
@@ -957,6 +959,68 @@ class VerifiedPilot33Tests(unittest.TestCase):
                     self.assertIn(n["substitute"]["source_id"], s["source_ids"], aphia)
         mussel = [r for r in self.new[506159]["food_trace"]["supplemental_nutrition"] if r["record_id"] == "uFiSh1.0:093015"]
         self.assertIn("zinc_mg is used as a verified-pilot-3.3 substitute", mussel[0]["substitute_use"])
+
+
+# 3.4: a decline signal (OBIS reporting rate against the same WoRMS class, 2006-15 vs 2016-25) adds 10 to a computed MCUI.
+CHANGED_34 = {342067: ("decline_signal", 20.0), 413600: ("decline_signal", 20.0), 219984: ("decline_signal", 20.0),
+              281273: ("decline_signal", 20.0)}
+
+
+class VerifiedPilot34Tests(unittest.TestCase):
+    """Public method: 3.3 plus the OBIS occurrence-trend element of MCUI and the no-assessment priority label."""
+
+    def setUp(self):
+        self.evidence, *self.rest = load_inputs()
+        self.report = build(self.evidence, *self.rest)
+        self.v33 = build(*load_inputs(config=V33))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v33)
+        self.rule = self.report["method"]["conservation"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.4", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_mcui_moves_and_only_by_a_decline_signal(self):
+        for aphia, s in self.new.items():
+            before, t = self.old[aphia], s["occurrence_trend"]
+            for axis in ("MFPI", "MBPI", "BBVI"):
+                self.assertEqual(s["scores"][axis], before["scores"][axis], (aphia, axis))
+            self.assertEqual(t["mcui_base"], before["scores"]["MCUI"], aphia)
+            expected = None if before["scores"]["MCUI"] is None else (
+                min(100.0, before["scores"]["MCUI"] + self.rule["effort_adjustment"]) if t["class"] == "decline_signal" else before["scores"]["MCUI"])
+            self.assertEqual(s["scores"]["MCUI"], expected, aphia)
+            self.assertEqual(t["mcui_adjustment"], 0 if expected == before["scores"]["MCUI"] else self.rule["effort_adjustment"], aphia)
+        self.assertEqual({a: (s["occurrence_trend"]["class"], s["scores"]["MCUI"]) for a, s in self.new.items()
+                          if s["occurrence_trend"]["mcui_adjustment"]}, CHANGED_34)
+
+    def test_trend_follows_the_snapshot(self):
+        snap = self.evidence["obis_trend"]
+        self.assertEqual(snap["query"]["periods"], self.rule["trend"]["periods"])
+        for aphia, s in self.new.items():
+            t, sp = s["occurrence_trend"], snap["species"][str(aphia)]
+            self.assertEqual(t["effort_group"], sp["class"], aphia)
+            self.assertLessEqual(t["species_records"]["past"], sp["past"]["records"], aphia)
+            self.assertEqual(t["species_records"]["past"] + t["records_outside_compared_cells"]["past"],
+                             sp["past"]["records"] + sp["past"]["outside_grid"], aphia)
+            self.assertEqual(t["label"], self.rule["trend"]["labels"][t["class"]])
+            self.assertIn("obis_trend", s["source_ids"], aphia)
+
+    def test_no_assessment_is_a_priority_survey_reason(self):
+        for aphia, s in self.new.items():
+            why = s["priority_survey_reasons"]
+            self.assertIs(s["priority_survey"], bool(why), aphia)
+            self.assertIs("no_conservation_assessment" in why, s["scores"]["MCUI"] is None, aphia)
+            self.assertIs("low_information_sufficiency" in why, s["information_sufficiency"]["mean_ratio"] < 0.5, aphia)
+        added = {a for a, s in self.new.items() if s["priority_survey"] and not self.old[a]["priority_survey"]}
+        self.assertEqual(added, {145721, 250680, 494972, 145086})  # 미역·멍게·톳·청각: no IUCN or national category
+        self.assertFalse({a for a, s in self.old.items() if s["priority_survey"] and not self.new[a]["priority_survey"]})
+
+    def test_trend_snapshot_guards(self):
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        broken = {**evidence, "obis_trend": {**evidence["obis_trend"], "species": {}}}
+        with self.assertRaisesRegex(ValueError, "no OBIS trend record"):
+            build(broken, candidates, config, snapshot, taxonomy)
 
 
 if __name__ == "__main__":

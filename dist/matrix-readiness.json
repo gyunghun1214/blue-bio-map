@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.3",
+  "method_version": "verified-pilot-3.4",
   "schema_version": 1,
   "species": [
     {
@@ -186,7 +186,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
-      "priority_survey": false,
+      "priority_survey": true,
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
@@ -197,6 +197,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
@@ -253,6 +254,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://doi.org/10.1111/bph.16333",
         "https://doi.org/10.2305/IUCN.UK.2013-1.RLTS.T180424A1629389.en",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -302,7 +304,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
-      "priority_survey": false,
+      "priority_survey": true,
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
@@ -313,6 +315,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://europepmc.org/article/PMC/PMC12948284",
         "https://koreascience.kr/article/JAKO201127250032645.page",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -381,10 +384,11 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": 20.0,
         "MFPI": null
       },
       "source_urls": [
+        "https://api.obis.org/v3/",
         "https://doi.org/10.3390/ijms20174159",
         "https://www.cmnpd.org",
         "https://www.e-kfas.org/Upload/files/kfas/KSSHBC_2011_v44n2_118.pdf",
@@ -437,6 +441,7 @@
         "MFPI": null
       },
       "source_urls": [
+        "https://api.obis.org/v3/",
         "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
         "https://pubmed.ncbi.nlm.nih.gov/29316644/",
         "https://www.cmnpd.org",
@@ -483,7 +488,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
-      "priority_survey": false,
+      "priority_survey": true,
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
@@ -494,6 +499,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -543,6 +549,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://pubmed.ncbi.nlm.nih.gov/32061872/",
         "https://query.wikidata.org/sparql",
@@ -605,6 +612,7 @@
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
+        "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.foodchem.2022.132160",
         "https://doi.org/10.1271/bbb1961.55.1313",
         "https://doi.org/10.3389/fnut.2022.981163",
@@ -658,6 +666,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Saccharina+japonica&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -695,6 +704,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ecklonia+cava&limit=100",
+        "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.bmc.2013.04.026",
         "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
         "https://pubchem.ncbi.nlm.nih.gov/",
@@ -738,6 +748,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ulva+prolifera&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -773,6 +784,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sargassum+horneri&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cmnpd.org",
@@ -815,6 +827,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gracilaria+vermiculophylla&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -840,7 +853,7 @@
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
-      "priority_survey": false,
+      "priority_survey": true,
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
@@ -852,6 +865,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Codium+fragile&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -894,6 +908,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -937,6 +952,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/258065905",
+        "https://api.obis.org/v3/",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC6541628/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -980,6 +996,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Mizuhopecten+yessoensis&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -1024,6 +1041,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Magallana+sikamea&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cmnpd.org",
@@ -1074,6 +1092,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Anadara+broughtonii&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -1112,11 +1131,12 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": 20.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sinonovacula+constricta&limit=100",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
@@ -1157,6 +1177,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species/176707342",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -1194,11 +1215,12 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": 20.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176690205",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
@@ -1234,11 +1256,12 @@
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 10.0,
+        "MCUI": 20.0,
         "MFPI": null
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176748719",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
@@ -1279,6 +1302,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Paralichthys+olivaceus&limit=100",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
@@ -1318,6 +1342,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
+        "https://api.obis.org/v3/",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1358,6 +1383,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176745256",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japaneseamberjack.htm",
@@ -1401,6 +1427,7 @@
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
+        "https://api.obis.org/v3/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255",
@@ -1443,6 +1470,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
@@ -1482,6 +1510,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
+        "https://api.obis.org/v3/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
@@ -1521,6 +1550,7 @@
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Acanthosepion+esculentum&limit=100",
+        "https://api.obis.org/v3/",
         "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",

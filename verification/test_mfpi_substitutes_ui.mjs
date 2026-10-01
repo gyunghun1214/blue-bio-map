@@ -63,5 +63,5 @@ assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}).includes('�
 assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/대체치 후보: 아연 uFiSh1\.0 093033[^]*다른 이유로 보류/);
 assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 후보 없음[^]*채울 후보가 없는 성분/);
 // the 홍합 uFiSh observation record now states which component is used
-assert.match(ctx.detail({assessment:withSub.find(a=>a.aphia_id===506159)}),/uFiSh1\.0:093015: zinc_mg is used as a verified-pilot-3\.3 substitute/);
+assert.ok(ctx.detail({assessment:withSub.find(a=>a.aphia_id===506159)}).includes(`uFiSh1.0:093015: zinc_mg is used as a ${report.method_version} substitute`));
 console.log(`ok MFPI substitutes UI (${withSub.length} species)`);

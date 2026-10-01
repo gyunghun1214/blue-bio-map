@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.3.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.4.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -700,6 +700,42 @@ def national_axis(aphia: int, evidence: dict, config: dict) -> tuple:
                           "legal_protection_facts": facts}
 
 
+def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
+    """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods, controlled for survey effort.
+    Reporting rate = species records / all-taxa records in the same 1-degree cells and period; only cells with
+    effort in both periods count. A reporting rate is not abundance; the class is a screen for review."""
+    sp = snap["species"].get(str(aphia))
+    require(sp is not None, f"{aphia}: no OBIS trend record")
+    group = snap["group_effort"][sp["class"]]["cells"]  # target group: the species' WoRMS class
+    past, recent, k = sp["past"]["cells"], sp["recent"]["cells"], rule["continuity"]
+    cells = sorted(c for c in set(past) | set(recent) if all(group.get(c, {}).get(p, 0) > 0 for p in ("past", "recent")))
+    n1, n2 = sum(past.get(c, 0) for c in cells), sum(recent.get(c, 0) for c in cells)
+    e1, e2 = sum(group[c]["past"] for c in cells), sum(group[c]["recent"] for c in cells)
+    a1, a2 = sum(snap["effort"][c]["past"] for c in cells), sum(snap["effort"][c]["recent"] for c in cells)
+    out = {"source_id": rule["source_id"], "periods": rule["periods"], "effort_group": sp["class"], "cells_compared": len(cells),
+           "species_records": {"past": n1, "recent": n2}, "effort_records": {"past": e1, "recent": e2},
+           "records_outside_compared_cells": {p: sp[p]["records"] + sp[p]["outside_grid"] - n for p, n in (("past", n1), ("recent", n2))},
+           "latest_record_year": (sp.get("yearrange") or [None, None])[1], "records_all_years": sp["records_all_years"],
+           "datasets": {p: len(sp[p]["datasets"]) for p in ("past", "recent")}}
+    if n1 < rule["min_past_records"]:
+        return {**out, "class": "undetermined", "reason": "past_records_below_minimum"}
+    ratio = ((n2 + k) / e2) / ((n1 + k) / e1)
+    spread = math.exp(rule["z"] * math.sqrt(1 / (n1 + k) + 1 / (n2 + k)))
+    low, high = ratio / spread, ratio * spread
+    out.update({"reporting_rate_ratio": round(ratio, 3), "ci": [round(low, 3), round(high, 3)], "effort_ratio": round(e2 / e1, 3),
+                "all_taxa_sensitivity": {"effort_records": {"past": a1, "recent": a2},
+                                         "reporting_rate_ratio": round(((n2 + k) / a2) / ((n1 + k) / a1), 3)}})
+    if ratio <= rule["decline_ratio"] and high < 1:
+        return {**out, "class": "decline_signal", "reason": "reporting_rate_fell_beyond_threshold"}
+    if ratio <= rule["decline_ratio"]:
+        return {**out, "class": "undetermined", "reason": "decline_uncertain"}
+    if high < 1:  # a clear fall smaller than the threshold: neither a decline signal nor explained by effort
+        return {**out, "class": "no_clear_decline", "reason": "reporting_rate_fell_less_than_threshold"}
+    if n2 < n1 and e2 < e1:
+        return {**out, "class": "survey_gap", "reason": "fewer_records_explained_by_less_effort"}
+    return {**out, "class": "no_clear_decline", "reason": "reporting_rate_not_lower"}
+
+
 def independent_sources(item: dict) -> int:
     """Independent papers behind an MBPI item. ChEMBL items need both the species link and the activity
     to rest on separate papers, so the weaker side counts."""
@@ -770,6 +806,13 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             national_value, national = national_axis(aphia, evidence, config)
             if national_value is not None:
                 mcui, conservation_reason, mcui_basis = national_value, None, "national"
+        trend_rule = config["conservation"].get("trend")
+        trend = occurrence_trend(aphia, evidence["obis_trend"], trend_rule) if trend_rule else None
+        if trend:  # verified-pilot-3.4: an auxiliary MCUI element; it raises a computed MCUI, never creates or lowers one
+            adjust = config["conservation"]["effort_adjustment"] if mcui is not None and trend["class"] == "decline_signal" else 0
+            trend.update({"label": trend_rule["labels"][trend["class"]], "mcui_base": mcui, "mcui_adjustment": adjust})
+            if adjust:
+                mcui = float(min(100, mcui + adjust))
         w = config["bbvi"]["default_food_weight"]
         best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
         # verified-pilot-3: an MBPI value resting on fewer independent papers is shown for reference and kept out of BBVI
@@ -841,6 +884,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids.add("worms_ecklonia")
         if national and national.get("source_id"):
             source_ids.add(national["source_id"])
+        if trend:
+            source_ids.add(trend["source_id"])
         if bio_trace and config.get("peptide_bioactivity") and any(i.get("stratum_kind") == "peptide" for i in bio_trace):
             source_ids.add(config["peptide_bioactivity"]["cohort_source_id"])
         source_ids.discard(None)
@@ -862,6 +907,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         if config.get("national_red_list"):
             row["national_assessment"] = national
             row["mcui_basis"] = mcui_basis
+        if trend:
+            row["occurrence_trend"] = trend
         if config.get("reference_combination"):  # verified-pilot-2.1: beside the scores, never in scores.BBVI, the matrix or rankings
             rc = config["reference_combination"]
             row["reference_combination"] = {
@@ -904,6 +951,10 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                                                     rule and rule["relative_min_bbvi"])
         if rule:  # low information sufficiency is its own label, never a score
             s["priority_survey"] = s["information_sufficiency"]["mean_ratio"] < config["unexplored_threshold"]
+            if config["conservation"].get("no_assessment"):  # verified-pilot-3.4: figure stage 3, no IUCN or national MCUI
+                why = ["low_information_sufficiency"] if s["priority_survey"] else []
+                why += ["no_conservation_assessment"] if s["scores"]["MCUI"] is None else []
+                s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
@@ -1014,6 +1065,15 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "mfpi_substitutes": snap, "food_support": evidence["food_support"] + aqua["food_support"],
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], aqua["snapshot_date"]),
                     "sources": {**evidence["sources"], **snap["sources"], **aqua["sources"]}}
+    trend = cfg["conservation"].get("trend")
+    if trend:  # verified-pilot-3.4: OBIS per-cell counts (scripts/collect_mcui_trend.py)
+        snap = read(ROOT / trend["snapshot"])
+        require(snap.get("snapshot_date", "") >= evidence["snapshot_date"], "OBIS trend snapshot is older than evidence")
+        require(set(snap["sources"]) == {trend["source_id"]} and trend["source_id"] not in evidence["sources"],
+                "OBIS trend source differs from the rule or redefines a source")
+        require(snap["query"]["periods"] == trend["periods"], "OBIS trend periods differ from the rule")
+        evidence = {**evidence, "obis_trend": snap, "sources": {**evidence["sources"], **snap["sources"]},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"])}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
