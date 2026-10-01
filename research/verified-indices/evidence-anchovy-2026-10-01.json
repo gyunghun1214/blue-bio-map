@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "sources": {
+    "kim_2016_anchovy_sauce": {
+      "provider": "Applied Biological Chemistry 59(1):25-31 (Kim HJ, Kang SG, Jaiswal L, et al. 2016), full text (Springer PDF, institutional subscription)",
+      "title": "Identification of four new angiotensin I-converting enzyme inhibitory peptides from fermented anchovy sauce",
+      "version": "2016",
+      "doi": "10.1007/s13765-015-0129-4",
+      "url": "https://doi.org/10.1007/s13765-015-0129-4",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "license": "Publisher copyright"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 219984,
+      "origin_scientific_name": "Engraulis japonicus",
+      "record_id": "10.1007/s13765-015-0129-4:DGGP",
+      "source_id": "kim_2016_anchovy_sauce",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "DGGP",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 163.51,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1007/s13765-015-0129-4",
+      "verification": "Full text (Springer PDF, institutional subscription, read 2026-10-01): Korean fermented anchovy sauce (anchovies with 25% solar sea salt, 10 C, 12-24 months); the paper names no species. Team-lead decision 2026-10-01: a Korean anchovy sauce is read as Engraulis japonicus (WoRMS 219984), the Korean anchovy; the fermented origin is accepted with that note. RP-HPLC peaks I-2/I-3 analysed by ESI-MS/MS and amino acid sequencing; spectra matched the synthetic peptides (Results). Peptides synthesized by Fmoc solid phase (New England Peptide), HPLC-purified, MALDI-TOF mass checked; the four synthetic peptides were assayed because the natural ones co-eluted as a mixture. Assay: Cushman-Cheung, 5 mM HHL, 0.1 M borate pH 8.3 with 0.3 M NaCl, rabbit-lung acetone powder ACE (Sigma), 37 C 1 h, hippuric acid by ethyl acetate extraction at 228 nm. Table 1 IC50 163.51 +- 8.45 uM (abstract and Results: 164 uM)."
+    },
+    {
+      "origin_aphia_id": 219984,
+      "origin_scientific_name": "Engraulis japonicus",
+      "record_id": "10.1007/s13765-015-0129-4:GCK",
+      "source_id": "kim_2016_anchovy_sauce",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "GCK",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 177.75,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1007/s13765-015-0129-4",
+      "verification": "Same paper and assay as DGGP. Synthetic peptide; Table 1 IC50 177.75 +- 26.62 uM (abstract and Results: 178 uM)."
+    },
+    {
+      "origin_aphia_id": 219984,
+      "origin_scientific_name": "Engraulis japonicus",
+      "record_id": "10.1007/s13765-015-0129-4:PK",
+      "source_id": "kim_2016_anchovy_sauce",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "PK",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 4092.26,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1007/s13765-015-0129-4",
+      "verification": "Same paper and assay as DGGP. Synthetic peptide; Table 1 IC50 4092.26 +- 139.28 uM (abstract: 4092 uM)."
+    }
+  ]
+}

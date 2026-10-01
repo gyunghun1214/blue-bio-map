@@ -1,15 +1,15 @@
-# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.12`
+# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.14`
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
-- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.12`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
+- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.14`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
 - 모든 지표는 **검증 전 시범 지표**다. 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
 
 ## 0. 한눈에 보기
 
 | 그림 단계 | 사이트에서 보이는 것 | 구현 위치 | 결정 기록 |
 |---|---|---|---|
-| 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/data.json`, `dist/assessments.json`의 `sources` | 각 자료원 행 |
+| 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/assessments.json`의 `sources` | 각 자료원 행 |
 | 2 표준화·연계 (WoRMS AphiaID, InChIKey·PubChem CID) | 종 상세의 AphiaID·WoRMS 링크, MBPI 근거의 화합물 링크 | `scripts/collect_taxonomy.py`, `scripts/collect_mbpi_links.py`, `research/verified-indices/mbpi-link-review-2026-09-30.json` | `mbpi-chembl-stratum-2026-09-29.md` |
 | 3 MBPI | 종 상세 MBPI 근거(층·표적·화합물·출처) | `build_verified_indices.py`의 `chembl_items`, `chembl_stratum`, `bio_scores`, `peptide_items` | `mbpi-chembl-stratum-2026-09-29.md` |
 | 3 MFPI | 종 상세 MFPI 근거(원값·백분위·대체치 라벨·가식부·양식) | `food_axis`, `substitute`, `mfpi`, `build_cohorts` | `mfpi-substitutes-2026-09-30.md` |
@@ -119,29 +119,31 @@
 | `verified-pilot-3.10` | verified-pilot-3.9 (2026-10-01). Evidence rows only: the reviewed 톳 (Sargassum fusiforme, syn. Hizikia fusiformis) peptide rows GKY 3.92, SVY 8.12 and SKTY 11.07 uM (Suetsuna 1998, Nippon Suisan Gakkaishi 64:862; synthetic peptides, HHL) join peptide_supplements. Rules, coefficients and cohorts are unchanged. 톳 MBPI moves from its ChEMBL value 45.3 to the GKY peptide value 65.0 (single-paper reference) and BBVI stays withheld (no second paper for GKY). See research/verified-indices/evidence-hijiki-2026-10-01.md. |
 | `verified-pilot-3.11` | verified-pilot-3.10 (2026-10-01). Evidence rows only: the reviewed 고등어 (Scomber japonicus) peptide rows PLITT 48.73 uM (Wang 2024, Food Chem 447:138873) and APFLAG 69.45, FDHKKFF 212.85 and LFPKFA 259.05 uM (Zhang 2025, J Food Sci e70767), all synthetic peptides identified by LC-MS/MS in mackerel muscle hydrolysates and assayed with HHL, join peptide_supplements. Rules, coefficients and cohorts are unchanged. 고등어 gains an MBPI from the PLITT item (single-paper reference); BBVI stays withheld (no second paper for PLITT). See research/verified-indices/evidence-mackerel-2026-10-01.md. |
 | `verified-pilot-3.12` | verified-pilot-3.11 (2026-10-01). Evidence rows only: the cross-origin potency supplement becomes research/verified-indices/evidence-xo-potency-3.12.json, which keeps the 2.3 row (Miyoshi 1991 zein LQP 2.0 uM) and adds the synthetic IY 2.65 uM of Suetsuna 2000 (J Nutr Biochem 11:450; HHL). It replicates the potency of the 미역 IY item (Sato 2002, 6.1 uM; pIC50 gap 0.36). Takahisa Nakano co-authored both papers; the team lead counted them as independent (2026-10-01). Rules, coefficients and cohorts are unchanged. 미역 IY becomes a two-DOI item, so 미역 MBPI moves from the single-paper IW value to IY and BBVI is computed. See research/verified-indices/evidence-wakame-iy-2026-10-01.md. |
+| `verified-pilot-3.13` | verified-pilot-3.12 (2026-10-01). Evidence rows only: the reviewed 멸치 (Engraulis japonicus) peptide rows DGGP 163.51, GCK 177.75 and PK 4092.26 uM (Kim 2016, Appl Biol Chem 59:25; synthetic peptides, HHL) join peptide_supplements. The paper names no species for its Korean fermented anchovy sauce; the team lead read it as E. japonicus (2026-10-01). NHP is left out because the text and Table 1 spell it differently (NHP/NPH). Rules, coefficients and cohorts are unchanged. 멸치 gains an MBPI from the DGGP item (single-paper reference); BBVI stays withheld. See research/verified-indices/evidence-anchovy-2026-10-01.md. |
+| `verified-pilot-3.14` | verified-pilot-3.13 (2026-10-01). Peptide material rule (team-lead decision 2026-10-01): a sequence-confirmed purified single peptide counts like a synthetic one, for origin rows and for potency replications (peptide_bioactivity.cross_origin_potency.accepted_materials). New origin rows: 대구 GASSGMPG 6.9 and LAYA 14.5 uM (Ngo 2016, Process Biochem 51:1622) and 바지락 VISDEDGVTH 8.16 uM and three more (Chen 2018, Food Funct 9:5230). New replications: Lin 2018 (Nutrients 10:1397) purified IW 0.50 and VW 0.58 uM and Kapel 2006 (Process Biochem 41:1961) purified VW 1.1 uM. Coefficients, cohorts and the pIC50 gap are unchanged. See research/verified-indices/evidence-isolates-2026-10-01.md. |
 
 | 축 | 2.3 | 현재 |
 |---|---|---|
 | MFPI 산출 종 수 | 7 | 21 |
-| MBPI 산출 종 수 | 3 | 15 |
+| MBPI 산출 종 수 | 3 | 17 |
 | MCUI 산출 종 수 | 14 | 14 |
 | BBVI 산출 종 수 | 1 | 2 |
 
-## 7. 30종 값 변화 (2.3 → `verified-pilot-3.12`)
+## 7. 30종 값 변화 (2.3 → `verified-pilot-3.14`)
 
 굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다.
 
 | 종 (AphiaID) | 범위 | MFPI | MBPI | MCUI | BBVI | 정보충분도 2.3 → 현재 | 우선 조사 대상 (사유) | 미탐색 후보 | 매트릭스 유형 | OBIS 추세 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 멍게 (250680) | 운영 8종 | 54.2 → **52.8** | – → **13.5** | – | – | 42% → 67% | 예 (보전 평가 없음) | – | – | 판단 불가 |
-| 미역 (145721) | 운영 8종 | 42.2 → **46.7** | 19.6 → **81.0** | – | – → **63.9** | 67% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 미역 (145721) | 운영 8종 | 42.2 → **46.7** | 19.6 → **95.3** | – | – → **71.0** | 67% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 살오징어 (342067) | 운영 8종 | – | – | 10.0 → **20.0** (IUCN) | – | 78% → 81% | – | – | – | 감소 신호 |
 | 우뭇가사리 (372119) | 운영 8종 | – | – | – | – | 0% → 0% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 참굴 (836033) | 운영 8종 | 65.5 → **71.6** | 96.3 | 10.0 (국가 평가) | 80.9 → **83.9** | 67% → 100% | – | – | 지속가능 활용 후보 | 조사 부족 |
 | 톳 (494972) | 운영 8종 | – → **63.3** | – → **65.0** | – | – | 28% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 해삼 (241776) | 운영 8종 | – | – → **8.7** | 80.0 (IUCN) | – | 50% → 67% | – | – | – | 보고율 감소 없음 |
 | 홍합(참담치) (506159) | 운영 8종 | – → **60.9** | – → **10.1** | 10.0 (국가 평가) | – | 28% → 94% | – | – | – | 조사 부족 |
-| Gracilaria vermiculophylla (236157) | 조사 후보 | – | – | – | – | 0% → 8% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 꼬시래기 (236157) | 조사 후보 | – | – | – | – | 0% → 8% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 가시파래 (234476) | 조사 후보 | – | – → **73.3** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 감태 (371986) | 조사 후보 | – | 67.5 | – | – | 33% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 갑오징어 (1666974) | 조사 후보 | – → **42.5** | – | 10.0 (국가 평가) | – | 42% → 61% | – | – | – | 조사 부족 |
@@ -150,10 +152,10 @@
 | 꽃게 (1061762) | 조사 후보 | – → **62.0** | – | – | – | 27% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 넙치 (275816) | 조사 후보 | – → **59.4** | – → **29.2** | – | – | 27% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 다시마 (377084) | 조사 후보 | – | – | – | – | 0% → 17% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 대구 (254538) | 조사 후보 | – → **38.3** | – | – | – | 20% → 36% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 대구 (254538) | 조사 후보 | – → **38.3** | – → **59.9** | – | – | 20% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 맛조개 (413600) | 조사 후보 | – → **57.7** | – → **56.9** | 10.0 → **20.0** (국가 평가) | – | 0% → 100% | – | – | – | 감소 신호 |
-| 멸치 (219984) | 조사 후보 | – → **74.1** | – | 10.0 → **20.0** (IUCN) | – | 53% → 61% | – | – | – | 감소 신호 |
-| 바지락 (231750) | 조사 후보 | 52.1 → **60.4** | – → **39.5** | 10.0 (국가 평가) | – | 33% → 100% | – | – | – | 조사 부족 |
+| 멸치 (219984) | 조사 후보 | – → **74.1** | – → **22.6** | 10.0 → **20.0** (IUCN) | – | 53% → 94% | – | – | – | 감소 신호 |
+| 바지락 (231750) | 조사 후보 | 52.1 → **60.4** | – → **58.6** | 10.0 (국가 평가) | – | 33% → 100% | – | – | – | 조사 부족 |
 | 방어 (276651) | 조사 후보 | 56.3 → **51.0** | – | 10.0 (IUCN) | – | 67% → 67% | – | – | – | 조사 부족 |
 | 시카메굴 (836041) | 조사 후보 | – | – | – | – | 0% → 8% | 예 (정보충분도, 보전 평가 없음) | 같은 속 Magallana | – | 판단 불가 |
 | 전복(종 수준) (397082) | 조사 후보 | – → **54.7** | – | 80.0 (IUCN) | – | 53% → 61% | – | – | – | 조사 부족 |
