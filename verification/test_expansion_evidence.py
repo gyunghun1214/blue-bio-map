@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRIVATE = re.compile(r'"(?:decimalLatitude|decimalLongitude|gbifID|occurrenceID|recordID|dataset_id_record|'
                      r'catalogNumber|eventDate)"\s*:')  # IUCN "locality" is the assessment scope, not a record
-OPEN = {"CC0 1.0", "CC BY 4.0"}
+OPEN = {"CC0 1.0", "CC BY 4.0", "CC BY-NC 4.0"}  # CC BY-NC 4.0 allowed for candidate cells (2026-10-01), labelled on screen
 CITATION = re.compile(r"^https://(www\.gbif\.org|obis\.org)/dataset/[\w-]+$")
 
 

@@ -31,7 +31,7 @@ async function fetchPublishedRows() {
 }
 async function loadPublishedProfiles() {
   const {rows,cellRows,snapshotAt}=await fetchPublishedRows().catch(loadSnapshot);
-  const licenseUrl={'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/','CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/'};
+  const licenseUrl={'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/','CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/'};
   const cellsOf=id=>cellRows.filter(c=>c.species_id===id).flatMap(c=>{
     const m=/^deg(1|4):N(-?\d+)E(-?\d+):/.exec(c.cell_code);if(!m)return [];
     const citations=Array.isArray(c.citations)?c.citations:[];
@@ -132,7 +132,7 @@ async function loadPublishedProfiles() {
     const records=cells.reduce((a,x)=>a+x.records,0), outdatedRelease=!entry&&releaseOutdated;
     // Reviewed occurrence cells are not a current distribution, abundance or a verified score.
     const info={summary_version:2,occurrence_status:cells.length?'reviewed_public_cells':entry?'no_eligible_records':outdatedRelease?'client_outdated':'release_unverified',record_count:cells.length?records:null,
-      map:cells.length?{source:`${[...new Set(cells.flatMap(x=>x.sources))].join('·')} 검수 기록 · ${[...new Set(cells.flatMap(x=>x.licenses))].join('·')}`}:null,
+      map:cells.length?{source:`${[...new Set(cells.flatMap(x=>x.sources))].join("·")} 검수 기록 · ${[...new Set(cells.flatMap(x=>x.licenses))].join("·")}${cells.some(x=>x.licenses.includes("CC BY-NC 4.0"))?" (비상업 연구용)":""}`}:null,
       conservation:{status:audit?.iucn?.record?.category?'checklist_record':'not_reviewed'},
       nutrition:{status:audit?.nutrition?.foodCode?'candidate_row':'not_collected'},
       compounds:{status:'not_collected'},production:{},

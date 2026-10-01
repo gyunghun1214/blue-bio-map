@@ -4,11 +4,13 @@ Rules follow the approved map-1 prototype (output/database/publication/OCCURRENC
 with the candidate additions of 2026-09-27:
 - Box 124–132°E · 33–38.7°N, coordinates present, occurrence present. Fossils and captive, cultivated or
   living-collection records are excluded.
-- Licence: GBIF record licence, OBIS dataset licence (and record licence when given) must be CC0 1.0 or
-  CC BY 4.0. CC BY-NC and unclear terms are counted, never used.
+- Licence: GBIF record licence, OBIS dataset licence (and record licence when given) must be CC0 1.0,
+  CC BY 4.0 or (2026-10-01, team-lead decision) CC BY-NC 4.0; the site is a non-commercial research demo and
+  every cell lists its licences. ShareAlike, NoDerivatives and unclear terms are counted, never used.
 - Identity: each record's species name must resolve in WoRMS to the candidate AphiaID (accepted name,
   synonym or infraspecific child). A GBIF backbone gap falls back to the genus key plus the verbatim name.
-- Coordinates: OBIS xylookup shore distance < 0 = on land (no buffer, coordinates never moved); GBIF
+- Coordinates: OBIS xylookup shore distance < -1000 m = on land (2026-10-01: a 1 km landward buffer keeps
+  tidal-flat and intertidal points that the coarse coastline puts on land; coordinates never moved); GBIF
   coordinate issues, uncertainty > 10 km and source-generalized coordinates are excluded; one calendar year
   is required (ranges over several years are excluded, as GBIF leaves their year empty).
   Missing uncertainty is allowed because no cell is smaller than 1°.
@@ -40,7 +42,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "tmp/expansion-30/cells"
 OUT = ROOT / "dist/expansion-public-cells.json"
 CATALOG = ROOT / "dist/candidate-catalog.json"
-REVIEWED, THIS_YEAR = "2026-09-27", 2026
+REVIEWED, THIS_YEAR = "2026-10-01", 2026
+LAND_BUFFER_M = 1000  # shore distance below -1 km is on land
 BOX = "POLYGON((124 33,132 33,132 38.7,124 38.7,124 33))"
 GBIF, OBIS, WORMS = "https://api.gbif.org/v1/", "https://api.obis.org/v3/", "https://www.marinespecies.org/rest/"
 BAD_ISSUES = {"ZERO_COORDINATE", "COORDINATE_INVALID", "COORDINATE_OUT_OF_RANGE", "COUNTRY_COORDINATE_MISMATCH",
@@ -89,8 +92,10 @@ def cached(name, fetch):
 
 def licence(text):
     t = (text or "").lower().replace("-", " ")
-    if re.search(r"non ?commercial|by nc|share ?alike|by sa|no ?deriv|by nd", t):
+    if re.search(r"share ?alike|by sa|nc sa|no ?deriv|by nd|nc nd", t):
         return None
+    if re.search(r"non ?commercial|by nc", t):  # CC BY-NC 4.0 only (2026-10-01); other NC versions stay unclear
+        return "CC BY-NC 4.0" if "4.0" in t else None
     if "publicdomain/zero" in t or "cc0" in t:
         return "CC0 1.0"
     if ("licenses/by/4.0" in t or "attribution" in t or "cc by" in t) and "4.0" in t:
@@ -170,7 +175,7 @@ def fetch_obis(species):
         lic = licence(d.get("intellectualrights"))
         datasets.append({"id": d["id"], "title": d.get("title"), "records": d.get("records") or 0,
                          "licence": lic, "rights": d.get("intellectualrights")})
-        if lic:  # records are only downloaded from CC0 / CC BY 4.0 datasets
+        if lic:  # records are only downloaded from CC0 / CC BY 4.0 / CC BY-NC 4.0 datasets
             page = get(OBIS + "occurrence?" + urllib.parse.urlencode({**q, "datasetid": d["id"], "size": 10000}))
             if page["total"] != len(page["results"]) or page["total"] != datasets[-1]["records"]:
                 raise ValueError("OBIS page truncated for " + d["id"])
@@ -229,7 +234,8 @@ def normalize(species, gbif, obis):
         out.append({
             "src": "OBIS", "taxon": r.get("speciesid") == species["aphiaID"],
             "present": not r.get("absence") and not r.get("dropped"), "fossil": basis == "fossilspecimen",
-            "licence": None if re.search(r"bync|noncommercial|bysa|sharealike|bynd|noderiv", record_terms)
+            "licence": None if re.search(r"bysa|sharealike|bynd|noderiv", record_terms)
+            else ("CC BY-NC 4.0" if licences.get(r.get("dataset_id")) else None) if re.search(r"bync|noncommercial", record_terms)
             else licences.get(r.get("dataset_id")),
             "year": y0 if y1 in (None, y0) else None, "range": y1 not in (None, y0),
             "lat": r.get("decimalLatitude"), "lon": r.get("decimalLongitude"),
@@ -318,7 +324,7 @@ def screen(species, gbif, obis):
         r["korean_eez"] = any(a["name"] in KOREAN_EEZ for a in areas.get("obis", []))
     accepted, seen = [], set()
     for r in pending:  # GBIF first (sorted by key), then OBIS
-        if r["shore"] is None or r["shore"] < 0:
+        if r["shore"] is None or r["shore"] < -LAND_BUFFER_M:
             why = "on_land_obis_rule"
         elif r["ids"] & seen or (r["src"] == "OBIS" and any(copy_of(r, g) for g in accepted if g["src"] == "GBIF")):
             why = "duplicate"
@@ -399,7 +405,7 @@ def main():
               f'OBIS {rv["obis"]["queried"]} {rv["obis"]["excluded"]}', flush=True)
     OUT.write_text(json.dumps({
         "schemaVersion": "candidate-public-cells-2", "reviewedOn": REVIEWED,
-        "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27): scripts/build_expansion_cells.py",
+        "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01): scripts/build_expansion_cells.py",
         "scope": ("Generalized occurrence cells from reviewed GBIF and OBIS records. Not current distribution, "
                   "abundance, stock size or regional value. Pre-2000 records are a separate historical period."),
         "queryBox": "124–132°E · 33–38.7°N",
