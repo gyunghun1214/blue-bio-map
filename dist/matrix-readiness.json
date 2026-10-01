@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.7",
+  "method_version": "verified-pilot-3.8",
   "schema_version": 1,
   "species": [
     {
@@ -838,18 +838,13 @@
     {
       "aphia_id": 231750,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "바지락",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -860,7 +855,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 39.5,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
@@ -868,11 +863,14 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.5657/fas.2005.8.2.109",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm",
         "https://www.iucnredlist.org/search",
+        "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
         "https://www.marinespecies.org/rest/",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
