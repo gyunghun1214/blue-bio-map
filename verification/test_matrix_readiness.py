@@ -30,7 +30,7 @@ class MatrixReadinessTests(unittest.TestCase):
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 81.0), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
                           (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 39.5), (393716, 27.3), (413600, 56.9),
-                          (127022, 34.9), (275816, 29.2)])
+                          (127022, 34.9), (219984, 22.6), (275816, 29.2)])
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
         # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a
@@ -47,6 +47,7 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.11 adds the reviewed 고등어 peptide rows (Wang 2024, Zhang 2025; one paper per sequence): 고등어 MBPI 34.9.
         # verified-pilot-3.12 counts Suetsuna 2000's synthetic IY as a potency replication of 미역 IY: MBPI 71.5 -> 81.0, BBVI 63.9
         # (no MCUI, so the matrix keeps one point).
+        # verified-pilot-3.13 adds the reviewed 멸치 peptide rows (Kim 2016, anchovy sauce, single paper): 멸치 MBPI 22.6.
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 21)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)

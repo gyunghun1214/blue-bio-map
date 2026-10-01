@@ -1411,17 +1411,19 @@ XO312 = "research/verified-indices/evidence-xo-potency-3.12.json"
 
 
 class VerifiedPilot312Tests(unittest.TestCase):
-    """Public method: 3.11 with the cross-origin potency supplement widened to Suetsuna 2000's synthetic IY
+    """Superseded by 3.13. 3.12: 3.11 with the cross-origin potency supplement widened to Suetsuna 2000's synthetic IY
     (research/verified-indices/evidence-wakame-iy-2026-10-01.md). Rules, coefficients and cohorts are 3.11's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V312))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V311)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.12", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.12 report is archived as it was
+        archived312 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.12.json"
+        self.assertEqual(render(self.report), archived312.read_text(encoding="utf-8"))
 
     def test_only_wakame_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1447,6 +1449,44 @@ class VerifiedPilot312Tests(unittest.TestCase):
         for old in (V33, V34, V35, V36, V37, V38, V39, V310, V311):
             xo = cfg(old).get("peptide_bioactivity", {}).get("cross_origin_potency", {})
             self.assertNotEqual(xo.get("supplement"), XO312)
+
+
+
+V312 = ROOT / "config" / "verified-indices-v3.12.json"  # superseded by 3.13 (멸치 peptide rows); its rows stay tested
+ANCHOVY = "research/verified-indices/evidence-anchovy-2026-10-01.json"
+
+
+class VerifiedPilot313Tests(unittest.TestCase):
+    """Public method: 3.12 plus the reviewed 멸치 peptide rows (research/verified-indices/evidence-anchovy-2026-10-01.md).
+    Evidence rows only: rules, coefficients and cohorts are 3.12's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V312)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.13", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_anchovy_mbpi_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(219984, "MBPI"): 22.6})
+        self.assertEqual(sum(s["scores"]["MBPI"] is not None for s in self.new.values()), 16)
+
+    def test_anchovy_rows(self):
+        m = self.new[219984]
+        peptides = sorted((i["peptide_sequence"], i["percentile"]) for i in m["bioactivity_trace"] if i["stratum_kind"] == "peptide")
+        # NHP is not recorded: the text and Table 1 spell it differently (NHP/NPH)
+        self.assertEqual(peptides, [("DGGP", 30.11), ("GCK", 29.26), ("PK", 1.42)])
+        self.assertEqual((m["mbpi_stratum"], m["mbpi_label"]), ("peptide", "참고값(단일 논문)"))
+        self.assertEqual(m["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_rows_are_read_from_3_13_on(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36, V37, V38, V39, V310, V311, V312):
+            self.assertNotIn(ANCHOVY, cfg(old)["peptide_supplements"])
 
 
 if __name__ == "__main__":

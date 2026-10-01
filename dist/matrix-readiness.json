@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.12",
+  "method_version": "verified-pilot-3.13",
   "schema_version": 1,
   "species": [
     {
@@ -1160,18 +1160,13 @@
     {
       "aphia_id": 219984,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "멸치",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -1182,14 +1177,16 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 22.6,
         "MCUI": 20.0,
         "MFPI": 74.1
       },
       "source_urls": [
         "https://api.gbif.org/v1/species/176690205",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1007/s13765-015-0129-4",
         "https://doi.org/10.1038/s41598-025-99911-y",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
