@@ -25,7 +25,7 @@ const evaluate=async expression=>{const r=await send('Runtime.evaluate',{express
 async function settled(){
   for(let i=0;i<160;i++){await sleep(250);
     const st=await evaluate("document.getElementById('connection-state')?.textContent||''").catch(()=>'');
-    if(/연결됨|추가 수집|불러오기 실패|연결 실패/.test(st)){await sleep(1500);return st;}}
+    if(/연결됨|불러오기 실패|연결 실패/.test(st)){await sleep(1500);return st;}}
   return 'timeout';
 }
 const readTable=`[...document.querySelectorAll('#comparison tbody tr')].filter(tr=>/MFPI|MBPI|MCUI|BBVI/.test(tr.querySelector('th').innerText))
