@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.10",
+  "method_version": "verified-pilot-3.11",
   "schema_version": 1,
   "species": [
     {
@@ -1114,18 +1114,13 @@
     {
       "aphia_id": 127022,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "고등어",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -1136,7 +1131,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 34.9,
         "MCUI": 10.0,
         "MFPI": 48.0
       },
@@ -1144,9 +1139,12 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species/176707342",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.foodchem.2024.138873",
+        "https://doi.org/10.1111/1750-3841.70767",
         "https://doi.org/10.5657/kfas.2010.43.6.589",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/170306/170083106",

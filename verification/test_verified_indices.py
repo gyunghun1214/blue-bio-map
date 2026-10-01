@@ -1325,17 +1325,19 @@ HIJIKI = "research/verified-indices/evidence-hijiki-2026-10-01.json"
 
 
 class VerifiedPilot310Tests(unittest.TestCase):
-    """Public method: 3.9 plus the reviewed 톳 peptide rows (research/verified-indices/evidence-hijiki-2026-10-01.md).
+    """Superseded by 3.11. 3.10: 3.9 plus the reviewed 톳 peptide rows (research/verified-indices/evidence-hijiki-2026-10-01.md).
     Evidence rows only: rules, coefficients and cohorts are 3.9's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V310))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V39)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.10", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.10 report is archived as it was
+        archived310 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.10.json"
+        self.assertEqual(render(self.report), archived310.read_text(encoding="utf-8"))
 
     def test_only_hijiki_mbpi_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1357,6 +1359,48 @@ class VerifiedPilot310Tests(unittest.TestCase):
         cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
         for old in (V33, V34, V35, V36, V37, V38, V39):
             self.assertNotIn(HIJIKI, cfg(old)["peptide_supplements"])
+
+
+
+V310 = ROOT / "config" / "verified-indices-v3.10.json"  # superseded by 3.11 (고등어 peptide rows); its rows stay tested
+MACKEREL = "research/verified-indices/evidence-mackerel-2026-10-01.json"
+
+
+class VerifiedPilot311Tests(unittest.TestCase):
+    """Public method: 3.10 plus the reviewed 고등어 peptide rows (research/verified-indices/evidence-mackerel-2026-10-01.md).
+    Evidence rows only: rules, coefficients and cohorts are 3.10's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V310)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.11", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_mackerel_mbpi_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(127022, "MBPI"): 34.9})
+        self.assertEqual(sum(s["scores"]["MBPI"] is not None for s in self.new.values()), 15)
+
+    def test_mackerel_rows(self):
+        m = self.new[127022]
+        peptides = [(i["peptide_sequence"], i["percentile"], i["original_paper_dois"]) for i in m["bioactivity_trace"]
+                    if i["stratum_kind"] == "peptide"]
+        self.assertEqual(sorted(peptides), [("APFLAG", 41.19, ["10.1111/1750-3841.70767"]),
+                                            ("FDHKKFF", 27.56, ["10.1111/1750-3841.70767"]),
+                                            ("LFPKFA", 25.0, ["10.1111/1750-3841.70767"]),
+                                            ("PLITT", 46.59, ["10.1016/j.foodchem.2024.138873"])])
+        # PLITT (48.73 uM) is the top item; two papers exist but each sequence rests on one, so BBVI stays withheld
+        self.assertEqual((m["mbpi_stratum"], m["mbpi_label"]), ("peptide", "참고값(단일 논문)"))
+        self.assertEqual(m["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_rows_are_read_from_3_11_on(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36, V37, V38, V39, V310):
+            self.assertNotIn(MACKEREL, cfg(old)["peptide_supplements"])
 
 
 if __name__ == "__main__":
