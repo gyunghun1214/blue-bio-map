@@ -1150,17 +1150,21 @@ class VerifiedPilot36Tests(unittest.TestCase):
             self.assertIsNone(next(s for s in report["candidate_species"] if s["aphia_id"] == 504357)["scores"]["MFPI"], name)
 
 
-# verified-pilot-3.7: calcium joins the MFPI components and a row reporting 3 of 4 scores; three aquaculture records.
-# (aphia, axis) -> new value; every other value of 3.6 stays.
+# verified-pilot-3.7: calcium joins the MFPI components and a row reporting 3 of 4 scores; three aquaculture records;
+# the reviewed 바지락 peptide rows (PR #76). (aphia, axis) -> new value; every other value of 3.6 stays.
 CHANGED_37 = {(145721, "MFPI"): 46.7, (250680, "MFPI"): 52.8, (494972, "MFPI"): 63.3, (506159, "MFPI"): 60.9,
               (836033, "MFPI"): 71.6, (836033, "BBVI"): 83.9, (145086, "MFPI"): 36.7, (231750, "MFPI"): 60.4,
               (397082, "MFPI"): 54.7, (393716, "MFPI"): 55.8, (504357, "MFPI"): 61.9, (219984, "MFPI"): 74.1,
               (281273, "MFPI"): 39.4, (275816, "MFPI"): 59.4, (274849, "MFPI"): 48.5, (276651, "MFPI"): 51.0,
-              (254538, "MFPI"): 38.3, (1061762, "MFPI"): 62.0, (1666974, "MFPI"): 42.5}
+              (254538, "MFPI"): 38.3, (1061762, "MFPI"): 62.0, (1666974, "MFPI"): 42.5,
+              (231750, "MBPI"): 39.5}
+
+CLAM = "research/verified-indices/evidence-clam-2026-10-01.json"
 
 
 class VerifiedPilot37Tests(unittest.TestCase):
-    """Public method: 3.6 plus calcium as a fourth MFPI component (3 of 4 required) and three aquaculture records."""
+    """Public method: 3.6 plus calcium as a fourth MFPI component (3 of 4 required), three aquaculture records
+    and the 바지락 peptide rows (research/verified-indices/evidence-clam-2026-10-01.md)."""
 
     def setUp(self):
         self.report = build(*load_inputs())
@@ -1172,11 +1176,12 @@ class VerifiedPilot37Tests(unittest.TestCase):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.7", "provisional_unvalidated"))
         self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
 
-    def test_only_mfpi_and_its_bbvi_move(self):
+    def test_only_mfpi_its_bbvi_and_clam_mbpi_move(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
                    if s["scores"][axis] != self.old[a]["scores"][axis]}
         self.assertEqual(changed, CHANGED_37)
         self.assertEqual(sum(s["scores"]["MFPI"] is not None for s in self.new.values()), 18)
+        self.assertEqual(sum(s["scores"]["MBPI"] is not None for s in self.new.values()), 14)
         self.assertEqual([a for a, s in self.new.items() if s["scores"]["BBVI"] is not None], [836033])
 
     def test_cohorts_keep_their_members(self):
@@ -1215,30 +1220,10 @@ class VerifiedPilot37Tests(unittest.TestCase):
             n = cfg(old)["nutrition"]
             self.assertNotIn("calcium_mg", n["components"])
             self.assertNotEqual(n["substitutes"]["aquaculture_supplement"], "research/verified-indices/mfpi-aquaculture-3.7-2026-10-01.json")
+            self.assertNotIn(CLAM, cfg(old)["peptide_supplements"])
 
-
-CLAM = "research/verified-indices/evidence-clam-2026-10-01.json"
-
-
-class StagedClamRowsTests(unittest.TestCase):
-    """Reviewed 바지락 peptide rows (2026-10-01), staged for the next version: no public config reads them yet.
-    Added to 3.6 they must pass the peptide rules and move only 바지락 MBPI (research/verified-indices/evidence-clam-2026-10-01.md)."""
-
-    def test_rows_move_only_clam_mbpi(self):
-        import tempfile
-        cfg = json.loads((ROOT / "config" / "verified-indices-v3.6.json").read_text(encoding="utf-8"))
-        self.assertNotIn(CLAM, cfg["peptide_supplements"])
-        cfg["peptide_supplements"] = cfg["peptide_supplements"] + [CLAM]
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "config.json"
-            path.write_text(json.dumps(cfg), encoding="utf-8")
-            staged = build(*load_inputs(config=path))
-        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
-        new, old = rows(staged), rows(build(*load_inputs(config=V36)))
-        changed = {(a, axis): s["scores"][axis] for a, s in new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
-                   if s["scores"][axis] != old[a]["scores"][axis]}
-        self.assertEqual(changed, {(231750, "MBPI"): 39.5})
-        clam = new[231750]
+    def test_clam_rows(self):
+        clam = self.new[231750]
         self.assertEqual([(i["peptide_sequence"], i["percentile"]) for i in clam["bioactivity_trace"]],
                          [("IAE", 52.7), ("IVE", 35.23), ("LLP", 30.68)])
         # one paper per item, so BBVI stays withheld; the same-author Spirulina IAE value (2001) is not a replication

@@ -2510,8 +2510,193 @@
     {
       "aphia_id": 231750,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [],
-      "bioactivity_trace": [],
+      "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+          ],
+          "origin_aphia_id": 231750,
+          "origin_scientific_name": "Ruditapes philippinarum",
+          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+          "record_id": "10.1046/j.1444-2906.2002.00415.x:AEL",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "AEL",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2002_clam",
+          "status": "partial_only",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "value": 57.1,
+          "value_in_text": true,
+          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+          ],
+          "origin_aphia_id": 231750,
+          "origin_scientific_name": "Ruditapes philippinarum",
+          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+          "record_id": "10.1046/j.1444-2906.2002.00415.x:LVE",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "LVE",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2002_clam",
+          "status": "partial_only",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "value": 14.2,
+          "value_in_text": true,
+          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "IC50",
+          "material_kind": "single_peptide",
+          "missing": [
+            "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved"
+          ],
+          "origin_aphia_id": 231750,
+          "origin_scientific_name": "Ruditapes philippinarum",
+          "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+          "record_id": "10.1046/j.1444-2906.2002.00415.x:IELPLG",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "IELPLG",
+          "sequence_confirmed": true,
+          "source_id": "suetsuna_2002_clam",
+          "status": "partial_only",
+          "substrate": "HHL",
+          "target": "ACE",
+          "unit": "uM",
+          "value": 72.1,
+          "value_in_text": true,
+          "verification": "Same paper and assay as IAE/IVE; synthetic peptide value from Table 1."
+        }
+      ],
+      "bioactivity_trace": [
+        {
+          "adjusted": 39.52414772727273,
+          "evidence_factor": 0.75,
+          "independent_dois": [
+            "10.1046/j.1444-2906.2002.00415.x"
+          ],
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+              "relation": "=",
+              "source_id": "suetsuna_2002_clam",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 34.7
+            }
+          ],
+          "original_paper_dois": [
+            "10.1046/j.1444-2906.2002.00415.x"
+          ],
+          "pIC50": 4.46,
+          "peer_peptides": 352,
+          "peptide_sequence": "IAE",
+          "percentile": 52.7,
+          "potency_replications": [],
+          "record_ids": [
+            "10.1046/j.1444-2906.2002.00415.x:IAE"
+          ],
+          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+          "stratum_kind": "peptide"
+        },
+        {
+          "adjusted": 26.420454545454547,
+          "evidence_factor": 0.75,
+          "independent_dois": [
+            "10.1046/j.1444-2906.2002.00415.x"
+          ],
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.1046/j.1444-2906.2002.00415.x",
+              "relation": "=",
+              "source_id": "suetsuna_2002_clam",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 95.6
+            }
+          ],
+          "original_paper_dois": [
+            "10.1046/j.1444-2906.2002.00415.x"
+          ],
+          "pIC50": 4.02,
+          "peer_peptides": 352,
+          "peptide_sequence": "IVE",
+          "percentile": 35.23,
+          "potency_replications": [],
+          "record_ids": [
+            "10.1046/j.1444-2906.2002.00415.x:IVE"
+          ],
+          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+          "stratum_kind": "peptide"
+        },
+        {
+          "adjusted": 23.011363636363637,
+          "evidence_factor": 0.75,
+          "independent_dois": [
+            "10.5657/fas.2005.8.2.109"
+          ],
+          "measurements": [
+            {
+              "endpoint": "IC50",
+              "original_paper_doi": "10.5657/fas.2005.8.2.109",
+              "relation": "=",
+              "source_id": "lee_2005_clam",
+              "substrate": "HHL",
+              "target": "ACE",
+              "unit": "uM",
+              "value": 158
+            }
+          ],
+          "original_paper_dois": [
+            "10.5657/fas.2005.8.2.109"
+          ],
+          "pIC50": 3.801,
+          "peer_peptides": 352,
+          "peptide_sequence": "LLP",
+          "percentile": 30.68,
+          "potency_replications": [],
+          "record_ids": [
+            "10.5657/fas.2005.8.2.109:LLP"
+          ],
+          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+          "stratum_kind": "peptide"
+        }
+      ],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -2546,11 +2731,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
+          "log_scale_common_fence": 39.5,
+          "minimum_cohort_10": 39.5,
+          "minimum_cohort_100": 39.5,
+          "no_approved_drug_filter": 39.5,
+          "no_common_metabolite_filter": 39.5
         },
         "sufficiency": {
           "best_record_steps": 1,
@@ -3292,8 +3477,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 4,
+          "ratio": 1.0,
           "required": [
             "origin",
             "structure_id",
@@ -3329,11 +3514,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.75
+        "mean_ratio": 1.0
       },
       "korean_name": "바지락",
-      "mbpi_label": null,
-      "mbpi_stratum": null,
+      "mbpi_label": "참고값(단일 논문)",
+      "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 231750,
@@ -3447,43 +3632,77 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 39.5,
+          "MFPI": 60.4
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1046/j.1444-2906.2002.00415.x"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 44.7,
+          "0.5": 50.0,
+          "0.75": 55.2
+        },
+        "used_for_score": false,
+        "value": 50.0
+      },
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 39.5,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
       "sensitivity": {
-        "food_weights": {}
+        "food_weights": {},
+        "mean_compound_sensitivity": 29.7,
+        "median_compound_sensitivity": 26.4,
+        "range_from_aggregation": [
+          23.0,
+          39.5
+        ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": null,
+        "bioactivity_only_MBPI": 39.5,
         "food_only_MFPI": 60.4
       },
       "source_ids": [
+        "ahtpdb_ic50_2026",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "fao_casp_ruditapes",
         "iucn_redlist_search",
+        "lee_2005_clam",
         "nibr_red_data_book_2024",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
+        "suetsuna_2002_clam",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       }
@@ -15624,7 +15843,8 @@
     },
     "peptide_supplements": [
       "research/verified-indices/evidence-v3.5.json",
-      "research/verified-indices/peptide-raw-values-2.1.json"
+      "research/verified-indices/peptide-raw-values-2.1.json",
+      "research/verified-indices/evidence-clam-2026-10-01.json"
     ],
     "posthoc": {
       "calibration_cases": [],
@@ -16195,6 +16415,16 @@
       "url": "https://www.koreascience.kr/article/JAKO198622105902972.page",
       "version": "page checked 2026-09-30"
     },
+    "lee_2005_clam": {
+      "accessed": "2026-10-01",
+      "doi": "10.5657/fas.2005.8.2.109",
+      "license": "Publisher copyright",
+      "provider": "Journal of Fisheries Science and Technology 8:109 (Lee et al. 2005), full text via KoreaScience",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Peptide inhibitor for angiotensin-converting enzyme from thermolysin hydrolysate of Manila clam proteins",
+      "url": "https://doi.org/10.5657/fas.2005.8.2.109",
+      "version": "2005"
+    },
     "lee_2024_sargassum_nutrition": {
       "accessed": "2026-09-25",
       "doi": "10.11002/fsp.2024.31.2.324",
@@ -16460,6 +16690,16 @@
       "title": "Identification of an antihypertensive peptide from peptic digest of wakame",
       "url": "https://doi.org/10.1016/s0955-2863(00)00110-8",
       "version": "2000"
+    },
+    "suetsuna_2002_clam": {
+      "accessed": "2026-10-01",
+      "doi": "10.1046/j.1444-2906.2002.00415.x",
+      "license": "Publisher copyright",
+      "provider": "Fisheries Science 68:233 (Suetsuna 2002), full text via J-STAGE",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "title": "Identification of antihypertensive peptides from peptic digest of the short-necked clam Tapes philippinarum and the pearl oyster Pinctada fucata martensii",
+      "url": "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article",
+      "version": "2002"
     },
     "todarodes_2011_peptide": {
       "accessed": "2026-09-25",

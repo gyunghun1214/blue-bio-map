@@ -29,7 +29,7 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 71.5), (241776, 8.7), (250680, 13.5), (494972, 45.3), (506159, 10.1), (836033, 96.3),
-                          (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (393716, 27.3), (413600, 56.9),
+                          (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 39.5), (393716, 27.3), (413600, 56.9),
                           (275816, 29.2)])
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
@@ -40,7 +40,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # MCUI 5 (전복·고등어·멸치·참조기·방어). Every matrix score must equal the reviewed report, species by species.
         # verified-pilot-3.3 fills a missing RDA zinc value from uFiSh: 홍합(species), 전복(genus), 대구(species), 갑오징어(family).
         # verified-pilot-3.6 fills 피조개 zinc from the MEXT 2020 same-species raw item (あかがい 10279): MFPI 14 -> 15.
-        # verified-pilot-3.7 adds calcium (3 of 4 components) and three aquaculture records: 톳·청각·멸치 MFPI, 참굴 BBVI 80.9 -> 83.9.
+        # verified-pilot-3.7 adds calcium (3 of 4 components) and three aquaculture records: 톳·청각·멸치 MFPI, 참굴 BBVI 80.9 -> 83.9;
+        # it also reads the reviewed 바지락 peptide rows (single paper): 바지락 MBPI 39.5, BBVI withheld.
         self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 18)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)

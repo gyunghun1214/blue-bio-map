@@ -342,7 +342,8 @@
   },
   "peptide_supplements": [
     "research/verified-indices/evidence-v3.5.json",
-    "research/verified-indices/peptide-raw-values-2.1.json"
+    "research/verified-indices/peptide-raw-values-2.1.json",
+    "research/verified-indices/evidence-clam-2026-10-01.json"
   ],
   "reference_combination": {
     "label": "참고 통합값 · 독립 재현 미확인",
