@@ -1,5 +1,7 @@
 # 실제 근거 지표 설계 및 입력 경계
 
+> **현재 구현은 [워크플로 그림 기준 방법 문서](workflow-method.md)를 본다.** 이 문서는 2026-09-25 설계 검토 기록이다.
+
 기준: 제안서 「Blue-bio Value Map」 3–4쪽, GitHub `main` `c35c99c` (2026-09-25),
 `docs/evidence-schema.md`, `scripts/evaluate_candidates.py`, 공개 `species_profiles` 읽기 전용 조회.
 이 문서는 원자료 조사와 구현에 **앞서** 제안 원칙과 현재 시범 규칙을 분리한다.
