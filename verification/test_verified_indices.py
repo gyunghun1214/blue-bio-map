@@ -1051,18 +1051,23 @@ CHANGED_35 = {(145721, "MBPI"): 71.5, (241776, "MBPI"): 8.7, (234476, "MBPI"): 7
               (1061762, "MFPI"): 53.5}
 
 
+V35 = ROOT / "config" / "verified-indices-v3.5.json"  # superseded by 3.6 (MEXT zinc substitute); its rows stay tested
+
+
 class VerifiedPilot35Tests(unittest.TestCase):
-    """Public method: 3.4 rules with the reviewed rows of sunny/bbvm-0928-pr2-evidence and PR #65, in 3.5-only files."""
+    """Superseded by 3.6. 3.5: 3.4 rules with the reviewed rows of sunny/bbvm-0928-pr2-evidence and PR #65, in 3.5-only files."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V35))
         self.v34 = build(*load_inputs(config=V34))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.v34)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.5", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.5 report is archived as it was
+        archived35 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.5.json"
+        self.assertEqual(render(self.report), archived35.read_text(encoding="utf-8"))
         self.assertEqual(self.report["generated_at"], "2026-10-01T00:00:00Z")
 
     def test_only_the_reviewed_rows_move(self):
@@ -1087,6 +1092,57 @@ class VerifiedPilot35Tests(unittest.TestCase):
             c = cfg(old)
             self.assertNotIn("research/verified-indices/evidence-v3.5.json", c["peptide_supplements"])
             self.assertNotEqual(c["nutrition"]["substitutes"]["aquaculture_supplement"], "research/verified-indices/mfpi-aquaculture-2026-10-01.json")
+
+
+
+class VerifiedPilot36Tests(unittest.TestCase):
+    """Public method: 3.5 plus a MEXT 2020 same-species raw item for zinc missing from a species' own RDA row."""
+
+    def setUp(self):
+        self.evidence, *self.rest = load_inputs()
+        self.report = build(self.evidence, *self.rest)
+        self.v35 = build(*load_inputs(config=V35))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v35)
+        self.rule = self.report["method"]["nutrition"]["substitutes"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.6", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_ark_shell_mfpi_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(504357, "MFPI"): 57.7})
+        self.assertEqual(self.report["comparison_cohorts"], self.v35["comparison_cohorts"])
+        zinc = self.new[504357]["food_trace"]["nutrients"]["zinc_mg"]
+        self.assertEqual((zinc["value"], zinc["grade"], zinc["evidence_factor"], zinc["substitute"]["taxon_level"], zinc["substitute"]["food_item_id"]),
+                         (1.5, "foreign_table_cited", 0.85, "mext", "10279"))
+        self.assertIn("mext_sfct_2020_zinc", self.new[504357]["source_ids"])
+
+    def test_mext_ranks_after_species_and_before_proxies(self):
+        self.assertEqual(self.rule["levels"], ["subsample", "species", "mext", "genus", "family"])
+        # 살오징어: a family-level uFiSh proxy (3.3) gives way to the same-species MEXT item; 멸치 had no candidate at all
+        self.assertEqual(self.old[342067]["food_trace"]["substitute_search"], {"zinc_mg": "093033"})
+        self.assertEqual(self.new[342067]["food_trace"]["substitute_search"], {"zinc_mg": "MEXT:10345"})
+        self.assertEqual(self.new[219984]["food_trace"]["substitute_search"], {"zinc_mg": "MEXT:10044"})
+        for aphia in (342067, 219984):  # zinc can be filled; aquaculture is still missing, so MFPI stays withheld
+            self.assertIsNone(self.new[aphia]["scores"]["MFPI"])
+            self.assertEqual(self.new[aphia]["withheld_reasons"]["MFPI"], "aquaculture_method_unverified")
+        for aphia in (494972, 145086):  # 톳, 청각: no raw MEXT item, nothing substituted
+            self.assertEqual(self.new[aphia]["food_trace"]["substitute_search"], {"zinc_mg": None})
+
+    def test_mext_items_are_raw_species_values(self):
+        snap = self.evidence["mfpi_mext"]
+        self.assertEqual({i["aphia_id"] for i in snap["items"]}, {504357, 219984, 342067})
+        for item in snap["items"]:
+            self.assertEqual((item["sample_state"], item["basis"], item["part"]), ("raw", "100 g edible portion", "edible portion"))
+            self.assertEqual(set(item["components"]), set(self.rule["mext"]["components"]))
+        for name in ("protein_g", "iron_mg"):  # only the listed component is ever taken from MEXT
+            evidence, candidates, config, snapshot, taxonomy = load_inputs()
+            config["nutrition"]["substitutes"]["mext"]["components"] = [name]
+            report = build(evidence, candidates, config, snapshot, taxonomy)
+            self.assertIsNone(next(s for s in report["candidate_species"] if s["aphia_id"] == 504357)["scores"]["MFPI"], name)
 
 
 if __name__ == "__main__":

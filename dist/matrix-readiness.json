@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.5",
+  "method_version": "verified-pilot-3.6",
   "schema_version": 1,
   "species": [
     {
@@ -1030,7 +1030,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
-        "MFPI": "component_missing_in_source"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
@@ -1051,7 +1051,7 @@
         "BBVI": null,
         "MBPI": null,
         "MCUI": 10.0,
-        "MFPI": null
+        "MFPI": 57.7
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
@@ -1064,6 +1064,7 @@
         "https://www.koreascience.kr/article/JAKO198622105902972.page",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=504357",
         "https://www.marinespecies.org/rest/",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
@@ -1161,7 +1162,7 @@
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
-        "MFPI": "component_missing_in_source"
+        "MFPI": "aquaculture_method_unverified"
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [

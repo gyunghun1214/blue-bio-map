@@ -39,7 +39,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # Operating MFPI 3 + MCUI 2 (main), plus the #39 reviewed candidates: MFPI 4 (바지락·참가리비·조피볼락·방어),
         # MCUI 5 (전복·고등어·멸치·참조기·방어). Every matrix score must equal the reviewed report, species by species.
         # verified-pilot-3.3 fills a missing RDA zinc value from uFiSh: 홍합(species), 전복(genus), 대구(species), 갑오징어(family).
-        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 14)
+        # verified-pilot-3.6 fills 피조개 zinc from the MEXT 2020 same-species raw item (あかがい 10279): MFPI 14 -> 15.
+        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 15)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 7)

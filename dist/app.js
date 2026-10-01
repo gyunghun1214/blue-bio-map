@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -150,10 +150,12 @@ function verifiedFoodValid(a,report){
   const ownRow=outside?(f.observed_rows||[]).find(o=>o.linked&&o.food_item_id===f.source_food_item_id):null;
   if(outside&&!ownRow)return false;
   for(const [name,unit] of Object.entries(config.components||{})){
-    const n=f.nutrients?.[name], s=n?.substitute, sample=s?.taxon_level==='subsample';
-    if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||(!sample&&!sub.parts?.includes(s.part))||s.label!==sub.labels?.[s.taxon_level]||
-       !sources[s.source_id]||(sample?!['domestic_table','foreign_table_cited'].includes(n.grade)
-         :n.grade!==(s.taxon_level==='species'?sub.species_grade_by_doc?.[s.doc_code]||'proxy':'proxy'))))return false;
+    const n=f.nutrients?.[name], s=n?.substitute, sample=s?.taxon_level==='subsample', mext=s?.taxon_level==='mext';
+    // 3.6: a MEXT 2020 same-species raw item (edible portion), only for the components the rule lists, at the rule's grade
+    if(s&&(!outside||!sub.levels?.includes(s.taxon_level)||(!sample&&!mext&&!sub.parts?.includes(s.part))||s.label!==sub.labels?.[s.taxon_level]||
+       !sources[s.source_id]||(mext&&(s.source_id!==sub.mext?.source_id||!sub.mext?.components?.includes(name)||s.part!=='edible portion'))||
+       (sample?!['domestic_table','foreign_table_cited'].includes(n.grade)
+         :n.grade!==(mext?sub.mext?.grade:s.taxon_level==='species'?sub.species_grade_by_doc?.[s.doc_code]||'proxy':'proxy'))))return false;
     // a sub-sample value is the mean of reviewed same-species rows of the same table
     if(sample){
       const ids=String(s.food_item_id).split('+'),vals=ids.map(id=>s.values?.[id]);
@@ -704,11 +706,14 @@ function observedRows(f){
 }
 // Display only: four significant digits (the trace keeps the source value).
 const num=v=>Number.isFinite(v)?String(Number(v.toPrecision(4))):v;
-const substituteRef=s=>(s.taxon_level==='subsample'?'RDA ':'uFiSh1.0 ')+s.food_item_id;
+const substituteRef=s=>(s.taxon_level==='subsample'?'RDA ':s.taxon_level==='mext'?'MEXT 8정판 ':'uFiSh1.0 ')+s.food_item_id;
 function substituteText(s){
   return s.taxon_level==='subsample'
     ?`<b>${esc(s.label)}</b>: 이 종의 연결 RDA 행에 값이 없어, 같은 표에서 같은 종의 부표본 행 ${esc(Object.entries(s.values||{}).map(([id,v])=>id+' '+num(v)).join(', '))}`+
       `(${esc(s.food_name)})의 ${s.n>1?'평균':'값'}을 썼습니다. 이 부표본 행들은 고정 비교집단에 넣지 않습니다. ${verifiedSource(s.source_id,'RDA ↗')}`
+    :s.taxon_level==='mext'
+    ?`<b>${esc(s.label)}</b>: 이 종의 연결 RDA 행과 uFiSh에 같은 종 값이 없어 일본 식품성분표 2020(8정판) ${esc(s.food_item_id)} ${esc(s.food_name)}`+
+      `(${esc(s.taxon_label)}, 가식부 100 g)의 값을 썼습니다. 종 연결: ${esc(s.link_evidence||'')} ${verifiedSource(s.source_id,'MEXT ↗')}`
     :`<b>${esc(s.label)}</b>: 이 종의 연결 RDA 행에 값이 없어 FAO/INFOODS uFiSh1.0 ${esc(s.food_item_id)} `+
       `${esc(s.food_name)}(${esc(s.taxon_label)}, 섭취 부위 ${esc(s.part)}, 문서 코드 ${esc(s.doc_code||'없음')}, n ${esc(s.n??'미기재')})의 값을 썼습니다. `+
       `${verifiedSource(s.source_id,'uFiSh ↗')}`;
@@ -717,7 +722,7 @@ function verifiedFoodDetail(s){
   const f=s.assessment.food_trace||{};
   const search=Object.entries(f.substitute_search||{});
   if(!Number.isFinite(s.assessment.scores.MFPI))return observedRows(f)+
-    (search.length?`<p class="fine">빠진 성분의 대체치 후보: ${esc(search.map(([k,v])=>(nutrientNames[k]||k)+' '+(v?(String(v).startsWith('K')?'RDA ':'uFiSh1.0 ')+v:'후보 없음')).join(' · '))}. `+
+    (search.length?`<p class="fine">빠진 성분의 대체치 후보: ${esc(search.map(([k,v])=>(nutrientNames[k]||k)+' '+(v?(String(v).startsWith('MEXT:')?'MEXT 8정판 '+String(v).slice(5):(String(v).startsWith('K')?'RDA ':'uFiSh1.0 ')+v):'후보 없음')).join(' · '))}. `+
       `${f.substitute_row?'빠진 성분은 채울 수 있지만 아래 다른 이유로 보류합니다.':'채울 후보가 없는 성분이 있어 보류합니다.'}</p>`:'')+
     (f.supplemental_nutrition||[]).map(o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
       `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
