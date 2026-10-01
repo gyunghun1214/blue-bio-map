@@ -1106,7 +1106,8 @@ const bioUse=t=>{
   if(/cholinesterase|beta-secretase/i.test(name))return 'dementia';
   if(/Trypanosoma|Plasmodium|Leishmania|Toxoplasma|Schistosoma|Giardia/i.test(name))return 'parasite';
   if(type==='CELL-LINE')return 'cancer';
-  if(type==='ORGANISM'&&/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella|Candida|Aspergillus/i.test(name))return 'microbe';
+  if(type==='ORGANISM'&&/Candida|Aspergillus|Cryptococcus|Fusarium|Trichophyton|Saccharomyces/i.test(name))return 'fungus';
+  if(type==='ORGANISM'&&/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella/i.test(name))return 'microbe';
   if(/glucosidase|dipeptidyl peptidase|PTP1B|amylase/i.test(name))return 'glucose';
   return 'other';
 };
@@ -1115,7 +1116,8 @@ const USE_CHIPS=[
   {id:'virus',group:'신약',label:'바이러스',syn:['바이러스','항바이러스','hiv','코로나','sars','뎅기']},
   {id:'dementia',group:'신약',label:'치매 관련 효소',syn:['치매','알츠하이머','콜린에스테라아제','bace']},
   {id:'parasite',group:'신약',label:'기생충',syn:['기생충','트리파노소마','말라리아','수면병']},
-  {id:'microbe',group:'신약',label:'항균',syn:['항균','세균','내성균','항생제','항진균']},
+  {id:'microbe',group:'신약',label:'항균(세균)',syn:['항균','세균','내성균','항생제']},
+  {id:'fungus',group:'신약',label:'항진균',syn:['항진균','진균','곰팡이','칸디다','무좀']},
   {id:'cancer',group:'신약',label:'항암',syn:['항암','암','종양','세포독성']},
   {id:'glucose',group:'신약',label:'혈당',syn:['혈당','당뇨','항당뇨']},
   {id:'protein_g',group:'식량',label:'고단백',syn:['단백질','고단백','protein']},
@@ -1147,7 +1149,8 @@ function useEvidence(s,id){
     :t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
     :t.stratum_kind==='chembl'?`${t.compound_name||t.compound_id} · ${t.target_name} ${t.standard_type} pChEMBL ${t.median_pchembl}`
     :`${m.compound_name||t.compound_id||'화합물'} · ACE IC50 ${m.raw_value??''} ${m.raw_unit||''}`;
-  return {text:`${what} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
+  const floor=t.percentile===0?' · 비교집단 최하위 실측값(미확인이 아님)':'';
+  return {text:`${what}${floor} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
 }
 const useCount=id=>(data?.species||[]).filter(s=>useEvidence(s,id)).length;
 function renderUseChips(){
@@ -2026,7 +2029,12 @@ function toggleSimulation(value){
 function renderSources(){
   $('snapshot-date').textContent=`공개 기준 자료 발행 ${data.collectedAt}`;$('collection-note').textContent=data.notes;
   const all=new Map();data.species.forEach(s=>s.sources.forEach(src=>all.set(src.id,src)));
-  $('all-sources').innerHTML=data.species.map(s=>`<div class="citation"><strong>${esc(s.label)} · 학명</strong><span>${esc(s.wormsCitation)}</span><br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation"><strong>${esc(s.title)}</strong><span>${esc(s.citation)}</span><br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('');
+  // Indicator sources (the報告's own registry) are cited here too, so a comparison cohort is named on the method tab.
+  const report=data.assessmentInfo||{};
+  const indicator=[...new Set(data.species.flatMap(s=>s.assessment?.source_ids||[]))]
+    .map(id=>[id,report.sources?.[id]]).filter(([,src])=>src)
+    .map(([id,src])=>`<div class="citation"><strong>${esc(src.title||src.provider||id)}</strong><span>${esc(src.citation||src.provider||'')}</span><br>${sourceLink(src.url,'원문 ↗')} · ${esc(src.license||'이용조건 미기재')}<br><span>${esc(src.terms||'')} ${esc(src.accessed||'')} 조회.</span></div>`).join('');
+  $('all-sources').innerHTML=data.species.map(s=>`<div class="citation"><strong>${esc(s.label)} · 학명</strong><span>${esc(s.wormsCitation)}</span><br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation"><strong>${esc(s.title)}</strong><span>${esc(s.citation)}</span><br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
 }
 
 function registerTools(){
