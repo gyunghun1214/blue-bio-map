@@ -362,8 +362,9 @@ try{
   check('Value map (3.2): layer labels count flagged species and those on the map; flagged species without a cell are listed',
     layers.pCount.startsWith(nP+'종 · 지도 표시 ')&&layers.uCount.startsWith(nU+'종 · 지도 표시 ')&&
     (layers.uCount===nU+'종 · 지도 표시 0종'?layers.noCell.includes('미탐색 후보 중 공개 출현 셀이 없어'):true)&&layers.noCell.includes('종 부재나 분포 없음을 뜻하지 않습니다'),JSON.stringify(layers));
-  await pick(377084);await sleep(300);ms=await modeState();
-  check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=377084/.test(ms.hash),JSON.stringify(ms));
+  // 2026-10-01: 다시마 now has CC BY-NC cells; 시카메굴 (all five records over 1 km inland) is the candidate without cells.
+  await pick(836041);await sleep(300);ms=await modeState();
+  check('Value mode + candidate without public cells: stays in value mode, explains no link',ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')&&/s=836041/.test(ms.hash),JSON.stringify(ms));
   ms=await clickMode('occurrence');
   check('Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, no fake cell for candidate',
     ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===0,JSON.stringify(ms));
@@ -449,7 +450,7 @@ try{
     f=await flow(504357);
     check(`Flow 3 ${tag}: 피조개 reviewed 4° cells labelled not a current distribution, pre-2000 records flagged`,f.sel.includes('현재 분포 아님')&&f.sel.includes('조사 후보')&&f.src==='조사 후보 · 검수 기록 공개 4° 셀'&&f.shapes===arkPlaces&&f.note.includes('현재 분포')&&f.note.includes('2000년 이전'),f.sel+' | '+f.src);
     await mapShot('3-ark-shell');
-    f=await flow(377084);
+    f=await flow(836041);
     check(`Flow 4 ${tag}: candidate without public cells draws no cell and says so`,f.shapes===0&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.note.includes('제외 사유')&&f.note.includes('종 부재'),f.sel+' | '+f.note.slice(0,120));
     await mapShot('4-candidate-no-cells');
     const walk=await walkComparison();

@@ -425,7 +425,7 @@ function cellAssessmentStatus(s,c) {
 function occurrenceCitationLinks(c) {
   return (c.citations||[]).map(x=>{
     const terms=(x.licenses||[]).map(l=>sourceLink({'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/',
-      'CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/'}[l],l)).join(' · ')||'이용조건 미확인';
+      'CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/'}[l],l)).join(' · ')||'이용조건 미확인';
     return `<li>${sourceLink(x.url,x.title||'제공처 원문')} · ${terms}</li>`;
   }).join('');
 }
@@ -1124,7 +1124,7 @@ function renderCandidateDetail(s){
         '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'))+
       more('수집·선별 기준',(r?sourceRow('GBIF',r.gbif)+sourceRow('OBIS',r.obis)+row('제외 사유',withheldLine(r))+
           row('통과 기록의 원자료 학명',r.names.join(', ')||'없음')+row('공개 해상도',s.sensitivity||'미기재')+
-          '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0 기록만 · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선 기준 육상 좌표 제외 · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다. 양식·방류 여부는 원자료 표시가 없으면 구분하지 못합니다.</p>'
+          '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0·CC BY-NC 4.0 기록만(비상업 연구용, 2026-10-01부터 BY-NC 포함) · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선에서 1 km보다 안쪽 육상 좌표 제외(조간대 기록 보존) · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다. 양식·방류 여부는 원자료 표시가 없으면 구분하지 못합니다.</p>'
           :row('출현 검수',releaseMissing(s),'pending'))+
         '<p class="fine">다음 단계: 식품명의 종 동정과 IUCN 원평가 기준·시점을 확인한 뒤 축별 지표를 다시 심사합니다.</p>')+
       more('출처와 이용조건','<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>'+
@@ -1194,7 +1194,7 @@ function renderLiveDetail(s) {
 const REASONS={on_land_obis_rule:'육지 위 좌표(OBIS 해안선 기준)',duplicate:'같은 기록 중복',under_existing_db_review:'운영 DB에서 검토 중인 기존 기록',
   species_held_until_sensitivity_review:'민감도 검토 전 보류 종',bad_coordinate_issue:'GBIF 좌표 오류 표시',uncertainty_over_10km:'좌표 불확실성 10 km 초과',
   coordinates_generalized_at_source:'제공처가 좌표를 흐리게 처리',no_year:'관측 연도 없음',
-  taxon_not_verified:'학명 미확인',absent_or_dropped:'부재·삭제 기록',fossil_specimen:'화석 표본',license_not_open:'이용조건 미충족(비상업·불명 등)',
+  taxon_not_verified:'학명 미확인',absent_or_dropped:'부재·삭제 기록',fossil_specimen:'화석 표본',license_not_open:'이용조건 미충족(허용 범위 밖·불명)',
   multi_year_range:'여러 해에 걸친 날짜',coordinate_issue:'GBIF 좌표 오류 표시',generalized_at_source:'제공처가 좌표를 흐리게 처리',
   captive_or_cultivated:'양식·사육 표시 기록',market_purchase_point:'시장 구입 표본(채집 위치 미상)',locality_contradicts_coordinates:'장소 설명과 좌표 불일치'};
 // Candidate record review (expansion-public-cells.json): what was queried, what passed and why the rest was withheld.
@@ -1526,7 +1526,7 @@ function valueSpeciesCard(s,records){
       :cons?' · IUCN '+esc(cons.category||'등급 미기재')+' / 평가 '+esc(cons.assessment_date||cons.assessment_year||'일자 미기재'):'')+'</p>'+
     '<p class="fine">평가 보고서 '+esc(report.generatedAt?.slice(0,10)||'미발행')+
     ' · 출현 자료 '+esc(s.publishedAt?.slice(0,10)||data.collectedAt||'미기재')+
-    ' · 이용조건: '+esc(data.live?'GBIF 공개 기준 CC0·CC BY 4.0':'OBIS 추가 수집 CC BY-NC 포함')+'</p>'+
+    ' · 이용조건: '+esc(data.live?'운영 8종 GBIF CC0·CC BY 4.0 · 후보 22종 GBIF·OBIS CC0·CC BY·CC BY-NC 4.0(비상업 연구용)':'OBIS 추가 수집 CC BY-NC 포함')+'</p>'+
     (links?'<details><summary>지표 근거 원문과 이용조건</summary><ul>'+links+'</ul></details>':'<p class="fine">이 종에 연결된 지표 근거 원문은 아직 없습니다.</p>')+
     '<button type="button" class="text-button" data-value-species="'+esc(s.aphiaID)+'">종별 상세 근거 보기 →</button></article>';
 }
