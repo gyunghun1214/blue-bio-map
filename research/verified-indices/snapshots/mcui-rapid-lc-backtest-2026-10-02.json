@@ -1,0 +1,742 @@
+{
+  "cap_records": 20000,
+  "projection": "Lambert cylindrical equal-area, R = 6371.0088 km",
+  "snapshot_date": "2026-10-02",
+  "sources": {
+    "gbif_rapid_lc": {
+      "accessed": "2026-10-02",
+      "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+      "provider": "GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check)",
+      "terms": "GBIF data user agreement and OBIS data policy; derived counts only, cite GBIF.org and OBIS with the query",
+      "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
+      "version": "queried 2026-10-02"
+    }
+  },
+  "species": {
+    "127022": {
+      "aoo_cells": 298,
+      "aoo_km2": 29800,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU",
+        "TW",
+        "VN"
+      ],
+      "eoo_km2": 5253818,
+      "gbif": {
+        "count": 770,
+        "name": "Scomber japonicus Houttuyn, 1782",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 7599552,
+          "year": "1990,2026"
+        },
+        "read": 770,
+        "status": "ACCEPTED",
+        "taxon_key": 7599552,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 527,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 127022
+        }
+      },
+      "records": 426,
+      "scientific_name": "Scomber japonicus"
+    },
+    "1666974": {
+      "aoo_cells": 144,
+      "aoo_km2": 14400,
+      "countries_gbif": [
+        "CN",
+        "HK",
+        "ID",
+        "JP",
+        "KR",
+        "PH",
+        "TW",
+        "VN"
+      ],
+      "eoo_km2": 7197807,
+      "gbif": {
+        "count": 264,
+        "name": "Acanthosepion esculentum (Hoyle, 1885)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 12193375,
+          "year": "1990,2026"
+        },
+        "read": 264,
+        "status": "ACCEPTED",
+        "taxon_key": 12193375,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 223,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 1666974
+        }
+      },
+      "records": 213,
+      "scientific_name": "Acanthosepion esculentum"
+    },
+    "219984": {
+      "aoo_cells": 309,
+      "aoo_km2": 30900,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "PH",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 5520517,
+      "gbif": {
+        "count": 1275,
+        "name": "Engraulis japonicus Temminck & Schlegel, 1846",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2413997,
+          "year": "1990,2026"
+        },
+        "read": 1275,
+        "status": "ACCEPTED",
+        "taxon_key": 2413997,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 716,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 219984
+        }
+      },
+      "records": 462,
+      "scientific_name": "Engraulis japonicus"
+    },
+    "231750": {
+      "aoo_cells": 292,
+      "aoo_km2": 29200,
+      "countries_gbif": [
+        "CN",
+        "HK",
+        "JP",
+        "KP",
+        "KR",
+        "MO",
+        "PH",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 6215703,
+      "gbif": {
+        "count": 2016,
+        "name": "Ruditapes philippinarum (A.Adams & Reeve, 1850)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 4372686,
+          "year": "1990,2026"
+        },
+        "read": 2016,
+        "status": "ACCEPTED",
+        "taxon_key": 4372686,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1895,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 231750
+        }
+      },
+      "records": 1168,
+      "scientific_name": "Ruditapes philippinarum"
+    },
+    "241776": {
+      "aoo_cells": 88,
+      "aoo_km2": 8800,
+      "countries_gbif": [
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 1228609,
+      "gbif": {
+        "count": 527,
+        "name": "Apostichopus japonicus (Selenka, 1867)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2279100,
+          "year": "1990,2026"
+        },
+        "read": 527,
+        "status": "ACCEPTED",
+        "taxon_key": 2279100,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 614,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 241776
+        }
+      },
+      "records": 291,
+      "scientific_name": "Apostichopus japonicus"
+    },
+    "276651": {
+      "aoo_cells": 86,
+      "aoo_km2": 8600,
+      "countries_gbif": [
+        "JP",
+        "KR",
+        "PH",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 2794815,
+      "gbif": {
+        "count": 339,
+        "name": "Seriola quinqueradiata Temminck & Schlegel, 1845",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5961724,
+          "year": "1990,2026"
+        },
+        "read": 339,
+        "status": "ACCEPTED",
+        "taxon_key": 5961724,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 315,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 276651
+        }
+      },
+      "records": 129,
+      "scientific_name": "Seriola quinqueradiata"
+    },
+    "281273": {
+      "aoo_cells": 160,
+      "aoo_km2": 16000,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "TW"
+      ],
+      "eoo_km2": 1967046,
+      "gbif": {
+        "count": 354,
+        "name": "Larimichthys polyactis (Bleeker, 1877)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2400171,
+          "year": "1990,2026"
+        },
+        "read": 354,
+        "status": "ACCEPTED",
+        "taxon_key": 2400171,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 284,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 281273
+        }
+      },
+      "records": 209,
+      "scientific_name": "Larimichthys polyactis"
+    },
+    "342067": {
+      "aoo_cells": 131,
+      "aoo_km2": 13100,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "PH",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 4409933,
+      "gbif": {
+        "count": 209,
+        "name": "Todarodes pacificus (Steenstrup, 1880)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2290498,
+          "year": "1990,2026"
+        },
+        "read": 209,
+        "status": "ACCEPTED",
+        "taxon_key": 2290498,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 228,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 342067
+        }
+      },
+      "records": 172,
+      "scientific_name": "Todarodes pacificus"
+    },
+    "393716": {
+      "aoo_cells": 72,
+      "aoo_km2": 7200,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 2493138,
+      "gbif": {
+        "count": 245,
+        "name": "Mizuhopecten yessoensis (Jay, 1857)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 4373871,
+          "year": "1990,2026"
+        },
+        "read": 245,
+        "status": "ACCEPTED",
+        "taxon_key": 4373871,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 174,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 393716
+        }
+      },
+      "records": 142,
+      "scientific_name": "Mizuhopecten yessoensis"
+    },
+    "397082": {
+      "aoo_cells": 87,
+      "aoo_km2": 8700,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 3172947,
+      "gbif": {
+        "count": 204,
+        "name": "Haliotis discus Reeve, 1846",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 4357763,
+          "year": "1990,2026"
+        },
+        "read": 204,
+        "status": "ACCEPTED",
+        "taxon_key": 4357763,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 239,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 397082
+        }
+      },
+      "records": 208,
+      "scientific_name": "Haliotis discus"
+    },
+    "413600": {
+      "aoo_cells": 27,
+      "aoo_km2": 2700,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR"
+      ],
+      "eoo_km2": 1317827,
+      "gbif": {
+        "count": 212,
+        "name": "Sinonovacula constricta (Lamarck, 1818)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5855549,
+          "year": "1990,2026"
+        },
+        "read": 212,
+        "status": "ACCEPTED",
+        "taxon_key": 5855549,
+        "type": "EXACT"
+      },
+      "likely_least_concern": false,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 186,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 413600
+        }
+      },
+      "records": 82,
+      "scientific_name": "Sinonovacula constricta"
+    },
+    "504357": {
+      "aoo_cells": 72,
+      "aoo_km2": 7200,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 2766399,
+      "gbif": {
+        "count": 294,
+        "name": "Anadara broughtonii (Schrenck, 1867)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5855397,
+          "year": "1990,2026"
+        },
+        "read": 294,
+        "status": "ACCEPTED",
+        "taxon_key": 5855397,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 229,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 504357
+        }
+      },
+      "records": 100,
+      "scientific_name": "Anadara broughtonii"
+    },
+    "506159": {
+      "aoo_cells": 127,
+      "aoo_km2": 12700,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 2518994,
+      "gbif": {
+        "count": 380,
+        "name": "Mytilus coruscus Gould, 1861",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 6531375,
+          "year": "1990,2026"
+        },
+        "read": 380,
+        "status": "SYNONYM",
+        "taxon_key": 6531375,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 418,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 506159
+        }
+      },
+      "records": 311,
+      "scientific_name": "Mytilus coruscus"
+    },
+    "836033": {
+      "aoo_cells": 282,
+      "aoo_km2": 28200,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "MO",
+        "PH",
+        "RU",
+        "TW"
+      ],
+      "eoo_km2": 6297161,
+      "gbif": {
+        "count": 1645,
+        "name": "Magallana gigas (Thunberg, 1793)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 7820753,
+          "year": "1990,2026"
+        },
+        "read": 1645,
+        "status": "ACCEPTED",
+        "taxon_key": 7820753,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1694,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 836033
+        }
+      },
+      "records": 1056,
+      "scientific_name": "Magallana gigas"
+    }
+  },
+  "thresholds": {
+    "aoo_cell_km": 10,
+    "aoo_km2": 3000,
+    "eoo_km2": 30000,
+    "records": 75
+  }
+}

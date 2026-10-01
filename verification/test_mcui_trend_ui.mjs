@@ -53,8 +53,33 @@ for(const a of rows.filter(a=>a.occurrence_trend.mcui_base===null))assert.equal(
 // archived reports without the trend rule keep validating; a 3.4 row without its trend does not
 const archived=JSON.parse(read('research/verified-indices/archive/assessments-verified-pilot-3.3.json'));
 for(const a of [...archived.species,...archived.candidate_species])assert.ok(ctx.valid(a,archived),`3.3 archive ${a.korean_name} still validates`);
+// 3.15 (team-lead decision 2026-10-02): reference only; a 3.14 report has no Rapid LC record and validates as before
+const archived314=JSON.parse(read('research/verified-indices/archive/assessments-verified-pilot-3.14.json'));
+for(const a of [...archived314.species,...archived314.candidate_species]){
+  assert.equal(a.mcui_substitute,undefined);
+  assert.ok(ctx.valid(a,archived314),`3.14 archive ${a.korean_name} still validates`);
+}
 const plain=structuredClone(rows.find(a=>a.scores.MCUI!==null&&!a.occurrence_trend.mcui_adjustment));delete plain.occurrence_trend;
 assert.equal(ctx.valid(plain,report),false,'a 3.4 row must carry its trend');
+// 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record rides beside a withheld MCUI and is re-checked;
+// a record that carries a value, a report that scores it, or a record below the published thresholds is refused.
+const refRows=rows.filter(a=>a.mcui_substitute?.use==='reference_only');
+assert.equal(refRows.length,14);
+assert.ok(refRows.every(a=>a.scores.MCUI===null&&a.mcui_basis===null&&a.mcui_substitute.value===null&&a.withheld_reasons.MCUI==='not_in_red_list'));
+const ref=refRows[0];
+assert.equal(broken(ref,b=>{b.mcui_substitute.value=10;}),false,'a reference-only record carries no value');
+assert.equal(broken(ref,b=>{b.scores.MCUI=10;b.score_status.MCUI='산출됨';b.withheld_reasons.MCUI=null;}),false,'a reference-only record never gives an MCUI');
+assert.equal(broken(ref,b=>{b.mcui_basis='preliminary';}),false,'preliminary is not an MCUI basis');
+assert.equal(broken(ref,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
+assert.equal(broken(ref,b=>{b.mcui_substitute.record.aoo_cells+=1;}),false,'AOO must equal its cells');
+assert.equal(broken(ref,b=>{b.mcui_substitute.record.trend_class='decline_signal';}),false,'a decline signal is never likely LC');
+assert.equal(broken(ref,b=>{b.mcui_substitute.source_ids=['missing_source'];}),false,'every source id must exist');
+// attached only where the builder may attach one: never beside an IUCN or national assessment (the back-test's failure mode)
+assert.equal(broken(ref,b=>{b.conservation_trace.iucn_state='assessed';b.conservation_trace.category='EN';b.withheld_reasons.MCUI='current_status_unverified';}),false,'never beside an IUCN assessment');
+assert.equal(broken(ref,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
+assert.equal(broken(ref,b=>{b.mcui_substitute.record.thresholds={...b.mcui_substitute.record.thresholds,eoo_km2:1};}),false,'the record carries the published thresholds');
+assert.equal(broken(ref,b=>{b.mcui_substitute.record.trend_class=b.occurrence_trend?.class==='survey_gap'?'no_clear_decline':'survey_gap';}),false,'the record trend equals the re-checked trend');
+assert.equal(broken(ref,b=>{delete b.mcui_substitute.record.native_box;}),false,'the range box must be present');
 
 // Screen text
 for(const a of rows){
@@ -72,6 +97,9 @@ const cucumber=rows.find(a=>a.aphia_id===241776);
 if(!['decline_signal','decline_below_threshold'].includes(cucumber.occurrence_trend.class))
   assert.match(ctx.trendDetail({assessment:cucumber}),/IUCN 개체군 추세\(Decreasing\)와 OBIS 보고율 결과가 다릅니다/);
 // priority reasons are named, both when a species has both
+// 3.15 (team-lead decision 2026-10-02): reference only. A Rapid LC check gives no MCUI, so those species keep the
+// no-assessment reason (8 of the 14 also have low information sufficiency) and no 'preliminary' reason exists.
+assert.ok(rows.every(a=>!a.priority_survey_reasons.includes('preliminary_assessment_only')));
 const both=rows.find(a=>a.priority_survey_reasons.length===2);
 assert.match(ctx.reasons(both),/^정보충분도 낮음\(필수 입력 평균 \d+%, 기준 50% 미만\) · 보전 평가 없음\(IUCN·국가 평가 모두 없어 MCUI 미산출\)$/);
 const onlyNoAssessment=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');

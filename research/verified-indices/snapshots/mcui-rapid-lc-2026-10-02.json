@@ -1,0 +1,714 @@
+{
+  "cap_records": 20000,
+  "projection": "Lambert cylindrical equal-area, R = 6371.0088 km",
+  "snapshot_date": "2026-10-02",
+  "sources": {
+    "gbif_rapid_lc": {
+      "accessed": "2026-10-02",
+      "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+      "provider": "GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check)",
+      "terms": "GBIF data user agreement and OBIS data policy; derived counts only, cite GBIF.org and OBIS with the query",
+      "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
+      "version": "queried 2026-10-02"
+    }
+  },
+  "species": {
+    "1061762": {
+      "aoo_cells": 240,
+      "aoo_km2": 24000,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "PH",
+        "TW",
+        "VN"
+      ],
+      "eoo_km2": 5942957,
+      "gbif": {
+        "count": 644,
+        "name": "Portunus trituberculatus (Miers, 1876)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5716110,
+          "year": "1990,2026"
+        },
+        "read": 644,
+        "status": "ACCEPTED",
+        "taxon_key": 5716110,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 598,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 1061762
+        }
+      },
+      "records": 372,
+      "scientific_name": "Portunus trituberculatus"
+    },
+    "145086": {
+      "aoo_cells": 217,
+      "aoo_km2": 21700,
+      "countries_gbif": [
+        "CN",
+        "HK",
+        "JP",
+        "KR",
+        "PH",
+        "RU"
+      ],
+      "eoo_km2": 6342310,
+      "gbif": {
+        "count": 1370,
+        "name": "Codium fragile (Suringar) Har.",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5272096,
+          "year": "1990,2026"
+        },
+        "read": 1370,
+        "status": "ACCEPTED",
+        "taxon_key": 5272096,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1403,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 145086
+        }
+      },
+      "records": 601,
+      "scientific_name": "Codium fragile"
+    },
+    "145721": {
+      "aoo_cells": 305,
+      "aoo_km2": 30500,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 2122193,
+      "gbif": {
+        "count": 1523,
+        "name": "Undaria pinnatifida (Harv.) Suringar",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5422556,
+          "year": "1990,2026"
+        },
+        "read": 1523,
+        "status": "ACCEPTED",
+        "taxon_key": 5422556,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1607,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 145721
+        }
+      },
+      "records": 877,
+      "scientific_name": "Undaria pinnatifida"
+    },
+    "234476": {
+      "aoo_cells": 101,
+      "aoo_km2": 10100,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU",
+        "TW",
+        "VN"
+      ],
+      "eoo_km2": 4900669,
+      "gbif": {
+        "count": 497,
+        "name": "Ulva prolifera O.F.Mull.",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5273366,
+          "year": "1990,2026"
+        },
+        "read": 497,
+        "status": "ACCEPTED",
+        "taxon_key": 5273366,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 307,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 234476
+        }
+      },
+      "records": 233,
+      "scientific_name": "Ulva prolifera"
+    },
+    "236157": {
+      "aoo_cells": 172,
+      "aoo_km2": 17200,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "TW"
+      ],
+      "eoo_km2": 2081573,
+      "gbif": {
+        "count": 1061,
+        "name": "Gracilaria vermiculophylla (Ohmi) Papenfuss",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5278964,
+          "year": "1990,2026"
+        },
+        "read": 1061,
+        "status": "ACCEPTED",
+        "taxon_key": 5278964,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1100,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 236157
+        }
+      },
+      "records": 480,
+      "scientific_name": "Gracilaria vermiculophylla"
+    },
+    "250680": {
+      "aoo_cells": 46,
+      "aoo_km2": 4600,
+      "countries_gbif": [
+        "HK",
+        "JP",
+        "KR",
+        "PH",
+        "RU"
+      ],
+      "eoo_km2": 4313746,
+      "gbif": {
+        "count": 242,
+        "name": "Halocynthia roretzi (Drasche, 1884)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2331879,
+          "year": "1990,2026"
+        },
+        "read": 242,
+        "status": "ACCEPTED",
+        "taxon_key": 2331879,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 306,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 250680
+        }
+      },
+      "records": 200,
+      "scientific_name": "Halocynthia roretzi"
+    },
+    "254538": {
+      "aoo_cells": 140,
+      "aoo_km2": 14000,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 2072315,
+      "gbif": {
+        "count": 223,
+        "name": "Gadus macrocephalus Tilesius, 1810",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2415853,
+          "year": "1990,2026"
+        },
+        "read": 223,
+        "status": "ACCEPTED",
+        "taxon_key": 2415853,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 425,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 254538
+        }
+      },
+      "records": 297,
+      "scientific_name": "Gadus macrocephalus"
+    },
+    "274849": {
+      "aoo_cells": 186,
+      "aoo_km2": 18600,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 2017711,
+      "gbif": {
+        "count": 420,
+        "name": "Sebastes schlegelii Hilgendorf, 1880",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2335435,
+          "year": "1990,2026"
+        },
+        "read": 420,
+        "status": "ACCEPTED",
+        "taxon_key": 2335435,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 497,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 274849
+        }
+      },
+      "records": 368,
+      "scientific_name": "Sebastes schlegelii"
+    },
+    "275816": {
+      "aoo_cells": 201,
+      "aoo_km2": 20100,
+      "countries_gbif": [
+        "CN",
+        "HK",
+        "JP",
+        "KR",
+        "TW"
+      ],
+      "eoo_km2": 2922117,
+      "gbif": {
+        "count": 370,
+        "name": "Paralichthys olivaceus (Temminck & Schlegel, 1846)",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2408877,
+          "year": "1990,2026"
+        },
+        "read": 370,
+        "status": "ACCEPTED",
+        "taxon_key": 2408877,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 320,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 275816
+        }
+      },
+      "records": 301,
+      "scientific_name": "Paralichthys olivaceus"
+    },
+    "371986": {
+      "aoo_cells": 346,
+      "aoo_km2": 34600,
+      "countries_gbif": [],
+      "eoo_km2": 759571,
+      "gbif": {
+        "count": 0,
+        "name": null,
+        "read": 0,
+        "status": null,
+        "taxon_key": null,
+        "type": "NONE"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1943,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 371986
+        }
+      },
+      "records": 1358,
+      "scientific_name": "Ecklonia cava"
+    },
+    "372119": {
+      "aoo_cells": 344,
+      "aoo_km2": 34400,
+      "countries_gbif": [
+        "JP",
+        "KR",
+        "TW"
+      ],
+      "eoo_km2": 2100617,
+      "gbif": {
+        "count": 1289,
+        "name": "Gelidium elegans Kützing",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 2662699,
+          "year": "1990,2026"
+        },
+        "read": 1289,
+        "status": "ACCEPTED",
+        "taxon_key": 2662699,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1683,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 372119
+        }
+      },
+      "records": 998,
+      "scientific_name": "Gelidium elegans"
+    },
+    "377084": {
+      "aoo_cells": 181,
+      "aoo_km2": 18100,
+      "countries_gbif": [
+        "JP",
+        "KR",
+        "RU"
+      ],
+      "eoo_km2": 788369,
+      "gbif": {
+        "count": 2012,
+        "name": "Saccharina japonica (Aresch.) C.E.Lane, C.Mayes, Druehl & G.W.Saunders, 2006",
+        "query": {
+          "decimalLatitude": "38.5,60",
+          "decimalLongitude": "128,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 5422368,
+          "year": "1990,2026"
+        },
+        "read": 2012,
+        "status": "SYNONYM",
+        "taxon_key": 5422368,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          38.5,
+          60
+        ],
+        "lon": [
+          128,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1788,
+        "query": {
+          "geometry": "POLYGON((128 38.5,165 38.5,165 60,128 60,128 38.5))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 377084
+        }
+      },
+      "records": 2082,
+      "scientific_name": "Saccharina japonica"
+    },
+    "494853": {
+      "aoo_cells": 392,
+      "aoo_km2": 39200,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR",
+        "TW"
+      ],
+      "eoo_km2": 2791048,
+      "gbif": {
+        "count": 1231,
+        "name": "Sargassum horneri (Turner) C.Agardh, 1820",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 3196570,
+          "year": "1990,2026"
+        },
+        "read": 1231,
+        "status": "ACCEPTED",
+        "taxon_key": 3196570,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 2123,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 494853
+        }
+      },
+      "records": 1381,
+      "scientific_name": "Sargassum horneri"
+    },
+    "494972": {
+      "aoo_cells": 297,
+      "aoo_km2": 29700,
+      "countries_gbif": [
+        "CN",
+        "JP",
+        "KR"
+      ],
+      "eoo_km2": 2011614,
+      "gbif": {
+        "count": 1553,
+        "name": "Sargassum fusiforme (Harvey) Setchell, 1931",
+        "query": {
+          "decimalLatitude": "0,60",
+          "decimalLongitude": "105,165",
+          "hasCoordinate": "true",
+          "hasGeospatialIssue": "false",
+          "occurrenceStatus": "PRESENT",
+          "taxonKey": 3196917,
+          "year": "1990,2026"
+        },
+        "read": 1553,
+        "status": "ACCEPTED",
+        "taxon_key": 3196917,
+        "type": "EXACT"
+      },
+      "likely_least_concern": true,
+      "native_box": {
+        "lat": [
+          0,
+          60
+        ],
+        "lon": [
+          105,
+          165
+        ]
+      },
+      "obis": {
+        "count": 1985,
+        "query": {
+          "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+          "size": 5000,
+          "startdate": "1990-01-01",
+          "taxonid": 494972
+        }
+      },
+      "records": 1044,
+      "scientific_name": "Sargassum fusiforme"
+    }
+  },
+  "thresholds": {
+    "aoo_cell_km": 10,
+    "aoo_km2": 3000,
+    "eoo_km2": 30000,
+    "records": 75
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-02",
+  "reviewed_on": "2026-10-02",
+  "purpose": "MCUI substitutes after 3.14 (team-lead decision 2026-10-01: do not limit conservation sources to IUCN and the Korean list). Step 1: the official national red list of another range state. Step 2 (in the Rapid LC snapshot): a preliminary Rapid Least Concern check. Read only by configs that name this file.",
+  "sources": {
+    "moe_japan_red_list_2020_molluscs": {
+      "provider": "Ministry of the Environment, Japan (環境省), いきものログ レッドリスト公開データ",
+      "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
+      "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv",
+      "version": "Red List 2020 (4th revision, latest mollusc list on the いきものログ book list checked 2026-10-02); file sha256 0731ae4ed0340492aede7ae528acb8dc057cb880b6acc12cf1155888e3e9f8db",
+      "accessed": "2026-10-02",
+      "license": "Government open data (政府標準利用規約); category and name facts only",
+      "terms": "One row quoted (category, Japanese and scientific name); the list is not redistributed"
+    },
+    "bachman_2020_rapid_lc": {
+      "provider": "Biodiversity Data Journal 8:e47018 (Pensoft), full text in PubMed Central (PMC6992691)",
+      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+      "url": "https://doi.org/10.3897/BDJ.8.e47018",
+      "version": "2020",
+      "accessed": "2026-10-02",
+      "license": "CC BY 4.0",
+      "terms": "Method and thresholds cited (Table 1: EOO > 30,000 km2, AOO > 3,000 km2 on 10 km cells, at least 75 records)"
+    }
+  },
+  "range_state": [
+    {
+      "aphia_id": 836041,
+      "scientific_name": "Magallana sikamea",
+      "name_as_published": "シカメガキ Magallana sikamea",
+      "country": "Japan",
+      "country_ko": "일본",
+      "list": "環境省レッドリスト2020 (貝類)",
+      "category_as_published": "準絶滅危惧（NT）",
+      "category": "NT",
+      "assessment_basis": "Ministry of the Environment Japan red-list categories, which name their IUCN equivalent (準絶滅危惧 = NT)",
+      "scope": "national (Japan)",
+      "continuity": "NT in the 2015, 2017, 2018 and 2019 mollusc lists (as Crassostrea sikamea) and in 2020 (as Magallana sikamea); each CSV read 2026-10-02",
+      "source_id": "moe_japan_red_list_2020_molluscs",
+      "reviewed": true,
+      "limitations": "A national assessment of Japan, where the species is confined to the Ariake and northern Yatsushiro seas; not an IUCN global or Korean assessment. In Korea it is known from few sites (Hong et al. 2012, Fish Sci 78:259). Never ranked or pooled with IUCN-based or Korean national MCUI."
+    }
+  ]
+}
