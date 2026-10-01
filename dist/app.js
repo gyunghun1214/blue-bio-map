@@ -1015,26 +1015,36 @@ function renderDetail() {
 const count = (v,unit='건') => Number.isFinite(v) ? `${v.toLocaleString()}${unit}` : '정보 없음';
 const row = (label,value,cls='') => `<div class="evidence-item"><span>${esc(label)}</span><b class="${cls}">${esc(value)}</b></div>`;
 
+// The operating profile summary was published before the index report. Where the report reviewed an axis, show its
+// result instead of the profile's older "미수집/미검토/보류"; profile counts that do exist are kept as they are.
+function indexReviewRow(s,key,label){
+  const a=VERIFIED.includes(s.assessment?.report_version)?s.assessment:null;
+  const seen=a&&{MFPI:a.food_trace?.observed_rows?.length,MBPI:a.bioactivity_trace?.length||a.bioactivity_partial?.length,MCUI:a.conservation_trace?.reviewed}[key];
+  if(!seen)return null;
+  const v=pilotScore(s,key);
+  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?'산출 보류':v.toFixed(1)}`,v===null?'pending':'done')+
+    `<p class="fine">운영 요약(발행 ${esc((s.publishedAt||'').slice(0,10)||'날짜 미확인')})은 지표 보고서보다 먼저 작성되어 이 항목을 반영하지 않았습니다. 원값과 보류 사유는 위 ${key} 근거에서 확인합니다.</p>`;
+}
 function liveEvidence(s) {
   const i=s.info,n=i.nutrition||{},c=i.compounds||{},k=i.conservation||{},p=i.production||{};
   const cmnpd=s.sources.find(x=>x.id==='cmnpd-1.0');
-  const nutrition=n.status==='available'
+  const nutrition=n.status!=='available'&&indexReviewRow(s,'MFPI','영양 기록 수')||(n.status==='available'
     ? row('영양 기록 수 · 수집 현황',count(n.record_count))
       +row('기록 분류 · 영양값 아님',`실측 ${count(n.measured_count)} · 계산 ${count(n.calculated_count)}`+(n.proxy_count?` · 대용 ${count(n.proxy_count)}`:''))
       +row('참고 기록 수',`AFCD ${count(n.evidence_record_count)}`)
       +row('불확실성',`단위 미확정 ${count(n.unit_unconfirmed_count)} · 기준량 가정 ${count(n.basis_assumed_count)}`)
       +(n.note?`<p class="fine">${esc(n.note)}</p>`:'')
-    : row('영양 기록 수',n.status==='not_collected'?'미수집':'정보 없음','pending');
+    : row('영양 기록 수',n.status==='not_collected'?'미수집':'정보 없음','pending'));
   const aquaculture=Number.isFinite(p.aquaculture_evidence_count)&&p.aquaculture_evidence_count>0
     ? `<p class="fine">양식 관련 요약 ${count(p.aquaculture_evidence_count)} · 기술적 가능성 판정 아님: ${esc(p.note||'방법·해역·시기 추가 검수 필요.')}</p>`:'';
-  const compounds=c.status==='available'
+  const compounds=c.status!=='available'&&indexReviewRow(s,'MBPI','보고 화합물')||(c.status==='available'
     ? row('보고 화합물',count(c.compound_count,'개'),'done')
       +row('정량 활성 자료',c.quantitative_bioactivity_count===0?'확인한 자료에서 없음':count(c.quantitative_bioactivity_count))
       +(c.note?`<p class="fine">${esc(c.note)}</p>`:'')
       +(CASE_NOTES[s.aphiaID]?`<p class="fine"><b>별도 원문 조사 · 지표 입력 아님</b> ${esc(CASE_NOTES[s.aphiaID].detail)} ${sourceLink(CASE_NOTES[s.aphiaID].url,CASE_NOTES[s.aphiaID].title+' ↗')}</p>`:'')
       +`<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'} — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`
-    : row('보고 화합물',c.status==='not_collected'?'미수집':'정보 없음','pending');
-  const conservation={
+    : row('보고 화합물',c.status==='not_collected'?'미수집':'정보 없음','pending'));
+  const conservation=indexReviewRow(s,'MCUI','보전평가')||{
     withheld_insufficient_evidence:row('보전평가','근거 부족으로 보류','pending')+row('검토 기록',`IUCN 검색 기록 ${count(k.search_record_count)} · 평가 ${count(k.assessment_count)}`)+(k.note?`<p class="fine">${esc(k.note)}</p>`:''),
     not_reviewed:row('보전평가','미검토','pending')
   }[k.status]||row('보전평가','정보 없음','pending');

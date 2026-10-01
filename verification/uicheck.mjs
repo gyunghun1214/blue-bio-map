@@ -121,8 +121,9 @@ try{
   check('Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) kept apart from the verified-pilot-2 MFPI trace',
     ['영양 자료 수집 현황 · 식량가치 아님','영양 기록 수 · 수집 현황','144건','실측 107건 · 계산 37건','AFCD 25건','단위 미확정 4건 · 기준량 가정 144건','MFPI · 식량 가능성','65.5 · 검증 전 시범 지표'].every(x=>t.includes(x))&&!t.includes('영양 성분 값'),t);
   check('Oyster: aquaculture 4 shown as evidence records, not production',t.includes('양식 관련 요약 4건 · 기술적 가능성 판정 아님')&&t.includes('AFCD에서 양식(farmed)으로 표시된 근거 기록 수')&&t.includes('생산량 통계가 아닙니다')&&!/생산량\s*4/.test(t),t);
-  check('Oyster: conservation withheld',t.includes('근거 부족으로 보류')&&t.includes('IUCN 검색 기록 2건 · 평가 0건'),t);
-  check('Oyster: compounds 미수집, separate OBIS 26 kept in details',/보고 화합물\s*미수집/.test(t)&&/기록 수\s*26건/.test(t),t);
+  // The operating profile predates the index report: reviewed axes show the report result, not the profile's old status.
+  check('Oyster: conservation follows the index report (MCUI 10.0), not the older profile 보류',/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0/.test(t)&&!t.includes('근거 부족으로 보류')&&t.includes('지표 보고서보다 먼저 작성'),t);
+  check('Oyster: compounds follow the index report (MBPI 96.3), separate OBIS 26 kept in details',/보고 화합물\s*지표 보고서에서 검토 · MBPI 96\.3/.test(t)&&!/보고 화합물\s*미수집/.test(t)&&/기록 수\s*26건/.test(t),t);
   const nat=await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=true);document.getElementById('detail').innerText");
   // verified-pilot-2.1: with no IUCN global record, the oyster MCUI is the separately labelled Korean national assessment.
   check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 시범 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, 매트릭스에도 놓지 않습니다')&&!nat.includes('IUCN LC'),nat);
@@ -137,14 +138,14 @@ try{
   check('Sea cucumber: no efficacy claim',!/입증|효능|효과가 있/.test(t),t);
   check('Sea cucumber: CMNPD source and NC-SA terms visible in compound summary',t.includes('CMNPD')&&t.includes('CC BY-NC-SA 4.0')&&t.includes('비상업 이용'),t);
   check('Sea cucumber: two occurrence records, 4-degree generalization',/지도 표시 기록\s*2건 · 2개 격자\(4°\)/.test(t)&&t.includes('GBIF')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
-  check('Sea cucumber: conservation withheld, nutrition 미수집',t.includes('근거 부족으로 보류')&&/영양 기록 수\s*미수집/.test(t),t);
+  check('Sea cucumber: conservation MCUI 80.0 and nutrition 산출 보류 from the index report, no stale 미수집/보류',/보전평가\s*지표 보고서에서 검토 · MCUI 80\.0/.test(t)&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&!t.includes('근거 부족으로 보류')&&!/영양 기록 수\s*미수집/.test(t),t);
   check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 · 검증 전 시범 지표/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 검증 전 시범 지표')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
   check('Sea cucumber map: two broad cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(' | 2 | shapes=2'),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
-  check('Squid: 미수집 vs 미검토 distinguished',/영양 기록 수\s*미수집/.test(t)&&/보고 화합물\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&t.includes('2건'),t);
+  check('Squid: index report replaces the older profile 미수집/미검토 (MFPI·MBPI 산출 보류, MCUI 20.0)',/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 산출 보류/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 20\.0/.test(t)&&!/미수집|미검토/.test(t.split('영양 자료 수집 현황')[1]||'')&&t.includes('2건'),t);
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
@@ -329,7 +330,7 @@ try{
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
-  check('톳 live: new profile with 4 cells, nutrition/compounds 미수집, conservation 미검토',(await shapes())===4&&/영양 기록 수\s*미수집/.test(t)&&/보전평가\s*미검토/.test(t)&&/지도 표시 기록\s*[\d,]+건 · 4개 격자/.test(t)&&t.includes('GBIF'),t);
+  check('톳 live: new profile with 4 cells, nutrition/compounds/conservation from the index report',(await shapes())===4&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 산출 보류/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 45\.3/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 산출 보류/.test(t)&&/지도 표시 기록\s*[\d,]+건 · 4개 격자/.test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===2&&t.includes('공개 셀')&&t.includes('2개 · 4°×4°')&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
