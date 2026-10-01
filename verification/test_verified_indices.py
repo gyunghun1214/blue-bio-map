@@ -966,11 +966,14 @@ CHANGED_34 = {342067: ("decline_signal", 20.0), 413600: ("decline_signal", 20.0)
               281273: ("decline_signal", 20.0)}
 
 
+V34 = ROOT / "config" / "verified-indices-v3.4.json"  # superseded by 3.5 (evidence rows only); its rules stay tested
+
+
 class VerifiedPilot34Tests(unittest.TestCase):
-    """Public method: 3.3 plus the OBIS occurrence-trend element of MCUI and the no-assessment priority label."""
+    """Superseded by 3.5. 3.4: 3.3 plus the OBIS occurrence-trend element of MCUI and the no-assessment priority label."""
 
     def setUp(self):
-        self.evidence, *self.rest = load_inputs()
+        self.evidence, *self.rest = load_inputs(config=V34)
         self.report = build(self.evidence, *self.rest)
         self.v33 = build(*load_inputs(config=V33))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
@@ -979,7 +982,9 @@ class VerifiedPilot34Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.4", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.4 report is archived as it was
+        archived34 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.4.json"
+        self.assertEqual(render(self.report), archived34.read_text(encoding="utf-8"))
 
     def test_only_mcui_moves_and_only_by_a_decline_signal(self):
         for aphia, s in self.new.items():
@@ -1022,7 +1027,7 @@ class VerifiedPilot34Tests(unittest.TestCase):
 
     def test_only_a_missing_or_dd_assessment_is_a_priority_reason(self):
         # a failed IUCN lookup is a data problem, a DD category is 'IUCN 자료 부족', neither is 'no assessment'
-        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V34)
         rows = [r for r in evidence["conservation"] if r["aphia_id"] == 145721]
         for state, reason in (("lookup_failed", None), ("data_deficient", "conservation_data_deficient")):
             changed = [{**r, "iucn_state": state, "reviewed": True, "category": "DD"} if r["aphia_id"] == 145721 else r for r in evidence["conservation"]]
@@ -1034,10 +1039,54 @@ class VerifiedPilot34Tests(unittest.TestCase):
         self.assertTrue(rows)
 
     def test_trend_snapshot_guards(self):
-        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V34)
         broken = {**evidence, "obis_trend": {**evidence["obis_trend"], "species": {}}}
         with self.assertRaisesRegex(ValueError, "no OBIS trend record"):
             build(broken, candidates, config, snapshot, taxonomy)
+
+
+# verified-pilot-3.5: reviewed evidence rows only (rules unchanged). (aphia, axis) -> new value; every other value stays.
+CHANGED_35 = {(145721, "MBPI"): 71.5, (241776, "MBPI"): 8.7, (234476, "MBPI"): 73.3, (393716, "MBPI"): 27.3,
+              (413600, "MBPI"): 56.9, (275816, "MBPI"): 29.2, (281273, "MFPI"): 39.8, (275816, "MFPI"): 53.3,
+              (1061762, "MFPI"): 53.5}
+
+
+class VerifiedPilot35Tests(unittest.TestCase):
+    """Public method: 3.4 rules with the reviewed rows of sunny/bbvm-0928-pr2-evidence and PR #65, in 3.5-only files."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v34 = build(*load_inputs(config=V34))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v34)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.5", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(self.report["generated_at"], "2026-10-01T00:00:00Z")
+
+    def test_only_the_reviewed_rows_move(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, CHANGED_35)
+        self.assertEqual(self.report["comparison_cohorts"], self.v34["comparison_cohorts"])
+
+    def test_new_mbpi_rests_on_one_paper_so_no_new_bbvi(self):
+        for (aphia, axis) in CHANGED_35:
+            s = self.new[aphia]
+            self.assertIsNone(s["scores"]["BBVI"], aphia)
+            if axis == "MBPI":
+                self.assertEqual(s["mbpi_label"], "참고값(단일 논문)", aphia)
+            if s["scores"]["MFPI"] is not None and s["scores"]["MBPI"] is not None:
+                self.assertEqual(s["withheld_reasons"]["BBVI"], "mbpi_single_source", aphia)
+        self.assertEqual([a for a, s in self.new.items() if s["scores"]["BBVI"] is not None], [836033])
+
+    def test_new_inputs_are_read_by_3_5_only(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34):
+            c = cfg(old)
+            self.assertNotIn("research/verified-indices/evidence-v3.5.json", c["peptide_supplements"])
+            self.assertNotEqual(c["nutrition"]["substitutes"]["aquaculture_supplement"], "research/verified-indices/mfpi-aquaculture-2026-10-01.json")
 
 
 if __name__ == "__main__":

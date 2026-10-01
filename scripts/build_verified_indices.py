@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.4.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.5.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1024,10 +1024,13 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
                     "sources": {**evidence["sources"], **extra["sources"]}}
     for path in cfg.get("peptide_supplements", []):  # extra reviewed peptide rows, same rules; only their sources and the cohort's
         extra = read(ROOT / path)
-        require(extra.get("snapshot_date") == evidence["snapshot_date"], "peptide supplement snapshot differs from evidence")
+        # 3.5: a supplement may be dated after the evidence (rows reviewed later); the report's input date follows it
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "peptide supplement is older than evidence")
         used = {r["source_id"] for r in extra["peptide_bioactivity"]} | ({cfg["peptide_bioactivity"]["cohort_source_id"]} & set(extra["sources"]))
         require(not used & set(evidence["sources"]), "peptide supplement redefines a source")
-        evidence = {**evidence, "peptide_bioactivity": evidence.get("peptide_bioactivity", []) + extra["peptide_bioactivity"],
+        later = {"inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])} \
+            if extra["snapshot_date"] > evidence["snapshot_date"] else {}
+        evidence = {**evidence, **later, "peptide_bioactivity": evidence.get("peptide_bioactivity", []) + extra["peptide_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}}}
     xo = (cfg.get("peptide_bioactivity") or {}).get("cross_origin_potency")
     if xo:  # research-only: synthetic-peptide potency measured from another origin; never scored as an item of its own
@@ -1078,7 +1081,8 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
                                                          "papers_screened": s["papers_screened"], "accepted_links": accepted[s["aphia_id"]]}
                                          for s in papers["searched"]}}
         snap["link_review"] = review["links"]
-        evidence = {**evidence, "chembl_links": snap, "inputs_as_of": max(snap["snapshot_date"], review["reviewed_on"]),
+        evidence = {**evidence, "chembl_links": snap,
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], review["reviewed_on"]),
                     "sources": {**evidence["sources"], **snap["sources"], **papers["sources"]}}
     sub = cfg["nutrition"].get("substitutes")
     if sub:  # verified-pilot-3.3: uFiSh substitutes (scripts/collect_mfpi_substitutes.py) and reviewed aquaculture records
