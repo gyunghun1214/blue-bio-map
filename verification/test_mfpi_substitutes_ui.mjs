@@ -15,7 +15,7 @@ vm.runInContext('data={assessmentInfo:globalThis.info}',ctx);
 const rows=[...report.species,...report.candidate_species];
 for(const a of rows)assert.ok(ctx.valid(a,report),`${a.korean_name} passes the browser re-check`);
 const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
-assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[254538,397082,506159,1666974]);
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[254538,397082,504357,506159,1666974]);  // 3.6: 피조개 zinc from MEXT
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
 const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);
@@ -46,12 +46,21 @@ assert.equal(codZinc.value,0.51);
 assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.value=0.55;}),false,'the sub-sample value is the mean of its rows');
 assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.substitute.food_item_id='K0440002570a+K9999999999a';}),false,'only reviewed sub-sample links');
 assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.grade='proxy';f.nutrients.zinc_mg.evidence_factor=.5;}),false,'a sub-sample keeps the table grade');
+// verified-pilot-3.6: MEXT 2020 same-species raw item (피조개 zinc, あかがい 10279), graded as a cited foreign table
+const ark=withSub.find(a=>a.aphia_id===504357),arkZinc=ark.food_trace.nutrients.zinc_mg;
+assert.deepEqual([arkZinc.substitute.taxon_level,arkZinc.substitute.food_item_id,arkZinc.value,arkZinc.grade,arkZinc.evidence_factor],['mext','10279',1.5,'foreign_table_cited',0.85]);
+assert.equal(tamper(504357,f=>{f.nutrients.zinc_mg.grade='measured';f.nutrients.zinc_mg.evidence_factor=1;}),false,'a MEXT value keeps the rule grade');
+assert.equal(tamper(504357,f=>{f.nutrients.zinc_mg.substitute.part='muscle';}),false,'a MEXT value is the edible portion');
+assert.equal(tamper(504357,f=>{f.nutrients.zinc_mg.substitute.source_id='ufish_1_workbook';}),false,'a MEXT value cites the MEXT source');
+const noMext=structuredClone(report);delete noMext.method.nutrition.substitutes.mext;
+assert.equal(ctx.valid(ark,noMext),false,'a MEXT substitute without the published MEXT rule');
 
 // Screen: every substituted component says so, with its source item and level label (and the consumed part for uFiSh).
 for(const a of withSub){
   const html=ctx.detail({assessment:a});
   for(const n of Object.values(a.food_trace.nutrients).filter(n=>n.substitute))
     for(const text of n.substitute.taxon_level==='subsample'?[n.substitute.label,'같은 종의 부표본 행','K0440002570a 0.55','K0440002580a 0.47','평균']
+        :n.substitute.taxon_level==='mext'?[n.substitute.label,`일본 식품성분표 2020(8정판) ${n.substitute.food_item_id}`,'가식부 100 g','종 연결:','アカガイ']
         :[n.substitute.label,`uFiSh1.0 ${n.substitute.food_item_id}`,`섭취 부위 ${n.substitute.part}`])
       assert.ok(html.includes(text),`${a.korean_name} shows ${text}`);
   assert.ok(!/\d\.\d{5,}/.test(html),`${a.korean_name}: values shown with at most four significant digits`);
@@ -59,8 +68,10 @@ for(const a of withSub){
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
 assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}).includes('양식 가능 근거 없음(양식 점수 0)'),'cod aquaculture shown as not feasible');
-// a withheld species whose missing component could be filled says so (살오징어: zinc found, aquaculture missing)
-assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/대체치 후보: 아연 uFiSh1\.0 093033[^]*다른 이유로 보류/);
+// a withheld species whose missing component could be filled says so (살오징어: zinc found, aquaculture missing).
+// 3.6: the same-species MEXT item (するめいか 10345) now outranks the 3.3 family-level uFiSh proxy 093033.
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/대체치 후보: 아연 MEXT 8정판 10345[^]*다른 이유로 보류/);
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===219984)}),/대체치 후보: 아연 MEXT 8정판 10044[^]*다른 이유로 보류/);
 assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 후보 없음[^]*채울 후보가 없는 성분/);
 // the 홍합 uFiSh observation record now states which component is used
 assert.ok(ctx.detail({assessment:withSub.find(a=>a.aphia_id===506159)}).includes(`uFiSh1.0:093015: zinc_mg is used as a ${report.method_version} substitute`));

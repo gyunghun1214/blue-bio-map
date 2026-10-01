@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.5.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.6.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -218,10 +218,25 @@ def substitute(aphia: int, name: str, evidence: dict, settings: dict, rows: dict
             grade = rule["species_grade_by_doc"].get(c["doc"], "proxy") if level == "species" else "proxy"
             found.append(((rule["levels"].index(level), -settings["grade_factors"][grade], -(c["n"] or 0), item["food_item_id"]),
                           item, level, grade))
+    mext = rule.get("mext")  # 3.6: same-species raw item of the Japanese table, after uFiSh species and before proxies
+    if mext and name in mext["components"]:
+        for item in evidence["mfpi_mext"]["items"]:
+            c = item["components"].get(name)
+            if item["aphia_id"] == aphia and c and c["value"] is not None:
+                require(item["sample_state"] == "raw" and item["basis"] == "100 g edible portion" and c["unit"] == settings["components"][name],
+                        f"{aphia}: MEXT item is not a raw 100 g edible-portion value")
+                found.append(((rule["levels"].index("mext"), -settings["grade_factors"][mext["grade"]], 0, item["food_item_id"]),
+                              item, "mext", mext["grade"]))
     if not found:
         return None
     _, item, level, grade = min(found, key=lambda x: x[0])
     c = item["components"][name]
+    if level == "mext":
+        return {"value": c["value"], "unit": settings["components"][name], "grade": grade,
+                "method": f"MEXT 2020 (8th) {item['food_item_id']} {item['food_name']}: same-species raw item, {item['value_basis']}",
+                "substitute": {"food_item_id": item["food_item_id"], "food_name": item["food_name"], "taxon_label": item["taxon_label"],
+                               "taxon_level": "mext", "part": item["part"], "doc_code": None, "n": None, "table": "MEXT",
+                               "link_evidence": item["link_evidence"], "source_id": mext["source_id"], "label": rule["labels"]["mext"]}}
     return {"value": c["value"], "unit": settings["components"][name], "grade": grade,
             "method": f"uFiSh1.0 {item['food_item_id']} {item['food_name']}: {level}-level value, documentation '{c['doc']}', n {c['n'] or 'not given'}",
             "substitute": {"food_item_id": item["food_item_id"], "food_name": item["food_name"], "taxon_label": item["taxon_label"],
@@ -279,7 +294,8 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
             if not missing or len(missing) == len(r["nutrients"]):  # complete rows are cohort members; empty ones never score
                 continue
             filled = {k: substitute(aphia, k, evidence, settings, rows) for k in missing}
-            trace.setdefault("substitute_search", {}).update({k: v and v["substitute"]["food_item_id"] for k, v in filled.items()})
+            trace.setdefault("substitute_search", {}).update({k: v and (("MEXT:" if v["substitute"]["taxon_level"] == "mext" else "")
+                                                                         + v["substitute"]["food_item_id"]) for k, v in filled.items()})
             if all(filled.values()):
                 trace["substitute_row"] = r["food_item_id"]
                 return {**r, "nutrients": {**r["nutrients"], **filled}}
@@ -1098,6 +1114,14 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "mfpi_substitutes": snap, "food_support": evidence["food_support"] + aqua["food_support"],
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], aqua["snapshot_date"]),
                     "sources": {**evidence["sources"], **snap["sources"], **aqua["sources"]}}
+        if sub.get("mext"):  # verified-pilot-3.6: reviewed MEXT 2020 items (research/verified-indices/snapshots/mext-zinc-*.json)
+            mx = read(ROOT / sub["mext"]["snapshot"])
+            require(mx.get("snapshot_date", "") >= evidence["snapshot_date"], "MEXT snapshot is older than evidence")
+            require(set(mx["sources"]) == {sub["mext"]["source_id"]} and sub["mext"]["source_id"] not in evidence["sources"],
+                    "MEXT source differs from the rule or redefines a source")
+            require(len({i["aphia_id"] for i in mx["items"]}) == len(mx["items"]), "MEXT snapshot links one item per species")
+            evidence = {**evidence, "mfpi_mext": mx, "sources": {**evidence["sources"], **mx["sources"]},
+                        "inputs_as_of": max(evidence["inputs_as_of"], mx["snapshot_date"])}
     trend = cfg["conservation"].get("trend")
     if trend:  # verified-pilot-3.4: OBIS per-cell counts (scripts/collect_mcui_trend.py)
         snap = read(ROOT / trend["snapshot"])
