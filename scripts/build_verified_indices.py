@@ -276,6 +276,37 @@ def mext_species_row(aphia: int, evidence: dict, settings: dict) -> dict | None:
                                 "limitations": "Refuse share of the food as purchased in the Japanese table; size and origin of the sample differ from Korean catches."}}
 
 
+def literature_species_row(aphia: int, evidence: dict, settings: dict) -> dict | None:
+    """After 3.12: a reviewed paper's analysis of the species itself, converted to fresh weight with the moisture of the same
+    sample, as the species' nutrition row when neither RDA DB 10.4 nor MEXT 2020 has one. Ranked against a fixed cohort plus
+    itself and never joins one; a component the paper reports inconsistently stays out of the mean (3.7 rule)."""
+    lit = (settings.get("substitutes") or {}).get("literature")
+    item = lit and next((i for i in evidence["mfpi_literature"]["items"] if i["aphia_id"] == aphia), None)
+    if not item:
+        return None
+    moisture = finite(item["moisture_pct"], f"{aphia}: literature moisture", 0, 99)
+    require(item["sample_state"] == "raw" and item["basis"] == "100 g edible portion" and item["food_group"] in lit["species_row_groups"]
+            and item["source_id"] in lit["source_ids"] and not set(item["components"]) & set(item.get("omitted", {}))
+            and set(item["components"]) | set(item.get("omitted", {})) == set(settings["components"]),
+            f"{aphia}: literature row is not a raw 100 g edible-portion row of a configured group")
+    for k, c in item["components"].items():
+        require(c["unit"] == settings["components"][k] and c["value"] == round(c["dry_basis_value"] * (100 - moisture) / 100, 2),
+                f"{aphia}:{k}: literature value is not the dry-basis value at the sample's moisture")
+    method = f"{item['record_id']} ({item['source_id']}): dry-basis value x (100 - {moisture:g}% moisture of the same sample) / 100"
+    e = item["edible_fraction"]
+    return {"food_item_id": f"LIT:{item['record_id']}", "reported_food_name": item["taxon_label"], "english_name": item["taxon_label"],
+            "group": item["food_group"], "row_source": "literature", "aphia_id": aphia,
+            "taxon_link": {"link_evidence": item["taxon_link_evidence"]}, "source_id": item["source_id"], "reviewed": True,
+            "sample_state": "raw", "basis": "100 g edible portion", "refuse_not_accepted": None,
+            "nutrients": {k: None if k not in item["components"] else
+                          {"value": item["components"][k]["value"], "unit": unit, "grade": lit["grade"], "method": method}
+                          for k, unit in settings["components"].items()},
+            "edible_fraction": {"kind": "edible_fraction", "value": finite(e["value"], f"{aphia}: literature edible fraction", 0, 1),
+                                "unit": "edible share of food as purchased", "method": e["method"], "source_id": item["source_id"],
+                                "record_id": f"{item['record_id']}:edible_fraction", "region": item["region"],
+                                "sample_period": item["sample_period"], "reviewed": True, "limitations": e["limitations"]}}
+
+
 def support_for(aphia: int, evidence: dict, kind: str) -> list[dict]:
     return [r for r in evidence.get("food_support", []) if r.get("aphia_id") == aphia and r.get("kind") == kind]
 
@@ -301,8 +332,11 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                 "values": {k: (n or {}).get("value") for k, n in r["nutrients"].items()},
                 "missing": [k for k, n in r["nutrients"].items() if n is None],
                 "refuse_pct": None if r["edible_fraction"] is None else round(100 * (1 - r["edible_fraction"]["value"]), 4),
-                **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {})})
-    mrow = None if any(r["aphia_id"] == aphia for r in rows.values()) else mext_species_row(aphia, evidence, settings)
+                **({"refuse_not_accepted": r["refuse_not_accepted"]} if r["refuse_not_accepted"] else {}),
+                **({"link_source_id": link["source_id"]} if r["aphia_id"] == aphia and link.get("source_id") else {})})  # name links after 3.12
+    # 3.9: a MEXT species row; after 3.12 a reviewed literature row when MEXT has none either
+    mrow = None if any(r["aphia_id"] == aphia for r in rows.values()) else (
+        mext_species_row(aphia, evidence, settings) or literature_species_row(aphia, evidence, settings))
     if mrow:  # 3.9: the MEXT row is this species' own row, shown with the RDA observations it stands in for
         trace["observed_rows"].append({
             "food_item_id": mrow["food_item_id"], "reported_food_name": mrow["reported_food_name"], "english_name": mrow["english_name"],
@@ -364,7 +398,7 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         omitted = [k for k, n in row["nutrients"].items() if n is None]
         extra = ({"outside_cohort": True, "substituted_components": [k for k, n in row["nutrients"].items() if n and n.get("substitute")],
                   **({"omitted_components": omitted} if omitted else {}),  # key only in 3.7+, so older reports reproduce
-                  **({"row_table": "mext"} if row is mrow else {})}  # 3.9+
+                  **({"row_table": "literature" if row["row_source"] == "literature" else "mext"} if row is mrow else {})}  # 3.9+
                  if peers is not cohort["rows"] else {})
         require(not extra or extra["substituted_components"] or extra.get("omitted_components") or extra.get("row_table"),
                 f"{aphia}: a row outside the cohort must carry a substitute, an omitted component or a MEXT species row")
@@ -408,7 +442,9 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         why = ([f"{k} is a substitute ({row['nutrients'][k]['substitute']['label']}, {row['nutrients'][k]['substitute']['food_item_id']})"
                 for k in d.get("substituted_components", [])]
                + [f"{k} is not reported in the species' own row and is left out of the mean (not scored 0)" for k in d.get("omitted_components", [])]
-               + (["the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species)"] if d.get("row_table") else []))
+               + (["the species' own row is a MEXT 2020 same-species item (RDA DB 10.4 has no row linked to this species)"] if d.get("row_table") == "mext" else [])
+               + (["the species' own row is a reviewed paper's analysis of the species converted to fresh weight with the same sample's moisture "
+                   "(neither RDA DB 10.4 nor MEXT 2020 has a row for this species)"] if d.get("row_table") == "literature" else []))
         outside = [f"Ranked against the {len(cohort['rows'])}-food cohort plus itself because " + ", ".join(why)
                    + ("; a substitute comes from another sample, region or table, not from this species' own row." if d.get("substituted_components") else ".")
                    ] if d.get("outside_cohort") else []
@@ -958,6 +994,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         source_ids |= {n["substitute"]["source_id"] for n in (food_trace.get("nutrients") or {}).values() if n.get("substitute")}
         if food_trace["observed_rows"]:
             source_ids.add("rda_db_10_4")
+        source_ids |= {o["link_source_id"] for o in food_trace["observed_rows"] if o.get("link_source_id")}
         for key in ("edible_fraction", "aquaculture"):
             if food_trace.get(key):
                 source_ids.add(food_trace[key]["source_id"])
@@ -1180,6 +1217,27 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
             require(len({i["aphia_id"] for i in mx["items"]}) == len(mx["items"]), "MEXT snapshot links one item per species")
             evidence = {**evidence, "mfpi_mext": mx, "sources": {**evidence["sources"], **mx["sources"]},
                         "inputs_as_of": max(evidence["inputs_as_of"], mx["snapshot_date"])}
+        if sub.get("literature"):  # after 3.12: a reviewed paper's analysis of the species as its row when RDA and MEXT have none
+            lit = read(ROOT / sub["literature"]["snapshot"])
+            require(lit.get("snapshot_date", "") >= evidence["snapshot_date"], "literature row snapshot is older than evidence")
+            require(set(lit["sources"]) == set(sub["literature"]["source_ids"]) and not set(lit["sources"]) & set(evidence["sources"]),
+                    "literature row sources differ from the rule or redefine a source")
+            require(len({i["aphia_id"] for i in lit["items"]}) == len(lit["items"]), "one literature row per species")
+            evidence = {**evidence, "mfpi_literature": lit, "sources": {**evidence["sources"], **lit["sources"]},
+                        "inputs_as_of": max(evidence["inputs_as_of"], lit["snapshot_date"])}
+    names = cfg["nutrition"].get("rda_name_links")
+    if names:  # after 3.12: unlinked RDA rows linked through a Korean national name authority (MABIK 국명, then MFDS 성분학명)
+        extra = read(ROOT / names)
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "RDA name-link supplement is older than evidence")
+        require(not set(extra["sources"]) & set(evidence["sources"]), "RDA name-link supplement redefines a source")
+        old = {l["food_item_id"]: l for l in evidence["rda_taxon_links"]}
+        new = {l["food_item_id"]: l for l in extra["rda_taxon_links"]}
+        require(all(k in old and old[k].get("reviewed") is not True and old[k].get("candidate_aphia_id") == l["aphia_id"]
+                    and l.get("reviewed") is True and l.get("source_id") in extra["sources"] and l.get("link_evidence")
+                    for k, l in new.items()), "a name link must review an unlinked candidate row of the evidence")
+        evidence = {**evidence, "rda_taxon_links": [new.get(l["food_item_id"], l) for l in evidence["rda_taxon_links"]],
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"]),
+                    "sources": {**evidence["sources"], **extra["sources"]}}
     trend = cfg["conservation"].get("trend")
     if trend:  # verified-pilot-3.4: OBIS per-cell counts (scripts/collect_mcui_trend.py)
         snap = read(ROOT / trend["snapshot"])

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "reviewed_on": "2026-10-01",
+  "purpose": "MFPI after verified-pilot-3.12: a peer-reviewed analysis of the species itself as its own nutrition row when neither RDA DB 10.4 nor MEXT 2020 has a row for it (team-lead decision 2026-10-01, route 3, factor 0.85). Read only by configs that name this file.",
+  "rule": "Used only when no RDA row is linked to the species and no MEXT species row exists. The paper must identify the species (morphology or molecular), analyse raw edible tissue, and report the moisture of the same sample. Dry-basis values are converted to fresh weight as value_dw x (100 - moisture) / 100; mg/kg dry weight is first divided by 10 to give mg per 100 g dry weight. A component the paper reports inconsistently is left out (3.7 minimum-components rule), never guessed. The row is ranked against the fixed cohort of its RDA group plus itself and never joins a cohort.",
+  "sources": {
+    "liu_2021_kumamoto_xiangshan": {
+      "provider": "Frontiers in Physiology 12:713736 (Frontiers), full text in PubMed Central (PMC8353274, PMID 34385935)",
+      "title": "Molecular Basis of Taste and Micronutrient Content in Kumamoto Oysters (Crassostrea sikamea) and Portuguese Oysters (Crassostrea angulata) From Xiangshan Bay (Liu S, Xu H, Jian S, Xue Q, Lin Z), doi:10.3389/fphys.2021.713736",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8353274/",
+      "version": "PMC full text read 2026-10-01 (Table 1, Materials and Methods, Results)",
+      "accessed": "2026-10-01",
+      "license": "CC BY 4.0",
+      "terms": "Open access, Creative Commons Attribution 4.0 International; values quoted with attribution"
+    }
+  },
+  "items": [
+    {
+      "record_id": "liu2021-csikamea-table1",
+      "aphia_id": 836041,
+      "taxon_label": "Magallana sikamea (Crassostrea sikamea, Kumamoto oyster)",
+      "source_id": "liu_2021_kumamoto_xiangshan",
+      "food_group": "어패류 및 기타 수산물",
+      "part": "whole soft body (flesh), 25 oysters pooled per replicate, 4 replicates",
+      "sample_state": "raw",
+      "basis": "100 g edible portion",
+      "sample": "Cultured oysters, 20 months old, commercial size, sampled in February before gametogenesis; Xiangshan Bay, Ningbo, Zhejiang, China (29.47 N, 121.42 E); 100 individuals; species confirmed by species-specific molecular markers on the adductor muscle",
+      "taxon_link_evidence": "The paper identifies every sampled oyster by species-specific molecular methods and names it Crassostrea sikamea, which WoRMS resolves to Magallana sikamea (836041).",
+      "moisture_pct": 84.9,
+      "moisture_method": "Each oyster: (soft weight - freeze-dried soft weight) / soft weight; Table 1 mean 84.9 ± 3.3%",
+      "components": {
+        "protein_g": {
+          "value": 5.96,
+          "unit": "g",
+          "dry_basis_value": 39.5,
+          "dry_basis_unit": "g per 100 g dry weight",
+          "reported": "Protein 39.5 ± 2.3% of dry weight (Kjeldahl, N x 6.25)"
+        },
+        "iron_mg": {
+          "value": 8.2,
+          "unit": "mg",
+          "dry_basis_value": 54.3,
+          "dry_basis_unit": "mg per 100 g dry weight",
+          "reported": "Fe 543 ± 158 mg/kg dry weight (ICP-OES)"
+        },
+        "calcium_mg": {
+          "value": 141.44,
+          "unit": "mg",
+          "dry_basis_value": 936.7,
+          "dry_basis_unit": "mg per 100 g dry weight",
+          "reported": "Ca 9,367 ± 1,978 mg/kg dry weight (ICP-OES)"
+        }
+      },
+      "omitted": {
+        "zinc_mg": "Table 1 gives Zn 1,164 ± 30 and Cu 493 ± 11 mg/kg dry weight for C. sikamea, but the Results text says 'Cu and Zn were also significantly higher in Kumamoto oysters (1,164 and 493 mg/kg)', the reverse order. The zinc value is ambiguous inside the paper and is left out of the mean (not 0)."
+      },
+      "edible_fraction": {
+        "value": 0.2055,
+        "method": "mean soft weight 3.0 ± 0.7 g / mean total weight 14.6 ± 3.2 g (Table 1, oysters in shell)",
+        "limitations": "Ratio of means of 100 cultured oysters of 20 months; shell share varies with size, season and culture site."
+      },
+      "limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
+      "region": "Xiangshan Bay, Ningbo, Zhejiang, China (29.47 N, 121.42 E)",
+      "sample_period": "February, before gametogenesis (year not stated; paper published July 2021)"
+    }
+  ]
+}
