@@ -1217,5 +1217,35 @@ class VerifiedPilot37Tests(unittest.TestCase):
             self.assertNotEqual(n["substitutes"]["aquaculture_supplement"], "research/verified-indices/mfpi-aquaculture-3.7-2026-10-01.json")
 
 
+CLAM = "research/verified-indices/evidence-clam-2026-10-01.json"
+
+
+class StagedClamRowsTests(unittest.TestCase):
+    """Reviewed 바지락 peptide rows (2026-10-01), staged for the next version: no public config reads them yet.
+    Added to 3.6 they must pass the peptide rules and move only 바지락 MBPI (research/verified-indices/evidence-clam-2026-10-01.md)."""
+
+    def test_rows_move_only_clam_mbpi(self):
+        import tempfile
+        cfg = json.loads((ROOT / "config" / "verified-indices-v3.6.json").read_text(encoding="utf-8"))
+        self.assertNotIn(CLAM, cfg["peptide_supplements"])
+        cfg["peptide_supplements"] = cfg["peptide_supplements"] + [CLAM]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "config.json"
+            path.write_text(json.dumps(cfg), encoding="utf-8")
+            staged = build(*load_inputs(config=path))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        new, old = rows(staged), rows(build(*load_inputs(config=V36)))
+        changed = {(a, axis): s["scores"][axis] for a, s in new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != old[a]["scores"][axis]}
+        self.assertEqual(changed, {(231750, "MBPI"): 39.5})
+        clam = new[231750]
+        self.assertEqual([(i["peptide_sequence"], i["percentile"]) for i in clam["bioactivity_trace"]],
+                         [("IAE", 52.7), ("IVE", 35.23), ("LLP", 30.68)])
+        # one paper per item, so BBVI stays withheld; the same-author Spirulina IAE value (2001) is not a replication
+        self.assertEqual(clam["withheld_reasons"]["BBVI"], "mbpi_single_source")
+        # origin ambiguous in the paper (clam vs pearl oyster): shown, never scored
+        self.assertEqual(sorted(p["sequence"] for p in clam["bioactivity_partial"]), ["AEL", "IELPLG", "LVE"])
+
+
 if __name__ == "__main__":
     unittest.main()
