@@ -126,13 +126,13 @@ const stages={
   250680:['verified','linked','calculated','calculated','unavailable'],
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
   241776:['verified','linked','found','calculated','calculated'],
-  // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI (BBVI still withheld); 2.3 gives the oyster a BBVI.
+  // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI; 2.3 gives the oyster a BBVI; 3.12 replicates wakame IY (BBVI 63.9).
   145721:['verified','linked','calculated','calculated','unavailable']
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
   assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
-  assert.equal(ctx.score(s,'BBVI'),Number(id)===836033?83.9:null);
+  assert.equal(ctx.score(s,'BBVI'),{836033:83.9,145721:63.9}[id]??null);
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
@@ -334,21 +334,23 @@ assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 시범
 assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 시범 숫자 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // verified-pilot-2.2: the reviewed peptide values are scored in the AHTPDB cohort; paper values and both licences stay visible.
-// 3.5: Sato 2002 dipeptides are scored after the full-text review (IW 1.5 µM is the top item); KNFL stays listed.
-for(const [id,value,texts] of [[145721,71.5,['IW','1.5 µM','10.1021/jf020482t','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0']]]){
-  html=ctx.renderScores(by(id));
-  assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),`${id}: scored values are not repeated as unscored raw values`);
-  const mbpi=html.slice(html.indexOf('MBPI · 생리활성'));
-  for(const text of [...texts,'기질 HHL','참고값(단일 논문)','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능','점수에 쓴 값의 독립 원논문 1편'])
-    assert.ok(mbpi.includes(text),`${id}: missing ${text}`);
-  assert.equal(ctx.score(by(id),'MBPI'),value);
-  assert.equal(ctx.score(by(id),'BBVI'),null,'a single-paper MBPI never becomes BBVI');
-}
+// 3.5: Sato 2002 dipeptides are scored after the full-text review; KNFL stays listed.
+// 3.12: Suetsuna 2000's synthetic IY replicates Sato's IY potency, so IY (two DOIs, 81.0) outranks the single-paper IW (71.5).
+html=ctx.renderScores(by(145721));
+assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721: scored values are not repeated as unscored raw values');
+{const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
+  for(const text of ['81.0 · 검증 전 시범 지표','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
+    '기질 HHL','효능 재현','합성 IY 2.65 µM','재현 시료 미역','차이 0.362','독립 DOI로 셈','DOI 2편(기원 1 + 효능 재현 1)',
+    '펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
+    assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
+  assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
+assert.equal(ctx.score(by(145721),'MBPI'),81.0);
+assert.equal(ctx.score(by(145721),'BBVI'),63.9);
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 html=ctx.renderScores(by(836033));
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
   for(const text of ['96.3 · 검증 전 시범 지표','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
-    '효능 재현','합성 LQP 2 µM','다른 기원 옥수수 α-제인','차이 0.229','독립 DOI로 셈','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다',
+    '효능 재현','합성 LQP 2 µM','재현 시료 옥수수 α-제인','차이 0.229','독립 DOI로 셈','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다',
     'DOI 2편(기원 1 + 효능 재현 1)','펩타이드 352개','doi:10.1093/nar/gku1141'])
     assert.ok(mbpi.includes(text),`oyster MBPI missing ${text}`);
   assert.match(mbpi,/기원 근거는 Do et al\. 2012 \(<a [^>]*>10\.5352\/jls\.2012\.22\.2\.220<\/a>\) 1편뿐입니다/);

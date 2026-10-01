@@ -36,13 +36,13 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.11",
+  "method_version": "verified-pilot-3.12",
   "schema_version": 1,
   "species": [
     {
       "aphia_id": 145721,
       "axis_reasons": {
-        "BBVI": "mbpi_single_source",
+        "BBVI": null,
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -116,14 +116,15 @@
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
-        "BBVI": null,
-        "MBPI": 71.5,
+        "BBVI": 63.9,
+        "MBPI": 81.0,
         "MCUI": null,
         "MFPI": 46.7
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",

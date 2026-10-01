@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-09-27",
+ "purpose": "Input for the cross-origin potency rule from verified-pilot-3.12 (config/verified-indices-v3.12.json): the 2.3 row (Miyoshi 1991 zein LQP) plus the 3.12 row (Suetsuna 2000 wakame IY, team-lead decision 2026-10-01). Synthetic peptides re-measured in another paper replicate potency only; they never become an item, a species value or an origin claim. evidence-xo-potency.json stays as read by 2.3-3.11.",
+ "sources": {
+  "miyoshi_1991_zein": {
+   "provider": "Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF)",
+   "title": "Structures and activity of angiotensin-converting enzyme inhibitors in an alpha-zein hydrolysate",
+   "version": "1991",
+   "doi": "10.1271/bbb1961.55.1313",
+   "alternate_doi": "10.1080/00021369.1991.10870760",
+   "url": "https://doi.org/10.1271/bbb1961.55.1313",
+   "accessed": "2026-09-27",
+   "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+   "license": "Publisher copyright (JSBBA; free access on J-STAGE, no CC licence stated)"
+  },
+  "suetsuna_2000_wakame_fulltext": {
+   "provider": "J Nutr Biochem 11(9):450-454 (Suetsuna & Nakano 2000), full text (ScienceDirect HTML, Dongguk University institutional access)",
+   "title": "Identification of an antihypertensive peptide from peptic digest of wakame (Undaria pinnatifida)",
+   "version": "2000",
+   "doi": "10.1016/S0955-2863(00)00110-8",
+   "pmid": "11091100",
+   "url": "https://doi.org/10.1016/S0955-2863(00)00110-8",
+   "accessed": "2026-10-01",
+   "terms": "Bibliographic record and numeric values only; no text or tables copied",
+   "license": "Publisher copyright"
+  }
+ },
+ "potency_replications": [
+  {
+   "record_id": "10.1271/bbb1961.55.1313:TableIII:LQP-synthetic",
+   "sequence": "LQP",
+   "origin_material": "alpha-zein (maize, Sigma) thermolysin hydrolysate; the scored value is the synthetic peptide",
+   "origin_label": "옥수수 α-제인 (합성 펩타이드로 측정)",
+   "synthetic": true,
+   "target": "ACE",
+   "endpoint": "IC50",
+   "relation": "=",
+   "value": 2.0,
+   "unit": "uM",
+   "substrate": "HHL",
+   "value_in_text": true,
+   "location": "Table III (synthetic L-Leu-L-Gln-L-Pro 2.0 uM); isolated peptide 1.9 uM in Table II and Discussion",
+   "assay": "Modified Cushman-Cheung: Hip-His-Leu 5 mM, 100 mM borate pH 8.3 with 300 mM NaCl, 8 mU ACE (rabbit lung acetone powder, Sigma), 37 C 30 min",
+   "source_id": "miyoshi_1991_zein",
+   "original_paper_doi": "10.1271/bbb1961.55.1313",
+   "reviewed": true,
+   "verification": "Full text read 2026-09-27 (J-STAGE PDF). Solid-phase synthesis, HPLC-purified, FAB-MS 357 (M+H)+. Different group (Showa Sangyo / Fermentation Research Institute) and different origin from Do et al. 2012 (oyster, 1.18 uM). Assay conditions match Do 2012 (5 mM HHL, borate pH 8.3, 300 mM NaCl, 37 C 30 min, rabbit-lung ACE)."
+  },
+  {
+   "record_id": "10.1016/S0955-2863(00)00110-8:Table2:IY-synthetic",
+   "sequence": "IY",
+   "origin_material": "wakame (Undaria pinnatifida, Kitagami, Miyagi, 1996) pepsin digest; IY is a synthetic fragment of the isolated tetrapeptide AIYK, so the scored value is the synthetic peptide",
+   "origin_label": "미역 펩신 소화물 테트라펩타이드 AIYK의 단편 (합성 펩타이드로 측정)",
+   "synthetic": true,
+   "target": "ACE",
+   "endpoint": "IC50",
+   "relation": "=",
+   "value": 2.65,
+   "unit": "uM",
+   "substrate": "HHL",
+   "value_in_text": true,
+   "location": "Table 2 'ACE inhibitory activity of synthetic tetrapeptides' (Ile-Tyr 2.65 uM)",
+   "assay": "Modified Cheung-Cushman: Hip-His-Leu 12.5 mM (Peptide Institute) in 1.0 M NaCl-borate pH 8.3, rabbit-lung acetone powder ACE (Sigma), 37 C 1 h, hippuric acid by ethyl acetate extraction at 228 nm",
+   "source_id": "suetsuna_2000_wakame_fulltext",
+   "original_paper_doi": "10.1016/S0955-2863(00)00110-8",
+   "reviewed": true,
+   "verification": "Full text read 2026-10-01 (ScienceDirect, Dongguk institutional access). Peptides synthesized by solid phase (433A), HF cleavage, homogeneous on RP-HPLC; Table 2 lists synthetic IC50 values including Ile-Tyr 2.65 uM. Same assay family as Sato 2002 (HHL 12.5 mM, rabbit-lung ACE, 228 nm). Takahisa Nakano (Riken Vitamin) co-authored both this paper and Sato 2002 (10.1021/jf020482t); the values differ (2.65 vs 6.1 uM) and the measuring groups differ (Suetsuna lab vs Tohoku Univ.). Counted as an independent paper by team-lead decision 2026-10-01. pIC50 gap to Sato IY 0.36."
+  }
+ ]
+}
