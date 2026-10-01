@@ -17,7 +17,7 @@ alt F4의 Ocean 20 Challenge 본선 준비용 연구 프로토타입.
 - 선정·제외 기준: [research/expansion-30/README.md](research/expansion-30/README.md). 분류만 확인한 22종은 `dist/candidate-catalog.json`으로 읽으며, 국명·근연종과의 연결은 추가 검수 대상이다.
 - 이전 OBIS/WoRMS 실험은 수집 가능한 환경에서 `python scripts/collect_expansion_research.py`를 실행하면 WoRMS 승인명과 한반도 시험 범위 OBIS 원자료·데이터셋 메타데이터를 **무시되는 `tmp/expansion-30/`**에만 저장한다. 실행 결과를 자동 발행하지 않는다. 수집·분류·라이선스·좌표 품질·민감도 확인 후에만 운영 DB에 공개 격자로 올릴 수 있다.
 - GBIF 실측 감사와 22종별 보류 사유: [감사 보고서](research/expansion-30/audit-2026-09-25.md). 재현 명령은 `python scripts/collect_expansion_gbif.py`, `python scripts/audit_expansion_iucn.py`, `python scripts/build_expansion_evidence.py` 순서다. 원좌표/개별 기록 ID는 `tmp/`에만 남고 `dist/expansion-evidence.json`은 공개 전 연구 상태만 담는다.
-- 후보 22종 중 21종에서 검수 기준을 통과한 공개 출현 셀 544개(기간별 행, 기록 8,126건)를 표시한다. 시카메굴은 기록 5건이 모두 해안선에서 1 km보다 안쪽 육지 좌표라 셀이 없다. 빈 지도는 조사 공백이며 부재의 증거가 아니다. 비교 표는 다섯 종씩 표시한다.
+- 후보 22종 모두에서 검수 기준을 통과한 공개 출현 셀 567개(기간별 행, 기록 8,908건)를 표시한다. 국립생물자원관 표본은 GBIF에 좌표 없이 올라가 있어, 같은 표본번호로 국립생물자원관 생물지리정보의 채집 지점·일자를 붙여 같은 기준으로 검수했다(782건 통과, 시카메굴 순천만 40건 포함; [근거](research/expansion-30/cells-nibr-points-2026-10-01.md)). 빈 지도는 조사 공백이며 부재의 증거가 아니다. 비교 표는 다섯 종씩 표시한다.
 
 ## 실행 및 자료 갱신
 

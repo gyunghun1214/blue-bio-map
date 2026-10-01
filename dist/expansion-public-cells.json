@@ -1,7 +1,7 @@
 {
  "schemaVersion": "candidate-public-cells-2",
  "reviewedOn": "2026-10-01",
- "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01): scripts/build_expansion_cells.py",
+ "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01) + NIBR holder points (2026-10-01): scripts/build_expansion_cells.py",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not current distribution, abundance, stock size or regional value. Pre-2000 records are a separate historical period.",
  "queryBox": "124–132°E · 33–38.7°N",
  "species": [
@@ -12,22 +12,29 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 385,
-    "historical": 0,
+    "accepted": 523,
+    "historical": 2,
     "outsideKoreanEEZ": 0,
     "names": [
      "Saccharina japonica (Aresch.) C.E.Lane, C.Mayes, Druehl & G.W.Saunders, 2006"
     ],
     "gbif": {
-     "queried": 407,
-     "accepted": 385,
+     "queried": 596,
+     "accepted": 523,
      "excluded": {
       "taxon_not_verified": 1,
       "no_year": 18,
-      "on_land_obis_rule": 3
+      "on_land_obis_rule": 54
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5422368&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5422368&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 220,
+      "pointsInBox": 189,
+      "accepted": 138,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5422368&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 398,
@@ -51,11 +58,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2011,
      "yearEnd": 2013,
-     "records": 8,
-     "sites": 3,
-     "uncertaintyMissing": 8,
+     "records": 10,
+     "sites": 4,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "East China Sea"
      ],
@@ -64,9 +71,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -85,11 +109,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2008,
      "yearEnd": 2013,
-     "records": 8,
-     "sites": 3,
-     "uncertaintyMissing": 8,
+     "records": 26,
+     "sites": 10,
+     "uncertaintyMissing": 26,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -98,9 +122,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -153,11 +194,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2002,
      "yearEnd": 2015,
-     "records": 35,
-     "sites": 12,
-     "uncertaintyMissing": 35,
+     "records": 41,
+     "sites": 16,
+     "uncertaintyMissing": 41,
      "seaAreas": [
       "East China Sea",
       "Yellow Sea"
@@ -167,9 +208,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1997,
+     "yearEnd": 1997,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -223,11 +323,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2010,
      "yearEnd": 2014,
-     "records": 9,
-     "sites": 3,
-     "uncertaintyMissing": 9,
+     "records": 10,
+     "sites": 4,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "East China Sea"
      ],
@@ -236,9 +336,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -257,11 +374,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2012,
-     "records": 20,
-     "sites": 5,
-     "uncertaintyMissing": 20,
+     "records": 23,
+     "sites": 6,
+     "uncertaintyMissing": 23,
      "seaAreas": [
       "East China Sea"
      ],
@@ -270,9 +387,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -325,11 +459,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2013,
+     "yearStart": 2011,
      "yearEnd": 2014,
-     "records": 4,
-     "sites": 2,
-     "uncertaintyMissing": 4,
+     "records": 7,
+     "sites": 3,
+     "uncertaintyMissing": 7,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -338,9 +472,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -361,9 +512,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2006,
      "yearEnd": 2015,
-     "records": 80,
-     "sites": 18,
-     "uncertaintyMissing": 80,
+     "records": 102,
+     "sites": 23,
+     "uncertaintyMissing": 102,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -372,9 +523,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -489,17 +657,59 @@
     },
     {
      "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2006,
+     "yearEnd": 2014,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
      "lon0": 128,
      "sizeDeg": 1,
      "resolutionM": 87721,
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2005,
+     "yearStart": 2002,
      "yearEnd": 2015,
-     "records": 62,
-     "sites": 16,
-     "uncertaintyMissing": 62,
+     "records": 79,
+     "sites": 23,
+     "uncertaintyMissing": 79,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -508,9 +718,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1995,
+     "yearEnd": 1995,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -529,22 +798,39 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2006,
+     "yearStart": 2005,
      "yearEnd": 2013,
-     "records": 20,
-     "sites": 7,
-     "uncertaintyMissing": 20,
+     "records": 26,
+     "sites": 10,
+     "uncertaintyMissing": 26,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
      "sources": [
       "GBIF"
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -599,20 +885,37 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2000,
      "yearEnd": 2014,
-     "records": 62,
-     "sites": 13,
-     "uncertaintyMissing": 62,
+     "records": 118,
+     "sites": 24,
+     "uncertaintyMissing": 118,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
      "sources": [
       "GBIF"
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -1654,7 +1957,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 226,
+    "accepted": 245,
     "historical": 20,
     "outsideKoreanEEZ": 1,
     "names": [
@@ -1662,14 +1965,21 @@
      "Ulva prolifera O.F.Mull."
     ],
     "gbif": {
-     "queried": 245,
-     "accepted": 219,
+     "queried": 264,
+     "accepted": 238,
      "excluded": {
       "no_year": 21,
       "on_land_obis_rule": 5
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5273366&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5273366&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 64,
+      "pointsInBox": 19,
+      "accepted": 19,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5273366&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 247,
@@ -1695,9 +2005,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2001,
      "yearEnd": 2014,
-     "records": 42,
-     "sites": 10,
-     "uncertaintyMissing": 42,
+     "records": 43,
+     "sites": 11,
+     "uncertaintyMissing": 43,
      "seaAreas": [
       "East China Sea"
      ],
@@ -1715,9 +2025,26 @@
        ]
       },
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -1837,11 +2164,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2013,
+     "yearStart": 2010,
      "yearEnd": 2014,
-     "records": 11,
-     "sites": 2,
-     "uncertaintyMissing": 11,
+     "records": 14,
+     "sites": 3,
+     "uncertaintyMissing": 14,
      "seaAreas": [
       "East China Sea"
      ],
@@ -1850,9 +2177,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -1908,9 +2252,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2012,
      "yearEnd": 2015,
-     "records": 41,
+     "records": 44,
      "sites": 3,
-     "uncertaintyMissing": 41,
+     "uncertaintyMissing": 44,
      "seaAreas": [
       "East China Sea"
      ],
@@ -1919,9 +2263,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -1942,9 +2303,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2000,
      "yearEnd": 2013,
-     "records": 10,
-     "sites": 5,
-     "uncertaintyMissing": 10,
+     "records": 14,
+     "sites": 6,
+     "uncertaintyMissing": 14,
      "seaAreas": [
       "East China Sea"
      ],
@@ -1953,9 +2314,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2144,11 +2522,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2010,
      "yearEnd": 2011,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 4,
+     "sites": 2,
+     "uncertaintyMissing": 4,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -2157,9 +2535,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2257,9 +2652,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2014,
-     "records": 21,
-     "sites": 5,
-     "uncertaintyMissing": 21,
+     "records": 26,
+     "sites": 7,
+     "uncertaintyMissing": 26,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -2268,9 +2663,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2460,22 +2872,30 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 950,
+    "accepted": 1073,
     "historical": 253,
     "outsideKoreanEEZ": 35,
     "names": [
      "Sargassum horneri (Turner) C.Agardh, 1820"
     ],
     "gbif": {
-     "queried": 1222,
-     "accepted": 950,
+     "queried": 1353,
+     "accepted": 1073,
      "excluded": {
+      "taxon_not_verified": 3,
       "no_year": 249,
-      "on_land_obis_rule": 13,
+      "on_land_obis_rule": 18,
       "duplicate": 10
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=3196570&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=3196570&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 381,
+      "pointsInBox": 131,
+      "accepted": 123,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=3196570&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 1136,
@@ -2536,9 +2956,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2005,
      "yearEnd": 2015,
-     "records": 85,
-     "sites": 40,
-     "uncertaintyMissing": 85,
+     "records": 114,
+     "sites": 66,
+     "uncertaintyMissing": 114,
      "seaAreas": [
       "East China Sea"
      ],
@@ -2546,6 +2966,14 @@
       "GBIF"
      ],
      "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
       {
        "title": "2020_biodiversity_new_contents",
        "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
@@ -2559,6 +2987,15 @@
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2680,11 +3117,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2014,
-     "records": 19,
-     "sites": 10,
-     "uncertaintyMissing": 19,
+     "records": 33,
+     "sites": 15,
+     "uncertaintyMissing": 33,
      "seaAreas": [
       "East China Sea"
      ],
@@ -2693,9 +3130,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2750,9 +3204,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2007,
      "yearEnd": 2015,
-     "records": 39,
-     "sites": 11,
-     "uncertaintyMissing": 39,
+     "records": 47,
+     "sites": 15,
+     "uncertaintyMissing": 47,
      "seaAreas": [
       "East China Sea"
      ],
@@ -2761,9 +3215,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2852,9 +3323,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2001,
      "yearEnd": 2015,
-     "records": 38,
-     "sites": 18,
-     "uncertaintyMissing": 38,
+     "records": 51,
+     "sites": 23,
+     "uncertaintyMissing": 51,
      "seaAreas": [
       "East China Sea"
      ],
@@ -2863,9 +3334,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -2954,9 +3442,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2010,
      "yearEnd": 2014,
-     "records": 18,
-     "sites": 5,
-     "uncertaintyMissing": 18,
+     "records": 21,
+     "sites": 6,
+     "uncertaintyMissing": 21,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -2965,9 +3453,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3075,9 +3580,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2009,
      "yearEnd": 2009,
-     "records": 4,
-     "sites": 1,
-     "uncertaintyMissing": 4,
+     "records": 5,
+     "sites": 2,
+     "uncertaintyMissing": 5,
      "seaAreas": [
       "East China Sea"
      ],
@@ -3086,9 +3591,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3109,9 +3631,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2006,
      "yearEnd": 2015,
-     "records": 48,
-     "sites": 18,
-     "uncertaintyMissing": 48,
+     "records": 75,
+     "sites": 24,
+     "uncertaintyMissing": 75,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -3120,9 +3642,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3255,9 +3794,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2009,
      "yearEnd": 2015,
-     "records": 42,
-     "sites": 11,
-     "uncertaintyMissing": 42,
+     "records": 44,
+     "sites": 12,
+     "uncertaintyMissing": 44,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -3266,9 +3805,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3366,9 +3922,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2006,
      "yearEnd": 2015,
-     "records": 49,
-     "sites": 15,
-     "uncertaintyMissing": 49,
+     "records": 53,
+     "sites": 17,
+     "uncertaintyMissing": 53,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -3377,9 +3933,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3502,9 +4075,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2005,
      "yearEnd": 2015,
-     "records": 57,
-     "sites": 15,
-     "uncertaintyMissing": 57,
+     "records": 64,
+     "sites": 18,
+     "uncertaintyMissing": 64,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -3513,9 +4086,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3580,9 +4170,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2005,
      "yearEnd": 2014,
-     "records": 24,
-     "sites": 9,
-     "uncertaintyMissing": 24,
+     "records": 35,
+     "sites": 12,
+     "uncertaintyMissing": 35,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -3591,9 +4181,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3886,9 +4493,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2000,
      "yearEnd": 2015,
-     "records": 21,
-     "sites": 7,
-     "uncertaintyMissing": 21,
+     "records": 25,
+     "sites": 8,
+     "uncertaintyMissing": 25,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -3897,9 +4504,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -3972,7 +4596,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 885,
+    "accepted": 1004,
     "historical": 47,
     "outsideKoreanEEZ": 0,
     "names": [
@@ -3981,16 +4605,23 @@
      "Gracilaria vermiculophylla (Ohmi) Papenfuss"
     ],
     "gbif": {
-     "queried": 1008,
-     "accepted": 883,
+     "queried": 1165,
+     "accepted": 1002,
      "excluded": {
       "no_year": 93,
       "captive_or_cultivated": 2,
-      "on_land_obis_rule": 20,
+      "on_land_obis_rule": 58,
       "duplicate": 10
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5278964&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5278964&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 196,
+      "pointsInBox": 157,
+      "accepted": 119,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5278964&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 861,
@@ -4016,11 +4647,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 167,
-     "sites": 37,
-     "uncertaintyMissing": 167,
+     "records": 215,
+     "sites": 66,
+     "uncertaintyMissing": 215,
      "seaAreas": [
       "East China Sea"
      ],
@@ -4028,6 +4659,14 @@
       "GBIF"
      ],
      "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
       {
        "title": "2020_biodiversity_new_contents",
        "url": "https://www.gbif.org/dataset/8de067be-9e1e-4823-984e-44d329c2cadd",
@@ -4041,6 +4680,15 @@
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4158,9 +4806,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 109,
-     "sites": 25,
-     "uncertaintyMissing": 109,
+     "records": 120,
+     "sites": 29,
+     "uncertaintyMissing": 120,
      "seaAreas": [
       "East China Sea"
      ],
@@ -4169,9 +4817,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4400,9 +5065,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2003,
      "yearEnd": 2015,
-     "records": 78,
-     "sites": 16,
-     "uncertaintyMissing": 78,
+     "records": 88,
+     "sites": 18,
+     "uncertaintyMissing": 88,
      "seaAreas": [
       "East China Sea"
      ],
@@ -4411,9 +5076,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4468,9 +5150,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2015,
-     "records": 108,
-     "sites": 9,
-     "uncertaintyMissing": 108,
+     "records": 114,
+     "sites": 11,
+     "uncertaintyMissing": 114,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -4479,9 +5161,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4602,6 +5301,48 @@
      "lon0": 128,
      "sizeDeg": 1,
      "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2009,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
      "period": "2016–2026",
      "historical": false,
      "outsideKoreanEEZ": false,
@@ -4639,11 +5380,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2007,
      "yearEnd": 2012,
-     "records": 30,
-     "sites": 9,
-     "uncertaintyMissing": 30,
+     "records": 51,
+     "sites": 16,
+     "uncertaintyMissing": 51,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -4652,9 +5393,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4709,9 +5467,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 57,
-     "sites": 14,
-     "uncertaintyMissing": 57,
+     "records": 69,
+     "sites": 17,
+     "uncertaintyMissing": 69,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -4720,9 +5478,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4820,9 +5595,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 29,
-     "sites": 9,
-     "uncertaintyMissing": 29,
+     "records": 36,
+     "sites": 14,
+     "uncertaintyMissing": 36,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -4831,9 +5606,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4888,9 +5680,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2012,
-     "records": 4,
-     "sites": 1,
-     "uncertaintyMissing": 4,
+     "records": 5,
+     "sites": 2,
+     "uncertaintyMissing": 5,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -4899,9 +5691,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -4922,9 +5731,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2012,
-     "records": 31,
-     "sites": 8,
-     "uncertaintyMissing": 31,
+     "records": 32,
+     "sites": 9,
+     "uncertaintyMissing": 32,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -4933,9 +5742,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_al",
        "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90",
        "doi": "10.15468/yjunss",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -5074,7 +5900,14 @@
       "duplicate": 10
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5272096&taxon_key=5272101&taxon_key=5272105&taxon_key=5272106&taxon_key=7230558&taxon_key=12171760&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5272096&taxon_key=5272101&taxon_key=5272105&taxon_key=5272106&taxon_key=7230558&taxon_key=12171760&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 22,
+      "pointsInBox": 0,
+      "accepted": 0,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5272096&taxon_key=5272101&taxon_key=5272105&taxon_key=5272106&taxon_key=7230558&taxon_key=12171760&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 1238,
@@ -6821,27 +7654,34 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 700,
-    "historical": 17,
+    "accepted": 790,
+    "historical": 36,
     "outsideKoreanEEZ": 89,
     "names": [
      "Ruditapes philippinarum",
      "Ruditapes philippinarum (A.Adams & Reeve, 1850)"
     ],
     "gbif": {
-     "queried": 839,
-     "accepted": 618,
+     "queried": 983,
+     "accepted": 708,
      "excluded": {
       "taxon_not_verified": 6,
       "absent_or_dropped": 79,
       "fossil_specimen": 2,
       "no_year": 114,
       "uncertainty_over_10km": 1,
-      "on_land_obis_rule": 11,
+      "on_land_obis_rule": 65,
       "duplicate": 8
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=4372686&taxon_key=12258568&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4372686&taxon_key=12258568&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 239,
+      "pointsInBox": 144,
+      "accepted": 90,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=4372686&taxon_key=12258568&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 676,
@@ -6867,11 +7707,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2012,
-     "records": 75,
-     "sites": 4,
-     "uncertaintyMissing": 75,
+     "records": 76,
+     "sites": 5,
+     "uncertaintyMissing": 76,
      "seaAreas": [
       "East China Sea"
      ],
@@ -6880,9 +7720,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -7243,6 +8100,48 @@
      "lon0": 125,
      "sizeDeg": 1,
      "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1999,
+     "yearEnd": 1999,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
      "period": "2016–2026",
      "historical": false,
      "outsideKoreanEEZ": false,
@@ -7280,11 +8179,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2000,
      "yearEnd": 2015,
-     "records": 10,
-     "sites": 7,
-     "uncertaintyMissing": 10,
+     "records": 14,
+     "sites": 8,
+     "uncertaintyMissing": 14,
      "seaAreas": [
       "East China Sea"
      ],
@@ -7293,9 +8192,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1998,
+     "records": 3,
+     "sites": 2,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -7330,6 +8288,90 @@
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2000,
+     "yearEnd": 2010,
+     "records": 46,
+     "sites": 14,
+     "uncertaintyMissing": 46,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1999,
+     "records": 3,
+     "sites": 3,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -7393,9 +8435,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 6,
-     "sites": 5,
-     "uncertaintyMissing": 6,
+     "records": 10,
+     "sites": 9,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "East China Sea"
      ],
@@ -7404,9 +8446,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1999,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -7468,11 +8569,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2008,
+     "yearStart": 2000,
      "yearEnd": 2015,
-     "records": 36,
-     "sites": 25,
-     "uncertaintyMissing": 36,
+     "records": 39,
+     "sites": 27,
+     "uncertaintyMissing": 39,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -7487,6 +8588,14 @@
        "source": "OBIS",
        "licenses": [
         "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
        ]
       },
       {
@@ -7505,6 +8614,15 @@
        "source": "GBIF",
        "licenses": [
         "CC BY 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
        ]
       },
       {
@@ -7601,11 +8719,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2006,
      "yearEnd": 2012,
-     "records": 26,
-     "sites": 6,
-     "uncertaintyMissing": 26,
+     "records": 28,
+     "sites": 7,
+     "uncertaintyMissing": 28,
      "seaAreas": [
       "East China Sea"
      ],
@@ -7614,9 +8732,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1998,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -7784,9 +8961,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2006,
      "yearEnd": 2015,
-     "records": 146,
-     "sites": 29,
-     "uncertaintyMissing": 139,
+     "records": 152,
+     "sites": 34,
+     "uncertaintyMissing": 145,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -7794,6 +8971,14 @@
       "GBIF"
      ],
      "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
       {
        "title": "iNaturalist Research-grade Observations",
        "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
@@ -7812,10 +8997,61 @@
        "licenses": [
         "CC BY-NC 4.0"
        ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
       }
      ],
      "licenses": [
       "CC BY 4.0",
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1999,
+     "records": 3,
+     "sites": 3,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
       "CC BY-NC 4.0"
      ]
     },
@@ -7993,11 +9229,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2009,
+     "yearStart": 2001,
      "yearEnd": 2014,
-     "records": 98,
-     "sites": 28,
-     "uncertaintyMissing": 98,
+     "records": 103,
+     "sites": 31,
+     "uncertaintyMissing": 103,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -8006,9 +9242,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1995,
+     "yearEnd": 1999,
+     "records": 5,
+     "sites": 4,
+     "uncertaintyMissing": 5,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -8580,13 +9875,21 @@
      "Patinopecten yessoensis (Jay, 1857)"
     ],
     "gbif": {
-     "queried": 79,
+     "queried": 80,
      "accepted": 77,
      "excluded": {
+      "taxon_not_verified": 1,
       "no_year": 2
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=4373871&taxon_key=11602916&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4373871&taxon_key=11602916&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 1,
+      "pointsInBox": 1,
+      "accepted": 0,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=4373871&taxon_key=11602916&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 66,
@@ -8902,19 +10205,28 @@
    "sizeDeg": 1,
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
-    "status": "no_eligible_records",
-    "accepted": 0,
+    "status": "cells_published",
+    "accepted": 40,
     "historical": 0,
     "outsideKoreanEEZ": 0,
-    "names": [],
+    "names": [
+     "Crassostrea sikamea (Amemiya, 1928)"
+    ],
     "gbif": {
-     "queried": 5,
-     "accepted": 0,
+     "queried": 45,
+     "accepted": 40,
      "excluded": {
       "on_land_obis_rule": 5
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=8016550&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=8016550&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 40,
+      "pointsInBox": 40,
+      "accepted": 40,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=8016550&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 0,
@@ -8925,7 +10237,50 @@
      "query": "https://api.obis.org/v3/occurrence?taxonid=836041&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
     }
    },
-   "cells": []
+   "cells": [
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 40,
+     "sites": 2,
+     "uncertaintyMissing": 40,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ]
   },
   {
    "aphiaID": 504357,
@@ -9401,22 +10756,29 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 166,
-    "historical": 0,
+    "accepted": 172,
+    "historical": 1,
     "outsideKoreanEEZ": 0,
     "names": [
      "Sinonovacula constricta",
      "Sinonovacula constricta (Lamarck, 1818)"
     ],
     "gbif": {
-     "queried": 192,
-     "accepted": 163,
+     "queried": 208,
+     "accepted": 169,
      "excluded": {
       "no_year": 6,
-      "on_land_obis_rule": 23
+      "on_land_obis_rule": 33
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5855549&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5855549&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 27,
+      "pointsInBox": 16,
+      "accepted": 6,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5855549&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 168,
@@ -9439,22 +10801,39 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2007,
      "yearEnd": 2012,
-     "records": 20,
-     "sites": 1,
-     "uncertaintyMissing": 20,
+     "records": 22,
+     "sites": 2,
+     "uncertaintyMissing": 22,
      "seaAreas": [
-      "해역명 미확인"
+      "Yellow Sea"
      ],
      "sources": [
       "GBIF"
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -9507,11 +10886,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 51,
-     "sites": 44,
-     "uncertaintyMissing": 51,
+     "records": 52,
+     "sites": 45,
+     "uncertaintyMissing": 52,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -9520,9 +10899,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1998,
+     "yearEnd": 1998,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -9575,11 +11013,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2006,
      "yearEnd": 2013,
-     "records": 30,
-     "sites": 3,
-     "uncertaintyMissing": 30,
+     "records": 31,
+     "sites": 4,
+     "uncertaintyMissing": 31,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -9588,9 +11026,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_mo",
        "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
        "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -9645,6 +11100,48 @@
      ]
     },
     {
+     "lat0": 36,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2007,
+     "yearEnd": 2007,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
      "lat0": 37,
      "lon0": 126,
      "sizeDeg": 1,
@@ -9687,24 +11184,31 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 401,
-    "historical": 1,
+    "accepted": 479,
+    "historical": 2,
     "outsideKoreanEEZ": 25,
     "names": [
      "Scomber japonicus",
      "Scomber japonicus Houttuyn, 1782"
     ],
     "gbif": {
-     "queried": 366,
-     "accepted": 353,
+     "queried": 465,
+     "accepted": 431,
      "excluded": {
       "no_year": 1,
       "uncertainty_over_10km": 3,
       "market_purchase_point": 1,
-      "on_land_obis_rule": 8
+      "on_land_obis_rule": 29
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=7599552&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=7599552&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 201,
+      "pointsInBox": 99,
+      "accepted": 78,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=7599552&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 408,
@@ -9800,11 +11304,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2007,
      "yearEnd": 2015,
-     "records": 36,
-     "sites": 19,
-     "uncertaintyMissing": 36,
+     "records": 59,
+     "sites": 28,
+     "uncertaintyMissing": 59,
      "seaAreas": [
       "East China Sea"
      ],
@@ -9813,9 +11317,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -9887,10 +11408,10 @@
      "historical": false,
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
-     "yearEnd": 2012,
-     "records": 23,
-     "sites": 12,
-     "uncertaintyMissing": 23,
+     "yearEnd": 2013,
+     "records": 24,
+     "sites": 13,
+     "uncertaintyMissing": 24,
      "seaAreas": [
       "East China Sea"
      ],
@@ -9899,9 +11420,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10100,11 +11638,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2014,
-     "records": 5,
-     "sites": 4,
-     "uncertaintyMissing": 5,
+     "records": 7,
+     "sites": 6,
+     "uncertaintyMissing": 7,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -10113,9 +11651,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10236,11 +11791,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2012,
-     "records": 59,
-     "sites": 15,
-     "uncertaintyMissing": 59,
+     "records": 68,
+     "sites": 20,
+     "uncertaintyMissing": 68,
      "seaAreas": [
       "East China Sea"
      ],
@@ -10249,9 +11804,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1995,
+     "yearEnd": 1995,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10313,11 +11927,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2014,
-     "records": 38,
-     "sites": 19,
-     "uncertaintyMissing": 38,
+     "records": 49,
+     "sites": 24,
+     "uncertaintyMissing": 49,
      "seaAreas": [
       "East China Sea"
      ],
@@ -10326,9 +11940,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10516,11 +12147,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2014,
+     "yearStart": 2013,
      "yearEnd": 2014,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -10529,9 +12160,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10550,11 +12198,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2014,
+     "yearStart": 2009,
      "yearEnd": 2014,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 4,
+     "sites": 3,
+     "uncertaintyMissing": 4,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -10563,9 +12211,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10618,11 +12283,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
-     "yearEnd": 2012,
-     "records": 49,
-     "sites": 15,
-     "uncertaintyMissing": 49,
+     "yearStart": 2008,
+     "yearEnd": 2013,
+     "records": 62,
+     "sites": 20,
+     "uncertaintyMissing": 62,
      "seaAreas": [
       "East China Sea",
       "Sea of Japan"
@@ -10632,9 +12297,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10843,9 +12525,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2012,
-     "records": 8,
-     "sites": 6,
-     "uncertaintyMissing": 8,
+     "records": 9,
+     "sites": 7,
+     "uncertaintyMissing": 9,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -10854,9 +12536,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10942,11 +12641,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2015,
-     "records": 3,
-     "sites": 2,
-     "uncertaintyMissing": 3,
+     "records": 8,
+     "sites": 5,
+     "uncertaintyMissing": 8,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -10955,9 +12654,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -10976,11 +12692,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2010,
      "yearEnd": 2011,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -10989,9 +12705,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2007,
+     "yearEnd": 2007,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11044,6 +12819,48 @@
        "title": "iNaturalist Research-grade Observations",
        "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7",
        "doi": "10.15468/ab3s5x",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 38,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 86511,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2010,
+     "records": 6,
+     "sites": 3,
+     "uncertaintyMissing": 6,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11115,7 +12932,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 439,
+    "accepted": 489,
     "historical": 12,
     "outsideKoreanEEZ": 3,
     "names": [
@@ -11123,16 +12940,23 @@
      "Engraulis japonicus Temminck & Schlegel, 1846"
     ],
     "gbif": {
-     "queried": 469,
-     "accepted": 408,
+     "queried": 526,
+     "accepted": 458,
      "excluded": {
       "no_year": 2,
       "uncertainty_over_10km": 4,
       "market_purchase_point": 2,
-      "on_land_obis_rule": 53
+      "on_land_obis_rule": 60
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=2413997&taxon_key=8997148&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2413997&taxon_key=8997148&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 106,
+      "pointsInBox": 57,
+      "accepted": 50,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=2413997&taxon_key=8997148&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 619,
@@ -11193,11 +13017,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2009,
+     "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 19,
-     "sites": 12,
-     "uncertaintyMissing": 19,
+     "records": 24,
+     "sites": 17,
+     "uncertaintyMissing": 24,
      "seaAreas": [
       "East China Sea"
      ],
@@ -11206,9 +13030,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11313,10 +13154,10 @@
      "historical": false,
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
-     "yearEnd": 2011,
-     "records": 4,
-     "sites": 3,
-     "uncertaintyMissing": 4,
+     "yearEnd": 2014,
+     "records": 6,
+     "sites": 4,
+     "uncertaintyMissing": 6,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -11325,9 +13166,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11451,9 +13309,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2004,
      "yearEnd": 2014,
-     "records": 86,
-     "sites": 15,
-     "uncertaintyMissing": 86,
+     "records": 100,
+     "sites": 20,
+     "uncertaintyMissing": 100,
      "seaAreas": [
       "East China Sea"
      ],
@@ -11462,9 +13320,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11559,11 +13434,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2012,
-     "records": 74,
-     "sites": 15,
-     "uncertaintyMissing": 74,
+     "records": 82,
+     "sites": 19,
+     "uncertaintyMissing": 82,
      "seaAreas": [
       "East China Sea"
      ],
@@ -11572,9 +13447,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11677,6 +13569,48 @@
      "lon0": 125,
      "sizeDeg": 1,
      "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2013,
+     "yearEnd": 2013,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
      "period": "2000년 이전",
      "historical": true,
      "outsideKoreanEEZ": false,
@@ -11713,11 +13647,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 4,
-     "sites": 3,
-     "uncertaintyMissing": 4,
+     "records": 11,
+     "sites": 9,
+     "uncertaintyMissing": 11,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -11726,9 +13660,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11783,9 +13734,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2004,
      "yearEnd": 2014,
-     "records": 33,
-     "sites": 6,
-     "uncertaintyMissing": 33,
+     "records": 36,
+     "sites": 8,
+     "uncertaintyMissing": 36,
      "seaAreas": [
       "East China Sea",
       "Sea of Japan"
@@ -11795,9 +13746,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -11963,9 +13931,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2001,
      "yearEnd": 2014,
-     "records": 52,
-     "sites": 22,
-     "uncertaintyMissing": 52,
+     "records": 55,
+     "sites": 25,
+     "uncertaintyMissing": 55,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -11973,6 +13941,14 @@
       "GBIF"
      ],
      "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
       {
        "title": "niek_2022",
        "url": "https://www.gbif.org/dataset/1e09d985-8f58-4a34-ab86-17e55f203c8a",
@@ -11986,6 +13962,15 @@
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12203,11 +14188,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 15,
-     "sites": 4,
-     "uncertaintyMissing": 15,
+     "records": 18,
+     "sites": 7,
+     "uncertaintyMissing": 18,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -12216,9 +14201,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12237,11 +14239,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2010,
      "yearEnd": 2011,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 3,
+     "sites": 3,
+     "uncertaintyMissing": 3,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -12250,9 +14252,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12304,11 +14323,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2009,
+     "yearStart": 2007,
      "yearEnd": 2009,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -12317,9 +14336,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12404,11 +14440,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2013,
+     "yearStart": 2007,
      "yearEnd": 2013,
-     "records": 2,
-     "sites": 1,
-     "uncertaintyMissing": 2,
+     "records": 3,
+     "sites": 2,
+     "uncertaintyMissing": 3,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -12417,6 +14453,14 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "niek_2022",
        "url": "https://www.gbif.org/dataset/1e09d985-8f58-4a34-ab86-17e55f203c8a",
        "doi": "10.15468/9axxge",
@@ -12424,9 +14468,19 @@
        "licenses": [
         "CC0 1.0"
        ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
       }
      ],
      "licenses": [
+      "CC BY-NC 4.0",
       "CC0 1.0"
      ]
     },
@@ -12482,7 +14536,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 223,
+    "accepted": 257,
     "historical": 9,
     "outsideKoreanEEZ": 8,
     "names": [
@@ -12490,16 +14544,23 @@
      "Larimichthys polyactis (Bleeker, 1877)"
     ],
     "gbif": {
-     "queried": 223,
-     "accepted": 200,
+     "queried": 265,
+     "accepted": 234,
      "excluded": {
       "no_year": 6,
       "coordinate_issue": 8,
       "market_purchase_point": 1,
-      "on_land_obis_rule": 8
+      "on_land_obis_rule": 16
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=2400171&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2400171&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 67,
+      "pointsInBox": 42,
+      "accepted": 34,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=2400171&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 236,
@@ -12592,11 +14653,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 18,
-     "sites": 11,
-     "uncertaintyMissing": 18,
+     "records": 22,
+     "sites": 13,
+     "uncertaintyMissing": 22,
      "seaAreas": [
       "East China Sea"
      ],
@@ -12605,9 +14666,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12728,9 +14806,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2014,
-     "records": 9,
-     "sites": 9,
-     "uncertaintyMissing": 9,
+     "records": 11,
+     "sites": 11,
+     "uncertaintyMissing": 11,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -12739,9 +14817,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12829,11 +14924,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 19,
-     "sites": 12,
-     "uncertaintyMissing": 19,
+     "records": 28,
+     "sites": 17,
+     "uncertaintyMissing": 28,
      "seaAreas": [
       "East China Sea"
      ],
@@ -12842,9 +14937,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -12906,11 +15018,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2014,
-     "records": 14,
-     "sites": 6,
-     "uncertaintyMissing": 14,
+     "records": 16,
+     "sites": 8,
+     "uncertaintyMissing": 16,
      "seaAreas": [
       "East China Sea"
      ],
@@ -12919,9 +15031,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13042,11 +15171,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 5,
-     "sites": 4,
-     "uncertaintyMissing": 5,
+     "records": 10,
+     "sites": 9,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -13055,9 +15184,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13213,10 +15359,10 @@
      "historical": false,
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
-     "yearEnd": 2012,
-     "records": 3,
-     "sites": 2,
-     "uncertaintyMissing": 3,
+     "yearEnd": 2013,
+     "records": 4,
+     "sites": 3,
+     "uncertaintyMissing": 4,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -13225,9 +15371,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2008,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13349,10 +15554,10 @@
      "historical": false,
      "outsideKoreanEEZ": false,
      "yearStart": 2010,
-     "yearEnd": 2012,
-     "records": 5,
-     "sites": 4,
-     "uncertaintyMissing": 5,
+     "yearEnd": 2013,
+     "records": 6,
+     "sites": 5,
+     "uncertaintyMissing": 6,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -13361,9 +15566,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13384,9 +15606,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2009,
      "yearEnd": 2011,
-     "records": 5,
-     "sites": 3,
-     "uncertaintyMissing": 5,
+     "records": 6,
+     "sites": 4,
+     "uncertaintyMissing": 6,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -13395,9 +15617,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13459,11 +15698,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2000,
      "yearEnd": 2011,
-     "records": 2,
-     "sites": 2,
-     "uncertaintyMissing": 2,
+     "records": 10,
+     "sites": 6,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -13472,9 +15711,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13527,24 +15783,31 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 229,
-    "historical": 6,
+    "accepted": 283,
+    "historical": 7,
     "outsideKoreanEEZ": 12,
     "names": [
      "Paralichthys olivaceus",
      "Paralichthys olivaceus (Temminck & Schlegel, 1846)"
     ],
     "gbif": {
-     "queried": 223,
-     "accepted": 203,
+     "queried": 288,
+     "accepted": 257,
      "excluded": {
       "taxon_not_verified": 2,
       "uncertainty_over_10km": 4,
       "market_purchase_point": 3,
-      "on_land_obis_rule": 11
+      "on_land_obis_rule": 22
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=2408877&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2408877&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 109,
+      "pointsInBox": 65,
+      "accepted": 54,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=2408877&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 261,
@@ -13639,11 +15902,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2015,
-     "records": 26,
-     "sites": 14,
-     "uncertaintyMissing": 26,
+     "records": 31,
+     "sites": 17,
+     "uncertaintyMissing": 31,
      "seaAreas": [
       "East China Sea"
      ],
@@ -13652,9 +15915,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13920,11 +16200,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2003,
      "yearEnd": 2011,
-     "records": 5,
-     "sites": 5,
-     "uncertaintyMissing": 5,
+     "records": 9,
+     "sites": 8,
+     "uncertaintyMissing": 9,
      "seaAreas": [
       "East China Sea",
       "Yellow Sea"
@@ -13934,9 +16214,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13955,11 +16252,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 8,
-     "sites": 4,
-     "uncertaintyMissing": 8,
+     "records": 13,
+     "sites": 8,
+     "uncertaintyMissing": 13,
      "seaAreas": [
       "East China Sea"
      ],
@@ -13968,9 +16265,68 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": false,
+     "yearStart": 1995,
+     "yearEnd": 1995,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -13989,11 +16345,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2015,
-     "records": 12,
-     "sites": 7,
-     "uncertaintyMissing": 12,
+     "records": 16,
+     "sites": 10,
+     "uncertaintyMissing": 16,
      "seaAreas": [
       "East China Sea"
      ],
@@ -14002,9 +16358,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14159,10 +16532,10 @@
      "historical": false,
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
-     "yearEnd": 2012,
-     "records": 5,
-     "sites": 5,
-     "uncertaintyMissing": 5,
+     "yearEnd": 2013,
+     "records": 7,
+     "sites": 7,
+     "uncertaintyMissing": 7,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -14171,9 +16544,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14192,11 +16582,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2012,
-     "records": 6,
-     "sites": 4,
-     "uncertaintyMissing": 6,
+     "records": 20,
+     "sites": 14,
+     "uncertaintyMissing": 20,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -14205,9 +16595,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14328,11 +16735,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 6,
-     "sites": 3,
-     "uncertaintyMissing": 6,
+     "records": 9,
+     "sites": 5,
+     "uncertaintyMissing": 9,
      "seaAreas": [
       "East China Sea"
      ],
@@ -14341,9 +16748,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14463,11 +16887,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2009,
+     "yearStart": 2006,
      "yearEnd": 2014,
-     "records": 13,
-     "sites": 10,
-     "uncertaintyMissing": 13,
+     "records": 20,
+     "sites": 16,
+     "uncertaintyMissing": 20,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -14476,9 +16900,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14542,9 +16983,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2012,
-     "records": 3,
-     "sites": 3,
-     "uncertaintyMissing": 3,
+     "records": 4,
+     "sites": 4,
+     "uncertaintyMissing": 4,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -14553,9 +16994,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14718,11 +17176,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2009,
+     "yearStart": 2007,
      "yearEnd": 2014,
-     "records": 15,
-     "sites": 11,
-     "uncertaintyMissing": 15,
+     "records": 19,
+     "sites": 14,
+     "uncertaintyMissing": 19,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -14731,9 +17189,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14779,17 +17254,59 @@
     },
     {
      "lat0": 37,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2008,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "해역명 미확인"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
      "lon0": 129,
      "sizeDeg": 1,
      "resolutionM": 87721,
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2011,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -14798,9 +17315,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14862,11 +17396,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2009,
      "yearEnd": 2015,
-     "records": 7,
-     "sites": 3,
-     "uncertaintyMissing": 7,
+     "records": 9,
+     "sites": 5,
+     "uncertaintyMissing": 9,
      "seaAreas": [
       "해역명 미확인"
      ],
@@ -14875,9 +17409,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -14949,7 +17500,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 304,
+    "accepted": 309,
     "historical": 0,
     "outsideKoreanEEZ": 0,
     "names": [
@@ -14957,18 +17508,25 @@
      "Sebastes schlegelii Hilgendorf, 1880"
     ],
     "gbif": {
-     "queried": 324,
-     "accepted": 295,
+     "queried": 330,
+     "accepted": 300,
      "excluded": {
       "taxon_not_verified": 1,
       "no_year": 13,
       "uncertainty_over_10km": 2,
       "market_purchase_point": 1,
-      "on_land_obis_rule": 7,
+      "on_land_obis_rule": 8,
       "duplicate": 5
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=2335435&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2335435&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 51,
+      "pointsInBox": 6,
+      "accepted": 5,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=2335435&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 314,
@@ -15272,9 +17830,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2004,
      "yearEnd": 2012,
-     "records": 25,
-     "sites": 6,
-     "uncertaintyMissing": 25,
+     "records": 26,
+     "sites": 7,
+     "uncertaintyMissing": 26,
      "seaAreas": [
       "East China Sea"
      ],
@@ -15283,9 +17841,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -15338,11 +17913,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2010,
+     "yearStart": 2009,
      "yearEnd": 2012,
-     "records": 39,
-     "sites": 7,
-     "uncertaintyMissing": 39,
+     "records": 41,
+     "sites": 9,
+     "uncertaintyMissing": 41,
      "seaAreas": [
       "East China Sea"
      ],
@@ -15351,9 +17926,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -15552,11 +18144,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2011,
-     "records": 2,
-     "sites": 2,
-     "uncertaintyMissing": 2,
+     "records": 3,
+     "sites": 3,
+     "uncertaintyMissing": 3,
      "seaAreas": [
       "Yellow Sea"
      ],
@@ -15565,9 +18157,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -15672,11 +18281,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2015,
-     "records": 9,
-     "sites": 7,
-     "uncertaintyMissing": 9,
+     "records": 10,
+     "sites": 8,
+     "uncertaintyMissing": 10,
      "seaAreas": [
       "East China Sea",
       "Sea of Japan"
@@ -15686,9 +18295,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -16359,7 +18985,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 308,
+    "accepted": 322,
     "historical": 0,
     "outsideKoreanEEZ": 14,
     "names": [
@@ -16367,15 +18993,22 @@
      "Seriola quinqueradiata Temminck & Schlegel, 1845"
     ],
     "gbif": {
-     "queried": 225,
-     "accepted": 217,
+     "queried": 247,
+     "accepted": 231,
      "excluded": {
       "taxon_not_verified": 1,
       "market_purchase_point": 3,
-      "on_land_obis_rule": 4
+      "on_land_obis_rule": 12
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5961724&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5961724&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 51,
+      "pointsInBox": 22,
+      "accepted": 14,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5961724&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 309,
@@ -16402,9 +19035,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2015,
-     "records": 7,
-     "sites": 6,
-     "uncertaintyMissing": 7,
+     "records": 8,
+     "sites": 7,
+     "uncertaintyMissing": 8,
      "seaAreas": [
       "East China Sea"
      ],
@@ -16413,9 +19046,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -16501,11 +19151,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2005,
      "yearEnd": 2012,
-     "records": 20,
-     "sites": 7,
-     "uncertaintyMissing": 20,
+     "records": 24,
+     "sites": 10,
+     "uncertaintyMissing": 24,
      "seaAreas": [
       "East China Sea"
      ],
@@ -16514,9 +19164,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -16570,9 +19237,9 @@
      "outsideKoreanEEZ": false,
      "yearStart": 2011,
      "yearEnd": 2014,
-     "records": 9,
-     "sites": 3,
-     "uncertaintyMissing": 9,
+     "records": 11,
+     "sites": 4,
+     "uncertaintyMissing": 11,
      "seaAreas": [
       "East China Sea"
      ],
@@ -16581,9 +19248,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -16873,11 +19557,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2007,
      "yearEnd": 2015,
-     "records": 136,
-     "sites": 8,
-     "uncertaintyMissing": 136,
+     "records": 139,
+     "sites": 11,
+     "uncertaintyMissing": 139,
      "seaAreas": [
       "East China Sea",
       "Sea of Japan"
@@ -16887,9 +19571,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -16976,11 +19677,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2008,
      "yearEnd": 2013,
-     "records": 3,
-     "sites": 3,
-     "uncertaintyMissing": 3,
+     "records": 6,
+     "sites": 5,
+     "uncertaintyMissing": 6,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -16989,9 +19690,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -17187,11 +19905,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2012,
+     "yearStart": 2008,
      "yearEnd": 2015,
-     "records": 5,
-     "sites": 2,
-     "uncertaintyMissing": 5,
+     "records": 6,
+     "sites": 3,
+     "uncertaintyMissing": 6,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -17200,9 +19918,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -17265,7 +20000,7 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 211,
+    "accepted": 223,
     "historical": 2,
     "outsideKoreanEEZ": 2,
     "names": [
@@ -17273,17 +20008,24 @@
      "Gadus macrocephalus Tilesius, 1810"
     ],
     "gbif": {
-     "queried": 219,
-     "accepted": 190,
+     "queried": 242,
+     "accepted": 202,
      "excluded": {
       "taxon_not_verified": 5,
       "no_year": 21,
       "coordinate_issue": 1,
       "uncertainty_over_10km": 1,
-      "on_land_obis_rule": 1
+      "on_land_obis_rule": 12
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=2415853&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2415853&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 36,
+      "pointsInBox": 23,
+      "accepted": 12,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=2415853&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 215,
@@ -17613,11 +20355,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2013,
-     "records": 6,
-     "sites": 6,
-     "uncertaintyMissing": 6,
+     "records": 9,
+     "sites": 8,
+     "uncertaintyMissing": 9,
      "seaAreas": [
       "East China Sea"
      ],
@@ -17626,9 +20368,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -17777,6 +20536,48 @@
     },
     {
      "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2008,
+     "yearEnd": 2008,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
      "lon0": 128,
      "sizeDeg": 1,
      "resolutionM": 90059,
@@ -17817,11 +20618,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
-     "yearEnd": 2012,
-     "records": 15,
-     "sites": 10,
-     "uncertaintyMissing": 15,
+     "yearStart": 2008,
+     "yearEnd": 2013,
+     "records": 17,
+     "sites": 12,
+     "uncertaintyMissing": 17,
      "seaAreas": [
       "East China Sea",
       "Sea of Japan"
@@ -17831,9 +20632,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -17988,11 +20806,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2008,
      "yearEnd": 2012,
-     "records": 10,
-     "sites": 9,
-     "uncertaintyMissing": 10,
+     "records": 11,
+     "sites": 10,
+     "uncertaintyMissing": 11,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -18001,9 +20819,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -18226,11 +21061,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2006,
      "yearEnd": 2012,
-     "records": 10,
-     "sites": 9,
-     "uncertaintyMissing": 10,
+     "records": 12,
+     "sites": 10,
+     "uncertaintyMissing": 12,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -18239,9 +21074,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -18303,11 +21155,11 @@
      "period": "2000–2015",
      "historical": false,
      "outsideKoreanEEZ": false,
-     "yearStart": 2011,
+     "yearStart": 2009,
      "yearEnd": 2015,
-     "records": 24,
-     "sites": 12,
-     "uncertaintyMissing": 24,
+     "records": 27,
+     "sites": 15,
+     "uncertaintyMissing": 27,
      "seaAreas": [
       "Sea of Japan"
      ],
@@ -18316,9 +21168,26 @@
      ],
      "citations": [
       {
+       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+       "url": "https://species.nibr.go.kr/geo/html/index.do",
+       "source": "NIBR",
+       "licenses": [
+        "공공누리 제3유형"
+       ]
+      },
+      {
        "title": "mabik_pi",
        "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4",
        "doi": "10.15468/qjaw98",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "flora & fauna(NIBR)",
+       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
+       "doi": "10.15468/fppdz4",
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
@@ -18398,7 +21267,14 @@
       "on_land_obis_rule": 9
      },
      "genusFallback": false,
-     "query": "https://www.gbif.org/occurrence/search?taxon_key=5716110&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=5716110&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true",
+     "nibrPoints": {
+      "specimens": 5,
+      "pointsInBox": 0,
+      "accepted": 0,
+      "query": "https://www.gbif.org/occurrence/search?taxon_key=5716110&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
+      "points": "https://species.nibr.go.kr/geo/html/index.do"
+     }
     },
     "obis": {
      "queried": 460,
