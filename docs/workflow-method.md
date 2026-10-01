@@ -9,7 +9,7 @@
 
 | 그림 단계 | 사이트에서 보이는 것 | 구현 위치 | 결정 기록 |
 |---|---|---|---|
-| 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/data.json`, `dist/assessments.json`의 `sources` | 각 자료원 행 |
+| 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/assessments.json`의 `sources` | 각 자료원 행 |
 | 2 표준화·연계 (WoRMS AphiaID, InChIKey·PubChem CID) | 종 상세의 AphiaID·WoRMS 링크, MBPI 근거의 화합물 링크 | `scripts/collect_taxonomy.py`, `scripts/collect_mbpi_links.py`, `research/verified-indices/mbpi-link-review-2026-09-30.json` | `mbpi-chembl-stratum-2026-09-29.md` |
 | 3 MBPI | 종 상세 MBPI 근거(층·표적·화합물·출처) | `build_verified_indices.py`의 `chembl_items`, `chembl_stratum`, `bio_scores`, `peptide_items`, `converted_peptide` | `mbpi-chembl-stratum-2026-09-29.md`, `gap-closing-2026-10-02.md` |
 | 3 MFPI | 종 상세 MFPI 근거(원값·백분위·대체치 라벨·가식부·양식) | `food_axis`, `substitute`, `literature_species_row`, `mfpi`, `build_cohorts`; 종 연결 `rda-name-links-2026-10-01.json` | `mfpi-substitutes-2026-09-30.md`, `gap-closing-2026-10-02.md` |

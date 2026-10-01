@@ -31,7 +31,6 @@ for(const row of readiness.species){
   if(plan.known.length)scored++;
   assert.equal(ctx.followup({...species,name:'Other species'}),null,'wrong taxon must not attach');
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
-  assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
 assert.equal(scored,30,'3.15: 27 MFPI (national-name links, aquaculture records, a literature row) + 18 MBPI + 30 MCUI (7 IUCN + 8 Korean national incl. the 참문어 crosswalk + 1 range-state + 14 preliminary) cover all 30 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');

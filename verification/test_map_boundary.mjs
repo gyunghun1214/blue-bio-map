@@ -126,10 +126,9 @@ assert.ok(dots.every(d=>d.options.color==='#ffffff'&&d.options.weight===.65),'li
 vm.runInContext("basemap='basic'",context);
 // A-3: GBIF sensitive-species vocabulary; 4° cells say they are wider than GBIF's strictest level.
 vm.runInContext('globalThis.gen=generalizationNote;globalThis.pv=periodView;globalThis.csv=cellCsv;globalThis.eff=effortFor;globalThis.effLine=effortLine',context);
-assert.match(context.gen(1,true),/dataGeneralizations: 좌표를 1° 셀로 일반화, 좌표 이동·무작위화 없음/);
-assert.match(context.gen(1,true),/informationWithheld: 원좌표·기록 ID 비공개/);
-assert.match(context.gen(4,true),/가장 엄격한 등급\(1°\)보다 넓은 4° 셀/);
-assert.doesNotMatch(context.gen(1,false),/재검토 예정일/);
+assert.match(context.gen(1),/dataGeneralizations: 좌표를 1° 셀로 일반화, 좌표 이동·무작위화 없음/);
+assert.match(context.gen(1),/informationWithheld: 원좌표·기록 ID 비공개/);
+assert.match(context.gen(4),/가장 엄격한 등급\(1°\)보다 넓은 4° 셀/);
 // B-1: effort sums the 1° cells inside a cell; unknown without the snapshot.
 assert.equal(context.eff(34,126,1),null);
 vm.runInContext("effortData={startdate:'2000-01-01',cells:[{lat0:34,lon0:126,records:10},{lat0:35,lon0:127,records:5},{lat0:40,lon0:126,records:99}]}",context);

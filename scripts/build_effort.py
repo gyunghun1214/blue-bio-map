@@ -18,7 +18,7 @@ from datetime import date
 from pathlib import Path
 
 API = "https://api.obis.org/v3/statistics"
-LON = range(122, 136)  # cell west edges, matches the demo extent 122–136°E
+LON = range(122, 136)  # cell west edges, 122–136°E (initial map view)
 LAT = range(30, 43)    # cell south edges, 30–43°N
 START = "2000-01-01"   # same period floor as the published GBIF cells
 
