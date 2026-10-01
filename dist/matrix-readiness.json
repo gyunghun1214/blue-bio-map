@@ -36,7 +36,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.13",
+  "method_version": "verified-pilot-3.14",
   "schema_version": 1,
   "species": [
     {
@@ -116,8 +116,8 @@
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
-        "BBVI": 63.9,
-        "MBPI": 81.0,
+        "BBVI": 71.0,
+        "MBPI": 95.3,
         "MCUI": null,
         "MFPI": 46.7
       },
@@ -126,9 +126,11 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
+        "https://doi.org/10.1016/j.procbio.2006.04.019",
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
         "https://doi.org/10.3390/md19030177",
+        "https://doi.org/10.3390/nu10101397",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
@@ -858,7 +860,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": 39.5,
+        "MBPI": 58.6,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
@@ -866,6 +868,7 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1039/c8fo01146j",
         "https://doi.org/10.5657/fas.2005.8.2.109",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
@@ -1374,32 +1377,26 @@
     {
       "aphia_id": 254538,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "대구",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 59.9,
         "MCUI": null,
         "MFPI": 38.3
       },
@@ -1407,9 +1404,11 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.procbio.2016.07.006",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255",
+        "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=254538",

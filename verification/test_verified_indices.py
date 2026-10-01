@@ -1457,17 +1457,19 @@ ANCHOVY = "research/verified-indices/evidence-anchovy-2026-10-01.json"
 
 
 class VerifiedPilot313Tests(unittest.TestCase):
-    """Public method: 3.12 plus the reviewed 멸치 peptide rows (research/verified-indices/evidence-anchovy-2026-10-01.md).
+    """Superseded by 3.14. 3.13: 3.12 plus the reviewed 멸치 peptide rows (research/verified-indices/evidence-anchovy-2026-10-01.md).
     Evidence rows only: rules, coefficients and cohorts are 3.12's."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V313))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V312)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.13", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.13 report is archived as it was
+        archived313 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.13.json"
+        self.assertEqual(render(self.report), archived313.read_text(encoding="utf-8"))
 
     def test_only_anchovy_mbpi_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1487,6 +1489,59 @@ class VerifiedPilot313Tests(unittest.TestCase):
         cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
         for old in (V33, V34, V35, V36, V37, V38, V39, V310, V311, V312):
             self.assertNotIn(ANCHOVY, cfg(old)["peptide_supplements"])
+
+
+
+V313 = ROOT / "config" / "verified-indices-v3.13.json"  # superseded by 3.14 (purified peptides accepted); its rows stay tested
+ISOLATES = "research/verified-indices/evidence-isolates-2026-10-01.json"
+XO314 = "research/verified-indices/evidence-xo-potency-3.14.json"
+
+
+class VerifiedPilot314Tests(unittest.TestCase):
+    """Public method: 3.13 with sequence-confirmed purified peptides accepted for origin rows and potency replications
+    (research/verified-indices/evidence-isolates-2026-10-01.md). Coefficients, cohorts and the pIC50 gap are 3.13's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V313)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.14", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_changes(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(145721, "MBPI"): 95.3, (145721, "BBVI"): 71.0, (231750, "MBPI"): 58.6, (254538, "MBPI"): 59.9})
+        self.assertEqual(sum(s["scores"]["MBPI"] is not None for s in self.new.values()), 17)
+
+    def test_purified_replications(self):
+        item = lambda a, seq: [i for i in self.new[a]["bioactivity_trace"] if i.get("peptide_sequence") == seq][0]
+        used = lambda i: [(r["source_id"], r.get("material"), r["used"]) for r in i["potency_replications"]]
+        self.assertEqual(used(item(145721, "IW")), [("lin_2018_chlorella", "purified_isolate", True)])
+        self.assertEqual(used(item(145721, "VW")), [("lin_2018_chlorella", "purified_isolate", True),
+                                                    ("kapel_2006_alfalfa", "purified_isolate", True)])
+        # the scallop VW (86.9 uM) is more than 1.0 pIC50 away from both purified values
+        self.assertEqual(used(item(393716, "VW")), [("lin_2018_chlorella", "purified_isolate", False),
+                                                    ("kapel_2006_alfalfa", "purified_isolate", False)])
+        self.assertEqual(self.new[393716]["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_purified_origin_rows(self):
+        top = lambda a: max((i for i in self.new[a]["bioactivity_trace"] if i["stratum_kind"] == "peptide"), key=lambda i: i["adjusted"])
+        self.assertEqual(top(254538)["peptide_sequence"], "GASSGMPG")
+        self.assertEqual(top(231750)["peptide_sequence"], "VISDEDGVTH")
+        for a in (254538, 231750):
+            self.assertEqual(self.new[a]["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_older_configs_stay_synthetic_only(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36, V37, V38, V39, V310, V311, V312, V313):
+            c = cfg(old)
+            self.assertNotIn(ISOLATES, c["peptide_supplements"])
+            xo = c.get("peptide_bioactivity", {}).get("cross_origin_potency", {})
+            self.assertNotEqual(xo.get("supplement"), XO314)
+            self.assertNotIn("accepted_materials", xo)
 
 
 if __name__ == "__main__":
