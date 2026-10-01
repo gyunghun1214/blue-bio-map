@@ -1099,7 +1099,8 @@ function setView(view) {
 // MFDS 식품등의 표시기준 [별지 1] 영양성분 강조표시: '고/풍부' = 100 g당 1일 영양성분 기준치의 단백질 20%, 무기질 30%.
 const CLAIM_REF={protein_g:55,calcium_mg:700,iron_mg:12,zinc_mg:8.5}, CLAIM_SHARE={protein_g:.2,calcium_mg:.3,iron_mg:.3,zinc_mg:.3};
 const bioUse=t=>{
-  const name=(t.target_name||'')+' '+(t.target_organism||''), type=t.target_type||'';
+  const name=(t.target_name||'')+' '+(t.target_organism||'')+' '+(t.target_species||''), type=t.target_type||'';
+  if(t.stratum_kind==='amp')return 'microbe';  // 3.18: the AMP stratum is a MIC against a named bacterium
   if(t.stratum_kind==='peptide'||/wijesinghe|ACE/i.test(t.stratum_id||'')||/angiotensin/i.test(name))return 'ace';
   if(/virus|SARS|HIV|dengue|influenza/i.test(name))return 'virus';
   if(/cholinesterase|beta-secretase/i.test(name))return 'dementia';
@@ -1142,7 +1143,8 @@ function useEvidence(s,id){
   const hits=(a.bioactivity_trace||[]).filter(t=>bioUse(t)===id).sort((x,y)=>y.adjusted-x.adjusted);
   if(!hits.length)return null;
   const t=hits[0], m=(t.measurements||[])[0]||{};
-  const what=t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
+  const what=t.stratum_kind==='amp'?`항균 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.target_species} MIC ${m.value} ${m.unit}`
+    :t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
     :t.stratum_kind==='chembl'?`${t.compound_name||t.compound_id} · ${t.target_name} ${t.standard_type} pChEMBL ${t.median_pchembl}`
     :`${m.compound_name||t.compound_id||'화합물'} · ACE IC50 ${m.raw_value??''} ${m.raw_unit||''}`;
   return {text:`${what} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
