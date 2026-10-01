@@ -3,11 +3,12 @@ import copy
 import json
 import sys
 import unittest
+from statistics import median
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_verified_indices import build, load_inputs, render  # noqa: E402
+from build_verified_indices import build, independent_sources, load_inputs, render, round1  # noqa: E402
 
 
 def species(report, aphia):
@@ -48,6 +49,7 @@ def synthetic_assays(evidence):
 V2 = ROOT / "config" / "verified-indices-v2.json"  # superseded public method; its rules stay tested
 V21 = ROOT / "config" / "verified-indices-v2.1.json"  # superseded by 2.2 (peptide stratum); its rules stay tested
 V22 = ROOT / "config" / "verified-indices-v2.2.json"  # superseded by 2.3 (cross-origin potency); its rules stay tested
+V23 = ROOT / "config" / "verified-indices-v2.3.json"  # superseded by 3.1 (ChEMBL stratum); its rules stay tested
 NATIONAL_MCUI = {506159, 836033, 231750, 393716, 504357, 413600, 1666974}
 
 
@@ -558,20 +560,20 @@ class VerifiedPilot22Tests(unittest.TestCase):
         self.assertEqual((ref["mbpi_stratum"], ref["mbpi_original_paper_dois"]), ("ahtpdb-ace-ic50-hhl-cushman-cheung", ["10.5352/jls.2012.22.2.220"]))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class VerifiedPilot23Tests(unittest.TestCase):
-    """The published method: 2.2 plus the cross-origin potency rule, with the research config's values."""
+    """Superseded by 3.1: 2.2 plus the cross-origin potency rule, with the research config's values."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V23))
         self.v22 = build(*load_inputs(config=V22))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-2.3", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 2.3 report is archived as it was; only the evidence snapshot date moved on (2026-09-27 -> 2026-09-30)
+        dated = lambda text: {k: v for k, v in json.loads(text).items() if k not in ("snapshot_date", "generated_at")}
+        archived = (ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-2.3.json").read_text(encoding="utf-8")
+        self.assertEqual(dated(render(self.report)), dated(archived))
+        self.assertEqual(json.loads(archived)["snapshot_date"], "2026-09-27")
 
     def test_only_oyster_scores_differ_from_22(self):
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
@@ -609,3 +611,105 @@ class VerifiedPilot23Tests(unittest.TestCase):
         self.assertEqual((rep["used"], rep["value"], rep["origin_label"], rep["source_id"]),
                          (True, 2.0, "옥수수 α-제인 (합성 펩타이드로 측정)", "miyoshi_1991_zein"))
         self.assertIn("miyoshi_1991_zein", self.report["sources"])
+
+
+# 3.1 adds ChEMBL MBPI to these species: aphia -> (2.3 MBPI, 3.1 MBPI, 2.3 BBVI, 3.1 BBVI).
+# Every new value rests on one linking paper, so each is a single-source reference value and BBVI stays withheld.
+# The link review (mbpi-link-review-2026-09-30.json) removed the contaminant, drug-metabolite and ubiquitous links,
+# so 다시마·바지락·큰가리비·피조개·고등어 have no ChEMBL item left and 멍게·홍합·청각 drop.
+CHANGED_31 = {250680: (None, 13.5, None, None), 494972: (None, 45.3, None, None), 506159: (None, 10.1, None, None),
+              494853: (None, 21.6, None, None), 145086: (None, 0.4, None, None)}
+
+
+
+
+class VerifiedPilot31Tests(unittest.TestCase):
+    """Public method: 2.3 plus the automatic ChEMBL stratum (species -> P703 compound -> pChEMBL cohort percentile)."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        self.v23 = build(*load_inputs(config=V23))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.v23)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.1", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_mbpi_moves_and_the_changed_species_are_listed(self):
+        self.assertEqual(set(self.new), set(self.old))
+        for aphia, s in self.new.items():
+            before = self.old[aphia]
+            for axis in ("MFPI", "MCUI"):
+                self.assertEqual(s["scores"][axis], before["scores"][axis], (aphia, axis))
+            strip = lambda t: {k: v for k, v in t.items() if k != "method_version"}
+            self.assertEqual((strip(s["food_trace"]), strip(s["conservation_trace"])), (strip(before["food_trace"]), strip(before["conservation_trace"])))
+        changed = {a: (self.old[a]["scores"]["MBPI"], s["scores"]["MBPI"], self.old[a]["scores"]["BBVI"], s["scores"]["BBVI"])
+                   for a, s in self.new.items()
+                   if (s["scores"]["MBPI"], s["scores"]["BBVI"]) != (self.old[a]["scores"]["MBPI"], self.old[a]["scores"]["BBVI"])}
+        self.assertEqual(changed, CHANGED_31)
+
+    def test_reviewed_strata_are_kept(self):
+        # the peptide and Ecklonia paper strata stay as they were; ChEMBL items are added beside them
+        for aphia, s in self.new.items():
+            kept = [i for i in s["bioactivity_trace"] if i.get("stratum_kind") != "chembl"]
+            self.assertEqual(kept, self.old[aphia]["bioactivity_trace"], aphia)
+
+    def test_species_mbpi_is_the_max_over_strata(self):
+        for aphia, s in self.new.items():
+            trace = s["bioactivity_trace"]
+            if not trace:
+                self.assertIsNone(s["scores"]["MBPI"], aphia)
+                continue
+            adjusted = [i["adjusted"] for i in trace]
+            self.assertEqual(s["scores"]["MBPI"], round1(max(adjusted)), aphia)
+            self.assertEqual(s["sensitivity"]["median_compound_sensitivity"], round1(median(adjusted)), aphia)
+
+    def test_chembl_items_follow_the_rule(self):
+        rule = self.report["method"]["chembl_bioactivity"]
+        items = [i for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "chembl"]
+        self.assertTrue(items)
+        for i in items:
+            self.assertGreaterEqual(i["cohort_records"], rule["minimum_cohort_records"])
+            self.assertIn(i["chembl_stratum"], rule["strata"])
+            self.assertEqual(i["label"], "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님")
+            self.assertEqual(i["link_factor"], 0.75 if len(i["original_paper_dois"]) == 1 else 1.0)
+            self.assertEqual(i["activity_factor"], 0.75 if len(i["document_chembl_ids"]) == 1 else 1.0)
+            self.assertAlmostEqual(i["adjusted"], i["percentile"] * i["link_factor"] * i["activity_factor"], places=1)
+            self.assertEqual(i["independent_sources"], min(len(i["original_paper_dois"]), len(i["document_chembl_ids"])))
+        # one item per species, compound and stratum (the compound's best target x endpoint cohort in that stratum)
+        keys = [(a, i["compound_id"], i["chembl_stratum"]) for a, s in self.new.items() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "chembl"]
+        self.assertEqual(len(keys), len(set(keys)))
+
+    def test_bbvi_needs_two_independent_papers(self):
+        for aphia, s in self.new.items():
+            if s["scores"]["MBPI"] is None:
+                continue
+            best = max(s["bioactivity_trace"], key=lambda i: i["adjusted"])
+            single = independent_sources(best) < 2
+            self.assertEqual(s["mbpi_label"], "참고값(단일 논문)" if single else None, aphia)
+            if single:
+                self.assertIsNone(s["scores"]["BBVI"], aphia)
+
+    def test_primary_item_needs_a_review_entry(self):
+        evidence, *rest = load_inputs()
+        top = max((i for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "chembl"),
+                  key=lambda i: i["adjusted"])
+        links = evidence["chembl_links"]
+        evidence = {**evidence, "chembl_links": {**links, "link_review": [r for r in links["link_review"]
+                                                                            if r["inchikey"] not in top["inchikeys"]]}}
+        with self.assertRaisesRegex(ValueError, "without a review entry"):
+            build(evidence, *rest)
+
+    def test_species_left_without_links_are_low_information(self):
+        # no P703 link and no accepted original-paper link, or every link rejected by the review
+        low = {a for a, s in self.new.items() if s["score_status"]["MBPI"] == "정보충분도 낮음"}
+        self.assertEqual(low, {397082, 836041, 413600, 219984, 281273, 275816, 274849, 276651, 1061762, 534443, 1666974})
+        for a in low:
+            counts = self.new[a]["chembl_links"]["counts"]
+            self.assertEqual(counts.get("linked", 0), counts.get("rejected_by_review", 0), a)
+            self.assertFalse(self.new[a]["bioactivity_partial"], a)
+
+
+if __name__ == "__main__":
+    unittest.main()

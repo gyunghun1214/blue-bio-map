@@ -4,11 +4,14 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
 const mbpiDois = x => new Set((x.independent_dois||x.original_paper_dois).map(d=>d.toLowerCase()));
+// 3.1: a ChEMBL item needs both the species link and the activity on separate papers, so the weaker side counts.
+const mbpiSources = x => x.stratum_kind==='chembl'?x.independent_sources:mbpiDois(x).size;
+const bestBio = a => (a?.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -49,7 +52,7 @@ function evidenceCoverage(s) {
     {name:'영양',stage:pilotScore(s,'MFPI')!==null?'calculated':foodLinked?'linked':foodRows.length||extras.length||nutrition.status==='available'?'found':'unavailable',
       detail:pilotScore(s,'MFPI')!==null?'동기준 영양·가식부·양식 근거로 검증 전 시범 MFPI를 산출했습니다.':foodLinked?'종별 원값은 확인했으나 시료 상태·가식부·동일 기준 비교 또는 양식 근거가 부족해 MFPI는 보류합니다.':'영양 자료가 있더라도 이 종의 비교 가능한 원값인지 확인해야 합니다.'},
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null?'calculated':bioLinked?'linked':partial.length||compounds.status==='available'?'found':'unavailable',
-      detail:pilotScore(s,'MBPI')!==null?`기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 시범 MBPI를 산출했습니다.${a.mbpi_label?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`:''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
+      detail:pilotScore(s,'MBPI')!==null?`${bestBio(a)?.stratum_kind==='chembl'?`종→화합물 공개 연결(LOTUS·원논문)과 ChEMBL 같은 표적·종말점 비교집단으로 시범 MBPI를 산출했습니다(${bestBio(a).label}).`:'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 시범 MBPI를 산출했습니다.'}${a.mbpi_label?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`:''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?'calculated':conservation?.iucn_state==='assessed'?'linked':'unavailable',
       detail:nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 시범 MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 시범 MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.':'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.'}
   ];
@@ -194,14 +197,25 @@ function verifiedBioValid(a,report){
   const replicated=x=>x.independent_dois===undefined||Array.isArray(x.independent_dois)&&Array.isArray(x.potency_replications)&&
     [...mbpiDois(x)].sort().join()===[...new Set([...x.original_paper_dois,...x.potency_replications.filter(r=>r.used).map(r=>r.original_paper_doi)]
       .map(d=>d.toLowerCase()))].sort().join()&&x.potency_replications.every(r=>!r.used||report.sources?.[r.source_id]?.url&&a.source_ids.includes(r.source_id));
-  if(items.some(x=>!common(x)||!(peptide(x)||compound(x))||!replicated(x)))return false;
-  if(new Set(items.map(x=>x.stratum_kind||'compound')).size!==1)return false;
+  // 3.1 ChEMBL stratum: link factor (species-link DOIs) x activity factor (ChEMBL documents), cohort of at least the minimum records.
+  const rule3=report?.method?.chembl_bioactivity, bio=report?.method?.bioactivity||{};
+  const docFactor=n=>n===1?bio.single_doi_factor:bio.multiple_doi_factor;
+  const chembl=x=>!!rule3&&x.stratum_kind==='chembl'&&!!x.compound_id&&!!x.target_chembl_id&&!!x.standard_type&&x.label===rule3.label&&
+    !!rule3.strata?.[x.chembl_stratum]&&Array.isArray(x.activity_ids)&&x.activity_ids.length>0&&
+    Array.isArray(x.document_chembl_ids)&&x.document_chembl_ids.length>0&&Number.isInteger(x.cohort_records)&&x.cohort_records>=rule3.minimum_cohort_records&&
+    x.link_factor===docFactor(mbpiDois(x).size)&&x.activity_factor===docFactor(new Set(x.document_chembl_ids).size)&&
+    Math.abs(x.link_factor*x.activity_factor-x.evidence_factor)<1e-9&&
+    x.independent_sources===Math.min(mbpiDois(x).size,new Set(x.document_chembl_ids).size)&&rule3.source_ids.every(id=>a.source_ids.includes(id))&&
+    (!rule3.link_review||x.link_review==='accepted');
+  if(items.some(x=>!common(x)||!(peptide(x)||compound(x)||chembl(x))||!replicated(x)))return false;
+  // Peptides and reviewed compounds never share a trace; 3.1 adds the ChEMBL stratum beside either, and MBPI is the max over strata.
+  if(new Set(items.filter(x=>x.stratum_kind!=='chembl').map(x=>x.stratum_kind||'compound')).size>1)return false;
   if(Math.abs(a.scores.MBPI-Math.max(...items.map(x=>x.adjusted)))>=.06)return false;
   if(singleSourceRule(report.method_version)){
-    const rule=report.method?.bbvi, best=items.reduce((p,x)=>x.adjusted>p.adjusted?x:p);
+    const rule=report.method?.bbvi, best=bestBio(a);
     if(!Number.isInteger(rule?.minimum_independent_mbpi_dois)||rule.minimum_independent_mbpi_dois<2||
        !rule.single_source_mbpi_label)return false;
-    const papers=mbpiDois(best).size;
+    const papers=mbpiSources(best);
     if(a.mbpi_label!==(papers<rule.minimum_independent_mbpi_dois?rule.single_source_mbpi_label:null))return false;
   }
   return true;
@@ -222,10 +236,10 @@ function verifiedAxisErrors(a,report){
     if(!Number.isFinite(a.scores.MFPI)||!Number.isFinite(a.scores.MBPI)||
        Math.abs(a.scores.BBVI-(w*a.scores.MFPI+(1-w)*a.scores.MBPI))>.06)return false;
     if(singleSourceRule(report.method_version)){
-      const best=(a.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
+      const best=bestBio(a);
       const minimum=report.method?.bbvi?.minimum_independent_mbpi_dois;
       return Number.isInteger(minimum)&&best&&
-        mbpiDois(best).size>=minimum;
+        mbpiSources(best)>=minimum;
     }
     return true;
   });
@@ -325,7 +339,8 @@ async function attachPilotAssessments(next) {
       s.assessment=a;
     }
     next.assessmentInfo={foodWeight:report.food_weight,generatedAt:report.generated_at,
-      sources:report.sources,method:report.method,cohort:report.comparison_cohort,cohorts:report.comparison_cohorts||[],version:report.method_version};
+      sources:report.sources,method:report.method,cohort:report.comparison_cohort,cohorts:report.comparison_cohorts||[],version:report.method_version,
+      chemblCommonLimit:report.chembl_common_taxon_limit};
   } catch { failed('technical_error'); /* A malformed optional report must not hide the underlying species evidence. */ }
 }
 
@@ -526,8 +541,8 @@ function showDecision(s){
         // pilot-1 traces name the stratum as [target, assay] and a ChEMBL median; verified reports name a stratum id.
         if(!b.stratum_id){html+=`<li>${esc(b.compound_id)} · 표적 ${esc(b.stratum?.[0])}, assay ${esc(b.stratum?.[1])} · 중앙 pChEMBL ${esc(b.median_pchembl)} · 비교 화합물 ${esc(b.peer_count)}개 · 백분위 ${esc(b.rank)} · 독립 문헌 ${esc(b.independent_references)}건 · 근거 계수 ${esc(b.evidence_factor)} · ${esc((b.reference_ids||[]).join(', '))}</li>`;continue;}
         const m=(b.measurements||[])[0];
-        html+=`<li>${esc(b.stratum_kind==='peptide'?'펩타이드 '+b.peptide_sequence:(m?.compound_name||'')+' '+b.compound_id)} · 비교 코호트 ${esc(b.stratum_id)} `+
-          `(${esc(b.peer_compounds??b.peer_peptides)}개) · ${m?`원값 ${esc(b.stratum_kind==='peptide'?peptideValue(m):m.raw_value+' '+m.raw_unit)} · `:''}백분위 ${esc(b.percentile)} × 근거 계수 ${esc(b.evidence_factor)} = ${esc(Math.round(b.adjusted*10)/10)} · 원논문 ${esc((b.original_paper_dois||[]).join(', '))}</li>`;
+        html+=`<li>${esc(b.stratum_kind==='peptide'?'펩타이드 '+b.peptide_sequence:(m?.compound_name||b.compound_name||'')+' '+b.compound_id)} · 비교 코호트 ${esc(b.stratum_id)} `+
+          `(${b.stratum_kind==='chembl'?`${esc(b.stratum_label)} · 활성 기록 ${esc(b.cohort_records)}건`:esc(b.peer_compounds??b.peer_peptides)+'개'}) ·${m?`원값 ${esc(b.stratum_kind==='peptide'?peptideValue(m):m.raw_value+' '+m.raw_unit)} · `:''}백분위 ${esc(b.percentile)} × 근거 계수 ${esc(b.evidence_factor)} = ${esc(Math.round(b.adjusted*10)/10)} · 원논문 ${esc((b.original_paper_dois||[]).join(', '))}</li>`;
       }
       html+='</ul>';
     }
@@ -643,21 +658,26 @@ function verifiedBioTrace(s){
   // e.g. "Do et al. 2012" from the provider line; the DOI link when the provider names no author-year.
   const originNames=origin.map(d=>{const m=(best.measurements||[]).find(v=>v.original_paper_doi?.toLowerCase()===d),
     ay=/\(([^()]*\d{4})\)/.exec(data.assessmentInfo?.sources?.[m?.source_id]?.provider||'');return ay?`${esc(ay[1])} (${doiLink(d)})`:doiLink(d);}).join(', ');
-  const rows=[...items].sort((x,y)=>y.adjusted-x.adjusted).map(x=>{
+  // ponytail: the strongest rows only; a ChEMBL trace can hold dozens, and every row stays in assessments.json.
+  const SHOWN=12, sorted=[...items].sort((x,y)=>y.adjusted-x.adjusted);
+  const rows=sorted.slice(0,SHOWN).map(x=>{
     const used=Math.abs(x.adjusted-top)<1e-9;
-    const peptide=x.stratum_kind==='peptide';
+    const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl';
     const m=(x.measurements||[])[0]||{};
-    const name=peptide?`펩타이드 ${esc(x.peptide_sequence)}`:
+    const name=peptide?`펩타이드 ${esc(x.peptide_sequence)}`:ch?
+      `${esc(x.compound_name||x.compound_id)} · ${sourceLink(`https://www.ebi.ac.uk/chembl/explore/compound/${x.compound_id}`,x.compound_id)}`:
       `${esc(m.compound_name||x.compound_id)} · ${m.structure_url?sourceLink(m.structure_url,x.compound_id):esc(x.compound_id)}${m.molecular_formula?' · '+esc(m.molecular_formula):''}`;
-    const raw=peptide?(x.measurements||[]).map(v=>esc(`${v.target} ${v.endpoint} ${v.relation} ${peptideValue(v)} · 기질 ${v.substrate}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:(x.measurements||[]).map(v=>
-      `IC50 ${esc(v.relation||'')} ${esc(v.raw_value)}${v.raw_sd!==undefined?' ± '+esc(v.raw_sd):''} ${esc(v.raw_unit)}`).join(' / ');
-    const cohort=peptide?`펩타이드 ${esc(x.peer_peptides)}개`:`화합물 ${esc(x.peer_compounds)}개`;
+    const raw=peptide?(x.measurements||[]).map(v=>esc(`${v.target} ${v.endpoint} ${v.relation} ${peptideValue(v)} · 기질 ${v.substrate}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:
+      ch?`${esc(x.stratum_label)} · 표적 ${esc(x.target_name)} (${esc(x.target_chembl_id)}, ${esc(x.target_type)}${x.target_organism?', '+esc(x.target_organism):''}) · ${esc(x.standard_type)} 중앙 pChEMBL ${esc(x.median_pchembl)} · 활성 ${esc(x.activity_ids.length)}건`:
+      (x.measurements||[]).map(v=>`IC50 ${esc(v.relation||'')} ${esc(v.raw_value)}${v.raw_sd!==undefined?' ± '+esc(v.raw_sd):''} ${esc(v.raw_unit)}`).join(' / ');
+    const cohort=peptide?`펩타이드 ${esc(x.peer_peptides)}개`:ch?`ChEMBL 활성 기록 ${esc(x.cohort_records)}건`:`화합물 ${esc(x.peer_compounds)}개`;
     return `<div class="score-fact${used?' score-used':''}"><b>${used?'점수에 쓴 값 · ':''}${name}</b>`+
       `<span>${raw}${m.target_id?' · 표적 '+esc(m.target_id):''}${m.test_system?' · '+esc(m.test_system):''}</span></div>`+
       (m.conditions_key?`<p class="fine">시험 조건: ${esc(m.conditions_key)}</p>`:'')+
       (peptide?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
         return `<p class="fine">원값 출처: ${verifiedSource(v.source_id,esc(src?.provider||'원논문')+' ↗')} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}</p>`;}).join(''):'')+
-      `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`+
+      (ch?`<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)}(종 연결 ${esc(x.link_factor)} × 활성 ${esc(x.activity_factor)}) = ${esc(Math.round(x.adjusted*10)/10)} · 종 연결 논문 ${x.original_paper_dois.map(doiLink).join(', ')} · ChEMBL 문서 ${esc(x.document_chembl_ids.join(', '))}</p><p class="fine">${esc(x.label)}</p>`:
+      `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`)+
       (x.potency_replications||[]).map(r=>{const src=data.assessmentInfo?.sources?.[r.source_id];
         return `<div class="score-fact"><b>효능 재현 · 합성 ${esc(x.peptide_sequence)} ${esc(peptideValue(r))} · 다른 기원 ${esc(r.origin_label||r.origin_material)}</b>`+
           `<span>pIC50 ${esc(r.pIC50)} · 차이 ${esc(r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(r.reason)}</span></div>`+
@@ -666,16 +686,24 @@ function verifiedBioTrace(s){
   // A peptide percentile ranks against the fixed AHTPDB cohort (CC BY-NC 4.0), so the cohort is cited where the rank is shown.
   const pep=best.stratum_kind==='peptide'?data.assessmentInfo?.method?.peptide_bioactivity:null;
   const pepSrc=pep?data.assessmentInfo?.sources?.[pep.cohort_source_id]:null;
+  const ch=best.stratum_kind==='chembl', rule3=data.assessmentInfo?.method?.chembl_bioactivity;
   const scope=pep?`AHTPDB에서 고른 고정 비교집단(${esc(pep.target)} ${esc(pep.endpoint)}, 기질 ${esc(pep.substrate)}, 펩타이드 ${esc(best.peer_peptides)}개) 안의 상대 순위입니다.`:
+    ch?`ChEMBL 같은 표적·같은 종말점(${esc(best.standard_type)}) 활성 기록 ${esc(best.cohort_records)}건 안의 상대 순위입니다.`:
     '같은 논문·같은 시험 조건 안의 상대 순위입니다.';
-  return `<h4>점수 근거 · ${esc(items.length)}개 측정값</h4>${rows}`+
-    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${reps.length?`DOI ${dois.length}편(기원 ${origin.length} + 효능 재현 ${reps.length})`:`원논문 ${dois.length}편`}`+
-    `${dois.length<2?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
-    `<p class="fine">한계: 백분위는 ${scope} ${dois.length<2?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 다른 기원의 합성 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}세포 밖(효소) 시험값이며 임상 효과나 제품 가치가 아닙니다.</p>`+
+  const independence=ch?`종 연결 논문 ${dois.length}편 · ChEMBL 문서 ${esc(new Set(best.document_chembl_ids).size)}건 → 약한 쪽 ${esc(best.independent_sources)}편`:
+    reps.length?`DOI ${dois.length}편(기원 ${origin.length} + 효능 재현 ${reps.length})`:`원논문 ${dois.length}편`;
+  const single=mbpiSources(best)<2;
+  const chemblLimit=ch?`${esc(best.label)}. 종→화합물 연결은 위키데이터 P703(LOTUS 자동 추출) 또는 검수한 원논문이며 함량·추출 조건은 알 수 없습니다. 분류군 ${esc(data.assessmentInfo?.chemblCommonLimit)}개를 넘는 흔한 대사물과 승인 약물(max_phase 4) 연결은 뺐습니다. 분류군 수는 위키데이터에 정리된 문헌 양이라 흔한 물질을 다 거르지 못하므로, 점수에 쓰는 연결은 원문 제목·초록과 PubChem 기록으로 검수했습니다. `:'';
+  return `<h4>점수 근거 · ${esc(items.length)}개 측정값${items.length>SHOWN?` (상위 ${SHOWN}개 표시, 전체는 공개 JSON)`:''}</h4>${rows}`+
+    `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${independence}`+
+    `${single&&!ch?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
+    `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 다른 기원의 합성 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}${ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
+    (ch&&rule3?`<p class="fine">출처: ${rule3.source_ids.map(id=>{const src=data.assessmentInfo?.sources?.[id];return `${verifiedSource(id,(src?.provider||id)+' ↗')} (${esc(src?.license||'이용조건 미확인')}, 조회 ${esc(src?.accessed||'미기재')})`;}).join(' · ')} · ID와 값만 저장했습니다.</p>`:'')+
     (pep?`<p class="fine">비교집단 출처: ${verifiedSource(pep.cohort_source_id,esc(pepSrc?.provider||'AHTPDB')+' ↗')} · ${esc(pepSrc?.citation||'인용 미기재')} · 이용조건 ${esc(pepSrc?.license||'미확인')} · 행 ID와 IC50 값만 써서 백분위로 가공했습니다.</p>`:'');
 }
 // Paper values are stored in µM; values of 1000 µM and above are also shown in mM as the paper reports them.
 const peptideValue = r => r.unit==='uM'?(r.value>=1000?`${r.value/1000} mM (${r.value} µM)`:`${r.value} µM`):`${r.value} ${r.unit||''}`;
+const REVIEW_CLASS={structure_mismatch:'구조 불일치',contaminant:'오염물',not_tissue:'종 조직 아님',ubiquitous_metabolite:'보편 대사물'};
 function verifiedBioDetail(s){
   const items=s.assessment.bioactivity_partial||[];
   const trace=verifiedBioTrace(s);
@@ -702,9 +730,16 @@ function verifiedBioDetail(s){
       `<p class="fine">${verifiedSource(r.source_id,esc(src?.provider||'원논문')+' ↗')} · DOI ${esc(r.original_paper_doi)} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}. `+
       '같은 조건의 공개 비교집단이 없어 백분위·점수를 내지 않습니다. MBPI·BBVI에 쓰지 않습니다.</p>';}).join('');
   const rawHtml=raw?'<h4>원값·출처 · 점수 미사용</h4>'+raw:'';
-  if(trace)return trace+rawHtml+partial;
-  return '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>'+rawHtml+partial+
-    (s.assessment.candidate_label&&!items.length?'<p class="fine">조사 후보 검색 범위: Wikidata/LOTUS 기원종 기록과 ChEMBL 37 정량값(2026-09-26)에서 미발견. PubChem·CMNPD·문헌 전수는 아직 조사하지 않았습니다.</p>':'');
+  // 3.1 link review (mbpi-link-review-*.json): rejected species -> compound links, shown whether or not the species has a score.
+  const cl=s.assessment.chembl_links, n=cl?.counts||{}, ps=cl?.paper_search, rule3=data.assessmentInfo?.method?.chembl_bioactivity;
+  const rej=cl?.rejected_links||[];
+  const rejected=rej.length?`<p class="fine">연결 검수 제외 ${esc(rej.length)}건: ${rej.map(r=>`${esc(r.compound_name)}(${esc(REVIEW_CLASS[r.class]||r.class)})`).join(' · ')}. 원문 제목·초록과 PubChem 기록으로 판단했고 어떤 점수에도 쓰지 않습니다.</p>`:'';
+  if(trace)return trace+rejected+rawHtml+partial;
+  // 3.1: what the automated species -> compound -> ChEMBL chain found, and the original-paper search for species without a P703 link.
+  const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${esc(n.linked||0)}건 · 참고문헌 DOI 있음 ${esc(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${esc(n.common_metabolite||0)}건 · 승인 약물 제외 ${esc(n.approved_drug||0)}건 · 검수 제외 ${esc(n.rejected_by_review||0)}건 → ChEMBL 비교 코호트(활성 기록 ${esc(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${esc(n.scored_compounds||0)}개.`+
+    (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${esc(ps.searched_on)}, Europe PMC ${esc(ps.europepmc_hits)}건 중 ${esc(ps.papers_screened)}건 선별, 인정 연결 ${esc(ps.accepted_links)}건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
+  return '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>'+rawHtml+partial+linkChain+rejected+
+    (!cl&&s.assessment.candidate_label&&!items.length?'<p class="fine">조사 후보 검색 범위: Wikidata/LOTUS 기원종 기록과 ChEMBL 37 정량값(2026-09-26)에서 미발견. PubChem·CMNPD·문헌 전수는 아직 조사하지 않았습니다.</p>':'');
 }
 function verifiedNationalFact(s){
   const b=s.assessment.national_assessment;
@@ -755,7 +790,7 @@ function axisPairsHtml(){
   const groups=new Map();
   for(const s of data?.species||[])for(const k of ['MFPI','MBPI','BBVI']){
     if(pilotScore(s,k)===null||pilotScore(s,'MCUI')===null)continue;
-    const cohort=k==='MFPI'?s.assessment.food_trace?.cohort_id:k==='MBPI'?s.assessment.bioactivity_trace?.[0]?.stratum_id:'BBVI';
+    const cohort=k==='MFPI'?s.assessment.food_trace?.cohort_id:k==='MBPI'?bestBio(s.assessment)?.stratum_id:'BBVI';
     const key=`${k} × MCUI(${nationalMcui(s)?'한국 국가 평가 기반':'IUCN 기반'}) · ${cohort}`;
     groups.set(key,[...(groups.get(key)||[]),`${s.label} ${k} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment.mbpi_label?' ('+s.assessment.mbpi_label+')':''} · MCUI ${pilotScore(s,'MCUI').toFixed(1)}`]);
   }
@@ -900,8 +935,10 @@ function renderCandidateDetail(s){
     const a=s.audit, n=a.nutrition, i=a.iucn, r=s.review;
     const pilot=s.assessment, mbpi=pilotScore(s,'MBPI');
     const bioRows=mbpi===null?'':(pilot.bioactivity_trace||[]).map(t=>(t.measurements||[]).map(m=>`<tr><td>${sourceLink(m.structure_url,m.compound_name+' · '+t.compound_id)}</td><td>${esc(m.relation)} ${esc(m.raw_value)} ± ${esc(m.raw_sd)} ${esc(m.raw_unit)}</td><td>${esc(t.percentile)} · ${esc(t.evidence_factor)}</td></tr>`).join('')).join('');
-    const papers=new Set((pilot?.bioactivity_trace||[]).flatMap(x=>x.original_paper_dois||[]).map(d=>d.toLowerCase())).size;
-    const bioDetail=mbpi===null?'기원종→화합물→assay 원문 미검수':`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 같은 시험 조건 측정값 ${pilot.bioactivity_trace.length}개, 원논문 ${papers}편${papers<2?', 독립 재현 미확인':''}. 같은 코호트 안의 상대 백분위이며 임상 효능·종 간 가치 순위가 아닙니다.`;
+    // 3.1: count only the scoring item's stratum; ChEMBL items of other target x endpoint cohorts are listed apart
+    const trace=pilot?.bioactivity_trace||[], same=trace.filter(x=>x.stratum_id===bestBio(pilot)?.stratum_id), other=trace.length-same.length;
+    const papers=new Set(same.flatMap(x=>x.original_paper_dois||[]).map(d=>d.toLowerCase())).size;
+    const bioDetail=mbpi===null?'기원종→화합물→assay 원문 미검수':`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 같은 시험 조건 측정값 ${same.length}개, 원논문 ${papers}편${papers<2?', 독립 재현 미확인':''}${other?` · 다른 비교집단 ${other}개는 점수 근거에 따로 표시`:''}. 같은 코호트 안의 상대 백분위이며 임상 효능·종 간 가치 순위가 아닙니다.`;
     const categories={ENDANGERED:'EN · 위기',LEAST_CONCERN:'LC · 관심대상'};
     const conservation=i.record?.category
       ?`IUCN 게시 체크리스트: ${categories[i.record.category]||i.record.category} (전 지구 평가 메타데이터 · 원평가 일자/기준 미검수)`
@@ -920,7 +957,7 @@ function renderCandidateDetail(s){
     $('detail').innerHTML=heading(s.cells.length?`공개 ${s.cells[0].sizeDeg}° 셀`:r?'공개 가능한 기록 없음':releaseMissing(s))+
       `<div class="detail-summary">${identity}<div id="detail-map-summary">${mapSummaryHtml(periodView(s))}</div>`+
       (pilot?'<p class="pending">조사 후보 · 운영 8종과 같은 규칙으로 축별 판정했지만 후보 목록에서 옮기지 않습니다.</p>'+
-        (mbpi===null?'':row('생리활성 근거',`검증 전 시범 MBPI ${mbpi.toFixed(1)} · 원논문 ${papers}편 · 같은 코호트 안의 상대 백분위`,'linked'))+renderVerifiedIndices(s)+
+        (mbpi===null?'':row('생리활성 근거',`검증 전 시범 MBPI ${mbpi.toFixed(1)} · ${bestBio(pilot).stratum_kind==='chembl'?`${bestBio(pilot).stratum_label} · ${bestBio(pilot).label}`:`원논문 ${papers}편`} · 같은 코호트 안의 상대 백분위`,'linked'))+renderVerifiedIndices(s)+
         `<p class="detail-limit">${limit} ${scored.length?scored.join('·')+'만 검증 전 시범 산출이며 나머지 축은 보류입니다.':'MFPI·MBPI·MCUI·BBVI 모두 산출 보류입니다.'}</p></div>`:
       axisStateSection(s)+`<h3>근거 상태 <span class="fine">판정 아님</span></h3>`+
       row('식량 근거',n.foodCode?'식품명 후보 · 종 연결 미확인':'연결된 식품 행 없음','pending')+

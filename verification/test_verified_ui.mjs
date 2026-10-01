@@ -52,7 +52,8 @@ assert.match(html,/결과 0건/);
 html=ctx.renderScores(by(494972));
 for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문에서 미확인','Publisher terms'])
   assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
-assert.equal(ctx.score(by(494972),'MBPI'),null);
+// verified-pilot-3.1: the ChEMBL stratum scores 톳 (one linking paper); the paper-local MCF-7 result stays unscored
+assert.equal(ctx.score(by(494972),'MBPI'),45.3);
 assert.equal(ctx.score(by(494972),'BBVI'),null);
 
 // The old operational summary has no IUCN assessment count, despite a separately
@@ -103,11 +104,12 @@ await ctx.attach(published);
 // 2.1: oyster and mussel MCUI come from the Korean national assessment (labelled apart; see coverage detail test above).
 const stages={
   836033:['verified','linked','calculated','calculated','calculated'],
-  506159:['verified','linked','linked','linked','calculated'],
-  494972:['verified','linked','linked','linked','unavailable'],
+  // 3.1: the ChEMBL stratum gives mussel, hijiki and sea squirt a single-paper MBPI (BBVI withheld).
+  506159:['verified','linked','linked','calculated','calculated'],
+  494972:['verified','linked','linked','calculated','unavailable'],
   372119:['verified','linked','linked','found','unavailable'],
   342067:['verified','linked','linked','linked','calculated'],
-  250680:['verified','linked','calculated','linked','unavailable'],
+  250680:['verified','linked','calculated','calculated','unavailable'],
   241776:['verified','linked','found','linked','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI (BBVI still withheld); 2.3 gives the oyster a BBVI.
   145721:['verified','linked','calculated','calculated','unavailable']

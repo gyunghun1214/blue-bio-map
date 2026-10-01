@@ -7,66 +7,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 9,
-          "linked": 30,
-          "rejected_by_review": 3,
-          "scored_compounds": 0,
-          "with_reference_doi": 30
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "contaminant",
-            "compound_chembl_id": "CHEMBL75967",
-            "compound_name": "pentachlorophenol",
-            "dois": [
-              "10.1016/j.chroma.2013.02.087"
-            ],
-            "inchikey": "IZUPBVBPLAPZRR-UHFFFAOYSA-N",
-            "reason": "Industrial biocide. The cited paper (PMID 23558048) develops a method to determine alkylphenol pollutants in Laminaria japonica food samples."
-          },
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL450072",
-            "compound_name": "(E)-2-nonenal",
-            "dois": [
-              "10.3390/molecules200712093"
-            ],
-            "inchikey": "BSAIUMLZVGUGKX-BQYQJAHWSA-N",
-            "reason": "C9 aldehyde formed by oxidation of linoleic acid; found in the essential oil of L. japonica (PMID 26147582) as in most lipid-containing tissue. Not specific to the species."
-          },
-          {
-            "class": "contaminant",
-            "compound_chembl_id": "CHEMBL4071043",
-            "compound_name": "butyl isobutyl phthalate",
-            "dois": [
-              "10.1002/ptr.3139"
-            ],
-            "inchikey": "UVIVWIFUPKGWGF-UHFFFAOYSA-N",
-            "reason": "Phthalate ester plasticizer. The paper (PMID 21031613) isolated it from L. japonica rhizoid but gives no evidence of natural origin (for example radiocarbon), which is needed to tell a phthalate from laboratory or environmental contamination."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 52.7,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": 52.7
-        },
-        "sufficiency": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 377084,
         "category": null,
@@ -93,7 +33,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -128,8 +68,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -156,7 +96,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.17
+        "mean_ratio": 0.0
       },
       "korean_name": "다시마",
       "mbpi_label": null,
@@ -168,7 +108,7 @@
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -186,13 +126,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -402,480 +337,9 @@
           "peer_compounds": 5,
           "percentile": 10.0,
           "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50"
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            13340934
-          ],
-          "adjusted": 23.90625,
-          "chembl_stratum": "protein",
-          "cohort_records": 200,
-          "compound_id": "CHEMBL2391423",
-          "compound_name": "2-PHLOROECKOL",
-          "document_chembl_ids": [
-            "CHEMBL2390950"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "WYQMJNVMBAQVFD-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 4.88,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2013.04.026"
-          ],
-          "percentile": 42.5,
-          "pubchem_cids": [
-            5320532
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL5118|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5118",
-          "target_name": "Replicase polyprotein 1ab",
-          "target_organism": "Severe acute respiratory syndrome-related coronavirus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q105322480"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2239283
-          ],
-          "adjusted": 24.81357927786499,
-          "chembl_stratum": "protein",
-          "cohort_records": 1274,
-          "compound_id": "CHEMBL443626",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1139406"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "FHYNTHBAMAEFJB-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 6.29,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2008.07.078",
-            "10.1248/bpb.27.544"
-          ],
-          "percentile": 33.08,
-          "pubchem_cids": [
-            3008867
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL247|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL247",
-          "target_name": "Human immunodeficiency virus type 1 reverse transcriptase",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q4644251"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            13340931
-          ],
-          "adjusted": 28.928571428571427,
-          "chembl_stratum": "protein",
-          "cohort_records": 35,
-          "compound_id": "CHEMBL456228",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL2390950"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "JLEVVQRBEATTCM-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 4.71,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.bmc.2013.04.026"
-          ],
-          "percentile": 38.57,
-          "pubchem_cids": [
-            10480940
-          ],
-          "standard_type": "Ki",
-          "stratum_id": "ChEMBL_37:CHEMBL5118|Ki",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5118",
-          "target_name": "Replicase polyprotein 1ab",
-          "target_organism": "Severe acute respiratory syndrome-related coronavirus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q4642878"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            13340930
-          ],
-          "adjusted": 22.6875,
-          "chembl_stratum": "protein",
-          "cohort_records": 200,
-          "compound_id": "CHEMBL459393",
-          "compound_name": "FUCODIPHLOROETHOL G",
-          "document_chembl_ids": [
-            "CHEMBL2390950"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "DUSGAYNDQIKXHD-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 4.65,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.bmc.2013.04.026"
-          ],
-          "percentile": 30.25,
-          "pubchem_cids": [
-            44590821
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL5118|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5118",
-          "target_name": "Replicase polyprotein 1ab",
-          "target_organism": "Severe acute respiratory syndrome-related coronavirus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q27134416"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            13340939
-          ],
-          "adjusted": 46.07142857142857,
-          "chembl_stratum": "protein",
-          "cohort_records": 35,
-          "compound_id": "CHEMBL471187",
-          "compound_name": "ECKOL",
-          "document_chembl_ids": [
-            "CHEMBL2390950"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "PCZZRBGISTUIOA-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.09,
-          "original_paper_dois": [
-            "10.1002/ptr.2298",
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.bmc.2013.04.026",
-            "10.1248/bpb.27.544"
-          ],
-          "percentile": 61.43,
-          "pubchem_cids": [
-            145937
-          ],
-          "standard_type": "Ki",
-          "stratum_id": "ChEMBL_37:CHEMBL5118|Ki",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5118",
-          "target_name": "Replicase polyprotein 1ab",
-          "target_organism": "Severe acute respiratory syndrome-related coronavirus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q5332934"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2239272,
-            2239273,
-            2239274
-          ],
-          "adjusted": 19.760479041916167,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 31563,
-          "compound_id": "CHEMBL502202",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1139406"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "HBJNTPFHQKXWOY-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.9,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2008.07.078",
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.intimp.2012.01.005",
-            "10.4162/nrp.2011.5.6.495",
-            "10.5483/bmbrep.2010.43.1.062"
-          ],
-          "percentile": 26.35,
-          "pubchem_cids": [
-            137388
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL378|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL378",
-          "target_name": "Human immunodeficiency virus 1",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q4641520"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2239271
-          ],
-          "adjusted": 19.809654631083202,
-          "chembl_stratum": "protein",
-          "cohort_records": 1274,
-          "compound_id": "CHEMBL502202",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1139406"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "HBJNTPFHQKXWOY-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.97,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2008.07.078",
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.intimp.2012.01.005",
-            "10.4162/nrp.2011.5.6.495",
-            "10.5483/bmbrep.2010.43.1.062"
-          ],
-          "percentile": 26.41,
-          "pubchem_cids": [
-            137388
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL247|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL247",
-          "target_name": "Human immunodeficiency virus type 1 reverse transcriptase",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q4641520"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            13340941
-          ],
-          "adjusted": 56.78571428571428,
-          "chembl_stratum": "protein",
-          "cohort_records": 35,
-          "compound_id": "CHEMBL508791",
-          "compound_name": "DIECKOL",
-          "document_chembl_ids": [
-            "CHEMBL2390950"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "DRZQFGYIIYNNEC-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.62,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.bmc.2011.10.078",
-            "10.1016/j.bmc.2013.04.026",
-            "10.1155/2011/140462",
-            "10.1248/bpb.27.544"
-          ],
-          "percentile": 75.71,
-          "pubchem_cids": [
-            3008868
-          ],
-          "standard_type": "Ki",
-          "stratum_id": "ChEMBL_37:CHEMBL5118|Ki",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5118",
-          "target_name": "Replicase polyprotein 1ab",
-          "target_organism": "Severe acute respiratory syndrome-related coronavirus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q5274515"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            26971654
-          ],
-          "adjusted": 39.34299017071909,
-          "chembl_stratum": "protein",
-          "cohort_records": 3866,
-          "compound_id": "CHEMBL510508",
-          "compound_name": "PHLOROFUCOFUROECKOL A",
-          "document_chembl_ids": [
-            "CHEMBL5725808"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "SLWPBUMYPRVYIJ-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 6.0,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2009.01.031",
-            "10.1016/j.bmc.2013.04.026",
-            "10.1248/bpb.27.544"
-          ],
-          "percentile": 52.46,
-          "pubchem_cids": [
-            130976
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL1914|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL1914",
-          "target_name": "Cholinesterase",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q7186528"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            3306807
-          ],
-          "adjusted": 9.004366607193164,
-          "chembl_stratum": "protein",
-          "cohort_records": 10649,
-          "compound_id": "CHEMBL559870",
-          "compound_name": "DIOXINODEHYDROECKOL",
-          "document_chembl_ids": [
-            "CHEMBL1155522"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "LBHQACSAGWCMAB-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.27,
-          "original_paper_dois": [
-            "10.1016/j.bmc.2013.04.026",
-            "10.1016/j.fct.2009.04.013"
-          ],
-          "percentile": 12.01,
-          "pubchem_cids": [
-            10429214
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL4822|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL4822",
-          "target_name": "Beta-secretase 1",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q5332937"
-          ]
         }
       ],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 1,
-          "common_metabolite": 2,
-          "linked": 19,
-          "scored_compounds": 9,
-          "with_reference_doi": 19
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 67.5,
-          "minimum_cohort_10": 67.5,
-          "minimum_cohort_100": 67.5,
-          "no_approved_drug_filter": 74.6,
-          "no_common_metabolite_filter": 67.5
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 371986,
         "category": null,
@@ -901,7 +365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -970,8 +434,8 @@
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 31.9,
-        "median_compound_sensitivity": 24.8,
+        "mean_compound_sensitivity": 37.5,
+        "median_compound_sensitivity": 37.5,
         "range_from_aggregation": [
           7.5,
           67.5
@@ -982,16 +446,11 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
         "park_2013_dieckol",
         "pubchem_ecklonia_structures",
-        "pubchem_inchikey_mbpi",
         "wijesinghe_2011_ace",
-        "wikidata_p703_lotus",
-        "worms_ecklonia",
-        "worms_rest_mbpi"
+        "worms_ecklonia"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -1006,34 +465,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 1,
-          "linked": 3,
-          "scored_compounds": 0,
-          "with_reference_doi": 3
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 234476,
         "category": null,
@@ -1060,7 +491,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1077,8 +508,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -1105,7 +536,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.08
+        "mean_ratio": 0.0
       },
       "korean_name": "가시파래",
       "mbpi_label": null,
@@ -1117,7 +548,7 @@
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -1135,12 +566,7 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
-        "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "iucn_redlist_search"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -1153,86 +579,8 @@
       "aphia_id": 494853,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            18255046
-          ],
-          "adjusted": 21.579186893203882,
-          "chembl_stratum": "protein",
-          "cohort_records": 4944,
-          "compound_id": "CHEMBL4085945",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL4052658"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "QKXAGRZCXAYBQX-WDZAAMDOSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.03,
-          "original_paper_dois": [
-            "10.3390/md19090497",
-            "10.3390/md20010028",
-            "10.3390/md20110710"
-          ],
-          "percentile": 28.77,
-          "pubchem_cids": [
-            10455044
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL5763|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5763",
-          "target_name": "Cholinesterase",
-          "target_organism": "Equus caballus",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q105223378"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 3,
-          "linked": 5,
-          "scored_compounds": 1,
-          "with_reference_doi": 5
-        },
-        "paper_search": {
-          "accepted_links": 9,
-          "europepmc_hits": 58,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 52.3,
-          "minimum_cohort_10": 21.6,
-          "minimum_cohort_100": 21.6,
-          "no_approved_drug_filter": 21.6,
-          "no_common_metabolite_filter": 52.3
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 494853,
         "category": null,
@@ -1258,7 +606,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1275,8 +623,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -1303,11 +651,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.33
+        "mean_ratio": 0.0
       },
       "korean_name": "괭생이모자반",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1315,42 +663,29 @@
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 21.6,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 21.6,
-        "median_compound_sensitivity": 21.6,
-        "range_from_aggregation": [
-          21.6,
-          21.6
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 21.6,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
-        "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "iucn_redlist_search"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       }
@@ -1361,34 +696,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 9,
-          "scored_compounds": 0,
-          "with_reference_doi": 9
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 236157,
         "category": null,
@@ -1414,7 +721,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -1449,8 +756,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -1477,7 +784,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.08
+        "mean_ratio": 0.0
       },
       "korean_name": "Gracilaria vermiculophylla",
       "mbpi_label": null,
@@ -1489,7 +796,7 @@
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -1507,13 +814,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -1526,101 +828,8 @@
       "aphia_id": 145086,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            24977634
-          ],
-          "adjusted": 0.42521598272138234,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 926,
-          "compound_id": "CHEMBL5287816",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL5223129"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "SUCKEYMKNGZJHK-ZARIWKGHSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 4.06,
-          "original_paper_dois": [
-            "10.1016/s0031-9422(00)90263-2"
-          ],
-          "percentile": 0.76,
-          "pubchem_cids": [
-            11204185
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL4303835|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL4303835",
-          "target_name": "SARS-CoV-2",
-          "target_organism": "Severe acute respiratory syndrome coronavirus 2",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q76416793"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 1,
-          "linked": 9,
-          "rejected_by_review": 2,
-          "scored_compounds": 1,
-          "with_reference_doi": 9
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL1255",
-            "compound_name": "formaldehyde",
-            "dois": [
-              "10.1016/s0305-1978(97)00083-5"
-            ],
-            "inchikey": "WSFSSNUMVMOOMR-UHFFFAOYSA-N",
-            "reason": "C1 metabolite of all organisms. The cited paper ('Formaldehyde from marine algae', 10.1016/s0305-1978(97)00083-5) measures it across algae."
-          },
-          {
-            "class": "contaminant",
-            "compound_chembl_id": "CHEMBL1231644",
-            "compound_name": "cacodylic acid (dimethylarsinic acid)",
-            "dois": [
-              "10.1002/aoc.590020414"
-            ],
-            "inchikey": "OGGXGZAMXPVRFZ-UHFFFAOYSA-N",
-            "reason": "Methylated arsenic, the product of arsenate taken up from sea water (10.1002/aoc.590020414). It reflects exposure to an environmental element; cacodylic acid is also a herbicide."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 50.7,
-          "minimum_cohort_10": 0.4,
-          "minimum_cohort_100": 0.4,
-          "no_approved_drug_filter": 0.4,
-          "no_common_metabolite_filter": 50.7
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 145086,
         "category": null,
@@ -1646,7 +855,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea staghom, Raw",
@@ -1685,8 +894,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -1717,11 +926,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.53
+        "mean_ratio": 0.2
       },
       "korean_name": "청각",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1729,41 +938,30 @@
       "scientific_name": "Codium fragile",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 0.4,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 0.4,
-        "median_compound_sensitivity": 0.4,
-        "range_from_aggregation": [
-          0.4,
-          0.4
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 0.4,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": "component_missing_in_source"
       }
@@ -1774,56 +972,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 10,
-          "rejected_by_review": 2,
-          "scored_compounds": 0,
-          "with_reference_doi": 10
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "not_tissue",
-            "compound_chembl_id": "CHEMBL2322191",
-            "compound_name": "ergosta-4,24(28)-dien-3-one",
-            "dois": [
-              "10.2331/suisan.44.525"
-            ],
-            "inchikey": "JRMPVNVOLQJLJX-QVMRCSLBSA-N",
-            "reason": "Same feces paper (10.2331/suisan.44.525)."
-          },
-          {
-            "class": "not_tissue",
-            "compound_chembl_id": "CHEMBL63243",
-            "compound_name": "4-cholesten-3-one",
-            "dois": [
-              "10.2331/suisan.44.525"
-            ],
-            "inchikey": "NYOXRYYXRWJDKP-GYKMGIIDSA-N",
-            "reason": "The only cited paper is 'Steroids in the feces of a marine bivalve' (10.2331/suisan.44.525): feces carry dietary and microbial sterols, not the clam's own tissue."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 231750,
         "category": null,
@@ -1914,7 +1062,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 52.1
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -2413,8 +1561,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -2447,7 +1595,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.42
+        "mean_ratio": 0.33
       },
       "korean_name": "바지락",
       "mbpi_label": null,
@@ -2495,7 +1643,7 @@
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -2513,15 +1661,10 @@
         "food_only_MFPI": 52.1
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "fao_casp_ruditapes",
         "iucn_redlist_search",
         "nibr_red_data_book_2024",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -2536,35 +1679,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 92,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": null,
         "aphia_id": 397082,
@@ -2599,7 +1713,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Disk abalone, Raw",
@@ -2682,7 +1796,7 @@
       "scientific_name": "Haliotis discus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -2700,8 +1814,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_haliotis_discus_2022",
         "rda_db_10_4"
@@ -2719,46 +1831,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 52,
-          "rejected_by_review": 1,
-          "scored_compounds": 0,
-          "with_reference_doi": 52
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL58343",
-            "compound_name": "agmatine",
-            "dois": [
-              "10.1021/jf60216a038"
-            ],
-            "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
-            "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 393716,
         "category": null,
@@ -2850,7 +1922,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.3
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -3332,8 +2404,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -3366,7 +2438,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.5
+        "mean_ratio": 0.33
       },
       "korean_name": "큰가리비",
       "mbpi_label": null,
@@ -3414,7 +2486,7 @@
       "scientific_name": "Mizuhopecten yessoensis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -3432,15 +2504,10 @@
         "food_only_MFPI": 56.3
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "fao_casp_yesso_scallop",
         "iucn_redlist_search",
         "nibr_red_data_book_2024",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -3455,51 +2522,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 1,
-          "rejected_by_review": 1,
-          "scored_compounds": 0,
-          "with_reference_doi": 1
-        },
-        "paper_search": {
-          "accepted_links": 1,
-          "europepmc_hits": 4,
-          "papers_screened": 4,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": null,
-            "compound_name": "(2E,4E)-hepta-2,4-dienal",
-            "dois": [
-              "10.3389/fphys.2021.713736"
-            ],
-            "inchikey": "SATICYYAWWYRAM-VNKDHWASSA-N",
-            "reason": "Accepted as an original-paper link but flagged there as a likely lipid-oxidation volatile. Rejected here with 2-nonenal so that the same class gets the same decision; it gave no ChEMBL item."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 836041,
         "category": null,
@@ -3526,7 +2548,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -3543,8 +2565,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -3571,7 +2593,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.08
+        "mean_ratio": 0.0
       },
       "korean_name": "시카메굴",
       "mbpi_label": null,
@@ -3583,7 +2605,7 @@
       "scientific_name": "Magallana sikamea",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -3601,14 +2623,7 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
-        "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "iucn_redlist_search"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -3623,46 +2638,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 2,
-          "rejected_by_review": 1,
-          "scored_compounds": 0,
-          "with_reference_doi": 2
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL58343",
-            "compound_name": "agmatine",
-            "dois": [
-              "10.1021/jf60216a038"
-            ],
-            "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
-            "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 504357,
         "category": null,
@@ -3689,7 +2664,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Ark shell, Farm-raised, Raw",
@@ -3728,8 +2703,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -3760,7 +2735,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.28
+        "mean_ratio": 0.2
       },
       "korean_name": "피조개",
       "mbpi_label": null,
@@ -3810,7 +2785,7 @@
       "scientific_name": "Anadara broughtonii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -3828,14 +2803,9 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
         "nibr_red_data_book_2024",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -3850,35 +2820,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 21,
-          "papers_screened": 21,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 413600,
         "category": null,
@@ -3904,7 +2845,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -3997,7 +2938,7 @@
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
@@ -4015,8 +2956,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "iucn_redlist_search",
         "nibr_red_data_book_2024"
       ],
@@ -4033,46 +2972,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 11,
-          "linked": 15,
-          "rejected_by_review": 1,
-          "scored_compounds": 0,
-          "with_reference_doi": 15
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL367149",
-            "compound_name": "docosahexaenoic acid (doconexent)",
-            "dois": [
-              "10.1246/bcsj.59.3709"
-            ],
-            "inchikey": "MBMBGCFOFBJSGT-KUBAVDMBSA-N",
-            "reason": "Docosahexaenoic acid, a common n-3 fatty acid of fish and algae. The cited paper (10.1246/bcsj.59.3709) models supercritical CO2 extraction from mackerel powder."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 54.8,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": 54.8
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": null,
         "aphia_id": 127022,
@@ -4107,7 +3006,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Mackerel, Raw",
@@ -4142,8 +3041,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -4170,7 +3069,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.42
+        "mean_ratio": 0.33
       },
       "korean_name": "고등어",
       "mbpi_label": null,
@@ -4182,7 +3081,7 @@
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "산출 보류"
       },
@@ -4200,14 +3099,9 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "gbif_iucn_checklist",
         "iucn_scomber_japonicus_2023",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -4222,35 +3116,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 13,
-          "papers_screened": 13,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": null,
         "aphia_id": 219984,
@@ -4285,7 +3150,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Anchovy, Raw",
@@ -4368,7 +3233,7 @@
       "scientific_name": "Engraulis japonicus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -4386,8 +3251,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_engraulis_japonicus_2018",
         "rda_db_10_4"
@@ -4405,35 +3268,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 11,
-          "papers_screened": 11,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": null,
         "aphia_id": 281273,
@@ -4468,7 +3302,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Yellow croaker, Raw",
@@ -4551,7 +3385,7 @@
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -4569,8 +3403,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_larimichthys_polyactis_2020",
         "rda_db_10_4"
@@ -4588,35 +3420,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 282,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 275816,
         "category": null,
@@ -4642,7 +3445,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Bastard halibut, Raw",
@@ -4725,7 +3528,7 @@
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
@@ -4743,8 +3546,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -4761,35 +3562,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 81,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 274849,
         "category": null,
@@ -4881,7 +3653,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.9
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -5409,7 +4181,7 @@
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
@@ -5427,8 +4199,6 @@
         "food_only_MFPI": 42.9
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
         "rda_db_10_4"
@@ -5446,35 +4216,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 54,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": "Needs updating",
         "aphia_id": 276651,
@@ -5577,7 +4318,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -6116,7 +4857,7 @@
       "scientific_name": "Seriola quinqueradiata",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -6134,8 +4875,6 @@
         "food_only_MFPI": 56.3
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "fao_casp_amberjack",
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
@@ -6155,34 +4894,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 2,
-          "linked": 3,
-          "scored_compounds": 0,
-          "with_reference_doi": 3
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 53.1,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": 53.1
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 254538,
         "category": null,
@@ -6208,7 +4919,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Pacific cod, Raw",
@@ -6247,8 +4958,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -6279,7 +4990,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.28
+        "mean_ratio": 0.2
       },
       "korean_name": "대구",
       "mbpi_label": null,
@@ -6291,7 +5002,7 @@
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
@@ -6309,13 +5020,8 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
@@ -6330,35 +5036,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 40,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 1061762,
         "category": null,
@@ -6384,7 +5061,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Blue crab, Raw",
@@ -6467,7 +5144,7 @@
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
@@ -6485,8 +5162,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -6503,35 +5178,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 0,
-          "papers_screened": 0,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 534443,
         "category": null,
@@ -6557,7 +5203,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Common octopus, Raw",
@@ -6632,7 +5278,7 @@
       "scientific_name": "Octopus sinensis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
@@ -6650,8 +5296,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "iucn_redlist_search",
         "rda_db_10_4"
       ],
@@ -6668,35 +5312,6 @@
       "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 9,
-          "papers_screened": 9,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": "Needs updating",
         "aphia_id": 1666974,
@@ -6729,7 +5344,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Cuttle fish, Raw",
@@ -6867,7 +5482,7 @@
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "정보충분도 낮음",
+        "MBPI": "산출 보류",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
@@ -6885,8 +5500,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_sepia_esculenta_2012",
         "nibr_red_data_book_2024",
@@ -6900,7 +5513,6 @@
       }
     }
   ],
-  "chembl_common_taxon_limit": 31.0,
   "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
   "comparison_cohorts": [
     {
@@ -7019,7 +5631,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-09-30T00:00:00Z",
+  "generated_at": "2026-09-27T00:00:00Z",
   "method": {
     "bbvi": {
       "default_food_weight": 0.5,
@@ -7051,115 +5663,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-2.3 (2026-09-27). Diagram stage 2-3 MBPI: adds the automated ChEMBL stratum (see chembl_bioactivity and research/verified-indices/mbpi-chembl-stratum-2026-09-29.md). Every other rule, factor, cohort and threshold equals 2.3.",
-    "chembl_bioactivity": {
-      "assay_types": [
-        "B",
-        "F"
-      ],
-      "bbvi_rule": "bbvi.minimum_independent_mbpi_dois applies as min(link DOIs, ChEMBL documents) >= 2, so both the species link and the activity rest on two papers each.",
-      "cohort_rule": "Cohort = every admitted ChEMBL activity with the same target_chembl_id and standard_type (activity level, counted with the ChEMBL API at the snapshot date). Species value = median pChEMBL of the parent compound's admitted activities in that cohort; percentile = 100 x (count below + 0.5 x count equal) / total.",
-      "commonness_rule": "Exclude a compound when its count of taxa with a P703 statement exceeds the Tukey upper fence Q3 + 1.5 IQR of the counts over every linked compound (statistics.quantiles, n=4, inclusive). Such compounds (fatty acids, amino acids, sterols, carotenoids) say nothing specific about one species. Sensitivity: the same fence on log10 counts, and no filter.",
-      "data_validity_comments": [
-        null,
-        "Manually validated"
-      ],
-      "drug_rule": "Exclude compounds whose ChEMBL parent is an approved drug (max_phase 4): LOTUS text mining attaches reference drugs used as assay controls to the paper's organism (zidovudine -> Ecklonia cava, DOI 10.1016/j.bmc.2008.07.078). Natural products that are also approved drugs lose their link too. Sensitivity: no filter.",
-      "evidence_level": "Reviewed original-paper strata (감태 ACE, AHTPDB peptides) are level 1; this automated stratum is level 2. The species MBPI is the max over all strata; the stratum of the best item is shown.",
-      "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. One item per species, parent compound and stratum: that compound's target x endpoint cohort with the highest percentile (ties: more records). The species MBPI is the highest adjusted item.",
-      "exclude_potential_duplicate": true,
-      "excluded_max_phase": 4.0,
-      "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-      "link_review": "research/verified-indices/mbpi-link-review-2026-09-30.json",
-      "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count.",
-      "minimum_cohort_records": 30,
-      "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
-      "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
-      "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
-      "paper_source_ids": [
-        "europepmc_mbpi",
-        "cmnpd_mbpi"
-      ],
-      "review_rule": "Every species -> compound link behind a primary ChEMBL item was checked against the linked paper titles, abstracts and the PubChem structure (mbpi-link-review-2026-09-30.json). A link is rejected only on positive evidence of one class: structure_mismatch (the name resolved to another structure), contaminant (pollutant or reagent found in the sample), not_tissue (found in faeces, diet or symbionts, not the organism), ubiquitous_metabolite (C1 metabolites, amino-acid amines, common C16-C22 fatty acids, C6-C10 oxidation aldehydes). A rejected link enters no item in any view. Each review entry stores the link's DOI set; the build stops when the DOIs differ (stale review) or when a primary item rests on a link without a review entry.",
-      "sensitivity_minimum_cohort_records": [
-        10,
-        100
-      ],
-      "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
-      "source_ids": [
-        "worms_rest_mbpi",
-        "wikidata_p703_lotus",
-        "chembl_mbpi",
-        "pubchem_inchikey_mbpi",
-        "cellosaurus_mbpi"
-      ],
-      "standard_relation": "=",
-      "strata": {
-        "cancer_cell_line": {
-          "cellosaurus_category": "Cancer cell line",
-          "label": "암세포주(항암·세포독성)",
-          "target_types": [
-            "CELL-LINE"
-          ]
-        },
-        "pathogen": {
-          "label": "병원체(항균·항바이러스·항기생충)",
-          "organism_class_note": "ChEMBL organism classification (l1, l2). Bacteria, viruses and protozoan/helminth parasites only; fungi, oomycetes, arthropods, plants and vertebrates (for example Homo sapiens ORGANISM targets) are not pathogen targets here.",
-          "organism_classes": [
-            [
-              "Bacteria"
-            ],
-            [
-              "Viruses"
-            ],
-            [
-              "Eukaryotes",
-              "Apicomplexa"
-            ],
-            [
-              "Eukaryotes",
-              "Kinetoplastida"
-            ],
-            [
-              "Eukaryotes",
-              "Nematoda"
-            ],
-            [
-              "Eukaryotes",
-              "Platyhelminthes"
-            ],
-            [
-              "Eukaryotes",
-              "Amoebozoa"
-            ],
-            [
-              "Eukaryotes",
-              "Parabasalia"
-            ],
-            [
-              "Eukaryotes",
-              "Fornicata"
-            ]
-          ],
-          "target_types": [
-            "ORGANISM"
-          ]
-        },
-        "protein": {
-          "label": "효소·수용체 등 단백질 표적",
-          "target_types": [
-            "SINGLE PROTEIN",
-            "PROTEIN COMPLEX",
-            "PROTEIN COMPLEX GROUP",
-            "PROTEIN FAMILY",
-            "CHIMERIC PROTEIN",
-            "PROTEIN-PROTEIN INTERACTION",
-            "SELECTIVITY GROUP",
-            "PROTEIN NUCLEIC-ACID COMPLEX"
-          ]
-        }
-      }
-    },
+    "changes_from": "verified-pilot-2.2 (2026-09-27). Adopts the research cross-origin potency rule (config/verified-indices-research-xo-potency.json, research/verified-indices/xo-potency-research-2026-09-27.md) as the public definition, with the same values: in the peptide stratum, a synthetic peptide with the same sequence measured by another paper from another origin (same target, endpoint, HHL substrate, uM, value in text) counts as an independent DOI for the single/multiple DOI factor and the BBVI independence check, when its pIC50 is within max_pIC50_gap of the species value. It never changes the species value (pIC50 stays the median of origin-species rows), never creates an item or a species row, and is not an origin claim. Only effect today: oyster (836033) LQP, Do et al. 2012 (origin) + Miyoshi et al. 1991 (synthetic LQP 2.0 uM, alpha-zein) -> MBPI 72.2 -> 96.3, BBVI withheld -> 80.9. Every other rule, factor, cohort, threshold and the other 29 species equal 2.2.",
     "conservation": {
       "category_scores": {
         "CR": 100,
@@ -7171,7 +5675,7 @@
       "effort_adjustment": 10,
       "label": "IUCN 기반 시범 MCUI, 출현 추세 교차검증 미완료"
     },
-    "method_version": "verified-pilot-3.1",
+    "method_version": "verified-pilot-2.3",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -7388,7 +5892,7 @@
     "status": "provisional_unvalidated",
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.1",
+  "method_version": "verified-pilot-2.3",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -7491,15 +5995,6 @@
       "url": "https://doi.org/10.1111/bph.16333",
       "version": "Published article, DOI 10.1111/bph.16333"
     },
-    "cellosaurus_mbpi": {
-      "accessed": "2026-09-30",
-      "license": "CC BY 4.0",
-      "provider": "SIB Cellosaurus",
-      "terms": "CC BY 4.0; category field only",
-      "title": "Cell-line category for ChEMBL CELL-LINE targets",
-      "url": "https://api.cellosaurus.org/cell-line/",
-      "version": "API, queried 2026-09-29 to 2026-09-30"
-    },
     "chembl_37": {
       "accessed": "2026-09-25",
       "license": "ChEMBL data terms",
@@ -7507,15 +6002,6 @@
       "terms": "ChEMBL data use terms; database search result is not a biological negative result",
       "title": "ChEMBL database/document search",
       "url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
-      "version": "ChEMBL_37 (2026-05-01)"
-    },
-    "chembl_mbpi": {
-      "accessed": "2026-09-30",
-      "license": "CC BY-SA 3.0",
-      "provider": "EMBL-EBI ChEMBL",
-      "terms": "CC BY-SA 3.0; only IDs, pChEMBL values and cohort counts are stored",
-      "title": "ChEMBL molecule, activity, target and cell-line resources",
-      "url": "https://www.ebi.ac.uk/chembl/api/data/",
       "version": "ChEMBL_37 (2026-05-01)"
     },
     "chen_2022_oyster": {
@@ -7538,13 +6024,6 @@
       "url": "https://docs.cmnpd.org/",
       "version": "CMNPD 1.0"
     },
-    "cmnpd_mbpi": {
-      "accessed": "2026-09-29",
-      "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
-      "terms": "CC BY-NC-SA 4.0",
-      "url": "https://www.cmnpd.org",
-      "version": "public site search without login"
-    },
     "do_2012_oyster_lqp": {
       "accessed": "2026-09-27",
       "doi": "10.5352/JLS.2012.22.2.220",
@@ -7554,13 +6033,6 @@
       "title": "Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)",
       "url": "https://doi.org/10.5352/JLS.2012.22.2.220",
       "version": "2012"
-    },
-    "europepmc_mbpi": {
-      "accessed": "2026-09-29",
-      "provider": "EMBL-EBI Europe PMC",
-      "terms": "https://europepmc.org/Copyright (metadata; only IDs, titles and quoted abstract sentences stored)",
-      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-      "version": "REST search, live"
     },
     "fao_casp_amberjack": {
       "accessed": "2026-09-26",
@@ -7929,15 +6401,6 @@
       "url": "https://pubchem.ncbi.nlm.nih.gov/",
       "version": "CID structure pages checked 2026-09-27"
     },
-    "pubchem_inchikey_mbpi": {
-      "accessed": "2026-09-30",
-      "license": "NCBI public access",
-      "provider": "NCBI PubChem",
-      "terms": "NCBI public access; taxonomy section presence only (the sdqagent compound table returned HTTP 404 on 2026-09-29)",
-      "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
-      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/",
-      "version": "queried 2026-09-29 to 2026-09-30"
-    },
     "pubchem_pugrest": {
       "accessed": "2026-09-25",
       "license": "NCBI public access",
@@ -8051,18 +6514,6 @@
       "url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
       "version": "2011 5(2):93-100, DOI 10.4162/nrp.2011.5.2.93; Table 2 and Fig. 3"
     },
-    "wikidata_p703_lotus": {
-      "accessed": "2026-09-30",
-      "count_query": "SELECT ?c (COUNT(DISTINCT ?t) AS ?n) WHERE { VALUES ?c { %s } ?c wdt:P703 ?t } GROUP BY ?c",
-      "license": "CC0 1.0",
-      "provider": "Wikidata (LOTUS natural products import)",
-      "query": "SELECT ?taxon ?name ?c ?ik ?st ?ref WHERE {\n  VALUES ?name { %s }\n  ?taxon wdt:P225 ?name .\n  OPTIONAL { ?c p:P703 ?st . ?st ps:P703 ?taxon . ?c wdt:P235 ?ik .\n             OPTIONAL { ?st prov:wasDerivedFrom/pr:P248 ?ref } }\n}",
-      "terms": "CC0; P703 statements are mostly LOTUS imports (DOI 10.5281/zenodo.5794106)",
-      "title": "P703 found-in-taxon statements and P248 references",
-      "url": "https://query.wikidata.org/sparql",
-      "user_agent": "BlueBioValueMap-research/1.0 (research@example.org)",
-      "version": "query service, queried 2026-09-29 to 2026-09-30"
-    },
     "worms_ecklonia": {
       "accessed": "2026-09-27",
       "license": "WoRMS attribution",
@@ -8080,15 +6531,6 @@
       "title": "Magallana gigas accepted taxon, AphiaID 836033",
       "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033",
       "version": "WoRMS public record accessed 2026-09-25"
-    },
-    "worms_rest_mbpi": {
-      "accessed": "2026-09-30",
-      "license": "CC BY 4.0",
-      "provider": "World Register of Marine Species",
-      "terms": "CC BY 4.0; the AphiaID <-> synonym map is stored per species",
-      "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
-      "url": "https://www.marinespecies.org/rest/",
-      "version": "queried 2026-09-29 to 2026-09-30"
     },
     "yu_2019_todarodes": {
       "accessed": "2026-09-26",
@@ -8483,46 +6925,6 @@
           "stratum_kind": "peptide"
         }
       ],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 5,
-          "linked": 26,
-          "rejected_by_review": 1,
-          "scored_compounds": 0,
-          "with_reference_doi": 26
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "ubiquitous_metabolite",
-            "compound_chembl_id": "CHEMBL267484",
-            "compound_name": "(5E,8E,11E,14E)-icosa-5,8,11,14-tetraenoic acid",
-            "dois": [
-              "10.1021/jf071791s"
-            ],
-            "inchikey": "YZXBAPSDXZZRGB-CGRWFSSPSA-N",
-            "reason": "C20:4 fatty acid (arachidonic acid skeleton), a common fatty acid of algae and animals. The paper (10.1021/jf071791s, PMID 17665931) isolates arachidonic acid, which is all-Z; the stored InChIKey is the all-E isomer."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 54.8,
-          "minimum_cohort_10": 19.6,
-          "minimum_cohort_100": 19.6,
-          "no_approved_drug_filter": 19.6,
-          "no_common_metabolite_filter": 54.8
-        },
-        "sufficiency": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 145721,
         "category": null,
@@ -8592,7 +6994,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.2
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -8846,19 +7248,14 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "fao_seaweed_guide",
         "feng_2021_knfl",
         "iucn_redlist_search",
         "mext_sfct_2020",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "sato_2002_wakame",
         "suetsuna_2000_wakame",
-        "undaria_2018_paper",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "undaria_2018_paper"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -8942,34 +7339,6 @@
         }
       ],
       "bioactivity_trace": [],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 3,
-          "linked": 7,
-          "scored_compounds": 0,
-          "with_reference_doi": 7
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 38.1,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": 38.1
-        },
-        "sufficiency": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": null,
         "aphia_id": 241776,
@@ -9015,7 +7384,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -9109,15 +7478,10 @@
       },
       "source_ids": [
         "apostichopus_2024_paper",
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "gbif_iucn_checklist",
         "iucn_japonicus_2013",
         "iucn_japonicus_2026",
-        "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -9208,93 +7572,7 @@
           ]
         }
       ],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2425801
-          ],
-          "adjusted": 13.463154492566257,
-          "chembl_stratum": "protein",
-          "cohort_records": 7735,
-          "compound_id": "CHEMBL450953",
-          "compound_name": "HALOCYNTHIAXANTHIN",
-          "document_chembl_ids": [
-            "CHEMBL1159269"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "CNOIXMULOQWVGR-ABUIXNMTSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.14,
-          "original_paper_dois": [
-            "10.1016/0305-0491(85)90174-9",
-            "10.1016/s0040-4039(01)83006-9",
-            "10.1248/cpb.32.4309"
-          ],
-          "percentile": 17.95,
-          "pubchem_cids": [
-            11966451
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL247",
-          "target_name": "Human immunodeficiency virus type 1 reverse transcriptase",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q63392367"
-          ]
-        }
-      ],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 1,
-          "common_metabolite": 8,
-          "linked": 34,
-          "rejected_by_review": 1,
-          "scored_compounds": 1,
-          "with_reference_doi": 34
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "structure_mismatch",
-            "compound_chembl_id": "CHEMBL859",
-            "compound_name": "oxypurinol",
-            "dois": [
-              "10.1016/0305-0491(85)90174-9",
-              "10.1248/cpb.32.4309"
-            ],
-            "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
-            "reason": "Both cited papers are carotenoid studies of sea squirts. The carotenoid alloxanthin was resolved to oxypurinol: PubChem CID 135398752 lists 'Alloxanthine' and 'Alloxanthin (VAN)' as synonyms of oxypurinol."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 69.7,
-          "minimum_cohort_10": 13.5,
-          "minimum_cohort_100": 13.5,
-          "no_approved_drug_filter": 13.5,
-          "no_common_metabolite_filter": 69.7
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
+      "bioactivity_trace": [],
       "conservation_trace": {
         "aphia_id": 250680,
         "category": null,
@@ -9386,7 +7664,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.6
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 0.85,
@@ -9868,8 +8146,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -9902,84 +8180,46 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.42
       },
       "korean_name": "멍게",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 13.5,
-          "MFPI": 54.2
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.1016/0305-0491(85)90174-9",
-          "10.1016/s0040-4039(01)83006-9",
-          "10.1248/cpb.32.4309"
-        ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL247|IC50",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 23.7,
-          "0.5": 33.9,
-          "0.75": 44.0
-        },
-        "used_for_score": false,
-        "value": 33.9
-      },
+      "reference_combination": null,
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 13.5,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": 54.2
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 13.5,
-        "median_compound_sensitivity": 13.5,
-        "range_from_aggregation": [
-          13.5,
-          13.5
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 13.5,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 54.2
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "halocynthia_2006_paper",
         "halorotetin_b_2026",
         "iucn_redlist_search",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "shin_2011_seasquirt",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "shin_2011_seasquirt"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
       }
@@ -10088,35 +8328,6 @@
         }
       ],
       "bioactivity_trace": [],
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 29,
-          "papers_screened": 25,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "annotations": "Needs updating",
         "aphia_id": 342067,
@@ -10151,7 +8362,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -10269,8 +8480,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gbif_iucn_checklist",
         "iucn_todarodes_2014",
         "nibr_red_data_book_2024",
@@ -10315,35 +8524,6 @@
         }
       ],
       "bioactivity_trace": [],
-      "chembl_links": {
-        "counts": {
-          "scored_compounds": 0
-        },
-        "paper_search": {
-          "accepted_links": 0,
-          "europepmc_hits": 2,
-          "papers_screened": 2,
-          "searched_on": "2026-09-29"
-        },
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": null,
-          "minimum_cohort_10": null,
-          "minimum_cohort_100": null,
-          "no_approved_drug_filter": null,
-          "no_common_metabolite_filter": null
-        },
-        "sufficiency": {
-          "best_record_steps": 0,
-          "ratio": 0.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 372119,
         "category": null,
@@ -10370,7 +8550,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -10497,8 +8677,6 @@
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cmnpd_mbpi",
-        "europepmc_mbpi",
         "gelidium_2018_extract",
         "iucn_redlist_search",
         "mext_fooddb_2023",
@@ -10581,163 +8759,7 @@
           ]
         }
       ],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2057506
-          ],
-          "adjusted": 19.558011049723756,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 4525,
-          "compound_id": "CHEMBL252366",
-          "compound_name": "SARINGOSTEROL",
-          "document_chembl_ids": [
-            "CHEMBL1141252"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "OPGVEUGCNGNPSX-SVSQYMGHSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.11,
-          "original_paper_dois": [
-            "10.1021/jf500083r",
-            "10.2331/suisan.51.1305"
-          ],
-          "percentile": 26.08,
-          "pubchem_cids": [
-            14161394
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL612851",
-          "target_name": "Trypanosoma brucei brucei",
-          "target_organism": "Trypanosoma brucei brucei",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q15426985"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2057505
-          ],
-          "adjusted": 26.51519337016575,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 4525,
-          "compound_id": "CHEMBL252561",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1141252"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "WLNWTSOEOWZEGI-SVSQYMGHSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.5,
-          "original_paper_dois": [
-            "10.1021/jf500083r"
-          ],
-          "percentile": 47.14,
-          "pubchem_cids": [
-            20847459
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL612851",
-          "target_name": "Trypanosoma brucei brucei",
-          "target_organism": "Trypanosoma brucei brucei",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q105308116"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            803672
-          ],
-          "adjusted": 45.26820231958763,
-          "chembl_stratum": "protein",
-          "cohort_records": 776,
-          "compound_id": "CHEMBL275911",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1134370"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "PGLNLCWHYQYRGQ-ZHHJOTBYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 6.75,
-          "original_paper_dois": [
-            "10.2331/suisan.51.1305"
-          ],
-          "percentile": 80.48,
-          "pubchem_cids": [
-            11036808
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL2808|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL2808",
-          "target_name": "Oxysterols receptor LXR-alpha",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q76416506"
-          ]
-        }
-      ],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 7,
-          "linked": 13,
-          "scored_compounds": 3,
-          "with_reference_doi": 13
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 52.3,
-          "minimum_cohort_10": 45.3,
-          "minimum_cohort_100": 45.3,
-          "no_approved_drug_filter": 45.3,
-          "no_common_metabolite_filter": 52.3
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
+      "bioactivity_trace": [],
       "conservation_trace": {
         "aphia_id": 494972,
         "category": null,
@@ -10765,7 +8787,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Seaweed fusiforme, Raw",
@@ -10829,8 +8851,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -10861,11 +8883,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.53
+        "mean_ratio": 0.28
       },
       "korean_name": "톳",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -10873,45 +8895,34 @@
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 45.3,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 30.4,
-        "median_compound_sensitivity": 26.5,
-        "range_from_aggregation": [
-          19.6,
-          45.3
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 45.3,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "iucn_redlist_search",
         "lee_2024_sargassum_nutrition",
         "li_2022_saringosterol_acetate",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "sargassum_2024_fractions",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "sargassum_2024_fractions"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": "component_missing_in_source"
       }
@@ -10945,100 +8956,7 @@
           "values": []
         }
       ],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2425801
-          ],
-          "adjusted": 10.097365869424692,
-          "chembl_stratum": "protein",
-          "cohort_records": 7735,
-          "compound_id": "CHEMBL450953",
-          "compound_name": "HALOCYNTHIAXANTHIN",
-          "document_chembl_ids": [
-            "CHEMBL1159269"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "CNOIXMULOQWVGR-ABUIXNMTSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.14,
-          "original_paper_dois": [
-            "10.1021/np970039q"
-          ],
-          "percentile": 17.95,
-          "pubchem_cids": [
-            11966451
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL247",
-          "target_name": "Human immunodeficiency virus type 1 reverse transcriptase",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q63392367"
-          ]
-        }
-      ],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 2,
-          "linked": 20,
-          "rejected_by_review": 2,
-          "scored_compounds": 1,
-          "with_reference_doi": 20
-        },
-        "paper_search": null,
-        "rejected_links": [
-          {
-            "class": "structure_mismatch",
-            "compound_chembl_id": "CHEMBL321248",
-            "compound_name": "7-methylxanthine",
-            "dois": [
-              "10.1021/np970039q"
-            ],
-            "inchikey": "PFWLFWPASULGAN-UHFFFAOYSA-N",
-            "reason": "The cited paper is a carotenoid study. The carotenoid heteroxanthin was resolved to 7-methylxanthine: PubChem CID 68374 lists 'Heteroxanthine' as a synonym."
-          },
-          {
-            "class": "structure_mismatch",
-            "compound_chembl_id": "CHEMBL859",
-            "compound_name": "oxypurinol",
-            "dois": [
-              "10.1021/np970039q"
-            ],
-            "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
-            "reason": "The cited paper is 'A New Apocarotenoid from the Marine Shellfish Mytilus coruscus'. The carotenoid alloxanthin was resolved to oxypurinol (PubChem CID 135398752 synonyms 'Alloxanthine', 'Alloxanthin (VAN)')."
-          }
-        ],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 10.1,
-          "minimum_cohort_10": 10.1,
-          "minimum_cohort_100": 10.1,
-          "no_approved_drug_filter": 10.1,
-          "no_common_metabolite_filter": 10.1
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
+      "bioactivity_trace": [],
       "conservation_trace": {
         "aphia_id": 506159,
         "category": null,
@@ -11065,7 +8983,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "observed_rows": [
           {
             "english_name": "Hard shelled mussel, Raw",
@@ -11165,8 +9083,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -11197,11 +9115,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.53
+        "mean_ratio": 0.28
       },
       "korean_name": "홍합(참담치)",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "national_assessment": {
         "aphia_id": 506159,
@@ -11247,46 +9165,35 @@
       "scientific_name": "Mytilus coruscus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "일부 근거 확인"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 10.1,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 10.1,
-        "median_compound_sensitivity": 10.1,
-        "range_from_aggregation": [
-          10.1,
-          10.1
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 10.1,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": null
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "he_2012_mussel",
         "iucn_redlist_search",
         "mytilus_2020_myticusin",
         "nibr_red_data_book_2024",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "ufish_1",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "ufish_1"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": null,
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": "component_missing_in_source"
       }
@@ -11427,168 +9334,8 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
-        },
-        {
-          "activity_factor": 1.0,
-          "activity_ids": [
-            19235457,
-            24666601,
-            24666620
-          ],
-          "adjusted": 29.38562596599691,
-          "chembl_stratum": "pathogen",
-          "cohort_records": 1294,
-          "compound_id": "CHEMBL1980535",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL4396891",
-            "CHEMBL5096200"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "UYRDHEJRPVSJFM-VSWVFQEASA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.35,
-          "original_paper_dois": [
-            "10.1021/np000476w"
-          ],
-          "percentile": 39.18,
-          "pubchem_cids": [
-            5289155
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL613966|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL613966",
-          "target_name": "dengue virus type 2",
-          "target_organism": "dengue virus type 2",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q2080033"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            19235314,
-            19235315,
-            19235316,
-            19235460
-          ],
-          "adjusted": 19.85294117647059,
-          "chembl_stratum": "protein",
-          "cohort_records": 136,
-          "compound_id": "CHEMBL1980535",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL4396891"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "UYRDHEJRPVSJFM-VSWVFQEASA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.175,
-          "original_paper_dois": [
-            "10.1021/np000476w"
-          ],
-          "percentile": 35.29,
-          "pubchem_cids": [
-            5289155
-          ],
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL5980|EC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL5980",
-          "target_name": "Genome polyprotein",
-          "target_organism": "dengue virus type 2",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q2080033"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2425801
-          ],
-          "adjusted": 10.097365869424692,
-          "chembl_stratum": "protein",
-          "cohort_records": 7735,
-          "compound_id": "CHEMBL450953",
-          "compound_name": "HALOCYNTHIAXANTHIN",
-          "document_chembl_ids": [
-            "CHEMBL1159269"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "CNOIXMULOQWVGR-ABUIXNMTSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.14,
-          "original_paper_dois": [
-            "10.1021/np000476w"
-          ],
-          "percentile": 17.95,
-          "pubchem_cids": [
-            11966451
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL247",
-          "target_name": "Human immunodeficiency virus type 1 reverse transcriptase",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q63392367"
-          ]
         }
       ],
-      "chembl_links": {
-        "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 8,
-          "linked": 35,
-          "scored_compounds": 2,
-          "with_reference_doi": 35
-        },
-        "paper_search": null,
-        "rejected_links": [],
-        "rule_sensitivity": {
-          "log_scale_common_fence": 96.3,
-          "minimum_cohort_10": 96.3,
-          "minimum_cohort_100": 96.3,
-          "no_approved_drug_filter": 96.3,
-          "no_common_metabolite_filter": 96.3
-        },
-        "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
-          "required": [
-            "origin",
-            "structure_id",
-            "quantitative_endpoint",
-            "comparable_cohort"
-          ]
-        }
-      },
       "conservation_trace": {
         "aphia_id": 836033,
         "category": null,
@@ -11690,7 +9437,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.5
         },
-        "method_version": "verified-pilot-3.1",
+        "method_version": "verified-pilot-2.3",
         "nutrients": {
           "iron_mg": {
             "evidence_factor": 1.0,
@@ -12292,8 +10039,8 @@
           "0.5": 80.9,
           "0.75": 73.2
         },
-        "mean_compound_sensitivity": 31.3,
-        "median_compound_sensitivity": 19.9,
+        "mean_compound_sensitivity": 48.7,
+        "median_compound_sensitivity": 48.7,
         "range_from_aggregation": [
           1.1,
           96.3
@@ -12307,8 +10054,6 @@
         "afcd_r3_details",
         "afcd_r3_nutrients",
         "ahtpdb_ic50_2026",
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "chen_2022_oyster",
         "do_2012_oyster_lqp",
         "fao_oyster_culture",
@@ -12319,11 +10064,8 @@
         "magallana_2013_peptide",
         "miyoshi_1991_zein",
         "nibr_red_data_book_2024",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "valenzuela_2022_yield",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "valenzuela_2022_yield"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {

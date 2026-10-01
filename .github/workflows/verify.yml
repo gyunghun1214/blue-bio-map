@@ -33,6 +33,7 @@ jobs:
           node verification/test_map_boundary.mjs
           node verification/test_csv_export.mjs
           node verification/test_client_outdated.mjs
+          node verification/test_mbpi_chembl_ui.mjs
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:
