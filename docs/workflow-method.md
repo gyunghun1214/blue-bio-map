@@ -1,8 +1,8 @@
-# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.10`
+# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.11`
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
-- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.10`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
+- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.11`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
 - 모든 지표는 **검증 전 시범 지표**다. 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
 
 ## 0. 한눈에 보기
@@ -117,15 +117,16 @@
 | `verified-pilot-3.8` | verified-pilot-3.7 (2026-10-01). Evidence rows only: the reviewed 바지락 (Ruditapes philippinarum) peptide rows IAE 34.7 and IVE 95.6 uM (Suetsuna 2002, Fish Sci 68:233) and LLP 158 uM (Lee et al. 2005, J Fish Sci Technol 8:109) join peptide_supplements; AEL, LVE and IELPLG stay partial_only because the paper swaps the clam and pearl-oyster peak lists. Rules, coefficients and cohorts are unchanged. 바지락 MBPI 39.5 is a single-paper reference value and BBVI stays withheld; a same-author repeat of the same value (Suetsuna & Chen 2001, Spirulina) is not counted as replication. See research/verified-indices/evidence-clam-2026-10-01.md. |
 | `verified-pilot-3.9` | verified-pilot-3.8 (2026-10-01). MFPI: the MEXT 2020 (8th) same-species raw item now covers protein, iron, zinc and calcium (research/verified-indices/snapshots/mext-2026-10-01.json). When RDA DB 10.4 has no row linked to a species, a reviewed MEXT item marked species_row is that species' own nutrition row and edible fraction (graded foreign_table_cited 0.85, ranked against the fixed cohort plus itself, never a cohort member): あげまき 10280 (맛조개), まさば 10154 (고등어), まだこ 10361 (참문어). Name link: the MEXT standard Japanese name equals the WoRMS Japanese vernacular, or equals it without a final ガイ (貝) when the MEXT description matches the taxon. Three aquaculture records (research/verified-indices/mfpi-aquaculture-3.9-2026-10-01.json): 고등어 Tongyeong sea cages 2007-08, 맛조개 Zhoushan polyculture pond 2020-21, 참문어 rearing stopped at settlement (feasible false). Team-lead decisions of 2026-10-01. See research/verified-indices/mext-rows-2026-10-01.md. |
 | `verified-pilot-3.10` | verified-pilot-3.9 (2026-10-01). Evidence rows only: the reviewed 톳 (Sargassum fusiforme, syn. Hizikia fusiformis) peptide rows GKY 3.92, SVY 8.12 and SKTY 11.07 uM (Suetsuna 1998, Nippon Suisan Gakkaishi 64:862; synthetic peptides, HHL) join peptide_supplements. Rules, coefficients and cohorts are unchanged. 톳 MBPI moves from its ChEMBL value 45.3 to the GKY peptide value 65.0 (single-paper reference) and BBVI stays withheld (no second paper for GKY). See research/verified-indices/evidence-hijiki-2026-10-01.md. |
+| `verified-pilot-3.11` | verified-pilot-3.10 (2026-10-01). Evidence rows only: the reviewed 고등어 (Scomber japonicus) peptide rows PLITT 48.73 uM (Wang 2024, Food Chem 447:138873) and APFLAG 69.45, FDHKKFF 212.85 and LFPKFA 259.05 uM (Zhang 2025, J Food Sci e70767), all synthetic peptides identified by LC-MS/MS in mackerel muscle hydrolysates and assayed with HHL, join peptide_supplements. Rules, coefficients and cohorts are unchanged. 고등어 gains an MBPI from the PLITT item (single-paper reference); BBVI stays withheld (no second paper for PLITT). See research/verified-indices/evidence-mackerel-2026-10-01.md. |
 
 | 축 | 2.3 | 현재 |
 |---|---|---|
 | MFPI 산출 종 수 | 7 | 21 |
-| MBPI 산출 종 수 | 3 | 14 |
+| MBPI 산출 종 수 | 3 | 15 |
 | MCUI 산출 종 수 | 14 | 14 |
 | BBVI 산출 종 수 | 1 | 1 |
 
-## 7. 30종 값 변화 (2.3 → `verified-pilot-3.10`)
+## 7. 30종 값 변화 (2.3 → `verified-pilot-3.11`)
 
 굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다.
 
@@ -143,7 +144,7 @@
 | 가시파래 (234476) | 조사 후보 | – | – → **73.3** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 감태 (371986) | 조사 후보 | – | 67.5 | – | – | 33% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 갑오징어 (1666974) | 조사 후보 | – → **42.5** | – | 10.0 (국가 평가) | – | 42% → 61% | – | – | – | 조사 부족 |
-| 고등어 (127022) | 조사 후보 | – → **48.0** | – | 10.0 (IUCN) | – | 33% → 75% | – | – | – | 감소 경향(30% 미만) |
+| 고등어 (127022) | 조사 후보 | – → **48.0** | – → **34.9** | 10.0 (IUCN) | – | 33% → 100% | – | – | – | 감소 경향(30% 미만) |
 | 괭생이모자반 (494853) | 조사 후보 | – | – → **21.6** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 꽃게 (1061762) | 조사 후보 | – → **62.0** | – | – | – | 27% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 넙치 (275816) | 조사 후보 | – → **59.4** | – → **29.2** | – | – | 27% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |

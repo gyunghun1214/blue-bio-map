@@ -93,7 +93,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [
           {
             "english_name": "Brown Kelp, Raw",
@@ -983,7 +983,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1256,7 +1256,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1543,7 +1543,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1780,7 +1780,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [
           {
             "english_name": "Sea string, Raw",
@@ -2138,7 +2138,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2838,7 +2838,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3842,7 +3842,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4830,7 +4830,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5757,7 +5757,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -6043,7 +6043,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7064,7 +7064,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7941,136 +7941,7 @@
       "aphia_id": 127022,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "adjusted": 30.894886363636367,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1111/1750-3841.70767",
-              "relation": "=",
-              "source_id": "zhang_2025_mackerel_jfs",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 69.45
-            }
-          ],
-          "original_paper_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "pIC50": 4.158,
-          "peer_peptides": 352,
-          "peptide_sequence": "APFLAG",
-          "percentile": 41.19,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1111/1750-3841.70767:APFLAG"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 20.667613636363637,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1111/1750-3841.70767",
-              "relation": "=",
-              "source_id": "zhang_2025_mackerel_jfs",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 212.85
-            }
-          ],
-          "original_paper_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "pIC50": 3.672,
-          "peer_peptides": 352,
-          "peptide_sequence": "FDHKKFF",
-          "percentile": 27.56,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1111/1750-3841.70767:FDHKKFF"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 18.75,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1111/1750-3841.70767",
-              "relation": "=",
-              "source_id": "zhang_2025_mackerel_jfs",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 259.05
-            }
-          ],
-          "original_paper_dois": [
-            "10.1111/1750-3841.70767"
-          ],
-          "pIC50": 3.587,
-          "peer_peptides": 352,
-          "peptide_sequence": "LFPKFA",
-          "percentile": 25.0,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1111/1750-3841.70767:LFPKFA"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 34.94318181818182,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1016/j.foodchem.2024.138873"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1016/j.foodchem.2024.138873",
-              "relation": "=",
-              "source_id": "wang_2024_mackerel_foodchem",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 48.73
-            }
-          ],
-          "original_paper_dois": [
-            "10.1016/j.foodchem.2024.138873"
-          ],
-          "pIC50": 4.312,
-          "peer_peptides": 352,
-          "peptide_sequence": "PLITT",
-          "percentile": 46.59,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1016/j.foodchem.2024.138873:PLITT"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -8096,9 +7967,9 @@
         ],
         "rule_sensitivity": {
           "log_scale_common_fence": 54.8,
-          "minimum_cohort_10": 34.9,
-          "minimum_cohort_100": 34.9,
-          "no_approved_drug_filter": 34.9,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
           "no_common_metabolite_filter": 54.8
         },
         "sufficiency": {
@@ -8212,7 +8083,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 53.8
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8876,8 +8747,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -8912,11 +8783,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.75
       },
       "korean_name": "고등어",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "peptide",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -8994,60 +8865,28 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 34.9,
-          "MFPI": 48.0
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.1016/j.foodchem.2024.138873"
-        ],
-        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 38.2,
-          "0.5": 41.5,
-          "0.75": 44.7
-        },
-        "used_for_score": false,
-        "value": 41.5
-      },
+      "reference_combination": null,
       "scientific_name": "Scomber japonicus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 34.9,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": 48.0
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 26.3,
-        "median_compound_sensitivity": 25.8,
-        "range_from_aggregation": [
-          18.8,
-          34.9
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 34.9,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 48.0
       },
       "source_ids": [
-        "ahtpdb_ic50_2026",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "gbif_iucn_checklist",
@@ -9057,15 +8896,13 @@
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "wang_2024_mackerel_foodchem",
         "wikidata_p703_lotus",
-        "worms_rest_mbpi",
-        "zhang_2025_mackerel_jfs"
+        "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -9205,7 +9042,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10159,7 +9996,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11126,7 +10963,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12063,7 +11900,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12979,7 +12816,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -13893,7 +13730,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14844,7 +14681,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15749,7 +15586,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 42.0
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16705,7 +16542,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17722,7 +17559,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.10 (2026-10-01). Evidence rows only: the reviewed 고등어 (Scomber japonicus) peptide rows PLITT 48.73 uM (Wang 2024, Food Chem 447:138873) and APFLAG 69.45, FDHKKFF 212.85 and LFPKFA 259.05 uM (Zhang 2025, J Food Sci e70767), all synthetic peptides identified by LC-MS/MS in mackerel muscle hydrolysates and assayed with HHL, join peptide_supplements. Rules, coefficients and cohorts are unchanged. 고등어 gains an MBPI from the PLITT item (single-paper reference); BBVI stays withheld (no second paper for PLITT). See research/verified-indices/evidence-mackerel-2026-10-01.md.",
+    "changes_from": "verified-pilot-3.9 (2026-10-01). Evidence rows only: the reviewed 톳 (Sargassum fusiforme, syn. Hizikia fusiformis) peptide rows GKY 3.92, SVY 8.12 and SKTY 11.07 uM (Suetsuna 1998, Nippon Suisan Gakkaishi 64:862; synthetic peptides, HHL) join peptide_supplements. Rules, coefficients and cohorts are unchanged. 톳 MBPI moves from its ChEMBL value 45.3 to the GKY peptide value 65.0 (single-paper reference) and BBVI stays withheld (no second paper for GKY). See research/verified-indices/evidence-hijiki-2026-10-01.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -17921,7 +17758,7 @@
         }
       }
     },
-    "method_version": "verified-pilot-3.11",
+    "method_version": "verified-pilot-3.10",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/evidence-v3.json",
     "national_red_list": {
@@ -18147,8 +17984,7 @@
       "research/verified-indices/evidence-v3.5.json",
       "research/verified-indices/peptide-raw-values-2.1.json",
       "research/verified-indices/evidence-clam-2026-10-01.json",
-      "research/verified-indices/evidence-hijiki-2026-10-01.json",
-      "research/verified-indices/evidence-mackerel-2026-10-01.json"
+      "research/verified-indices/evidence-hijiki-2026-10-01.json"
     ],
     "posthoc": {
       "calibration_cases": [],
@@ -18224,7 +18060,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.11",
+  "method_version": "verified-pilot-3.10",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 534443,
@@ -19110,16 +18946,6 @@
       "url": "https://doi.org/10.3390/md22020090",
       "version": "2024"
     },
-    "wang_2024_mackerel_foodchem": {
-      "accessed": "2026-10-01",
-      "doi": "10.1016/j.foodchem.2024.138873",
-      "license": "Publisher copyright",
-      "provider": "Food Chemistry 447:138873 (Wang B, Zhang H, Wen Y, et al. 2024), full text (Elsevier PDF, institutional subscription)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "The novel angiotensin-I-converting enzyme inhibitory peptides from Scomber japonicus muscle protein hydrolysates: QSAR-based screening, molecular docking, kinetic and stability studies",
-      "url": "https://doi.org/10.1016/j.foodchem.2024.138873",
-      "version": "2024"
-    },
     "wijesinghe_2011_ace": {
       "accessed": "2026-09-27",
       "license": "CC BY-NC 3.0",
@@ -19218,16 +19044,6 @@
       "title": "Holotoxin A1 induces apoptosis by activating acid and neutral sphingomyelinase in K562 and human primary leukemia cells",
       "url": "https://europepmc.org/article/PMC/PMC5923410",
       "version": "Mar Drugs 2018;16(4):123, PMC5923410"
-    },
-    "zhang_2025_mackerel_jfs": {
-      "accessed": "2026-10-01",
-      "doi": "10.1111/1750-3841.70767",
-      "license": "Publisher copyright",
-      "provider": "Journal of Food Science 90(12) e70767 (Zhang H, Wang C, Wang F, et al. 2025), full text (Wiley PDF, institutional subscription)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Revealing Novel Angiotensin-Converting Enzyme (ACE)-Inhibitory Peptides From Mackerel Hydrolysates and Potential Antihypertensive Mechanism Using Virtual Screening and Network Pharmacology Analysis",
-      "url": "https://doi.org/10.1111/1750-3841.70767",
-      "version": "2025"
     }
   },
   "species": [
@@ -19745,7 +19561,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20309,7 +20125,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [
           {
             "english_name": "Sea cucumber, Raw",
@@ -20766,7 +20582,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -21749,7 +21565,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [
           {
             "english_name": "Japanese common squid, Raw",
@@ -22052,7 +21868,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "observed_rows": [
           {
             "english_name": "Ceylon moss, Raw",
@@ -22668,7 +22484,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23282,7 +23098,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23923,7 +23739,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.11 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.10 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -24629,7 +24445,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.11",
+        "method_version": "verified-pilot-3.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
