@@ -1317,5 +1317,32 @@ class VerifiedPilot39Tests(unittest.TestCase):
             self.assertNotIn("species_row_groups", m)
             self.assertEqual(m["components"], ["zinc_mg"])
 
+HIJIKI = "research/verified-indices/evidence-hijiki-2026-10-01.json"
+
+
+class StagedHijikiRowsTests(unittest.TestCase):
+    """Reviewed 톳 peptide rows (Suetsuna 1998), staged for the next version: no public config reads them yet.
+    Added to 3.9 they must pass the peptide rules and move only 톳 MBPI (research/verified-indices/evidence-hijiki-2026-10-01.md)."""
+
+    def test_rows_move_only_hijiki_mbpi(self):
+        import tempfile
+        cfg = json.loads((ROOT / "config" / "verified-indices-v3.9.json").read_text(encoding="utf-8"))
+        self.assertNotIn(HIJIKI, cfg["peptide_supplements"])
+        cfg["peptide_supplements"] = cfg["peptide_supplements"] + [HIJIKI]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "config.json"
+            path.write_text(json.dumps(cfg), encoding="utf-8")
+            staged = build(*load_inputs(config=path))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        new, old = rows(staged), rows(build(*load_inputs()))
+        changed = {(a, axis): s["scores"][axis] for a, s in new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != old[a]["scores"][axis]}
+        self.assertEqual(changed, {(494972, "MBPI"): 65.0})
+        hijiki = new[494972]
+        best = max(hijiki["bioactivity_trace"], key=lambda i: i["adjusted"])
+        self.assertEqual((best["peptide_sequence"], best["percentile"]), ("GKY", 86.65))
+        # three peptides from one paper: BBVI stays withheld until another paper measures one of them
+        self.assertEqual(hijiki["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
 if __name__ == "__main__":
     unittest.main()

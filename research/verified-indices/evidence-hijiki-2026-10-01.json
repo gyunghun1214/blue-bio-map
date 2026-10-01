@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "sources": {
+    "suetsuna_1998_hizikia": {
+      "provider": "Nippon Suisan Gakkaishi 64(5):862-866 (Suetsuna 1998), full text via J-STAGE",
+      "title": "Separation and Identification of Angiotensin I-Converting Enzyme Inhibitory Peptides from Peptic Digest of Hizikia fusiformis Protein",
+      "version": "1998",
+      "doi": "10.2331/suisan.64.862",
+      "url": "https://www.jstage.jst.go.jp/article/suisan1932/64/5/64_5_862/_article",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright (free full text on J-STAGE)"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:GKY",
+      "source_id": "suetsuna_1998_hizikia",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "GKY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 3.92,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Full text (J-STAGE, free): peptic digest of Hizikia fusiformis (= Sargassum fusiforme, WoRMS 494972) protein; peptides synthesized by Fmoc solid phase (Applied Biosystems 433A); HHL (Peptide Institute) and rabbit-lung ACE (Sigma); Table 1 ('ACE inhibitory activity of synthetic peptides') gives IC50 in uM."
+    },
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:SVY",
+      "source_id": "suetsuna_1998_hizikia",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "SVY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 8.12,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Full text (J-STAGE, free): peptic digest of Hizikia fusiformis (= Sargassum fusiforme, WoRMS 494972) protein; peptides synthesized by Fmoc solid phase (Applied Biosystems 433A); HHL (Peptide Institute) and rabbit-lung ACE (Sigma); Table 1 ('ACE inhibitory activity of synthetic peptides') gives IC50 in uM."
+    },
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:SKTY",
+      "source_id": "suetsuna_1998_hizikia",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "SKTY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 11.07,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Full text (J-STAGE, free): peptic digest of Hizikia fusiformis (= Sargassum fusiforme, WoRMS 494972) protein; peptides synthesized by Fmoc solid phase (Applied Biosystems 433A); HHL (Peptide Institute) and rabbit-lung ACE (Sigma); Table 1 ('ACE inhibitory activity of synthetic peptides') gives IC50 in uM. The Japanese results paragraph prints Ser-Lys-Tyr-Tyr; Table 1, the amino-acid ratio (Thr 1.07) and FAB-MS m/z 498 confirm Ser-Lys-Thr-Tyr, as the English abstract does."
+    }
+  ]
+}
