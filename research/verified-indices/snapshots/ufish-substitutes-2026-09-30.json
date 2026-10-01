@@ -1,0 +1,1497 @@
+{
+ "basis": "per 100 g edible portion, raw",
+ "components": {
+  "iron_mg": "FE(mg)",
+  "protein_g": "PROTCNT(g)",
+  "zinc_mg": "ZN(mg)"
+ },
+ "items": [
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 21,
+     "value": 0.17380952380952386
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.572930327868853
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 22,
+     "value": 0.37545454545454543
+    }
+   },
+   "edible_factor_comment": "Own estimation",
+   "family": "Gadidae",
+   "food_item_id": "091044",
+   "food_name": "Atlantic cod, fillet, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.38
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.81
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.45
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091045",
+   "food_name": "Atlantic cod, fillet, raw (Northwest Atlantic)",
+   "habitat": null,
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 20,
+     "value": 0.16350000000000003
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.579235537190083
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 21,
+     "value": 0.37190476190476185
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091046",
+   "food_name": "Atlantic cod, fillet, raw (Northeast Atlantic)",
+   "habitat": null,
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 16,
+     "value": 0.16437500000000002
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.54510869565217
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 16,
+     "value": 0.35687499999999994
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091047",
+   "food_name": "Atlantic cod, wild, fillet, raw (Northeast Atlantic)",
+   "habitat": "W",
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 13,
+     "value": 0.14846153846153848
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.190992647058824
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 13,
+     "value": 0.36
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091048",
+   "food_name": "Atlantic cod, wild, fillet w/o skin, raw (Northeast Atlantic)",
+   "habitat": "W",
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "e",
+     "n": null,
+     "value": 0.16437500000000002
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.2
+    },
+    "zinc_mg": {
+     "doc": "e",
+     "n": null,
+     "value": 0.35687499999999994
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091049",
+   "food_name": "Atlantic cod, wild, fillet w/o skin, raw (treated)",
+   "habitat": "W",
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 3,
+     "value": 0.14666666666666667
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 19.45
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 4,
+     "value": 0.43
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091050",
+   "food_name": "Atlantic cod, farmed, fillet, raw (n.s.)",
+   "habitat": "F",
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 2,
+     "value": 0.175
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 19.766666666666666
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 3,
+     "value": 0.44333333333333336
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091051",
+   "food_name": "Atlantic cod, farmed, fillet, raw (Norway)",
+   "habitat": "F",
+   "matches": {
+    "254538": "genus"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus morhua, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 5,
+     "value": 0.17260000000000003
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.169999999999998
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 5,
+     "value": 0.36235999999999996
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091052",
+   "food_name": "Pacific cod, fillet, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "254538": "species"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus macrocephalus, Tilesius 1810",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 3,
+     "value": 0.17766666666666667
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.3
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 3,
+     "value": 0.3839333333333333
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091053",
+   "food_name": "Pacific cod, wild, fillet, raw (Northeast Pacific)",
+   "habitat": "W",
+   "matches": {
+    "254538": "species"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus macrocephalus, Tilesius 1810",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.17
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.54
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.35
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091054",
+   "food_name": "Pacific cod, fillet, raw (not previously frozen)",
+   "habitat": null,
+   "matches": {
+    "254538": "species"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus macrocephalus, Tilesius 1810",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.16
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 15.27
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.31
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Gadidae",
+   "food_item_id": "091055",
+   "food_name": "Pacific cod, fillet, raw (may have been previously frozen)",
+   "habitat": null,
+   "matches": {
+    "254538": "species"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Gadus macrocephalus, Tilesius 1810",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 3,
+     "value": 1.0833333333333333
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 18.62363636363637
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 3,
+     "value": 0.41333333333333333
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Carangidae",
+   "food_item_id": "091059",
+   "food_name": "Atlantic horse mackerel, wild, fillet w/o skin, raw (n.s.)",
+   "habitat": "W",
+   "matches": {
+    "276651": "family"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Trachurus trachurus (Linnaeus, 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 2,
+     "value": 1.125
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.989166666666666
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 2,
+     "value": 0.44
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Carangidae",
+   "food_item_id": "091060",
+   "food_name": "Atlantic horse mackerel, wild, fatty, fillet w/o skin, raw",
+   "habitat": "W",
+   "matches": {
+    "276651": "family"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Trachurus trachurus (Linnaeus, 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 1
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 19.384999999999998
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 0.36
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Carangidae",
+   "food_item_id": "091061",
+   "food_name": "Atlantic horse mackerel, atlantic, wild, lean, fillet w/o skin, raw",
+   "habitat": "W",
+   "matches": {
+    "276651": "family"
+   },
+   "part": "fillet",
+   "state": "raw",
+   "taxon_label": "Trachurus trachurus (Linnaeus, 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 7,
+     "value": 1.1985714285714286
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.163888888888888
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 6,
+     "value": 3.041666666666666
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Portunidae",
+   "food_item_id": "092012",
+   "food_name": "Swimming crabs, etc., flesh, raw",
+   "habitat": null,
+   "matches": {
+    "1061762": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Includes CRB, SCD, MUD, and other species belonging to the Portunidae family",
+   "taxon_level": "family"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 0.74
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 15.923333333333334
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 3.54
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Portunidae",
+   "food_item_id": "092013",
+   "food_name": "Blue crab, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "1061762": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Callinectes sapidus, Rathbun 1896",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 0.375
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 19.875999999999998
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 2.45
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Portunidae",
+   "food_item_id": "092014",
+   "food_name": "Blue swimming crab, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "1061762": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Portunus pelagicus, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 3,
+     "value": 1.7666666666666668
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 14.7
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 2,
+     "value": 3.245
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Portunidae",
+   "food_item_id": "092015",
+   "food_name": "Indo-Pacific swamp crab, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "1061762": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Scylla serrata (Forsskål, 1775)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 7,
+     "value": 2.6
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 17.706
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 8,
+     "value": 1.0090000000000001
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Haliotidae",
+   "food_item_id": "093001",
+   "food_name": "Abalones, muscle, raw",
+   "habitat": null,
+   "matches": {
+    "397082": "genus"
+   },
+   "part": "muscle",
+   "state": "raw",
+   "taxon_label": "Haliotis spp∆",
+   "taxon_level": "genus"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 12,
+     "value": 3.103802583333333
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 8.886788571428571
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 11,
+     "value": 11.480187545454546
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093005",
+   "food_name": "Cupped oysters, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea spp∆",
+   "taxon_level": "genus"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 9,
+     "value": 2.7179999999999995
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.724483333333334
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 9,
+     "value": 8.499
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093006",
+   "food_name": "Pacific cupped oyster, flesh, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "836033": "species",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea gigas (Thunberg 1793)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 5,
+     "value": 1.5623999999999998
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.619311111111111
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 5,
+     "value": 0.014199999999999999
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093007",
+   "food_name": "Pacific cupped oyster, farmed, flesh, raw",
+   "habitat": "F",
+   "matches": {
+    "836033": "species",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea gigas (Thunberg 1793)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 2.393631
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 8.444
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 11.871063
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093008",
+   "food_name": "Mangrove cupped oyster, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea rhizophorae (Guilding 1828)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 2,
+     "value": 5.195
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 5.566
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 2,
+     "value": null
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093009",
+   "food_name": "American cupped oyster, flesh, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea virginica (Gmelin 1791)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 5.78
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 5.11
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": null
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093010",
+   "food_name": "American cupped oyster, flesh, farmed, raw (USA)",
+   "habitat": "F",
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea virginica (Gmelin 1791)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 4.61
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 5.949999999999999
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": null
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093011",
+   "food_name": "American cupped oyster, flesh, wild, raw (USA)",
+   "habitat": "W",
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Crassostrea virginica (Gmelin 1791)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 6,
+     "value": 6.0200000000000005
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.422857142857142
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 4,
+     "value": 9.4725
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093012",
+   "food_name": "Flat oysters, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Ostrea spp∆",
+   "taxon_level": "genus"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 5.7
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 10.8
+    },
+    "zinc_mg": {
+     "doc": "e",
+     "n": null,
+     "value": 9.4725
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ostreidae",
+   "food_item_id": "093013",
+   "food_name": "European flat oyster, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "836033": "family",
+    "836041": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Ostrea edulis, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 11,
+     "value": 4.163995636363636
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 11.35463726666667
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 12,
+     "value": 2.083485916666667
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093014",
+   "food_name": "Mytilus mussels, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "506159": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus spp∆",
+   "taxon_level": "genus"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 4,
+     "value": 2.255988
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 12.38488975
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 4,
+     "value": 1.3517015
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093015",
+   "food_name": "Korean mussel, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "506159": "species"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus coruscus, Gould 1861",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 3,
+     "value": 4.3933333333333335
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 11.799999999999999
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 3,
+     "value": 2.19
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093016",
+   "food_name": "Blue mussel, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "506159": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus edulis, Linnaeus 1758",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 2.5
+    },
+    "protein_g": {
+     "doc": "a",
+     "n": null,
+     "value": 9.565
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 3,
+     "value": 2.7866666666666666
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093017",
+   "food_name": "Mediterranean mussel, flesh, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "506159": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus galloprovincialis, Lamarck 1819",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "e",
+     "n": null,
+     "value": 4.163995636363636
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 10.2225
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 4.6
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093018",
+   "food_name": "Mediterranean mussel, wild, flesh, raw",
+   "habitat": "W",
+   "matches": {
+    "506159": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus galloprovincialis, Lamarck 1819",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 2.5
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 8.25
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 1.88
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093019",
+   "food_name": "Mediterranean mussel, farmed, flesh, raw",
+   "habitat": "F",
+   "matches": {
+    "506159": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Mytilus galloprovincialis, Lamarck 1819",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 2,
+     "value": 6.800000000000001
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 13.504166666666666
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 11,
+     "value": 1.5781818181818181
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093020",
+   "food_name": "Perna mussel, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "506159": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Perna spp∆",
+   "taxon_level": "genus"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 3.3
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 10.6875
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 1.13
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093021",
+   "food_name": "New Zealand mussel, flesh, raw (New Zealand)",
+   "habitat": null,
+   "matches": {
+    "506159": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Perna canaliculus (Gmelin 1791)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "r",
+     "n": 1,
+     "value": 10.3
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.3
+    },
+    "zinc_mg": {
+     "doc": "r",
+     "n": 10,
+     "value": 1.623
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Mytilidae",
+   "food_item_id": "093022",
+   "food_name": "Green mussel, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "506159": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Perna viridis (Linnaeus 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 9,
+     "value": 1.2722222222222221
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 14.936250000000003
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 7,
+     "value": 1.7142857142857142
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Pectinidae",
+   "food_item_id": "093023",
+   "food_name": "Scallops, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "393716": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Includes SCE, and other species belonging to the Pectinidae family",
+   "taxon_level": "family"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 3,
+     "value": 0.6633333333333332
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 14.799999999999999
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 3,
+     "value": 1.7566666666666666
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Pectinidae",
+   "food_item_id": "093024",
+   "food_name": "Great Atlantic scallop, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "393716": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Pecten maximus (Linnaeus, 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 9,
+     "value": 6.59
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.199015151515152
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 7,
+     "value": 1.1685714285714286
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Veneridae",
+   "food_item_id": "093025",
+   "food_name": "Venus clams, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "231750": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Includes SVE, and other species belonging to the Veneridae family",
+   "taxon_level": "family"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 5,
+     "value": 7.675999999999999
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 9.22846153846154
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 5,
+     "value": 1.256
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Veneridae",
+   "food_item_id": "093026",
+   "food_name": "Striped venus, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "231750": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Chamelea gallina (Linnaeus, 1758)",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 6,
+     "value": 2.2533333333333334
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 13.826250000000002
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 6,
+     "value": 2.841666666666667
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Octopodidae",
+   "food_item_id": "093030",
+   "food_name": "Octopuses, etc., flesh, raw",
+   "habitat": null,
+   "matches": {
+    "534443": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Includes OCC, and other species belonging to the Octopodidae family",
+   "taxon_level": "family"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 5,
+     "value": 2.404
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 13.690000000000001
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 5,
+     "value": 3.0859999999999994
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Octopodidae",
+   "food_item_id": "093031",
+   "food_name": "Common octopus, flesh, raw (n.s.)",
+   "habitat": null,
+   "matches": {
+    "534443": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Octopus vulgaris, Cuvier 1797",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 3.7
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 13.3975
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 1,
+     "value": 5.1
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Octopodidae",
+   "food_item_id": "093032",
+   "food_name": "Common octopus, wild, flesh, raw (Mediterranean Sea)",
+   "habitat": "W",
+   "matches": {
+    "534443": "genus"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Octopus vulgaris, Cuvier 1797",
+   "taxon_level": "species"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "ar",
+     "n": 2,
+     "value": 3.3
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 16.422960000000003
+    },
+    "zinc_mg": {
+     "doc": "ar",
+     "n": 2,
+     "value": 2.8049999999999997
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Ommastrephidae",
+   "food_item_id": "093033",
+   "food_name": "Ommastrephidae squids, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "342067": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Includes a mix of species belonging to the Ommastrephidae family",
+   "taxon_level": "family"
+  },
+  {
+   "components": {
+    "iron_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 2.52
+    },
+    "protein_g": {
+     "doc": "c",
+     "n": null,
+     "value": 15.962499999999999
+    },
+    "zinc_mg": {
+     "doc": "a",
+     "n": 2,
+     "value": 2.9850000000000003
+    }
+   },
+   "edible_factor_comment": null,
+   "family": "Sepiidae",
+   "food_item_id": "093035",
+   "food_name": "Common cuttlefish, flesh, raw",
+   "habitat": null,
+   "matches": {
+    "1666974": "family"
+   },
+   "part": "flesh",
+   "state": "raw",
+   "taxon_label": "Sepia officinalis, Linnaeus 1758",
+   "taxon_level": "species"
+  }
+ ],
+ "match_rule": "species: the uFiSh scientific name equals the WoRMS accepted name or a WoRMS synonym; genus: the first word of the uFiSh scientific name as published equals the WoRMS genus of the species (not resolved to the accepted combination, so uFiSh 'Crassostrea gigas' does not match genus Magallana); family: the uFiSh FAMILY column equals the WoRMS family; pooled entries spanning several families (e.g. 093034 'Sepiidae, Sepiolidae') are never matched",
+ "snapshot_date": "2026-09-30",
+ "sources": {
+  "ufish_1_workbook": {
+   "accessed": "2026-09-30",
+   "documentation_codes": {
+    "a": "analytical value",
+    "ar": "mix of analytical and reference-dataset values",
+    "c": "calculated in the datasheet (e.g. protein from nitrogen)",
+    "e": "estimated or borrowed from a similar food",
+    "r": "value taken from a reference food composition dataset"
+   },
+   "license": "FAO copyright; non-commercial research and education use with attribution",
+   "provider": "FAO/INFOODS",
+   "terms": "© FAO 2016 (user guide i6655en.pdf p.4, read 2026-10-01): material may be copied, downloaded and printed for private study, research and teaching purposes, or for use in non-commercial products or services, provided that appropriate acknowledgement of FAO as the source and copyright holder is given and that FAO's endorsement is not implied; translation, adaptation, resale and other commercial use rights must be requested from FAO. Cite as: FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome. Only matched item IDs, three values, documentation codes and n are stored.",
+   "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
+   "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx",
+   "user_guide": "https://www.fao.org/3/I6655EN/i6655en.pdf",
+   "version": "uFiSh1.0 (December 2016); workbook sha256 66ce0037ce1f9296102d190e4aafc08aa30d658fd843a7591a9abdcdc787be12"
+  }
+ }
+}

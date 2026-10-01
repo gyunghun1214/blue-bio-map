@@ -33,7 +33,7 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
   assert.equal(ctx.followup({...species,live:false}),null,'demo never gets operational follow-up');
 }
-assert.equal(scored,21,'7 MFPI + 8 MBPI (3.1 ChEMBL stratum after the link review) + 14 MCUI (7 IUCN + 7 Korean national) cover 21 species');
+assert.equal(scored,22,'11 MFPI (3.3 uFiSh zinc substitutes add 홍합·전복·대구·갑오징어; 대구 had no other score) + 8 MBPI (3.1 ChEMBL stratum after the link review) + 14 MCUI (7 IUCN + 7 Korean national) cover 22 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,7,'national MCUI stays labelled by basis');
 assert.ok(national.every(r=>r.matrix_eligible===(r.scores.BBVI!==null)),'verified-pilot-3.2: national MCUI is placed only with a BBVI, labelled by mcui_basis');

@@ -1,0 +1,67 @@
+// verified-pilot-3.3 MFPI substitutes on screen: the browser re-check accepts the published traces and rejects
+// each broken part of the rule; the trace names the substitute, its level, part and uFiSh item.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const app=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
+const report=JSON.parse(fs.readFileSync(new URL('../dist/assessments.json',import.meta.url),'utf8'));
+const ctx={};
+vm.createContext(ctx);
+vm.runInContext(app.split('function setView')[0]+';globalThis.valid=verifiedFoodValid;globalThis.detail=verifiedFoodDetail;',ctx);
+ctx.info={method:report.method,sources:report.sources,cohorts:report.comparison_cohorts};
+vm.runInContext('data={assessmentInfo:globalThis.info}',ctx);
+
+const rows=[...report.species,...report.candidate_species];
+for(const a of rows)assert.ok(ctx.valid(a,report),`${a.korean_name} passes the browser re-check`);
+const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[254538,397082,506159,1666974]);
+
+const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
+const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);
+const broken=(change,r=report)=>{const a=structuredClone(a0);change(a,a.food_trace,a.food_trace.nutrients[key]);return ctx.valid(a,r);};
+assert.ok(broken(()=>{}),'unchanged copy passes');
+assert.equal(broken((a,f,n)=>{n.grade='measured';n.evidence_factor=1;}),false,'a genus value is never graded as measured');
+assert.equal(broken((a,f,n)=>{n.substitute.label='종 수준 대체치(다른 성분표)';}),false,'label follows the level');
+assert.equal(broken((a,f,n)=>{n.substitute.taxon_level='order';}),false,'only species, genus or family');
+assert.equal(broken((a,f,n)=>{n.substitute.part='whole';}),false,'consumed part must be fillet, flesh or muscle');
+assert.equal(broken((a,f,n)=>{n.substitute.source_id='nowhere';}),false,'substitute source must be registered');
+assert.equal(broken((a,f)=>{f.outside_cohort=false;}),false,'a substituted row is never a cohort member');
+assert.equal(broken((a,f)=>{for(const n of Object.values(f.nutrients))n.substitute=structuredClone(f.nutrients[key].substitute);}),false,
+  'a score never rests only on other foods');
+const noRule=structuredClone(report);delete noRule.method.nutrition.substitutes;
+assert.equal(broken(()=>{},noRule),false,'a substituted trace without the published rule');
+// independent review (wf_649e5916-f04): the trace is checked against the species' own linked RDA row
+const tamper=(aphia,change)=>{const a=structuredClone(withSub.find(x=>x.aphia_id===aphia));change(a.food_trace);return ctx.valid(a,report);};
+const subKey=f=>Object.keys(f.nutrients).find(k=>f.nutrients[k].substitute);
+assert.equal(tamper(506159,f=>{delete f.nutrients[subKey(f)].substitute;}),false,'a substitute cannot pose as the own RDA value');
+assert.equal(tamper(397082,f=>{delete f.nutrients[subKey(f)].substitute;}),false,'a genus value cannot pose as the own RDA value');
+assert.equal(tamper(506159,f=>{f.nutrients.protein_g.substitute=structuredClone(f.nutrients[subKey(f)].substitute);}),false,
+  'a component the own row reports is never substituted');
+assert.equal(tamper(1666974,f=>{for(const n of Object.values(f.nutrients))delete n.substitute;}),false,'outside the cohort only with a substitute');
+// same-species sub-sample (대구): reviewed links only, and the value is the mean of the named rows
+const cod=withSub.find(a=>a.aphia_id===254538),codZinc=cod.food_trace.nutrients.zinc_mg;
+assert.equal((codZinc.substitute.taxon_level),'subsample');
+assert.equal(codZinc.value,0.51);
+assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.value=0.55;}),false,'the sub-sample value is the mean of its rows');
+assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.substitute.food_item_id='K0440002570a+K9999999999a';}),false,'only reviewed sub-sample links');
+assert.equal(tamper(254538,f=>{f.nutrients.zinc_mg.grade='proxy';f.nutrients.zinc_mg.evidence_factor=.5;}),false,'a sub-sample keeps the table grade');
+
+// Screen: every substituted component says so, with its source item and level label (and the consumed part for uFiSh).
+for(const a of withSub){
+  const html=ctx.detail({assessment:a});
+  for(const n of Object.values(a.food_trace.nutrients).filter(n=>n.substitute))
+    for(const text of n.substitute.taxon_level==='subsample'?[n.substitute.label,'같은 종의 부표본 행','K0440002570a 0.55','K0440002580a 0.47','평균']
+        :[n.substitute.label,`uFiSh1.0 ${n.substitute.food_item_id}`,`섭취 부위 ${n.substitute.part}`])
+      assert.ok(html.includes(text),`${a.korean_name} shows ${text}`);
+  assert.ok(!/\d\.\d{5,}/.test(html),`${a.korean_name}: values shown with at most four significant digits`);
+  assert.ok(html.includes('고정 비교집단에 넣지 않고'),`${a.korean_name} says it is ranked outside the cohort`);
+  assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
+}
+assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}).includes('양식 가능 근거 없음(양식 점수 0)'),'cod aquaculture shown as not feasible');
+// a withheld species whose missing component could be filled says so (살오징어: zinc found, aquaculture missing)
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/대체치 후보: 아연 uFiSh1\.0 093033[^]*다른 이유로 보류/);
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 후보 없음[^]*채울 후보가 없는 성분/);
+// the 홍합 uFiSh observation record now states which component is used
+assert.match(ctx.detail({assessment:withSub.find(a=>a.aphia_id===506159)}),/uFiSh1\.0:093015: zinc_mg is used as a verified-pilot-3\.3 substitute/);
+console.log(`ok MFPI substitutes UI (${withSub.length} species)`);
