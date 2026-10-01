@@ -516,6 +516,9 @@ function assessmentBlockers(s){
   }
   if(pilotScore(s,'BBVI')===null)reasons.BBVI=
     scoreReason[s.assessment?.withheld_reasons?.BBVI]||'MFPI와 MBPI가 모두 산출되어야 계산 가능.';
+  // A verified report's own withheld reason outranks the operating profile's older 미수집/미검토 (published before the report).
+  const told=VERIFIED.includes(s.assessment?.report_version)?s.assessment.withheld_reasons||{}:{};
+  for(const k of ['MFPI','MBPI','MCUI'])if(reasons[k]&&scoreReason[told[k]])reasons[k]=scoreReason[told[k]];
   return reasons;
 }
 // verified-pilot-3.2 places a national MCUI too (marked apart); older reports keep it off the IUCN matrix.
@@ -688,6 +691,13 @@ const shortReason={comparable_nutrition_missing:'고정 비교집단에 종 행 
   compound_origin_assay_chain_or_fixed_cohort_missing:'기원종→물질→시험 비교집단 없음',not_in_red_list:'IUCN 검색 0건 · 낮은 점수 아님',
   assessment_lookup_failed:'IUCN 조회 실패',category_not_numeric:'IUCN DD · 숫자 없음',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요',
   mbpi_single_source:'MBPI 단일 논문 · BBVI 보류'};
+// Conservation as the verified report reviewed it, for the chip and cell line that otherwise read the older profile status.
+const reportConservation=s=>{
+  const a=VERIFIED.includes(s.assessment?.report_version)?s.assessment:null;
+  if(!a?.conservation_trace?.reviewed)return null;
+  const v=pilotScore(s,'MCUI');
+  return v!==null?`시범 MCUI ${v.toFixed(1)}`:shortReason[a.withheld_reasons?.MCUI]||'MCUI 산출 보류';
+};
 const scoreReason={
   comparable_nutrition_missing:'같은 시료 상태의 고정 영양 비교집단에 이 종의 행이 없습니다.',
   food_row_not_species_specific:'식품성분표 행이 종 수준으로 확인되지 않아(예: 일반명 “해삼”) 이 종의 값으로 쓰지 않습니다.',
@@ -1240,6 +1250,7 @@ function speciesAxesLine(s){
   const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return `${k} ${st.value!==null?'시범값 있음':st.kind==='withheld'?'보류':st.label}`;}).join(' · ');
   const h=IUCN_HISTORICAL[s.aphiaID], k=s.info?.conservation||{};
   const iucn=h?(h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published}년 발표(원문 검수 전, 2013 평가 대체)`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.criteria||''} ${s.assessment.conservation_trace.publication_year}년 발표(원문 검수 · 시범 MCUI, 2013 평가 대체)`:`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':'현행 재확인 · 시범'})`))
+    :reportConservation(s)?`보전 ${reportConservation(s)}(지표 보고서)`
     :({withheld_insufficient_evidence:'보전평가 근거 부족으로 보류',not_reviewed:'보전평가 미검토'}[k.status]||'보전평가 정보 없음');
   return `종 단위 상태(이 셀의 값 아님): ${axes} · ${iucn}`;
 }
