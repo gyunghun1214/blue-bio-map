@@ -254,3 +254,48 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .vs-pill.held{background:#f0f3f6;color:var(--muted);font-weight:500}
 .value-species[open]>summary{border-bottom:1px solid var(--line)}
 .value-species-body{padding:4px 12px 12px;font-size:13px}
+
+/* ---------- 쓰임새로 찾기 chips ---------- */
+.use-chips{display:grid;gap:6px;margin:10px 0 0}
+.use-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.use-group{flex:none;width:30px;color:var(--muted);font-size:11px;font-weight:700}
+.use-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border:1px solid #cfe6e3;border-radius:99px;background:#fff;color:var(--teal-ink);font-size:12px;font-weight:600;line-height:1.5;cursor:pointer}
+.use-chip b{min-width:14px;padding:0 4px;border-radius:99px;background:var(--teal-soft);font-size:11px;font-variant-numeric:tabular-nums;text-align:center}
+.use-chip:hover{border-color:var(--teal-fill)}
+.use-chip.on{border-color:var(--teal);background:var(--teal);color:#fff}
+.use-chip.on b{background:rgba(255,255,255,.22)}
+.use-chip.gap{border-style:dashed;border-color:#d5dde4;background:#f6f8fa;color:#7d8c99;font-weight:500}
+.use-chip.gap b{background:#e8edf1;color:#7d8c99}
+.use-note{margin:8px 0 0;padding:7px 10px;border-radius:9px;background:var(--teal-soft);color:var(--ink2);font-size:12px;line-height:1.45}
+.use-note .text-button{margin-left:4px;font-size:12px}
+.use-suggest{display:block;width:100%;margin:8px 0 0;padding:7px 10px;border:1px dashed var(--teal-fill);border-radius:9px;background:#fff;color:var(--ink2);font-size:12.5px;text-align:left;cursor:pointer}
+.species-card .use-line{grid-column:2/-1;display:block;margin-top:3px;color:var(--ink2);font-size:11.5px;line-height:1.4}
+@media (max-width:740px){
+  .use-chips{order:5;grid-auto-flow:row;margin-top:6px}
+  .use-row{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .use-chip{flex:none}
+}
+
+/* Card scores: four axis values per species ('–' withheld) */
+.species-card .card-scores{grid-column:2/-1;display:flex;gap:4px;margin-top:5px}
+.card-scores i{display:grid;flex:1;min-width:0;padding:2px 0 3px;border-radius:6px;background:#f2f6f8;color:var(--ink);font-style:normal;font-size:12px;font-weight:700;line-height:1.15;text-align:center;font-variant-numeric:tabular-nums}
+.card-scores i small{color:var(--muted);font-size:9.5px;font-weight:600;letter-spacing:.02em}
+.card-scores i.held{background:none;border:1px dashed #dbe3e9;color:#9aa8b4;font-weight:500}
+.species-card.selected .card-scores i:not(.held){background:#fff}
+
+/* Half-circle gauges at the top of the species evidence */
+.axis-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 12px}
+.gauge{position:relative;margin:0;text-align:center}
+.gauge svg{display:block;width:100%;height:auto}
+.gauge .g-track{fill:none;stroke:#e9eff3;stroke-width:7;stroke-linecap:round}
+.gauge .g-fill{fill:none;stroke-width:7;stroke-linecap:round}
+.gauge text{font-size:21px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
+.gauge figcaption{display:grid;margin-top:-2px;font-size:12px;font-weight:700;color:var(--ink2)}
+.gauge figcaption small{font-size:11px;font-weight:500;color:var(--muted)}
+.gauge.held text{fill:#9aa8b4;font-weight:500}
+.gauge.held .g-track{stroke-dasharray:3 4}
+
+/* Value map: soft glow under typed cells (figure 5 heat-map look); the crisp cell above keeps the meaning and the click */
+.leaflet-valueGlow-pane{filter:blur(14px);opacity:.85;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.leaflet-valueGlow-pane{transition:opacity .3s}}
+@media (max-width:740px){.axis-gauges{gap:2px}.species-card .card-scores{grid-column:1/-1}}

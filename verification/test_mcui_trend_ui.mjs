@@ -64,7 +64,7 @@ assert.equal(ctx.valid(plain,report),false,'a 3.4 row must carry its trend');
 // 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record rides beside a withheld MCUI and is re-checked;
 // a record that carries a value, a report that scores it, or a record below the published thresholds is refused.
 const refRows=rows.filter(a=>a.mcui_substitute?.use==='reference_only');
-assert.equal(refRows.length,14);
+assert.equal(refRows.length,13);  // 3.16: 우뭇가사리 now has a range-state MCUI, so its Rapid LC record is gone
 assert.ok(refRows.every(a=>a.scores.MCUI===null&&a.mcui_basis===null&&a.mcui_substitute.value===null&&a.withheld_reasons.MCUI==='not_in_red_list'));
 const ref=refRows[0];
 assert.equal(broken(ref,b=>{b.mcui_substitute.value=10;}),false,'a reference-only record carries no value');

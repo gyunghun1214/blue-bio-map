@@ -133,7 +133,8 @@ const stages={
   // 3.15: MFPI shows 'validated' (cross-table check passed) and 우뭇가사리·살오징어·해삼 gain an MFPI. A Rapid LC check is
   // reference only (team-lead decision 2026-10-02), so a species without an IUCN or national category keeps MCUI 'unavailable'.
   494972:['verified','linked','validated','calculated','unavailable'],
-  372119:['verified','linked','validated','found','unavailable'],
+  // 3.16: Russia's Red Data Book gives 우뭇가사리 a range-state MCUI, so its conservation check reaches '시범 산출'
+  372119:['verified','linked','validated','found','calculated'],
   342067:['verified','linked','validated','linked','calculated'],
   250680:['verified','linked','validated','calculated','unavailable'],
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
@@ -174,7 +175,7 @@ assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 3.15 (team-lead decision 2026-10-02): reference only. The withheld MCUI keeps its reason and adds one reference line,
 // shown like the BBVI 참고값 line; 해삼 (IUCN EN) has no such line.
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI" aria-label="미역 MCUI 산출 보류 · 예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님 근거 보기">산출 보류<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small><small>예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님<\/small><\/button>/);
-assert.equal(dom.comparison.innerHTML.match(/<small>예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님<\/small>/g).length,3,'미역·멍게·우뭇가사리 on page 1');
+assert.equal(dom.comparison.innerHTML.match(/<small>예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님<\/small>/g).length,2,'미역·멍게 on page 1 (3.16: 우뭇가사리 now has a range-state MCUI, so no reference line)');
 assert.doesNotMatch(dom.comparison.innerHTML,/data-score-aphia="241776" data-score-axis="MCUI"[^>]*예비 평가/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);

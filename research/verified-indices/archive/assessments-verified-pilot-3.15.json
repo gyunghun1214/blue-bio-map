@@ -137,7 +137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1247,7 +1247,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1576,7 +1576,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1935,7 +1935,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2286,7 +2286,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2865,7 +2865,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3765,7 +3765,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4809,7 +4809,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5860,7 +5860,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6854,7 +6854,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7657,7 +7657,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8679,7 +8679,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -9828,7 +9828,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10920,7 +10920,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11908,7 +11908,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12876,7 +12876,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13884,7 +13884,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14870,7 +14870,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -15850,7 +15850,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16903,7 +16903,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17880,7 +17880,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18881,7 +18881,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19899,7 +19899,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.15 (2026-10-02). MCUI: the range-state step gains the Russian Red Data Book (Order No. 320 of 23.05.2023) row for Gelidium elegans (우뭇가사리), threat status 'У' = VU -> 60, labelled as a peripheral (northern-limit) population; the ladder order (range state before the preliminary check) is 3.15's. Every other rule, coefficient, cohort and threshold equals 3.15. See research/verified-indices/gap-closing-3.16-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.14 (2026-10-01). Gap closing (team-lead decisions 2026-10-01; research/verified-indices/gap-closing-2026-10-02.md). MFPI: an RDA DB 10.4 row is linked to a species by its MABIK national species list Korean name, else by its MFDS food-material scientific name, with a misapplied-name crosswalk (다시마, 우뭇가사리, 꼬시래기 and 해삼 join; 고등어 and 참문어 move from their MEXT item to their RDA row); a reviewed paper's own analysis, converted to fresh weight with the moisture of the same sample, is a species row graded literature_converted 0.85 (시카메굴, Liu 2021); six aquaculture records are added (살오징어 false). MBPI: a synthetic, sequence-confirmed peptide reported only in ug/mL is converted to uM with its average-residue molecular weight (전복 AMN, Wu 2015: 317.71 uM, MBPI 15.6). MCUI: when IUCN and the Korean list have no assessment, another range state's official national list (시카메굴, Japan NT) gives a separately labelled MCUI, and the Korean 참문어 row is assigned to Octopus sinensis by the crosswalk. Post-hoc validation with criteria fixed before the run: MFPI passed (MEXT cross-table, 11 species, rho 0.873); the preliminary Rapid LC check (Bachman et al. 2020; 14 species likely LC) failed its back-test (EN 해삼 and 전복 called LC), so it is shown as reference information only and gives no MCUI (team-lead decision 2026-10-02). BBVI rules, coefficients, cohorts and weights are unchanged; the site shows a single-paper BBVI reference value beside a withheld BBVI.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -20120,7 +20120,7 @@
       "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI.",
       "ranking_rule": "Each basis that gives an MCUI is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
-      "snapshot": "research/verified-indices/mcui-substitutes-3.16-2026-10-02.json",
+      "snapshot": "research/verified-indices/mcui-substitutes-2026-10-02.json",
       "snapshot_source_id": "gbif_rapid_lc",
       "thresholds": {
         "aoo_cell_km": 10,
@@ -20129,7 +20129,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.16",
+    "method_version": "verified-pilot-3.15",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -20487,7 +20487,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.16",
+  "method_version": "verified-pilot-3.15",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21392,15 +21392,6 @@
       "url": "https://koreascience.kr/article/JAKO200011921114207.page",
       "version": "page and PDF checked 2026-10-01"
     },
-    "russia_red_data_book_plants_2023": {
-      "accessed": "2026-10-02",
-      "license": "Russian federal legal act (official publication); category and name facts only",
-      "provider": "Ministry of Natural Resources and Ecology of the Russian Federation (Минприроды России)",
-      "terms": "One row quoted (rarity category, threat status, priority, Russian and scientific name); the list is not redistributed. The 'У = Уязвимые (VU - Vulnerable)' code is defined in Order No. 306 of 23.05.2016 para 3.7 as amended by Order No. 161 of 24.03.2020 (Minjust 02.04.2020 No. 57941).",
-      "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
-      "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
-      "version": "Order No. 320 of 23.05.2023 (in force; the preceding list was Order No. 289 of 2005, row 635); PDF p.38 of 48, ConsultantPlus print 01.03.2024 footer 'Страница 37 из 47'; file sha256 a606bb3c0cf2b98ac2ce04ddb03a3f0cc2f338e82309afd740c0a4dfba9152a8"
-    },
     "sargassum_2024_fractions": {
       "accessed": "2026-09-25",
       "doi": "10.3390/molecules29246000",
@@ -22276,7 +22267,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22958,7 +22949,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23924,7 +23915,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -25044,7 +25035,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26013,7 +26004,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26237,8 +26228,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -26263,37 +26253,78 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.61
+        "mean_ratio": 0.28
       },
       "korean_name": "우뭇가사리",
       "mbpi_label": null,
       "mbpi_stratum": null,
-      "mcui_basis": "range_state",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "range_state",
-        "category": "VU",
-        "label": "서식국 국가 평가 기반 시범 MCUI",
-        "pilot_mapping": "VU -> 60 (Russia national red list, team pilot rule)",
+        "basis": "preliminary",
+        "category": "LC",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "aphia_id": 372119,
-          "assessment_basis": "The list's threat-status column uses the IUCN codes defined in Order No. 306 para 3.7 (as amended 2020): 'У - Уязвимые (VU - Vulnerable)'. The rarity column ('3 - Редкие') is a Russian scale and is not mapped.",
-          "category": "VU",
-          "category_as_published": "Редкость 3 (Редкие) · Угроза исчезновения: У",
-          "continuity": "Row 635 of the 2005 list (Order No. 289) already held Gelidium elegans at rarity category 3; that list had no threat-status column, so the VU reading is first stated in the 2023 list.",
-          "country": "Russia",
-          "country_ko": "러시아",
-          "limitations": "Russia is the northern edge of the range (Amur Bay and Cape De-Friz, Peter the Great Gulf) and the species is recorded there as single finds, so this is a peripheral-population assessment, not a range-wide one. Japan, the centre of the range, does not list the species in the Ministry of the Environment algae red lists of 2020 or 2025 (the congener Gelidium hirsutum is listed); absence from a threatened-species list is not an LC assessment and does not overturn the Russian category. Never ranked or pooled with IUCN-based or Korean national MCUI.",
-          "list": "Красная книга Российской Федерации (растения и грибы), Section 5 ВОДОРОСЛИ, row 594",
-          "name_as_published": "Гелидиум изящный - Gelidium elegans",
-          "reviewed": true,
-          "scientific_name": "Gelidium elegans",
-          "scope": "national (Russia)",
-          "source_id": "russia_red_data_book_plants_2023"
+          "aoo_cells": 344,
+          "aoo_km2": 34400,
+          "countries_gbif": [
+            "JP",
+            "KR",
+            "TW"
+          ],
+          "eoo_km2": 2100617,
+          "gbif": {
+            "count": 1289,
+            "name": "Gelidium elegans Kützing",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 2662699,
+              "year": "1990,2026"
+            },
+            "read": 1289,
+            "status": "ACCEPTED",
+            "taxon_key": 2662699,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 1683,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 372119
+            }
+          },
+          "records": 998,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "russia_red_data_book_plants_2023"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 60.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -26345,7 +26376,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 60.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -26369,20 +26400,23 @@
           "recent": 230
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "일부 근거 확인",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": 60.0,
+        "MCUI": null,
         "MFPI": 76.7
       },
       "sensitivity": {
@@ -26393,22 +26427,23 @@
         "food_only_MFPI": 76.7
       },
       "source_ids": [
+        "bachman_2020_rapid_lc",
         "cmnpd_mbpi",
         "europepmc_mbpi",
+        "gbif_rapid_lc",
         "gelidium_2018_extract",
         "iucn_redlist_search",
         "lin_2024_gelidium_taiwan",
         "mabik_national_species_list",
         "mext_fooddb_2023",
         "obis_trend",
-        "rda_db_10_4",
-        "russia_red_data_book_plants_2023"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -26805,7 +26840,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27488,7 +27523,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28129,7 +28164,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.16 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.15 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -28836,7 +28871,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.16",
+        "method_version": "verified-pilot-3.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
