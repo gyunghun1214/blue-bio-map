@@ -1266,18 +1266,20 @@ MEXT_ROWS = {413600: ("MEXT:10280", 0.65, True), 127022: ("MEXT:10154", 0.5, Tru
 
 
 class VerifiedPilot39Tests(unittest.TestCase):
-    """Public method: 3.8 plus MEXT 2020 same-species raw items as the species' own nutrition row where RDA DB 10.4 has
+    """Superseded by 3.10. 3.9: 3.8 plus MEXT 2020 same-species raw items as the species' own nutrition row where RDA DB 10.4 has
     no row linked to the species, MEXT components widened to all four, and three aquaculture records
     (research/verified-indices/mext-rows-2026-10-01.md)."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V39))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V38)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.9", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.9 report is archived as it was
+        archived39 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.9.json"
+        self.assertEqual(render(self.report), archived39.read_text(encoding="utf-8"))
 
     def test_only_three_mfpi_move(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1316,6 +1318,46 @@ class VerifiedPilot39Tests(unittest.TestCase):
             m = cfg(old)["nutrition"]["substitutes"]["mext"]
             self.assertNotIn("species_row_groups", m)
             self.assertEqual(m["components"], ["zinc_mg"])
+
+
+V39 = ROOT / "config" / "verified-indices-v3.9.json"  # superseded by 3.10 (톳 peptide rows); its rows stay tested
+HIJIKI = "research/verified-indices/evidence-hijiki-2026-10-01.json"
+
+
+class VerifiedPilot310Tests(unittest.TestCase):
+    """Public method: 3.9 plus the reviewed 톳 peptide rows (research/verified-indices/evidence-hijiki-2026-10-01.md).
+    Evidence rows only: rules, coefficients and cohorts are 3.9's."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V39)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.10", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_hijiki_mbpi_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(494972, "MBPI"): 65.0})
+        self.assertEqual(sum(s["scores"]["MBPI"] is not None for s in self.new.values()), 14)
+
+    def test_hijiki_rows(self):
+        h = self.new[494972]
+        peptides = [(i["peptide_sequence"], i["percentile"]) for i in h["bioactivity_trace"] if i["stratum_kind"] == "peptide"]
+        self.assertEqual(sorted(peptides), [("GKY", 86.65), ("SKTY", 73.58), ("SVY", 78.12)])
+        # the synthetic GKY (65.0) now outranks the ChEMBL LXR-alpha item (45.3), which stays in the trace
+        self.assertEqual(h["mbpi_stratum"], "peptide")
+        self.assertIn(45.27, [round(i["adjusted"], 2) for i in h["bioactivity_trace"] if i["stratum_kind"] == "chembl"])
+        # one paper behind every item, so BBVI stays withheld
+        self.assertEqual(h["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_rows_are_read_from_3_10_on(self):
+        cfg = lambda p: json.loads(Path(p).read_text(encoding="utf-8"))
+        for old in (V33, V34, V35, V36, V37, V38, V39):
+            self.assertNotIn(HIJIKI, cfg(old)["peptide_supplements"])
+
 
 if __name__ == "__main__":
     unittest.main()

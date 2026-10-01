@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-01",
+  "sources": {
+    "suetsuna_1998_hijiki": {
+      "provider": "Nippon Suisan Gakkaishi 64(5):862 (Suetsuna 1998), full text via J-STAGE",
+      "title": "Separation and identification of angiotensin I-converting enzyme inhibitory peptides from peptic digest of Hizikia fusiformis protein",
+      "version": "1998",
+      "doi": "10.2331/suisan.64.862",
+      "url": "https://www.jstage.jst.go.jp/article/suisan1932/64/5/64_5_862/_article/-char/en",
+      "accessed": "2026-10-01",
+      "terms": "Bibliographic record and numeric values only; no text or tables copied",
+      "license": "Publisher copyright"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:GKY",
+      "source_id": "suetsuna_1998_hijiki",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "GKY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 3.92,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Full text (J-STAGE, free, Japanese with English abstract): pepsin digest of protein from the brown alga Hizikia fusiformis (WoRMS: synonym of Sargassum fusiforme 494972), collected at Sasuna Bay, Tsushima, Nagasaki, February 1995 (p.862). Sequence by amino acid analysis, automated Edman degradation (477A) and FAB-MS (m/z 367, p.864). Peptide synthesized by Fmoc solid phase (433A, p.863). ACE from rabbit lung (Sigma) with 12.5 mM HHL (Peptide Institute), Yamamoto's modification of Lieberman's method (p.863). Table 1 (p.865, 'ACE inhibitory activity of synthetic peptides') and the abstract give IC50 3.92 uM."
+    },
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:SVY",
+      "source_id": "suetsuna_1998_hijiki",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "SVY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 8.12,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Same paper and assay as GKY. FAB-MS m/z 368; Table 1 (p.865, synthetic peptide) and the abstract give IC50 8.12 uM."
+    },
+    {
+      "origin_aphia_id": 494972,
+      "origin_scientific_name": "Sargassum fusiforme",
+      "record_id": "10.2331/suisan.64.862:SKTY",
+      "source_id": "suetsuna_1998_hijiki",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "SKTY",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 11.07,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.2331/suisan.64.862",
+      "verification": "Same paper and assay as GKY. Table 1 (p.865, synthetic peptide), the results (p.864) and the abstract give Ser-Lys-Thr-Tyr, IC50 11.07 uM; amino acid ratio Ser:Lys:Thr:Tyr about 1:1:1:1 and FAB-MS m/z 498 fit SKTY. (The PDF's machine text layer reads 'Ser-Lys-Tyr-Tyr' once; the printed page does not.)"
+    }
+  ]
+}
