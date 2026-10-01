@@ -137,7 +137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1247,7 +1247,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1576,7 +1576,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1935,7 +1935,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2286,7 +2286,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2865,7 +2865,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3774,7 +3774,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4818,7 +4818,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5878,7 +5878,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6872,7 +6872,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7541,224 +7541,7 @@
       "aphia_id": 504357,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "adjusted": 1.4781792585640545,
-          "cohort_median_pMIC": 5.252,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Bacillus subtilis",
-              "target_strain": "ATCC 6633",
-              "unit": "uM",
-              "value": 182.16
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 3.74,
-          "peer_peptides": 2131,
-          "peptide_name": "AI-hemocidin 2",
-          "peptide_sequence": "DLRDSWKVIGSDKK",
-          "percentile": 1.97,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-2:B.subtilis"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-bacillus-subtilis",
-          "stratum_kind": "amp",
-          "target_species": "Bacillus subtilis",
-          "target_strains": [
-            "ATCC 6633"
-          ]
-        },
-        {
-          "adjusted": 12.961533061912114,
-          "cohort_median_pMIC": 5.028,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Escherichia coli",
-              "target_strain": "ATCC 25922",
-              "unit": "uM",
-              "value": 45.54
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 4.342,
-          "peer_peptides": 7123,
-          "peptide_name": "AI-hemocidin 2",
-          "peptide_sequence": "DLRDSWKVIGSDKK",
-          "percentile": 17.28,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-2:E.coli"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
-          "stratum_kind": "amp",
-          "target_species": "Escherichia coli",
-          "target_strains": [
-            "ATCC 25922"
-          ]
-        },
-        {
-          "adjusted": 5.655235066999772,
-          "cohort_median_pMIC": 4.903,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Pseudomonas aeruginosa",
-              "target_strain": "ATCC 27853",
-              "unit": "uM",
-              "value": 91.08
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 4.041,
-          "peer_peptides": 4403,
-          "peptide_name": "AI-hemocidin 2",
-          "peptide_sequence": "DLRDSWKVIGSDKK",
-          "percentile": 7.54,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-2:P.aeruginosa"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-pseudomonas-aeruginosa",
-          "stratum_kind": "amp",
-          "target_species": "Pseudomonas aeruginosa",
-          "target_strains": [
-            "ATCC 27853"
-          ]
-        },
-        {
-          "adjusted": 22.056674244884704,
-          "cohort_median_pMIC": 5.056,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Staphylococcus aureus",
-              "target_strain": "ATCC 25923",
-              "unit": "uM",
-              "value": 22.77
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 4.643,
-          "peer_peptides": 6158,
-          "peptide_name": "AI-hemocidin 2",
-          "peptide_sequence": "DLRDSWKVIGSDKK",
-          "percentile": 29.41,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-2:S.aureus"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
-          "stratum_kind": "amp",
-          "target_species": "Staphylococcus aureus",
-          "target_strains": [
-            "ATCC 25923"
-          ]
-        },
-        {
-          "adjusted": 12.814123262670224,
-          "cohort_median_pMIC": 5.028,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Escherichia coli",
-              "target_strain": "ATCC 25922",
-              "unit": "uM",
-              "value": 47.35
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 4.325,
-          "peer_peptides": 7123,
-          "peptide_name": "AI-hemocidin 1",
-          "peptide_sequence": "PSVQGAAAQLTADVKK",
-          "percentile": 17.09,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-1:E.coli"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
-          "stratum_kind": "amp",
-          "target_species": "Escherichia coli",
-          "target_strains": [
-            "ATCC 25922"
-          ]
-        },
-        {
-          "adjusted": 13.933681580740403,
-          "cohort_median_pMIC": 4.903,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md15070205",
-              "relation": "=",
-              "source_id": "li_2017_arca_hemocidin",
-              "target_species": "Pseudomonas aeruginosa",
-              "target_strain": "ATCC 27853",
-              "unit": "uM",
-              "value": 47.35
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md15070205"
-          ],
-          "pMIC": 4.325,
-          "peer_peptides": 4403,
-          "peptide_name": "AI-hemocidin 1",
-          "peptide_sequence": "PSVQGAAAQLTADVKK",
-          "percentile": 18.58,
-          "record_ids": [
-            "10.3390/md15070205:AI-hemocidin-1:P.aeruginosa"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-pseudomonas-aeruginosa",
-          "stratum_kind": "amp",
-          "target_species": "Pseudomonas aeruginosa",
-          "target_strains": [
-            "ATCC 27853"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -7783,11 +7566,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 22.1,
-          "minimum_cohort_10": 22.1,
-          "minimum_cohort_100": 22.1,
-          "no_approved_drug_filter": 22.1,
-          "no_common_metabolite_filter": 22.1
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 1,
@@ -7892,7 +7675,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8556,8 +8339,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -8592,11 +8375,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.69
       },
       "korean_name": "피조개",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "amp",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "national",
       "mcui_substitute": null,
       "national_assessment": {
@@ -8713,65 +8496,32 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 22.1,
-          "MFPI": 61.9
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.3390/md15070205"
-        ],
-        "mbpi_stratum": "amp-dbaasp-mic-broth-staphylococcus-aureus",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 32.1,
-          "0.5": 42.0,
-          "0.75": 51.9
-        },
-        "used_for_score": false,
-        "value": 42.0
-      },
+      "reference_combination": null,
       "scientific_name": "Anadara broughtonii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 22.1,
+        "MBPI": null,
         "MCUI": 10.0,
         "MFPI": 61.9
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 11.5,
-        "median_compound_sensitivity": 12.9,
-        "range_from_aggregation": [
-          1.5,
-          22.1
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 22.1,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 61.9
       },
       "source_ids": [
         "cellosaurus_mbpi",
         "chembl_mbpi",
-        "dbaasp_amp_cohort",
         "iucn_redlist_search",
         "kwon_cho_1986_anadara",
-        "li_2017_arca_hemocidin",
         "mext_sfct_2020_items",
         "nibr_red_data_book_2024",
         "obis_trend",
@@ -8782,8 +8532,8 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -8947,7 +8697,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10096,7 +9846,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11188,7 +10938,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12185,7 +11935,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13162,7 +12912,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14048,144 +13798,7 @@
       "aphia_id": 274849,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "adjusted": 31.647856446898345,
-          "cohort_median_pMIC": 5.056,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md20060353",
-              "relation": "=",
-              "source_id": "zhang_2022_rockfish_ts40",
-              "target_species": "Staphylococcus aureus",
-              "target_strain": null,
-              "unit": "uM",
-              "value": 12.5
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20060353"
-          ],
-          "pMIC": 4.903,
-          "peer_peptides": 6158,
-          "peptide_name": "TS40",
-          "peptide_sequence": "FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA",
-          "percentile": 42.2,
-          "record_ids": [
-            "10.3390/md20060353:TS40:S.aureus"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
-          "stratum_kind": "amp",
-          "target_species": "Staphylococcus aureus",
-          "target_strains": []
-        },
-        {
-          "adjusted": 0.0,
-          "cohort_median_pMIC": 5.072,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md20060353",
-              "relation": "=",
-              "source_id": "zhang_2022_rockfish_ts40",
-              "target_species": "Streptococcus agalactiae",
-              "target_strain": null,
-              "unit": "uM",
-              "value": 800.0
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20060353"
-          ],
-          "pMIC": 3.097,
-          "peer_peptides": 97,
-          "peptide_name": "TS40",
-          "peptide_sequence": "FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA",
-          "percentile": 0.0,
-          "record_ids": [
-            "10.3390/md20060353:TS40:S.agalactiae"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-streptococcus-agalactiae",
-          "stratum_kind": "amp",
-          "target_species": "Streptococcus agalactiae",
-          "target_strains": []
-        },
-        {
-          "adjusted": 12.5,
-          "cohort_median_pMIC": 5.201,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md20060353",
-              "relation": "=",
-              "source_id": "zhang_2022_rockfish_ts40",
-              "target_species": "Vibrio anguillarum",
-              "target_strain": null,
-              "unit": "uM",
-              "value": 25.0
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20060353"
-          ],
-          "pMIC": 4.602,
-          "peer_peptides": 69,
-          "peptide_name": "TS40",
-          "peptide_sequence": "FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA",
-          "percentile": 16.67,
-          "record_ids": [
-            "10.3390/md20060353:TS40:V.anguillarum"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-vibrio-anguillarum",
-          "stratum_kind": "amp",
-          "target_species": "Vibrio anguillarum (incl. Listonella anguillarum)",
-          "target_strains": []
-        },
-        {
-          "adjusted": 0.0,
-          "cohort_median_pMIC": 5.281,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "LB broth",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/md20060353",
-              "relation": "=",
-              "source_id": "zhang_2022_rockfish_ts40",
-              "target_species": "Vibrio parahaemolyticus",
-              "target_strain": null,
-              "unit": "uM",
-              "value": 400.0
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20060353"
-          ],
-          "pMIC": 3.398,
-          "peer_peptides": 128,
-          "peptide_name": "TS40",
-          "peptide_sequence": "FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA",
-          "percentile": 0.0,
-          "record_ids": [
-            "10.3390/md20060353:TS40:V.parahaemolyticus"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-vibrio-parahaemolyticus",
-          "stratum_kind": "amp",
-          "target_species": "Vibrio parahaemolyticus",
-          "target_strains": []
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -14199,11 +13812,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 31.6,
-          "minimum_cohort_10": 31.6,
-          "minimum_cohort_100": 31.6,
-          "no_approved_drug_filter": 31.6,
-          "no_common_metabolite_filter": 31.6
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -14316,7 +13929,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14937,8 +14550,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -14973,11 +14586,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.33
       },
       "korean_name": "조피볼락",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "amp",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
@@ -15123,76 +14736,44 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 31.6,
-          "MFPI": 48.5
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.3390/md20060353"
-        ],
-        "mbpi_stratum": "amp-dbaasp-mic-broth-staphylococcus-aureus",
-        "mfpi_cohort": "rda-10.4-raw-marine-animals",
-        "sensitivity": {
-          "0.25": 35.8,
-          "0.5": 40.1,
-          "0.75": 44.3
-        },
-        "used_for_score": false,
-        "value": 40.1
-      },
+      "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 31.6,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": 48.5
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 11.0,
-        "median_compound_sensitivity": 6.3,
-        "range_from_aggregation": [
-          0.0,
-          31.6
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 31.6,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 48.5
       },
       "source_ids": [
         "bachman_2020_rapid_lc",
         "cmnpd_mbpi",
-        "dbaasp_amp_cohort",
         "europepmc_mbpi",
         "gbif_rapid_lc",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
         "obis_trend",
-        "rda_db_10_4",
-        "zhang_2022_rockfish_ts40"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
       }
@@ -15343,7 +14924,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16323,7 +15904,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17385,7 +16966,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18362,7 +17943,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19363,7 +18944,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20351,31 +19932,6 @@
   "food_weight": 0.5,
   "generated_at": "2026-10-02T00:00:00Z",
   "method": {
-    "amp_bioactivity": {
-      "accepted_materials": [
-        "synthetic",
-        "purified_isolate"
-      ],
-      "cohort_builder": "scripts/build_amp_cohorts.py",
-      "cohort_file": "research/verified-indices/amp-cohorts-dbaasp-2026-10-02.json",
-      "cohort_rule": "One cohort per target bacterium: DBAASP rows whose activityMeasureValue is exactly MIC, measured in a broth medium on the published whitelist, with a single numeric concentration. Censored values, ranges, agar media and unclassifiable media are dropped. ug/mL becomes uM with ExPASy average residue masses plus one water, which admits only plain standard-residue monomers with free termini. Member key = sequence + termini + non-standard residues + bonds; member value = the median of that member's uM rows.",
-      "cohort_source_id": "dbaasp_amp_cohort",
-      "endpoint": "MIC",
-      "fungal_cohorts": "Candida albicans is a fungus. Its cohort was built in the same run and is kept out of this file; a fungal row would need its own labelled cohort and is never pooled with the bacterial ones.",
-      "limitations": [
-        "The cohort is dominated by designed and synthetic peptides, so a natural marine peptide usually lands below the median; the natural-origin-only cohort is published beside it as a sensitivity.",
-        "DBAASP gives molarMass 0.0 for every terminus and unusual residue, so modified peptides' ug/mL rows are dropped. Allowing only amidation and acetylation would add about 1,300 members per large cohort and move no cohort's median pMIC by more than 0.10.",
-        "Media differ: our two papers used LB broth, so the CLSI MHB/CAMHB cohort is a sensitivity, not the primary.",
-        "Seaweeds have no peptide-with-MIC paper at all, so this stratum covers animals only."
-      ],
-      "method": "broth_microdilution",
-      "minimum_justification": "Same as the ACE peptide stratum: 30 peers keep one rank step at about 3 percentile points, below which a single peer moves the score more than the 0.75 single-DOI discount.",
-      "minimum_peptides": 30,
-      "origin_rule": "The origin claim is read in the original paper, never from DBAASP, which records neither the tested material nor its synthesis: the sequence must come from the species' own gene or tissue, the tested material must be a chemically synthetic or sequence-confirmed purified single peptide, and the value must be a numeric MIC by broth microdilution. MEC (radial diffusion), inhibition-zone diameters, recombinant proteins and censored values never enter.",
-      "separation_rule": "A MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
-      "supplement": "research/verified-indices/evidence-amp-2026-10-02.json",
-      "value_scale": "pMIC = 6 - log10(MIC in uM); higher is more potent"
-    },
     "bbvi": {
       "default_food_weight": 0.5,
       "minimum_independent_mbpi_dois": 2,
@@ -20406,7 +19962,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.17 (2026-10-02). New MBPI stratum for antibacterial activity, the input the proposal names beside the ACE one: a fixed DBAASP cohort per target bacterium (MIC, broth media, single clean numeric value; research/verified-indices/amp-cohorts-dbaasp-2026-10-02.json, built by scripts/build_amp_cohorts.py), pMIC = 6 - log10(MIC uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the peptide stratum. A MIC is never ranked against an ACE IC50: each stratum keeps its own cohort. Origin rows come from the original paper, never from the database (DBAASP records neither the tested material nor its synthesis): a chemically synthetic or sequence-confirmed purified single peptide whose sequence comes from the species' own gene or tissue, with a numeric MIC by broth microdilution. MEC, inhibition zones, recombinant proteins and censored values are excluded. 피조개 (AI-hemocidin 1 and 2, Li 2017) and 조피볼락 (TS40, Zhang 2022) gain an MBPI; both rest on one paper each, so both are reference values and BBVI stays withheld. Every other rule, coefficient and cohort equals 3.17. See research/verified-indices/amp-stratum-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.16 (2026-10-02). Display only, no score changes: the species' own RDA DB 10.4 row also carries EPA and DHA per 100 g (research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json, collected by scripts/collect_rda_fatty_acids.py from the same 425 rows), shown beside the species with its share of the 330 mg daily reference value for EPA + DHA (식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5]). Korea has no omega-3 content claim, so no claim word is used. MFPI keeps its four components, its weights and its cohorts; nothing enters any score. See research/verified-indices/omega3-display-2026-10-02.md.",
     "chembl_bioactivity": {
       "assay_types": [
         "B",
@@ -20636,7 +20192,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.18",
+    "method_version": "verified-pilot-3.17",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21008,7 +20564,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.18",
+  "method_version": "verified-pilot-3.17",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21220,16 +20776,6 @@
       "terms": "CC BY-NC-SA 4.0",
       "url": "https://www.cmnpd.org",
       "version": "public site search without login"
-    },
-    "dbaasp_amp_cohort": {
-      "accessed": "2026-10-02",
-      "citation": "Pirtskhalava M, Amstrong AA, Grigolava M, et al. DBAASP v3. Nucleic Acids Research 49(D1):D288-D297 (2021), doi:10.1093/nar/gkaa991",
-      "license": "Open with attribution (DBAASP Data Access Policy)",
-      "provider": "DBAASP v3 (Database of Antimicrobial Activity and Structure of Peptides), I. Beritashvili Center of Experimental Biomedicine and NIAID OCICB",
-      "terms": "DBAASP Data Access Policy (terms-and-conditions page, read 2026-10-02): the data may be accessed, downloaded, copied, used, adapted and redistributed without restriction, with acknowledgement of DBAASP as the source. Only sequences, MIC values and row counts are stored; DBAASP's own numeric 'activity' field is never read.",
-      "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
-      "url": "https://dbaasp.org/v3/api-docs",
-      "version": "v3 REST, dumped 2026-10-02; dump sha256 d8877834a51d92276d19a1ab6bb7fff53ab32083fce6ad53232dca9b0dad3eb8"
     },
     "do_2012_oyster_lqp": {
       "accessed": "2026-09-27",
@@ -21646,16 +21192,6 @@
       "title": "Identification of angiotensin I-converting enzyme inhibitory peptides derived from enzymatic hydrolysates of razor clam Sinonovacula constricta",
       "url": "https://doi.org/10.3390/md14060110",
       "version": "2016"
-    },
-    "li_2017_arca_hemocidin": {
-      "accessed": "2026-10-02",
-      "doi": "10.3390/md15070205",
-      "license": "CC BY 4.0",
-      "provider": "Marine Drugs 15(7):205 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC5532647",
-      "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "Antibacterial Activity of AI-Hemocidin 2, a Novel N-Terminal Peptide of Hemoglobin Purified from Arca inflata (Li C, Zhu C, Zhang M, et al. 2017)",
-      "url": "https://doi.org/10.3390/md15070205",
-      "version": "2017 (PMID 28661457, PMC5532647)"
     },
     "li_2018_scallop_vw": {
       "accessed": "2026-09-28",
@@ -22239,16 +21775,6 @@
       "title": "Holotoxin A1 induces apoptosis by activating acid and neutral sphingomyelinase in K562 and human primary leukemia cells",
       "url": "https://europepmc.org/article/PMC/PMC5923410",
       "version": "Mar Drugs 2018;16(4):123, PMC5923410"
-    },
-    "zhang_2022_rockfish_ts40": {
-      "accessed": "2026-10-02",
-      "doi": "10.3390/md20060353",
-      "license": "CC BY 4.0",
-      "provider": "Marine Drugs 20(6):353 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC9228364",
-      "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Zhang M, Chen Y, Wang Z, et al. 2022)",
-      "url": "https://doi.org/10.3390/md20060353",
-      "version": "2022 (PMC9228364)"
     },
     "zhang_2025_mackerel_jfs": {
       "accessed": "2026-10-01",
@@ -22847,7 +22373,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23529,7 +23055,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24504,7 +24030,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -25624,7 +25150,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26593,7 +26119,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27385,7 +26911,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28068,7 +27594,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28709,7 +28235,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.18 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.17 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -29425,7 +28951,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.18",
+        "method_version": "verified-pilot-3.17",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

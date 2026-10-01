@@ -1,5 +1,6 @@
 """Regression checks for the reviewed snapshot and the scorer's admission rules (verified-pilot-2)."""
 import copy
+import math
 import json
 import sys
 import unittest
@@ -1737,20 +1738,26 @@ class VerifiedPilot316Tests(unittest.TestCase):
             self.assertNotIn(MCUI316, Path(old).read_text(encoding="utf-8"))
 
 
+V317 = ROOT / "config" / "verified-indices-v3.17.json"  # superseded by 3.18 (AMP stratum); its rows stay tested
+AMP = "research/verified-indices/evidence-amp-2026-10-02.json"
+
+
 class VerifiedPilot317Tests(unittest.TestCase):
-    """Public method: 3.16 plus display-only EPA and DHA. The species' own RDA DB 10.4 row carries the two fatty acids per
+    """Superseded by 3.18. Public method: 3.16 plus display-only EPA and DHA. The species' own RDA DB 10.4 row carries the two fatty acids per
     100 g (scripts/collect_rda_fatty_acids.py, same 425 rows), shown beside the species with its share of the 330 mg daily
     reference value. Korea has no omega-3 content claim, so no claim word is used. No score, cohort, percentile or weight
     changes: MFPI keeps protein, calcium, iron and zinc."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V317))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V316)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.17", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.17 report is archived as it was
+        archived317 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.17.json"
+        self.assertEqual(render(self.report), archived317.read_text(encoding="utf-8"))
 
     def test_no_score_moves(self):
         for a, s in self.new.items():
@@ -1792,6 +1799,100 @@ class VerifiedPilot317Tests(unittest.TestCase):
     def test_older_configs_do_not_read_it(self):
         for old in (V313, V314, V315, V316):
             self.assertNotIn(FATTY, Path(old).read_text(encoding="utf-8"))
+
+
+class VerifiedPilot318Tests(unittest.TestCase):
+    """Public method: 3.17 plus the antimicrobial-peptide stratum the proposal names beside the ACE one. A fixed DBAASP cohort
+    per target bacterium (MIC, broth media, single clean numeric value) ranks pMIC = 6 - log10(MIC uM) the way the ACE stratum
+    ranks pIC50, with the same minimum cohort, the same DOI factors and the same max aggregation. A MIC percentile is never
+    ranked against an ACE IC50 percentile. Origin rows are read in the original paper, never in the database. 피조개 and
+    조피볼락 gain a single-paper MBPI; their BBVI stays withheld."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V317)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.18", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_two_species_gain_an_mbpi_and_nothing_else_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(504357, "MBPI"): 22.1, (274849, "MBPI"): 31.6})
+        filled = {axis: sum(s["scores"][axis] is not None for s in self.new.values()) for axis in ("MFPI", "MBPI", "MCUI", "BBVI")}
+        self.assertEqual(filled, {"MFPI": 27, "MBPI": 20, "MCUI": 17, "BBVI": 2})
+        self.assertEqual(sum(filled.values()), 66)
+        # one paper each, so both are reference values and BBVI stays withheld
+        for a in (504357, 274849):
+            self.assertEqual(self.new[a]["mbpi_label"], "참고값(단일 논문)")
+            self.assertEqual(self.new[a]["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_items_rank_inside_their_own_cohort(self):
+        book = json.loads((ROOT / self.report["method"]["amp_bioactivity"]["cohort_file"]).read_text(encoding="utf-8"))
+        cohorts = {c["cohort_id"]: c for c in book["cohorts"]}
+        seen = 0
+        for a, s in self.new.items():
+            for item in s["bioactivity_trace"]:
+                if item.get("stratum_kind") != "amp":
+                    continue
+                seen += 1
+                cohort = cohorts[item["stratum_id"]]
+                self.assertEqual(item["peer_peptides"], cohort["size"], item["record_ids"])
+                self.assertEqual(cohort["target_kind"], "bacterium")
+                self.assertGreaterEqual(cohort["size"], self.report["method"]["amp_bioactivity"]["minimum_peptides"])
+                self.assertEqual(item["evidence_factor"], 0.75)  # one paper each
+                self.assertAlmostEqual(item["adjusted"], item["percentile"] * 0.75, places=1)
+                for m in item["measurements"]:
+                    self.assertEqual((m["endpoint"], m["relation"], m["unit"], m["method"]), ("MIC", "=", "uM", "broth_microdilution"))
+                    self.assertEqual(m["target_species"], item["measurements"][0]["target_species"])
+        self.assertEqual(seen, 10)
+
+    def test_best_items_are_the_published_ones(self):
+        best = lambda a: max(self.new[a]["bioactivity_trace"], key=lambda i: i["adjusted"])
+        clam, rockfish = best(504357), best(274849)
+        self.assertEqual((clam["stratum_kind"], clam["peptide_name"], clam["percentile"]), ("amp", "AI-hemocidin 2", 29.41))
+        self.assertEqual((rockfish["stratum_kind"], rockfish["peptide_name"], rockfish["percentile"]), ("amp", "TS40", 42.2))
+        for item in (clam, rockfish):
+            self.assertEqual(item["target_species"], "Staphylococcus aureus")
+            self.assertLess(item["pMIC"], item["cohort_median_pMIC"])  # both sit below the cohort median; say so, do not hide it
+
+    def test_a_mic_is_never_ranked_against_an_ace_ic50(self):
+        strata = {i["stratum_id"] for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "amp"}
+        ace = {i["stratum_id"] for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "peptide"}
+        self.assertTrue(strata and ace and not (strata & ace))
+        for s in self.new.values():
+            for i in s["bioactivity_trace"]:
+                self.assertEqual("pMIC" in i, i.get("stratum_kind") == "amp")
+                self.assertEqual("pIC50" in i, i.get("stratum_kind") == "peptide")
+
+    def test_the_cohort_file_obeys_its_own_published_rule(self):
+        rule = self.report["method"]["amp_bioactivity"]
+        book = json.loads((ROOT / rule["cohort_file"]).read_text(encoding="utf-8"))
+        for c in book["cohorts"]:
+            self.assertEqual(c["measure"], "MIC")
+            self.assertEqual(len(c["members"]), c["size"])
+            pmic = sorted(6 - math.log10(m["mic_uM"]) for m in c["members"])
+            self.assertAlmostEqual(round(median(pmic), 3), c["median_pMIC"], places=3)
+            self.assertAlmostEqual(round(pmic[0], 3), c["min_pMIC"], places=3)
+            self.assertTrue(all(m["mic_uM"] > 0 for m in c["members"]))
+        self.assertIn(rule["cohort_source_id"], self.report["sources"])
+        # Candida albicans is a fungus and is kept out of the scored file
+        self.assertNotIn("Candida", json.dumps([c["target_species"] for c in book["cohorts"]]))
+
+    def test_rejected_rows_stay_recorded(self):
+        supplement = json.loads((ROOT / self.report["method"]["amp_bioactivity"]["supplement"]).read_text(encoding="utf-8"))
+        reasons = " ".join(x["reason"] for x in supplement["excluded"])
+        for phrase in ("sequence", "recombinant", "MEC", "censored"):
+            self.assertIn(phrase, reasons)
+        self.assertEqual(len({x["species"] for x in supplement["excluded"]}), 3)
+
+    def test_older_configs_do_not_read_it(self):
+        for old in (V314, V315, V316, V317):
+            text = Path(old).read_text(encoding="utf-8")
+            self.assertNotIn(AMP, text)
+            self.assertNotIn("amp_bioactivity", json.loads(text))
 
 
 if __name__ == "__main__":
