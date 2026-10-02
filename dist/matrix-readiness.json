@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 1,
+  "matrix_points": 2,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.23",
+  "method_version": "verified-pilot-3.24",
   "schema_version": 1,
   "species": [
     {
@@ -131,6 +131,7 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
+        "https://doi.org/10.1016/j.jnutbio.2003.11.004",
         "https://doi.org/10.1016/j.procbio.2006.04.019",
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
@@ -959,7 +960,7 @@
     {
       "aphia_id": 393716,
       "axis_reasons": {
-        "BBVI": "mbpi_single_source",
+        "BBVI": null,
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -967,16 +968,16 @@
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "큰가리비",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
       "mcui_basis": "national",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Mizuhopecten yessoensis",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": 27.3,
+        "BBVI": 46.1,
+        "MBPI": 36.4,
         "MCUI": 10.0,
         "MFPI": 55.8
       },
@@ -984,6 +985,7 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Mizuhopecten+yessoensis&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.jnutbio.2003.11.004",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",

@@ -37,7 +37,7 @@ const N=(traces.get(ECKLONIA)||[]).filter(t=>!t.stratum_kind).reduce((a,t)=>a+(t
 assert.ok(N>0,'감태 has reviewed compound measurements');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
 const findings=[], count={detail:0,decision:0,cells:0,popup:0};
-let cellSpecies=0, popupSpecies=0;
+let cellSpecies=0, popupSpecies=0, replicatedSpecies=0;
 for(const s of next.species){
   const places=[['detail',()=>s.catalog?T.renderCandidateDetail(s):T.renderLiveDetail(s),'detail'],['decision',()=>T.showDecision(s),'decision-detail']];
   if(s.cells?.length){cellSpecies++;places.push(['cells',()=>T.renderCellTable(s),'cell-table'],['popup',()=>T.renderCellMap(s,'#000')]);}
@@ -54,6 +54,9 @@ for(const s of next.species){
     if((at>=0)!==own)p.push(own?'감태 caption missing':'감태 caption');
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
     if(h.includes('github.com/gyunghun1214'))p.push('private repo link');
+    // 3.24: a candidate whose top MBPI item rests on a used potency replication names it beside the origin papers
+    const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null), used=(top?.potency_replications||[]).filter(r=>r.used).length;
+    if(place==='detail'&&s.catalog&&used){replicatedSpecies++;if(!h.includes(`효능 재현 ${used}편`))p.push('potency replication missing from the MBPI summary');}
     if(place==='decision'){
       // Every MBPI item is named, with its stratum and, when it has measurements, a number. A field the shared helper
       // misses prints '' rather than 'undefined', so a stratum without its own branch shows up only here.
@@ -71,5 +74,6 @@ console.log(`findings ${findings.length} (detail ${count.detail} · decision ${c
 findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
+assert.ok(replicatedSpecies>0,'a candidate with a replicated top item (큰가리비, 3.24) was rendered');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
 console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value`);

@@ -27,14 +27,14 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertEqual(placed, [r["aphia_id"] for r in report["species"]
                                   if r["scores"]["BBVI"] is not None and r["scores"]["MCUI"] is not None
                                   and (r["mcui_basis"] not in ("range_state", "preliminary") or r["mcui_basis"] in allowed)])
-        self.assertEqual(placed, [836033])
+        self.assertEqual(placed, [836033, 393716])
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
-                          if r["scores"]["BBVI"] is not None], [(145721, 71.0), (836033, 83.9)])
+                          if r["scores"]["BBVI"] is not None], [(145721, 71.0), (836033, 83.9), (393716, 46.1)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 95.3), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
-                          (377084, 26.5), (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 58.6), (397082, 15.6), (393716, 27.3),
+                          (377084, 26.5), (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 58.6), (397082, 15.6), (393716, 36.4),
                           (504357, 75.0), (413600, 56.9),
                           (127022, 34.9), (219984, 22.6), (275816, 29.2), (274849, 31.7),
                           (254538, 59.9)])
@@ -48,6 +48,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.22: 괭생이모자반 gets MFPI 53.5 from the literature route (Murakami 2011) plus the
         # aquaculture record it needed (Pang 2008); MBPI is unchanged, so it still has no BBVI.
         # verified-pilot-3.23: display data only (literature-row limitations in the MFPI trace); no count moves.
+        # verified-pilot-3.24: Suetsuna 2004's purified VW replicates the 큰가리비 VW potency (pIC50 gap 0.906): MBPI
+        # 27.3 -> 36.4 and BBVI 46.1; its MCUI is a national assessment, so it is the matrix's second point.
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
         # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a
