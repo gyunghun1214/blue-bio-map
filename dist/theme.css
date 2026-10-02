@@ -255,25 +255,29 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .value-species[open]>summary{border-bottom:1px solid var(--line)}
 .value-species-body{padding:4px 12px 12px;font-size:13px}
 
-/* ---------- 쓰임새로 찾기 chips ---------- */
+/* ---------- 활용 특성으로 찾기 chips ---------- */
 .use-chips{display:grid;gap:6px;margin:10px 0 0}
-.use-row{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
-.use-group{flex:none;width:30px;color:var(--muted);font-size:11px;font-weight:700}
-.use-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border:1px solid #cfe6e3;border-radius:99px;background:#fff;color:var(--teal-ink);font-size:12px;font-weight:600;line-height:1.5;cursor:pointer}
+.use-title{margin:0;color:var(--ink2);font-size:12px;font-weight:700}
+.use-row{display:flex;align-items:flex-start;gap:4px}
+.use-group{flex:none;width:30px;padding-top:4px;color:var(--muted);font-size:11px;font-weight:700}
+/* Chips wrap inside their row (no sideways scroll), so a 380px phone shows every chip without overlap. */
+.use-row-chips{display:flex;flex-wrap:wrap;gap:4px;min-width:0}
+.use-chip{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:3px 9px;border:1px solid #cfe6e3;border-radius:99px;background:#fff;color:var(--teal-ink);font-size:12px;font-weight:600;line-height:1.5;cursor:pointer}
 .use-chip b{min-width:14px;padding:0 4px;border-radius:99px;background:var(--teal-soft);font-size:11px;font-variant-numeric:tabular-nums;text-align:center}
-.use-chip:hover{border-color:var(--teal-fill)}
+.use-chip:not([disabled]):hover{border-color:var(--teal-fill)}
 .use-chip.on{border-color:var(--teal);background:var(--teal);color:#fff}
 .use-chip.on b{background:rgba(255,255,255,.22)}
-.use-chip.gap{border-style:dashed;border-color:#d5dde4;background:#f6f8fa;color:#7d8c99;font-weight:500}
-.use-chip.gap b{background:#e8edf1;color:#7d8c99}
+.use-chip.gap{border-style:dashed;border-color:#d5dde4;background:#f6f8fa;color:#7d8c99;font-weight:500;cursor:not-allowed}
+.use-chip.gap b{background:#e8edf1;color:#7d8c99;font-weight:500}
 .use-note{margin:8px 0 0;padding:7px 10px;border-radius:9px;background:var(--teal-soft);color:var(--ink2);font-size:12px;line-height:1.45}
 .use-note .text-button{margin-left:4px;font-size:12px}
-.use-suggest{display:block;width:100%;margin:8px 0 0;padding:7px 10px;border:1px dashed var(--teal-fill);border-radius:9px;background:#fff;color:var(--ink2);font-size:12.5px;text-align:left;cursor:pointer}
+.use-suggest{display:block;width:100%;margin:8px 0 0;padding:7px 10px;border:1px dashed var(--teal-fill);border-radius:9px;background:#fff;color:var(--ink2);font-size:12.5px;line-height:1.6;text-align:left;cursor:pointer}
+.use-suggest.gap,.use-suggest.none{cursor:default}
+.use-suggest.none{border-color:#d5dde4;background:#f6f8fa}
+.use-suggest .use-chip{margin:0 2px;vertical-align:middle}
 .species-card .use-line{grid-column:2/-1;display:block;margin-top:3px;color:var(--ink2);font-size:11.5px;line-height:1.4}
 @media (max-width:740px){
   .use-chips{order:5;grid-auto-flow:row;margin-top:6px}
-  .use-row{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
-  .use-chip{flex:none}
 }
 
 /* Card scores: four axis values per species ('–' withheld) */

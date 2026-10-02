@@ -1079,54 +1079,72 @@ function setView(view) {
   writeHash();
 }
 
-// ---------- 쓰임새로 찾기 (find by use) ----------
-// Chips come only from evidence the report already adopted: MBPI items in bioactivity_trace (by target) and the
-// species' own nutrient row against the MFDS nutrient-claim thresholds. Nothing is tagged by hand. A use with no
-// adopted evidence stays a grey chip ("0종 · 근거 수집 전") so the gap is shown, not hidden.
+// ---------- 활용 특성으로 찾기 (find by use trait) ----------
+// Chips come only from evidence the report already adopted: MBPI items in bioactivity_trace (by assay target) and the
+// species' own nutrient row against the MFDS nutrient-claim thresholds. Nothing is tagged by hand, and rejected or
+// withheld records (chembl_links.rejected_links, bioactivity_partial, a withheld axis) never reach a chip. A trait
+// with no adopted evidence stays a grey, unclickable chip ("0종 · 근거 수집 전") and turns on by itself once a report
+// adopts an item its rule matches.
 // MFDS 식품등의 표시기준 [별지 1] 영양성분 강조표시: '고/풍부' = 100 g당 1일 영양성분 기준치의 단백질 20%, 무기질 30%.
 const CLAIM_REF={protein_g:55,calcium_mg:700,iron_mg:12,zinc_mg:8.5}, CLAIM_SHARE={protein_g:.2,calcium_mg:.3,iron_mg:.3,zinc_mg:.3};
-const bioUse=t=>{
-  const name=(t.target_name||'')+' '+(t.target_organism||''), type=t.target_type||'';
-  if(t.stratum_kind==='peptide'||/wijesinghe|ACE/i.test(t.stratum_id||'')||/angiotensin/i.test(name))return 'ace';
-  if(/virus|SARS|HIV|dengue|influenza/i.test(name))return 'virus';
-  if(/cholinesterase|beta-secretase/i.test(name))return 'dementia';
-  if(/Trypanosoma|Plasmodium|Leishmania|Toxoplasma|Schistosoma|Giardia/i.test(name))return 'parasite';
-  if(type==='CELL-LINE')return 'cancer';
-  if(type==='ORGANISM'&&/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella|Candida|Aspergillus/i.test(name))return 'microbe';
-  if(/glucosidase|dipeptidyl peptidase|PTP1B|amylase/i.test(name))return 'glucose';
-  return 'other';
+const MINERALS={calcium_mg:'칼슘',iron_mg:'철',zinc_mg:'아연'};
+const targetText=t=>(t.target_name||'')+' '+(t.target_organism||'');
+const BACTERIA=/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella|Candida|Aspergillus/i;
+// An MBPI item takes the first drug trait whose rule matches (the precedence the 3.12 counts were checked with);
+// a trait with a parent (내성균 under 항균) is counted under its parent as well.
+const USE_TRAITS=[
+  {id:'ace',group:'신약',label:'혈압(ACE 저해)',match:t=>t.stratum_kind==='peptide'||/wijesinghe|ACE/i.test(t.stratum_id||'')||/angiotensin/i.test(targetText(t))},
+  {id:'virus',group:'신약',label:'바이러스',match:t=>/virus|SARS|HIV|dengue|influenza/i.test(targetText(t))},
+  {id:'dementia',group:'신약',label:'치매 관련 효소',match:t=>/cholinesterase|beta-secretase/i.test(targetText(t))},
+  {id:'parasite',group:'신약',label:'기생충',match:t=>/Trypanosoma|Plasmodium|Leishmania|Toxoplasma|Schistosoma|Giardia/i.test(targetText(t))},
+  {id:'cancer',group:'신약',label:'항암',match:t=>t.target_type==='CELL-LINE'},
+  {id:'microbe',group:'신약',label:'항균',match:t=>t.target_type==='ORGANISM'&&BACTERIA.test(targetText(t))},
+  {id:'resistant',group:'신약',label:'내성균',parent:'microbe',match:t=>t.target_type==='ORGANISM'&&/resistan|MRSA|VRE|MDR/i.test(targetText(t))},
+  {id:'pain',group:'신약',label:'진통',match:t=>/opioid receptor|TRPV1|cyclooxygenase/i.test(targetText(t))},
+  {id:'antioxidant',group:'신약',label:'항산화',match:t=>/DPPH|ABTS|radical/i.test(targetText(t))},
+  {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|amylase/i.test(targetText(t))},
+  {id:'protein_g',group:'식량',label:'고단백'},
+  {id:'mineral',group:'식량',label:'미네랄'},
+];
+// Search words that point at a trait chip, kept apart from the rules so wording can grow without touching evidence.
+const TRAIT_SYNONYMS={
+  ace:['혈압','고혈압','ace','안지오텐신','항고혈압'],
+  virus:['바이러스','항바이러스','hiv','코로나','sars','뎅기','인플루엔자'],
+  dementia:['치매','알츠하이머','콜린에스테라아제','bace'],
+  parasite:['기생충','트리파노소마','말라리아','수면병','리슈마니아'],
+  cancer:['항암','암','종양','세포독성'],
+  microbe:['항균','세균','항생제','항진균'],
+  resistant:['내성균','내성','슈퍼박테리아','mrsa'],
+  pain:['진통','통증'],
+  antioxidant:['항산화','활성산소'],
+  diabetes:['항당뇨','당뇨','혈당'],
+  protein_g:['단백질','고단백','protein'],
+  mineral:['미네랄','무기질','칼슘','철','철분','아연'],
 };
-const USE_CHIPS=[
-  {id:'ace',group:'신약',label:'혈압(ACE 저해)',syn:['혈압','고혈압','ace','안지오텐신','항고혈압']},
-  {id:'virus',group:'신약',label:'바이러스',syn:['바이러스','항바이러스','hiv','코로나','sars','뎅기']},
-  {id:'dementia',group:'신약',label:'치매 관련 효소',syn:['치매','알츠하이머','콜린에스테라아제','bace']},
-  {id:'parasite',group:'신약',label:'기생충',syn:['기생충','트리파노소마','말라리아','수면병']},
-  {id:'microbe',group:'신약',label:'항균',syn:['항균','세균','내성균','항생제','항진균']},
-  {id:'cancer',group:'신약',label:'항암',syn:['항암','암','종양','세포독성']},
-  {id:'glucose',group:'신약',label:'혈당',syn:['혈당','당뇨','항당뇨']},
-  {id:'protein_g',group:'식량',label:'고단백',syn:['단백질','고단백','protein']},
-  {id:'calcium_mg',group:'식량',label:'칼슘',syn:['칼슘','뼈','미네랄','무기질']},
-  {id:'iron_mg',group:'식량',label:'철',syn:['철','철분','빈혈','미네랄','무기질']},
-  {id:'zinc_mg',group:'식량',label:'아연',syn:['아연','미네랄','무기질']},
-  {id:'omega3',group:'식량',label:'오메가-3',syn:['dha','epa','오메가','omega','불포화지방']},
+// Words for traits no chip collects: the search says "not collected" instead of showing a grey 0 that looks measured.
+const UNCOLLECTED_TERMS=[
+  {words:['dha','epa','오메가-3','오메가3','오메가','omega','omega-3','불포화지방'],note:'종 상세의 EPA·DHA 값은 점수에 쓰지 않는 참고값입니다.'},
 ];
 let activeUse=null;
-// Evidence line for one species and one use, or null. Values are the species' adopted items, never a relative's.
+const traitById=id=>USE_TRAITS.find(c=>c.id===id);
+// ChEMBL items carry a link review; peptide and reviewed-compound items are adopted by their stratum.
+const isAdopted=t=>t.link_review===undefined||t.link_review==='accepted';
+function traitIdsOf(t){
+  const first=USE_TRAITS.find(c=>c.match&&!c.parent&&c.match(t));
+  return first?[first.id,...USE_TRAITS.filter(c=>c.parent===first.id&&c.match(t)).map(c=>c.id)]:[];
+}
+const overClaim=(a,id)=>{const v=a.food_trace?.nutrients?.[id];return v&&Number.isFinite(v.value)&&v.value>=CLAIM_REF[id]*CLAIM_SHARE[id]?v:null;};
+const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(CLAIM_REF[id]*CLAIM_SHARE[id]*10)/10)} 이상${v.substitute?' · '+v.substitute.label:''}`;
+// Evidence line for one species and one trait, or null. Values are the species' adopted items, never a relative's.
 function useEvidence(s,id){
   const a=s.assessment;if(!a)return null;
-  if(id==='omega3'){
-    const fa=a.food_trace?.display_fatty_acids;
-    if(!fa)return null;
-    const pct=Math.round(fa.sum_mg/fa.reference_mg*100);
-    return pct>=30?{text:`EPA+DHA ${num(fa.sum_mg)} mg/100 g · 1일 기준치 ${fa.reference_mg} mg의 ${pct}%${/JAPAN|USDA/.test(fa.row_source||'')?' · '+fa.row_source+' 차용값':''}`,score:pilotScore(s,'MFPI')}:null;
-  }
-  if(id in CLAIM_REF){
-    const v=a.food_trace?.nutrients?.[id];if(!v||!Number.isFinite(v.value))return null;
-    const cut=CLAIM_REF[id]*CLAIM_SHARE[id];
-    return v.value>=cut?{text:`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(cut*10)/10)} 이상${v.substitute?' · '+v.substitute.label:''}`,score:pilotScore(s,'MFPI')}:null;
+  if(traitById(id)?.group==='식량'){
+    if(a.axis_errors?.MFPI||pilotScore(s,'MFPI')===null)return null;
+    const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
+    return hits.length?{text:hits.map(([k,v])=>(MINERALS[k]||'단백질')+' '+nutrientLine(v,k)).join(' · '),score:pilotScore(s,'MFPI')}:null;
   }
   if(a.axis_errors?.MBPI||pilotScore(s,'MBPI')===null)return null;
-  const hits=(a.bioactivity_trace||[]).filter(t=>bioUse(t)===id).sort((x,y)=>y.adjusted-x.adjusted);
+  const hits=(a.bioactivity_trace||[]).filter(t=>isAdopted(t)&&traitIdsOf(t).includes(id)).sort((x,y)=>y.adjusted-x.adjusted);
   if(!hits.length)return null;
   const t=hits[0], m=(t.measurements||[])[0]||{};
   const what=t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
@@ -1135,38 +1153,52 @@ function useEvidence(s,id){
   return {text:`${what} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
 }
 const useCount=id=>(data?.species||[]).filter(s=>useEvidence(s,id)).length;
+// A chip's state comes from its count alone, so a grey chip activates as soon as adopted evidence matches it.
+function traitChip(c,n){
+  const on=activeUse===c.id;
+  return `<button type="button" class="use-chip${n?'':' gap'}${on?' on':''}" data-use="${c.id}"${n?` aria-pressed="${on}"`:' disabled'} title="${n?`채택된 근거가 있는 ${n}종`:'채택된 근거가 아직 없습니다'}">${esc(c.label)} <b>${n?n+'종':'0종 · 근거 수집 전'}</b></button>`;
+}
 function renderUseChips(){
   const box=$('use-chips');if(!box||!data)return;
-  box.innerHTML=['신약','식량'].map(g=>`<div class="use-row" role="group" aria-label="${g} 쓰임새"><span class="use-group">${g}</span>`+
-    USE_CHIPS.filter(c=>c.group===g).map(c=>{const n=c.gap?0:useCount(c.id);
-      return `<button type="button" class="use-chip${n?'':' gap'}${activeUse===c.id?' on':''}" data-use="${c.id}" aria-pressed="${activeUse===c.id}" title="${esc(n?`채택된 근거가 있는 ${n}종`:(c.gap||'채택된 근거가 아직 없습니다 · 근거 수집 전'))}">${esc(c.label)} <b>${n}</b></button>`;}).join('')+'</div>').join('');
-  box.querySelectorAll('[data-use]').forEach(b=>b.addEventListener('click',()=>setUse(activeUse===b.dataset.use?null:b.dataset.use)));
+  box.innerHTML='<p class="use-title">활용 특성으로 찾기</p>'+['신약','식량'].map(g=>`<div class="use-row" role="group" aria-label="${g} 활용 특성"><span class="use-group">${g}</span><span class="use-row-chips">`+
+    USE_TRAITS.filter(c=>c.group===g).map(c=>traitChip(c,useCount(c.id))).join('')+'</span></div>').join('');
+  box.querySelectorAll('[data-use]:not([disabled])').forEach(b=>b.addEventListener('click',()=>setUse(activeUse===b.dataset.use?null:b.dataset.use)));
 }
 function setUse(id){
-  activeUse=id;renderUseChips();renderList();
+  activeUse=id&&useCount(id)?id:null;renderUseChips();renderList();
   if(mapMode==='value')renderMap();
+  writeHash();
 }
 const useMatch=s=>!activeUse||!!useEvidence(s,activeUse);
-// Search words that name a use ("혈압", "DHA") suggest its chip; name search keeps working.
+// Search words that name a trait ("혈압", "항암") show its chip; words no chip collects ("DHA") say so.
+// Name search keeps working beside this.
+const termHit=(words,q)=>words.some(w=>w===q||(q.length>1&&w.startsWith(q)));
 function useSuggestion(query){
-  const q=query.trim().toLowerCase();if(!q)return '';
-  const c=USE_CHIPS.find(c=>c.syn.some(w=>w===q||(q.length>1&&w.startsWith(q))));
-  if(!c||activeUse===c.id)return '';
-  const n=c.gap?0:useCount(c.id);
-  return `<button type="button" class="use-suggest" data-use-suggest="${c.id}">‘${esc(query.trim())}’ → <b>${esc(c.group)} · ${esc(c.label)}</b> ${n?n+'종 보기':'0종 · 근거 수집 전'}</button>`;
+  const raw=query.trim(), q=raw.toLowerCase();if(!q)return '';
+  const c=USE_TRAITS.find(c=>termHit(TRAIT_SYNONYMS[c.id]||[],q));
+  if(c){
+    if(activeUse===c.id)return '';
+    const n=useCount(c.id);
+    return n?`<button type="button" class="use-suggest" data-use-suggest="${c.id}">‘${esc(raw)}’ → <b>${esc(c.group)} · ${esc(c.label)}</b> ${n}종 보기</button>`
+      :`<p class="use-suggest gap">‘${esc(raw)}’ → ${esc(c.group)} ${traitChip(c,0)} 채택된 근거가 아직 없어 선택할 수 없습니다.</p>`;
+  }
+  const u=UNCOLLECTED_TERMS.find(u=>termHit(u.words,q));
+  return u?`<p class="use-suggest none">‘${esc(raw)}’ · 해당 특성은 아직 자료를 수집하지 않았습니다(활용 특성 기준). ${esc(u.note)}</p>`:'';
 }
-function useNote(shown){
+// shown/base: species the trait keeps, out of those already passing the name, group and evidence filters.
+function useNote(shown,base){
   if(!activeUse)return '';
-  const c=USE_CHIPS.find(c=>c.id===activeUse), hidden=(data?.species.length||0)-shown;
-  const rule=c.id==='omega3'?'EPA+DHA가 1일 기준치(330 mg)의 30% 이상인 종. 오메가-3에는 식약처 함량강조표시 기준이 없어 수치와 비율만 표시하는 팀 규칙입니다'
-    :c.id in CLAIM_REF?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%)`:'보고서에 채택된 MBPI 근거의 표적';
-  return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 근거 미확인 ${hidden}종은 숨김(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
+  const c=traitById(activeUse);
+  const rule=c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
+    :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
+    :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
+  return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 숨김: 근거 미확인 ${base-shown}종(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
 }
-// Result cards always carry conservation and the matrix type, so a use filter never shows use alone.
+// Result cards always carry conservation and the matrix type, so a trait filter never shows use alone.
 function useCardLine(s){
   if(!activeUse)return '';
   const e=useEvidence(s,activeUse), mc=pilotScore(s,'MCUI'), t=matrixType(s);
-  return `<span class="use-line">${esc(e?.text||'')}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)} · ${t?'매트릭스 '+esc(matrixTypeLabel(t)):'매트릭스 미배치'}</span>`;
+  return `<span class="use-line">${esc(e?.text||'')}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)} · 매트릭스 유형 ${t?esc(matrixTypeLabel(t)):'없음(미배치)'}</span>`;
 }
 
 // Four axis values on every card ('–' = withheld, never 0), so the list can be scanned without opening a species.
@@ -1175,12 +1207,13 @@ const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MC
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
   const group=$('species-group').value, evidence=$('species-evidence').value;
-  const matches=data.species.filter(s=>(group==='all'||s.group===group)
+  const base=data.species.filter(s=>(group==='all'||s.group===group)
     &&(evidence==='all'||(evidence==='published'?!!s.cells.length:!!s.catalog&&!s.cells.length))
-    &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query))&&useMatch(s));
+    &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
+  const matches=base.filter(useMatch);
   $('species-count').textContent=`${matches.length}종`;
   const extra=$('use-extra');
-  if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches.length);
+  if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches.length,base.length);
     extra.querySelector('[data-use-suggest]')?.addEventListener('click',e=>{$('search').value='';setUse(e.currentTarget.dataset.useSuggest);});
     extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUse(null));}
   // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
@@ -1624,12 +1657,13 @@ function cellCsv(s){
   const rows=s.cells.map(c=>[s.label,s.name,s.aphiaID,c.lat0,c.lat0+c.sizeDeg,c.lon0,c.lon0+c.sizeDeg,c.sizeDeg,c.period,c.yearStart,c.yearEnd,c.records,c.sites,(c.citations||[]).map(x=>x.title).join('; '),(c.licenses||[...new Set((c.citations||[]).flatMap(x=>x.licenses||[]))]).join('; '),(c.seaAreas||[]).join('; '),note+(c.historical?' · 2000년 이전 과거 기록':'')+(c.outsideKoreanEEZ?' · 한국·북한 EEZ 밖':'')]);
   return '﻿'+[head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
 }
-// Shareable view: species, tab, basemap, period and map view live in the URL hash.
+// Shareable view: species, tab, basemap, period, map view and use-trait chip live in the URL hash.
 function readHash(){try{return Object.fromEntries(new URLSearchParams(location.hash.slice(1)));}catch{return {};}}
 function writeHash(){
   if(!data||!selected)return;
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
   if(periodFilter!=='all')p.set('p',periodFilter);
+  if(activeUse)p.set('u',activeUse);
   if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
   try{history.replaceState(null,'','#'+p.toString());}catch{}
 }
@@ -1637,6 +1671,7 @@ function applyHash(h){
   const s=data?.species.find(x=>x.aphiaID===Number(h.s));
   if(s)selectSpecies(s.aphiaID);
   if(h.p&&selected?.cells.some(c=>c.period===h.p)){periodFilter=h.p;renderMap();}
+  if(h.u&&traitById(h.u))setUse(h.u); // a chip that has no evidence in this report stays off
   if(h.t==='value')setMapMode('value');
   if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
   const m=(h.m||'').split('/').map(Number);
@@ -1778,7 +1813,7 @@ function renderValueMap(){
   $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 보류 사유를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
-  if(activeUse){const c=USE_CHIPS.find(c=>c.id===activeUse);$('map-judgment').textContent+=` 쓰임새 ‘${c.group} · ${c.label}’ 칩 적용 중: 그 근거가 있는 종의 셀만 표시합니다.`;}
+  if(activeUse){const c=traitById(activeUse);$('map-judgment').textContent+=` 활용 특성 ‘${c.group} · ${c.label}’ 칩 적용 중: 그 근거가 있는 종의 셀만 표시합니다(출현 기록 보기에는 적용하지 않음).`;}
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
   $('layer-unexplored-count').textContent=`${layerCounts.unexplored.n}종 · 지도 표시 ${layerCounts.unexplored.shown}종`;
