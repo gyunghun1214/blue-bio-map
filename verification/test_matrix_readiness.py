@@ -45,6 +45,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # species with P703 statements; one paper, so no BBVI.
         # verified-pilot-3.21: the anticancer stratum moves 피조개 22.0 -> 75.0 (P6 on HT-29, Li 2022); it still rests
         # on one paper, so no BBVI.
+        # verified-pilot-3.22: 괭생이모자반 gets MFPI 53.5 from the literature route (Murakami 2011) plus the
+        # aquaculture record it needed (Pang 2008); MBPI is unchanged, so it still has no BBVI.
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
         # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a
@@ -66,7 +68,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # 바지락 VISDEDGVTH (Chen 2018) 39.5 -> 58.6; 대구 GASSGMPG (Ngo 2016) 59.9, all single-paper except 미역.
         # verified-pilot-3.15 links RDA rows by name (다시마·우뭇가사리·꼬시래기·해삼), reads 시카메굴 from a paper, adds six
         # aquaculture records (살오징어 false) and converts the synthetic 전복 AMN to uM: MFPI 21 -> 27, 전복 MBPI 15.6.
-        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 27)
+        # verified-pilot-3.22 adds 괭생이모자반 through the literature route: MFPI 27 -> 28.
+        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 28)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
         # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list. 3.15 (team-lead decision

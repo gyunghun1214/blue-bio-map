@@ -2048,15 +2048,18 @@ class VerifiedPilot320Tests(unittest.TestCase):
 ANTICANCER = "research/verified-indices/evidence-anticancer-2026-10-02.json"
 
 
+V321 = ROOT / "config" / "verified-indices-v3.21.json"  # superseded by 3.22 (괭생이모자반 MFPI); its rows stay tested
+
+
 class VerifiedPilot321Tests(unittest.TestCase):
-    """Public method: 3.20 plus the anticancer stratum the proposal names beside the antibacterial one. A fixed CancerPPD 2.0
+    """Superseded by 3.22. Public method: 3.20 plus the anticancer stratum the proposal names beside the antibacterial one. A fixed CancerPPD 2.0
     cohort per cancer cell line (IC50, single clean numeric value) ranks pIC50 = 6 - log10(IC50 uM) the way the AMP stratum
     ranks pMIC, with the same minimum cohort, the same DOI factors and the same max aggregation. A cell IC50 is never ranked
     against a MIC or an ACE IC50, and a peptide the database already holds is removed from its own cohort before ranking.
     피조개 gains an anticancer item that becomes its best; 가시파래 and 맛조개 gain items that rank below their best."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V321))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V320)))
         self.rule = self.report["method"]["anticancer_bioactivity"]
@@ -2065,7 +2068,9 @@ class VerifiedPilot321Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.21", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.21 report is archived as it was
+        archived321 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.21.json"
+        self.assertEqual(render(self.report), archived321.read_text(encoding="utf-8"))
 
     def test_one_species_moves_and_the_others_only_gain_evidence(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -2157,6 +2162,76 @@ class VerifiedPilot321Tests(unittest.TestCase):
             text = Path(old).read_text(encoding="utf-8")
             self.assertNotIn(ANTICANCER, text)
             self.assertNotIn("anticancer_bioactivity", json.loads(text))
+
+
+LIT322 = "research/verified-indices/mfpi-literature-rows-3.22-2026-10-02.json"
+AQUA322 = "research/verified-indices/mfpi-aquaculture-names-3.22-2026-10-02.json"
+
+
+class VerifiedPilot322Tests(unittest.TestCase):
+    """Public method: 3.21 plus an MFPI for 괭생이모자반 through the literature route the method has had since 3.12.
+    Murakami et al. 2011 analyses the raw edible portion of this species and reports the moisture of the same pooled
+    sample, so protein, calcium and zinc convert to fresh weight; iron is not analysed at all and stays out of the mean
+    under the 3.7 minimum-components rule. The species also gains the aquaculture record the MFPI formula requires.
+    No rule, cohort, weight or coefficient moves."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V321)))
+        self.lit = self.report["method"]["nutrition"]["substitutes"]["literature"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.22", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_the_seaweed_gains_a_score(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(494853, "MFPI"): 53.5})
+        self.assertEqual(sum(s["scores"][axis] is not None for s in self.new.values() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")), 68)
+        weed = self.new[494853]
+        self.assertIsNone(weed["scores"]["BBVI"])  # its MBPI still rests on one paper
+        self.assertEqual(weed["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_the_row_is_the_paper_converted_with_its_own_moisture(self):
+        trace = self.new[494853]["food_trace"]
+        self.assertEqual(trace["row_table"], "literature")
+        self.assertTrue(trace["outside_cohort"])
+        self.assertEqual(trace["omitted_components"], ["iron_mg"])
+        self.assertEqual({k: v["value"] for k, v in trace["nutrients"].items() if v},
+                         {"protein_g": 1.04, "calcium_mg": 147.8, "zinc_mg": 0.48})
+        book = json.loads((ROOT / LIT322).read_text(encoding="utf-8"))
+        item, = [i for i in book["items"] if i["aphia_id"] == 494853]
+        self.assertEqual(item["sample_state"], "raw")
+        self.assertEqual(item["basis"], "100 g edible portion")
+        self.assertEqual(item["food_group"], "해조류")
+        # every published value is the dry-basis value at this sample's own moisture
+        for key, c in item["components"].items():
+            self.assertEqual(c["value"], round(c["dry_basis_value"] * (100 - item["moisture_pct"]) / 100, 2), key)
+        self.assertEqual(set(item["components"]) | set(item["omitted"]), set(self.report["method"]["nutrition"]["components"]))
+        self.assertIn("does not analyse iron", item["omitted"]["iron_mg"])
+        self.assertIn(item["source_id"], self.lit["source_ids"])
+        self.assertIn(item["source_id"], self.new[494853]["source_ids"])
+
+    def test_the_aquaculture_record_is_research_rearing_and_says_so(self):
+        aqua = self.new[494853]["food_trace"]["aquaculture"]
+        self.assertTrue(aqua["feasible"])
+        self.assertIn("not food production", aqua["limitations"])
+        self.assertIn("Qingdao", aqua["region"])
+        self.assertIn(aqua["source_id"], self.new[494853]["source_ids"])
+
+    def test_the_other_literature_species_is_untouched(self):
+        # 시카메굴 keeps the 3.12 row, so the shared file only grew
+        book = json.loads((ROOT / LIT322).read_text(encoding="utf-8"))
+        self.assertEqual(sorted(i["aphia_id"] for i in book["items"]), [494853, 836041])
+        self.assertEqual(self.new[836041]["food_trace"]["nutrients"], self.old[836041]["food_trace"]["nutrients"])
+
+    def test_older_configs_keep_their_own_input_files(self):
+        for old in (V319, V320, V321):
+            text = Path(old).read_text(encoding="utf-8")
+            self.assertNotIn(LIT322, text)
+            self.assertNotIn(AQUA322, text)
 
 
 if __name__ == "__main__":

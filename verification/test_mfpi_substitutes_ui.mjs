@@ -19,7 +19,10 @@ const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
 // 3.9: 고등어·맛조개·참문어 have no linked RDA row; a MEXT same-species raw item is their own row.
 // 3.15: national-name links give 고등어·참문어 their RDA rows (MEXT zinc fills the blank) and 해삼·다시마·우뭇가사리·꼬시래기 rows that
 // leave zinc out; 살오징어 scores with its MEXT zinc once its aquaculture record exists; 시카메굴 has a literature row.
-assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[127022,145086,219984,236157,241776,254538,342067,372119,377084,397082,413600,494972,504357,506159,534443,836041,1666974]);
+// 3.22: 괭생이모자반 (494853) joins through the same literature route, leaving iron out of the mean.
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[127022,145086,219984,236157,241776,254538,342067,372119,377084,397082,413600,494853,494972,504357,506159,534443,836041,1666974]);
+const akamoku=rows.find(a=>a.aphia_id===494853).food_trace;
+assert.deepEqual([akamoku.row_table,akamoku.source_food_item_id,akamoku.omitted_components],['literature','LIT:murakami2011-shorneri-tables3-4',['iron_mg']]);
 const kumamoto=rows.find(a=>a.aphia_id===836041).food_trace;
 assert.deepEqual([kumamoto.row_table,kumamoto.source_food_item_id,kumamoto.omitted_components],['literature','LIT:liu2021-csikamea-table1',['zinc_mg']]);
 
