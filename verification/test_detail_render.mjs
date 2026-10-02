@@ -36,6 +36,8 @@ const ECKLONIA=371986, CAPTION='감태 유래 분리 화합물';
 const N=(traces.get(ECKLONIA)||[]).filter(t=>!t.stratum_kind).reduce((a,t)=>a+(t.measurements||[]).length,0);
 assert.ok(N>0,'감태 has reviewed compound measurements');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
+// A template that puts its own period after a source sentence that already ends in one prints '..' ('cod..'); '...' stays.
+const DOTS=/[^.]\.\.(?!\.)/g;
 const findings=[], count={detail:0,decision:0,cells:0,popup:0};
 let cellSpecies=0, popupSpecies=0;
 for(const s of next.species){
@@ -50,6 +52,8 @@ for(const s of next.species){
     const bad=h.match(BAD), sea=h.match(SEA_EN)||[];
     if(bad)p.push(`${bad.length}× ${[...new Set(bad)].join('/')}`);
     if(sea.length)p.push(`${sea.length}× English sea name (${[...new Set(sea)].join(', ')})`);
+    const dots=[...h.matchAll(DOTS)].map(m=>h.slice(Math.max(0,m.index-20),m.index+3));
+    if(dots.length)p.push(`${dots.length}× double period (${dots.join(' | ')})`);
     const own=place==='detail'&&s.aphiaID===ECKLONIA, at=h.indexOf(CAPTION);
     if((at>=0)!==own)p.push(own?'감태 caption missing':'감태 caption');
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
@@ -72,4 +76,4 @@ findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value`);
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period`);

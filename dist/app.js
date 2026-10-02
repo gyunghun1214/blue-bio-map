@@ -827,7 +827,7 @@ function verifiedFoodDetail(s){
     `<p class="fine">고정 비교집단 ${esc(f.cohort_id)} · ${esc(f.cohort_species)}개 식품${cohort?' ('+esc(cohort.foods.join(', '))+')':''}. ${esc(f.cohort_criteria)} 비교집단이 다른 종의 MFPI끼리는 비교하지 않습니다.</p>`+
     // the edible fraction carries its own sample and caveats, the way the aquaculture line below already does
     `<p>가식부 ${esc((e.value*100).toFixed(1))}% · ${esc(e.method)}${e.region?` 시료: ${esc(e.region)}${e.sample_period?` (${esc(e.sample_period)})`:''}.`:''}${e.limitations?` 제약: ${esc(e.limitations)}`:''} · ${verifiedSource(e.source_id,'원자료 ↗')}</p>`+
-    `<p>${q.feasible?'양식 방법':'양식 가능 근거 없음(양식 점수 0) · 확인한 시도'}: ${esc(q.method)}. 적용 범위: ${esc(q.region)} (${esc(q.year)}). 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
+    `<p>${q.feasible?'양식 방법':'양식 가능 근거 없음(양식 점수 0) · 확인한 시도'}: ${esc(String(q.method??'').replace(/\.\s*$/,''))}. 적용 범위: ${esc(q.region)} (${esc(q.year)}). 제약: ${esc(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
     (f.yield_sensitivity||[]).map(y=>`<p class="fine">가식부 ${esc((y.fraction*100).toFixed(2))}% (${esc(y.region||'')}) 대입 시 MFPI ${esc(Number(y.mfpi_at_same_nutrients).toFixed(1))} · ${verifiedSource(y.source_id,'독립 자료 ↗')}</p>`).join('')+
     (f.weight_sensitivity||[]).map(w=>`<p class="fine">가중치 ${w.nutrient_weight}/${w.edible_fraction_weight}/${w.aquaculture_weight} 적용 시 MFPI ${esc(Number(w.mfpi).toFixed(1))}</p>`).join('')+
     (f.grade_sensitivity?`<p class="fine">신뢰도 계수를 모두 1로 두면 MFPI ${esc(Number(f.grade_sensitivity.all_grade_factors_1).toFixed(1))}</p>`:'')+
@@ -1113,10 +1113,13 @@ const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japa
 const seaName=x=>SEA_KO[x]||x;
 function setView(view) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
+  const changed=view!==currentView;
   currentView=view;
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
+  // A real tab change starts at the top; callers that open a target (source list, evidence) scroll to it afterwards.
+  if(changed)window.scrollTo(0,0);
   writeHash();
 }
 
@@ -1221,8 +1224,8 @@ function setUse(id){
   writeHash();
 }
 const useMatch=s=>!activeUse||!!useEvidence(s,activeUse);
-// Search words that name a trait ("혈압", "항암") show its chip; words no chip collects ("DHA") say so.
-// Name search keeps working beside this.
+// Search words that name a trait ("혈압", "항암", "DHA") show its chip, or say it has no adopted evidence yet.
+// Other words only search names.
 const termHit=(words,q)=>words.some(w=>w===q||(q.length>1&&w.startsWith(q)));
 function useSuggestion(query){
   const raw=query.trim(), q=raw.toLowerCase();if(!q)return '';
@@ -1254,12 +1257,12 @@ function useCardLine(s){
 
 // Four axis values on every card ('–' = withheld, never 0), so the list can be scanned without opening a species.
 const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MCUI','BBVI'].map(k=>{const n=axisState(s,k).value;
-  return `<i class="${n===null?'held':''}"><small>${k}</small>${n===null?'–':n.toFixed(1)}</i>`;}).join('')+'</span>':'';
+  return `<i class="${n===null?'held':''}" title="${GAUGE_NAME[k]}"><small>${k}</small>${n===null?'–':n.toFixed(1)}</i>`;}).join('')+'</span>':'';
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
   const group=$('species-group').value, evidence=$('species-evidence').value;
   const base=data.species.filter(s=>(group==='all'||s.group===group)
-    &&(evidence==='all'||(evidence==='published'?!!s.cells.length:!!s.catalog&&!s.cells.length))
+    &&(evidence==='all'||(evidence==='published'?!s.catalog:!!s.catalog))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   const matches=base.filter(useMatch);
   $('species-count').textContent=`${matches.length}종`;
@@ -1275,18 +1278,6 @@ function renderList() {
   if(refocus)list.querySelector('.species-card.selected')?.focus({preventScroll:true});
 }
 
-// Status chips, not a verdict: what exists, what is withheld, and when the summary was published.
-function summaryCard(s){
-  const chip=(label,value,state)=>`<span class="chip ${state}"><b>${esc(label)}</b> ${esc(value)}</span>`;
-  const k=s.info?.conservation||{}, h=IUCN_HISTORICAL[s.aphiaID];
-  const cells=s.cells||[];
-  const occ=cells.length?chip('출현',`공개 셀 ${spatialCells(s).length}개 · ${cells[0].sizeDeg}°`,'ok'):chip('출현','조사 범위만','warn');
-  const axes=['MFPI','MBPI','MCUI','BBVI'].map(a=>{const st=axisState(s,a);return st.value===null?chip(a,st.kind==='withheld'?'보류':st.label,'warn'):chip(a,'시범값','pilot');}).join('');
-  const cons=h?chip('보전',h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published} · 원문 검수 전`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.publication_year} · 원문 검수 · 시범 MCUI`:`IUCN ${h.category.split(' ')[0]} ${h.published} · ${pilotScore(s,'MCUI')===null?'갱신 필요':'현행 재확인'}`),'warn')
-    :chip('보전',{withheld_insufficient_evidence:'평가 근거 부족',not_reviewed:'미검토'}[k.status]||'정보 없음','none');
-  const when=(s.publishedAt||'').slice(0,10);
-  return `<div class="summary-card" aria-label="상태 요약"><div class="summary-top"><b>상태 요약</b><span>판정 아님${when?' · 발행 '+esc(when):''}</span></div><div class="chips">${occ}${axes}${cons}</div>${coverageBar(s)}</div>`;
-}
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
@@ -2045,7 +2036,8 @@ function openEvidence(aphia,axis){
   $('detail').prepend(back);
   back.addEventListener('click',()=>{
     comparisonPage=page;renderComparison();setView('compare');
-    $('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`)?.focus({preventScroll:true});
+    const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
+    cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
     $('comparison').scrollLeft=returnScroll;
   });
   const target=axis==='OCC'?($('cell-table').querySelector('details')||$('detail-map-summary')):$('detail').querySelector(`[data-axis="${axis}"]`);
@@ -2089,7 +2081,7 @@ function toggleSimulation(value){
   $('axis-pairs').innerHTML=value||!data?'':axisPairsHtml();
   const points=[['A',24,74,'보전 우선·모니터링'],['B',77,76,'대체생산·배양 연구'],['C',25,25,'기초조사·관찰 대상'],['D',77,25,'지속가능 활용 후보']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map((s,i)=>{const kind=nationalMcui(s)?' · MCUI 한국 국가 평가 기반':'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
-    return `<button class="matrix-point pilot${separateMcui(s)?' national':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. 타당성 미검증">${i+1}</button>`;}).join('');
+    return `<button class="matrix-point pilot${separateMcui(s)?' national':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · 시범 BBVI ${pilotScore(s,'BBVI')}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} 시범 활용 지표 ${pilotScore(s,'BBVI')}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. 타당성 미검증"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
     if(!value){showDecision(assessed[i]);$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
@@ -2097,7 +2089,8 @@ function toggleSimulation(value){
 }
 
 function renderSources(){
-  $('snapshot-date').textContent=`공개 기준 자료 발행 ${data.collectedAt}`;$('collection-note').textContent=data.notes;
+  const info=data.assessmentInfo;
+  $('snapshot-date').textContent=`공개 기준 자료 발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
   const all=new Map();data.species.forEach(s=>s.sources.forEach(src=>all.set(src.id,src)));
   // Indicator sources (the report's own registry) are cited here too, so a comparison cohort is named on the method tab.
   const report=data.assessmentInfo||{};
@@ -2151,7 +2144,7 @@ async function loadCollection(){
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
     toggleSimulation(false);updateWeightControl();
-    if(startHash){const h=startHash;startHash=null;if(h.s)applyHash(h);}
+    if(startHash){const h=startHash;startHash=null;if(h.s||h.v)applyHash(h);}
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
 }
 let startHash={};
@@ -2162,7 +2155,8 @@ async function start(){
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);}catch{$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }
-$('reload-data').addEventListener('click',loadCollection);
+// ↻ reloads the data but keeps species, chip, tab and map: writeHash already holds them, so they are re-applied like a shared link.
+$('reload-data').addEventListener('click',()=>{startHash=readHash();loadCollection();});
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
 document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
