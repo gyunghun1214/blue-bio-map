@@ -1,4 +1,4 @@
-# Build the AMP MIC comparison cohorts for verified-pilot-3.16 from the DBAASP dump.
+# Build the AMP MIC comparison cohorts (verified-pilot-3.18, Poor Broth added in 3.19) from the DBAASP dump.
 # Mirrors research/verified-indices/peptide-cohort-ahtpdb-ace-hhl.json (ic50_uM -> mic_uM).
 # Strict rules: MIC only, broth media only (whitelist), single clean numeric concentration,
 # DBAASP's own numeric 'activity' field is never read.
@@ -32,6 +32,9 @@ BROTH = {
     'SDB': 'Sabouraud dextrose broth', 'SGB': 'Sabouraud glucose broth',
     'PDB': 'potato dextrose broth', 'MEB': 'malt extract broth',
     'YEPD': 'yeast extract peptone dextrose broth', 'YNB': 'yeast nitrogen base (liquid)',
+    # verified-pilot-3.19 team-lead decision: the liquid growth inhibition assay in Poor Broth is a broth MIC
+    # (DBAASP describes PBM as 'Poor Broth medium (Peptone/Tryptone, NaCl)'). Run without this line for the 3.18 file.
+    'PBM': 'Poor Broth medium (peptone/tryptone, NaCl)',
 }
 CLSI = {'MHB', 'CAMHB'}          # sensitivity variant only, never the primary cohort
 
@@ -56,6 +59,11 @@ TARGETS = [
      r'^Candida albicans\b', 'fungus'),
 ]
 TARGETS = [(cid, name, re.compile(p, re.I), kind) for cid, name, p, kind in TARGETS]
+# the published file keeps only the cohorts an adopted row measures
+SCOPE = {'Staphylococcus aureus', 'Escherichia coli', 'Pseudomonas aeruginosa', 'Bacillus subtilis',
+         'Vibrio anguillarum (incl. Listonella anguillarum)', 'Vibrio parahaemolyticus', 'Streptococcus agalactiae'}
+KEEP = ('cohort_id', 'target_species', 'target_kind', 'measure', 'media', 'size', 'median_pMIC', 'min_pMIC',
+        'max_pMIC', 'median_mic_uM', 'sensitivity', 'filter_counts', 'dropped_media', 'dropped_concentration_shapes')
 
 
 def member_key(d):
@@ -213,9 +221,15 @@ def main():
         'broth_whitelist': BROTH,
         'clsi_sensitivity_media': sorted(CLSI),
         'percentile_rule': 'percentile = 100 x (members with lower pMIC + 0.5 x members with equal pMIC) / size',
-        'cohorts': cohorts,
+        'scope': 'Only the target species the adopted rows measure. Other cohorts built in the same run (Vibrio alginolyticus %d, Candida albicans %d - a fungus, never pooled with the bacteria) are reported in the decision record and can be added when a row needs them.' % tuple(
+            next(c['size'] for c in cohorts if c['target_species'] == t) for t in ('Vibrio alginolyticus', 'Candida albicans')),
+        # members hold only what the percentile needs; the key hash stays for auditing
+        'cohorts': [{**{k: c[k] for k in KEEP},
+                     'members': [{'k': m['member_key_sha256_16'], 'mic_uM': m['mic_uM'], 'n': m['n_rows']} for m in c['members']]}
+                    for c in cohorts if c['target_species'] in SCOPE],
     }
-    json.dump(doc, open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    with open(OUT, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(json.dumps(doc, ensure_ascii=False, separators=(',', ':')) + '\n')
 
     for c in cohorts:
         print('%-46s size=%-6d min30=%-5s median_pMIC=%-7s nat=%-5s clsi=%s' % (
