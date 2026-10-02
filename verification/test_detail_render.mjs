@@ -29,9 +29,9 @@ const next=await vm.runInContext(`(async()=>{
   next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
   await attachPilotAssessments(next);return data=next;})()`,ctx);
 
-// Expected values come from the published report.
+// Expected values come from the published report: the MBPI items the page must list (species with a computed MBPI).
 const report=JSON.parse(read('assessments.json'));
-const traces=new Map([...report.species,...report.candidate_species||[]].map(r=>[r.aphia_id,r.bioactivity_trace||[]]));
+const traces=new Map([...report.species,...report.candidate_species||[]].map(r=>[r.aphia_id,r.scores?.MBPI==null?[]:r.bioactivity_trace||[]]));
 const ECKLONIA=371986, CAPTION='감태 유래 분리 화합물';
 const N=(traces.get(ECKLONIA)||[]).filter(t=>!t.stratum_kind).reduce((a,t)=>a+(t.measurements||[]).length,0);
 assert.ok(N>0,'감태 has reviewed compound measurements');
@@ -55,10 +55,13 @@ for(const s of next.species){
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
     if(h.includes('github.com/gyunghun1214'))p.push('private repo link');
     if(place==='decision'){
-      const items=h.split('<li>');
-      for(const b of traces.get(s.aphiaID)?.filter(t=>t.stratum_kind==='amp')||[]){
-        const name=T.esc(b.peptide_name||b.peptide_sequence);
-        if(!items.some(li=>li.includes(name)&&li.includes(T.esc(b.stratum_id))&&li.includes('MIC')))p.push(`AMP ${name} ${b.stratum_id} without MIC`);
+      // Every MBPI item is named, with its stratum and, when it has measurements, a number. A field the shared helper
+      // misses prints '' rather than 'undefined', so a stratum without its own branch shows up only here.
+      const items=h.split('<li>').map(li=>[li.split(' · 비교 코호트 ')[0],li]);
+      for(const b of traces.get(s.aphiaID)||[]){
+        const key=T.esc(b.peptide_sequence??b.compound_id), li=items.find(([name,li])=>name.includes(key)&&li.includes(T.esc(b.stratum_id)))?.[1];
+        if(!li)p.push(`MBPI item ${key} (${b.stratum_id}) not named`);
+        else if(b.measurements?.length&&!/(MIC|IC50|원값) (=|&lt;|&gt;|≤|≥)? ?\d/.test(li))p.push(`MBPI item ${key} (${b.stratum_id}) without its value`);
       }
     }
     if(p.length){count[place]++;findings.push(`${s.label} ${place}: ${p.join(' · ')}`);}
@@ -69,4 +72,4 @@ findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, AMP items with MIC`);
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value`);
