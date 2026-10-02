@@ -225,7 +225,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1365,7 +1365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1637,80 +1637,6 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 2.2556390977443606,
-          "cancer_type": "Lung cancer",
-          "cell_line": "A-549",
-          "cohort_median_pIC50": 4.838,
-          "cohort_members": 134,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Lung cancer",
-              "cell_line": "A-549",
-              "endpoint": "IC50",
-              "exposure": "48 h",
-              "method": "CCK-8",
-              "original_paper_doi": "10.3390/foods11213507",
-              "relation": "=",
-              "source_id": "zhang_2022_ulva_htdt",
-              "unit": "uM",
-              "value": 1738.2418,
-              "value_as_published": "0.9867 mg/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/foods11213507"
-          ],
-          "pIC50": 2.76,
-          "peer_peptides": 133,
-          "peptide_name": "HTDT-6-2-3-2",
-          "peptide_sequence": "GPLGAGP",
-          "percentile": 3.01,
-          "record_ids": [
-            "10.3390/foods11213507:HTDT-6-2-3-2:A-549"
-          ],
-          "self_in_cohort": true,
-          "stratum_id": "anticancer-cancerppd-ic50-a-549",
-          "stratum_kind": "anticancer"
-        },
-        {
-          "adjusted": 2.083333333333333,
-          "cancer_type": "Liver cancer",
-          "cell_line": "HepG-2",
-          "cohort_median_pIC50": 4.788,
-          "cohort_members": 109,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Liver cancer",
-              "cell_line": "HepG-2",
-              "endpoint": "IC50",
-              "exposure": "48 h",
-              "method": "CCK-8",
-              "original_paper_doi": "10.3390/foods11213507",
-              "relation": "=",
-              "source_id": "zhang_2022_ulva_htdt",
-              "unit": "uM",
-              "value": 2213.3648,
-              "value_as_published": "1.2564 mg/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/foods11213507"
-          ],
-          "pIC50": 2.655,
-          "peer_peptides": 108,
-          "peptide_name": "HTDT-6-2-3-2",
-          "peptide_sequence": "GPLGAGP",
-          "percentile": 2.78,
-          "record_ids": [
-            "10.3390/foods11213507:HTDT-6-2-3-2:HepG-2"
-          ],
-          "self_in_cohort": true,
-          "stratum_id": "anticancer-cancerppd-ic50-hepg-2",
-          "stratum_kind": "anticancer"
         }
       ],
       "candidate_label": "조사 후보",
@@ -1768,7 +1694,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1986,10 +1912,10 @@
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 25.9,
-        "median_compound_sensitivity": 2.3,
+        "mean_compound_sensitivity": 73.3,
+        "median_compound_sensitivity": 73.3,
         "range_from_aggregation": [
-          2.1,
+          73.3,
           73.3
         ]
       },
@@ -2000,7 +1926,6 @@
       "source_ids": [
         "ahtpdb_ic50_2026",
         "bachman_2020_rapid_lc",
-        "cancerppd_anticancer_cohort",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "gbif_rapid_lc",
@@ -2009,8 +1934,7 @@
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "wikidata_p703_lotus",
-        "worms_rest_mbpi",
-        "zhang_2022_ulva_htdt"
+        "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -2129,7 +2053,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2480,7 +2404,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3059,7 +2983,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3968,7 +3892,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5012,7 +4936,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6072,7 +5996,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7066,7 +6990,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7951,80 +7875,6 @@
           "target_strains": [
             "ATCC 27853"
           ]
-        },
-        {
-          "adjusted": 50.0,
-          "cancer_type": "Colorectal cancer",
-          "cell_line": "HCT-116",
-          "cohort_median_pIC50": 5.076,
-          "cohort_members": 58,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Colorectal cancer",
-              "cell_line": "HCT-116",
-              "endpoint": "IC50",
-              "exposure": "48 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3390/md20020110",
-              "relation": "=",
-              "source_id": "li_2022_arca_p6",
-              "unit": "uM",
-              "value": 3.8933,
-              "value_as_published": "10.88 ug/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20020110"
-          ],
-          "pIC50": 5.41,
-          "peer_peptides": 57,
-          "peptide_name": "P6",
-          "peptide_sequence": "WYIRKIRRFFKWLKKKLKKK",
-          "percentile": 66.67,
-          "record_ids": [
-            "10.3390/md20020110:P6:HCT-116"
-          ],
-          "self_in_cohort": true,
-          "stratum_id": "anticancer-cancerppd-ic50-hct-116",
-          "stratum_kind": "anticancer"
-        },
-        {
-          "adjusted": 75.0,
-          "cancer_type": "Colorectal cancer",
-          "cell_line": "HT-29",
-          "cohort_median_pIC50": 4.659,
-          "cohort_members": 51,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Colorectal cancer",
-              "cell_line": "HT-29",
-              "endpoint": "IC50",
-              "exposure": "48 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3390/md20020110",
-              "relation": "=",
-              "source_id": "li_2022_arca_p6",
-              "unit": "uM",
-              "value": 1.5852,
-              "value_as_published": "4.43 ug/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/md20020110"
-          ],
-          "pIC50": 5.8,
-          "peer_peptides": 50,
-          "peptide_name": "P6",
-          "peptide_sequence": "WYIRKIRRFFKWLKKKLKKK",
-          "percentile": 100.0,
-          "record_ids": [
-            "10.3390/md20020110:P6:HT-29"
-          ],
-          "self_in_cohort": true,
-          "stratum_id": "anticancer-cancerppd-ic50-ht-29",
-          "stratum_kind": "anticancer"
         }
       ],
       "candidate_label": "조사 후보",
@@ -8051,11 +7901,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 75.0,
-          "minimum_cohort_10": 75.0,
-          "minimum_cohort_100": 75.0,
-          "no_approved_drug_filter": 75.0,
-          "no_common_metabolite_filter": 75.0
+          "log_scale_common_fence": 22.0,
+          "minimum_cohort_10": 22.0,
+          "minimum_cohort_100": 22.0,
+          "no_approved_drug_filter": 22.0,
+          "no_common_metabolite_filter": 22.0
         },
         "sufficiency": {
           "best_record_steps": 1,
@@ -8160,7 +8010,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8864,7 +8714,7 @@
       },
       "korean_name": "피조개",
       "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "anticancer",
+      "mbpi_stratum": "amp",
       "mcui_basis": "national",
       "mcui_substitute": null,
       "national_assessment": {
@@ -8985,7 +8835,7 @@
         "food_weight": 0.5,
         "formula": "w×MFPI+(1−w)×MBPI",
         "inputs": {
-          "MBPI": 75.0,
+          "MBPI": 22.0,
           "MFPI": 61.9
         },
         "label": "참고 통합값 · 독립 재현 미확인",
@@ -8995,17 +8845,17 @@
           "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
         ],
         "mbpi_original_paper_dois": [
-          "10.3390/md20020110"
+          "10.3390/md15070205"
         ],
-        "mbpi_stratum": "anticancer-cancerppd-ic50-ht-29",
+        "mbpi_stratum": "amp-dbaasp-mic-broth-staphylococcus-aureus",
         "mfpi_cohort": "rda-10.4-raw-marine-animals",
         "sensitivity": {
-          "0.25": 71.7,
-          "0.5": 68.5,
-          "0.75": 65.2
+          "0.25": 32.0,
+          "0.5": 42.0,
+          "0.75": 51.9
         },
         "used_for_score": false,
-        "value": 68.5
+        "value": 42.0
       },
       "scientific_name": "Anadara broughtonii",
       "score_status": {
@@ -9016,32 +8866,30 @@
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 75.0,
+        "MBPI": 22.0,
         "MCUI": 10.0,
         "MFPI": 61.9
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 24.2,
-        "median_compound_sensitivity": 13.4,
+        "mean_compound_sensitivity": 11.5,
+        "median_compound_sensitivity": 12.8,
         "range_from_aggregation": [
           1.5,
-          75.0
+          22.0
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 75.0,
+        "bioactivity_only_MBPI": 22.0,
         "food_only_MFPI": 61.9
       },
       "source_ids": [
-        "cancerppd_anticancer_cohort",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "dbaasp_amp_cohort",
         "iucn_redlist_search",
         "kwon_cho_1986_anadara",
         "li_2017_arca_hemocidin",
-        "li_2022_arca_p6",
         "mext_sfct_2020_items",
         "nibr_red_data_book_2024",
         "obis_trend",
@@ -9094,136 +8942,6 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 3.260869565217391,
-          "cancer_type": "Prostate cancer",
-          "cell_line": "PC-3",
-          "cohort_median_pIC50": 4.743,
-          "cohort_members": 92,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "6 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 22211.8837,
-              "value_as_published": "10.94 mg/mL"
-            },
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "12 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 10395.324,
-              "value_as_published": "5.12 mg/mL"
-            },
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "24 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 1847.6064,
-              "value_as_published": "0.91 mg/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3892/mmr.2017.7418"
-          ],
-          "pIC50": 1.983,
-          "peer_peptides": 92,
-          "peptide_name": "SCH-P10",
-          "peptide_sequence": "DYVP",
-          "percentile": 4.35,
-          "record_ids": [
-            "10.3892/mmr.2017.7418:SCH-P10:PC-3:12h",
-            "10.3892/mmr.2017.7418:SCH-P10:PC-3:24h",
-            "10.3892/mmr.2017.7418:SCH-P10:PC-3:6h"
-          ],
-          "self_in_cohort": false,
-          "stratum_id": "anticancer-cancerppd-ic50-pc-3",
-          "stratum_kind": "anticancer"
-        },
-        {
-          "adjusted": 3.260869565217391,
-          "cancer_type": "Prostate cancer",
-          "cell_line": "PC-3",
-          "cohort_median_pIC50": 4.743,
-          "cohort_members": 92,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "6 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 31611.1538,
-              "value_as_published": "12.09 mg/mL"
-            },
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "12 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 15583.3314,
-              "value_as_published": "5.96 mg/mL"
-            },
-            {
-              "cancer_type": "Prostate cancer",
-              "cell_line": "PC-3",
-              "endpoint": "IC50",
-              "exposure": "24 h",
-              "method": "MTT",
-              "original_paper_doi": "10.3892/mmr.2017.7418",
-              "relation": "=",
-              "source_id": "zhu_2017_sinonovacula_sch",
-              "unit": "uM",
-              "value": 2849.9717,
-              "value_as_published": "1.09 mg/mL"
-            }
-          ],
-          "original_paper_dois": [
-            "10.3892/mmr.2017.7418"
-          ],
-          "pIC50": 1.807,
-          "peer_peptides": 92,
-          "peptide_name": "SCH-P9",
-          "peptide_sequence": "LPGP",
-          "percentile": 4.35,
-          "record_ids": [
-            "10.3892/mmr.2017.7418:SCH-P9:PC-3:12h",
-            "10.3892/mmr.2017.7418:SCH-P9:PC-3:24h",
-            "10.3892/mmr.2017.7418:SCH-P9:PC-3:6h"
-          ],
-          "self_in_cohort": false,
-          "stratum_id": "anticancer-cancerppd-ic50-pc-3",
-          "stratum_kind": "anticancer"
         }
       ],
       "candidate_label": "조사 후보",
@@ -9347,7 +9065,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10190,10 +9908,10 @@
       },
       "sensitivity": {
         "food_weights": {},
-        "mean_compound_sensitivity": 21.1,
-        "median_compound_sensitivity": 3.3,
+        "mean_compound_sensitivity": 56.9,
+        "median_compound_sensitivity": 56.9,
         "range_from_aggregation": [
-          3.3,
+          56.9,
           56.9
         ]
       },
@@ -10203,7 +9921,6 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
-        "cancerppd_anticancer_cohort",
         "cmnpd_mbpi",
         "dong_2021_pond_razor_clam",
         "europepmc_mbpi",
@@ -10212,8 +9929,7 @@
         "mext_sfct_2020_items",
         "nibr_red_data_book_2024",
         "obis_trend",
-        "rda_db_10_4",
-        "zhu_2017_sinonovacula_sch"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -10498,7 +10214,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11590,7 +11306,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12587,7 +12303,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13564,7 +13280,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14718,7 +14434,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15745,7 +15461,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16725,7 +16441,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17787,7 +17503,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18764,7 +18480,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19765,7 +19481,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20780,37 +20496,6 @@
       "supplement": "research/verified-indices/evidence-amp-3.19-2026-10-02.json",
       "value_scale": "pMIC = 6 - log10(MIC in uM); higher is more potent"
     },
-    "anticancer_bioactivity": {
-      "accepted_materials": [
-        "synthetic",
-        "purified_isolate"
-      ],
-      "accepted_methods": [
-        "MTT",
-        "MTS",
-        "CCK-8",
-        "SRB",
-        "alamarBlue"
-      ],
-      "cohort_builder": "scripts/build_anticancer_cohorts.py",
-      "cohort_file": "research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json",
-      "cohort_rule": "One cohort per cancer cell line: CancerPPD 2.0 rows whose activity reads IC50 with relation '=' and a single numeric value (an attached standard deviation is kept and its central value used). EC50, LD50, LC50, CC50, GI50, MIC, censored and range values are dropped. uM, nM, mM and pM are used as read; ug/mL, mg/mL, ng/mL and ug/L become uM with ExPASy average residue masses plus one water, which admits only a plain standard-residue linear monomer with free unmodified termini. A bare 'M' is refused because every such row reads 'IC50 = 5 M' or '6 M', which is not a credible peptide IC50. Member key = sequence + chemical modification + both termini + ring form + chirality; member value = the median of that member's uM rows for the cell line. Cell-line names are matched ignoring hyphens, spaces and case.",
-      "cohort_source_id": "cancerppd_anticancer_cohort",
-      "endpoint": "IC50",
-      "limitations": [
-        "The cohort pools exposure times (24 h, 48 h, 72 h) and assay formats (MTT, MTS, CCK-8, SRB, alamarBlue). A longer exposure usually gives a lower IC50, so a short-exposure value ranks low for a reason that is not potency.",
-        "The cohort is dominated by designed and synthetic peptides, so a natural marine peptide usually lands below the median; a natural-origin-only cohort is published beside it as a sensitivity.",
-        "Only a part of CancerPPD 2.0 carries an IC50 our rule can convert, so a cohort is a few dozen peers, not the whole database. A percentile of 100 means the value beats every peer in that cohort, not that no stronger anticancer peptide exists.",
-        "The strongest measured value of 피조개 P6 (DLD-1) and of 가시파래 HTDT-6-2-3-2 (NCI-H460) cannot be scored, because neither cell line has 30 usable peers. Both are recorded in the supplement's excluded list."
-      ],
-      "minimum_justification": "Same as the ACE and AMP strata: 30 peers keep one rank step at about 3 percentile points, below which a single peer moves the score more than the 0.75 single-DOI discount.",
-      "minimum_peptides": 30,
-      "origin_rule": "The origin claim is read in the original paper, never from CancerPPD, which records neither the tested material nor its synthesis: the sequence must come from the species' own tissue or gene, the tested material must be a chemically synthetic or sequence-confirmed peptide purified from the species itself, and the value must be a numeric IC50 against a named cancer cell line by a cell-viability assay. Growth-inhibition percentages, censored values and recombinant proteins never enter.",
-      "self_membership_rule": "A peptide that CancerPPD 2.0 already holds is one of its own cohort rows. The row names that member (cohort_self_member_key) and the builder removes it before ranking, so nothing is ranked against itself; the remaining peer count must still meet the minimum.",
-      "separation_rule": "A cell IC50 percentile, a MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
-      "supplement": "research/verified-indices/evidence-anticancer-2026-10-02.json",
-      "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
-    },
     "bbvi": {
       "default_food_weight": 0.5,
       "minimum_independent_mbpi_dois": 2,
@@ -20841,7 +20526,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.20 (2026-10-02). New MBPI stratum for anticancer activity, the second input the proposal names beside the antibacterial one. Built like the 3.18 AMP stratum with a cancer cell line in place of a target bacterium: one fixed CancerPPD 2.0 cohort per cell line (IC50, single clean numeric value; research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json, built by scripts/build_anticancer_cohorts.py from 407 cell-line tables), pIC50 = 6 - log10(IC50 uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the other strata. A cell IC50 is never ranked against a MIC or an ACE IC50. Origin rows come from the original paper, never from the database. A peptide the database already holds is removed from its own cohort before ranking. 피조개 (P6, Li 2022) gains an anticancer item that becomes its best MBPI item; 가시파래 (HTDT-6-2-3-2, Zhang 2022) and 맛조개 (SCH-P9 and SCH-P10, Zhu 2017) gain items that rank below their existing best, so their scores do not move. The use of CancerPPD 2.0 was confirmed in writing by its maintainer on 2026-10-02. Every other rule and coefficient equals 3.20. See research/verified-indices/anticancer-stratum-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.19 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.20-2026-10-02.md). (1) An original-paper link is also admitted for a species that already has Wikidata P703 statements, when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (research/verified-indices/mbpi-paper-links-p703-2026-10-02.json). 다시마 gains a single-paper ChEMBL MBPI 26.5 (24-hydroperoxy-24-vinylcholesterol, Lu 2022) with the autoxidation caveat already used for 톳. 꼬시래기 is held: its highest values are screening rows marked Inconclusive. (2) A ChEMBL activity the depositor marked Inconclusive or Not Active never enters a species item (snapshots/chembl-activity-comments-2026-10-02.json, 100 of 2,058 snapshot rows); no current score rests on one. Every other rule and coefficient equals 3.19.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21084,7 +20769,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.21",
+    "method_version": "verified-pilot-3.20",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21456,7 +21141,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.21",
+  "method_version": "verified-pilot-3.20",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21595,16 +21280,6 @@
       "title": "Production of Mycosporine-Like Amino Acids from Gracilaria vermiculophylla (Rhodophyta) Cultured Through One Year in an Integrated Multi-trophic Aquaculture (IMTA) System (Barceló-Villalobos M, Figueroa FL, Korbee N, Álvarez-Gómez F, Abreu MH), doi:10.1007/s10126-017-9746-8",
       "url": "https://doi.org/10.1007/s10126-017-9746-8",
       "version": "PubMed abstract checked 2026-10-01"
-    },
-    "cancerppd_anticancer_cohort": {
-      "accessed": "2026-10-02",
-      "citation": "Chauhan M., Gupta A., Tomer R. and Raghava G.P.S. (2025) CancerPPD2: an updated repository of anticancer peptides and proteins. Database 2025:baaf030, doi:10.1093/database/baaf030",
-      "license": "Open, confirmed by the maintainer by email (2026-10-02)",
-      "provider": "CancerPPD 2.0 (repository of experimentally verified anticancer peptides and proteins), Raghava group, IIIT-Delhi",
-      "terms": "Prof. G. P. S. Raghava (IIIT-Delhi), who maintains the database, answered our written enquiry on 2026-10-02: \"All our databases and server are free for public, we have no restrictions from our side.\" Only peptide sequences, IC50 values and row counts are stored.",
-      "title": "CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts",
-      "url": "https://webs.iiitd.edu.in/raghava/cancerppd2/",
-      "version": "CancerPPD 2.0, cell-line tables read 2026-10-02; dump sha256 ab2e058e5d67ca21b3556eb6b8413b8c2006ffd28405d7080f105574f852d2f8"
     },
     "cellosaurus_mbpi": {
       "accessed": "2026-09-30",
@@ -22133,16 +21808,6 @@
       "title": "扇贝裙边ACE抑制肽的分离鉴定及其降血压活性研究 (ACE inhibitory peptide from scallop skirt: isolation, identification and antihypertensive activity)",
       "url": "https://xuebao.dlou.edu.cn/article/2018/2095-1388/201806016.html",
       "version": "2018"
-    },
-    "li_2022_arca_p6": {
-      "accessed": "2026-10-02",
-      "doi": "10.3390/md20020110",
-      "license": "CC BY 4.0",
-      "provider": "Marine Drugs 20(2):110 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC8875476",
-      "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "A Novel Peptide Derived from Arca inflata Induces Apoptosis in Colorectal Cancer Cells through Mitochondria and the p38 MAPK Pathway (2022)",
-      "url": "https://doi.org/10.3390/md20020110",
-      "version": "2022 (PMID 35200639, PMC8875476)"
     },
     "li_2022_saringosterol_acetate": {
       "accessed": "2026-09-25",
@@ -22737,16 +22402,6 @@
       "url": "https://doi.org/10.3390/md20060353",
       "version": "2022 (PMC9228364)"
     },
-    "zhang_2022_ulva_htdt": {
-      "accessed": "2026-10-02",
-      "doi": "10.3390/foods11213507",
-      "license": "CC BY 4.0",
-      "provider": "Foods 11(21):3507 (MDPI), open access, full text and figures read from the Europe PMC REST fullTextXML of PMC9657784",
-      "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (2022)",
-      "url": "https://doi.org/10.3390/foods11213507",
-      "version": "2022 (PMID 36360120, PMC9657784)"
-    },
     "zhang_2025_mackerel_jfs": {
       "accessed": "2026-10-01",
       "doi": "10.1111/1750-3841.70767",
@@ -22756,16 +22411,6 @@
       "title": "Revealing Novel Angiotensin-Converting Enzyme (ACE)-Inhibitory Peptides From Mackerel Hydrolysates and Potential Antihypertensive Mechanism Using Virtual Screening and Network Pharmacology Analysis",
       "url": "https://doi.org/10.1111/1750-3841.70767",
       "version": "2025"
-    },
-    "zhu_2017_sinonovacula_sch": {
-      "accessed": "2026-10-02",
-      "doi": "10.3892/mmr.2017.7418",
-      "license": "CC BY-NC-ND 4.0",
-      "provider": "Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC5865786",
-      "terms": "CC BY-NC-ND 4.0; only sequences and numeric values recorded, no text or tables copied",
-      "title": "Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (2017)",
-      "url": "https://doi.org/10.3892/mmr.2017.7418",
-      "version": "2017 (PMID 28901516, PMC5865786)"
     }
   },
   "species": [
@@ -23354,7 +22999,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24036,7 +23681,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25011,7 +24656,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -26131,7 +25776,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27100,7 +26745,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27894,7 +27539,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28577,7 +28222,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29218,7 +28863,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.21 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.20 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30055,7 +29700,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.21",
+        "method_version": "verified-pilot-3.20",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

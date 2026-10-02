@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.20.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.21.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -648,6 +648,68 @@ def amp_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
+def anticancer_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
+    """verified-pilot-3.21 anticancer-peptide stratum. Same shape as the AMP stratum, with a cancer cell line in place of a
+    target bacterium: one fixed CancerPPD 2.0 cohort per cell line, pIC50 = 6 - log10(IC50 uM), percentile inside that cohort,
+    the same minimum cohort, the same single/multiple-DOI factors and the same max aggregation. The proposal names anticancer
+    activity beside the antibacterial one; this is that input. A cell IC50 is never ranked against a MIC or an ACE IC50."""
+    settings = config.get("anticancer_bioactivity")
+    rows = evidence.get("anticancer_bioactivity", [])
+    if not settings or not rows:
+        return []
+    book = json.loads((ROOT / settings["cohort_file"]).read_text(encoding="utf-8"))
+    cohorts = {c["cell_line_key"]: c for c in book["cohorts"]}
+    key = lambda name: re.sub(r"[^A-Z0-9]", "", (name or "").upper())
+    groups = defaultdict(list)
+    for r in rows:
+        if r.get("status") != "approved_for_score":
+            continue
+        require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
+                and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None
+                and r.get("sequence_confirmed") is True and r.get("value_in_text") is True
+                and (r.get("synthetic") is True or r.get("material") in settings["accepted_materials"])
+                and r.get("endpoint") == settings["endpoint"] and r.get("relation") == "=" and r.get("unit") == "uM"
+                and r.get("method") in settings["accepted_methods"] and r.get("source_id") in evidence["sources"]
+                and r.get("original_paper_doi") and r.get("origin_aphia_id") and r.get("origin_scientific_name"),
+                f"{r.get('record_id')}: incomplete anticancer origin/sequence/assay chain")
+        finite(r.get("value"), "anticancer IC50", 0.0000001)
+        groups[(r["origin_aphia_id"], r["sequence"], key(r["cell_line"]))].append(r)
+    out = []
+    for (origin, sequence, cell_key), own in sorted(groups.items()):
+        cohort = cohorts.get(cell_key)
+        require(cohort is not None, f"{own[0]['cell_line']}: no anticancer cohort for this cell line")
+        require(cohort["size"] >= settings["minimum_peptides"], f"{cohort['cohort_id']}: cohort below minimum size")
+        require(len(cohort["members"]) == cohort["size"], f"{cohort['cohort_id']}: member count differs from the published size")
+        # a scored peptide CancerPPD already holds is one of its own cohort rows; nothing is ranked against itself
+        self_key = own[0].get("cohort_self_member_key")
+        require(self_key is None or any(m["k"] == self_key for m in cohort["members"])
+                or not own[0].get("cancerppd_ids"), f"{own[0]['record_id']}: the named self member is not in this cohort")
+        peers = [6 - math.log10(finite(m["ic50_uM"], "cohort IC50", 0.0000001))
+                 for m in cohort["members"] if m["k"] != self_key]
+        require(len(peers) >= settings["minimum_peptides"],
+                f"{cohort['cohort_id']}: fewer than the minimum peers once the peptide itself is removed")
+        value = median(6 - math.log10(r["value"]) for r in own)
+        rank = percentile(value, peers)
+        dois = {r["original_paper_doi"].lower() for r in own}
+        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        out.append((origin, {"stratum_kind": "anticancer", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
+                             "peptide_name": own[0].get("peptide_name"), "cell_line": cohort["cell_line"],
+                             "cancer_type": own[0].get("cancer_type"),
+                             "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
+                             "peer_peptides": len(peers), "cohort_members": cohort["size"],
+                             "self_in_cohort": bool(self_key) and len(peers) < cohort["size"],
+                             "cohort_median_pIC50": cohort["median_pIC50"],
+                             "pIC50": round(value, 3), "percentile": round(rank, 2),
+                             "evidence_factor": factor, "adjusted": rank * factor,
+                             "measurements": [{"endpoint": r["endpoint"], "relation": r["relation"], "value": r["value"],
+                                               "unit": r["unit"], "value_as_published": r.get("value_as_published"),
+                                               "cell_line": r["cell_line"],
+                                               "cancer_type": r.get("cancer_type"), "method": r["method"],
+                                               "exposure": r.get("exposure"), "source_id": r["source_id"],
+                                               "original_paper_doi": r["original_paper_doi"]} for r in own]}))
+    return out
+
+
 def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
     """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
@@ -818,6 +880,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
     for origin, item in peptide_items(evidence, config):
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for origin, item in amp_items(evidence, config):  # verified-pilot-3.18
+        out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    for origin, item in anticancer_items(evidence, config):  # verified-pilot-3.21
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     chembl = None
     if config.get("chembl_bioactivity"):  # verified-pilot-3.1
@@ -1140,11 +1204,14 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             source_ids |= {r["source_id"] for r in evidence.get("peptide_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             if item.get("stratum_kind") == "amp":
                 source_ids.add(config["amp_bioactivity"]["cohort_source_id"])
+            if item.get("stratum_kind") == "anticancer":
+                source_ids.add(config["anticancer_bioactivity"]["cohort_source_id"])
             source_ids |= {r["source_id"] for r in evidence.get("amp_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
+            source_ids |= {r["source_id"] for r in evidence.get("anticancer_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in item.get("potency_replications", []) if r["used"]}
             if item.get("stratum_kind") == "chembl":
                 source_ids |= set(config["chembl_bioactivity"]["source_ids"])
-            elif item.get("stratum_kind") not in ("peptide", "amp"):
+            elif item.get("stratum_kind") not in ("peptide", "amp", "anticancer"):
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if links and links["counts"].get("linked"):
             source_ids |= set(config["chembl_bioactivity"]["source_ids"])
@@ -1427,6 +1494,15 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         used = {r["source_id"] for r in extra["amp_bioactivity"]} | {amp["cohort_source_id"]}
         require(not used & set(evidence["sources"]), "AMP supplement redefines a source")
         evidence = {**evidence, "amp_bioactivity": extra["amp_bioactivity"],
+                    "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+    ac = cfg.get("anticancer_bioactivity")
+    if ac:  # verified-pilot-3.21: anticancer-peptide rows and their papers
+        extra = read(ROOT / ac["supplement"])
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "anticancer supplement is older than evidence")
+        used = {r["source_id"] for r in extra["anticancer_bioactivity"]} | {ac["cohort_source_id"]}
+        require(not used & set(evidence["sources"]), "anticancer supplement redefines a source")
+        evidence = {**evidence, "anticancer_bioactivity": extra["anticancer_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     fa = cfg["nutrition"].get("display_fatty_acids")

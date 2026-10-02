@@ -239,11 +239,12 @@ try{
   // 3.18: 피조개 (AI-hemocidin 2, 22.1) and 조피볼락 (TS40, 31.6) get a single-paper AMP MBPI beside their MFPI and join too
   // (3.19: 22.0 and 31.7 after Poor Broth joins the cohort).
   // 3.18: the trait chips (#98 layout) are built from adopted evidence only; a trait with none stays a grey, disabled
-  // '0종 · 근거 수집 전' chip. The AMP stratum turns 항균 on (2; 3.19 adds 참굴 Cg-BigDef1 -> 3) and fungi are kept out of it (항진균 0).
+  // '0종 · 근거 수집 전' chip. The AMP stratum turns 항균 on (2; 3.19 adds 참굴 Cg-BigDef1 -> 3) and fungi are kept out of
+  // it (항진균 0). 3.21 turns 항암 on with 피조개, 가시파래 and 맛조개.
   const chips=await evaluate("(()=>{renderUseChips();return [...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10),b.classList.contains('gap'),b.disabled])})()");
   const chipN=Object.fromEntries(chips.map(([id,n])=>[id,n]));
-  check('Use chips: counts come from adopted evidence (ACE 14, antibacterial 3 from the 3.18/3.19 AMP stratum, antifungal 0, omega-3 9 from the 3.17 EPA+DHA rows), and a trait with none stays a grey disabled 0 chip',
-    chipN.ace===14&&chipN.microbe===3&&chipN.fungus===0&&chipN.cancer===0&&chipN.omega3===9&&
+  check('Use chips: counts come from adopted evidence (ACE 14, antibacterial 3 from the 3.18/3.19 AMP stratum, anticancer 3 from the 3.21 stratum, antifungal 0, omega-3 9 from the 3.17 EPA+DHA rows), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===14&&chipN.microbe===3&&chipN.fungus===0&&chipN.cancer===3&&chipN.omega3===9&&
     chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
   const chipFilter=await evaluate("(()=>{setUse('microbe');const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUse(null);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
