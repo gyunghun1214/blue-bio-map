@@ -237,16 +237,17 @@ try{
   // 3.14: 대구 gets a single-paper purified-peptide MBPI 59.9 (GASSGMPG, Ngo 2016) beside its MFPI 38.3; 바지락 MBPI 58.6.
   // 3.15: 해삼 (MFPI 63.5 from the name link) and 전복 (MBPI 15.6 from the uM conversion) join.
   // 3.18: 피조개 (AI-hemocidin 2, 22.1) and 조피볼락 (TS40, 31.6) get a single-paper AMP MBPI beside their MFPI and join too.
-  // 3.18: the find-by-use chips are built from adopted evidence only; an empty use stays a grey 0 chip rather than vanishing.
-  const chips=await evaluate("(()=>{renderUseChips();return [...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,Number(b.querySelector('b').textContent),b.classList.contains('gap')])})()");
+  // 3.18: the trait chips (#98 layout) are built from adopted evidence only; a trait with none stays a grey, disabled
+  // '0종 · 근거 수집 전' chip. The AMP stratum turns 항균 on (2) and fungi are kept out of it (항진균 0).
+  const chips=await evaluate("(()=>{renderUseChips();return [...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10),b.classList.contains('gap'),b.disabled])})()");
   const chipN=Object.fromEntries(chips.map(([id,n])=>[id,n]));
-  check('Use chips: counts come from adopted evidence (ACE 14, antibacterial 2 from the 3.18 AMP stratum, omega-3 9), and a use with none stays a grey 0 chip',
-    chipN.ace===14&&chipN.microbe===2&&chipN.omega3===9&&chipN.cancer===0&&chipN.fungus===0&&
-    chips.filter(([,n,gap])=>gap).every(([,n])=>n===0)&&chips.filter(([,n,gap])=>!gap).every(([,n])=>n>0),JSON.stringify(chips));
+  check('Use chips: counts come from adopted evidence (ACE 14, antibacterial 2 from the 3.18 AMP stratum, antifungal 0), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===14&&chipN.microbe===2&&chipN.fungus===0&&chipN.cancer===0&&
+    chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
   const chipFilter=await evaluate("(()=>{setUse('microbe');const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const note=document.getElementById('use-extra').innerText;setUse(null);return {ids,note,back:document.querySelectorAll('.species-card').length}})()");
   check('Use chip filter: the antibacterial chip leaves 피조개 and 조피볼락, counts the hidden species and clears back to all 30',
-    JSON.stringify(chipFilter.ids.sort())==='[274849,504357]'&&/근거 미확인 28종은 숨김/.test(chipFilter.note)&&
+    JSON.stringify(chipFilter.ids.sort())==='[274849,504357]'&&/근거 미확인 28종/.test(chipFilter.note)&&
     /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30,JSON.stringify(chipFilter));
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
