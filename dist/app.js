@@ -1101,6 +1101,7 @@ function setView(view) {
 // MFDS 식품등의 표시기준 [별지 1] 영양성분 강조표시: '고/풍부' = 100 g당 1일 영양성분 기준치의 단백질 20%, 무기질 30%.
 const CLAIM_REF={protein_g:55,calcium_mg:700,iron_mg:12,zinc_mg:8.5}, CLAIM_SHARE={protein_g:.2,calcium_mg:.3,iron_mg:.3,zinc_mg:.3};
 const MINERALS={calcium_mg:'칼슘',iron_mg:'철',zinc_mg:'아연'};
+const OMEGA_SHARE=.3; // team display rule for EPA+DHA: no MFDS claim exists, so the mineral '고/풍부' share is reused
 const targetText=t=>(t.target_name||'')+' '+(t.target_organism||'');
 const BACTERIA=/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella/i;
 const FUNGI=/Candida|Aspergillus|Cryptococcus|Fusarium|Trichophyton|Saccharomyces/i;
@@ -1120,6 +1121,7 @@ const USE_TRAITS=[
   {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|amylase/i.test(targetText(t))},
   {id:'protein_g',group:'식량',label:'고단백'},
   {id:'mineral',group:'식량',label:'미네랄'},
+  {id:'omega3',group:'식량',label:'오메가-3'},
 ];
 // Search words that point at a trait chip, kept apart from the rules so wording can grow without touching evidence.
 const TRAIT_SYNONYMS={
@@ -1136,11 +1138,8 @@ const TRAIT_SYNONYMS={
   diabetes:['항당뇨','당뇨','혈당'],
   protein_g:['단백질','고단백','protein'],
   mineral:['미네랄','무기질','칼슘','철','철분','아연'],
+  omega3:['오메가-3','오메가3','오메가','omega','omega-3','dha','epa','불포화지방'],
 };
-// Words for traits no chip collects: the search says "not collected" instead of showing a grey 0 that looks measured.
-const UNCOLLECTED_TERMS=[
-  {words:['dha','epa','오메가-3','오메가3','오메가','omega','omega-3','불포화지방'],note:'종 상세의 EPA·DHA 값은 점수에 쓰지 않는 참고값입니다.'},
-];
 let activeUse=null;
 const traitById=id=>USE_TRAITS.find(c=>c.id===id);
 // ChEMBL items carry a link review; peptide and reviewed-compound items are adopted by their stratum.
@@ -1154,6 +1153,12 @@ const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(
 // Evidence line for one species and one trait, or null. Values are the species' adopted items, never a relative's.
 function useEvidence(s,id){
   const a=s.assessment;if(!a)return null;
+  if(id==='omega3'){
+    const fa=a.food_trace?.display_fatty_acids;
+    if(a.axis_errors?.MFPI||!fa||fa.sum_mg<fa.reference_mg*OMEGA_SHARE)return null;
+    const borrowed=/JAPAN|USDA/.test(fa.row_source||'')?` · ${fa.row_source} 차용값`:'';
+    return {text:`EPA+DHA ${num(fa.sum_mg)} mg/100 g · 1일 기준치 ${fa.reference_mg} mg의 ${Math.round(fa.sum_mg/fa.reference_mg*100)}%${borrowed}`,score:pilotScore(s,'MFPI')};
+  }
   if(traitById(id)?.group==='식량'){
     if(a.axis_errors?.MFPI||pilotScore(s,'MFPI')===null)return null;
     const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
@@ -1199,8 +1204,7 @@ function useSuggestion(query){
     return n?`<button type="button" class="use-suggest" data-use-suggest="${c.id}">‘${esc(raw)}’ → <b>${esc(c.group)} · ${esc(c.label)}</b> ${n}종 보기</button>`
       :`<p class="use-suggest gap">‘${esc(raw)}’ → ${esc(c.group)} ${traitChip(c,0)} 채택된 근거가 아직 없어 선택할 수 없습니다.</p>`;
   }
-  const u=UNCOLLECTED_TERMS.find(u=>termHit(u.words,q));
-  return u?`<p class="use-suggest none">‘${esc(raw)}’ · 해당 특성은 아직 자료를 수집하지 않았습니다(활용 특성 기준). ${esc(u.note)}</p>`:'';
+  return '';
 }
 // shown/base: species the trait keeps, out of those already passing the name, group and evidence filters.
 function useNote(shown,base){
@@ -1208,6 +1212,7 @@ function useNote(shown,base){
   const c=traitById(activeUse);
   const rule=c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
+    :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
   return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 숨김: 근거 미확인 ${base-shown}종(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
 }
