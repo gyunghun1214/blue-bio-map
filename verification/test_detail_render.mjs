@@ -38,10 +38,11 @@ assert.ok(N>0,'감태 has reviewed compound measurements');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
 // A template that puts its own period after a source sentence that already ends in one prints '..' ('cod..'); '...' stays.
 const DOTS=/[^.]\.\.(?!\.)/g;
-// The evidence files keep exclusion reasons in English; the page shows each one in Korean (REASON_KO in app.js).
+// The evidence files keep exclusion reasons and 누락 items in English; the page shows each one in Korean (REASON_KO in app.js).
 const EN_REASONS=[];
 (function walk(o,parent){if(Array.isArray(o))o.forEach(v=>walk(v,parent));else if(o&&typeof o==='object')for(const [k,v] of Object.entries(o)){
-  if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications'))EN_REASONS.push(T.esc(v));else walk(v,k);}})(report);
+  if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications'))EN_REASONS.push(T.esc(v));
+  else if(k==='missing'&&parent==='bioactivity_partial'&&Array.isArray(v))v.forEach(x=>EN_REASONS.push(T.esc(x)));else walk(v,k);}})(report);
 assert.ok(EN_REASONS.length>0,'English reasons found in assessments.json (drop this check once the data itself is Korean)');
 const findings=[], count={detail:0,decision:0,cells:0,popup:0};
 let cellSpecies=0, popupSpecies=0, replicatedSpecies=0;
@@ -58,7 +59,7 @@ for(const s of next.species){
     if(bad)p.push(`${bad.length}× ${[...new Set(bad)].join('/')}`);
     if(sea.length)p.push(`${sea.length}× English sea name (${[...new Set(sea)].join(', ')})`);
     const en=EN_REASONS.filter(r=>h.includes(r));
-    if(en.length)p.push(`${en.length}× English reason (${en.map(r=>r.slice(0,40)).join(' | ')})`);
+    if(en.length)p.push(`${en.length}× English reason or 누락 item (${en.map(r=>r.slice(0,40)).join(' | ')})`);
     const dots=[...h.matchAll(DOTS)].map(m=>h.slice(Math.max(0,m.index-20),m.index+3));
     if(dots.length)p.push(`${dots.length}× double period (${dots.join(' | ')})`);
     const own=place==='detail'&&s.aphiaID===ECKLONIA, at=h.indexOf(CAPTION);

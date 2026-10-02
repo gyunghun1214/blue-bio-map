@@ -797,7 +797,7 @@ function substituteText(s){
       `${esc(s.food_name)}(${esc(s.taxon_label)}, 섭취 부위 ${esc(s.part)}, 문서 코드 ${esc(s.doc_code||'없음')}, n ${esc(s.n??'미기재')})의 값을 썼습니다. `+
       `${verifiedSource(s.source_id,'uFiSh ↗')}`;
 }
-// The evidence files keep reasons in English (research notes); the page shows them in Korean. A reason missing here
+// The evidence files keep reasons and 누락 items in English (research notes); the page shows them in Korean. One missing here
 // prints as written, and verification/test_detail_render.mjs reports it.
 const REASON_KO={
   "Extract and purchased standard cannot be linked as one species-derived single compound activity.":"추출물과 구입한 표준품의 결과를 이 종에서 나온 단일 화합물의 활성 하나로 연결할 수 없습니다.",
@@ -816,6 +816,40 @@ const REASON_KO={
   "A partly characterized hydrolysate peptide cannot support a compound-identified, comparable MBPI percentile.":"일부만 특성이 밝혀진 가수분해물 펩타이드로는 화합물이 확인된, 비교 가능한 MBPI 백분위를 낼 수 없습니다.",
   "Origin, structure and numeric endpoint are traceable, but the method has no fixed comparable stratum; PR-A adds no cohorts.":"기원·구조·수치 종말점은 추적할 수 있지만, 이 시험법에는 비교 가능한 고정 층이 없습니다. 비교집단은 새로 추가하지 않았습니다.",
   "same paper as the origin measurement":"원측정과 같은 논문",
+  "No proven isolation of the tested standard from this Undaria specimen":"시험한 표준품을 이 미역 시료에서 분리했다는 증거 없음",
+  "No fixed comparable assay cohort":"비교 가능한 고정 시험 비교집단 없음",
+  "ACE substrate/method not confirmed from the paper (abstract only; AHTPDB curation says Cushman-Cheung)":"ACE 기질·시험법을 논문에서 확인하지 못함(초록만 열람, AHTPDB 정리에는 Cushman-Cheung법으로 기재)",
+  "Conflicting external CIDs 119551 and 163110604 need stereochemical resolution":"외부 CID 119551과 163110604가 서로 달라 입체화학 확인 필요",
+  "MIC/MFC not eligible pChEMBL endpoints":"MIC/MFC는 pChEMBL에 쓸 수 있는 종말점이 아님",
+  "No provenance-backed stereo-defined structure record: the only fully defined CID (154730607) is a vendor deposit.":"출처가 뒷받침하는 입체 구조 기록 없음: 구조가 완전히 정의된 유일한 CID(154730607)는 판매업체가 등록한 자료임",
+  "Full article experimental chain and structure stereochemistry not independently reviewed":"논문 전문의 실험 과정과 구조 입체화학을 독립적으로 검토하지 않음",
+  "No IC50/EC50 endpoint or fixed comparable assay cohort":"IC50/EC50 종말점과 비교 가능한 고정 시험 비교집단 없음",
+  "IC50 values only in a figure, not in text or tables":"IC50 값이 그림에만 있고 본문·표에는 없음",
+  "No absolute configuration reported":"절대 배치 보고 없음",
+  "No PubChem CID/InChIKey":"PubChem CID/InChIKey 없음",
+  "Authors state H. roretzi defence metabolites are primarily produced by symbiotic microorganisms: producing organism unresolved":"저자들이 멍게(H. roretzi)의 방어 대사물은 주로 공생 미생물이 만든다고 밝힘: 생산 생물 미확정",
+  "No confirmed stable CID/InChIKey for the exact peptide":"이 펩타이드 자체의 확인된 고정 CID/InChIKey 없음",
+  "ACE preparation source and full assay conditions not transcribed":"ACE 효소 출처와 전체 시험 조건을 옮겨 적지 않음",
+  "No fixed comparable ACE-peptide assay cohort":"비교 가능한 ACE 펩타이드 고정 시험 비교집단 없음",
+  "Sequence SAGSLVP (linear, all-L, free termini) computes to 629.7 Da (C27H47N7O10; RDKit InChIKey AUYBEMNUWGOKGL-WVBSATCKSA-N) but the paper reports 657 Da; the 28 Da difference is unexplained, so the structure is not confirmed.":"서열 SAGSLVP(선형, 모두 L형, 말단 자유)는 계산상 629.7 Da(C27H47N7O10, RDKit InChIKey AUYBEMNUWGOKGL-WVBSATCKSA-N)인데 논문은 657 Da로 보고함. 28 Da 차이가 설명되지 않아 구조를 확정하지 못함",
+  "Sequence predicted by in silico hydrolysis of T. pacificus myosin; release from squid material not observed":"살오징어(T. pacificus) 미오신을 인실리코로 가수분해해 예측한 서열이며, 실제 오징어 시료에서 나오는 것은 관찰되지 않음",
+  "No isolated exact compound linked to the intervention":"처치와 연결된, 분리·확인된 단일 화합물 없음",
+  "No molecule-level target, endpoint, value or fixed comparable assay cohort":"분자 수준의 표적·종말점·값과 비교 가능한 고정 시험 비교집단 없음",
+  "Fraction activity cannot be attributed to a named constituent":"분획의 활성을 특정 성분에 돌릴 수 없음",
+  "No numerical qualifying IC50 for isolated fucosterol in the checked original material":"확인한 원자료에 분리 푸코스테롤의 조건에 맞는 IC50 수치 없음",
+  "No fixed comparable single-compound assay cohort":"비교 가능한 단일 화합물 고정 시험 비교집단 없음",
+  "Original species spelling S. fusiformis and prior isolation report require specimen-level taxonomic reconciliation with WoRMS S. fusiforme 494972":"원논문의 종명 표기 S. fusiformis와 이전 분리 보고를 WoRMS S. fusiforme(494972)와 표본 수준에서 분류학적으로 맞춰 보아야 함",
+  "Full original isolation methods and exact stereochemistry / PubChem CID / InChIKey not established; non-acetylated saringosterol CID 14161394 is a different material":"원논문의 전체 분리 방법과 정확한 입체화학·PubChem CID·InChIKey가 확인되지 않음. 아세틸화되지 않은 사링고스테롤(CID 14161394)은 다른 물질임",
+  "Exposure duration, detailed cell-viability protocol and a fixed like-for-like compound cohort missing":"노출 시간, 세포 생존율 시험의 세부 절차, 같은 조건의 화합물 고정 비교집단이 없음",
+  "No assay-specific value, relation and unit from the accessible original abstract":"열람할 수 있는 원논문 초록에 시험별 값·관계 기호·단위가 없음",
+  "Natural, recombinant and analogue assay results must not be pooled":"천연·재조합·유사체 시험 결과는 합쳐 쓸 수 없음",
+  "No fixed comparable peptide cohort":"비교 가능한 펩타이드 고정 비교집단 없음",
+  "Complete peptide sequence and exact public structure identifier not established":"펩타이드 전체 서열과 정확한 공개 구조 식별자가 확인되지 않음",
+  "No cell-specific IC50, relation or unit in accessed original abstract":"열람한 원논문 초록에 세포주별 IC50·관계 기호·단위가 없음",
+  "No fixed comparable peptide assay cohort":"비교 가능한 펩타이드 고정 시험 비교집단 없음",
+  "ACE substrate/method not confirmed from the paper (abstract only)":"ACE 기질·시험법을 논문에서 확인하지 못함(초록만 열람)",
+  "No fixed comparable compound stratum for this target/assay in verified-pilot-2":"verified-pilot-2에는 이 표적·시험법에 맞는 비교 가능한 화합물 고정 층이 없음",
+  "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved":"기원이 모호함: 논문의 피크별 IC50 목록은 이 값을 진주조개(Pinctada fucata martensii)에 배정하지만, 서열을 설명한 문장은 이 펩타이드를 바지락 것으로 적음. 저자의 배정이 정리될 때까지 점수에 쓰지 않음",
 };
 const reasonKo=t=>REASON_KO[t]||t?.replace(/^pIC50 gap above (\S+)$/,'pIC50 차이가 기준 $1 초과');
 const supplementalRecord=o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
@@ -955,7 +989,7 @@ function verifiedBioDetail(s){
       (item.reported_origin_scientific_name?`<p class="fine">논문 원명 ${esc(item.reported_origin_scientific_name)} → 운영 승인명 ${esc(item.origin_scientific_name)} · AphiaID ${esc(item.origin_aphia_id)}. ${esc(item.origin_name_link_status||'원명과 승인명 연결은 출처별 확인 필요')}</p>`:'')+
       (item.assay_type?`<p class="fine">시험 ${esc(item.assay_type)} · 시료 연도 ${esc(item.sample_year||'원문에서 미확인')} · 논문 발행 ${esc(item.publication_year||'출처 참고')}</p>`:'')+
       (chain?`<p class="fine">연결 단계: ${esc(chain)}</p>`:'')+
-      ((item.missing||[]).length?`<p class="fine">누락: ${esc(item.missing.join(' / '))}</p>`:'')+
+      ((item.missing||[]).length?`<p class="fine">누락: ${esc(item.missing.map(reasonKo).join(' / '))}</p>`:'')+
       `<p class="fine">점수에 쓰지 않은 이유: ${esc(reasonKo(item.exclusion_reason)||'비교 가능한 고정 코호트 없음')} ${verifiedSource(item.source_id,'원자료 ↗')} · DOI ${esc(source?.doi||'원문 확인 필요')} · 조회 ${esc(source?.accessed||'미기재')} · 이용조건 ${esc(source?.license||'미확인')}</p>`;
   }).join(''):'';
   const raw=(s.assessment.peptide_raw_values||[]).map(r=>{const src=data.assessmentInfo?.sources?.[r.source_id];
