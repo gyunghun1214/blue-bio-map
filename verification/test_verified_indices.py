@@ -2263,7 +2263,7 @@ class VerifiedPilot323Tests(unittest.TestCase):
             new, old = self.new[item["aphia_id"]]["food_trace"], self.old[item["aphia_id"]]["food_trace"]
             self.assertEqual(new["row_table"], "literature")
             self.assertEqual([u for u in new["uncertainty"] if u not in old["uncertainty"]],
-                             [f"Literature row limitations: {item['limitations']}"], item["aphia_id"])
+                             [f"원논문 자료의 한계: {item['limitations']}"], item["aphia_id"])
         self.assertTrue(any("Kjeldahl" in u for u in self.new[494853]["food_trace"]["uncertainty"]))
 
     def test_nothing_else_changes(self):
@@ -2275,7 +2275,7 @@ class VerifiedPilot323Tests(unittest.TestCase):
             for s in r["species"] + r["candidate_species"]:
                 t = s.get("food_trace") or {}
                 t["method_version"] = None
-                t["uncertainty"] = [u for u in t.get("uncertainty", []) if not u.startswith("Literature row limitations: ")]
+                t["uncertainty"] = [u for u in t.get("uncertainty", []) if not u.startswith("원논문 자료의 한계: ")]
                 for n in t.get("supplemental_nutrition", []):
                     if "substitute_use" in n:
                         n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")

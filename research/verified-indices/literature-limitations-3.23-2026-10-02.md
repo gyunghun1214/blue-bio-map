@@ -18,10 +18,10 @@
 ## 2. 고친 것
 
 - 빌더: `literature_species_row()`가 돌려주는 행에 `limitations`를 싣는다. 점수 계산과 관측 행 표시는 이 키를 쓰지 않으므로 출력이 바뀌지 않는다.
-- 설정 플래그 `show_limitations`가 켜진 설정에서만, 문헌 행으로 점수를 낸 종의 `food_trace.uncertainty`에 `Literature row limitations: <문구>` 한 줄을 더한다. 문구가 비어 있으면 빌드가 멈춘다.
+- 설정 플래그 `show_limitations`가 켜진 설정에서만, 문헌 행으로 점수를 낸 종의 `food_trace.uncertainty`에 `원논문 자료의 한계: <문구>` 한 줄을 더한다. 문구가 비어 있으면 빌드가 멈춘다.
 - 3.15~3.22 설정에는 이 플래그가 없다. 그래서 보관본이 그대로 재현된다(검사로 고정).
 - 문헌 행 파일과 양식 기록 파일은 3.22의 것을 그대로 읽는다. 입력 파일을 고치지 않았으므로 로더의 출처 일치 조건(`set(파일 sources) == set(설정 source_ids)`)도 그대로다.
-- 화면: `dist/app.js`의 표시 코드는 바꾸지 않았다. MFPI 상세 맨 끝의 기존 '불확실성:' 줄로 나온다. 같은 자리에 나오는 비교집단 순위 안내와 구분되도록 문장 앞에 'Literature row limitations:'를 붙였다. 바꾼 것은 버전 목록(`VERIFIED`)과 `index.html`의 `app.js?v=`뿐이다.
+- 화면: `dist/app.js`의 표시 코드는 바꾸지 않았다. MFPI 상세 맨 끝의 기존 '불확실성:' 줄로 나온다. 같은 자리에 나오는 비교집단 순위 안내와 구분되도록 문장 앞에 '원논문 자료의 한계:'를 붙였다(문구 본문은 검수 기록의 영어 원문). '원논문이 밝힌 한계'라고 쓰지 않은 것은 이 문구가 논문이 직접 쓴 것이 아니라 우리가 검수하며 적은 기록이기 때문이다. 바꾼 것은 버전 목록(`VERIFIED`)과 `index.html`의 `app.js?v=`뿐이다.
 
 ## 3. 결과 (3.22 → 3.23)
 
@@ -43,4 +43,4 @@
 
 - `build_verified_indices.py --check`, `build_matrix_readiness.py --check` 재현 일치
 - unittest: `VerifiedPilot323Tests` 5개 신규(점수 불변, 두 종의 한계 문구, 그 밖의 차이 없음, 옛 설정에 플래그 없음, 재현). `VerifiedPilot322Tests`는 3.22 보관본을 재현한다.
-- JS: `test_mfpi_substitutes_ui.mjs`가 두 종의 MFPI 상세에 'Literature row limitations'가 나오는지, 괭생이모자반에 'Kjeldahl'이 나오는지 확인한다. `test_client_outdated.mjs`는 버전 탐침을 하나씩 올렸다.
+- JS: `test_mfpi_substitutes_ui.mjs`가 두 종의 MFPI 상세에 '원논문 자료의 한계'가 나오는지, 괭생이모자반에 'Kjeldahl'이 나오는지 확인한다. `test_client_outdated.mjs`는 버전 탐침을 하나씩 올렸다.

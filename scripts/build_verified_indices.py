@@ -462,7 +462,7 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         noted = []
         if d.get("row_table") == "literature" and ((settings.get("substitutes") or {}).get("literature") or {}).get("show_limitations"):
             require(row.get("limitations"), f"{aphia}: a literature row needs its reviewed limitations")
-            noted = [f"Literature row limitations: {row['limitations']}"]
+            noted = [f"원논문 자료의 한계: {row['limitations']}"]
         trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + noted + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",

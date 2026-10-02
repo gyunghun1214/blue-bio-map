@@ -26,7 +26,7 @@ assert.deepEqual([akamoku.row_table,akamoku.source_food_item_id,akamoku.omitted_
 const kumamoto=rows.find(a=>a.aphia_id===836041).food_trace;
 assert.deepEqual([kumamoto.row_table,kumamoto.source_food_item_id,kumamoto.omitted_components],['literature','LIT:liu2021-csikamea-table1',['zinc_mg']]);
 // 3.23: each literature row's reviewed limitations reach the MFPI detail as an uncertainty line
-for(const aphia of [494853,836041])assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)}),/불확실성: Literature row limitations: /,String(aphia));
+for(const aphia of [494853,836041])assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)}),/불확실성: 원논문 자료의 한계: /,String(aphia));
 assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===494853)}).includes('Kjeldahl'),'the seaweed protein caveat is on screen');
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
