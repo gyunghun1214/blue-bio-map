@@ -1,0 +1,97 @@
+{
+ "snapshot_date": "2026-10-02",
+ "searched_on": "2026-10-02",
+ "purpose": "verified-pilot-3.20: original-paper links for species that already have Wikidata P703 statements (team-lead decision 2026-10-02).",
+ "rule": "A paper link for a species with P703 statements is admitted only when the paper names the species (WoRMS accepted name or a WoRMS synonym) and states where its sample came from; the other paper-link conditions of 3.1 (single defined compound, isolated or identified from the species, InChIKey equal to the PubChem record) still apply, and every link carries a link-review decision.",
+ "sources": {
+  "europepmc_fulltext_p703": {
+   "provider": "Europe PMC REST fullTextXML",
+   "title": "Open-access full texts read for the 3.20 paper links (PMC8794173, PMC9858231)",
+   "version": "fullTextXML of PMC8794173 (PLoS ONE 17:e0258980, 2022) and PMC9858231 (Foods 12:244, 2023), read 2026-10-02",
+   "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/",
+   "accessed": "2026-10-02",
+   "terms": "CC BY 4.0 articles; compound names, sample origin and DOIs recorded, no text copied",
+   "license": "CC BY 4.0"
+  }
+ },
+ "held": [
+  {
+   "aphia_id": 236157,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "reason": "Held by the team lead (2026-10-02): its highest ChEMBL values are PubChem qHTS rows marked Inconclusive (PGA2 influenza NS1, 15-keto-PGE2 ROR-gamma); without them only a qHTS 'Active' screening hit or a weak Nur77 Kd would carry the species score."
+  }
+ ],
+ "links": [
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "compound_name_in_paper": "24-hydroperoxy-24-vinyl-cholesterol",
+   "compound_chembl_id": "CHEMBL252561",
+   "pubchem_cid": 20847459,
+   "inchikey": "WLNWTSOEOWZEGI-SVSQYMGHSA-N",
+   "compound_qid": "Q105308116",
+   "doi": "10.1371/journal.pone.0258980",
+   "pmcid": "PMC8794173",
+   "verification": {
+    "species_named": true,
+    "species_as_published": "Laminaria japonica (WoRMS synonym of Saccharina japonica, 377084)",
+    "sample_origin": "Cultivated at Yantai, Shandong, China (cultivar GS-02-004-2013), harvested July 2018, sun-dried then oven-dried at 50 C (Section 2.2)",
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Abstract and Section 3.1 name 24-hydroperoxy-24-vinyl-cholesterol among the five sterols isolated from this sample. The published 13C shifts suggest the paper swapped the labels of compounds 2 and 5 (C-24 at 89.1 ppm belongs to the hydroperoxide, 77.7 to saringosterol); both structures are among the isolates either way, so the link holds, but the masses per compound are uncertain."
+   },
+   "review": {
+    "decision": "accept",
+    "class": null,
+    "reason": "Isolated from cultivated Saccharina japonica (10.1371/journal.pone.0258980). Same autoxidation caveat as the 톳 link: the sample was sun- and oven-dried, and this hydroperoxide can form from fucosterol by photo-oxidation, so it may be a drying product rather than a biosynthetic one."
+   }
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "compound_name_in_paper": "saringosterol",
+   "compound_chembl_id": "CHEMBL252366",
+   "pubchem_cid": 14161394,
+   "inchikey": "OPGVEUGCNGNPSX-SVSQYMGHSA-N",
+   "compound_qid": "Q15426985",
+   "doi": "10.1371/journal.pone.0258980",
+   "pmcid": "PMC8794173",
+   "verification": {
+    "species_named": true,
+    "species_as_published": "Laminaria japonica (WoRMS synonym of Saccharina japonica, 377084)",
+    "sample_origin": "Cultivated at Yantai, Shandong, China (cultivar GS-02-004-2013), harvested July 2018, sun-dried then oven-dried at 50 C (Section 2.2)",
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Abstract and Section 3.1 name saringosterol (24-vinyl-cholest-5-ene-3b,24-diol) among the five sterols isolated from this sample. PubChem resolves 'saringosterol' to the single CID 14161394 with this InChIKey."
+   },
+   "review": {
+    "decision": "accept",
+    "class": null,
+    "reason": "Isolated from Saccharina japonica (10.1371/journal.pone.0258980) and quantified by 1H NMR against a reference standard in Japanese kombu (10.3390/foods12020244). Same autoxidation caveat as the 톳 link."
+   }
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "compound_name_in_paper": "saringosterol",
+   "compound_chembl_id": "CHEMBL252366",
+   "pubchem_cid": 14161394,
+   "inchikey": "OPGVEUGCNGNPSX-SVSQYMGHSA-N",
+   "compound_qid": "Q15426985",
+   "doi": "10.3390/foods12020244",
+   "pmcid": "PMC9858231",
+   "verification": {
+    "species_named": true,
+    "species_as_published": "Kombu (Saccharina japonica)",
+    "sample_origin": "Collected in Japan, March to April 2021, 8 batches; production areas in the paper's Table S1 (Section 2.2)",
+    "single_defined_compound": true,
+    "isolated_or_identified_from_species": true,
+    "inchikey_matches_pubchem": true,
+    "reason": "Section 3.5 and Figure 6: saringosterol quantified by 1H NMR against a Sigma-Aldrich standard in every kombu batch (identified, not isolated)."
+   },
+   "review": null
+  }
+ ]
+}
