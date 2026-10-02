@@ -26,11 +26,11 @@ const axes=['MFPI','MBPI','MCUI','BBVI'];
 const plain=x=>JSON.parse(JSON.stringify(x)); // objects built inside vm have another realm's prototypes
 
 // (1) A higher verified-pilot report: one reload, then 새 버전 있음 on every axis (never 기술 오류).
-let next=await run('verified-pilot-3.25');
-assert.deepEqual(plain(next.outdated),[{file:'assessments.json',version:'verified-pilot-3.25'}]);
+let next=await run('verified-pilot-3.26');
+assert.deepEqual(plain(next.outdated),[{file:'assessments.json',version:'verified-pilot-3.26'}]);
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,1,'first sight of a newer report reloads once');
-next=await run('verified-pilot-3.25');
+next=await run('verified-pilot-3.26');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),false);
 assert.equal(reloads,1,'no reload loop when the reload still serves an old app.js');
 for(const s of next.species)for(const k of axes){
@@ -38,15 +38,15 @@ for(const s of next.species)for(const k of axes){
   assert.equal(ctx.axisState(s,k).label,'새 버전 있음');
 }
 // A later version seen in the same tab reloads once more; still at most once per version.
-next=await run('verified-pilot-3.26');
+next=await run('verified-pilot-3.27');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,2);
 
 // (2) Numeric, not string, comparison; only the known dotted format is "newer".
 const latest=ctx.VERIFIED.at(-1);
-assert.equal(latest,'verified-pilot-3.24');
-for(const v of ['verified-pilot-3.27','verified-pilot-3.26','verified-pilot-4','verified-pilot-3.25.1'])assert.equal(ctx.newerVersion(v,latest,'verified-pilot-'),true,v);
-for(const v of ['verified-pilot-3.24','verified-pilot-3.23','verified-pilot-3.22','verified-pilot-3.21','verified-pilot-3.20','verified-pilot-3.19','verified-pilot-3.18','verified-pilot-3.17','verified-pilot-3.16','verified-pilot-3.15','verified-pilot-3.14','verified-pilot-3.13','verified-pilot-3.12','verified-pilot-3.11','verified-pilot-3.10','verified-pilot-3.9','verified-pilot-3.8','verified-pilot-3.7','verified-pilot-3.6','verified-pilot-3.5','verified-pilot-3.4','verified-pilot-3.3','verified-pilot-3.2','verified-pilot-3.1','verified-pilot-3','verified-pilot-2.3','verified-pilot-1','verified-pilot-3-oyster-lqp-research','verified-pilot-3.7a',
+assert.equal(latest,'verified-pilot-3.25');
+for(const v of ['verified-pilot-3.28','verified-pilot-3.27','verified-pilot-4','verified-pilot-3.26.1'])assert.equal(ctx.newerVersion(v,latest,'verified-pilot-'),true,v);
+for(const v of ['verified-pilot-3.25','verified-pilot-3.24','verified-pilot-3.23','verified-pilot-3.22','verified-pilot-3.21','verified-pilot-3.20','verified-pilot-3.19','verified-pilot-3.18','verified-pilot-3.17','verified-pilot-3.16','verified-pilot-3.15','verified-pilot-3.14','verified-pilot-3.13','verified-pilot-3.12','verified-pilot-3.11','verified-pilot-3.10','verified-pilot-3.9','verified-pilot-3.8','verified-pilot-3.7','verified-pilot-3.6','verified-pilot-3.5','verified-pilot-3.4','verified-pilot-3.3','verified-pilot-3.2','verified-pilot-3.1','verified-pilot-3','verified-pilot-2.3','verified-pilot-1','verified-pilot-3-oyster-lqp-research','verified-pilot-3.7a',
   'verified-pilot-','bogus',null,24])assert.equal(ctx.newerVersion(v,latest,'verified-pilot-'),false,String(v));
 
 // (3) Unknown or older versions are still data faults, and the current version is unchanged.
@@ -61,7 +61,7 @@ assert.ok(next.species.every(s=>s.assessmentState===undefined));
 
 // (4) Separate keys per file; several newer files share one reload.
 store.clear();reloads=0;
-const both=[{file:'assessments.json',version:'verified-pilot-3.25'},{file:'matrix-readiness.json',version:2}];
+const both=[{file:'assessments.json',version:'verified-pilot-3.26'},{file:'matrix-readiness.json',version:2}];
 assert.equal(ctx.reloadOnceForNewData(both),true);
 assert.equal(reloads,1);
 assert.deepEqual([...store.keys()].sort(),['reload:assessments.json','reload:matrix-readiness.json']);
@@ -71,7 +71,7 @@ assert.equal(reloads,2);
 
 // (5) Without sessionStorage it never reloads, and still shows 새 버전 있음.
 delete ctx.sessionStorage;store.clear();reloads=0;
-next=await run('verified-pilot-3.25');
+next=await run('verified-pilot-3.26');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),false);
 assert.equal(reloads,0,'without sessionStorage it never reloads');
 assert.equal(ctx.axisState(next.species[0],'MFPI').kind,'client_outdated');

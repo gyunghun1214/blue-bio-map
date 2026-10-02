@@ -372,11 +372,12 @@ next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInCont
 // 3.5: Sato 2002 dipeptides are scored after the full-text review; KNFL stays listed.
 // 3.12: Suetsuna 2000's synthetic IY replicates Sato's IY potency (two DOIs, 81.0).
 // 3.14: Lin 2018's purified IW replicates Sato's IW, so IW (two DOIs, 95.3) is the top item.
+// 3.25: Michelke 2018's synthetic IW (1.91 uM) is a second replication of the top item, so its line counts three DOIs; Saito/Nomura add synthetic IY/VW.
 html=ctx.renderScores(by(145721));
 assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721: scored values are not repeated as unscored raw values');
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
   for(const text of ['95.3 · 검증 전 시범 지표','정제 IW','재현 시료 클로렐라','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
-    '기질 HHL','효능 재현','합성 IY 2.65 µM','재현 시료 미역','차이 0.362','독립 DOI로 셈','DOI 2편(기원 1 + 효능 재현 1)',
+    '기질 HHL','효능 재현','합성 IY 2.65 µM','재현 시료 미역','차이 0.362','독립 DOI로 셈','DOI 3편(기원 1 + 효능 재현 2)','합성 IW 1.91 µM','재현 시료 화학 합성 IW','합성 IY 2.4 µM','합성 VW 1.68 µM',
     '펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
     assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
   assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
