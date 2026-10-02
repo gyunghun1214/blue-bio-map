@@ -2239,9 +2239,9 @@ class VerifiedPilot322Tests(unittest.TestCase):
 
 class VerifiedPilot323Tests(unittest.TestCase):
     """Public method: 3.22 plus display data only. The reviewed limitations of a literature species row (where, when and how
-    the paper sampled; for the seaweed, that Kjeldahl nitrogen x 6.25 overstates protein) reach the MFPI trace's uncertainty
-    list. From 3.15 to 3.22 the builder read the row's values and dropped this text. No input file, rule, cohort,
-    coefficient or score moves."""
+    the paper sampled; for the seaweed, that Kjeldahl nitrogen x 6.25 overstates protein) reach the MFPI trace as
+    literature_limitations. From 3.15 to 3.22 the builder read the row's values and dropped this text. No input file,
+    rule, cohort, coefficient or score moves, and the uncertainty list is untouched."""
 
     def setUp(self):
         self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V322))
@@ -2262,12 +2262,16 @@ class VerifiedPilot323Tests(unittest.TestCase):
         for item in book["items"]:
             new, old = self.new[item["aphia_id"]]["food_trace"], self.old[item["aphia_id"]]["food_trace"]
             self.assertEqual(new["row_table"], "literature")
-            self.assertEqual([u for u in new["uncertainty"] if u not in old["uncertainty"]],
-                             [f"원논문 자료의 한계: {item['limitations']}"], item["aphia_id"])
-        self.assertTrue(any("Kjeldahl" in u for u in self.new[494853]["food_trace"]["uncertainty"]))
+            self.assertEqual(new["literature_limitations"], item["limitations"], item["aphia_id"])
+            self.assertNotIn("literature_limitations", old)
+            self.assertEqual(new["uncertainty"], old["uncertainty"])
+        self.assertIn("Kjeldahl", self.new[494853]["food_trace"]["literature_limitations"])
+        # only the literature rows carry it
+        self.assertEqual(sorted(a for a, s in self.new.items() if "literature_limitations" in (s.get("food_trace") or {})),
+                         sorted(i["aphia_id"] for i in book["items"]))
 
     def test_nothing_else_changes(self):
-        # apart from the version stamps, the flag and the two added lines, the 3.23 report is the 3.22 report
+        # apart from the version stamps, the flag and the two added fields, the 3.23 report is the 3.22 report
         def strip(report):
             r = json.loads(render(report))
             r["method_version"] = r["method"]["method_version"] = r["method"]["changes_from"] = None
@@ -2275,7 +2279,7 @@ class VerifiedPilot323Tests(unittest.TestCase):
             for s in r["species"] + r["candidate_species"]:
                 t = s.get("food_trace") or {}
                 t["method_version"] = None
-                t["uncertainty"] = [u for u in t.get("uncertainty", []) if not u.startswith("원논문 자료의 한계: ")]
+                t.pop("literature_limitations", None)
                 for n in t.get("supplemental_nutrition", []):
                     if "substitute_use" in n:
                         n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")

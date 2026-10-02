@@ -459,11 +459,10 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                                                 "reference_mg": fa["daily_reference_mg"], "row_source": hit["row_source"],
                                                 "source_id": fa["display_source_id"], "use": "display_only"}
         # 3.23: a literature row's reviewed limitations reach the trace (3.15-3.22 read its values and dropped this text)
-        noted = []
         if d.get("row_table") == "literature" and ((settings.get("substitutes") or {}).get("literature") or {}).get("show_limitations"):
             require(row.get("limitations"), f"{aphia}: a literature row needs its reviewed limitations")
-            noted = [f"원논문 자료의 한계: {row['limitations']}"]
-        trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + noted + [
+            trace["literature_limitations"] = row["limitations"]
+        trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
             "Sensitivity values are scenario arithmetic, not a statistical confidence interval."]

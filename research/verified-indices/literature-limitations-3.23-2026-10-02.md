@@ -18,29 +18,31 @@
 ## 2. 고친 것
 
 - 빌더: `literature_species_row()`가 돌려주는 행에 `limitations`를 싣는다. 점수 계산과 관측 행 표시는 이 키를 쓰지 않으므로 출력이 바뀌지 않는다.
-- 설정 플래그 `show_limitations`가 켜진 설정에서만, 문헌 행으로 점수를 낸 종의 `food_trace.uncertainty`에 `원논문 자료의 한계: <문구>` 한 줄을 더한다. 문구가 비어 있으면 빌드가 멈춘다.
+- 설정 플래그 `show_limitations`가 켜진 설정에서만, 문헌 행으로 점수를 낸 종의 `food_trace.literature_limitations`에 문구 원문을 싣는다. 문구가 비어 있으면 빌드가 멈춘다. 비교집단 순위 민감도를 적는 `uncertainty`에는 넣지 않는다(두 리뷰 세션 의견).
 - 3.15~3.22 설정에는 이 플래그가 없다. 그래서 보관본이 그대로 재현된다(검사로 고정).
 - 문헌 행 파일과 양식 기록 파일은 3.22의 것을 그대로 읽는다. 입력 파일을 고치지 않았으므로 로더의 출처 일치 조건(`set(파일 sources) == set(설정 source_ids)`)도 그대로다.
-- 화면: `dist/app.js`의 표시 코드는 바꾸지 않았다. MFPI 상세 맨 끝의 기존 '불확실성:' 줄로 나온다. 같은 자리에 나오는 비교집단 순위 안내와 구분되도록 문장 앞에 '원논문 자료의 한계:'를 붙였다(문구 본문은 검수 기록의 영어 원문). '원논문이 밝힌 한계'라고 쓰지 않은 것은 이 문구가 논문이 직접 쓴 것이 아니라 우리가 검수하며 적은 기록이기 때문이다. 바꾼 것은 버전 목록(`VERIFIED`)과 `index.html`의 `app.js?v=`뿐이다.
+- 화면: MFPI 상세에서 문헌 환산을 설명하는 문단("…비교집단과 자기 자신 안에서 순위를 매겼습니다") 바로 아래, '점수 구성' 앞에 `원논문 자료의 한계: <문구>` 한 줄로 나온다(`dist/app.js`의 `verifiedFoodDetail` 한 줄). 문구 본문은 검수 기록의 영어 원문이다. 표시 조건은 `outside` 문단과 따로 두어, 비교집단 처리 규칙이 바뀌어도 문구가 조용히 사라지지 않는다.
+  - 처음 구현은 이 문구를 '불확실성:' 목록에 넣었다. 그러나 두 리뷰 세션('PR 병합 검토', '지도 사이트 데이터 수집')이 두 가지를 지적해 별도 필드로 바꿨다. 하나는 라벨이 '불확실성: 원논문 자료의 한계: …'로 겹친다는 것, 다른 하나는 순위 민감도 안내와 성격이 다른 문장이 섞인다는 것이다.
+  - '원논문이 밝힌 한계'라고 쓰지 않은 것은 이 문구가 논문이 직접 쓴 것이 아니라 우리가 검수하며 적은 기록이기 때문이다.
 
 ## 3. 결과 (3.22 → 3.23)
 
 | 항목 | 3.22 | 3.23 |
 |---|---|---|
 | 30종 × 4축 점수·보류 사유 | – | 모두 같음 (68/120) |
-| 시카메굴 `food_trace.uncertainty` | 6줄 | 7줄 (한계 문구 1줄 추가) |
-| 괭생이모자반 `food_trace.uncertainty` | 4줄 | 5줄 (한계 문구 1줄 추가) |
+| 시카메굴 `food_trace.literature_limitations` | 없음 | 문헌 행 한계 원문 |
+| 괭생이모자반 `food_trace.literature_limitations` | 없음 | 문헌 행 한계 원문 (Kjeldahl 포함) |
+| 두 종의 `uncertainty` | – | 그대로 |
 | 그 밖의 차이 | – | 버전 표기(`method_version`, `changes_from`, 각 종 `food_trace.method_version`, 홍합 보충 기록의 '3.22 substitute' 문구)와 설정 플래그뿐 |
 
-`VerifiedPilot323Tests.test_nothing_else_changes`가 이 표를 고정한다. 버전 표기, 플래그, 추가된 두 줄을 빼면 3.23 보고서와 3.22 보고서가 같아야 한다.
+`VerifiedPilot323Tests.test_nothing_else_changes`가 이 표를 고정한다. 버전 표기, 플래그, 추가된 두 필드를 빼면 3.23 보고서와 3.22 보고서가 같아야 한다.
 
 ## 4. 넣지 않은 것
 
 - 감태·가시파래 MFPI: 같은 시료 수분이 있는 성분 원문을 아직 확보하지 못했다. 감태는 김진아 2004 이화여대 박사논문(RISS, 원문 로그인 필요)이 남은 후보이고, 가시파래는 후보가 없다. 두 종 모두 양식 기록도 따로 있어야 한다. 이 버전에는 근거 행을 넣지 않았다.
-- 화면 위치 이동: 한계 문구를 가식부 줄 근처로 옮기는 안은 `app.js` 표시 코드를 바꿔야 해서 이번 범위에서 뺐다.
 
 ## 5. 검사
 
 - `build_verified_indices.py --check`, `build_matrix_readiness.py --check` 재현 일치
-- unittest: `VerifiedPilot323Tests` 5개 신규(점수 불변, 두 종의 한계 문구, 그 밖의 차이 없음, 옛 설정에 플래그 없음, 재현). `VerifiedPilot322Tests`는 3.22 보관본을 재현한다.
-- JS: `test_mfpi_substitutes_ui.mjs`가 두 종의 MFPI 상세에 '원논문 자료의 한계'가 나오는지, 괭생이모자반에 'Kjeldahl'이 나오는지 확인한다. `test_client_outdated.mjs`는 버전 탐침을 하나씩 올렸다.
+- unittest: `VerifiedPilot323Tests` 5개 신규(점수 불변, 두 종만 원문 그대로의 필드를 갖고 `uncertainty`는 그대로, 그 밖의 차이 없음, 옛 설정에 플래그 없음, 재현). `VerifiedPilot322Tests`는 3.22 보관본을 재현한다.
+- JS: `test_mfpi_substitutes_ui.mjs`가 두 종의 MFPI 상세에서 '원논문 자료의 한계'가 문헌 환산 문단 뒤·'점수 구성' 앞에 나오는지, '불확실성:' 줄에는 없는지, 괭생이모자반에 'Kjeldahl'이 나오는지 확인한다. `test_client_outdated.mjs`는 버전 탐침을 하나씩 올렸다.
