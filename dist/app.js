@@ -1111,15 +1111,16 @@ function renderVerifiedIndices(s){
 // keeps the source names. Kept above setView: test_map_boundary.mjs loads only the code before it with the popup code.
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'};
 const seaName=x=>SEA_KO[x]||x;
-function setView(view) {
+function setView(view,toTop=true) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
   const changed=view!==currentView;
   currentView=view;
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
-  // A real tab change starts at the top; callers that open a target (source list, evidence) scroll to it afterwards.
-  if(changed)window.scrollTo(0,0);
+  // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
+  // toTop=false, so the page does not jump up first and then travel the whole way back down.
+  if(changed&&toTop)window.scrollTo(0,0);
   writeHash();
 }
 
@@ -1463,7 +1464,7 @@ function renderLiveDetail(s) {
     more('수집·선별 기준',`${row('AphiaID',s.aphiaID)}${row('원자료 학명',(i.original_names||[]).join(', ')||'미기재')}<p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 AphiaID를 기준으로 합니다.</p>${mapSection({...s,cells})}${separate}${institutionChecks(s)}`)+
     more('출처와 이용조건',`<div class="source-area">${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,((mcuiReference(s)?.source_ids||[]).includes(id)?'참고 정보 출처 ':'지표 근거 ')+id+' ↗')} · ${esc(src.license)}${src.notice?`<br><span class="fine">${esc(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`)+
     `</div>`;
-  $('detail-sources').addEventListener('click',()=>{setView('method');document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
+  $('detail-sources').addEventListener('click',()=>{setView('method',false);document.querySelector('.source-section').scrollIntoView({behavior:'smooth'});});
 }
 
 // Published 1° map cells (public.species_map_cells, rules map-1). Cells only: no coordinates or record ids exist in the API.
@@ -2030,7 +2031,7 @@ function renderComparison(){
 function openEvidence(aphia,axis){
   const page=comparisonPage, returnScroll=$('comparison').scrollLeft;
   if(axis==='OCC'){lastFitted=null;if(mapMode!=='occurrence')setMapMode('occurrence');}
-  selectSpecies(aphia);setView('explore');
+  selectSpecies(aphia);setView('explore',false);
   const back=document.createElement('button');
   back.type='button';back.className='text-button comparison-return';back.textContent='← 비교표로 돌아가기';
   $('detail').prepend(back);
