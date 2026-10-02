@@ -38,6 +38,11 @@ assert.ok(N>0,'감태 has reviewed compound measurements');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
 // A template that puts its own period after a source sentence that already ends in one prints '..' ('cod..'); '...' stays.
 const DOTS=/[^.]\.\.(?!\.)/g;
+// The evidence files keep exclusion reasons in English; the page shows each one in Korean (REASON_KO in app.js).
+const EN_REASONS=[];
+(function walk(o,parent){if(Array.isArray(o))o.forEach(v=>walk(v,parent));else if(o&&typeof o==='object')for(const [k,v] of Object.entries(o)){
+  if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications'))EN_REASONS.push(T.esc(v));else walk(v,k);}})(report);
+assert.ok(EN_REASONS.length>0,'English reasons found in assessments.json (drop this check once the data itself is Korean)');
 const findings=[], count={detail:0,decision:0,cells:0,popup:0};
 let cellSpecies=0, popupSpecies=0, replicatedSpecies=0;
 for(const s of next.species){
@@ -52,6 +57,8 @@ for(const s of next.species){
     const bad=h.match(BAD), sea=h.match(SEA_EN)||[];
     if(bad)p.push(`${bad.length}× ${[...new Set(bad)].join('/')}`);
     if(sea.length)p.push(`${sea.length}× English sea name (${[...new Set(sea)].join(', ')})`);
+    const en=EN_REASONS.filter(r=>h.includes(r));
+    if(en.length)p.push(`${en.length}× English reason (${en.map(r=>r.slice(0,40)).join(' | ')})`);
     const dots=[...h.matchAll(DOTS)].map(m=>h.slice(Math.max(0,m.index-20),m.index+3));
     if(dots.length)p.push(`${dots.length}× double period (${dots.join(' | ')})`);
     const own=place==='detail'&&s.aphiaID===ECKLONIA, at=h.indexOf(CAPTION);
@@ -80,4 +87,4 @@ assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
 assert.ok(replicatedSpecies>0,'a candidate with a replicated top item (큰가리비, 3.24) was rendered');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period`);
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean`);
