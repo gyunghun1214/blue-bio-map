@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.24",
+  "method_version": "verified-pilot-3.25",
   "schema_version": 1,
   "species": [
     {
@@ -129,12 +129,15 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1002/elsc.201700172",
         "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
         "https://doi.org/10.1016/j.jnutbio.2003.11.004",
         "https://doi.org/10.1016/j.procbio.2006.04.019",
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
+        "https://doi.org/10.1046/j.1444-2906.2002.00518.x",
+        "https://doi.org/10.1271/bbb.58.1767",
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
         "https://doi.org/10.3897/BDJ.8.e47018",

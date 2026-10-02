@@ -50,6 +50,7 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.23: display data only (literature-row limitations in the MFPI trace); no count moves.
         # verified-pilot-3.24: Suetsuna 2004's purified VW replicates the 큰가리비 VW potency (pIC50 gap 0.906): MBPI
         # 27.3 -> 36.4 and BBVI 46.1; its MCUI is a national assessment, so it is the matrix's second point.
+        # verified-pilot-3.25: three synthetic wakame replications and two corrected aquaculture records; no count moves.
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
         # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a
