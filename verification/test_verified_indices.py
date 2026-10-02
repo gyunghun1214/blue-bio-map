@@ -1975,21 +1975,26 @@ class VerifiedPilot319Tests(unittest.TestCase):
             self.assertNotIn("3.19-2026-10-02", Path(old).read_text(encoding="utf-8"))
 
 
+V320 = ROOT / "config" / "verified-indices-v3.20.json"  # superseded by 3.21 (anticancer stratum); its rows stay tested
+
+
 class VerifiedPilot320Tests(unittest.TestCase):
-    """Public method: 3.19 plus two team-lead decisions of 2026-10-02. (1) An original-paper link is also admitted for a species
+    """Superseded by 3.21. Public method: 3.19 plus two team-lead decisions of 2026-10-02. (1) An original-paper link is also admitted for a species
     that has Wikidata P703 statements, when the paper names the species and states where the sample came from; 다시마 gains a
     single-paper ChEMBL MBPI from Lu 2022 and 꼬시래기 is held. (2) A ChEMBL activity its depositor marked Inconclusive or
     Not Active never enters a species item."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V320))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V319)))
         self.rule = self.report["method"]["chembl_bioactivity"]
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.20", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.20 report is archived as it was
+        archived320 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.20.json"
+        self.assertEqual(render(self.report), archived320.read_text(encoding="utf-8"))
 
     def test_only_kelp_gains_a_score(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -2038,6 +2043,120 @@ class VerifiedPilot320Tests(unittest.TestCase):
             text = Path(old).read_text(encoding="utf-8")
             self.assertNotIn("paper_links_p703", text)
             self.assertNotIn("activity_comments", text)
+
+
+ANTICANCER = "research/verified-indices/evidence-anticancer-2026-10-02.json"
+
+
+class VerifiedPilot321Tests(unittest.TestCase):
+    """Public method: 3.20 plus the anticancer stratum the proposal names beside the antibacterial one. A fixed CancerPPD 2.0
+    cohort per cancer cell line (IC50, single clean numeric value) ranks pIC50 = 6 - log10(IC50 uM) the way the AMP stratum
+    ranks pMIC, with the same minimum cohort, the same DOI factors and the same max aggregation. A cell IC50 is never ranked
+    against a MIC or an ACE IC50, and a peptide the database already holds is removed from its own cohort before ranking.
+    피조개 gains an anticancer item that becomes its best; 가시파래 and 맛조개 gain items that rank below their best."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V320)))
+        self.rule = self.report["method"]["anticancer_bioactivity"]
+        self.items = {(a, i["peptide_name"], i["cell_line"]): i for a, s in self.new.items()
+                      for i in s["bioactivity_trace"] if i.get("stratum_kind") == "anticancer"}
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.21", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_one_species_moves_and_the_others_only_gain_evidence(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(504357, "MBPI"): 75.0})
+        clam = self.new[504357]
+        self.assertEqual((clam["mbpi_label"], clam["mbpi_stratum"]), ("참고값(단일 논문)", "anticancer"))
+        self.assertEqual(clam["withheld_reasons"]["BBVI"], "mbpi_single_source")
+        self.assertEqual(sum(s["scores"][axis] is not None for s in self.new.values() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")), 67)
+        # 가시파래 and 맛조개 gain items, but weaker than what they already had
+        for a in (234476, 413600):
+            self.assertEqual(self.new[a]["scores"]["MBPI"], self.old[a]["scores"]["MBPI"])
+            self.assertTrue([i for i in self.new[a]["bioactivity_trace"] if i.get("stratum_kind") == "anticancer"])
+        self.assertEqual({a for a, _, _ in self.items}, {504357, 234476, 413600})
+
+    def test_items_rank_inside_their_own_cell_line_cohort(self):
+        book = json.loads((ROOT / self.rule["cohort_file"]).read_text(encoding="utf-8"))
+        cohorts = {c["cohort_id"]: c for c in book["cohorts"]}
+        self.assertEqual(len(self.items), 6)
+        for (aphia, name, cell), item in self.items.items():
+            cohort = cohorts[item["stratum_id"]]
+            self.assertEqual(cohort["cell_line"], cell)
+            self.assertEqual(item["cohort_members"], cohort["size"])
+            self.assertGreaterEqual(item["peer_peptides"], self.rule["minimum_peptides"])
+            self.assertEqual(item["evidence_factor"], 0.75)  # one paper each
+            self.assertLess(abs(item["adjusted"] - item["percentile"] * 0.75), 0.01)  # the item rounds the percentile
+            self.assertAlmostEqual(item["pIC50"], median(6 - math.log10(m["value"]) for m in item["measurements"]), places=3)
+            for m in item["measurements"]:
+                self.assertEqual((m["endpoint"], m["relation"], m["unit"]), ("IC50", "=", "uM"))
+                self.assertIn(m["method"], self.rule["accepted_methods"])
+                self.assertEqual(m["cell_line"], cell)
+
+    def test_a_peptide_is_never_ranked_against_itself(self):
+        book = json.loads((ROOT / self.rule["cohort_file"]).read_text(encoding="utf-8"))
+        cohorts = {c["cohort_id"]: c for c in book["cohorts"]}
+        rows = {r["record_id"]: r for r in json.loads((ROOT / self.rule["supplement"]).read_text(encoding="utf-8"))["anticancer_bioactivity"]}
+        for item in self.items.values():
+            own = [rows[r] for r in item["record_ids"]]
+            key = own[0]["cohort_self_member_key"]
+            members = cohorts[item["stratum_id"]]["members"]
+            if own[0]["cancerppd_ids"]:
+                # the paper's own row is in CancerPPD, so exactly one member is dropped before ranking
+                self.assertTrue(item["self_in_cohort"])
+                self.assertEqual(item["peer_peptides"], item["cohort_members"] - 1)
+                self.assertEqual(len([m for m in members if m["k"] == key]), 1)
+            else:
+                self.assertFalse(item["self_in_cohort"])
+                self.assertEqual(item["peer_peptides"], item["cohort_members"])
+        # 피조개 P6 beats every peer on HT-29; that is a statement about this cohort, nothing wider
+        p6 = self.items[(504357, "P6", "HT-29")]
+        self.assertEqual((p6["percentile"], p6["peer_peptides"], p6["cohort_members"]), (100.0, 50, 51))
+
+    def test_an_ic50_is_never_ranked_against_a_mic_or_an_ace_ic50(self):
+        kinds = {"anticancer": set(), "amp": set(), "peptide": set()}
+        for s in self.new.values():
+            for i in s["bioactivity_trace"]:
+                if i.get("stratum_kind") in ("anticancer", "amp", "peptide"):
+                    kinds[i["stratum_kind"]].add(i["stratum_id"])
+                self.assertEqual("cell_line" in i, i.get("stratum_kind") == "anticancer")
+                self.assertEqual("pMIC" in i, i.get("stratum_kind") == "amp")
+        self.assertTrue(all(kinds.values()))
+        self.assertFalse(kinds["anticancer"] & kinds["amp"])
+        self.assertFalse(kinds["anticancer"] & kinds["peptide"])
+
+    def test_the_cohort_file_obeys_its_own_published_rule(self):
+        book = json.loads((ROOT / self.rule["cohort_file"]).read_text(encoding="utf-8"))
+        self.assertIn("free for public", book["source"]["licence"])  # the maintainer's written permission
+        for c in book["cohorts"]:
+            self.assertEqual(c["measure"], "IC50")
+            self.assertGreaterEqual(c["size"], self.rule["minimum_peptides"])
+            self.assertEqual(len(c["members"]), c["size"])
+            self.assertTrue(all(m["ic50_uM"] > 0 for m in c["members"]))
+            pic = sorted(6 - math.log10(m["ic50_uM"]) for m in c["members"])
+            self.assertAlmostEqual(round(median(pic), 3), c["median_pIC50"], places=3)
+            self.assertAlmostEqual(round(pic[0], 3), c["min_pIC50"], places=3)
+        self.assertIn(self.rule["cohort_source_id"], self.report["sources"])
+
+    def test_rejected_rows_stay_recorded(self):
+        supplement = json.loads((ROOT / self.rule["supplement"]).read_text(encoding="utf-8"))
+        reasons = " ".join(x["reason"] for x in supplement["excluded"])
+        for phrase in ("recombinant", "fewer than 30", "censored", "not this species"):
+            self.assertIn(phrase, reasons)
+        # the strongest measured value of both marine peptides is the one we cannot score; say so
+        self.assertIn("DLD-1", reasons)
+        self.assertIn("NCI-H460", reasons)
+
+    def test_older_configs_do_not_read_it(self):
+        for old in (V319, V320):
+            text = Path(old).read_text(encoding="utf-8")
+            self.assertNotIn(ANTICANCER, text)
+            self.assertNotIn("anticancer_bioactivity", json.loads(text))
 
 
 if __name__ == "__main__":

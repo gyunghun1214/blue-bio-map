@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.20",
+  "method_version": "verified-pilot-3.21",
   "schema_version": 1,
   "species": [
     {
@@ -715,11 +715,13 @@
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ulva+prolifera&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3390/foods11213507",
         "https://doi.org/10.3390/md22090398",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
+        "https://webs.iiitd.edu.in/raghava/cancerppd2/",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476",
@@ -1063,7 +1065,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": 22.0,
+        "MBPI": 75.0,
         "MCUI": 10.0,
         "MFPI": 61.9
       },
@@ -1073,8 +1075,10 @@
         "https://api.obis.org/v3/",
         "https://dbaasp.org",
         "https://doi.org/10.3390/md15070205",
+        "https://doi.org/10.3390/md20020110",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
+        "https://webs.iiitd.edu.in/raghava/cancerppd2/",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.koreascience.kr/article/JAKO198622105902972.page",
@@ -1116,7 +1120,9 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.3389/fmars.2021.747891",
         "https://doi.org/10.3390/md14060110",
+        "https://doi.org/10.3892/mmr.2017.7418",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
+        "https://webs.iiitd.edu.in/raghava/cancerppd2/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
