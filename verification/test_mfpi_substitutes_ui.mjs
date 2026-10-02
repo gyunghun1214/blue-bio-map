@@ -25,6 +25,13 @@ const akamoku=rows.find(a=>a.aphia_id===494853).food_trace;
 assert.deepEqual([akamoku.row_table,akamoku.source_food_item_id,akamoku.omitted_components],['literature','LIT:murakami2011-shorneri-tables3-4',['iron_mg']]);
 const kumamoto=rows.find(a=>a.aphia_id===836041).food_trace;
 assert.deepEqual([kumamoto.row_table,kumamoto.source_food_item_id,kumamoto.omitted_components],['literature','LIT:liu2021-csikamea-table1',['zinc_mg']]);
+// 3.23: each literature row's reviewed limitations sit under the paragraph that explains the row, before the score build-up
+for(const aphia of [494853,836041]){
+  const html=ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)});
+  assert.ok(html.indexOf('원논문 자료의 한계: ')>html.indexOf('비교집단과 자기 자신 안에서 순위를 매겼습니다')&&html.indexOf('원논문 자료의 한계: ')<html.indexOf('점수 구성'),String(aphia));
+  assert.doesNotMatch(html,/불확실성: 원논문/,'not a second label inside the uncertainty lines');
+}
+assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===494853)}).includes('Kjeldahl'),'the seaweed protein caveat is on screen');
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
 const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);

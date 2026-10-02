@@ -225,7 +225,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1365,7 +1365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1768,7 +1768,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2172,8 +2172,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2718,7 +2717,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3297,7 +3296,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4206,7 +4205,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5250,7 +5249,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6310,7 +6309,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7304,8 +7303,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8399,7 +8397,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9586,7 +9584,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10737,7 +10735,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11829,7 +11827,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12826,7 +12824,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13803,7 +13801,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14957,7 +14955,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15984,7 +15982,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16964,7 +16962,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18026,7 +18024,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19003,7 +19001,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20004,7 +20002,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21080,7 +21078,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.22 (2026-10-02). Display data only, no score change: the reviewed limitations of a literature species row (sample site, season, laboratory and method, e.g. that Kjeldahl nitrogen x 6.25 overstates seaweed protein) now reach the MFPI trace as food_trace.literature_limitations (nutrition.substitutes.literature.show_limitations), shown under the literature-row paragraph of the MFPI detail as '원논문 자료의 한계: ...'. From 3.15 to 3.22 the builder read the row's values but dropped this text, so it was in neither the report nor the screen for 시카메굴 and 괭생이모자반. Every rule, input file, cohort, coefficient, weight and score equals 3.22. See research/verified-indices/literature-limitations-3.23-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.21 (2026-10-02). 괭생이모자반 gains an MFPI through the literature route the method has had since 3.12: Murakami et al. 2011 (J Food Compos Anal 24:231) analyses the raw edible portion of this species and reports the moisture of the same pooled sample, which is exactly what the earlier searches could not find. Protein, calcium and zinc convert to a fresh-weight basis; iron is not measured and stays out of the mean under the 3.7 minimum-components rule. Read on 2026-10-02 through the Dongguk University library. The species also gains the aquaculture record the MFPI formula needs (Pang et al. 2008, tank culture through a full generation to the long-line stage), counted feasible = true under the 3.7 research-rearing clause. No rule, cohort or coefficient changes. See research/verified-indices/mfpi-sargassum-2026-10-02.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21323,7 +21321,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.23",
+    "method_version": "verified-pilot-3.22",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21495,7 +21493,6 @@
           "grade": "literature_converted",
           "label": "문헌 분석값(같은 시료 수분으로 날것 환산)",
           "rule": "Only for a species with no RDA DB 10.4 row linked and no MEXT species row. A peer-reviewed paper that identifies the species (morphology or molecular), analyses raw edible tissue and reports the moisture of the same sample; dry-basis values become fresh weight as value_dw x (100 - moisture) / 100 (mg/kg dry weight divided by 10 first). A component reported inconsistently within the paper is left out of the mean under the 3.7 minimum-components rule. Ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Team-lead decision 2026-10-01 (route 3, factor 0.85). Since 3.22 a seaweed row joins the shellfish one: the same conditions apply, and a component the paper does not analyse at all (iron, here) is omitted exactly like one it reports inconsistently.",
-          "show_limitations": true,
           "snapshot": "research/verified-indices/mfpi-literature-rows-3.22-2026-10-02.json",
           "source_ids": [
             "liu_2021_kumamoto_xiangshan",
@@ -21697,7 +21694,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.23",
+  "method_version": "verified-pilot-3.22",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -23613,7 +23610,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24295,7 +24292,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25270,7 +25267,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -26390,7 +26387,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27359,7 +27356,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28153,7 +28150,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28836,7 +28833,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29477,7 +29474,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.23 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.22 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30314,7 +30311,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.23",
+        "method_version": "verified-pilot-3.22",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
