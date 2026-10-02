@@ -21228,8 +21228,8 @@
       "provider": "DBAASP v3 (Database of Antimicrobial Activity and Structure of Peptides), I. Beritashvili Center of Experimental Biomedicine and NIAID OCICB",
       "terms": "DBAASP Data Access Policy (terms-and-conditions page, read 2026-10-02): the data may be accessed, downloaded, copied, used, adapted and redistributed without restriction, with acknowledgement of DBAASP as the source. Only sequences, MIC values and row counts are stored; DBAASP's own numeric 'activity' field is never read.",
       "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
-      "url": "https://dbaasp.org/v3/api-docs",
-      "version": "v3 REST, dumped 2026-10-02; dump sha256 d8877834a51d92276d19a1ab6bb7fff53ab32083fce6ad53232dca9b0dad3eb8"
+      "url": "https://dbaasp.org",
+      "version": "v3, REST API https://dbaasp.org/v3/api-docs, dumped 2026-10-02; dump sha256 d8877834a51d92276d19a1ab6bb7fff53ab32083fce6ad53232dca9b0dad3eb8"
     },
     "do_2012_oyster_lqp": {
       "accessed": "2026-09-27",
