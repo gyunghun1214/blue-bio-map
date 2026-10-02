@@ -2396,20 +2396,25 @@ NEW325 = {"michelke_2018_iw": ("IW", "10.1002/elsc.201700172", 0.105), "nomura_2
           "saito_1994_sake": ("IY", "10.1271/bbb.58.1767", 0.405)}
 
 
+V325 = ROOT / "config" / "verified-indices-v3.25.json"  # superseded by 3.26 (청각 limitation no longer quotes a misprint)
+
+
 class VerifiedPilot325Tests(unittest.TestCase):
-    """Public method: 3.24 plus three synthetic potency replications for the wakame IW, VW and IY items (Michelke 2018,
+    """Superseded by 3.26. Public method: 3.24 plus three synthetic potency replications for the wakame IW, VW and IY items (Michelke 2018,
     Nomura 2002, Saito 1994; found by doyoun0824, two independent readers each, read a third time) and two corrected
     aquaculture records (멸치's rearing site, 청각 read in full). No feasible flag, rule, cohort, gap, coefficient or score
     moves; 미역's BBVI no longer needs the purified-isolate rule or the shared-co-author exception for those items."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V324))
+        self.report, self.old_report = build(*load_inputs(config=V325)), build(*load_inputs(config=V324))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.25", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.25 report is archived as it was
+        archived325 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.25.json"
+        self.assertEqual(render(self.report), archived325.read_text(encoding="utf-8"))
 
     def test_no_score_moves(self):
         for a, s in self.new.items():
@@ -2488,6 +2493,61 @@ class VerifiedPilot325Tests(unittest.TestCase):
                     if "potency_replications" in i:
                         i["potency_replications"] = [x for x in i["potency_replications"] if x["source_id"] not in new_sources]
                         i["independent_dois"] = [d for d in i["independent_dois"] if d not in {v[1] for v in NEW325.values()}]
+            return r
+        self.assertEqual(strip(self.report), strip(self.old_report))
+
+
+AQUA326 = "research/verified-indices/mfpi-aquaculture-names-3.26-2026-10-02.json"
+
+
+class VerifiedPilot326Tests(unittest.TestCase):
+    """Public method: 3.25 with one record sentence corrected. The 청각 aquaculture limitation quoted Hwang et al. 2008's
+    36,110 kg dry weight per hectare as the authors' estimate. By Table 2's own footnotes (5% dry yield, 100 ropes of 100 m
+    per hectare) that row is 3,610, the rule the other three depths follow, so the printed figure is a misprint and the
+    limitation now says so. No feasible flag, rule, cohort, coefficient or score moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V325))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.26", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_no_score_moves(self):
+        for a, s in self.new.items():
+            self.assertEqual((s["scores"], s["withheld_reasons"]), (self.old[a]["scores"], self.old[a]["withheld_reasons"]), s["korean_name"])
+        self.assertEqual(sum(v is not None for s in self.new.values() for v in s["scores"].values()), 69)
+
+    def test_only_the_codium_limitation_changes_in_a_fork(self):
+        # Hwang 2008 Table 2, depth: (kg dry per 100 m of rope, printed kg dry per hectare); a hectare holds 100 such ropes
+        table2 = {0.5: (7.9, 790), 1: (36.1, 36110), 2: (17.2, 1720), 3: (5.15, 515)}
+        self.assertEqual({d for d, (rope, printed) in table2.items() if round(rope * 100) != printed}, {1})
+        read = lambda p: json.loads((ROOT / p).read_text(encoding="utf-8"))
+        old, new = read(AQUA325), read(AQUA326)
+        changed = {(o["aphia_id"], k) for o, n in zip(old["food_support"], new["food_support"]) for k in set(o) | set(n) if o.get(k) != n.get(k)}
+        self.assertEqual(changed, {(145086, "limitations")})
+        self.assertEqual((new["rule"], new["sources"], len(new["food_support"])), (old["rule"], old["sources"], len(old["food_support"])))
+        limitation = self.new[145086]["food_trace"]["aquaculture"]["limitations"]
+        self.assertIn("gives 3,610", limitation)
+        self.assertNotIn("potential-production estimate", limitation)
+        # 3.25 keeps reading its own file, so its archive stays as published
+        self.assertEqual(json.loads(V325.read_text(encoding="utf-8"))["nutrition"]["substitutes"]["aquaculture_supplement"], AQUA325)
+
+    def test_nothing_else_changes(self):
+        def strip(report):
+            r = json.loads(render(report))
+            r["method_version"] = r["method"]["method_version"] = r["method"]["changes_from"] = None
+            r["method"]["nutrition"]["substitutes"]["aquaculture_supplement"] = None
+            for s in r["species"] + r["candidate_species"]:
+                t = s.get("food_trace") or {}
+                t["method_version"] = None
+                if s["aphia_id"] == 145086:
+                    t["aquaculture"]["limitations"] = None
+                for n in t.get("supplemental_nutrition", []):
+                    if "substitute_use" in n:
+                        n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
             return r
         self.assertEqual(strip(self.report), strip(self.old_report))
 
