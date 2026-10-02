@@ -225,7 +225,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1365,7 +1365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1768,7 +1768,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2127,188 +2127,13 @@
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 494853,
-          "feasible": true,
-          "kind": "aquaculture",
-          "limitations": "Research rearing for seedling production, not food production: the paper reports no harvest, yield or cost, and the grow-out stops at the long-line cultivation stage. It is counted feasible = true under the 3.7 rule that research rearing of a species through its life cycle in a named facility and period counts, the same standing as the 우뭇가사리 and 다시마 records. The work is Chinese, not Korean, and the parent plants are a Zhejiang population.",
-          "method": "Indoor tank culture of the species through a full generation. Adult male and female plants were sampled in April 2007 at Xiaohuyu, Nanji Islands (27 27 N, 121 04 E), flown to the laboratory in Qingdao within 24 h and precultured in 80 L flow-through polypropylene tanks in tumble culture under reduced solar irradiance. Zygotes were collected on 6 June from one female plant and seeded onto a 0.5 m2 seedling collector; the seedlings were grown to 5-7 cm, re-inserted into a 2 cm nylon/cotton rope and grown on in a 1,000 L flow-through indoor raceway tank (lanes 400 x 40 x 40 cm, sand-filtered and ozone-treated water, 50% renewed daily, KNO3 10 and KH2PO4 1 mg/L every two days, long-lines hung at the surface at 15 cm intervals). The paper reports that the seedlings reached the long-line cultivation stage and that the life cycle in culture was completed in 4.5 months.",
-          "record_id": "pang2008-shorneri-tank-seedling",
-          "region": "Laboratory in Qingdao, Shandong, China; parent plants from Nanji Islands, Zhejiang, China",
-          "reviewed": true,
-          "source_id": "pang_2008_sargassum_horneri_culture",
-          "year": "October 2007 to April 2008 (raceway run); parent plants sampled April 2007, zygotes seeded 6 June"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
-        "cohort_food_item_ids": [
-          "L0110000000a",
-          "L0130000000a",
-          "L0270000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-seaweeds",
-        "cohort_species": 3,
-        "components": {
-          "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 6.67,
-          "evidence_grade_deduction": 6.5,
-          "nutrient_value_contribution": 43.33
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "This is the paper's length ratio, not a measured weight ratio, and the lower portion is the thicker part, so the true edible share by weight is probably lower than 2/3. The paper reports no refuse percentage.",
-          "method": "The paper's own definition of the edible portion: the upper two thirds of the plant length, with the lower rigid portion discarded (Section 2.2). Taken as 2/3.",
-          "record_id": "murakami2011-shorneri-tables3-4:edible_fraction",
-          "region": "Chikuzen Sea, Fukuoka Prefecture, Japan",
-          "reviewed": true,
-          "sample_period": "19 January to 11 May 2005 (six harvest dates); collected once or twice a month from November 2004",
-          "source_id": "murakami_2011_sargassum_horneri",
-          "unit": "edible share of food as purchased",
-          "value": 0.6667
-        },
-        "english_name": "Sargassum horneri (괭생이모자반, akamoku)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 60.0
-        },
-        "method_version": "verified-pilot-3.22",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "murakami2011-shorneri-tables3-4 (murakami_2011_sargassum_horneri): dry-basis value x (100 - 88% moisture of the same sample) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 91.0
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 79.0
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 55.0
-              },
-              {
-                "food_item_id": "LIT:murakami2011-shorneri-tables3-4",
-                "name": "Sargassum horneri (괭생이모자반, akamoku)",
-                "value": 147.8
-              }
-            ],
-            "percentile": 87.5,
-            "percentile_unrounded": 87.5,
-            "unit": "mg",
-            "value": 147.8
-          },
-          "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "murakami2011-shorneri-tables3-4 (murakami_2011_sargassum_horneri): dry-basis value x (100 - 88% moisture of the same sample) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 3.88
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 1.68
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 2.18
-              },
-              {
-                "food_item_id": "LIT:murakami2011-shorneri-tables3-4",
-                "name": "Sargassum horneri (괭생이모자반, akamoku)",
-                "value": 1.04
-              }
-            ],
-            "percentile": 12.5,
-            "percentile_unrounded": 12.5,
-            "unit": "g",
-            "value": 1.04
-          },
-          "zinc_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "murakami2011-shorneri-tables3-4 (murakami_2011_sargassum_horneri): dry-basis value x (100 - 88% moisture of the same sample) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 1.01
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 0.14
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 0.13
-              },
-              {
-                "food_item_id": "LIT:murakami2011-shorneri-tables3-4",
-                "name": "Sargassum horneri (괭생이모자반, akamoku)",
-                "value": 0.48
-              }
-            ],
-            "percentile": 62.5,
-            "percentile_unrounded": 62.5,
-            "unit": "mg",
-            "value": 0.48
-          }
-        },
-        "observed_rows": [
-          {
-            "english_name": "Sargassum horneri (괭생이모자반, akamoku)",
-            "food_item_id": "LIT:murakami2011-shorneri-tables3-4",
-            "link_evidence": "The paper analyses Sargassum horneri (Turner) C. Agardh, which is the WoRMS accepted name of 괭생이모자반 (494853); no other species is in the samples.",
-            "linked": true,
-            "missing": [
-              "iron_mg"
-            ],
-            "refuse_pct": 33.33,
-            "reported_food_name": "Sargassum horneri (괭생이모자반, akamoku)",
-            "row_source": "literature",
-            "source_id": "murakami_2011_sargassum_horneri",
-            "values": {
-              "calcium_mg": 147.8,
-              "iron_mg": null,
-              "protein_g": 1.04,
-              "zinc_mg": 0.48
-            }
-          }
-        ],
-        "omitted_components": [
-          "iron_mg"
-        ],
-        "outside_cohort": true,
-        "reported_food_name": "Sargassum horneri (괭생이모자반, akamoku)",
-        "row_source": "literature",
-        "row_table": "literature",
-        "sample_state": "raw",
-        "source_food_item_id": "LIT:murakami2011-shorneri-tables3-4",
-        "source_id": "murakami_2011_sargassum_horneri",
-        "substituted_components": [],
+        "method_version": "verified-pilot-3.21",
+        "observed_rows": [],
         "sufficiency": {
-          "present": [
-            "protein_g",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -2318,34 +2143,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points.",
-          "Ranked against the 3-food cohort plus itself because iron_mg is not reported in the species' own row and is left out of the mean (not scored 0), the species' own row is a reviewed paper's analysis of the species converted to fresh weight with the same sample's moisture (neither RDA DB 10.4 nor MEXT 2020 has a row for this species).",
-          "4-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 25.0 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 53.50033333333334,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 57.2,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 49.8,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -2367,14 +2165,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "protein_g",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -2384,7 +2176,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.61
+        "mean_ratio": 0.33
       },
       "korean_name": "괭생이모자반",
       "mbpi_label": "참고값(단일 논문)",
@@ -2534,48 +2326,22 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 21.6,
-          "MFPI": 53.5
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.3390/md19090497",
-          "10.3390/md20010028",
-          "10.3390/md20110710"
-        ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL5763|IC50",
-        "mfpi_cohort": "rda-10.4-raw-seaweeds",
-        "sensitivity": {
-          "0.25": 29.6,
-          "0.5": 37.6,
-          "0.75": 45.5
-        },
-        "used_for_score": false,
-        "value": 37.6
-      },
+      "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 21.6,
         "MCUI": null,
-        "MFPI": 53.5
+        "MFPI": null
       },
       "sensitivity": {
         "food_weights": {},
@@ -2588,7 +2354,7 @@
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": 21.6,
-        "food_only_MFPI": 53.5
+        "food_only_MFPI": null
       },
       "source_ids": [
         "bachman_2020_rapid_lc",
@@ -2598,20 +2364,17 @@
         "europepmc_mbpi",
         "gbif_rapid_lc",
         "iucn_redlist_search",
-        "murakami_2011_sargassum_horneri",
         "obis_trend",
-        "pang_2008_sargassum_horneri_culture",
         "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
+        "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
         "MCUI": "not_in_red_list",
-        "MFPI": null
+        "MFPI": "comparable_nutrition_missing"
       }
     },
     {
@@ -2717,7 +2480,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3296,7 +3059,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4205,7 +3968,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5249,7 +5012,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6309,7 +6072,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7303,7 +7066,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8397,7 +8160,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9584,7 +9347,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10735,7 +10498,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11827,7 +11590,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12824,7 +12587,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13801,7 +13564,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14955,7 +14718,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15982,7 +15745,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16962,7 +16725,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18024,7 +17787,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19001,7 +18764,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20002,7 +19765,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21078,7 +20841,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.21 (2026-10-02). 괭생이모자반 gains an MFPI through the literature route the method has had since 3.12: Murakami et al. 2011 (J Food Compos Anal 24:231) analyses the raw edible portion of this species and reports the moisture of the same pooled sample, which is exactly what the earlier searches could not find. Protein, calcium and zinc convert to a fresh-weight basis; iron is not measured and stays out of the mean under the 3.7 minimum-components rule. Read on 2026-10-02 through the Dongguk University library. The species also gains the aquaculture record the MFPI formula needs (Pang et al. 2008, tank culture through a full generation to the long-line stage), counted feasible = true under the 3.7 research-rearing clause. No rule, cohort or coefficient changes. See research/verified-indices/mfpi-sargassum-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.20 (2026-10-02). New MBPI stratum for anticancer activity, the second input the proposal names beside the antibacterial one. Built like the 3.18 AMP stratum with a cancer cell line in place of a target bacterium: one fixed CancerPPD 2.0 cohort per cell line (IC50, single clean numeric value; research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json, built by scripts/build_anticancer_cohorts.py from 407 cell-line tables), pIC50 = 6 - log10(IC50 uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the other strata. A cell IC50 is never ranked against a MIC or an ACE IC50. Origin rows come from the original paper, never from the database. A peptide the database already holds is removed from its own cohort before ranking. 피조개 (P6, Li 2022) gains an anticancer item that becomes its best MBPI item; 가시파래 (HTDT-6-2-3-2, Zhang 2022) and 맛조개 (SCH-P9 and SCH-P10, Zhu 2017) gain items that rank below their existing best, so their scores do not move. The use of CancerPPD 2.0 was confirmed in writing by its maintainer on 2026-10-02. Every other rule and coefficient equals 3.20. See research/verified-indices/anticancer-stratum-2026-10-02.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21321,7 +21084,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.22",
+    "method_version": "verified-pilot-3.21",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21472,7 +21235,7 @@
       "rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.json",
       "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
       "substitutes": {
-        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-3.22-2026-10-02.json",
+        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-2026-10-01.json",
         "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
         "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
         "labels": {
@@ -21492,11 +21255,10 @@
         "literature": {
           "grade": "literature_converted",
           "label": "문헌 분석값(같은 시료 수분으로 날것 환산)",
-          "rule": "Only for a species with no RDA DB 10.4 row linked and no MEXT species row. A peer-reviewed paper that identifies the species (morphology or molecular), analyses raw edible tissue and reports the moisture of the same sample; dry-basis values become fresh weight as value_dw x (100 - moisture) / 100 (mg/kg dry weight divided by 10 first). A component reported inconsistently within the paper is left out of the mean under the 3.7 minimum-components rule. Ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Team-lead decision 2026-10-01 (route 3, factor 0.85). Since 3.22 a seaweed row joins the shellfish one: the same conditions apply, and a component the paper does not analyse at all (iron, here) is omitted exactly like one it reports inconsistently.",
-          "snapshot": "research/verified-indices/mfpi-literature-rows-3.22-2026-10-02.json",
+          "rule": "Only for a species with no RDA DB 10.4 row linked and no MEXT species row. A peer-reviewed paper that identifies the species (morphology or molecular), analyses raw edible tissue and reports the moisture of the same sample; dry-basis values become fresh weight as value_dw x (100 - moisture) / 100 (mg/kg dry weight divided by 10 first). A component reported inconsistently within the paper is left out of the mean under the 3.7 minimum-components rule. Ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Team-lead decision 2026-10-01 (route 3, factor 0.85).",
+          "snapshot": "research/verified-indices/mfpi-literature-rows-2026-10-01.json",
           "source_ids": [
-            "liu_2021_kumamoto_xiangshan",
-            "murakami_2011_sargassum_horneri"
+            "liu_2021_kumamoto_xiangshan"
           ],
           "species_row_groups": [
             "어패류 및 기타 수산물",
@@ -21694,7 +21456,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.22",
+  "method_version": "verified-pilot-3.21",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -22540,15 +22302,6 @@
       "url": "https://doi.org/10.5657/kfas.2010.43.6.589",
       "version": "full text checked 2026-10-01"
     },
-    "murakami_2011_sargassum_horneri": {
-      "accessed": "2026-10-02",
-      "license": "Publisher copyright (Elsevier); read through the Dongguk University library subscription",
-      "provider": "Journal of Food Composition and Analysis 24(2):231-236 (Elsevier)",
-      "terms": "Subscription access via the university library; only numeric values and method statements are recorded, no text or tables are copied.",
-      "title": "Seasonal variation in the chemical composition of a marine brown alga, Sargassum horneri (Turner) C. Agardh (Murakami K, Yamaguchi Y, Noda K, Fujii T, Shinohara N, Ushirokawa T, Sugawa-Katayama Y, Katayama M), doi:10.1016/j.jfca.2010.08.004",
-      "url": "https://doi.org/10.1016/j.jfca.2010.08.004",
-      "version": "Publisher full text read 2026-10-02 (Tables 3 and 4, Sections 2.2 and 2.3, Abstract)"
-    },
     "mytilus_2020_myticusin": {
       "accessed": "2026-09-25",
       "doi": "10.1016/j.fsi.2020.02.020",
@@ -22599,15 +22352,6 @@
       "title": "Fish welfare-related issues and their relevance in land-based olive flounder (Paralichthys olivaceus) farms in Korea",
       "url": "https://doi.org/10.3390/ani14111693",
       "version": "2024 (published 2024-06-05)"
-    },
-    "pang_2008_sargassum_horneri_culture": {
-      "accessed": "2026-10-02",
-      "license": "Publisher copyright (Springer); read through a university library subscription",
-      "provider": "Journal of Applied Phycology 21(4):413-422 (Springer)",
-      "terms": "Subscription access via the university library; only method statements, the site and the period are recorded, no text is copied.",
-      "title": "Cultivation of the brown alga Sargassum horneri: sexual reproduction and seedling production in tank culture under reduced solar irradiance in ambient temperature (Pang SJ, Liu F, Shan TF, Gao SQ, Zhang ZH), doi:10.1007/s10811-008-9386-5",
-      "url": "https://doi.org/10.1007/s10811-008-9386-5",
-      "version": "Publisher full text read 2026-10-02 (Abstract, Materials and methods)"
     },
     "park_2013_dieckol": {
       "accessed": "2026-09-26",
@@ -23610,7 +23354,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24292,7 +24036,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25267,7 +25011,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -26387,7 +26131,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27356,7 +27100,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28150,7 +27894,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28833,7 +28577,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29474,7 +29218,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.22 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.21 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30311,7 +30055,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.22",
+        "method_version": "verified-pilot-3.21",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

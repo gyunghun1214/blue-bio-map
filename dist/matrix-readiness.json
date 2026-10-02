@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.21",
+  "method_version": "verified-pilot-3.22",
   "schema_version": 1,
   "species": [
     {
@@ -732,10 +732,10 @@
     {
       "aphia_id": 494853,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
-        "MFPI": "comparable_nutrition_missing"
+        "MFPI": null
       },
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
@@ -745,7 +745,6 @@
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Sargassum horneri",
@@ -754,13 +753,15 @@
         "BBVI": null,
         "MBPI": 21.6,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 53.5
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sargassum+horneri&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1007/s10811-008-9386-5",
+        "https://doi.org/10.1016/j.jfca.2010.08.004",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
@@ -769,7 +770,8 @@
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=494853",
-        "https://www.marinespecies.org/rest/"
+        "https://www.marinespecies.org/rest/",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
     },
