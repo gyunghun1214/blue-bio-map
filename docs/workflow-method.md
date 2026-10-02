@@ -1,8 +1,8 @@
-# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.22`
+# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.23`
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
-- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.22`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
+- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.23`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
 - 모든 지표는 **시범 지표**다. 사후 검증은 MFPI만 통과했다(일본 식품성분표 2020으로 다시 계산한 영양 점수의 순위 일치: 11종, Spearman ρ 0.873, 단측 순열 p 0.0004). MBPI는 사례 사슬이 없어 미실시다. MCUI 예비 평가(Rapid LC)는 역검증을 통과하지 못해 MCUI 점수로 쓰지 않고 참고 정보로만 표시한다(팀장 결정 2026-10-02). 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
 
 ## 0. 한눈에 보기
@@ -12,7 +12,7 @@
 | 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/assessments.json`의 `sources` | 각 자료원 행 |
 | 2 표준화·연계 (WoRMS AphiaID, InChIKey·PubChem CID) | 종 상세의 AphiaID·WoRMS 링크, MBPI 근거의 화합물 링크 | `scripts/collect_taxonomy.py`, `scripts/collect_mbpi_links.py`, `research/verified-indices/mbpi-link-review-2026-09-30.json` | `mbpi-chembl-stratum-2026-09-29.md` |
 | 3 MBPI | 종 상세 MBPI 근거(층·표적·화합물·출처), '쓰임새로 찾기' 신약 칩 | `build_verified_indices.py`의 `chembl_items`, `chembl_stratum`, `bio_scores`, `peptide_items`, `converted_peptide`, `amp_items`, `anticancer_items`; 비교집단 `scripts/build_amp_cohorts.py`, `scripts/build_anticancer_cohorts.py`; `dist/app.js`의 `USE_TRAITS` | `mbpi-chembl-stratum-2026-09-29.md`, `gap-closing-2026-10-02.md`, `amp-stratum-2026-10-02.md`, `decisions-3.19-2026-10-02.md`, `decisions-3.20-2026-10-02.md`, `anticancer-stratum-2026-10-02.md` |
-| 3 MFPI | 종 상세 MFPI 근거(원값·백분위·대체치 라벨·가식부·양식), EPA·DHA 표시(점수 아님), '쓰임새로 찾기' 식량 칩 | `food_axis`, `substitute`, `literature_species_row`, `mfpi`, `build_cohorts`; 종 연결 `rda-name-links-2026-10-01.json`; EPA·DHA `scripts/collect_rda_fatty_acids.py` | `mfpi-substitutes-2026-09-30.md`, `gap-closing-2026-10-02.md`, `omega3-display-2026-10-02.md`, `mfpi-sargassum-2026-10-02.md` |
+| 3 MFPI | 종 상세 MFPI 근거(원값·백분위·대체치 라벨·가식부·양식), EPA·DHA 표시(점수 아님), '쓰임새로 찾기' 식량 칩 | `food_axis`, `substitute`, `literature_species_row`, `mfpi`, `build_cohorts`; 종 연결 `rda-name-links-2026-10-01.json`; EPA·DHA `scripts/collect_rda_fatty_acids.py` | `mfpi-substitutes-2026-09-30.md`, `gap-closing-2026-10-02.md`, `omega3-display-2026-10-02.md`, `mfpi-sargassum-2026-10-02.md`, `literature-limitations-3.23-2026-10-02.md` |
 | 3 MCUI | 종 상세 MCUI 근거(IUCN/국가 평가/서식국 국가 평가, OBIS 출현 추세), 예비 평가(참고 정보) | `conservation_axis`, `national_axis`, `occurrence_trend`, `mcui_substitute`; `scripts/collect_mcui_rapid_lc.py` | `mcui-trend-2026-10-01.md`, `gap-closing-2026-10-02.md`, `gap-closing-3.16-2026-10-02.md`, `decisions-3.19-2026-10-02.md` |
 | 4 통합·정보충분도 | BBVI 가중치 슬라이더, 정보충분도·우선 조사 대상·미탐색 후보 표시 | `build`→`assess`(BBVI, `information_sufficiency`, `priority_survey`), `unexplored_flag` | `matrix-gis-2026-09-30.md` |
 | 5 매트릭스 | 활용 × 보전 매트릭스(네 유형, 국가 평가·서식국 국가 평가 MCUI는 네모 점. 예비 평가는 참고 정보라 MCUI가 아님) | `build_matrix_readiness.py`의 `matrix_type`; `dist/app.js`의 `matrixType`, `toggleSimulation` | `matrix-gis-2026-09-30.md` |
@@ -87,7 +87,7 @@
   - 대체치가 있는 종은 비교집단에 넣지 않고 '비교집단 + 자기 자신' 안에서 순위를 매긴다.
   - 정보충분도는 자기 값만 센다.
 - **종 연결(3.15):** RDA 식품명의 종 이름이 국립해양생물자원관 목록에서 정확히 한 종의 국명이면 그 종에 연결하고, 아니면 식약처 식품원료 성분학명이 WoRMS에서 한 종으로 풀릴 때 연결한다(`rda_name_links`). 목록 학명이 북서태평양 분포 기록이 없는 종이면 동아시아 개체군 종에 연결한다(참문어 → *Octopus sinensis*). 다시마·우뭇가사리·꼬시래기·해삼이 연결됐고, 고등어·참문어는 일본 표 대신 RDA 행을 쓴다.
-- **문헌 분석값 행(3.15):** RDA·일본 표 어디에도 행이 없는 종은 원논문의 날것 가식부 분석값을 같은 시료 수분으로 날것 환산해 종 행으로 쓴다(등급 0.85, `literature_species_row`). 시카메굴: Liu et al. 2021(CC BY). 아연은 원문 안에서 값이 어긋나 평균에서 뺐다. 3.22에 괭생이모자반이 같은 경로로 들어왔다(Murakami 2011, 표 3·4의 같은 시료 수분 88.0%로 환산, 철은 측정되지 않아 평균에서 뺐다).
+- **문헌 분석값 행(3.15):** RDA·일본 표 어디에도 행이 없는 종은 원논문의 날것 가식부 분석값을 같은 시료 수분으로 날것 환산해 종 행으로 쓴다(등급 0.85, `literature_species_row`). 시카메굴: Liu et al. 2021(CC BY). 아연은 원문 안에서 값이 어긋나 평균에서 뺐다. 3.22에 괭생이모자반이 같은 경로로 들어왔다(Murakami 2011, 표 3·4의 같은 시료 수분 88.0%로 환산, 철은 측정되지 않아 평균에서 뺐다). 3.23부터 문헌 행 파일에 적은 검수 한계(시료 산지·시기·방법, 해조류 단백질의 Kjeldahl 과대평가 등)를 MFPI 상세의 문헌 환산 설명 바로 아래에 '원논문 자료의 한계: …' 줄로 보인다(`food_trace.literature_limitations`). 3.15~3.22는 빌더가 값만 읽고 이 문구를 버렸다.
 - 양식 가능성은 원문으로 확인한 근거만 쓴다(대구·살오징어는 '불가'로 0점). 양식 기록이 없으면 영양 행이 있어도 MFPI를 내지 않는다. 3.7부터 명시된 시설·기간에서 생활사를 거친 연구용 사육도 feasible = true로 센다(예: 멸치, 우뭇가사리, 3.22의 괭생이모자반 Pang 2008 수조 양성). 이런 기록에는 식량 생산이 아니라고 적는다.
 - **EPA·DHA 표시(3.17):** 종 자신의 RDA 행이 EPA·DHA를 함께 보고하면(30종 중 10종) mg/100 g과 1일 기준치 330 mg(식품 등의 표시·광고에 관한 법률 시행규칙 별표 5) 대비 비율을 보인다. 한국에는 오메가-3 함량 강조표시 기준이 없어 '풍부' 같은 법정 용어를 쓰지 않고, '오메가-3' 칩의 30%는 팀 표시 기준이다. MFPI의 성분·가중치·비교집단에는 들어가지 않는다.
 - 한계: 대체치는 다른 지역·시기·분석법의 값이다. 비교집단이 작아 순위 한 칸이 약 4점이다.
@@ -156,6 +156,7 @@
 | `verified-pilot-3.20` | verified-pilot-3.19 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.20-2026-10-02.md). (1) An original-paper link is also admitted for a species that already has Wikidata P703 statements, when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (research/verified-indices/mbpi-paper-links-p703-2026-10-02.json). 다시마 gains a single-paper ChEMBL MBPI 26.5 (24-hydroperoxy-24-vinylcholesterol, Lu 2022) with the autoxidation caveat already used for 톳. 꼬시래기 is held: its highest values are screening rows marked Inconclusive. (2) A ChEMBL activity the depositor marked Inconclusive or Not Active never enters a species item (snapshots/chembl-activity-comments-2026-10-02.json, 100 of 2,058 snapshot rows); no current score rests on one. Every other rule and coefficient equals 3.19. |
 | `verified-pilot-3.21` | verified-pilot-3.20 (2026-10-02). New MBPI stratum for anticancer activity, the second input the proposal names beside the antibacterial one. Built like the 3.18 AMP stratum with a cancer cell line in place of a target bacterium: one fixed CancerPPD 2.0 cohort per cell line (IC50, single clean numeric value; research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json, built by scripts/build_anticancer_cohorts.py from 407 cell-line tables), pIC50 = 6 - log10(IC50 uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the other strata. A cell IC50 is never ranked against a MIC or an ACE IC50. Origin rows come from the original paper, never from the database. A peptide the database already holds is removed from its own cohort before ranking. 피조개 (P6, Li 2022) gains an anticancer item that becomes its best MBPI item; 가시파래 (HTDT-6-2-3-2, Zhang 2022) and 맛조개 (SCH-P9 and SCH-P10, Zhu 2017) gain items that rank below their existing best, so their scores do not move. The use of CancerPPD 2.0 was confirmed in writing by its maintainer on 2026-10-02. Every other rule and coefficient equals 3.20. See research/verified-indices/anticancer-stratum-2026-10-02.md. |
 | `verified-pilot-3.22` | verified-pilot-3.21 (2026-10-02). 괭생이모자반 gains an MFPI through the literature route the method has had since 3.12: Murakami et al. 2011 (J Food Compos Anal 24:231) analyses the raw edible portion of this species and reports the moisture of the same pooled sample, which is exactly what the earlier searches could not find. Protein, calcium and zinc convert to a fresh-weight basis; iron is not measured and stays out of the mean under the 3.7 minimum-components rule. Read on 2026-10-02 through the Dongguk University library. The species also gains the aquaculture record the MFPI formula needs (Pang et al. 2008, tank culture through a full generation to the long-line stage), counted feasible = true under the 3.7 research-rearing clause. No rule, cohort or coefficient changes. See research/verified-indices/mfpi-sargassum-2026-10-02.md. |
+| `verified-pilot-3.23` | verified-pilot-3.22 (2026-10-02). Display data only, no score change: the reviewed limitations of a literature species row (sample site, season, laboratory and method, e.g. that Kjeldahl nitrogen x 6.25 overstates seaweed protein) now reach the MFPI trace as food_trace.literature_limitations (nutrition.substitutes.literature.show_limitations), shown under the literature-row paragraph of the MFPI detail as '원논문 자료의 한계: ...'. From 3.15 to 3.22 the builder read the row's values but dropped this text, so it was in neither the report nor the screen for 시카메굴 and 괭생이모자반. Every rule, input file, cohort, coefficient, weight and score equals 3.22. See research/verified-indices/literature-limitations-3.23-2026-10-02.md. |
 
 | 축 | 2.3 | 현재 |
 |---|---|---|
@@ -166,7 +167,7 @@
 
 MCUI 17종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 2. 예비 평가(Rapid LC) 참고 정보 13종과 BBVI 칸의 참고값 17종은 산출 종 수에 넣지 않는다.
 
-## 7. 30종 값 변화 (2.3 → `verified-pilot-3.22`)
+## 7. 30종 값 변화 (2.3 → `verified-pilot-3.23`)
 
 굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다. 예비 평가(Rapid LC) 참고 정보는 MCUI 칸에 넣지 않는다.
 
@@ -208,6 +209,6 @@ MCUI 17종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 2. 예�
 - 모든 지표는 팀의 시범 규칙이다(계수·임계값·가중치). 사후 검증은 MFPI의 표 의존성(일본 식품성분표로 다시 계산해도 순위 유지)만 통과했고, 가중치·공식 자체와 MBPI는 독립 사례로 검증하지 않았다.
 - BBVI가 있는 종은 참굴·미역 둘이고, 매트릭스 점은 참굴 하나다(미역은 MCUI가 없다). 단일 논문 MBPI가 많아 매트릭스 점이 적다. MFPI·MCUI가 다 있는데 최고 MBPI 항목이 논문 한 편이라 BBVI만 막힌 종이 9종(해삼·전복·맛조개·멸치·고등어·바지락·큰가리비·피조개·홍합)이다. 같은 항목을 다른 논문이 다시 잰 값이 확인되면 매트릭스 점이 된다.
 - 예비 평가(Rapid LC)는 분포 범위만 본다. 역검증에서 남획으로 EN이 된 해삼·전복을 LC로 판정했으므로 MCUI 점수로 쓰지 않고 참고 정보로만 표시한다(팀장 결정 2026-10-02).
-- 남은 공백(30종 × 4축 120칸 중 52칸): MFPI 2종(가시파래·감태: 같은 시료 수분을 보고한 원문과 양식 기록 미확보), MBPI 9종(살오징어·우뭇가사리·꼬시래기·시카메굴·참조기·방어·꽃게·참문어(동아시아 종)·갑오징어; 꼬시래기는 보류), MCUI 13종(예비 평가 Rapid LC는 참고 정보만), BBVI 28종(입력 축 부족 11종, 단일 논문 MBPI 17종은 참고값만 표시).
+- 남은 공백(30종 × 4축 120칸 중 52칸): MFPI 2종(가시파래·감태: 같은 시료 수분을 보고한 원문과 양식 기록 미확보. 두 종 모두 탐색 중단(팀장 결정 2026-10-02) — `research/verified-indices/gap-search-2026-10-02.md`), MBPI 9종(살오징어·우뭇가사리·꼬시래기·시카메굴·참조기·방어·꽃게·참문어(동아시아 종)·갑오징어; 꼬시래기는 보류), MCUI 13종(예비 평가 Rapid LC는 참고 정보만), BBVI 28종(입력 축 부족 11종, 단일 논문 MBPI 17종은 참고값만 표시).
 - 출현 셀과 OBIS 추세는 조사 노력에 좌우된다. 셀이 없다는 것은 종이 없다는 뜻이 아니다. OBIS 추세와 IUCN 개체군 추세의 방향이 3종에서 모두 어긋나, 추세 방법은 아직 검증되지 않았다.
 - 대체치, 국가 평가, 추세 보정은 화면에서 구분 표시하지만, 서로 다른 근거를 섞은 값이라는 점은 그대로 남는다.
