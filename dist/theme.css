@@ -1,13 +1,13 @@
 /* Blue-bio Value Map 2.0 theme (Figma "Blue-bio Value Map · Redesign 2026-10").
    Loaded after style.css: tokens, app shell, map-first explorer, floating map controls, compact panels. */
 :root{
-  --navy:#0b1b2b;--ink:#0f2537;--ink2:#3e5468;--muted:#5e7184;--line:#e3eaf0;--bg:#f3f6f9;--surface:#fff;
+  --navy:#0b1b2b;--ink:#0f2537;--ink2:#3e5468;--muted:#526b7b;--line:#e3eaf0;--bg:#f3f6f9;--surface:#fff;
   --teal:#0b7a74;--teal-ink:#0a5f5a;--teal-fill:#12a39a;--teal-soft:#e4f4f2;--coral:#e5484d;
   --amber:#995c08;--amber-soft:#fbf4e4;--blue:#1f6fb2;
   --shadow:0 6px 20px rgba(11,27,43,.14);--shadow-sm:0 1px 2px rgba(11,27,43,.08);
   --head:56px;--note:36px;--chrome:calc(var(--head) + var(--note));
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
-  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235e7184' stroke-width='1.6'/%3E%3C/svg%3E");
+  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526b7b' stroke-width='1.6'/%3E%3C/svg%3E");
 }
 html{scroll-padding-top:var(--chrome)}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
@@ -40,7 +40,8 @@ main{max-width:none;margin:0;padding:0}
 .notice p strong{color:var(--amber)}
 #connection-state{flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
 #connection-state:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal-fill)}
-#snapshot-date{flex:none;margin:0;color:var(--muted);font-size:12px}
+/* The longer date line gives way first (huge shrink), down to the old '공개 기준 자료 발행 YYYY-MM-DD…' (170px); only then the disclaimer, so "…사용하지 마세요." stays whole from 1280px. */
+#snapshot-date{flex:0 100000 auto;min-width:170px;margin:0;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:12px}
 
 /* ---------- Explorer: rail | map | detail ---------- */
 .explorer{grid-template-columns:296px minmax(0,1fr) 384px;align-items:start;min-height:0;overflow:visible;border:0;border-radius:0;background:var(--bg);box-shadow:none}
@@ -178,7 +179,6 @@ main{max-width:none;margin:0;padding:0}
 .followup-brief h3{margin-top:0}
 .followup-brief p{margin:0 0 8px;color:var(--ink2);font-size:13px}
 .withheld{border-radius:10px;background:#f6f8fa}
-.summary-card{border-radius:12px;background:#fbfcfd}
 .text-button{color:var(--teal)}
 
 /* ---------- Compare / method ---------- */
@@ -188,6 +188,18 @@ main{max-width:none;margin:0;padding:0}
 .pill{border-radius:99px}
 .comparison,.matrix-explanation,.method-card,.method-bottom article,.source-section,.decision-detail,.weight-control{border-radius:14px}
 .method-card{border:1px solid var(--line);box-shadow:none}
+/* Five species columns fit the table box from about 1250px (1440×900 and 1280×900): 170px row labels + 5 × (160px bar + cell
+   padding); narrower screens scroll the table sideways. */
+#comparison td .coverage-bar{min-width:160px}
+/* In those narrower bars a long item name splits evenly (생리 / 활성), not 생리활 / 성. */
+#comparison .coverage-bar .seg b{word-break:normal;text-wrap:balance}
+/* Matrix points name their species beside the dot; the label faces the matrix centre so it stays inside the box. */
+.matrix-point .point-label{position:absolute;top:50%;left:100%;margin-left:6px;transform:translateY(-50%);padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.92);box-shadow:var(--shadow-sm);color:var(--ink);font-size:12px;font-weight:600;line-height:1.4;white-space:nowrap}
+.matrix-point .point-label.left{left:auto;right:100%;margin:0 6px 0 0}
+/* 200+ citations scroll inside their own box; the text stays in the DOM (uicheck reads #all-sources.innerText). */
+#all-sources{max-height:min(60vh,560px);overflow-y:auto;padding-right:6px}
+#all-sources:focus-visible{outline:2px solid var(--teal-fill);outline-offset:2px}
+@media print{#all-sources{max-height:none;overflow:visible}}
 footer{max-width:none;padding:16px 20px;background:#fff}
 
 /* ---------- Narrower screens ---------- */
