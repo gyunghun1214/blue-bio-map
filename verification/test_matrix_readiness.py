@@ -35,9 +35,11 @@ class MatrixReadinessTests(unittest.TestCase):
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 95.3), (241776, 8.7), (250680, 13.5), (494972, 65.0), (506159, 10.1), (836033, 96.3),
                           (371986, 67.5), (234476, 73.3), (494853, 21.6), (145086, 0.4), (231750, 58.6), (397082, 15.6), (393716, 27.3),
-                          (413600, 56.9),
-                          (127022, 34.9), (219984, 22.6), (275816, 29.2),
+                          (504357, 22.1), (413600, 56.9),
+                          (127022, 34.9), (219984, 22.6), (275816, 29.2), (274849, 31.6),
                           (254538, 59.9)])
+        # verified-pilot-3.18: the antimicrobial-peptide stratum gives 피조개 (AI-hemocidin 2) and 조피볼락 (TS40) a
+        # single-paper MBPI from their MIC percentile, so neither opens a BBVI.
         # verified-pilot-3.5 adds single-paper peptide MBPI (해삼, 가시파래, 큰가리비, 가리맛조개, 넙치; 미역 19.6 -> 71.5 after the
         # Sato 2002 full text) and three aquaculture records (참조기, 넙치, 꽃게 MFPI). Every new MBPI rests on one paper: no new BBVI.
         # verified-pilot-2.3: 참굴 LQP potency is replicated across origins, so its BBVI exists, but its MCUI is a

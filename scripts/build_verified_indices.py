@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.17.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.18.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -594,6 +594,58 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
+def amp_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
+    """verified-pilot-3.18 antimicrobial-peptide stratum. Same shape as the ACE peptide stratum: one fixed cohort per target
+    bacterium (DBAASP MIC, broth media), pMIC = 6 - log10(MIC uM), percentile inside that cohort, the same single/multiple-DOI
+    factors and the same max aggregation. The proposal names antibacterial activity as an MBPI input; this is that input, kept
+    in its own stratum so a MIC is never ranked against an ACE IC50."""
+    settings = config.get("amp_bioactivity")
+    rows = evidence.get("amp_bioactivity", [])
+    if not settings or not rows:
+        return []
+    book = json.loads((ROOT / settings["cohort_file"]).read_text(encoding="utf-8"))
+    cohorts = {c["target_species"]: c for c in book["cohorts"]}
+    groups = defaultdict(list)
+    for r in rows:
+        if r.get("status") != "approved_for_score":
+            continue
+        require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
+                and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None
+                and r.get("sequence_confirmed") is True and r.get("value_in_text") is True
+                and (r.get("synthetic") is True or r.get("material") in settings["accepted_materials"])
+                and r.get("endpoint") == settings["endpoint"] and r.get("relation") == "=" and r.get("unit") == "uM"
+                and r.get("method") == settings["method"] and r.get("source_id") in evidence["sources"]
+                and r.get("original_paper_doi") and r.get("origin_aphia_id") and r.get("origin_scientific_name"),
+                f"{r.get('record_id')}: incomplete AMP origin/sequence/assay chain")
+        finite(r.get("value"), "AMP MIC", 0.0000001)
+        groups[(r["origin_aphia_id"], r["sequence"], r["target_species"])].append(r)
+    out = []
+    for (origin, sequence, target), own in sorted(groups.items()):
+        cohort = next((c for c in cohorts.values() if c["target_species"].startswith(target)), None)
+        require(cohort is not None, f"{target}: no AMP cohort for this target species")
+        require(cohort["size"] >= settings["minimum_peptides"], f"{cohort['cohort_id']}: AMP cohort below minimum size")
+        require(cohort["target_kind"] == "bacterium", f"{cohort['cohort_id']}: only bacterial cohorts are scored")
+        peers = [6 - math.log10(finite(m["mic_uM"], "cohort MIC", 0.0000001)) for m in cohort["members"]]
+        require(len(peers) == cohort["size"], f"{cohort['cohort_id']}: member count differs from the published size")
+        value = median(6 - math.log10(r["value"]) for r in own)
+        rank = percentile(value, peers)
+        dois = {r["original_paper_doi"].lower() for r in own}
+        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        out.append((origin, {"stratum_kind": "amp", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
+                             "peptide_name": own[0].get("peptide_name"), "target_species": cohort["target_species"],
+                             "target_strains": sorted({r["target_strain"] for r in own if r.get("target_strain")}),
+                             "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
+                             "peer_peptides": len(peers), "cohort_median_pMIC": cohort["median_pMIC"],
+                             "pMIC": round(value, 3), "percentile": round(rank, 2),
+                             "evidence_factor": factor, "adjusted": rank * factor,
+                             "measurements": [{"endpoint": r["endpoint"], "relation": r["relation"], "value": r["value"],
+                                               "unit": r["unit"], "target_species": r["target_species"],
+                                               "target_strain": r.get("target_strain"), "medium": r["medium"],
+                                               "method": r["method"], "source_id": r["source_id"],
+                                               "original_paper_doi": r["original_paper_doi"]} for r in own]}))
+    return out
+
+
 def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
     """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
@@ -760,6 +812,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
                         "percentile": round(rank, 2), "evidence_factor": factor, "adjusted": rank * factor}
                 out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for origin, item in peptide_items(evidence, config):
+        out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    for origin, item in amp_items(evidence, config):  # verified-pilot-3.18
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     chembl = None
     if config.get("chembl_bioactivity"):  # verified-pilot-3.1
@@ -1080,10 +1134,13 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         for item in bio_trace:
             source_ids |= {r["source_id"] for r in evidence["bioactivity"] if r.get("activity_id") in item.get("activity_ids", [])}
             source_ids |= {r["source_id"] for r in evidence.get("peptide_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
+            if item.get("stratum_kind") == "amp":
+                source_ids.add(config["amp_bioactivity"]["cohort_source_id"])
+            source_ids |= {r["source_id"] for r in evidence.get("amp_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in item.get("potency_replications", []) if r["used"]}
             if item.get("stratum_kind") == "chembl":
                 source_ids |= set(config["chembl_bioactivity"]["source_ids"])
-            elif item.get("stratum_kind") != "peptide":
+            elif item.get("stratum_kind") not in ("peptide", "amp"):
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if links and links["counts"].get("linked"):
             source_ids |= set(config["chembl_bioactivity"]["source_ids"])
@@ -1313,6 +1370,15 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "rda_taxon_links": [new.get(l["food_item_id"], l) for l in evidence["rda_taxon_links"]],
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"]),
                     "sources": {**evidence["sources"], **extra["sources"]}}
+    amp = cfg.get("amp_bioactivity")
+    if amp:  # verified-pilot-3.18: antimicrobial-peptide rows and their papers
+        extra = read(ROOT / amp["supplement"])
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "AMP supplement is older than evidence")
+        used = {r["source_id"] for r in extra["amp_bioactivity"]} | {amp["cohort_source_id"]}
+        require(not used & set(evidence["sources"]), "AMP supplement redefines a source")
+        evidence = {**evidence, "amp_bioactivity": extra["amp_bioactivity"],
+                    "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     fa = cfg["nutrition"].get("display_fatty_acids")
     if fa:  # 3.17: EPA/DHA of the same RDA rows, display only (scripts/collect_rda_fatty_acids.py)
         extra = read(ROOT / fa["snapshot"])

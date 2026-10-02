@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.17",
+  "method_version": "verified-pilot-3.18",
   "schema_version": 1,
   "species": [
     {
@@ -1050,18 +1050,13 @@
     {
       "aphia_id": 504357,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "피조개",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -1072,7 +1067,7 @@
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 22.1,
         "MCUI": 10.0,
         "MFPI": 61.9
       },
@@ -1080,6 +1075,8 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Anadara+broughtonii&limit=100",
         "https://api.obis.org/v3/",
+        "https://dbaasp.org",
+        "https://doi.org/10.3390/md15070205",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -1311,32 +1308,26 @@
     {
       "aphia_id": 274849,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "조피볼락",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Sebastes schlegelii",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 31.6,
         "MCUI": null,
         "MFPI": 48.5
       },
@@ -1344,6 +1335,8 @@
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
         "https://api.obis.org/v3/",
+        "https://dbaasp.org",
+        "https://doi.org/10.3390/md20060353",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
         "https://www.cmnpd.org",

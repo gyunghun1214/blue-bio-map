@@ -236,7 +236,24 @@ try{
   // 3.13: 멸치 gets a single-paper peptide MBPI 22.6 (DGGP, Kim 2016) beside its MFPI 74.1.
   // 3.14: 대구 gets a single-paper purified-peptide MBPI 59.9 (GASSGMPG, Ngo 2016) beside its MFPI 38.3; 바지락 MBPI 58.6.
   // 3.15: 해삼 (MFPI 63.5 from the name link) and 전복 (MBPI 15.6 from the uM conversion) join.
-  check('Reference combination: shown only where MFPI meets a single-paper MBPI (고등어·청각·멸치·바지락·해삼·멍게·대구·넙치·큰가리비·전복·맛조개·톳·홍합; 3.9 adds 맛조개, 3.11 고등어, 3.13 멸치, 3.14 대구, 3.15 해삼·전복); 참굴 and 미역 (3.12) have a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[127022,145086,219984,231750,241776,250680,254538,275816,393716,397082,413600,494972,506159]',JSON.stringify(refN));
+  // 3.18: 피조개 (AI-hemocidin 2, 22.1) and 조피볼락 (TS40, 31.6) get a single-paper AMP MBPI beside their MFPI and join too.
+  // 3.18: the trait chips (#98 layout) are built from adopted evidence only; a trait with none stays a grey, disabled
+  // '0종 · 근거 수집 전' chip. The AMP stratum turns 항균 on (2) and fungi are kept out of it (항진균 0).
+  const chips=await evaluate("(()=>{renderUseChips();return [...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10),b.classList.contains('gap'),b.disabled])})()");
+  const chipN=Object.fromEntries(chips.map(([id,n])=>[id,n]));
+  check('Use chips: counts come from adopted evidence (ACE 14, antibacterial 2 from the 3.18 AMP stratum, antifungal 0), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===14&&chipN.microbe===2&&chipN.fungus===0&&chipN.cancer===0&&
+    chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
+  // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
+  const chipFilter=await evaluate("(()=>{setUse('microbe');const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const note=document.getElementById('use-extra').innerText;setUse(null);return {ids,note,back:document.querySelectorAll('.species-card').length}})()");
+  check('Use chip filter: the antibacterial chip leaves 피조개 and 조피볼락, counts the hidden species and clears back to all 30',
+    JSON.stringify(chipFilter.ids.sort())==='[274849,504357]'&&/근거 미확인 28종/.test(chipFilter.note)&&
+    /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30,JSON.stringify(chipFilter));
+  // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
+  const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
+  check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
+
+  check('Reference combination: shown only where MFPI meets a single-paper MBPI (고등어·청각·멸치·바지락·해삼·멍게·대구·조피볼락·넙치·큰가리비·전복·맛조개·톳·피조개·홍합; 3.9 adds 맛조개, 3.11 고등어, 3.13 멸치, 3.14 대구, 3.15 해삼·전복, 3.18 피조개·조피볼락); 참굴 and 미역 (3.12) have a computed BBVI instead',refN.assessed===expPub+expCand&&JSON.stringify(refN.shown)==='[127022,145086,219984,231750,241776,250680,254538,274849,275816,393716,397082,413600,494972,504357,506159]',JSON.stringify(refN));
   check('Axis pairs: national and IUCN MCUI groups kept apart, oyster MBPI 96.3 and BBVI 83.9 only in the national group, hidden in simulation, MFPI-only is not BBVI',natPair.includes('참굴 MFPI 71.6 · MCUI 10.0')&&!iucnPair.includes('참굴')&&pairs.li.includes('MBPI × MCUI(한국 국가 평가 기반) · ahtpdb-ace-ic50-hhl-cushman-cheung 4종: 참굴 MBPI 96.3 · MCUI 10.0 / 바지락 MBPI 58.6 (참고값(단일 논문)) · MCUI 10.0 / 큰가리비 MBPI 27.3 (참고값(단일 논문)) · MCUI 10.0 / 맛조개 MBPI 56.9 (참고값(단일 논문)) · MCUI 20.0')&&pairs.li.some(x=>x.startsWith('BBVI × MCUI(한국 국가 평가 기반)')&&x.endsWith('1종: 참굴 BBVI 83.9 · MCUI 10.0'))&&!pairs.li.some(x=>x.startsWith('BBVI × MCUI(IUCN 기반)')&&x.includes('참굴'))&&pairs.hid&&pairs.intro.includes('MFPI만의 쌍은 BBVI가 아닙니다'),JSON.stringify(pairs).slice(0,600));
   // ---- Presentation polish (2026-09-25) ----
   const og=await evaluate("(async()=>{const m=p=>document.querySelector(`meta[${p}]`)?.content||'';const img=m('property=\"og:image\"');const r=await fetch('og.png');const b=await r.blob();return {title:m('property=\"og:title\"'),desc:m('property=\"og:description\"'),type:m('property=\"og:type\"'),url:m('property=\"og:url\"'),locale:m('property=\"og:locale\"'),card:m('name=\"twitter:card\"'),img,ok:r.ok,type2:b.type,size:b.size,dims:await createImageBitmap(b).then(i=>i.width+'x'+i.height)}})()");
