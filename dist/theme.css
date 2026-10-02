@@ -7,7 +7,7 @@
   --shadow:0 6px 20px rgba(11,27,43,.14);--shadow-sm:0 1px 2px rgba(11,27,43,.08);
   --head:56px;--note:36px;--chrome:calc(var(--head) + var(--note));
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
-  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235e7184' stroke-width='1.6'/%3E%3C/svg%3E");
+  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526b7b' stroke-width='1.6'/%3E%3C/svg%3E");
 }
 html{scroll-padding-top:var(--chrome)}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
@@ -186,8 +186,9 @@ main{max-width:none;margin:0;padding:0}
 .pill{border-radius:99px}
 .comparison,.matrix-explanation,.method-card,.method-bottom article,.source-section,.decision-detail,.weight-control{border-radius:14px}
 .method-card{border:1px solid var(--line);box-shadow:none}
-/* Five species columns fit the 1270px table box at 1440×900 (170px labels + 5 × 220px); narrower screens scroll it sideways. */
-#comparison td .coverage-bar{min-width:170px}
+/* Five species columns fit the table box from about 1250px (1440×900 and 1280×900): 170px row labels + 5 × (160px bar + cell
+   padding); narrower screens scroll the table sideways. */
+#comparison td .coverage-bar{min-width:160px}
 /* In those narrower bars a long item name splits evenly (생리 / 활성), not 생리활 / 성. */
 #comparison .coverage-bar .seg b{word-break:normal;text-wrap:balance}
 /* Matrix points name their species beside the dot; the label faces the matrix centre so it stays inside the box. */
@@ -196,6 +197,7 @@ main{max-width:none;margin:0;padding:0}
 /* 200+ citations scroll inside their own box; the text stays in the DOM (uicheck reads #all-sources.innerText). */
 #all-sources{max-height:min(60vh,560px);overflow-y:auto;padding-right:6px}
 #all-sources:focus-visible{outline:2px solid var(--teal-fill);outline-offset:2px}
+@media print{#all-sources{max-height:none;overflow:visible}}
 footer{max-width:none;padding:16px 20px;background:#fff}
 
 /* ---------- Narrower screens ---------- */

@@ -367,7 +367,7 @@ try{
   // 근거 상태 filter: 운영 발행 = !s.catalog, 조사 후보 = !!s.catalog (the same split as the header counts).
   const evid=await evaluate("(()=>{const sel=document.getElementById('species-evidence'),n=v=>{sel.value=v;sel.dispatchEvent(new Event('change'));return document.querySelectorAll('#species-list .species-card').length;};const r={published:n('published'),candidate:n('candidate'),all:n('all'),wantPublished:data.species.filter(s=>!s.catalog).length,wantCandidate:data.species.filter(s=>!!s.catalog).length,total:data.species.length};return r})()");
   check('Species filter 근거 상태: 운영 발행 / 조사 후보 counts come from data.species and add up to all species',evid.published===evid.wantPublished&&evid.candidate===evid.wantCandidate&&evid.published>0&&evid.candidate>0&&evid.published+evid.candidate===evid.total&&evid.all===evid.total,JSON.stringify(evid));
-  // ↻ reloads the data and re-applies species, use chip and tab from the hash.
+  // ↻ reloads the data, re-applies species and use chip from the hash and leaves the tab as it was.
   await evaluate("selectSpecies(274849);setUse('microbe');setView('compare');document.getElementById('reload-data').click();1");
   for(let i=0;i<80;i++){await sleep(250);if(await evaluate('!!data'))break;}
   const kept=await evaluate("({s:selected?.aphiaID,use:activeUse,v:currentView})");
