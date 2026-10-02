@@ -2166,24 +2166,27 @@ class VerifiedPilot321Tests(unittest.TestCase):
 
 LIT322 = "research/verified-indices/mfpi-literature-rows-3.22-2026-10-02.json"
 AQUA322 = "research/verified-indices/mfpi-aquaculture-names-3.22-2026-10-02.json"
+V322 = ROOT / "config" / "verified-indices-v3.22.json"  # superseded by 3.23 (literature limitations shown); its rows stay tested
 
 
 class VerifiedPilot322Tests(unittest.TestCase):
-    """Public method: 3.21 plus an MFPI for 괭생이모자반 through the literature route the method has had since 3.12.
+    """Superseded by 3.23. Public method: 3.21 plus an MFPI for 괭생이모자반 through the literature route the method has had since 3.12.
     Murakami et al. 2011 analyses the raw edible portion of this species and reports the moisture of the same pooled
     sample, so protein, calcium and zinc convert to fresh weight; iron is not analysed at all and stays out of the mean
     under the 3.7 minimum-components rule. The species also gains the aquaculture record the MFPI formula requires.
     No rule, cohort, weight or coefficient moves."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V322))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V321)))
         self.lit = self.report["method"]["nutrition"]["substitutes"]["literature"]
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.22", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.22 report is archived as it was
+        archived322 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.22.json"
+        self.assertEqual(render(self.report), archived322.read_text(encoding="utf-8"))
 
     def test_only_the_seaweed_gains_a_score(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -2232,6 +2235,57 @@ class VerifiedPilot322Tests(unittest.TestCase):
             text = Path(old).read_text(encoding="utf-8")
             self.assertNotIn(LIT322, text)
             self.assertNotIn(AQUA322, text)
+
+
+class VerifiedPilot323Tests(unittest.TestCase):
+    """Public method: 3.22 plus display data only. The reviewed limitations of a literature species row (where, when and how
+    the paper sampled; for the seaweed, that Kjeldahl nitrogen x 6.25 overstates protein) reach the MFPI trace's uncertainty
+    list. From 3.15 to 3.22 the builder read the row's values and dropped this text. No input file, rule, cohort,
+    coefficient or score moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V322))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.23", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_no_score_moves(self):
+        for a, s in self.new.items():
+            self.assertEqual((s["scores"], s["withheld_reasons"]), (self.old[a]["scores"], self.old[a]["withheld_reasons"]), a)
+        self.assertEqual(sum(v is not None for s in self.new.values() for v in s["scores"].values()), 68)
+
+    def test_each_literature_row_shows_its_own_limitations(self):
+        book = json.loads((ROOT / LIT322).read_text(encoding="utf-8"))
+        for item in book["items"]:
+            new, old = self.new[item["aphia_id"]]["food_trace"], self.old[item["aphia_id"]]["food_trace"]
+            self.assertEqual(new["row_table"], "literature")
+            self.assertEqual([u for u in new["uncertainty"] if u not in old["uncertainty"]],
+                             [f"Literature row limitations: {item['limitations']}"], item["aphia_id"])
+        self.assertTrue(any("Kjeldahl" in u for u in self.new[494853]["food_trace"]["uncertainty"]))
+
+    def test_nothing_else_changes(self):
+        # apart from the version stamps, the flag and the two added lines, the 3.23 report is the 3.22 report
+        def strip(report):
+            r = json.loads(render(report))
+            r["method_version"] = r["method"]["method_version"] = r["method"]["changes_from"] = None
+            r["method"]["nutrition"]["substitutes"]["literature"].pop("show_limitations", None)
+            for s in r["species"] + r["candidate_species"]:
+                t = s.get("food_trace") or {}
+                t["method_version"] = None
+                t["uncertainty"] = [u for u in t.get("uncertainty", []) if not u.startswith("Literature row limitations: ")]
+                for n in t.get("supplemental_nutrition", []):
+                    if "substitute_use" in n:
+                        n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
+            return r
+        self.assertEqual(strip(self.report), strip(self.old_report))
+
+    def test_older_configs_never_show_the_line(self):
+        for old in (V315, V316, V317, V318, V319, V320, V321, V322):
+            lit = json.loads(Path(old).read_text(encoding="utf-8"))["nutrition"]["substitutes"].get("literature") or {}
+            self.assertNotIn("show_limitations", lit, old)
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.22.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.23.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -295,7 +295,7 @@ def literature_species_row(aphia: int, evidence: dict, settings: dict) -> dict |
     method = f"{item['record_id']} ({item['source_id']}): dry-basis value x (100 - {moisture:g}% moisture of the same sample) / 100"
     e = item["edible_fraction"]
     return {"food_item_id": f"LIT:{item['record_id']}", "reported_food_name": item["taxon_label"], "english_name": item["taxon_label"],
-            "group": item["food_group"], "row_source": "literature", "aphia_id": aphia,
+            "group": item["food_group"], "row_source": "literature", "aphia_id": aphia, "limitations": item.get("limitations"),
             "taxon_link": {"link_evidence": item["taxon_link_evidence"]}, "source_id": item["source_id"], "reviewed": True,
             "sample_state": "raw", "basis": "100 g edible portion", "refuse_not_accepted": None,
             "nutrients": {k: None if k not in item["components"] else
@@ -458,7 +458,12 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
                                                 "sum_mg": round(hit["epa_mg"] + hit["dha_mg"], 2),
                                                 "reference_mg": fa["daily_reference_mg"], "row_source": hit["row_source"],
                                                 "source_id": fa["display_source_id"], "use": "display_only"}
-        trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + [
+        # 3.23: a literature row's reviewed limitations reach the trace (3.15-3.22 read its values and dropped this text)
+        noted = []
+        if d.get("row_table") == "literature" and ((settings.get("substitutes") or {}).get("literature") or {}).get("show_limitations"):
+            require(row.get("limitations"), f"{aphia}: a literature row needs its reviewed limitations")
+            noted = [f"Literature row limitations: {row['limitations']}"]
+        trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + noted + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
             "Sensitivity values are scenario arithmetic, not a statistical confidence interval."]
