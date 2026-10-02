@@ -40,7 +40,7 @@ main{max-width:none;margin:0;padding:0}
 .notice p strong{color:var(--amber)}
 #connection-state{flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
 #connection-state:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal-fill)}
-/* The longer date line gives way first (huge shrink), down to the old '공개 기준 자료 발행 YYYY-MM-DD…' (170px); only then the disclaimer, so "…사용하지 마세요." stays whole from 1280px. */
+/* The date line gives way first (huge shrink), down to 170px ('발행 YYYY-MM-DD · 지표 …'); only then the disclaimer, so "…사용하지 마세요." stays whole from 1280px. The full line shows from about 1440px. */
 #snapshot-date{flex:0 100000 auto;min-width:170px;margin:0;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:12px}
 
 /* ---------- Explorer: rail | map | detail ---------- */

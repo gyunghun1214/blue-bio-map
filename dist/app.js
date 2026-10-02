@@ -2093,7 +2093,7 @@ function toggleSimulation(value){
 
 function renderSources(){
   const info=data.assessmentInfo;
-  $('snapshot-date').textContent=$('snapshot-date').title=`공개 기준 자료 발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
+  $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
   const all=new Map();data.species.forEach(s=>s.sources.forEach(src=>all.set(src.id,src)));
   // Indicator sources (the report's own registry) are cited here too, so a comparison cohort is named on the method tab.
   const report=data.assessmentInfo||{};
