@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -844,7 +844,7 @@ function verifiedBioTrace(s){
     const used=Math.abs(x.adjusted-top)<1e-9;
     const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl', amp=x.stratum_kind==='amp';
     const m=(x.measurements||[])[0]||{};
-    const name=amp?`항균 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)})`:peptide?`펩타이드 ${esc(x.peptide_sequence)}`:ch?
+    const name=amp?`항균 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)}${x.sequence_modifications?' · '+esc(x.sequence_modifications):''})`:peptide?`펩타이드 ${esc(x.peptide_sequence)}`:ch?
       `${esc(x.compound_name||x.compound_id)} · ${sourceLink(`https://www.ebi.ac.uk/chembl/explore/compound/${x.compound_id}`,x.compound_id)}`:
       `${esc(m.compound_name||x.compound_id)} · ${m.structure_url?sourceLink(m.structure_url,x.compound_id):esc(x.compound_id)}${m.molecular_formula?' · '+esc(m.molecular_formula):''}`;
     const raw=amp?(x.measurements||[]).map(v=>esc(`${v.target_species}${v.target_strain?' '+v.target_strain:''} MIC ${v.relation} ${v.value} ${v.unit} · ${v.medium}`)).join(' / ')+` · pMIC ${esc(x.pMIC)}`:
@@ -1168,7 +1168,7 @@ function useEvidence(s,id){
   const hits=(a.bioactivity_trace||[]).filter(t=>isAdopted(t)&&traitIdsOf(t).includes(id)).sort((x,y)=>y.adjusted-x.adjusted);
   if(!hits.length)return null;
   const t=hits[0], m=(t.measurements||[])[0]||{};
-  const what=t.stratum_kind==='amp'?`항균 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.target_species} MIC ${m.value} ${m.unit}`
+  const what=t.stratum_kind==='amp'?`항균 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.target_species} MIC ${t.measurements.length>1?`${num(10**(6-t.pMIC))} ${m.unit} (균주 ${t.measurements.length}개 중앙값)`:`${m.value} ${m.unit}`}`
     :t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
     :t.stratum_kind==='chembl'?`${t.compound_name||t.compound_id} · ${t.target_name} ${t.standard_type} pChEMBL ${t.median_pchembl}`
     :`${m.compound_name||t.compound_id||'화합물'} · ACE IC50 ${m.raw_value??''} ${m.raw_unit||''}`;

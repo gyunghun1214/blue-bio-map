@@ -1801,21 +1801,26 @@ class VerifiedPilot317Tests(unittest.TestCase):
             self.assertNotIn(FATTY, Path(old).read_text(encoding="utf-8"))
 
 
+V318 = ROOT / "config" / "verified-indices-v3.18.json"  # superseded by 3.19 (Poor Broth, Cg-BigDef1); its rows stay tested
+
+
 class VerifiedPilot318Tests(unittest.TestCase):
-    """Public method: 3.17 plus the antimicrobial-peptide stratum the proposal names beside the ACE one. A fixed DBAASP cohort
+    """Superseded by 3.19. Public method: 3.17 plus the antimicrobial-peptide stratum the proposal names beside the ACE one. A fixed DBAASP cohort
     per target bacterium (MIC, broth media, single clean numeric value) ranks pMIC = 6 - log10(MIC uM) the way the ACE stratum
     ranks pIC50, with the same minimum cohort, the same DOI factors and the same max aggregation. A MIC percentile is never
     ranked against an ACE IC50 percentile. Origin rows are read in the original paper, never in the database. 피조개 and
     조피볼락 gain a single-paper MBPI; their BBVI stays withheld."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V318))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V317)))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.18", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.18 report is archived as it was
+        archived318 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.18.json"
+        self.assertEqual(render(self.report), archived318.read_text(encoding="utf-8"))
 
     def test_two_species_gain_an_mbpi_and_nothing_else_moves(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1893,6 +1898,76 @@ class VerifiedPilot318Tests(unittest.TestCase):
             text = Path(old).read_text(encoding="utf-8")
             self.assertNotIn(AMP, text)
             self.assertNotIn("amp_bioactivity", json.loads(text))
+
+
+class VerifiedPilot319Tests(unittest.TestCase):
+    """Public method: 3.18 plus three team-lead decisions of 2026-10-02. (1) A liquid growth inhibition assay that reads the MIC
+    over two-fold dilutions in a liquid medium counts as broth microdilution, and Poor Broth (DBAASP PBM) joins the cohort's
+    broth list; 참굴 Cg-BigDef1 (total chemical synthesis) enters with all seven S. aureus strains of its table. (2) Peptides
+    expressed in another organism stay excluded (Cg-Def family). (3) Only ministry or agency red lists count for the MCUI
+    range-state step (no China Species Red List 2004)."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V318)))
+        self.rule = self.report["method"]["amp_bioactivity"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.19", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_the_cohort_change_moves_scores(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        # Poor Broth adds 50 S. aureus members: each AMP percentile moves by hundredths, two scores by one tenth
+        self.assertEqual(changed, {(504357, "MBPI"): 22.0, (274849, "MBPI"): 31.7})
+        self.assertEqual(sum(s["scores"][axis] is not None for s in self.new.values() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")), 66)
+        oyster = self.new[836033]
+        self.assertEqual((oyster["scores"]["MBPI"], oyster["scores"]["BBVI"]), (96.3, 83.9))
+        best = max(oyster["bioactivity_trace"], key=lambda i: i["adjusted"])
+        self.assertEqual(best["stratum_kind"], "peptide")  # LQP still leads; Cg-BigDef1 adds evidence, not score
+
+    def test_cg_bigdef1_uses_every_strain_of_its_table(self):
+        item, = [i for i in self.new[836033]["bioactivity_trace"] if i.get("stratum_kind") == "amp"]
+        self.assertEqual((item["peptide_name"], item["target_species"], item["peer_peptides"]), ("Cg-BigDef1", "Staphylococcus aureus", 6208))
+        self.assertEqual(len(item["target_strains"]), 7)
+        values = sorted(m["value"] for m in item["measurements"])
+        self.assertEqual(values, [1.25, 1.25, 2.5, 2.5, 2.5, 2.5, 5.0])  # DBAASP lists only three of them
+        self.assertAlmostEqual(item["pMIC"], round(6 - math.log10(2.5), 3), places=6)
+        self.assertEqual((item["percentile"], item["evidence_factor"]), (83.51, 0.75))
+        self.assertIn("피로글루탐산", item["sequence_modifications"])  # the Q at position 1 is shown as the modified residue it is
+        self.assertTrue(all(m["medium"].startswith("Poor Broth") and m["method"] == "broth_microdilution" for m in item["measurements"]))
+        rows = json.loads((ROOT / self.rule["supplement"]).read_text(encoding="utf-8"))["amp_bioactivity"]
+        for r in rows:
+            if r["peptide_name"] == "Cg-BigDef1":
+                self.assertIn("liquid growth inhibition", r["method_as_published"])  # the published wording stays beside the row
+                self.assertTrue(r["synthetic"])
+
+    def test_poor_broth_is_the_only_new_medium(self):
+        old_rule = json.loads(Path(V318).read_text(encoding="utf-8"))["amp_bioactivity"]
+        old_book = json.loads((ROOT / old_rule["cohort_file"]).read_text(encoding="utf-8"))
+        book = json.loads((ROOT / self.rule["cohort_file"]).read_text(encoding="utf-8"))
+        self.assertEqual(set(book["broth_whitelist"]) - set(old_book["broth_whitelist"]), {"PBM"})
+        self.assertEqual(set(old_book["broth_whitelist"]) - set(book["broth_whitelist"]), set())
+        self.assertEqual([c["cohort_id"] for c in book["cohorts"]], [c["cohort_id"] for c in old_book["cohorts"]])
+        for old, new in zip(old_book["cohorts"], book["cohorts"]):
+            self.assertGreaterEqual(new["size"], old["size"])
+            self.assertNotIn("PBM", new["dropped_media"])
+            self.assertEqual(len(new["members"]), new["size"])
+
+    def test_recombinant_and_non_ministry_sources_stay_out(self):
+        supplement = json.loads((ROOT / self.rule["supplement"]).read_text(encoding="utf-8"))
+        self.assertFalse([r for r in supplement["amp_bioactivity"] if r["peptide_name"].startswith("Cg-Def")])
+        cg_def, = [x for x in supplement["excluded"] if x["record"].startswith("Cg-Def")]
+        self.assertIn("recombinant", cg_def["reason"])
+        self.assertIn("China Species Red List", self.report["method"]["mcui_substitutes"]["range_state_rule"])
+        self.assertFalse([k for k, v in self.report["sources"].items()
+                          if "china species red list" in json.dumps(v).lower() or "中国物种红色名录" in json.dumps(v, ensure_ascii=False)])
+
+    def test_older_configs_do_not_read_it(self):
+        for old in (V317, V318):
+            self.assertNotIn("3.19-2026-10-02", Path(old).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

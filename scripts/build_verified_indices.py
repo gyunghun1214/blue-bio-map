@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.18.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.19.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -633,6 +633,8 @@ def amp_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
         out.append((origin, {"stratum_kind": "amp", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
                              "peptide_name": own[0].get("peptide_name"), "target_species": cohort["target_species"],
+                             **({"sequence_modifications": own[0]["sequence_modifications"]}  # 3.19: e.g. pyroglutamate
+                                if own[0].get("sequence_modifications") else {}),
                              "target_strains": sorted({r["target_strain"] for r in own if r.get("target_strain")}),
                              "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
                              "peer_peptides": len(peers), "cohort_median_pMIC": cohort["median_pMIC"],
