@@ -23,7 +23,7 @@ const placedInMatrix=report.species.filter(s=>(nationalPlaced||s.mcui_basis!=='n
 const typeLabel=aphia=>Object.values(report.method.matrix.types).find(t=>t.id===readiness.species.find(r=>r.aphia_id===aphia).matrix_type)?.label;
 if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
-const URL0='http://127.0.0.1:8765/';
+const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
 const chrome=spawn(chromePath,['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
