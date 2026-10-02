@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.19.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.20.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -770,7 +770,9 @@ def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, li
                     "median_pchembl": m, "cohort_records": total, "percentile": round(rank, 2),
                     "link_factor": lf, "activity_factor": af, "evidence_factor": lf * af, "adjusted": rank * lf * af,
                     "independent_sources": min(len(info["dois"]), len(docs)), "label": rule["label"],
-                    "evidence_level": 2, "link_review": "accepted" if info["reviewed"] else "not_reviewed"}))
+                    "evidence_level": 2, "link_review": "accepted" if info["reviewed"] else "not_reviewed",
+                    # verified-pilot-3.20: a compound-level caveat (e.g. a possible drying artifact) travels with the item
+                    **{"caveat": rule["compound_caveats"][k] for k in sorted(info["inchikeys"]) if k in rule.get("compound_caveats", {})}}))
         counts["scored_compounds"] = len({i["compound_id"] for a, i in out if a == s["aphia_id"]})
         summary[s["aphia_id"]] = {"counts": dict(counts), "sufficiency": bio_sufficiency(chains),
                                   "paper_search": snap.get("paper_search", {}).get(s["aphia_id"]), "rejected_links": rejected}
@@ -1326,9 +1328,55 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
                                                          "papers_screened": s["papers_screened"], "accepted_links": accepted[s["aphia_id"]]}
                                          for s in papers["searched"]}}
         snap["link_review"] = review["links"]
-        evidence = {**evidence, "chembl_links": snap,
-                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], review["reviewed_on"]),
-                    "sources": {**evidence["sources"], **snap["sources"], **papers["sources"]}}
+        as_of = max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"], review["reviewed_on"])
+        extra_sources = {}
+        p703_rule = cfg["chembl_bioactivity"].get("paper_links_p703")
+        if p703_rule:  # verified-pilot-3.20 team-lead decision: paper links for P703 species that name the species and the sample
+            sup = read(ROOT / p703_rule)
+            require(not set(sup["sources"]) & (set(evidence["sources"]) | set(snap["sources"]) | set(papers["sources"])),
+                    "P703 paper-link supplement redefines a source")
+            species = {s["aphia_id"]: s for s in snap["species"]}
+            refs, reviews = dict(snap["reference_dois"]), defaultdict(lambda: {"dois": set(), "review": None, "link": None})
+            for p in sup["links"]:
+                v = p["verification"]
+                require(p["aphia_id"] in p703 and p["inchikey"] in snap["compounds"] and v["species_named"] is True
+                        and str(v.get("sample_origin", "")).strip() and v["single_defined_compound"] is True
+                        and v["isolated_or_identified_from_species"] is True and v["inchikey_matches_pubchem"] is True,
+                        f"{p['aphia_id']} {p['inchikey']}: P703 paper link misses a condition")
+                ref = "doi:" + p["doi"].lower()
+                refs[ref] = p["doi"].lower()
+                r = reviews[(p["aphia_id"], p["inchikey"])]
+                r["dois"].add(p["doi"].lower())
+                r["link"], r["review"] = p, p["review"] or r["review"]
+            for (aphia, key), r in reviews.items():
+                require(r["review"] is not None, f"{aphia} {key}: P703 paper link has no review decision")
+                s = species[aphia] = {**species[aphia], "links": [dict(l) for l in species[aphia]["links"]]}
+                link = next((l for l in s["links"] if l["inchikey"] == key), None)
+                require(link is None, f"{aphia} {key}: the species already links this compound")
+                s["links"].append({"compound_qid": r["link"]["compound_qid"], "inchikey": key,
+                                   "statements": [{"references": sorted("doi:" + d for d in r["dois"]), "taxon_qid": "original_paper"}]})
+                snap["link_review"] = snap["link_review"] + [{"aphia_id": aphia, "scientific_name": r["link"]["scientific_name"],
+                    "inchikey": key, "compound_chembl_id": r["link"]["compound_chembl_id"], "compound_name": r["link"]["compound_name_in_paper"],
+                    "pubchem_cid": r["link"]["pubchem_cid"], "dois": sorted(r["dois"]), **r["review"]}]
+            snap = {**snap, "species": [species[s["aphia_id"]] for s in snap["species"]], "reference_dois": refs}
+            extra_sources, as_of = sup["sources"], max(as_of, sup["snapshot_date"])
+        comments = cfg["chembl_bioactivity"].get("activity_comments")
+        if comments:  # verified-pilot-3.20: a depositor's Inconclusive / Not Active flag keeps the row out of every species item
+            book = read(ROOT / comments)
+            require(book["for_snapshot"] == cfg["chembl_bioactivity"]["snapshot"]
+                    and set(book["comments"]) == {str(a["activity_id"]) for a in snap["activities"]},
+                    "activity comments do not cover the ChEMBL snapshot")
+            drop = set(cfg["chembl_bioactivity"]["excluded_activity_comments"])
+            cohorts = dict(snap["cohorts"])
+            for key, c in book["cohort_counts"].items():  # medians that only exist once the flagged rows are gone
+                require(cohorts[key]["total"] == c["total"], f"{key}: added cohort counts come from another release")
+                cohorts[key] = {**cohorts[key], "below": {**cohorts[key]["below"], str(c["median"]): c["below"]},
+                                "equal": {**cohorts[key]["equal"], str(c["median"]): c["equal"]}}
+            snap = {**snap, "cohorts": cohorts,
+                    "activities": [a for a in snap["activities"] if (book["comments"][str(a["activity_id"])] or "").lower() not in drop]}
+            as_of = max(as_of, book["snapshot_date"])
+        evidence = {**evidence, "chembl_links": snap, "inputs_as_of": as_of,
+                    "sources": {**evidence["sources"], **snap["sources"], **papers["sources"], **extra_sources}}
     sub = cfg["nutrition"].get("substitutes")
     if sub:  # verified-pilot-3.3: uFiSh substitutes (scripts/collect_mfpi_substitutes.py) and reviewed aquaculture records
         snap = read(ROOT / sub["snapshot"])

@@ -5,104 +5,16 @@
       "aphia_id": 377084,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2057506
-          ],
-          "adjusted": 19.558011049723756,
-          "caveat": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-          "chembl_stratum": "pathogen",
-          "cohort_records": 4525,
-          "compound_id": "CHEMBL252366",
-          "compound_name": "SARINGOSTEROL",
-          "document_chembl_ids": [
-            "CHEMBL1141252"
-          ],
-          "evidence_factor": 0.75,
-          "evidence_level": 2,
-          "inchikeys": [
-            "OPGVEUGCNGNPSX-SVSQYMGHSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 1.0,
-          "link_review": "accepted",
-          "median_pchembl": 5.11,
-          "original_paper_dois": [
-            "10.1371/journal.pone.0258980",
-            "10.3390/foods12020244"
-          ],
-          "percentile": 26.08,
-          "pubchem_cids": [
-            14161394
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL612851",
-          "target_name": "Trypanosoma brucei brucei",
-          "target_organism": "Trypanosoma brucei brucei",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q15426985"
-          ]
-        },
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2057505
-          ],
-          "adjusted": 26.51519337016575,
-          "caveat": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-          "chembl_stratum": "pathogen",
-          "cohort_records": 4525,
-          "compound_id": "CHEMBL252561",
-          "compound_name": null,
-          "document_chembl_ids": [
-            "CHEMBL1141252"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "WLNWTSOEOWZEGI-SVSQYMGHSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.5,
-          "original_paper_dois": [
-            "10.1371/journal.pone.0258980"
-          ],
-          "percentile": 47.14,
-          "pubchem_cids": [
-            20847459
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL612851",
-          "target_name": "Trypanosoma brucei brucei",
-          "target_organism": "Trypanosoma brucei brucei",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q105308116"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 9,
-          "linked": 32,
+          "linked": 30,
           "rejected_by_review": 3,
-          "scored_compounds": 2,
-          "with_reference_doi": 32
+          "scored_compounds": 0,
+          "with_reference_doi": 30
         },
         "paper_search": null,
         "rejected_links": [
@@ -139,14 +51,14 @@
         ],
         "rule_sensitivity": {
           "log_scale_common_fence": 52.7,
-          "minimum_cohort_10": 26.5,
-          "minimum_cohort_100": 26.5,
-          "no_approved_drug_filter": 26.5,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
           "no_common_metabolite_filter": 52.7
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -225,7 +137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -405,8 +317,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -440,11 +352,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.61
+        "mean_ratio": 0.44
       },
       "korean_name": "다시마",
-      "mbpi_label": "참고값(단일 논문)",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
@@ -589,58 +501,28 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
-      "reference_combination": {
-        "food_weight": 0.5,
-        "formula": "w×MFPI+(1−w)×MBPI",
-        "inputs": {
-          "MBPI": 26.5,
-          "MFPI": 56.7
-        },
-        "label": "참고 통합값 · 독립 재현 미확인",
-        "limits": [
-          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
-          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
-        ],
-        "mbpi_original_paper_dois": [
-          "10.1371/journal.pone.0258980"
-        ],
-        "mbpi_stratum": "ChEMBL_37:CHEMBL612851|IC50",
-        "mfpi_cohort": "rda-10.4-raw-seaweeds",
-        "sensitivity": {
-          "0.25": 34.1,
-          "0.5": 41.6,
-          "0.75": 49.2
-        },
-        "used_for_score": false,
-        "value": 41.6
-      },
+      "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "산출됨",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": null,
-        "MBPI": 26.5,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": 56.7
       },
       "sensitivity": {
-        "food_weights": {},
-        "mean_compound_sensitivity": 23.0,
-        "median_compound_sensitivity": 23.0,
-        "range_from_aggregation": [
-          19.6,
-          26.5
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 26.5,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 56.7
       },
       "source_ids": [
@@ -659,8 +541,8 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": "mbpi_single_source",
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
       }
@@ -1365,7 +1247,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1694,7 +1576,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2011,11 +1893,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 51.4,
+          "log_scale_common_fence": 52.3,
           "minimum_cohort_10": 21.6,
           "minimum_cohort_100": 21.6,
           "no_approved_drug_filter": 21.6,
-          "no_common_metabolite_filter": 51.4
+          "no_common_metabolite_filter": 52.3
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -2053,7 +1935,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2404,7 +2286,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2897,11 +2779,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 0.4,
+          "log_scale_common_fence": 50.7,
           "minimum_cohort_10": 0.4,
           "minimum_cohort_100": 0.4,
           "no_approved_drug_filter": 0.4,
-          "no_common_metabolite_filter": 0.4
+          "no_common_metabolite_filter": 50.7
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -2983,7 +2865,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3892,7 +3774,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4936,7 +4818,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5996,7 +5878,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6990,7 +6872,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8010,7 +7892,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9065,7 +8947,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10214,7 +10096,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11306,7 +11188,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12303,7 +12185,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13280,7 +13162,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14434,7 +14316,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15461,7 +15343,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16441,7 +16323,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17503,7 +17385,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18480,7 +18362,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19481,7 +19363,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20526,10 +20408,8 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.19 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.20-2026-10-02.md). (1) An original-paper link is also admitted for a species that already has Wikidata P703 statements, when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (research/verified-indices/mbpi-paper-links-p703-2026-10-02.json). 다시마 gains a single-paper ChEMBL MBPI 26.5 (24-hydroperoxy-24-vinylcholesterol, Lu 2022) with the autoxidation caveat already used for 톳. 꼬시래기 is held: its highest values are screening rows marked Inconclusive. (2) A ChEMBL activity the depositor marked Inconclusive or Not Active never enters a species item (snapshots/chembl-activity-comments-2026-10-02.json, 100 of 2,058 snapshot rows); no current score rests on one. Every other rule and coefficient equals 3.19.",
+    "changes_from": "verified-pilot-3.18 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.19-2026-10-02.md). (1) The liquid growth inhibition assay (liquid medium, two-fold dilutions, MIC = 100% inhibition) counts as broth microdilution, and Poor Broth (DBAASP code PBM) joins the cohort's broth list (research/verified-indices/amp-cohorts-dbaasp-3.19-2026-10-02.json, same builder and dump; S. aureus 6158 -> 6208 members). 참굴 Cg-BigDef1 (total chemical synthesis, Loth 2019) enters with all seven S. aureus strains of its table, median 2.5 uM; 참굴 MBPI stays 96.3 (LQP is higher) and only the antibacterial evidence grows. (2) Recombinant peptides expressed in another organism stay excluded (참굴 Cg-Def family). (3) Non-ministry red lists such as the China Species Red List (2004) are not official national lists for the MCUI range-state step. Every other rule and coefficient equals 3.18.",
     "chembl_bioactivity": {
-      "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
-      "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
       "assay_types": [
         "B",
         "F"
@@ -20537,11 +20417,6 @@
       "bbvi_rule": "bbvi.minimum_independent_mbpi_dois applies as min(link DOIs, ChEMBL documents) >= 2, so both the species link and the activity rest on two papers each.",
       "cohort_rule": "Cohort = every admitted ChEMBL activity with the same target_chembl_id and standard_type (activity level, counted with the ChEMBL API at the snapshot date). Species value = median pChEMBL of the parent compound's admitted activities in that cohort; percentile = 100 x (count below + 0.5 x count equal) / total.",
       "commonness_rule": "Exclude a compound when its count of taxa with a P703 statement exceeds the Tukey upper fence Q3 + 1.5 IQR of the counts over every linked compound (statistics.quantiles, n=4, inclusive). Such compounds (fatty acids, amino acids, sterols, carotenoids) say nothing specific about one species. Sensitivity: the same fence on log10 counts, and no filter.",
-      "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score.",
-      "compound_caveats": {
-        "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-        "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다."
-      },
       "data_validity_comments": [
         null,
         "Manually validated"
@@ -20550,20 +20425,14 @@
       "evidence_level": "Reviewed original-paper strata (감태 ACE, AHTPDB peptides) are level 1; this automated stratum is level 2. The species MBPI is the max over all strata; the stratum of the best item is shown.",
       "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. One item per species, parent compound and stratum: that compound's target x endpoint cohort with the highest percentile (ties: more records). The species MBPI is the highest adjusted item.",
       "exclude_potential_duplicate": true,
-      "excluded_activity_comments": [
-        "inconclusive",
-        "not active",
-        "inactive"
-      ],
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
       "link_review": "research/verified-indices/mbpi-link-review-2026-09-30.json",
-      "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply.",
+      "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count.",
       "minimum_cohort_records": 30,
       "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
       "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
       "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
-      "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-2026-10-02.json",
       "paper_source_ids": [
         "europepmc_mbpi",
         "cmnpd_mbpi"
@@ -20769,7 +20638,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.20",
+    "method_version": "verified-pilot-3.19",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21141,7 +21010,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.20",
+  "method_version": "verified-pilot-3.19",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21382,15 +21251,6 @@
       "title": "Assessment of the Carrying Capacity of Integrated Pond Aquaculture of Portunus trituberculatus at the Ecosystem Level (Dong S, Wang F, Zhang D, Yu L, Pu W, Xu X, Xie Y), doi:10.3389/fmars.2021.747891",
       "url": "https://doi.org/10.3389/fmars.2021.747891",
       "version": "full text checked 2026-10-01"
-    },
-    "europepmc_fulltext_p703": {
-      "accessed": "2026-10-02",
-      "license": "CC BY 4.0",
-      "provider": "Europe PMC REST fullTextXML",
-      "terms": "CC BY 4.0 articles; compound names, sample origin and DOIs recorded, no text copied",
-      "title": "Open-access full texts read for the 3.20 paper links (PMC8794173, PMC9858231)",
-      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/",
-      "version": "fullTextXML of PMC8794173 (PLoS ONE 17:e0258980, 2022) and PMC9858231 (Foods 12:244, 2023), read 2026-10-02"
     },
     "europepmc_mbpi": {
       "accessed": "2026-09-29",
@@ -22999,7 +22859,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23553,11 +23413,11 @@
         "paper_search": null,
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 36.7,
+          "log_scale_common_fence": 38.1,
           "minimum_cohort_10": 8.7,
           "minimum_cohort_100": 8.7,
           "no_approved_drug_filter": 8.7,
-          "no_common_metabolite_filter": 36.7
+          "no_common_metabolite_filter": 38.1
         },
         "sufficiency": {
           "best_record_steps": 1,
@@ -23681,7 +23541,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24539,11 +24399,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 68.5,
+          "log_scale_common_fence": 69.7,
           "minimum_cohort_10": 13.5,
           "minimum_cohort_100": 13.5,
           "no_approved_drug_filter": 13.5,
-          "no_common_metabolite_filter": 68.5
+          "no_common_metabolite_filter": 69.7
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -24656,7 +24516,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -25776,7 +25636,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26745,7 +26605,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27316,7 +27176,6 @@
             2057506
           ],
           "adjusted": 19.558011049723756,
-          "caveat": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
           "chembl_stratum": "pathogen",
           "cohort_records": 4525,
           "compound_id": "CHEMBL252366",
@@ -27360,7 +27219,6 @@
             2057505
           ],
           "adjusted": 26.51519337016575,
-          "caveat": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
           "chembl_stratum": "pathogen",
           "cohort_records": 4525,
           "compound_id": "CHEMBL252561",
@@ -27539,7 +27397,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28222,7 +28080,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28863,7 +28721,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.20 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.19 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -29700,7 +29558,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.20",
+        "method_version": "verified-pilot-3.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -855,6 +855,7 @@ function verifiedBioTrace(s){
     return `<div class="score-fact${used?' score-used':''}"><b>${used?'점수에 쓴 값 · ':''}${name}</b>`+
       `<span>${raw}${m.target_id?' · 표적 '+esc(m.target_id):''}${m.test_system?' · '+esc(m.test_system):''}</span></div>`+
       (m.conditions_key?`<p class="fine">시험 조건: ${esc(m.conditions_key)}</p>`:'')+
+      (x.caveat?`<p class="fine">주의: ${esc(x.caveat)}</p>`:'')+
       ((peptide||amp)?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
         return `<p class="fine">원값 출처: ${verifiedSource(v.source_id,esc(src?.provider||'원논문')+' ↗')} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}</p>`;}).join(''):'')+
       (ch?`<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)}(종 연결 ${esc(x.link_factor)} × 활성 ${esc(x.activity_factor)}) = ${esc(Math.round(x.adjusted*10)/10)} · 종 연결 논문 ${x.original_paper_dois.map(doiLink).join(', ')} · ChEMBL 문서 ${esc(x.document_chembl_ids.join(', '))}</p><p class="fine">${esc(x.label)}</p>`:

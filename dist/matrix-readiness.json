@@ -40,7 +40,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.19",
+  "method_version": "verified-pilot-3.20",
   "schema_version": 1,
   "species": [
     {
@@ -596,32 +596,26 @@
     {
       "aphia_id": 377084,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": "mbpi_single_source",
+        "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "다시마",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Saccharina japonica",
       "scope": "expansion_22",
       "scores": {
         "BBVI": null,
-        "MBPI": null,
+        "MBPI": 26.5,
         "MCUI": null,
         "MFPI": 56.7
       },

@@ -1900,22 +1900,27 @@ class VerifiedPilot318Tests(unittest.TestCase):
             self.assertNotIn("amp_bioactivity", json.loads(text))
 
 
+V319 = ROOT / "config" / "verified-indices-v3.19.json"  # superseded by 3.20 (P703 paper links, activity comments); its rows stay tested
+
+
 class VerifiedPilot319Tests(unittest.TestCase):
-    """Public method: 3.18 plus three team-lead decisions of 2026-10-02. (1) A liquid growth inhibition assay that reads the MIC
+    """Superseded by 3.20. Public method: 3.18 plus three team-lead decisions of 2026-10-02. (1) A liquid growth inhibition assay that reads the MIC
     over two-fold dilutions in a liquid medium counts as broth microdilution, and Poor Broth (DBAASP PBM) joins the cohort's
     broth list; 참굴 Cg-BigDef1 (total chemical synthesis) enters with all seven S. aureus strains of its table. (2) Peptides
     expressed in another organism stay excluded (Cg-Def family). (3) Only ministry or agency red lists count for the MCUI
     range-state step (no China Species Red List 2004)."""
 
     def setUp(self):
-        self.report = build(*load_inputs())
+        self.report = build(*load_inputs(config=V319))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V318)))
         self.rule = self.report["method"]["amp_bioactivity"]
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.19", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.19 report is archived as it was
+        archived319 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.19.json"
+        self.assertEqual(render(self.report), archived319.read_text(encoding="utf-8"))
 
     def test_only_the_cohort_change_moves_scores(self):
         changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
@@ -1968,6 +1973,71 @@ class VerifiedPilot319Tests(unittest.TestCase):
     def test_older_configs_do_not_read_it(self):
         for old in (V317, V318):
             self.assertNotIn("3.19-2026-10-02", Path(old).read_text(encoding="utf-8"))
+
+
+class VerifiedPilot320Tests(unittest.TestCase):
+    """Public method: 3.19 plus two team-lead decisions of 2026-10-02. (1) An original-paper link is also admitted for a species
+    that has Wikidata P703 statements, when the paper names the species and states where the sample came from; 다시마 gains a
+    single-paper ChEMBL MBPI from Lu 2022 and 꼬시래기 is held. (2) A ChEMBL activity its depositor marked Inconclusive or
+    Not Active never enters a species item."""
+
+    def setUp(self):
+        self.report = build(*load_inputs())
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(build(*load_inputs(config=V319)))
+        self.rule = self.report["method"]["chembl_bioactivity"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.20", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_kelp_gains_a_score(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        self.assertEqual(changed, {(377084, "MBPI"): 26.5})
+        kelp = self.new[377084]
+        self.assertEqual((kelp["mbpi_label"], kelp["withheld_reasons"]["BBVI"]), ("참고값(단일 논문)", "mbpi_single_source"))
+        self.assertEqual(sum(s["scores"][axis] is not None for s in self.new.values() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")), 67)
+        self.assertIsNone(self.new[236157]["scores"]["MBPI"])  # 꼬시래기 held by the team lead
+
+    def test_kelp_items_match_the_hijiki_precedent(self):
+        kelp = {i["compound_id"]: i for i in self.new[377084]["bioactivity_trace"] if i.get("stratum_kind") == "chembl"}
+        hijiki = {i["compound_id"]: i for i in self.new[494972]["bioactivity_trace"] if i.get("stratum_kind") == "chembl"}
+        self.assertEqual(set(kelp), {"CHEMBL252561", "CHEMBL252366"})
+        for cid, item in kelp.items():
+            # same compound, same cohort, same activity: the percentile is the 톳 one; only the linking papers differ
+            self.assertEqual((item["stratum_id"], item["percentile"], item["activity_ids"]),
+                             (hijiki[cid]["stratum_id"], hijiki[cid]["percentile"], hijiki[cid]["activity_ids"]))
+            self.assertEqual(item["link_review"], "accepted")
+            self.assertEqual(item["caveat"], hijiki[cid]["caveat"])  # the autoxidation caveat is shown for both species
+            self.assertIn("10.1371/journal.pone.0258980", item["original_paper_dois"])
+        self.assertEqual(round(kelp["CHEMBL252561"]["adjusted"], 2), 26.52)
+        self.assertEqual(kelp["CHEMBL252366"]["link_factor"], 1.0)  # Lu 2022 and the Foods 2023 kombu quantitation
+
+    def test_p703_paper_links_carry_their_conditions(self):
+        sup = json.loads((ROOT / self.rule["paper_links_p703"]).read_text(encoding="utf-8"))
+        for p in sup["links"]:
+            v = p["verification"]
+            self.assertTrue(v["species_named"] and v["sample_origin"].strip() and v["isolated_or_identified_from_species"])
+        self.assertEqual({p["aphia_id"] for p in sup["links"]}, {377084})
+        self.assertEqual([h["aphia_id"] for h in sup["held"]], [236157])
+
+    def test_flagged_activities_never_enter_an_item(self):
+        book = json.loads((ROOT / self.rule["activity_comments"]).read_text(encoding="utf-8"))
+        flagged = {int(k) for k, v in book["comments"].items() if (v or "").lower() in self.rule["excluded_activity_comments"]}
+        self.assertEqual(len(flagged), 100)
+        used = {a for s in self.new.values() for i in s["bioactivity_trace"] if i.get("stratum_kind") == "chembl" for a in i["activity_ids"]}
+        self.assertFalse(used & flagged)
+        # no 3.19 item rested on a flagged row, so only the new kelp items differ
+        for a, s in self.new.items():
+            if a != 377084:
+                self.assertEqual([i["adjusted"] for i in s["bioactivity_trace"]], [i["adjusted"] for i in self.old[a]["bioactivity_trace"]], a)
+
+    def test_older_configs_do_not_read_it(self):
+        for old in (V318, V319):
+            text = Path(old).read_text(encoding="utf-8")
+            self.assertNotIn("paper_links_p703", text)
+            self.assertNotIn("activity_comments", text)
 
 
 if __name__ == "__main__":
