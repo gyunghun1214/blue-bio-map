@@ -2237,20 +2237,25 @@ class VerifiedPilot322Tests(unittest.TestCase):
             self.assertNotIn(AQUA322, text)
 
 
+V323 = ROOT / "config" / "verified-indices-v3.23.json"  # superseded by 3.24 (큰가리비 VW potency replication); its rows stay tested
+
+
 class VerifiedPilot323Tests(unittest.TestCase):
-    """Public method: 3.22 plus display data only. The reviewed limitations of a literature species row (where, when and how
+    """Superseded by 3.24. Public method: 3.22 plus display data only. The reviewed limitations of a literature species row (where, when and how
     the paper sampled; for the seaweed, that Kjeldahl nitrogen x 6.25 overstates protein) reach the MFPI trace as
     literature_limitations. From 3.15 to 3.22 the builder read the row's values and dropped this text. No input file,
     rule, cohort, coefficient or score moves, and the uncertainty list is untouched."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V322))
+        self.report, self.old_report = build(*load_inputs(config=V323)), build(*load_inputs(config=V322))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.23", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.23 report is archived as it was
+        archived323 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.23.json"
+        self.assertEqual(render(self.report), archived323.read_text(encoding="utf-8"))
 
     def test_no_score_moves(self):
         for a, s in self.new.items():
@@ -2290,6 +2295,201 @@ class VerifiedPilot323Tests(unittest.TestCase):
         for old in (V315, V316, V317, V318, V319, V320, V321, V322):
             lit = json.loads(Path(old).read_text(encoding="utf-8"))["nutrition"]["substitutes"].get("literature") or {}
             self.assertNotIn("show_limitations", lit, old)
+
+
+XO314 = "research/verified-indices/evidence-xo-potency-3.14.json"
+XO324 = "research/verified-indices/evidence-xo-potency-3.24.json"
+SUETSUNA_2004 = "10.1016/j.jnutbio.2003.11.004"
+
+
+V324 = ROOT / "config" / "verified-indices-v3.24.json"  # superseded by 3.25 (three synthetic wakame replications, two record fixes)
+
+
+class VerifiedPilot324Tests(unittest.TestCase):
+    """Superseded by 3.25. Public method: 3.23 plus one potency replication row. Suetsuna et al. 2004 (J Nutr Biochem 15:267) isolated Val-Trp
+    from a wakame hot-water extract as a single HPLC peak, sequenced it by Edman degradation and measured 10.8 uM with HHL.
+    A sequence-confirmed purified peptide has counted since 3.14, and its pIC50 lies 0.906 from the scallop VW (86.9 uM),
+    inside the 1.0 gap, so 큰가리비's top item rests on two independent papers and its BBVI opens. No rule, cohort, gap or
+    coefficient moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs(config=V324)), build(*load_inputs(config=V323))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.24", "provisional_unvalidated"))
+        # the published 3.24 report is archived as it was
+        archived324 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.24.json"
+        self.assertEqual(render(self.report), archived324.read_text(encoding="utf-8"))
+
+    def test_only_the_scallop_moves(self):
+        changed = {(a, axis): s["scores"][axis] for a, s in self.new.items() for axis in ("MFPI", "MBPI", "MCUI", "BBVI")
+                   if s["scores"][axis] != self.old[a]["scores"][axis]}
+        # VW percentile 36.36 at the two-paper factor 1.0; BBVI = 0.5 x MFPI 55.8 + 0.5 x MBPI 36.4
+        self.assertEqual(changed, {(393716, "MBPI"): 36.4, (393716, "BBVI"): 46.1})
+        self.assertEqual(sum(v is not None for s in self.new.values() for v in s["scores"].values()), 69)
+        scallop = self.new[393716]
+        self.assertIsNone(scallop["withheld_reasons"]["BBVI"])
+        self.assertIsNone(scallop["mbpi_label"])
+        self.assertIsNone(scallop["reference_combination"])
+        self.assertEqual(self.old[393716]["withheld_reasons"]["BBVI"], "mbpi_single_source")
+
+    def test_the_vw_item_rests_on_two_papers(self):
+        item = lambda rows: [i for i in rows[393716]["bioactivity_trace"] if i.get("peptide_sequence") == "VW"][0]
+        new, old = item(self.new), item(self.old)
+        self.assertEqual(new["independent_dois"], [SUETSUNA_2004, "10.16535/j.cnki.dlhyxb.2018.06.016"])
+        self.assertEqual((new["evidence_factor"], old["evidence_factor"]), (1.0, 0.75))
+        # the scored value is still the scallop paper's synthetic VW; the replication adds a paper, not a value
+        self.assertEqual((new["measurements"], new["pIC50"], new["percentile"]), (old["measurements"], old["pIC50"], old["percentile"]))
+        self.assertEqual([(r["source_id"], r["material"], r["used"], r["pIC50_gap"]) for r in new["potency_replications"]],
+                         [("lin_2018_chlorella", "purified_isolate", False, 2.176), ("kapel_2006_alfalfa", "purified_isolate", False, 1.898),
+                          ("suetsuna_2004_wakame", "purified_isolate", True, 0.906)])
+        self.assertIn("suetsuna_2004_wakame", self.new[393716]["source_ids"])
+
+    def test_the_supplement_only_grows(self):
+        read = lambda p: json.loads((ROOT / p).read_text(encoding="utf-8"))
+        old, new = read(XO314), read(XO324)
+        self.assertEqual(new["snapshot_date"], old["snapshot_date"])
+        self.assertEqual(new["potency_replications"][:-1], old["potency_replications"])
+        row = new["potency_replications"][-1]
+        self.assertEqual((row["sequence"], row["value"], row["unit"], row["substrate"], row["material"], row["synthetic"]),
+                         ("VW", 10.8, "uM", "HHL", "purified_isolate", False))
+        self.assertEqual(row["original_paper_doi"], SUETSUNA_2004)
+        self.assertEqual({k: v for k, v in new["sources"].items() if k != row["source_id"]}, old["sources"])
+        # 3.14 to 3.23 keep reading the old file, so their archives stay as published
+        for cfg in (V314, V315, V316, V317, V318, V319, V320, V321, V322, V323):
+            self.assertEqual(json.loads(Path(cfg).read_text(encoding="utf-8"))["peptide_bioactivity"]["cross_origin_potency"]["supplement"], XO314)
+
+    def test_nothing_else_changes(self):
+        # 미역 VW (Sato 2002, 3.3 uM) also gains the row as a replication (pIC50 gap 0.515), but it already rested on more
+        # than one paper, so its factor and every 미역 score stay; apart from that, the version stamps and 큰가리비, the
+        # 3.24 report is the 3.23 report
+        wakame_vw = lambda rows: [i for i in rows[145721]["bioactivity_trace"] if i.get("peptide_sequence") == "VW"][0]
+        self.assertEqual(wakame_vw(self.new)["evidence_factor"], wakame_vw(self.old)["evidence_factor"])
+        self.assertEqual([r["pIC50_gap"] for r in wakame_vw(self.new)["potency_replications"] if r["source_id"] == "suetsuna_2004_wakame"], [0.515])
+
+        def strip(report):
+            r = json.loads(render(report))
+            r["method_version"] = r["method"]["method_version"] = r["method"]["changes_from"] = None
+            r["method"]["peptide_bioactivity"]["cross_origin_potency"]["supplement"] = None
+            r["sources"].pop("suetsuna_2004_wakame", None)
+            r["candidate_species"] = [s for s in r["candidate_species"] if s["aphia_id"] != 393716]
+            for s in r["species"] + r["candidate_species"]:
+                s["source_ids"] = [x for x in s["source_ids"] if x != "suetsuna_2004_wakame"]
+                t = s.get("food_trace") or {}
+                t["method_version"] = None
+                for n in t.get("supplemental_nutrition", []):
+                    if "substitute_use" in n:
+                        n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
+                for i in s.get("bioactivity_trace") or []:
+                    if "potency_replications" in i:
+                        i["potency_replications"] = [x for x in i["potency_replications"] if x["source_id"] != "suetsuna_2004_wakame"]
+                        i["independent_dois"] = [d for d in i["independent_dois"] if d != SUETSUNA_2004]
+            return r
+        self.assertEqual(strip(self.report), strip(self.old_report))
+
+
+XO325 = "research/verified-indices/evidence-xo-potency-3.25.json"
+AQUA325 = "research/verified-indices/mfpi-aquaculture-names-3.25-2026-10-02.json"
+NEW325 = {"michelke_2018_iw": ("IW", "10.1002/elsc.201700172", 0.105), "nomura_2002_thresher": ("VW", "10.1046/j.1444-2906.2002.00518.x", 0.293),
+          "saito_1994_sake": ("IY", "10.1271/bbb.58.1767", 0.405)}
+
+
+class VerifiedPilot325Tests(unittest.TestCase):
+    """Public method: 3.24 plus three synthetic potency replications for the wakame IW, VW and IY items (Michelke 2018,
+    Nomura 2002, Saito 1994; found by doyoun0824, two independent readers each, read a third time) and two corrected
+    aquaculture records (멸치's rearing site, 청각 read in full). No feasible flag, rule, cohort, gap, coefficient or score
+    moves; 미역's BBVI no longer needs the purified-isolate rule or the shared-co-author exception for those items."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V324))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.25", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_no_score_moves(self):
+        for a, s in self.new.items():
+            self.assertEqual(s["scores"], self.old[a]["scores"], s["korean_name"])
+            self.assertEqual(s["withheld_reasons"], self.old[a]["withheld_reasons"], s["korean_name"])
+        self.assertEqual(sum(v is not None for s in self.new.values() for v in s["scores"].values()), 69)
+        self.assertEqual((self.new[145721]["scores"]["MBPI"], self.new[145721]["scores"]["BBVI"]), (95.3, 71.0))
+
+    def test_each_wakame_item_has_a_synthetic_independent_replication(self):
+        items = {i["peptide_sequence"]: i for i in self.new[145721]["bioactivity_trace"] if i.get("peptide_sequence") in ("IW", "VW", "IY")}
+        old = {i["peptide_sequence"]: i for i in self.old[145721]["bioactivity_trace"] if i.get("peptide_sequence") in ("IW", "VW", "IY")}
+        for source, (seq, doi, gap) in NEW325.items():
+            rep = [r for r in items[seq]["potency_replications"] if r["source_id"] == source]
+            self.assertEqual([(r["used"], r["pIC50_gap"]) for r in rep], [(True, gap)], seq)
+            self.assertIn(doi, items[seq]["independent_dois"])
+            self.assertEqual(items[seq]["evidence_factor"], old[seq]["evidence_factor"])
+            self.assertIn(source, self.new[145721]["source_ids"])
+            # the older rows stay attached; the new one is added after them
+            self.assertEqual(items[seq]["potency_replications"][:-1], old[seq]["potency_replications"])
+
+    def test_scallop_vw_does_not_take_the_thresher_value(self):
+        vw = [i for i in self.new[393716]["bioactivity_trace"] if i.get("peptide_sequence") == "VW"][0]
+        self.assertEqual([(r["source_id"], r["used"], r["pIC50_gap"]) for r in vw["potency_replications"]][-1], ("nomura_2002_thresher", False, 1.714))
+        self.assertEqual((self.new[393716]["scores"]["MBPI"], self.new[393716]["scores"]["BBVI"]), (36.4, 46.1))
+        self.assertNotIn("nomura_2002_thresher", self.new[393716]["source_ids"])
+
+    def test_the_supplement_only_grows(self):
+        read = lambda p: json.loads((ROOT / p).read_text(encoding="utf-8"))
+        old, new = read(XO324), read(XO325)
+        self.assertEqual(new["snapshot_date"], old["snapshot_date"])
+        self.assertEqual(new["potency_replications"][:-3], old["potency_replications"])
+        added = new["potency_replications"][-3:]
+        self.assertEqual([(r["source_id"], r["sequence"], r["value"], r["unit"], r["substrate"], r["synthetic"]) for r in added],
+                         [("michelke_2018_iw", "IW", 1.91, "uM", "HHL", True), ("nomura_2002_thresher", "VW", 1.68, "uM", "HHL", True),
+                          ("saito_1994_sake", "IY", 2.4, "uM", "HHL", True)])
+        self.assertEqual({k: v for k, v in new["sources"].items() if k not in NEW325}, old["sources"])
+        self.assertEqual(json.loads(V324.read_text(encoding="utf-8"))["peptide_bioactivity"]["cross_origin_potency"]["supplement"], XO324)
+
+    def test_two_aquaculture_records_are_corrected_in_a_fork(self):
+        read = lambda p: json.loads((ROOT / p).read_text(encoding="utf-8"))
+        old, new = read(AQUA322), read(AQUA325)
+        changed = {o["aphia_id"] for o, n in zip(old["food_support"], new["food_support"]) if o != n}
+        self.assertEqual(changed, {219984, 145086})
+        self.assertEqual([x["feasible"] for x in new["food_support"]], [x["feasible"] for x in old["food_support"]])
+        self.assertEqual({k for k in old["sources"] if old["sources"][k] != new["sources"][k]}, {"hwang_2008_codium_wando"})
+        self.assertEqual(set(new["sources"]), set(old["sources"]))
+        anchovy = self.new[219984]["food_trace"]["aquaculture"]
+        self.assertTrue(anchovy["region"].startswith("Hakatajima Field Station"))
+        codium = self.new[145086]["food_trace"]["aquaculture"]
+        self.assertEqual(codium["year"], "July 2004 to August 2005")
+        self.assertNotIn("Abstract-level", codium["limitations"])
+        # 3.22 to 3.24 keep reading the 3.22 file, so their archives stay as published
+        for cfg in (V322, V323, V324):
+            self.assertEqual(json.loads(Path(cfg).read_text(encoding="utf-8"))["nutrition"]["substitutes"]["aquaculture_supplement"], AQUA322)
+
+    def test_nothing_else_changes(self):
+        new_sources = set(NEW325)
+
+        def strip(report):
+            r = json.loads(render(report))
+            r["method_version"] = r["method"]["method_version"] = r["method"]["changes_from"] = None
+            r["method"]["peptide_bioactivity"]["cross_origin_potency"]["supplement"] = None
+            r["method"]["nutrition"]["substitutes"]["aquaculture_supplement"] = None
+            for k in new_sources | {"hwang_2008_codium_wando"}:
+                r["sources"].pop(k, None)
+            for s in r["species"] + r["candidate_species"]:
+                s["source_ids"] = [x for x in s["source_ids"] if x not in new_sources]
+                t = s.get("food_trace") or {}
+                t["method_version"] = None
+                if s["aphia_id"] in (219984, 145086):
+                    t["aquaculture"] = None
+                for n in t.get("supplemental_nutrition", []):
+                    if "substitute_use" in n:
+                        n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
+                for i in s.get("bioactivity_trace") or []:
+                    if "potency_replications" in i:
+                        i["potency_replications"] = [x for x in i["potency_replications"] if x["source_id"] not in new_sources]
+                        i["independent_dois"] = [d for d in i["independent_dois"] if d not in {v[1] for v in NEW325.values()}]
+            return r
+        self.assertEqual(strip(self.report), strip(self.old_report))
 
 
 if __name__ == "__main__":

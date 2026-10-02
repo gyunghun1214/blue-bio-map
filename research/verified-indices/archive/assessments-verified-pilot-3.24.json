@@ -225,7 +225,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1365,7 +1365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1768,7 +1768,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2173,7 +2173,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2718,7 +2718,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3255,14 +3255,14 @@
           "aphia_id": 145086,
           "feasible": true,
           "kind": "aquaculture",
-          "limitations": "One research cultivation cycle at one Wando farm site with depth trials, not a farm production record. The 36,110 kg dry weight per hectare in Table 2 is the authors' potential-production estimate from the best rope biomass, not measured farm output.",
-          "method": "Artificial seed from isolated utricles and medullary filaments on seed fibre (July 2004) and 60 days of tank culture, then nursery (October-December 2004), pre-main (December 2004-May 2005) and main cultivation (May-August 2005) on 100 m horizontal ropes held at 0.5-3 m; at harvest about 7 kg fresh weight per metre of rope at 1 m depth",
-          "quote": "Artificial seeding of isolated utricles and medullary filaments were conducted in July 2004",
-          "record_id": "10.1007/s10811-007-9265-5: Materials and methods, Fig. 1, Fig. 3, Table 2",
-          "region": "Wando (34°17'N, 126°42'E), southwestern coast of Korea",
+          "limitations": "Abstract-level evidence: the full text is a subscription article. The yield (7.2 kg fresh weight per metre of rope at 1 m depth) is per rope, not farm production.",
+          "method": "Seed stock from regenerated isolated utricles and medullary filaments; nursery, pre-main and main cultivation stages on cultivation rope at controlled depth",
+          "quote": "an edible green alga farmed in Korea using seed stock produced from regeneration of isolated utricles and medullary filaments",
+          "record_id": "10.1007/s10811-007-9265-5: abstract",
+          "region": "Wando, southwestern coast of Korea",
           "reviewed": true,
           "source_id": "hwang_2008_codium_wando",
-          "year": "July 2004 to August 2005"
+          "year": "October 2004 to August 2005"
         },
         "basis": "100 g edible portion",
         "cohort_criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
@@ -3297,7 +3297,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4206,7 +4206,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5250,7 +5250,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6175,19 +6175,6 @@
               "unit": "uM",
               "used": true,
               "value": 10.8
-            },
-            {
-              "origin_label": "환도상어 근육 가수분해물에서 동정된 서열 (Sigma 합성 펩타이드로 측정)",
-              "origin_material": "Val-Trp purchased from Sigma (sequence identified in pelagic thresher muscle hydrolysate); the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1046/j.1444-2906.2002.00518.x",
-              "pIC50": 5.775,
-              "pIC50_gap": 1.714,
-              "reason": "pIC50 gap above 1.0",
-              "record_id": "10.1046/j.1444-2906.2002.00518.x:Table2:VW-synthetic",
-              "source_id": "nomura_2002_thresher",
-              "unit": "uM",
-              "used": false,
-              "value": 1.68
             }
           ],
           "record_ids": [
@@ -6338,7 +6325,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7313,7 +7300,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8407,7 +8394,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9594,7 +9581,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10745,7 +10732,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11774,10 +11761,10 @@
           "feasible": true,
           "kind": "aquaculture",
           "limitations": "Research rearing for a reproduction experiment, not food production: no harvest, yield or cost. Counted as feasible by the 3.7 rule note (team-lead decision 2026-10-01).",
-          "method": "Wild broodstock (light-assisted purse seine, Omura Bay, Nagasaki; held in a company's sea cages, then about 700 fish moved to the field station in February 2014) kept in 2 m3 and 20 m3 indoor tanks; eggs collected on 27 May 2014 and the offspring reared from egg on rotifers, Artemia nauplii and commercial pellets to sexual maturity (80-130 days after hatching)",
+          "method": "Wild broodstock (purse seine, Omura Bay) held in 2 m3 and 20 m3 indoor tanks; eggs collected on 27 May 2014 and the offspring reared from egg on rotifers, Artemia nauplii and commercial pellets to sexual maturity (80-130 days after hatching)",
           "quote": "eggs were collected from the parent on May 27, 2014. Approximately 10,000 eggs were kept in 2 m3 rearing tank",
           "record_id": "10.1038/s41598-025-99911-y: Methods, Fish rearing",
-          "region": "Hakatajima Field Station, National Research Institute of Fisheries and Environment of Inland Sea, Japan",
+          "region": "Hatsukaichi Field Station, Fisheries Research and Education Agency, Japan",
           "reviewed": true,
           "source_id": "yoneda_2025_engraulis_rearing",
           "year": "2014"
@@ -11837,7 +11824,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12834,7 +12821,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13811,7 +13798,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14965,7 +14952,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15992,7 +15979,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16972,7 +16959,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18034,7 +18021,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19011,7 +18998,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20012,7 +19999,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21088,7 +21075,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.24 (2026-10-02). Evidence rows and record text only; no score moves. (1) Three synthetic potency replications for the wakame IW, VW and IY items (Sato 2002), found by doyoun0824 with two independent readers each and read a third time: Michelke et al. 2018 (Eng Life Sci 18:218, chemically produced Ile-Trp from Bachem, Table 1, 1.91 uM), Nomura et al. 2002 (Fish Sci 68:954, synthetic Val-Trp from Sigma, Table 2, 1.68 uM) and Saito et al. 1994 (Biosci Biotechnol Biochem 58:1767, solid-phase synthetic Ile-Tyr fragment, Table III, 2.4 uM), all with HHL and from groups that share no author with Sato 2002. 미역 already scored 1.0 on those items, so its values stay, but its BBVI no longer rests only on the 3.14 purified-isolate rule (Lin 2018, whose uM values the authors converted from mg/mL) or on the Suetsuna 2000 shared-co-author exception. Nomura's VW also attaches to the scallop VW item and stays unused (pIC50 gap 1.714). (2) Two aquaculture records corrected without changing any feasible flag: 멸치's rearing site is the Hakatajima Field Station named in Yoneda 2025's Methods, not the authors' Hatsukaichi affiliation (found by doyoun0824's independent check); 청각's Hwang 2008 was read in full (seeding July 2004 to harvest August 2005 on horizontal ropes at Wando), so its abstract-level limitation is replaced. See research/verified-indices/doyoun-replication-3.25-2026-10-02.md.",
+    "changes_from": "verified-pilot-3.23 (2026-10-02). Evidence row only: Suetsuna et al. 2004 (J Nutr Biochem 15:267) joins the potency replications. Its Table 1 gives 10.8 uM for Val-Trp isolated from a wakame hot-water extract as a single HPLC peak and sequenced by Edman degradation, measured with HHL; a sequence-confirmed purified peptide has counted since the 3.14 team-lead decision, and the 2026-09-30 review had excluded the paper only under the older synthetic-only rule. Its pIC50 lies 0.906 from the scallop VW (86.9 uM, Li 2018), inside the 1.0 gap, so 큰가리비's top item rests on two independent papers and its BBVI is computed. 3/3 independent verifiers passed the row. No rule, cohort, gap or coefficient changes. See research/verified-indices/bbvi-replication-3.24-2026-10-02.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21331,7 +21318,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.25",
+    "method_version": "verified-pilot-3.24",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21482,7 +21469,7 @@
       "rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.json",
       "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
       "substitutes": {
-        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-3.25-2026-10-02.json",
+        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-3.22-2026-10-02.json",
         "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
         "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
         "labels": {
@@ -21575,7 +21562,7 @@
         "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
         "max_pIC50_gap": 1.0,
         "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper. 3.14: the re-measured peptide may be synthetic or a sequence-confirmed purified single peptide (team-lead decision 2026-10-01).",
-        "supplement": "research/verified-indices/evidence-xo-potency-3.25.json"
+        "supplement": "research/verified-indices/evidence-xo-potency-3.24.json"
       },
       "endpoint": "IC50",
       "excluded_material_kinds": [
@@ -21705,7 +21692,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.25",
+  "method_version": "verified-pilot-3.24",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -22118,13 +22105,13 @@
       "version": "2012 article, Tables 2 and 5"
     },
     "hwang_2008_codium_wando": {
-      "accessed": "2026-10-02",
-      "license": "Publisher copyright (Springer); fact, method summary and a short quotation",
+      "accessed": "2026-10-01",
+      "license": "Publisher copyright (Springer); abstract only, fact and a short quotation",
       "provider": "Journal of Applied Phycology 20(5):469-475 (Springer)",
-      "terms": "Subscription article read through institutional access; no text, tables or PDF copied.",
+      "terms": "Subscription article; only the public abstract was read.",
       "title": "Cultivation of the green alga, Codium fragile (Suringar) Hariot, by artificial seed production in Korea, Hwang EK, Baek JM, Park CS, doi:10.1007/s10811-007-9265-5",
       "url": "https://doi.org/10.1007/s10811-007-9265-5",
-      "version": "full text read 2026-10-02 (institutional subscription via Dongguk University Library)"
+      "version": "publisher abstract page checked 2026-10-01"
     },
     "hwang_2018_saccharina_haenam": {
       "accessed": "2026-10-01",
@@ -22522,17 +22509,6 @@
       "url": "https://impfood.mfds.go.kr/CFCJJ01F01",
       "version": "records read 2026-10-01"
     },
-    "michelke_2018_iw": {
-      "accessed": "2026-10-01",
-      "doi": "10.1002/elsc.201700172",
-      "license": "Publisher copyright (Wiley-VCH 2017); free full text in PMC, no CC licence stated",
-      "pmcid": "PMC6999327",
-      "provider": "Engineering in Life Sciences 18(4):218-226 (Michelke et al. 2018), free full text via PubMed Central (PMC6999327)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Biotechnological production of the angiotensin-converting enzyme inhibitory dipeptide isoleucine-tryptophan",
-      "url": "https://doi.org/10.1002/elsc.201700172",
-      "version": "2018"
-    },
     "miyoshi_1991_zein": {
       "accessed": "2026-09-27",
       "alternate_doi": "10.1080/00021369.1991.10870760",
@@ -22600,16 +22576,6 @@
       "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
       "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
       "version": "2024 integrated edition; mollusc revision (vol. 6) 2022"
-    },
-    "nomura_2002_thresher": {
-      "accessed": "2026-10-01",
-      "doi": "10.1046/j.1444-2906.2002.00518.x",
-      "license": "Publisher copyright (The Japanese Society of Fisheries Science); free access on J-STAGE, no CC licence stated",
-      "provider": "Fisheries Science 68(4):954-956 (Nomura et al. 2002), full text via J-STAGE (free PDF)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Purification of angiotensin I-converting enzyme inhibitors in pelagic thresher Alopias pelagicus muscle hydrolysate and viscera extracts",
-      "url": "https://doi.org/10.1046/j.1444-2906.2002.00518.x",
-      "version": "2002"
     },
     "obis_trend": {
       "accessed": "2026-10-01",
@@ -22727,16 +22693,6 @@
       "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
       "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
       "version": "Order No. 320 of 23.05.2023 (in force; the preceding list was Order No. 289 of 2005, row 635); PDF p.38 of 48, ConsultantPlus print 01.03.2024 footer 'Страница 37 из 47'; file sha256 a606bb3c0cf2b98ac2ce04ddb03a3f0cc2f338e82309afd740c0a4dfba9152a8"
-    },
-    "saito_1994_sake": {
-      "accessed": "2026-10-01",
-      "doi": "10.1271/bbb.58.1767",
-      "license": "Publisher copyright (JSBBA); free access on J-STAGE, no CC licence stated",
-      "provider": "Bioscience, Biotechnology, and Biochemistry 58(10):1767-1771 (Saito et al. 1994), full text via J-STAGE (free PDF)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Structure and Activity of Angiotensin I Converting Enzyme Inhibitory Peptides from Sake and Sake Lees",
-      "url": "https://doi.org/10.1271/bbb.58.1767",
-      "version": "1994"
     },
     "sargassum_2024_fractions": {
       "accessed": "2026-09-25",
@@ -23294,7 +23250,6 @@
           "adjusted": 95.3125,
           "evidence_factor": 1.0,
           "independent_dois": [
-            "10.1002/elsc.201700172",
             "10.1021/jf020482t",
             "10.3390/nu10101397"
           ],
@@ -23331,19 +23286,6 @@
               "unit": "uM",
               "used": true,
               "value": 0.5
-            },
-            {
-              "origin_label": "화학 합성 IW (Bachem 구매, 재조합 rIW 값은 쓰지 않음)",
-              "origin_material": "commercial chemically produced Ile-Trp (cIW, Bachem); the paper's recombinant IW (rIW) is not used",
-              "original_paper_doi": "10.1002/elsc.201700172",
-              "pIC50": 5.719,
-              "pIC50_gap": 0.105,
-              "reason": null,
-              "record_id": "10.1002/elsc.201700172:Table1:IW-synthetic",
-              "source_id": "michelke_2018_iw",
-              "unit": "uM",
-              "used": true,
-              "value": 1.91
             }
           ],
           "record_ids": [
@@ -23357,8 +23299,7 @@
           "evidence_factor": 1.0,
           "independent_dois": [
             "10.1016/s0955-2863(00)00110-8",
-            "10.1021/jf020482t",
-            "10.1271/bbb.58.1767"
+            "10.1021/jf020482t"
           ],
           "measurements": [
             {
@@ -23392,19 +23333,6 @@
               "unit": "uM",
               "used": true,
               "value": 2.65
-            },
-            {
-              "origin_label": "사케박 펩타이드 IYPRY의 합성 단편 (합성 펩타이드로 측정)",
-              "origin_material": "solid-phase synthetic fragment of Ile-Tyr-Pro-Arg-Tyr (parent peptide isolated from sake lees); the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1271/bbb.58.1767",
-              "pIC50": 5.62,
-              "pIC50_gap": 0.405,
-              "reason": null,
-              "record_id": "10.1271/bbb.58.1767:TableIII:IY-synthetic",
-              "source_id": "saito_1994_sake",
-              "unit": "uM",
-              "used": true,
-              "value": 2.4
             }
           ],
           "record_ids": [
@@ -23484,7 +23412,6 @@
             "10.1016/j.jnutbio.2003.11.004",
             "10.1016/j.procbio.2006.04.019",
             "10.1021/jf020482t",
-            "10.1046/j.1444-2906.2002.00518.x",
             "10.3390/nu10101397"
           ],
           "measurements": [
@@ -23548,19 +23475,6 @@
               "unit": "uM",
               "used": true,
               "value": 10.8
-            },
-            {
-              "origin_label": "환도상어 근육 가수분해물에서 동정된 서열 (Sigma 합성 펩타이드로 측정)",
-              "origin_material": "Val-Trp purchased from Sigma (sequence identified in pelagic thresher muscle hydrolysate); the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1046/j.1444-2906.2002.00518.x",
-              "pIC50": 5.775,
-              "pIC50_gap": 0.293,
-              "reason": null,
-              "record_id": "10.1046/j.1444-2906.2002.00518.x:Table2:VW-synthetic",
-              "source_id": "nomura_2002_thresher",
-              "unit": "uM",
-              "used": true,
-              "value": 1.68
             }
           ],
           "record_ids": [
@@ -23720,7 +23634,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24138,12 +24052,9 @@
         "kapel_2006_alfalfa",
         "lin_2018_chlorella",
         "mext_sfct_2020",
-        "michelke_2018_iw",
-        "nomura_2002_thresher",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "saito_1994_sake",
         "sato_2002_wakame",
         "suetsuna_2000_wakame",
         "suetsuna_2000_wakame_fulltext",
@@ -24406,7 +24317,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25381,7 +25292,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -26501,7 +26412,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27470,7 +27381,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28264,7 +28175,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28947,7 +28858,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29588,7 +29499,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.25 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.24 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30425,7 +30336,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.25",
+        "method_version": "verified-pilot-3.24",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
