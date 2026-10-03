@@ -42,7 +42,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.27",
+  "method_version": "verified-pilot-3.28",
   "schema_version": 1,
   "species": [
     {
@@ -140,6 +140,7 @@
         "https://doi.org/10.1016/s0955-2863(00)00110-8",
         "https://doi.org/10.1021/jf020482t",
         "https://doi.org/10.1046/j.1444-2906.2002.00518.x",
+        "https://doi.org/10.1111/jfpp.12628",
         "https://doi.org/10.1271/bbb.58.1767",
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
@@ -419,7 +420,7 @@
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
-      "bbvi_label": "단일 논문",
+      "bbvi_label": null,
       "bioactivity_leads": [
         {
           "chain": {
@@ -456,8 +457,8 @@
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
-        "BBVI": 64.2,
-        "MBPI": 65.0,
+        "BBVI": 74.9,
+        "MBPI": 86.6,
         "MCUI": null,
         "MFPI": 63.3
       },
@@ -465,6 +466,7 @@
         "https://api.cellosaurus.org/cell-line/",
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1111/jfpp.12628",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://koreascience.kr/article/JAKO200011921114207.page",
         "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",

@@ -77,11 +77,12 @@ html=ctx.renderScores(by(494972));
 for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문에서 미확인','Publisher terms'])
   assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
 // verified-pilot-3.1: the ChEMBL stratum scored 톳 (45.3, one linking paper); 3.10: the synthetic GKY peptide (Suetsuna 1998)
-// outranks it at 65.0. The paper-local MCF-7 result stays unscored.
-assert.equal(ctx.score(by(494972),'MBPI'),65.0);
-// 3.27 (team-lead decision 2026-10-03): the single-paper top item still gives a BBVI score, carried with its label
-assert.equal(ctx.score(by(494972),'BBVI'),64.2);
-assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>64\.2 · 시범 지표 · 사후 검증 미통과 · 단일 논문<\/b>/);
+// outranks it at 65.0; 3.28: Chen 2016 re-measured synthetic GKY (HHL), so the factor 0.75 goes and it is 86.6.
+// The paper-local MCF-7 result stays unscored.
+assert.equal(ctx.score(by(494972),'MBPI'),86.6);
+// 3.27 gave the single-paper item a labelled BBVI (64.2 · 단일 논문); 3.28's replication lifts the label
+assert.equal(ctx.score(by(494972),'BBVI'),74.9);
+assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>74\.9 · 시범 지표 · 사후 검증 미통과<\/b>/);
 
 // The old operational summary has no IUCN assessment count, despite a separately
 // reviewed MCUI: coverage must follow the accepted report, not the stale counter.
@@ -159,7 +160,7 @@ for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
   assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
   // 3.27: a labelled single-paper BBVI is a score too
-  assert.equal(ctx.score(s,'BBVI'),{836033:83.9,145721:71.0,241776:36.1,250680:33.2,342067:51.5,494972:64.2,506159:35.5}[id]??null);
+  assert.equal(ctx.score(s,'BBVI'),{836033:83.9,145721:71.0,241776:36.1,250680:33.2,342067:51.5,494972:74.9,506159:35.5}[id]??null);
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
