@@ -14,12 +14,12 @@ const el=()=>({innerHTML:'',textContent:'',value:'',hidden:false,style:{},datase
 const $=id=>{if(!nodes.has(id))nodes.set(id,el());return nodes.get(id);};
 const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,querySelector:el,querySelectorAll(){return []},activeElement:null},
   window:{addEventListener(){}},location:{hash:'',pathname:'/'},history:{replaceState(){}},requestAnimationFrame(){},matchMedia:()=>({matches:false}),
-  L:{rectangle:()=>({addTo(){return this},bindPopup(h){popups.push(h);return this}}),circleMarker:()=>({addTo(){return this}})},
+  L:{rectangle:()=>({addTo(){return this},bindPopup(h){popups.push(h);return this}}),circleMarker:()=>({addTo(){return this}}),marker:()=>({addTo(){return this}}),divIcon:()=>({})},
   // The live API (https) fails, so the page falls back to the dated dist/live-snapshot.json: deterministic.
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
-vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';map={fitBounds(){},getZoom(){return 7}};overlay={};'+
+vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';map={fitBounds(){},getZoom(){return 7}};overlay={eachLayer(){},removeLayer(){},hasLayer(){return true}};'+
   'globalThis.T={esc,renderCandidateDetail,renderLiveDetail,showDecision,renderCellTable,renderCellMap};',ctx);
 const T=ctx.T;
 // The loading steps of loadCollection.
