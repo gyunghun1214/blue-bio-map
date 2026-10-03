@@ -407,6 +407,20 @@ function reloadOnceForNewData(outdated){
   return true;
 }
 // matrix-readiness.json schema 1 is read; a higher integer schema is newer data; anything else is ignored.
+// Display-only literature values for drug-use chips (team-lead decision 2026-10-03, scripts/build_trait_evidence.py).
+// Schema 1 is read; a higher number is a newer file this code does not know; anything else is ignored.
+let traitDisplay=new Map();
+function traitDisplayRows(file,outdated){
+  const v=/^trait-display-evidence-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'trait-evidence.json',version:file.schema_version});
+  const rows=new Map();
+  if(file?.schema_version!=='trait-display-evidence-1'||!Array.isArray(file.records))return rows;
+  for(const r of file.records){
+    if(!Number.isFinite(r?.value)||r.relation!=='='||!String(r.doi||'').startsWith('10.'))continue;
+    const key=r.aphia_id+'|'+r.trait;rows.set(key,[...(rows.get(key)||[]),r]);
+  }
+  return rows;
+}
 function readinessRows(readiness,outdated){
   if(Number.isSafeInteger(readiness?.schema_version)&&readiness.schema_version>1)outdated.push({file:'matrix-readiness.json',version:readiness.schema_version});
   return new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
@@ -1269,9 +1283,9 @@ function useEvidence(s,id){
     const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
     return hits.length?{text:hits.map(([k,v])=>(MINERALS[k]||'단백질')+' '+nutrientLine(v,k)).join(' · '),score:pilotScore(s,'MFPI')}:null;
   }
-  if(a.axis_errors?.MBPI||pilotScore(s,'MBPI')===null)return null;
-  const hits=(a.bioactivity_trace||[]).filter(t=>isAdopted(t)&&traitIdsOf(t).includes(id)).sort((x,y)=>y.adjusted-x.adjusted);
-  if(!hits.length)return null;
+  const hits=a.axis_errors?.MBPI||pilotScore(s,'MBPI')===null?[]
+    :(a.bioactivity_trace||[]).filter(t=>isAdopted(t)&&traitIdsOf(t).includes(id)).sort((x,y)=>y.adjusted-x.adjusted);
+  if(!hits.length)return displayEvidence(s,id);
   const t=hits[0], m=(t.measurements||[])[0]||{};
   if(id==='resistant'&&resistantRows(t).length){
     const r=resistantRows(t), v=r.map(x=>x.value), lo=Math.min(...v), hi=Math.max(...v);
@@ -1284,11 +1298,19 @@ function useEvidence(s,id){
     :`${m.compound_name||t.compound_id||'화합물'} · ACE IC50 ${m.raw_value??''} ${m.raw_unit||''}`;
   return {text:`${what} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
 }
+// A literature value outside every score, shown only when no adopted MBPI item reaches the chip. The lowest value of the
+// species' rows in the first row's unit leads; the line says it is not a score.
+function displayEvidence(s,id){
+  const rows=traitDisplay.get(s.aphiaID+'|'+id);if(!rows?.length)return null;
+  const t=[...rows].filter(r=>r.unit===rows[0].unit).sort((x,y)=>x.value-y.value)[0];
+  return {text:`${t.name} · ${t.assay} ${t.endpoint} ${num(t.value)} ${t.unit} · 시험값 ${rows.length}개(doi ${t.doi}) · 표시 전용, 점수 미반영`,score:null,display:true};
+}
+const displayOnly=id=>{const e=(data?.species||[]).map(s=>useEvidence(s,id)).filter(Boolean);return e.length>0&&e.every(x=>x.display);};
 const useCount=id=>(data?.species||[]).filter(s=>useEvidence(s,id)).length;
 // A chip's state comes from its count alone, so a grey chip activates as soon as adopted evidence matches it.
 function traitChip(c,n){
   const on=activeUse===c.id;
-  return `<button type="button" class="use-chip${n?'':' gap'}${on?' on':''}" data-use="${c.id}"${n?` aria-pressed="${on}"`:' disabled'} title="${n?`채택된 근거가 있는 ${n}종`:'채택된 근거가 아직 없습니다'}">${esc(c.label)} <b>${n?n+'종':'0종 · 근거 수집 전'}</b></button>`;
+  return `<button type="button" class="use-chip${n?'':' gap'}${on?' on':''}" data-use="${c.id}"${n?` aria-pressed="${on}"`:' disabled'} title="${n?(displayOnly(c.id)?`문헌 근거(표시 전용, 점수 미반영)가 있는 ${n}종`:`채택된 근거가 있는 ${n}종`):'채택된 근거가 아직 없습니다'}">${esc(c.label)} <b>${n?n+'종':'0종 · 근거 수집 전'}</b></button>`;
 }
 function renderUseChips(){
   const box=$('use-chips');if(!box||!data)return;
@@ -1323,6 +1345,7 @@ function useNote(shown,base){
   const rule=c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
+    :displayOnly(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. 팀장 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
   return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 숨김: 근거 미확인 ${base-shown}종(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
 }
@@ -2234,9 +2257,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness]=await Promise.all([loadPublishedProfiles(),
-      fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);
+    const [next,readiness,traits]=await Promise.all([loadPublishedProfiles(),
+      fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
     await attachPilotAssessments(next);

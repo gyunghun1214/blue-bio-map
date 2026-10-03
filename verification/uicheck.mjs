@@ -247,8 +247,10 @@ try{
   const chips=await evaluate("(()=>{renderUseChips();return [...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10),b.classList.contains('gap'),b.disabled])})()");
   const chipN=Object.fromEntries(chips.map(([id,n])=>[id,n]));
   // 3.27: 살오징어 YALPHA joins ACE (14 -> 15) and 시카메굴 flazin (anti-HIV) joins the virus chip (5 -> 6)
-  check('Use chips: counts come from adopted evidence (ACE 15, virus 6, antibacterial 3 from the 3.18/3.19 AMP stratum, anticancer 3 from the 3.21 stratum, antifungal 0, omega-3 9 from the 3.17 EPA+DHA rows), and a trait with none stays a grey disabled 0 chip',
-    chipN.ace===15&&chipN.virus===6&&chipN.microbe===3&&chipN.fungus===0&&chipN.cancer===3&&chipN.omega3===9&&
+  // 2026-10-03: 내성균 reads the adopted Cg-BigDef1 MRSA rows (1); 항산화 and 항당뇨 take display-only literature rows from
+  // trait-evidence.json (team-lead decision 2026-10-03, 2 each); 항진균 and 진통 stay grey (no row passed the rule).
+  check('Use chips: counts come from adopted evidence (ACE 15, virus 6, antibacterial 3 from the 3.18/3.19 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===15&&chipN.virus===6&&chipN.microbe===3&&chipN.resistant===1&&chipN.fungus===0&&chipN.pain===0&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
     chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
   const chipFilter=await evaluate("(()=>{setUse('microbe');const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUse(null);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
@@ -257,6 +259,11 @@ try{
     /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30&&
     // several strains of one target show their median (the scored value); a single strain shows its own value
     chipFilter.oyster.includes('MIC 2.5 uM (균주 7개 중앙값)')&&chipFilter.ark.includes('MIC 22.77 uM')&&!chipFilter.ark.includes('중앙값'),JSON.stringify(chipFilter));
+  // A display-only chip says on every card and in its note that it is not a score.
+  const disp=await evaluate("(()=>{setUse('antioxidant');const cards=[...document.querySelectorAll('.species-card')].map(b=>[Number(b.dataset.species),b.innerText]);const note=document.getElementById('use-extra').innerText;const title=document.querySelector('[data-use=antioxidant]').title;setUse(null);return {cards,note,title}})()");
+  check('Display-only chip: 항산화 shows 감태 and 참조기, each card and the note say 표시 전용·점수 미반영',
+    JSON.stringify(disp.cards.map(c=>c[0]).sort())==='[281273,371986]'&&disp.cards.every(c=>c[1].includes('표시 전용, 점수 미반영'))&&
+    disp.note.includes('표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며')&&disp.title.includes('점수 미반영'),JSON.stringify(disp));
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
