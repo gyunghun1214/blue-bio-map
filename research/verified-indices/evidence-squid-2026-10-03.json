@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-03",
+  "sources": {
+    "wako_1996_squid": {
+      "provider": "Biosci Biotechnol Biochem 60(8):1353-1355 (Wako Y, Ishikawa S, Muramoto K 1996, Note), full text (J-STAGE scanned PDF, open)",
+      "title": "Angiotensin I-converting enzyme inhibitors in autolysates of squid liver and mantle muscle",
+      "version": "1996",
+      "doi": "10.1271/bbb.60.1353",
+      "url": "https://doi.org/10.1271/bbb.60.1353",
+      "accessed": "2026-10-03",
+      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
+      "license": "Publisher copyright (J-STAGE free access)"
+    }
+  },
+  "peptide_bioactivity": [
+    {
+      "origin_aphia_id": 342067,
+      "origin_scientific_name": "Todarodes pacificus",
+      "record_id": "10.1271/bbb.60.1353:YALPHA",
+      "source_id": "wako_1996_squid",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "YALPHA",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 9.8,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1271/bbb.60.1353",
+      "verification": "Full text (J-STAGE scanned PDF, read 2026-10-03 by one researcher and two verifiers; abstract re-read on Europe PMC). Methods p.1353: squid (Todarodes pacificus Steenstrup) and shiokara from a fishing company in Hachinohe, Aomori. Material: autolysate (the squid's own proteases, no added enzyme) of equal weights of mantle-muscle and liver homogenate at pH 6.0, 37 C; 75% acetone, Amicon YM1 ultrafiltration, LP-60C18 open column, then three successive RP-HPLC steps (Fig. 2); peak A sequenced by gas-phase Edman (Shimadzu PSQ-1), concentration set by amino-acid analysis after HCl hydrolysis. ACE assay: 6 mM hippuryl-L-histidyl-L-leucine (HHL), hippuric acid release (modified Ukeda 1991). Table p.1354 and abstract: Tyr-Ala-Leu-Pro-His-Ala IC50 9.8 uM. Not synthesised: a sequence-confirmed purified single peptide (team-lead decision 2026-10-01, verified-pilot-3.14). Earlier sweeps missed the paper because its title and abstract say only 'squid'.",
+      "limitations": "The general assay paragraph (p.1353) pre-incubates every sample with ACE for 3 h and heats it before the assay to remove substrate-type peptides; the text gives no exception for the purified peptides, so this IC50 is probably measured after that step and may partly reflect ACE digestion products of YALPHA. Purity is not stated (main RP-HPLC peak, Edman sequence only, no mass spectrum). The material is a mixed liver and mantle autolysate, not the mantle alone. YALPHA is a conserved actin fragment (T. pacificus actin UniProt D3GBA7 residues 170-175), so it is not specific to this squid. One paper (single-DOI factor 0.75).",
+      "caveat": "논문은 모든 시료를 ACE와 3시간 미리 반응시킨 뒤 측정해, 이 IC50은 ACE 분해 산물의 영향을 받았을 수 있습니다. 순도는 적혀 있지 않고(질량 분석 없음), 시료는 간·외투근 혼합 자가분해물입니다. YALPHA는 여러 종에 보존된 액틴 조각이라 이 종에만 있는 서열이 아닙니다."
+    },
+    {
+      "origin_aphia_id": 342067,
+      "origin_scientific_name": "Todarodes pacificus",
+      "record_id": "10.1271/bbb.60.1353:GYALPHA",
+      "source_id": "wako_1996_squid",
+      "status": "approved_for_score",
+      "reviewed": true,
+      "material_kind": "single_peptide",
+      "sequence": "GYALPHA",
+      "target": "ACE",
+      "endpoint": "IC50",
+      "relation": "=",
+      "value": 27.3,
+      "unit": "uM",
+      "sequence_confirmed": true,
+      "value_in_text": true,
+      "substrate": "HHL",
+      "original_paper_doi": "10.1271/bbb.60.1353",
+      "verification": "Same paper, material, purification, sequencing and HHL assay as YALPHA. Peak B (the sub-peak of the final RP-HPLC, Fig. 2b): Gly-Tyr-Ala-Leu-Pro-His-Ala IC50 27.3 uM (Table p.1354, text p.1354 and abstract).",
+      "limitations": "Same 3-h ACE pre-incubation, purity and specificity caveats as YALPHA (GYALPHA is T. pacificus actin residues 169-175).",
+      "caveat": "YALPHA와 같은 3시간 ACE 사전 반응·순도 주의점이 있고, GYALPHA도 보존된 액틴 조각이라 이 종에만 있는 서열이 아닙니다."
+    }
+  ]
+}

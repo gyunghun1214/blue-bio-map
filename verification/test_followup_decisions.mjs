@@ -37,9 +37,9 @@ const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,8,'national MCUI stays labelled by basis (3.15 adds 참문어 through the misapplied-name crosswalk)');
 // 3.15: the range-state list is the only substitute MCUI basis. 3.15 (team-lead decision 2026-10-02): reference only, so the
 // 14 Rapid LC checks give no MCUI, no basis and no matrix point.
-assert.deepEqual(readiness.species.filter(r=>!['iucn','national',null].includes(r.mcui_basis)).map(r=>r.mcui_basis),['range_state','range_state']);  // 3.16: 시카메굴(일본) + 우뭇가사리(러시아)
+assert.deepEqual(readiness.species.filter(r=>!['iucn','national',null].includes(r.mcui_basis)).map(r=>r.mcui_basis),['range_state','range_state','range_state']);  // 3.16: 시카메굴(일본) + 우뭇가사리(러시아); 3.27: 가시파래(스웨덴)
 const reference=readiness.species.filter(r=>byId.get(r.aphia_id).mcui_substitute?.use==='reference_only');
-assert.equal(reference.length,13);  // 3.16: 우뭇가사리 moves to a range-state MCUI
+assert.equal(reference.length,12);  // 3.16: 우뭇가사리, 3.27: 가시파래 move to a range-state MCUI
 assert.ok(reference.every(r=>r.scores.MCUI===null&&r.mcui_basis===null&&r.matrix_eligible===false));
 assert.ok(national.every(r=>r.matrix_eligible===(r.scores.BBVI!==null)),'verified-pilot-3.2: national MCUI is placed only with a BBVI, labelled by mcui_basis');
 const oyster=readiness.species.find(r=>r.aphia_id===836033);

@@ -25,15 +25,17 @@ def _bio_blockers(partials):
     return [k for k in STEPS if best.get("chain", {}).get(k) is not True]
 
 
-def _eligible(scores, mcui_basis, rule=None):
+def _eligible(scores, mcui_basis, rule=None, bbvi_label=None):
     # verified-pilot-2.1 to 3.1: a Korean national-assessment MCUI is a separate stratum and never shares the IUCN-based matrix.
     # verified-pilot-3.2: it is placed with its own marker (method.matrix.national_mcui) and stays labelled as national.
     national_ok = bool(rule and rule.get("include_national_mcui"))
     # after 3.14: a substitute MCUI joins (separate marker) only for the bases the rule lists; 3.15 lists the range-state
     # national list and keeps the preliminary Rapid LC off, since its back-test failed
     substitutes = (rule or {}).get("include_substitute_mcui") or []
+    # 3.27: a labelled single-paper BBVI joins (hollow marker) only when the rule says so
+    single_ok = not bbvi_label or bool((rule or {}).get("include_single_source_bbvi"))
     return (scores["BBVI"] is not None and scores["MCUI"] is not None and (national_ok or mcui_basis != "national")
-            and (mcui_basis not in ("range_state", "preliminary") or mcui_basis in substitutes))
+            and (mcui_basis not in ("range_state", "preliminary") or mcui_basis in substitutes) and single_ok)
 
 
 def matrix_type(scores, rule):
@@ -49,7 +51,7 @@ def _layers(s, rule):
     From 3.4 the priority label carries its reasons (low information sufficiency, no conservation assessment)."""
     if not rule:
         return {}
-    eligible = _eligible(s["scores"], s.get("mcui_basis"), rule)
+    eligible = _eligible(s["scores"], s.get("mcui_basis"), rule, s.get("bbvi_label"))
     return {"matrix_type": matrix_type(s["scores"], rule) if eligible else None,
             "priority_survey": s.get("priority_survey", False), "unexplored_candidate": s.get("unexplored_candidate"),
             **({"priority_survey_reasons": s["priority_survey_reasons"]} if "priority_survey_reasons" in s else {})}
@@ -67,8 +69,9 @@ def build(assessments, catalog, expansion):
         raise ValueError("duplicate candidate or assessment")
     assessed_by_id = {s["aphia_id"]: s for s in assessed}
     rule = assessments["method"].get("matrix")
-    if any(s["scores"]["BBVI"] is not None and s.get("mbpi_label") for s in assessed):
-        raise ValueError("BBVI from a single-source MBPI")  # the label marks an MBPI below the independent-DOI minimum
+    labelled = (assessments["method"].get("bbvi") or {}).get("single_source_policy") == "score_with_label"
+    if any(s["scores"]["BBVI"] is not None and s.get("mbpi_label") and not (labelled and s.get("bbvi_label")) for s in assessed):
+        raise ValueError("BBVI from a single-source MBPI")  # 3.27: allowed only as a labelled score under the config's policy
     rows = []
     for s in assessed:
         if s["aphia_id"] in candidate_ids:
@@ -84,7 +87,8 @@ def build(assessments, catalog, expansion):
                                             "chain": p.get("chain", {}), "exclusion_reason": p.get("exclusion_reason")}
                                            for p in partial],
                      "source_urls": sorted(set(links)), "mcui_basis": s.get("mcui_basis"),
-                     "matrix_eligible": _eligible(scores, s.get("mcui_basis"), rule), **_layers(s, rule)})
+                     **({"bbvi_label": s.get("bbvi_label")} if labelled else {}),
+                     "matrix_eligible": _eligible(scores, s.get("mcui_basis"), rule, s.get("bbvi_label")), **_layers(s, rule)})
     for s in candidates:
         e = evidence[s["aphiaID"]]
         if e["name"] != s["name"] or e["scores"] != s["scores"]:
@@ -123,7 +127,8 @@ def build(assessments, catalog, expansion):
                      "bioactivity_missing_steps": [] if scores["MBPI"] is not None else list(STEPS),
                      "bioactivity_leads": [], "source_urls": sorted(set(urls)),
                      "mcui_basis": reviewed and reviewed.get("mcui_basis"),
-                     "matrix_eligible": _eligible(scores, reviewed and reviewed.get("mcui_basis"), rule),
+                     **({"bbvi_label": reviewed and reviewed.get("bbvi_label")} if labelled else {}),
+                     "matrix_eligible": _eligible(scores, reviewed and reviewed.get("mcui_basis"), rule, reviewed and reviewed.get("bbvi_label")),
                      **_layers(reviewed or {"scores": scores}, rule)})
     if len({r["aphia_id"] for r in rows}) != 30:
         raise ValueError("duplicate AphiaID")
@@ -132,7 +137,7 @@ def build(assessments, catalog, expansion):
             raise ValueError("missing score axis")
         if row["scores"]["BBVI"] is not None and (row["scores"]["MFPI"] is None or row["scores"]["MBPI"] is None):
             raise ValueError("BBVI without both inputs")
-        if row["matrix_eligible"] != _eligible(row["scores"], row["mcui_basis"], rule):
+        if row["matrix_eligible"] != _eligible(row["scores"], row["mcui_basis"], rule, row.get("bbvi_label")):
             raise ValueError("matrix gate mismatch")
         if rule and (row["matrix_type"] is not None) != row["matrix_eligible"]:
             raise ValueError("matrix type without an eligible point")

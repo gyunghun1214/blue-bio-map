@@ -1,0 +1,8 @@
+Change log for 01_method_fixed_before_data.md (locked sha256 fd9311a1..., 2026-10-03T06:30+09:00). The locked file is not edited; code-only fixes are listed here.
+None of these fixes was made after any outcome (trend class) of an out-of-panel species was seen.
+
+1. 2026-10-03 (before any run): fetch() returned an error on HTTP 4xx and on an empty body, so GBIF 404/204 do not trigger 10/60/300 s retries. OBIS statistics with an HTTP error raises CheckFailed (never a silent 0).
+2. 2026-10-03 (implementation check ran: 멸치 219984 and 해삼 241776 reproduced dist/assessments.json exactly: class, ratio, CI, n and E).
+3. 2026-10-03 (selection, first run stopped at Bivalvia, no IUCN or trend data fetched yet): the OBIS checklist 'total' is an approximate distinct count (Bivalvia total 394, 403 distinct rows returned, no duplicates). The equality assertion was replaced by paging until a page shorter than 5000 and a no-duplicate check. Rule unchanged.
+4. 2026-10-03: a string-escape typo in the analysis stage (tab/newline literals) fixed before it ever ran.
+5. 2026-10-03 (operational, before any trend of an out-of-panel species): the method said OBIS calls are sequential. To finish in reasonable time, the per-cell class-effort and all-taxa statistics (11 classes + all taxa, 182 cells x 2 periods = 4,368 calls) are prefetched into the same URL cache with 3 concurrent connections (prefetch.py). The URLs are identical to the sequential ones, so the counts used are the same; species paging and dataset checks stay sequential. Analysis unchanged.

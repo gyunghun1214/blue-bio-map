@@ -1,0 +1,72 @@
+{
+ "219984": {
+  "new": {
+   "class": "decline_signal",
+   "reporting_rate_ratio": 0.31,
+   "ci": [
+    0.235,
+    0.41
+   ],
+   "species_records": {
+    "past": 503,
+    "recent": 54
+   },
+   "effort_records": {
+    "past": 26898,
+    "recent": 9382
+   }
+  },
+  "published": {
+   "class": "decline_signal",
+   "reporting_rate_ratio": 0.31,
+   "ci": [
+    0.235,
+    0.41
+   ],
+   "species_records": {
+    "past": 503,
+    "recent": 54
+   },
+   "effort_records": {
+    "past": 26898,
+    "recent": 9382
+   }
+  },
+  "pass": true
+ },
+ "241776": {
+  "new": {
+   "class": "no_clear_decline",
+   "reporting_rate_ratio": 1.741,
+   "ci": [
+    1.44,
+    2.104
+   ],
+   "species_records": {
+    "past": 180,
+    "recent": 262
+   },
+   "effort_records": {
+    "past": 717,
+    "recent": 599
+   }
+  },
+  "published": {
+   "class": "no_clear_decline",
+   "reporting_rate_ratio": 1.741,
+   "ci": [
+    1.44,
+    2.104
+   ],
+   "species_records": {
+    "past": 180,
+    "recent": 262
+   },
+   "effort_records": {
+    "past": 717,
+    "recent": 599
+   }
+  },
+  "pass": true
+ }
+}

@@ -7,8 +7,9 @@ The criteria are fixed before any result is read and nothing is tuned to pass:
         against the same fixed RDA cohort. Pass: Spearman rho >= 0.6 between the two, one-sided permutation p < 0.05.
   MCUI  back-test of the preliminary Rapid LC step on the species that already have an IUCN or Korean national category.
         Pass: no species assessed VU, EN or CR is called likely Least Concern (a false LC would understate urgency).
-  MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin); not computable without their species ->
-        compound -> assay chains, which are not collected here.
+  MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin), scored offline with the published ChEMBL
+        rule from the stored case snapshot (3.27; before: not computable). Pass: a case species ranks above every operating
+        species that has an MBPI.
 Writes research/verified-indices/posthoc-validation-<date>.json; the config copies each result into posthoc.validation_sets.
 """
 from __future__ import annotations
@@ -153,6 +154,42 @@ def mcui_check(report: dict, rapid: dict) -> dict:
             "false_lc_for_threatened": [r["korean_name"] for r in false_lc], "criterion": CRITERIA["MCUI"], "rows": rows}
 
 
+MBPI_CASES = ROOT / "research" / "verified-indices" / "posthoc-3.27" / "mbpi-drug-origin"
+
+
+def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
+    """3.27: the drug-origin cases scored offline with the published ChEMBL rule (build_verified_indices.chembl_items, the
+    report's commonness fence, the same filters, the 3.20 comment exclusion) from the stored case snapshot, collected with
+    collect_mbpi_links.py's own functions (cases/collect_cases.py, ChEMBL_37). Criterion as registered: a case species ranks
+    above the operating candidates, read literally as above every operating species that has an MBPI."""
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_verified_indices as B
+    snap = json.loads((cases / "cases-snapshot.json").read_text(encoding="utf-8"))
+    review = json.loads((cases / "link-review.json").read_text(encoding="utf-8"))
+    drop = set(config["chembl_bioactivity"]["excluded_activity_comments"])
+    snap = {**snap, "sources": {"chembl_mbpi": {"version": snap["chembl_version"]}}, "link_review": review,
+            "activities": [a for a in snap["activities"] if (snap["activity_comments"][str(a["activity_id"])] or "").lower() not in drop]}
+    items, summary = B.chembl_items({"chembl_links": snap}, config, limit=report["chembl_common_taxon_limit"])
+    B.require(all(i["link_review"] == "accepted" for _, i in items), "a case ChEMBL item rests on a link without an accepted review")
+    operating = {s["korean_name"]: s["scores"]["MBPI"] for s in report["species"] if s["scores"]["MBPI"] is not None}
+    rows = []
+    for s in snap["species"]:
+        own = [i for a, i in items if a == s["aphia_id"]]
+        best = max(own, key=lambda i: i["adjusted"], default=None)
+        mbpi = best and B.round1(best["adjusted"])
+        rows.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"], "mbpi": mbpi,
+                     "counts": summary["species"][s["aphia_id"]]["counts"],
+                     "best": best and {k: best[k] for k in ("compound_id", "compound_name", "target_chembl_id", "target_name", "standard_type",
+                                                            "median_pchembl", "cohort_records", "percentile", "link_factor", "activity_factor",
+                                                            "original_paper_dois", "document_chembl_ids")},
+                     "above_every_operating_species": mbpi is not None and all(mbpi > v for v in operating.values()),
+                     "operating_species_below": sorted(k for k, v in operating.items() if mbpi is not None and v < mbpi)})
+    computed = [r for r in rows if r["mbpi"] is not None]
+    return {"result": ("passed" if all(r["above_every_operating_species"] for r in computed) else "failed") if computed else "not_computable",
+            "n": len(rows), "computed": len(computed), "operating_mbpi": operating, "rows": rows}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=ROOT / "dist" / "assessments.json")
@@ -164,8 +201,7 @@ def main() -> None:
     out = {"generated_on": str(date.today()), "report_version": report["method_version"], "criteria": CRITERIA,
            "MFPI": mfpi_check(report, mext_items(args.mext)),
            "MCUI": mcui_check(report, json.loads(args.rapid_lc.read_text(encoding="utf-8"))),
-           "MBPI": {"result": "not_computable", "reason": "The drug-origin validation species need species -> compound -> assay chains "
-                                                        "that this run does not collect; the 3.1 config states the same."}}
+           "MBPI": mbpi_check(report, report["method"])}  # 3.27: from the stored case snapshot (before: not computable)
     args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print({k: out[k]["result"] for k in ("MFPI", "MCUI", "MBPI")}, {k: out["MFPI"].get(k) for k in ("n", "spearman_rho", "permutation_p_one_sided")})
 

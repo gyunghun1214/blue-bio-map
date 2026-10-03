@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-10-03",
+  "reviewed_on": "2026-10-03",
+  "purpose": "MCUI substitutes after 3.14 (team-lead decision 2026-10-01: do not limit conservation sources to IUCN and the Korean list). Step 1: the official national red list of another range state. Step 2 (in the Rapid LC snapshot): a preliminary Rapid Least Concern check. Read only by configs that name this file. 3.16 adds the Russian Red Data Book row for Gelidium elegans. 3.27 (fork, 2026-10-03) adds the Swedish red list row for Ulva prolifera and the rule for choosing among several range-state lists (team-lead decision 2026-10-03). Configs up to 3.26 keep reading the 3.16 file.",
+  "sources": {
+    "moe_japan_red_list_2020_molluscs": {
+      "provider": "Ministry of the Environment, Japan (環境省), いきものログ レッドリスト公開データ",
+      "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
+      "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv",
+      "version": "Red List 2020 (4th revision, latest mollusc list on the いきものログ book list checked 2026-10-02); file sha256 0731ae4ed0340492aede7ae528acb8dc057cb880b6acc12cf1155888e3e9f8db",
+      "accessed": "2026-10-02",
+      "license": "Government open data (政府標準利用規約); category and name facts only",
+      "terms": "One row quoted (category, Japanese and scientific name); the list is not redistributed"
+    },
+    "bachman_2020_rapid_lc": {
+      "provider": "Biodiversity Data Journal 8:e47018 (Pensoft), full text in PubMed Central (PMC6992691)",
+      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+      "url": "https://doi.org/10.3897/BDJ.8.e47018",
+      "version": "2020",
+      "accessed": "2026-10-02",
+      "license": "CC BY 4.0",
+      "terms": "Method and thresholds cited (Table 1: EOO > 30,000 km2, AOO > 3,000 km2 on 10 km cells, at least 75 records)"
+    },
+    "russia_red_data_book_plants_2023": {
+      "provider": "Ministry of Natural Resources and Ecology of the Russian Federation (Минприроды России)",
+      "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
+      "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
+      "version": "Order No. 320 of 23.05.2023 (in force; the preceding list was Order No. 289 of 2005, row 635); PDF p.38 of 48, ConsultantPlus print 01.03.2024 footer 'Страница 37 из 47'; file sha256 a606bb3c0cf2b98ac2ce04ddb03a3f0cc2f338e82309afd740c0a4dfba9152a8",
+      "accessed": "2026-10-02",
+      "license": "Russian federal legal act (official publication); category and name facts only",
+      "terms": "One row quoted (rarity category, threat status, priority, Russian and scientific name); the list is not redistributed. The 'У = Уязвимые (VU - Vulnerable)' code is defined in Order No. 306 of 23.05.2016 para 3.7 as amended by Order No. 161 of 24.03.2020 (Minjust 02.04.2020 No. 57941)."
+    },
+    "slu_rodlista_2025": {
+      "provider": "SLU Artdatabanken (Swedish University of Agricultural Sciences, a state agency; list funded with Naturvårdsverket)",
+      "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
+      "url": "https://doi.org/10.5878/ffrv-6x57",
+      "doi": "10.5878/ffrv-6x57",
+      "version": "Rödlista 2025 (published 2026-03-24; the current Swedish list). Also read from Artfakta taxon 232807 on 2026-10-03: currentRedListInfo 'Rödlistning 2025' = LC, swedishPresence 'Bofast och reproducerande', immigrationHistory 'Spontan'",
+      "accessed": "2026-10-03",
+      "license": "CC0 1.0 (SND dataset)",
+      "terms": "Category, presence and immigration-history facts for one taxon only."
+    }
+  },
+  "range_state": [
+    {
+      "aphia_id": 836041,
+      "scientific_name": "Magallana sikamea",
+      "name_as_published": "シカメガキ Magallana sikamea",
+      "country": "Japan",
+      "country_ko": "일본",
+      "list": "環境省レッドリスト2020 (貝類)",
+      "category_as_published": "準絶滅危惧（NT）",
+      "category": "NT",
+      "assessment_basis": "Ministry of the Environment Japan red-list categories, which name their IUCN equivalent (準絶滅危惧 = NT)",
+      "scope": "national (Japan)",
+      "continuity": "NT in the 2015, 2017, 2018 and 2019 mollusc lists (as Crassostrea sikamea) and in 2020 (as Magallana sikamea); each CSV read 2026-10-02",
+      "source_id": "moe_japan_red_list_2020_molluscs",
+      "reviewed": true,
+      "limitations": "A national assessment of Japan, where the species is confined to the Ariake and northern Yatsushiro seas; not an IUCN global or Korean assessment. In Korea it is known from few sites (Hong et al. 2012, Fish Sci 78:259). Never ranked or pooled with IUCN-based or Korean national MCUI."
+    },
+    {
+      "aphia_id": 372119,
+      "scientific_name": "Gelidium elegans",
+      "name_as_published": "Гелидиум изящный - Gelidium elegans",
+      "country": "Russia",
+      "country_ko": "러시아",
+      "list": "Красная книга Российской Федерации (растения и грибы), Section 5 ВОДОРОСЛИ, row 594",
+      "category_as_published": "Редкость 3 (Редкие) · Угроза исчезновения: У",
+      "category": "VU",
+      "assessment_basis": "The list's threat-status column uses the IUCN codes defined in Order No. 306 para 3.7 (as amended 2020): 'У - Уязвимые (VU - Vulnerable)'. The rarity column ('3 - Редкие') is a Russian scale and is not mapped.",
+      "scope": "national (Russia)",
+      "continuity": "Row 635 of the 2005 list (Order No. 289) already held Gelidium elegans at rarity category 3; that list had no threat-status column, so the VU reading is first stated in the 2023 list.",
+      "source_id": "russia_red_data_book_plants_2023",
+      "reviewed": true,
+      "limitations": "Russia is the northern edge of the range (Amur Bay and Cape De-Friz, Peter the Great Gulf) and the species is recorded there as single finds, so this is a peripheral-population assessment, not a range-wide one. Japan, the centre of the range, does not list the species in the Ministry of the Environment algae red lists of 2020 or 2025 (the congener Gelidium hirsutum is listed); absence from a threatened-species list is not an LC assessment and does not overturn the Russian category. Never ranked or pooled with IUCN-based or Korean national MCUI."
+    },
+    {
+      "aphia_id": 234476,
+      "scientific_name": "Ulva prolifera",
+      "name_as_published": "Ulva prolifera O.F.Müll. (spretig tarmalg), Dyntaxa 232807; synonyms there include Enteromorpha prolifera",
+      "country": "Sweden",
+      "country_ko": "스웨덴",
+      "list": "Rödlistade arter i Sverige 2025 (SLU Artdatabanken), Rodlistearbete_2025.csv row for taxon 232807",
+      "category_as_published": "Livskraftig (LC)",
+      "category": "LC",
+      "assessment_basis": "The Swedish list applies the IUCN categories and criteria at the regional level; LC is an assigned category ('De skattade värdena ... ligger alla inom intervallet för kategorin Livskraftig (LC)'), not an absence from the list.",
+      "scope": "national (Sweden: Skagerrak, Kattegat and Baltic coasts)",
+      "continuity": "LC in the 2020 and 2025 Swedish lists (NE in 2010). Other range-state lists read on 2026-10-03: Norway, Rødlista for arter 2021 (Artsdatabanken), LC (also LC in 2015 and 2010); Finland, 2019 red list (Ministry of the Environment / SYKE, laji.fi MX.254295), DD.",
+      "selection_rule": "Several range states list the species. Following the team-lead decision of 2026-10-03, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, including a DD, are shown as limitations.",
+      "source_id": "slu_rodlista_2025",
+      "reviewed": true,
+      "limitations": "A distant range state: Sweden, Norway and Finland assess North-East Atlantic and Baltic populations, not the North-West Pacific population around Korea (the project's reviewed native-range box for this species is the North-West Pacific). Finland's 2019 list gives DD for the same species. The Ulva linza-procera-prolifera complex is hard to separate, so the same name may not mean the same biological entity in both oceans. Never ranked or pooled with IUCN-based or Korean national MCUI."
+    }
+  ]
+}

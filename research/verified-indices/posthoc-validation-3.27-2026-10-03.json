@@ -1,0 +1,291 @@
+{
+  "generated_on": "2026-10-03",
+  "report_version": "verified-pilot-3.27",
+  "MBPI": {
+    "result": "failed",
+    "n": 3,
+    "computed": 2,
+    "operating_mbpi": {
+      "미역": 95.3,
+      "해삼": 8.7,
+      "멍게": 13.5,
+      "살오징어": 56.9,
+      "톳": 65.0,
+      "홍합(참담치)": 10.1,
+      "참굴": 96.3
+    },
+    "rows": [
+      {
+        "aphia_id": 215429,
+        "scientific_name": "Conus magus",
+        "mbpi": null,
+        "counts": {
+          "scored_compounds": 0
+        },
+        "best": null,
+        "above_every_operating_species": false,
+        "operating_species_below": []
+      },
+      {
+        "aphia_id": 165849,
+        "scientific_name": "Halichondria (Halichondria) okadai",
+        "mbpi": 73.8,
+        "counts": {
+          "linked": 18,
+          "with_reference_doi": 17,
+          "common_metabolite": 0,
+          "approved_drug": 0,
+          "scored_compounds": 1
+        },
+        "best": {
+          "compound_id": "CHEMBL280487",
+          "compound_name": "OKADAIC ACID",
+          "target_chembl_id": "CHEMBL335",
+          "target_name": "Tyrosine-protein phosphatase non-receptor type 1",
+          "standard_type": "IC50",
+          "median_pchembl": 7.845,
+          "cohort_records": 3497,
+          "percentile": 98.34,
+          "link_factor": 0.75,
+          "activity_factor": 1.0,
+          "original_paper_dois": [
+            "10.1007/bf00172811"
+          ],
+          "document_chembl_ids": [
+            "CHEMBL1130173",
+            "CHEMBL1135037",
+            "CHEMBL1150469"
+          ]
+        },
+        "above_every_operating_species": false,
+        "operating_species_below": [
+          "멍게",
+          "살오징어",
+          "톳",
+          "해삼",
+          "홍합(참담치)"
+        ]
+      },
+      {
+        "aphia_id": 103756,
+        "scientific_name": "Ecteinascidia turbinata",
+        "mbpi": 56.1,
+        "counts": {
+          "linked": 13,
+          "with_reference_doi": 13,
+          "common_metabolite": 0,
+          "approved_drug": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 1
+        },
+        "best": {
+          "compound_id": "CHEMBL448144",
+          "compound_name": "ECTEINASCIDIN 770",
+          "target_chembl_id": "CHEMBL398",
+          "target_name": "KB",
+          "standard_type": "IC50",
+          "median_pchembl": 10.47,
+          "cohort_records": 5343,
+          "percentile": 99.75,
+          "link_factor": 0.75,
+          "activity_factor": 0.75,
+          "original_paper_dois": [
+            "10.1021/jo00302a007"
+          ],
+          "document_chembl_ids": [
+            "CHEMBL1150603"
+          ]
+        },
+        "above_every_operating_species": false,
+        "operating_species_below": [
+          "멍게",
+          "해삼",
+          "홍합(참담치)"
+        ]
+      }
+    ]
+  },
+  "MCUI_trend": {
+    "counts": {
+      "candidates_computed": 229,
+      "computable": 228,
+      "by_group_iucn_all": {
+        "P:LC": 172,
+        "P:DD": 35,
+        "P:NT": 7,
+        "P:VU": 5,
+        "P:EN": 2,
+        "P:CR": 2,
+        "S2:VU": 1,
+        "S2:LC": 1,
+        "S2:DD": 1,
+        "S2:EN": 2,
+        "S2:NT": 1
+      },
+      "by_group_iucn_computable": {
+        "P:LC": 172,
+        "P:DD": 35,
+        "P:NT": 7,
+        "P:VU": 5,
+        "P:EN": 2,
+        "P:CR": 2,
+        "S2:VU": 1,
+        "S2:LC": 1,
+        "S2:DD": 1,
+        "S2:EN": 2
+      },
+      "not_computable_reasons": {
+        "past_records_below_minimum": 1
+      },
+      "data_check_failed": [],
+      "class_by_group": {
+        "P:survey_gap": 112,
+        "P:undetermined": 44,
+        "P:decline_signal": 50,
+        "P:no_clear_decline": 16,
+        "P:decline_below_threshold": 1,
+        "S2:decline_signal": 2,
+        "S2:undetermined": 2,
+        "S2:survey_gap": 1
+      }
+    },
+    "primary_P": {
+      "table_[[T_sig,T_none],[L_sig,L_none]]": [
+        [
+          1,
+          8
+        ],
+        [
+          36,
+          136
+        ]
+      ],
+      "odds_ratio": 0.4722222222222222,
+      "p_one_sided": 0.8789000575027318,
+      "sensitivity_T": {
+        "signal": 1,
+        "n": 9,
+        "share": 0.111,
+        "ci95": [
+          0.003,
+          0.482
+        ]
+      },
+      "false_alarm_L": {
+        "signal": 36,
+        "n": 172,
+        "share": 0.209,
+        "ci95": [
+          0.151,
+          0.278
+        ]
+      },
+      "n_threatened_computable": 9,
+      "verdict": "FAIL (not testable: fewer than 10 threatened)"
+    },
+    "S1_mannwhitney_P_T_less_than_L": {
+      "U": 955.0,
+      "p": 0.8818987001799039,
+      "median_T": 1.212,
+      "median_L": 0.9
+    },
+    "S2_P_plus_Elasmobranchii": {
+      "table_[[T_sig,T_none],[L_sig,L_none]]": [
+        [
+          2,
+          10
+        ],
+        [
+          37,
+          136
+        ]
+      ],
+      "odds_ratio": 0.7351351351351352,
+      "p_one_sided": 0.7641063876002974,
+      "sensitivity_T": {
+        "signal": 2,
+        "n": 12,
+        "share": 0.167,
+        "ci95": [
+          0.021,
+          0.484
+        ]
+      },
+      "false_alarm_L": {
+        "signal": 37,
+        "n": 173,
+        "share": 0.214,
+        "ci95": [
+          0.155,
+          0.283
+        ]
+      }
+    },
+    "S3_japan_moe": {
+      "table_[[T_sig,T_none],[L_sig,L_none]]": [
+        [
+          0,
+          2
+        ],
+        [
+          50,
+          167
+        ]
+      ],
+      "odds_ratio": 0.0,
+      "p_one_sided": 1.0,
+      "sensitivity_T": {
+        "signal": 0,
+        "n": 2,
+        "share": 0.0,
+        "ci95": [
+          0.0,
+          0.842
+        ]
+      },
+      "false_alarm_L": {
+        "signal": 50,
+        "n": 217,
+        "share": 0.23,
+        "ci95": [
+          0.176,
+          0.292
+        ]
+      }
+    },
+    "S4_NT_DD": {
+      "NT": {
+        "signal": 2,
+        "n": 7,
+        "share": 0.286,
+        "ci95": [
+          0.037,
+          0.71
+        ]
+      },
+      "DD": {
+        "signal": 11,
+        "n": 36,
+        "share": 0.306,
+        "ci95": [
+          0.163,
+          0.481
+        ]
+      }
+    }
+  },
+  "MCUI_preliminary_criterion_A": {
+    "n": 14,
+    "false_lc_for_threatened": [],
+    "threatened_detected": [],
+    "evaluable_n": 4,
+    "agree_n": 1,
+    "agree": [
+      "고등어"
+    ],
+    "pass_1_no_false_lc": true,
+    "pass_2_detects_threatened": false,
+    "pass_3_evaluable_ge_8": false,
+    "passed": false
+  }
+}

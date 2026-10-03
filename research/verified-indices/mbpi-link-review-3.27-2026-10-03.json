@@ -1,0 +1,517 @@
+{
+  "reviewed_on": "2026-10-03",
+  "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
+  "paper_links": "research/verified-indices/mbpi-paper-links-3.27-2026-10-03.json",
+  "purpose": "Screen every species -> compound link that yields a ChEMBL item under the verified-pilot-3.1 primary rule. The Tukey commonness fence counts curated Wikidata P703 taxa, so it measures how much literature is curated, not how common a compound is, and the approved-drug rule catches only max_phase 4. This review closes those gaps with the rejection classes the original-paper links already used.",
+  "rule": "A link is rejected only on positive evidence of one class below, read from the cited paper's title or abstract (Crossref, Europe PMC) and the PubChem record of the stored InChIKey; otherwise it is accepted. Each entry holds the link's DOI set. The builder refuses a reviewed link whose DOIs differ (a new snapshot needs a new review) and a primary ChEMBL item whose link has no accepted entry.",
+  "scope": "All 32 (species, InChIKey) links behind the 36 primary ChEMBL items of 2026-09-30, plus one original-paper link of the same class as a rejected link. Links that yield an item only in a rule_sensitivity view were not reviewed; the rejections below apply there as well.",
+  "classes": {
+    "structure_mismatch": "The stored structure is not the compound the paper reports (name collision, for example a carotenoid resolved to a purine).",
+    "contaminant": "Industrial chemical, pollutant, or product of an environmental element taken up by the organism, without evidence of natural origin in the paper.",
+    "not_tissue": "Reported from feces, gut contents or associated organisms, not the species' own tissue.",
+    "ubiquitous_metabolite": "Formed in essentially all organisms: C1 metabolites, amines from protein amino acids, common C16-C22 fatty acids and their C6-C10 oxidation aldehydes."
+  },
+  "links": [
+    {
+      "aphia_id": 145721,
+      "scientific_name": "Undaria pinnatifida",
+      "inchikey": "YZXBAPSDXZZRGB-CGRWFSSPSA-N",
+      "compound_chembl_id": "CHEMBL267484",
+      "compound_name": "(5E,8E,11E,14E)-icosa-5,8,11,14-tetraenoic acid",
+      "pubchem_cid": 5312542,
+      "dois": [
+        "10.1021/jf071791s"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "C20:4 fatty acid (arachidonic acid skeleton), a common fatty acid of algae and animals. The paper (10.1021/jf071791s, PMID 17665931) isolates arachidonic acid, which is all-Z; the stored InChIKey is the all-E isomer."
+    },
+    {
+      "aphia_id": 250680,
+      "scientific_name": "Halocynthia roretzi",
+      "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL859",
+      "compound_name": "oxypurinol",
+      "pubchem_cid": 135398752,
+      "dois": [
+        "10.1016/0305-0491(85)90174-9",
+        "10.1248/cpb.32.4309"
+      ],
+      "decision": "reject",
+      "class": "structure_mismatch",
+      "reason": "Both cited papers are carotenoid studies of sea squirts. The carotenoid alloxanthin was resolved to oxypurinol: PubChem CID 135398752 lists 'Alloxanthine' and 'Alloxanthin (VAN)' as synonyms of oxypurinol."
+    },
+    {
+      "aphia_id": 250680,
+      "scientific_name": "Halocynthia roretzi",
+      "inchikey": "CNOIXMULOQWVGR-ABUIXNMTSA-N",
+      "compound_chembl_id": "CHEMBL450953",
+      "compound_name": "halocynthiaxanthin",
+      "pubchem_cid": 11966451,
+      "dois": [
+        "10.1016/0305-0491(85)90174-9",
+        "10.1016/s0040-4039(01)83006-9",
+        "10.1248/cpb.32.4309"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Carotenoid named in the titles of 10.1248/cpb.32.4309 and 10.1016/s0040-4039(01)83006-9 as isolated from Halocynthia roretzi."
+    },
+    {
+      "aphia_id": 494972,
+      "scientific_name": "Sargassum fusiforme",
+      "inchikey": "PGLNLCWHYQYRGQ-ZHHJOTBYSA-N",
+      "compound_chembl_id": "CHEMBL275911",
+      "compound_name": "24-ketocholesterol",
+      "pubchem_cid": 11036808,
+      "dois": [
+        "10.2331/suisan.51.1305"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Oxysterol reported among the nonpolar constituents of Hizikia fusiformis (10.2331/suisan.51.1305). Fucosterol-derived oxysterols can also form by autoxidation during drying; no rejection class covers this (see the decision record, limits)."
+    },
+    {
+      "aphia_id": 494972,
+      "scientific_name": "Sargassum fusiforme",
+      "inchikey": "WLNWTSOEOWZEGI-SVSQYMGHSA-N",
+      "compound_chembl_id": "CHEMBL252561",
+      "compound_name": "24-hydroperoxy-24-vinylcholesterol",
+      "pubchem_cid": 20847459,
+      "dois": [
+        "10.1021/jf500083r"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Oxysterol from the 24(S)-saringosterol study of Sargassum fusiforme (10.1021/jf500083r). Same autoxidation caveat as saringosterol."
+    },
+    {
+      "aphia_id": 494972,
+      "scientific_name": "Sargassum fusiforme",
+      "inchikey": "OPGVEUGCNGNPSX-SVSQYMGHSA-N",
+      "compound_chembl_id": "CHEMBL252366",
+      "compound_name": "saringosterol",
+      "pubchem_cid": 14161394,
+      "dois": [
+        "10.1021/jf500083r",
+        "10.2331/suisan.51.1305"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Title of 10.1021/jf500083r: '24(S)-Saringosterol from Edible Marine Seaweed Sargassum fusiforme'."
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "inchikey": "HXNFUBHNUDHIGC-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL859",
+      "compound_name": "oxypurinol",
+      "pubchem_cid": 135398752,
+      "dois": [
+        "10.1021/np970039q"
+      ],
+      "decision": "reject",
+      "class": "structure_mismatch",
+      "reason": "The cited paper is 'A New Apocarotenoid from the Marine Shellfish Mytilus coruscus'. The carotenoid alloxanthin was resolved to oxypurinol (PubChem CID 135398752 synonyms 'Alloxanthine', 'Alloxanthin (VAN)')."
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "inchikey": "CNOIXMULOQWVGR-ABUIXNMTSA-N",
+      "compound_chembl_id": "CHEMBL450953",
+      "compound_name": "halocynthiaxanthin",
+      "pubchem_cid": 11966451,
+      "dois": [
+        "10.1021/np970039q"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Carotenoid in the Mytilus coruscus carotenoid paper (10.1021/np970039q)."
+    },
+    {
+      "aphia_id": 506159,
+      "scientific_name": "Mytilus coruscus",
+      "inchikey": "PFWLFWPASULGAN-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL321248",
+      "compound_name": "7-methylxanthine",
+      "pubchem_cid": 68374,
+      "dois": [
+        "10.1021/np970039q"
+      ],
+      "decision": "reject",
+      "class": "structure_mismatch",
+      "reason": "The cited paper is a carotenoid study. The carotenoid heteroxanthin was resolved to 7-methylxanthine: PubChem CID 68374 lists 'Heteroxanthine' as a synonym."
+    },
+    {
+      "aphia_id": 836033,
+      "scientific_name": "Magallana gigas",
+      "inchikey": "UYRDHEJRPVSJFM-VSWVFQEASA-N",
+      "compound_chembl_id": "CHEMBL1980535",
+      "compound_name": "peridinin",
+      "pubchem_cid": 5289155,
+      "dois": [
+        "10.1021/np000476w"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Carotenoid paper on Crassostrea gigas tissue (10.1021/np000476w, PMID 11374947). The abstract names new nor-carotenoids, not peridinin, so the link rests on the LOTUS reference. Peridinin comes from the dinoflagellate diet but is held in oyster tissue; no rejection class applies."
+    },
+    {
+      "aphia_id": 836033,
+      "scientific_name": "Magallana gigas",
+      "inchikey": "CNOIXMULOQWVGR-ABUIXNMTSA-N",
+      "compound_chembl_id": "CHEMBL450953",
+      "compound_name": "halocynthiaxanthin",
+      "pubchem_cid": 11966451,
+      "dois": [
+        "10.1021/np000476w"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Carotenoid in the Crassostrea gigas carotenoid paper (10.1021/np000476w)."
+    },
+    {
+      "aphia_id": 377084,
+      "scientific_name": "Saccharina japonica",
+      "inchikey": "IZUPBVBPLAPZRR-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL75967",
+      "compound_name": "pentachlorophenol",
+      "pubchem_cid": 992,
+      "dois": [
+        "10.1016/j.chroma.2013.02.087"
+      ],
+      "decision": "reject",
+      "class": "contaminant",
+      "reason": "Industrial biocide. The cited paper (PMID 23558048) develops a method to determine alkylphenol pollutants in Laminaria japonica food samples."
+    },
+    {
+      "aphia_id": 377084,
+      "scientific_name": "Saccharina japonica",
+      "inchikey": "BSAIUMLZVGUGKX-BQYQJAHWSA-N",
+      "compound_chembl_id": "CHEMBL450072",
+      "compound_name": "(E)-2-nonenal",
+      "pubchem_cid": 5283335,
+      "dois": [
+        "10.3390/molecules200712093"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "C9 aldehyde formed by oxidation of linoleic acid; found in the essential oil of L. japonica (PMID 26147582) as in most lipid-containing tissue. Not specific to the species."
+    },
+    {
+      "aphia_id": 377084,
+      "scientific_name": "Saccharina japonica",
+      "inchikey": "UVIVWIFUPKGWGF-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL4071043",
+      "compound_name": "butyl isobutyl phthalate",
+      "pubchem_cid": 28813,
+      "dois": [
+        "10.1002/ptr.3139"
+      ],
+      "decision": "reject",
+      "class": "contaminant",
+      "reason": "Phthalate ester plasticizer. The paper (PMID 21031613) isolated it from L. japonica rhizoid but gives no evidence of natural origin (for example radiocarbon), which is needed to tell a phthalate from laboratory or environmental contamination."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "DRZQFGYIIYNNEC-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL508791",
+      "compound_name": "dieckol",
+      "pubchem_cid": 3008868,
+      "dois": [
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.bmc.2011.10.078",
+        "10.1016/j.bmc.2013.04.026",
+        "10.1155/2011/140462",
+        "10.1248/bpb.27.544"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "PCZZRBGISTUIOA-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL471187",
+      "compound_name": "eckol",
+      "pubchem_cid": 145937,
+      "dois": [
+        "10.1002/ptr.2298",
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.bmc.2013.04.026",
+        "10.1248/bpb.27.544"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "SLWPBUMYPRVYIJ-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL510508",
+      "compound_name": "phlorofucofuroeckol A",
+      "pubchem_cid": 130976,
+      "dois": [
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.bmc.2013.04.026",
+        "10.1248/bpb.27.544"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "JLEVVQRBEATTCM-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL456228",
+      "compound_name": "7-phloroeckol",
+      "pubchem_cid": 10480940,
+      "dois": [
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.bmc.2013.04.026"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "FHYNTHBAMAEFJB-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL443626",
+      "compound_name": "8,8'-bieckol",
+      "pubchem_cid": 3008867,
+      "dois": [
+        "10.1016/j.bmc.2008.07.078",
+        "10.1248/bpb.27.544"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "WYQMJNVMBAQVFD-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL2391423",
+      "compound_name": "2-phloroeckol",
+      "pubchem_cid": 5320532,
+      "dois": [
+        "10.1016/j.bmc.2013.04.026"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "DUSGAYNDQIKXHD-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL459393",
+      "compound_name": "fucodiphloroethol G",
+      "pubchem_cid": 44590821,
+      "dois": [
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.bmc.2013.04.026"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "HBJNTPFHQKXWOY-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL502202",
+      "compound_name": "6,6'-bieckol",
+      "pubchem_cid": 137388,
+      "dois": [
+        "10.1016/j.bmc.2008.07.078",
+        "10.1016/j.bmc.2009.01.031",
+        "10.1016/j.intimp.2012.01.005",
+        "10.4162/nrp.2011.5.6.495",
+        "10.5483/bmbrep.2010.43.1.062"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 371986,
+      "scientific_name": "Ecklonia cava",
+      "inchikey": "LBHQACSAGWCMAB-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL559870",
+      "compound_name": "dioxinodehydroeckol",
+      "pubchem_cid": 10429214,
+      "dois": [
+        "10.1016/j.bmc.2013.04.026",
+        "10.1016/j.fct.2009.04.013"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Phlorotannin of brown algae; the cited Ecklonia cava papers isolate it or name it in the title. No rejection class applies."
+    },
+    {
+      "aphia_id": 494853,
+      "scientific_name": "Sargassum horneri",
+      "inchikey": "QKXAGRZCXAYBQX-WDZAAMDOSA-N",
+      "compound_chembl_id": "CHEMBL4085945",
+      "compound_name": "sargachromenol",
+      "pubchem_cid": 10455044,
+      "dois": [
+        "10.3390/md19090497",
+        "10.3390/md20010028",
+        "10.3390/md20110710"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Original-paper link verified in mbpi-paper-links-2026-09-29.json: three titles state sargachromenol isolated or purified from Sargassum horneri."
+    },
+    {
+      "aphia_id": 145086,
+      "scientific_name": "Codium fragile",
+      "inchikey": "WSFSSNUMVMOOMR-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL1255",
+      "compound_name": "formaldehyde",
+      "pubchem_cid": 712,
+      "dois": [
+        "10.1016/s0305-1978(97)00083-5"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "C1 metabolite of all organisms. The cited paper ('Formaldehyde from marine algae', 10.1016/s0305-1978(97)00083-5) measures it across algae."
+    },
+    {
+      "aphia_id": 145086,
+      "scientific_name": "Codium fragile",
+      "inchikey": "OGGXGZAMXPVRFZ-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL1231644",
+      "compound_name": "cacodylic acid (dimethylarsinic acid)",
+      "pubchem_cid": 2513,
+      "dois": [
+        "10.1002/aoc.590020414"
+      ],
+      "decision": "reject",
+      "class": "contaminant",
+      "reason": "Methylated arsenic, the product of arsenate taken up from sea water (10.1002/aoc.590020414). It reflects exposure to an environmental element; cacodylic acid is also a herbicide."
+    },
+    {
+      "aphia_id": 145086,
+      "scientific_name": "Codium fragile",
+      "inchikey": "SUCKEYMKNGZJHK-ZARIWKGHSA-N",
+      "compound_chembl_id": "CHEMBL5287816",
+      "compound_name": "siphonaxanthin",
+      "pubchem_cid": 11204185,
+      "dois": [
+        "10.1016/s0031-9422(00)90263-2"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Title of 10.1016/s0031-9422(00)90263-2: 'The structures of siphonein and siphonaxanthin from Codium fragile'."
+    },
+    {
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "inchikey": "NYOXRYYXRWJDKP-GYKMGIIDSA-N",
+      "compound_chembl_id": "CHEMBL63243",
+      "compound_name": "4-cholesten-3-one",
+      "pubchem_cid": 91477,
+      "dois": [
+        "10.2331/suisan.44.525"
+      ],
+      "decision": "reject",
+      "class": "not_tissue",
+      "reason": "The only cited paper is 'Steroids in the feces of a marine bivalve' (10.2331/suisan.44.525): feces carry dietary and microbial sterols, not the clam's own tissue."
+    },
+    {
+      "aphia_id": 231750,
+      "scientific_name": "Ruditapes philippinarum",
+      "inchikey": "JRMPVNVOLQJLJX-QVMRCSLBSA-N",
+      "compound_chembl_id": "CHEMBL2322191",
+      "compound_name": "ergosta-4,24(28)-dien-3-one",
+      "pubchem_cid": 14753570,
+      "dois": [
+        "10.2331/suisan.44.525"
+      ],
+      "decision": "reject",
+      "class": "not_tissue",
+      "reason": "Same feces paper (10.2331/suisan.44.525)."
+    },
+    {
+      "aphia_id": 393716,
+      "scientific_name": "Mizuhopecten yessoensis",
+      "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL58343",
+      "compound_name": "agmatine",
+      "pubchem_cid": 199,
+      "dois": [
+        "10.1021/jf60216a038"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
+    },
+    {
+      "aphia_id": 504357,
+      "scientific_name": "Anadara broughtonii",
+      "inchikey": "QYPPJABKJHAVHS-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL58343",
+      "compound_name": "agmatine",
+      "pubchem_cid": 199,
+      "dois": [
+        "10.1021/jf60216a038"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "Biogenic amine from arginine decarboxylation, present across organisms. The cited paper (PMID 632423) is a survey of guanidino compounds in foods."
+    },
+    {
+      "aphia_id": 127022,
+      "scientific_name": "Scomber japonicus",
+      "inchikey": "MBMBGCFOFBJSGT-KUBAVDMBSA-N",
+      "compound_chembl_id": "CHEMBL367149",
+      "compound_name": "docosahexaenoic acid (doconexent)",
+      "pubchem_cid": 445580,
+      "dois": [
+        "10.1246/bcsj.59.3709"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "Docosahexaenoic acid, a common n-3 fatty acid of fish and algae. The cited paper (10.1246/bcsj.59.3709) models supercritical CO2 extraction from mackerel powder."
+    },
+    {
+      "aphia_id": 836041,
+      "scientific_name": null,
+      "inchikey": "SATICYYAWWYRAM-VNKDHWASSA-N",
+      "compound_chembl_id": null,
+      "compound_name": "(2E,4E)-hepta-2,4-dienal",
+      "pubchem_cid": null,
+      "dois": [
+        "10.3389/fphys.2021.713736"
+      ],
+      "decision": "reject",
+      "class": "ubiquitous_metabolite",
+      "reason": "Accepted as an original-paper link but flagged there as a likely lipid-oxidation volatile. Rejected here with 2-nonenal so that the same class gets the same decision; it gave no ChEMBL item."
+    },
+    {
+      "aphia_id": 836041,
+      "scientific_name": "Magallana sikamea",
+      "inchikey": "USBWYUYKHHILLZ-UHFFFAOYSA-N",
+      "compound_chembl_id": "CHEMBL1822160",
+      "compound_name": "flazin",
+      "pubchem_cid": 5377686,
+      "dois": [
+        "10.1016/s1875-5364(21)60119-x"
+      ],
+      "decision": "accept",
+      "class": null,
+      "reason": "Isolated from the edible parts of C. sikamea from Zhanjiang, China (Kong et al. 2021, full text). None of the four rejection classes applies. Caveats for the page: flazin is also a known soy-sauce and fermentation beta-carboline, and the paper reports no spectra for its own isolate. Its ChEMBL anti-HIV rows come from two reviews and one synthesis paper that restate one earlier measurement (EC50 2.36 uM, Tang et al. 2008), so the activity side counts as one document."
+    }
+  ],
+  "forked_from": "mbpi-link-review-2026-09-30.json",
+  "fork_note": "verified-pilot-3.27: the 2026-09-30 review plus the new original-paper link (flazin in Magallana sikamea). The base ChEMBL snapshot is unchanged; its 2026-10-03 supplement (snapshots/mbpi-links-supplement-2026-10-03.json) adds the compounds of new links."
+}

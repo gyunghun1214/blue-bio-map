@@ -1,0 +1,1687 @@
+{
+ "queried_on": [
+  "2026-10-03"
+ ],
+ "chembl_version": "ChEMBL_37",
+ "species": [
+  {
+   "aphia_id": 215429,
+   "scientific_name": "Conus magus",
+   "worms_synonyms": [
+    "Conus (Phasmoconus) ambaroides",
+    "Conus (Pionoconus) magus",
+    "Conus adansoni",
+    "Conus assimilis",
+    "Conus borneensis",
+    "Conus consul",
+    "Conus epistomioides",
+    "Conus fucatus",
+    "Conus fulvobullatus",
+    "Conus rollandi",
+    "Conus tasmaniae",
+    "Cucullus caesius",
+    "Pionoconus magus"
+   ],
+   "ncbi_taxids": [
+    "6492"
+   ],
+   "wikidata_taxa": [
+    [
+     "Q106172532",
+     "Conus assimilis"
+    ],
+    [
+     "Q106172960",
+     "Conus epistomioides"
+    ],
+    [
+     "Q106174260",
+     "Conus rollandi"
+    ],
+    [
+     "Q106174618",
+     "Conus tasmaniae"
+    ],
+    [
+     "Q106174973",
+     "Cucullus caesius"
+    ],
+    [
+     "Q106179847",
+     "Pionoconus magus"
+    ],
+    [
+     "Q148438",
+     "Conus magus"
+    ],
+    [
+     "Q1605322",
+     "Conus borneensis"
+    ],
+    [
+     "Q18481518",
+     "Conus adansoni"
+    ],
+    [
+     "Q18481774",
+     "Conus consul"
+    ],
+    [
+     "Q18481890",
+     "Conus fucatus"
+    ],
+    [
+     "Q18481902",
+     "Conus fulvobullatus"
+    ]
+   ],
+   "links": []
+  },
+  {
+   "aphia_id": 165849,
+   "scientific_name": "Halichondria (Halichondria) okadai",
+   "worms_synonyms": [
+    "Halichondria okadai",
+    "Reniera okadai"
+   ],
+   "ncbi_taxids": [],
+   "wikidata_taxa": [
+    [
+     "Q2113513",
+     "Halichondria okadai"
+    ]
+   ],
+   "links": [
+    {
+     "compound_qid": "Q104391846",
+     "inchikey": "QNDVLZJODHBUFM-GDDXNKLMSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q42130730",
+        "Q69052795"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q104402180",
+     "inchikey": "FXNFULJVOQMBCW-KEMZUWMSSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q104402181",
+     "inchikey": "LMZKVILFCFSDGK-XWAHEJASSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q104936130",
+     "inchikey": "BHONBYIDLOVJEW-GRNUDOEXSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q78280992"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105181998",
+     "inchikey": "NMWGUXUJLUPRSU-LZODVCNKSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105195083",
+     "inchikey": "ONRNPNQJAQBNOL-KSYYMMPFSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q105195082"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105224067",
+     "inchikey": "QMMYJVVIJJCWBY-UHFFFAOYSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105285560",
+     "inchikey": "VFSHZIHZUDECMJ-WVVDMUGJSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105352697",
+     "inchikey": "YRARXUIKYFTHNU-CZKJWXNMSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q105035715"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110185611",
+     "inchikey": "FXNFULJVOQMBCW-VZBLNRDYSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110193972",
+     "inchikey": "XCLQLVOVBWDWOP-HPUNYJORSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q82283109"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110193973",
+     "inchikey": "KFDJLXAKTXMEBA-QXTIUPHPSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q82283109"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110193974",
+     "inchikey": "FXPDDUKAZLWMEK-PFWSVGDOSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q82283109"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110194130",
+     "inchikey": "ONRNPNQJAQBNOL-CHXSLDIESA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q82283109"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q27271653",
+     "inchikey": "YRFGXHUJNOHXQO-BEMDRSKZSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q62773345"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q414042",
+     "inchikey": "QNDVLZJODHBUFM-WFXQOWMNSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q42130730"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q4993812",
+     "inchikey": "FXNFULJVOQMBCW-JWNPXFETSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": []
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q83033624",
+     "inchikey": "CWEKFTKXPSRWJZ-UHFFFAOYSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q2113513",
+       "references": [
+        "Q82283109"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 103756,
+   "scientific_name": "Ecteinascidia turbinata",
+   "worms_synonyms": [
+    "Ecteinascidia moorei"
+   ],
+   "ncbi_taxids": [
+    "284476"
+   ],
+   "wikidata_taxa": [
+    [
+     "Q4922975",
+     "Ecteinascidia turbinata"
+    ]
+   ],
+   "links": [
+    {
+     "compound_qid": "Q104935507",
+     "inchikey": "BGFXHQYUWCGGLL-QWIBJBKUSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q104935969",
+     "inchikey": "BHHQTFMAYOYXOX-IWXLMPDPSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q37325101"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q104991779",
+     "inchikey": "DZGBXOVHGNYJRY-BWYMSXMVSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105192197",
+     "inchikey": "OHORAXYXCAQZNK-UHFFFAOYSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105210696",
+     "inchikey": "PKVRCIRHQMSYJX-PYDRXBSSSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506",
+        "Q105210695"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105211260",
+     "inchikey": "PLVJCDOGVLFKEZ-HNPJFJHRSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q39475391"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105221164",
+     "inchikey": "QHVNYJIFSJQQAS-WDTUAYOASA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q39475391"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105271993",
+     "inchikey": "UFODTPKSZSKMKO-QVBKYYBOSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q37325101"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105276776",
+     "inchikey": "UPGCDKVJPIRNTG-CPDPZGSSSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q105385740",
+     "inchikey": "ZXRUNJQKTSZBLX-DGLPJRTBSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q39475391"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q110186841",
+     "inchikey": "DZGBXOVHGNYJRY-KBVPHHNESA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q2637746",
+     "inchikey": "PKVRCIRHQMSYJX-AIFWHQITSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506",
+        "Q105210692",
+        "Q105210695"
+       ]
+      }
+     ]
+    },
+    {
+     "compound_qid": "Q82894440",
+     "inchikey": "UPGCDKVJPIRNTG-VIHNCQKYSA-N",
+     "statements": [
+      {
+       "taxon_qid": "Q4922975",
+       "references": [
+        "Q104935506"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reference_dois": {
+  "Q104935506": "10.1021/JO00302A007",
+  "Q105035715": "10.1021/JO00041A053",
+  "Q105195082": "10.1016/0040-4039(96)00703-4",
+  "Q105210692": "10.1021/JO00302A006",
+  "Q105210695": "10.1021/NP50124A025",
+  "Q37325101": "10.1073/PNAS.89.23.11456",
+  "Q39475391": "10.1021/NP050449B",
+  "Q42130730": "10.1007/BF00172811",
+  "Q62773345": "10.1351/PAC198658050701",
+  "Q69052795": "10.1159/000158679",
+  "Q78280992": "10.1007/BF01952874",
+  "Q82283109": "10.1039/C1CC15557A"
+ },
+ "compound_taxon_counts": {
+  "Q414042": 15,
+  "Q2637746": 1,
+  "Q4993812": 1,
+  "Q27271653": 1,
+  "Q82894440": 1,
+  "Q83033624": 1,
+  "Q104391846": 14,
+  "Q104402180": 5,
+  "Q104402181": 5,
+  "Q104935507": 2,
+  "Q104935969": 1,
+  "Q104936130": 2,
+  "Q104991779": 1,
+  "Q105181998": 1,
+  "Q105192197": 2,
+  "Q105195083": 1,
+  "Q105210696": 1,
+  "Q105211260": 1,
+  "Q105221164": 1,
+  "Q105224067": 1,
+  "Q105271993": 1,
+  "Q105276776": 1,
+  "Q105285560": 2,
+  "Q105352697": 1,
+  "Q105385740": 1,
+  "Q110185611": 7,
+  "Q110186841": 1,
+  "Q110193972": 1,
+  "Q110193973": 1,
+  "Q110193974": 1,
+  "Q110194130": 1
+ },
+ "compounds": {
+  "BGFXHQYUWCGGLL-QWIBJBKUSA-N": {
+   "chembl_id": "CHEMBL448144",
+   "parent_chembl_id": "CHEMBL448144",
+   "chembl_pref_name": "ECTEINASCIDIN 770",
+   "pubchem_cids": [
+    10952807
+   ]
+  },
+  "BHHQTFMAYOYXOX-IWXLMPDPSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101268587
+   ]
+  },
+  "BHONBYIDLOVJEW-GRNUDOEXSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    23428245
+   ]
+  },
+  "CWEKFTKXPSRWJZ-UHFFFAOYSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    177904
+   ]
+  },
+  "DZGBXOVHGNYJRY-BWYMSXMVSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101268584
+   ]
+  },
+  "DZGBXOVHGNYJRY-KBVPHHNESA-N": {
+   "chembl_id": "CHEMBL506794",
+   "parent_chembl_id": "CHEMBL506794",
+   "chembl_pref_name": "ECTEINASCIDIN 745",
+   "pubchem_cids": [
+    9831913
+   ]
+  },
+  "FXNFULJVOQMBCW-JWNPXFETSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    10079877
+   ]
+  },
+  "FXNFULJVOQMBCW-KEMZUWMSSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    135875334
+   ]
+  },
+  "FXNFULJVOQMBCW-VZBLNRDYSA-N": {
+   "chembl_id": "CHEMBL387466",
+   "parent_chembl_id": "CHEMBL387466",
+   "chembl_pref_name": "HALICHONDRIN B",
+   "pubchem_cids": [
+    5488895
+   ]
+  },
+  "FXPDDUKAZLWMEK-PFWSVGDOSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    57334260
+   ]
+  },
+  "KFDJLXAKTXMEBA-QXTIUPHPSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    56834631
+   ]
+  },
+  "LMZKVILFCFSDGK-XWAHEJASSA-N": {
+   "chembl_id": "CHEMBL453453",
+   "parent_chembl_id": "CHEMBL453453",
+   "chembl_pref_name": "HOMOHALICHONDRIN B",
+   "pubchem_cids": [
+    44581723
+   ]
+  },
+  "NMWGUXUJLUPRSU-LZODVCNKSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101451497
+   ]
+  },
+  "OHORAXYXCAQZNK-UHFFFAOYSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    23412497
+   ]
+  },
+  "ONRNPNQJAQBNOL-CHXSLDIESA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    162866170
+   ]
+  },
+  "ONRNPNQJAQBNOL-KSYYMMPFSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    21589588
+   ]
+  },
+  "PKVRCIRHQMSYJX-AIFWHQITSA-N": {
+   "chembl_id": "CHEMBL450449",
+   "parent_chembl_id": "CHEMBL450449",
+   "chembl_pref_name": "TRABECTEDIN",
+   "pubchem_cids": [
+    108150
+   ]
+  },
+  "PKVRCIRHQMSYJX-PYDRXBSSSA-N": {
+   "chembl_id": "CHEMBL1224207",
+   "parent_chembl_id": "CHEMBL1224207",
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    49865963
+   ]
+  },
+  "PLVJCDOGVLFKEZ-HNPJFJHRSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": []
+  },
+  "QHVNYJIFSJQQAS-WDTUAYOASA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": []
+  },
+  "QMMYJVVIJJCWBY-UHFFFAOYSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    14353758
+   ]
+  },
+  "QNDVLZJODHBUFM-GDDXNKLMSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    139242912
+   ]
+  },
+  "QNDVLZJODHBUFM-WFXQOWMNSA-N": {
+   "chembl_id": "CHEMBL280487",
+   "parent_chembl_id": "CHEMBL280487",
+   "chembl_pref_name": "OKADAIC ACID",
+   "pubchem_cids": [
+    446512
+   ]
+  },
+  "UFODTPKSZSKMKO-QVBKYYBOSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101268586
+   ]
+  },
+  "UPGCDKVJPIRNTG-CPDPZGSSSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101268583
+   ]
+  },
+  "UPGCDKVJPIRNTG-VIHNCQKYSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    189259
+   ]
+  },
+  "VFSHZIHZUDECMJ-WVVDMUGJSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    101451502
+   ]
+  },
+  "XCLQLVOVBWDWOP-HPUNYJORSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    56834630
+   ]
+  },
+  "YRARXUIKYFTHNU-CZKJWXNMSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": []
+  },
+  "YRFGXHUJNOHXQO-BEMDRSKZSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": [
+    57333215
+   ]
+  },
+  "ZXRUNJQKTSZBLX-DGLPJRTBSA-N": {
+   "chembl_id": null,
+   "parent_chembl_id": null,
+   "chembl_pref_name": null,
+   "pubchem_cids": []
+  }
+ },
+ "parent_names": {
+  "CHEMBL1224207": null,
+  "CHEMBL280487": "OKADAIC ACID",
+  "CHEMBL387466": "HALICHONDRIN B",
+  "CHEMBL448144": "ECTEINASCIDIN 770",
+  "CHEMBL450449": "TRABECTEDIN",
+  "CHEMBL453453": "HOMOHALICHONDRIN B",
+  "CHEMBL506794": "ECTEINASCIDIN 745"
+ },
+ "parent_max_phase": {
+  "CHEMBL1224207": null,
+  "CHEMBL280487": null,
+  "CHEMBL387466": null,
+  "CHEMBL448144": null,
+  "CHEMBL450449": 4.0,
+  "CHEMBL453453": null,
+  "CHEMBL506794": null
+ },
+ "api_filter_checks": [
+  {
+   "parent": "CHEMBL1224207",
+   "all_pchembl": 1,
+   "client_admitted": 1,
+   "api_filtered": 1
+  },
+  {
+   "parent": "CHEMBL280487",
+   "all_pchembl": 32,
+   "client_admitted": 30,
+   "api_filtered": 30
+  },
+  {
+   "parent": "CHEMBL387466",
+   "all_pchembl": 0,
+   "client_admitted": 0,
+   "api_filtered": 0
+  },
+  {
+   "parent": "CHEMBL448144",
+   "all_pchembl": 9,
+   "client_admitted": 9,
+   "api_filtered": 9
+  },
+  {
+   "parent": "CHEMBL450449",
+   "all_pchembl": 1,
+   "client_admitted": 1,
+   "api_filtered": 1
+  },
+  {
+   "parent": "CHEMBL453453",
+   "all_pchembl": 0,
+   "client_admitted": 0,
+   "api_filtered": 0
+  },
+  {
+   "parent": "CHEMBL506794",
+   "all_pchembl": 0,
+   "client_admitted": 0,
+   "api_filtered": 0
+  }
+ ],
+ "activities": [
+  {
+   "activity_id": 69890,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL2845",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL767316",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1134214",
+   "data_validity_comment": null,
+   "pchembl_value": 6.9
+  },
+  {
+   "activity_id": 69891,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4703",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL768151",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1134214",
+   "data_validity_comment": null,
+   "pchembl_value": 8.15
+  },
+  {
+   "activity_id": 86934,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL2669",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL769193",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1130173",
+   "data_validity_comment": null,
+   "pchembl_value": 9.35
+  },
+  {
+   "activity_id": 86935,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL2669",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL769191",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1130173",
+   "data_validity_comment": null,
+   "pchembl_value": 9.0
+  },
+  {
+   "activity_id": 86936,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL335",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL767486",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1130173",
+   "data_validity_comment": null,
+   "pchembl_value": 8.91
+  },
+  {
+   "activity_id": 86937,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL335",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL767326",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1130173",
+   "data_validity_comment": null,
+   "pchembl_value": 5.89
+  },
+  {
+   "activity_id": 204928,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL335",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL767327",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135037",
+   "data_validity_comment": null,
+   "pchembl_value": 7.22
+  },
+  {
+   "activity_id": 261979,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL612545",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL804802",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 8.52
+  },
+  {
+   "activity_id": 261983,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL612545",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL800723",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 9.7
+  },
+  {
+   "activity_id": 261984,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL798973",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 7.35
+  },
+  {
+   "activity_id": 261988,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL806672",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 6.58
+  },
+  {
+   "activity_id": 261992,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL806666",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 7.11
+  },
+  {
+   "activity_id": 261993,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL806673",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 5.94
+  },
+  {
+   "activity_id": 261994,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL806668",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 7.55
+  },
+  {
+   "activity_id": 261998,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL806669",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1135579",
+   "data_validity_comment": null,
+   "pchembl_value": 7.32
+  },
+  {
+   "activity_id": 479782,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL335",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL766691",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1150469",
+   "data_validity_comment": null,
+   "pchembl_value": 8.47
+  },
+  {
+   "activity_id": 479783,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4763",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL766692",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1150469",
+   "data_validity_comment": null,
+   "pchembl_value": 10.15
+  },
+  {
+   "activity_id": 479784,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL375",
+   "standard_type": "ED50",
+   "assay_chembl_id": "CHEMBL735495",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1150469",
+   "data_validity_comment": null,
+   "pchembl_value": 8.55
+  },
+  {
+   "activity_id": 479785,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL375",
+   "standard_type": "ED50",
+   "assay_chembl_id": "CHEMBL735493",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1150469",
+   "data_validity_comment": null,
+   "pchembl_value": 8.49
+  },
+  {
+   "activity_id": 820938,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL612545",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL756499",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1134845",
+   "data_validity_comment": null,
+   "pchembl_value": 7.31
+  },
+  {
+   "activity_id": 1132478,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4438",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL798976",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1148466",
+   "data_validity_comment": null,
+   "pchembl_value": 7.7
+  },
+  {
+   "activity_id": 1132479,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL612545",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL798982",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1148466",
+   "data_validity_comment": null,
+   "pchembl_value": 9.7
+  },
+  {
+   "activity_id": 1891363,
+   "parent_molecule_chembl_id": "CHEMBL1224207",
+   "target_chembl_id": "CHEMBL267",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL905921",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL1143794",
+   "data_validity_comment": null,
+   "pchembl_value": 6.68
+  },
+  {
+   "activity_id": 2150065,
+   "parent_molecule_chembl_id": "CHEMBL450449",
+   "target_chembl_id": "CHEMBL612558",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL937297",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1147059",
+   "data_validity_comment": null,
+   "pchembl_value": 8.22
+  },
+  {
+   "activity_id": 2427687,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL394",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL993016",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1147245",
+   "data_validity_comment": null,
+   "pchembl_value": 8.92
+  },
+  {
+   "activity_id": 2427691,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL612268",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL993017",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1147245",
+   "data_validity_comment": null,
+   "pchembl_value": 8.41
+  },
+  {
+   "activity_id": 2427695,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL396",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL993802",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1147245",
+   "data_validity_comment": null,
+   "pchembl_value": 9.19
+  },
+  {
+   "activity_id": 2427699,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL614285",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL993803",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1147245",
+   "data_validity_comment": null,
+   "pchembl_value": 8.62
+  },
+  {
+   "activity_id": 2533790,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL3879801",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL961154",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1150603",
+   "data_validity_comment": null,
+   "pchembl_value": 8.6
+  },
+  {
+   "activity_id": 2533791,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL398",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL961155",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1150603",
+   "data_validity_comment": null,
+   "pchembl_value": 10.47
+  },
+  {
+   "activity_id": 3523216,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL389",
+   "standard_type": "EC50",
+   "assay_chembl_id": "CHEMBL1273032",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1268890",
+   "data_validity_comment": null,
+   "pchembl_value": 7.04
+  },
+  {
+   "activity_id": 3523217,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL389",
+   "standard_type": "EC50",
+   "assay_chembl_id": "CHEMBL1273033",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1268890",
+   "data_validity_comment": null,
+   "pchembl_value": 7.06
+  },
+  {
+   "activity_id": 6290626,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL613508",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL1810020",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1806456",
+   "data_validity_comment": null,
+   "pchembl_value": 9.09
+  },
+  {
+   "activity_id": 6290656,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL612268",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL1810019",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1806456",
+   "data_validity_comment": null,
+   "pchembl_value": 8.62
+  },
+  {
+   "activity_id": 6290686,
+   "parent_molecule_chembl_id": "CHEMBL448144",
+   "target_chembl_id": "CHEMBL394",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL1810018",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL1806456",
+   "data_validity_comment": null,
+   "pchembl_value": 9.22
+  },
+  {
+   "activity_id": 18276293,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL394",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL4119108",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL4118026",
+   "data_validity_comment": null,
+   "pchembl_value": 6.17
+  },
+  {
+   "activity_id": 18276295,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL395",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL4119107",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL4118026",
+   "data_validity_comment": null,
+   "pchembl_value": 6.27
+  },
+  {
+   "activity_id": 18276298,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL614062",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL4119109",
+   "assay_type": "F",
+   "document_chembl_id": "CHEMBL4118026",
+   "data_validity_comment": null,
+   "pchembl_value": 6.07
+  },
+  {
+   "activity_id": 26045457,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL4877",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL5587146",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL5584313",
+   "data_validity_comment": null,
+   "pchembl_value": 8.0
+  },
+  {
+   "activity_id": 26045463,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL612545",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL5587147",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL5584313",
+   "data_validity_comment": null,
+   "pchembl_value": 10.0
+  },
+  {
+   "activity_id": 26045469,
+   "parent_molecule_chembl_id": "CHEMBL280487",
+   "target_chembl_id": "CHEMBL6066240",
+   "standard_type": "IC50",
+   "assay_chembl_id": "CHEMBL5587148",
+   "assay_type": "B",
+   "document_chembl_id": "CHEMBL5584313",
+   "data_validity_comment": null,
+   "pchembl_value": 8.46
+  }
+ ],
+ "activity_comments": {
+  "69890": null,
+  "69891": null,
+  "86934": null,
+  "86935": null,
+  "86936": null,
+  "86937": null,
+  "204928": null,
+  "261979": null,
+  "261983": null,
+  "261984": null,
+  "261988": null,
+  "261992": null,
+  "261993": null,
+  "261994": null,
+  "261998": null,
+  "479782": null,
+  "479783": null,
+  "479784": null,
+  "479785": null,
+  "820938": null,
+  "1132478": null,
+  "1132479": null,
+  "1891363": null,
+  "2150065": null,
+  "2427687": null,
+  "2427691": null,
+  "2427695": null,
+  "2427699": null,
+  "2533790": null,
+  "2533791": null,
+  "3523216": null,
+  "3523217": null,
+  "6290626": null,
+  "6290656": null,
+  "6290686": null,
+  "18276293": null,
+  "18276295": null,
+  "18276298": null,
+  "26045457": null,
+  "26045463": null,
+  "26045469": null
+ },
+ "targets": {
+  "CHEMBL4763": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Serine/threonine-protein phosphatase 2A 56 kDa regulatory subunit alpha isoform",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL4877": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Neuropeptide Y receptor type 4",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL2845": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Protein phosphatase 1B",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL267": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Proto-oncogene tyrosine-protein kinase Src",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL4703": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Serine/threonine-protein phosphatase 2A catalytic subunit alpha isoform",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL4438": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Serine/threonine-protein phosphatase PP1-gamma catalytic subunit",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL335": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Tyrosine-protein phosphatase non-receptor type 1",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  },
+  "CHEMBL2669": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Serine-threonine protein phosphatase 2A regulatory subunit",
+   "organism": "Gallus gallus",
+   "tax_id": 9031
+  },
+  "CHEMBL3879801": {
+   "target_type": "NON-MOLECULAR",
+   "pref_name": "NON-PROTEIN TARGET",
+   "organism": null,
+   "tax_id": null
+  },
+  "CHEMBL612558": {
+   "target_type": "ADMET",
+   "pref_name": "ADMET",
+   "organism": null,
+   "tax_id": null
+  },
+  "CHEMBL612545": {
+   "target_type": "UNCHECKED",
+   "pref_name": "Unchecked",
+   "organism": null,
+   "tax_id": null
+  },
+  "CHEMBL375": {
+   "target_type": "ORGANISM",
+   "pref_name": "Mus musculus",
+   "organism": "Mus musculus",
+   "tax_id": 10090,
+   "organism_class": [
+    "Eukaryotes",
+    "Mammalia",
+    "Rodentia"
+   ]
+  },
+  "CHEMBL614285": {
+   "target_type": "CELL-LINE",
+   "pref_name": "DLD-1",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0248",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL613508": {
+   "target_type": "CELL-LINE",
+   "pref_name": "DU-145",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0105",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL614062": {
+   "target_type": "CELL-LINE",
+   "pref_name": "N2a",
+   "organism": "Mus musculus",
+   "tax_id": 10090,
+   "cellosaurus": {
+    "id": "CVCL_0470",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL389": {
+   "target_type": "CELL-LINE",
+   "pref_name": "P388",
+   "organism": "Mus musculus",
+   "tax_id": 10090,
+   "cellosaurus": {
+    "id": "CVCL_7222",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL394": {
+   "target_type": "CELL-LINE",
+   "pref_name": "HCT-116",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0291",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL395": {
+   "target_type": "CELL-LINE",
+   "pref_name": "HepG2",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0027",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL396": {
+   "target_type": "CELL-LINE",
+   "pref_name": "NCI-H460",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0459",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL398": {
+   "target_type": "CELL-LINE",
+   "pref_name": "KB",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_0372",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL612268": {
+   "target_type": "CELL-LINE",
+   "pref_name": "QG-56",
+   "organism": "Homo sapiens",
+   "tax_id": 9606,
+   "cellosaurus": {
+    "id": "CVCL_6943",
+    "category": "Cancer cell line"
+   }
+  },
+  "CHEMBL6066240": {
+   "target_type": "SINGLE PROTEIN",
+   "pref_name": "Tissue factor pathway inhibitor 2",
+   "organism": "Homo sapiens",
+   "tax_id": 9606
+  }
+ },
+ "cohorts": {
+  "CHEMBL267|IC50": {
+   "below": {
+    "6.68": 1922
+   },
+   "equal": {
+    "6.68": 19
+   },
+   "total": 3966
+  },
+  "CHEMBL2669|IC50": {
+   "below": {
+    "9.175": 39
+   },
+   "equal": {
+    "9.175": 0
+   },
+   "total": 45
+  },
+  "CHEMBL2845|IC50": {
+   "below": {
+    "6.9": 23
+   },
+   "equal": {
+    "6.9": 1
+   },
+   "total": 26
+  },
+  "CHEMBL335|IC50": {
+   "below": {
+    "7.845": 3439
+   },
+   "equal": {
+    "7.845": 0
+   },
+   "total": 3497
+  },
+  "CHEMBL375|ED50": {
+   "below": {
+    "8.52": 71
+   },
+   "equal": {
+    "8.52": 1
+   },
+   "total": 116
+  },
+  "CHEMBL389|EC50": {
+   "below": {
+    "7.05": 22
+   },
+   "equal": {
+    "7.05": 0
+   },
+   "total": 26
+  },
+  "CHEMBL394|IC50": {
+   "below": {
+    "6.17": 15251,
+    "9.07": 21905
+   },
+   "equal": {
+    "6.17": 75,
+    "9.07": 2
+   },
+   "total": 22147
+  },
+  "CHEMBL395|IC50": {
+   "below": {
+    "6.27": 15486
+   },
+   "equal": {
+    "6.27": 25
+   },
+   "total": 17904
+  },
+  "CHEMBL4438|IC50": {
+   "below": {
+    "7.32": 13
+   },
+   "equal": {
+    "7.32": 2
+   },
+   "total": 32
+  },
+  "CHEMBL4703|IC50": {
+   "below": {
+    "8.15": 13
+   },
+   "equal": {
+    "8.15": 1
+   },
+   "total": 15
+  },
+  "CHEMBL4763|IC50": {
+   "below": {
+    "10.15": 2
+   },
+   "equal": {
+    "10.15": 1
+   },
+   "total": 3
+  },
+  "CHEMBL4877|IC50": {
+   "below": {
+    "8.0": 19
+   },
+   "equal": {
+    "8.0": 1
+   },
+   "total": 25
+  },
+  "CHEMBL6066240|IC50": {
+   "below": {
+    "8.46": 23
+   },
+   "equal": {
+    "8.46": 1
+   },
+   "total": 25
+  },
+  "CHEMBL614062|IC50": {
+   "below": {
+    "6.07": 74
+   },
+   "equal": {
+    "6.07": 1
+   },
+   "total": 90
+  },
+  "CHEMBL396|IC50": {
+   "below": {
+    "9.19": 5627
+   },
+   "equal": {
+    "9.19": 1
+   },
+   "total": 5697
+  },
+  "CHEMBL398|IC50": {
+   "below": {
+    "10.47": 5328
+   },
+   "equal": {
+    "10.47": 3
+   },
+   "total": 5343
+  },
+  "CHEMBL612268|IC50": {
+   "below": {
+    "8.515": 84
+   },
+   "equal": {
+    "8.515": 0
+   },
+   "total": 120
+  },
+  "CHEMBL613508|IC50": {
+   "below": {
+    "9.09": 6584
+   },
+   "equal": {
+    "9.09": 2
+   },
+   "total": 6610
+  },
+  "CHEMBL614285|IC50": {
+   "below": {
+    "8.62": 1244
+   },
+   "equal": {
+    "8.62": 3
+   },
+   "total": 1353
+  }
+ }
+}
