@@ -7,8 +7,9 @@ The criteria are fixed before any result is read and nothing is tuned to pass:
         against the same fixed RDA cohort. Pass: Spearman rho >= 0.6 between the two, one-sided permutation p < 0.05.
   MCUI  back-test of the preliminary Rapid LC step on the species that already have an IUCN or Korean national category.
         Pass: no species assessed VU, EN or CR is called likely Least Concern (a false LC would understate urgency).
-  MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin); not computable without their species ->
-        compound -> assay chains, which are not collected here.
+  MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin), scored offline with the published ChEMBL
+        rule from the stored case snapshot (3.27; before: not computable). Pass: a case species ranks above every operating
+        species that has an MBPI.
 Writes research/verified-indices/posthoc-validation-<date>.json; the config copies each result into posthoc.validation_sets.
 """
 from __future__ import annotations
@@ -170,6 +171,7 @@ def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
     snap = {**snap, "sources": {"chembl_mbpi": {"version": snap["chembl_version"]}}, "link_review": review,
             "activities": [a for a in snap["activities"] if (snap["activity_comments"][str(a["activity_id"])] or "").lower() not in drop]}
     items, summary = B.chembl_items({"chembl_links": snap}, config, limit=report["chembl_common_taxon_limit"])
+    B.require(all(i["link_review"] == "accepted" for _, i in items), "a case ChEMBL item rests on a link without an accepted review")
     operating = {s["korean_name"]: s["scores"]["MBPI"] for s in report["species"] if s["scores"]["MBPI"] is not None}
     rows = []
     for s in snap["species"]:

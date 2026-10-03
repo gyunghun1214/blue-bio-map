@@ -160,6 +160,11 @@ class SnapshotGuards(unittest.TestCase):
         self.assertIn("only for species without a P703 link",
                       self.attempt(snapshot_date=papers["snapshot_date"], species=species))
 
+    def test_paper_links_must_all_be_in_the_snapshot(self):
+        # 3.27 review: a link added to the paper record without re-collecting its compounds would never score, silently
+        papers = json.loads((ROOT / CONFIG["chembl_bioactivity"]["paper_links"]).read_text(encoding="utf-8"))
+        self.assertIn("hold different original-paper links", self.attempt(snapshot_date=papers["snapshot_date"], species=[]))
+
     def test_source_redefinition(self):
         evidence = json.loads((ROOT / "research" / "verified-indices" / "evidence.json").read_text(encoding="utf-8"))
         taken = next(iter(evidence["sources"]))

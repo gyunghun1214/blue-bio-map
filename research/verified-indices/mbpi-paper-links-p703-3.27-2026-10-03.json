@@ -108,7 +108,7 @@
    "review": {
     "decision": "accept",
     "class": null,
-    "reason": "Identified in the species' own wounded thallus (activated defence chemistry), not a contaminant or a diet product. Caveats carried to the page: the only scoring activity is one PubChem qHTS screening row, and PGA2 is a thiol-reactive cyclopentenone whose other qHTS hits are thiol enzymes, so non-specific reactivity cannot be ruled out."
+    "reason": "Identified in the species' own wounded thallus (activated defence chemistry), not a contaminant or a diet product. Caveats carried to the page: the only scoring activity is one PubChem qHTS screening row, and PGA2 is a thiol-reactive cyclopentenone that is Active in many unrelated PubChem screens (thiol enzymes such as ALDH1A1 and PTPN7, but also HPGD, Sfp PPTase and receptor or integrin assays), so non-specific reactivity cannot be ruled out."
    }
   }
  ],

@@ -2608,6 +2608,7 @@ class VerifiedPilot327Tests(unittest.TestCase):
         self.assertEqual({k: (v["pIC50"], v["percentile"], v["evidence_factor"]) for k, v in items.items()},
                          {"YALPHA": (5.009, 75.85, 0.75), "GYALPHA": (4.564, 57.1, 0.75)})
         self.assertEqual(items["YALPHA"]["original_paper_dois"], ["10.1271/bbb.60.1353"])
+        self.assertTrue(all("3시간" in i["caveat"] and "액틴" in i["caveat"] for i in items.values()))  # the reviewed assay caveat reaches the page
         self.assertIn("wako_1996_squid", self.new[342067]["source_ids"])
         self.assertEqual((self.new[342067]["scores"]["BBVI"], self.new[342067]["bbvi_label"]), (51.5, "단일 논문"))
 
@@ -2615,6 +2616,7 @@ class VerifiedPilot327Tests(unittest.TestCase):
         oyster = max(self.new[836041]["bioactivity_trace"], key=lambda i: i["adjusted"])
         self.assertEqual((oyster["compound_id"], oyster["target_chembl_id"], oyster["standard_type"], oyster["percentile"],
                           oyster["link_factor"], oyster["activity_factor"]), ("CHEMBL1822160", "CHEMBL378", "IC50", 24.51, 0.75, 0.75))
+        self.assertIn("EC50 2.36", oyster["caveat"])  # the score row is a review's restatement of one EC50 measurement; the page says so
         alga = max(self.new[236157]["bioactivity_trace"], key=lambda i: i["adjusted"])
         self.assertEqual((alga["compound_id"], alga["target_chembl_id"], alga["standard_type"], alga["percentile"],
                           alga["link_factor"], alga["activity_factor"]), ("CHEMBL1084643", "CHEMBL2392", "Potency", 87.62, 0.75, 0.75))
@@ -2661,16 +2663,18 @@ class VerifiedPilot327Tests(unittest.TestCase):
         # the stored method and result files keep the bytes their runs hashed (.gitattributes keeps the folder byte-exact)
         base = ROOT / "research/verified-indices/posthoc-3.27"
         checked = 0
+        # raw OBIS/IUCN pulls the trend run hashed but the repo does not carry (third-party data; see the 3.27 record)
+        uncommitted = {("mcui-obis-trend", n) for n in ("trend_results.json", "candidates.json", "jp_lists.json")}
         for folder, book in (("mcui-obis-trend", "locked.sha256"), ("mcui-obis-trend", "results.sha256"), ("mcui-criterion-a", "locked.sha256")):
             for line in (base / folder / book).read_text(encoding="utf-8").splitlines():
                 parts = line.split()
                 name = parts[1].lstrip("*") if len(parts) == 2 else None
-                if not name or not (base / folder / name).exists():
+                if not name or (folder, name) in uncommitted:
                     continue
                 body = (base / folder / name).read_bytes()
                 self.assertEqual(hashlib.sha256(body).hexdigest(), parts[0], name)
                 checked += 1
-        self.assertGreaterEqual(checked, 5)
+        self.assertEqual(checked, 8)
 
     def test_nothing_else_changes(self):
         def strip(report):
@@ -2679,6 +2683,8 @@ class VerifiedPilot327Tests(unittest.TestCase):
                 r[k] = None
             for k in ("wako_1996_squid", "slu_rodlista_2025"):
                 r["sources"].pop(k, None)
+            for k in ("chembl_mbpi", "pubchem_inchikey_mbpi", "wikidata_p703_lotus"):  # re-queried by the supplement
+                r["sources"][k]["accessed"] = r["sources"][k]["version"] = None
             for s in r["species"] + r["candidate_species"]:
                 for k in ("scores", "withheld_reasons", "score_status", "bbvi_label", "mbpi_label", "reference_combination",
                           "sensitivity", "bbvi_mbpi_from_peptide_stratum"):
@@ -2693,6 +2699,8 @@ class VerifiedPilot327Tests(unittest.TestCase):
                     if "substitute_use" in n:
                         n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
             return r
+        self.assertEqual([self.report["sources"][k]["accessed"] for k in ("chembl_mbpi", "wikidata_p703_lotus")], ["2026-10-03"] * 2)
+        self.assertEqual(self.report["sources"]["chembl_mbpi"]["version"], self.old_report["sources"]["chembl_mbpi"]["version"])
         self.assertEqual(strip(self.report), strip(self.old_report))
 
 

@@ -37,6 +37,8 @@ def main() -> None:
     cfg = json.loads(args.config.read_text(encoding="utf-8"))
     rule = cfg["chembl_bioactivity"]
     base = read(rule["snapshot"])
+    if {k: rule[k] for k in base["filters"]} != base["filters"]:  # the file records the filters it was collected with
+        raise ValueError("config ChEMBL filters differ from the base snapshot's")
     status = C.get(C.CHEMBL + "status.json")
     version = f"{status['chembl_db_version']} ({status['chembl_release_date']})"
     if version != base["sources"]["chembl_mbpi"]["version"]:
@@ -139,8 +141,14 @@ def main() -> None:
             c["below"][str(m)] = sum(C.chembl_count({**f, "pchembl_value__lt": m}) for f in base_f)
             c["equal"][str(m)] = sum(C.chembl_count({**f, "pchembl_value": m}) for f in base_f) if round(m, 2) == m else 0
 
-    links = [{"aphia_id": p["aphia_id"], "compound_qid": qids.get(p["inchikey"]), "inchikey": p["inchikey"],
-              "statements": [{"taxon_qid": "original_paper", "references": ["doi:" + p["doi"].lower()]}]} for p in paper]
+    # one link per (species, compound) with all its papers, as collect_mbpi_links.py builds it; a compound the base already
+    # holds keeps the base item, so the commonness fence still sees its taxon count
+    known = {l["inchikey"]: l["compound_qid"] for s in base["species"] for l in s["links"] if l["compound_qid"]}
+    grouped = {}
+    for p in paper:
+        grouped.setdefault((p["aphia_id"], p["inchikey"]), set()).add("doi:" + p["doi"].lower())
+    links = [{"aphia_id": a, "compound_qid": qids.get(ik) or known.get(ik), "inchikey": ik,
+              "statements": [{"taxon_qid": "original_paper", "references": sorted(refs)}]} for (a, ik), refs in sorted(grouped.items())]
     out = {
         "snapshot_date": today, "queried_on": today, "base_snapshot": rule["snapshot"], "chembl_version": version,
         "purpose": "Compounds of species -> compound links accepted after the base snapshot, collected from the same ChEMBL release "

@@ -509,7 +509,7 @@
       ],
       "decision": "accept",
       "class": null,
-      "reason": "Isolated from the edible parts of C. sikamea from Zhanjiang, China (Kong et al. 2021, full text). None of the four rejection classes applies. Caveats for the page: flazin is also a known soy-sauce and fermentation beta-carboline, and the paper reports no spectra for its own isolate. Its ChEMBL anti-HIV rows come from reviews that restate one earlier measurement, so the activity side counts as one document."
+      "reason": "Isolated from the edible parts of C. sikamea from Zhanjiang, China (Kong et al. 2021, full text). None of the four rejection classes applies. Caveats for the page: flazin is also a known soy-sauce and fermentation beta-carboline, and the paper reports no spectra for its own isolate. Its ChEMBL anti-HIV rows come from two reviews and one synthesis paper that restate one earlier measurement (EC50 2.36 uM, Tang et al. 2008), so the activity side counts as one document."
     }
   ],
   "forked_from": "mbpi-link-review-2026-09-30.json",

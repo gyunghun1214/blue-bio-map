@@ -1,7 +1,7 @@
 {
   "method_version": "verified-pilot-3.27",
   "status": "provisional_unvalidated",
-  "changes_from": "verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix and map with its own marker; it was a reference value since 3.15 (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (OBIS trend element out of panel; a catch-based criterion-A screen), so no MCUI is filled from them. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md.",
+  "changes_from": "verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix as a hollow point and counted in each map cell's tooltip; 16 of the 19 were reference values since 3.15 (살오징어, 시카메굴 and 꼬시래기 have an MBPI only since 3.27) (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (the OBIS trend element, whose +10 rule is kept unchanged; a catch-based criterion-A screen), so no MCUI is filled from them. (5) The approved new MBPI strata were not added: none holds a row for a blank species; the team lead's confirmation is pending. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md.",
   "nutrition": {
     "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
     "components": {
@@ -295,7 +295,7 @@
     ],
     "single_source_policy": "score_with_label",
     "single_source_bbvi_label": "단일 논문",
-    "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries the single-paper factor 0.75. It enters the matrix and map with its own marker. Up to 3.26 such a BBVI was withheld and shown only as a reference combination."
+    "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries its single-paper factor (0.75; 0.75 x 0.75 for a ChEMBL item with one link paper and one activity document). In the matrix it is a hollow point; on the map each cell's tooltip counts such species and the cell's species list carries the label. Up to 3.26 such a BBVI was withheld and shown only as a reference combination."
   },
   "sensitivity": {
     "mfpi_weights": [
@@ -324,7 +324,7 @@
         ],
         "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
         "result": "failed",
-        "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 점수를 내는 화합물이 승인 약물 ziconotide뿐이라 승인 약물 제외 규칙으로 계산되지 않습니다. 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
+        "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 Wikidata에 이 종(이명 포함)과 화합물을 잇는 P703 연결이 없어 계산되지 않습니다(ziconotide도 연결되지 않았고, 연결되더라도 승인 약물 제외 규칙으로 빠집니다). 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
         "n": 3,
         "computed": 2,
         "case_mbpi": {
@@ -394,7 +394,7 @@
         "n": 14,
         "threatened_detected": 0,
         "exact_agreement": 1,
-        "reason": "어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 역검증했지만 통과하지 못했습니다. 판정 가능한 종이 14종 중 4종뿐이었고, EN인 해삼·전복은 양식 비중이 크거나 종 수준 어획 통계가 없어 판정하지 못했습니다. 해조류는 양식이 98–100%라 이 방법을 쓸 수 없습니다. 그래서 MCUI 빈칸 13종은 이 방법으로 채우지 않습니다(팀장 결정 2026-10-03: 통과할 때만 점수로 사용).",
+        "reason": "어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 역검증했지만 통과하지 못했습니다. 판정 가능한 종이 14종 중 4종뿐이었고, EN인 해삼·전복은 양식 비중이 크거나 종 수준 어획 통계가 없어 판정하지 못했습니다. 해조류는 양식이 98–100%라 이 방법을 쓸 수 없습니다. 그래서 남은 MCUI 빈칸 12종(사전 등록 대상 13종 가운데 가시파래는 스웨덴 목록으로 채움)은 이 방법으로 채우지 않습니다(팀장 결정 2026-10-03: 통과할 때만 점수로 사용).",
         "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json"
       }
     }
@@ -596,10 +596,10 @@
     "compound_caveats": {
       "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
       "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-      "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS) 'Active' 1건 기반입니다. 확인 시험이 없고, PGA2는 티올과 반응하는 구조라 비특이 반응일 수 있습니다.",
-      "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 한 측정을 다시 실은 리뷰 기록입니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다."
+      "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
+      "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다."
     },
-    "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score.",
+    "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score. Since 3.27 also the single-screen caveat for PGA2 (꼬시래기) and the restated-measurement and food-origin caveat for flazin (시카메굴); a reviewed peptide row may carry its own caveat the same way (살오징어, the 3-h ACE pre-incubation). None changes a score.",
     "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-03.json",
     "snapshot_supplement_rule": "After 3.26: compounds of links accepted after the 2026-09-30 snapshot are collected from the same ChEMBL release (scripts/collect_mbpi_supplement.py, same filters, same cohort counting) and merged into it. The supplement adds compounds, their admitted activities with the depositor's activity_comment, new targets and the cohort counts at the new medians; a cohort the snapshot already holds must keep its total. Original-paper links of species without P703 statements are added as species links."
   },

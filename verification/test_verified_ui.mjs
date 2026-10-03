@@ -38,6 +38,13 @@ for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-mar
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
 // 3.27: the MBPI drug-origin check is computed and failed, so MBPI and the BBVI built on it carry that label
 assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>83\.9 · 시범 지표 · 사후 검증 미통과<\/b>/);
+// 3.27 review: a labelled BBVI is described as a score everywhere, with the factor actually applied and matrix wording only when placed
+{const cov=ctx.coverage(by(241776)).checks.find(c=>c.name==='생리활성').detail;
+  assert.ok(cov.includes("BBVI에도 '단일 논문' 표시를 붙입니다")&&!cov.includes('BBVI에 쓰지 않습니다'),cov);
+  const placed=ctx.renderScores(by(241776)),unplaced=ctx.renderScores(by(250680)),squid=ctx.renderScores(by(342067));
+  assert.ok(placed.includes('근거 계수(0.75)')&&placed.includes('매트릭스에서는 속이 빈 점입니다'),'placed labelled BBVI note');
+  assert.ok(unplaced.includes('ChEMBL 항목은 종 연결 원논문과 활성 문서 중 적은 쪽')&&unplaced.includes('MCUI가 없어 매트릭스·지도 색에는 들어가지 않습니다')&&!unplaced.includes('속이 빈 점'),'unplaced labelled BBVI note');
+  assert.ok(squid.includes('3시간')&&squid.includes('액틴'),'squid peptide caveat shown');}
 // 3.3 fills 홍합 zinc from uFiSh; 톳 (a seaweed; uFiSh covers fish and shellfish only) keeps a blank zinc.
 // 3.6: that blank is left out of the mean (3 of 4 components) and said so, never scored 0
 html=ctx.renderScores(by(494972));
