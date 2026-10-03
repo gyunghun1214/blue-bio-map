@@ -308,7 +308,8 @@ try{
   const popCells=await evaluate("spatialCells(selected).map(rows=>[...rows.map(r=>'공개 집계 기간 '+r.period),...rows.map(r=>'선별 기록 '+r.records+'건 · 조사 지점 '+r.sites+'곳'),...rows.flatMap(r=>r.licenses)])");
   check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 보류','판단 보류 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
-  check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
+  // Cell fill is 0.1 on the satellite/depth basemaps (satellite is the default since 2026-10-03), 0.06 on the outline fallback.
+  check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<=.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
   // The popup opened above auto-pans the map; measure the dot only after that pan and the scroll have settled.
   await evaluate("map.closePopup();document.getElementById('map').scrollIntoView({block:'center',behavior:'instant'})");
   await sleep(800);
@@ -378,7 +379,7 @@ try{
   await sleep(800);
   const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
   check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
-  await evaluate("setBasemap('basic');setView('explore');history.replaceState(null,'',location.pathname);1");
+  await evaluate("setBasemap('satellite');setView('explore');history.replaceState(null,'',location.pathname);1");
   // A real tab change starts at the top of the page (setView scrolls only when the view changes).
   const tabTop=await evaluate("(()=>{setView('compare');scrollTo(0,1500);const from=Math.round(scrollY);document.querySelector('[data-view=method]').click();const r={from,to:Math.round(scrollY),view:currentView};setView('explore');return r})()");
   check('Tab change resets the page to the top: compare scrolled down, then the 근거와 방법 tab opens at scrollY 0',tabTop.from>0&&tabTop.to===0&&tabTop.view==='method',JSON.stringify(tabTop));
@@ -471,8 +472,9 @@ try{
     pages.total===expPub+expCand&&pages.out[0].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&pages.out[0].prev&&JSON.stringify(pages.out[0].heads)===JSON.stringify(pages.names.slice(0,5))&&
     pages.out[1].label===`2 / ${Math.ceil(pages.total/5)} · 6–10종`&&JSON.stringify(pages.out[1].heads)===JSON.stringify(pages.names.slice(5,10))&&
     pages.out[2].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&JSON.stringify(pages.out[2].heads)===JSON.stringify(pages.names.slice(0,5)),JSON.stringify(pages));
-  // ---------- Background maps: basic / satellite (NASA GIBS) / depth (GEBCO) ----------
+  // ---------- Background maps: satellite (NASA GIBS, default) / depth (GEBCO); the bundled outline map only replaces failed tiles ----------
   await pick(494972);
+  check('Basemap switch: only 위성 and 수심, no 기본 button',(await evaluate("[...document.querySelectorAll('[data-basemap]')].map(b=>b.dataset.basemap+':'+b.textContent).join()"))==='satellite:위성,depth:수심');
   const tiles=host=>evaluate(`[...document.querySelectorAll('#map img.leaflet-tile-loaded')].filter(i=>i.src.includes('${host}')).length`);
   const waitTiles=async host=>{for(let i=0;i<60;i++){if(await tiles(host)>0)return true;await sleep(500);}return false;};
   // screenshots only after every visible tile finished (GEBCO WMS is slow)
@@ -483,13 +485,13 @@ try{
   await evaluate("document.querySelector('[data-basemap=depth]').click();1");
   check('Depth basemap: GEBCO tiles load, cells kept',await waitTiles('wms.gebco.net')&&(await shapes())===hijMap.cells&&(await tiles('gibs.earthdata.nasa.gov'))===0);
   await settle();await shot('desktop-basemap-depth');
-  await evaluate("document.querySelector('[data-basemap=basic]').click();1");await sleep(300);
-  check('Basic basemap: 1:10m outline, no external tiles',(await evaluate("document.querySelectorAll('#map img.leaflet-tile').length"))===0&&!(await evaluate("document.getElementById('map').classList.contains('map-dark')"))&&(await shapes())===hijMap.cells);
   await send('Network.enable');await send('Network.setCacheDisabled',{cacheDisabled:true});await send('Network.setBlockedURLs',{urls:['*gibs.earthdata.nasa.gov*']});
   await evaluate("document.querySelector('[data-basemap=satellite]').click();1");
   let fell='';for(let i=0;i<40;i++){await sleep(250);fell=await evaluate("document.getElementById('basemap-status').textContent");if(fell)break;}
-  check('Tile failure falls back to basic with a message',fell.includes('기본 지도로 바꿨습니다')&&(await evaluate("document.querySelector('[data-basemap=basic]').getAttribute('aria-pressed')"))==='true'&&(await shapes())===hijMap.cells,fell);
+  check('Tile failure falls back to the 1:10m outline map with a message: no external tiles, no button pressed, cells kept',fell.includes('경계선만 있는 지도로 바꿨습니다')&&(await evaluate("basemap==='basic'&&!document.querySelector('[data-basemap][aria-pressed=true]')&&!document.getElementById('map').classList.contains('map-dark')&&document.querySelectorAll('#map img.leaflet-tile').length===0"))&&(await shapes())===hijMap.cells,fell);
   await send('Network.setBlockedURLs',{urls:[]});await send('Network.setCacheDisabled',{cacheDisabled:false});
+  await evaluate("localStorage.setItem('basemap','basic');1");await load();
+  check('A browser that stored 기본 before 2026-10-03 opens satellite, the default',await evaluate("basemap==='satellite'&&localStorage.getItem('basemap')==='satellite'&&document.querySelector('[data-basemap=satellite]').getAttribute('aria-pressed')==='true'"));
   await evaluate("try{localStorage.removeItem('basemap')}catch{};1");
 
   // ---------- Page width: only the comparison wrapper may scroll sideways ----------
