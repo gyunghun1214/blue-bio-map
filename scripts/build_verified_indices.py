@@ -764,10 +764,11 @@ def chembl_stratum(target: dict, strata: dict) -> str | None:
 
 
 def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, limit: float | None = None,
-                 exclude_drugs: bool = True) -> tuple[list, dict]:
+                 exclude_drugs: bool = True, trail: dict | None = None) -> tuple[list, dict]:
     """verified-pilot-3.1 ChEMBL stratum: species -> compound (Wikidata P703, mostly LOTUS, with reference DOIs)
     -> ChEMBL parent -> admitted pChEMBL, ranked in its ChEMBL target x endpoint cohort. The value is a public
-    activity of a compound reported in the species, never the efficacy of the species or its extract."""
+    activity of a compound reported in the species, never the efficacy of the species or its extract.
+    `trail` (scripts/lineage.py only) receives each link's status and each unused activity's reason; it changes nothing."""
     rule, snap = config["chembl_bioactivity"], evidence["chembl_links"]
     minimum = minimum or rule["minimum_cohort_records"]
     limit = common_limit(snap) if limit is None else limit
@@ -801,6 +802,12 @@ def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, li
             counts["approved_drug"] += bool(drug)
             chain = {"origin": bool(dois) and not common and not drug and not (verdict and verdict["decision"] == "reject"),
                      "structure_id": bool(ident["parent_chembl_id"])}
+            if trail is not None:
+                trail["links"].append({"aphia_id": s["aphia_id"], "inchikey": link["inchikey"], "parent": ident["parent_chembl_id"],
+                                       "status": "rejected_by_review" if verdict and verdict["decision"] == "reject"
+                                       else "no_reference_doi" if not dois else "common_metabolite" if common
+                                       else "approved_drug" if drug else "no_chembl_parent" if not chain["structure_id"]
+                                       else "accepted" if verdict else "accepted_not_reviewed"})
             if chain["origin"] and chain["structure_id"]:
                 p = parents[ident["parent_chembl_id"]]
                 p["reviewed"] &= verdict is not None
@@ -841,6 +848,16 @@ def chembl_items(evidence: dict, config: dict, *, minimum: int | None = None, li
                     "evidence_level": 2, "link_review": "accepted" if info["reviewed"] else "not_reviewed",
                     # verified-pilot-3.20: a compound-level caveat (e.g. a possible drying artifact) travels with the item
                     **{"caveat": rule["compound_caveats"][k] for k in sorted(info["inchikeys"]) if k in rule.get("compound_caveats", {})}}))
+        if trail is not None:  # every activity of a linked parent that no item of this species uses, with the first rule that drops it
+            used = {x for a, i in out if a == s["aphia_id"] for x in i["activity_ids"]}
+            for l in (l for l in trail["links"] if l["aphia_id"] == s["aphia_id"] and l["parent"]):
+                for a in trail["by_parent"].get(l["parent"], []):
+                    t, key = a["target_chembl_id"], f"{a['target_chembl_id']}|{a['standard_type']}"
+                    why = (None if l["status"].startswith("accepted") else l["status"]) or (
+                        "target_outside_strata" if not strata[t] else "cohort_below_minimum" if snap["cohorts"][key]["total"] < minimum
+                        else None if a["activity_id"] in used else "not_best_target_in_stratum_class")
+                    if why:
+                        trail["activities"][(s["aphia_id"], a["activity_id"])] = {"inchikey": l["inchikey"], "parent": l["parent"], "reason": why}
         counts["scored_compounds"] = len({i["compound_id"] for a, i in out if a == s["aphia_id"]})
         summary[s["aphia_id"]] = {"counts": dict(counts), "sufficiency": bio_sufficiency(chains),
                                   "paper_search": snap.get("paper_search", {}).get(s["aphia_id"]), "rejected_links": rejected}

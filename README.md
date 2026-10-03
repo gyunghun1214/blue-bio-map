@@ -23,6 +23,8 @@ alt F4의 Ocean 20 Challenge 본선 준비용 연구 프로토타입.
 
 Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m http.server 8765 --bind 127.0.0.1 --directory dist` 실행 후 `http://127.0.0.1:8765/`를 연다.
 
+MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기록은 `python scripts/lineage.py explain --aphia <AphiaID>` / `diff` / `validate`로 본다. 테이블 구조와 새 버전 발행 시 갱신 절차는 [docs/lineage.md](docs/lineage.md)에 있다.
+
 지도 라이브러리(Leaflet) 파일은 `python scripts/prepare_snapshot.py`로 받는다. 원자료는 제외된 `tmp/`에만 저장하고, 배포 파일에는 원좌표·연락처를 포함하지 않는다.
 
 ## 공개 배포 (2026-09-25)
