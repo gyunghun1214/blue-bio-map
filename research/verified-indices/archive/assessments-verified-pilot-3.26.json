@@ -3,7 +3,6 @@
   "candidate_species": [
     {
       "aphia_id": 377084,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -226,7 +225,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -444,7 +443,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "다시마",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -592,26 +591,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 26.5,
+          "MFPI": 56.7
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1371/journal.pone.0258980"
+        ],
+        "mbpi_stratum": "ChEMBL_37:CHEMBL612851|IC50",
+        "mfpi_cohort": "rda-10.4-raw-seaweeds",
+        "sensitivity": {
+          "0.25": 34.1,
+          "0.5": 41.6,
+          "0.75": 49.2
+        },
+        "used_for_score": false,
+        "value": 41.6
+      },
       "scientific_name": "Saccharina japonica",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 41.6,
+        "BBVI": null,
         "MBPI": 26.5,
         "MCUI": null,
         "MFPI": 56.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 34.1,
-          "0.5": 41.6,
-          "0.75": 49.2
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 23.0,
         "median_compound_sensitivity": 23.0,
         "range_from_aggregation": [
@@ -639,7 +659,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -647,7 +667,6 @@
     },
     {
       "aphia_id": 371986,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -1346,7 +1365,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1396,7 +1415,7 @@
         "mean_ratio": 0.33
       },
       "korean_name": "감태",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "small_molecule",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -1584,7 +1603,6 @@
     },
     {
       "aphia_id": 234476,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -1750,7 +1768,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1778,8 +1796,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -1798,38 +1815,81 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.33
       },
       "korean_name": "가시파래",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "range_state",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "range_state",
+        "basis": "preliminary",
         "category": "LC",
-        "label": "서식국 국가 평가 기반 시범 MCUI",
-        "pilot_mapping": "LC -> 10 (Sweden national red list, team pilot rule)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "aphia_id": 234476,
-          "assessment_basis": "The Swedish list applies the IUCN categories and criteria at the regional level; LC is an assigned category ('De skattade värdena ... ligger alla inom intervallet för kategorin Livskraftig (LC)'), not an absence from the list.",
-          "category": "LC",
-          "category_as_published": "Livskraftig (LC)",
-          "continuity": "LC in the 2020 and 2025 Swedish lists (NE in 2010). Other range-state lists read on 2026-10-03: Norway, Rødlista for arter 2021 (Artsdatabanken), LC (also LC in 2015 and 2010); Finland, 2019 red list (Ministry of the Environment / SYKE, laji.fi MX.254295), DD.",
-          "country": "Sweden",
-          "country_ko": "스웨덴",
-          "limitations": "A distant range state: Sweden, Norway and Finland assess North-East Atlantic and Baltic populations, not the North-West Pacific population around Korea (the project's reviewed native-range box for this species is the North-West Pacific). Finland's 2019 list gives DD for the same species. The Ulva linza-procera-prolifera complex is hard to separate, so the same name may not mean the same biological entity in both oceans. Never ranked or pooled with IUCN-based or Korean national MCUI.",
-          "list": "Rödlistade arter i Sverige 2025 (SLU Artdatabanken), Rodlistearbete_2025.csv row for taxon 232807",
-          "name_as_published": "Ulva prolifera O.F.Müll. (spretig tarmalg), Dyntaxa 232807; synonyms there include Enteromorpha prolifera",
-          "reviewed": true,
-          "scientific_name": "Ulva prolifera",
-          "scope": "national (Sweden: Skagerrak, Kattegat and Baltic coasts)",
-          "selection_rule": "Several range states list the species. Following the team-lead decision of 2026-10-03, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, including a DD, are shown as limitations.",
-          "source_id": "slu_rodlista_2025"
+          "aoo_cells": 101,
+          "aoo_km2": 10100,
+          "countries_gbif": [
+            "CN",
+            "JP",
+            "KR",
+            "RU",
+            "TW",
+            "VN"
+          ],
+          "eoo_km2": 4900669,
+          "gbif": {
+            "count": 497,
+            "name": "Ulva prolifera O.F.Mull.",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 5273366,
+              "year": "1990,2026"
+            },
+            "read": 497,
+            "status": "ACCEPTED",
+            "taxon_key": 5273366,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 307,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 234476
+            }
+          },
+          "records": 233,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "slu_rodlista_2025"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1881,7 +1941,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -1905,20 +1965,23 @@
           "recent": 52
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "low_information_sufficiency",
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출 보류",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출 보류"
       },
       "scores": {
         "BBVI": null,
         "MBPI": 73.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": null
       },
       "sensitivity": {
@@ -1936,14 +1999,15 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
+        "bachman_2020_rapid_lc",
         "cancerppd_anticancer_cohort",
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "gbif_rapid_lc",
         "iucn_redlist_search",
         "li_2024_ulva_kaf",
         "obis_trend",
         "pubchem_inchikey_mbpi",
-        "slu_rodlista_2025",
         "wikidata_p703_lotus",
         "worms_rest_mbpi",
         "zhang_2022_ulva_htdt"
@@ -1952,13 +2016,12 @@
       "withheld_reasons": {
         "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": "comparable_nutrition_missing"
       }
     },
     {
       "aphia_id": 494853,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -2110,7 +2173,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2325,7 +2388,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "괭생이모자반",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -2474,26 +2537,49 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 21.6,
+          "MFPI": 53.5
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.3390/md19090497",
+          "10.3390/md20010028",
+          "10.3390/md20110710"
+        ],
+        "mbpi_stratum": "ChEMBL_37:CHEMBL5763|IC50",
+        "mfpi_cohort": "rda-10.4-raw-seaweeds",
+        "sensitivity": {
+          "0.25": 29.6,
+          "0.5": 37.6,
+          "0.75": 45.5
+        },
+        "used_for_score": false,
+        "value": 37.6
+      },
       "scientific_name": "Sargassum horneri",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 37.6,
+        "BBVI": null,
         "MBPI": 21.6,
         "MCUI": null,
         "MFPI": 53.5
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 29.6,
-          "0.5": 37.6,
-          "0.75": 45.5
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 21.6,
         "median_compound_sensitivity": 21.6,
         "range_from_aggregation": [
@@ -2523,7 +2609,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -2531,75 +2617,30 @@
     },
     {
       "aphia_id": 236157,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            5031175
-          ],
-          "adjusted": 49.28519180754227,
-          "caveat": "대량 스크리닝(PubChem qHTS) 'Active' 1건 기반입니다. 확인 시험이 없고, PGA2는 티올과 반응하는 구조라 비특이 반응일 수 있습니다.",
-          "chembl_stratum": "protein",
-          "cohort_records": 23070,
-          "compound_id": "CHEMBL1084643",
-          "compound_name": "PROSTAGLANDIN A2",
-          "document_chembl_ids": [
-            "CHEMBL1201862"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "MYHXHCUNDDAEOZ-FOSBLDSVSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.5,
-          "original_paper_dois": [
-            "10.1371/journal.pone.0029359"
-          ],
-          "percentile": 87.62,
-          "pubchem_cids": [
-            5280880
-          ],
-          "standard_type": "Potency",
-          "stratum_id": "ChEMBL_37:CHEMBL2392|Potency",
-          "stratum_kind": "chembl",
-          "stratum_label": "효소·수용체 등 단백질 표적",
-          "target_chembl_id": "CHEMBL2392",
-          "target_name": "DNA polymerase beta",
-          "target_organism": "Homo sapiens",
-          "target_type": "SINGLE PROTEIN",
-          "wikidata_qids": [
-            "Q27088462"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 0,
-          "linked": 10,
-          "scored_compounds": 1,
-          "with_reference_doi": 10
+          "linked": 9,
+          "scored_compounds": 0,
+          "with_reference_doi": 9
         },
         "paper_search": null,
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 49.3,
-          "minimum_cohort_10": 49.3,
-          "minimum_cohort_100": 49.3,
-          "no_approved_drug_filter": 49.3,
-          "no_common_metabolite_filter": 49.3
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -2677,7 +2718,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -2857,8 +2898,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -2892,11 +2933,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.61
+        "mean_ratio": 0.36
       },
       "korean_name": "꼬시래기",
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
@@ -3042,37 +3083,28 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
-        "BBVI": "산출됨",
-        "MBPI": "산출됨",
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 59.7,
-        "MBPI": 49.3,
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": 70.0
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 54.5,
-          "0.5": 59.7,
-          "0.75": 64.8
-        },
-        "mean_compound_sensitivity": 49.3,
-        "median_compound_sensitivity": 49.3,
-        "range_from_aggregation": [
-          49.3,
-          49.3
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 49.3,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 70.0
       },
       "source_ids": [
@@ -3091,15 +3123,14 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
     {
       "aphia_id": 145086,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -3266,7 +3297,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3483,7 +3514,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "청각",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -3634,26 +3665,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 0.4,
+          "MFPI": 36.7
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1016/s0031-9422(00)90263-2"
+        ],
+        "mbpi_stratum": "ChEMBL_37:CHEMBL4303835|IC50",
+        "mfpi_cohort": "rda-10.4-raw-seaweeds",
+        "sensitivity": {
+          "0.25": 9.5,
+          "0.5": 18.6,
+          "0.75": 27.6
+        },
+        "used_for_score": false,
+        "value": 18.6
+      },
       "scientific_name": "Codium fragile",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 18.6,
+        "BBVI": null,
         "MBPI": 0.4,
         "MCUI": null,
         "MFPI": 36.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 9.5,
-          "0.5": 18.6,
-          "0.75": 27.6
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 0.4,
         "median_compound_sensitivity": 0.4,
         "range_from_aggregation": [
@@ -3680,7 +3732,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -3688,8 +3740,7 @@
     },
     {
       "aphia_id": 231750,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -4155,7 +4206,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4834,7 +4885,7 @@
         "mean_ratio": 1.0
       },
       "korean_name": "바지락",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -4950,26 +5001,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 58.6,
+          "MFPI": 60.4
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1039/c8fo01146j"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 59.1,
+          "0.5": 59.5,
+          "0.75": 59.9
+        },
+        "used_for_score": false,
+        "value": 59.5
+      },
       "scientific_name": "Ruditapes philippinarum",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 59.5,
+        "BBVI": null,
         "MBPI": 58.6,
         "MCUI": 10.0,
         "MFPI": 60.4
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 59.1,
-          "0.5": 59.5,
-          "0.75": 59.9
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 37.2,
         "median_compound_sensitivity": 36.6,
         "range_from_aggregation": [
@@ -4999,7 +5071,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -5007,8 +5079,7 @@
     },
     {
       "aphia_id": 397082,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -5179,7 +5250,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5879,7 +5950,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "전복(종 수준)",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -5959,26 +6030,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 15.6,
+          "MFPI": 54.7
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1007/s00217-014-2315-8"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 25.4,
+          "0.5": 35.2,
+          "0.75": 44.9
+        },
+        "used_for_score": false,
+        "value": 35.2
+      },
       "scientific_name": "Haliotis discus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 35.2,
+        "BBVI": null,
         "MBPI": 15.6,
         "MCUI": 80.0,
         "MFPI": 54.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 25.4,
-          "0.5": 35.2,
-          "0.75": 44.9
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 15.6,
         "median_compound_sensitivity": 15.6,
         "range_from_aggregation": [
@@ -6004,7 +6096,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -6012,7 +6104,6 @@
     },
     {
       "aphia_id": 393716,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -6247,7 +6338,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7080,66 +7171,21 @@
     },
     {
       "aphia_id": 836041,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            25040660
-          ],
-          "adjusted": 13.787276226695111,
-          "caveat": "항바이러스 값은 한 측정을 다시 실은 리뷰 기록입니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
-          "chembl_stratum": "pathogen",
-          "cohort_records": 10781,
-          "compound_id": "CHEMBL1822160",
-          "compound_name": "FLAZINE",
-          "document_chembl_ids": [
-            "CHEMBL5244217"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "USBWYUYKHHILLZ-UHFFFAOYSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.62,
-          "original_paper_dois": [
-            "10.1016/s1875-5364(21)60119-x"
-          ],
-          "percentile": 24.51,
-          "pubchem_cids": [
-            5377686
-          ],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL378",
-          "target_name": "Human immunodeficiency virus 1",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q27137781"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
           "approved_drug": 0,
           "common_metabolite": 0,
-          "linked": 2,
+          "linked": 1,
           "rejected_by_review": 1,
-          "scored_compounds": 1,
-          "with_reference_doi": 2
+          "scored_compounds": 0,
+          "with_reference_doi": 1
         },
         "paper_search": {
-          "accepted_links": 2,
+          "accepted_links": 1,
           "europepmc_hits": 4,
           "papers_screened": 4,
           "searched_on": "2026-09-29"
@@ -7157,15 +7203,15 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 13.8,
-          "minimum_cohort_10": 13.8,
-          "minimum_cohort_100": 13.8,
-          "no_approved_drug_filter": 13.8,
-          "no_common_metabolite_filter": 13.8
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -7267,7 +7313,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -7776,8 +7822,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 1,
+          "ratio": 0.25,
           "required": [
             "origin",
             "structure_id",
@@ -7812,11 +7858,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.69
       },
       "korean_name": "시카메굴",
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "range_state",
       "mcui_substitute": {
         "basis": "range_state",
@@ -7891,32 +7937,22 @@
       "reference_combination": null,
       "scientific_name": "Magallana sikamea",
       "score_status": {
-        "BBVI": "산출됨",
-        "MBPI": "산출됨",
+        "BBVI": "산출 보류",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 35.0,
-        "MBPI": 13.8,
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": 35.0,
         "MFPI": 56.1
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 24.4,
-          "0.5": 35.0,
-          "0.75": 45.5
-        },
-        "mean_compound_sensitivity": 13.8,
-        "median_compound_sensitivity": 13.8,
-        "range_from_aggregation": [
-          13.8,
-          13.8
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 13.8,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 56.1
       },
       "source_ids": [
@@ -7936,15 +7972,14 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
     },
     {
       "aphia_id": 504357,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -8372,7 +8407,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9075,7 +9110,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "피조개",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "anticancer",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -9193,26 +9228,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 75.0,
+          "MFPI": 61.9
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.3390/md20020110"
+        ],
+        "mbpi_stratum": "anticancer-cancerppd-ic50-ht-29",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 71.7,
+          "0.5": 68.5,
+          "0.75": 65.2
+        },
+        "used_for_score": false,
+        "value": 68.5
+      },
       "scientific_name": "Anadara broughtonii",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 68.5,
+        "BBVI": null,
         "MBPI": 75.0,
         "MCUI": 10.0,
         "MFPI": 61.9
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 71.7,
-          "0.5": 68.5,
-          "0.75": 65.2
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 24.2,
         "median_compound_sensitivity": 13.4,
         "range_from_aggregation": [
@@ -9243,7 +9299,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -9251,8 +9307,7 @@
     },
     {
       "aphia_id": 413600,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -9539,7 +9594,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10225,7 +10280,7 @@
         "mean_ratio": 1.0
       },
       "korean_name": "맛조개",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -10341,26 +10396,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 56.9,
+          "MFPI": 57.7
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.3390/md14060110"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 57.1,
+          "0.5": 57.3,
+          "0.75": 57.5
+        },
+        "used_for_score": false,
+        "value": 57.3
+      },
       "scientific_name": "Sinonovacula constricta",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 57.3,
+        "BBVI": null,
         "MBPI": 56.9,
         "MCUI": 20.0,
         "MFPI": 57.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 57.1,
-          "0.5": 57.3,
-          "0.75": 57.5
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 21.1,
         "median_compound_sensitivity": 3.3,
         "range_from_aggregation": [
@@ -10388,7 +10464,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -10396,8 +10472,7 @@
     },
     {
       "aphia_id": 127022,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -10670,7 +10745,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11373,7 +11448,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "고등어",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -11453,26 +11528,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 34.9,
+          "MFPI": 59.9
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1016/j.foodchem.2024.138873"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 41.2,
+          "0.5": 47.4,
+          "0.75": 53.7
+        },
+        "used_for_score": false,
+        "value": 47.4
+      },
       "scientific_name": "Scomber japonicus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 47.4,
+        "BBVI": null,
         "MBPI": 34.9,
         "MCUI": 10.0,
         "MFPI": 59.9
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 41.2,
-          "0.5": 47.4,
-          "0.75": 53.7
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 26.3,
         "median_compound_sensitivity": 25.8,
         "range_from_aggregation": [
@@ -11503,7 +11599,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -11511,8 +11607,7 @@
     },
     {
       "aphia_id": 219984,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -11742,7 +11837,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12444,7 +12539,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "멸치",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -12524,26 +12619,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 22.6,
+          "MFPI": 74.1
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1007/s13765-015-0129-4"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 35.5,
+          "0.5": 48.3,
+          "0.75": 61.2
+        },
+        "used_for_score": false,
+        "value": 48.3
+      },
       "scientific_name": "Engraulis japonicus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 48.3,
+        "BBVI": null,
         "MBPI": 22.6,
         "MCUI": 20.0,
         "MFPI": 74.1
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 35.5,
-          "0.5": 48.3,
-          "0.75": 61.2
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 15.2,
         "median_compound_sensitivity": 21.9,
         "range_from_aggregation": [
@@ -12569,7 +12685,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -12577,7 +12693,6 @@
     },
     {
       "aphia_id": 281273,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [],
@@ -12719,7 +12834,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13499,8 +13614,7 @@
     },
     {
       "aphia_id": 275816,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -13697,7 +13811,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14357,7 +14471,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "넙치",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -14507,26 +14621,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 29.2,
+          "MFPI": 59.4
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1016/j.procbio.2016.01.009"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 36.8,
+          "0.5": 44.3,
+          "0.75": 51.8
+        },
+        "used_for_score": false,
+        "value": 44.3
+      },
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 44.3,
+        "BBVI": null,
         "MBPI": 29.2,
         "MCUI": null,
         "MFPI": 59.4
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 36.8,
-          "0.5": 44.3,
-          "0.75": 51.8
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 27.5,
         "median_compound_sensitivity": 27.5,
         "range_from_aggregation": [
@@ -14552,7 +14687,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -14560,7 +14695,6 @@
     },
     {
       "aphia_id": 274849,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
@@ -14831,7 +14965,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15491,7 +15625,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "조피볼락",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "amp",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -15640,26 +15774,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 31.7,
+          "MFPI": 48.5
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.3390/md20060353"
+        ],
+        "mbpi_stratum": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 35.9,
+          "0.5": 40.1,
+          "0.75": 44.3
+        },
+        "used_for_score": false,
+        "value": 40.1
+      },
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 40.1,
+        "BBVI": null,
         "MBPI": 31.7,
         "MCUI": null,
         "MFPI": 48.5
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 35.9,
-          "0.5": 40.1,
-          "0.75": 44.3
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 11.1,
         "median_compound_sensitivity": 6.4,
         "range_from_aggregation": [
@@ -15685,7 +15840,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -15693,7 +15848,6 @@
     },
     {
       "aphia_id": 276651,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [],
@@ -15838,7 +15992,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16630,8 +16784,7 @@
     },
     {
       "aphia_id": 254538,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -16819,7 +16972,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17523,7 +17676,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "대구",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -17672,26 +17825,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 59.9,
+          "MFPI": 38.3
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1016/j.procbio.2016.07.006"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 54.5,
+          "0.5": 49.1,
+          "0.75": 43.7
+        },
+        "used_for_score": false,
+        "value": 49.1
+      },
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 49.1,
+        "BBVI": null,
         "MBPI": 59.9,
         "MCUI": null,
         "MFPI": 38.3
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 54.5,
-          "0.5": 49.1,
-          "0.75": 43.7
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 55.6,
         "median_compound_sensitivity": 55.6,
         "range_from_aggregation": [
@@ -17720,7 +17894,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -17728,7 +17902,6 @@
     },
     {
       "aphia_id": 1061762,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [],
@@ -17861,7 +18034,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18714,7 +18887,6 @@
     },
     {
       "aphia_id": 534443,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [],
@@ -18839,7 +19011,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19709,7 +19881,6 @@
     },
     {
       "aphia_id": 1666974,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [],
@@ -19841,7 +20012,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20827,7 +20998,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-10-03T00:00:00Z",
+  "generated_at": "2026-10-02T00:00:00Z",
   "method": {
     "amp_bioactivity": {
       "accepted_materials": [
@@ -20895,10 +21066,7 @@
         0.5,
         0.75
       ],
-      "single_source_bbvi_label": "단일 논문",
-      "single_source_mbpi_label": "단일 논문",
-      "single_source_policy": "score_with_label",
-      "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries the single-paper factor 0.75. It enters the matrix and map with its own marker. Up to 3.26 such a BBVI was withheld and shown only as a reference combination."
+      "single_source_mbpi_label": "참고값(단일 논문)"
     },
     "bioactivity": {
       "eligible_endpoints": [
@@ -20920,7 +21088,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix and map with its own marker; it was a reference value since 3.15 (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (OBIS trend element out of panel; a catch-based criterion-A screen), so no MCUI is filled from them. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md.",
+    "changes_from": "verified-pilot-3.25 (2026-10-02). Record text only; no score moves. The 청각 aquaculture limitation quoted the maximum potential production in Hwang et al. 2008 (J Appl Phycol 20:469), 36,110 kg dry weight per hectare at 1 m depth, as the authors' estimate. That figure is a misprint in the paper: Table 2's own footnotes (5% dry yield; 100 ropes of 100 m per hectare) turn the 1 m row's 36.1 kg dry per 100 m into 3,610, the rule its 0.5, 2 and 3 m rows follow (790, 1,720, 515), and the text and the income column (433,320 = 36,110 x 12 US$) repeat the misprint. The limitation now says so. No feasible flag, rule, cohort or coefficient changes. See research/verified-indices/codium-table2-3.26-2026-10-02.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -20933,9 +21101,7 @@
       "commonness_rule": "Exclude a compound when its count of taxa with a P703 statement exceeds the Tukey upper fence Q3 + 1.5 IQR of the counts over every linked compound (statistics.quantiles, n=4, inclusive). Such compounds (fatty acids, amino acids, sterols, carotenoids) say nothing specific about one species. Sensitivity: the same fence on log10 counts, and no filter.",
       "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score.",
       "compound_caveats": {
-        "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS) 'Active' 1건 기반입니다. 확인 시험이 없고, PGA2는 티올과 반응하는 구조라 비특이 반응일 수 있습니다.",
         "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-        "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 한 측정을 다시 실은 리뷰 기록입니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
         "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다."
       },
       "data_validity_comments": [
@@ -20953,13 +21119,13 @@
       ],
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-      "link_review": "research/verified-indices/mbpi-link-review-3.27-2026-10-03.json",
+      "link_review": "research/verified-indices/mbpi-link-review-2026-09-30.json",
       "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply.",
       "minimum_cohort_records": 30,
       "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
       "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
-      "paper_links": "research/verified-indices/mbpi-paper-links-3.27-2026-10-03.json",
-      "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-3.27-2026-10-03.json",
+      "paper_links": "research/verified-indices/mbpi-paper-links-2026-09-29.json",
+      "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-2026-10-02.json",
       "paper_source_ids": [
         "europepmc_mbpi",
         "cmnpd_mbpi"
@@ -20970,8 +21136,6 @@
         100
       ],
       "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
-      "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-03.json",
-      "snapshot_supplement_rule": "After 3.26: compounds of links accepted after the 2026-09-30 snapshot are collected from the same ChEMBL release (scripts/collect_mbpi_supplement.py, same filters, same cohort counting) and merged into it. The supplement adds compounds, their admitted activities with the depositor's activity_comment, new targets and the cohort counts at the new medians; a cohort the snapshot already holds must keep its total. Original-paper links of species without P703 statements are added as species links.",
       "source_ids": [
         "worms_rest_mbpi",
         "wikidata_p703_lotus",
@@ -21113,14 +21277,12 @@
       ],
       "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
       "include_national_mcui": true,
-      "include_single_source_bbvi": true,
       "include_substitute_mcui": [
         "range_state"
       ],
       "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
       "mcui_threshold": 50,
       "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
-      "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
       "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
       "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
       "types": {
@@ -21157,10 +21319,10 @@
       ],
       "preliminary_category": "LC",
       "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so a met check is never an official assessment. When a test fails, nothing is shown as met. Since the team-lead decision of 2026-10-02 (the back-test failed) a met check is not an MCUI either: the record (EOO, AOO, records, back-test result) is shown beside the withheld MCUI as reference information, and the species keeps its no-assessment reason.",
-      "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state.",
+      "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not.",
       "ranking_rule": "Each basis that gives an MCUI is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
-      "snapshot": "research/verified-indices/mcui-substitutes-3.27-2026-10-03.json",
+      "snapshot": "research/verified-indices/mcui-substitutes-3.16-2026-10-02.json",
       "snapshot_source_id": "gbif_rapid_lc",
       "thresholds": {
         "aoo_cell_km": 10,
@@ -21169,7 +21331,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.27",
+    "method_version": "verified-pilot-3.26",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21442,37 +21604,21 @@
       "research/verified-indices/evidence-mackerel-2026-10-01.json",
       "research/verified-indices/evidence-anchovy-2026-10-01.json",
       "research/verified-indices/evidence-isolates-2026-10-01.json",
-      "research/verified-indices/evidence-abalone-2026-10-01.json",
-      "research/verified-indices/evidence-squid-2026-10-03.json"
+      "research/verified-indices/evidence-abalone-2026-10-01.json"
     ],
     "posthoc": {
       "calibration_cases": [],
       "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
       "validation_sets": {
         "MBPI": {
-          "case_mbpi": {
-            "Conus magus": null,
-            "Ecteinascidia turbinata": 56.1,
-            "Halichondria okadai": 73.8
-          },
           "cases": [
             "Conus magus (ziconotide)",
             "Halichondria okadai (eribulin; halichondrin B)",
             "Ecteinascidia turbinata (trabectedin)"
           ],
-          "caveats": [
-            "The okadaic-acid top item rests on four protein phosphatase 1 assays that ChEMBL assigns to PTP1B (homologous-target mapping); without them the species would score about 48.8 and still fail.",
-            "Okadaic acid is made by dinoflagellates; the linked paper does not say so, so the link review accepted it as the rule is written.",
-            "The ET-770 value comes from a sample of E. thurstoni treated with KCN (Suwanborirux 2002)."
-          ],
-          "computed": 2,
           "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
-          "n": 3,
-          "operating_max_mbpi": 96.3,
-          "reading": "Read literally as above every operating species that has an MBPI; the wording was registered without a numeric threshold.",
-          "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 점수를 내는 화합물이 승인 약물 ziconotide뿐이라 승인 약물 제외 규칙으로 계산되지 않습니다. 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
-          "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-          "result": "failed"
+          "reason": "No origin -> compound -> assay chain was collected for these species in this snapshot and no operating candidate has an MBPI, so there is nothing to rank against.",
+          "result": "not_computable"
         },
         "MCUI": {
           "cases": [
@@ -21494,30 +21640,6 @@
           "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
           "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
           "result": "failed"
-        },
-        "MCUI_preliminary_criterion_A": {
-          "cases": "The 14 back-test species of MCUI_preliminary",
-          "criterion": "Fixed before the run (posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md): IUCN criterion A from FAO FishStat species-level wild capture, 2014-2024; pass needs no threatened species called LC, at least one threatened species detected, and at least 8 evaluable species.",
-          "evaluable": 4,
-          "exact_agreement": 1,
-          "n": 14,
-          "reason": "어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 역검증했지만 통과하지 못했습니다. 판정 가능한 종이 14종 중 4종뿐이었고, EN인 해삼·전복은 양식 비중이 크거나 종 수준 어획 통계가 없어 판정하지 못했습니다. 해조류는 양식이 98–100%라 이 방법을 쓸 수 없습니다. 그래서 MCUI 빈칸 13종은 이 방법으로 채우지 않습니다(팀장 결정 2026-10-03: 통과할 때만 점수로 사용).",
-          "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-          "result": "failed",
-          "threatened_detected": 0
-        },
-        "MCUI_trend": {
-          "cases": "229 out-of-panel species of the 10 panel WoRMS classes in the map box (at least 20 OBIS records in 2006-2015), IUCN categories from the GBIF IUCN checklist (2026-07-28)",
-          "criterion": "Fixed before the run (posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md): with at least 10 computable threatened species, the share of threatened species with an OBIS decline signal must exceed the LC share (one-sided Fisher p < 0.05).",
-          "fisher_p_one_sided": 0.879,
-          "lc_n": 172,
-          "lc_with_signal": 36,
-          "n_threatened_computable": 9,
-          "reason": "OBIS 보고율 감소 신호(+10 보정)를 지도 상자 안의 다른 229종에 적용해 보았습니다. 위협종은 9종만 계산되어(사전 기준 10종) 검증이 성립하지 않았고, 신호 비율도 위협종 11%·LC 21%로 반대 방향이었습니다. 신호는 모두 국립해양생물자원관 표본 수집 자료의 기록 감소에서 나왔습니다. 보정 규칙은 바꾸지 않았고, 바꾸려면 새 사전 등록이 필요합니다.",
-          "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-          "result": "failed",
-          "scope": "Only the OBIS reporting-rate element (the +10 adjustment), not the IUCN or national categories.",
-          "threatened_with_signal": 1
         },
         "MFPI": {
           "cases": "11 species scored from their own RDA DB 10.4 row that also have a same-species raw item in the MEXT 2020 table (WoRMS Japanese name link, 3.6 rule)",
@@ -21583,7 +21705,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.27",
+  "method_version": "verified-pilot-3.26",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21611,29 +21733,14 @@
     "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
     "validation_sets": {
       "MBPI": {
-        "case_mbpi": {
-          "Conus magus": null,
-          "Ecteinascidia turbinata": 56.1,
-          "Halichondria okadai": 73.8
-        },
         "cases": [
           "Conus magus (ziconotide)",
           "Halichondria okadai (eribulin; halichondrin B)",
           "Ecteinascidia turbinata (trabectedin)"
         ],
-        "caveats": [
-          "The okadaic-acid top item rests on four protein phosphatase 1 assays that ChEMBL assigns to PTP1B (homologous-target mapping); without them the species would score about 48.8 and still fail.",
-          "Okadaic acid is made by dinoflagellates; the linked paper does not say so, so the link review accepted it as the rule is written.",
-          "The ET-770 value comes from a sample of E. thurstoni treated with KCN (Suwanborirux 2002)."
-        ],
-        "computed": 2,
         "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
-        "n": 3,
-        "operating_max_mbpi": 96.3,
-        "reading": "Read literally as above every operating species that has an MBPI; the wording was registered without a numeric threshold.",
-        "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 점수를 내는 화합물이 승인 약물 ziconotide뿐이라 승인 약물 제외 규칙으로 계산되지 않습니다. 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
-        "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-        "result": "failed"
+        "reason": "No origin -> compound -> assay chain was collected for these species in this snapshot and no operating candidate has an MBPI, so there is nothing to rank against.",
+        "result": "not_computable"
       },
       "MCUI": {
         "cases": [
@@ -21655,30 +21762,6 @@
         "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
         "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
         "result": "failed"
-      },
-      "MCUI_preliminary_criterion_A": {
-        "cases": "The 14 back-test species of MCUI_preliminary",
-        "criterion": "Fixed before the run (posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md): IUCN criterion A from FAO FishStat species-level wild capture, 2014-2024; pass needs no threatened species called LC, at least one threatened species detected, and at least 8 evaluable species.",
-        "evaluable": 4,
-        "exact_agreement": 1,
-        "n": 14,
-        "reason": "어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 역검증했지만 통과하지 못했습니다. 판정 가능한 종이 14종 중 4종뿐이었고, EN인 해삼·전복은 양식 비중이 크거나 종 수준 어획 통계가 없어 판정하지 못했습니다. 해조류는 양식이 98–100%라 이 방법을 쓸 수 없습니다. 그래서 MCUI 빈칸 13종은 이 방법으로 채우지 않습니다(팀장 결정 2026-10-03: 통과할 때만 점수로 사용).",
-        "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-        "result": "failed",
-        "threatened_detected": 0
-      },
-      "MCUI_trend": {
-        "cases": "229 out-of-panel species of the 10 panel WoRMS classes in the map box (at least 20 OBIS records in 2006-2015), IUCN categories from the GBIF IUCN checklist (2026-07-28)",
-        "criterion": "Fixed before the run (posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md): with at least 10 computable threatened species, the share of threatened species with an OBIS decline signal must exceed the LC share (one-sided Fisher p < 0.05).",
-        "fisher_p_one_sided": 0.879,
-        "lc_n": 172,
-        "lc_with_signal": 36,
-        "n_threatened_computable": 9,
-        "reason": "OBIS 보고율 감소 신호(+10 보정)를 지도 상자 안의 다른 229종에 적용해 보았습니다. 위협종은 9종만 계산되어(사전 기준 10종) 검증이 성립하지 않았고, 신호 비율도 위협종 11%·LC 21%로 반대 방향이었습니다. 신호는 모두 국립해양생물자원관 표본 수집 자료의 기록 감소에서 나왔습니다. 보정 규칙은 바꾸지 않았고, 바꾸려면 새 사전 등록이 필요합니다.",
-        "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
-        "result": "failed",
-        "scope": "Only the OBIS reporting-rate element (the +10 adjustment), not the IUCN or national categories.",
-        "threatened_with_signal": 1
       },
       "MFPI": {
         "cases": "11 species scored from their own RDA DB 10.4 row that also have a same-species raw item in the MEXT 2020 table (WoRMS Japanese name link, 3.6 rule)",
@@ -22695,16 +22778,6 @@
       "url": "https://koreascience.kr/article/JAKO201127250032645.page",
       "version": "KFAS 44(4):366, published 2011-08-30"
     },
-    "slu_rodlista_2025": {
-      "accessed": "2026-10-03",
-      "doi": "10.5878/ffrv-6x57",
-      "license": "CC0 1.0 (SND dataset)",
-      "provider": "SLU Artdatabanken (Swedish University of Agricultural Sciences, a state agency; list funded with Naturvårdsverket)",
-      "terms": "Category, presence and immigration-history facts for one taxon only.",
-      "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
-      "url": "https://doi.org/10.5878/ffrv-6x57",
-      "version": "Rödlista 2025 (published 2026-03-24; the current Swedish list). Also read from Artfakta taxon 232807 on 2026-10-03: currentRedListInfo 'Rödlistning 2025' = LC, swedishPresence 'Bofast och reproducerande', immigrationHistory 'Spontan'"
-    },
     "suetsuna_1998_hijiki": {
       "accessed": "2026-10-01",
       "doi": "10.2331/suisan.64.862",
@@ -22823,16 +22896,6 @@
       "title": "Pacific oyster wet meat yield, Chiloé Island",
       "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825",
       "version": "PLOS ONE 2022, Table 1"
-    },
-    "wako_1996_squid": {
-      "accessed": "2026-10-03",
-      "doi": "10.1271/bbb.60.1353",
-      "license": "Publisher copyright (J-STAGE free access)",
-      "provider": "Biosci Biotechnol Biochem 60(8):1353-1355 (Wako Y, Ishikawa S, Muramoto K 1996, Note), full text (J-STAGE scanned PDF, open)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Angiotensin I-converting enzyme inhibitors in autolysates of squid liver and mantle muscle",
-      "url": "https://doi.org/10.1271/bbb.60.1353",
-      "version": "1996"
     },
     "wang_2024_apostichopus": {
       "accessed": "2026-09-28",
@@ -23017,7 +23080,6 @@
   "species": [
     {
       "aphia_id": 145721,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [
         {
@@ -23658,7 +23720,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24100,8 +24162,7 @@
     },
     {
       "aphia_id": 241776,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -24345,7 +24406,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24895,7 +24956,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "해삼",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -24975,26 +25036,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 8.7,
+          "MFPI": 63.5
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.3390/md22020090"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 22.4,
+          "0.5": 36.1,
+          "0.75": 49.8
+        },
+        "used_for_score": false,
+        "value": 36.1
+      },
       "scientific_name": "Apostichopus japonicus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 36.1,
+        "BBVI": null,
         "MBPI": 8.7,
         "MCUI": 80.0,
         "MFPI": 63.5
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 22.4,
-          "0.5": 36.1,
-          "0.75": 49.8
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 8.7,
         "median_compound_sensitivity": 8.7,
         "range_from_aggregation": [
@@ -25025,7 +25107,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -25033,7 +25115,6 @@
     },
     {
       "aphia_id": 250680,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -25300,7 +25381,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -25960,7 +26041,7 @@
         "mean_ratio": 0.67
       },
       "korean_name": "멍게",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -26110,26 +26191,49 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 13.5,
+          "MFPI": 52.8
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1016/0305-0491(85)90174-9",
+          "10.1016/s0040-4039(01)83006-9",
+          "10.1248/cpb.32.4309"
+        ],
+        "mbpi_stratum": "ChEMBL_37:CHEMBL247|IC50",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 23.3,
+          "0.5": 33.2,
+          "0.75": 43.0
+        },
+        "used_for_score": false,
+        "value": 33.2
+      },
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 33.2,
+        "BBVI": null,
         "MBPI": 13.5,
         "MCUI": null,
         "MFPI": 52.8
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 23.3,
-          "0.5": 33.2,
-          "0.75": 43.0
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 13.5,
         "median_compound_sensitivity": 13.5,
         "range_from_aggregation": [
@@ -26158,7 +26262,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -26166,8 +26270,7 @@
     },
     {
       "aphia_id": 342067,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "assay_conditions": "Cushman & Cheung (1971) method; ACE purchased from Sigma-Aldrich (tissue source not stated in paper); substrate HHL; specimen T. pacificus skin, Jumunjin port, June 2010",
@@ -26268,72 +26371,7 @@
           "value_in_text": true
         }
       ],
-      "bioactivity_trace": [
-        {
-          "adjusted": 42.82670454545455,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1271/bbb.60.1353"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1271/bbb.60.1353",
-              "relation": "=",
-              "source_id": "wako_1996_squid",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 27.3
-            }
-          ],
-          "original_paper_dois": [
-            "10.1271/bbb.60.1353"
-          ],
-          "pIC50": 4.564,
-          "peer_peptides": 352,
-          "peptide_sequence": "GYALPHA",
-          "percentile": 57.1,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1271/bbb.60.1353:GYALPHA"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        },
-        {
-          "adjusted": 56.88920454545455,
-          "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1271/bbb.60.1353"
-          ],
-          "measurements": [
-            {
-              "endpoint": "IC50",
-              "original_paper_doi": "10.1271/bbb.60.1353",
-              "relation": "=",
-              "source_id": "wako_1996_squid",
-              "substrate": "HHL",
-              "target": "ACE",
-              "unit": "uM",
-              "value": 9.8
-            }
-          ],
-          "original_paper_dois": [
-            "10.1271/bbb.60.1353"
-          ],
-          "pIC50": 5.009,
-          "peer_peptides": 352,
-          "peptide_sequence": "YALPHA",
-          "percentile": 75.85,
-          "potency_replications": [],
-          "record_ids": [
-            "10.1271/bbb.60.1353:YALPHA"
-          ],
-          "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
-          "stratum_kind": "peptide"
-        }
-      ],
+      "bioactivity_trace": [],
       "chembl_links": {
         "counts": {
           "scored_compounds": 0
@@ -26346,11 +26384,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 56.9,
-          "minimum_cohort_10": 56.9,
-          "minimum_cohort_100": 56.9,
-          "no_approved_drug_filter": 56.9,
-          "no_common_metabolite_filter": 56.9
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -26463,7 +26501,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27127,8 +27165,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 3,
+          "ratio": 0.75,
           "required": [
             "origin",
             "structure_id",
@@ -27162,11 +27200,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.86
       },
       "korean_name": "살오징어",
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "peptide",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "iucn",
       "mcui_substitute": null,
       "national_assessment": null,
@@ -27265,36 +27303,25 @@
       "reference_combination": null,
       "scientific_name": "Todarodes pacificus",
       "score_status": {
-        "BBVI": "산출됨",
-        "MBPI": "산출됨",
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 51.5,
-        "MBPI": 56.9,
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": 20.0,
         "MFPI": 46.1
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 54.2,
-          "0.5": 51.5,
-          "0.75": 48.8
-        },
-        "mean_compound_sensitivity": 49.9,
-        "median_compound_sensitivity": 49.9,
-        "range_from_aggregation": [
-          42.8,
-          56.9
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 56.9,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 46.1
       },
       "source_ids": [
-        "ahtpdb_ic50_2026",
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "gbif_iucn_checklist",
@@ -27305,20 +27332,18 @@
         "puneeta_2015_todarodes",
         "rda_db_10_4",
         "todarodes_2011_peptide",
-        "wako_1996_squid",
         "yu_2019_todarodes"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
     },
     {
       "aphia_id": 372119,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -27445,7 +27470,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27846,8 +27871,7 @@
     },
     {
       "aphia_id": 494972,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
           "chain": {
@@ -28240,7 +28264,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28482,7 +28506,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "톳",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -28630,26 +28654,47 @@
       "priority_survey_reasons": [
         "no_conservation_assessment"
       ],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 65.0,
+          "MFPI": 63.3
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.2331/suisan.64.862"
+        ],
+        "mbpi_stratum": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "mfpi_cohort": "rda-10.4-raw-seaweeds",
+        "sensitivity": {
+          "0.25": 64.6,
+          "0.5": 64.2,
+          "0.75": 63.7
+        },
+        "used_for_score": false,
+        "value": 64.2
+      },
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 64.2,
+        "BBVI": null,
         "MBPI": 65.0,
         "MCUI": null,
         "MFPI": 63.3
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 64.6,
-          "0.5": 64.2,
-          "0.75": 63.7
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 45.0,
         "median_compound_sensitivity": 50.2,
         "range_from_aggregation": [
@@ -28681,7 +28726,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
@@ -28689,7 +28734,6 @@
     },
     {
       "aphia_id": 506159,
-      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -28903,7 +28947,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29544,7 +29588,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.27 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.26 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -29666,7 +29710,7 @@
         "mean_ratio": 0.94
       },
       "korean_name": "홍합(참담치)",
-      "mbpi_label": "단일 논문",
+      "mbpi_label": "참고값(단일 논문)",
       "mbpi_stratum": "chembl",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -29784,26 +29828,47 @@
       },
       "priority_survey": false,
       "priority_survey_reasons": [],
-      "reference_combination": null,
+      "reference_combination": {
+        "food_weight": 0.5,
+        "formula": "w×MFPI+(1−w)×MBPI",
+        "inputs": {
+          "MBPI": 10.1,
+          "MFPI": 60.9
+        },
+        "label": "참고 통합값 · 독립 재현 미확인",
+        "limits": [
+          "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+          "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+          "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
+        ],
+        "mbpi_original_paper_dois": [
+          "10.1021/np970039q"
+        ],
+        "mbpi_stratum": "ChEMBL_37:CHEMBL247|IC50",
+        "mfpi_cohort": "rda-10.4-raw-marine-animals",
+        "sensitivity": {
+          "0.25": 22.8,
+          "0.5": 35.5,
+          "0.75": 48.2
+        },
+        "used_for_score": false,
+        "value": 35.5
+      },
       "scientific_name": "Mytilus coruscus",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 35.5,
+        "BBVI": null,
         "MBPI": 10.1,
         "MCUI": 10.0,
         "MFPI": 60.9
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 22.8,
-          "0.5": 35.5,
-          "0.75": 48.2
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 10.1,
         "median_compound_sensitivity": 10.1,
         "range_from_aggregation": [
@@ -29833,7 +29898,7 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "mbpi_single_source",
         "MBPI": null,
         "MCUI": null,
         "MFPI": null
@@ -29841,7 +29906,6 @@
     },
     {
       "aphia_id": 836033,
-      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [
         {
@@ -30361,7 +30425,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.27",
+        "method_version": "verified-pilot-3.26",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

@@ -1,0 +1,9 @@
+{
+ "label": "POST-HOC DESCRIPTIVE DIAGNOSTIC, not pre-registered; does not change the verdict",
+ "decline_signal_dominant_datasets_out_of_panel": {"mabik_pi d5303d4b-e154-49a9-a2df-ebef09fbc166": 46, "mabik_mo 86e5bc4a-0bc2-43e6-8e9b-db09a2fa6265": 4, "mabik_al b69f0512-c185-4adc-bf8b-0239fab76c69": 1, "mabik_cr 1058cb10-c377-4fa0-984f-4fa9a2e92baf": 1, "total_decline_signals_P_plus_S2": 52},
+ "panel_decline_signals_dominant_datasets_snapshot_2026-10-01": {"Engraulis japonicus 219984": "mabik_pi 0.718", "Larimichthys polyactis 281273": "mabik_pi 0.907", "Todarodes pacificus 342067": "mabik_mo 0.92", "Sinonovacula constricta 413600": "mabik_mo 1.0"},
+ "mabik_pi_teleostei_in_map_box": {"2006-2015": {"records": 29063, "species": 616}, "2016-2025": {"records": 4880, "species": 613}},
+ "all_teleostei_in_map_box": {"2006-2015": {"records": 34305, "species": 856}, "2016-2025": {"records": 13165, "species": 932}},
+ "mabik_pi_basisOfRecord_sample": "200/200 PreservedSpecimen, collectionCode PI, both periods; IPT metadata (mbris.kr/ipt resource mabik_pi) gives no sampling protocol",
+ "reading": "In mabik_pi the number of species stays ~615 while records fall 6-fold, so common species lose share within the dataset; the dataset check (same dataset, class effort within it) therefore confirms falls that reflect a change in what the specimen collection accessions, not abundance."
+}

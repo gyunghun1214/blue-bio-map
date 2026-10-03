@@ -29,7 +29,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.26.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.27.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1150,7 +1150,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         min_dois = config["bbvi"].get("minimum_independent_mbpi_dois")
         single_source = bool(min_dois and best) and independent_sources(best) < min_dois
         both = mfpi_value is not None and mbpi is not None
-        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if both and not single_source else None
+        # 3.27 (team-lead decision 2026-10-03): a single-paper top item still gives a BBVI score, published with its label
+        labelled = config["bbvi"].get("single_source_policy") == "score_with_label"
+        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if both and (not single_source or labelled) else None
         partial_bio = [r for key in ("bioactivity", "peptide_bioactivity") for r in evidence.get(key, [])
                        if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
         links = (chembl or {"species": {}})["species"].get(aphia)
@@ -1242,6 +1244,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 "source_ids": sorted(source_ids)}
         if min_dois:
             row["mbpi_label"] = config["bbvi"]["single_source_mbpi_label"] if single_source else None
+        if labelled:
+            row["bbvi_label"] = config["bbvi"]["single_source_bbvi_label"] if single_source and bbvi is not None else None
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
             row["mbpi_stratum"] = None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
@@ -1262,7 +1266,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 "mbpi_original_paper_dois": best["original_paper_dois"], "food_weight": w,
                 "value": round1(w * mfpi_value + (1 - w) * mbpi),
                 "sensitivity": {str(x): round1(x * mfpi_value + (1 - x) * mbpi) for x in config["bbvi"]["sensitivity_food_weights"]},
-                "limits": rc["limits"], "used_for_score": False} if both and single_source else None
+                "limits": rc["limits"], "used_for_score": False} if both and single_source and bbvi is None else None
         if config.get("peptide_raw_values"):  # shown as raw value and source; the peptide stratum is absent, so no score
             require(not config.get("peptide_bioactivity"), "raw-value display and the peptide stratum are exclusive")
             raw = [r for r in evidence.get("peptide_bioactivity", []) if r.get("origin_aphia_id") == aphia and r.get("status") == "approved_for_score"]
@@ -1380,6 +1384,29 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         snap = read(ROOT / cfg["chembl_bioactivity"]["snapshot"])
         require(snap.get("snapshot_date", "") >= evidence["snapshot_date"], "ChEMBL link snapshot is older than evidence")
         require(not set(snap["sources"]) & set(evidence["sources"]), "ChEMBL link snapshot redefines a source")
+        added_snap = None
+        if cfg["chembl_bioactivity"].get("snapshot_supplement"):  # 3.27: compounds of later links, same ChEMBL release
+            added_snap = read(ROOT / cfg["chembl_bioactivity"]["snapshot_supplement"])
+            require(added_snap["base_snapshot"] == cfg["chembl_bioactivity"]["snapshot"] and added_snap["snapshot_date"] >= snap["snapshot_date"]
+                    and added_snap["chembl_version"] == snap["sources"]["chembl_mbpi"]["version"], "ChEMBL supplement is for another snapshot or release")
+            require(not set(added_snap["compounds"]) & set(snap["compounds"]) and not set(added_snap["parent_names"]) & set(snap["parent_names"])
+                    and not {a["activity_id"] for a in added_snap["activities"]} & {a["activity_id"] for a in snap["activities"]}
+                    and set(added_snap["activity_comments"]) == {str(a["activity_id"]) for a in added_snap["activities"]},
+                    "ChEMBL supplement repeats snapshot rows or misses an activity comment")
+            cohorts = dict(snap["cohorts"])
+            for key, c in added_snap["cohorts"].items():  # a cohort the snapshot holds keeps its total; only new medians are added
+                old = cohorts.get(key)
+                require(old is None or old["total"] == c["total"], f"{key}: supplement cohort total differs from the snapshot")
+                cohorts[key] = c if old is None else {**old, "below": {**old["below"], **c["below"]}, "equal": {**old["equal"], **c["equal"]}}
+            added = defaultdict(list)
+            for link in added_snap["species_links"]:
+                added[link["aphia_id"]].append({k: link[k] for k in ("compound_qid", "inchikey", "statements")})
+            require(set(added) <= {s["aphia_id"] for s in snap["species"]}, "ChEMBL supplement links an unknown species")
+            snap = {**snap, "snapshot_date": added_snap["snapshot_date"],
+                    "species": [{**s, "links": s["links"] + added.get(s["aphia_id"], [])} for s in snap["species"]],
+                    **{k: {**snap[k], **added_snap[k]} for k in ("reference_dois", "compound_taxon_counts", "compounds", "parent_names",
+                                                         "parent_max_phase", "targets")},
+                    "activities": sorted(snap["activities"] + added_snap["activities"], key=lambda a: a["activity_id"]), "cohorts": cohorts}
         require(set(cfg["chembl_bioactivity"]["source_ids"]) == set(snap["sources"]), "ChEMBL stratum source list differs from its snapshot")
         # species with no P703 link were searched in CMNPD, PubChem taxonomy and Europe PMC; the record is shown as it is
         papers = read(ROOT / cfg["chembl_bioactivity"]["paper_links"])
@@ -1434,6 +1461,7 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         comments = cfg["chembl_bioactivity"].get("activity_comments")
         if comments:  # verified-pilot-3.20: a depositor's Inconclusive / Not Active flag keeps the row out of every species item
             book = read(ROOT / comments)
+            book = {**book, "comments": {**book["comments"], **(added_snap or {}).get("activity_comments", {})}}  # 3.27: supplement rows
             require(book["for_snapshot"] == cfg["chembl_bioactivity"]["snapshot"]
                     and set(book["comments"]) == {str(a["activity_id"]) for a in snap["activities"]},
                     "activity comments do not cover the ChEMBL snapshot")

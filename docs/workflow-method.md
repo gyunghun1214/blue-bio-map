@@ -1,9 +1,9 @@
-# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.26`
+# 워크플로 그림 기준 방법 문서 — `verified-pilot-3.27`
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
-- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.26`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
-- 모든 지표는 **시범 지표**다. 사후 검증은 MFPI만 통과했다(일본 식품성분표 2020으로 다시 계산한 영양 점수의 순위 일치: 11종, Spearman ρ 0.873, 단측 순열 p 0.0004). MBPI는 사례 사슬이 없어 미실시다. MCUI 예비 평가(Rapid LC)는 역검증을 통과하지 못해 MCUI 점수로 쓰지 않고 참고 정보로만 표시한다(팀장 결정 2026-10-02). 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
+- 표의 숫자는 `dist/assessments.json`(현재 `verified-pilot-3.27`)과 `research/verified-indices/archive/assessments-verified-pilot-2.3.json`(2.3 공개본)에서 만든 값이다. 문서를 고쳐 쓰지 않고, 같은 자료로 다시 만들 수 있다.
+- 모든 지표는 **시범 지표**다. 사후 검증은 MFPI만 통과했다(일본 식품성분표 2020으로 다시 계산한 영양 점수의 순위 일치: 11종, Spearman ρ 0.873, 단측 순열 p 0.0004). MBPI는 3.27에 약물 기원종 사례를 계산해 미통과였고(H. okadai 73.8·E. turbinata 56.1 < 참굴 96.3), 그래서 MBPI와 BBVI 라벨은 '사후 검증 미통과'다. MCUI 예비 평가 두 가지(Rapid LC, 어획 기반 기준 A)와 OBIS 추세 요소의 외부 검증도 통과하지 못해 MCUI 점수로 쓰지 않는다(팀장 결정 2026-10-02·2026-10-03). 종 단위 지표이며, 해역의 가치·자원량·분포가 아니다.
 
 ## 0. 한눈에 보기
 
@@ -11,14 +11,14 @@
 |---|---|---|---|
 | 1 문제 인식 (OBIS·IUCN·FAO/AFCD·CMNPD·ChEMBL·PubChem) | 종별 근거 화면의 출처·이용조건 목록, 출현 지도 | `dist/assessments.json`의 `sources` | 각 자료원 행 |
 | 2 표준화·연계 (WoRMS AphiaID, InChIKey·PubChem CID) | 종 상세의 AphiaID·WoRMS 링크, MBPI 근거의 화합물 링크 | `scripts/collect_taxonomy.py`, `scripts/collect_mbpi_links.py`, `research/verified-indices/mbpi-link-review-2026-09-30.json` | `mbpi-chembl-stratum-2026-09-29.md` |
-| 3 MBPI | 종 상세 MBPI 근거(층·표적·화합물·출처), '쓰임새로 찾기' 신약 칩 | `build_verified_indices.py`의 `chembl_items`, `chembl_stratum`, `bio_scores`, `peptide_items`, `converted_peptide`, `amp_items`, `anticancer_items`; 비교집단 `scripts/build_amp_cohorts.py`, `scripts/build_anticancer_cohorts.py`; `dist/app.js`의 `USE_TRAITS` | `mbpi-chembl-stratum-2026-09-29.md`, `gap-closing-2026-10-02.md`, `amp-stratum-2026-10-02.md`, `decisions-3.19-2026-10-02.md`, `decisions-3.20-2026-10-02.md`, `anticancer-stratum-2026-10-02.md`, `bbvi-replication-3.24-2026-10-02.md`, `doyoun-replication-3.25-2026-10-02.md` |
+| 3 MBPI | 종 상세 MBPI 근거(층·표적·화합물·출처), '쓰임새로 찾기' 신약 칩 | `build_verified_indices.py`의 `chembl_items`, `chembl_stratum`, `bio_scores`, `load_inputs`(3.27 보충 스냅숏 병합), `peptide_items`, `converted_peptide`, `amp_items`, `anticancer_items`; 비교집단 `scripts/build_amp_cohorts.py`, `scripts/build_anticancer_cohorts.py`; `dist/app.js`의 `USE_TRAITS` | `mbpi-chembl-stratum-2026-09-29.md`, `gap-closing-2026-10-02.md`, `amp-stratum-2026-10-02.md`, `decisions-3.19-2026-10-02.md`, `decisions-3.20-2026-10-02.md`, `anticancer-stratum-2026-10-02.md`, `bbvi-replication-3.24-2026-10-02.md`, `doyoun-replication-3.25-2026-10-02.md`, `gap-filling-3.27-2026-10-03.md` |
 | 3 MFPI | 종 상세 MFPI 근거(원값·백분위·대체치 라벨·가식부·양식), EPA·DHA 표시(점수 아님), '쓰임새로 찾기' 식량 칩 | `food_axis`, `substitute`, `literature_species_row`, `mfpi`, `build_cohorts`; 종 연결 `rda-name-links-2026-10-01.json`; EPA·DHA `scripts/collect_rda_fatty_acids.py` | `mfpi-substitutes-2026-09-30.md`, `gap-closing-2026-10-02.md`, `omega3-display-2026-10-02.md`, `mfpi-sargassum-2026-10-02.md`, `literature-limitations-3.23-2026-10-02.md`, `doyoun-replication-3.25-2026-10-02.md`, `codium-table2-3.26-2026-10-02.md` |
-| 3 MCUI | 종 상세 MCUI 근거(IUCN/국가 평가/서식국 국가 평가, OBIS 출현 추세), 예비 평가(참고 정보) | `conservation_axis`, `national_axis`, `occurrence_trend`, `mcui_substitute`; `scripts/collect_mcui_rapid_lc.py` | `mcui-trend-2026-10-01.md`, `gap-closing-2026-10-02.md`, `gap-closing-3.16-2026-10-02.md`, `decisions-3.19-2026-10-02.md` |
+| 3 MCUI | 종 상세 MCUI 근거(IUCN/국가 평가/서식국 국가 평가, OBIS 출현 추세), 예비 평가(참고 정보) | `conservation_axis`, `national_axis`, `occurrence_trend`, `mcui_substitute`; `scripts/collect_mcui_rapid_lc.py` | `mcui-trend-2026-10-01.md`, `gap-closing-2026-10-02.md`, `gap-closing-3.16-2026-10-02.md`, `decisions-3.19-2026-10-02.md`, `gap-filling-3.27-2026-10-03.md` |
 | 4 통합·정보충분도 | BBVI 가중치 슬라이더, 정보충분도·우선 조사 대상·미탐색 후보 표시 | `build`→`assess`(BBVI, `information_sufficiency`, `priority_survey`), `unexplored_flag` | `matrix-gis-2026-09-30.md` |
-| 5 매트릭스 | 활용 × 보전 매트릭스(네 유형, 국가 평가·서식국 국가 평가 MCUI는 네모 점. 예비 평가는 참고 정보라 MCUI가 아님) | `build_matrix_readiness.py`의 `matrix_type`; `dist/app.js`의 `matrixType`, `toggleSimulation` | `matrix-gis-2026-09-30.md` |
+| 5 매트릭스 | 활용 × 보전 매트릭스(네 유형, 국가 평가·서식국 국가 평가 MCUI는 네모 점, 3.27부터 단일 논문 BBVI는 속 빈 점. 예비 평가는 참고 정보라 MCUI가 아님) | `build_matrix_readiness.py`의 `matrix_type`, `_eligible`; `dist/app.js`의 `matrixType`, `toggleSimulation`, `declutterPointLabels` | `matrix-gis-2026-09-30.md`, `gap-filling-3.27-2026-10-03.md` |
 | 5 GIS 지도 | '활용 × 보전 보기': 출현 셀 × 종 유형 색, 정보충분도 층, 셀 카드 | `dist/app.js`의 `renderValueMap`, `cellMatrixType`, `valueCellOrder`, `drawSufficiency`, `valueSpeciesCard` | `matrix-gis-2026-09-30.md` |
 | 추가 정보 연계 (관할 해역·국제 이익공유) | 종 상세의 활용 전 제도 확인 목록(ABS·나고야의정서·BBNJ) | `dist/app.js`의 `institutionChecks` | – |
-| 사후 검증 | 축별 라벨('시범 지표 · 방법 검증 통과(11종 비교)'), 자료 연결 현황의 '방법 검증 통과' 단계 | `scripts/posthoc_validation.py` → `method.posthoc.validation_sets`; `dist/app.js`의 `validationResult`, `pilotLabel` | `gap-closing-2026-10-02.md` |
+| 사후 검증 | 축별 라벨('시범 지표 · 방법 검증 통과(11종 비교)', '시범 지표 · 사후 검증 미통과'), 자료 연결 현황의 '방법 검증 통과' 단계, MBPI 상세 첫 줄의 검증 결과 | `scripts/posthoc_validation.py`(`mfpi_check`, `mcui_check`, `mbpi_check`) → `method.posthoc.validation_sets`; `dist/app.js`의 `validationResult`, `pilotLabel` | `gap-closing-2026-10-02.md`, `gap-filling-3.27-2026-10-03.md`, `posthoc-3.27/` |
 
 ## 1. 문제 인식 — 자료원과 이용조건
 
@@ -71,11 +71,13 @@
 - **효능 재현(2.3·3.12·3.14):** 같은 서열을 다른 논문이 합성품이나 서열을 확인한 정제 단일 펩타이드로 HHL에서 다시 잰 값은, pIC50 차이가 1.0 이내이면 독립 DOI로만 센다. 점수 값과 기원 주장은 바꾸지 않는다(`potency_replications`, ACE 층에만 있음). 3.24에 큰가리비 VW(86.9 µM)가 Suetsuna 2004 미역 정제 VW(10.8 µM, 차이 0.906)로 2편이 됐다. 3.25에 미역 IW·VW·IY에 합성 펩타이드 재현(Michelke 2018 1.91 · Nomura 2002 1.68 · Saito 1994 2.4 µM)이 더해져, 미역 BBVI는 정제물 규칙(3.14)이나 공저자 예외(Suetsuna 2000) 없이도 성립한다.
 - 기존 층(펩타이드 AHTPDB ACE/HHL, 원논문 화합물)은 유지한다. 종 점수는 층 전체의 최댓값이다(민감도: 중앙값·평균).
 - **µg/mL → µM 환산(3.15):** 서열을 확인한 합성 펩타이드가 µg/mL로만 보고되면 평균 잔기 질량 + 물 1분자로 계산한 분자량으로 µM로 바꾼다(`converted_peptide`). 원문 값·단위·분자량을 옆에 남기고, 가수분해물·분획물은 바꾸지 않는다. 전복 AMN(Wu et al. 2015): 106.24 µg/mL ÷ 334.39 g/mol = 317.71 µM.
-- **원논문 연결(3.20):** Wikidata P703 진술이 있는 종도 원논문에 그 종(WoRMS 인정명 또는 동의어)의 학명과 시료 출처가 적혀 있으면 연결한다(`mbpi-paper-links-p703-2026-10-02.json`). 다시마가 26.5(단일 논문)를 얻었고 톳과 같은 자동산화 주의문을 함께 보인다. 꼬시래기는 미확정 행을 빼면 최고값이 대량 스크리닝 'Active' 1건이라 보류한다.
+- **원논문 연결(3.20):** Wikidata P703 진술이 있는 종도 원논문에 그 종(WoRMS 인정명 또는 동의어)의 학명과 시료 출처가 적혀 있으면 연결한다(`mbpi-paper-links-p703-2026-10-02.json`). 다시마가 26.5(단일 논문)를 얻었고 톳과 같은 자동산화 주의문을 함께 보인다. 꼬시래기는 미확정 행을 빼면 최고값이 대량 스크리닝 'Active' 1건이라 3.20에 보류했고, 3.27에 팀장 결정으로 보류를 풀었다(PGA2, Nylund 2011 연결, DNA 중합효소 β qHTS 백분위 87.62 → 49.3, 화면 주의문 '대량 스크리닝 1건 기반 · 확인 시험 없음').
+- **보충 스냅숏(3.27):** 2026-09-30 스냅숏 뒤에 인정한 연결의 화합물(flazin, PGA2)은 같은 ChEMBL_37 판에서 같은 필터로 따로 모아 병합한다(`scripts/collect_mbpi_supplement.py`, `snapshots/mbpi-links-supplement-2026-10-03.json`). 스냅숏에 이미 있는 비교집단은 총수가 같아야 하고 새 중앙값의 수만 더한다. 등록자 판정(Inconclusive·Not Active)도 함께 저장해 3.20 규칙을 그대로 적용한다. 시카메굴은 flazin(Kong 2021, 원논문 연결)으로 13.8을 얻었다.
+- **살오징어(3.27):** Wako 1996의 정제 펩타이드 YALPHA 9.8 µM(HHL, Edman 서열 확인, 3.14 정제물 규칙)로 56.9. 시험법이 모든 시료를 ACE와 3시간 미리 반응시키는 점, 간과 외투근이 섞인 자가분해물이라는 점, 보존된 액틴 조각이라는 점을 기록에 함께 적었다.
 - **항균 층(3.18, 3.19):** 기원 행은 데이터베이스가 아니라 원논문에서 판정한다. 서열이 그 종 자신의 유전자·조직에서 나와야 하고, 시험 물질은 화학 합성품이나 서열을 확인한 정제 단일 펩타이드, 값은 액체배지 미량희석 MIC여야 한다. 3.19부터 액체 생장 억제 시험을 같은 방법으로 읽고 비교집단 배지에 Poor Broth를 넣었다. MEC·억제대 지름·검열값과 다른 생물에서 발현한 재조합 펩타이드는 뺀다(3.19 팀장 결정). 진균 값은 세균 비교집단에 섞지 않는다. 현재 항목은 피조개 AI-hemocidin 1·2(Li 2017), 조피볼락 TS40(Zhang 2022), 참굴 Cg-BigDef1(Loth 2019, 전합성, 황색포도상구균 7개 균주 중앙값 2.5 µM; 참굴 MBPI는 LQP가 더 높아 그대로)이다.
 - **항암 층(3.21):** 세포주 하나 × IC50이 비교집단 하나이고 최소 30개다. ± 표기는 가운데 값을 쓰고, 단위가 'M'인 행은 입력 오류로 버린다. 점수를 매기는 펩타이드가 데이터베이스에 이미 있으면 순위를 매기기 전에 자기 비교집단에서 뺀다(`cohort_self_member_key`). 피조개 P6(Li 2022, HT-29 IC50 1.585 µM, 50개 중 백분위 100)가 75.0으로 피조개의 최고 항목이 됐고, 가시파래 HTDT-6-2-3-2와 맛조개 SCH-P9·P10은 기존 최고 항목보다 낮아 점수가 바뀌지 않는다.
 - 화면 표시는 "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님"이다.
-- 한계: 흔한 대사물 울타리는 문헌량에 좌우된다. 단일 논문 MBPI는 참고값이며 BBVI에 넣지 않는다. DBAASP·CancerPPD 비교집단은 설계·합성 펩타이드가 많아 천연 펩타이드는 대개 중앙값 아래에 놓인다(자연기원만 모은 비교집단을 민감도로 함께 싣는다). 백분위 100은 그 비교집단 안에서 가장 강하다는 뜻이지 더 강한 펩타이드가 없다는 뜻이 아니다. 항암 비교집단은 노출 시간과 시험법을 섞는다.
+- 한계: 흔한 대사물 울타리는 문헌량에 좌우된다. 단일 논문 MBPI는 0.75를 곱한 값이고, 3.27부터 그 위의 BBVI는 '단일 논문' 표시를 단 점수다(3.15–3.26은 참고값). DBAASP·CancerPPD 비교집단은 설계·합성 펩타이드가 많아 천연 펩타이드는 대개 중앙값 아래에 놓인다(자연기원만 모은 비교집단을 민감도로 함께 싣는다). 백분위 100은 그 비교집단 안에서 가장 강하다는 뜻이지 더 강한 펩타이드가 없다는 뜻이 아니다. 항암 비교집단은 노출 시간과 시험법을 섞는다.
 
 ### MFPI — 식량자원 잠재력
 
@@ -106,19 +108,20 @@
 - **IUCN 평가가 없거나(검색 0건) DD이고 국가 평가도 없는 종**은 MCUI를 만들지 않고 우선 조사 대상으로 표시한다(3.4부터). 3.15에서도 아래 1·2번 근거가 없는 종은 그대로다. 사유는 '보전 평가 없음' 또는 'IUCN 자료 부족(DD)'이다. IUCN 조회 실패는 자료 문제라 이 사유를 붙이지 않는다.
 - **대체 근거(3.15):** IUCN 검색 0건이고 한국 목록에도 없으면 이 순서로 찾는다(`mcui_substitute`). 기반마다 따로 표시하고 IUCN 기반과 순위를 매기거나 합치지 않는다. DD는 대체하지 않는다.
   1. 한국 목록 학명 대응: 목록 학명이 북서태평양 분포가 없는 종이면 국명이 가리키는 한국 개체군 종에 배정한다(참문어 NT → *O. sinensis*).
-  2. 서식국 공식 국가 적색목록: 시카메굴은 일본 환경성 레드리스트 2020 NT(2015–2020판 모두 NT). 3.16부터 우뭇가사리는 러시아연방 적색자료집(2023) 절멸 위협 상태 'У' = VU(60)이고, 러시아가 분포의 북쪽 끝이라 주변 개체군 평가로 표시한다. 3.19부터 이 단계에는 정부 부처·기관이 발행한 목록만 쓴다(학술 편찬물인 『中国物种红色名录』(2004)는 쓰지 않는다). 매트릭스에는 네모 점으로 놓는다.
-  3. 예비 평가 Rapid LC(Bachman et al. 2020): 1990년 이후 GBIF·OBIS 좌표로 EOO > 30,000 km², 10 km 격자 AOO > 3,000 km², 기록 75건 이상, OBIS 감소 신호 없음이면 '아마 LC'로 본다(`scripts/collect_mcui_rapid_lc.py`). 3.15에 14종이 해당했고, 3.16에 우뭇가사리가 서식국 평가로 넘어가 13종이 남았다. MCUI는 만들지 않는다(아래).
+  2. 서식국 공식 국가 적색목록: 시카메굴은 일본 환경성 레드리스트 2020 NT(2015–2020판 모두 NT). 3.16부터 우뭇가사리는 러시아연방 적색자료집(2023) 절멸 위협 상태 'У' = VU(60)이고, 러시아가 분포의 북쪽 끝이라 주변 개체군 평가로 표시한다. 3.27부터 가시파래는 스웨덴 적색목록 2025 LC(10)이다. 여러 서식국 목록이 있으면 범주를 명시한 가장 최근 정부 목록(DD 제외)을 쓰고, 나머지(노르웨이 2021 LC, 핀란드 2019 DD)와 '먼 서식국(북동대서양) 평가'를 한계로 보인다(팀장 결정 2026-10-03). 3.19부터 이 단계에는 정부 부처·기관이 발행한 목록만 쓴다(학술 편찬물인 『中国物种红色名录』(2004)는 쓰지 않는다). 매트릭스에는 네모 점으로 놓는다.
+  3. 예비 평가 Rapid LC(Bachman et al. 2020): 1990년 이후 GBIF·OBIS 좌표로 EOO > 30,000 km², 10 km 격자 AOO > 3,000 km², 기록 75건 이상, OBIS 감소 신호 없음이면 '아마 LC'로 본다(`scripts/collect_mcui_rapid_lc.py`). 3.15에 14종이 해당했고, 3.16에 우뭇가사리, 3.27에 가시파래가 서식국 평가로 넘어가 12종이 남았다. MCUI는 만들지 않는다(아래).
   - 예비 평가는 역검증(이미 평가된 14종에 적용)에서 EN인 해삼·전복을 LC로 판정해 통과하지 못했다. 그래서 MCUI 점수로 쓰지 않고, 비교표에는 '예비 평가 참고 · LC 가능성 · 역검증 미통과 · 점수 아님', 종 상세에는 '예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님'으로 EOO·AOO·기록 수와 역검증 결과만 보여 준다(팀장 결정 2026-10-02). BBVI 참고값처럼 점수·매트릭스·지도 색·순위·산출 종 수에 쓰지 않는다. MCUI를 주는 대체 근거는 1·2번뿐이다.
-  - 그 13종은 '보전 평가 없음' 사유로 우선 조사 대상에 남는다. 정보충분도의 MCUI 칸도 평가가 없는 종으로 센다(0/3).
-- 한계: 보고율은 개체수가 아니다. 최대 데이터셋 외의 구성 변화, 중복, 세대 길이, 과분산은 통제하지 않았다. IUCN 개체군 추세가 알려진 3종(해삼·전복·고등어)은 모두 방향이 어긋난다(결정 기록 §4).
+  - 3.27에 어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 같은 14종에 역검증했지만 통과하지 못했다(판정 가능 4/14, 위협종 검출 0/2; `posthoc-3.27/mcui-criterion-a/`). 팀장 결정(2026-10-03: 통과할 때만 점수)에 따라 이 경로로 채운 MCUI는 없다.
+  - 그 12종은 '보전 평가 없음' 사유로 우선 조사 대상에 남는다. 정보충분도의 MCUI 칸도 평가가 없는 종으로 센다(0/3).
+- 한계: 보고율은 개체수가 아니다. 최대 데이터셋 외의 구성 변화, 중복, 세대 길이, 과분산은 통제하지 않았다. IUCN 개체군 추세가 알려진 3종(해삼·전복·고등어)은 모두 방향이 어긋난다(결정 기록 §4). 3.27의 외부 검증(지도 상자 안 다른 229종)도 통과하지 못했다. 위협종 9종(사전 기준 10종 미달) 중 1종, LC 172종 중 36종에서 신호가 나왔다. 추세 +10을 받은 4종(멸치·참조기·살오징어·맛조개)의 신호는 모두 국립해양생물자원관 표본 수집 자료의 기록 감소에서 나왔다(규칙은 바꾸지 않았다; `posthoc-3.27/mcui-obis-trend/`).
 
 ## 4. 지표 통합 및 정보충분도
 
 - BBVI = w × MFPI + (1 − w) × MBPI. 기본 w는 0.5이고 화면 슬라이더로 바꿀 수 있다.
-  - MBPI가 독립 원논문 2편 미만이면 BBVI를 보류한다. 대신 '참고 조합'을 점수가 아닌 값으로 보여 준다. 3.15부터 비교표·종 상세의 BBVI 칸에도 'BBVI 참고값 · 점수·매트릭스 미사용'으로 보인다(16종. 큰가리비는 3.24에 BBVI를 얻어 빠졌다).
+  - MBPI 최고 항목이 독립 원논문 2편 미만이면 3.26까지는 BBVI를 보류하고 '참고 조합'만 보였다. 3.27부터는 같은 공식의 BBVI를 점수로 내고 'BBVI · 단일 논문' 표시를 단다(팀장 결정 2026-10-03, `bbvi.single_source_policy`). MBPI 항목에는 이미 단일 논문 계수 0.75가 곱해져 있다. 매트릭스에서는 속이 빈 점이고, 재현 논문이 확인되면 표시를 뗀다. 22종 중 19종이 단일 논문이고, 미역·참굴·큰가리비만 재현 논문이 있다.
   - MCUI는 합치지 않는 별도 축이다.
 - 정보충분도 = 축별 필수 입력 충족 비율의 평균이다. 점수에 곱하거나 더하지 않는다.
-- 우선 조사 대상: 평균 < 0.5이거나, 보전 평가가 없거나 IUCN DD인 종(사유를 나눠 표시). 예비 평가(Rapid LC) 참고 정보만 있는 종은 평가가 없는 종이므로 '보전 평가 없음' 사유로 남는다(13종, 이 중 4종은 정보충분도 사유도 있다).
+- 우선 조사 대상: 평균 < 0.5이거나, 보전 평가가 없거나 IUCN DD인 종(사유를 나눠 표시). 예비 평가(Rapid LC) 참고 정보만 있는 종은 평가가 없는 종이므로 '보전 평가 없음' 사유로 남는다(12종, 이 중 2종은 정보충분도 사유도 있다).
 - 미탐색 후보: 우선 조사 대상 가운데, 같은 속(없으면 과)의 근연종 BBVI가 50 이상인 종. 근연종 점수는 옮겨 적지 않는다.
 
 ## 5. 최종 결과: 매트릭스와 GIS 지도
@@ -129,7 +132,7 @@
 - 셀을 누르면 종별 BBVI·MCUI·영양 원값(대체치 표시)·이 셀 출현 기록·정보충분도를 보여 준다.
 - 정보충분도 층(우선 조사 대상, 미탐색 후보)은 따로 켤 수 있다. 층 이름에 '지도 표시 종 수'를 적고, 공개 셀이 없는 종은 이름을 나열한다.
 
-**현재 배치:** 참굴(BBVI 83.9 × MCUI 10.0, 한국 국가 평가 기반) → 지속가능 활용 후보. 미역은 BBVI 71.0이 있지만 MCUI가 없어(예비 평가는 참고 정보) 놓지 않는다. 우선 조사 대상 13종(모두 '보전 평가 없음', 이 중 4종은 정보충분도도 낮음), 미탐색 후보 0종.
+**현재 배치(3.27, 12점):** 지속가능 활용 후보 5(참굴 83.9×10, 피조개 68.5×10, 바지락 59.5×10, 맛조개 57.3×20, 살오징어 51.5×20), 기초조사·관찰 대상 5(멸치 48.3×20, 고등어 47.4×10, 큰가리비 46.1×10, 홍합 35.5×10, 시카메굴 35.0×35), 보전 우선·모니터링 2(해삼 36.1×80, 전복 35.2×80). 참굴·큰가리비를 뺀 10점은 단일 논문 BBVI다. 미역(71.0)·톳(64.2)·꼬시래기(59.7) 등 10종은 BBVI가 있지만 MCUI가 없어 놓지 않는다. 우선 조사 대상 12종(모두 '보전 평가 없음', 이 중 2종은 정보충분도도 낮음), 미탐색 후보 0종. 지도에서 유형 색이 칠해진 공개 격자는 39곳이다.
 
 ## 6. 2.3 → 현재 버전
 
@@ -161,58 +164,59 @@
 | `verified-pilot-3.24` | verified-pilot-3.23 (2026-10-02). Evidence row only: Suetsuna et al. 2004 (J Nutr Biochem 15:267) joins the potency replications. Its Table 1 gives 10.8 uM for Val-Trp isolated from a wakame hot-water extract as a single HPLC peak and sequenced by Edman degradation, measured with HHL; a sequence-confirmed purified peptide has counted since the 3.14 team-lead decision, and the 2026-09-30 review had excluded the paper only under the older synthetic-only rule. Its pIC50 lies 0.906 from the scallop VW (86.9 uM, Li 2018), inside the 1.0 gap, so 큰가리비's top item rests on two independent papers and its BBVI is computed. 3/3 independent verifiers passed the row. No rule, cohort, gap or coefficient changes. See research/verified-indices/bbvi-replication-3.24-2026-10-02.md. |
 | `verified-pilot-3.25` | verified-pilot-3.24 (2026-10-02). Evidence rows and record text only; no score moves. (1) Three synthetic potency replications for the wakame IW, VW and IY items (Sato 2002), found by doyoun0824 with two independent readers each and read a third time: Michelke et al. 2018 (Eng Life Sci 18:218, chemically produced Ile-Trp from Bachem, Table 1, 1.91 uM), Nomura et al. 2002 (Fish Sci 68:954, synthetic Val-Trp from Sigma, Table 2, 1.68 uM) and Saito et al. 1994 (Biosci Biotechnol Biochem 58:1767, solid-phase synthetic Ile-Tyr fragment, Table III, 2.4 uM), all with HHL and from groups that share no author with Sato 2002. 미역 already scored 1.0 on those items, so its values stay, but its BBVI no longer rests only on the 3.14 purified-isolate rule (Lin 2018, whose uM values the authors converted from mg/mL) or on the Suetsuna 2000 shared-co-author exception. Nomura's VW also attaches to the scallop VW item and stays unused (pIC50 gap 1.714). (2) Two aquaculture records corrected without changing any feasible flag: 멸치's rearing site is the Hakatajima Field Station named in Yoneda 2025's Methods, not the authors' Hatsukaichi affiliation (found by doyoun0824's independent check); 청각's Hwang 2008 was read in full (seeding July 2004 to harvest August 2005 on horizontal ropes at Wando), so its abstract-level limitation is replaced. See research/verified-indices/doyoun-replication-3.25-2026-10-02.md. |
 | `verified-pilot-3.26` | verified-pilot-3.25 (2026-10-02). Record text only; no score moves. The 청각 aquaculture limitation quoted the maximum potential production in Hwang et al. 2008 (J Appl Phycol 20:469), 36,110 kg dry weight per hectare at 1 m depth, as the authors' estimate. That figure is a misprint in the paper: Table 2's own footnotes (5% dry yield; 100 ropes of 100 m per hectare) turn the 1 m row's 36.1 kg dry per 100 m into 3,610, the rule its 0.5, 2 and 3 m rows follow (790, 1,720, 515), and the text and the income column (433,320 = 36,110 x 12 US$) repeat the misprint. The limitation now says so. No feasible flag, rule, cohort or coefficient changes. See research/verified-indices/codium-table2-3.26-2026-10-02.md. |
+| `verified-pilot-3.27` | verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix and map with its own marker; it was a reference value since 3.15 (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (OBIS trend element out of panel; a catch-based criterion-A screen), so no MCUI is filled from them. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md. |
 
 | 축 | 2.3 | 현재 |
 |---|---|---|
 | MFPI 산출 종 수 | 7 | 28 |
-| MBPI 산출 종 수 | 3 | 21 |
-| MCUI 산출 종 수 | 14 | 17 |
-| BBVI 산출 종 수 | 1 | 2 |
+| MBPI 산출 종 수 | 3 | 24 |
+| MCUI 산출 종 수 | 14 | 18 |
+| BBVI 산출 종 수 | 1 | 22 |
 
-MCUI 17종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 2. 예비 평가(Rapid LC) 참고 정보 13종과 BBVI 칸의 참고값 17종은 산출 종 수에 넣지 않는다.
+MCUI 18종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 3. 예비 평가(Rapid LC) 참고 정보 12종은 산출 종 수에 넣지 않는다. BBVI 22종 중 19종은 '단일 논문' 표시 점수다.
 
-## 7. 30종 값 변화 (2.3 → `verified-pilot-3.26`)
+## 7. 30종 값 변화 (2.3 → `verified-pilot-3.27`)
 
-굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다. 예비 평가(Rapid LC) 참고 정보는 MCUI 칸에 넣지 않는다.
+굵은 글씨는 2.3에서 바뀐 값이다. '–'는 산출 보류이며, 0점이나 낮은 가치가 아니다. 예비 평가(Rapid LC) 참고 정보는 MCUI 칸에 넣지 않는다. BBVI의 '(단일 논문)'은 3.27부터 점수로 쓰는 단일 논문 BBVI다.
 
 | 종 (AphiaID) | 범위 | MFPI | MBPI | MCUI | BBVI | 정보충분도 2.3 → 현재 | 우선 조사 대상 (사유) | 미탐색 후보 | 매트릭스 유형 | OBIS 추세 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 멍게 (250680) | 운영 8종 | 54.2 → **52.8** | – → **13.5** | – | – | 42% → 67% | 예 (보전 평가 없음) | – | – | 판단 불가 |
+| 멍게 (250680) | 운영 8종 | 54.2 → **52.8** | – → **13.5** | – | – → **33.2** (단일 논문) | 42% → 67% | 예 (보전 평가 없음) | – | – | 판단 불가 |
 | 미역 (145721) | 운영 8종 | 42.2 → **46.7** | 19.6 → **95.3** | – | – → **71.0** | 67% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 살오징어 (342067) | 운영 8종 | – → **46.1** | – | 10.0 → **20.0** (IUCN) | – | 78% → 86% | – | – | – | 감소 신호 |
+| 살오징어 (342067) | 운영 8종 | – → **46.1** | – → **56.9** | 10.0 → **20.0** (IUCN) | – → **51.5** (단일 논문) | 78% → 94% | – | – | 지속가능 활용 후보 | 감소 신호 |
 | 우뭇가사리 (372119) | 운영 8종 | – → **76.7** | – | – → **60.0** (러시아 국가 평가) | – | 0% → 61% | – | – | – | 조사 부족 |
 | 참굴 (836033) | 운영 8종 | 65.5 → **71.6** | 96.3 | 10.0 (국가 평가) | 80.9 → **83.9** | 67% → 100% | – | – | 지속가능 활용 후보 | 조사 부족 |
-| 톳 (494972) | 운영 8종 | – → **63.3** | – → **65.0** | – | – | 28% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 해삼 (241776) | 운영 8종 | – → **63.5** | – → **8.7** | 80.0 (IUCN) | – | 50% → 94% | – | – | – | 보고율 감소 없음 |
-| 홍합(참담치) (506159) | 운영 8종 | – → **60.9** | – → **10.1** | 10.0 (국가 평가) | – | 28% → 94% | – | – | – | 조사 부족 |
-| 가시파래 (234476) | 조사 후보 | – | – → **73.3** | – | – | 0% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 톳 (494972) | 운영 8종 | – → **63.3** | – → **65.0** | – | – → **64.2** (단일 논문) | 28% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 해삼 (241776) | 운영 8종 | – → **63.5** | – → **8.7** | 80.0 (IUCN) | – → **36.1** (단일 논문) | 50% → 94% | – | – | 보전 우선·모니터링 | 보고율 감소 없음 |
+| 홍합(참담치) (506159) | 운영 8종 | – → **60.9** | – → **10.1** | 10.0 (국가 평가) | – → **35.5** (단일 논문) | 28% → 94% | – | – | 기초조사·관찰 대상 | 조사 부족 |
+| 가시파래 (234476) | 조사 후보 | – | – → **73.3** | – → **10.0** (스웨덴 국가 평가) | – | 0% → 67% | – | – | – | 조사 부족 |
 | 감태 (371986) | 조사 후보 | – | 67.5 | – | – | 33% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
 | 갑오징어 (1666974) | 조사 후보 | – → **42.5** | – | 10.0 (국가 평가) | – | 42% → 61% | – | – | – | 조사 부족 |
-| 고등어 (127022) | 조사 후보 | – → **59.9** | – → **34.9** | 10.0 (IUCN) | – | 33% → 94% | – | – | – | 감소 경향(30% 미만) |
-| 괭생이모자반 (494853) | 조사 후보 | – → **53.5** | – → **21.6** | – | – | 0% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 꼬시래기 (236157) | 조사 후보 | – → **70.0** | – | – | – | 0% → 36% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
+| 고등어 (127022) | 조사 후보 | – → **59.9** | – → **34.9** | 10.0 (IUCN) | – → **47.4** (단일 논문) | 33% → 94% | – | – | 기초조사·관찰 대상 | 감소 경향(30% 미만) |
+| 괭생이모자반 (494853) | 조사 후보 | – → **53.5** | – → **21.6** | – | – → **37.6** (단일 논문) | 0% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 꼬시래기 (236157) | 조사 후보 | – → **70.0** | – → **49.3** | – | – → **59.7** (단일 논문) | 0% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 꽃게 (1061762) | 조사 후보 | – → **62.0** | – | – | – | 27% → 33% | 예 (정보충분도, 보전 평가 없음) | – | – | 조사 부족 |
-| 넙치 (275816) | 조사 후보 | – → **59.4** | – → **29.2** | – | – | 27% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 다시마 (377084) | 조사 후보 | – → **56.7** | – → **26.5** | – | – | 0% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 대구 (254538) | 조사 후보 | – → **38.3** | – → **59.9** | – | – | 20% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
-| 맛조개 (413600) | 조사 후보 | – → **57.7** | – → **56.9** | 10.0 → **20.0** (국가 평가) | – | 0% → 100% | – | – | – | 감소 신호 |
-| 멸치 (219984) | 조사 후보 | – → **74.1** | – → **22.6** | 10.0 → **20.0** (IUCN) | – | 53% → 94% | – | – | – | 감소 신호 |
-| 바지락 (231750) | 조사 후보 | 52.1 → **60.4** | – → **58.6** | 10.0 (국가 평가) | – | 33% → 100% | – | – | – | 조사 부족 |
+| 넙치 (275816) | 조사 후보 | – → **59.4** | – → **29.2** | – | – → **44.3** (단일 논문) | 27% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 다시마 (377084) | 조사 후보 | – → **56.7** | – → **26.5** | – | – → **41.6** (단일 논문) | 0% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 대구 (254538) | 조사 후보 | – → **38.3** | – → **59.9** | – | – → **49.1** (단일 논문) | 20% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 맛조개 (413600) | 조사 후보 | – → **57.7** | – → **56.9** | 10.0 → **20.0** (국가 평가) | – → **57.3** (단일 논문) | 0% → 100% | – | – | 지속가능 활용 후보 | 감소 신호 |
+| 멸치 (219984) | 조사 후보 | – → **74.1** | – → **22.6** | 10.0 → **20.0** (IUCN) | – → **48.3** (단일 논문) | 53% → 94% | – | – | 기초조사·관찰 대상 | 감소 신호 |
+| 바지락 (231750) | 조사 후보 | 52.1 → **60.4** | – → **58.6** | 10.0 (국가 평가) | – → **59.5** (단일 논문) | 33% → 100% | – | – | 지속가능 활용 후보 | 조사 부족 |
 | 방어 (276651) | 조사 후보 | 56.3 → **51.0** | – | 10.0 (IUCN) | – | 67% → 67% | – | – | – | 조사 부족 |
-| 시카메굴 (836041) | 조사 후보 | – → **56.1** | – | – → **35.0** (일본 국가 평가) | – | 0% → 69% | – | – | – | 판단 불가 |
-| 전복(종 수준) (397082) | 조사 후보 | – → **54.7** | – → **15.6** | 80.0 (IUCN) | – | 53% → 94% | – | – | – | 조사 부족 |
-| 조피볼락 (274849) | 조사 후보 | 42.9 → **48.5** | – → **31.7** | – | – | 33% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 시카메굴 (836041) | 조사 후보 | – → **56.1** | – → **13.8** | – → **35.0** (일본 국가 평가) | – → **35.0** (단일 논문) | 0% → 94% | – | – | 기초조사·관찰 대상 | 판단 불가 |
+| 전복(종 수준) (397082) | 조사 후보 | – → **54.7** | – → **15.6** | 80.0 (IUCN) | – → **35.2** (단일 논문) | 53% → 94% | – | – | 보전 우선·모니터링 | 조사 부족 |
+| 조피볼락 (274849) | 조사 후보 | 42.9 → **48.5** | – → **31.7** | – | – → **40.1** (단일 논문) | 33% → 67% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 참문어(동아시아 종) (534443) | 조사 후보 | – → **37.8** | – | – → **35.0** (국가 평가) | – | 0% → 50% | – | – | – | 조사 부족 |
 | 참조기 (281273) | 조사 후보 | – → **39.4** | – | 10.0 → **20.0** (IUCN) | – | 60% → 67% | – | – | – | 감소 신호 |
-| 청각 (145086) | 조사 후보 | – → **36.7** | – → **0.4** | – | – | 20% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
+| 청각 (145086) | 조사 후보 | – → **36.7** | – → **0.4** | – | – → **18.6** (단일 논문) | 20% → 61% | 예 (보전 평가 없음) | – | – | 조사 부족 |
 | 큰가리비 (393716) | 조사 후보 | 56.3 → **55.8** | – → **36.4** | 10.0 (국가 평가) | – → **46.1** | 33% → 100% | – | – | 기초조사·관찰 대상 | 조사 부족 |
-| 피조개 (504357) | 조사 후보 | – → **61.9** | – → **75.0** | 10.0 (국가 평가) | – | 20% → 94% | – | – | – | 조사 부족 |
+| 피조개 (504357) | 조사 후보 | – → **61.9** | – → **75.0** | 10.0 (국가 평가) | – → **68.5** (단일 논문) | 20% → 94% | – | – | 지속가능 활용 후보 | 조사 부족 |
 
 ## 8. 남은 한계
 
-- 모든 지표는 팀의 시범 규칙이다(계수·임계값·가중치). 사후 검증은 MFPI의 표 의존성(일본 식품성분표로 다시 계산해도 순위 유지)만 통과했고, 가중치·공식 자체와 MBPI는 독립 사례로 검증하지 않았다.
-- BBVI가 있는 종은 참굴·미역·큰가리비 셋이고, 매트릭스 점은 참굴·큰가리비 둘이다(미역은 MCUI가 없다). 큰가리비의 재현은 pIC50 차이 0.906으로 기준 1.0에 가깝고, 이미 기록된 다른 VW 값(Lin 2018 0.58 · Kapel 2006 1.1 · Sato 2002 3.3 µM)과는 차이가 1.0을 넘는다(`bbvi-replication-3.24-2026-10-02.md` 2절의 한계). 단일 논문 MBPI가 많아 매트릭스 점이 적다. MFPI·MCUI가 다 있는데 최고 MBPI 항목이 논문 한 편이라 BBVI만 막힌 종이 8종(해삼·전복·맛조개·멸치·고등어·바지락·피조개·홍합)이다. 2026-10-02 탐색에서 이 8종의 재현 논문은 찾지 못했다(같은 기록 4·5절).
-- 예비 평가(Rapid LC)는 분포 범위만 본다. 역검증에서 남획으로 EN이 된 해삼·전복을 LC로 판정했으므로 MCUI 점수로 쓰지 않고 참고 정보로만 표시한다(팀장 결정 2026-10-02).
-- 남은 공백(30종 × 4축 120칸 중 51칸): MFPI 2종(가시파래·감태: 같은 시료 수분을 보고한 원문과 양식 기록 미확보. 두 종 모두 탐색 중단(팀장 결정 2026-10-02) — `research/verified-indices/gap-search-2026-10-02.md`), MBPI 9종(살오징어·우뭇가사리·꼬시래기·시카메굴·참조기·방어·꽃게·참문어(동아시아 종)·갑오징어; 꼬시래기는 보류), MCUI 13종(예비 평가 Rapid LC는 참고 정보만), BBVI 27종(입력 축 부족 11종, 단일 논문 MBPI 16종은 참고값만 표시).
+- 모든 지표는 팀의 시범 규칙이다(계수·임계값·가중치). 사후 검증은 MFPI의 표 의존성(일본 식품성분표로 다시 계산해도 순위 유지)만 통과했다. MBPI 약물 기원종 검증(3.27)은 미통과였고, 가중치·공식 자체는 독립 사례로 검증하지 않았다.
+- BBVI 22종 중 19종은 MBPI 최고 항목이 논문 한 편인 '단일 논문' BBVI다(3.27 팀장 결정으로 점수화). 재현 논문이 있는 종은 참굴·미역·큰가리비 셋이고, 큰가리비의 재현은 pIC50 차이 0.906으로 기준 1.0에 가깝다(`bbvi-replication-3.24-2026-10-02.md` 2절의 한계). 2026-10-03 탐색에서도 단일 논문 종의 재현 논문은 원문으로 확인하지 못했다(톳 GKY Chen 2016은 리뷰 표에서만 확인됨; `gap-filling-3.27-2026-10-03.md` 4-4절).
+- 예비 평가(Rapid LC)는 분포 범위만 본다. 역검증에서 남획으로 EN이 된 해삼·전복을 LC로 판정했으므로 MCUI 점수로 쓰지 않고 참고 정보로만 표시한다(팀장 결정 2026-10-02). 어획 기반 기준 A 예비 평가(3.27)도 역검증을 통과하지 못했다.
+- 남은 공백(30종 × 4축 120칸 중 28칸): MFPI 2종(가시파래·감태: 양식 기록은 찾았지만 같은 시료 수분을 보고한 날것 성분 원문이 없다), MBPI 6종(우뭇가사리·참조기·방어·꽃게·참문어(동아시아 종)·갑오징어: 어느 층 규칙도 통과하는 측정값이 없다), MCUI 12종(어느 정부 적색목록에도 없고, 예비 평가 두 가지가 역검증을 통과하지 못했다), BBVI 8종(입력 축 부족). 막힌 이유와 남은 단서(로그인·구독 원문)는 `research/verified-indices/gap-filling-3.27-2026-10-03.md` 4절에 있다.
 - 출현 셀과 OBIS 추세는 조사 노력에 좌우된다. 셀이 없다는 것은 종이 없다는 뜻이 아니다. OBIS 추세와 IUCN 개체군 추세의 방향이 3종에서 모두 어긋나, 추세 방법은 아직 검증되지 않았다.
 - 대체치, 국가 평가, 추세 보정은 화면에서 구분 표시하지만, 서로 다른 근거를 섞은 값이라는 점은 그대로 남는다.

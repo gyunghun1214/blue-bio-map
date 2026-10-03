@@ -1,0 +1,169 @@
+{
+ "counts": {
+  "candidates_computed": 229,
+  "computable": 228,
+  "by_group_iucn_all": {
+   "P:LC": 172,
+   "P:DD": 35,
+   "P:NT": 7,
+   "P:VU": 5,
+   "P:EN": 2,
+   "P:CR": 2,
+   "S2:VU": 1,
+   "S2:LC": 1,
+   "S2:DD": 1,
+   "S2:EN": 2,
+   "S2:NT": 1
+  },
+  "by_group_iucn_computable": {
+   "P:LC": 172,
+   "P:DD": 35,
+   "P:NT": 7,
+   "P:VU": 5,
+   "P:EN": 2,
+   "P:CR": 2,
+   "S2:VU": 1,
+   "S2:LC": 1,
+   "S2:DD": 1,
+   "S2:EN": 2
+  },
+  "not_computable_reasons": {
+   "past_records_below_minimum": 1
+  },
+  "data_check_failed": [],
+  "class_by_group": {
+   "P:survey_gap": 112,
+   "P:undetermined": 44,
+   "P:decline_signal": 50,
+   "P:no_clear_decline": 16,
+   "P:decline_below_threshold": 1,
+   "S2:decline_signal": 2,
+   "S2:undetermined": 2,
+   "S2:survey_gap": 1
+  }
+ },
+ "primary_P": {
+  "table_[[T_sig,T_none],[L_sig,L_none]]": [
+   [
+    1,
+    8
+   ],
+   [
+    36,
+    136
+   ]
+  ],
+  "odds_ratio": 0.4722222222222222,
+  "p_one_sided": 0.8789000575027318,
+  "sensitivity_T": {
+   "signal": 1,
+   "n": 9,
+   "share": 0.111,
+   "ci95": [
+    0.003,
+    0.482
+   ]
+  },
+  "false_alarm_L": {
+   "signal": 36,
+   "n": 172,
+   "share": 0.209,
+   "ci95": [
+    0.151,
+    0.278
+   ]
+  },
+  "n_threatened_computable": 9,
+  "verdict": "FAIL (not testable: fewer than 10 threatened)"
+ },
+ "S1_mannwhitney_P_T_less_than_L": {
+  "U": 955.0,
+  "p": 0.8818987001799039,
+  "median_T": 1.212,
+  "median_L": 0.9
+ },
+ "S2_P_plus_Elasmobranchii": {
+  "table_[[T_sig,T_none],[L_sig,L_none]]": [
+   [
+    2,
+    10
+   ],
+   [
+    37,
+    136
+   ]
+  ],
+  "odds_ratio": 0.7351351351351352,
+  "p_one_sided": 0.7641063876002974,
+  "sensitivity_T": {
+   "signal": 2,
+   "n": 12,
+   "share": 0.167,
+   "ci95": [
+    0.021,
+    0.484
+   ]
+  },
+  "false_alarm_L": {
+   "signal": 37,
+   "n": 173,
+   "share": 0.214,
+   "ci95": [
+    0.155,
+    0.283
+   ]
+  }
+ },
+ "S3_japan_moe": {
+  "table_[[T_sig,T_none],[L_sig,L_none]]": [
+   [
+    0,
+    2
+   ],
+   [
+    50,
+    167
+   ]
+  ],
+  "odds_ratio": 0.0,
+  "p_one_sided": 1.0,
+  "sensitivity_T": {
+   "signal": 0,
+   "n": 2,
+   "share": 0.0,
+   "ci95": [
+    0.0,
+    0.842
+   ]
+  },
+  "false_alarm_L": {
+   "signal": 50,
+   "n": 217,
+   "share": 0.23,
+   "ci95": [
+    0.176,
+    0.292
+   ]
+  }
+ },
+ "S4_NT_DD": {
+  "NT": {
+   "signal": 2,
+   "n": 7,
+   "share": 0.286,
+   "ci95": [
+    0.037,
+    0.71
+   ]
+  },
+  "DD": {
+   "signal": 11,
+   "n": 36,
+   "share": 0.306,
+   "ci95": [
+    0.163,
+    0.481
+   ]
+  }
+ }
+}
