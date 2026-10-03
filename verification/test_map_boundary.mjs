@@ -13,7 +13,7 @@ const css=fs.readFileSync(new URL('../dist/style.css',import.meta.url),'utf8');
 assert.match(css,/\.map-symbol\{width:4px;height:4px;/,'legend marks reflect the smaller schematic dots');
 
 const nodes=new Map();
-const popup=[], dots=[], rectangles=[];
+const popup=[], dots=[], rectangles=[], markers=[];
 const context={
   document:{getElementById(id){
     if(!nodes.has(id))nodes.set(id,{textContent:'',nextElementSibling:{textContent:''}});
@@ -24,7 +24,9 @@ const context={
     return {addTo(){return this},bindPopup(body){popup.push(body);return this}};
   },circleMarker(latlng,options){
     const dot={latlng,options,addTo(){dots.push(this);return this}};return dot;
-  }}
+  },marker(latlng,options){
+    const m={latlng,options,addTo(){markers.push(this);return this}};return m;
+  },divIcon(o){return o;}}
 };
 vm.createContext(context);
 vm.runInContext(pre+'\n'+mapCode+'\nglobalThis.check=cellAssessmentStatus;globalThis.draw=renderCellMap;globalThis.banner=mapJudgmentStatus;',context);
@@ -54,7 +56,7 @@ assert.match(nodes.get('map-judgment').textContent,/승인 0곳/);
 assert.match(nodes.get('map-judgment').textContent,/1개 셀 모두 판단 보류/);
 
 context.species=species;
-context.layer={clearLayers(){}};
+context.layer={clearLayers(){},eachLayer(){},removeLayer(){},hasLayer(){return true}};
 context.mapStub={zoom:7,fitBounds(){},getZoom(){return this.zoom}};
 vm.runInContext('let lastFitted;overlay=globalThis.layer;map=globalThis.mapStub;',context);
 context.draw(species,'#123456');
@@ -111,10 +113,38 @@ assert.match(nodes.get('map-judgment').textContent,/공개 출현 셀이 없어/
 dots.length=0;species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:500}];context.draw(species,'#123456');
 assert.equal(dots.length,576,'4° cell capped at 24x24');
 assert.ok(dots.every(d=>d.options.radius>0&&d.options.interactive===false));
-// At an overview zoom dots keep >= 6 px apart instead of fusing into a solid red block.
-dots.length=0;context.mapStub.zoom=5;context.draw(species,'#123456');
-assert.equal(dots.length,15*15,'4° cell at zoom 5: spacing-capped grid');
-assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=1.8),'zoom 5 dots stay legible without joining');
+// 2026-10-03: overview zooms (<= 6) show one regional bubble instead of the cell's dots; zoom 7+ splits it into dots.
+dots.length=0;markers.length=0;context.mapStub.zoom=5;context.draw(species,'#123456');
+assert.equal(dots.length,1,'zoom 5: one bubble, no schematic dots');
+assert.ok(dots[0].options.radius>=9&&dots[0].options.fillOpacity===.75,'500 records in one cell -> darkest band');
+assert.deepEqual(JSON.parse(JSON.stringify(dots[0].latlng)),[34,126],'bubble sits on the published cell centre');
+assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon.className)).length,0,'no per-cell BBVI tag on bubbles');
+// Bubbles group published cells by region: size = cells, never a species score.
+vm.runInContext('globalThis.bubbles=cellBubbles;globalThis.tag=bbviTagText;globalThis.summary=cellSummaryHtml',context);
+const grouped=context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],5);
+assert.equal(grouped.length,2,'two nearby cells share a 4° block, the far one stands alone');
+assert.equal(grouped.find(b=>b.cells.length===2).records,39);
+assert.equal(context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],6).length,3,'zoom 6 uses 2° blocks');
+// Zoomed in: each cell carries the species-level BBVI tag, labelled apart from the popup text.
+markers.length=0;dots.length=0;context.mapStub.zoom=7;context.draw(species,'#123456');
+const tags=markers.filter(m=>/bbvi-tag/.test(m.options.icon.className));
+assert.equal(tags.length,1,'one BBVI tag per spatial cell');
+assert.equal(tags[0].options.icon.html,'BBVI 90.0');
+assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 51.5 · 단일 논문','single-paper label travels with the value');
+assert.equal(context.tag({assessment:{scores:{}}}),'BBVI 미산출');
+// A cell's species summary: confirmed, usable, conservation priority, evidence gap.
+const gap={label:'근거 부족 종',assessment:{scores:{BBVI:20},priority_survey:true}}, none={label:'평가 없음 종'};
+const sum=context.summary([species,gap,none]);
+assert.match(sum,/<b>3<\/b><span>확인 종/);assert.match(sum,/<b>1<\/b><span>활용 가능 종/);
+assert.match(sum,/<b>1<\/b><span>보전 우선 종/);assert.match(sum,/<b>2<\/b><span>근거 부족 종/);
+assert.match(sum,/근거 부족\(우선 조사 대상 또는 지표 평가 없음\): 근거 부족 종, 평가 없음 종/);
+assert.equal(context.summary([]),'');
+vm.runInContext('data={species:[globalThis.species]}',context);
+popup.length=0;context.draw(species,'#123456');
+assert.match(popup[0],/cell-summary/,'cell popup opens with the species summary');
+assert.doesNotMatch(popup[0],/BBVI 90/,'the popup keeps status-only species axes');
+vm.runInContext('data=undefined',context);
+dots.length=0;context.mapStub.zoom=5;
 dots.length=0;context.mapStub.zoom=8;context.draw(species,'#123456');
 assert.ok(dots.every(d=>d.options.radius<=3),'zoom 8 dots never become oversized');
 context.mapStub.zoom=7;
