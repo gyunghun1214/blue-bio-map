@@ -1206,6 +1206,10 @@ const OMEGA_SHARE=.3; // team display rule for EPA+DHA: no MFDS claim exists, so
 const targetText=t=>(t.target_name||'')+' '+(t.target_organism||'');
 const BACTERIA=/bacter|coccus|Escherichia|Staphylococcus|Pseudomonas|Bacillus|Mycobacterium|Vibrio|Salmonella|Streptococcus|Klebsiella/i;
 const FUNGI=/Candida|Aspergillus|Cryptococcus|Fusarium|Trichophyton|Saccharomyces/i;
+// An AMP item names its bacterium, not the strain; the strain of each adopted MIC row says whether it is a resistant one
+// (Cg-BigDef1 was measured on four MRSA isolates as well as on susceptible S. aureus).
+const RESISTANT=/resistan|MRSA|VRE|MDR/i;
+const resistantRows=t=>t.stratum_kind==='amp'?(t.measurements||[]).filter(m=>RESISTANT.test(m.target_strain||'')):[];
 // An MBPI item takes the first drug trait whose rule matches (the precedence the 3.12 counts were checked with);
 // a trait with a parent (내성균 under 항균) is counted under its parent as well.
 const USE_TRAITS=[
@@ -1215,11 +1219,11 @@ const USE_TRAITS=[
   {id:'parasite',group:'신약',label:'기생충',match:t=>/Trypanosoma|Plasmodium|Leishmania|Toxoplasma|Schistosoma|Giardia/i.test(targetText(t))},
   {id:'cancer',group:'신약',label:'항암',match:t=>t.stratum_kind==='anticancer'||t.target_type==='CELL-LINE'},
   {id:'microbe',group:'신약',label:'항균',match:t=>t.stratum_kind==='amp'||t.target_type==='ORGANISM'&&BACTERIA.test(targetText(t))},
-  {id:'resistant',group:'신약',label:'내성균',parent:'microbe',match:t=>t.target_type==='ORGANISM'&&/resistan|MRSA|VRE|MDR/i.test(targetText(t))},
+  {id:'resistant',group:'신약',label:'내성균',parent:'microbe',match:t=>t.target_type==='ORGANISM'&&RESISTANT.test(targetText(t))||resistantRows(t).length>0},
   {id:'fungus',group:'신약',label:'항진균',match:t=>t.target_type==='ORGANISM'&&FUNGI.test(targetText(t))},
   {id:'pain',group:'신약',label:'진통',match:t=>/opioid receptor|TRPV1|cyclooxygenase/i.test(targetText(t))},
   {id:'antioxidant',group:'신약',label:'항산화',match:t=>/DPPH|ABTS|radical/i.test(targetText(t))},
-  {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|amylase/i.test(targetText(t))},
+  {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|phosphatase non-receptor type 1\b|amylase/i.test(targetText(t))},
   {id:'protein_g',group:'식량',label:'고단백'},
   {id:'mineral',group:'식량',label:'미네랄'},
   {id:'omega3',group:'식량',label:'오메가-3'},
@@ -1269,6 +1273,10 @@ function useEvidence(s,id){
   const hits=(a.bioactivity_trace||[]).filter(t=>isAdopted(t)&&traitIdsOf(t).includes(id)).sort((x,y)=>y.adjusted-x.adjusted);
   if(!hits.length)return null;
   const t=hits[0], m=(t.measurements||[])[0]||{};
+  if(id==='resistant'&&resistantRows(t).length){
+    const r=resistantRows(t), v=r.map(x=>x.value), lo=Math.min(...v), hi=Math.max(...v);
+    return {text:`항균 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.target_species} 내성 균주 ${r.length}개 MIC ${lo===hi?num(lo):num(lo)+'–'+num(hi)} ${r[0].unit} · 근거 ${hits.length}건`,score:pilotScore(s,'MBPI')};
+  }
   const what=t.stratum_kind==='anticancer'?`항암 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.cell_line} IC50 ${t.measurements.length>1?`${num(10**(6-t.pIC50))} ${m.unit} (노출 ${t.measurements.length}개 중앙값)`:`${num(m.value)} ${m.unit}`}`
     :t.stratum_kind==='amp'?`항균 펩타이드 ${t.peptide_name||t.peptide_sequence} · ${t.target_species} MIC ${t.measurements.length>1?`${num(10**(6-t.pMIC))} ${m.unit} (균주 ${t.measurements.length}개 중앙값)`:`${m.value} ${m.unit}`}`
     :t.stratum_kind==='peptide'?`펩타이드 ${t.peptide_sequence} · ACE IC50 ${peptideValue(m)}`
