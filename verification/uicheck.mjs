@@ -264,17 +264,31 @@ try{
     chipN.ace===15&&chipN.virus===6&&chipN.microbe===3&&chipN.resistant===1&&chipN.fungus===0&&chipN.pain===0&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
     chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
-  const chipFilter=await evaluate("(()=>{setUse('microbe');const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUse(null);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
+  const chipFilter=await evaluate("(()=>{setUses(['microbe']);const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUses([]);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
   check('Use chip filter: the antibacterial chip leaves 피조개, 조피볼락 and 참굴 (3.19), counts the hidden species and clears back to all 30',
     JSON.stringify(chipFilter.ids.sort())==='[274849,504357,836033]'&&/근거 미확인 27종/.test(chipFilter.note)&&
     /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30&&
     // several strains of one target show their median (the scored value); a single strain shows its own value
     chipFilter.oyster.includes('MIC 2.5 uM (균주 7개 중앙값)')&&chipFilter.ark.includes('MIC 22.77 uM')&&!chipFilter.ark.includes('중앙값'),JSON.stringify(chipFilter));
   // A display-only chip says on every card and in its note that it is not a score.
-  const disp=await evaluate("(()=>{setUse('antioxidant');const cards=[...document.querySelectorAll('.species-card')].map(b=>[Number(b.dataset.species),b.innerText]);const note=document.getElementById('use-extra').innerText;const title=document.querySelector('[data-use=antioxidant]').title;setUse(null);return {cards,note,title}})()");
+  const disp=await evaluate("(()=>{setUses(['antioxidant']);const cards=[...document.querySelectorAll('.species-card')].map(b=>[Number(b.dataset.species),b.innerText]);const note=document.getElementById('use-extra').innerText;const title=document.querySelector('[data-use=antioxidant]').title;setUses([]);return {cards,note,title}})()");
   check('Display-only chip: 항산화 shows 감태 and 참조기, each card and the note say 표시 전용·점수 미반영',
     JSON.stringify(disp.cards.map(c=>c[0]).sort())==='[281273,371986]'&&disp.cards.every(c=>c[1].includes('표시 전용, 점수 미반영'))&&
     disp.note.includes('표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며')&&disp.title.includes('점수 미반영'),JSON.stringify(disp));
+  // 2026-10-03: chips combine with AND. The counts are the intersections of the chip counts above; an empty result
+  // offers to turn the last chip off, and clearing returns the occurrence map to the species shown before.
+  const and=await evaluate(`(()=>{const n=()=>document.querySelectorAll('.species-card').length,before=selected.aphiaID,view=map.getZoom()+'/'+map.getCenter().lat.toFixed(3),r={};
+    for(const ids of [['ace','protein_g'],['protein_g','omega3'],['virus','mineral'],['ace','protein_g','omega3'],['virus','parasite']]){const pre=selected.aphiaID;setUses(ids);r[ids.join('+')]=n();r.kept=selected.aphiaID===pre;}
+    r.undo=document.querySelector('.use-empty [data-use-off]')?.innerText||'';
+    setUses(['virus']);document.querySelector('[data-use=mineral]').click();
+    r.badge=document.querySelector('[data-use=parasite]').innerText;r.zero=document.querySelector('[data-use=parasite]').classList.contains('zero');
+    r.pressed=[...document.querySelectorAll('[data-use][aria-pressed=true]')].map(b=>b.dataset.use).join();r.hash=decodeURIComponent(location.hash.match(/u=([^&]*)/)?.[1]||'');
+    r.sum=document.querySelector('.use-sum')?.innerText||'';r.sel=useMatch(selected);
+    document.querySelector('[data-use-clear]').click();r.back=n();r.restored=selected.aphiaID===before;r.cleared=activeUses.size;r.view=map.getZoom()+'/'+map.getCenter().lat.toFixed(3)===view;return r})()`);
+  check('Use chips AND: 혈압×고단백 8, 고단백×오메가-3 7, 바이러스×미네랄 4, 혈압×고단백×오메가-3 3, 바이러스×기생충 0 with a turn-last-off button (→ 6) that keeps the map species; badges show what adding a chip leaves; 전체 해제 returns all 30 and the species and map view from before',
+    and['ace+protein_g']===8&&and['protein_g+omega3']===7&&and['virus+mineral']===4&&and['ace+protein_g+omega3']===3&&and['virus+parasite']===0&&
+    /기생충’ 끄기 → 6종/.test(and.undo)&&and.kept&&/0종/.test(and.badge)&&and.zero&&and.pressed==='virus,mineral'&&and.hash==='virus,mineral'&&
+    /4종/.test(and.sum)&&and.sel&&and.back===30&&and.restored&&and.view&&and.cleared===0,JSON.stringify(and));
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
@@ -394,11 +408,11 @@ try{
   const evid=await evaluate("(()=>{const sel=document.getElementById('species-evidence'),n=v=>{sel.value=v;sel.dispatchEvent(new Event('change'));return document.querySelectorAll('#species-list .species-card').length;};const r={published:n('published'),candidate:n('candidate'),all:n('all'),wantPublished:data.species.filter(s=>!s.catalog).length,wantCandidate:data.species.filter(s=>!!s.catalog).length,total:data.species.length};return r})()");
   check('Species filter 근거 상태: 운영 발행 / 조사 후보 counts come from data.species and add up to all species',evid.published===evid.wantPublished&&evid.candidate===evid.wantCandidate&&evid.published>0&&evid.candidate>0&&evid.published+evid.candidate===evid.total&&evid.all===evid.total,JSON.stringify(evid));
   // ↻ reloads the data, re-applies species and use chip from the hash and leaves the tab as it was.
-  await evaluate("selectSpecies(274849);setUse('microbe');setView('compare');document.getElementById('reload-data').click();1");
+  await evaluate("selectSpecies(274849);setUses(['microbe']);setView('compare');document.getElementById('reload-data').click();1");
   for(let i=0;i<80;i++){await sleep(250);if(await evaluate('!!data'))break;}
-  const kept=await evaluate("({s:selected?.aphiaID,use:activeUse,v:currentView})");
+  const kept=await evaluate("({s:selected?.aphiaID,use:[...activeUses].join(),v:currentView})");
   check('↻ reload keeps the selected species, use chip and tab',kept.s===274849&&kept.use==='microbe'&&kept.v==='compare',JSON.stringify(kept));
-  await evaluate("setUse(null);setView('explore');history.replaceState(null,'',location.pathname);1");
+  await evaluate("setUses([]);setView('explore');history.replaceState(null,'',location.pathname);1");
   const bars=await walkComparison();
   check('A-2 comparison pages show one coverage bar per species column, all species covered',bars.every(p=>p.bars===p.cols&&p.cols>0&&p.cols<=5)&&bars.reduce((a,p)=>a+p.bars,0)===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.cols])));
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");

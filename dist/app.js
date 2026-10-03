@@ -1259,7 +1259,9 @@ const TRAIT_SYNONYMS={
   mineral:['미네랄','무기질','칼슘','철','철분','아연'],
   omega3:['오메가-3','오메가3','오메가','omega','omega-3','dha','epa','불포화지방'],
 };
-let activeUse=null;
+// Chips combine with AND: a species stays only when it has evidence for every chip that is on (insertion order kept,
+// so the last chip turned on is the one the empty-result button turns off).
+let activeUses=new Set(), useReturn=null; // useReturn {from,to,period,view}: the screen a chip moved the selection away from
 const traitById=id=>USE_TRAITS.find(c=>c.id===id);
 // ChEMBL items carry a link review; peptide and reviewed-compound items are adopted by their stratum.
 const isAdopted=t=>t.link_review===undefined||t.link_review==='accepted';
@@ -1307,23 +1309,53 @@ function displayEvidence(s,id){
 }
 const displayOnly=id=>{const e=(data?.species||[]).map(s=>useEvidence(s,id)).filter(Boolean);return e.length>0&&e.every(x=>x.display);};
 const useCount=id=>(data?.species||[]).filter(s=>useEvidence(s,id)).length;
-// A chip's state comes from its count alone, so a grey chip activates as soon as adopted evidence matches it.
+const hasAll=(s,ids)=>ids.every(id=>useEvidence(s,id));
+const useMatch=s=>hasAll(s,[...activeUses]);
+// Species left if this chip were on together with the current ones; for a chip that is on, the current result.
+const useLeft=id=>(data?.species||[]).filter(s=>hasAll(s,[...activeUses,id])).length;
+// Results lead with the first chip's own axis (신약 → MBPI, 식량 → MFPI); species without that score keep their order last.
+function useSorted(list){
+  if(!activeUses.size)return list;
+  const k=traitById([...activeUses][0]).group==='식량'?'MFPI':'MBPI';
+  return [...list].sort((a,b)=>(pilotScore(b,k)??-1)-(pilotScore(a,k)??-1));
+}
+// A chip's state comes from its own count, so a grey chip activates as soon as adopted evidence matches it.
+// With chips on, the badge says what adding it would leave; a chip that would leave none is faded but still clickable.
 function traitChip(c,n){
-  const on=activeUse===c.id;
-  return `<button type="button" class="use-chip${n?'':' gap'}${on?' on':''}" data-use="${c.id}"${n?` aria-pressed="${on}"`:' disabled'} title="${n?(displayOnly(c.id)?`문헌 근거(표시 전용, 점수 미반영)가 있는 ${n}종`:`채택된 근거가 있는 ${n}종`):'채택된 근거가 아직 없습니다'}">${esc(c.label)} <b>${n?n+'종':'0종 · 근거 수집 전'}</b></button>`;
+  const on=activeUses.has(c.id), left=n&&activeUses.size?useLeft(c.id):n;
+  const title=!n?'채택된 근거가 아직 없습니다':activeUses.size&&!on?`지금 선택에 더하면 ${left}종(모두 만족)`
+    :displayOnly(c.id)?`문헌 근거(표시 전용, 점수 미반영)가 있는 ${n}종`:`채택된 근거가 있는 ${n}종`;
+  return `<button type="button" class="use-chip${n?'':' gap'}${on?' on':''}${n&&!left?' zero':''}" data-use="${c.id}"${n?` aria-pressed="${on}"`:' disabled'} title="${title}">${on?'✓ ':''}${esc(c.label)} <b>${n?left+'종':'0종 · 근거 수집 전'}</b></button>`;
 }
 function renderUseChips(){
   const box=$('use-chips');if(!box||!data)return;
-  box.innerHTML='<p class="use-title">활용 특성으로 찾기</p>'+['신약','식량'].map(g=>`<div class="use-row" role="group" aria-label="${g} 활용 특성"><span class="use-group">${g}</span><span class="use-row-chips">`+
+  const focus=box.contains(document.activeElement)?document.activeElement.dataset.use:null;
+  box.innerHTML='<p class="use-title">활용 특성으로 찾기 · 여러 개를 켜면 모두 만족하는 종</p>'+['신약','식량'].map(g=>`<div class="use-row" role="group" aria-label="${g} 활용 특성"><span class="use-group">${g}</span><span class="use-row-chips">`+
     USE_TRAITS.filter(c=>c.group===g).map(c=>traitChip(c,useCount(c.id))).join('')+'</span></div>').join('');
-  box.querySelectorAll('[data-use]:not([disabled])').forEach(b=>b.addEventListener('click',()=>setUse(activeUse===b.dataset.use?null:b.dataset.use)));
+  box.querySelectorAll('[data-use]:not([disabled])').forEach(b=>b.addEventListener('click',()=>toggleUse(b.dataset.use)));
+  if(focus)box.querySelector(`[data-use="${focus}"]`)?.focus(); // keyboard toggling keeps its place
 }
-function setUse(id){
-  activeUse=id&&useCount(id)?id:null;renderUseChips();renderList();
+const toggleUse=id=>setUses(activeUses.has(id)?[...activeUses].filter(x=>x!==id):[...activeUses,id]);
+// The occurrence map draws one species, so when the selected species drops out of the result the top result is
+// selected; clearing every chip returns to the species, period and map view from before, unless the user picked
+// another species meanwhile.
+function setUses(ids){
+  activeUses=new Set(ids.filter(id=>traitById(id)&&useCount(id)));
+  renderUseChips();
+  const first=useSorted((data?.species||[]).filter(useMatch))[0];
+  if(first&&mapMode==='value')lastFitted=null; // fit the result cells; an empty result leaves the map where it is
+  if(first&&selected&&!useMatch(selected)){
+    useReturn={...(useReturn||{from:selected.aphiaID,period:periodFilter,view:map&&[map.getCenter(),map.getZoom()]}),to:first.aphiaID};
+    return selectSpecies(first.aphiaID);
+  }
+  if(!activeUses.size&&useReturn){
+    const r=useReturn;useReturn=null;
+    if(selected?.aphiaID===r.to){lastFitted=r.from;selectSpecies(r.from);periodFilter=r.period;if(r.view)map.setView(...r.view,{animate:false});renderMap();writeHash();return;}
+  }
+  renderList();
   if(mapMode==='value')renderMap();
   writeHash();
 }
-const useMatch=s=>!activeUse||!!useEvidence(s,activeUse);
 // Search words that name a trait ("혈압", "항암", "DHA") show its chip, or say it has no adopted evidence yet.
 // Other words only search names.
 const termHit=(words,q)=>words.some(w=>w===q||(q.length>1&&w.startsWith(q)));
@@ -1331,29 +1363,35 @@ function useSuggestion(query){
   const raw=query.trim(), q=raw.toLowerCase();if(!q)return '';
   const c=USE_TRAITS.find(c=>termHit(TRAIT_SYNONYMS[c.id]||[],q));
   if(c){
-    if(activeUse===c.id)return '';
+    if(activeUses.has(c.id))return '';
     const n=useCount(c.id);
     return n?`<button type="button" class="use-suggest" data-use-suggest="${c.id}">‘${esc(raw)}’ → <b>${esc(c.group)} · ${esc(c.label)}</b> ${n}종 보기</button>`
       :`<p class="use-suggest gap">‘${esc(raw)}’ → ${esc(c.group)} ${traitChip(c,0)} 채택된 근거가 아직 없어 선택할 수 없습니다.</p>`;
   }
   return '';
 }
-// shown/base: species the trait keeps, out of those already passing the name, group and evidence filters.
-function useNote(shown,base){
-  if(!activeUse)return '';
-  const c=traitById(activeUse);
-  const rule=c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
+const useRule=c=>c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
     :displayOnly(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. 팀장 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
-  return `<p class="use-note"><b>${esc(c.group)} · ${esc(c.label)}</b> ${shown}종 · ${rule}. 숨김: 근거 미확인 ${base-shown}종(가치가 낮다는 뜻 아님). <button type="button" class="text-button" data-use-clear>해제</button></p>`;
+// shown/base: species lists after the chips and before them (name, group and evidence filters already applied).
+function useNote(shown,base){
+  if(!activeUses.size)return '';
+  const on=[...activeUses].map(traitById), last=on.at(-1);
+  const pills=on.map(c=>`<button type="button" class="use-pill" data-use-off="${c.id}" aria-label="${esc(c.label)} 해제">${esc(c.label)} <span aria-hidden="true">✕</span></button>`).join(' × ');
+  const undo=shown.length?'':`<p class="use-empty">선택한 조건을 모두 만족하는 종이 없습니다. <button type="button" class="text-button" data-use-off="${last.id}">‘${esc(last.label)}’ 끄기 → ${base.filter(s=>hasAll(s,on.slice(0,-1).map(c=>c.id))).length}종</button></p>`;
+  return `<div class="use-note"><p class="use-sum">${pills} <b>${shown.length}종</b> <button type="button" class="text-button" data-use-clear>전체 해제</button></p>${undo}`+
+    on.map(c=>`<p><b>${esc(c.group)} · ${esc(c.label)}</b> ${useRule(c)}.</p>`).join('')+
+    `<p>숨김: 근거 미확인 ${base.length-shown.length}종(가치가 낮다는 뜻 아님).</p></div>`;
 }
+// Every trait the species has evidence for, the chips that are on in bold.
+const traitTags=s=>USE_TRAITS.filter(c=>useEvidence(s,c.id)).map(c=>activeUses.has(c.id)?`<b>${esc(c.label)}</b>`:esc(c.label)).join(' · ');
 // Result cards always carry conservation and the matrix type, so a trait filter never shows use alone.
 function useCardLine(s){
-  if(!activeUse)return '';
-  const e=useEvidence(s,activeUse), mc=pilotScore(s,'MCUI'), t=matrixType(s);
-  return `<span class="use-line">${esc(e?.text||'')}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)} · 매트릭스 유형 ${t?esc(matrixTypeLabel(t)):'없음(미배치)'}</span>`;
+  if(!activeUses.size)return '';
+  const mc=pilotScore(s,'MCUI'), t=matrixType(s);
+  return `<span class="use-line">${[...activeUses].map(id=>esc(useEvidence(s,id)?.text||'')).join('<br>')}<br>활용 특성: ${traitTags(s)}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)} · 매트릭스 유형 ${t?esc(matrixTypeLabel(t)):'없음(미배치)'}</span>`;
 }
 
 // Four axis values on every card ('–' = withheld, never 0), so the list can be scanned without opening a species.
@@ -1366,16 +1404,20 @@ function renderList() {
   const base=data.species.filter(s=>(group==='all'||s.group===group)
     &&(evidence==='all'||(evidence==='published'?!s.catalog:!!s.catalog))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
-  const matches=base.filter(useMatch);
+  const matches=useSorted(base.filter(useMatch));
   $('species-count').textContent=`${matches.length}종`;
   const extra=$('use-extra');
-  if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches.length,base.length);
-    extra.querySelector('[data-use-suggest]')?.addEventListener('click',e=>{$('search').value='';setUse(e.currentTarget.dataset.useSuggest);});
-    extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUse(null));}
+  if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches,base);
+    extra.querySelector('[data-use-suggest]')?.addEventListener('click',e=>{$('search').value='';setUses([...activeUses,e.currentTarget.dataset.useSuggest]);});
+    extra.querySelectorAll('[data-use-off]').forEach(b=>b.addEventListener('click',()=>toggleUse(b.dataset.useOff)));
+    extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUses([]));}
   // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
   const list=$('species-list'),left=list.scrollLeft,top=list.scrollTop,refocus=list.contains(document.activeElement);
   $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
-  $('species-list').querySelectorAll('[data-species]').forEach(button=>button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species))));
+  $('species-list').querySelectorAll('[data-species]').forEach(button=>{
+    button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species)));
+    for(const [ev,on] of [['mouseenter',1],['focus',1],['mouseleave',0],['blur',0]])button.addEventListener(ev,()=>hoverSpecies(on&&Number(button.dataset.species)));
+  });
   list.scrollLeft=left;list.scrollTop=top;
   if(refocus)list.querySelector('.species-card.selected')?.focus({preventScroll:true});
 }
@@ -1885,15 +1927,15 @@ function writeHash(){
   if(!data||!selected)return;
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
   if(periodFilter!=='all')p.set('p',periodFilter);
-  if(activeUse)p.set('u',activeUse);
+  if(activeUses.size)p.set('u',[...activeUses].join(','));
   if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
   try{history.replaceState(null,'','#'+p.toString());}catch{}
 }
 function applyHash(h){
   const s=data?.species.find(x=>x.aphiaID===Number(h.s));
+  if(h.u)setUses(h.u.split(',')); // before the species, so the linked species wins; a chip without evidence stays off
   if(s)selectSpecies(s.aphiaID);
   if(h.p&&selected?.cells.some(c=>c.period===h.p)){periodFilter=h.p;renderMap();}
-  if(h.u&&traitById(h.u))setUse(h.u); // a chip that has no evidence in this report stays off
   if(h.t==='value')setMapMode('value');
   if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
   const m=(h.m||'').split('/').map(Number);
@@ -1905,11 +1947,11 @@ function applyHash(h){
 /* The evidence map joins published cell extents only. No occurrence coordinates or
    species scores are promoted into sea-level scores. A 4° extent stays 4°. */
 const valueCellKey=(lat,lon,size)=>[lat,lon,size].join('/');
-function valueCellGroups(){
+function valueCellGroups(all=false){
   const groups=new Map();
   if(!data)return groups;
   for(const s of data.species){
-    if(!useMatch(s))continue;
+    if(!all&&!useMatch(s))continue;
     for(const c of periodView(s).cells){
       const lat=c.lat0,lon=c.lon0,size=c.sizeDeg;
       if(![lat,lon,size].every(Number.isFinite))continue;
@@ -1980,7 +2022,7 @@ function valueSpeciesCard(s,records){
   // One line per species (name + four axis values); the evidence text opens on demand.
   const pills=['BBVI','MFPI','MBPI','MCUI'].map(k=>{const n=axisState(s,k).value;return '<span class="vs-pill'+(n===null?' held':'')+'">'+k+' '+(n===null?'–':n.toFixed(1))+'</span>';}).join('');
   return '<details class="value-species"><summary><h4>'+esc(s.label)+' <small>'+esc(s.name)+'</small></h4><span class="vs-pills">'+pills+'</span></summary><div class="value-species-body">'+
-    '<p>종 단위 근거 · AphiaID '+esc(s.aphiaID)+' · '+esc(stage)+(Number.isFinite(records)?' · 이 셀 출현 기록 '+records.toLocaleString()+'건':'')+'</p>'+valueSpeciesType(s)+
+    '<p>종 단위 근거 · AphiaID '+esc(s.aphiaID)+' · '+esc(stage)+(Number.isFinite(records)?' · 이 셀 출현 기록 '+records.toLocaleString()+'건':'')+'</p>'+(traitTags(s)?'<p class="fine">활용 특성: '+traitTags(s)+'</p>':'')+valueSpeciesType(s)+
     '<div class="value-axes">'+scores+'</div><p class="fine">원자료(점수 아님): '+esc(rawText)+
     (nationalMcui(s)?' · 한국 국가생물적색자료집 '+esc(s.assessment.national_assessment.category)+' / 목록 '+esc(s.assessment.national_assessment.list_page_printed)+'쪽 · '+esc(iucnGlobalNote(s))
       :cons?' · IUCN '+esc(cons.category||'등급 미기재')+' / 평가 '+esc(cons.assessment_date||cons.assessment_year||'일자 미기재'):'')+'</p>'+
@@ -2029,6 +2071,15 @@ function sufficiencyTip(g){
   };
   return part('priority','priority_survey','우선 조사 대상')+part('unexplored','unexplored_candidate','미탐색 후보');
 }
+// Hovering or focusing a species card outlines the value-map cells that species is recorded in.
+let valueRects=[];
+function hoverSpecies(id){
+  for(const [g,layer,active] of valueRects){
+    const on=id&&g.species.has(id);
+    layer.setStyle(on?{color:'#ffd166',weight:4}:valueCellStyle(g,active));
+    if(on)layer.bringToFront();
+  }
+}
 function renderValueMap(){
   const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule();
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
@@ -2037,7 +2088,7 @@ function renderValueMap(){
   $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 보류 사유를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
-  if(activeUse){const c=traitById(activeUse);$('map-judgment').textContent+=` 활용 특성 ‘${c.group} · ${c.label}’ 칩 적용 중: 그 근거가 있는 종의 셀만 표시합니다(출현 기록 보기에는 적용하지 않음).`;}
+  if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
   $('layer-unexplored-count').textContent=`${layerCounts.unexplored.n}종 · 지도 표시 ${layerCounts.unexplored.shown}종`;
@@ -2045,22 +2096,29 @@ function renderValueMap(){
   $('layer-nocell').textContent=noCell.map(([name,c])=>`${name} 중 공개 출현 셀이 없어 지도에 표시되지 않는 종 ${c.missing.length}종: ${c.missing.join(', ')}`).join(' · ')+
     (noCell.length?'. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다.':'');
   $('map-count').textContent='—';$('map-cells').textContent=String(groups.size);$('map-years').textContent='—';
-  if(!groups.size){panel.innerHTML='<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';return;}
-  if(!selectedValueCell||!groups.has(selectedValueCell))selectedValueCell=groups.keys().next().value;
-  showValueCell(selectedValueCell);
-  if(selected?.catalog&&!selected.cells.length)$('value-cell-detail').insertAdjacentHTML('afterbegin','<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 아래 격자와 연결되지 않습니다. 격자를 누르면 다른 종의 근거를 볼 수 있습니다.</p>');
+  if(!groups.size)panel.innerHTML=activeUses.size?'<h3>조건을 모두 만족하는 종의 격자 없음</h3><p>선택한 활용 특성을 모두 가진 종이 없습니다. 종 목록에서 마지막 항목을 끄거나 전체 해제하세요.</p>'
+    :'<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';
+  else{
+    if(!selectedValueCell||!groups.has(selectedValueCell))selectedValueCell=groups.keys().next().value;
+    showValueCell(selectedValueCell);
+    if(selected?.catalog&&!selected.cells.length)$('value-cell-detail').insertAdjacentHTML('afterbegin','<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 아래 격자와 연결되지 않습니다. 격자를 누르면 다른 종의 근거를 볼 수 있습니다.</p>');
+  }
   if(!map)return;
+  // Cells the chips leave out stay as faint grey, so the map shows where the result is and where it is not.
+  if(activeUses.size)for(const g of valueCellGroups(true).values())if(!groups.has(valueCellKey(g.lat,g.lon,g.size)))
+    L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false}).addTo(overlay);
   if(!map.getPane('valueGlow')){map.createPane('valueGlow').style.zIndex=390;}
   for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)L.rectangle([[g.lat-g.size*.15,g.lon-g.size*.15],[g.lat+g.size*1.15,g.lon+g.size*1.15]],{pane:'valueGlow',stroke:false,fillColor:matrixTypeColour[t],fillOpacity:.5,interactive:false}).addTo(overlay);}
   for(const [key,g] of valueCellOrder(groups)){
     const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1,nat=nationalTyped(g);
     const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
+    valueRects.push([g,layer,active]);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
     layer.bindTooltip('공개 '+g.size+'° 격자 · '+g.species.size+'종 · '+(type?'색 '+matrixTypeLabel(type)+(mixed?' · 유형 혼재 ':' · ')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+(nat?' · 국가 평가 기반 MCUI '+nat+'종':'')+(singleTyped(g)?' · 단일 논문 BBVI '+singleTyped(g)+'종':'')+(untyped?' · 유형 없음 '+untyped+'종':''):'유형 산출 종 없음 · 판단 보류')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g));
     drawSufficiency(g);
     layer.on('click',()=>{showValueCell(key);renderMap();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
   }
-  if(lastFitted!=='value'){
+  if(groups.size&&lastFitted!=='value'){
     lastFitted='value';
     map.fitBounds([...groups.values()].flatMap(g=>[[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]]),
       {...fitPad(35),maxZoom:7,animate:false});
@@ -2086,7 +2144,7 @@ function renderMap() {
   renderPeriodFilter(selected);
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
   if(map)map.invalidateSize(); // the detail pane can change the map column height
-  overlay?.clearLayers();dotCells=[];cellLayers=[];occurrenceSpecies=null;
+  overlay?.clearLayers();dotCells=[];cellLayers=[];valueRects=[];occurrenceSpecies=null;
   if(mapMode==='value'){effortLayer?.clearLayers();renderValueMap();return;}
   if(!map)return;
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
@@ -2321,7 +2379,7 @@ function registerTools(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonPage=0;activeUse=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
+  data=null;selected=null;selectedValueCell=null;comparisonPage=0;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('axis-pairs').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
