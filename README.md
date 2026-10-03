@@ -23,6 +23,8 @@ alt F4의 Ocean 20 Challenge 본선 준비용 연구 프로토타입.
 
 Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m http.server 8765 --bind 127.0.0.1 --directory dist` 실행 후 `http://127.0.0.1:8765/`를 연다.
 
+MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기록은 `python scripts/lineage.py explain --aphia <AphiaID>` / `diff` / `validate`로 본다. 테이블 구조와 새 버전 발행 시 갱신 절차는 [docs/lineage.md](docs/lineage.md)에 있다.
+
 지도 라이브러리(Leaflet) 파일은 `python scripts/prepare_snapshot.py`로 받는다. 원자료는 제외된 `tmp/`에만 저장하고, 배포 파일에는 원좌표·연락처를 포함하지 않는다.
 
 ## 공개 배포 (2026-09-25)
@@ -79,6 +81,7 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 - 외부 타일을 불러오지 못하면(전환 후 4회 실패, 성공 0회) 기본 지도로 돌아가고 안내 문구를 띄운다.
 - 종을 고르면 그 종의 셀 범위로 확대한다. '전체 범위'로 되돌릴 수 있다. 데스크톱 지도는 높이를 고정하고, 스크롤할 때 화면에 붙어 있다.
 - 검증: 37 PASS(`verification/2026-09-24-basemap/`). 위성·수심 타일 로드, 셀 유지, 위성 서버를 막았을 때 기본 지도로 전환되는지 포함.
+- 2026-10-03: [기본] 버튼을 없애 [위성 / 수심]만 남겼다. 처음 열면 위성이고, 예전에 기본을 골라 둔 브라우저나 `b=basic` 링크도 위성으로 연다. Natural Earth 경계 지도는 버튼 없이 외부 타일을 불러오지 못할 때의 대체 지도로만 쓴다.
 
 ## 근거 현황 표시
 

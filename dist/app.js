@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'basic', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
 const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
@@ -2110,8 +2110,8 @@ function renderMap() {
 
 function fitMap(){if(map)map.fitBounds([[30,122],[43,136]],{padding:[8,8]});}
 
-// Background maps. basic: Natural Earth 1:10m outline (bundled). satellite: NASA GIBS Blue Marble. depth: GEBCO WMS.
-// External tiles are optional: if they fail to load, the map falls back to basic and says so.
+// Background maps: satellite (NASA GIBS Blue Marble, the default) and depth (GEBCO WMS).
+// basic (bundled Natural Earth 1:10m outline) has had no button since 2026-10-03: the map falls back to it, and says so, only when external tiles fail to load.
 let basemapLayers, lastFitted;
 function initBasemaps(geography){
   map.createPane('basePane').style.zIndex=250; // above tiles, below cells
@@ -2133,15 +2133,15 @@ function initBasemaps(geography){
   }
   document.querySelectorAll('[data-basemap]').forEach(b=>b.addEventListener('click',()=>setBasemap(b.dataset.basemap)));
 }
-function savedBasemap(){try{return localStorage.getItem('basemap')||'basic';}catch{return 'basic';}}
+function savedBasemap(){try{return localStorage.getItem('basemap');}catch{return null;}}
 function setBasemap(name,failed=false){
-  if(!basemapLayers?.[name])name='basic';
+  if(!failed&&name!=='depth')name='satellite'; // also a 'basic' stored or linked before 2026-10-03
   for(const layers of Object.values(basemapLayers))for(const l of layers)map.removeLayer(l);
   for(const l of basemapLayers[name])l.addTo(map);
   basemap=name;
   $('map').classList.toggle('map-dark',name!=='basic');
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
-  $('basemap-status').textContent=failed?'배경 지도를 불러오지 못해 기본 지도로 바꿨습니다.':'';
+  $('basemap-status').textContent=failed?'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.':'';
   try{if(!failed)localStorage.setItem('basemap',name);}catch{}
   renderMap();writeHash();
 }

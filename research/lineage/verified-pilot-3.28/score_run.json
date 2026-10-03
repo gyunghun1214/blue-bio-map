@@ -1,0 +1,91 @@
+{
+  "run_id": "verified-pilot-3.28",
+  "method_version": "verified-pilot-3.28",
+  "report_generated_at": "2026-10-03T00:00:00Z",
+  "inputs_as_of": "2026-10-03",
+  "git_commit": "cca5e77",
+  "sources": {
+    "cellosaurus_mbpi": {
+      "provider": "SIB Cellosaurus",
+      "version": "API, queried 2026-09-29 to 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0"
+    },
+    "chembl_mbpi": {
+      "provider": "EMBL-EBI ChEMBL",
+      "version": "ChEMBL_37 (2026-05-01)",
+      "accessed": "2026-10-03",
+      "license": "CC BY-SA 3.0"
+    },
+    "cmnpd_mbpi": {
+      "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
+      "version": "public site search without login",
+      "accessed": "2026-09-29",
+      "license": null
+    },
+    "europepmc_mbpi": {
+      "provider": "EMBL-EBI Europe PMC",
+      "version": "REST search, live",
+      "accessed": "2026-09-29",
+      "license": null
+    },
+    "pubchem_inchikey_mbpi": {
+      "provider": "NCBI PubChem",
+      "version": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03",
+      "accessed": "2026-10-03",
+      "license": "NCBI public access"
+    },
+    "wikidata_p703_lotus": {
+      "provider": "Wikidata (LOTUS natural products import)",
+      "version": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03",
+      "accessed": "2026-10-03",
+      "license": "CC0 1.0"
+    },
+    "worms_rest_mbpi": {
+      "provider": "World Register of Marine Species",
+      "version": "queried 2026-09-29 to 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0"
+    }
+  },
+  "parameters": {
+    "bioactivity": {
+      "minimum_compounds_per_stratum": 3,
+      "single_doi_factor": 0.75,
+      "multiple_doi_factor": 1.0,
+      "primary_aggregation": "max",
+      "sensitivity_aggregations": [
+        "median",
+        "mean"
+      ],
+      "eligible_endpoints": [
+        "IC50",
+        "XC50",
+        "EC50",
+        "AC50",
+        "Ki",
+        "Kd",
+        "Potency",
+        "ED50"
+      ]
+    },
+    "chembl_minimum_cohort_records": 30,
+    "chembl_filters": {
+      "assay_types": [
+        "B",
+        "F"
+      ],
+      "data_validity_comments": [
+        null,
+        "Manually validated"
+      ],
+      "exclude_potential_duplicate": true,
+      "standard_relation": "="
+    },
+    "chembl_common_taxon_limit": 31.0,
+    "peptide_bioactivity_minimum": 30,
+    "amp_bioactivity_minimum": 30,
+    "anticancer_bioactivity_minimum": 30
+  },
+  "activity_exclusions_before_snapshot": "ChEMBL rows outside the assay-type / potential-duplicate filters were counted, never stored (snapshot activity_exclusions); they have no record here."
+}
