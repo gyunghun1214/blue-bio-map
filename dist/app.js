@@ -1677,7 +1677,7 @@ function dotRadius(spacingDeg){
 let dotCells=[]; // cells whose dot pattern is redrawn on zoom (reset with the overlay in renderMap)
 function addCellDots(lat0,lon0,size,records){
   if(!Number.isFinite(records)||records<=0)return;
-  dotCells.push([lat0,lon0,size,records]);drawCellDots(lat0,lon0,size,records);
+  dotCells.push([lat0,lon0,size,records]); // drawn by drawOccurrence: bubbles or dots, depending on the zoom
 }
 function drawCellDots(lat0,lon0,size,records){
   // Same density per area for 1° and 4° cells; capped so a wide cell stays fast (≤ 24×24 before masking)
@@ -1695,6 +1695,77 @@ function drawCellDots(lat0,lon0,size,records){
     dot._schematicDot=true;dot.addTo(overlay);
   }
 }
+// 2026-10-03 team-lead request: overview zooms show regional bubbles first; zooming in splits them into each cell's red dots.
+// A bubble groups published cells only (their centres, never record coordinates). Size = number of cells, shade = records per
+// cell in the same bands as the dot density. No species score is folded into the bubble: that would be a sea-area score.
+const BUBBLE_MAX_ZOOM=6, BUBBLE_FILL={4:.3,6:.45,8:.6,10:.75};
+const BUBBLE_BAND={4:'1–4건',6:'5–19건',8:'20–99건',10:'100건 이상'};
+let occurrenceSpecies=null;
+const bubbleView=()=>dotCells.length>0&&map.getZoom()<=BUBBLE_MAX_ZOOM;
+function cellBubbles(cells,zoom){
+  const block=zoom<=5?4:2, groups=new Map();
+  for(const c of cells){
+    const [lat0,lon0,size,records]=c, lat=lat0+size/2, lon=lon0+size/2, key=Math.floor(lat/block)+'/'+Math.floor(lon/block);
+    if(!groups.has(key))groups.set(key,{cells:[],records:0,lat:0,lon:0});
+    const g=groups.get(key);g.cells.push(c);g.records+=records;g.lat+=lat;g.lon+=lon;
+  }
+  return [...groups.values()].map(g=>({...g,lat:g.lat/g.cells.length,lon:g.lon/g.cells.length}));
+}
+// Species-level pilot BBVI beside the red dots (team-lead request 2026-10-03). It is the same number on every cell of the
+// species, labelled as such: a species value, not this sea area's value. The single-paper label travels with it.
+function bbviTagText(s){
+  const v=s?pilotScore(s,'BBVI'):null;
+  return v===null?'BBVI 미산출':'BBVI '+v.toFixed(1)+(bbviLabel(s)?' · '+bbviLabel(s):'');
+}
+function zoomIntoCells(bounds){
+  const z=Math.max(BUBBLE_MAX_ZOOM+1,Math.min(map.getMaxZoom(),map.getBoundsZoom(bounds)));
+  map.setView(L.latLngBounds(bounds).getCenter(),z);
+}
+function drawBubble(b){
+  const n=b.cells.length, band=dotsPerDegree(b.records/n), size=b.cells[0][2];
+  const r=Math.min(30,9+5*Math.sqrt(n));
+  const bounds=b.cells.flatMap(([lat0,lon0,s])=>[[lat0,lon0],[lat0+s,lon0+s]]);
+  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:basemap==='basic'?'#7a0f1d':'#ffffff',weight:1.5,opacity:.9,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band]});
+  bubble._zoomMark=true;
+  bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 시범값 · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 붉은 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
+  bubble.on?.('click',()=>zoomIntoCells(bounds));
+  bubble.addTo(overlay);
+  const count=L.marker([b.lat,b.lon],{interactive:false,keyboard:false,icon:L.divIcon({className:'bubble-count',html:String(n),iconSize:[40,20]})});
+  count._zoomMark=true;count.addTo(overlay);
+}
+function drawBbviTag([lat0,lon0,size]){
+  const tag=L.marker([lat0+size*.92,lon0+size/2],{interactive:false,keyboard:false,icon:L.divIcon({className:'bbvi-tag'+(pilotScore(occurrenceSpecies,'BBVI')===null?' held':''),html:esc(bbviTagText(occurrenceSpecies)),iconSize:null})});
+  tag._zoomMark=true;tag.addTo(overlay);
+}
+function drawOccurrence(){
+  if(!map||!overlay)return;
+  overlay.eachLayer(l=>{if(l._schematicDot||l._zoomMark)overlay.removeLayer(l);});
+  const bubbles=bubbleView();
+  // The cell frames carry the evidence popups; they come back with the dots so every cell stays clickable when zoomed in.
+  for(const frame of cellLayers){if(bubbles)overlay.removeLayer(frame);else if(!overlay.hasLayer(frame))frame.addTo(overlay);}
+  if(bubbles){for(const b of cellBubbles(dotCells,map.getZoom()))drawBubble(b);return;}
+  for(const c of dotCells){drawCellDots(...c);if(occurrenceSpecies)drawBbviTag(c);}
+}
+// 2026-10-03 team-lead request: one glance per grid cell. Counts species by their species-level pilot values; a species can
+// sit in more than one group. Nothing here is a value measured in this cell or a sea-area score.
+function cellSpeciesAt(lat0,lon0,size){
+  return (data?.species||[]).filter(s=>periodView(s).cells.some(c=>c.lat0===lat0&&c.lon0===lon0&&c.sizeDeg===size));
+}
+function cellSpeciesGroups(list){
+  const rule=matrixRule(), bt=rule?.bbvi_threshold??50, mt=rule?.mcui_threshold??50;
+  return {bt,mt,all:list,
+    use:list.filter(s=>(pilotScore(s,'BBVI')??-1)>=bt),
+    cons:list.filter(s=>(pilotScore(s,'MCUI')??-1)>=mt),
+    gap:list.filter(s=>!s.assessment||s.assessment.priority_survey)};
+}
+function cellSummaryHtml(list){
+  if(!list.length)return '';
+  const g=cellSpeciesGroups(list), names=xs=>xs.length?xs.map(s=>esc(s.label)).join(', '):'없음';
+  const tile=(n,label)=>`<div><b>${n}</b><span>${label}</span></div>`;
+  return `<div class="cell-summary" role="group" aria-label="이 격자 종 요약">${tile(g.all.length,'확인 종')}${tile(g.use.length,'활용 가능 종')}${tile(g.cons.length,'보전 우선 종')}${tile(g.gap.length,'근거 부족 종')}</div>`+
+    `<p class="fine cell-summary-names">확인 종: ${names(g.all)}<br>활용 가능(BBVI ${g.bt} 이상): ${names(g.use)}<br>보전 우선(MCUI ${g.mt} 이상): ${names(g.cons)}<br>근거 부족(우선 조사 대상 또는 지표 평가 없음): ${names(g.gap)}<br>종 전체 시범값 기준이며 이 격자에서 측정한 값이 아닙니다. 한 종이 여러 묶음에 들어갈 수 있습니다.</p>`;
+}
+const cellSummaryTip=list=>{const g=cellSpeciesGroups(list);return ` · 활용 가능 ${g.use.length}종 · 보전 우선 ${g.cons.length}종 · 근거 부족 ${g.gap.length}종`;};
 // GBIF sensitive-species best practice: say what was generalised, what was withheld and why.
 function generalizationNote(size){
   const sens=size>=4?'채취 압력을 고려해 GBIF 지침의 가장 엄격한 등급(1°)보다 넓은 4° 셀 적용'
@@ -1711,13 +1782,14 @@ function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
   document.querySelector('.map-symbol').hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`붉은 점 = 이 종 기록이 있는 ${size}° 칸 (실제 발견 좌표 아님)`;
-  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`붉은 버블 = 기록 칸이 모인 해역 · 확대하면 ${size}° 칸별 붉은 점 (실제 발견 좌표 아님)`;
+  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸 위의 BBVI는 이 종 전체의 시범값이며 그 해역의 값이 아닙니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
 function fitPad(p){const h=sel=>document.querySelector?.(sel)?.getBoundingClientRect().height||0;return {paddingTopLeft:[p,p+h('.map-ui-tl')],paddingBottomRight:[p,p+h('.map-ui-bl')]};}
 function renderCellMap(s,color){
+  occurrenceSpecies=s;dotCells=[];cellLayers=[]; // renderMap has cleared the overlay
   const degree=s.cells[0]?.sizeDeg||1;
   $('map-review-note').textContent=`선별된 ${s.catalog?'GBIF·OBIS':'GBIF'} 출현기록을 공개 ${degree}° 셀의 붉은 점 무늬로 표시합니다. 붉은 점은 실제 발견 좌표가 아닌 공개 셀의 도식적 표시이며 가치·보전 등급도 아닙니다. 기록 수는 개체수·자원량·현재 분포나 한국 전체 분포를 뜻하지 않습니다.${s.catalog?' 2000년 이전 과거 기록과 한국·북한 EEZ 밖 기록은 셀 팝업에 따로 표시합니다. 양식·방류 개체는 원자료 표시가 없으면 구분하지 못합니다.':''}`;
   mapJudgmentStatus(s);
@@ -1726,11 +1798,12 @@ function renderCellMap(s,color){
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}${r.historical?'<br><b>과거 기록(2000년 이전) · 현재 분포 근거 아님</b>':''}${r.outsideKoreanEEZ?'<br><b>한국·북한 EEZ 밖 기록</b>':''}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+seaName(x)).join(', '))}${r.countries?' · 국가 메타데이터 '+esc(r.countries.join(', ')||'미기재'):''}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
     cellLayers.push(L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay));
-    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong><br><b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>공개 기준(이용조건·좌표 품질)을 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+effortLine(c.lat0,c.lon0,c.sizeDeg)+generalizationNote(c.sizeDeg)+cellPopupNotice(c.sizeDeg));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong>${cellSummaryHtml(cellSpeciesAt(c.lat0,c.lon0,c.sizeDeg))||'<br>'}<b>해역별 활용·보전 판단: 보류</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>판단 보류 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>공개 기준(이용조건·좌표 품질)을 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+effortLine(c.lat0,c.lon0,c.sizeDeg)+generalizationNote(c.sizeDeg)+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:7,animate:false});}
+  drawOccurrence();
   $('map-count').textContent=cellRecords(s).toLocaleString();$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=cellYears(s);
 }
 // The same cell evidence as the popups, as a table: reachable by keyboard and screen readers, and without the map.
@@ -1752,6 +1825,7 @@ function renderCellTable(s){
   });
   box.querySelectorAll('[data-cell]').forEach(b=>b.addEventListener('click',()=>{
     const layer=cellLayers[Number(b.dataset.cell)];if(!layer)return;
+    if(map.getZoom()<=BUBBLE_MAX_ZOOM)map.setView(layer.getBounds().getCenter(),BUBBLE_MAX_ZOOM+1,{animate:false}); // bubbles hide the cell frames
     map.panTo(layer.getBounds().getCenter(),{animate:false});layer.openPopup();
     const content=document.querySelector('.leaflet-popup-content');
     if(content){content.tabIndex=-1;content.focus();} // move reading focus into the opened evidence
@@ -1923,7 +1997,7 @@ function showValueCell(key){
   const species=[...group.species.values()].sort((a,b)=>a.label.localeCompare(b.label,'ko'));
   panel.innerHTML='<h3>선택한 공개 격자 · 종별 근거</h3><p>'+
     esc(group.lat)+'–'+esc(group.lat+group.size)+'°N · '+esc(group.lon)+'–'+esc(group.lon+group.size)+'°E ('+esc(group.size)+'° 공개 범위)</p>'+
-    '<p class="fine">연결 종 '+species.length+'종 · 해당 공개 셀에 기록이 있는 종만 표시합니다. 지표는 종 전체에 대한 시범값이며 이 해역에서 측정한 값이 아닙니다. 셀의 합산 점수·우선순위는 산출하지 않았습니다.'+cellTypeLine(group)+'</p>'+
+    cellSummaryHtml(species)+'<p class="fine">연결 종 '+species.length+'종 · 해당 공개 셀에 기록이 있는 종만 표시합니다. 지표는 종 전체에 대한 시범값이며 이 해역에서 측정한 값이 아닙니다. 셀의 합산 점수·우선순위는 산출하지 않았습니다.'+cellTypeLine(group)+'</p>'+
     species.map(s=>valueSpeciesCard(s,group.records?.get(s.aphiaID))).join('');
   panel.querySelectorAll('[data-value-species]').forEach(button=>button.addEventListener('click',()=>{
     selectSpecies(Number(button.dataset.valueSpecies));
@@ -1982,7 +2056,7 @@ function renderValueMap(){
     const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1,nat=nationalTyped(g);
     const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
-    layer.bindTooltip('공개 '+g.size+'° 격자 · '+g.species.size+'종 · '+(type?'색 '+matrixTypeLabel(type)+(mixed?' · 유형 혼재 ':' · ')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+(nat?' · 국가 평가 기반 MCUI '+nat+'종':'')+(singleTyped(g)?' · 단일 논문 BBVI '+singleTyped(g)+'종':'')+(untyped?' · 유형 없음 '+untyped+'종':''):'유형 산출 종 없음 · 판단 보류')+sufficiencyTip(g));
+    layer.bindTooltip('공개 '+g.size+'° 격자 · '+g.species.size+'종 · '+(type?'색 '+matrixTypeLabel(type)+(mixed?' · 유형 혼재 ':' · ')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+(nat?' · 국가 평가 기반 MCUI '+nat+'종':'')+(singleTyped(g)?' · 단일 논문 BBVI '+singleTyped(g)+'종':'')+(untyped?' · 유형 없음 '+untyped+'종':''):'유형 산출 종 없음 · 판단 보류')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g));
     drawSufficiency(g);
     layer.on('click',()=>{showValueCell(key);renderMap();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
   }
@@ -2012,7 +2086,7 @@ function renderMap() {
   renderPeriodFilter(selected);
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
   if(map)map.invalidateSize(); // the detail pane can change the map column height
-  overlay?.clearLayers();dotCells=[];cellLayers=[];
+  overlay?.clearLayers();dotCells=[];cellLayers=[];occurrenceSpecies=null;
   if(mapMode==='value'){effortLayer?.clearLayers();renderValueMap();return;}
   if(!map)return;
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
@@ -2085,7 +2159,7 @@ function initMap(geography){
   effortRenderer=L.canvas({pane:'effortPane',padding:.5});
   map.on('moveend',writeHash);
   overlay=L.layerGroup().addTo(map);
-  map.on('zoomend',()=>{overlay.eachLayer(l=>{if(l._schematicDot)overlay.removeLayer(l);});for(const c of dotCells)drawCellDots(...c);});
+  map.on('zoomend',drawOccurrence);
   map.attributionControl.setPrefix('Leaflet');map.attributionControl.addAttribution('OBIS · GBIF');fitMap();setBasemap(savedBasemap());
 }
 
