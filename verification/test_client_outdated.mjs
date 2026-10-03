@@ -15,7 +15,7 @@ const ctx={fetch:async()=>({ok:true,json:async()=>structuredClone(report)}),
   sessionStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v))},location:{reload:()=>reloads++}};
 vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+';Object.assign(globalThis,{attachPilotAssessments,axisState,newerVersion,'+
-  'reloadOnceForNewData,readinessRows,releaseMissing,VERIFIED});',ctx);
+  'reloadOnceForNewData,readinessRows,traitDisplayRows,releaseMissing,VERIFIED});',ctx);
 const run=async version=>{
   report.method_version=version;
   const next={live:true,species:report.species.map(s=>({aphiaID:s.aphia_id,name:s.scientific_name,label:s.korean_name,live:true}))};
@@ -86,6 +86,21 @@ for(const [version,newer] of [[2,true],['2',false],[0,false],[1.5,false],[undefi
   assert.equal(ctx.readinessRows({...readiness,schema_version:version},outdated).size,0);
   assert.equal(outdated.length,newer?1:0,String(version));
 }
+
+// (6b) trait-evidence.json (display-only chip values): a newer schema reloads on its own key; others are ignored.
+const traitFile=json('trait-evidence.json');
+outdated=[];
+assert.ok(ctx.traitDisplayRows(traitFile,outdated).size>0);
+assert.deepEqual(plain(outdated),[]);
+for(const [version,newer] of [['trait-display-evidence-2',true],['trait-display-evidence-0',false],['trait-display-evidence-x',false],[undefined,false]]){
+  outdated=[];
+  assert.equal(ctx.traitDisplayRows({...traitFile,schema_version:version},outdated).size,0);
+  assert.equal(outdated.length,newer?1:0,String(version));
+}
+ctx.sessionStorage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v))};store.clear();reloads=0;
+assert.equal(ctx.reloadOnceForNewData([{file:'trait-evidence.json',version:'trait-display-evidence-2'}]),true);
+assert.deepEqual([...store.keys()],['reload:trait-evidence.json']);
+delete ctx.sessionStorage;
 
 // (7) live-data.js schema gates: a higher number in the same family is newer; other values stay rejected.
 const files={'candidate-catalog.json':json('candidate-catalog.json'),'expansion-evidence.json':json('expansion-evidence.json'),
