@@ -2556,22 +2556,25 @@ class VerifiedPilot326Tests(unittest.TestCase):
 
 
 V327_CHANGED = {342067: "살오징어", 836041: "시카메굴", 236157: "꼬시래기", 234476: "가시파래"}
+V327 = ROOT / "config" / "verified-indices-v3.27.json"  # superseded by 3.28 (톳 GKY/SKTY potency replication, Chen 2016)
 
 
 class VerifiedPilot327Tests(unittest.TestCase):
     """Public method (team-lead decisions 2026-10-03): 3.26 plus (1) a labelled BBVI score when the top MBPI item rests on one
     paper, (2) 살오징어 MBPI from Wako 1996's purified YALPHA (HHL), (3) 시카메굴 MBPI from flazin (Kong 2021) and 꼬시래기 MBPI from
     PGA2 (hold released), both from a same-release ChEMBL supplement, (4) 가시파래 MCUI from Sweden's red list 2025, and (5) the
-    MBPI drug-origin check computed (failed) with two failed MCUI checks recorded."""
+    MBPI drug-origin check computed (failed) with two failed MCUI checks recorded. Superseded by 3.28."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V326))
+        self.report, self.old_report = build(*load_inputs(config=V327)), build(*load_inputs(config=V326))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.27", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.27 report is archived as it was
+        archived327 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.27.json"
+        self.assertEqual(render(self.report), archived327.read_text(encoding="utf-8"))
 
     def test_filled_cells_and_which_axes_moved(self):
         filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
@@ -2702,6 +2705,76 @@ class VerifiedPilot327Tests(unittest.TestCase):
         self.assertEqual([self.report["sources"][k]["accessed"] for k in ("chembl_mbpi", "wikidata_p703_lotus")], ["2026-10-03"] * 2)
         self.assertEqual(self.report["sources"]["chembl_mbpi"]["version"], self.old_report["sources"]["chembl_mbpi"]["version"])
         self.assertEqual(strip(self.report), strip(self.old_report))
+
+
+XO328 = "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
+
+
+class VerifiedPilot328Tests(unittest.TestCase):
+    """Public method: 3.27 plus Chen et al. 2016's synthetic re-measurements (GKY, SKTY, FY; HHL) under the existing potency
+    replication rule, read through the user's library login on 2026-10-03. 톳's top item now rests on two papers, so its MBPI
+    loses the single-paper factor and its BBVI the '단일 논문' label. Nothing else moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V327))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.28", "provisional_unvalidated"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_hijiki_gky_and_skty_are_replicated(self):
+        tot, old = self.new[494972], self.old[494972]
+        self.assertEqual((old["scores"]["MBPI"], old["scores"]["BBVI"], old["bbvi_label"]), (65.0, 64.2, "단일 논문"))
+        self.assertEqual((tot["scores"]["MBPI"], tot["scores"]["BBVI"], tot.get("bbvi_label"), tot.get("mbpi_label")), (86.6, 74.9, None, None))
+        items = {i.get("peptide_sequence"): i for i in tot["bioactivity_trace"]}
+        for seq, gap in (("GKY", 0.307), ("SKTY", 0.27)):
+            (r,) = items[seq]["potency_replications"]
+            self.assertEqual((r["original_paper_doi"], r["pIC50_gap"], r["used"], items[seq]["evidence_factor"]),
+                             ("10.1111/jfpp.12628", gap, True, 1.0))
+        self.assertEqual(items["SVY"]["evidence_factor"], 0.75)  # Chen 2016 did not measure SVY
+
+    def test_only_hijiki_moves(self):
+        moved = {a for a, s in self.new.items() if s["scores"] != self.old[a]["scores"] or s.get("bbvi_label") != self.old[a].get("bbvi_label")}
+        self.assertEqual(moved, {494972})
+        fy = next(i for i in self.new[145721]["bioactivity_trace"] if i.get("peptide_sequence") == "FY")
+        self.assertEqual((fy["potency_replications"][0]["pIC50_gap"], fy["evidence_factor"]), (0.942, 1.0))  # not the 미역 top item
+        filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
+        self.assertEqual((filled(self.old), filled(self.new)), (92, 92))
+
+        def strip(report):
+            r = json.loads(render(report))
+            for k in ("method_version", "generated_at", "method"):
+                r[k] = None
+            r["sources"].pop("chen_2016_jfpp", None)
+            for s in r["species"] + r["candidate_species"]:
+                (s.get("food_trace") or {})["method_version"] = None
+                for n in (s.get("food_trace") or {}).get("supplemental_nutrition", []):
+                    if "substitute_use" in n:
+                        n["substitute_use"] = n["substitute_use"].replace(report["method_version"], "VERSION")
+                if s["aphia_id"] in (494972, 145721):
+                    for k in ("bioactivity_trace", "scores", "bbvi_label", "mbpi_label", "sensitivity", "single_axis_views", "source_ids",
+                              "chembl_links"):  # its rule_sensitivity restates the species MBPI
+                        s.pop(k, None)
+            return r
+        self.assertEqual(strip(self.report), strip(self.old_report))
+
+    def test_older_record_is_unchanged(self):
+        old = json.loads((ROOT / XO325).read_text(encoding="utf-8"))
+        new = json.loads((ROOT / XO328).read_text(encoding="utf-8"))
+        self.assertEqual(new["potency_replications"][:len(old["potency_replications"])], old["potency_replications"])
+        self.assertEqual([r["sequence"] for r in new["potency_replications"][len(old["potency_replications"]):]], ["GKY", "SKTY", "FY"])
+        self.assertEqual(new["snapshot_date"], old["snapshot_date"])
+
+    def test_mbpi_posthoc_block_matches_this_report(self):
+        # 3.28 raises an operating MBPI (톳 86.6), so the published drug-origin block is re-checked against this report
+        import posthoc_validation as P
+        block = self.report["method"]["posthoc"]["validation_sets"]["MBPI"]
+        mbpi = P.mbpi_check(self.report, self.report["method"])
+        self.assertEqual((block["result"], mbpi["result"]), ("failed", "failed"))
+        self.assertEqual(block["operating_max_mbpi"], max(mbpi["operating_mbpi"].values()))
+        self.assertEqual(block["case_mbpi"], {"Conus magus": None, "Halichondria okadai": 73.8, "Ecteinascidia turbinata": 56.1})
 
 
 if __name__ == "__main__":

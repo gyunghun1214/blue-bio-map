@@ -226,7 +226,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1346,7 +1346,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -1750,7 +1750,7 @@
       "food_trace": {
         "aquaculture": null,
         "cross_checks": [],
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "observed_rows": [],
         "sufficiency": {
           "present": [],
@@ -2110,7 +2110,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2677,7 +2677,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3266,7 +3266,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4155,7 +4155,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5179,7 +5179,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6247,7 +6247,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7267,7 +7267,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8372,7 +8372,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9539,7 +9539,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10670,7 +10670,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11742,7 +11742,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12719,7 +12719,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13697,7 +13697,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14831,7 +14831,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15838,7 +15838,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -16819,7 +16819,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17861,7 +17861,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18839,7 +18839,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19841,7 +19841,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20920,7 +20920,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "changes_from": "verified-pilot-3.27 (2026-10-03). Potency replication under the existing rule, no rule, cohort or coefficient change: Chen et al. 2016 (J Food Process Preserv 40:492, synthetic standards, HHL) re-measured GKY 7.94 uM and SKTY 20.63 uM, two of the three 톳 peptides of Suetsuna 1998 (pIC50 gaps 0.307 and 0.270; GKY is 톳's top item, SVY 8.12 uM was not re-measured), and FY 4.83 uM (the 미역 FY item, gap 0.942, not its top item). 톳's top item now rests on two independent papers, so its MBPI loses the single-paper factor and its BBVI the '단일 논문' label. The paper was read through the user's university library login on 2026-10-03; in the same session Li et al. 2018 (Chemosphere) gave only dried-sample moisture, so 가시파래 MFPI stays withheld. See research/verified-indices/tot-replication-3.28-2026-10-03.md.",
+    "changes_from": "verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix as a hollow point and counted in each map cell's tooltip; 16 of the 19 were reference values since 3.15 (살오징어, 시카메굴 and 꼬시래기 have an MBPI only since 3.27) (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (the OBIS trend element, whose +10 rule is kept unchanged; a catch-based criterion-A screen), so no MCUI is filled from them. (5) The approved new MBPI strata were not added: none holds a row for a blank species; the team lead's confirmation is pending. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21169,7 +21169,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-pilot-3.28",
+    "method_version": "verified-pilot-3.27",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21413,7 +21413,7 @@
         "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
         "max_pIC50_gap": 1.0,
         "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper. 3.14: the re-measured peptide may be synthetic or a sequence-confirmed purified single peptide (team-lead decision 2026-10-01).",
-        "supplement": "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
+        "supplement": "research/verified-indices/evidence-xo-potency-3.25.json"
       },
       "endpoint": "IC50",
       "excluded_material_kinds": [
@@ -21583,7 +21583,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-pilot-3.28",
+  "method_version": "verified-pilot-3.27",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -21807,16 +21807,6 @@
       "title": "Overview of sea cucumber farming and sea ranching practices in China (Chen J)",
       "url": "https://coastfish.spc.int/News/BDM/18/Chen.pdf",
       "version": "full-text PDF read 2026-10-01"
-    },
-    "chen_2016_jfpp": {
-      "accessed": "2026-10-03",
-      "doi": "10.1111/jfpp.12628",
-      "license": "Publisher copyright (Wiley); subscription access",
-      "provider": "Journal of Food Processing and Preservation 40(3):492-501 (Chen et al. 2016, first published 2015-11-20), full text (Wiley Online Library, Dongguk University institutional access)",
-      "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
-      "title": "Simultaneous Determination of 8 Small Antihypertensive Peptides with Tyrosine at the C-Terminal in Laminaria japonica Hydrolysates by RP-HPLC Method",
-      "url": "https://doi.org/10.1111/jfpp.12628",
-      "version": "2016"
     },
     "chen_2018_clam_natto": {
       "accessed": "2026-10-01",
@@ -23207,11 +23197,10 @@
           "stratum_kind": "peptide"
         },
         {
-          "adjusted": 49.71590909090909,
-          "evidence_factor": 1.0,
+          "adjusted": 37.28693181818182,
+          "evidence_factor": 0.75,
           "independent_dois": [
-            "10.1021/jf020482t",
-            "10.1111/jfpp.12628"
+            "10.1021/jf020482t"
           ],
           "measurements": [
             {
@@ -23232,21 +23221,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "FY",
           "percentile": 49.72,
-          "potency_replications": [
-            {
-              "origin_label": "다시마(Laminaria japonica) 가수분해물에서 검출한 서열의 합성 표준품 (합성 펩타이드로 측정)",
-              "origin_material": "synthetic standard (Chinese Peptide Company, Hangzhou) of a sequence detected in Laminaria japonica protein-waste hydrolysate by RP-HPLC and LC-ESI-MS/MS; the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1111/jfpp.12628",
-              "pIC50": 5.316,
-              "pIC50_gap": 0.942,
-              "reason": null,
-              "record_id": "10.1111/jfpp.12628:Table3:FY-synthetic",
-              "source_id": "chen_2016_jfpp",
-              "unit": "uM",
-              "used": true,
-              "value": 4.83
-            }
-          ],
+          "potency_replications": [],
           "record_ids": [
             "10.1021/jf020482t:FY"
           ],
@@ -23683,7 +23658,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24078,8 +24053,8 @@
           "0.5": 71.0,
           "0.75": 58.9
         },
-        "mean_compound_sensitivity": 58.3,
-        "median_compound_sensitivity": 48.7,
+        "mean_compound_sensitivity": 56.7,
+        "median_compound_sensitivity": 46.1,
         "range_from_aggregation": [
           19.6,
           95.3
@@ -24094,7 +24069,6 @@
         "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
-        "chen_2016_jfpp",
         "fao_seaweed_guide",
         "feng_2021_knfl",
         "gbif_rapid_lc",
@@ -24371,7 +24345,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25326,7 +25300,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -26491,7 +26465,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27473,7 +27447,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27874,7 +27848,7 @@
     },
     {
       "aphia_id": 494972,
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [
         {
@@ -27944,10 +27918,9 @@
       ],
       "bioactivity_trace": [
         {
-          "adjusted": 86.64772727272727,
-          "evidence_factor": 1.0,
+          "adjusted": 64.98579545454545,
+          "evidence_factor": 0.75,
           "independent_dois": [
-            "10.1111/jfpp.12628",
             "10.2331/suisan.64.862"
           ],
           "measurements": [
@@ -27969,21 +27942,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "GKY",
           "percentile": 86.65,
-          "potency_replications": [
-            {
-              "origin_label": "다시마(Laminaria japonica) 가수분해물에서 검출한 서열의 합성 표준품 (합성 펩타이드로 측정)",
-              "origin_material": "synthetic standard (Chinese Peptide Company, Hangzhou) of a sequence detected in Laminaria japonica protein-waste hydrolysate by RP-HPLC and LC-ESI-MS/MS; the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1111/jfpp.12628",
-              "pIC50": 5.1,
-              "pIC50_gap": 0.307,
-              "reason": null,
-              "record_id": "10.1111/jfpp.12628:Table3:GKY-synthetic",
-              "source_id": "chen_2016_jfpp",
-              "unit": "uM",
-              "used": true,
-              "value": 7.94
-            }
-          ],
+          "potency_replications": [],
           "record_ids": [
             "10.2331/suisan.64.862:GKY"
           ],
@@ -27991,10 +27950,9 @@
           "stratum_kind": "peptide"
         },
         {
-          "adjusted": 73.57954545454545,
-          "evidence_factor": 1.0,
+          "adjusted": 55.18465909090909,
+          "evidence_factor": 0.75,
           "independent_dois": [
-            "10.1111/jfpp.12628",
             "10.2331/suisan.64.862"
           ],
           "measurements": [
@@ -28016,21 +27974,7 @@
           "peer_peptides": 352,
           "peptide_sequence": "SKTY",
           "percentile": 73.58,
-          "potency_replications": [
-            {
-              "origin_label": "다시마(Laminaria japonica) 가수분해물에서 검출한 서열의 합성 표준품 (합성 펩타이드로 측정)",
-              "origin_material": "synthetic standard (Chinese Peptide Company, Hangzhou) of a sequence detected in Laminaria japonica protein-waste hydrolysate by RP-HPLC and LC-ESI-MS/MS; the scored value is the synthetic peptide",
-              "original_paper_doi": "10.1111/jfpp.12628",
-              "pIC50": 4.686,
-              "pIC50_gap": 0.27,
-              "reason": null,
-              "record_id": "10.1111/jfpp.12628:Table3:SKTY-synthetic",
-              "source_id": "chen_2016_jfpp",
-              "unit": "uM",
-              "used": true,
-              "value": 20.63
-            }
-          ],
+          "potency_replications": [],
           "record_ids": [
             "10.2331/suisan.64.862:SKTY"
           ],
@@ -28210,11 +28154,11 @@
         "paper_search": null,
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 86.6,
-          "minimum_cohort_10": 86.6,
-          "minimum_cohort_100": 86.6,
-          "no_approved_drug_filter": 86.6,
-          "no_common_metabolite_filter": 86.6
+          "log_scale_common_fence": 65.0,
+          "minimum_cohort_10": 65.0,
+          "minimum_cohort_100": 65.0,
+          "no_approved_drug_filter": 65.0,
+          "no_common_metabolite_filter": 65.0
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -28298,7 +28242,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28540,7 +28484,7 @@
         "mean_ratio": 0.61
       },
       "korean_name": "톳",
-      "mbpi_label": null,
+      "mbpi_label": "단일 논문",
       "mbpi_stratum": "peptide",
       "mcui_basis": null,
       "mcui_substitute": {
@@ -28697,26 +28641,26 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 74.9,
-        "MBPI": 86.6,
+        "BBVI": 64.2,
+        "MBPI": 65.0,
         "MCUI": null,
         "MFPI": 63.3
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 80.8,
-          "0.5": 74.9,
-          "0.75": 69.1
+          "0.25": 64.6,
+          "0.5": 64.2,
+          "0.75": 63.7
         },
-        "mean_compound_sensitivity": 51.7,
-        "median_compound_sensitivity": 51.9,
+        "mean_compound_sensitivity": 45.0,
+        "median_compound_sensitivity": 50.2,
         "range_from_aggregation": [
           19.6,
-          86.6
+          65.0
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 86.6,
+        "bioactivity_only_MBPI": 65.0,
         "food_only_MFPI": 63.3
       },
       "source_ids": [
@@ -28724,7 +28668,6 @@
         "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
-        "chen_2016_jfpp",
         "gbif_rapid_lc",
         "iucn_redlist_search",
         "lee_2024_sargassum_nutrition",
@@ -28962,7 +28905,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29603,7 +29546,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-pilot-3.28 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.27 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30420,7 +30363,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-pilot-3.28",
+        "method_version": "verified-pilot-3.27",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
