@@ -2088,6 +2088,15 @@
      "score_delta": null
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.1",
+   "to_run_id": "verified-4.2",
+   "from_commit": "8ae10da",
+   "to_commit": "4f1af11",
+   "published_on": "2026-10-05",
+   "method_note": "verified-4.1 (2026-10-04). Team-lead decision of 2026-10-04: the competition deadline (2026-10-30) falls before every official route that could fill the ten empty MCUI cells (IUCN 2026-2 on 2026-11-19; the Japanese 5th marine red list from FY2026), so the conservation axis accepts one more basis: an official SUB-NATIONAL red list (prefecture, federal subject, province) of a state in the species' native range. It ranks below every national basis and never overrides one; DD and regional extinction give no score; several regions are reduced by the median (the lower-risk of the two middle categories when the count is even). Every value carries a '지방 목록 참고값' label, its own matrix marker and the result of a pre-registered over-statement back-test (research/verified-indices/prereg-subnational-mcui-2026-10-04.md, committed before the rows were collected). The extension was decided after seeing which cells it would fill; that is stated in the record and on the method tab. No cohort, weight, coefficient or threshold of any other axis changes.",
+   "entries": []
   }
  ]
 }
