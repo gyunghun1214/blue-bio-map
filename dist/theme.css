@@ -359,8 +359,9 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .seg.checked_none,.seg.searched_none{background:#eef1f4;color:#33475b;border:1px dashed #8a9bab}
 /* method tab: labelled, spaced bullets */
 .method-card li{margin:8px 0}.method-card li b{color:var(--ink);margin-right:4px}
-/* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭 */
-.matrix-layout+.matrix-unplaced,#axis-pairs{margin:16px 0 0}
+/* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭. 휴대폰은 DOM 순서대로 매트릭스 바로 밑 */
+.matrix-layout .matrix-unplaced{margin:16px 0 0}
+@media(min-width:741px){.matrix-layout{row-gap:0}.matrix-layout>div:first-child{display:contents}.matrix-explanation{grid-column:2;grid-row:1/4}.matrix-layout .matrix-unplaced{grid-column:1/-1}#matrix-note{margin-bottom:0}}
 
 /* 4.2: 지방 목록 참고값 points — a dashed purple marker, apart from the amber national square; a hollow
    single-paper point keeps its white fill so the two signals stay readable together */
