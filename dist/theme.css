@@ -198,6 +198,14 @@ main{max-width:none;margin:0;padding:0}
 .section-heading p{color:var(--muted)}
 .pill{border-radius:99px}
 .comparison,.matrix-explanation,.method-card,.method-bottom article,.source-section,.decision-detail,.weight-control{border-radius:14px}
+/* Species evidence opens under the chosen card's row (dense lets later cards fill that row first). */
+.decision-list{grid-auto-flow:row dense}
+.decision-list>.decision-detail{grid-column:1/-1;margin:0 0 6px}
+.decision-more{margin-top:auto;padding-top:6px;color:var(--teal);font-size:12.5px;font-weight:600}
+.decision-more:after{content:" ▾"}
+.decision-card[aria-expanded=true] .decision-more:after{content:" ▴"}
+.decision-close{display:block;margin:18px auto 0;padding:8px 22px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--teal);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.decision-close:after{content:" ▴"}
 .method-card{border:1px solid var(--line);box-shadow:none}
 /* Five species columns fit the table box from about 1250px (1440×900 and 1280×900): 170px row labels + 5 × (160px bar + cell
    padding); narrower screens scroll the table sideways. */
