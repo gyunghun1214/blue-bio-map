@@ -1,8 +1,8 @@
 {
  "schema_version": "trait-display-evidence-1",
- "snapshot_date": "2026-10-03",
+ "snapshot_date": "2026-10-04",
  "scope_note": "Display only: these records never enter MFPI, MBPI, MCUI, BBVI, the matrix or the map colours.",
- "decision": "Team-lead decision 2026-10-03 (option '표시 전용'): drug-use chips with no adopted MBPI evidence may show reviewed single-compound or single-peptide literature values, labelled as not entering any score.",
+ "decision": "Team-lead decision 2026-10-03 (option '표시 전용'): drug-use chips with no adopted MBPI evidence may show reviewed single-compound or single-peptide literature values, labelled as not entering any score. Team-lead decision 2026-10-04: for the 항진균 and 진통 chips, a species with no single-substance row may show extract-level values (extract, fraction, hydrolysate or polysaccharide of the species) read in the full text, labelled '추출물'.",
  "records": [
   {
    "aphia_id": 281273,
@@ -15,7 +15,8 @@
    "value": 0.37,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 281273,
@@ -28,7 +29,8 @@
    "value": 0.45,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 281273,
@@ -41,7 +43,8 @@
    "value": 0.59,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 281273,
@@ -54,7 +57,8 @@
    "value": 1.76,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 281273,
@@ -67,7 +71,8 @@
    "value": 2.96,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 281273,
@@ -80,7 +85,8 @@
    "value": 4.24,
    "unit": "mg/mL",
    "doi": "10.3390/md18030156",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -93,7 +99,8 @@
    "value": 8.28,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -106,7 +113,8 @@
    "value": 8.69,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -119,7 +127,8 @@
    "value": 14.72,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -132,7 +141,8 @@
    "value": 17.66,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -145,7 +155,8 @@
    "value": 18.64,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -158,7 +169,8 @@
    "value": 22.89,
    "unit": "µM",
    "doi": "10.1016/j.bmc.2009.01.031",
-   "verified_against": "chembl_record"
+   "verified_against": "chembl_record",
+   "tier": "single"
   },
   {
    "aphia_id": 231750,
@@ -171,7 +183,8 @@
    "value": 140.82,
    "unit": "µM",
    "doi": "10.3390/molecules22101714",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 231750,
@@ -184,7 +197,8 @@
    "value": 168.72,
    "unit": "µM",
    "doi": "10.3390/molecules22101714",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 231750,
@@ -197,7 +211,8 @@
    "value": 393.3,
    "unit": "µM",
    "doi": "10.3390/molecules22101714",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -210,7 +225,8 @@
    "value": 6.94,
    "unit": "µM",
    "doi": "10.1080/13880209.2017.1291693",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
   },
   {
    "aphia_id": 371986,
@@ -223,7 +239,260 @@
    "value": 23.35,
    "unit": "µM",
    "doi": "10.1080/13880209.2017.1291693",
-   "verified_against": "full_text"
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 234476,
+   "trait": "fungus",
+   "name": "에탄올 분획",
+   "material": "fraction",
+   "assay": "Candida albicans 최소 억제 농도(임상 분리주)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 125.0,
+   "unit": "µg/mL",
+   "doi": "10.3390/molecules23113032",
+   "verified_against": "full_text",
+   "tier": "extract"
+  },
+  {
+   "aphia_id": 234476,
+   "trait": "fungus",
+   "name": "에탄올 분획",
+   "material": "fraction",
+   "assay": "Aspergillus niger 최소 억제 농도(임상 분리주)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 500.0,
+   "unit": "µg/mL",
+   "doi": "10.3390/molecules23113032",
+   "verified_against": "full_text",
+   "tier": "extract"
+  },
+  {
+   "aphia_id": 234476,
+   "trait": "fungus",
+   "name": "에탄올 분획",
+   "material": "fraction",
+   "assay": "Mucor sp. 최소 억제 농도(임상 분리주)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 500.0,
+   "unit": "µg/mL",
+   "doi": "10.3390/molecules23113032",
+   "verified_against": "full_text",
+   "tier": "extract"
+  },
+  {
+   "aphia_id": 234476,
+   "trait": "fungus",
+   "name": "에탄올 분획",
+   "material": "fraction",
+   "assay": "Paecilomyces sp. 최소 억제 농도(임상 분리주)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 500.0,
+   "unit": "µg/mL",
+   "doi": "10.3390/molecules23113032",
+   "verified_against": "full_text",
+   "tier": "extract"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Trichophyton rubrum 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 0.78,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Trichophyton mentagrophytes 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 1.56,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Microsporum gypseum 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 3.12,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Candida utilis 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 3.12,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Torula utilis 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 3.12,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Penicillium chrysogenum 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 3.12,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Candida albicans 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 6.25,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 241776,
+   "trait": "fungus",
+   "name": "holotoxin A",
+   "material": "isolated_compound",
+   "assay": "Aspergillus oryzae 최소 억제 농도(시험법 미기재)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 6.25,
+   "unit": "µg/mL",
+   "doi": "10.1248/cpb.24.275",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 836033,
+   "trait": "fungus",
+   "name": "Cg-Prp20-36",
+   "material": "synthetic_peptide",
+   "assay": "Botrytis cinerea 최소 억제 농도(액체 배지)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 100.0,
+   "unit": "µM",
+   "doi": "10.1016/j.molimm.2008.07.021",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 836033,
+   "trait": "fungus",
+   "name": "Cg-Prp22-36",
+   "material": "synthetic_peptide",
+   "assay": "Botrytis cinerea 최소 억제 농도(액체 배지)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 100.0,
+   "unit": "µM",
+   "doi": "10.1016/j.molimm.2008.07.021",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 836033,
+   "trait": "fungus",
+   "name": "Cg-Prp22-36",
+   "material": "synthetic_peptide",
+   "assay": "Fusarium oxysporum 최소 억제 농도(액체 배지)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 125.0,
+   "unit": "µM",
+   "doi": "10.1016/j.molimm.2008.07.021",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 836033,
+   "trait": "fungus",
+   "name": "Cg-Prp20-36",
+   "material": "synthetic_peptide",
+   "assay": "Fusarium oxysporum 최소 억제 농도(액체 배지)",
+   "endpoint": "MIC",
+   "relation": "=",
+   "value": 200.0,
+   "unit": "µM",
+   "doi": "10.1016/j.molimm.2008.07.021",
+   "verified_against": "full_text",
+   "tier": "single"
+  },
+  {
+   "aphia_id": 371986,
+   "trait": "pain",
+   "name": "70% 에탄올 추출물",
+   "material": "extract",
+   "assay": "절개 통증 von Frey(쥐, 300 mg/kg 경구, 대조 0.47 g)",
+   "endpoint": "24시간 뒤 기계적 역치",
+   "relation": "=",
+   "value": 3.68,
+   "unit": "g",
+   "doi": "10.3390/molecules19067669",
+   "verified_against": "full_text",
+   "tier": "extract"
+  },
+  {
+   "aphia_id": 371986,
+   "trait": "pain",
+   "name": "70% 에탄올 추출물",
+   "material": "extract",
+   "assay": "절개 통증 열판 50 °C(쥐, 300 mg/kg 경구)",
+   "endpoint": "회피 잠복기 증가",
+   "relation": "=",
+   "value": 24.1,
+   "unit": "%",
+   "doi": "10.3390/molecules19067669",
+   "verified_against": "full_text",
+   "tier": "extract"
   }
  ]
 }

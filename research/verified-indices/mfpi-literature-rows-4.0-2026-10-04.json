@@ -1,0 +1,281 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-04",
+ "reviewed_on": "2026-10-04",
+ "purpose": "MFPI after verified-pilot-3.12: a peer-reviewed analysis of the species itself as its own nutrition row when neither RDA DB 10.4 nor MEXT 2020 has a row for it (team-lead decision 2026-10-01, route 3, factor 0.85). Read only by configs that name this file. 4.0 fork (2026-10-04): two seaweed rows converted with other samples' fresh moisture under the team-lead decision of 2026-10-04 (가시파래 from the RDA DB 10.4 dried row, 감태 from a 1983 activation analysis). Configs up to 3.28 keep reading the 3.22 file.",
+ "rule": "Used only when no RDA row is linked to the species and no MEXT species row exists. The paper must identify the species (morphology or molecular), analyse raw edible tissue, and report the moisture of the same sample. Dry-basis values are converted to fresh weight as value_dw x (100 - moisture) / 100; mg/kg dry weight is first divided by 10 to give mg per 100 g dry weight. A component the paper reports inconsistently is left out (3.7 minimum-components rule), never guessed. The row is ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Since 4.0 (team-lead decision 2026-10-04): when no paper reports the same sample's fresh moisture, a dry-basis analysis (a dried table row first converted to dry basis with its own water) is converted to fresh weight with the median of the fresh moisture values that full-text papers report for the species (each survey or sample mean counted once; a paper that reports the value inconsistently is left out). Such a row is labelled and lists the values used.",
+ "sources": {
+  "liu_2021_kumamoto_xiangshan": {
+   "provider": "Frontiers in Physiology 12:713736 (Frontiers), full text in PubMed Central (PMC8353274, PMID 34385935)",
+   "title": "Molecular Basis of Taste and Micronutrient Content in Kumamoto Oysters (Crassostrea sikamea) and Portuguese Oysters (Crassostrea angulata) From Xiangshan Bay (Liu S, Xu H, Jian S, Xue Q, Lin Z), doi:10.3389/fphys.2021.713736",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8353274/",
+   "version": "PMC full text read 2026-10-01 (Table 1, Materials and Methods, Results)",
+   "accessed": "2026-10-01",
+   "license": "CC BY 4.0",
+   "terms": "Open access, Creative Commons Attribution 4.0 International; values quoted with attribution"
+  },
+  "murakami_2011_sargassum_horneri": {
+   "provider": "Journal of Food Composition and Analysis 24(2):231-236 (Elsevier)",
+   "title": "Seasonal variation in the chemical composition of a marine brown alga, Sargassum horneri (Turner) C. Agardh (Murakami K, Yamaguchi Y, Noda K, Fujii T, Shinohara N, Ushirokawa T, Sugawa-Katayama Y, Katayama M), doi:10.1016/j.jfca.2010.08.004",
+   "url": "https://doi.org/10.1016/j.jfca.2010.08.004",
+   "version": "Publisher full text read 2026-10-02 (Tables 3 and 4, Sections 2.2 and 2.3, Abstract)",
+   "accessed": "2026-10-02",
+   "license": "Publisher copyright (Elsevier); read through the Dongguk University library subscription",
+   "terms": "Subscription access via the university library; only numeric values and method statements are recorded, no text or tables are copied."
+  },
+  "rda_10_4_ulva_prolifera_dried": {
+   "provider": "Rural Development Administration, National Institute of Crop and Food Science, National Standard Food Composition DB (국가표준식품성분 DB)",
+   "title": "파래, 가시파래, 말린것 (food code L0270010001a)",
+   "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a",
+   "version": "DB 10.4 (2026); row source code ('95)",
+   "accessed": "2026-10-04",
+   "license": "KOGL Type 1 (attribution) for the DB",
+   "terms": "One row's values recorded with attribution"
+  },
+  "kawashima_1983_seaweed_inaa": {
+   "provider": "Nippon Kagaku Kaishi 1983(3):368-379 (The Chemical Society of Japan), J-STAGE",
+   "title": "Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368",
+   "url": "https://doi.org/10.1246/nikkashi.1983.368",
+   "version": "1983",
+   "accessed": "2026-10-04",
+   "license": "Publisher copyright (J-STAGE free access)",
+   "terms": "Sample description and three element values recorded; no text or tables copied"
+  }
+ },
+ "items": [
+  {
+   "record_id": "liu2021-csikamea-table1",
+   "aphia_id": 836041,
+   "taxon_label": "Magallana sikamea (Crassostrea sikamea, Kumamoto oyster)",
+   "source_id": "liu_2021_kumamoto_xiangshan",
+   "food_group": "어패류 및 기타 수산물",
+   "part": "whole soft body (flesh), 25 oysters pooled per replicate, 4 replicates",
+   "sample_state": "raw",
+   "basis": "100 g edible portion",
+   "sample": "Cultured oysters, 20 months old, commercial size, sampled in February before gametogenesis; Xiangshan Bay, Ningbo, Zhejiang, China (29.47 N, 121.42 E); 100 individuals; species confirmed by species-specific molecular markers on the adductor muscle",
+   "region": "Xiangshan Bay, Ningbo, Zhejiang, China (29.47 N, 121.42 E)",
+   "sample_period": "February, before gametogenesis (year not stated; paper published July 2021)",
+   "taxon_link_evidence": "The paper identifies every sampled oyster by species-specific molecular methods and names it Crassostrea sikamea, which WoRMS resolves to Magallana sikamea (836041).",
+   "moisture_pct": 84.9,
+   "moisture_method": "Each oyster: (soft weight - freeze-dried soft weight) / soft weight; Table 1 mean 84.9 ± 3.3%",
+   "components": {
+    "protein_g": {
+     "value": 5.96,
+     "unit": "g",
+     "dry_basis_value": 39.5,
+     "dry_basis_unit": "g per 100 g dry weight",
+     "reported": "Protein 39.5 ± 2.3% of dry weight (Kjeldahl, N x 6.25)"
+    },
+    "iron_mg": {
+     "value": 8.2,
+     "unit": "mg",
+     "dry_basis_value": 54.3,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Fe 543 ± 158 mg/kg dry weight (ICP-OES)"
+    },
+    "calcium_mg": {
+     "value": 141.44,
+     "unit": "mg",
+     "dry_basis_value": 936.7,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Ca 9,367 ± 1,978 mg/kg dry weight (ICP-OES)"
+    }
+   },
+   "omitted": {
+    "zinc_mg": "Table 1 gives Zn 1,164 ± 30 and Cu 493 ± 11 mg/kg dry weight for C. sikamea, but the Results text says 'Cu and Zn were also significantly higher in Kumamoto oysters (1,164 and 493 mg/kg)', the reverse order. The zinc value is ambiguous inside the paper and is left out of the mean (not 0)."
+   },
+   "edible_fraction": {
+    "value": 0.2055,
+    "method": "mean soft weight 3.0 ± 0.7 g / mean total weight 14.6 ± 3.2 g (Table 1, oysters in shell)",
+    "limitations": "Ratio of means of 100 cultured oysters of 20 months; shell share varies with size, season and culture site."
+   },
+   "limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member."
+  },
+  {
+   "record_id": "murakami2011-shorneri-tables3-4",
+   "aphia_id": 494853,
+   "taxon_label": "Sargassum horneri (괭생이모자반, akamoku)",
+   "source_id": "murakami_2011_sargassum_horneri",
+   "food_group": "해조류",
+   "part": "edible portion = the upper two thirds of the plant length; the lower rigid portion was discarded (Section 2.2)",
+   "sample_state": "raw",
+   "basis": "100 g edible portion",
+   "sample": "Wild Sargassum horneri harvested from the Chikuzen Sea, Fukuoka, Japan, once or twice a month; the six dates with both proximate and mineral data (19 Jan, 14 Feb, 28 Feb, 28 Mar, 21 Apr and 11 May 2005) are averaged. One pooled sample of 7-20 plants per date, each measured 2-4 times; from 28 February the male and female plants were analysed apart and the paper's own (Average) row is used.",
+   "region": "Chikuzen Sea, Fukuoka Prefecture, Japan",
+   "sample_period": "19 January to 11 May 2005 (six harvest dates); collected once or twice a month from November 2004",
+   "taxon_link_evidence": "The paper analyses Sargassum horneri (Turner) C. Agardh, which is the WoRMS accepted name of 괭생이모자반 (494853); no other species is in the samples.",
+   "moisture_pct": 88.0,
+   "moisture_method": "Table 3, mean of the six dates: water lost by lyophilization plus the weight lost by drying the pulverized sample at 105 C for 5 h, measured on the same pooled sample as the components (Section 2.3.1), 893/894/879/860/866/888 mg/g.",
+   "components": {
+    "protein_g": {
+     "value": 1.04,
+     "unit": "g",
+     "dry_basis_value": 8.643,
+     "dry_basis_unit": "g per 100 g dry weight",
+     "reported": "Table 3, protein on a dry weight basis: 88.0 / 128 / 105 / 63.5 / 63.7 / 70.4 mg/g (Kjeldahl N x 6.25, AOAC 1995); mean 86.43 mg/g = 8.643 g per 100 g dry weight."
+    },
+    "calcium_mg": {
+     "value": 147.8,
+     "unit": "mg",
+     "dry_basis_value": 1231.7,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Table 4, calcium on a dry weight basis: 13.3 / 12.5 / 11.9 / 10.7 / 11.8 / 13.7 mg/g (AOAC 1995); mean 12.317 mg/g = 1,231.7 mg per 100 g dry weight."
+    },
+    "zinc_mg": {
+     "value": 0.48,
+     "unit": "mg",
+     "dry_basis_value": 4.007,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Table 4, zinc on a dry weight basis: 46.5 / 41.4 / 41.0 / 38.4 / 38.6 / 34.5 ug/g (AOAC 1995); mean 40.07 ug/g = 4.007 mg per 100 g dry weight."
+    }
+   },
+   "omitted": {
+    "iron_mg": "The paper does not analyse iron: Table 4 reports calcium, magnesium and zinc only, and iron appears nowhere in the text. It is left out of the mean (not 0) under the 3.7 minimum-components rule."
+   },
+   "edible_fraction": {
+    "value": 0.6667,
+    "method": "The paper's own definition of the edible portion: the upper two thirds of the plant length, with the lower rigid portion discarded (Section 2.2). Taken as 2/3.",
+    "limitations": "This is the paper's length ratio, not a measured weight ratio, and the lower portion is the thicker part, so the true edible share by weight is probably lower than 2/3. The paper reports no refuse percentage."
+   },
+   "limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture."
+  },
+  {
+   "record_id": "rda-L0270010001a-dried",
+   "aphia_id": 234476,
+   "taxon_label": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
+   "source_id": "rda_10_4_ulva_prolifera_dried",
+   "food_group": "해조류",
+   "part": "thallus, dried product as listed",
+   "sample_state": "dried",
+   "basis": "100 g edible portion",
+   "sample": "RDA National Standard Food Composition DB 10.4 row '파래, 가시파래, 말린것' (L0270010001a): water 12.8 g, protein 20 g, Ca 646 mg, Fe 37.2 mg per 100 g; zinc blank; refuse 0%; row source code ('95).",
+   "region": "Korea (site not stated in the DB row)",
+   "sample_period": "data year 1995 (row source code '95)",
+   "taxon_link_evidence": "The national table names the food 가시파래, the Korean standard name of Ulva prolifera in the NIBR national species list (Ulva prolifera Müller 1778 = 가시파래, ktsn 120000000173, read 2026-10-04); WoRMS 234476 accepted.",
+   "moisture_pct": 93.1,
+   "moisture_method": "Median of three full-text fresh moisture values of the species (85.6, 93.1, 96.6%). The dried row is first put on dry basis with its own water (12.8 g/100 g).",
+   "moisture_source": {
+    "kind": "other_sample",
+    "rule": "median of full-text values",
+    "values": [
+     {
+      "value": 85.6,
+      "source": "Yamaoka 외 1986, 家政学雑誌 37(12):1009-1019, 표 2(교토 구미하마, 면포로 닦은 생엽체)",
+      "doi": "10.11428/jhej1951.37.12_1009",
+      "verified_against": "full_text"
+     },
+     {
+      "value": 93.1,
+      "source": "Li 외 2025, National Science Review 12(8):nwaf273, 결과(남황해 생엽체, 2016-07-23, 93.1 ± 0.06%)",
+      "doi": "10.1093/nsr/nwaf273",
+      "verified_against": "full_text"
+     },
+     {
+      "value": 96.6,
+      "source": "Miyoshi 외 2013, 水産技術 6(1):109-124, 표 1 No.56(히로시마 하쓰카이치, 2008-05-26, 물기만 뺌)",
+      "url": "https://fra.repo.nii.ac.jp/records/2010550",
+      "verified_against": "full_text"
+     }
+    ]
+   },
+   "components": {
+    "protein_g": {
+     "value": 1.58,
+     "unit": "g",
+     "dry_basis_value": 22.94,
+     "dry_basis_unit": "g per 100 g dry weight",
+     "reported": "RDA row (dried): protein 20 g per 100 g at water 12.8 g"
+    },
+    "iron_mg": {
+     "value": 2.94,
+     "unit": "mg",
+     "dry_basis_value": 42.66,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "RDA row (dried): iron 37.2 mg per 100 g at water 12.8 g"
+    },
+    "calcium_mg": {
+     "value": 51.12,
+     "unit": "mg",
+     "dry_basis_value": 740.83,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "RDA row (dried): calcium 646 mg per 100 g at water 12.8 g"
+    }
+   },
+   "omitted": {
+    "zinc_mg": "The RDA row leaves zinc blank (a missing value, not zero), so it is left out of the mean (3.7 minimum-components rule)."
+   },
+   "edible_fraction": {
+    "value": 1.0,
+    "method": "Refuse 0% in the same RDA row (L0270010001a)",
+    "limitations": "Refuse of the dried product as the DB lists it; the raw thallus refuse is not reported separately."
+   },
+   "limitations": "A dried product (1995 data, site not stated) converted with the fresh moisture of other samples (median 93.1% of 85.6, 93.1 and 96.6%). The fresh values move with the moisture: at 85.6% they would be about 2.1 times higher, at 96.6% about half. The moisture samples come from Japanese and Chinese samples, not from the table's sample. Zinc is blank in the row. Ranked against the RDA seaweed cohort plus itself; never a cohort member."
+  },
+  {
+   "record_id": "kawashima1983-ecklonia-cava-P18",
+   "aphia_id": 371986,
+   "taxon_label": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
+   "source_id": "kawashima_1983_seaweed_inaa",
+   "food_group": "해조류",
+   "part": "thallus (part not stated), washed with tap and distilled water until free of chloride",
+   "sample_state": "raw",
+   "basis": "100 g edible portion",
+   "sample": "Table 1 sample P-18, Ecklonia cava (Kajime), Tomogashima, Wakayama Prefecture, Japan, 16 July 1969; one sample; instrumental neutron activation analysis; ash 12.7% (Table 3(5)).",
+   "region": "Tomogashima, Wakayama Prefecture, Japan",
+   "sample_period": "16 July 1969",
+   "taxon_link_evidence": "Table 1 names sample P-18 Ecklonia cava (Kajime); WoRMS 371986 accepted (Ecklonia stolonifera is a separate accepted species in WoRMS and is not used).",
+   "moisture_pct": 85.5,
+   "moisture_method": "Median of the blade fresh moisture means reported in full text (87.0, 84.0%). Niwa et al. 2020 (日本水産学会誌 86:9) is left out because its Table 2 (86.0%) and text (82.2%) disagree for this species.",
+   "moisture_source": {
+    "kind": "other_sample",
+    "rule": "median of full-text values",
+    "values": [
+     {
+      "value": 87.0,
+      "source": "Yamada·Kinoshita 2004, 神奈川県環境科学センター研究報告 27:89-92, 표 2 엽상부 함수율 평균(1차, 2003-01-27, 8개체)",
+      "url": "https://www.pref.kanagawa.jp/documents/3137/h16bull08.pdf",
+      "verified_against": "full_text"
+     },
+     {
+      "value": 84.0,
+      "source": "Yamada·Kinoshita 2004, 같은 표 2 엽상부 함수율 평균(2차, 2003-02-28, 8개체)",
+      "url": "https://www.pref.kanagawa.jp/documents/3137/h16bull08.pdf",
+      "verified_against": "full_text"
+     }
+    ]
+   },
+   "components": {
+    "iron_mg": {
+     "value": 0.33,
+     "unit": "mg",
+     "dry_basis_value": 2.3,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Fe 23 ppm of dry sample (Table 3(5), P-18)"
+    },
+    "zinc_mg": {
+     "value": 1.89,
+     "unit": "mg",
+     "dry_basis_value": 13.0,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Zn 130 ppm of dry sample (Table 3(5), P-18)"
+    },
+    "calcium_mg": {
+     "value": 159.5,
+     "unit": "mg",
+     "dry_basis_value": 1100.0,
+     "dry_basis_unit": "mg per 100 g dry weight",
+     "reported": "Ca 1.1% of dry sample (Table 3(5), P-18)"
+    }
+   },
+   "omitted": {
+    "protein_g": "The paper analyses elements only; protein is not reported, so it is left out of the mean (3.7 minimum-components rule)."
+   },
+   "edible_fraction": {
+    "value": 1.0,
+    "method": "The paper reports no refuse. The RDA DB 10.4 raw seaweed rows list 0% refuse, so the whole thallus is counted edible.",
+    "limitations": "A table convention, not a measurement of this species. Yamada & Kinoshita (2004) give a blade:stipe wet-weight ratio of 0.7:0.2; if only the blade were eaten the edible share would be about 0.78."
+   },
+   "limitations": "One sample from 1969 (Wakayama), analysed by activation analysis after washing until chloride-free; the authors note that strong washing can lower some elements. Converted with the fresh moisture of other samples (median 85.5% of 87 and 84%, Kanagawa 2003): at 82% moisture the values would be about 1.24 times higher. No protein value. Ranked against the RDA seaweed cohort plus itself; never a cohort member."
+  }
+ ]
+}

@@ -160,22 +160,7 @@
         "aphia_id": 377084,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 377084,
-          "checked_on": "2026-10-04",
-          "note": "Also 0 hits for Laminaria japonica; genera Saccharina and Laminaria: 0 assessments in 2026-1.",
-          "queries": [
-            "Saccharina japonica",
-            "Laminaria japonica"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Saccharina japonica",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Saccharina japonica",
         "search": {
@@ -241,7 +226,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -662,7 +647,7 @@
     },
     {
       "aphia_id": 371986,
-      "bbvi_label": "단일 논문",
+      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -1340,21 +1325,7 @@
         "aphia_id": 371986,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 371986,
-          "checked_on": "2026-10-04",
-          "note": "Genus Ecklonia: 0 assessments in 2026-1.",
-          "queries": [
-            "Ecklonia cava"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Ecklonia cava",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Ecklonia cava",
         "search": {
@@ -1373,209 +1344,13 @@
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 371986,
-          "feasible": true,
-          "kind": "aquaculture",
-          "limitations": "Research cultivation by the national fisheries institute, aimed at biomass for the extract industry (the introduction also mentions food use); not proof of commercial food production. One site and two seasons.",
-          "method": "Seeded culture from zoospores to two-year-old plants. Mature sporophytes collected in Jeju in October 2005 released zoospores in a tank at the NFRDI Seaweed Research Center test site (정도리, 완도읍); they settled on seed frames and were grown in flowing seawater. Nursery on vertical frames at the 장용리 test farm (약산면, 완도군), January-March 2006 (best at 2 m). Main culture: seed string inserted on longline rope at 20 cm intervals; depth trial March-October 2006 (best at 1 m) and horizontal longline at 1 m, March 2006-March 2007. Biomass 2.6 kg wet wt/m in August 2006 and 3.6 kg/m in December 2006.",
-          "record_id": "hwang2010-ecklonia-cava-wando",
-          "region": "Wando-gun, Jeollanam-do, Korea (정도리 seedling site; 장용리 test farm, 약산면)",
-          "reviewed": true,
-          "source_id": "hwang_2010_ecklonia_cava_culture",
-          "year": "October 2005 seeding; nursery January-March 2006; longline March 2006 to March 2007"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
-        "cohort_food_item_ids": [
-          "L0110000000a",
-          "L0130000000a",
-          "L0270000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-seaweeds",
-        "cohort_species": 3,
-        "components": {
-          "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 10.0,
-          "evidence_grade_deduction": 7.5,
-          "nutrient_value_contribution": 50.0
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "A table convention, not a measurement of this species. Yamada & Kinoshita (2004) give a blade:stipe wet-weight ratio of 0.7:0.2; if only the blade were eaten the edible share would be about 0.78.",
-          "method": "The paper reports no refuse. The RDA DB 10.4 raw seaweed rows list 0% refuse, so the whole thallus is counted edible.",
-          "record_id": "kawashima1983-ecklonia-cava-P18:edible_fraction",
-          "region": "Tomogashima, Wakayama Prefecture, Japan",
-          "reviewed": true,
-          "sample_period": "16 July 1969",
-          "source_id": "kawashima_1983_seaweed_inaa",
-          "unit": "edible share of food as purchased",
-          "value": 1.0
-        },
-        "english_name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 70.0
-        },
-        "literature_limitations": "One sample from 1969 (Wakayama), analysed by activation analysis after washing until chloride-free; the authors note that strong washing can lower some elements. Converted with the fresh moisture of other samples (median 85.5% of 87 and 84%, Kanagawa 2003): at 82% moisture the values would be about 1.24 times higher. No protein value. Ranked against the RDA seaweed cohort plus itself; never a cohort member.",
-        "literature_moisture": {
-          "kind": "other_sample",
-          "label": "수분 환산값(다른 시료)",
-          "moisture_pct": 85.5,
-          "rule": "median of full-text values",
-          "values": [
-            {
-              "source": "Yamada·Kinoshita 2004, 神奈川県環境科学センター研究報告 27:89-92, 표 2 엽상부 함수율 평균(1차, 2003-01-27, 8개체)",
-              "url": "https://www.pref.kanagawa.jp/documents/3137/h16bull08.pdf",
-              "value": 87.0,
-              "verified_against": "full_text"
-            },
-            {
-              "source": "Yamada·Kinoshita 2004, 같은 표 2 엽상부 함수율 평균(2차, 2003-02-28, 8개체)",
-              "url": "https://www.pref.kanagawa.jp/documents/3137/h16bull08.pdf",
-              "value": 84.0,
-              "verified_against": "full_text"
-            }
-          ]
-        },
-        "method_version": "verified-4.0",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "kawashima1983-ecklonia-cava-P18 (kawashima_1983_seaweed_inaa): dry-basis value x (100 - 85.5% fresh moisture, median of 2 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 91.0
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 79.0
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 55.0
-              },
-              {
-                "food_item_id": "LIT:kawashima1983-ecklonia-cava-P18",
-                "name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-                "value": 159.5
-              }
-            ],
-            "percentile": 87.5,
-            "percentile_unrounded": 87.5,
-            "unit": "mg",
-            "value": 159.5
-          },
-          "iron_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "kawashima1983-ecklonia-cava-P18 (kawashima_1983_seaweed_inaa): dry-basis value x (100 - 85.5% fresh moisture, median of 2 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 18.3
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 0.46
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 4.1
-              },
-              {
-                "food_item_id": "LIT:kawashima1983-ecklonia-cava-P18",
-                "name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-                "value": 0.33
-              }
-            ],
-            "percentile": 12.5,
-            "percentile_unrounded": 12.5,
-            "unit": "mg",
-            "value": 0.33
-          },
-          "zinc_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "kawashima1983-ecklonia-cava-P18 (kawashima_1983_seaweed_inaa): dry-basis value x (100 - 85.5% fresh moisture, median of 2 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 1.01
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 0.14
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 0.13
-              },
-              {
-                "food_item_id": "LIT:kawashima1983-ecklonia-cava-P18",
-                "name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-                "value": 1.89
-              }
-            ],
-            "percentile": 87.5,
-            "percentile_unrounded": 87.5,
-            "unit": "mg",
-            "value": 1.89
-          }
-        },
-        "observed_rows": [
-          {
-            "english_name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-            "food_item_id": "LIT:kawashima1983-ecklonia-cava-P18",
-            "link_evidence": "Table 1 names sample P-18 Ecklonia cava (Kajime); WoRMS 371986 accepted (Ecklonia stolonifera is a separate accepted species in WoRMS and is not used).",
-            "linked": true,
-            "missing": [
-              "protein_g"
-            ],
-            "refuse_pct": 0.0,
-            "reported_food_name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-            "row_source": "literature",
-            "source_id": "kawashima_1983_seaweed_inaa",
-            "values": {
-              "calcium_mg": 159.5,
-              "iron_mg": 0.33,
-              "protein_g": null,
-              "zinc_mg": 1.89
-            }
-          }
-        ],
-        "omitted_components": [
-          "protein_g"
-        ],
-        "outside_cohort": true,
-        "reported_food_name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
-        "row_source": "literature",
-        "row_table": "literature",
-        "sample_state": "raw",
-        "source_food_item_id": "LIT:kawashima1983-ecklonia-cava-P18",
-        "source_id": "kawashima_1983_seaweed_inaa",
-        "substituted_components": [],
+        "method_version": "verified-pilot-3.28",
+        "observed_rows": [],
         "sufficiency": {
-          "present": [
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -1585,34 +1360,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points.",
-          "Ranked against the 3-food cohort plus itself because protein_g is not reported in the species' own row and is left out of the mean (not scored 0), the species' own row is a reviewed paper's analysis of the species converted to fresh weight with the same sample's moisture (neither RDA DB 10.4 nor MEXT 2020 has a row for this species).",
-          "4-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 25.0 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 62.5,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 67.2,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 57.8,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -1634,14 +1382,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "iron_mg",
-            "zinc_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -1651,7 +1393,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.61
+        "mean_ratio": 0.33
       },
       "korean_name": "감태",
       "mbpi_label": "단일 논문",
@@ -1787,28 +1529,25 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출 보류",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
-        "BBVI": 65.0,
+        "BBVI": null,
         "MBPI": 67.5,
         "MCUI": null,
-        "MFPI": 62.5
+        "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 66.3,
-          "0.5": 65.0,
-          "0.75": 63.8
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 31.9,
         "median_compound_sensitivity": 24.8,
         "range_from_aggregation": [
@@ -1818,21 +1557,18 @@
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": 67.5,
-        "food_only_MFPI": 62.5
+        "food_only_MFPI": null
       },
       "source_ids": [
         "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "gbif_rapid_lc",
-        "hwang_2010_ecklonia_cava_culture",
         "iucn_redlist_search",
-        "kawashima_1983_seaweed_inaa",
         "obis_trend",
         "park_2013_dieckol",
         "pubchem_ecklonia_structures",
         "pubchem_inchikey_mbpi",
-        "rda_db_10_4",
         "wijesinghe_2011_ace",
         "wikidata_p703_lotus",
         "worms_ecklonia",
@@ -1840,16 +1576,16 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
         "MCUI": "not_in_red_list",
-        "MFPI": null
+        "MFPI": "comparable_nutrition_missing"
       }
     },
     {
       "aphia_id": 234476,
-      "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
+      "bbvi_label": null,
+      "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [],
       "bioactivity_trace": [
         {
@@ -1992,7 +1728,7 @@
         "aphia_id": 234476,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Ulva prolifera",
         "search": {
@@ -2012,215 +1748,13 @@
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
       "food_trace": {
-        "aquaculture": {
-          "aphia_id": 234476,
-          "feasible": true,
-          "kind": "aquaculture",
-          "limitations": "One season of trial culture by the national fisheries institute; the paper notes there was then no farming of this species alone in Korea. Table 4's 'Mean' row is a seasonal total and differs from the column sums by 1.2 and 1.6 kg.",
-          "method": "Seed collection and grow-out to harvest. Natural seeding on frames at Yongwon-dong, Jinhae (June, August and October 1999) and artificial seeding from mature thalli (April-May) in 1 t tanks, indoor nursery to August and transfer to the farm in mid-September. Pole culture at Yongwon-dong, Jinhae (65 nets) and floating culture at Wonpo-ri, Hwayang-myeon, Yeosu (28 nets), harvested by hand four to six times; monthly harvest November 1999 to March 2000 (Table 4).",
-          "record_id": "yoon2003-ulva-prolifera-jinhae-yeosu",
-          "region": "Yongwon-dong, Jinhae (pole culture) and Wonpo-ri, Hwayang-myeon, Yeosu (floating culture), Korea",
-          "reviewed": true,
-          "source_id": "yoon_2003_ulva_prolifera_culture",
-          "year": "seeding 1999; grow-out and harvest November 1999 to March 2000"
-        },
-        "basis": "100 g edible portion",
-        "cohort_criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
-        "cohort_food_item_ids": [
-          "L0110000000a",
-          "L0130000000a",
-          "L0270000000a"
-        ],
-        "cohort_id": "rda-10.4-raw-seaweeds",
-        "cohort_species": 3,
-        "components": {
-          "aquaculture_contribution": 10.0,
-          "edible_fraction_contribution": 10.0,
-          "evidence_grade_deduction": 2.5,
-          "nutrient_value_contribution": 16.67
-        },
+        "aquaculture": null,
         "cross_checks": [],
-        "edible_fraction": {
-          "kind": "edible_fraction",
-          "limitations": "Refuse of the dried product as the DB lists it; the raw thallus refuse is not reported separately.",
-          "method": "Refuse 0% in the same RDA row (L0270010001a)",
-          "record_id": "rda-L0270010001a-dried:edible_fraction",
-          "region": "Korea (site not stated in the DB row)",
-          "reviewed": true,
-          "sample_period": "data year 1995 (row source code '95)",
-          "source_id": "rda_10_4_ulva_prolifera_dried",
-          "unit": "edible share of food as purchased",
-          "value": 1.0
-        },
-        "english_name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-        "formula": "nutrient_weight x mean(percentile x evidence_factor) + 100 x edible_fraction_weight x edible_fraction + 100 x aquaculture_weight x aquaculture_boolean",
-        "grade_sensitivity": {
-          "all_grade_factors_1": 36.7
-        },
-        "literature_limitations": "A dried product (1995 data, site not stated) converted with the fresh moisture of other samples (median 93.1% of 85.6, 93.1 and 96.6%). The fresh values move with the moisture: at 85.6% they would be about 2.1 times higher, at 96.6% about half. The moisture samples come from Japanese and Chinese samples, not from the table's sample. Zinc is blank in the row. Ranked against the RDA seaweed cohort plus itself; never a cohort member.",
-        "literature_moisture": {
-          "kind": "other_sample",
-          "label": "수분 환산값(다른 시료)",
-          "moisture_pct": 93.1,
-          "rule": "median of full-text values",
-          "values": [
-            {
-              "doi": "10.11428/jhej1951.37.12_1009",
-              "source": "Yamaoka 외 1986, 家政学雑誌 37(12):1009-1019, 표 2(교토 구미하마, 면포로 닦은 생엽체)",
-              "value": 85.6,
-              "verified_against": "full_text"
-            },
-            {
-              "doi": "10.1093/nsr/nwaf273",
-              "source": "Li 외 2025, National Science Review 12(8):nwaf273, 결과(남황해 생엽체, 2016-07-23, 93.1 ± 0.06%)",
-              "value": 93.1,
-              "verified_against": "full_text"
-            },
-            {
-              "source": "Miyoshi 외 2013, 水産技術 6(1):109-124, 표 1 No.56(히로시마 하쓰카이치, 2008-05-26, 물기만 뺌)",
-              "url": "https://fra.repo.nii.ac.jp/records/2010550",
-              "value": 96.6,
-              "verified_against": "full_text"
-            }
-          ]
-        },
-        "method_version": "verified-4.0",
-        "nutrients": {
-          "calcium_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "rda-L0270010001a-dried (rda_10_4_ulva_prolifera_dried): dry-basis value x (100 - 93.1% fresh moisture, median of 3 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 91.0
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 79.0
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 55.0
-              },
-              {
-                "food_item_id": "LIT:rda-L0270010001a-dried",
-                "name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-                "value": 51.12
-              }
-            ],
-            "percentile": 12.5,
-            "percentile_unrounded": 12.5,
-            "unit": "mg",
-            "value": 51.12
-          },
-          "iron_mg": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "rda-L0270010001a-dried (rda_10_4_ulva_prolifera_dried): dry-basis value x (100 - 93.1% fresh moisture, median of 3 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 18.3
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 0.46
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 4.1
-              },
-              {
-                "food_item_id": "LIT:rda-L0270010001a-dried",
-                "name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-                "value": 2.94
-              }
-            ],
-            "percentile": 37.5,
-            "percentile_unrounded": 37.5,
-            "unit": "mg",
-            "value": 2.94
-          },
-          "protein_g": {
-            "evidence_factor": 0.85,
-            "grade": "literature_converted",
-            "method": "rda-L0270010001a-dried (rda_10_4_ulva_prolifera_dried): dry-basis value x (100 - 93.1% fresh moisture, median of 3 other samples of the species) / 100",
-            "peer_values": [
-              {
-                "food_item_id": "L0110000000a",
-                "name": "매생이, 생것",
-                "value": 3.88
-              },
-              {
-                "food_item_id": "L0130000000a",
-                "name": "미역, 생것",
-                "value": 1.68
-              },
-              {
-                "food_item_id": "L0270000000a",
-                "name": "파래, 생것",
-                "value": 2.18
-              },
-              {
-                "food_item_id": "LIT:rda-L0270010001a-dried",
-                "name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-                "value": 1.58
-              }
-            ],
-            "percentile": 12.5,
-            "percentile_unrounded": 12.5,
-            "unit": "g",
-            "value": 1.58
-          }
-        },
-        "observed_rows": [
-          {
-            "english_name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-            "food_item_id": "LIT:rda-L0270010001a-dried",
-            "link_evidence": "The national table names the food 가시파래, the Korean standard name of Ulva prolifera in the NIBR national species list (Ulva prolifera Müller 1778 = 가시파래, ktsn 120000000173, read 2026-10-04); WoRMS 234476 accepted.",
-            "linked": true,
-            "missing": [
-              "zinc_mg"
-            ],
-            "refuse_pct": 0.0,
-            "reported_food_name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-            "row_source": "literature",
-            "source_id": "rda_10_4_ulva_prolifera_dried",
-            "values": {
-              "calcium_mg": 51.12,
-              "iron_mg": 2.94,
-              "protein_g": 1.58,
-              "zinc_mg": null
-            }
-          }
-        ],
-        "omitted_components": [
-          "zinc_mg"
-        ],
-        "outside_cohort": true,
-        "reported_food_name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
-        "row_source": "literature",
-        "row_table": "literature",
-        "sample_state": "raw",
-        "source_food_item_id": "LIT:rda-L0270010001a-dried",
-        "source_id": "rda_10_4_ulva_prolifera_dried",
-        "substituted_components": [],
+        "method_version": "verified-pilot-3.28",
+        "observed_rows": [],
         "sufficiency": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -2230,34 +1764,7 @@
             "aquaculture"
           ]
         },
-        "supplemental_nutrition": [],
-        "uncertainty": [
-          "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points.",
-          "Ranked against the 3-food cohort plus itself because zinc_mg is not reported in the species' own row and is left out of the mean (not scored 0), the species' own row is a reviewed paper's analysis of the species converted to fresh weight with the same sample's moisture (neither RDA DB 10.4 nor MEXT 2020 has a row for this species).",
-          "4-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about 25.0 points.",
-          "Sensitivity values are scenario arithmetic, not a statistical confidence interval."
-        ],
-        "unrounded": 34.166666666666664,
-        "weight_sensitivity": [
-          {
-            "aquaculture_weight": 0.15,
-            "edible_fraction_weight": 0.15,
-            "mfpi": 42.4,
-            "nutrient_weight": 0.7
-          },
-          {
-            "aquaculture_weight": 0.05,
-            "edible_fraction_weight": 0.05,
-            "mfpi": 25.9,
-            "nutrient_weight": 0.9
-          }
-        ],
-        "weights": {
-          "aquaculture_weight": 0.1,
-          "edible_fraction_weight": 0.1,
-          "nutrient_weight": 0.8
-        },
-        "yield_sensitivity": []
+        "supplemental_nutrition": []
       },
       "information_sufficiency": {
         "MBPI": {
@@ -2280,14 +1787,8 @@
           ]
         },
         "MFPI": {
-          "present": [
-            "protein_g",
-            "iron_mg",
-            "calcium_mg",
-            "edible_fraction",
-            "aquaculture"
-          ],
-          "ratio": 0.83,
+          "present": [],
+          "ratio": 0.0,
           "required": [
             "protein_g",
             "iron_mg",
@@ -2297,7 +1798,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.67
       },
       "korean_name": "가시파래",
       "mbpi_label": "단일 논문",
@@ -2306,8 +1807,8 @@
       "mcui_substitute": {
         "basis": "range_state",
         "category": "LC",
-        "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "LC → 10 (스웨덴 국가 적색목록, 팀 규칙 v4.0)",
+        "label": "서식국 국가 평가 기반 시범 MCUI",
+        "pilot_mapping": "LC -> 10 (Sweden national red list, team pilot rule)",
         "record": {
           "aphia_id": 234476,
           "assessment_basis": "The Swedish list applies the IUCN categories and criteria at the regional level; LC is an assigned category ('De skattade värdena ... ligger alla inom intervallet för kategorin Livskraftig (LC)'), not an absence from the list.",
@@ -2409,23 +1910,19 @@
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
-        "BBVI": "산출됨",
+        "BBVI": "산출 보류",
         "MBPI": "산출됨",
         "MCUI": "산출됨",
-        "MFPI": "산출됨"
+        "MFPI": "산출 보류"
       },
       "scores": {
-        "BBVI": 53.8,
+        "BBVI": null,
         "MBPI": 73.3,
         "MCUI": 10.0,
-        "MFPI": 34.2
+        "MFPI": null
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 63.5,
-          "0.5": 53.8,
-          "0.75": 44.0
-        },
+        "food_weights": {},
         "mean_compound_sensitivity": 25.9,
         "median_compound_sensitivity": 2.3,
         "range_from_aggregation": [
@@ -2435,7 +1932,7 @@
       },
       "single_axis_views": {
         "bioactivity_only_MBPI": 73.3,
-        "food_only_MFPI": 34.2
+        "food_only_MFPI": null
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
@@ -2446,20 +1943,17 @@
         "li_2024_ulva_kaf",
         "obis_trend",
         "pubchem_inchikey_mbpi",
-        "rda_10_4_ulva_prolifera_dried",
-        "rda_db_10_4",
         "slu_rodlista_2025",
         "wikidata_p703_lotus",
         "worms_rest_mbpi",
-        "yoon_2003_ulva_prolifera_culture",
         "zhang_2022_ulva_htdt"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
         "MBPI": null,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": "comparable_nutrition_missing"
       }
     },
     {
@@ -2551,21 +2045,7 @@
         "aphia_id": 494853,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 494853,
-          "checked_on": "2026-10-04",
-          "note": "Genus Sargassum in 2026-1: only 4 Galapagos species (2007).",
-          "queries": [
-            "Sargassum horneri"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Sargassum horneri",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Sargassum horneri",
         "search": {
@@ -2630,7 +2110,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3132,22 +2612,7 @@
         "aphia_id": 236157,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 236157,
-          "checked_on": "2026-10-04",
-          "note": "Also 0 hits for Agarophyton vermiculophyllum. Genus Gracilaria in 2026-1: G. ecuadoreanus DD 2007, G. skottsbergii CR 2007.",
-          "queries": [
-            "Gracilaria vermiculophylla",
-            "Agarophyton vermiculophyllum"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Gracilaria vermiculophylla",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Gracilaria vermiculophylla",
         "search": {
@@ -3212,7 +2677,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3736,21 +3201,7 @@
         "aphia_id": 145086,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 145086,
-          "checked_on": "2026-10-04",
-          "note": "Genus Codium in 2026-1: only C. spinulosum (DD, 2023).",
-          "queries": [
-            "Codium fragile"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Codium fragile",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Codium fragile",
         "search": {
@@ -3815,7 +3266,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4609,7 +4060,7 @@
         "aphia_id": 231750,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Ruditapes philippinarum",
         "search": {
@@ -4704,7 +4155,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5395,12 +4846,12 @@
         "first_edition_category": "LC",
         "index_page_printed": 1468,
         "index_page_viewer": 1470,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1375,
         "list_page_viewer": 1377,
         "name_as_published": "바지락 Ruditapes philippinarum A. Adams & Reeve, 1848",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Ruditapes philippinarum",
         "scope": "national (Republic of Korea)",
@@ -5646,9 +5097,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "78764186",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "EN → 80 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "EN -> 80 (team pilot rule, not an IUCN score)",
         "population_trend": "Decreasing",
         "publication_year": 2022,
         "record_id": "IUCN:e.T78764186A78772433",
@@ -5728,7 +5179,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6700,7 +6151,7 @@
         "aphia_id": 393716,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Mizuhopecten yessoensis",
         "search": {
@@ -6796,7 +6247,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7469,12 +6920,12 @@
         "first_edition_category": "LC",
         "index_page_printed": 1484,
         "index_page_viewer": 1486,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1379,
         "list_page_viewer": 1381,
         "name_as_published": "큰가리비 Mizuhopecten yessoensis Jay, 1856",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Mizuhopecten yessoensis",
         "scope": "national (Republic of Korea)",
@@ -7727,7 +7178,7 @@
         "aphia_id": 836041,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Magallana sikamea",
         "search": {
@@ -7816,7 +7267,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8370,8 +7821,8 @@
       "mcui_substitute": {
         "basis": "range_state",
         "category": "NT",
-        "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "NT → 35 (일본 국가 적색목록, 팀 규칙 v4.0)",
+        "label": "서식국 국가 평가 기반 시범 MCUI",
+        "pilot_mapping": "NT -> 35 (Japan national red list, team pilot rule)",
         "record": {
           "aphia_id": 836041,
           "assessment_basis": "Ministry of the Environment Japan red-list categories, which name their IUCN equivalent (準絶滅危惧 = NT)",
@@ -8833,7 +8284,7 @@
         "aphia_id": 504357,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Anadara broughtonii",
         "search": {
@@ -8921,7 +8372,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9636,13 +9087,13 @@
         "first_edition_category": "LC",
         "index_page_printed": 1486,
         "index_page_viewer": 1488,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1380,
         "list_page_viewer": 1382,
         "name_as_published": "피조개 Scapharca broughtonii Schrenck, 1867",
         "name_note": "WoRMS 591364 unaccepted; valid name 504357 A. broughtonii",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Anadara broughtonii",
         "scope": "national (Republic of Korea)",
@@ -10001,7 +9452,7 @@
         "aphia_id": 413600,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Sinonovacula constricta",
         "search": {
@@ -10088,7 +9539,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10786,12 +10237,12 @@
         "first_edition_category": "LC",
         "index_page_printed": 1453,
         "index_page_viewer": 1455,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1370,
         "list_page_viewer": 1372,
         "name_as_published": "가리맛조개 Sinonovacula constricta Lamarck, 1818",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Sinonovacula constricta",
         "scope": "national (Republic of Korea)",
@@ -11137,9 +10588,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "170306",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Stable",
         "publication_year": 2023,
         "record_id": "IUCN:e.T170306A170083106",
@@ -11219,7 +10670,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12209,9 +11660,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "98969433",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
         "publication_year": 2018,
         "record_id": "IUCN:e.T98969433A143841777",
@@ -12291,7 +11742,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13128,41 +12579,7 @@
       "aphia_id": 281273,
       "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "IC50(잔틴 산화효소 억제)",
-          "exclusion_reason": "고정 비교집단이 없어 백분위를 매길 수 없습니다.",
-          "material_kind": "참조기 가수분해물에서 동정한 펩타이드 WDDMEKIW·APPERKYSVW",
-          "missing": [
-            "잔틴 산화효소 시험의 공개 비교집단이 8건뿐이라(최소 30건) 고정 비교집단 층을 만들 수 없음"
-          ],
-          "origin_aphia_id": 281273,
-          "origin_scientific_name": "Larimichthys polyactis",
-          "record_id": "10.3390/foods12050982:XOI-peptides",
-          "reviewed": true,
-          "source_id": "chen_2023_foods_xoi",
-          "status": "partial_only",
-          "test_system": "잔틴 산화효소 억제 시험(시험관)",
-          "values": [
-            {
-              "material": "WDDMEKIW",
-              "unit": "mM",
-              "value": 3.16
-            },
-            {
-              "material": "APPERKYSVW",
-              "unit": "mM",
-              "value": 5.86
-            }
-          ]
-        }
-      ],
+      "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
@@ -13212,9 +12629,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "49182929",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
         "publication_year": 2020,
         "record_id": "IUCN:e.T49182929A49229050",
@@ -13302,7 +12719,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13923,8 +13340,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 3,
-          "ratio": 0.75,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -13959,7 +13376,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.92
+        "mean_ratio": 0.67
       },
       "korean_name": "참조기",
       "mbpi_label": null,
@@ -14046,7 +13463,7 @@
       "scientific_name": "Larimichthys polyactis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -14064,7 +13481,6 @@
         "food_only_MFPI": 39.4
       },
       "source_ids": [
-        "chen_2023_foods_xoi",
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "gbif_iucn_checklist",
@@ -14186,21 +13602,7 @@
         "aphia_id": 275816,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 275816,
-          "checked_on": "2026-10-04",
-          "note": "Genus Paralichthys: 20 species assessed in 2026-1, P. olivaceus not among them.",
-          "queries": [
-            "Paralichthys olivaceus"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Paralichthys olivaceus",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Paralichthys olivaceus",
         "search": {
@@ -14295,7 +13697,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14926,8 +14328,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -14953,38 +14354,80 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.67
       },
       "korean_name": "넙치",
       "mbpi_label": "단일 논문",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "range_state",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "range_state",
+        "basis": "preliminary",
         "category": "LC",
-        "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "aphia_id": 275816,
-          "assessment_basis": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
-          "category": "LC",
-          "category_as_published": "ランク外",
-          "continuity": "Single round (2017); Japan's next marine red-list round has not been published (checked 2026-10-04).",
-          "country": "Japan",
-          "country_ko": "일본",
-          "limitations": "'ランク外' means the evaluation assigned no category. The 2013 application guide for the marine red list says no category is assigned when extinction risk is not considered or when there is not enough information to evaluate it; the published table does not say which applies per species. The same table gives DD to one species separately, and every listed species is one whose stock the Fisheries Agency assesses every year, so the result is read as 'not threatened'. Treating it as LC-equivalent is a team-lead decision (2026-10-04), shown on the species. A national evaluation of Japanese waters, not an IUCN global or Korean assessment. Never ranked or pooled with IUCN-based or Korean national MCUI. Japan's FY2025 stock assessments (FRA, not used for the MCUI) put two of four stocks below SBmsy (日本海北部 0.66, 日本海中西部・東シナ海 0.53 × SBmsy, fishing above Fmsy) and two above (太平洋北部 1.52, 瀬戸内海 1.02).",
-          "list": "水産庁 水産資源の希少性評価結果 (2017), p.2, 整理番号 40",
-          "name_as_published": "40 ヒラメ Paralichthys olivaceus",
-          "rank_out": true,
-          "reviewed": true,
-          "scientific_name": "Paralichthys olivaceus",
-          "scope": "national (Japan; stocks the Fisheries Agency assesses)",
-          "source_id": "jfa_rarity_2017"
+          "aoo_cells": 201,
+          "aoo_km2": 20100,
+          "countries_gbif": [
+            "CN",
+            "HK",
+            "JP",
+            "KR",
+            "TW"
+          ],
+          "eoo_km2": 2922117,
+          "gbif": {
+            "count": 370,
+            "name": "Paralichthys olivaceus (Temminck & Schlegel, 1846)",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 2408877,
+              "year": "1990,2026"
+            },
+            "read": 370,
+            "status": "ACCEPTED",
+            "taxon_key": 2408877,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 320,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 275816
+            }
+          },
+          "records": 301,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "jfa_rarity_2017"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -15036,7 +14479,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -15060,20 +14503,22 @@
           "recent": 55
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 44.3,
         "MBPI": 29.2,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 59.4
       },
       "sensitivity": {
@@ -15095,10 +14540,11 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
+        "bachman_2020_rapid_lc",
         "cmnpd_mbpi",
         "europepmc_mbpi",
+        "gbif_rapid_lc",
         "iucn_redlist_search",
-        "jfa_rarity_2017",
         "ko_2016_flounder",
         "obis_trend",
         "oh_2024_flounder",
@@ -15108,7 +14554,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -15289,22 +14735,7 @@
         "aphia_id": 274849,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 274849,
-          "checked_on": "2026-10-04",
-          "note": "Also 0 hits for 'Sebastes schlegeli'. Genus Sebastes: 14 assessments (incl. S. koreanus DD 2010), S. schlegelii not among them.",
-          "queries": [
-            "Sebastes schlegelii",
-            "Sebastes schlegeli"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Sebastes schlegelii",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Sebastes schlegelii",
         "search": {
@@ -15400,7 +14831,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16314,9 +15745,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "20435860",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
         "publication_year": 2016,
         "record_id": "IUCN:e.T20435860A115383171",
@@ -16407,7 +15838,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -17301,21 +16732,7 @@
         "aphia_id": 254538,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 254538,
-          "checked_on": "2026-10-04",
-          "note": "Genus Gadus in 2026-1: G. chalcogrammus NT 2015 (Europe), G. morhua VU 1996 (Global) and LC 2015 (Europe); no G. macrocephalus.",
-          "queries": [
-            "Gadus macrocephalus"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Gadus macrocephalus",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Gadus macrocephalus",
         "search": {
@@ -17402,7 +16819,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18078,8 +17495,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -18104,38 +17520,79 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "대구",
       "mbpi_label": "단일 논문",
       "mbpi_stratum": "peptide",
-      "mcui_basis": "range_state",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "range_state",
+        "basis": "preliminary",
         "category": "LC",
-        "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "aphia_id": 254538,
-          "assessment_basis": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
-          "category": "LC",
-          "category_as_published": "ランク外",
-          "continuity": "Single round (2017); Japan's next marine red-list round has not been published (checked 2026-10-04).",
-          "country": "Japan",
-          "country_ko": "일본",
-          "limitations": "'ランク外' means the evaluation assigned no category. The 2013 application guide for the marine red list says no category is assigned when extinction risk is not considered or when there is not enough information to evaluate it; the published table does not say which applies per species. The same table gives DD to one species separately, and every listed species is one whose stock the Fisheries Agency assesses every year, so the result is read as 'not threatened'. Treating it as LC-equivalent is a team-lead decision (2026-10-04), shown on the species. A national evaluation of Japanese waters, not an IUCN global or Korean assessment. Never ranked or pooled with IUCN-based or Korean national MCUI. Japan's FY2025 stock assessments (FRA, not used for the MCUI) put two of six stocks below SBmsy (本州太平洋北部 0.60, 本州日本海北部 0.67 × SBmsy, fishing below Fmsy); the Hokkaido and Okhotsk stocks are at high or medium levels.",
-          "list": "水産庁 水産資源の希少性評価結果 (2017), p.1, 整理番号 14",
-          "name_as_published": "14 マダラ Gadus macrocephalus",
-          "rank_out": true,
-          "reviewed": true,
-          "scientific_name": "Gadus macrocephalus",
-          "scope": "national (Japan; stocks the Fisheries Agency assesses)",
-          "source_id": "jfa_rarity_2017"
+          "aoo_cells": 140,
+          "aoo_km2": 14000,
+          "countries_gbif": [
+            "CN",
+            "JP",
+            "KR",
+            "RU"
+          ],
+          "eoo_km2": 2072315,
+          "gbif": {
+            "count": 223,
+            "name": "Gadus macrocephalus Tilesius, 1810",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 2415853,
+              "year": "1990,2026"
+            },
+            "read": 223,
+            "status": "ACCEPTED",
+            "taxon_key": 2415853,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 425,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 254538
+            }
+          },
+          "records": 297,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "jfa_rarity_2017"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -18187,7 +17644,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -18211,20 +17668,22 @@
           "recent": 40
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 49.1,
         "MBPI": 59.9,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 38.3
       },
       "sensitivity": {
@@ -18246,10 +17705,11 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
+        "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "gbif_rapid_lc",
         "iucn_redlist_search",
-        "jfa_rarity_2017",
         "kordi_2010_pacific_cod",
         "ngo_2016_cod_gelatin",
         "obis_trend",
@@ -18262,7 +17722,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -18270,35 +17730,7 @@
       "aphia_id": 1061762,
       "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": true,
-            "origin": false,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "MIC",
-          "exclusion_reason": "논문과 특허의 기원종이 달라, 저자가 확인하기 전에는 꽃게의 점수 근거로 쓰지 않습니다.",
-          "material_kind": "합성 펩타이드 MCCC1-MTS(미토콘드리아 표적 서열, 순도 90% 이상)",
-          "missing": [
-            "기원종 충돌: 논문(초록·방법·보충 그림 S1)은 꽃게라고 적지만, 같은 연구소의 특허 KR20250095776A는 같은 서열(SEQ ID NO:1)의 원료를 대게로 적음 — 저자 확인 전",
-            "서열은 특허에 인쇄되어 있고 논문에는 나선 바퀴 그림으로만 실림"
-          ],
-          "origin_aphia_id": 1061762,
-          "origin_scientific_name": "Portunus trituberculatus",
-          "record_id": "10.3390/ijms26178546:MCCC1-MTS",
-          "relation": "=",
-          "reviewed": true,
-          "sequence": "MSMRRGWRFLRGGVGGWCR",
-          "source_id": "hong_2025_ijms_mts",
-          "status": "partial_only",
-          "target": "대장균·황색포도상구균",
-          "test_system": "Mueller-Hinton 액체배지 미량희석(96웰, 1×10^4 cfu/mL, 37 °C 18시간)",
-          "unit": "uM",
-          "value": 14.1
-        }
-      ],
+      "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
@@ -18334,21 +17766,7 @@
         "aphia_id": 1061762,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 1061762,
-          "checked_on": "2026-10-04",
-          "note": "Genus Portunus and family Portunidae: 0 assessments in 2026-1.",
-          "queries": [
-            "Portunus trituberculatus"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Portunus trituberculatus",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Portunus trituberculatus",
         "search": {
@@ -18443,7 +17861,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19064,8 +18482,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 3,
-          "ratio": 0.75,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -19100,7 +18518,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.58
+        "mean_ratio": 0.33
       },
       "korean_name": "꽃게",
       "mbpi_label": null,
@@ -19252,13 +18670,14 @@
       },
       "priority_survey": true,
       "priority_survey_reasons": [
+        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
@@ -19280,7 +18699,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "gbif_rapid_lc",
-        "hong_2025_ijms_mts",
         "iucn_redlist_search",
         "jiang_2025_crab",
         "obis_trend",
@@ -19298,31 +18716,7 @@
       "aphia_id": 534443,
       "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": false,
-            "structure_id": false
-          },
-          "endpoint": "항균 활성 농도 범위",
-          "exclusion_reason": "단일 MIC 값과 시험 조건을 원문에서 확인하지 못했습니다.",
-          "material_kind": "유전체에서 고른 합성 항균 펩타이드 7종(GAP1, Big Defensin 등)",
-          "missing": [
-            "초록은 농도 범위(5–10 µM, 3.2–12.9 µM)만 밝히고 단일 MIC 값이 없음",
-            "원문이 유료라 시험 방법과 값을 확인하지 못함"
-          ],
-          "origin_aphia_id": 534443,
-          "origin_scientific_name": "Octopus sinensis",
-          "record_id": "10.1016/j.fsi.2025.110408:AMPs",
-          "reviewed": false,
-          "source_id": "zhou_2025_fsi_octopus",
-          "status": "partial_only",
-          "test_system": "세균 4종(대장균, 장염비브리오, 황색포도상구균, 고초균)",
-          "values": []
-        }
-      ],
+      "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
@@ -19358,7 +18752,7 @@
         "aphia_id": 534443,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Octopus sinensis",
         "search": {
@@ -19445,7 +18839,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20110,8 +19504,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 1,
-          "ratio": 0.25,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -20146,7 +19540,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.58
+        "mean_ratio": 0.5
       },
       "korean_name": "참문어(동아시아 종)",
       "mbpi_label": null,
@@ -20165,12 +19559,12 @@
         },
         "index_page_printed": 1484,
         "index_page_viewer": 1486,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1027,
         "list_page_viewer": 1029,
         "name_as_published": "참문어 Octopus vulgaris",
-        "pilot_mapping": "NT → 35 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "NT -> 35 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Octopus sinensis",
         "scope": "national (Republic of Korea)",
@@ -20277,7 +19671,7 @@
       "scientific_name": "Octopus sinensis",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -20303,8 +19697,7 @@
         "nibr_red_data_book_2024",
         "obis_trend",
         "rda_db_10_4",
-        "suzumura_2024_octopus_thesis",
-        "zhou_2025_fsi_octopus"
+        "suzumura_2024_octopus_thesis"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -20318,31 +19711,7 @@
       "aphia_id": 1666974,
       "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": false,
-            "structure_id": true
-          },
-          "endpoint": "선충 산화 스트레스 생존율(2·4 mM 처리)",
-          "exclusion_reason": "정량 종말점과 비교집단이 없어 점수를 매길 수 없습니다.",
-          "material_kind": "갑오징어(Sepia esculenta) 가수분해물에서 정제·동정한 펩타이드 SeP2(DVEDLEAGLAK)·SeP5(EITSLAPSTM)",
-          "missing": [
-            "펩타이드 단위의 수치 종말점(IC50 등)이 없음 — 생존율 %만 보고",
-            "항산화 시험에는 공통 종말점의 고정 비교집단 층이 없음"
-          ],
-          "origin_aphia_id": 1666974,
-          "origin_scientific_name": "Acanthosepion esculentum",
-          "record_id": "10.3390/md18100490:SeP2-SeP5",
-          "reviewed": true,
-          "source_id": "yu_2020_md_sepia",
-          "status": "partial_only",
-          "test_system": "Caenorhabditis elegans 산화 스트레스 모델(생존율 %)",
-          "values": []
-        }
-      ],
+      "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
@@ -20391,7 +19760,7 @@
         },
         "iucn_state": "data_deficient",
         "iucn_taxon_id": "162666",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "population_trend": "Unknown",
         "publication_year": 2012,
         "record_id": "IUCN:e.T162666A940677",
@@ -20472,7 +19841,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21152,8 +20521,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -21188,7 +20557,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.78
+        "mean_ratio": 0.61
       },
       "korean_name": "갑오징어",
       "mbpi_label": null,
@@ -21203,13 +20572,13 @@
         "first_edition_category": "LC",
         "index_page_printed": 1483,
         "index_page_viewer": 1485,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1379,
         "list_page_viewer": 1381,
         "name_as_published": "참갑오징어 Sepia esculenta Hoyle, 1885",
         "name_note": "WoRMS 342131 superseded combination; valid name 1666974 A. esculentum",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Acanthosepion esculentum",
         "scope": "national (Republic of Korea)",
@@ -21313,7 +20682,7 @@
       "scientific_name": "Acanthosepion esculentum",
       "score_status": {
         "BBVI": "산출 보류",
-        "MBPI": "일부 근거 확인",
+        "MBPI": "정보충분도 낮음",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
@@ -21339,8 +20708,7 @@
         "obis_trend",
         "rda_db_10_4",
         "ufish_1_workbook",
-        "yoo_2023_sepia_esculenta",
-        "yu_2020_md_sepia"
+        "yoo_2023_sepia_esculenta"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -21351,7 +20719,7 @@
       }
     }
   ],
-  "chembl_common_taxon_limit": 30.375,
+  "chembl_common_taxon_limit": 31.0,
   "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
   "comparison_cohorts": [
     {
@@ -21459,7 +20827,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-10-04T00:00:00Z",
+  "generated_at": "2026-10-03T00:00:00Z",
   "method": {
     "amp_bioactivity": {
       "accepted_materials": [
@@ -21552,8 +20920,7 @@
       ],
       "single_doi_factor": 0.75
     },
-    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.0-2026-10-04.json",
-    "changes_from": "verified-pilot-3.28 (2026-10-03). Team-lead decisions of 2026-10-04: (1) the indicator set is published as 정식 산출 under frozen rules (status 'released'); every validation result stays on screen (MFPI method check passed; MBPI drug-origin post-hoc failed, shown as '검증 미통과'; MCUI is the official assessment category mapped by conservation.category_scores, its OBIS trend element failed its check). (2) Gap filling under three approved extensions, each labelled: MFPI rows converted with other samples' fresh moisture (가시파래: RDA DB 10.4 dried row L0270010001a at the median 93.1% of three papers; 감태: Kawashima et al. 1983 activation analysis at the median 85.5% of Yamada & Kinoshita 2004), with the 3.27 aquaculture records of both species; MCUI from the Fisheries Agency of Japan rarity evaluation 2017 'ランク外' read as LC-equivalent (넙치, 대구); MBPI through the Korean 'Gelidium amansii' -> Gelidium elegans name mapping (우뭇가사리: pheophorbide A, Park, Kim & Han 2022, ChEMBL CHEMBL510103 HIV-1 IC50, with the 2026-10-04 supplement of the same ChEMBL_37 release). No cohort, weight, coefficient or threshold changes. Filled cells 92 -> 100. See research/verified-indices/formal-release-4.0-2026-10-04.md.",
+    "changes_from": "verified-pilot-3.27 (2026-10-03). Potency replication under the existing rule, no rule, cohort or coefficient change: Chen et al. 2016 (J Food Process Preserv 40:492, synthetic standards, HHL) re-measured GKY 7.94 uM and SKTY 20.63 uM, two of the three 톳 peptides of Suetsuna 1998 (pIC50 gaps 0.307 and 0.270; GKY is 톳's top item, SVY 8.12 uM was not re-measured), and FY 4.83 uM (the 미역 FY item, gap 0.942, not its top item). 톳's top item now rests on two independent papers, so its MBPI loses the single-paper factor and its BBVI the '단일 논문' label. The paper was read through the user's university library login on 2026-10-03; in the same session Li et al. 2018 (Chemosphere) gave only dried-sample moisture, so 가시파래 MFPI stays withheld. See research/verified-indices/tot-replication-3.28-2026-10-03.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21567,7 +20934,6 @@
       "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score. Since 3.27 also the single-screen caveat for PGA2 (꼬시래기) and the restated-measurement and food-origin caveat for flazin (시카메굴); a reviewed peptide row may carry its own caveat the same way (살오징어, the 3-h ACE pre-incubation). None changes a score.",
       "compound_caveats": {
         "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
-        "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다.",
         "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
         "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
         "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다."
@@ -21587,12 +20953,12 @@
       ],
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-      "link_review": "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json",
+      "link_review": "research/verified-indices/mbpi-link-review-3.27-2026-10-03.json",
       "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply.",
       "minimum_cohort_records": 30,
       "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
       "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
-      "paper_links": "research/verified-indices/mbpi-paper-links-4.0-2026-10-04.json",
+      "paper_links": "research/verified-indices/mbpi-paper-links-3.27-2026-10-03.json",
       "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-3.27-2026-10-03.json",
       "paper_source_ids": [
         "europepmc_mbpi",
@@ -21604,7 +20970,7 @@
         100
       ],
       "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
-      "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-04.json",
+      "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-03.json",
       "snapshot_supplement_rule": "After 3.26: compounds of links accepted after the 2026-09-30 snapshot are collected from the same ChEMBL release (scripts/collect_mbpi_supplement.py, same filters, same cohort counting) and merged into it. The supplement adds compounds, their admitted activities with the depositor's activity_comment, new targets and the cohort counts at the new medians; a cohort the snapshot already holds must keep its total. Original-paper links of species without P703 statements are added as species links.",
       "source_ids": [
         "worms_rest_mbpi",
@@ -21689,24 +21055,13 @@
         "VU": 60
       },
       "effort_adjustment": 10,
-      "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-      "mapping_text": {
-        "iucn": "{category} → {value} (팀 규칙 v4.0, IUCN 점수 아님)",
-        "national": "{category} → {value} (한국 국가 평가, 팀 규칙 v4.0)",
-        "range_state": "{category} → {value} ({country} 국가 적색목록, 팀 규칙 v4.0)",
-        "range_state_rank_out": "ランク外 → LC 상당 → {value} ({country} 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)"
-      },
+      "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
       "no_assessment": {
         "labels": {
           "conservation_data_deficient": "IUCN 자료 부족(DD)",
           "no_conservation_assessment": "보전 평가 없음"
         },
         "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
-      },
-      "recheck": {
-        "file": "research/verified-indices/iucn-recheck-4.0-2026-10-04.json",
-        "rule": "4.0 (team-lead request 2026-10-04 to check every '미확인' item): the zero-result IUCN search of each species without any MCUI is repeated on the current Red List version and recorded beside the first search; it never creates a score.",
-        "source_id": "iucn_redlist_recheck"
       },
       "trend": {
         "cell_rule": "A record on a cell edge counts in every cell whose closed polygon holds it, as the OBIS statistics endpoint counts the effort; numerator and denominator use the same cells.",
@@ -21793,7 +21148,7 @@
       ],
       "labels": {
         "preliminary": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
-        "range_state": "서식국 국가 평가 기반 MCUI"
+        "range_state": "서식국 국가 평가 기반 시범 MCUI"
       },
       "method_source_id": "bachman_2020_rapid_lc",
       "order": [
@@ -21802,10 +21157,10 @@
       ],
       "preliminary_category": "LC",
       "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so a met check is never an official assessment. When a test fails, nothing is shown as met. Since the team-lead decision of 2026-10-02 (the back-test failed) a met check is not an MCUI either: the record (EOO, AOO, records, back-test result) is shown beside the withheld MCUI as reference information, and the species keeps its no-assessment reason.",
-      "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state. Since 4.0 (team-lead decision 2026-10-04): a species that a Japanese government agency evaluated by name and published as 'ランク外' (no category assigned; the same table gives DD separately) counts as LC-equivalent; the row says so (rank_out) and the species shows the list's own definition of 'ランク外'.",
+      "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state.",
       "ranking_rule": "Each basis that gives an MCUI is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
-      "snapshot": "research/verified-indices/mcui-substitutes-4.0-2026-10-04.json",
+      "snapshot": "research/verified-indices/mcui-substitutes-3.27-2026-10-03.json",
       "snapshot_source_id": "gbif_rapid_lc",
       "thresholds": {
         "aoo_cell_km": 10,
@@ -21814,7 +21169,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.0",
+    "method_version": "verified-pilot-3.28",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -21825,7 +21180,7 @@
       ],
       "category_scores": "same as conservation.category_scores",
       "crosswalk_rule": "After 3.14: a national row whose published scientific name is an accepted WoRMS species with no WoRMS distribution record in the northwest Pacific assesses the Korean population named by its Korean name, and is assigned to the candidate with that Korean name that WoRMS accepts for the East Asian population (참문어: Octopus vulgaris -> O. sinensis). The same crosswalk links the RDA row.",
-      "label": "한국 국가 평가 기반 MCUI",
+      "label": "한국 국가 평가 기반 시범 MCUI",
       "legal_protection": "A legal protection designation without a red-list category is shown as a fact and never scored.",
       "page_recheck": {
         "checked_on": "2026-09-27",
@@ -21965,7 +21320,7 @@
       "rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.json",
       "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
       "substitutes": {
-        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-4.0-2026-10-04.json",
+        "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-3.26-2026-10-02.json",
         "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
         "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
         "labels": {
@@ -21985,18 +21340,12 @@
         "literature": {
           "grade": "literature_converted",
           "label": "문헌 분석값(같은 시료 수분으로 날것 환산)",
-          "other_sample_moisture": {
-            "label": "수분 환산값(다른 시료)",
-            "rule": "Team-lead decision 2026-10-04: when no paper reports the same sample's fresh moisture, a dry-basis analysis (a dried table row first put on dry basis with its own water) is converted to fresh weight with the median of the fresh moisture values that full-text papers report for the species (each survey or sample mean counted once; a paper that reports the value inconsistently is left out). Same grade as the literature route (literature_converted); the row is labelled and lists the moisture values."
-          },
           "rule": "Only for a species with no RDA DB 10.4 row linked and no MEXT species row. A peer-reviewed paper that identifies the species (morphology or molecular), analyses raw edible tissue and reports the moisture of the same sample; dry-basis values become fresh weight as value_dw x (100 - moisture) / 100 (mg/kg dry weight divided by 10 first). A component reported inconsistently within the paper is left out of the mean under the 3.7 minimum-components rule. Ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Team-lead decision 2026-10-01 (route 3, factor 0.85). Since 3.22 a seaweed row joins the shellfish one: the same conditions apply, and a component the paper does not analyse at all (iron, here) is omitted exactly like one it reports inconsistently.",
           "show_limitations": true,
-          "snapshot": "research/verified-indices/mfpi-literature-rows-4.0-2026-10-04.json",
+          "snapshot": "research/verified-indices/mfpi-literature-rows-3.22-2026-10-02.json",
           "source_ids": [
             "liu_2021_kumamoto_xiangshan",
-            "murakami_2011_sargassum_horneri",
-            "rda_10_4_ulva_prolifera_dried",
-            "kawashima_1983_seaweed_inaa"
+            "murakami_2011_sargassum_horneri"
           ],
           "species_row_groups": [
             "어패류 및 기타 수산물",
@@ -22189,7 +21538,7 @@
       "limits": [
         "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
         "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
-        "가중치 w는 팀이 정한 고정 규칙이며 민감도 결과를 함께 봐야 합니다."
+        "가중치 w는 팀 시범 규칙이며 민감도 결과를 함께 봐야 합니다."
       ],
       "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking."
     },
@@ -22207,7 +21556,7 @@
         }
       ]
     },
-    "status": "released",
+    "status": "provisional_unvalidated",
     "unexplored_candidates": {
       "national_mcui_sufficiency": "When mcui_basis is national, the MCUI steps are read from the national assessment that gives the MCUI: assessment_record = the reviewed national record, numeric_category = its category is in conservation.category_scores, current_check = its list and index pages were re-read (national_red_list.page_recheck). Otherwise the IUCN steps apply.",
       "ranks": [
@@ -22234,7 +21583,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-4.0",
+  "method_version": "verified-pilot-3.28",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -22442,7 +21791,7 @@
       "version": "ChEMBL_37 (2026-05-01)"
     },
     "chembl_mbpi": {
-      "accessed": "2026-10-04",
+      "accessed": "2026-10-03",
       "license": "CC BY-SA 3.0",
       "provider": "EMBL-EBI ChEMBL",
       "terms": "CC BY-SA 3.0; only IDs, pChEMBL values and cohort counts are stored",
@@ -22489,16 +21838,6 @@
       "title": "A novel ACE inhibitory peptide from oyster (Crassostrea gigas)",
       "url": "https://doi.org/10.3389/fnut.2022.981163",
       "version": "2022"
-    },
-    "chen_2023_foods_xoi": {
-      "accessed": "2026-10-04",
-      "doi": "10.3390/foods12050982",
-      "license": "CC BY 4.0",
-      "provider": "Foods 12(5):982 (MDPI), full text in PMC10001067",
-      "terms": "Two IC50 values recorded",
-      "title": "Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)",
-      "url": "https://doi.org/10.3390/foods12050982",
-      "version": "2023"
     },
     "cmnpd_1": {
       "accessed": "2026-09-25",
@@ -22705,16 +22044,6 @@
       "url": "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf",
       "version": "2012 article, Tables 2 and 5"
     },
-    "hong_2025_ijms_mts": {
-      "accessed": "2026-10-04",
-      "doi": "10.3390/ijms26178546",
-      "license": "CC BY 4.0",
-      "provider": "International Journal of Molecular Sciences 26(17):8546 (MDPI), full text in PMC12429151",
-      "terms": "Values and method statements recorded; patent KR20250095776A consulted for the sequence",
-      "title": "Marine-derived N-terminal mitochondrial-targeting sequences exhibit antimicrobial and anticancer activities (Hong SM et al. 2025)",
-      "url": "https://doi.org/10.3390/ijms26178546",
-      "version": "2025"
-    },
     "hwang_2008_codium_wando": {
       "accessed": "2026-10-02",
       "license": "Publisher copyright (Springer); fact, method summary and a short quotation",
@@ -22723,15 +22052,6 @@
       "title": "Cultivation of the green alga, Codium fragile (Suringar) Hariot, by artificial seed production in Korea, Hwang EK, Baek JM, Park CS, doi:10.1007/s10811-007-9265-5",
       "url": "https://doi.org/10.1007/s10811-007-9265-5",
       "version": "full text read 2026-10-02 (institutional subscription via Dongguk University Library)"
-    },
-    "hwang_2010_ecklonia_cava_culture": {
-      "accessed": "2026-10-03",
-      "license": "Publisher terms (open access on KoreaScience)",
-      "provider": "Korean Journal of Fisheries and Aquatic Sciences 43(6):687-692 (KoreaScience full text)",
-      "terms": "Only method statements, sites and periods are recorded",
-      "title": "Nursery and main culture conditions for mass cultivation of the brown alga Ecklonia cava Kjellman (Hwang EK, Gong YG, Ha DS, Park CS 2010), doi:10.5657/kfas.2010.43.6.687",
-      "url": "https://doi.org/10.5657/kfas.2010.43.6.687",
-      "version": "2010; full text read 2026-10-03 in the 3.27 gap search (KoreaScience JAKO201013351027068)"
     },
     "hwang_2018_saccharina_haenam": {
       "accessed": "2026-10-01",
@@ -22807,15 +22127,6 @@
       "url": "https://www.iucnredlist.org/species/49182929/49229050",
       "version": "2020-1 record, current in Red List 2026-1"
     },
-    "iucn_redlist_recheck": {
-      "accessed": "2026-10-04",
-      "license": "IUCN terms of use; search results only, no assessment text",
-      "provider": "IUCN Red List of Threatened Species",
-      "terms": "Zero-result searches recorded; nothing redistributed",
-      "title": "Site search of Red List assessments (version 2026-1)",
-      "url": "https://www.iucnredlist.org/search",
-      "version": "2026-1 (released 2026-07-09; 2026-2 scheduled 2026-11-19)"
-    },
     "iucn_redlist_search": {
       "accessed": "2026-09-25",
       "license": "IUCN Red List terms (non-commercial)",
@@ -22870,15 +22181,6 @@
       "url": "https://www.iucnredlist.org/species/176085/1428473",
       "version": "2014-1 record, current in Red List 2026-1"
     },
-    "jfa_rarity_2017": {
-      "accessed": "2026-10-04",
-      "license": "Government publication (政府標準利用規約); category and name facts only",
-      "provider": "Fisheries Agency of Japan (水産庁), published with the Ministry of the Environment marine red list on 2017-03-21",
-      "terms": "Two rows quoted (number, Japanese and scientific name, result) and the header totals; the list is not redistributed",
-      "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
-      "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf",
-      "version": "2017-03-21 (latest: Japan's marine red-list round of 2017 has not been superseded as of 2026-10-04); file sha256 a0666315b27254344e2f3a3ae8f778582a5be8a76e7d7e29ef886e1848279228"
-    },
     "jiang_2025_crab": {
       "accessed": "2026-09-28",
       "doi": "10.3390/biology14121682",
@@ -22908,15 +22210,6 @@
       "title": "Characterization of an antihypertensive peptide from an Alfalfa white protein hydrolysate produced by a continuous enzymatic membrane reactor",
       "url": "https://doi.org/10.1016/j.procbio.2006.04.019",
       "version": "2006"
-    },
-    "kawashima_1983_seaweed_inaa": {
-      "accessed": "2026-10-04",
-      "license": "Publisher copyright (J-STAGE free access)",
-      "provider": "Nippon Kagaku Kaishi 1983(3):368-379 (The Chemical Society of Japan), J-STAGE",
-      "terms": "Sample description and three element values recorded; no text or tables copied",
-      "title": "Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368",
-      "url": "https://doi.org/10.1246/nikkashi.1983.368",
-      "version": "1983"
     },
     "kim_2016_anchovy_sauce": {
       "accessed": "2026-10-01",
@@ -23296,13 +22589,13 @@
       "version": "CID structure pages checked 2026-09-27"
     },
     "pubchem_inchikey_mbpi": {
-      "accessed": "2026-10-04",
+      "accessed": "2026-10-03",
       "license": "NCBI public access",
       "provider": "NCBI PubChem",
       "terms": "NCBI public access; taxonomy section presence only (the sdqagent compound table returned HTTP 404 on 2026-09-29)",
       "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
       "url": "https://pubchem.ncbi.nlm.nih.gov/rest/",
-      "version": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04"
+      "version": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03"
     },
     "pubchem_pugrest": {
       "accessed": "2026-09-25",
@@ -23321,15 +22614,6 @@
       "title": "Observations on the spawning behavior, egg masses and paralarval development of the ommastrephid squid Todarodes pacificus in a laboratory mesocosm (Puneeta P, Vijai D, Yoo HK, Matsui H, Sakurai Y), doi:10.1242/jeb.127670",
       "url": "https://doi.org/10.1242/jeb.127670",
       "version": "PubMed abstract checked 2026-10-01"
-    },
-    "rda_10_4_ulva_prolifera_dried": {
-      "accessed": "2026-10-04",
-      "license": "KOGL Type 1 (attribution) for the DB",
-      "provider": "Rural Development Administration, National Institute of Crop and Food Science, National Standard Food Composition DB (국가표준식품성분 DB)",
-      "terms": "One row's values recorded with attribution",
-      "title": "파래, 가시파래, 말린것 (food code L0270010001a)",
-      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a",
-      "version": "DB 10.4 (2026); row source code ('95)"
     },
     "rda_db_10_4": {
       "accessed": "2026-09-25",
@@ -23593,7 +22877,7 @@
       "version": "2011 5(2):93-100, DOI 10.4162/nrp.2011.5.2.93; Table 2 and Fig. 3"
     },
     "wikidata_p703_lotus": {
-      "accessed": "2026-10-04",
+      "accessed": "2026-10-03",
       "count_query": "SELECT ?c (COUNT(DISTINCT ?t) AS ?n) WHERE { VALUES ?c { %s } ?c wdt:P703 ?t } GROUP BY ?c",
       "license": "CC0 1.0",
       "provider": "Wikidata (LOTUS natural products import)",
@@ -23602,7 +22886,7 @@
       "title": "P703 found-in-taxon statements and P248 references",
       "url": "https://query.wikidata.org/sparql",
       "user_agent": "BlueBioValueMap-research/1.0 (research@example.org)",
-      "version": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04"
+      "version": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03"
     },
     "worms_classification": {
       "accessed": "2026-09-30",
@@ -23678,15 +22962,6 @@
       "url": "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",
       "version": "page checked 2026-09-30"
     },
-    "yoon_2003_ulva_prolifera_culture": {
-      "accessed": "2026-10-03",
-      "license": "Publisher terms (open access on KoreaScience)",
-      "provider": "Journal of Aquaculture (한국양식학회지) 16(1):44-50 (KoreaScience scanned full text)",
-      "terms": "Only method statements, sites and periods are recorded",
-      "title": "녹조식물 가시파래, Enteromorpha prolifera의 양식연구 (Yoon JT, Cho YC, Gong YG 2003)",
-      "url": "https://www.koreascience.kr/article/JAKO200311921555932.page",
-      "version": "2003; scanned full text read 2026-10-03 in the 3.27 gap search"
-    },
     "yu_2019_todarodes": {
       "accessed": "2026-09-26",
       "doi": "10.3390/ijms20174159",
@@ -23697,16 +22972,6 @@
       "title": "Novel ACE inhibitory peptides from Todarodes pacificus: in silico and in vitro",
       "url": "https://doi.org/10.3390/ijms20174159",
       "version": "2019"
-    },
-    "yu_2020_md_sepia": {
-      "accessed": "2026-10-04",
-      "doi": "10.3390/md18100490",
-      "license": "CC BY 4.0",
-      "provider": "Marine Drugs 18(10):490 (MDPI), full text in PMC7599988",
-      "terms": "Peptide sequences and assay type recorded",
-      "title": "Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)",
-      "url": "https://doi.org/10.3390/md18100490",
-      "version": "2020"
     },
     "yun_2018_holotoxin": {
       "accessed": "2026-09-25",
@@ -23746,16 +23011,6 @@
       "terms": "Bibliographic record and numeric values only; no text, tables or PDF copied",
       "title": "Revealing Novel Angiotensin-Converting Enzyme (ACE)-Inhibitory Peptides From Mackerel Hydrolysates and Potential Antihypertensive Mechanism Using Virtual Screening and Network Pharmacology Analysis",
       "url": "https://doi.org/10.1111/1750-3841.70767",
-      "version": "2025"
-    },
-    "zhou_2025_fsi_octopus": {
-      "accessed": "2026-10-04",
-      "doi": "10.1016/j.fsi.2025.110408",
-      "license": "Publisher copyright; abstract only",
-      "provider": "Fish & Shellfish Immunology 163:110408 (Elsevier), abstract on PubMed (PMID 40360041)",
-      "terms": "Abstract statements recorded",
-      "title": "Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)",
-      "url": "https://doi.org/10.1016/j.fsi.2025.110408",
       "version": "2025"
     },
     "zhu_2017_sinonovacula_sch": {
@@ -24354,21 +23609,7 @@
         "aphia_id": 145721,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 145721,
-          "checked_on": "2026-10-04",
-          "note": "Genus Undaria in 2026-1: only U. crenata (DD, 2023). Order Laminariales: 2 assessments (Eisenia galapagensis VU 2007; Undaria crenata DD 2023).",
-          "queries": [
-            "Undaria pinnatifida"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Undaria pinnatifida",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Undaria pinnatifida",
         "search": {
@@ -24442,7 +23683,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25037,9 +24278,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "180424",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "EN → 80 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "EN -> 80 (team pilot rule, not an IUCN score)",
         "population_trend": "Decreasing",
         "previous_assessments": [
           {
@@ -25130,7 +24371,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25989,21 +25230,7 @@
         "aphia_id": 250680,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 250680,
-          "checked_on": "2026-10-04",
-          "note": "Genus Halocynthia and family Pyuridae: 0 assessments in 2026-1.",
-          "queries": [
-            "Halocynthia roretzi"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Halocynthia roretzi",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Halocynthia roretzi",
         "search": {
@@ -26099,7 +25326,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -27182,9 +26409,9 @@
         },
         "iucn_state": "assessed",
         "iucn_taxon_id": "176085",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "occurrence_trend_adjustment": null,
-        "pilot_mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+        "pilot_mapping": "LC -> 10 (team pilot rule, not an IUCN score)",
         "population_trend": "Unknown",
         "publication_year": 2014,
         "record_id": "IUCN:e.T176085A1428473",
@@ -27264,7 +26491,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28119,7 +27346,7 @@
     },
     {
       "aphia_id": 372119,
-      "bbvi_label": "단일 논문",
+      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -28146,74 +27373,28 @@
           "values": []
         }
       ],
-      "bioactivity_trace": [
-        {
-          "activity_factor": 0.75,
-          "activity_ids": [
-            2432635
-          ],
-          "adjusted": 13.542053149058528,
-          "caveat": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다.",
-          "chembl_stratum": "pathogen",
-          "cohort_records": 10781,
-          "compound_id": "CHEMBL510103",
-          "compound_name": "PHEOPHORBIDE A",
-          "document_chembl_ids": [
-            "CHEMBL1159344"
-          ],
-          "evidence_factor": 0.5625,
-          "evidence_level": 2,
-          "inchikeys": [
-            "NSFSLUUZQIAOOX-QEWKCGBTSA-N"
-          ],
-          "independent_sources": 1,
-          "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
-          "link_review": "accepted",
-          "median_pchembl": 5.6,
-          "original_paper_dois": [
-            "10.1016/j.nutres.2022.10.001"
-          ],
-          "percentile": 24.07,
-          "pubchem_cids": [],
-          "standard_type": "IC50",
-          "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
-          "stratum_kind": "chembl",
-          "stratum_label": "병원체(항균·항바이러스·항기생충)",
-          "target_chembl_id": "CHEMBL378",
-          "target_name": "Human immunodeficiency virus 1",
-          "target_organism": "Human immunodeficiency virus 1",
-          "target_type": "ORGANISM",
-          "wikidata_qids": [
-            "Q63370"
-          ]
-        }
-      ],
+      "bioactivity_trace": [],
       "chembl_links": {
         "counts": {
-          "approved_drug": 0,
-          "common_metabolite": 0,
-          "linked": 1,
-          "scored_compounds": 1,
-          "with_reference_doi": 1
+          "scored_compounds": 0
         },
         "paper_search": {
-          "accepted_links": 1,
+          "accepted_links": 0,
           "europepmc_hits": 2,
           "papers_screened": 2,
           "searched_on": "2026-09-29"
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 13.5,
-          "minimum_cohort_10": 13.5,
-          "minimum_cohort_100": 13.5,
-          "no_approved_drug_filter": 13.5,
-          "no_common_metabolite_filter": 13.5
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -28226,7 +27407,7 @@
         "aphia_id": 372119,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Gelidium elegans",
         "search": {
@@ -28292,7 +27473,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28506,8 +27687,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -28542,17 +27723,17 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "우뭇가사리",
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "chembl",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": "range_state",
       "mcui_substitute": {
         "basis": "range_state",
         "category": "VU",
-        "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "VU → 60 (러시아 국가 적색목록, 팀 규칙 v4.0)",
+        "label": "서식국 국가 평가 기반 시범 MCUI",
+        "pilot_mapping": "VU -> 60 (Russia national red list, team pilot rule)",
         "record": {
           "aphia_id": 372119,
           "assessment_basis": "The list's threat-status column uses the IUCN codes defined in Order No. 306 para 3.7 (as amended 2020): 'У - Уязвимые (VU - Vulnerable)'. The rarity column ('3 - Редкие') is a Russian scale and is not mapped.",
@@ -28653,37 +27834,25 @@
       "reference_combination": null,
       "scientific_name": "Gelidium elegans",
       "score_status": {
-        "BBVI": "산출됨",
-        "MBPI": "산출됨",
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 45.1,
-        "MBPI": 13.5,
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": 60.0,
         "MFPI": 76.7
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 29.3,
-          "0.5": 45.1,
-          "0.75": 60.9
-        },
-        "mean_compound_sensitivity": 13.5,
-        "median_compound_sensitivity": 13.5,
-        "range_from_aggregation": [
-          13.5,
-          13.5
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 13.5,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 76.7
       },
       "source_ids": [
-        "cellosaurus_mbpi",
-        "chembl_mbpi",
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "gelidium_2018_extract",
@@ -28692,16 +27861,13 @@
         "mabik_national_species_list",
         "mext_fooddb_2023",
         "obis_trend",
-        "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "russia_red_data_book_plants_2023",
-        "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "russia_red_data_book_plants_2023"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": null,
         "MFPI": null
       }
@@ -29065,23 +28231,7 @@
         "aphia_id": 494972,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
-        "recheck": {
-          "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
-          "aphia_id": 494972,
-          "checked_on": "2026-10-04",
-          "note": "Also 0 hits for Hizikia fusiformis / Hizikia fusiforme. Genus Sargassum in 2026-1: S. albemarlense DD, S. galapagense DD, S. setifolium EN, S. templetonii DD (all 2007, Galapagos).",
-          "queries": [
-            "Sargassum fusiforme",
-            "Hizikia fusiformis",
-            "Hizikia fusiforme"
-          ],
-          "red_list_version": "2026-1",
-          "result_count": 0,
-          "scientific_name": "Sargassum fusiforme",
-          "scope": "Global, species; scientific name, synonyms, keywords and common names",
-          "source_id": "iucn_redlist_recheck"
-        },
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Sargassum fusiforme",
         "search": {
@@ -29148,7 +28298,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29724,7 +28874,7 @@
         "aphia_id": 506159,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Mytilus coruscus",
         "search": {
@@ -29812,7 +28962,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30453,7 +29603,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.0 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-pilot-3.28 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -30587,13 +29737,13 @@
         "first_edition_category": "LC",
         "index_page_printed": 1487,
         "index_page_viewer": 1489,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1380,
         "list_page_viewer": 1382,
         "name_as_published": "홍합 Mytilus unguiculatus Valenciennes, 1858",
         "name_note": "WoRMS 541675 M. unguiculatus is a nomen oblitum; valid name 506159 M. coruscus",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Mytilus coruscus",
         "scope": "national (Republic of Korea)",
@@ -31172,7 +30322,7 @@
         "aphia_id": 836033,
         "category": null,
         "iucn_state": "not_in_red_list",
-        "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+        "label": "IUCN 기반 시범 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
         "reviewed": true,
         "scientific_name": "Magallana gigas",
         "search": {
@@ -31270,7 +30420,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.0",
+        "method_version": "verified-pilot-3.28",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -31965,12 +31115,12 @@
         "first_edition_category": "LC",
         "index_page_printed": 1457,
         "index_page_viewer": 1459,
-        "label": "한국 국가 평가 기반 MCUI",
+        "label": "한국 국가 평가 기반 시범 MCUI",
         "legal_protection_facts": [],
         "list_page_printed": 1371,
         "list_page_viewer": 1373,
         "name_as_published": "굴 Magallana gigas Thunberg, 1793",
-        "pilot_mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+        "pilot_mapping": "LC -> 10 (national assessment, team pilot rule)",
         "reviewed": true,
         "scientific_name": "Magallana gigas",
         "scope": "national (Republic of Korea)",
@@ -32131,5 +31281,5 @@
       }
     }
   ],
-  "status": "released"
+  "status": "provisional_unvalidated"
 }

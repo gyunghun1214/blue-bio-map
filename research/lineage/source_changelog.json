@@ -1972,6 +1972,64 @@
      "score_delta": 21.6
     }
    ]
+  },
+  {
+   "from_run_id": "verified-pilot-3.28",
+   "to_run_id": "verified-4.0",
+   "from_commit": "a4d8299",
+   "to_commit": "6060264",
+   "published_on": "2026-10-04",
+   "method_note": "verified-pilot-3.28 (2026-10-03). Team-lead decisions of 2026-10-04: (1) the indicator set is published as 정식 산출 under frozen rules (status 'released'); every validation result stays on screen (MFPI method check passed; MBPI drug-origin post-hoc failed, shown as '검증 미통과'; MCUI is the official assessment category mapped by conservation.category_scores, its OBIS trend element failed its check). (2) Gap filling under three approved extensions, each labelled: MFPI rows converted with other samples' fresh moisture (가시파래: RDA DB 10.4 dried row L0270010001a at the median 93.1% of three papers; 감태: Kawashima et al. 1983 activation analysis at the median 85.5% of Yamada & Kinoshita 2004), with the 3.27 aquaculture records of both species; MCUI from the Fisheries Agency of Japan rarity evaluation 2017 'ランク外' read as LC-equivalent (넙치, 대구); MBPI through the Korean 'Gelidium amansii' -> Gelidium elegans name mapping (우뭇가사리: pheophorbide A, Park, Kim & Han 2022, ChEMBL CHEMBL510103 HIV-1 IC50, with the 2026-10-04 supplement of the same ChEMBL_37 release). No cohort, weight, coefficient or threshold changes. Filled cells 92 -> 100. See research/verified-indices/formal-release-4.0-2026-10-04.md.",
+   "entries": [
+    {
+     "change_id": "verified-4.0#0001",
+     "entity_type": "source",
+     "entity_id": "pubchem_inchikey_mbpi",
+     "change_type": "version",
+     "old_source": "pubchem_inchikey_mbpi",
+     "old_value": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03",
+     "new_source": "pubchem_inchikey_mbpi",
+     "new_value": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04",
+     "reason": "자료원 릴리스/조회 버전 변경",
+     "run_id": "verified-4.0",
+     "from_run_id": "verified-pilot-3.28",
+     "score_before": null,
+     "score_after": null,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.0#0002",
+     "entity_type": "source",
+     "entity_id": "wikidata_p703_lotus",
+     "change_type": "version",
+     "old_source": "wikidata_p703_lotus",
+     "old_value": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-03",
+     "new_source": "wikidata_p703_lotus",
+     "new_value": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04",
+     "reason": "자료원 릴리스/조회 버전 변경",
+     "run_id": "verified-4.0",
+     "from_run_id": "verified-pilot-3.28",
+     "score_before": null,
+     "score_after": null,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.0#0003",
+     "entity_type": "assay",
+     "entity_id": "372119|chembl|CHEMBL510103|CHEMBL378|IC50",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "ChEMBL_37:CHEMBL378|IC50",
+     "new_value": "5.6 @ 24.07",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.0",
+     "from_run_id": "verified-pilot-3.28",
+     "score_before": null,
+     "score_after": 13.5,
+     "score_delta": null
+    }
+   ]
   }
  ]
 }

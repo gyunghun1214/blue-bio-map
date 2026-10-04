@@ -31,13 +31,17 @@ async function fetchPublishedRows() {
 }
 async function loadPublishedProfiles() {
   const {rows,cellRows,snapshotAt}=await fetchPublishedRows().catch(loadSnapshot);
+  // 4.0: a cell the operational DB publishes without a sea-area name takes the LME names of the sea points on a 10 x 10
+  // grid inside the cell (cell-sea-areas.json, the candidate cells' rule); without that file it stays '해역명 미확인'.
+  const cellSea=await fetch('cell-sea-areas.json').then(r=>r.ok?r.json():null).catch(()=>null);
+  const seaOf=m=>cellSea?.schemaVersion==='cell-sea-areas-1'?cellSea.cells?.[`${m[2]},${m[3]},${m[1]}`]:null;
   const licenseUrl={'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/','CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/'};
   const cellsOf=id=>cellRows.filter(c=>c.species_id===id).flatMap(c=>{
     const m=/^deg(1|4):N(-?\d+)E(-?\d+):/.exec(c.cell_code);if(!m)return [];
     const citations=Array.isArray(c.citations)?c.citations:[];
     return [{lat0:Number(m[2]),lon0:Number(m[3]),sizeDeg:Number(m[1]),resolutionM:c.resolution_m,yearStart:c.year_start,yearEnd:c.year_end,
       period:`${String(c.period_start).slice(0,4)}–${String(c.period_end).slice(0,4)}`,records:c.record_count,sites:c.site_count,
-      uncertaintyMissing:c.uncertainty_missing_count,seaAreas:c.sea_areas?.length?c.sea_areas:['해역명 미확인'],countries:c.countries||[],
+      uncertaintyMissing:c.uncertainty_missing_count,seaAreas:c.sea_areas?.length?c.sea_areas:seaOf(m)||['해역명 미확인'],countries:c.countries||[],
       citations,licenses:[...new Set(citations.flatMap(x=>x.licenses||[]))]}];
   });
   // A file of the same schema family with a higher number was written for newer page code: app.js reloads once,

@@ -23,7 +23,9 @@ class TraitEvidence(unittest.TestCase):
         per = lambda t: sorted({r["aphia_id"] for r in rows if r["trait"] == t})
         self.assertEqual(per("antioxidant"), [281273, 371986])   # 참조기, 감태
         self.assertEqual(per("diabetes"), [231750, 371986])      # 바지락, 감태
-        self.assertEqual(per("fungus") + per("pain"), [])
+        self.assertEqual(per("fungus"), [234476, 241776, 836033])  # 4.0: 가시파래 (extract), 해삼 holotoxin A, 참굴 Cg-Prp
+        self.assertEqual(per("pain"), [371986])                     # 4.0: 감태 70% ethanol extract
+        self.assertEqual({r["tier"] for r in rows if r["trait"] in ("antioxidant", "diabetes")}, {"single"})
 
     def test_pending_rows_are_not_published(self):
         published = {(r["aphia_id"], r["trait"]) for r in build(RECORD, REPORT)["records"]}

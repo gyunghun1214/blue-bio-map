@@ -16,15 +16,19 @@ import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RECORD = ROOT / "research/verified-indices/trait-display-evidence-2026-10-03.json"
+DEFAULT_RECORD = ROOT / "research/verified-indices/trait-display-evidence-2026-10-04.json"
 DEFAULT_REPORT = ROOT / "dist/assessments.json"
 DEFAULT_OUTPUT = ROOT / "dist/trait-evidence.json"
 SCHEMA = "trait-display-evidence-1"
 # The chips this file may fill: drug traits only, and none whose chip already counts adopted MBPI items by rule.
 TRAITS = {"fungus", "pain", "antioxidant", "diabetes", "resistant"}
 MATERIALS = {"isolated_compound", "synthetic_peptide", "purified_peptide"}
+# Team-lead decision 2026-10-04: for the 항진균 and 진통 chips only, a species with no single-substance row may show an
+# extract-level value (extract, fraction, hydrolysate or polysaccharide of the species), labelled 'extract'.
+EXTRACT_TRAITS = {"fungus", "pain"}
+EXTRACTS = {"extract", "fraction", "hydrolysate", "polysaccharide"}
 VERIFIED = {"full_text", "chembl_record"}   # abstract-only values stay in 'pending'
-PUBLIC = ("aphia_id", "trait", "name", "material", "assay", "endpoint", "relation", "value", "unit", "doi", "verified_against")
+PUBLIC = ("aphia_id", "trait", "name", "material", "assay", "endpoint", "relation", "value", "unit", "doi", "verified_against", "tier")
 
 
 def require(ok: bool, message: str) -> None:
@@ -40,16 +44,22 @@ def build(record: dict, report: dict) -> dict:
         what = f"{r.get('korean_name')} {r.get('name')}"
         require(r["aphia_id"] in species, f"{what}: not one of the report's species")
         require(r["trait"] in TRAITS, f"{what}: trait {r['trait']} is not a display-only drug trait")
-        require(r["material"] in MATERIALS, f"{what}: material must be a single compound or peptide")
+        extract = r["material"] in EXTRACTS
+        require(r["material"] in MATERIALS or extract and r["trait"] in EXTRACT_TRAITS,
+                f"{what}: material must be a single compound or peptide (extracts only for 항진균·진통)")
+        require(r.get("tier", "single") == ("extract" if extract else "single"), f"{what}: tier must match the material")
         require(r["relation"] == "=", f"{what}: censored or ranged values are not shown")
         require(isinstance(r["value"], (int, float)) and math.isfinite(r["value"]) and r["value"] > 0, f"{what}: value")
         require(bool(r.get("unit")) and bool(r.get("assay")) and bool(r.get("endpoint")), f"{what}: unit, assay and endpoint")
         require(str(r.get("doi", "")).startswith("10."), f"{what}: a DOI is required")
         require(r["verified_against"] in VERIFIED, f"{what}: value must be read in the full text or a ChEMBL record")
         require(bool(r.get("evidence")), f"{what}: the review note is required")
-        rows.append({k: r[k] for k in PUBLIC})
+        rows.append({k: r.get(k, "single") if k == "tier" else r[k] for k in PUBLIC})
     keys = [(r["aphia_id"], r["trait"], r["name"], r["assay"]) for r in rows]
     require(len(keys) == len(set(keys)), "duplicate trait-evidence row")
+    single = {(r["aphia_id"], r["trait"]) for r in rows if r["tier"] == "single"}
+    require(not [r for r in rows if r["tier"] == "extract" and (r["aphia_id"], r["trait"]) in single],
+            "an extract row is shown only when the species has no single-substance row for that chip")
     return {"schema_version": SCHEMA, "snapshot_date": record["snapshot_date"], "scope_note": record["scope_note"],
             "decision": record["decision"], "records": sorted(rows, key=lambda r: (r["trait"], r["aphia_id"], r["value"]))}
 

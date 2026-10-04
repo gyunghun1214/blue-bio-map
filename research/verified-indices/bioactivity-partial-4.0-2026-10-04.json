@@ -1,0 +1,155 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-04",
+ "purpose": "verified-4.0: reviewed bioactivity records of four species whose MBPI stays withheld, kept as partial evidence so the page shows what was found and which step is missing (team-lead request 2026-10-04 to check every '미확인' item). None of them enters a score.",
+ "sources": {
+  "hong_2025_ijms_mts": {
+   "provider": "International Journal of Molecular Sciences 26(17):8546 (MDPI), full text in PMC12429151",
+   "title": "Marine-derived N-terminal mitochondrial-targeting sequences exhibit antimicrobial and anticancer activities (Hong SM et al. 2025)",
+   "version": "2025",
+   "doi": "10.3390/ijms26178546",
+   "url": "https://doi.org/10.3390/ijms26178546",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Values and method statements recorded; patent KR20250095776A consulted for the sequence"
+  },
+  "chen_2023_foods_xoi": {
+   "provider": "Foods 12(5):982 (MDPI), full text in PMC10001067",
+   "title": "Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)",
+   "version": "2023",
+   "doi": "10.3390/foods12050982",
+   "url": "https://doi.org/10.3390/foods12050982",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Two IC50 values recorded"
+  },
+  "yu_2020_md_sepia": {
+   "provider": "Marine Drugs 18(10):490 (MDPI), full text in PMC7599988",
+   "title": "Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)",
+   "version": "2020",
+   "doi": "10.3390/md18100490",
+   "url": "https://doi.org/10.3390/md18100490",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Peptide sequences and assay type recorded"
+  },
+  "zhou_2025_fsi_octopus": {
+   "provider": "Fish & Shellfish Immunology 163:110408 (Elsevier), abstract on PubMed (PMID 40360041)",
+   "title": "Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)",
+   "version": "2025",
+   "doi": "10.1016/j.fsi.2025.110408",
+   "url": "https://doi.org/10.1016/j.fsi.2025.110408",
+   "accessed": "2026-10-04",
+   "license": "Publisher copyright; abstract only",
+   "terms": "Abstract statements recorded"
+  }
+ },
+ "bioactivity": [
+  {
+   "origin_aphia_id": 1061762,
+   "origin_scientific_name": "Portunus trituberculatus",
+   "record_id": "10.3390/ijms26178546:MCCC1-MTS",
+   "source_id": "hong_2025_ijms_mts",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "합성 펩타이드 MCCC1-MTS(미토콘드리아 표적 서열, 순도 90% 이상)",
+   "sequence": "MSMRRGWRFLRGGVGGWCR",
+   "endpoint": "MIC",
+   "test_system": "Mueller-Hinton 액체배지 미량희석(96웰, 1×10^4 cfu/mL, 37 °C 18시간)",
+   "missing": [
+    "기원종 충돌: 논문(초록·방법·보충 그림 S1)은 꽃게라고 적지만, 같은 연구소의 특허 KR20250095776A는 같은 서열(SEQ ID NO:1)의 원료를 대게로 적음 — 저자 확인 전",
+    "서열은 특허에 인쇄되어 있고 논문에는 나선 바퀴 그림으로만 실림"
+   ],
+   "exclusion_reason": "논문과 특허의 기원종이 달라, 저자가 확인하기 전에는 꽃게의 점수 근거로 쓰지 않습니다.",
+   "chain": {
+    "origin": false,
+    "structure_id": true,
+    "quantitative_endpoint": true,
+    "comparable_cohort": true
+   },
+   "target": "대장균·황색포도상구균",
+   "relation": "=",
+   "value": 14.1,
+   "unit": "uM"
+  },
+  {
+   "origin_aphia_id": 281273,
+   "origin_scientific_name": "Larimichthys polyactis",
+   "record_id": "10.3390/foods12050982:XOI-peptides",
+   "source_id": "chen_2023_foods_xoi",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "참조기 가수분해물에서 동정한 펩타이드 WDDMEKIW·APPERKYSVW",
+   "endpoint": "IC50(잔틴 산화효소 억제)",
+   "values": [
+    {
+     "material": "WDDMEKIW",
+     "value": 3.16,
+     "unit": "mM"
+    },
+    {
+     "material": "APPERKYSVW",
+     "value": 5.86,
+     "unit": "mM"
+    }
+   ],
+   "test_system": "잔틴 산화효소 억제 시험(시험관)",
+   "missing": [
+    "잔틴 산화효소 시험의 공개 비교집단이 8건뿐이라(최소 30건) 고정 비교집단 층을 만들 수 없음"
+   ],
+   "exclusion_reason": "고정 비교집단이 없어 백분위를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": true,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.3390/md18100490:SeP2-SeP5",
+   "source_id": "yu_2020_md_sepia",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "갑오징어(Sepia esculenta) 가수분해물에서 정제·동정한 펩타이드 SeP2(DVEDLEAGLAK)·SeP5(EITSLAPSTM)",
+   "endpoint": "선충 산화 스트레스 생존율(2·4 mM 처리)",
+   "values": [],
+   "test_system": "Caenorhabditis elegans 산화 스트레스 모델(생존율 %)",
+   "missing": [
+    "펩타이드 단위의 수치 종말점(IC50 등)이 없음 — 생존율 %만 보고",
+    "항산화 시험에는 공통 종말점의 고정 비교집단 층이 없음"
+   ],
+   "exclusion_reason": "정량 종말점과 비교집단이 없어 점수를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 534443,
+   "origin_scientific_name": "Octopus sinensis",
+   "record_id": "10.1016/j.fsi.2025.110408:AMPs",
+   "source_id": "zhou_2025_fsi_octopus",
+   "status": "partial_only",
+   "reviewed": false,
+   "material_kind": "유전체에서 고른 합성 항균 펩타이드 7종(GAP1, Big Defensin 등)",
+   "endpoint": "항균 활성 농도 범위",
+   "values": [],
+   "test_system": "세균 4종(대장균, 장염비브리오, 황색포도상구균, 고초균)",
+   "missing": [
+    "초록은 농도 범위(5–10 µM, 3.2–12.9 µM)만 밝히고 단일 MIC 값이 없음",
+    "원문이 유료라 시험 방법과 값을 확인하지 못함"
+   ],
+   "exclusion_reason": "단일 MIC 값과 시험 조건을 원문에서 확인하지 못했습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": false,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  }
+ ]
+}

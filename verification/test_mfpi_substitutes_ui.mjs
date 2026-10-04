@@ -20,7 +20,14 @@ const withSub=rows.filter(a=>a.food_trace?.outside_cohort);
 // 3.15: national-name links give 고등어·참문어 their RDA rows (MEXT zinc fills the blank) and 해삼·다시마·우뭇가사리·꼬시래기 rows that
 // leave zinc out; 살오징어 scores with its MEXT zinc once its aquaculture record exists; 시카메굴 has a literature row.
 // 3.22: 괭생이모자반 (494853) joins through the same literature route, leaving iron out of the mean.
-assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[127022,145086,219984,236157,241776,254538,342067,372119,377084,397082,413600,494853,494972,504357,506159,534443,836041,1666974]);
+// 4.0 (team-lead decision 2026-10-04): 가시파래 (234476) and 감태 (371986) join the literature route with other samples' moisture.
+assert.deepEqual(withSub.map(a=>a.aphia_id).sort((x,y)=>x-y),[127022,145086,219984,234476,236157,241776,254538,342067,371986,372119,377084,397082,413600,494853,494972,504357,506159,534443,836041,1666974]);
+for(const [aphia,item,omit,m] of [[234476,'LIT:rda-L0270010001a-dried','zinc_mg',93.1],[371986,'LIT:kawashima1983-ecklonia-cava-P18','protein_g',85.5]]){
+  const f=rows.find(a=>a.aphia_id===aphia).food_trace;
+  assert.deepEqual([f.row_table,f.source_food_item_id,f.omitted_components,f.literature_moisture.kind,f.literature_moisture.moisture_pct],['literature',item,[omit],'other_sample',m]);
+  const html=ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)});
+  assert.ok(html.includes('수분 환산값(다른 시료)')&&html.includes(`중앙값 ${m}%`)&&!html.includes('같은 시료의 수분으로'),String(aphia));
+}
 const akamoku=rows.find(a=>a.aphia_id===494853).food_trace;
 assert.deepEqual([akamoku.row_table,akamoku.source_food_item_id,akamoku.omitted_components],['literature','LIT:murakami2011-shorneri-tables3-4',['iron_mg']]);
 const kumamoto=rows.find(a=>a.aphia_id===836041).food_trace;

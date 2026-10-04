@@ -1,7 +1,7 @@
 {
  "schemaVersion": "candidate-public-cells-2",
  "reviewedOn": "2026-10-01",
- "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01) + NIBR holder points (2026-10-01): scripts/build_expansion_cells.py",
+ "rules": "map-1 (2026-09-24) + candidate additions (2026-09-27) + CC BY-NC 4.0 and 1 km land buffer (2026-10-01) + NIBR holder points (2026-10-01): scripts/build_expansion_cells.py + 2026-10-04: a cell whose accepted records carry no LME (all inside the 1 km landward buffer) takes the LME names of the sea points on a 10 x 10 grid inside the cell (seaAreasFrom = cell_grid; research/expansion-30/cell-sea-areas-2026-10-04.json)",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not current distribution, abundance, stock size or regional value. Pre-2000 records are a separate historical period.",
  "queryBox": "124–132°E · 33–38.7°N",
  "species": [
@@ -252,8 +252,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -465,8 +467,10 @@
      "sites": 3,
      "uncertaintyMissing": 7,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -762,8 +766,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -855,8 +860,9 @@
      "sites": 1,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1049,8 +1055,10 @@
      "sites": 2,
      "uncertaintyMissing": 23,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1452,8 +1460,9 @@
      "sites": 1,
      "uncertaintyMissing": 2,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1554,8 +1563,10 @@
      "sites": 15,
      "uncertaintyMissing": 23,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1588,8 +1599,10 @@
      "sites": 5,
      "uncertaintyMissing": 10,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1656,8 +1669,9 @@
      "sites": 1,
      "uncertaintyMissing": 2,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1690,8 +1704,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1724,8 +1739,9 @@
      "sites": 1,
      "uncertaintyMissing": 2,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1758,8 +1774,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -1928,8 +1945,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -2069,8 +2087,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "OBIS"
      ],
@@ -2494,8 +2514,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -2741,8 +2763,9 @@
      "sites": 2,
      "uncertaintyMissing": 4,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -2809,8 +2832,9 @@
      "sites": 3,
      "uncertaintyMissing": 8,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -3635,8 +3659,10 @@
      "sites": 24,
      "uncertaintyMissing": 75,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -3686,8 +3712,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -3720,8 +3748,10 @@
      "sites": 9,
      "uncertaintyMissing": 17,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -3977,8 +4007,9 @@
      "sites": 1,
      "uncertaintyMissing": 7,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -4225,8 +4256,9 @@
      "sites": 1,
      "uncertaintyMissing": 14,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -4497,8 +4529,9 @@
      "sites": 8,
      "uncertaintyMissing": 25,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -5386,8 +5419,10 @@
      "sites": 16,
      "uncertaintyMissing": 51,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -5437,8 +5472,10 @@
      "sites": 2,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -5684,8 +5721,9 @@
      "sites": 2,
      "uncertaintyMissing": 5,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -5735,8 +5773,9 @@
      "sites": 9,
      "uncertaintyMissing": 32,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -5820,8 +5859,9 @@
      "sites": 3,
      "uncertaintyMissing": 11,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -6720,8 +6760,10 @@
      "sites": 11,
      "uncertaintyMissing": 73,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -6788,8 +6830,10 @@
      "sites": 1,
      "uncertaintyMissing": 23,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -6992,8 +7036,9 @@
      "sites": 1,
      "uncertaintyMissing": 7,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -7316,8 +7361,9 @@
      "sites": 8,
      "uncertaintyMissing": 39,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -7554,8 +7600,9 @@
      "sites": 2,
      "uncertaintyMissing": 5,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -7818,8 +7865,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -7852,8 +7900,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -8354,8 +8403,9 @@
      "sites": 3,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -8818,8 +8868,9 @@
      "sites": 4,
      "uncertaintyMissing": 5,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -8861,8 +8912,10 @@
      "sites": 1,
      "uncertaintyMissing": 0,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -8895,8 +8948,10 @@
      "sites": 2,
      "uncertaintyMissing": 0,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9133,8 +9188,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9167,8 +9223,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9373,8 +9430,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9407,8 +9465,9 @@
      "sites": 2,
      "uncertaintyMissing": 2,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9441,8 +9500,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9804,8 +9864,9 @@
      "sites": 5,
      "uncertaintyMissing": 7,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -9917,8 +9978,10 @@
      "sites": 2,
      "uncertaintyMissing": 7,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10099,8 +10162,9 @@
      "sites": 3,
      "uncertaintyMissing": 31,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10143,8 +10207,9 @@
      "sites": 2,
      "uncertaintyMissing": 26,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10369,8 +10434,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10502,8 +10569,11 @@
      "sites": 1,
      "uncertaintyMissing": 0,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Kuroshio Current",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10727,8 +10797,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -10858,8 +10929,9 @@
      "sites": 3,
      "uncertaintyMissing": 40,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -11848,8 +11920,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -12086,8 +12159,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "OBIS"
      ],
@@ -12698,8 +12773,9 @@
      "sites": 2,
      "uncertaintyMissing": 2,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -12843,8 +12919,9 @@
      "sites": 3,
      "uncertaintyMissing": 6,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -13279,8 +13356,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -13790,8 +13869,10 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -13824,8 +13905,10 @@
      "sites": 3,
      "uncertaintyMissing": 4,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -14245,8 +14328,9 @@
      "sites": 3,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -14446,8 +14530,9 @@
      "sites": 2,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -14498,8 +14583,9 @@
      "sites": 2,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF",
       "OBIS"
@@ -15457,8 +15543,9 @@
      "sites": 1,
      "uncertaintyMissing": 9,
      "seaAreas": [
-      "해역명 미확인"
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -15491,8 +15578,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Yellow Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -16309,8 +16397,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -16707,8 +16796,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -17266,8 +17356,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -17359,8 +17450,9 @@
      "sites": 2,
      "uncertaintyMissing": 9,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF",
       "OBIS"
@@ -17402,8 +17494,9 @@
      "sites": 5,
      "uncertaintyMissing": 9,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -18339,8 +18432,10 @@
      "sites": 3,
      "uncertaintyMissing": 3,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea",
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -18802,8 +18897,9 @@
      "sites": 2,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -19123,8 +19219,9 @@
      "sites": 1,
      "uncertaintyMissing": 0,
      "seaAreas": [
-      "해역명 미확인"
+      "Kuroshio Current"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -19292,8 +19389,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -19394,8 +19492,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],
@@ -20226,8 +20325,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "East China Sea"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "OBIS"
      ],
@@ -22671,8 +22771,9 @@
      "sites": 1,
      "uncertaintyMissing": 1,
      "seaAreas": [
-      "해역명 미확인"
+      "Sea of Japan"
      ],
+     "seaAreasFrom": "cell_grid",
      "sources": [
       "GBIF"
      ],

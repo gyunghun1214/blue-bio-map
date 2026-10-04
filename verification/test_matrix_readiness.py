@@ -30,20 +30,25 @@ class MatrixReadinessTests(unittest.TestCase):
                                   and (not r.get("bbvi_label") or report["matrix_rule"].get("include_single_source_bbvi"))])
         # verified-pilot-3.27 (team-lead decision 2026-10-03): a labelled single-paper BBVI is a score and a (hollow) point,
         # so every species with BBVI and an admitted MCUI is placed: 2 -> 12 points.
-        self.assertEqual(placed, [241776, 342067, 506159, 836033, 231750, 397082, 393716, 836041, 504357, 413600, 127022, 219984])
+        # verified-4.0 (team-lead decisions 2026-10-04): 우뭇가사리 (MBPI via the G. amansii mapping), 가시파래 (MFPI with other
+        # samples' moisture) and 넙치·대구 (Fisheries Agency 'ランク外' as LC-equivalent) join: 12 -> 16 points.
+        self.assertEqual(placed, [241776, 342067, 372119, 506159, 836033, 234476, 231750, 397082, 393716, 836041, 504357, 413600,
+                                  127022, 219984, 275816, 254538])
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
                           and r["aphia_id"] not in (145721, 836033, 393716, 494972)])  # 3.28: 톳 replicated (Chen 2016)
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
-                         [(145721, 71.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (494972, 74.9), (506159, 35.5), (836033, 83.9),
-                          (377084, 41.6), (494853, 37.6), (236157, 59.7), (145086, 18.6), (231750, 59.5), (397082, 35.2), (393716, 46.1),
+                         [(145721, 71.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (372119, 45.1), (494972, 74.9), (506159, 35.5),
+                          (836033, 83.9), (377084, 41.6), (371986, 65.0), (234476, 53.8), (494853, 37.6), (236157, 59.7), (145086, 18.6),
+                          (231750, 59.5), (397082, 35.2), (393716, 46.1),
                           (836041, 35.0), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (275816, 44.3), (274849, 40.1),
                           (254538, 49.1)])
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
-                         [(145721, 95.3), (241776, 8.7), (250680, 13.5), (342067, 56.9), (494972, 86.6), (506159, 10.1), (836033, 96.3),
+                         [(145721, 95.3), (241776, 8.7), (250680, 13.5), (342067, 56.9), (372119, 13.5), (494972, 86.6), (506159, 10.1),
+                          (836033, 96.3),
                           (377084, 26.5), (371986, 67.5), (234476, 73.3), (494853, 21.6), (236157, 49.3), (145086, 0.4), (231750, 58.6),
                           (397082, 15.6), (393716, 36.4), (836041, 13.8),
                           (504357, 75.0), (413600, 56.9),
@@ -87,7 +92,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.15 links RDA rows by name (다시마·우뭇가사리·꼬시래기·해삼), reads 시카메굴 from a paper, adds six
         # aquaculture records (살오징어 false) and converts the synthetic 전복 AMN to uM: MFPI 21 -> 27, 전복 MBPI 15.6.
         # verified-pilot-3.22 adds 괭생이모자반 through the literature route: MFPI 27 -> 28.
-        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 28)
+        # verified-4.0 adds 가시파래 and 감태 with other samples' fresh moisture (team-lead decision 2026-10-04): 28 -> 30.
+        self.assertEqual(sum(r["scores"]["MFPI"] is not None for r in report["species"]), 30)
         # verified-pilot-2.1 adds 7 Korean national-assessment MCUI, kept apart by mcui_basis and out of the matrix.
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "iucn" for r in report["species"]), 7)
         # 3.15: 참문어 joins through the misapplied-name crosswalk; 시카메굴 reads Japan's list. 3.15 (team-lead decision
@@ -95,9 +101,10 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertEqual(sum(r["scores"]["MCUI"] is not None and r["mcui_basis"] == "national" for r in report["species"]), 8)
         # verified-pilot-3.16: 우뭇가사리 joins through Russia's Red Data Book (VU, peripheral population)
         # verified-pilot-3.27: 가시파래 joins through Sweden's red list 2025 (LC; distant range state)
-        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 3)
+        # verified-4.0: 넙치·대구 join through the Fisheries Agency of Japan rarity evaluation ('ランク外' as LC-equivalent)
+        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 5)
         self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 0)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 18)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 20)
         self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
@@ -163,8 +170,9 @@ class MatrixReadinessTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.assessments, self.catalog, mismatched)
         counterfeit = copy.deepcopy(self.assessments)
-        # a species whose BBVI is withheld (3.12 gives the first species, 미역, an earned BBVI)
-        next(s for s in counterfeit["species"] if s["scores"]["BBVI"] is None)["scores"]["BBVI"] = 50
+        # a species whose BBVI is withheld (3.12 gives the first species, 미역, an earned BBVI; in 4.0 every operating species
+        # has one, so a research candidate is used)
+        next(s for s in counterfeit["species"] + counterfeit["candidate_species"] if s["scores"]["BBVI"] is None)["scores"]["BBVI"] = 50
         with self.assertRaises(ValueError):
             build(counterfeit, self.catalog, self.expansion)
 

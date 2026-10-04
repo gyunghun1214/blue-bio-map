@@ -64,7 +64,7 @@ assert.equal(ctx.valid(plain,report),false,'a 3.4 row must carry its trend');
 // 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record rides beside a withheld MCUI and is re-checked;
 // a record that carries a value, a report that scores it, or a record below the published thresholds is refused.
 const refRows=rows.filter(a=>a.mcui_substitute?.use==='reference_only');
-assert.equal(refRows.length,12);  // 3.16: 우뭇가사리, 3.27: 가시파래 now have a range-state MCUI, so their Rapid LC records are gone
+assert.equal(refRows.length,10);  // 3.16: 우뭇가사리, 3.27: 가시파래, 4.0: 넙치·대구 now have a range-state MCUI, so their Rapid LC records are gone
 assert.ok(refRows.every(a=>a.scores.MCUI===null&&a.mcui_basis===null&&a.mcui_substitute.value===null&&a.withheld_reasons.MCUI==='not_in_red_list'));
 const ref=refRows[0];
 assert.equal(broken(ref,b=>{b.mcui_substitute.value=10;}),false,'a reference-only record carries no value');
@@ -100,7 +100,9 @@ if(!['decline_signal','decline_below_threshold'].includes(cucumber.occurrence_tr
 // 3.15 (team-lead decision 2026-10-02): reference only. A Rapid LC check gives no MCUI, so those species keep the
 // no-assessment reason (8 of the 14 also have low information sufficiency) and no 'preliminary' reason exists.
 assert.ok(rows.every(a=>!a.priority_survey_reasons.includes('preliminary_assessment_only')));
-const both=rows.find(a=>a.priority_survey_reasons.length===2);
+const onlyNoAssessment0=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
+// 4.0: no species keeps both reasons (감태 gains an MFPI, 꽃게 a reviewed partial record), so the pair is checked on a copy
+const both=rows.find(a=>a.priority_survey_reasons.length===2)||{...onlyNoAssessment0,priority_survey_reasons:['low_information_sufficiency','no_conservation_assessment']};
 assert.match(ctx.reasons(both),/^정보충분도 낮음\(필수 입력 평균 \d+%, 기준 50% 미만\) · 보전 평가 없음\(IUCN·국가 평가 모두 없어 MCUI 미산출\)$/);
 const onlyNoAssessment=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
 assert.equal(ctx.reasons(onlyNoAssessment),'보전 평가 없음(IUCN·국가 평가 모두 없어 MCUI 미산출)');

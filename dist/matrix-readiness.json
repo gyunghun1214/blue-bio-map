@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 12,
+  "matrix_points": 16,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -42,7 +42,7 @@
       }
     }
   },
-  "method_version": "verified-pilot-3.28",
+  "method_version": "verified-4.0",
   "schema_version": 1,
   "species": [
     {
@@ -359,12 +359,12 @@
     {
       "aphia_id": 372119,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [
         {
           "chain": {
@@ -378,35 +378,35 @@
           "source_url": "https://pubmed.ncbi.nlm.nih.gov/29316644/"
         }
       ],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "우뭇가사리",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "conservation_priority",
       "mcui_basis": "range_state",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Gelidium elegans",
       "scope": "operating_8",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 45.1,
+        "MBPI": 13.5,
         "MCUI": 60.0,
         "MFPI": 76.7
       },
       "source_urls": [
+        "https://api.cellosaurus.org/cell-line/",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1007/s10811-024-03342-7",
         "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=9_09025_7",
+        "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://pubmed.ncbi.nlm.nih.gov/29316644/",
+        "https://query.wikidata.org/sparql",
         "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
         "https://www.cmnpd.org",
+        "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
+        "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
@@ -658,12 +658,12 @@
     {
       "aphia_id": 371986,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
+        "BBVI": null,
         "MBPI": null,
         "MCUI": "not_in_red_list",
-        "MFPI": "comparable_nutrition_missing"
+        "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "감태",
@@ -672,16 +672,15 @@
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
+        "BBVI": 65.0,
         "MBPI": 67.5,
         "MCUI": null,
-        "MFPI": null
+        "MFPI": 62.5
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
@@ -689,7 +688,9 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ecklonia+cava&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.bmc.2013.04.026",
+        "https://doi.org/10.1246/nikkashi.1983.368",
         "https://doi.org/10.3897/BDJ.8.e47018",
+        "https://doi.org/10.5657/kfas.2010.43.6.687",
         "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
         "https://pubchem.ncbi.nlm.nih.gov/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
@@ -697,34 +698,35 @@
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
-        "https://www.marinespecies.org/rest/"
+        "https://www.marinespecies.org/rest/",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
     },
     {
       "aphia_id": 234476,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
+        "BBVI": null,
         "MBPI": null,
         "MCUI": null,
-        "MFPI": "comparable_nutrition_missing"
+        "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "가시파래",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "sustainable_use",
       "mcui_basis": "range_state",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Ulva prolifera",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
+        "BBVI": 53.8,
         "MBPI": 73.3,
         "MCUI": 10.0,
-        "MFPI": null
+        "MFPI": 34.2
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
@@ -739,8 +741,11 @@
         "https://webs.iiitd.edu.in/raghava/cancerppd2/",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
+        "https://www.koreascience.kr/article/JAKO200311921555932.page",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=234476",
-        "https://www.marinespecies.org/rest/"
+        "https://www.marinespecies.org/rest/",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
     },
@@ -1273,6 +1278,7 @@
         "https://api.gbif.org/v1/species/176748719",
         "https://api.obis.org/v3/",
         "https://doi.org/10.12717/DR.2025.29.1.13",
+        "https://doi.org/10.3390/foods12050982",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
@@ -1288,39 +1294,36 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "넙치",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "range_state",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 44.3,
         "MBPI": 29.2,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 59.4
       },
       "source_urls": [
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Paralichthys+olivaceus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.procbio.2016.01.009",
         "https://doi.org/10.3390/ani14111693",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",
+        "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=275816",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
@@ -1421,41 +1424,38 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "대구",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "range_state",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 49.1,
         "MBPI": 59.9,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 38.3
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.procbio.2016.07.006",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
         "https://www.iucnredlist.org/search",
+        "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=254538",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a",
@@ -1485,7 +1485,6 @@
       "mcui_basis": null,
       "priority_survey": true,
       "priority_survey_reasons": [
-        "low_information_sufficiency",
         "no_conservation_assessment"
       ],
       "scientific_name": "Portunus trituberculatus",
@@ -1501,6 +1500,7 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.3390/biology14121682",
+        "https://doi.org/10.3390/ijms26178546",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1544,6 +1544,7 @@
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.fsi.2025.110408",
         "https://opac-t.time.u-tokai.ac.jp/iwjs0018opc/TD00000555",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1590,6 +1591,7 @@
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Acanthosepion+esculentum&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.3390/md18100490",
         "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
