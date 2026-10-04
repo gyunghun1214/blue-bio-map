@@ -357,3 +357,5 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .unexplored-outside li{margin:2px 0}
 /* 4.0: checked states (평가 없음 확인 · 조사 완료) are not missing data */
 .seg.checked_none,.seg.searched_none{background:#eef1f4;color:#33475b;border:1px dashed #8a9bab}
+/* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭 */
+.matrix-layout+.matrix-unplaced,#axis-pairs{margin:16px 0 0}
