@@ -1,0 +1,168 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-04",
+ "purpose": "Re-check of the species that have no IUCN assessment, for verified-4.0 (team-lead request 2026-10-04 to check every '미확인' item). The IUCN site search index of Red List 2026-1 was queried by phrase for each name; 2026-2 is scheduled for 19 November 2026. Read only by configs that name this file.",
+ "also_checked": "Korean national red data books vols 1-12 (no volume for seaweeds, crustaceans, ascidians or marine fishes); Japan Ministry of the Environment red lists (algae 2020, marine 2017) and the Fisheries Agency rarity evaluation 2017 (94 species); China, Taiwan, Russian Federation and Vietnam lists. Only 넙치 and 대구 have a listed evaluation (Fisheries Agency 'ランク外'), used through the range-state route; the others have none.",
+ "sources": {
+  "iucn_redlist_recheck": {
+   "provider": "IUCN Red List of Threatened Species",
+   "title": "Site search of Red List assessments (version 2026-1)",
+   "url": "https://www.iucnredlist.org/search",
+   "version": "2026-1 (released 2026-07-09; 2026-2 scheduled 2026-11-19)",
+   "accessed": "2026-10-04",
+   "license": "IUCN terms of use; search results only, no assessment text",
+   "terms": "Zero-result searches recorded; nothing redistributed"
+  }
+ },
+ "species": [
+  {
+   "aphia_id": 145086,
+   "scientific_name": "Codium fragile",
+   "queries": [
+    "Codium fragile"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Codium in 2026-1: only C. spinulosum (DD, 2023)."
+  },
+  {
+   "aphia_id": 145721,
+   "scientific_name": "Undaria pinnatifida",
+   "queries": [
+    "Undaria pinnatifida"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Undaria in 2026-1: only U. crenata (DD, 2023). Order Laminariales: 2 assessments (Eisenia galapagensis VU 2007; Undaria crenata DD 2023)."
+  },
+  {
+   "aphia_id": 236157,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "queries": [
+    "Gracilaria vermiculophylla",
+    "Agarophyton vermiculophyllum"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Also 0 hits for Agarophyton vermiculophyllum. Genus Gracilaria in 2026-1: G. ecuadoreanus DD 2007, G. skottsbergii CR 2007."
+  },
+  {
+   "aphia_id": 250680,
+   "scientific_name": "Halocynthia roretzi",
+   "queries": [
+    "Halocynthia roretzi"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Halocynthia and family Pyuridae: 0 assessments in 2026-1."
+  },
+  {
+   "aphia_id": 254538,
+   "scientific_name": "Gadus macrocephalus",
+   "queries": [
+    "Gadus macrocephalus"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Gadus in 2026-1: G. chalcogrammus NT 2015 (Europe), G. morhua VU 1996 (Global) and LC 2015 (Europe); no G. macrocephalus."
+  },
+  {
+   "aphia_id": 274849,
+   "scientific_name": "Sebastes schlegelii",
+   "queries": [
+    "Sebastes schlegelii",
+    "Sebastes schlegeli"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Also 0 hits for 'Sebastes schlegeli'. Genus Sebastes: 14 assessments (incl. S. koreanus DD 2010), S. schlegelii not among them."
+  },
+  {
+   "aphia_id": 275816,
+   "scientific_name": "Paralichthys olivaceus",
+   "queries": [
+    "Paralichthys olivaceus"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Paralichthys: 20 species assessed in 2026-1, P. olivaceus not among them."
+  },
+  {
+   "aphia_id": 371986,
+   "scientific_name": "Ecklonia cava",
+   "queries": [
+    "Ecklonia cava"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Ecklonia: 0 assessments in 2026-1."
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "queries": [
+    "Saccharina japonica",
+    "Laminaria japonica"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Also 0 hits for Laminaria japonica; genera Saccharina and Laminaria: 0 assessments in 2026-1."
+  },
+  {
+   "aphia_id": 494853,
+   "scientific_name": "Sargassum horneri",
+   "queries": [
+    "Sargassum horneri"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Sargassum in 2026-1: only 4 Galapagos species (2007)."
+  },
+  {
+   "aphia_id": 494972,
+   "scientific_name": "Sargassum fusiforme",
+   "queries": [
+    "Sargassum fusiforme",
+    "Hizikia fusiformis",
+    "Hizikia fusiforme"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Also 0 hits for Hizikia fusiformis / Hizikia fusiforme. Genus Sargassum in 2026-1: S. albemarlense DD, S. galapagense DD, S. setifolium EN, S. templetonii DD (all 2007, Galapagos)."
+  },
+  {
+   "aphia_id": 1061762,
+   "scientific_name": "Portunus trituberculatus",
+   "queries": [
+    "Portunus trituberculatus"
+   ],
+   "result_count": 0,
+   "checked_on": "2026-10-04",
+   "red_list_version": "2026-1",
+   "scope": "Global, species; scientific name, synonyms, keywords and common names",
+   "note": "Genus Portunus and family Portunidae: 0 assessments in 2026-1."
+  }
+ ]
+}

@@ -326,6 +326,27 @@ def xylookup(aphia, points):
     return [known[f"{lon},{lat}"] for lon, lat in points]
 
 
+SEA_AREA_CACHE = ROOT / "research/expansion-30/cell-sea-areas-2026-10-04.json"
+
+
+def cell_sea_areas(lat0, lon0, size, steps=10):
+    """LME names of the sea points on a steps x steps grid inside a cell (2026-10-04). Used only when no accepted record
+    of the cell carries an LME: records inside the 1 km landward buffer get none from xylookup. The grid points are not
+    records; their result is kept in a committed file so a rebuild needs no lookup."""
+    cache = json.loads(SEA_AREA_CACHE.read_text(encoding="utf-8")) if SEA_AREA_CACHE.exists() else {}
+    key = f"{lat0},{lon0},{size}"
+    if key not in cache:
+        points = [[lon0 + (j + .5) * size / steps, lat0 + (i + .5) * size / steps] for i in range(steps) for j in range(steps)]
+        result = get("https://api.obis.org/xylookup", {"points": points, "shoredistance": True, "areas": True})
+        if len(result) != len(points):
+            raise ValueError("xylookup returned a different number of points")
+        sea = [x for x in result if (x.get("shoredistance") or 0) > 0]
+        cache[key] = {"points": len(points), "seaPoints": len(sea),
+                      "lme": sorted({a["name"] for x in sea for a in (x.get("areas") or {}).get("lme", [])})}
+        SEA_AREA_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    return cache[key]["lme"]
+
+
 def period(year):
     if year < 2000:
         return "2000년 이전", True
@@ -415,7 +436,8 @@ def review(species, gbif, obis):
             "yearStart": min(r["year"] for r in rows), "yearEnd": max(r["year"] for r in rows),
             "records": len(rows), "sites": len({(round(r["lon"], 3), round(r["lat"], 3)) for r in rows}),
             "uncertaintyMissing": sum(r["unc"] is None for r in rows),
-            "seaAreas": sorted({a for r in rows for a in r["lme"]}) or ["해역명 미확인"],
+            "seaAreas": sorted({a for r in rows for a in r["lme"]}) or cell_sea_areas(lat0, lon0, size) or ["해역명 미확인"],
+            **({} if any(r["lme"] for r in rows) else {"seaAreasFrom": "cell_grid"}),
             "sources": sorted({r["src"] for r in rows}),
             "citations": [{**v, "licenses": sorted(v["licenses"])} for _, v in sorted(cites.items())],
             "licenses": sorted({r["licence"] for r in rows})})

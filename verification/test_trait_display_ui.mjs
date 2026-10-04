@@ -24,8 +24,15 @@ for(const id of ['fungus','pain','antioxidant','diabetes'])assert.equal(ctx.coun
 ctx.setTraits(traits);
 assert.deepEqual(ids('antioxidant'),[281273,371986]);
 assert.deepEqual(ids('diabetes'),[231750,371986]);
-assert.equal(ctx.count('fungus'),0);assert.equal(ctx.count('pain'),0);
-for(const id of ['antioxidant','diabetes']){
+// 4.0 (team-lead decision 2026-10-04): 항진균 = 해삼 holotoxin A and 참굴 Cg-Prp (single substances) + 가시파래 ethanol fraction
+// (extract); 진통 = 감태 70% ethanol extract. Extract rows say so first.
+assert.deepEqual(ids('fungus'),[234476,241776,836033]);
+assert.deepEqual(ids('pain'),[371986]);
+assert.match(ctx.ue(species.find(s=>s.aphiaID===241776),'fungus').text,/^holotoxin A · Trichophyton rubrum 최소 억제 농도\(시험법 미기재\) MIC 0\.78 µg\/mL · 시험값 8개/);
+assert.match(ctx.ue(species.find(s=>s.aphiaID===234476),'fungus').text,/^추출물 · 에탄올 분획 · Candida albicans/);
+assert.match(ctx.ue(species.find(s=>s.aphiaID===371986),'pain').text,/^추출물 · 70% 에탄올 추출물 · .*3\.68 g · 시험값 2개/);
+assert.ok(!/^추출물/.test(ctx.ue(species.find(s=>s.aphiaID===836033),'fungus').text),'a single peptide is not labelled as an extract');
+for(const id of ['antioxidant','diabetes','fungus','pain']){
   assert.ok(ctx.only(id),id+' is display-only');
   for(const s of species){const e=ctx.ue(s,id);if(e){assert.equal(e.score,null);assert.match(e.text,/표시 전용, 점수 미반영/);assert.match(e.text,/doi 10\./);}}
 }
@@ -41,4 +48,4 @@ let out=[];assert.equal(ctx.rows({...traits,schema_version:'trait-display-eviden
 assert.deepEqual(JSON.parse(JSON.stringify(out)),[{file:'trait-evidence.json',version:'trait-display-evidence-2'}]);
 out=[];assert.equal(ctx.rows({...traits,schema_version:'other'},out).size,0);assert.equal(out.length,0);
 assert.equal(ctx.rows({...traits,records:[{...traits.records[0],relation:'<'}]},[]).size,0);
-console.log('PASS: trait chips: 내성균 from adopted MRSA rows; 항산화·항당뇨 from labelled display-only rows; adopted first; schema gate');
+console.log('PASS: trait chips: 내성균 from adopted MRSA rows; 항산화·항당뇨·항진균·진통 from labelled display-only rows (extract tier labelled); adopted first; schema gate');

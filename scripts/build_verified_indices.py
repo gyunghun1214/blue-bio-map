@@ -15,6 +15,7 @@ pilot rules, not international standards.
 from __future__ import annotations
 
 import argparse
+import statistics
 import json
 import math
 import re
@@ -29,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v3.28.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.0.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -285,17 +286,30 @@ def literature_species_row(aphia: int, evidence: dict, settings: dict) -> dict |
     if not item:
         return None
     moisture = finite(item["moisture_pct"], f"{aphia}: literature moisture", 0, 99)
-    require(item["sample_state"] == "raw" and item["basis"] == "100 g edible portion" and item["food_group"] in lit["species_row_groups"]
+    # 4.0 (team-lead decision 2026-10-04): with no same-sample fresh moisture, a dry-basis analysis (raw or dried sample) is
+    # converted with the median fresh moisture that other full-text papers report for the species; the row is labelled
+    other = (item.get("moisture_source") or {}).get("kind") == "other_sample"
+    if other:
+        values = [finite(v["value"], f"{aphia}: other-sample moisture", 0, 99) for v in item["moisture_source"]["values"]]
+        require(lit.get("other_sample_moisture") and len(values) >= 1 and moisture == round(statistics.median(values), 2)
+                and all(v.get("source") and v.get("verified_against") == "full_text" for v in item["moisture_source"]["values"]),
+                f"{aphia}: other-sample moisture needs the config rule and the median of full-text values")
+    require((item["sample_state"] == "raw" or other and item["sample_state"] == "dried") and item["basis"] == "100 g edible portion"
+            and item["food_group"] in lit["species_row_groups"]
             and item["source_id"] in lit["source_ids"] and not set(item["components"]) & set(item.get("omitted", {}))
             and set(item["components"]) | set(item.get("omitted", {})) == set(settings["components"]),
             f"{aphia}: literature row is not a raw 100 g edible-portion row of a configured group")
     for k, c in item["components"].items():
         require(c["unit"] == settings["components"][k] and c["value"] == round(c["dry_basis_value"] * (100 - moisture) / 100, 2),
                 f"{aphia}:{k}: literature value is not the dry-basis value at the sample's moisture")
-    method = f"{item['record_id']} ({item['source_id']}): dry-basis value x (100 - {moisture:g}% moisture of the same sample) / 100"
+    method = (f"{item['record_id']} ({item['source_id']}): dry-basis value x (100 - {moisture:g}% fresh moisture, median of "
+              f"{len(item['moisture_source']['values'])} other samples of the species) / 100" if other else
+              f"{item['record_id']} ({item['source_id']}): dry-basis value x (100 - {moisture:g}% moisture of the same sample) / 100")
     e = item["edible_fraction"]
     return {"food_item_id": f"LIT:{item['record_id']}", "reported_food_name": item["taxon_label"], "english_name": item["taxon_label"],
             "group": item["food_group"], "row_source": "literature", "aphia_id": aphia, "limitations": item.get("limitations"),
+            **({"moisture_source": {**item["moisture_source"], "moisture_pct": moisture, "label": lit["other_sample_moisture"]["label"]}}
+               if other else {}),
             "taxon_link": {"link_evidence": item["taxon_link_evidence"]}, "source_id": item["source_id"], "reviewed": True,
             "sample_state": "raw", "basis": "100 g edible portion", "refuse_not_accepted": None,
             "nutrients": {k: None if k not in item["components"] else
@@ -462,6 +476,8 @@ def food_axis(candidate: dict, evidence: dict, config: dict, rows: dict, primary
         if d.get("row_table") == "literature" and ((settings.get("substitutes") or {}).get("literature") or {}).get("show_limitations"):
             require(row.get("limitations"), f"{aphia}: a literature row needs its reviewed limitations")
             trace["literature_limitations"] = row["limitations"]
+        if d.get("row_table") == "literature" and row.get("moisture_source"):  # 4.0: converted with other samples' moisture
+            trace["literature_moisture"] = row["moisture_source"]
         trace["uncertainty"] = list(cohort["spec"].get("uncertainty", [])) + outside + [
             f"{len(peers)}-food ranking (the fixed cohort plus this species): one rank step moves a nutrient percentile by about {step} points."
             if outside else f"{len(cohort['rows'])}-food fixed cohort: one rank step moves a nutrient percentile by about {step} points.",
@@ -944,6 +960,11 @@ def conservation_axis(candidate: dict, evidence: dict, config: dict) -> tuple:
         search = assessment.get("search") or {}
         require(search.get("result_count") == 0 and search.get("queries") and valid_date(search.get("checked_on")),
                 "not_in_red_list needs a dated zero-result search")
+        again = evidence.get("iucn_recheck", {}).get(candidate["aphia_id"])
+        if again:  # 4.0: the zero-result search repeated on a later Red List version; the first search stays on record
+            require(again["result_count"] == 0 and again["queries"] and valid_date(again["checked_on"])
+                    and again["checked_on"] >= search["checked_on"], f"{candidate['aphia_id']}: invalid IUCN re-check")
+            trace["recheck"] = {**again, "source_id": evidence["iucn_recheck_source_id"], "also_checked": evidence["iucn_recheck_also"]}
         return None, trace, "not_in_red_list"
     if state == "lookup_failed":
         return None, trace, "assessment_lookup_failed"
@@ -961,9 +982,17 @@ def conservation_axis(candidate: dict, evidence: dict, config: dict) -> tuple:
         return None, trace, "assessment_not_current"
     value = config["conservation"]["category_scores"][assessment["category"]]
     trace["assessment_older_than_10y"] = int(evidence["snapshot_date"][:4]) - assessment["assessment_year"] > 10
-    trace["pilot_mapping"] = f"{assessment['category']} -> {value} (team pilot rule, not an IUCN score)"
+    trace["pilot_mapping"] = mapping_text(config, "iucn", f"{assessment['category']} -> {value} (team pilot rule, not an IUCN score)",
+                                          category=assessment["category"], value=value)
     trace["occurrence_trend_adjustment"] = None
     return float(value), trace, None
+
+
+def mapping_text(config: dict, kind: str, pilot: str, **values) -> str:
+    """The category-to-number note. 4.0 (released) states it in Korean from config['conservation']['mapping_text'];
+    older configs keep their pilot wording, so their archived reports stay byte-identical."""
+    template = config["conservation"].get("mapping_text", {}).get(kind)
+    return template.format(**values) if template else pilot
 
 
 def national_axis(aphia: int, evidence: dict, config: dict) -> tuple:
@@ -981,7 +1010,8 @@ def national_axis(aphia: int, evidence: dict, config: dict) -> tuple:
             f"{aphia}: national assessment needs a reviewed IUCN-regional category")
     value = config["conservation"]["category_scores"][record["category"]]
     return float(value), {**record, "label": settings["label"],
-                          "pilot_mapping": f"{record['category']} -> {value} (national assessment, team pilot rule)",
+                          "pilot_mapping": mapping_text(config, "national", f"{record['category']} -> {value} (national assessment, team pilot rule)",
+                                                        category=record["category"], value=value),
                           "legal_protection_facts": facts}
 
 
@@ -1004,7 +1034,10 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
                 and row.get("name_as_published") and row.get("category") in scores, f"{aphia}: range-state assessment incomplete")
         return {"basis": "range_state", "label": rule["labels"]["range_state"], "category": row["category"],
                 "value": float(scores[row["category"]]), "record": row, "source_ids": [row["source_id"]],
-                "pilot_mapping": f"{row['category']} -> {scores[row['category']]} ({row['country']} national red list, team pilot rule)"}
+                "pilot_mapping": mapping_text(config, "range_state_rank_out", "", category=row["category"], value=scores[row["category"]],
+                                              country=row.get("country_ko") or row["country"]) if row.get("rank_out") else mapping_text(config, "range_state",
+                                              f"{row['category']} -> {scores[row['category']]} ({row['country']} national red list, team pilot rule)",
+                                              category=row["category"], value=scores[row["category"]], country=row.get("country_ko") or row["country"])}
     lc = evidence["mcui_rapid_lc"]["species"].get(str(aphia))
     if lc is None:
         return None
@@ -1573,6 +1606,24 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(set(extra["sources"]) == {fa["display_source_id"]} and fa["display_source_id"] not in evidence["sources"],
                 "the fatty-acid snapshot must register its own display source and redefine none")
         evidence = {**evidence, "sources": {**evidence["sources"], **extra["sources"]},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+    partial = cfg.get("bioactivity_partial_supplement")
+    if partial:  # 4.0: reviewed records that stay partial (no score), added beside the evidence file's own
+        extra = read(ROOT / partial)
+        require(extra["snapshot_date"] >= evidence["snapshot_date"] and not set(extra["sources"]) & set(evidence["sources"])
+                and all(r["status"] == "partial_only" and r["source_id"] in extra["sources"] for r in extra["bioactivity"]),
+                "partial bioactivity supplement: date, source or status")
+        evidence = {**evidence, "bioactivity": evidence.get("bioactivity", []) + extra["bioactivity"],
+                    "sources": {**evidence["sources"], **extra["sources"]},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+    again = (cfg.get("conservation") or {}).get("recheck")
+    if again:  # 4.0: a dated re-check of the zero-result IUCN searches (one row per species), with its own source
+        extra = read(ROOT / again["file"])
+        require(extra["snapshot_date"] >= evidence["snapshot_date"] and set(extra["sources"]) == {again["source_id"]}
+                and again["source_id"] not in evidence["sources"] and len({r["aphia_id"] for r in extra["species"]}) == len(extra["species"]),
+                "IUCN re-check file: date, source or duplicate species")
+        evidence = {**evidence, "iucn_recheck": {r["aphia_id"]: r for r in extra["species"]}, "iucn_recheck_source_id": again["source_id"],
+                    "iucn_recheck_also": extra["also_checked"], "sources": {**evidence["sources"], **extra["sources"]},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     subs = cfg.get("mcui_substitutes")
     if subs:  # after 3.14: range-state national lists and the Rapid LC snapshot (scripts/collect_mcui_rapid_lc.py)

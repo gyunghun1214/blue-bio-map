@@ -41,8 +41,8 @@ const DOTS=/[^.]\.\.(?!\.)/g;
 // The evidence files keep exclusion reasons and 누락 items in English; the page shows each one in Korean (REASON_KO in app.js).
 const EN_REASONS=[];
 (function walk(o,parent){if(Array.isArray(o))o.forEach(v=>walk(v,parent));else if(o&&typeof o==='object')for(const [k,v] of Object.entries(o)){
-  if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications'))EN_REASONS.push(T.esc(v));
-  else if(k==='missing'&&parent==='bioactivity_partial'&&Array.isArray(v))v.forEach(x=>EN_REASONS.push(T.esc(x)));else walk(v,k);}})(report);
+  if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications')){if(!/[가-힣]/.test(v))EN_REASONS.push(T.esc(v));}
+  else if(k==='missing'&&parent==='bioactivity_partial'&&Array.isArray(v))v.filter(x=>!/[가-힣]/.test(x)).forEach(x=>EN_REASONS.push(T.esc(x)));else walk(v,k);}})(report);  // 4.0: rows written in Korean need no translation
 assert.ok(EN_REASONS.length>0,'English reasons found in assessments.json (drop this check once the data itself is Korean)');
 const findings=[], count={detail:0,decision:0,cells:0,popup:0};
 let cellSpecies=0, popupSpecies=0, replicatedSpecies=0;

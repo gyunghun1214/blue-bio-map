@@ -331,3 +331,10 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix-point.pilot{width:22px;min-width:22px;height:22px;padding:0;border-radius:50%}
 .matrix-point.pilot.national{border-radius:5px}
 .matrix-point .point-label{font-size:11.5px}
+/* 4.0: 30종 밖 미탐색 후보 list under the layer switch (collapsed; long genera such as Sargassum scroll) */
+.unexplored-outside{flex-basis:100%;font-size:12.5px}
+.unexplored-outside summary{cursor:pointer;color:#6b3fa0;font-weight:600}
+.unexplored-outside ul{max-height:12rem;overflow:auto;margin:4px 0 0;padding-left:18px}
+.unexplored-outside li{margin:2px 0}
+/* 4.0: checked states (평가 없음 확인 · 조사 완료) are not missing data */
+.seg.checked_none,.seg.searched_none{background:#eef1f4;color:#33475b;border:1px dashed #8a9bab}

@@ -2708,6 +2708,7 @@ class VerifiedPilot327Tests(unittest.TestCase):
 
 
 XO328 = "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
+V328 = ROOT / "config" / "verified-indices-v3.28.json"  # superseded by 4.0 (released set, labelled gap filling)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -2716,13 +2717,15 @@ class VerifiedPilot328Tests(unittest.TestCase):
     loses the single-paper factor and its BBVI the '단일 논문' label. Nothing else moves."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V327))
+        self.report, self.old_report = build(*load_inputs(config=V328)), build(*load_inputs(config=V327))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-pilot-3.28", "provisional_unvalidated"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 3.28 report is archived as it was
+        archived328 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-pilot-3.28.json"
+        self.assertEqual(render(self.report), archived328.read_text(encoding="utf-8"))
 
     def test_hijiki_gky_and_skty_are_replicated(self):
         tot, old = self.new[494972], self.old[494972]
@@ -2775,6 +2778,89 @@ class VerifiedPilot328Tests(unittest.TestCase):
         self.assertEqual((block["result"], mbpi["result"]), ("failed", "failed"))
         self.assertEqual(block["operating_max_mbpi"], max(mbpi["operating_mbpi"].values()))
         self.assertEqual(block["case_mbpi"], {"Conus magus": None, "Halichondria okadai": 73.8, "Ecteinascidia turbinata": 56.1})
+
+
+V40_CHANGED = {371986: "감태", 234476: "가시파래", 372119: "우뭇가사리", 275816: "넙치", 254538: "대구"}
+
+
+class Verified40Tests(unittest.TestCase):
+    """Released set (team-lead decisions 2026-10-04): 3.28's rules frozen and published as 정식 산출 (status 'released'), plus
+    three labelled gap-filling extensions: MFPI rows converted with other samples' fresh moisture (가시파래, 감태), MCUI from the
+    Fisheries Agency of Japan 'ランク外' read as LC-equivalent (넙치, 대구) and MBPI through the Korean 'Gelidium amansii' ->
+    G. elegans mapping (우뭇가사리, pheophorbide A). Also an IUCN re-check record and reviewed partial records; no score moves
+    elsewhere."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V328))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.0", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_filled_cells_and_which_species_moved(self):
+        filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
+        self.assertEqual((filled(self.old), filled(self.new)), (92, 100))
+        moved = {a for a, s in self.new.items() if s["scores"] != self.old[a]["scores"]}
+        self.assertEqual(moved, set(V40_CHANGED))
+        for a, s in self.new.items():  # a filled cell never empties and an existing value never changes
+            for k, v in self.old[a]["scores"].items():
+                if v is not None:
+                    self.assertEqual(s["scores"][k], v, f"{V40_CHANGED.get(a, a)} {k}")
+        self.assertEqual({a: self.new[a]["scores"] for a in V40_CHANGED}, {
+            371986: {"BBVI": 65.0, "MBPI": 67.5, "MCUI": None, "MFPI": 62.5},
+            234476: {"BBVI": 53.8, "MBPI": 73.3, "MCUI": 10.0, "MFPI": 34.2},
+            372119: {"BBVI": 45.1, "MBPI": 13.5, "MCUI": 60.0, "MFPI": 76.7},
+            275816: {"BBVI": 44.3, "MBPI": 29.2, "MCUI": 10.0, "MFPI": 59.4},
+            254538: {"BBVI": 49.1, "MBPI": 59.9, "MCUI": 10.0, "MFPI": 38.3}})
+
+    def test_other_sample_moisture_rows(self):
+        for aphia, item, m, omitted in ((234476, "LIT:rda-L0270010001a-dried", 93.1, ["zinc_mg"]),
+                                        (371986, "LIT:kawashima1983-ecklonia-cava-P18", 85.5, ["protein_g"])):
+            f = self.new[aphia]["food_trace"]
+            self.assertEqual((f["row_table"], f["source_food_item_id"], f["omitted_components"]), ("literature", item, omitted))
+            lm = f["literature_moisture"]
+            self.assertEqual((lm["kind"], lm["moisture_pct"], lm["label"]), ("other_sample", m, "수분 환산값(다른 시료)"))
+            self.assertEqual(median(v["value"] for v in lm["values"]), m)
+            self.assertTrue(all(n["grade"] == "literature_converted" for n in f["nutrients"].values()))
+        # the 3.28 config does not allow the route, so the same rows stay out there
+        self.assertIsNone(self.old[234476]["scores"]["MFPI"])
+
+    def test_rank_out_rows(self):
+        for aphia in (275816, 254538):
+            sub = self.new[aphia]["mcui_substitute"]
+            self.assertEqual((sub["basis"], sub["category"], sub["value"], sub["record"]["category_as_published"], sub["record"]["rank_out"]),
+                             ("range_state", "LC", 10.0, "ランク外", True))
+            self.assertIn("ランク外 → LC 상당", sub["pilot_mapping"])
+            self.assertEqual(self.new[aphia]["mcui_basis"], "range_state")
+
+    def test_gelidium_mbpi_link(self):
+        g = self.new[372119]
+        top = max(g["bioactivity_trace"], key=lambda t: t["adjusted"])
+        self.assertEqual((top["compound_id"], top["standard_type"], top["link_factor"], top["activity_factor"]),
+                         ("CHEMBL510103", "IC50", 0.75, 0.75))
+        self.assertIn("Gelidium elegans", top["caveat"])
+        self.assertIn("엽록소 분해 산물", top["caveat"])
+        self.assertEqual((g["mbpi_label"], g["bbvi_label"]), ("단일 논문", "단일 논문"))
+
+    def test_recheck_and_partials_never_score(self):
+        rechecked = {a for a, s in self.new.items() if (s.get("conservation_trace") or {}).get("recheck")}
+        self.assertEqual(len(rechecked), 12)
+        for a in rechecked:
+            r = self.new[a]["conservation_trace"]["recheck"]
+            self.assertEqual((r["checked_on"], r["red_list_version"], r["result_count"]), ("2026-10-04", "2026-1", 0))
+        for a in (1061762, 281273, 1666974, 534443):
+            self.assertIsNone(self.new[a]["scores"]["MBPI"])
+            self.assertTrue(any(p["source_id"] in ("hong_2025_ijms_mts", "chen_2023_foods_xoi", "yu_2020_md_sepia", "zhou_2025_fsi_octopus")
+                                for p in self.new[a]["bioactivity_partial"]))
+
+    def test_mbpi_posthoc_block_still_matches(self):
+        import posthoc_validation as P
+        block = self.report["method"]["posthoc"]["validation_sets"]["MBPI"]
+        mbpi = P.mbpi_check(self.report, self.report["method"])
+        self.assertEqual((block["result"], mbpi["result"]), ("failed", "failed"))
+        self.assertEqual(block["operating_max_mbpi"], max(mbpi["operating_mbpi"].values()))
 
 
 if __name__ == "__main__":
