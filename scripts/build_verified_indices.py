@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.0.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.1.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -657,6 +657,9 @@ def amp_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                              "peptide_name": own[0].get("peptide_name"), "target_species": cohort["target_species"],
                              **({"sequence_modifications": own[0]["sequence_modifications"]}  # 3.19: e.g. pyroglutamate
                                 if own[0].get("sequence_modifications") else {}),
+                             # 4.1: a reviewed row may carry a caveat (origin settled on sequence records, draft gene model);
+                             # it is shown with the item and changes no score, as the ChEMBL compound caveats do
+                             **({"caveat": own[0]["caveat"]} if own[0].get("caveat") else {}),
                              "target_strains": sorted({r["target_strain"] for r in own if r.get("target_strain")}),
                              "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
                              "peer_peptides": len(peers), "cohort_median_pMIC": cohort["median_pMIC"],

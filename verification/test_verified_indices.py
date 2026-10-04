@@ -2709,6 +2709,7 @@ class VerifiedPilot327Tests(unittest.TestCase):
 
 XO328 = "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
 V328 = ROOT / "config" / "verified-indices-v3.28.json"  # superseded by 4.0 (released set, labelled gap filling)
+V40 = ROOT / "config" / "verified-indices-v4.0.json"    # superseded by 4.1 (꽃게 AMP row)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -2791,13 +2792,15 @@ class Verified40Tests(unittest.TestCase):
     elsewhere."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V328))
+        self.report, self.old_report = build(*load_inputs(config=V40)), build(*load_inputs(config=V328))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.0", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.0 report is archived as it was
+        archived40 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.0.json"
+        self.assertEqual(render(self.report), archived40.read_text(encoding="utf-8"))
 
     def test_filled_cells_and_which_species_moved(self):
         filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
@@ -2861,6 +2864,62 @@ class Verified40Tests(unittest.TestCase):
         mbpi = P.mbpi_check(self.report, self.report["method"])
         self.assertEqual((block["result"], mbpi["result"]), ("failed", "failed"))
         self.assertEqual(block["operating_max_mbpi"], max(mbpi["operating_mbpi"].values()))
+
+
+class Verified41Tests(unittest.TestCase):
+    """4.1 (team-lead request 2026-10-04 to find ways to fill the last blanks): 꽃게 enters the AMP stratum with MCCC1-MTS.
+    4.0 held the record back because the group's patent names a different crab for the same sequence; the origin is settled on
+    public sequence records and the caveat travels with the value. Nothing else moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V40))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.1", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_the_swimming_crab_moved(self):
+        filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
+        self.assertEqual((filled(self.old), filled(self.new)), (100, 102))
+        self.assertEqual({a for a, s in self.new.items() if s["scores"] != self.old[a]["scores"]}, {1061762})
+        for a, s in self.new.items():  # a filled cell never empties and an existing value never changes
+            for k, v in self.old[a]["scores"].items():
+                if v is not None:
+                    self.assertEqual(s["scores"][k], v, f"{a} {k}")
+        self.assertEqual(self.new[1061762]["scores"], {"BBVI": 46.2, "MBPI": 30.3, "MCUI": None, "MFPI": 62.0})
+        self.assertEqual((self.new[1061762]["mbpi_label"], self.new[1061762]["bbvi_label"]), ("단일 논문", "단일 논문"))
+
+    def test_amp_row_chain_and_caveats(self):
+        top = max(self.new[1061762]["bioactivity_trace"], key=lambda t: t["adjusted"])
+        self.assertEqual((top["stratum_kind"], top["stratum_id"], top["evidence_factor"]),
+                         ("amp", "amp-dbaasp-mic-broth-escherichia-coli", 0.75))
+        self.assertEqual((top["pMIC"], top["percentile"]), (4.851, 40.44))
+        self.assertGreaterEqual(top["peer_peptides"], 30)
+        self.assertEqual({m["value"] for m in top["measurements"]}, {14.1})
+        self.assertEqual({m["unit"] for m in top["measurements"]}, {"uM"})
+        self.assertEqual({m["method"] for m in top["measurements"]}, {"broth_microdilution"})
+        self.assertEqual({m["target_species"] for m in top["measurements"]}, {"Escherichia coli"})
+        amp = json.loads((ROOT / "research/verified-indices/evidence-amp-4.1-2026-10-04.json").read_text(encoding="utf-8"))
+        own = [r for r in amp["amp_bioactivity"] if r["origin_aphia_id"] == 1061762]
+        self.assertEqual({r["target_species"] for r in own}, {"Escherichia coli", "Staphylococcus aureus"})
+        for r in own:  # the origin verdict and both limits stay in the record
+            self.assertIn("A0A5B7CYN9", r["origin_evidence"])
+            self.assertIn("A0A8J5CHQ3", r["origin_evidence"])
+            self.assertIn("KR20250095776A", r["origin_evidence"])
+            self.assertIn("XP_045119878.1", r["origin_evidence"])
+
+    def test_partial_records_lost_the_scored_one(self):
+        supplement = json.loads((ROOT / "research/verified-indices/bioactivity-partial-4.1-2026-10-04.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(supplement["sources"]), {"chen_2023_foods_xoi", "yu_2020_md_sepia", "zhou_2025_fsi_octopus"})
+        from_file = lambda rows: [r for r in rows if r["source_id"] in supplement["sources"]]
+        held = {a: from_file(s.get("bioactivity_partial") or []) for a, s in self.new.items()}
+        self.assertEqual({a for a, v in held.items() if v}, {281273, 1666974, 534443})  # 꽃게 is no longer among them
+        for a in (281273, 1666974, 534443):
+            self.assertIsNone(self.new[a]["scores"]["MBPI"])
+        self.assertFalse(any(r["source_id"] == "hong_2025_ijms_mts"
+                             for r in self.new[1061762].get("bioactivity_partial") or []))
 
 
 if __name__ == "__main__":

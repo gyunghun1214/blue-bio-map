@@ -1,0 +1,118 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-04",
+ "purpose": "verified-4.1: reviewed bioactivity records of three species whose MBPI stays withheld, kept as partial evidence so the page shows what was found and which step is missing (team-lead request 2026-10-04 to check every '미확인' item). None of them enters a score. 4.1: the 꽃게 record left this file — the origin species was settled on public sequence records and it now carries a score in the AMP stratum.",
+ "sources": {
+  "chen_2023_foods_xoi": {
+   "provider": "Foods 12(5):982 (MDPI), full text in PMC10001067",
+   "title": "Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)",
+   "version": "2023",
+   "doi": "10.3390/foods12050982",
+   "url": "https://doi.org/10.3390/foods12050982",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Two IC50 values recorded"
+  },
+  "yu_2020_md_sepia": {
+   "provider": "Marine Drugs 18(10):490 (MDPI), full text in PMC7599988",
+   "title": "Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)",
+   "version": "2020",
+   "doi": "10.3390/md18100490",
+   "url": "https://doi.org/10.3390/md18100490",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Peptide sequences and assay type recorded"
+  },
+  "zhou_2025_fsi_octopus": {
+   "provider": "Fish & Shellfish Immunology 163:110408 (Elsevier), abstract on PubMed (PMID 40360041)",
+   "title": "Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)",
+   "version": "2025",
+   "doi": "10.1016/j.fsi.2025.110408",
+   "url": "https://doi.org/10.1016/j.fsi.2025.110408",
+   "accessed": "2026-10-04",
+   "license": "Publisher copyright; abstract only",
+   "terms": "Abstract statements recorded"
+  }
+ },
+ "bioactivity": [
+  {
+   "origin_aphia_id": 281273,
+   "origin_scientific_name": "Larimichthys polyactis",
+   "record_id": "10.3390/foods12050982:XOI-peptides",
+   "source_id": "chen_2023_foods_xoi",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "참조기 가수분해물에서 동정한 펩타이드 WDDMEKIW·APPERKYSVW",
+   "endpoint": "IC50(잔틴 산화효소 억제)",
+   "values": [
+    {
+     "material": "WDDMEKIW",
+     "value": 3.16,
+     "unit": "mM"
+    },
+    {
+     "material": "APPERKYSVW",
+     "value": 5.86,
+     "unit": "mM"
+    }
+   ],
+   "test_system": "잔틴 산화효소 억제 시험(시험관)",
+   "missing": [
+    "잔틴 산화효소 시험의 공개 비교집단이 8건뿐이라(최소 30건) 고정 비교집단 층을 만들 수 없음"
+   ],
+   "exclusion_reason": "고정 비교집단이 없어 백분위를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": true,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.3390/md18100490:SeP2-SeP5",
+   "source_id": "yu_2020_md_sepia",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "갑오징어(Sepia esculenta) 가수분해물에서 정제·동정한 펩타이드 SeP2(DVEDLEAGLAK)·SeP5(EITSLAPSTM)",
+   "endpoint": "선충 산화 스트레스 생존율(2·4 mM 처리)",
+   "values": [],
+   "test_system": "Caenorhabditis elegans 산화 스트레스 모델(생존율 %)",
+   "missing": [
+    "펩타이드 단위의 수치 종말점(IC50 등)이 없음 — 생존율 %만 보고",
+    "항산화 시험에는 공통 종말점의 고정 비교집단 층이 없음"
+   ],
+   "exclusion_reason": "정량 종말점과 비교집단이 없어 점수를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 534443,
+   "origin_scientific_name": "Octopus sinensis",
+   "record_id": "10.1016/j.fsi.2025.110408:AMPs",
+   "source_id": "zhou_2025_fsi_octopus",
+   "status": "partial_only",
+   "reviewed": false,
+   "material_kind": "유전체에서 고른 합성 항균 펩타이드 7종(GAP1, Big Defensin 등)",
+   "endpoint": "항균 활성 농도 범위",
+   "values": [],
+   "test_system": "세균 4종(대장균, 장염비브리오, 황색포도상구균, 고초균)",
+   "missing": [
+    "초록은 농도 범위(5–10 µM, 3.2–12.9 µM)만 밝히고 단일 MIC 값이 없음",
+    "원문이 유료라 시험 방법과 값을 확인하지 못함"
+   ],
+   "exclusion_reason": "단일 MIC 값과 시험 조건을 원문에서 확인하지 못했습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": false,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  }
+ ]
+}
