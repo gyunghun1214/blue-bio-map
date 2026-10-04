@@ -118,6 +118,17 @@ main{max-width:none;margin:0;padding:0}
 .map-legend-more[open]{max-height:38vh;overflow:auto}
 .map-legend-more>span{display:block;max-width:300px;margin-top:6px;color:var(--muted);font-size:11.5px;line-height:1.5}
 .map-legend-more .map-info{margin-top:6px}
+/* legend fold: open on every load; one button folds both legends to an icon */
+.legend-toggle{position:absolute;top:6px;right:6px;z-index:1;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--ink2);cursor:pointer}
+.legend-toggle:hover{background:rgba(16,46,69,.07)}
+.legend-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.legend-toggle svg{width:16px;height:16px}
+.legend-toggle .ico-open,.legend-collapsed .legend-toggle .ico-fold{display:none}
+.legend-collapsed .legend-toggle .ico-open{display:block}
+.map-ui-bl .map-key>:first-child,.map-ui-bl .value-legend>strong{padding-right:26px}
+.map-ui-bl.legend-collapsed>:not(.legend-toggle){display:none!important}
+.legend-collapsed .legend-toggle{position:static;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--teal)}
+.legend-collapsed .legend-toggle svg{width:20px;height:20px}
 .map-ui-bl .value-legend{width:330px;max-height:calc(100vh - var(--chrome) - 120px);overflow:auto}
 .value-legend strong{margin:0;color:var(--ink);font-size:12.5px}
 .value-grid{width:100%;gap:5px}
