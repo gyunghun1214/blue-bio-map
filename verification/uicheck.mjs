@@ -420,6 +420,8 @@ try{
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
+  const fold=await evaluate("(()=>{const b=document.getElementById('legend-toggle'),box=b.parentElement,key=document.querySelector('.map-key');const vis=e=>e.getBoundingClientRect().height>0;const r={open:vis(key)&&b.getAttribute('aria-expanded')==='true'};b.click();r.folded=!vis(key)&&vis(b)&&b.getAttribute('aria-expanded')==='false'&&b.getBoundingClientRect().width<=44;setMapMode('value');r.valueFolded=!vis(document.getElementById('value-legend'));b.click();r.valueOpen=vis(document.getElementById('value-legend'))&&b.getAttribute('aria-expanded')==='true';setMapMode('occurrence');r.back=vis(key);return r;})()");
+  check('Legend fold: open on load, one button folds both legends to a small icon and reopens them',fold.open&&fold.folded&&fold.valueFolded&&fold.valueOpen&&fold.back,JSON.stringify(fold));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
   const hijMap=await liveMap(494972);
