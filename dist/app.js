@@ -702,14 +702,29 @@ function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
   list.innerHTML=data.species.map(s=>{
     const ready=assessedForMatrix(s);
-    return `<button type="button" class="decision-card" data-aphia="${s.aphiaID}" aria-controls="decision-detail"><strong>${esc(s.label)}</strong><em>${esc(s.name)} · AphiaID ${s.aphiaID}</em><span>${ready?(matrixType(s)?esc(matrixTypeLabel(matrixType(s)))+' · ':'')+pilotLabel('BBVI')+(bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+' · 근거 확인':esc(scoreSummary(s))}</span></button>`;
+    return `<button type="button" class="decision-card" data-aphia="${s.aphiaID}" aria-controls="decision-detail"><strong>${esc(s.label)}</strong><em>${esc(s.name)} · AphiaID ${s.aphiaID}</em><span>${ready?(matrixType(s)?esc(matrixTypeLabel(matrixType(s)))+' · ':'')+pilotLabel('BBVI')+(bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+' · 근거 확인':esc(scoreSummary(s))}</span><small class="decision-more">자세히 보기</small></button>`;
   }).join('');
-  list.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)))));
-  panel.textContent='종을 선택하면 산출 여부, 부족한 입력과 확인 가능한 원문을 볼 수 있습니다.';
+  // The detail opens right under the chosen card; a second click or the 접기 button closes it.
+  list.querySelectorAll('.decision-card').forEach(b=>b.addEventListener('click',()=>b.getAttribute('aria-expanded')==='true'?closeDecision():showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)))));
+  panel.onclick=e=>{if(e.target.closest('.decision-close'))closeDecision();};
+}
+function markDecisionCards(aphia){
+  let card=null;
+  $('decision-list').querySelectorAll('.decision-card').forEach(b=>{
+    const on=Number(b.dataset.aphia)===aphia;if(on)card=b;
+    b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-expanded',String(on));
+    const m=b.querySelector('.decision-more');if(m)m.textContent=on?'접기':'자세히 보기';
+  });
+  return card;
+}
+function closeDecision(){
+  const card=$('decision-list').querySelector('.decision-card[aria-expanded="true"]');
+  markDecisionCards(null);$('decision-detail').hidden=true;
+  if(card){card.focus({preventScroll:true});card.scrollIntoView({block:'nearest'});}
 }
 function showDecision(s){
   if(!s)return;
-  $('decision-list').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.aphia)===s.aphiaID)));
+  const card=markDecisionCards(s.aphiaID);
   const a=s.assessment, info=data.assessmentInfo||{}, reasons=assessmentBlockers(s), study=CASE_NOTES[s.aphiaID];
   let html=`<h3>${esc(s.label)} · 실제 종 근거</h3><p class="fine">${esc(s.name)} · AphiaID ${s.aphiaID} · ${a?(released(info)?'정식 산출':'시범 지표')+esc(validationNote(info)):esc(axisState(s,'MFPI').kind==='withheld'?'산출 보류':axisState(s,'MFPI').label)}</p>`;
   for(const k of ['MFPI','MBPI','MCUI','BBVI']){
@@ -759,8 +774,9 @@ function showDecision(s){
   }
   {const h=IUCN_HISTORICAL[s.aphiaID];if(h)html+=`<h4>IUCN 평가 · ${pilotScore(s,'MCUI')!==null?(h.current?`${h.current.published}년 현행 평가 · ${P_()}MCUI`:(released()?'현행 여부 재확인':'현행 여부 재확인(시범)')):h.current?'2026년 현행 평가 확인 · 원문 검수 전':'역사적 평가'}</h4><p>${esc(iucnHistoricalText(h,s))} ${sourceLink(h.current?.url||h.url,'IUCN 평가 레코드 ↗')}</p>`;}
   if(study)html+=`<h4>별도 원문 조사 · 지표 입력 아님</h4><p>${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`;
-  html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p>';
-  $('decision-detail').innerHTML=html;
+  html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p><button type="button" class="decision-close">접기</button>';
+  const panel=$('decision-detail');
+  panel.innerHTML=html;panel.hidden=false;card?.after(panel);
 }
 
 // Row counts are an inventory of retrieved records. They do not supply edible
@@ -2434,7 +2450,7 @@ async function loadCollection(){
   const request=++requestNumber;
   data=null;selected=null;selectedValueCell=null;comparisonPage=0;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('axis-pairs').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('axis-pairs').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
   setMapLegend(null);
