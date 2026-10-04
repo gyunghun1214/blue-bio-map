@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1439,7 +1439,7 @@
             }
           ]
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2084,7 +2084,7 @@
             }
           ]
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2630,7 +2630,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3212,7 +3212,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3815,7 +3815,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4704,7 +4704,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5728,7 +5728,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6796,7 +6796,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7816,7 +7816,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8921,7 +8921,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10088,7 +10088,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11219,7 +11219,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12291,7 +12291,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13302,7 +13302,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14295,7 +14295,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15400,7 +15400,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16407,7 +16407,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -17402,7 +17402,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18268,85 +18268,38 @@
     },
     {
       "aphia_id": 1061762,
-      "bbvi_label": "단일 논문",
+      "bbvi_label": null,
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [],
-      "bioactivity_trace": [
+      "bioactivity_partial": [
         {
-          "adjusted": 30.331342039455404,
-          "caveat": "기원종은 공개 서열 기록으로 확인했습니다. 이 펩타이드는 꽃게 자신의 MCCC1 유전자 모형 N말단 19잔기(UniProt A0A5B7CYN9)이고, 같은 19잔기는 대게 기록(A0A8J5CHQ3)에 없으며, 평균 질량 2268.71 Da가 논문의 환산값(32 µg/mL = 14.1 µM)을 그대로 재현합니다. 한계 둘: 이 서열은 초안 유전체 유전자 모형의 N말단이고 같은 유전자의 현재 RefSeq 모형(XP_045119878.1)은 다른 N말단을 예측합니다. 또 같은 연구진의 특허 KR20250095776A는 같은 서열을 대게로 적습니다(등록번호 없음). 실험 시료는 채집 개체가 아니라 합성 펩타이드입니다.",
-          "cohort_median_pMIC": 5.029,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "Mueller-Hinton broth (MHB)",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/ijms26178546",
-              "relation": "=",
-              "source_id": "hong_2025_ijms_mts",
-              "target_species": "Escherichia coli",
-              "target_strain": "KCCM 11234",
-              "unit": "uM",
-              "value": 14.1
-            }
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "MIC",
+          "exclusion_reason": "논문과 특허의 기원종이 달라, 저자가 확인하기 전에는 꽃게의 점수 근거로 쓰지 않습니다.",
+          "material_kind": "합성 펩타이드 MCCC1-MTS(미토콘드리아 표적 서열, 순도 90% 이상)",
+          "missing": [
+            "기원종 충돌: 논문(초록·방법·보충 그림 S1)은 꽃게라고 적지만, 같은 연구소의 특허 KR20250095776A는 같은 서열(SEQ ID NO:1)의 원료를 대게로 적음 — 저자 확인 전",
+            "서열은 특허에 인쇄되어 있고 논문에는 나선 바퀴 그림으로만 실림"
           ],
-          "original_paper_dois": [
-            "10.3390/ijms26178546"
-          ],
-          "pMIC": 4.851,
-          "peer_peptides": 7198,
-          "peptide_name": "MCCC1-MTS",
-          "peptide_sequence": "MSMRRGWRFLRGGVGGWCR",
-          "percentile": 40.44,
-          "record_ids": [
-            "10.3390/ijms26178546:MCCC1-MTS:E.coli"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
-          "stratum_kind": "amp",
-          "target_species": "Escherichia coli",
-          "target_strains": [
-            "KCCM 11234"
-          ]
-        },
-        {
-          "adjusted": 29.381443298969074,
-          "caveat": "기원종은 공개 서열 기록으로 확인했습니다. 이 펩타이드는 꽃게 자신의 MCCC1 유전자 모형 N말단 19잔기(UniProt A0A5B7CYN9)이고, 같은 19잔기는 대게 기록(A0A8J5CHQ3)에 없으며, 평균 질량 2268.71 Da가 논문의 환산값(32 µg/mL = 14.1 µM)을 그대로 재현합니다. 한계 둘: 이 서열은 초안 유전체 유전자 모형의 N말단이고 같은 유전자의 현재 RefSeq 모형(XP_045119878.1)은 다른 N말단을 예측합니다. 또 같은 연구진의 특허 KR20250095776A는 같은 서열을 대게로 적습니다(등록번호 없음). 실험 시료는 채집 개체가 아니라 합성 펩타이드입니다.",
-          "cohort_median_pMIC": 5.049,
-          "evidence_factor": 0.75,
-          "measurements": [
-            {
-              "endpoint": "MIC",
-              "medium": "Mueller-Hinton broth (MHB)",
-              "method": "broth_microdilution",
-              "original_paper_doi": "10.3390/ijms26178546",
-              "relation": "=",
-              "source_id": "hong_2025_ijms_mts",
-              "target_species": "Staphylococcus aureus",
-              "target_strain": "KCCM 40881",
-              "unit": "uM",
-              "value": 14.1
-            }
-          ],
-          "original_paper_dois": [
-            "10.3390/ijms26178546"
-          ],
-          "pMIC": 4.851,
-          "peer_peptides": 6208,
-          "peptide_name": "MCCC1-MTS",
-          "peptide_sequence": "MSMRRGWRFLRGGVGGWCR",
-          "percentile": 39.18,
-          "record_ids": [
-            "10.3390/ijms26178546:MCCC1-MTS:S.aureus"
-          ],
-          "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
-          "stratum_kind": "amp",
-          "target_species": "Staphylococcus aureus",
-          "target_strains": [
-            "KCCM 40881"
-          ]
+          "origin_aphia_id": 1061762,
+          "origin_scientific_name": "Portunus trituberculatus",
+          "record_id": "10.3390/ijms26178546:MCCC1-MTS",
+          "relation": "=",
+          "reviewed": true,
+          "sequence": "MSMRRGWRFLRGGVGGWCR",
+          "source_id": "hong_2025_ijms_mts",
+          "status": "partial_only",
+          "target": "대장균·황색포도상구균",
+          "test_system": "Mueller-Hinton 액체배지 미량희석(96웰, 1×10^4 cfu/mL, 37 °C 18시간)",
+          "unit": "uM",
+          "value": 14.1
         }
       ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -18360,11 +18313,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 30.3,
-          "minimum_cohort_10": 30.3,
-          "minimum_cohort_100": 30.3,
-          "no_approved_drug_filter": 30.3,
-          "no_common_metabolite_filter": 30.3
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -18490,7 +18443,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19111,8 +19064,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 3,
+          "ratio": 0.75,
           "required": [
             "origin",
             "structure_id",
@@ -19147,11 +19100,11 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.67
+        "mean_ratio": 0.58
       },
       "korean_name": "꽃게",
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "amp",
+      "mbpi_label": null,
+      "mbpi_stratum": null,
       "mcui_basis": null,
       "mcui_substitute": {
         "basis": "preliminary",
@@ -19304,38 +19257,27 @@
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
-        "BBVI": "산출됨",
-        "MBPI": "산출됨",
+        "BBVI": "산출 보류",
+        "MBPI": "일부 근거 확인",
         "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 46.2,
-        "MBPI": 30.3,
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": 62.0
       },
       "sensitivity": {
-        "food_weights": {
-          "0.25": 38.2,
-          "0.5": 46.2,
-          "0.75": 54.1
-        },
-        "mean_compound_sensitivity": 29.9,
-        "median_compound_sensitivity": 29.9,
-        "range_from_aggregation": [
-          29.4,
-          30.3
-        ]
+        "food_weights": {}
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 30.3,
+        "bioactivity_only_MBPI": null,
         "food_only_MFPI": 62.0
       },
       "source_ids": [
         "bachman_2020_rapid_lc",
         "cmnpd_mbpi",
-        "dbaasp_amp_cohort",
         "europepmc_mbpi",
         "gbif_rapid_lc",
         "hong_2025_ijms_mts",
@@ -19346,8 +19288,8 @@
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": "requires_MFPI_and_MBPI",
+        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
         "MCUI": "not_in_red_list",
         "MFPI": null
       }
@@ -19503,7 +19445,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20530,7 +20472,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21543,7 +21485,7 @@
       "minimum_peptides": 30,
       "origin_rule": "The origin claim is read in the original paper, never from DBAASP, which records neither the tested material nor its synthesis: the sequence must come from the species' own gene or tissue, the tested material must be a chemically synthetic or sequence-confirmed purified single peptide, and the value must be a numeric MIC by broth microdilution. MEC (radial diffusion), inhibition-zone diameters, recombinant proteins and censored values never enter. Since 3.19 (team-lead decision): a peptide expressed in another organism (for example an E. coli fusion protein cut free and purified) is recombinant and stays excluded; 'purified isolate' means purified from the species' own tissue.",
       "separation_rule": "A MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
-      "supplement": "research/verified-indices/evidence-amp-4.1-2026-10-04.json",
+      "supplement": "research/verified-indices/evidence-amp-3.19-2026-10-02.json",
       "value_scale": "pMIC = 6 - log10(MIC in uM); higher is more potent"
     },
     "anticancer_bioactivity": {
@@ -21610,8 +21552,8 @@
       ],
       "single_doi_factor": 0.75
     },
-    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.1-2026-10-04.json",
-    "changes_from": "verified-4.0 (2026-10-04). Team-lead request of 2026-10-04 to find ways to fill the last blanks. One cell pair moves: 꽃게 (Portunus trituberculatus) enters the AMP stratum with MCCC1-MTS (Hong et al. 2025, MIC 14.1 uM against Escherichia coli and Staphylococcus aureus, Mueller-Hinton broth microdilution, synthetic peptide above 90% purity). verified-4.0 held the record back because the group's patent KR20250095776A names a different crab for the same sequence; the origin is now settled on public sequence records (the 19-mer is the N-terminus of the species' own MCCC1 gene model UniProt A0A5B7CYN9 and is absent from the Chionoecetes opilio record A0A8J5CHQ3; its average mass reproduces the paper's own ug/mL to uM conversion), and the draft-gene-model and patent caveats are shown with the value. No cohort, weight, coefficient or threshold changes; no other species moves. Filled cells 100 -> 102. See research/verified-indices/formal-release-4.1-2026-10-04.md.",
+    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.0-2026-10-04.json",
+    "changes_from": "verified-pilot-3.28 (2026-10-03). Team-lead decisions of 2026-10-04: (1) the indicator set is published as 정식 산출 under frozen rules (status 'released'); every validation result stays on screen (MFPI method check passed; MBPI drug-origin post-hoc failed, shown as '검증 미통과'; MCUI is the official assessment category mapped by conservation.category_scores, its OBIS trend element failed its check). (2) Gap filling under three approved extensions, each labelled: MFPI rows converted with other samples' fresh moisture (가시파래: RDA DB 10.4 dried row L0270010001a at the median 93.1% of three papers; 감태: Kawashima et al. 1983 activation analysis at the median 85.5% of Yamada & Kinoshita 2004), with the 3.27 aquaculture records of both species; MCUI from the Fisheries Agency of Japan rarity evaluation 2017 'ランク外' read as LC-equivalent (넙치, 대구); MBPI through the Korean 'Gelidium amansii' -> Gelidium elegans name mapping (우뭇가사리: pheophorbide A, Park, Kim & Han 2022, ChEMBL CHEMBL510103 HIV-1 IC50, with the 2026-10-04 supplement of the same ChEMBL_37 release). No cohort, weight, coefficient or threshold changes. Filled cells 92 -> 100. See research/verified-indices/formal-release-4.0-2026-10-04.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21872,7 +21814,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.1",
+    "method_version": "verified-4.0",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -22292,7 +22234,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-4.1",
+  "method_version": "verified-4.0",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -22767,11 +22709,11 @@
       "accessed": "2026-10-04",
       "doi": "10.3390/ijms26178546",
       "license": "CC BY 4.0",
-      "provider": "International Journal of Molecular Sciences 26(17):8546 (MDPI), open access, full text read in PMC12429151",
-      "terms": "CC BY 4.0; sequence, numeric values and method statements recorded, no text or tables copied",
-      "title": "Marine-Derived N-Terminal Mitochondrial-Targeting Sequences Exhibit Antimicrobial and Anticancer Activities (Hong SM, Koo TW, Cho HS, et al. 2025)",
+      "provider": "International Journal of Molecular Sciences 26(17):8546 (MDPI), full text in PMC12429151",
+      "terms": "Values and method statements recorded; patent KR20250095776A consulted for the sequence",
+      "title": "Marine-derived N-terminal mitochondrial-targeting sequences exhibit antimicrobial and anticancer activities (Hong SM et al. 2025)",
       "url": "https://doi.org/10.3390/ijms26178546",
-      "version": "2025 (PMID 40943465, PMC12429151)"
+      "version": "2025"
     },
     "hwang_2008_codium_wando": {
       "accessed": "2026-10-02",
@@ -24500,7 +24442,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25188,7 +25130,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26157,7 +26099,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -27322,7 +27264,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28350,7 +28292,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29206,7 +29148,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29870,7 +29812,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30511,7 +30453,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.1 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.0 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -31328,7 +31270,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.1",
+        "method_version": "verified-4.0",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

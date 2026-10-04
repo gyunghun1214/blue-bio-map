@@ -25,12 +25,12 @@ const run=async version=>{
 const axes=['MFPI','MBPI','MCUI','BBVI'];
 const plain=x=>JSON.parse(JSON.stringify(x)); // objects built inside vm have another realm's prototypes
 
-// (1) A higher verified report (4.0 continues the pilot numbering): one reload, then 새 버전 있음 on every axis (never 기술 오류).
-let next=await run('verified-4.1');
-assert.deepEqual(plain(next.outdated),[{file:'assessments.json',version:'verified-4.1'}]);
+// (1) A higher verified report (4.x continues the pilot numbering): one reload, then 새 버전 있음 on every axis (never 기술 오류).
+let next=await run('verified-4.2');
+assert.deepEqual(plain(next.outdated),[{file:'assessments.json',version:'verified-4.2'}]);
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,1,'first sight of a newer report reloads once');
-next=await run('verified-4.1');
+next=await run('verified-4.2');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),false);
 assert.equal(reloads,1,'no reload loop when the reload still serves an old app.js');
 for(const s of next.species)for(const k of axes){
@@ -38,15 +38,15 @@ for(const s of next.species)for(const k of axes){
   assert.equal(ctx.axisState(s,k).label,'새 버전 있음');
 }
 // A later version seen in the same tab reloads once more; still at most once per version.
-next=await run('verified-4.2');
+next=await run('verified-4.3');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,2);
 
 // (2) Numeric, not string, comparison; only the known dotted format is "newer".
 const latest=ctx.VERIFIED.at(-1);
-assert.equal(latest,'verified-4.0');
-for(const v of ['verified-4.2','verified-4.1','verified-5','verified-4.0.1','verified-pilot-4.1'])assert.equal(ctx.newerVersion(v,latest),true,v);
-for(const v of ['verified-4.0','verified-pilot-4','verified-pilot-3.28','verified-pilot-3.27','verified-pilot-3.26','verified-pilot-3.25','verified-pilot-3.24','verified-pilot-3.23','verified-pilot-3.22','verified-pilot-3.21','verified-pilot-3.20','verified-pilot-3.19','verified-pilot-3.18','verified-pilot-3.17','verified-pilot-3.16','verified-pilot-3.15','verified-pilot-3.14','verified-pilot-3.13','verified-pilot-3.12','verified-pilot-3.11','verified-pilot-3.10','verified-pilot-3.9','verified-pilot-3.8','verified-pilot-3.7','verified-pilot-3.6','verified-pilot-3.5','verified-pilot-3.4','verified-pilot-3.3','verified-pilot-3.2','verified-pilot-3.1','verified-pilot-3','verified-pilot-2.3','verified-pilot-1','verified-pilot-3-oyster-lqp-research','verified-pilot-3.7a',
+assert.equal(latest,'verified-4.1');
+for(const v of ['verified-4.2','verified-4.1.1','verified-5','verified-4.2.1','verified-pilot-4.2'])assert.equal(ctx.newerVersion(v,latest),true,v);
+for(const v of ['verified-4.1','verified-4.0','verified-pilot-4','verified-pilot-3.28','verified-pilot-3.27','verified-pilot-3.26','verified-pilot-3.25','verified-pilot-3.24','verified-pilot-3.23','verified-pilot-3.22','verified-pilot-3.21','verified-pilot-3.20','verified-pilot-3.19','verified-pilot-3.18','verified-pilot-3.17','verified-pilot-3.16','verified-pilot-3.15','verified-pilot-3.14','verified-pilot-3.13','verified-pilot-3.12','verified-pilot-3.11','verified-pilot-3.10','verified-pilot-3.9','verified-pilot-3.8','verified-pilot-3.7','verified-pilot-3.6','verified-pilot-3.5','verified-pilot-3.4','verified-pilot-3.3','verified-pilot-3.2','verified-pilot-3.1','verified-pilot-3','verified-pilot-2.3','verified-pilot-1','verified-pilot-3-oyster-lqp-research','verified-pilot-3.7a',
   'verified-pilot-','bogus',null,24])assert.equal(ctx.newerVersion(v,latest),false,String(v));
 
 // (3) Unknown or older versions are still data faults, and the current version is unchanged.
@@ -71,7 +71,7 @@ assert.equal(reloads,2);
 
 // (5) Without sessionStorage it never reloads, and still shows 새 버전 있음.
 delete ctx.sessionStorage;store.clear();reloads=0;
-next=await run('verified-4.1');
+next=await run('verified-4.2');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),false);
 assert.equal(reloads,0,'without sessionStorage it never reloads');
 assert.equal(ctx.axisState(next.species[0],'MFPI').kind,'client_outdated');
