@@ -9,7 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_verified_indices import build, independent_sources, load_inputs, render, round1, unexplored_flag  # noqa: E402
+from build_verified_indices import (DEFAULT_CONFIG, build, independent_sources, load_inputs, render, round1,  # noqa: E402
+                                    subnational_backtest, subnational_category, unexplored_flag)
 
 
 def species(report, aphia):
@@ -2710,6 +2711,7 @@ class VerifiedPilot327Tests(unittest.TestCase):
 XO328 = "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
 V328 = ROOT / "config" / "verified-indices-v3.28.json"  # superseded by 4.0 (released set, labelled gap filling)
 V40 = ROOT / "config" / "verified-indices-v4.0.json"    # superseded by 4.1 (꽃게 AMP row)
+V41 = ROOT / "config" / "verified-indices-v4.1.json"    # superseded by 4.2 (sub-national MCUI basis)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -2872,13 +2874,15 @@ class Verified41Tests(unittest.TestCase):
     public sequence records and the caveat travels with the value. Nothing else moves."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V40))
+        self.report, self.old_report = build(*load_inputs(config=V41)), build(*load_inputs(config=V40))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.1", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.1 report is archived as it was
+        archived41 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.1.json"
+        self.assertEqual(render(self.report), archived41.read_text(encoding="utf-8"))
 
     def test_only_the_swimming_crab_moved(self):
         filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
@@ -2920,6 +2924,75 @@ class Verified41Tests(unittest.TestCase):
             self.assertIsNone(self.new[a]["scores"]["MBPI"])
         self.assertFalse(any(r["source_id"] == "hong_2025_ijms_mts"
                              for r in self.new[1061762].get("bioactivity_partial") or []))
+
+
+class Verified42Tests(unittest.TestCase):
+    """4.2 (team-lead decision 2026-10-04, the competition deadline falls before every official route): the conservation axis
+    accepts an official SUB-NATIONAL red list when no national one exists. The rule and the over-statement back-test were
+    pre-registered and committed before the rows were collected; the back-test result rides with every value and changes no
+    score. Only 톳, 청각 and 꽃게 move; DD, regional extinction and a variety-level row give nothing."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V41))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+        self.record = json.loads((ROOT / "research/verified-indices/mcui-subnational-4.2-2026-10-04.json").read_text(encoding="utf-8"))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.2", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_three_species_move_and_nothing_else_changes(self):
+        filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
+        self.assertEqual((filled(self.old), filled(self.new)), (102, 105))
+        self.assertEqual({a for a, s in self.new.items() if s["scores"] != self.old[a]["scores"]}, {494972, 145086, 1061762})
+        for a, s in self.new.items():
+            for k, v in self.old[a]["scores"].items():
+                if v is not None:
+                    self.assertEqual(s["scores"][k], v, f"{a} {k}")
+        self.assertEqual({a: self.new[a]["scores"]["MCUI"] for a in (494972, 145086, 1061762)},
+                         {494972: 60.0, 145086: 35.0, 1061762: 35.0})
+        for a in (494972, 145086, 1061762):
+            self.assertEqual(self.new[a]["mcui_basis"], "sub_national")
+
+    def test_a_sub_national_row_never_overrides_an_official_one(self):
+        # every species that holds a sub-national row and an official category keeps the official basis
+        listed = {p["aphia_id"] for p in self.record["backtest_pairs"]}
+        self.assertTrue(listed)
+        for a in listed:
+            self.assertIn(self.new[a]["mcui_basis"], ("iucn", "national", "range_state"))
+        self.assertEqual({r["aphia_id"] for r in self.record["sub_national"]} & listed, set())
+
+    def test_excluded_rows_give_no_score(self):
+        reasons = {r["aphia_id"]: r["excluded_reason"] for r in self.record["excluded"]}
+        for aphia in (371986, 236157, 274849, 377084):  # 지역 절멸, DD 둘, 변종
+            self.assertIn(aphia, reasons)
+            self.assertIsNone(self.new[aphia]["scores"]["MCUI"])
+        self.assertTrue(all(r["category"] is None for r in self.record["excluded"]))
+
+    def test_median_rule_and_regions_shown(self):
+        hijiki = self.new[494972]["mcui_substitute"]
+        self.assertEqual([r["region"] for r in hijiki["record"]["regions"]], ["Ishikawa", "Okinawa"])
+        self.assertEqual(hijiki["category"], "VU")
+        self.assertEqual(subnational_category([{"category": "NT"}, {"category": "VU"}]), "NT")   # even: lower risk
+        self.assertEqual(subnational_category([{"category": "VU"}, {"category": "CR"}, {"category": "CR"}]), "CR")
+
+    def test_backtest_was_pre_registered_and_its_result_rides_along(self):
+        back = self.new[494972]["mcui_substitute"]["record"]["backtest"]
+        self.assertEqual(back["prereg"], "research/verified-indices/prereg-subnational-mcui-2026-10-04.md")
+        self.assertTrue((ROOT / back["prereg"]).exists())
+        self.assertIn(back["result"], ("passed", "failed", "inconclusive"))
+        # the thresholds in the config are the registered ones and the verdict follows them
+        rule = self.report["method"]["mcui_substitutes"]["sub_national"]["backtest"]
+        self.assertEqual((rule["one_step_delta"], rule["two_step_delta"], rule["minimum_pairs"]), (25, 50, 5))
+        recomputed = subnational_backtest(load_inputs()[0], json.loads(DEFAULT_CONFIG.read_text(encoding="utf-8")))
+        self.assertEqual(recomputed["result"], back["result"])
+        self.assertEqual(recomputed["n"], back["n"])
+        for value in ("과대평가 역검증", "역검증"):
+            if value in back["label"]:
+                break
+        else:
+            self.fail(back["label"])
 
 
 if __name__ == "__main__":

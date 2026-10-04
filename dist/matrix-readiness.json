@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 16,
+  "matrix_points": 19,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -15,13 +15,14 @@
     "include_national_mcui": true,
     "include_single_source_bbvi": true,
     "include_substitute_mcui": [
-      "range_state"
+      "range_state",
+      "sub_national"
     ],
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
     "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
+    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI.",
     "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "types": {
       "high_bbvi_high_mcui": {
@@ -42,7 +43,7 @@
       }
     }
   },
-  "method_version": "verified-4.1",
+  "method_version": "verified-4.2",
   "schema_version": 1,
   "species": [
     {
@@ -417,7 +418,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": null,
@@ -447,27 +448,23 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "톳",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "alternative_production",
+      "mcui_basis": "sub_national",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
         "BBVI": 74.9,
         "MBPI": 86.6,
-        "MCUI": null,
+        "MCUI": 60.0,
         "MFPI": 63.3
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1111/jfpp.12628",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://koreascience.kr/article/JAKO200011921114207.page",
         "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
@@ -479,7 +476,9 @@
         "https://www.iucnredlist.org/search",
         "https://www.jstage.jst.go.jp/article/suisan1932/64/5/64_5_862/_article/-char/en",
         "https://www.marinespecies.org/rest/",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf",
+        "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -847,35 +846,31 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "청각",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "sub_national",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 18.6,
         "MBPI": 0.4,
-        "MCUI": null,
+        "MCUI": 35.0,
         "MFPI": 36.7
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Codium+fragile&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1007/s10811-007-9265-5",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -883,7 +878,8 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=145086",
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -1468,36 +1464,33 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "꽃게",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "sub_national",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 46.2,
         "MBPI": 30.3,
-        "MCUI": null,
+        "MCUI": 35.0,
         "MFPI": 62.0
       },
       "source_urls": [
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
         "https://api.obis.org/v3/",
+        "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
         "https://dbaasp.org",
         "https://doi.org/10.3390/biology14121682",
         "https://doi.org/10.3390/ijms26178546",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.iucnredlist.org/search",

@@ -32,14 +32,16 @@ class MatrixReadinessTests(unittest.TestCase):
         # so every species with BBVI and an admitted MCUI is placed: 2 -> 12 points.
         # verified-4.0 (team-lead decisions 2026-10-04): 우뭇가사리 (MBPI via the G. amansii mapping), 가시파래 (MFPI with other
         # samples' moisture) and 넙치·대구 (Fisheries Agency 'ランク外' as LC-equivalent) join: 12 -> 16 points.
-        self.assertEqual(placed, [241776, 342067, 372119, 506159, 836033, 234476, 231750, 397082, 393716, 836041, 504357, 413600,
-                                  127022, 219984, 275816, 254538])
+        # verified-4.2 (team-lead decision 2026-10-04): 톳·청각·꽃게 join through the sub-national basis, labelled and with the
+        # pre-registered back-test result beside them: 16 -> 19 points.
+        self.assertEqual(placed, [241776, 342067, 372119, 494972, 506159, 836033, 234476, 145086, 231750, 397082, 393716, 836041,
+                                  504357, 413600, 127022, 219984, 275816, 254538, 1061762])
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
                           and r["aphia_id"] not in (145721, 836033, 393716, 494972)])  # 3.28: 톳 replicated (Chen 2016)
-        # 꽃게's MCUI is still missing, so a 25th BBVI does not add a matrix point (4.1)
-        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 1061762)["scores"]["MCUI"])
+        # 4.2: 꽃게 now carries a sub-national MCUI, so its BBVI does become a (labelled) point
+        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"], "sub_national")
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
                          [(145721, 71.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (372119, 45.1), (494972, 74.9), (506159, 35.5),
@@ -106,7 +108,9 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-4.0: 넙치·대구 join through the Fisheries Agency of Japan rarity evaluation ('ランク外' as LC-equivalent)
         self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 5)
         self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 0)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 20)
+        # verified-4.2: 톳·청각·꽃게 join through official sub-national lists (labelled, back-test result shown)
+        self.assertEqual(sum(r["mcui_basis"] == "sub_national" for r in report["species"]), 3)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 23)
         self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
@@ -152,8 +156,9 @@ class MatrixReadinessTests(unittest.TestCase):
                 national = reviewed[row["aphia_id"]]["national_assessment"]
                 self.assertTrue(national["source_id"] and national["category"], row["aphia_id"])
                 continue
-            if row["mcui_basis"] in ("range_state", "preliminary"):
-                # after 3.14: a substitute MCUI cites its own record (another state's list or the Rapid LC run), never the checklist
+            if row["mcui_basis"] in ("range_state", "sub_national", "preliminary"):
+                # after 3.14 (4.2 adds sub_national): a substitute MCUI cites its own record — another state's list, a
+                # sub-national list or the Rapid LC run — never the catalog checklist line
                 sub = reviewed[row["aphia_id"]]["mcui_substitute"]
                 self.assertTrue(sub["record"] and set(sub["source_ids"]) <= set(self.assessments["sources"]), row["aphia_id"])
                 continue
@@ -192,7 +197,8 @@ class MatrixReadinessTests(unittest.TestCase):
         off = copy.deepcopy(self.assessments)
         off["method"]["matrix"]["include_single_source_bbvi"] = False
         rows = build(off, self.catalog, self.expansion)["species"]
-        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [836033, 393716])
+        # 4.2: 톳 keeps its replicated BBVI, so turning the single-paper policy off leaves three points, not two
+        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [494972, 836033, 393716])
         self.assertEqual([r["scores"] for r in rows], [r["scores"] for r in build(self.assessments, self.catalog, self.expansion)["species"]])
 
 

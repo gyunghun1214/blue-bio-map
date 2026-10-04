@@ -147,7 +147,8 @@ const stages={
   // 3.15: MFPI shows 'validated' (cross-table check passed) and 우뭇가사리·살오징어·해삼 gain an MFPI. A Rapid LC check is
   // reference only (team-lead decision 2026-10-02), so a species without an IUCN or national category keeps MCUI 'unavailable'.
   // 4.0: the zero-result IUCN search was repeated on 2026-10-04, so the stage reads '평가 없음 확인' (checked_none), not 미확인
-  494972:['verified','linked','validated','calculated','checked_none'],
+  // 4.2: 톳 gets a sub-national MCUI (Ishikawa/Okinawa VU), so the conservation stage is calculated, not '평가 없음 확인'.
+  494972:['verified','linked','validated','calculated','calculated'],
   // 3.16: Russia's Red Data Book gives 우뭇가사리 a range-state MCUI, so its conservation check reaches '시범 산출'
   // 4.0: pheophorbide A (Korean 'G. amansii' mapped to G. elegans) gives 우뭇가사리 a single-paper ChEMBL MBPI
   372119:['verified','linked','validated','calculated','calculated'],
