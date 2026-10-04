@@ -16,7 +16,7 @@ vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(glob
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-4.0');  // 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-4.1');  // 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);

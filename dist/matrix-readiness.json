@@ -42,7 +42,7 @@
       }
     }
   },
-  "method_version": "verified-4.0",
+  "method_version": "verified-4.1",
   "schema_version": 1,
   "species": [
     {
@@ -1466,19 +1466,14 @@
     {
       "aphia_id": 1061762,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": "not_in_red_list",
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "꽃게",
       "matrix_eligible": false,
       "matrix_type": null,
@@ -1490,8 +1485,8 @@
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 46.2,
+        "MBPI": 30.3,
         "MCUI": null,
         "MFPI": 62.0
       },
@@ -1499,6 +1494,7 @@
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
         "https://api.obis.org/v3/",
+        "https://dbaasp.org",
         "https://doi.org/10.3390/biology14121682",
         "https://doi.org/10.3390/ijms26178546",
         "https://doi.org/10.3897/BDJ.8.e47018",

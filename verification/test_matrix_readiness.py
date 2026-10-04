@@ -38,13 +38,15 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
                           and r["aphia_id"] not in (145721, 836033, 393716, 494972)])  # 3.28: 톳 replicated (Chen 2016)
+        # 꽃게's MCUI is still missing, so a 25th BBVI does not add a matrix point (4.1)
+        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 1061762)["scores"]["MCUI"])
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
                          [(145721, 71.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (372119, 45.1), (494972, 74.9), (506159, 35.5),
                           (836033, 83.9), (377084, 41.6), (371986, 65.0), (234476, 53.8), (494853, 37.6), (236157, 59.7), (145086, 18.6),
                           (231750, 59.5), (397082, 35.2), (393716, 46.1),
                           (836041, 35.0), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (275816, 44.3), (274849, 40.1),
-                          (254538, 49.1)])
+                          (254538, 49.1), (1061762, 46.2)])  # 4.1: 꽃게 (MCCC1-MTS, origin settled on sequence records)
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 95.3), (241776, 8.7), (250680, 13.5), (342067, 56.9), (372119, 13.5), (494972, 86.6), (506159, 10.1),
@@ -53,7 +55,7 @@ class MatrixReadinessTests(unittest.TestCase):
                           (397082, 15.6), (393716, 36.4), (836041, 13.8),
                           (504357, 75.0), (413600, 56.9),
                           (127022, 34.9), (219984, 22.6), (275816, 29.2), (274849, 31.7),
-                          (254538, 59.9)])
+                          (254538, 59.9), (1061762, 30.3)])  # 4.1: 꽃게 AMP row
         # verified-pilot-3.18: the antimicrobial-peptide stratum gives 피조개 (AI-hemocidin 2) and 조피볼락 (TS40) a
         # single-paper MBPI from their MIC percentile, so neither opens a BBVI. 3.19 adds Poor Broth to the cohort's broth
         # list (team-lead decision), which moves them by one tenth (22.1 -> 22.0, 31.6 -> 31.7).

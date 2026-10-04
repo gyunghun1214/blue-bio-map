@@ -261,13 +261,13 @@ try{
   // 3.27: 살오징어 YALPHA joins ACE (14 -> 15) and 시카메굴 flazin (anti-HIV) joins the virus chip (5 -> 6)
   // 2026-10-03: 내성균 reads the adopted Cg-BigDef1 MRSA rows (1); 항산화 and 항당뇨 take display-only literature rows from
   // trait-evidence.json (team-lead decision 2026-10-03, 2 each); 항진균 and 진통 stay grey (no row passed the rule).
-  check('Use chips: counts come from adopted evidence (ACE 15, virus 6, antibacterial 3 from the 3.18/3.19 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip',
-    chipN.ace===15&&chipN.virus===7&&chipN.microbe===3&&chipN.resistant===1&&chipN.fungus===3&&chipN.pain===1&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
+  check('Use chips: counts come from adopted evidence (ACE 15, virus 6, antibacterial 4 from the 3.18/3.19/4.1 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===15&&chipN.virus===7&&chipN.microbe===4&&chipN.resistant===1&&chipN.fungus===3&&chipN.pain===1&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
     chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
   const chipFilter=await evaluate("(()=>{setUses(['microbe']);const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUses([]);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
-  check('Use chip filter: the antibacterial chip leaves 피조개, 조피볼락 and 참굴 (3.19), counts the hidden species and clears back to all 30',
-    JSON.stringify(chipFilter.ids.sort())==='[274849,504357,836033]'&&/근거 미확인 27종/.test(chipFilter.note)&&
+  check('Use chip filter: the antibacterial chip leaves 꽃게 (4.1), 피조개, 조피볼락 and 참굴, counts the hidden species and clears back to all 30',
+    JSON.stringify(chipFilter.ids.sort((a,b)=>a-b))==='[274849,504357,836033,1061762]'&&/근거 미확인 26종/.test(chipFilter.note)&&
     /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30&&
     // several strains of one target show their median (the scored value); a single strain shows its own value
     chipFilter.oyster.includes('MIC 2.5 uM (균주 7개 중앙값)')&&chipFilter.ark.includes('MIC 22.77 uM')&&!chipFilter.ark.includes('중앙값'),JSON.stringify(chipFilter));
@@ -303,7 +303,7 @@ try{
   check('OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB',!!og.title&&!!og.desc&&og.type==='website'&&og.url==='https://blue-bio-map.blue-bio-map.workers.dev/'&&og.locale==='ko_KR'&&og.card==='summary_large_image'&&og.img==='https://blue-bio-map.blue-bio-map.workers.dev/og.png'&&og.ok&&og.dims==='1200x630'&&og.size<=300*1024,JSON.stringify(og));
   const slider=await evaluate("({n:data.species.filter(s=>pilotScore(s,'BBVI')!==null).length,lab:data.species.filter(s=>pilotScore(s,'BBVI')!==null&&s.assessment?.bbvi_label).length,rep:data.species.filter(s=>pilotScore(s,'BBVI')!==null&&!s.assessment?.bbvi_label).map(s=>s.aphiaID).sort((a,b)=>a-b),disabled:document.getElementById('bbvi-weight').disabled,status:document.getElementById('bbvi-weight-status').textContent})");
   // 3.27: 3 replicated (참굴, 미역, 큰가리비) + 19 labelled single-paper BBVI; 3.28: 톳 replicated, 4 + 18
-  check('BBVI 25 species (4 replicated: 참굴, 미역, 톳, 큰가리비 + 21 labelled single-paper; 4.0 adds 우뭇가사리·감태·가시파래): weight slider enabled',slider.n===25&&slider.lab===21&&JSON.stringify(slider.rep)==='[145721,393716,494972,836033]'&&!slider.disabled&&slider.status==='BBVI 산출 종 25종',JSON.stringify(slider));
+  check('BBVI 26 species (4 replicated: 참굴, 미역, 톳, 큰가리비 + 22 labelled single-paper; 4.0 adds 우뭇가사리·감태·가시파래, 4.1 꽃게): weight slider enabled',slider.n===26&&slider.lab===22&&JSON.stringify(slider.rep)==='[145721,393716,494972,836033]'&&!slider.disabled&&slider.status==='BBVI 산출 종 26종',JSON.stringify(slider));
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
   // verified-pilot-3.2: the oyster is placed (national MCUI, marked), so its card leads with the published matrix type
   check('Oyster status card leads with its published matrix type, no single-paper label',!!typeLabel(836033)&&oyCard===typeLabel(836033)+' · 정식 산출 · 검증 미통과 · 근거 확인'&&!oyCard.includes('참고값')&&!oyCard.includes('단일 논문'),oyCard);
