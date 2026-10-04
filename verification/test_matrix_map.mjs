@@ -5,7 +5,7 @@ import vm from 'node:vm';
 // verified-pilot-3.2 (diagram stages 4-5): BBVI x MCUI types, the map's cell colour rule and the information-sufficiency layers.
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'),report=JSON.parse(read('assessments.json')),readiness=JSON.parse(read('matrix-readiness.json'));
-const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v4.0.json',import.meta.url),'utf8'));  // 3.27 adds the single-paper BBVI keys; 4.0 is the released set
+const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v4.2.json',import.meta.url),'utf8'));  // 3.27 adds the single-paper BBVI keys; 4.0 is the released set; 4.2 admits the sub-national basis
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>structuredClone(report)})};
 vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
@@ -16,7 +16,7 @@ vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(glob
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-4.1');  // 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-4.2');  // 4.2 adds the sub-national MCUI basis (labelled, back-test shown), 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);

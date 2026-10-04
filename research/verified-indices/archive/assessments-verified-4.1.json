@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1439,7 +1439,7 @@
             }
           ]
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2084,7 +2084,7 @@
             }
           ]
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2630,7 +2630,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3212,7 +3212,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3815,7 +3815,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4034,47 +4034,76 @@
       "korean_name": "청각",
       "mbpi_label": "단일 논문",
       "mbpi_stratum": "chembl",
-      "mcui_basis": "sub_national",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "sub_national",
-        "category": "NT",
-        "label": "지방 목록 참고값(이바라키현) · 과대평가 역검증 미통과(6종 비교)",
-        "pilot_mapping": "NT → 35 (이바라키현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+        "basis": "preliminary",
+        "category": "LC",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "backtest": {
-            "criterion": "Pre-registered 2026-10-04 before collection: does a sub-national category overstate risk against the official one? For every species holding both, delta = sub-national score - official score.",
-            "label": "과대평가 역검증 미통과(6종 비교)",
-            "n": 6,
-            "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
-            "result": "failed"
-          },
-          "chosen_category": "NT",
-          "regions": [
-            {
-              "aphia_id": 145086,
-              "category": "NT",
-              "category_as_published": "準絶滅危惧",
-              "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
-              "country": "Japan",
-              "country_ko": "일본",
-              "edition": "2020",
-              "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
-              "name_as_published": "ミル Codium fragile (Suringar) Hariot",
-              "region": "Ibaraki",
-              "region_ko": "이바라키현",
-              "reviewed": true,
-              "scientific_name": "Codium fragile",
-              "source_id": "ibaraki_rdb2020_algae",
-              "species_level": true,
-              "verified_in_original": true
-            }
+          "aoo_cells": 217,
+          "aoo_km2": 21700,
+          "countries_gbif": [
+            "CN",
+            "HK",
+            "JP",
+            "KR",
+            "PH",
+            "RU"
           ],
-          "rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown."
+          "eoo_km2": 6342310,
+          "gbif": {
+            "count": 1370,
+            "name": "Codium fragile (Suringar) Har.",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 5272096,
+              "year": "1990,2026"
+            },
+            "read": 1370,
+            "status": "ACCEPTED",
+            "taxon_key": 5272096,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 1403,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 145086
+            }
+          },
+          "records": 601,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "ibaraki_rdb2020_algae"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 35.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -4126,7 +4155,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 35.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -4150,20 +4179,22 @@
           "recent": 341
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Codium fragile",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 18.6,
         "MBPI": 0.4,
-        "MCUI": 35.0,
+        "MCUI": null,
         "MFPI": 36.7
       },
       "sensitivity": {
@@ -4184,10 +4215,11 @@
         "food_only_MFPI": 36.7
       },
       "source_ids": [
+        "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "gbif_rapid_lc",
         "hwang_2008_codium_wando",
-        "ibaraki_rdb2020_algae",
         "iucn_redlist_search",
         "obis_trend",
         "pubchem_inchikey_mbpi",
@@ -4199,7 +4231,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -4672,7 +4704,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5696,7 +5728,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6764,7 +6796,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7784,7 +7816,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8889,7 +8921,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10056,7 +10088,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11187,7 +11219,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12259,7 +12291,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13270,7 +13302,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14263,7 +14295,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15368,7 +15400,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16375,7 +16407,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -17370,7 +17402,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18458,7 +18490,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19120,48 +19152,76 @@
       "korean_name": "꽃게",
       "mbpi_label": "단일 논문",
       "mbpi_stratum": "amp",
-      "mcui_basis": "sub_national",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "sub_national",
-        "category": "NT",
-        "label": "지방 목록 참고값(후쿠오카현) · 과대평가 역검증 미통과(6종 비교)",
-        "pilot_mapping": "NT → 35 (후쿠오카현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+        "basis": "preliminary",
+        "category": "LC",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "backtest": {
-            "criterion": "Pre-registered 2026-10-04 before collection: does a sub-national category overstate risk against the official one? For every species holding both, delta = sub-national score - official score.",
-            "label": "과대평가 역검증 미통과(6종 비교)",
-            "n": 6,
-            "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
-            "result": "failed"
-          },
-          "chosen_category": "NT",
-          "regions": [
-            {
-              "aphia_id": 1061762,
-              "category": "NT",
-              "category_as_published": "NT",
-              "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
-              "country": "Japan",
-              "country_ko": "일본",
-              "edition": "2024",
-              "list": "福岡県レッドリスト2024（動物）甲殻類等",
-              "name_as_published": "ガザミ Portunus trituberculatus",
-              "note": "2001·2011・2014 열은 '-', 2024년 신규 등재",
-              "region": "Fukuoka",
-              "region_ko": "후쿠오카현",
-              "reviewed": true,
-              "scientific_name": "Portunus trituberculatus",
-              "source_id": "fukuoka_redlist2024",
-              "species_level": true,
-              "verified_in_original": true
-            }
+          "aoo_cells": 240,
+          "aoo_km2": 24000,
+          "countries_gbif": [
+            "CN",
+            "JP",
+            "KR",
+            "PH",
+            "TW",
+            "VN"
           ],
-          "rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown."
+          "eoo_km2": 5942957,
+          "gbif": {
+            "count": 644,
+            "name": "Portunus trituberculatus (Miers, 1876)",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 5716110,
+              "year": "1990,2026"
+            },
+            "read": 644,
+            "status": "ACCEPTED",
+            "taxon_key": 5716110,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 598,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 1061762
+            }
+          },
+          "records": 372,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "fukuoka_redlist2024"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 35.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -19213,7 +19273,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 35.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -19237,20 +19297,22 @@
           "recent": 78
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 46.2,
         "MBPI": 30.3,
-        "MCUI": 35.0,
+        "MCUI": null,
         "MFPI": 62.0
       },
       "sensitivity": {
@@ -19271,10 +19333,11 @@
         "food_only_MFPI": 62.0
       },
       "source_ids": [
+        "bachman_2020_rapid_lc",
         "cmnpd_mbpi",
         "dbaasp_amp_cohort",
         "europepmc_mbpi",
-        "fukuoka_redlist2024",
+        "gbif_rapid_lc",
         "hong_2025_ijms_mts",
         "iucn_redlist_search",
         "jiang_2025_crab",
@@ -19285,7 +19348,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -19440,7 +19503,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20467,7 +20530,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21548,7 +21611,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.1-2026-10-04.json",
-    "changes_from": "verified-4.1 (2026-10-04). Team-lead decision of 2026-10-04: the competition deadline (2026-10-30) falls before every official route that could fill the ten empty MCUI cells (IUCN 2026-2 on 2026-11-19; the Japanese 5th marine red list from FY2026), so the conservation axis accepts one more basis: an official SUB-NATIONAL red list (prefecture, federal subject, province) of a state in the species' native range. It ranks below every national basis and never overrides one; DD and regional extinction give no score; several regions are reduced by the median (the lower-risk of the two middle categories when the count is even). Every value carries a '지방 목록 참고값' label, its own matrix marker and the result of a pre-registered over-statement back-test (research/verified-indices/prereg-subnational-mcui-2026-10-04.md, committed before the rows were collected). The extension was decided after seeing which cells it would fill; that is stated in the record and on the method tab. No cohort, weight, coefficient or threshold of any other axis changes.",
+    "changes_from": "verified-4.0 (2026-10-04). Team-lead request of 2026-10-04 to find ways to fill the last blanks. One cell pair moves: 꽃게 (Portunus trituberculatus) enters the AMP stratum with MCCC1-MTS (Hong et al. 2025, MIC 14.1 uM against Escherichia coli and Staphylococcus aureus, Mueller-Hinton broth microdilution, synthetic peptide above 90% purity). verified-4.0 held the record back because the group's patent KR20250095776A names a different crab for the same sequence; the origin is now settled on public sequence records (the 19-mer is the N-terminus of the species' own MCCC1 gene model UniProt A0A5B7CYN9 and is absent from the Chionoecetes opilio record A0A8J5CHQ3; its average mass reproduces the paper's own ug/mL to uM conversion), and the draft-gene-model and patent caveats are shown with the value. No cohort, weight, coefficient or threshold changes; no other species moves. Filled cells 100 -> 102. See research/verified-indices/formal-release-4.1-2026-10-04.md.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -21689,8 +21752,7 @@
         "iucn": "{category} → {value} (팀 규칙 v4.0, IUCN 점수 아님)",
         "national": "{category} → {value} (한국 국가 평가, 팀 규칙 v4.0)",
         "range_state": "{category} → {value} ({country} 국가 적색목록, 팀 규칙 v4.0)",
-        "range_state_rank_out": "ランク外 → LC 상당 → {value} ({country} 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
-        "sub_national": "{category} → {value} ({regions} 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)"
+        "range_state_rank_out": "ランク外 → LC 상당 → {value} ({country} 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)"
       },
       "no_assessment": {
         "labels": {
@@ -21756,14 +21818,13 @@
       "include_national_mcui": true,
       "include_single_source_bbvi": true,
       "include_substitute_mcui": [
-        "range_state",
-        "sub_national"
+        "range_state"
       ],
       "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
       "mcui_threshold": 50,
       "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
       "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-      "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI.",
+      "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02).",
       "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
       "types": {
         "high_bbvi_high_mcui": {
@@ -21790,58 +21851,20 @@
       ],
       "labels": {
         "preliminary": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
-        "range_state": "서식국 국가 평가 기반 MCUI",
-        "sub_national": "지방 목록 참고값({regions}) · {backtest}"
+        "range_state": "서식국 국가 평가 기반 MCUI"
       },
       "method_source_id": "bachman_2020_rapid_lc",
       "order": [
         "range_state",
-        "sub_national",
         "preliminary"
       ],
       "preliminary_category": "LC",
       "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so a met check is never an official assessment. When a test fails, nothing is shown as met. Since the team-lead decision of 2026-10-02 (the back-test failed) a met check is not an MCUI either: the record (EOO, AOO, records, back-test result) is shown beside the withheld MCUI as reference information, and the species keeps its no-assessment reason.",
       "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state. Since 4.0 (team-lead decision 2026-10-04): a species that a Japanese government agency evaluated by name and published as 'ランク外' (no category assigned; the same table gives DD separately) counts as LC-equivalent; the row says so (rank_out) and the species shows the list's own definition of 'ランク外'.",
-      "ranking_rule": "Each basis that gives an MCUI is its own stratum (4.2 adds the sub-national one, drawn with its own marker): shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
+      "ranking_rule": "Each basis that gives an MCUI is its own stratum: shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI. A reference-only Rapid LC gives no MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
       "snapshot": "research/verified-indices/mcui-substitutes-4.0-2026-10-04.json",
       "snapshot_source_id": "gbif_rapid_lc",
-      "sub_national": {
-        "backtest": {
-          "criterion": "Pre-registered 2026-10-04 before collection: does a sub-national category overstate risk against the official one? For every species holding both, delta = sub-national score - official score.",
-          "labels": {
-            "failed": "과대평가 역검증 미통과({n}종 비교)",
-            "inconclusive": "역검증 판정 불가(표본 {n}종)",
-            "passed": "과대평가 역검증 통과({n}종 비교)"
-          },
-          "minimum_pairs": 5,
-          "one_step_delta": 25,
-          "one_step_share_max": {
-            "denominator": 3,
-            "numerator": 1
-          },
-          "two_step_delta": 50,
-          "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. This differs from the 3.15 Rapid LC, which was our own estimate and is still not scored after failing its back-test."
-        },
-        "category_crosswalk": {
-          "情報不足": "DD",
-          "準絶滅危惧": "NT",
-          "絶滅危惧ⅠA類": "CR",
-          "絶滅危惧ⅠB類": "EN",
-          "絶滅危惧Ⅱ類": "VU"
-        },
-        "excluded": [
-          "DD (정보 부족) gives no score, as elsewhere",
-          "Regional extinction (絶滅 / RE) gives no score: a regional extirpation is not a global IUCN category",
-          "Local grades without a published correspondence to IUCN categories (for example 兵庫県 'Bランク')",
-          "Absence from a list whose roster of evaluated species is not published (that is not 'ランク外')"
-        ],
-        "file": "research/verified-indices/mcui-subnational-4.2-2026-10-04.json",
-        "limitation": "A sub-national assessment describes that region, not the country or the world, and many of these species are at the edge of their range there, where a species common in the core can be rare.",
-        "median_rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown.",
-        "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
-        "rule": "An official red list published by a sub-national government (Japanese prefecture, Russian federal subject, Chinese province, Korean province) of a state in the species' native range, current edition, the category assigned to the species itself (not a variety or another species), in IUCN categories or the Japanese Ministry of the Environment scheme, read in the original document. Applies only when IUCN, the Korean national list and every range-state national list are silent."
-      },
       "thresholds": {
         "aoo_cell_km": 10,
         "aoo_km2": 3000,
@@ -21849,7 +21872,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.2",
+    "method_version": "verified-4.1",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -22269,7 +22292,7 @@
     },
     "unexplored_threshold": 0.5
   },
-  "method_version": "verified-4.2",
+  "method_version": "verified-4.1",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -22419,15 +22442,6 @@
       "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
       "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
       "version": "download retrieved 2026-09-26; sha256 in peptide-cohort-ahtpdb-ace-hhl.json"
-    },
-    "aichi_redlist2025": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "愛知県 環境局自然環境課",
-      "terms": "조사 담당이 공식 PDF·CSV를 판독. 이 세션의 재확인은 서버가 막음(403·리다이렉트).",
-      "title": "レッドリストあいち2025（第五次レッドリスト）〈貝類〉",
-      "url": "https://www.pref.aichi.jp/soshiki/shizen/redlist-aichi-2025.html",
-      "version": "2025-03 (현행)"
     },
     "apostichopus_2024_paper": {
       "accessed": "2026-09-25",
@@ -22691,15 +22705,6 @@
       "url": "https://www.frdc.com.au/sites/default/files/products/2008-905-DLD.pdf",
       "version": "Final report, July 2012, ISBN 978-0-9805789-9-7"
     },
-    "fukuoka_redlist2024": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "福岡県 環境部自然環境課",
-      "terms": "현이 공개한 목록 엑셀을 직접 읽음(책자 PDF는 텍스트층 없는 스캔). 열: 2001 / 2011・2014 / 2024 / 環境省2020 / IUCN2023.",
-      "title": "福岡県レッドリスト2024（動物）",
-      "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
-      "version": "2024 (현행, 책자 2025-03 발행)"
-    },
     "gbif_iucn_checklist": {
       "accessed": "2026-09-25",
       "license": "CC BY 4.0",
@@ -22805,24 +22810,6 @@
       "title": "Morphometric assessment of egg quality for second generation of cultured small yellow croaker, Larimichthys polyactis broodstock",
       "url": "https://doi.org/10.12717/DR.2025.29.1.13",
       "version": "Short communication, published online 2025-03-31"
-    },
-    "ibaraki_rdb2020_algae": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "茨城県 県民生活環境部環境政策課",
-      "terms": "종 설명을 PDF 텍스트에서 직접 읽음.",
-      "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
-      "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf",
-      "version": "2020 (이 분류군 최초이자 현행판)"
-    },
-    "ishikawa_rdb2020": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "石川県 環境部自然環境課",
-      "terms": "종 설명 페이지의 石川県カテゴリー 칸을 직접 읽음(環境省カテゴリー 칸은 비어 있음).",
-      "title": "いしかわレッドデータブック2020〈動物編〉 6. 浅海域の生物",
-      "url": "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf",
-      "version": "2020 (현행)"
     },
     "iucn_engraulis_japonicus_2018": {
       "accessed": "2026-09-26",
@@ -23026,15 +23013,6 @@
       "title": "시도·시군구별 양식방법별 어종별 양식현황(입식, 생산, 사육, 먹이를 준 양) DT_1EZ0008",
       "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
       "version": "2010 ~ 2026 2/4, table updated 2026-08-31"
-    },
-    "kumamoto_redlist2024": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "熊本県 環境生活部自然保護課",
-      "terms": "현이 공개한 목록 엑셀을 직접 읽음.",
-      "title": "レッドリストくまもと2024 〈12. 海洋動物〉",
-      "url": "https://www.pref.kumamoto.jp/uploaded/attachment/271103.xlsx",
-      "version": "2024-10 (현행)"
     },
     "kwon_cho_1986_anadara": {
       "accessed": "2026-09-30",
@@ -23247,24 +23225,6 @@
       "url": "https://doi.org/10.1002/elsc.201700172",
       "version": "2018"
     },
-    "mie_redlist2024": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "三重県 環境生活部自然環境課",
-      "terms": "현이 공개한 목록 엑셀을 직접 읽음. 범주 정의표에서 VU=絶滅危惧Ⅱ類 확인.",
-      "title": "三重県レッドリスト2024 〈海産貝類〉",
-      "url": "https://www.pref.mie.lg.jp/common/content/001184884.xlsx",
-      "version": "2024-12-27 공표 (현행)"
-    },
-    "miyazaki_redlist2025": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "宮崎県 環境森林部自然環境課",
-      "terms": "PDF 텍스트에서 직접 읽음. DD-2는 현 고유 세분.",
-      "title": "宮崎県版レッドリスト（2025年度改訂版）〈貝類〉",
-      "url": "https://www.pref.miyazaki.lg.jp/documents/101538/101538_20260331101659-1.pdf",
-      "version": "2026-03-31 공표 (현행)"
-    },
     "miyoshi_1991_zein": {
       "accessed": "2026-09-27",
       "alternate_doi": "10.1080/00021369.1991.10870760",
@@ -23312,15 +23272,6 @@
       "title": "Myticusin-beta antimicrobial peptide isolated from Mytilus coruscus",
       "url": "https://pubmed.ncbi.nlm.nih.gov/32061872/",
       "version": "2020 article / PubMed primary abstract"
-    },
-    "nagasaki_redlist2022": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "長崎県 環境部自然環境課",
-      "terms": "PDF 텍스트에서 직접 읽음. 범례 CR=絶滅危惧ⅠA類.",
-      "title": "長崎県レッドリスト2022 〈11 貝類〉",
-      "url": "https://www.pref.nagasaki.jp/uploads/2022/03/1648644059.pdf",
-      "version": "2022-03 (현행)"
     },
     "ngo_2016_cod_gelatin": {
       "accessed": "2026-10-01",
@@ -23373,24 +23324,6 @@
       "url": "https://doi.org/10.3390/ani14111693",
       "version": "2024 (published 2024-06-05)"
     },
-    "okayama_redlist2025": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "岡山県 環境文化部自然環境課",
-      "terms": "현이 공개한 목록 엑셀을 직접 읽음.",
-      "title": "岡山県版レッドリスト2025 〈軟体動物門〉",
-      "url": "https://www.pref.okayama.jp/uploaded/life/965573_9283602_misc.xlsx",
-      "version": "2025-03 (현행)"
-    },
-    "okinawa_rdb3_plants": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "沖縄県 環境部自然保護課",
-      "terms": "종 설명을 PDF 텍스트에서 직접 읽음.",
-      "title": "レッドデータおきなわ 第3版 菌類編・植物編〈藻類〉",
-      "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf",
-      "version": "제3판 2018 (현행)"
-    },
     "pang_2008_sargassum_horneri_culture": {
       "accessed": "2026-10-02",
       "license": "Publisher copyright (Springer); read through a university library subscription",
@@ -23410,15 +23343,6 @@
       "title": "Dieckol, a SARS-CoV 3CL(pro) inhibitor, isolated from the edible brown algae Ecklonia cava",
       "url": "https://doi.org/10.1016/j.bmc.2013.04.026",
       "version": "2013; ChEMBL document CHEMBL2390950"
-    },
-    "primorsky_723pp_2022": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "Приморский край (연해주) 주정부",
-      "terms": "결정 전문을 직접 읽음. 부록(범주 변경) 33번에서 Gelidium elegans CR → VU. 범주 체계는 IUCN 1994 문자코드.",
-      "title": "Красная книга Приморского края 식물·균류편 — 현행 개정 постановление № 723-пп",
-      "url": "https://prim-pravo.ru/postanovlenie/2022/10/24/n-723-pp/",
-      "version": "2022-10-24 결정(2023-01-16 발효), 기준 목록은 2002년 주지사령 № 272"
     },
     "pubchem_ecklonia_structures": {
       "accessed": "2026-09-27",
@@ -23504,15 +23428,6 @@
       "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
       "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf",
       "version": "Order No. 320 of 23.05.2023 (in force; the preceding list was Order No. 289 of 2005, row 635); PDF p.38 of 48, ConsultantPlus print 01.03.2024 footer 'Страница 37 из 47'; file sha256 a606bb3c0cf2b98ac2ce04ddb03a3f0cc2f338e82309afd740c0a4dfba9152a8"
-    },
-    "saga_redlist2003_molluscs": {
-      "accessed": "2026-10-04",
-      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-      "provider": "佐賀県 県民環境部有明海再生・環境課",
-      "terms": "조사 담당이 PDF를 300dpi 이미지로 판독(텍스트층 없음). 이 세션의 재확인은 하지 못함.",
-      "title": "佐賀県レッドリスト2003 〈貝類・甲殻類・その他〉",
-      "url": "https://www.pref.saga.lg.jp/kiji00314125/index.html",
-      "version": "2003 작성·2004-03 발행 (패류는 이후 개정 없어 현행)"
     },
     "saito_1994_sake": {
       "accessed": "2026-10-01",
@@ -24585,7 +24500,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25273,7 +25188,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26242,7 +26157,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -27407,7 +27322,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28435,7 +28350,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29291,7 +29206,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29535,67 +29450,73 @@
       "korean_name": "톳",
       "mbpi_label": null,
       "mbpi_stratum": "peptide",
-      "mcui_basis": "sub_national",
+      "mcui_basis": null,
       "mcui_substitute": {
-        "basis": "sub_national",
-        "category": "VU",
-        "label": "지방 목록 참고값(이시카와현, 오키나와현) · 과대평가 역검증 미통과(6종 비교)",
-        "pilot_mapping": "VU → 60 (이시카와현, 오키나와현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+        "basis": "preliminary",
+        "category": "LC",
+        "label": "예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님",
         "record": {
-          "backtest": {
-            "criterion": "Pre-registered 2026-10-04 before collection: does a sub-national category overstate risk against the official one? For every species holding both, delta = sub-national score - official score.",
-            "label": "과대평가 역검증 미통과(6종 비교)",
-            "n": 6,
-            "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
-            "result": "failed"
-          },
-          "chosen_category": "VU",
-          "regions": [
-            {
-              "aphia_id": 494972,
-              "category": "VU",
-              "category_as_published": "絶滅危惧Ⅱ類",
-              "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
-              "country": "Japan",
-              "country_ko": "일본",
-              "edition": "2020",
-              "list": "いしかわレッドデータブック2020〈動物編〉浅海域の生物",
-              "name_as_published": "ヒジキ Sargassum fusiforme (Harvey) Setchell",
-              "note": "종 설명 페이지의 石川県カテゴリー 칸",
-              "region": "Ishikawa",
-              "region_ko": "이시카와현",
-              "reviewed": true,
-              "scientific_name": "Sargassum fusiforme",
-              "source_id": "ishikawa_rdb2020",
-              "species_level": true,
-              "verified_in_original": true
-            },
-            {
-              "aphia_id": 494972,
-              "category": "VU",
-              "category_as_published": "絶滅危惧Ⅱ類（VU）",
-              "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
-              "country": "Japan",
-              "country_ko": "일본",
-              "edition": "2018",
-              "list": "レッドデータおきなわ 第3版〈藻類〉",
-              "name_as_published": "ヒジキ Sargassum fusiforme",
-              "region": "Okinawa",
-              "region_ko": "오키나와현",
-              "reviewed": true,
-              "scientific_name": "Sargassum fusiforme",
-              "source_id": "okinawa_rdb3_plants",
-              "species_level": true,
-              "verified_in_original": true
-            }
+          "aoo_cells": 297,
+          "aoo_km2": 29700,
+          "countries_gbif": [
+            "CN",
+            "JP",
+            "KR"
           ],
-          "rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown."
+          "eoo_km2": 2011614,
+          "gbif": {
+            "count": 1553,
+            "name": "Sargassum fusiforme (Harvey) Setchell, 1931",
+            "query": {
+              "decimalLatitude": "0,60",
+              "decimalLongitude": "105,165",
+              "hasCoordinate": "true",
+              "hasGeospatialIssue": "false",
+              "occurrenceStatus": "PRESENT",
+              "taxonKey": 3196917,
+              "year": "1990,2026"
+            },
+            "read": 1553,
+            "status": "ACCEPTED",
+            "taxon_key": 3196917,
+            "type": "EXACT"
+          },
+          "method_source_id": "bachman_2020_rapid_lc",
+          "native_box": {
+            "lat": [
+              0,
+              60
+            ],
+            "lon": [
+              105,
+              165
+            ]
+          },
+          "obis": {
+            "count": 1985,
+            "query": {
+              "geometry": "POLYGON((105 0,165 0,165 60,105 60,105 0))",
+              "size": 5000,
+              "startdate": "1990-01-01",
+              "taxonid": 494972
+            }
+          },
+          "records": 1044,
+          "thresholds": {
+            "aoo_cell_km": 10,
+            "aoo_km2": 3000,
+            "eoo_km2": 30000,
+            "records": 75
+          },
+          "trend_class": "survey_gap"
         },
+        "result": "likely_least_concern",
         "source_ids": [
-          "ishikawa_rdb2020",
-          "okinawa_rdb3_plants"
+          "gbif_rapid_lc",
+          "bachman_2020_rapid_lc"
         ],
-        "value": 60.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -29647,7 +29568,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 60.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -29671,20 +29592,22 @@
           "recent": 352
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 74.9,
         "MBPI": 86.6,
-        "MCUI": 60.0,
+        "MCUI": null,
         "MFPI": 63.3
       },
       "sensitivity": {
@@ -29706,15 +29629,15 @@
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
+        "bachman_2020_rapid_lc",
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "chen_2016_jfpp",
-        "ishikawa_rdb2020",
+        "gbif_rapid_lc",
         "iucn_redlist_search",
         "lee_2024_sargassum_nutrition",
         "li_2022_saringosterol_acetate",
         "obis_trend",
-        "okinawa_rdb3_plants",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "roh_2000_hizikia_wando",
@@ -29727,7 +29650,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -29947,7 +29870,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30588,7 +30511,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.2 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.1 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -31405,7 +31328,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.2",
+        "method_version": "verified-4.1",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

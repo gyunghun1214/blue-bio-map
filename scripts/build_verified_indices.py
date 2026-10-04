@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.1.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.2.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1025,6 +1025,47 @@ def _rate_ratio(n1: int, n2: int, e1: int, e2: int, rule: dict) -> tuple[float, 
     return ratio, ratio / spread, ratio * spread
 
 
+CATEGORY_RISK = ["LC", "NT", "VU", "EN", "CR"]  # 4.2: ordering used by the sub-national median rule
+
+
+def subnational_category(rows: list[dict]) -> str:
+    """Median category of a species' sub-national rows; with an even count the lower-risk of the two middle ones.
+    Pre-registered 2026-10-04 (research/verified-indices/prereg-subnational-mcui-2026-10-04.md 1.4)."""
+    cats = sorted((r["category"] for r in rows), key=CATEGORY_RISK.index)
+    return cats[(len(cats) - 1) // 2]
+
+
+def subnational_backtest(evidence: dict, config: dict) -> dict:
+    """4.2 pre-registered check: does a sub-national category overstate risk against the official one? For every species that
+    has both, delta = sub-national score - official score. Pass when no pair reaches two category steps (>= 50) and at most a
+    third of the pairs reach one step (>= 25); fewer than the minimum pairs is inconclusive. The thresholds and wording were
+    registered before the rows were collected; the result is shown with every value and never changes a score."""
+    rule = config["mcui_substitutes"]["sub_national"]["backtest"]
+    scores = config["conservation"]["category_scores"]
+    pairs = []
+    for row in evidence["mcui_substitutes"].get("backtest_pairs", []):
+        require(row.get("reviewed") is True and row.get("official_category") in scores and row.get("official_basis")
+                and row.get("official_source_id") in evidence["sources"] and row.get("sub_national"),
+                f"{row.get('aphia_id') or row.get('scientific_name')}: back-test pair incomplete")
+        sub = float(scores[subnational_category(row["sub_national"])])
+        official = float(scores[row["official_category"]])
+        pairs.append({**row, "sub_national_category": subnational_category(row["sub_national"]),
+                      "sub_national_value": sub, "official_value": official, "delta": round(sub - official, 1)})
+    one, two = rule["one_step_delta"], rule["two_step_delta"]
+    over_one = [p for p in pairs if p["delta"] >= one]
+    over_two = [p for p in pairs if p["delta"] >= two]
+    share = rule["one_step_share_max"]
+    if len(pairs) < rule["minimum_pairs"]:
+        result = "inconclusive"
+    elif not over_two and len(over_one) * share["denominator"] <= len(pairs) * share["numerator"]:
+        result = "passed"
+    else:
+        result = "failed"
+    return {"result": result, "n": len(pairs), "pairs": pairs, "over_one_step": len(over_one), "over_two_steps": len(over_two),
+            "criterion": rule["criterion"], "label": rule["labels"][result].format(n=len(pairs)),
+            "prereg": config["mcui_substitutes"]["sub_national"]["prereg"]}
+
+
 def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None) -> dict | None:
     """After 3.14 (team-lead decision 2026-10-01): when neither IUCN nor the Korean national list gives a category, the
     national red list of another range state, else a preliminary Rapid Least Concern check of GBIF and OBIS occurrences
@@ -1041,6 +1082,25 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
                                               country=row.get("country_ko") or row["country"]) if row.get("rank_out") else mapping_text(config, "range_state",
                                               f"{row['category']} -> {scores[row['category']]} ({row['country']} national red list, team pilot rule)",
                                               category=row["category"], value=scores[row["category"]], country=row.get("country_ko") or row["country"])}
+    sub_rows = [r for r in evidence["mcui_substitutes"].get("sub_national", []) if r["aphia_id"] == aphia]
+    if sub_rows:  # 4.2 (team-lead decision 2026-10-04): official sub-national red lists, below every national basis
+        for r in sub_rows:
+            require(r.get("reviewed") is True and r.get("verified_in_original") is True and r.get("species_level") is True
+                    and r.get("source_id") in evidence["sources"] and r.get("region") and r.get("country")
+                    and r.get("list") and r.get("edition") and r.get("name_as_published")
+                    and r.get("category_as_published") and r.get("category") in scores,
+                    f"{aphia}: sub-national assessment incomplete")
+        category = subnational_category(sub_rows)
+        regions = ", ".join(r.get("region_ko") or r["region"] for r in sub_rows)
+        back = evidence["mcui_subnational_backtest"]
+        return {"basis": "sub_national", "label": rule["labels"]["sub_national"].format(regions=regions, backtest=back["label"]),
+                "category": category, "value": float(scores[category]),
+                "record": {"regions": sub_rows, "chosen_category": category, "rule": rule["sub_national"]["median_rule"],
+                           "backtest": {k: back[k] for k in ("result", "n", "label", "criterion", "prereg")}},
+                "source_ids": sorted({r["source_id"] for r in sub_rows}),
+                "pilot_mapping": mapping_text(config, "sub_national",
+                                              f"{category} -> {scores[category]} ({regions} sub-national red list, team rule)",
+                                              category=category, value=scores[category], regions=regions)}
     lc = evidence["mcui_rapid_lc"]["species"].get(str(aphia))
     if lc is None:
         return None
@@ -1641,6 +1701,20 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "mcui_substitutes": extra, "mcui_rapid_lc": lc,
                     "sources": {**evidence["sources"], **extra["sources"], **lc["sources"]},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"], lc["snapshot_date"])}
+        sub = subs.get("sub_national")
+        if sub:  # 4.2: official sub-national red lists collected for all 30 species, plus the back-test pairs
+            rows = read(ROOT / sub["file"])
+            require(rows.get("snapshot_date", "") >= evidence["snapshot_date"], "sub-national record is older than evidence")
+            require(not set(rows["sources"]) & set(evidence["sources"]), "sub-national record redefines a source")
+            require(rows.get("prereg") == sub["prereg"], "sub-national record names another pre-registration")
+            require({r["aphia_id"] for r in rows["sub_national"]} <= {r["aphia_id"] for r in rows["searched"]},
+                    "a sub-national row for a species that was not searched")
+            evidence = {**evidence,
+                        "mcui_substitutes": {**evidence["mcui_substitutes"], "sub_national": rows["sub_national"],
+                                             "sub_national_searched": rows["searched"], "backtest_pairs": rows["backtest_pairs"]},
+                        "sources": {**evidence["sources"], **rows["sources"]},
+                        "inputs_as_of": max(evidence["inputs_as_of"], rows["snapshot_date"])}
+            evidence["mcui_subnational_backtest"] = subnational_backtest(evidence, cfg)
     trend = cfg["conservation"].get("trend")
     if trend:  # verified-pilot-3.4: OBIS per-cell counts (scripts/collect_mcui_trend.py)
         snap = read(ROOT / trend["snapshot"])

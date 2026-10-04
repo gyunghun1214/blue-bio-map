@@ -361,3 +361,8 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .method-card li{margin:8px 0}.method-card li b{color:var(--ink);margin-right:4px}
 /* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭 */
 .matrix-layout+.matrix-unplaced,#axis-pairs{margin:16px 0 0}
+
+/* 4.2: 지방 목록 참고값 points — a dashed purple marker, apart from the amber national square; a hollow
+   single-paper point keeps its white fill so the two signals stay readable together */
+.matrix-point.pilot.subnational{border-radius:5px;border-style:dashed;border-color:#6b3fa0}
+.matrix-point.pilot.subnational:not(.single){background:#6b3fa0}
