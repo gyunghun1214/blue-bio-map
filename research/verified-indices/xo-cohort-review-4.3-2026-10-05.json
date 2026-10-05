@@ -522,7 +522,7 @@
    "source_species": "Stichopus japonicus",
    "readout": "not stated in accessible text (abstract only; J Food Sci full text closed, Unpaywall status CLOSED). Enzyme named as xanthine oxidase (XOD); source and uric-acid detection mode (A290-295 vs HPLC) not visible.",
    "material": "synthetic — abstract states the two peptides were \"screened, synthesized, and experimentally validated\"; sequence is a natural S. japonicus protein fragment selected by virtual screening, so not a designed non-natural sequence",
-   "designed": true,
+   "designed": false,
    "access": "abstract",
    "quote": "GGPGDR and WGNEEF exhibited significant XOD inhibitory activity, with IC50 values of 1.09 ± 0.04 mg/mL and 2.52 ± 0.06 mg/mL, respectively",
    "found_by": "first sweep (2026-10-05)",

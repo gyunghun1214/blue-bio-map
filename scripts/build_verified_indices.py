@@ -777,6 +777,9 @@ def xo_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                              "peer_peptides": len(peers), "cohort_median_pIC50": book["median_pIC50"],
                              "pIC50": round(value, 3), "percentile": round(rank, 2),
                              "evidence_factor": factor, "adjusted": rank * factor, "caveat": settings["item_caveat"],
+                             # the cohort is not a public database, so its members ship with the item and the browser re-ranks them
+                             "cohort_members": [{"sequence": m["sequence"], "ic50_uM": m["ic50_uM"],
+                                                 "dois": sorted({r["doi"] for r in m["rows"]})} for m in members],
                              "measurements": [{"endpoint": r["endpoint"], "relation": r["relation"], "value": r["value"],
                                                "unit": r["unit"], "value_as_published": r.get("value_as_published"),
                                                "target": r["target"], "enzyme_source": r.get("enzyme_source"),
@@ -1149,7 +1152,8 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
                 "category": category, "value": float(scores[category]),
                 "record": {"regions": sub_rows, "chosen_category": category, "rule": rule["sub_national"]["median_rule"],
                            "backtest": {k: back[k] for k in ("result", "n", "label", "criterion", "prereg")}},
-                "source_ids": sorted({r["source_id"] for r in sub_rows}),
+                # 4.3: the source that checked the list is still current is cited with it
+                "source_ids": sorted({r["source_id"] for r in sub_rows} | {r["currency_source_id"] for r in sub_rows if r.get("currency_source_id")}),
                 "pilot_mapping": mapping_text(config, "sub_national",
                                               f"{category} -> {scores[category]} ({regions} sub-national red list, team rule)",
                                               category=category, value=scores[category], regions=regions)}
@@ -1169,7 +1173,14 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
                 "result": "decline_signal" if decline else "thresholds_not_met"}
     category = rule["preliminary_category"]
     if rule.get("preliminary_scored"):  # 4.3 (team-lead decision 2026-10-05): the last basis, scored with its failed back-test label
-        return {**out, "basis": "preliminary", "category": category, "value": float(scores[category]), "use": "scored",
+        # official lists that name the species without a scored category (regional extinction, DD, variety) travel with the value
+        named = [{k: r.get(k) for k in ("region", "region_ko", "country_ko", "list", "edition", "name_as_published",
+                                        "category_as_published", "category", "species_level", "excluded_reason", "source_id", "url")}
+                 for r in evidence["mcui_substitutes"].get("sub_national_excluded", []) if r["aphia_id"] == aphia]
+        require(all(r["category"] is None for r in named), f"{aphia}: a scored sub-national category was excluded")
+        ids = sorted({r["source_id"] for r in named if r["source_id"] in evidence["sources"]})
+        return {**out, "record": {**record, "official_unscored": named}, "source_ids": out["source_ids"] + ids,
+                "basis": "preliminary", "category": category, "value": float(scores[category]), "use": "scored",
                 "result": "likely_least_concern", "backtest": rule["preliminary_scored"]["backtest"],
                 "pilot_mapping": mapping_text(config, "preliminary", "", category=category, value=scores[category])}
     # team-lead decision 2026-10-02: the back-test failed, so a met check is reference information only, never an MCUI
@@ -1788,7 +1799,8 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
                     "a sub-national row for a species that was not searched")
             evidence = {**evidence,
                         "mcui_substitutes": {**evidence["mcui_substitutes"], "sub_national": rows["sub_national"],
-                                             "sub_national_searched": rows["searched"], "backtest_pairs": rows["backtest_pairs"]},
+                                             "sub_national_searched": rows["searched"], "backtest_pairs": rows["backtest_pairs"],
+                                             "sub_national_excluded": rows.get("excluded", [])},
                         "sources": {**evidence["sources"], **rows["sources"]},
                         "inputs_as_of": max(evidence["inputs_as_of"], rows["snapshot_date"])}
             evidence["mcui_subnational_backtest"] = subnational_backtest(evidence, cfg)

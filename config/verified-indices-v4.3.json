@@ -278,7 +278,7 @@
     "no_clear_decline": "보고율 감소 없음",
     "undetermined": "판단 불가"
    },
-   "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI for a species without an IUCN or national category, and none lowers one."
+   "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI by itself, and none lowers one. 4.3: a species with no IUCN, national or sub-national category takes the scored Rapid LC basis (mcui_substitutes.preliminary_scored), not a trend class."
   },
   "no_assessment": {
    "labels": {
@@ -389,7 +389,7 @@
      "해삼",
      "전복(종 수준)"
     ],
-    "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
+    "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다.",
     "record": "research/verified-indices/posthoc-validation-2026-10-02.json"
    },
    "MCUI_trend": {
@@ -645,7 +645,7 @@
    "license_url": "https://www.marinespecies.org/about.php",
    "terms": "Text open access under CC BY; cite WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170. Re-distribution of the entire database is not permitted; only genus and family of the 30 species are stored."
   },
-  "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). A Rapid LC gives no MCUI (reference only), so the IUCN steps apply as for any species without an assessment."
+  "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). Until 4.2 a Rapid LC gave no MCUI (reference only). From 4.3 a met Rapid LC is the scored last basis (preliminary_scored); its steps are still read as for a species without an official assessment, so the official-assessment steps stay open."
  },
  "matrix": {
   "bbvi_threshold": 50,
@@ -751,7 +751,7 @@
      "failed": "과대평가 역검증 미통과({n}종 비교)",
      "inconclusive": "역검증 판정 불가(표본 {n}종)"
     },
-    "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. This differs from the 3.15 Rapid LC, which was our own estimate and is still not scored after failing its back-test."
+    "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. The 3.15 Rapid LC, our own estimate, failed its back-test and was reference only until 4.2; from 4.3 (team-lead decision 2026-10-05) it is scored as the last basis with that failed back-test as its label."
    },
    "original_reading_4_3": "4.3 (team-lead decision 2026-10-05, prereg-fill-all-4.3 1.2): the full text of a regional act read in a legal-database copy (signatory, date, number and category legend included), with its currency checked against the official publication portal, counts as read in the original."
   },
@@ -841,9 +841,9 @@
    "purified_isolate"
   ],
   "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent",
-  "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 (xanthine substrate, uric-acid readout by absorbance or HPLC) is one stated number; uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
+  "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 is one stated number (criterion 2, xanthine substrate and uric-acid readout, was observed for 16 of 46 members: 11 full texts and 5 abstracts naming HPLC; the other 30 were read at abstract level, where the assay is named as XO inhibition but its substrate and readout are not stated, and were taken as the standard assay); uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
   "origin_rule": "As for the other peptide strata: the sequence comes from the species' own material, the tested material is a synthetic or sequence-confirmed purified single peptide, and the IC50 is a number in the text of the original paper.",
-  "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.",
+  "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
   "label": "잔틴 산화효소(XO) 억제 펩타이드 · 문헌 비교집단",
   "separation_rule": "An XO IC50 percentile is never ranked against an ACE IC50, a MIC or a cell IC50; the species MBPI is the highest adjusted item over all strata."
  },
@@ -851,7 +851,7 @@
   "value": 0,
   "label": "효능 근거 미확인(하한값)",
   "bbvi_label": "MBPI 하한값 포함",
-  "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+  "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
   "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
   "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used."
  }

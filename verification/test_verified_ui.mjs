@@ -195,7 +195,7 @@ assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis
 assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);  // 3.15: MFPI labels read the cross-table result
 assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI is the Primorsky value, 멍게's the scored Rapid LC check; no reference-only line is left on the page
-assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · 과대평가 역검증 미통과\(6종 비교\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 미통과 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/예비 평가 참고|산출 보류/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0

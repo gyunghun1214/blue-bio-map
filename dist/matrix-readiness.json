@@ -146,6 +146,7 @@
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
+        "https://publication.pravo.gov.ru/document/2501202210260002",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -645,7 +646,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -691,7 +693,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
         "https://www.marinespecies.org/rest/",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -826,7 +829,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -1340,6 +1344,7 @@
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
         "https://api.obis.org/v3/",
+        "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
         "https://dbaasp.org",
         "https://doi.org/10.3390/md20060353",
         "https://doi.org/10.3897/BDJ.8.e47018",
@@ -1363,10 +1368,16 @@
       },
       "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [],
+      "bioactivity_missing_steps": [
+        "origin",
+        "structure_id",
+        "quantitative_endpoint",
+        "comparable_cohort"
+      ],
       "korean_name": "방어",
       "matrix_eligible": true,
       "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "iucn",
       "priority_survey": false,
       "priority_survey_reasons": [],
@@ -1488,10 +1499,16 @@
       },
       "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [],
+      "bioactivity_missing_steps": [
+        "origin",
+        "structure_id",
+        "quantitative_endpoint",
+        "comparable_cohort"
+      ],
       "korean_name": "참문어(동아시아 종)",
       "matrix_eligible": true,
       "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "national",
       "priority_survey": false,
       "priority_survey_reasons": [],
@@ -1531,10 +1548,16 @@
       },
       "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [],
+      "bioactivity_missing_steps": [
+        "origin",
+        "structure_id",
+        "quantitative_endpoint",
+        "comparable_cohort"
+      ],
       "korean_name": "갑오징어",
       "matrix_eligible": true,
       "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "national",
       "priority_survey": false,
       "priority_survey_reasons": [],

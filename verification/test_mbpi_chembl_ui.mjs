@@ -74,4 +74,11 @@ for(const a of rows.filter(a=>a.chembl_links?.rejected_links?.length)){
   assert.ok(!a.chembl_links.rejected_links.some(r=>html.includes(`(${r.class})`)),`${a.korean_name} class shown in Korean`);
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
+// 4.3 XO literature cohort: its members ship with the item and the browser re-ranks them (review 2026-10-05)
+const xoSp=rows.find(a=>kind(a,'xo')), xi=xoSp.bioactivity_trace.findIndex(x=>x.stratum_kind==='xo');
+const xoBroken=change=>{const a=structuredClone(xoSp);change(a.bioactivity_trace[xi]);return ctx.valid(a,original);};
+assert.ok(xoBroken(()=>{}),'unchanged XO copy passes');
+assert.equal(xoBroken(x=>{x.cohort_members.find(m=>6-Math.log10(m.ic50_uM)<x.pIC50).ic50_uM=0.001;}),false,'a weaker member made stronger breaks the re-ranked percentile');
+assert.equal(xoBroken(x=>{x.cohort_members.pop();}),false,'member count must equal the cohort size');
+assert.equal(xoBroken(x=>{delete x.cohort_members;}),false,'the XO cohort must ship with the item');
 console.log(`ok ChEMBL stratum UI (${withChembl.length} species)`);

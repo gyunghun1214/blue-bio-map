@@ -82,7 +82,9 @@ def build(assessments, catalog, expansion):
         rows.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"],
                      "korean_name": s["korean_name"], "scope": "operating_8",
                      "scores": scores, "axis_reasons": s["withheld_reasons"],
-                     "bioactivity_missing_steps": [] if scores["MBPI"] is not None else _bio_blockers(partial),
+                     # 4.3: a floor MBPI (0, no qualifying item) keeps every open step of its evidence chain
+                     "bioactivity_missing_steps": [] if scores["MBPI"] is not None and not s.get("mbpi_floor") else _bio_blockers(partial),
+                     **({"mbpi_label": s["mbpi_label"]} if s.get("mbpi_floor") else {}),
                      "bioactivity_leads": [{"record_id": p["record_id"], "source_url": assessments["sources"][p["source_id"]]["url"],
                                             "chain": p.get("chain", {}), "exclusion_reason": p.get("exclusion_reason")}
                                            for p in partial],
@@ -124,7 +126,8 @@ def build(assessments, catalog, expansion):
         rows.append({"aphia_id": s["aphiaID"], "scientific_name": s["name"],
                      "korean_name": s["label"], "scope": "expansion_22",
                      "scores": scores, "axis_reasons": reasons,
-                     "bioactivity_missing_steps": [] if scores["MBPI"] is not None else list(STEPS),
+                     "bioactivity_missing_steps": [] if scores["MBPI"] is not None and not (reviewed and reviewed.get("mbpi_floor")) else list(STEPS),
+                     **({"mbpi_label": reviewed["mbpi_label"]} if reviewed and reviewed.get("mbpi_floor") else {}),
                      "bioactivity_leads": [], "source_urls": sorted(set(urls)),
                      "mcui_basis": reviewed and reviewed.get("mcui_basis"),
                      **({"bbvi_label": reviewed and reviewed.get("bbvi_label")} if labelled else {}),

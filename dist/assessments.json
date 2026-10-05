@@ -520,6 +520,22 @@
               "taxonid": 377084
             }
           },
+          "official_unscored": [
+            {
+              "category": null,
+              "category_as_published": "絶滅危惧Ⅱ類",
+              "country_ko": "일본",
+              "edition": "2020",
+              "excluded_reason": "변종(var. religiosa)에 붙은 범주이고 종 단위가 아니다 (사전 등록 1.1.3)",
+              "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+              "name_as_published": "ホソメコンブ Saccharina japonica var. religiosa",
+              "region": "Ibaraki",
+              "region_ko": "이바라키현",
+              "source_id": "ibaraki_rdb2020_algae",
+              "species_level": false,
+              "url": null
+            }
+          ],
           "records": 2082,
           "thresholds": {
             "aoo_cell_km": 10,
@@ -532,7 +548,8 @@
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
-          "bachman_2020_rapid_lc"
+          "bachman_2020_rapid_lc",
+          "ibaraki_rdb2020_algae"
         ],
         "use": "scored",
         "value": 10.0
@@ -650,6 +667,7 @@
         "chembl_mbpi",
         "gbif_rapid_lc",
         "hwang_2018_saccharina_haenam",
+        "ibaraki_rdb2020_algae",
         "iucn_redlist_search",
         "mabik_national_species_list",
         "obis_trend",
@@ -1708,6 +1726,22 @@
               "taxonid": 371986
             }
           },
+          "official_unscored": [
+            {
+              "category": null,
+              "category_as_published": "絶滅",
+              "country_ko": "일본",
+              "edition": "2020",
+              "excluded_reason": "지역 절멸(絶滅)은 전 지구 IUCN 범주가 아니어서 점수표에 대응이 없다 (사전 등록 1.3)",
+              "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+              "name_as_published": "カジメ Ecklonia cava Kjellman",
+              "region": "Ibaraki",
+              "region_ko": "이바라키현",
+              "source_id": "ibaraki_rdb2020_algae",
+              "species_level": true,
+              "url": null
+            }
+          ],
           "records": 1358,
           "thresholds": {
             "aoo_cell_km": 10,
@@ -1720,7 +1754,8 @@
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
-          "bachman_2020_rapid_lc"
+          "bachman_2020_rapid_lc",
+          "ibaraki_rdb2020_algae"
         ],
         "use": "scored",
         "value": 10.0
@@ -1838,6 +1873,7 @@
         "chembl_mbpi",
         "gbif_rapid_lc",
         "hwang_2010_ecklonia_cava_culture",
+        "ibaraki_rdb2020_algae",
         "iucn_redlist_search",
         "kawashima_1983_seaweed_inaa",
         "obis_trend",
@@ -2920,6 +2956,7 @@
               "taxonid": 494853
             }
           },
+          "official_unscored": [],
           "records": 1381,
           "thresholds": {
             "aoo_cell_km": 10,
@@ -3511,6 +3548,22 @@
               "taxonid": 236157
             }
           },
+          "official_unscored": [
+            {
+              "category": null,
+              "category_as_published": "情報不足（DD）",
+              "country_ko": "일본",
+              "edition": "2018",
+              "excluded_reason": "DD(정보 부족)는 점수 없음 (사전 등록 1.3)",
+              "list": "レッドデータおきなわ 第3版〈藻類〉",
+              "name_as_published": "オゴノリ Gracilaria vermiculophylla (Ohmi) Papenfuss",
+              "region": "Okinawa",
+              "region_ko": "오키나와현",
+              "source_id": "okinawa_rdb3_plants",
+              "species_level": true,
+              "url": null
+            }
+          ],
           "records": 480,
           "thresholds": {
             "aoo_cell_km": 10,
@@ -3523,7 +3576,8 @@
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
-          "bachman_2020_rapid_lc"
+          "bachman_2020_rapid_lc",
+          "okinawa_rdb3_plants"
         ],
         "use": "scored",
         "value": 10.0
@@ -3644,6 +3698,7 @@
         "iucn_redlist_search",
         "mabik_national_species_list",
         "obis_trend",
+        "okinawa_rdb3_plants",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
         "wikidata_p703_lotus",
@@ -13134,8 +13189,332 @@
       "bioactivity_trace": [
         {
           "adjusted": 37.5,
-          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.",
+          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
           "cohort_median_pIC50": 2.235,
+          "cohort_members": [
+            {
+              "dois": [
+                "10.1016/j.foodchem.2021.129068"
+              ],
+              "ic50_uM": 13400,
+              "sequence": "ACECD"
+            },
+            {
+              "dois": [
+                "10.1039/c7fo01174a"
+              ],
+              "ic50_uM": 26746.8,
+              "sequence": "ADIYTE"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.2c07881"
+              ],
+              "ic50_uM": 8850,
+              "sequence": "AEAQMWR"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.6c07558"
+              ],
+              "ic50_uM": 536.1,
+              "sequence": "AFYLAGGVPR"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 65962,
+              "sequence": "AGDDAPR"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 48599,
+              "sequence": "AGF"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 34490,
+              "sequence": "AL"
+            },
+            {
+              "dois": [
+                "10.1016/j.bioorg.2022.106097"
+              ],
+              "ic50_uM": 7230,
+              "sequence": "ALPM"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 40450,
+              "sequence": "AM"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 107635,
+              "sequence": "DF"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jcim.5c00126"
+              ],
+              "ic50_uM": 37360,
+              "sequence": "ECFK"
+            },
+            {
+              "dois": [
+                "10.1002/jsfa.10745"
+              ],
+              "ic50_uM": 173,
+              "sequence": "EEAK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.149587"
+              ],
+              "ic50_uM": 680,
+              "sequence": "EFDGF"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.149587"
+              ],
+              "ic50_uM": 790,
+              "sequence": "FDPLIQ"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jcim.5c00126"
+              ],
+              "ic50_uM": 71570,
+              "sequence": "FECK"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c01770"
+              ],
+              "ic50_uM": 905.8,
+              "sequence": "FFAFGR"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c01770"
+              ],
+              "ic50_uM": 617.1,
+              "sequence": "FGHPEW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2018.08.057"
+              ],
+              "ic50_uM": 25700,
+              "sequence": "FH"
+            },
+            {
+              "dois": [
+                "10.3390/nu17111831"
+              ],
+              "ic50_uM": 3810,
+              "sequence": "FPAW"
+            },
+            {
+              "dois": [
+                "10.1111/1750-3841.71102"
+              ],
+              "ic50_uM": 1954.9,
+              "sequence": "GGPGDR"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 10200,
+              "sequence": "GL"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.3c01131"
+              ],
+              "ic50_uM": 8775.8,
+              "sequence": "GNQQVHLQSQDM"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 3935,
+              "sequence": "IRW"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c05340"
+              ],
+              "ic50_uM": 28060,
+              "sequence": "LCAFNK"
+            },
+            {
+              "dois": [
+                "10.1002/fsn3.70171"
+              ],
+              "ic50_uM": 15500,
+              "sequence": "LDQW"
+            },
+            {
+              "dois": [
+                "10.1039/d6fo01257d"
+              ],
+              "ic50_uM": 9700,
+              "sequence": "LGDF"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c05340"
+              ],
+              "ic50_uM": 20320,
+              "sequence": "LIFCEK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2022.111959"
+              ],
+              "ic50_uM": 3020,
+              "sequence": "LLW"
+            },
+            {
+              "dois": [
+                "10.3390/foods15061093"
+              ],
+              "ic50_uM": 3829,
+              "sequence": "LMFP"
+            },
+            {
+              "dois": [
+                "10.1016/j.bioorg.2022.106097"
+              ],
+              "ic50_uM": 5010,
+              "sequence": "LWM"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 6390,
+              "sequence": "NGPAHW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2022.111959"
+              ],
+              "ic50_uM": 3460,
+              "sequence": "PEW"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 23820,
+              "sequence": "PM"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 4850,
+              "sequence": "PPNSDIGWRV"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.6c07558"
+              ],
+              "ic50_uM": 467.2,
+              "sequence": "QGDIVAIPSGAAHW"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 38392,
+              "sequence": "QPSF"
+            },
+            {
+              "dois": [
+                "10.12301/spxb202400368"
+              ],
+              "ic50_uM": 2500,
+              "sequence": "TVVW"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 1804,
+              "sequence": "VKAGFAWTANQQLS"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 5310,
+              "sequence": "VWWW"
+            },
+            {
+              "dois": [
+                "10.12301/spxb202400368"
+              ],
+              "ic50_uM": 4300,
+              "sequence": "VYW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.148589"
+              ],
+              "ic50_uM": 2770,
+              "sequence": "WENWTK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.148589"
+              ],
+              "ic50_uM": 1730,
+              "sequence": "WEWTW"
+            },
+            {
+              "dois": [
+                "10.1111/1750-3841.71102"
+              ],
+              "ic50_uM": 3227.5,
+              "sequence": "WGNEEF"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 3950,
+              "sequence": "WPDNGFPGPQ"
+            },
+            {
+              "dois": [
+                "10.1039/c7fo01174a"
+              ],
+              "ic50_uM": 27702.4,
+              "sequence": "WPPKN"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2023.136837"
+              ],
+              "ic50_uM": 9780,
+              "sequence": "YNITGW"
+            }
+          ],
           "evidence_factor": 0.75,
           "measurements": [
             {
@@ -13168,8 +13547,332 @@
         },
         {
           "adjusted": 53.80434782608695,
-          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.",
+          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
           "cohort_median_pIC50": 2.235,
+          "cohort_members": [
+            {
+              "dois": [
+                "10.1016/j.foodchem.2021.129068"
+              ],
+              "ic50_uM": 13400,
+              "sequence": "ACECD"
+            },
+            {
+              "dois": [
+                "10.1039/c7fo01174a"
+              ],
+              "ic50_uM": 26746.8,
+              "sequence": "ADIYTE"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.2c07881"
+              ],
+              "ic50_uM": 8850,
+              "sequence": "AEAQMWR"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.6c07558"
+              ],
+              "ic50_uM": 536.1,
+              "sequence": "AFYLAGGVPR"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 65962,
+              "sequence": "AGDDAPR"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 48599,
+              "sequence": "AGF"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 34490,
+              "sequence": "AL"
+            },
+            {
+              "dois": [
+                "10.1016/j.bioorg.2022.106097"
+              ],
+              "ic50_uM": 7230,
+              "sequence": "ALPM"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 40450,
+              "sequence": "AM"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 107635,
+              "sequence": "DF"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jcim.5c00126"
+              ],
+              "ic50_uM": 37360,
+              "sequence": "ECFK"
+            },
+            {
+              "dois": [
+                "10.1002/jsfa.10745"
+              ],
+              "ic50_uM": 173,
+              "sequence": "EEAK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.149587"
+              ],
+              "ic50_uM": 680,
+              "sequence": "EFDGF"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.149587"
+              ],
+              "ic50_uM": 790,
+              "sequence": "FDPLIQ"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jcim.5c00126"
+              ],
+              "ic50_uM": 71570,
+              "sequence": "FECK"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c01770"
+              ],
+              "ic50_uM": 905.8,
+              "sequence": "FFAFGR"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c01770"
+              ],
+              "ic50_uM": 617.1,
+              "sequence": "FGHPEW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2018.08.057"
+              ],
+              "ic50_uM": 25700,
+              "sequence": "FH"
+            },
+            {
+              "dois": [
+                "10.3390/nu17111831"
+              ],
+              "ic50_uM": 3810,
+              "sequence": "FPAW"
+            },
+            {
+              "dois": [
+                "10.1111/1750-3841.71102"
+              ],
+              "ic50_uM": 1954.9,
+              "sequence": "GGPGDR"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 10200,
+              "sequence": "GL"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.3c01131"
+              ],
+              "ic50_uM": 8775.8,
+              "sequence": "GNQQVHLQSQDM"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 3935,
+              "sequence": "IRW"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c05340"
+              ],
+              "ic50_uM": 28060,
+              "sequence": "LCAFNK"
+            },
+            {
+              "dois": [
+                "10.1002/fsn3.70171"
+              ],
+              "ic50_uM": 15500,
+              "sequence": "LDQW"
+            },
+            {
+              "dois": [
+                "10.1039/d6fo01257d"
+              ],
+              "ic50_uM": 9700,
+              "sequence": "LGDF"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.5c05340"
+              ],
+              "ic50_uM": 20320,
+              "sequence": "LIFCEK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2022.111959"
+              ],
+              "ic50_uM": 3020,
+              "sequence": "LLW"
+            },
+            {
+              "dois": [
+                "10.3390/foods15061093"
+              ],
+              "ic50_uM": 3829,
+              "sequence": "LMFP"
+            },
+            {
+              "dois": [
+                "10.1016/j.bioorg.2022.106097"
+              ],
+              "ic50_uM": 5010,
+              "sequence": "LWM"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 6390,
+              "sequence": "NGPAHW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2022.111959"
+              ],
+              "ic50_uM": 3460,
+              "sequence": "PEW"
+            },
+            {
+              "dois": [
+                "10.3168/jds.2023-24028"
+              ],
+              "ic50_uM": 23820,
+              "sequence": "PM"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 4850,
+              "sequence": "PPNSDIGWRV"
+            },
+            {
+              "dois": [
+                "10.1021/acs.jafc.6c07558"
+              ],
+              "ic50_uM": 467.2,
+              "sequence": "QGDIVAIPSGAAHW"
+            },
+            {
+              "dois": [
+                "10.3390/foods14030524"
+              ],
+              "ic50_uM": 38392,
+              "sequence": "QPSF"
+            },
+            {
+              "dois": [
+                "10.12301/spxb202400368"
+              ],
+              "ic50_uM": 2500,
+              "sequence": "TVVW"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 1804,
+              "sequence": "VKAGFAWTANQQLS"
+            },
+            {
+              "dois": [
+                "10.3390/pr9050747"
+              ],
+              "ic50_uM": 5310,
+              "sequence": "VWWW"
+            },
+            {
+              "dois": [
+                "10.12301/spxb202400368"
+              ],
+              "ic50_uM": 4300,
+              "sequence": "VYW"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.148589"
+              ],
+              "ic50_uM": 2770,
+              "sequence": "WENWTK"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2026.148589"
+              ],
+              "ic50_uM": 1730,
+              "sequence": "WEWTW"
+            },
+            {
+              "dois": [
+                "10.1111/1750-3841.71102"
+              ],
+              "ic50_uM": 3227.5,
+              "sequence": "WGNEEF"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodres.2025.117870"
+              ],
+              "ic50_uM": 3950,
+              "sequence": "WPDNGFPGPQ"
+            },
+            {
+              "dois": [
+                "10.1039/c7fo01174a"
+              ],
+              "ic50_uM": 27702.4,
+              "sequence": "WPPKN"
+            },
+            {
+              "dois": [
+                "10.1016/j.foodchem.2023.136837"
+              ],
+              "ic50_uM": 9780,
+              "sequence": "YNITGW"
+            }
+          ],
           "evidence_factor": 0.75,
           "measurements": [
             {
@@ -16172,6 +16875,22 @@
               "taxonid": 274849
             }
           },
+          "official_unscored": [
+            {
+              "category": null,
+              "category_as_published": "DD",
+              "country_ko": "일본",
+              "edition": "2024",
+              "excluded_reason": "DD(정보 부족)는 점수 없음 (사전 등록 1.3). 2024판 신규 등재",
+              "list": "福岡県レッドリスト2024（動物）魚類",
+              "name_as_published": "クロソイ Sebastes schlegelii",
+              "region": "Fukuoka",
+              "region_ko": "후쿠오카현",
+              "source_id": "fukuoka_redlist2024",
+              "species_level": true,
+              "url": null
+            }
+          ],
           "records": 368,
           "thresholds": {
             "aoo_cell_km": 10,
@@ -16184,7 +16903,8 @@
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
-          "bachman_2020_rapid_lc"
+          "bachman_2020_rapid_lc",
+          "fukuoka_redlist2024"
         ],
         "use": "scored",
         "value": 10.0
@@ -16301,6 +17021,7 @@
         "cmnpd_mbpi",
         "dbaasp_amp_cohort",
         "europepmc_mbpi",
+        "fukuoka_redlist2024",
         "gbif_rapid_lc",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
@@ -17137,7 +17858,7 @@
       "mbpi_floor": {
         "bbvi_label": "MBPI 하한값 포함",
         "label": "효능 근거 미확인(하한값)",
-        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
         "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
         "value": 0
       },
@@ -20282,7 +21003,7 @@
       "mbpi_floor": {
         "bbvi_label": "MBPI 하한값 포함",
         "label": "효능 근거 미확인(하한값)",
-        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
         "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
         "value": 0
       },
@@ -21438,7 +22159,7 @@
       "mbpi_floor": {
         "bbvi_label": "MBPI 하한값 포함",
         "label": "효능 근거 미확인(하한값)",
-        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
         "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
         "value": 0
       },
@@ -21990,7 +22711,7 @@
           "survey_gap": "조사 부족",
           "undetermined": "판단 불가"
         },
-        "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI for a species without an IUCN or national category, and none lowers one.",
+        "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI by itself, and none lowers one. 4.3: a species with no IUCN, national or sub-national category takes the scored Rapid LC basis (mcui_substitutes.preliminary_scored), not a trend class.",
         "min_past_records": 20,
         "periods": {
           "past": [
@@ -22053,7 +22774,7 @@
     "mbpi_floor": {
       "bbvi_label": "MBPI 하한값 포함",
       "label": "효능 근거 미확인(하한값)",
-      "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+      "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
       "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
       "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used.",
       "value": 0
@@ -22108,7 +22829,7 @@
             "numerator": 1
           },
           "two_step_delta": 50,
-          "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. This differs from the 3.15 Rapid LC, which was our own estimate and is still not scored after failing its back-test."
+          "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. The 3.15 Rapid LC, our own estimate, failed its back-test and was reference only until 4.2; from 4.3 (team-lead decision 2026-10-05) it is scored as the last basis with that failed back-test as its label."
         },
         "category_crosswalk": {
           "情報不足": "DD",
@@ -22465,7 +23186,7 @@
             "전복(종 수준)"
           ],
           "n": 14,
-          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
+          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다.",
           "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
           "result": "failed"
         },
@@ -22551,7 +23272,7 @@
         "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
         "version": "queried 2026-09-30"
       },
-      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). A Rapid LC gives no MCUI (reference only), so the IUCN steps apply as for any species without an assessment.",
+      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). Until 4.2 a Rapid LC gave no MCUI (reference only). From 4.3 a met Rapid LC is the scored last basis (preliminary_scored); its steps are still read as for a species without an official assessment, so the official-assessment steps stay open.",
       "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)",
       "weight_note": "Relatives are judged at the published default BBVI weight (w = 0.5); the screen slider does not move this flag."
     },
@@ -22562,10 +23283,10 @@
         "purified_isolate"
       ],
       "cohort_file": "research/verified-indices/xo-cohort-4.3-2026-10-05.json",
-      "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 (xanthine substrate, uric-acid readout by absorbance or HPLC) is one stated number; uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
+      "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 is one stated number (criterion 2, xanthine substrate and uric-acid readout, was observed for 16 of 46 members: 11 full texts and 5 abstracts naming HPLC; the other 30 were read at abstract level, where the assay is named as XO inhibition but its substrate and readout are not stated, and were taken as the standard assay); uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
       "cohort_source_id": "xo_peptide_cohort_literature_2026",
       "endpoint": "IC50",
-      "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.",
+      "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
       "label": "잔틴 산화효소(XO) 억제 펩타이드 · 문헌 비교집단",
       "minimum_justification": "Same as the ACE, AMP and anticancer strata: 30 peers keep one rank step at about 3 percentile points.",
       "minimum_peptides": 30,
@@ -22645,7 +23366,7 @@
           "전복(종 수준)"
         ],
         "n": 14,
-        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
+        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다.",
         "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
         "result": "failed"
       },
@@ -23783,7 +24504,7 @@
       "terms": "docs.cntd.ru(Kodeks 법령 데이터베이스)의 결정문 원문 텍스트를 웹 아카이브 사본(2016-10-30·2018-09-19, 원문판 '14 мая 2002')으로 판독. 서명자·번호·범례(IUCN Red List Categories 1994, УГРОЖАЕМЫЕ - ENDANGERED (EN)) 포함. 2023 통합본 본문은 로그인 뒤라 머리말만 확인. 팀장 결정 2026-10-05로 원문 확인으로 인정(4.3 사전 등록 1.2).",
       "title": "Постановление Губернатора Приморского края от 14.05.2002 № 272 «Об утверждении перечня объектов растительного мира и перечня объектов животного мира, занесенных в Красную книгу Приморского края»",
       "url": "https://docs.cntd.ru/document/494219357",
-      "version": "2002-05-14 결정(현행). 통합본은 2023-04-18 개정까지 반영(208-па/2008, 576-пп/2022, 723-пп/2022, 258-пп/2023); 식물 목록을 고친 것은 723-пп뿐"
+      "version": "2002-05-14 결정(현행). 통합본은 2023-04-18 개정까지 반영(208-па/2008, 576-пп/2022, 723-пп/2022, 258-пп/2023); 723-пп(2022) 원본 스캔의 부록 1–3(추가·제외·범주 변경)에는 이 종이 없다. 나머지 개정(208-па/2008, 576-пп/2022, 258-пп/2023)이 식물 목록을 고쳤는지는 통합본 본문이 로그인 뒤라 읽지 못했다(2026-10-05 검토 지적)"
     },
     "pubchem_ecklonia_structures": {
       "accessed": "2026-09-27",
@@ -25228,6 +25949,7 @@
           "rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown."
         },
         "source_ids": [
+          "primorsky_723pp_2022_official",
           "primorsky_decree272_2002"
         ],
         "value": 80.0
@@ -25353,6 +26075,7 @@
         "michelke_2018_iw",
         "nomura_2002_thresher",
         "obis_trend",
+        "primorsky_723pp_2022_official",
         "primorsky_decree272_2002",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
@@ -27313,6 +28036,7 @@
               "taxonid": 250680
             }
           },
+          "official_unscored": [],
           "records": 200,
           "thresholds": {
             "aoo_cell_km": 10,

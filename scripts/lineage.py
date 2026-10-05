@@ -320,7 +320,9 @@ def explain(t: dict, aphia: int) -> str:
     if excluded:
         lines.append("제외 기록 (점수 미사용, 삭제하지 않음): " + ", ".join(f"{k} {v}건" for k, v in excluded.most_common()))
     if not order:
-        lines.append(f"점수 기여 항목 없음 · 보류 사유 {s['withheld_reasons'].get('MBPI')}")
+        floor = s.get("mbpi_floor")
+        lines.append(f"점수 기여 항목 없음 · {s['mbpi_label']}: {floor['meaning']}" if floor else
+                     f"점수 기여 항목 없음 · 보류 사유 {s['withheld_reasons'].get('MBPI')}")
     return "\n".join(lines)
 
 

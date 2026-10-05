@@ -3037,6 +3037,16 @@ class Verified43Tests(unittest.TestCase):
             self.assertIsNone(s["national_assessment"])
             self.assertIsNone(self.old[a]["scores"]["MCUI"])
         self.assertEqual(sum(s["mcui_basis"] == "preliminary" for s in self.new.values()), 6)
+        # official lists that name a species without a scored category (RE, DD, variety) travel with the value (review 2026-10-05)
+        named = {a: [(r["region"], r["category_as_published"]) for r in s["mcui_substitute"]["record"]["official_unscored"]]
+                 for a, s in self.new.items() if s["mcui_basis"] == "preliminary"}
+        self.assertEqual(named[371986], [("Ibaraki", "絶滅")])
+        self.assertEqual((named[236157], named[274849], named[250680]), ([("Okinawa", "情報不足（DD）")], [("Fukuoka", "DD")], []))
+        for a, s in self.new.items():
+            for r in s["mcui_substitute"]["record"].get("official_unscored", []) if s["mcui_basis"] == "preliminary" else []:
+                self.assertIsNone(r["category"])
+                if r["source_id"]:
+                    self.assertIn(r["source_id"], s["source_ids"])
         # the 4.2 config keeps the check reference-only
         self.assertTrue(all(s["mcui_basis"] != "preliminary" for s in self.old.values()))
 
@@ -3082,6 +3092,21 @@ class Verified43Tests(unittest.TestCase):
         prereg = ROOT / "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md"
         self.assertTrue(prereg.exists())
         self.assertEqual(self.report["method"]["mbpi_floor"]["prereg"], "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md")
+
+    def test_xo_cohort_ships_with_the_item_and_re_ranks(self):
+        x = next(t for t in self.new[281273]["bioactivity_trace"] if t["stratum_kind"] == "xo")
+        peers = [6 - math.log10(m["ic50_uM"]) for m in x["cohort_members"]]
+        self.assertEqual(len(peers), x["peer_peptides"])
+        self.assertNotIn(x["peptide_sequence"], {m["sequence"] for m in x["cohort_members"]})
+        rank = 100 * (sum(p < x["pIC50"] for p in peers) + 0.5 * sum(p == x["pIC50"] for p in peers)) / len(peers)
+        self.assertAlmostEqual(rank, x["percentile"], places=2)
+
+    def test_floor_species_keep_their_open_bioactivity_steps(self):
+        rows = {r["aphia_id"]: r for r in json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))["species"]}
+        for a in (276651, 534443, 1666974):
+            self.assertTrue(self.new[a]["mbpi_floor"])
+            self.assertEqual(rows[a]["bioactivity_missing_steps"], ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"])
+            self.assertEqual(rows[a]["mbpi_label"], self.new[a]["mbpi_label"])
 
 
 if __name__ == "__main__":
