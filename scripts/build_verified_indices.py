@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.4.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.5.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -818,8 +818,13 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         require(origin.get("accession") and origin.get("mature_peptide") and origin.get("translation")
                 and origin.get("source_ids") and all(s in evidence["sources"] for s in origin["source_ids"]),
                 f"{r.get('record_id')}: the origin rests on a public sequence record with registered sources")
+        require(bool(r.get("item_caveat")) or bool(settings.get("item_caveats")),
+                f"{r.get('record_id')}: a relaxed row carries its own caveat (4.5; 4.4 configs keep the shared one)")
         check = checks.get(r["record_id"])
-        require(check is not None and check["molecule_hits"] == 0 and check["document_hits"] == 0,
+        # 4.4: a peptide absent from ChEMBL records zero hits; 4.5 (prereg-4.5 2.3): a peptide that IS a ChEMBL
+        # molecule has its own rows removed from the cohort and listed, and the cohort may hold no row of it
+        require(check is not None and check["molecule_hits"] == 0
+                and (check["document_hits"] == 0 or check.get("excluded_activity_ids")),
                 f"{r.get('record_id')}: the tested peptide must be checked absent from its own ChEMBL cohort")
         finite(r.get("value"), "relaxed EC50", 0.0000001)
         groups[(r["origin_aphia_id"], r["sequence"])].append(r)
@@ -830,6 +835,9 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
             cohort = cohorts.get(f"{book['chembl_version']}:{r['target_chembl_id']}|{r['endpoint']}")
             require(cohort is not None and cohort["size"] >= settings["minimum_cohort_records"],
                     f"{r['record_id']}: no ChEMBL cohort of at least {settings['minimum_cohort_records']} records")
+            self_mol = (checks.get(r["record_id"]) or {}).get("molecule_chembl_id")
+            require(self_mol is None or all(m["molecule"] != self_mol for m in cohort["members"]),
+                    f"{r['record_id']}: a scored peptide is never its own cohort member")
             peers = [m["pchembl"] for m in cohort["members"]]
             require(cohort["size"] == len(peers), f"{r['record_id']}: cohort size differs from its member list")
             value = round(9 - math.log10(r["value"]), 3)
@@ -848,7 +856,7 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                              "record_ids": sorted(x["record_id"] for x in own), "original_paper_dois": sorted(dois),
                              "cohort_records": cohort["size"], "pchembl": value, "percentile": round(rank, 2),
                              "evidence_factor": factor, "adjusted": rank * factor,
-                             "caveat": " ".join(settings["item_caveats"]),
+                             "caveat": own[0].get("item_caveat") or " ".join(settings["item_caveats"]),
                              # the cohort is a fixed snapshot, so its pChEMBL values ship with the item and the browser re-ranks them
                              "cohort_pchembl": sorted(m["pchembl"] for m in cohort["members"]),
                              "other_targets": [{"target_chembl_id": c["target_chembl_id"], "target_name": c["target_name"],
@@ -856,11 +864,16 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                                                 "value": x["value"], "unit": x["unit"], "pchembl": v,
                                                 "percentile": round(p, 2)}
                                                for p, c, v, x in sorted(ranked, key=lambda y: -y[0])[1:]],
+                             # 4.5 (per-row caveats, prereg-4.5 2.3): measurements are the best stratum's own rows and
+                             # the other targets stay above; a 4.4 config (shared caveat) keeps every row, as published
                              "measurements": [{"endpoint": x["endpoint"], "relation": x["relation"], "value": x["value"],
                                                "unit": x["unit"], "value_as_published": x.get("value_as_published"),
                                                "target_chembl_id": x["target_chembl_id"], "target_name": x["target_name"],
                                                "assay": x.get("method"), "source_id": x["source_id"],
-                                               "original_paper_doi": x["original_paper_doi"]} for x in own]}))
+                                               "original_paper_doi": x["original_paper_doi"]} for x in own
+                                              if settings.get("item_caveats")
+                                              or (x["target_chembl_id"] == cohort["target_chembl_id"]
+                                                  and x["endpoint"] == cohort["standard_type"])]}))
     return out
 
 

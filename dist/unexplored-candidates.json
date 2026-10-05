@@ -1,7 +1,7 @@
 {
  "schemaVersion": "unexplored-candidates-1",
  "reviewedOn": "2026-10-04",
- "reportVersion": "verified-4.4",
+ "reportVersion": "verified-4.5",
  "rule": "Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI (default weight) is at least 50. No indicator was collected for it and no score is inferred or copied.",
  "cellRules": "scripts/build_expansion_cells.py (22-candidate review rules), unchanged; a congener of a 4° species is published at 4°",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not distribution, abundance, stock size or value. A listed species is a lead for survey, not a finding.",
@@ -63,6 +63,12 @@
    "BBVI": 54.2
   },
   {
+   "aphiaID": 1666974,
+   "label": "갑오징어",
+   "name": "Acanthosepion esculentum",
+   "BBVI": 54.2
+  },
+  {
    "aphiaID": 234476,
    "label": "가시파래",
    "name": "Ulva prolifera",
@@ -76,6 +82,214 @@
   }
  ],
  "species": [
+  {
+   "aphiaID": 1666971,
+   "name": "Acanthosepion aculeatum",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "no_eligible_records",
+    "accepted": 0,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [],
+    "gbif": {
+     "queried": 0,
+     "accepted": 0,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=12262821&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1,
+     "accepted": 0,
+     "excluded": {
+      "no_year": 1
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=1666971&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [],
+   "koreanName": null,
+   "genus": "Acanthosepion",
+   "foundIn": [
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 1666974,
+     "label": "갑오징어",
+     "name": "Acanthosepion esculentum",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 1666973,
+   "name": "Acanthosepion ellipticum",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 1,
+    "historical": 1,
+    "outsideKoreanEEZ": 1,
+    "names": [
+     "Sepia elliptica Hoyle, 1885"
+    ],
+    "gbif": {
+     "queried": 1,
+     "accepted": 1,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=4625833&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1,
+     "accepted": 0,
+     "excluded": {
+      "duplicate": 1
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=1666973&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 34,
+     "lon0": 130,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000년 이전",
+     "historical": true,
+     "outsideKoreanEEZ": true,
+     "yearStart": 1906,
+     "yearEnd": 1906,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "NMNH Extant Specimen Records (USNM, US)",
+       "url": "https://www.gbif.org/dataset/821cc27a-e3bb-4bc5-ac34-89ada245069d",
+       "doi": "10.15468/hnhrg3",
+       "source": "GBIF",
+       "licenses": [
+        "CC0 1.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC0 1.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Acanthosepion",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 1666974,
+     "label": "갑오징어",
+     "name": "Acanthosepion esculentum",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 1666975,
+   "name": "Acanthosepion lycidas",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 1,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Acanthosepion lycidas (Gray, 1849)"
+    ],
+    "gbif": {
+     "queried": 1,
+     "accepted": 1,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=12206654&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1,
+     "accepted": 0,
+     "excluded": {
+      "duplicate": 1
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=1666975&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 34,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Acanthosepion",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 1666974,
+     "label": "갑오징어",
+     "name": "Acanthosepion esculentum",
+     "BBVI": 54.2
+    }
+   ]
+  },
   {
    "aphiaID": 504321,
    "name": "Anadara aliena",
