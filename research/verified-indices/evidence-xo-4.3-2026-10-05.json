@@ -1,0 +1,74 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "purpose": "verified-4.3: xanthine-oxidase (XO) peptide rows for the XO stratum (prereg-fill-all-4.3-2026-10-05.md 1.3). The 참조기 record moved here from the 4.1 partial file once the literature cohort reached its minimum.",
+ "sources": {
+  "chen_2023_foods_xoi": {
+   "provider": "Foods 12(5):982 (MDPI), full text in PMC10001067",
+   "title": "Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)",
+   "version": "2023",
+   "doi": "10.3390/foods12050982",
+   "url": "https://doi.org/10.3390/foods12050982",
+   "accessed": "2026-10-05",
+   "license": "CC BY 4.0",
+   "terms": "Full text read: small yellow croaker from Zhejiang Xianghai Food Co. (Wenzhou); peptides identified by nano-HPLC-MS/MS and chemically synthesised (purity > 95%); bovine-milk XO, xanthine, uric acid at 290 nm; IC50 3.16 +/- 0.03 mM and 5.86 +/- 0.02 mM in the text."
+  },
+  "xo_peptide_cohort_literature_2026": {
+   "provider": "Blue-bio Value Map team, literature cohort built from PubMed (NCBI)",
+   "title": "Xanthine-oxidase inhibitory peptide IC50 cohort (verified-4.3)",
+   "version": "2026-10-05: four PubMed queries, 270 records read in full; members confirmed by two independent checks",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/",
+   "accessed": "2026-10-05",
+   "license": "Bibliographic data and published values only",
+   "terms": "Member list, DOIs and values as published are in research/verified-indices/xo-cohort-4.3-2026-10-05.json (built by scripts/build_xo_cohort.py from xo-cohort-review-4.3-2026-10-05.json)."
+  }
+ },
+ "xo_bioactivity": [
+  {
+   "origin_aphia_id": 281273,
+   "origin_scientific_name": "Larimichthys polyactis",
+   "record_id": "10.3390/foods12050982:WDDMEKIW",
+   "peptide_name": "WW8",
+   "source_id": "chen_2023_foods_xoi",
+   "status": "approved_for_score",
+   "reviewed": true,
+   "material_kind": "single_peptide",
+   "synthetic": true,
+   "sequence": "WDDMEKIW",
+   "sequence_confirmed": true,
+   "value_in_text": true,
+   "target": "xanthine oxidase",
+   "endpoint": "IC50",
+   "relation": "=",
+   "value": 3160,
+   "unit": "uM",
+   "value_as_published": "IC50 = 3.16 ± 0.03 mM",
+   "enzyme_source": "bovine milk (Solarbio X1875)",
+   "readout": "uric acid, absorbance 290 nm",
+   "original_paper_doi": "10.3390/foods12050982"
+  },
+  {
+   "origin_aphia_id": 281273,
+   "origin_scientific_name": "Larimichthys polyactis",
+   "record_id": "10.3390/foods12050982:APPERKYSVW",
+   "peptide_name": "AW10",
+   "source_id": "chen_2023_foods_xoi",
+   "status": "approved_for_score",
+   "reviewed": true,
+   "material_kind": "single_peptide",
+   "synthetic": true,
+   "sequence": "APPERKYSVW",
+   "sequence_confirmed": true,
+   "value_in_text": true,
+   "target": "xanthine oxidase",
+   "endpoint": "IC50",
+   "relation": "=",
+   "value": 5860,
+   "unit": "uM",
+   "value_as_published": "IC50 = 5.86 ± 0.02 mM",
+   "enzyme_source": "bovine milk (Solarbio X1875)",
+   "readout": "uric acid, absorbance 290 nm",
+   "original_paper_doi": "10.3390/foods12050982"
+  }
+ ]
+}

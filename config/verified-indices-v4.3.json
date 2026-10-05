@@ -1,0 +1,858 @@
+{
+ "method_version": "verified-4.3",
+ "status": "released",
+ "changes_from": "verified-4.2 (2026-10-04). Team-lead decisions of 2026-10-05 (\"fill every value; drop every pilot or withheld state\"), pre-registered before any value was computed in research/verified-indices/prereg-fill-all-4.3-2026-10-05.md: (1) MCUI: when IUCN, the Korean national list, every range-state national list and every sub-national list are silent, a met Rapid LC check (thresholds and snapshot unchanged since 3.15) is scored as LC-equivalent 10 with the label '자체 예비평가(Rapid LC) · 역검증 미통과' and its own matrix marker; this reverses the 2026-10-04 decision that kept it reference-only. (2) MCUI: the 미역 row of the Primorsky Krai governor decree No. 272 (2002), read in the docs.cntd.ru legal-database text and checked current against the official 2022 amendment scan No. 723-пп, counts as read in the original under the 4.2 pre-registration. (3) MBPI: a fourth peptide stratum, xanthine-oxidase (XO) IC50, with a literature-built fixed cohort (members confirmed by two independent checks). (4) MBPI: a species' own single-substance value that fails exactly one condition may be scored with a label naming the relaxed condition. (5) MBPI: a species with no item in any stratum gets the floor value 0 labelled '효능 근거 미확인(하한값)' (meaning: no qualifying evidence yet, not 'no activity'); its BBVI is 0.5 x MFPI, labelled 'MBPI 하한값 포함'. The extensions were decided after seeing which cells they would fill; the pre-registration says so. No cohort, weight, coefficient or threshold of MFPI, of the existing MBPI strata or of IUCN/national/sub-national MCUI changes.",
+ "nutrition": {
+  "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
+  "components": {
+   "protein_g": "g",
+   "iron_mg": "mg",
+   "zinc_mg": "mg",
+   "calcium_mg": "mg"
+  },
+  "minimum_species": 3,
+  "grade_factors": {
+   "measured": 1.0,
+   "calculated": 0.85,
+   "proxy": 0.5,
+   "domestic_table": 1.0,
+   "foreign_table_cited": 0.85,
+   "literature_converted": 0.85
+  },
+  "grade_notes": {
+   "domestic_table": "RDA row with a domestic source label such as ('16); per-value analysed/calculated status is not exposed online, so the row is not labelled 'measured'.",
+   "foreign_table_cited": "RDA row whose source label names another national table, e.g. JAPAN('20) or USDA('18): same food, borrowed value. Pilot factor 0.85, same as 'calculated'.",
+   "measured/calculated/proxy": "Kept from verified-pilot-1 for the AFCD cross-check rows.",
+   "literature_converted": "A reviewed paper's own analysis of the species, converted to fresh weight with the moisture of the same sample. Pilot factor 0.85, as for a value borrowed from another national table."
+  },
+  "nutrient_weight": 0.8,
+  "edible_fraction_weight": 0.1,
+  "aquaculture_weight": 0.1,
+  "primary_cohorts": [
+   {
+    "cohort_id": "rda-10.4-raw-marine-animals",
+    "criteria": "RDA National Standard Food Composition DB 10.4, group '어패류 및 기타 수산물', raw ('생것') rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Excludes organ/part-only rows, sex/region sub-sample rows and freshwater-farmed fish. Reference foods are not operating candidates.",
+    "rule": {
+     "group": "어패류 및 기타 수산물",
+     "exclude_name_terms": [
+      "내장",
+      "관자",
+      "붉은살",
+      "지방육"
+     ],
+     "exclude_food_item_ids": {
+      "K0150002550a": "고등어 남해: regional sub-sample of one species",
+      "K0150002560a": "고등어 서해: regional sub-sample of one species",
+      "K0440002570a": "대구 수컷: sex sub-sample of one species",
+      "K0440002580a": "대구 암컷: sex sub-sample of one species",
+      "K1440010000a": "은어 양식: freshwater-farmed (amphidromous) fish, outside the marine scope"
+     }
+    },
+    "frozen_food_item_ids": [
+     "K0270000000a",
+     "K0390010000a",
+     "K0620000000a",
+     "K0830011130a",
+     "K0960070000a",
+     "K1070000000a",
+     "K1140000000a",
+     "K1320000000a",
+     "K1370020000a",
+     "K1620000000a",
+     "K1650010000a",
+     "K1670000000a",
+     "K4000000000a",
+     "K4000010000a",
+     "K4000040000a",
+     "K4040020000a",
+     "K4060010000a",
+     "K4130000000a",
+     "K6000020000a",
+     "K6020010000a",
+     "K6080000000a",
+     "K6100000000a",
+     "K6110000000a",
+     "K6130180000a",
+     "K6230000000a"
+    ],
+    "uncertainty": [
+     "The cohort mixes molluscs, fish, crustaceans and a tunicate; ranks compare foods, not ecological or taxonomic peers.",
+     "Rows come from different source years and tables (domestic ('16), JAPAN('20), USDA('18)); per-value analysis method is not exposed.",
+     "Zinc is missing for most RDA seafood rows, so only foods reporting all three components can be ranked."
+    ]
+   },
+   {
+    "cohort_id": "rda-10.4-raw-seaweeds",
+    "criteria": "RDA DB 10.4, group '해조류', raw rows with protein, iron, zinc and calcium all reported per 100 g edible portion. Dried, salted and blanched rows are excluded by the raw-only rule and never converted.",
+    "rule": {
+     "group": "해조류",
+     "exclude_name_terms": [],
+     "exclude_food_item_ids": {}
+    },
+    "frozen_food_item_ids": [
+     "L0110000000a",
+     "L0130000000a",
+     "L0270000000a"
+    ],
+    "uncertainty": [
+     "Only three raw seaweed rows report all three components; each rank step moves a percentile by about 33 points."
+    ]
+   }
+  ],
+  "cross_check_cohorts": [],
+  "cross_check_source_ids": [
+   "afcd_r3_nutrients",
+   "afcd_r3_details",
+   "frdc_2008_905"
+  ],
+  "substitutes": {
+   "snapshot": "research/verified-indices/snapshots/ufish-substitutes-2026-09-30.json",
+   "aquaculture_supplement": "research/verified-indices/mfpi-aquaculture-names-4.0-2026-10-04.json",
+   "source_id": "ufish_1_workbook",
+   "levels": [
+    "subsample",
+    "species",
+    "mext",
+    "genus",
+    "family"
+   ],
+   "parts": [
+    "fillet",
+    "flesh",
+    "muscle"
+   ],
+   "species_grade_by_doc": {
+    "a": "measured",
+    "c": "calculated",
+    "r": "calculated",
+    "ar": "calculated",
+    "e": "proxy"
+   },
+   "labels": {
+    "subsample": "같은 종 국내 부표본(RDA)",
+    "species": "종 수준 대체치(다른 성분표)",
+    "genus": "유사종 대체치(같은 속)",
+    "family": "유사종 대체치(같은 과)",
+    "mext": "종 수준 대체치(일본 식품성분표 8정판)"
+   },
+   "rule": "Only a component missing from the species' own linked RDA row is filled, and only when that row reports at least one component. Candidates are uFiSh raw items of the consumed part fillet, flesh or muscle (not whole animal, organ or roe), per 100 g edible portion. Order: same-species RDA sub-sample rows (subsample_rule), then uFiSh WoRMS species or synonym, then same genus, then same family; within a level the higher grade factor, then larger n, then the lower item ID. A species-level value takes its grade from the uFiSh documentation code (a = measured 1.0; c, r, ar = calculated 0.85; e = proxy 0.5); every genus or family value is a proxy (0.5). Pooled entries spanning several families are never used.",
+   "cohort_rule": "The fixed cohorts stay the RDA rows that report all three components (frozen lists unchanged in 3.3). A species with a substituted component is ranked against the cohort plus itself, as a cohort member is, and never joins the cohort, so no other species' rank moves.",
+   "not_used": "AFCD Release 3 (FSANZ) food details carry no scientific names, so no AFCD row is matched to a genus or family; AFCD stays the oyster cross-check cohort.",
+   "subsample_links": [
+    {
+     "food_item_id": "K0440002570a",
+     "aphia_id": 254538,
+     "reviewed": true,
+     "link_evidence": "RDA '대구, 수컷, 생것' / 'Pacific cod, Male, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species."
+    },
+    {
+     "food_item_id": "K0440002580a",
+     "aphia_id": 254538,
+     "reviewed": true,
+     "link_evidence": "RDA '대구, 암컷, 생것' / 'Pacific cod, Female, Raw': the same species as the linked row K0440000000a 'Pacific cod, Raw' (Gadus macrocephalus); the marine-animal cohort rule excludes it as a sex sub-sample of one species."
+    }
+   ],
+   "subsample_rule": "Before any uFiSh value, a missing component is taken from other rows of the same RDA table that a review links to the same species and that the cohort rule excludes as sex or regional sub-samples (they never join the cohort). Several such rows give their arithmetic mean (equal weights; n is not published). The value keeps the rows' grade (domestic_table 1.0 or foreign_table_cited 0.85). Rows whose main row is not species-specific (e.g. 고등어 남해/서해 under the generic 고등어 row) are not linked.",
+   "grade_note": "A species-level uFiSh value keeps its documentation-code grade (a = measured 1.0). uFiSh documents each value's derivation (code, n, reference), whereas an RDA row citing another table does not expose it (0.85). The decision record shows the MFPI with other-table species values at 0.85 as a sensitivity.",
+   "mext": {
+    "snapshot": "research/verified-indices/snapshots/mext-2026-10-01.json",
+    "source_id": "mext_sfct_2020_items",
+    "grade": "foreign_table_cited",
+    "components": [
+     "protein_g",
+     "iron_mg",
+     "zinc_mg",
+     "calcium_mg"
+    ],
+    "rule": "A reviewed MEXT item is used only for the AphiaID it is linked to, only for a component listed here; as a substitute only when the species' own RDA row is blank for it and no RDA sub-sample or uFiSh species-level value exists, and only for a raw item per 100 g edible portion with a printed analytical or calculated value (estimates in parentheses, Tr and '-' are never used). It ranks above any genus or family proxy. 3.9: an item marked species_row is the species' own nutrition row (all listed components and the refuse share) only when RDA DB 10.4 has no row linked to the species; it is ranked against the fixed cohort of its RDA group plus itself and never joins the cohort.",
+    "species_row_groups": {
+     "10": "어패류 및 기타 수산물",
+     "09": "해조류"
+    },
+    "link_rule": "The MEXT standard Japanese name (food name, or the name the chapter 3 notes give) equals the Japanese vernacular WoRMS lists for the AphiaID, or equals it without a final ガイ (貝) when the chapter 3 description (family, form, habitat) matches the taxon. Generic names (なまこ, かき) are never linked to one species."
+   },
+   "literature": {
+    "snapshot": "research/verified-indices/mfpi-literature-rows-4.0-2026-10-04.json",
+    "source_ids": [
+     "liu_2021_kumamoto_xiangshan",
+     "murakami_2011_sargassum_horneri",
+     "rda_10_4_ulva_prolifera_dried",
+     "kawashima_1983_seaweed_inaa"
+    ],
+    "grade": "literature_converted",
+    "species_row_groups": [
+     "어패류 및 기타 수산물",
+     "해조류"
+    ],
+    "label": "문헌 분석값(같은 시료 수분으로 날것 환산)",
+    "rule": "Only for a species with no RDA DB 10.4 row linked and no MEXT species row. A peer-reviewed paper that identifies the species (morphology or molecular), analyses raw edible tissue and reports the moisture of the same sample; dry-basis values become fresh weight as value_dw x (100 - moisture) / 100 (mg/kg dry weight divided by 10 first). A component reported inconsistently within the paper is left out of the mean under the 3.7 minimum-components rule. Ranked against the fixed cohort of its RDA group plus itself and never joins a cohort. Team-lead decision 2026-10-01 (route 3, factor 0.85). Since 3.22 a seaweed row joins the shellfish one: the same conditions apply, and a component the paper does not analyse at all (iron, here) is omitted exactly like one it reports inconsistently.",
+    "show_limitations": true,
+    "other_sample_moisture": {
+     "label": "수분 환산값(다른 시료)",
+     "rule": "Team-lead decision 2026-10-04: when no paper reports the same sample's fresh moisture, a dry-basis analysis (a dried table row first put on dry basis with its own water) is converted to fresh weight with the median of the fresh moisture values that full-text papers report for the species (each survey or sample mean counted once; a paper that reports the value inconsistently is left out). Same grade as the literature route (literature_converted); the row is labelled and lists the moisture values."
+    }
+   }
+  },
+  "minimum_components": 3,
+  "minimum_components_rule": "A species row outside the cohort is scored when at least this many components are reported (own value or substitute). Missing components are left out of the mean and never scored 0; the trace lists them as omitted_components.",
+  "cross_check_note": "verified-pilot-3.7: the AFCD Release 3 oyster cross-check (verified-pilot-1 cohort) is paused because its rows carry no reviewed calcium value; 3.6 and earlier keep it.",
+  "rda_name_links": "research/verified-indices/rda-name-links-2026-10-01.json",
+  "display_fatty_acids": {
+   "snapshot": "research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json",
+   "collector": "scripts/collect_rda_fatty_acids.py",
+   "source_id": "rda_db_10_4",
+   "display_source_id": "rda_db_10_4_fatty_acids",
+   "components": {
+    "epa_mg": "에이코사펜타에노산(20:5(n-3)) mg/100 g",
+    "dha_mg": "도코사헥사에노산(22:6(n-3)) mg/100 g"
+   },
+   "daily_reference_mg": 330,
+   "daily_reference_source": "식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5] 1일 영양성분 기준치, 'EPA와 DHA의 합 330 ㎎'",
+   "rule": "Shown only when the species' own scored row is its RDA row and that row reports both EPA and DHA. The pair is read from the separate snapshot, the row source label must match the nutrition row, and the value is display only: it is never a cohort member, never a percentile and never part of MFPI.",
+   "claim_note": "식품등의 표시기준 [별지 1] 영양성분 함량강조표시 세부기준에는 오메가-3 항목이 없다. 그래서 '풍부' 같은 법정 강조표시 용어를 쓰지 않고 수치와 1일 기준치 대비 비율만 보여 준다."
+  }
+ },
+ "bioactivity": {
+  "minimum_compounds_per_stratum": 3,
+  "single_doi_factor": 0.75,
+  "multiple_doi_factor": 1.0,
+  "primary_aggregation": "max",
+  "sensitivity_aggregations": [
+   "median",
+   "mean"
+  ],
+  "eligible_endpoints": [
+   "IC50",
+   "XC50",
+   "EC50",
+   "AC50",
+   "Ki",
+   "Kd",
+   "Potency",
+   "ED50"
+  ]
+ },
+ "conservation": {
+  "category_scores": {
+   "LC": 10,
+   "NT": 35,
+   "VU": 60,
+   "EN": 80,
+   "CR": 100
+  },
+  "effort_adjustment": 10,
+  "label": "IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영",
+  "trend": {
+   "snapshot": "research/verified-indices/snapshots/obis-trend-2026-10-01.json",
+   "source_id": "obis_trend",
+   "periods": {
+    "past": [
+     "2006-01-01",
+     "2015-12-31"
+    ],
+    "recent": [
+     "2016-01-01",
+     "2025-12-31"
+    ]
+   },
+   "effort": "target group: OBIS records of the species' WoRMS class in the same cell and period; all-taxa records are a sensitivity",
+   "cells": "1-degree cells where the species has a record in either period and its class has records in both periods",
+   "min_past_records": 20,
+   "continuity": 0.5,
+   "z": 1.96,
+   "decline_ratio": 0.7,
+   "formula": "ratio = ((n_recent + 0.5) / E_recent) / ((n_past + 0.5) / E_past); 95% interval = ratio x/÷ exp(1.96 x sqrt(1/(n_past+0.5) + 1/(n_recent+0.5)))",
+   "cell_rule": "A record on a cell edge counts in every cell whose closed polygon holds it, as the OBIS statistics endpoint counts the effort; numerator and denominator use the same cells.",
+   "dataset_check": "A decline signal must also hold inside the dataset with most past records of the species (species and class records of that dataset only, same cells rule, same thresholds). Otherwise the fall may be a survey programme ending, and the class is undetermined. This is the reviewed-trend condition of docs/verified-indices-design.md, applied by rule to every species.",
+   "classes": [
+    "undetermined: no comparable cell, fewer than min_past_records past records, a fall to ratio <= decline_ratio whose interval reaches 1, or a decline not confirmed within the dominant dataset",
+    "decline_signal: ratio <= decline_ratio (a 30% fall, IUCN criterion A2 VU threshold), interval below 1, and the same within the dominant dataset",
+    "decline_below_threshold: interval below 1 but the fall smaller than the threshold",
+    "survey_gap: fewer species records while class effort in the same cells also fell, and the reporting rate is not clearly lower",
+    "no_clear_decline: a reporting rate not lower"
+   ],
+   "labels": {
+    "decline_signal": "감소 신호",
+    "decline_below_threshold": "감소 경향(30% 미만)",
+    "survey_gap": "조사 부족",
+    "no_clear_decline": "보고율 감소 없음",
+    "undetermined": "판단 불가"
+   },
+   "mcui_rule": "A decline signal adds effort_adjustment (10) to a computed MCUI, capped at 100. Other classes add nothing. No class creates an MCUI for a species without an IUCN or national category, and none lowers one."
+  },
+  "no_assessment": {
+   "labels": {
+    "no_conservation_assessment": "보전 평가 없음",
+    "conservation_data_deficient": "IUCN 자료 부족(DD)"
+   },
+   "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
+  },
+  "mapping_text": {
+   "iucn": "{category} → {value} (팀 규칙 v4.0, IUCN 점수 아님)",
+   "national": "{category} → {value} (한국 국가 평가, 팀 규칙 v4.0)",
+   "range_state": "{category} → {value} ({country} 국가 적색목록, 팀 규칙 v4.0)",
+   "range_state_rank_out": "ランク外 → LC 상당 → {value} ({country} 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+   "sub_national": "{category} → {value} ({regions} 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+   "preliminary": "Rapid LC 충족 → LC 상당 → {value} (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)"
+  },
+  "recheck": {
+   "file": "research/verified-indices/iucn-recheck-4.0-2026-10-04.json",
+   "source_id": "iucn_redlist_recheck",
+   "rule": "4.0 (team-lead request 2026-10-04 to check every '미확인' item): the zero-result IUCN search of each species without any MCUI is repeated on the current Red List version and recorded beside the first search; it never creates a score."
+  }
+ },
+ "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
+ "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
+ "bbvi": {
+  "default_food_weight": 0.5,
+  "minimum_independent_mbpi_dois": 2,
+  "single_source_mbpi_label": "단일 논문",
+  "sensitivity_food_weights": [
+   0.25,
+   0.5,
+   0.75
+  ],
+  "single_source_policy": "score_with_label",
+  "single_source_bbvi_label": "단일 논문",
+  "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries its single-paper factor (0.75; 0.75 x 0.75 for a ChEMBL item with one link paper and one activity document). In the matrix it is a hollow point; on the map each cell's tooltip counts such species and the cell's species list carries the label. Up to 3.26 such a BBVI was withheld and shown only as a reference combination."
+ },
+ "sensitivity": {
+  "mfpi_weights": [
+   {
+    "nutrient_weight": 0.7,
+    "edible_fraction_weight": 0.15,
+    "aquaculture_weight": 0.15
+   },
+   {
+    "nutrient_weight": 0.9,
+    "edible_fraction_weight": 0.05,
+    "aquaculture_weight": 0.05
+   }
+  ]
+ },
+ "unexplored_threshold": 0.5,
+ "posthoc": {
+  "calibration_cases": [],
+  "calibration_note": "No weight or formula was tuned in verified-pilot-2, so no case was used for calibration.",
+  "validation_sets": {
+   "MBPI": {
+    "cases": [
+     "Conus magus (ziconotide)",
+     "Halichondria okadai (eribulin; halichondrin B)",
+     "Ecteinascidia turbinata (trabectedin)"
+    ],
+    "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+    "result": "failed",
+    "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 Wikidata에 이 종(이명 포함)과 화합물을 잇는 P703 연결이 없어 계산되지 않습니다(ziconotide도 연결되지 않았고, 연결되더라도 승인 약물 제외 규칙으로 빠집니다). 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
+    "n": 3,
+    "computed": 2,
+    "case_mbpi": {
+     "Conus magus": null,
+     "Halichondria okadai": 73.8,
+     "Ecteinascidia turbinata": 56.1
+    },
+    "operating_max_mbpi": 96.3,
+    "reading": "Read literally as above every operating species that has an MBPI; the wording was registered without a numeric threshold.",
+    "caveats": [
+     "The okadaic-acid top item rests on four protein phosphatase 1 assays that ChEMBL assigns to PTP1B (homologous-target mapping); without them the species would score about 48.8 and still fail.",
+     "Okadaic acid is made by dinoflagellates; the linked paper does not say so, so the link review accepted it as the rule is written.",
+     "The ET-770 value comes from a sample of E. thurstoni treated with KCN (Suwanborirux 2002)."
+    ],
+    "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json"
+   },
+   "MCUI": {
+    "cases": [
+     "Apostichopus japonicus"
+    ],
+    "criterion": "Among candidates, a species whose current IUCN assessment cites fishing and uses criterion A (population reduction) should rank above one assessed without a reduction criterion.",
+    "result": "reproduced_n2",
+    "reason": "A. japonicus (EN A2bd, fishing) 80 > T. pacificus (LC, needs updating) 10. Only two species were compared (the check was written when only these two had an MCUI), so this is a consistency check, not validation."
+   },
+   "MFPI": {
+    "cases": "11 species scored from their own RDA DB 10.4 row that also have a same-species raw item in the MEXT 2020 table (WoRMS Japanese name link, 3.6 rule)",
+    "criterion": "Cross-table check fixed before the run: the nutrient part of MFPI (mean cohort percentile of the components the RDA row reports itself, substitutes excluded) recomputed with the MEXT values against the same fixed cohort must keep the order: Spearman rho >= 0.6 with a one-sided permutation p < 0.05 (at least 8 species, 2 shared components each).",
+    "result": "passed",
+    "spearman_rho": 0.873,
+    "permutation_p_one_sided": 0.0004,
+    "mean_absolute_difference": 10.8,
+    "n": 11,
+    "reason": "It tests whether MFPI ranks depend on which national table supplies the values; it does not test the weights or the formula.",
+    "record": "research/verified-indices/posthoc-validation-2026-10-02.json"
+   },
+   "MCUI_preliminary": {
+    "cases": "14 species that already have an IUCN or Korean national category, run through the Rapid LC step as if unassessed",
+    "criterion": "Fixed before the run: no species assessed VU, EN or CR may be called likely Least Concern.",
+    "result": "failed",
+    "agreement": 11,
+    "n": 14,
+    "false_lc_for_threatened": [
+     "해삼",
+     "전복(종 수준)"
+    ],
+    "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 그래서 예비 평가는 MCUI 점수로 쓰지 않고, 분포 범위와 이 한계를 참고 정보로만 표시합니다(팀장 결정 2026-10-02).",
+    "record": "research/verified-indices/posthoc-validation-2026-10-02.json"
+   },
+   "MCUI_trend": {
+    "cases": "229 out-of-panel species of the 10 panel WoRMS classes in the map box (at least 20 OBIS records in 2006-2015), IUCN categories from the GBIF IUCN checklist (2026-07-28)",
+    "criterion": "Fixed before the run (posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md): with at least 10 computable threatened species, the share of threatened species with an OBIS decline signal must exceed the LC share (one-sided Fisher p < 0.05).",
+    "result": "failed",
+    "n_threatened_computable": 9,
+    "threatened_with_signal": 1,
+    "lc_with_signal": 36,
+    "lc_n": 172,
+    "fisher_p_one_sided": 0.879,
+    "scope": "Only the OBIS reporting-rate element (the +10 adjustment), not the IUCN or national categories.",
+    "reason": "OBIS 보고율 감소 신호(+10 보정)를 지도 상자 안의 다른 229종에 적용해 보았습니다. 위협종은 9종만 계산되어(사전 기준 10종) 검증이 성립하지 않았고, 신호 비율도 위협종 11%·LC 21%로 반대 방향이었습니다. 신호는 모두 국립해양생물자원관 표본 수집 자료의 기록 감소에서 나왔습니다. 보정 규칙은 바꾸지 않았고, 바꾸려면 새 사전 등록이 필요합니다.",
+    "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json"
+   },
+   "MCUI_preliminary_criterion_A": {
+    "cases": "The 14 back-test species of MCUI_preliminary",
+    "criterion": "Fixed before the run (posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md): IUCN criterion A from FAO FishStat species-level wild capture, 2014-2024; pass needs no threatened species called LC, at least one threatened species detected, and at least 8 evaluable species.",
+    "result": "failed",
+    "evaluable": 4,
+    "n": 14,
+    "threatened_detected": 0,
+    "exact_agreement": 1,
+    "reason": "어획 통계로 IUCN 기준 A(감소율)를 보는 예비 평가를 미리 규칙을 정해 역검증했지만 통과하지 못했습니다. 판정 가능한 종이 14종 중 4종뿐이었고, EN인 해삼·전복은 양식 비중이 크거나 종 수준 어획 통계가 없어 판정하지 못했습니다. 해조류는 양식이 98–100%라 이 방법을 쓸 수 없습니다. 그래서 남은 MCUI 빈칸 12종(사전 등록 대상 13종 가운데 가시파래는 스웨덴 목록으로 채움)은 이 방법으로 채우지 않습니다(팀장 결정 2026-10-03: 통과할 때만 점수로 사용).",
+    "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json"
+   }
+  }
+ },
+ "national_red_list": {
+  "label": "한국 국가 평가 기반 MCUI",
+  "applies_when_iucn_reason": [
+   "not_in_red_list",
+   "category_not_numeric"
+  ],
+  "accepted_basis": "IUCN Red List Categories and Criteria, regional-level guidelines",
+  "category_scores": "same as conservation.category_scores",
+  "legal_protection": "A legal protection designation without a red-list category is shown as a fact and never scored.",
+  "taxon_rule": "Only rows whose published name resolves to the same accepted WoRMS species; subspecies and separate species are not moved.",
+  "ranking_rule": "Never ranked, pooled or plotted with IUCN-based MCUI; national and global scopes stay separate.",
+  "page_recheck": {
+   "checked_on": "2026-09-27",
+   "method": "NIBR e-catalogue page images re-read for the list page and the index page of every scored row (viewer page = printed page + 2)",
+   "rows": {
+    "836033": "list p.1371, index p.1457: 굴 Magallana gigas, LC -> LC, 유지",
+    "506159": "list p.1380, index p.1487: 홍합 Mytilus unguiculatus, LC -> LC, 유지",
+    "231750": "index p.1468: 바지락 Ruditapes philippinarum, LC -> LC, 유지, list p.1375",
+    "504357": "index p.1486: 피조개 Scapharca broughtonii, LC -> LC, 유지, list p.1380",
+    "393716": "index p.1484: 큰가리비 Mizuhopecten yessoensis, LC -> LC, 유지, list p.1379",
+    "413600": "index p.1453: 가리맛조개 Sinonovacula constricta, LC -> LC, 유지, list p.1370",
+    "1666974": "index p.1483: 참갑오징어 Sepia esculenta, LC -> LC, 유지, list p.1379"
+   }
+  },
+  "crosswalk_rule": "After 3.14: a national row whose published scientific name is an accepted WoRMS species with no WoRMS distribution record in the northwest Pacific assesses the Korean population named by its Korean name, and is assigned to the candidate with that Korean name that WoRMS accepts for the East Asian population (참문어: Octopus vulgaris -> O. sinensis). The same crosswalk links the RDA row."
+ },
+ "peptide_bioactivity": {
+  "cohort_file": "research/verified-indices/peptide-cohort-ahtpdb-ace-hhl.json",
+  "cohort_source_id": "ahtpdb_ic50_2026",
+  "target": "ACE",
+  "endpoint": "IC50",
+  "substrate": "HHL",
+  "minimum_peptides": 30,
+  "minimum_justification": "30 peers keep one rank step at about 3 percentile points; below that a single peer moves the score more than the 0.75 single-DOI discount.",
+  "excluded_material_kinds": [
+   "extract",
+   "hydrolysate",
+   "fraction"
+  ],
+  "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent",
+  "note": "Peptides never enter the small-molecule (ChEMBL) strata; the same single/multiple DOI factors and max aggregation apply.",
+  "cross_origin_potency": {
+   "supplement": "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json",
+   "max_pIC50_gap": 1.0,
+   "gap_justification": "Team research assumption: a tenfold IC50 difference is the usual spread between labs for the same HHL assay; larger gaps are treated as non-replication, not averaged.",
+   "rule": "Potency replication only: the origin claim (sequence found in the species' own material) still needs the species' paper. 3.14: the re-measured peptide may be synthetic or a sequence-confirmed purified single peptide (team-lead decision 2026-10-01).",
+   "accepted_materials": [
+    "synthetic",
+    "purified_isolate"
+   ]
+  },
+  "origin_material_rule": "Origin rows: a synthetic peptide or, from 3.14, a sequence-confirmed purified single peptide of the species' own material, with an ACE IC50 in uM in the text and HHL as substrate (team-lead decision 2026-10-01).",
+  "unit_conversion": {
+   "from_unit": "ug/mL",
+   "masses": "average residue masses (ExPASy Compute pI/Mw) plus one water; free peptide, no counter-ion",
+   "rule": "A paper value in ug/mL is converted to uM only for a synthetic peptide whose sequence the paper confirmed: uM = (ug/mL) / (molecular weight in g/mol) x 1000, rounded to 0.01 uM. The paper's own value, unit and the mass used are kept beside the converted value. Hydrolysates, fractions and unsequenced or non-synthetic material are never converted. Team-lead decision 2026-10-01."
+  }
+ },
+ "peptide_supplements": [
+  "research/verified-indices/evidence-v3.5.json",
+  "research/verified-indices/peptide-raw-values-2.1.json",
+  "research/verified-indices/evidence-clam-2026-10-01.json",
+  "research/verified-indices/evidence-hijiki-2026-10-01.json",
+  "research/verified-indices/evidence-mackerel-2026-10-01.json",
+  "research/verified-indices/evidence-anchovy-2026-10-01.json",
+  "research/verified-indices/evidence-isolates-2026-10-01.json",
+  "research/verified-indices/evidence-abalone-2026-10-01.json",
+  "research/verified-indices/evidence-squid-2026-10-03.json"
+ ],
+ "reference_combination": {
+  "label": "참고 통합값 · 독립 재현 미확인",
+  "formula": "w×MFPI+(1−w)×MBPI",
+  "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking.",
+  "limits": [
+   "MBPI는 독립 논문 재현이 확인되지 않았습니다.",
+   "MFPI와 MBPI의 비교집단(cohort)이 서로 다르며, 두 값은 각자의 집단 안 상대 위치입니다.",
+   "가중치 w는 팀이 정한 고정 규칙이며 민감도 결과를 함께 봐야 합니다."
+  ]
+ },
+ "chembl_bioactivity": {
+  "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
+  "snapshot": "research/verified-indices/snapshots/mbpi-links-2026-09-30.json",
+  "paper_links": "research/verified-indices/mbpi-paper-links-4.0-2026-10-04.json",
+  "paper_source_ids": [
+   "europepmc_mbpi",
+   "cmnpd_mbpi"
+  ],
+  "link_review": "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json",
+  "review_rule": "Every species -> compound link behind a primary ChEMBL item was checked against the linked paper titles, abstracts and the PubChem structure (mbpi-link-review-2026-09-30.json). A link is rejected only on positive evidence of one class: structure_mismatch (the name resolved to another structure), contaminant (pollutant or reagent found in the sample), not_tissue (found in faeces, diet or symbionts, not the organism), ubiquitous_metabolite (C1 metabolites, amino-acid amines, common C16-C22 fatty acids, C6-C10 oxidation aldehydes). A rejected link enters no item in any view. Each review entry stores the link's DOI set; the build stops when the DOIs differ (stale review) or when a primary item rests on a link without a review entry.",
+  "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
+  "source_ids": [
+   "worms_rest_mbpi",
+   "wikidata_p703_lotus",
+   "chembl_mbpi",
+   "pubchem_inchikey_mbpi",
+   "cellosaurus_mbpi"
+  ],
+  "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply.",
+  "commonness_rule": "Exclude a compound when its count of taxa with a P703 statement exceeds the Tukey upper fence Q3 + 1.5 IQR of the counts over every linked compound (statistics.quantiles, n=4, inclusive). Such compounds (fatty acids, amino acids, sterols, carotenoids) say nothing specific about one species. Sensitivity: the same fence on log10 counts, and no filter.",
+  "excluded_max_phase": 4.0,
+  "drug_rule": "Exclude compounds whose ChEMBL parent is an approved drug (max_phase 4): LOTUS text mining attaches reference drugs used as assay controls to the paper's organism (zidovudine -> Ecklonia cava, DOI 10.1016/j.bmc.2008.07.078). Natural products that are also approved drugs lose their link too. Sensitivity: no filter.",
+  "cohort_rule": "Cohort = every admitted ChEMBL activity with the same target_chembl_id and standard_type (activity level, counted with the ChEMBL API at the snapshot date). Species value = median pChEMBL of the parent compound's admitted activities in that cohort; percentile = 100 x (count below + 0.5 x count equal) / total.",
+  "minimum_cohort_records": 30,
+  "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
+  "sensitivity_minimum_cohort_records": [
+   10,
+   100
+  ],
+  "evidence_rule": "link factor = 0.75 for one link DOI, 1.0 for two or more; activity factor = 0.75 for one ChEMBL document, 1.0 for two or more; evidence factor = link x activity. One item per species, parent compound and stratum: that compound's target x endpoint cohort with the highest percentile (ties: more records). The species MBPI is the highest adjusted item.",
+  "bbvi_rule": "bbvi.minimum_independent_mbpi_dois applies as min(link DOIs, ChEMBL documents) >= 2, so both the species link and the activity rest on two papers each.",
+  "evidence_level": "Reviewed original-paper strata (감태 ACE, AHTPDB peptides) are level 1; this automated stratum is level 2. The species MBPI is the max over all strata; the stratum of the best item is shown.",
+  "standard_relation": "=",
+  "data_validity_comments": [
+   null,
+   "Manually validated"
+  ],
+  "exclude_potential_duplicate": true,
+  "assay_types": [
+   "B",
+   "F"
+  ],
+  "strata": {
+   "protein": {
+    "label": "효소·수용체 등 단백질 표적",
+    "target_types": [
+     "SINGLE PROTEIN",
+     "PROTEIN COMPLEX",
+     "PROTEIN COMPLEX GROUP",
+     "PROTEIN FAMILY",
+     "CHIMERIC PROTEIN",
+     "PROTEIN-PROTEIN INTERACTION",
+     "SELECTIVITY GROUP",
+     "PROTEIN NUCLEIC-ACID COMPLEX"
+    ]
+   },
+   "cancer_cell_line": {
+    "label": "암세포주(항암·세포독성)",
+    "target_types": [
+     "CELL-LINE"
+    ],
+    "cellosaurus_category": "Cancer cell line"
+   },
+   "pathogen": {
+    "label": "병원체(항균·항바이러스·항기생충)",
+    "target_types": [
+     "ORGANISM"
+    ],
+    "organism_classes": [
+     [
+      "Bacteria"
+     ],
+     [
+      "Viruses"
+     ],
+     [
+      "Eukaryotes",
+      "Apicomplexa"
+     ],
+     [
+      "Eukaryotes",
+      "Kinetoplastida"
+     ],
+     [
+      "Eukaryotes",
+      "Nematoda"
+     ],
+     [
+      "Eukaryotes",
+      "Platyhelminthes"
+     ],
+     [
+      "Eukaryotes",
+      "Amoebozoa"
+     ],
+     [
+      "Eukaryotes",
+      "Parabasalia"
+     ],
+     [
+      "Eukaryotes",
+      "Fornicata"
+     ]
+    ],
+    "organism_class_note": "ChEMBL organism classification (l1, l2). Bacteria, viruses and protozoan/helminth parasites only; fungi, oomycetes, arthropods, plants and vertebrates (for example Homo sapiens ORGANISM targets) are not pathogen targets here."
+   }
+  },
+  "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-3.27-2026-10-03.json",
+  "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
+  "excluded_activity_comments": [
+   "inconclusive",
+   "not active",
+   "inactive"
+  ],
+  "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
+  "compound_caveats": {
+   "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
+   "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
+   "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
+   "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
+   "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다."
+  },
+  "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score. Since 3.27 also the single-screen caveat for PGA2 (꼬시래기) and the restated-measurement and food-origin caveat for flazin (시카메굴); a reviewed peptide row may carry its own caveat the same way (살오징어, the 3-h ACE pre-incubation). None changes a score.",
+  "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-04.json",
+  "snapshot_supplement_rule": "After 3.26: compounds of links accepted after the 2026-09-30 snapshot are collected from the same ChEMBL release (scripts/collect_mbpi_supplement.py, same filters, same cohort counting) and merged into it. The supplement adds compounds, their admitted activities with the depositor's activity_comment, new targets and the cohort counts at the new medians; a cohort the snapshot already holds must keep its total. Original-paper links of species without P703 statements are added as species links."
+ },
+ "unexplored_candidates": {
+  "relative_min_bbvi": 50,
+  "ranks": [
+   "genus",
+   "family"
+  ],
+  "scope": "operating_8 + expansion_22",
+  "rule": "Information sufficiency below unexplored_threshold (mean ratio of required inputs) marks the species 'priority_survey' (우선 조사 대상). Such a species is an unexplored candidate (미탐색 후보) when a relative in the same WoRMS genus, else family, has a published BBVI of at least relative_min_bbvi (the matrix threshold). The relative's score is never copied.",
+  "national_mcui_sufficiency": "When mcui_basis is national, the MCUI steps are read from the national assessment that gives the MCUI: assessment_record = the reviewed national record, numeric_category = its category is in conservation.category_scores, current_check = its list and index pages were re-read (national_red_list.page_recheck). Otherwise the IUCN steps apply.",
+  "weight_note": "Relatives are judged at the published default BBVI weight (w = 0.5); the screen slider does not move this flag.",
+  "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)",
+  "source": {
+   "id": "worms_classification",
+   "title": "WoRMS AphiaClassificationByAphiaID (genus and family of the 30 species)",
+   "provider": "WoRMS Editorial Board, World Register of Marine Species (VLIZ)",
+   "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
+   "version": "queried 2026-09-30",
+   "accessed": "2026-09-30",
+   "license": "CC BY 4.0",
+   "license_url": "https://www.marinespecies.org/about.php",
+   "terms": "Text open access under CC BY; cite WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170. Re-distribution of the entire database is not permitted; only genus and family of the 30 species are stored."
+  },
+  "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). A Rapid LC gives no MCUI (reference only), so the IUCN steps apply as for any species without an assessment."
+ },
+ "matrix": {
+  "bbvi_threshold": 50,
+  "mcui_threshold": 50,
+  "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
+  "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
+  "include_national_mcui": true,
+  "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
+  "types": {
+   "low_bbvi_high_mcui": {
+    "id": "conservation_priority",
+    "label": "보전 우선·모니터링"
+   },
+   "high_bbvi_high_mcui": {
+    "id": "alternative_production",
+    "label": "대체생산·배양 연구"
+   },
+   "high_bbvi_low_mcui": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "low_bbvi_low_mcui": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   }
+  },
+  "cell_colour_precedence": [
+   "conservation_priority",
+   "alternative_production",
+   "sustainable_use",
+   "baseline_survey"
+  ],
+  "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
+  "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
+  "include_substitute_mcui": [
+   "range_state",
+   "sub_national",
+   "preliminary"
+  ],
+  "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
+  "include_single_source_bbvi": true,
+  "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
+  "include_floor_bbvi": true
+ },
+ "mcui_substitutes": {
+  "snapshot": "research/verified-indices/mcui-substitutes-4.0-2026-10-04.json",
+  "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
+  "snapshot_source_id": "gbif_rapid_lc",
+  "method_source_id": "bachman_2020_rapid_lc",
+  "applies_when_reason": [
+   "not_in_red_list"
+  ],
+  "order": [
+   "range_state",
+   "sub_national",
+   "preliminary"
+  ],
+  "labels": {
+   "range_state": "서식국 국가 평가 기반 MCUI",
+   "preliminary": "자체 예비평가(Rapid LC) · 역검증 미통과",
+   "sub_national": "지방 목록 참고값({regions}) · {backtest}"
+  },
+  "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state. Since 4.0 (team-lead decision 2026-10-04): a species that a Japanese government agency evaluated by name and published as 'ランク外' (no category assigned; the same table gives DD separately) counts as LC-equivalent; the row says so (rank_out) and the species shows the list's own definition of 'ランク外'.",
+  "preliminary_rule": "Otherwise a preliminary Rapid Least Concern check (Bachman et al. 2020, citing the IUCN guidelines): GBIF and OBIS records from 1990 inside a reviewed native-range box, one point per rounded coordinate and year; LC when EOO > 30,000 km2, AOO on 10 km cells > 3,000 km2 and at least 75 records, and the OBIS reporting rate shows no decline signal. It is not an IUCN assessment: criterion A is read only through the OBIS trend, so a met check is never an official assessment. When a test fails, nothing is shown as met. Since the team-lead decision of 2026-10-02 (the back-test failed) a met check is not an MCUI either: the record (EOO, AOO, records, back-test result) is shown beside the withheld MCUI as reference information, and the species keeps its no-assessment reason. 4.3 (team-lead decision 2026-10-05): a met check now gives the MCUI LC-equivalent value as the LAST basis, below every official list, with the label and the failed back-test shown beside the value and its own matrix marker.",
+  "preliminary_category": "LC",
+  "thresholds": {
+   "eoo_km2": 30000,
+   "aoo_km2": 3000,
+   "aoo_cell_km": 10,
+   "records": 75
+  },
+  "ranking_rule": "Each basis that gives an MCUI is its own stratum (4.2 adds the sub-national one, 4.3 the scored Rapid LC, each drawn with its own marker): shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI.",
+  "sub_national": {
+   "file": "research/verified-indices/mcui-subnational-4.3-2026-10-05.json",
+   "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
+   "rule": "An official red list published by a sub-national government (Japanese prefecture, Russian federal subject, Chinese province, Korean province) of a state in the species' native range, current edition, the category assigned to the species itself (not a variety or another species), in IUCN categories or the Japanese Ministry of the Environment scheme, read in the original document. Applies only when IUCN, the Korean national list and every range-state national list are silent.",
+   "median_rule": "Categories ordered LC < NT < VU < EN < CR; the median is scored and with an even count the lower-risk of the two middle categories is taken, so one region cannot pull the value up. Every region is shown.",
+   "excluded": [
+    "DD (정보 부족) gives no score, as elsewhere",
+    "Regional extinction (絶滅 / RE) gives no score: a regional extirpation is not a global IUCN category",
+    "Local grades without a published correspondence to IUCN categories (for example 兵庫県 'Bランク')",
+    "Absence from a list whose roster of evaluated species is not published (that is not 'ランク外')"
+   ],
+   "category_crosswalk": {
+    "絶滅危惧ⅠA類": "CR",
+    "絶滅危惧ⅠB類": "EN",
+    "絶滅危惧Ⅱ類": "VU",
+    "準絶滅危惧": "NT",
+    "情報不足": "DD"
+   },
+   "limitation": "A sub-national assessment describes that region, not the country or the world, and many of these species are at the edge of their range there, where a species common in the core can be rare.",
+   "backtest": {
+    "criterion": "Pre-registered 2026-10-04 before collection: does a sub-national category overstate risk against the official one? For every species holding both, delta = sub-national score - official score.",
+    "one_step_delta": 25,
+    "two_step_delta": 50,
+    "one_step_share_max": {
+     "numerator": 1,
+     "denominator": 3
+    },
+    "minimum_pairs": 5,
+    "labels": {
+     "passed": "과대평가 역검증 통과({n}종 비교)",
+     "failed": "과대평가 역검증 미통과({n}종 비교)",
+     "inconclusive": "역검증 판정 불가(표본 {n}종)"
+    },
+    "use_rule": "The result never changes a score: team-lead decision 2026-10-04 is to score the official sub-national category and state the transfer check beside it. This differs from the 3.15 Rapid LC, which was our own estimate and is still not scored after failing its back-test."
+   },
+   "original_reading_4_3": "4.3 (team-lead decision 2026-10-05, prereg-fill-all-4.3 1.2): the full text of a regional act read in a legal-database copy (signatory, date, number and category legend included), with its currency checked against the official publication portal, counts as read in the original."
+  },
+  "preliminary_scored": {
+   "decision": "Team-lead decision 2026-10-05 (prereg-fill-all-4.3-2026-10-05.md 1.1): the last MCUI basis, used only when no official list of any level gives a scored category.",
+   "backtest": {
+    "result": "failed",
+    "checked_on": "2026-10-02",
+    "label": "역검증 미통과",
+    "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk."
+   },
+   "limitations": [
+    "IUCN 평가가 아니다. 감소 기준(A)은 OBIS 보고율로만 읽었다.",
+    "2026-10-02 역검증에서 공식 위협 범주(해삼·전복 EN)를 가진 종도 LC로 보았다. 점수가 위험을 낮게 볼 수 있다."
+   ]
+  }
+ },
+ "amp_bioactivity": {
+  "supplement": "research/verified-indices/evidence-amp-4.1-2026-10-04.json",
+  "cohort_file": "research/verified-indices/amp-cohorts-dbaasp-3.19-2026-10-02.json",
+  "cohort_builder": "scripts/build_amp_cohorts.py",
+  "endpoint": "MIC",
+  "method": "broth_microdilution",
+  "minimum_peptides": 30,
+  "minimum_justification": "Same as the ACE peptide stratum: 30 peers keep one rank step at about 3 percentile points, below which a single peer moves the score more than the 0.75 single-DOI discount.",
+  "accepted_materials": [
+   "synthetic",
+   "purified_isolate"
+  ],
+  "value_scale": "pMIC = 6 - log10(MIC in uM); higher is more potent",
+  "cohort_rule": "One cohort per target bacterium: DBAASP rows whose activityMeasureValue is exactly MIC, measured in a broth medium on the published whitelist, with a single numeric concentration. Censored values, ranges, agar media and unclassifiable media are dropped. ug/mL becomes uM with ExPASy average residue masses plus one water, which admits only plain standard-residue monomers with free termini. Member key = sequence + termini + non-standard residues + bonds; member value = the median of that member's uM rows.",
+  "origin_rule": "The origin claim is read in the original paper, never from DBAASP, which records neither the tested material nor its synthesis: the sequence must come from the species' own gene or tissue, the tested material must be a chemically synthetic or sequence-confirmed purified single peptide, and the value must be a numeric MIC by broth microdilution. MEC (radial diffusion), inhibition-zone diameters, recombinant proteins and censored values never enter. Since 3.19 (team-lead decision): a peptide expressed in another organism (for example an E. coli fusion protein cut free and purified) is recombinant and stays excluded; 'purified isolate' means purified from the species' own tissue.",
+  "separation_rule": "A MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
+  "fungal_cohorts": "Candida albicans is a fungus. Its cohort was built in the same run and is kept out of this file; a fungal row would need its own labelled cohort and is never pooled with the bacterial ones.",
+  "limitations": [
+   "The cohort is dominated by designed and synthetic peptides, so a natural marine peptide usually lands below the median; the natural-origin-only cohort is published beside it as a sensitivity.",
+   "DBAASP gives molarMass 0.0 for every terminus and unusual residue, so modified peptides' ug/mL rows are dropped. Allowing only amidation and acetylation would add about 1,300 members per large cohort and move no cohort's median pMIC by more than 0.10.",
+   "Media differ: the 3.18 papers used LB broth and Cg-BigDef1 used Poor Broth, so the CLSI MHB/CAMHB cohort is a sensitivity, not the primary.",
+   "Seaweeds have no peptide-with-MIC paper at all, so this stratum covers animals only.",
+   "Other DBAASP media that are broths by DBAASP's own description (PB peptone broth, M7H9B, DMB and others) are still outside the list; the 3.19 decision covered only Poor Broth."
+  ],
+  "cohort_source_id": "dbaasp_amp_cohort",
+  "assay_rule": "Since 3.19 (team-lead decision): a liquid growth inhibition assay that reads the MIC in a liquid medium over two-fold dilutions counts as broth microdilution; the published wording is kept beside the row (method_as_published). Poor Broth (PBM) is on the cohort's broth list for the same reason."
+ },
+ "anticancer_bioactivity": {
+  "supplement": "research/verified-indices/evidence-anticancer-2026-10-02.json",
+  "cohort_file": "research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json",
+  "cohort_builder": "scripts/build_anticancer_cohorts.py",
+  "endpoint": "IC50",
+  "accepted_methods": [
+   "MTT",
+   "MTS",
+   "CCK-8",
+   "SRB",
+   "alamarBlue"
+  ],
+  "minimum_peptides": 30,
+  "minimum_justification": "Same as the ACE and AMP strata: 30 peers keep one rank step at about 3 percentile points, below which a single peer moves the score more than the 0.75 single-DOI discount.",
+  "accepted_materials": [
+   "synthetic",
+   "purified_isolate"
+  ],
+  "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent",
+  "cohort_rule": "One cohort per cancer cell line: CancerPPD 2.0 rows whose activity reads IC50 with relation '=' and a single numeric value (an attached standard deviation is kept and its central value used). EC50, LD50, LC50, CC50, GI50, MIC, censored and range values are dropped. uM, nM, mM and pM are used as read; ug/mL, mg/mL, ng/mL and ug/L become uM with ExPASy average residue masses plus one water, which admits only a plain standard-residue linear monomer with free unmodified termini. A bare 'M' is refused because every such row reads 'IC50 = 5 M' or '6 M', which is not a credible peptide IC50. Member key = sequence + chemical modification + both termini + ring form + chirality; member value = the median of that member's uM rows for the cell line. Cell-line names are matched ignoring hyphens, spaces and case.",
+  "origin_rule": "The origin claim is read in the original paper, never from CancerPPD, which records neither the tested material nor its synthesis: the sequence must come from the species' own tissue or gene, the tested material must be a chemically synthetic or sequence-confirmed peptide purified from the species itself, and the value must be a numeric IC50 against a named cancer cell line by a cell-viability assay. Growth-inhibition percentages, censored values and recombinant proteins never enter.",
+  "self_membership_rule": "A peptide that CancerPPD 2.0 already holds is one of its own cohort rows. The row names that member (cohort_self_member_key) and the builder removes it before ranking, so nothing is ranked against itself; the remaining peer count must still meet the minimum.",
+  "separation_rule": "A cell IC50 percentile, a MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
+  "limitations": [
+   "The cohort pools exposure times (24 h, 48 h, 72 h) and assay formats (MTT, MTS, CCK-8, SRB, alamarBlue). A longer exposure usually gives a lower IC50, so a short-exposure value ranks low for a reason that is not potency.",
+   "The cohort is dominated by designed and synthetic peptides, so a natural marine peptide usually lands below the median; a natural-origin-only cohort is published beside it as a sensitivity.",
+   "Only a part of CancerPPD 2.0 carries an IC50 our rule can convert, so a cohort is a few dozen peers, not the whole database. A percentile of 100 means the value beats every peer in that cohort, not that no stronger anticancer peptide exists.",
+   "The strongest measured value of 피조개 P6 (DLD-1) and of 가시파래 HTDT-6-2-3-2 (NCI-H460) cannot be scored, because neither cell line has 30 usable peers. Both are recorded in the supplement's excluded list."
+  ],
+  "cohort_source_id": "cancerppd_anticancer_cohort"
+ },
+ "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.3-2026-10-05.json",
+ "xo_bioactivity": {
+  "supplement": "research/verified-indices/evidence-xo-4.3-2026-10-05.json",
+  "cohort_file": "research/verified-indices/xo-cohort-4.3-2026-10-05.json",
+  "cohort_source_id": "xo_peptide_cohort_literature_2026",
+  "target": "xanthine oxidase",
+  "endpoint": "IC50",
+  "minimum_peptides": 30,
+  "minimum_justification": "Same as the ACE, AMP and anticancer strata: 30 peers keep one rank step at about 3 percentile points.",
+  "accepted_materials": [
+   "synthetic",
+   "purified_isolate"
+  ],
+  "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent",
+  "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 (xanthine substrate, uric-acid readout by absorbance or HPLC) is one stated number; uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
+  "origin_rule": "As for the other peptide strata: the sequence comes from the species' own material, the tested material is a synthetic or sequence-confirmed purified single peptide, and the IC50 is a number in the text of the original paper.",
+  "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.",
+  "label": "잔틴 산화효소(XO) 억제 펩타이드 · 문헌 비교집단",
+  "separation_rule": "An XO IC50 percentile is never ranked against an ACE IC50, a MIC or a cell IC50; the species MBPI is the highest adjusted item over all strata."
+ },
+ "mbpi_floor": {
+  "value": 0,
+  "label": "효능 근거 미확인(하한값)",
+  "bbvi_label": "MBPI 하한값 포함",
+  "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거는 종 상세에 그대로 보입니다.",
+  "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
+  "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used."
+ }
+}

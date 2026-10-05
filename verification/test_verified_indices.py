@@ -2712,6 +2712,7 @@ XO328 = "research/verified-indices/evidence-xo-potency-3.28-2026-10-03.json"
 V328 = ROOT / "config" / "verified-indices-v3.28.json"  # superseded by 4.0 (released set, labelled gap filling)
 V40 = ROOT / "config" / "verified-indices-v4.0.json"    # superseded by 4.1 (꽃게 AMP row)
 V41 = ROOT / "config" / "verified-indices-v4.1.json"    # superseded by 4.2 (sub-national MCUI basis)
+V42 = ROOT / "config" / "verified-indices-v4.2.json"    # superseded by 4.3 (every cell filled, labelled fallbacks)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -2933,14 +2934,16 @@ class Verified42Tests(unittest.TestCase):
     score. Only 톳, 청각 and 꽃게 move; DD, regional extinction and a variety-level row give nothing."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V41))
+        self.report, self.old_report = build(*load_inputs(config=V42)), build(*load_inputs(config=V41))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
         self.record = json.loads((ROOT / "research/verified-indices/mcui-subnational-4.2-2026-10-04.json").read_text(encoding="utf-8"))
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.2", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.2 report is archived as it was
+        archived42 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.2.json"
+        self.assertEqual(render(self.report), archived42.read_text(encoding="utf-8"))
 
     def test_only_three_species_move_and_nothing_else_changes(self):
         filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
@@ -2985,7 +2988,7 @@ class Verified42Tests(unittest.TestCase):
         # the thresholds in the config are the registered ones and the verdict follows them
         rule = self.report["method"]["mcui_substitutes"]["sub_national"]["backtest"]
         self.assertEqual((rule["one_step_delta"], rule["two_step_delta"], rule["minimum_pairs"]), (25, 50, 5))
-        recomputed = subnational_backtest(load_inputs()[0], json.loads(DEFAULT_CONFIG.read_text(encoding="utf-8")))
+        recomputed = subnational_backtest(load_inputs(config=V42)[0], json.loads(V42.read_text(encoding="utf-8")))
         self.assertEqual(recomputed["result"], back["result"])
         self.assertEqual(recomputed["n"], back["n"])
         for value in ("과대평가 역검증", "역검증"):
@@ -2993,6 +2996,92 @@ class Verified42Tests(unittest.TestCase):
                 break
         else:
             self.fail(back["label"])
+
+
+class Verified43Tests(unittest.TestCase):
+    """4.3 (team-lead decisions 2026-10-05, "fill every value"): pre-registered fallbacks fill the last 15 cells. MCUI: a met
+    Rapid LC check scores LC-equivalent 10 only where no official list of any level gives a category, and 미역 takes the
+    Primorsky Krai decree No. 272 row. MBPI: a literature-built XO peptide cohort gives 참조기 a value; species with no item in
+    any stratum get the labelled floor 0. No existing value changes."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V42))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.3", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_every_cell_is_filled_and_no_value_moves(self):
+        filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
+        self.assertEqual((filled(self.old), filled(self.new)), (105, 120))
+        for a, s in self.new.items():
+            for k, v in self.old[a]["scores"].items():
+                if v is not None:
+                    self.assertEqual(s["scores"][k], v, f"{a} {k}")
+            self.assertEqual(set(s["score_status"].values()), {"산출됨"}, a)
+        self.assertEqual({a for a, s in self.new.items() if s["scores"] != self.old[a]["scores"]},
+                         {145721, 250680, 377084, 371986, 494853, 236157, 274849, 281273, 276651, 534443, 1666974})
+
+    def test_rapid_lc_scores_only_where_every_official_list_is_silent(self):
+        rule = self.report["method"]["mcui_substitutes"]
+        for a, s in self.new.items():
+            if s["mcui_basis"] != "preliminary":
+                continue
+            sub = s["mcui_substitute"]
+            self.assertEqual((sub["use"], sub["category"], s["scores"]["MCUI"]), ("scored", "LC", 10.0))
+            self.assertEqual(sub["label"], rule["labels"]["preliminary"])
+            self.assertEqual(sub["backtest"]["result"], "failed")
+            self.assertEqual(s["conservation_trace"]["iucn_state"], "not_in_red_list")
+            self.assertIsNone(s["national_assessment"])
+            self.assertIsNone(self.old[a]["scores"]["MCUI"])
+        self.assertEqual(sum(s["mcui_basis"] == "preliminary" for s in self.new.values()), 6)
+        # the 4.2 config keeps the check reference-only
+        self.assertTrue(all(s["mcui_basis"] != "preliminary" for s in self.old.values()))
+
+    def test_undaria_takes_the_primorsky_decree(self):
+        u = self.new[145721]
+        self.assertEqual((u["mcui_basis"], u["scores"]["MCUI"], u["mcui_substitute"]["category"]), ("sub_national", 80.0, "EN"))
+        row = u["mcui_substitute"]["record"]["regions"][0]
+        self.assertEqual((row["source_id"], row["currency_source_id"]), ("primorsky_decree272_2002", "primorsky_723pp_2022_official"))
+        self.assertIn("역검증 미통과", u["mcui_substitute"]["label"])
+
+    def test_xo_cohort_is_built_from_its_review_and_ranks_croaker(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import build_xo_cohort
+        review = json.loads(build_xo_cohort.REVIEW.read_text(encoding="utf-8"))
+        cohort = json.loads(build_xo_cohort.OUT.read_text(encoding="utf-8"))
+        self.assertEqual(build_xo_cohort.build(review), cohort)
+        self.assertGreaterEqual(cohort["size"], 30)
+        self.assertFalse({"WDDMEKIW", "APPERKYSVW"} & {m["sequence"] for m in cohort["members"]})
+        top = max(self.new[281273]["bioactivity_trace"], key=lambda t: t["adjusted"])
+        self.assertEqual((top["stratum_kind"], top["peptide_sequence"], top["peer_peptides"]), ("xo", "WDDMEKIW", cohort["size"]))
+        peers = [6 - math.log10(m["ic50_uM"]) for m in cohort["members"]]
+        mine = 6 - math.log10(3160)
+        rank = 100 * (sum(p < mine for p in peers) + 0.5 * sum(p == mine for p in peers)) / len(peers)
+        self.assertAlmostEqual(top["percentile"], round(rank, 2))
+        self.assertEqual(self.new[281273]["scores"]["MBPI"], round1(rank * 0.75))
+        self.assertEqual(self.new[281273]["mbpi_label"], "단일 논문")
+
+    def test_floor_only_where_no_item_exists(self):
+        floor = self.report["method"]["mbpi_floor"]
+        floored = {a for a, s in self.new.items() if s.get("mbpi_floor")}
+        self.assertEqual(floored, {276651, 534443, 1666974})
+        for a in floored:
+            s = self.new[a]
+            self.assertEqual((s["scores"]["MBPI"], s["bioactivity_trace"], s["mbpi_stratum"]), (0.0, [], "floor"))
+            self.assertEqual((s["mbpi_label"], s["bbvi_label"]), (floor["label"], floor["bbvi_label"]))
+            self.assertEqual(s["scores"]["BBVI"], round1(0.5 * s["scores"]["MFPI"]))
+        for a, s in self.new.items():
+            if a not in floored:
+                self.assertIsNone(s.get("mbpi_floor"))
+                self.assertTrue(s["bioactivity_trace"], a)
+
+    def test_pre_registration_is_on_record(self):
+        prereg = ROOT / "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md"
+        self.assertTrue(prereg.exists())
+        self.assertEqual(self.report["method"]["mbpi_floor"]["prereg"], "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md")
 
 
 if __name__ == "__main__":

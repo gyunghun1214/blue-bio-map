@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.2.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.3.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -735,6 +735,56 @@ def anticancer_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
+def xo_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
+    """4.3 xanthine-oxidase peptide stratum (team-lead decision 2026-10-05; prereg-fill-all-4.3 1.3). Same shape as the
+    anticancer stratum with one fixed cohort. No public database holds XO peptides, so the cohort is literature-built:
+    single-peptide XO IC50 values from a documented PubMed search, each member kept only after two independent checks.
+    pIC50 = 6 - log10(IC50 uM), percentile inside the cohort, the same single/multiple-DOI factors and max aggregation.
+    An XO percentile is never ranked against an ACE IC50, a MIC or a cell IC50."""
+    settings = config.get("xo_bioactivity")
+    rows = evidence.get("xo_bioactivity", [])
+    if not settings or not rows:
+        return []
+    book = json.loads((ROOT / settings["cohort_file"]).read_text(encoding="utf-8"))
+    members = book["members"]
+    require(book["size"] == len(members) >= settings["minimum_peptides"], "XO cohort below minimum size")
+    require(len({m["sequence"] for m in members}) == len(members), "XO cohort: one member per sequence")
+    groups = defaultdict(list)
+    for r in rows:
+        if r.get("status") != "approved_for_score":
+            continue
+        require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
+                and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None
+                and r.get("sequence_confirmed") is True and r.get("value_in_text") is True
+                and (r.get("synthetic") is True or r.get("material") in settings["accepted_materials"])
+                and r.get("target") == settings["target"] and r.get("endpoint") == settings["endpoint"]
+                and r.get("relation") == "=" and r.get("unit") == "uM" and r.get("source_id") in evidence["sources"]
+                and r.get("original_paper_doi") and r.get("origin_aphia_id") and r.get("origin_scientific_name"),
+                f"{r.get('record_id')}: incomplete XO origin/sequence/assay chain")
+        finite(r.get("value"), "XO IC50", 0.0000001)
+        groups[(r["origin_aphia_id"], r["sequence"])].append(r)
+    out = []
+    for (origin, sequence), own in sorted(groups.items()):
+        require(all(m["sequence"] != sequence for m in members), f"{sequence}: a scored peptide is never its own XO cohort member")
+        peers = [6 - math.log10(finite(m["ic50_uM"], "cohort IC50", 0.0000001)) for m in members]
+        value = median(6 - math.log10(r["value"]) for r in own)
+        rank = percentile(value, peers)
+        dois = {r["original_paper_doi"].lower() for r in own}
+        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        out.append((origin, {"stratum_kind": "xo", "peptide_sequence": sequence, "stratum_id": book["cohort_id"],
+                             "peptide_name": own[0].get("peptide_name"), "target": settings["target"],
+                             "record_ids": sorted(r["record_id"] for r in own), "original_paper_dois": sorted(dois),
+                             "peer_peptides": len(peers), "cohort_median_pIC50": book["median_pIC50"],
+                             "pIC50": round(value, 3), "percentile": round(rank, 2),
+                             "evidence_factor": factor, "adjusted": rank * factor, "caveat": settings["item_caveat"],
+                             "measurements": [{"endpoint": r["endpoint"], "relation": r["relation"], "value": r["value"],
+                                               "unit": r["unit"], "value_as_published": r.get("value_as_published"),
+                                               "target": r["target"], "enzyme_source": r.get("enzyme_source"),
+                                               "readout": r.get("readout"), "source_id": r["source_id"],
+                                               "original_paper_doi": r["original_paper_doi"]} for r in own]}))
+    return out
+
+
 def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
     """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
@@ -924,6 +974,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
     for origin, item in amp_items(evidence, config):  # verified-pilot-3.18
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for origin, item in anticancer_items(evidence, config):  # verified-pilot-3.21
+        out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    for origin, item in xo_items(evidence, config):  # 4.3
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     chembl = None
     if config.get("chembl_bioactivity"):  # verified-pilot-3.1
@@ -1115,8 +1167,13 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
     if not met or decline:
         return {**out, "basis": None, "category": None, "value": None,
                 "result": "decline_signal" if decline else "thresholds_not_met"}
+    category = rule["preliminary_category"]
+    if rule.get("preliminary_scored"):  # 4.3 (team-lead decision 2026-10-05): the last basis, scored with its failed back-test label
+        return {**out, "basis": "preliminary", "category": category, "value": float(scores[category]), "use": "scored",
+                "result": "likely_least_concern", "backtest": rule["preliminary_scored"]["backtest"],
+                "pilot_mapping": mapping_text(config, "preliminary", "", category=category, value=scores[category])}
     # team-lead decision 2026-10-02: the back-test failed, so a met check is reference information only, never an MCUI
-    return {**out, "basis": "preliminary", "category": rule["preliminary_category"], "value": None, "use": "reference_only",
+    return {**out, "basis": "preliminary", "category": category, "value": None, "use": "reference_only",
             "result": "likely_least_concern"}
 
 
@@ -1259,6 +1316,10 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             trend.update({"label": trend_rule["labels"][trend["class"]], "mcui_base": mcui, "mcui_adjustment": adjust})
             if adjust:
                 mcui = float(min(100, mcui + adjust))
+        floor_rule, mbpi_floor = config.get("mbpi_floor"), None
+        if mbpi is None and floor_rule:  # 4.3 (team-lead decision 2026-10-05): no item in any stratum gives the labelled floor
+            mbpi_floor = {k: floor_rule[k] for k in ("value", "label", "bbvi_label", "meaning", "prereg")}
+            mbpi = float(floor_rule["value"])
         w = config["bbvi"]["default_food_weight"]
         best = max(bio_trace, key=lambda i: i["adjusted"]) if bio_trace else None
         # verified-pilot-3: an MBPI value resting on fewer independent papers is shown for reference and kept out of BBVI
@@ -1294,7 +1355,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                        bool(c.get("current_status_check"))]
         sufficiency = {"MFPI": food_trace["sufficiency"], "MBPI":
                        {"required": ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"],
-                        "best_record_steps": 4, "ratio": 1.0} if mbpi is not None else
+                        "best_record_steps": 4, "ratio": 1.0} if mbpi is not None and not mbpi_floor else
                        max([bio_sufficiency(partial_bio)] + ([links["sufficiency"]] if links else []), key=lambda x: x["best_record_steps"]),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
                                 "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {}),
@@ -1327,12 +1388,15 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 source_ids.add(config["amp_bioactivity"]["cohort_source_id"])
             if item.get("stratum_kind") == "anticancer":
                 source_ids.add(config["anticancer_bioactivity"]["cohort_source_id"])
+            if item.get("stratum_kind") == "xo":
+                source_ids.add(config["xo_bioactivity"]["cohort_source_id"])
+                source_ids |= {r["source_id"] for r in evidence["xo_bioactivity"] if r["record_id"] in item["record_ids"]}
             source_ids |= {r["source_id"] for r in evidence.get("amp_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in evidence.get("anticancer_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in item.get("potency_replications", []) if r["used"]}
             if item.get("stratum_kind") == "chembl":
                 source_ids |= set(config["chembl_bioactivity"]["source_ids"])
-            elif item.get("stratum_kind") not in ("peptide", "amp", "anticancer"):
+            elif item.get("stratum_kind") not in ("peptide", "amp", "anticancer", "xo"):
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if links and links["counts"].get("linked"):
             source_ids |= set(config["chembl_bioactivity"]["source_ids"])
@@ -1361,8 +1425,12 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             row["mbpi_label"] = config["bbvi"]["single_source_mbpi_label"] if single_source else None
         if labelled:
             row["bbvi_label"] = config["bbvi"]["single_source_bbvi_label"] if single_source and bbvi is not None else None
+        if floor_rule:  # 4.3: the floor travels with its own labels wherever MBPI or BBVI appears
+            row["mbpi_floor"] = mbpi_floor
+            if mbpi_floor:
+                row["mbpi_label"], row["bbvi_label"] = mbpi_floor["label"], mbpi_floor["bbvi_label"] if bbvi is not None else None
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
-            row["mbpi_stratum"] = None if best is None else best.get("stratum_kind", "small_molecule")
+            row["mbpi_stratum"] = "floor" if mbpi_floor else None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
         if chembl is not None:
             row["chembl_links"] = links
@@ -1660,6 +1728,15 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         used = {r["source_id"] for r in extra["anticancer_bioactivity"]} | {ac["cohort_source_id"]}
         require(not used & set(evidence["sources"]), "anticancer supplement redefines a source")
         evidence = {**evidence, "anticancer_bioactivity": extra["anticancer_bioactivity"],
+                    "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+    xo = cfg.get("xo_bioactivity")
+    if xo:  # 4.3: xanthine-oxidase peptide rows, their papers and the literature cohort's own source
+        extra = read(ROOT / xo["supplement"])
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "XO supplement is older than evidence")
+        used = {r["source_id"] for r in extra["xo_bioactivity"]} | {xo["cohort_source_id"]}
+        require(not used & set(evidence["sources"]), "XO supplement redefines a source")
+        evidence = {**evidence, "xo_bioactivity": extra["xo_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     fa = cfg["nutrition"].get("display_fatty_acids")

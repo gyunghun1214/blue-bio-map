@@ -64,7 +64,7 @@ assert.equal(popup.length,1);
 assert.equal(rectangles.length,1,'cell remains the full interactive map target');
 assert.deepEqual(JSON.parse(JSON.stringify(rectangles[0].bounds)),[[34,128],[35,129]]);
 assert.notEqual(rectangles[0].options.interactive,false,'smaller dots must not shrink the cell hit area');
-assert.match(popup[0],/해역별 활용·보전 판단: 보류/);
+assert.match(popup[0],/해역별 활용·보전 판단: 하지 않음\(지표는 종 단위\)/);
 assert.match(popup[0],/2015–2020/);
 assert.match(popup[0],/LME 43/);
 assert.match(popup[0],/https:\/\/example.org\/dataset/);
@@ -177,5 +177,5 @@ const csvText=context.csv({live:true,label:'시험, "종"',name:'Accepted specie
 assert.ok(csvText.startsWith('﻿"species_label"'));
 const csvRows=csvText.slice(1).split('\r\n');
 assert.equal(csvRows.length,2);
-assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","43","공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 보류"');
+assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","43","공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 안 함"');
 console.log('PASS: selected occurrences and unapproved spatial decisions remain separate');
