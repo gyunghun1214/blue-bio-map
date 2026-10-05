@@ -1,0 +1,251 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "purpose": "verified-4.1: reviewed bioactivity records of three species whose MBPI stays withheld, kept as partial evidence so the page shows what was found and which step is missing (team-lead request 2026-10-04 to check every '미확인' item). None of them enters a score. 4.1: the 꽃게 record left this file — the origin species was settled on public sequence records and it now carries a score in the AMP stratum. 4.3 (2026-10-05): the 참조기 XO record left this file — its peptides are scored in the new XO stratum (evidence-xo-4.3-2026-10-05.json). Three 갑오징어 records were added: each fails two or more conditions, so the one-condition relaxation (prereg-fill-all-4.3 1.4) does not apply and the species keeps the floor MBPI; they show what was found. The 참문어 Zhou 2025 record was re-read in full text (still no single MIC), and a cephalotocin record was added; neither scores.",
+ "sources": {
+  "yu_2020_md_sepia": {
+   "provider": "Marine Drugs 18(10):490 (MDPI), full text in PMC7599988",
+   "title": "Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)",
+   "version": "2020",
+   "doi": "10.3390/md18100490",
+   "url": "https://doi.org/10.3390/md18100490",
+   "accessed": "2026-10-04",
+   "license": "CC BY 4.0",
+   "terms": "Peptide sequences and assay type recorded"
+  },
+  "zhou_2025_fsi_octopus": {
+   "provider": "Fish & Shellfish Immunology 163:110408 (Elsevier), abstract on PubMed (PMID 40360041)",
+   "title": "Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)",
+   "version": "2025",
+   "doi": "10.1016/j.fsi.2025.110408",
+   "url": "https://doi.org/10.1016/j.fsi.2025.110408",
+   "accessed": "2026-10-05",
+   "license": "Publisher copyright; abstract only",
+   "terms": "Full text read from the team lead's library PDF on 2026-10-05 (not stored in the repository). Synthetic peptides (GenScript), LB broth, 96-well plates, growth curves at OD600; no per-bacterium MIC value in the text, tables or figures."
+  },
+  "ding_2011_cjnm_qpk": {
+   "provider": "Chinese Journal of Natural Medicines 9(2):151-155 (Elsevier)",
+   "title": "Anticancer activity of an oligopeptide isolated from hydrolysates of Sepia ink (Ding G-F et al. 2011)",
+   "version": "2011",
+   "doi": "10.3724/SP.J.1009.2011.00151",
+   "url": "https://www.sciencedirect.com/science/article/pii/S1875536411600563",
+   "accessed": "2026-10-05",
+   "license": "Publisher terms; values and wording recorded only",
+   "terms": "Full text read from the team lead's library PDF (sha256 4b7a52b58bac97796fbda5745e17d0ee515d5aa42ba5b9c620138d3059706ba8, not stored in the repository). Species stated as sepia esculenta, identified by Prof. Zhao Shen-Long."
+  },
+  "jing_2014_mfst_shp": {
+   "provider": "现代食品科技 (Modern Food Science and Technology) 30(9):1-6",
+   "title": "乌贼墨多肽诱导人前列腺癌DU-145细胞凋亡的机制研究 (景奕文·杨最素·黄芳芳·郁迪·丁国芳 2014)",
+   "version": "2014",
+   "doi": "10.13982/j.mfst.1673-9078.2014.09.001",
+   "url": "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901",
+   "accessed": "2026-10-05",
+   "license": "Publisher terms; values recorded only",
+   "terms": "Open PDF. IC50 values in the text; the Chinese methods text is not machine-readable (font without a Unicode map), so species name and purification step were not confirmed in this paper."
+  },
+  "huang_2017_mmr_shp": {
+   "provider": "Molecular Medicine Reports 16(4):4222-4228 (Spandidos)",
+   "title": "Sepia ink polypeptide SHP (LKEENRRRRD) and PC-3 prostate cancer cells (Huang F, Jing Y, Ding G, Yang Z 2017)",
+   "version": "2017",
+   "doi": "10.3892/mmr.2017.7068",
+   "url": "https://doi.org/10.3892/mmr.2017.7068",
+   "accessed": "2026-10-05",
+   "license": "Publisher terms; wording recorded only",
+   "terms": "Full text and publisher XML read: species sepia esculenta (Nanzhen Market, Zhoushan; identified by Prof. Sheng-Long Zhao); sequence LKEENRRRRD, 1371.53 Da; 'IC50' appears nowhere in the text, tables or figure captions; no supplementary files."
+  },
+  "kim_2022_md_cephalotocin": {
+   "provider": "Marine Drugs 20(5):328 (MDPI)",
+   "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim et al. 2022)",
+   "version": "2022",
+   "doi": "10.3390/md20050328",
+   "url": "https://doi.org/10.3390/md20050328",
+   "accessed": "2026-10-05",
+   "license": "CC BY 4.0",
+   "terms": "Open full text: synthetic cephalotocin (CYFRNCPIG-NH2, >98%) EC50 at human V2 and V1b receptors in the text. The paper names the source species Octopus vulgaris without a sampling region; the sequence papers (Reich 1992, Univ. Ulm; Takuwa-Kuroda 2003) give no public collection locality."
+  }
+ },
+ "bioactivity": [
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.3390/md18100490:SeP2-SeP5",
+   "source_id": "yu_2020_md_sepia",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "갑오징어(Sepia esculenta) 가수분해물에서 정제·동정한 펩타이드 SeP2(DVEDLEAGLAK)·SeP5(EITSLAPSTM)",
+   "endpoint": "선충 산화 스트레스 생존율(2·4 mM 처리)",
+   "values": [],
+   "test_system": "Caenorhabditis elegans 산화 스트레스 모델(생존율 %)",
+   "missing": [
+    "펩타이드 단위의 수치 종말점(IC50 등)이 없음 — 생존율 %만 보고",
+    "항산화 시험에는 공통 종말점의 고정 비교집단 층이 없음"
+   ],
+   "exclusion_reason": "정량 종말점과 비교집단이 없어 점수를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 534443,
+   "origin_scientific_name": "Octopus sinensis",
+   "record_id": "10.1016/j.fsi.2025.110408:AMPs",
+   "source_id": "zhou_2025_fsi_octopus",
+   "status": "partial_only",
+   "reviewed": false,
+   "material_kind": "유전체에서 고른 합성 항균 펩타이드 7종(GAP1, Big Defensin 등)",
+   "endpoint": "항균 활성 농도 범위",
+   "values": [],
+   "test_system": "세균 4종(대장균, 장염비브리오, 황색포도상구균, 고초균)",
+   "missing": [
+    "원문에 균별 단일 MIC 값이 없음: 본문은 억제 농도 범위(Big Defensin 3.2–12.9 µM, GAP1 5–10 µM)만 쓰고, 그림은 농도별 성장곡선(OD600)뿐",
+    "시험 종말점이 MIC(성장이 보이지 않는 최소 농도)가 아니라 성장곡선 억제 정도"
+   ],
+   "exclusion_reason": "원문 전문(팀장 도서관 PDF, 2026-10-05)을 읽었습니다. 합성 펩타이드·LB 액체배지·96웰은 맞지만 조건 둘(수치 없음·MIC 아님)이 걸려 4.3의 완화 규칙(조건 하나만)을 넘습니다. 곡선에서 MIC를 읽어 내는 추정은 하지 않습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": false,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.3724/SP.J.1009.2011.00151:QPK",
+   "source_id": "ding_2011_cjnm_qpk",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "먹물 가수분해물의 G-25 겔여과 분획 가루(논문은 QPK로 보고)",
+   "endpoint": "IC50(DU-145 세포 증식 억제, CCK-8)",
+   "values": [
+    {
+     "material": "24시간",
+     "value": 9.5,
+     "unit": "mg/mL"
+    },
+    {
+     "material": "48시간",
+     "value": 1.0,
+     "unit": "mg/mL"
+    },
+    {
+     "material": "72시간",
+     "value": 2.74,
+     "unit": "mg/mL"
+    }
+   ],
+   "test_system": "사람 전립선암 세포 DU-145",
+   "missing": [
+    "시험 물질이 정제 단일 펩타이드가 아니라 G-25 분획 가루(먹물 500 g에서 9.08 g)",
+    "논문 분자량 343.4가 QPK 서열 질량 371.44 Da와 맞지 않음",
+    "DU-145의 CancerPPD 비교집단이 20개(최소 30)"
+   ],
+   "exclusion_reason": "조건 셋이 걸려 4.3의 완화 규칙(조건 하나만)을 넘습니다. 모두 넓혀도 DU-145 비교집단의 가장 약한 값보다 약해 0.0입니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": false,
+    "quantitative_endpoint": true,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.13982/j.mfst.1673-9078.2014.09.001:SHP-DU145",
+   "source_id": "jing_2014_mfst_shp",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "먹물 펩신 가수분해물에서 정제한 펩타이드 SHP(같은 연구팀이 2017년에 LKEENRRRRD로 서열 확정)",
+   "endpoint": "IC50(DU-145 세포 증식 억제, CCK-8)",
+   "values": [
+    {
+     "material": "24시간",
+     "value": 8.53,
+     "unit": "mg/mL"
+    },
+    {
+     "material": "48시간",
+     "value": 7.4,
+     "unit": "mg/mL"
+    },
+    {
+     "material": "72시간",
+     "value": 6.1,
+     "unit": "mg/mL"
+    }
+   ],
+   "test_system": "사람 전립선암 세포 DU-145",
+   "missing": [
+    "DU-145의 CancerPPD 비교집단이 20개(최소 30)",
+    "합성품이 아닌 정제품이라 mg/mL를 서열 질량으로 µM 환산하지 않음(팀장 결정 2026-10-01)",
+    "이 논문 본문에서 학명과 정제 단계를 확인하지 못함(같은 팀 Huang 2017은 Sepia esculenta로 명시)"
+   ],
+   "exclusion_reason": "조건 셋이 걸려 4.3의 완화 규칙(조건 하나만)을 넘습니다. 모두 넓혀도 DU-145 비교집단의 가장 약한 값보다 약해 0.0입니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": true,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 1666974,
+   "origin_scientific_name": "Acanthosepion esculentum",
+   "record_id": "10.3892/mmr.2017.7068:SHP-PC3",
+   "source_id": "huang_2017_mmr_shp",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "먹물 펩신 가수분해물에서 정제한 펩타이드 SHP(LKEENRRRRD, 1371.53 Da)",
+   "endpoint": "PC-3 세포 증식 억제율(%)",
+   "values": [],
+   "test_system": "사람 전립선암 세포 PC-3(CCK-8, 5–20 mg/mL, 24·48·72시간)",
+   "missing": [
+    "IC50이 본문·표·그림 설명 어디에도 없음(억제율 곡선뿐). 곡선을 보간한 추정값은 쓰지 않음(4.3 사전 등록 1.4(c))"
+   ],
+   "exclusion_reason": "수치 종말점이 없어 점수를 매길 수 없습니다.",
+   "chain": {
+    "origin": true,
+    "structure_id": true,
+    "quantitative_endpoint": false,
+    "comparable_cohort": false
+   }
+  },
+  {
+   "origin_aphia_id": 534443,
+   "origin_scientific_name": "Octopus sinensis",
+   "record_id": "10.3390/md20050328:cephalotocin",
+   "source_id": "kim_2022_md_cephalotocin",
+   "status": "partial_only",
+   "reviewed": true,
+   "material_kind": "문어 신경 펩타이드 세팔로토신 합성품(CYFRNCPIG-NH2, 순도 98% 이상)",
+   "endpoint": "EC50(사람 바소프레신 수용체 작용)",
+   "values": [
+    {
+     "material": "V2 수용체",
+     "value": 12.09,
+     "unit": "nM"
+    },
+    {
+     "material": "V1b 수용체",
+     "value": 10.02,
+     "unit": "nM"
+    }
+   ],
+   "test_system": "사람 수용체 발현 세포 작용 시험",
+   "missing": [
+    "서열을 밝힌 원논문의 시료 채집지가 공개 자료로 확인되지 않아 동아시아산(O. sinensis)으로 볼 근거가 없음(1992년 분리 논문은 독일 연구팀)",
+    "펩타이드는 ChEMBL 화합물 비교집단에 넣지 않음(4.3 완화 (d)를 쓰더라도 기원 조건은 넓히지 않음)"
+   ],
+   "exclusion_reason": "기원(이 종의 시료) 확인이 안 되어 4.3의 완화 규칙도 적용할 수 없습니다.",
+   "chain": {
+    "origin": false,
+    "structure_id": true,
+    "quantitative_endpoint": true,
+    "comparable_cohort": false
+   }
+  }
+ ]
+}

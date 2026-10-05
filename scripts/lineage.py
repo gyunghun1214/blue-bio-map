@@ -32,8 +32,8 @@ REPORTS = ROOT / "reports"
 CHANGELOG = OUT / "source_changelog.json"
 REPORT_PATH = "dist/assessments.json"
 ROW_KINDS = {"bioactivity": "compound", "peptide_bioactivity": "peptide", "amp_bioactivity": "amp",
-             "anticancer_bioactivity": "anticancer"}
-CLASS = {"peptide": "ACE 억제 (펩타이드)", "amp": "항균 (펩타이드 MIC)", "anticancer": "항암 (펩타이드 세포 IC50)", "compound": "원논문 화합물"}
+             "anticancer_bioactivity": "anticancer", "xo_bioactivity": "xo"}
+CLASS = {"peptide": "ACE 억제 (펩타이드)", "amp": "항균 (펩타이드 MIC)", "anticancer": "항암 (펩타이드 세포 IC50)", "xo": "잔틴 산화효소 억제 (펩타이드 IC50)", "compound": "원논문 화합물"}
 AGGREGATION = "item = median p-value of its records -> percentile in the stratum cohort x evidence factor; species MBPI = round1(max item)"
 CHANGE_TYPES = {"fallback": "대체", "dedup": "중복 해소", "identifier": "식별자 변경", "version": "버전 변경",
                 "conversion": "환산 방식 변경", "evidence": "근거 기록 변경", "method": "계산 규칙 변경", "unexplained": "설명 안 됨"}
@@ -251,7 +251,7 @@ def tables(report: dict | None = None) -> dict:
            "sources": {k: {x: sources[k].get(x) for x in ("provider", "version", "accessed", "license")} for k in used_sources if k in sources},
            "parameters": {"bioactivity": cfg["bioactivity"], "chembl_minimum_cohort_records": rule["minimum_cohort_records"],
                           "chembl_filters": snap["filters"], "chembl_common_taxon_limit": report.get("chembl_common_taxon_limit"),
-                          **{f"{k}_minimum": cfg[k].get("minimum_peptides") for k in ("peptide_bioactivity", "amp_bioactivity", "anticancer_bioactivity") if cfg.get(k)}},
+                          **{f"{k}_minimum": cfg[k].get("minimum_peptides") for k in ("peptide_bioactivity", "amp_bioactivity", "anticancer_bioactivity", "xo_bioactivity") if cfg.get(k)}},
            "activity_exclusions_before_snapshot": "ChEMBL rows outside the assay-type / potential-duplicate filters were counted, never stored "
                                                    "(snapshot activity_exclusions); they have no record here."}
     return {"run": run, "links": sorted(links.values(), key=lambda l: l["link_id"]),
@@ -320,7 +320,9 @@ def explain(t: dict, aphia: int) -> str:
     if excluded:
         lines.append("제외 기록 (점수 미사용, 삭제하지 않음): " + ", ".join(f"{k} {v}건" for k, v in excluded.most_common()))
     if not order:
-        lines.append(f"점수 기여 항목 없음 · 보류 사유 {s['withheld_reasons'].get('MBPI')}")
+        floor = s.get("mbpi_floor")
+        lines.append(f"점수 기여 항목 없음 · {s['mbpi_label']}: {floor['meaning']}" if floor else
+                     f"점수 기여 항목 없음 · 보류 사유 {s['withheld_reasons'].get('MBPI')}")
     return "\n".join(lines)
 
 
@@ -352,7 +354,7 @@ def view(report: dict) -> dict:
             stratum = i["stratum_id"].split(":", 1)[1] if kind(i) == "chembl" else i["stratum_id"]
             items[(kind(i), compound_key(i), stratum)] = i
         out[s["aphia_id"]] = {"name": f"{s.get('korean_name') or ''}({s['scientific_name']})".lstrip("("),
-                              "MBPI": s["scores"].get("MBPI"), "items": items}
+                              "MBPI": s["scores"].get("MBPI"), "items": items, "floor": bool(s.get("mbpi_floor"))}
     return out
 
 
@@ -410,7 +412,9 @@ def compare(old: dict, new: dict, from_run: str, to_run: str) -> list[dict]:
                 scope = "" if aphia in va else "종이 실행 범위에 추가됨 · "
                 entry("assay", f"{aphia}|{key[0]}|{key[1]}|{key[2]}", ctype, a and a["stratum_id"] or "", ov, c and c["stratum_id"] or "", nv,
                       scope + why, sa, sb)
-        if sa != sb and len(entries) == before:
+        if sa != sb and len(entries) == before and vb.get(aphia, {}).get("floor"):  # 4.3: no item in any stratum -> labelled floor
+            entry("species", str(aphia), "fallback", "", str(sa), "mbpi_floor", str(sb), "MBPI 하한값 규칙(4.3 사전 등록 1.5): 어느 층에도 항목 없음", sa, sb)
+        elif sa != sb and len(entries) == before:
             entry("species", str(aphia), "unexplained", "", str(sa), "", str(sb), "점수 변화와 연결된 항목 변경 없음", sa, sb)
     return entries
 
@@ -441,7 +445,7 @@ def diff_markdown(old: dict, new: dict, entries: list[dict], from_run: str, to_r
         es = by_species[a]
         kinds = ", ".join(CHANGE_TYPES[k] for k in sorted({e["change_type"] for e in es}))
         out.append(f"- **{name_of(a, new, old)}** MBPI {show(sa)}→{show(sb)}: {kinds} — "
-                   + "; ".join(f"{e['entity_id'].split('|', 2)[2]}: {e['reason']} [{e['change_id']}]" for e in es[:4])
+                   + "; ".join(f"{e['entity_id'].split('|', 2)[2] if e['entity_type'] == 'assay' else '종 전체'}: {e['reason']} [{e['change_id']}]" for e in es[:4])
                    + (f" 외 {len(es) - 4}건" if len(es) > 4 else ""))
     src = [e for e in entries if e["entity_type"] == "source"]
     if src:
@@ -478,6 +482,9 @@ def checks(t: dict, log: dict | None) -> list[dict]:
         out.append({"check": name, "total": total, "failures": failures, "passed": not failures, "note": note})
 
     got = recompute(t["contributions"])
+    for s in all_species(report):  # 4.3: a floor MBPI has no contribution row; its value is the rule's floor
+        if s.get("mbpi_floor") and s["aphia_id"] not in got:
+            got[s["aphia_id"]] = s["mbpi_floor"]["value"]
     check("1. 재현성: 포함 기여 행으로 재계산한 MBPI == 발행 MBPI",
           [f"{s['aphia_id']}: {got.get(s['aphia_id'])} != {s['scores']['MBPI']}" for s in all_species(report)
            if got.get(s["aphia_id"]) != s["scores"]["MBPI"]], len(all_species(report)))

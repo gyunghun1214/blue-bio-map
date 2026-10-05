@@ -1,0 +1,1738 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "cohort_id": "xo-peptide-literature-2026-10-05",
+ "target": "xanthine oxidase",
+ "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
+ "search": {
+  "database": "PubMed (NCBI E-utilities)",
+  "run_on": "2026-10-05",
+  "records_read": 270,
+  "queries": [
+   "\"xanthine oxidase\"[tiab] AND peptide*[tiab]",
+   "(\"xanthine oxidase\"[tiab]) AND (peptide*|hydrolysate*) AND inhibit*[tiab]",
+   "hyperuricemi*[tiab] AND peptide*[tiab] AND (IC50|IC(50))[tiab]",
+   "\"uric acid\"[tiab] AND peptide*[tiab] AND \"xanthine oxidase\"[tiab]"
+  ],
+  "also_read": [
+   "open full texts reached from these records (PMC, MDPI, institutional mirrors)"
+  ],
+  "screening": "All 270 records were read twice: once by the first sweep and once in four chunks by separate readers; every candidate from either pass was checked by two independent reviewers (source fidelity; criteria and arithmetic)."
+ },
+ "member_rule": [
+  "single defined peptide; the IC50 is the peptide's own value against xanthine oxidase",
+  "xanthine substrate, uric-acid readout (absorbance 290-295 nm or HPLC); the readout is recorded, never an exclusion; many abstracts do not state it",
+  "one stated number (no range, inequality, single-concentration %, or figure reading)",
+  "uM/mM/mmol/L as read; mass units converted only for plain standard-residue linear peptides (ExPASy average residue masses + 18.015)",
+  "material recorded (synthetic/purified/unknown), not an exclusion; designed sequences allowed and flagged",
+  "one member per sequence (median uM)",
+  "the scored species' own peptides are never members"
+ ],
+ "never_members": [
+  "WDDMEKIW",
+  "APPERKYSVW"
+ ],
+ "known_limits": [
+  "Most members were read at abstract level: enzyme source and readout are often not stated.",
+  "Four whey dipeptides (GL, PM, AL, AM) were measured by HPLC; the others by absorbance where stated.",
+  "Values span 173 uM to 108 mM; several weak members come from AI or docking screens whose candidates were then synthesised and measured.",
+  "FPAW: the Nutrients 2025 paper cites the value from Hou et al. 2022 (Food Biosci 47:101639, paywalled); an independent open review table gives the same value. One sentence of the citing paper spells the sequence FAPW.",
+  "LMFP: the paper's own table gives a mass (928) that does not match the sequence; the conversion uses the sequence mass as the rule says.",
+  "WEWTW is a designed variant of the shrimp peptide WENWTK (flagged designed); the abstract's description of the design does not match the residue count."
+ ],
+ "candidates": [
+  {
+   "sequence": "EEAK",
+   "doi": "10.1002/jsfa.10745",
+   "pmid": "32820534",
+   "value_as_published": "IC50 of 173.00 ± 0.06 μM",
+   "ic50_uM": 173,
+   "source_species": "Thunnus spp. (tuna)",
+   "readout": "unknown - abstract names the enzyme as xanthine oxidase (XO) but states no enzyme source, no substrate and no detection method (absorbance vs HPLC)",
+   "material": "unknown - abstract does not state synthesis or purity; peptide was found by virtual screening of tuna protein and then assayed",
+   "designed": false,
+   "access": "abstract",
+   "quote": "EEAK, exhibited high XO inhibitory activity with an IC50 of 173.00 ± 0.06 μM",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (Europe PMC: isOpenAccess=N, inEPMC=N); verification is abstract-only",
+      "Enzyme source (e.g. bovine milk XO) not stated in abstract",
+      "Readout method (spectrophotometric ~295 nm vs HPLC uric acid) not stated in abstract",
+      "Material (synthetic vs purified) not stated in abstract — allowed by criterion 5, recorded as unknown"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C2 unverified: not OA (Unpaywall is_oa=false, no PMC/Europe PMC full text, Wiley page returns HTTP 403), so XO source (e.g. bovine milk), xanthine substrate and uric-acid readout (290-295 nm vs HPLC) could not be observed",
+      "C3 wording: abstract writes 'an IC50 of 173.00 ± 0.06 μM' rather than literal '=' or 'IC50:'; it is still one numeric value with an SD, no range, no inequality, not read from a figure",
+      "C4: no conversion needed (μM as published). MW(EEAK) recomputed = 475.499 Da for reference only",
+      "C6: no duplicate - Europe PMC full-text search for EEAK + xanthine returns only one unrelated review"
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "QGDIVAIPSGAAHW",
+   "doi": "10.1021/acs.jafc.6c07558",
+   "pmid": "42715978",
+   "value_as_published": "IC50 = 467.2 μM",
+   "ic50_uM": 467.2,
+   "source_species": "Sesamum indicum",
+   "readout": "unknown - abstract names xanthine oxidase (XO) and mixed-type kinetics but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+   "material": "unknown - abstract does not state synthesis or purity; sequence identified from sesame 11S globulin by nanoUHPLC-ESI-Q-TOF MS/MS, IC50 reported for the individual peptide",
+   "designed": false,
+   "access": "abstract",
+   "quote": "QGDIVAIPSGAAHW (IC50 = 467.2 μM)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (Europe PMC: isOpenAccess=N, inEPMC=N); verification is abstract-only",
+      "Enzyme source not stated in abstract",
+      "Readout method (spectrophotometric vs HPLC) not stated in abstract",
+      "Material (synthetic vs purified) not stated in abstract"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C2 unverified: not OA (Unpaywall is_oa=false, no PMC record, ACS page returns HTTP 403), so XO source, xanthine substrate and uric-acid readout could not be observed",
+      "C1 OK: value is explicitly attached to the single sequence, not to the TSH hydrolyzate (whose 47.16% inhibition is reported separately)",
+      "C3 OK: single numeric with '='; the only '>' in the abstract is the kinetic parameter α > 1, not the IC50",
+      "C4: no conversion needed (μM as published). MW recomputed = 1421.575 Da for reference only",
+      "C6: no duplicate - Europe PMC returns this paper only"
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AFYLAGGVPR",
+   "doi": "10.1021/acs.jafc.6c07558",
+   "pmid": "42715978",
+   "value_as_published": "IC50 = 536.1 μM",
+   "ic50_uM": 536.1,
+   "source_species": "Sesamum indicum",
+   "readout": "unknown - abstract names xanthine oxidase (XO) and mixed-type kinetics but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+   "material": "unknown - abstract does not state synthesis or purity; sequence identified from sesame 11S globulin by nanoUHPLC-ESI-Q-TOF MS/MS",
+   "designed": false,
+   "access": "abstract",
+   "quote": "AFYLAGGVPR (IC50 = 536.1 μM)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (Europe PMC: isOpenAccess=N, inEPMC=N); verification is abstract-only",
+      "Enzyme source not stated in abstract",
+      "Readout method (spectrophotometric vs HPLC) not stated in abstract",
+      "Material (synthetic vs purified) not stated in abstract"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C2 unverified: not OA (Unpaywall is_oa=false, no PMC record, ACS page returns HTTP 403), so XO source, xanthine substrate and uric-acid readout could not be observed",
+      "C4: no conversion needed (μM as published). MW recomputed = 1050.225 Da for reference only",
+      "C6: no duplicate IC50 - AFYLAGGVPR also appears in PMID 35885397 and PMID 28234998, but both are sesame-protein proteomic marker papers with no XO assay, so this stays one member",
+      "Same paper as QGDIVAIPSGAAHW: two distinct sequences, each with its own IC50, so they are two members and not a double-count of one value"
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FGHPEW",
+   "doi": "10.1021/acs.jafc.5c01770",
+   "pmid": "40553021",
+   "value_as_published": "IC50: 476.3 μg/mL (peptide No. 56, FGHPEW; the companion value 673.8 μg/mL belongs to FFAFGR, No. 117)",
+   "ic50_uM": 617.1,
+   "source_species": "Oryza sativa",
+   "readout": "unknown - abstract names xanthine oxidase (XOD) in vitro inhibition but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+   "material": "unknown - abstract does not state synthesis or purity; peptide screened from rice residue protein hydrolysate after simulated GI digestion and then 'validated for their biological activity'",
+   "designed": false,
+   "access": "abstract",
+   "quote": "two peptides─FGHPEW (No. 56) and FFAFGR (No. 117)... in vitro xanthine oxidase (XOD) inhibition (IC50: 476.3 and 673.8 μg/mL, respectively)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Published in μg/mL; converted per criterion 4: MW = 771.830 Da (F 147.1766 + G 57.0519 + H 137.1411 + P 97.1167 + E 129.1155 + W 186.2132 + 18.015 water), 476.3 μg/mL = 0.4763 mg/mL → 476300 / 771.830 = 617.1 μM — matches the submitted 617.1 μM exactly",
+      "Conversion assumes a plain linear peptide with free termini; the abstract does not state termini modification, so this is unverified from the source",
+      "No OA full text (Europe PMC: isOpenAccess=N, inEPMC=N); verification is abstract-only",
+      "Enzyme source and readout method not stated in abstract",
+      "Value is paired in one sentence with a second peptide's value — order-to-peptide mapping relies on 'respectively'; the 476.3 belongs to the first-named peptide FGHPEW (No. 56)"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C4 conversion re-derived and it matches: MW(FGHPEW) = 147.1766+57.0519+137.1411+97.1167+129.1155+186.2132 + 18.015 = 771.830 Da; 0.4763 mg/mL x 1e6 / 771.830 = 617.1 μM (deviation from the carried value < 0.1%)",
+      "C4 caveat: conversion assumes a plain linear peptide with free termini; the abstract does not state whether the synthesized peptide was amidated/acetylated, so the free-termini assumption is unverified",
+      "C2 unverified: not OA (Unpaywall is_oa=false, no PMC record, ACS page returns HTTP 403), so XOD source, xanthine substrate and uric-acid readout could not be observed",
+      "C1/C3 attribution rests on the 'respectively' ordering in the abstract ('FGHPEW (No. 56) and FFAFGR (No. 117)' -> '476.3 and 673.8 μg/mL'); the ordering is explicit and the input's '(peptide No. 56)' tag agrees, but the number was not seen in a table",
+      "C6: no duplicate - Europe PMC returns this paper only"
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "EFDGF",
+   "doi": "10.1016/j.foodchem.2026.149587",
+   "pmid": "42167182",
+   "value_as_published": "IC50 = 0.68 mM (EF-5 = Glu-Phe-Asp-Gly-Phe)",
+   "ic50_uM": 680,
+   "source_species": "Euphausia superba",
+   "readout": "not observable - enzyme is named as xanthine oxidase (XO) but substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated in the abstract and the full text is paywalled",
+   "material": "unknown - abstract does not state synthetic vs purified; peptide was identified from Antarctic krill hydrolysate (material is not an exclusion criterion)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Glu-Phe-Asp-Gly-Phe (EF-5) and Phe-Asp-Pro-Leu-Ile-Gln (FQ-6), were identified, with IC50 values of 0.68 and 0.79 mM",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Sequence given in three-letter code in the abstract; Glu-Phe-Asp-Gly-Phe maps exactly to EFDGF.",
+      "Paired value: 0.68 mM is the first of two values given 'respectively' for EF-5/FQ-6 — order is unambiguous.",
+      "Enzyme source (e.g. bovine milk XO) and readout (290-295 nm vs HPLC) not verifiable from the abstract; full text is subscription-only (Europe PMC isOpenAccess=N, no PMCID)."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C1 PASS: value attributed to the named single peptide EF-5, not to a hydrolysate or fraction. Three-letter code Glu-Phe-Asp-Gly-Phe = EFDGF, matches the cohort sequence.",
+      "C2 PARTIAL: enzyme confirmed as xanthine oxidase; enzyme source, substrate and readout method NOT observable (closed access, Unpaywall is_oa=false, not in PMC/Europe PMC). Recorded as unknown, not refuted.",
+      "C3 PASS: single numeric value, no range, no > or <, not a figure read.",
+      "C4 PASS: 0.68 mM used as read = 680 uM. No mass-unit conversion needed; MW (613.624 Da) not used.",
+      "C6 PASS: no duplicate - PubMed returns no other record for this sequence; not one of the excluded Larimichthys polyactis peptides.",
+      "Verified against two independent copies of the publisher abstract (PubMed efetch + Semantic Scholar), identical text."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FDPLIQ",
+   "doi": "10.1016/j.foodchem.2026.149587",
+   "pmid": "42167182",
+   "value_as_published": "IC50 = 0.79 mM (FQ-6 = Phe-Asp-Pro-Leu-Ile-Gln)",
+   "ic50_uM": 790,
+   "source_species": "Euphausia superba",
+   "readout": "not observable - enzyme is named as xanthine oxidase (XO); substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated in the abstract and the full text is paywalled",
+   "material": "unknown - abstract does not state synthetic vs purified; identified from Antarctic krill hydrolysate (material is not an exclusion criterion)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Glu-Phe-Asp-Gly-Phe (EF-5) and Phe-Asp-Pro-Leu-Ile-Gln (FQ-6), were identified, with IC50 values of 0.68 and 0.79 mM",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Sequence given in three-letter code in the abstract; Phe-Asp-Pro-Leu-Ile-Gln maps exactly to FDPLIQ.",
+      "Paired value: 0.79 mM is the second of two values given 'respectively' for EF-5/FQ-6 — order is unambiguous.",
+      "Enzyme source and readout not verifiable from the abstract; full text is subscription-only.",
+      "Same source paper as EFDGF — the two are separate members, not a duplicate sequence."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C1 PASS: value attributed to the named single peptide FQ-6. Three-letter code Phe-Asp-Pro-Leu-Ile-Gln = FDPLIQ, matches the cohort sequence.",
+      "C2 PARTIAL: enzyme confirmed as xanthine oxidase; enzyme source, substrate and readout method NOT observable (closed access).",
+      "C3 PASS: single numeric value, no range, no > or <, not a figure read.",
+      "C4 PASS: 0.79 mM used as read = 790 uM. No mass-unit conversion needed; MW (731.846 Da) not used.",
+      "C6 PASS: no duplicate found; same paper as EFDGF but a distinct sequence, so two separate members is correct.",
+      "Verified against two independent copies of the publisher abstract (PubMed efetch + Semantic Scholar), identical text."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FFAFGR",
+   "doi": "10.1021/acs.jafc.5c01770",
+   "pmid": "40553021",
+   "value_as_published": "IC50: 673.8 μg/mL (peptide No. 117 = FFAFGR), xanthine oxidase (XOD)",
+   "ic50_uM": 905.8,
+   "source_species": "Oryza sativa",
+   "readout": "not observable - abstract says 'in vitro xanthine oxidase (XOD) inhibition'; enzyme source, substrate and readout (absorbance ~290-295 nm vs HPLC) are not stated and the full text is paywalled",
+   "material": "unknown - screened from rice residue protein hydrolysate by LC-MS/MS and then 'validated'; abstract does not state whether the tested peptide was synthesized or purified (material is not an exclusion criterion)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Both peptides showed notable in vitro xanthine oxidase (XOD) inhibition (IC50: 476.3 and 673.8 μg/mL, respectively).",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Unit conversion required. MW(FFAFGR) = 147.1766+147.1766+71.0788+147.1766+57.0519+156.1875 + 18.015 = 743.863 Da; 0.6738 mg/mL x 1e6 / 743.863 = 905.81 uM. Matches the cohort's 905.8 within rounding.",
+      "Paired value: 673.8 is the second of two values given 'respectively' for No. 56 (FGHPEW) / No. 117 (FFAFGR) — order is unambiguous.",
+      "Plain standard-residue linear peptide with free termini assumed (no modification stated in abstract); not independently confirmable without full text, which is subscription-only.",
+      "Not a marine-derived peptide (rice residue protein) — flagging only as provenance context, not a criterion violation."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "C1 PASS: 673.8 ug/mL is attributed to peptide No. 117 = FFAFGR specifically (the 476.3 value belongs to FGHPEW, No. 56); not a hydrolysate value.",
+      "C2 PARTIAL: enzyme confirmed as xanthine oxidase (XOD); source/substrate/readout NOT observable (closed access).",
+      "C3 PASS: stated in the 'IC50: x' form allowed by the criterion; single value, no range, no > or <.",
+      "C4 ARITHMETIC RECHECKED AND MATCHES: MW(FFAFGR) = 3xF 147.1766 + A 71.0788 + G 57.0519 + R 156.1875 + H2O 18.015 = 743.863 Da; 673.8 ug/mL = 0.6738 mg/mL -> 0.6738e6/743.863 = 905.81 uM. Cohort value 905.8 uM deviates 0.0013%, far under the 1% tolerance.",
+      "C4 CAVEAT: the ug/mL -> uM conversion is only valid for a plain linear peptide with free termini and no modification. The abstract does not state purity, synthesis route or any terminal modification, so this assumption is unverified. If the full text shows an amidated/acetylated or salt-form peptide the uM value shifts.",
+      "C6 PASS: PubMed returns only this one record for FFAFGR; no duplicate member.",
+      "SCOPE NOTE (not a criterion failure): source material is rice residue protein, i.e. non-marine. The six member criteria do not require a marine source, so this does not refute the member, but flag it if the cohort is meant to be marine-only."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "WEWTW",
+   "doi": "10.1016/j.foodchem.2026.148589",
+   "pmid": "41780118",
+   "value_as_published": "IC50 = 1.73 ± 0.13 mmol/L (optimized peptide WEWTW)",
+   "ic50_uM": 1730,
+   "source_species": "Penaeus monodon (template)",
+   "readout": "not observable - enzyme confirmed as xanthine oxidase (XO); substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated and the full text is paywalled",
+   "material": "unknown as stated - necessarily synthetic in practice (a rationally designed Trp-substituted variant cannot be isolated from the hydrolysate), but the abstract does not say so explicitly",
+   "designed": true,
+   "access": "abstract",
+   "quote": "The optimized peptide, WEWTW, exhibited an improved IC50 value of 1.73 ± 0.13 mmol/L.",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "DESIGNED (non-natural): WEWTW is a rational Trp-substitution redesign of the natural tiger shrimp peptide WENWTK (IC50 2.77 ± 0.06 mmol/L). Allowed under criterion 5 but must carry the designed flag.",
+      "± 0.13 is an SD on a single stated value, not a range — criterion 3 satisfied.",
+      "Enzyme source and readout not verifiable from the abstract; full text is subscription-only."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "SEQUENCE INCONSISTENCY IN THE SOURCE (unresolved): the abstract says the design was done by 'targeted substitution of residues in WENWTK with Trp', but WENWTK is 6 residues and WEWTW is 5. Pure substitution cannot shorten a sequence, so one of the two strings in the abstract is likely mistyped (WEWTW could be a truncation of WEWWTW). The published string as printed is WEWTW. The IC50 is unaffected (mmol/L, no MW needed), but the sequence key should be checked against the full-text table/figure before it is used as an identifier.",
+      "C1 PASS: the value is attributed to the single named optimized peptide, not to a mixture.",
+      "C2 PARTIAL: enzyme confirmed as xanthine oxidase; source/substrate/readout NOT observable (closed access).",
+      "C3 PASS: 1.73 +/- 0.13 is a mean with SD, not a range and not a > / < bound, so it satisfies the single-numeric-value rule; recording the central value 1.73 mmol/L.",
+      "C4 PASS: 1.73 mmol/L used as read = 1730 uM. No mass-unit conversion needed; MW (806.875 Da as spelled) not used.",
+      "C5 FLAGGED: designed (non-natural) sequence - allowed by criterion 5, flagged as designed=true.",
+      "C6 PASS: PubMed returns only this one record for WEWTW; no duplicate member."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "VKAGFAWTANQQLS",
+   "doi": "10.3390/pr9050747",
+   "pmid": null,
+   "value_as_published": "Table 3: VS14 IC50 2.740 ± 0.022 mg/mL = 1.804 mM (abstract repeats 1.804 mM)",
+   "ic50_uM": 1804,
+   "source_species": "Thunnus sp. (tuna backbone)",
+   "readout": "uric-acid formation by absorbance, spectrophotometric at 293 nm (Multiskan GO microplate reader); xanthine substrate; xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, 0.5 U/mL, 0.05 M phosphate pH 7.5, 27 C",
+   "material": "synthetic — 11 peptides synthesized by TOOLS Biotechnology (New Taipei City), >95% purity by HPLC",
+   "designed": false,
+   "access": "full_text",
+   "quote": "VS14 2.740 ± 0.022 c 1.804",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Enzyme species/source not stated beyond 'xanthine oxidase (EC 1.17.3.2), Sigma-Aldrich'",
+      "Methods state peptide samples were assayed at 1 mg/mL while the reported IC50 is 2.740 mg/mL, i.e. above the stated test concentration (value appears extrapolated)",
+      "Methods give xanthine concentrations as '1.5, 3.0, 5.0, 6.0 and 10.0 M', an apparent unit misprint",
+      "mg/mL->uM with ExPASy masses gives 1801.8 uM (MW 1520.71); 1804 uM taken from the published mM value",
+      "MDPI site blocked direct fetch; full text read from the CC-BY copy in the Chia Nan University institutional repository (same article PDF)"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Enzyme species source not stated (Sigma-Aldrich XOD EC 1.17.3.2; not explicitly bovine milk).",
+      "MW recheck: ExPASy average MW = 1520.708 Da, so 2.740 mg/mL = 1801.8 uM vs the paper's 1.804 mM — 0.12% apart, well inside 1%. Published mM used as read (1804 uM).",
+      "Peptide origin is tuna backbone protein (VS14), i.e. not a Korean coastal-species peptide; relevant only if the cohort allows non-domestic source species.",
+      "Substrate 'xanthine ... (1.5, 3.0, 5.0, 6.0 and 10.0 M)' is a unit typo in the methods (should be mM/uM); does not affect the IC50 value."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "GGPGDR",
+   "doi": "10.1111/1750-3841.71102",
+   "pmid": "42109015",
+   "value_as_published": "IC50 1.09 ± 0.04 mg/mL for GGPGDR (WGNEEF 2.52 ± 0.06 mg/mL)",
+   "ic50_uM": 1954.9,
+   "source_species": "Stichopus japonicus",
+   "readout": "not stated in the abstract; closed access, no OA full text (Europe PMC: isOpenAccess N, inPMC N), so uric-acid-absorbance vs HPLC could not be verified",
+   "material": "synthetic — abstract states both peptides were \"screened, synthesized, and experimentally validated\"",
+   "designed": false,
+   "access": "abstract",
+   "quote": "GGPGDR and WGNEEF exhibited significant XOD inhibitory activity, with IC50 values of 1.09 ± 0.04 mg/mL",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Paywalled (Wiley, not OA per Unpaywall/Europe PMC); value verified from the publisher-deposited abstract via Crossref and PubMed efetch only",
+      "Assay readout (wavelength/HPLC) and enzyme source could not be verified",
+      "Conversion assumes a plain linear peptide with free termini: MW 557.56, 1.09 mg/mL -> 1954.9 uM"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: enzyme source, substrate and readout are not in the abstract and the full text is paywalled (no PMC/OA copy). Value, units and single-peptide attribution are verified.",
+      "MW recomputed from ExPASy average residue masses: G57.0519x3 + P97.1167 + D115.0886 + R156.1875 + 18.015 = 557.563 Da; 1.09 mg/mL = 1954.9 uM (matches the supplied value exactly, <1% deviation).",
+      "Conversion assumes a plain linear peptide with free termini (consistent with a synthesized standard sequence); no modification is stated, but this could not be confirmed from the abstract."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "TVVW",
+   "doi": "10.12301/spxb202400368",
+   "pmid": null,
+   "value_as_published": "Table 2: TVVW IC50 2.5 ± 0.4 mmol/L (abstract: TVVW IC50 = 2.5 mmol/L)",
+   "ic50_uM": 2500,
+   "source_species": "Undaria pinnatifida (미역)",
+   "readout": "uric-acid formation by absorbance at 290 nm; xanthine substrate 0.48 mmol/L; XO 0.05 U/mL in 50 mmol/L phosphate pH 7.5, 37 C, reaction stopped with 1 mol/L HCl",
+   "material": "synthetic — selected peptides were custom-synthesized (국태/GL-type supplier: 国肽生物科技有限公司) and then assayed",
+   "designed": false,
+   "access": "full_text",
+   "quote": "TVVW(IC50=2.5 mmol/L)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Chinese-language journal (食品科学技术학보 / J. Food Sci. Technol., BTBU, 2025, 43(1):55-62,73); publisher HTML full text is free, no PubMed record",
+      "Enzyme source organism not explicitly stated in the materials section seen"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Enzyme source species not stated: XO purchased from Shanghai Yuanye Bio-Technology; the paper only compares its Km (0.071 mmol/L) to a literature bovine-milk XO value.",
+      "Table 2 lists MW 503.274 u (monoisotopic) for TVVW; ExPASy average MW = 503.598 Da. No conversion needed because the value is published in mmol/L and used as read.",
+      "DOI 10.12301/spxb202400368 is not registered in Crossref (404); it resolves through the Handle system to 食품科학기술학보 / J. Food Sci. Technol. (BTBU) 2025, 43(1): 55-62,73 — cite with the resolved landing page, not a Crossref record.",
+      "Only value in this batch from a non-English, non-Crossref journal; full text was read on the publisher's own open HTML page."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "WENWTK",
+   "doi": "10.1016/j.foodchem.2026.148589",
+   "pmid": "41780118",
+   "value_as_published": "IC50 = 2.77 ± 0.06 mmol/L for WENWTK (optimized designed peptide WEWTW 1.73 ± 0.13 mmol/L)",
+   "ic50_uM": 2770,
+   "source_species": "Penaeus monodon",
+   "readout": "not stated in the abstract; closed access, no OA full text (Europe PMC: isOpenAccess N, inPMC N), so uric-acid-absorbance vs HPLC could not be verified",
+   "material": "unknown — abstract says the peptides were obtained by enzymatic hydrolysis plus virtual screening; it does not state whether WENWTK was chemically synthesized or purified",
+   "designed": false,
+   "access": "abstract",
+   "quote": "WENWTK exhibited the strongest XO inhibitory activity, with an IC50 value of 2.77 ± 0.06 mmol/L",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Paywalled (Elsevier, not OA per Unpaywall/Europe PMC); verified from the PubMed efetch abstract only",
+      "Assay readout and enzyme source could not be verified",
+      "Same paper also reports the designed analogue WEWTW (1.73 ± 0.13 mmol/L); that is a separate sequence, not this member"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: enzyme source, substrate and readout are not in the abstract and the full text is paywalled. Value, units and single-peptide attribution are verified.",
+      "Published in mmol/L and used as read (2.77 mmol/L = 2770 uM); no MW conversion needed. Cross-check only: ExPASy average MW of WENWTK = 862.94 Da.",
+      "The same paper reports a rationally designed Trp-substituted variant, WEWTW, with IC50 = 1.73 ± 0.13 mmol/L (1730 uM). It meets criteria 1-4 as a designed sequence and would be a stronger member than WENWTK — flagging it as a candidate, not adding it, since it was not in the batch.",
+      "Material unknown; criterion 5 records it but does not exclude."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LLW",
+   "doi": "10.1016/j.foodres.2022.111959",
+   "pmid": "36461210",
+   "value_as_published": "IC50 = 3.02 ± 0.17 mM",
+   "ic50_uM": 3020,
+   "source_species": "Bos taurus (whey)",
+   "readout": "not stated in accessible text (abstract only; Food Res Int full text is paywalled, Unpaywall is_oa=false). Enzyme named as xanthine oxidase (XO); source and uric-acid detection mode (A290-295 vs HPLC) not visible.",
+   "material": "unknown (abstract does not state synthesis; peptides were in-silico screened from WPI digest then activity-validated). J Dairy Sci 2023 abstract (10.3168/jds.2023-23369) confirms LLW = Leu-Leu-Trp.",
+   "designed": false,
+   "access": "abstract",
+   "quote": "PEW and LLW showed the highest XO inhibitory activity with 50 % inhibitory concentrations (IC50) of 3.46 ± 0.22 and 3.02 ± 0.17 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Enzyme source, substrate and readout (criterion 2 record fields) not stated in the abstract; article is not open access (Unpaywall is_oa=false, no PMC copy), so methods could not be read.",
+      "Value is paired in one sentence ('respectively'): LLW = the second value, 3.02 ± 0.17 mM. Order verified against the sentence order PEW, LLW."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: readout and XO source not stated in the abstract and the full text is closed access.",
+      "Value is in mM, no mass-to-molar conversion needed; 3.02 mM = 3020 uM is exact. Recomputed MW 430.5470 Da matches the 430.54 listed in the independent review PMC11719947 Table 1 (monoisotopic), consistent composition.",
+      "No duplicate: only Qi 2022 reports an XO IC50 for LLW; the same group's J Dairy Sci 2023 paper is in vivo and reports no new IC50."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "WGNEEF",
+   "doi": "10.1111/1750-3841.71102",
+   "pmid": "42109015",
+   "value_as_published": "IC50 = 2.52 ± 0.06 mg/mL",
+   "ic50_uM": 3227.5,
+   "source_species": "Stichopus japonicus",
+   "readout": "not stated in accessible text (abstract only; J Food Sci full text closed, Unpaywall status CLOSED). Enzyme named as xanthine oxidase (XOD); source and uric-acid detection mode (A290-295 vs HPLC) not visible.",
+   "material": "synthetic — abstract states the two peptides were \"screened, synthesized, and experimentally validated\"; sequence is a natural S. japonicus protein fragment selected by virtual screening, so not a designed non-natural sequence",
+   "designed": false,
+   "access": "abstract",
+   "quote": "GGPGDR and WGNEEF exhibited significant XOD inhibitory activity, with IC50 values of 1.09 ± 0.04 mg/mL and 2.52 ± 0.06 mg/mL, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Unit conversion recomputed: MW(WGNEEF) = 780.7915 Da (ExPASy average residue masses + 18.015); 2.52 mg/mL x 1e6 / 780.7915 = 3227.49 uM, matches the recorded 3227.5 uM.",
+      "Free termini / absence of modification (precondition for the mg/mL conversion in criterion 4) not confirmable: the abstract does not state synthesis details and the full text is paywalled (Unpaywall is_oa=false, no PMC copy).",
+      "Enzyme source, substrate and readout not stated in the abstract.",
+      "Peptide is computationally designed/virtually screened from Stichopus japonicus proteins, not isolated from a hydrolysate - flagged per criterion 5."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Conversion recomputed: MW = W 186.2132 + G 57.0519 + N 114.1038 + E 129.1155 + E 129.1155 + F 147.1766 + 18.015 = 780.7915 Da; 2.52e6 / 780.7915 = 3227.49 uM. Agrees with the recorded 3227.5 to 0.0003%, well inside 1%.",
+      "Conversion assumes free N- and C-termini (no C-terminal amidation). The abstract does not state the termini and the full text is paywalled, so this assumption is unverified; an amidated form would shift MW by about -1 Da (<0.2%), so the uM value is robust either way.",
+      "Criterion 2 only partly verifiable: readout and XOD source not stated in the abstract.",
+      "No duplicate: Europe PMC full-text search for \"WGNEEF\" returns this paper only."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "PEW",
+   "doi": "10.1016/j.foodres.2022.111959",
+   "pmid": "36461210",
+   "value_as_published": "IC50 = 3.46 ± 0.22 mM",
+   "ic50_uM": 3460,
+   "source_species": "Bos taurus (whey)",
+   "readout": "not stated in accessible text (abstract only; full text paywalled). Enzyme named as xanthine oxidase (XO); source and uric-acid detection mode not visible.",
+   "material": "unknown (abstract does not state synthesis). J Dairy Sci 2023 abstract confirms PEW = Pro-Glu-Trp.",
+   "designed": false,
+   "access": "abstract",
+   "quote": "PEW and LLW showed the highest XO inhibitory activity with 50 % inhibitory concentrations (IC50) of 3.46 ± 0.22 and 3.02 ± 0.17 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Enzyme source, substrate and readout not stated in the abstract; article not open access, methods unreadable.",
+      "Same 'respectively' sentence as LLW: PEW = first value, 3.46 ± 0.22 mM."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: readout and XO source not stated in the abstract and the full text is closed access.",
+      "3.46 mM = 3460 uM exact, no conversion needed. Recomputed MW 430.4604 Da matches review Table 1 value 430.45 (monoisotopic).",
+      "Shares a DOI with LLW but is a distinct sequence, so not a criterion-6 duplicate."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FPAW",
+   "doi": "10.3390/nu17111831",
+   "pmid": "40507101",
+   "value_as_published": "IC50 = 3.81 mM (abstract); 'an IC50 of 3.81 ± 0.18 mM in a previous study [22]' (introduction)",
+   "ic50_uM": 3810,
+   "source_species": "Trachinotus ovatus",
+   "readout": "not stated in any readable text. The Nutrients paper did not measure this IC50; the primary source (Hou 2022, Food Bioscience 47:101639) is paywalled with no abstract available in Crossref, Semantic Scholar, OpenAlex or Europe PMC, so the uric-acid detection mode and XOD source are unverified.",
+   "material": "synthetic — the Nutrients methods state FPAW \"was synthesized using a solid-phase method by GL Biochemistry Co., Ltd.\", though that synthesis served the in vivo work, not the cited in vitro IC50",
+   "designed": false,
+   "access": "full_text",
+   "quote": "FPAW (Phe-Pro-Ala-Trp) is a novel peptide identified from Trachinotus ovatus with great XOD (xanthine oxidase) inhibitory activity (IC 50 = 3.81 mM)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Secondary citation: the Nutrients paper reports no XO IC50 measurement of its own; the value originates in Hou et al. 2022, Food Biosci 47:101639, which is paywalled (Unpaywall is_oa=false), absent from PubMed and has no deposited abstract - the primary measurement could not be re-opened.",
+      "Sequence inconsistency inside the cited source: the single sentence that carries the '3.81 ± 0.18 mM' figure names 'FAPW (Phe-Ala-Pro-Trp)', while the title, abstract, figures and the other 66 occurrences use 'FPAW (Phe-Pro-Ala-Trp)'. FPAW is almost certainly the intended sequence (66 vs 1 occurrence), but the permutation FPAW/FAPW is not settled by an independently readable primary source. Same MW (519.6003 Da) either way.",
+      "The '± 0.18' error term appears only in the introduction sentence; the abstract states the bare 'IC50 = 3.81 mM'."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Second-hand value. The recorded DOI (Nutrients 2025) only cites the IC50; the measuring paper is Hou et al. 2022, Food Bioscience 47:101639, which I could not access by any open route. Criterion-3 compliance (single '=' value, no range) is verified in the two secondary sources, not in the primary.",
+      "Corroborated independently: the OA review PMC11719947 (Han et al., Beijing Technology and Business Univ — unrelated to both the Hou/Xiang and Qi groups) Table 1 lists, citing the same Hou 2022 reference, \"FPAW W, P 519.25 IC50 = 3.81 ± 0.18 mM\".",
+      "Sequence-spelling conflict inside the Nutrients paper: the introduction, exactly where the IC50 is cited, writes \"FAPW (Phe-Ala-Pro-Trp)\", against 66 occurrences of FPAW (Phe-Pro-Ala-Trp) in the title, abstract, methods and figures. Resolved as FPAW (66:1 internally, plus the independent review). Composition is identical either way, so the uM value is unaffected.",
+      "Arithmetic: value already in mM, 3.81 mM = 3810 uM, no conversion needed. Recomputed average MW = 519.6003 Da; the review's 519.25 is the monoisotopic mass of the same composition, not a discrepancy.",
+      "Consider repointing the record's DOI to 10.1016/j.fbio.2022.101639 (the primary) with the Nutrients paper as the readable secondary citation."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "IRW",
+   "doi": "10.3390/pr9050747",
+   "pmid": null,
+   "value_as_published": "Table 3 (xanthine oxidase): IC50 (mg/mL) 1.338 ± 0.015; IC50 (mM) 3.935 — sample IW3 (= IRW, egg white)",
+   "ic50_uM": 3935,
+   "source_species": "Gallus gallus (egg white)",
+   "readout": "uric acid formation, spectrophotometric absorbance at 293 nm (Multiskan GO microplate spectrophotometer); substrate xanthine; XO = xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, species not stated",
+   "material": "synthetic (chemically synthesized by TOOLS Biotechnology Co., New Taipei City; >95% purity by HPLC); native source egg white",
+   "designed": false,
+   "access": "full_text",
+   "quote": "(IC50) of the peptides for XOD inhibition were 5.310, 3.935, and 1.804 mM for VW4, IW3, and VS14, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Source's own mg/mL→mM conversion uses MW 340 Da for IRW (Table 1 lists 'IW3 (IRW, 340 Da)'), but IRW MW by ExPASy average masses is 473.57; the published 1.338 mg/mL therefore corresponds to 2.825 mM, not 3.935 mM. Value kept at 3935 uM only because criterion 4 says mM is used as read.",
+      "Enzyme species/source not stated (Sigma-Aldrich catalogue only).",
+      "mdpi.com returns 403 to both curl and WebFetch; the OA PDF was read from mdpi-res.com (same publisher host)."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "ARITHMETIC FAILURE IN THE SOURCE PAPER: recomputed MW(IRW) = 473.575 (ExPASy average residues I 113.1594 + R 156.1875 + W 186.2132 + 18.015 water). 1.338 mg/mL / 473.575 = 2.825 mM = 2825 uM, but the paper prints 3.935 mM, +39.3% higher. The paper's printed pair implies MW = 340.03, which is not IRW's mass.",
+      "The error is specific to this row: the same Table 3 converts VW4 (VWWW) within -0.63% (3.611 mg/mL / 675.787 = 5.343 vs printed 5.310 mM) and VS14 (VKAGFAWTANQQLS) within +0.12% (2.740 / 1520.708 = 1.802 vs printed 1.804 mM). So the mg/mL column is internally consistent for the other two peptides and the IRW mM entry is the outlier.",
+      "ic50_uM = 3935 is reported here per criterion 4 (mM / mmol/L used as read, and 3.935 mM is also the value stated in the abstract). If instead the measured mg/mL column (the only column carrying ± SD and significance letters) is taken as primary, the correct value is 2825 uM. This is a lead decision, not something I resolved.",
+      "The IC50 (mM) column carries no SD; only the IC50 (mg/mL) column has ± SD, consistent with the mM column being an author-side conversion rather than a measurement.",
+      "Methods typo in the same paper: xanthine substrate concentrations printed as '1.5, 3.0, 5.0, 6.0 and 10.0 M' (unit clearly wrong, should be uM or mM). Does not affect the IC50 value but shows unit handling in this paper is unreliable.",
+      "XO species not stated (Sigma-Aldrich, EC 1.17.3.2) - criterion 2 'record source' can only be recorded as supplier, not species.",
+      "Origin note (not a criterion): IRW is an egg-white / ovotransferrin peptide, not marine.",
+      "No duplicate of this sequence within batch 5; cross-batch duplicate check against other cohort members was outside this worker's scope."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "VYW",
+   "doi": "10.12301/spxb202400368",
+   "pmid": null,
+   "value_as_published": "Table 2: VYW, Mw 466.222, IC50/(mmol·L-1) 4.3 ± 0.0; abstract states IC50 = 4.3 mmol/L",
+   "ic50_uM": 4300,
+   "source_species": "Undaria pinnatifida (미역)",
+   "readout": "uric acid formation, spectrophotometric absorbance at 290 nm after stopping with 1 mol/L HCl; substrate xanthine 0.48 mmol/L; XO 0.05 U/mL from Shanghai Yuanye Bio-Technology, species not stated",
+   "material": "synthetic (sequence identified from Undaria pinnatifida protein hydrolysate by papain + Aspergillus niger acid protease AnproA1, selected by AutoDock Vina, then chemically synthesized by 国肽生物科技有限公司 and assayed)",
+   "designed": false,
+   "access": "full_text",
+   "quote": "VYW (IC50=4.3 mmol/L) and TVVW (IC50=2.5 mmol/L) showed high XO inhibitory activities",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Journal DOI is not registered with Crossref (404); it resolves to the publisher's OA site btbuspxb.com, article 20250106 (食品科学技术学报 2025, 43(1):55-62,73). Full text read as OA HTML.",
+      "Enzyme species not stated; the discussion only compares its Km with bovine-milk XO literature."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "No unit conversion needed: value published in mmol/L and used as read (4.3 mmol/L = 4300 uM).",
+      "Paper prints Mw 466.222 for VYW (monoisotopic). Recomputed average MW = 466.537 (V 99.1326 + Y 163.1760 + W 186.2132 + 18.015) - consistent, no discrepancy.",
+      "Precision is only two significant figures (4.3 ± 0.0 mmol/L).",
+      "XO species not stated (supplier Shanghai Yuanye Bio-Technology); the discussion compares its kinetics to bovine milk XO literature but does not claim bovine milk for its own enzyme.",
+      "Publisher HTML full text is openly readable; the site's PDF endpoint sits behind a bot-check script and was not used, per the access rules.",
+      "Four sibling peptides in the same Table 2 (YLGY 6.9, VVSW 8.8, TVVW 2.5, KVFAW 6.1 mmol/L) are separately eligible candidates if the cohort wants them - TVVW at 2500 uM is the strongest in the paper.",
+      "No duplicate of this sequence within batch 5; cross-batch duplicate check was outside this worker's scope."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LWM",
+   "doi": "10.1016/j.bioorg.2022.106097",
+   "pmid": "35985156",
+   "value_as_published": "IC50 of LWM = 5.01 ± 0.31 mM (ALPM 7.23 ± 0.22 mM), whey protein isolate hydrolysate-derived",
+   "ic50_uM": 5010,
+   "source_species": "Bos taurus (whey)",
+   "readout": "NOT VERIFIABLE - the abstract states xanthine oxidase inhibition and Lineweaver-Burk kinetics but does not state substrate, enzyme source or detection wavelength/HPLC; no open full text exists to check",
+   "material": "unknown - peptides identified from whey protein isolate hydrolysate and screened by molecular docking; whether the assayed material was synthetic or purified is not stated in the abstract",
+   "designed": false,
+   "access": "abstract",
+   "quote": "The IC50 values of ALPM and LWM were 7.23 ± 0.22 and 5.01 ± 0.31 mM, respectively.",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Closed access (Unpaywall is_oa = false, no OA location, not in PMC/Europe PMC): only the PubMed abstract could be re-opened.",
+      "Enzyme source, substrate and readout wavelength not verifiable from the abstract, so criterion 2 is assumed, not observed."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly recordable: Unpaywall reports is_oa = false with zero OA locations, Europe PMC inEPMC = N, no PMC copy. Verification rests on the PubMed/Europe PMC abstract alone, which does not give enzyme source, substrate or readout. Nothing was invented to fill these.",
+      "Criteria 1, 3, 4, 6 all pass on the abstract: a single named peptide LWM, one numeric IC50 with '=' phrasing and SD, mM units used as read, no range or inequality.",
+      "No unit conversion needed (mM as read); recomputed MW(LWM) = 448.580 is recorded only for completeness and was not used.",
+      "Value is stated jointly with ALPM (7.23 ± 0.22 mM) but the attribution of 5.01 mM to LWM alone is explicit and unambiguous.",
+      "Origin note (not a criterion): whey protein isolate, not marine.",
+      "No duplicate of this sequence within batch 5; cross-batch duplicate check was outside this worker's scope."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "VWWW",
+   "doi": "10.3390/pr9050747",
+   "pmid": null,
+   "value_as_published": "Table 3 (xanthine oxidase): IC50 (mg/mL) 3.611 ± 0.105; IC50 (mM) 5.310 — sample VW4 (= VWWW, mackerel meat, 680 Da)",
+   "ic50_uM": 5310,
+   "source_species": "Scomber sp. (mackerel)",
+   "readout": "uric acid formation, spectrophotometric absorbance at 293 nm (Multiskan GO microplate spectrophotometer); substrate xanthine; XO = xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, species not stated",
+   "material": "synthetic (chemically synthesized by TOOLS Biotechnology Co., New Taipei City; >95% purity by HPLC); native source mackerel (Scomber austriasicus) meat",
+   "designed": false,
+   "access": "full_text",
+   "quote": "VW4, IW3, and VS14 were 5.310, 3.935 and 1.804 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Paper uses MW 680 Da; ExPASy average MW is 675.79, which would give 5.344 mM from 3.611 mg/mL (0.6% rounding difference only).",
+      "Enzyme species/source not stated.",
+      "Table 3 row labels are vertically offset in the PDF; mapping confirmed independently by the abstract wording and by the MW cross-check (3.611/680 = 5.310 mM; allopurinol 0.171 µg/mL = 1.253e-3 mM)."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Arithmetic check passes: recomputed MW(VWWW) = 675.787 (V 99.1326 + 3 x W 186.2132 + 18.015). 3.611 mg/mL / 675.787 = 5.343 mM = 5343 uM vs printed 5.310 mM, a -0.63% difference, inside the 1% tolerance, so no correction applied and 5310 uM stands as read.",
+      "The IC50 (mM) column carries no SD; only the mg/mL column has ± SD.",
+      "Same paper reports a separate tyrosinase IC50 for VW4 (0.853 mg/mL = 1.254 mM, Table 4) - do not pull that value into the XO cohort.",
+      "XO species not stated (Sigma-Aldrich, EC 1.17.3.2).",
+      "Methods typo in the same paper: xanthine concentrations printed as '1.5, 3.0, 5.0, 6.0 and 10.0 M'. Does not affect the IC50 value.",
+      "Note on the companion row: the IRW/IW3 entry in the same table fails its own unit conversion by +39%, so this paper's mM column cannot be trusted blindly even though the VWWW row checks out.",
+      "No duplicate of this sequence within batch 5; cross-batch duplicate check was outside this worker's scope."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "ALPM",
+   "doi": "10.1016/j.bioorg.2022.106097",
+   "pmid": "35985156",
+   "value_as_published": "IC50 = 7.23 ± 0.22 mM (ALPM; LWM = 5.01 ± 0.31 mM in same sentence)",
+   "ic50_uM": 7230,
+   "source_species": "Bos taurus (whey)",
+   "readout": "xanthine oxidase (XO) inhibition, in vitro; enzyme source, substrate and detection mode (absorbance wavelength vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+   "material": "unknown — abstract states ALPM was identified from whey protein isolate hydrolysate and screened by molecular docking; whether the assayed peptide was synthetic or chromatographically purified is not stated in the accessible abstract",
+   "designed": false,
+   "access": "abstract",
+   "quote": "The IC50 values of ALPM and LWM were 7.23 ± 0.22 and 5.01 ± 0.31 mM, respectively.",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (Europe PMC isOpenAccess=N, no PMCID) — enzyme source, substrate and readout wavelength/HPLC could not be verified",
+      "Value stated as 'IC50 values ... were X mM' rather than literal 'IC50 ='; a single numeric value with SD, so criterion 3 is met",
+      "Unit is mM as published, no conversion needed"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: enzyme is xanthine oxidase (title, abstract, MeSH 'Xanthine Oxidase'), but XO source (e.g. bovine milk), substrate and uric-acid readout mode (290-295 nm absorbance vs HPLC) could not be seen — Bioorg Chem full text is closed (Unpaywall is_oa=false, no PMCID).",
+      "Criterion 3 wording: the abstract writes 'were 7.23 ± 0.22 ... mM' rather than '='; it is still one numeric value with an SD, no range, no inequality, not read from a figure. The OA review Foods 2025;14(1):58 (PMC11719947) tabulates it as 'IC50 = 7.23 ± 0.22 mM', citing this paper.",
+      "No unit conversion needed (mM used as read): 7.23 mM = 7230 uM. Recomputed MW 430.562 (ExPASy average residues + 18.015); the Foods review table lists 430.22 Da for ALPM (monoisotopic-style), a 0.08% difference that does not affect the value since no mass-unit conversion is involved.",
+      "No duplicate: Europe PMC search for ALPM + xanthine oxidase returns one primary report (this paper); the other six hits are reviews/secondary papers citing it."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "GNQQVHLQSQDM",
+   "doi": "10.1021/acs.jafc.3c01131",
+   "pmid": "37161263",
+   "value_as_published": "IC50 value of 12.15 mg/mL (peptide GM-12 = GNQQVHLQSQDM)",
+   "ic50_uM": 8775.8,
+   "source_species": "Gallus gallus (feather keratin)",
+   "readout": "xanthine oxidase (XOD) activity inhibition, in vitro; XOD source, substrate and uric-acid detection mode (absorbance vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy). The abstract separately reports fluorescence quenching of XOD, which is a binding observation, not the IC50 readout.",
+   "material": "unknown — identified and purified from Bacillus licheniformis 8-4 fermented feather-keratin broth; the abstract does not say whether the assayed GM-12 was synthetic or the purified fraction peptide",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Another peptide, GNQQVHLQSQDM (GM-12), demonstrated XOD activity inhibition, with an IC50 value of 12.15 mg/mL",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Published in mg/mL; converted per rule 4. MW = sum of ExPASy average residue masses (1366.471) + 18.015 = 1384.486; 12.15 mg/mL × 1e6 / 1384.486 = 8775.8 uM — matches the listed value",
+      "Conversion assumes a plain linear peptide with free termini; the abstract does not state any terminal modification, but this could not be confirmed without full text",
+      "No OA full text — enzyme source and readout unverified",
+      "Abstract also reports a synergistic DA-12 + GM-12 inhibition, but the 12.15 mg/mL value is the single peptide's own value, not the mixture's"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Mass-unit conversion recomputed: MW = sum of ExPASy average residue masses (G 57.0519 + N 114.1038 + Q 128.1307 + Q 128.1307 + V 99.1326 + H 137.1411 + L 113.1594 + Q 128.1307 + S 87.0782 + Q 128.1307 + D 115.0886 + M 131.1926) + 18.015 = 1384.486 Da. 12.15 mg/mL x 1e6 / 1384.486 = 8775.82 uM — agrees with the supplied 8775.8 uM (0.0002% difference).",
+      "Conversion assumes a plain linear peptide with free termini and no modification, as criterion 4 requires. GM-12 contains no Cys (unlike the sibling peptides DA-12/AR-10 in the same paper), so no disulfide concern, but the paper does not explicitly state the termini are free — this is an assumption, not an observation.",
+      "Criterion 2 only partly verifiable: enzyme is XOD (title, abstract, MeSH 'Xanthine Oxidase'), but source, substrate and readout mode could not be seen — JAFC full text is closed.",
+      "The paper also reports a synergistic DA-12 + GM-12 inhibition of XOD; the 12.15 mg/mL value is the single-peptide GM-12 value, not the mixture value, so criterion 1 holds.",
+      "No duplicate primary report: Europe PMC returns this paper plus one review (Foods 2023;12(24):4465, PMC10742721) whose table independently records 'GNQQVHLQSQDM IC50 = 12.15 mg/mL' citing it."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AEAQMWR",
+   "doi": "10.1021/acs.jafc.2c07881",
+   "pmid": "36625439",
+   "value_as_published": "AEAQMWR, 891.01 Da, IC50 = 8.85 ± 0.05 mM",
+   "ic50_uM": 8850,
+   "source_species": "Litopenaeus vannamei / Portunus trituberculatus",
+   "readout": "xanthine oxidase (XO) inhibition, in vitro; enzyme source, substrate and uric-acid detection mode (absorbance ~290-295 nm vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+   "material": "unknown — abstract says 17 novel XO inhibitory peptides were purified from Pacific white shrimp / swimming crab and screened by molecular docking; synthetic vs purified for the assayed AEAQMWR is not stated in the accessible abstract",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Ala-Glu-Ala-Gln-Met-Trp-Arg (AEAQMWR, 891.01 Da, IC50 = 8.85 ± 0.05 mM) exhibited the greatest XO inhibitory activity in vitro",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text — enzyme source and readout unverified",
+      "Unit is mM as published, no conversion needed",
+      "Paper's stated MW 891.01 Da matches the ExPASy average-mass calculation (872.997 + 18.015 = 891.01), consistent with a plain linear peptide with free termini"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "No unit conversion needed (mM used as read): 8.85 mM = 8850 uM.",
+      "MW cross-check (not used for the value): recomputed ExPASy average MW = 891.012 Da (A 71.0788 + E 129.1155 + A 71.0788 + Q 128.1307 + M 131.1926 + W 186.2132 + R 156.1875 + 18.015) vs the paper's stated 891.01 Da — 0.0002% difference, consistent with a plain linear peptide with free termini.",
+      "Criterion 2 only partly verifiable: enzyme is XO (title, abstract, MeSH 'Xanthine Oxidase'), but source, substrate and readout mode could not be seen — JAFC full text is closed.",
+      "Not a 참조기 (Larimichthys polyactis) peptide and not WDDMEKIW / APPERKYSVW, so criterion 6's exclusion does not apply. No duplicate primary report: the other Europe PMC hits (PMC11719947, PMC10742721, PMC12385867, PMC12073332) are reviews citing this paper; two of them reproduce 'IC50 = 8.85 ± 0.05 mM', corroborating the value."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LGDF",
+   "doi": "10.1039/d6fo01257d",
+   "pmid": "42148895",
+   "value_as_published": "LGDF ... confirmed by in vitro enzymatic assays (IC50 = 9.7 mM); the hydrolysate SCPH separately IC50 = 20.18 mg/mL",
+   "ic50_uM": 9700,
+   "source_species": "Helianthus annuus",
+   "readout": "xanthine oxidase inhibition, in vitro enzymatic assay; enzyme source, substrate and uric-acid detection mode (absorbance vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+   "material": "unknown — LGDF was identified from sunflower capitulum protein hydrolysate (SCPH), screened by molecular docking and confirmed in vitro; synthetic vs purified not stated in the accessible abstract",
+   "designed": false,
+   "access": "abstract",
+   "quote": "LGDF was identified, screened by molecular docking, and further confirmed by in vitro enzymatic assays (IC50 = 9.7 mM)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (Food & Function 2026, Europe PMC isOpenAccess=N) — enzyme source and readout unverified",
+      "Unit is mM as published, no conversion needed; no SD or replicate count given in the abstract",
+      "Source material is non-marine (sunflower capitulum, Helianthus), unlike the marine members of this cohort — flagged for the parent, not an exclusion under the stated criteria",
+      "The abstract's other IC50 (20.18 mg/mL) belongs to the SCPH hydrolysate, not to LGDF, and was correctly not used"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "No unit conversion needed (mM used as read): 9.7 mM = 9700 uM. Recomputed MW 450.491 (L 113.1594 + G 57.0519 + D 115.0886 + F 147.1766 + 18.015) is not needed for the value and is given only as a cross-check.",
+      "Criterion 1 holds: the 9.7 mM value is explicitly the LGDF peptide value, kept distinct in the same abstract from the hydrolysate value (SCPH, IC50 = 20.18 mg/mL) — do not confuse the two.",
+      "Criterion 2 only partly verifiable: enzyme is xanthine oxidase (title, abstract, MeSH 'Xanthine Oxidase', 'Uric Acid'), but source, substrate and readout mode could not be seen — Food & Function full text is closed.",
+      "Source is a terrestrial plant by-product (sunflower capitulum, Helianthus), not marine — flagged in case the cohort is meant to stay marine; this is not one of the stated criteria 1-6, so it does not refute membership.",
+      "Publication is Food Funct. 2026 (RSC DOI prefix d6fo = 2026), newer than the other three; no review has tabulated it yet, so the value rests on the primary abstract alone. No duplicate: Europe PMC returns exactly one record for LGDF + xanthine oxidase."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "YNITGW",
+   "doi": "10.1016/j.foodchem.2023.136837",
+   "pmid": "37473632",
+   "value_as_published": "IC50 = 9.78 ± 0.13 mM",
+   "ic50_uM": 9780,
+   "source_species": "Litopenaeus vannamei",
+   "readout": "not observable — abstract does not state substrate or detection method; full text is subscription-only (Unpaywall is_oa=false, no PMC/Europe PMC copy)",
+   "material": "unknown (abstract does not state synthesis or purification; peptide was virtually screened from Pacific white shrimp protein sequences, so the sequence itself is natural)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "YNITGW (IC50 = 9.78 ± 0.13 mM) showed the strongest activity.",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Full text closed (Unpaywall is_oa=False, no PMC/Europe PMC OA copy), so only the PubMed abstract could be read.",
+      "Enzyme source (e.g. bovine milk XO), substrate and readout (290-295 nm spectrophotometric vs HPLC) are not stated in the abstract.",
+      "Abstract wording matches the claimed value exactly; peptide is one of seven virtually screened from Pacific white shrimp whole protein sequences, so it is a natural-derived sequence, not one of the paper's Trp-inserted optimized variants."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partly verifiable: enzyme is named as xanthine oxidase, but substrate (xanthine) and readout (uric acid by ~290-295 nm absorbance vs HPLC) and enzyme source are not stated in the abstract and the full text is paywalled.",
+      "Criterion 5 material not observable (abstract-only).",
+      "Arithmetic OK: no unit conversion needed, 9.78 mM x 1000 = 9780 uM, matches submitted value. MW recomputed as reference only (752.8244 Da), so 9.78 mM ≈ 7.36 mg/mL — high but internally consistent with the other mM-scale peptides in this batch.",
+      "Same paper also reports Trp-insertion optimized variants; YNITGW is described as one of the seven virtually screened natural-sequence peptides, not an optimized design — re-check against full text if an optimized sibling is ever added as a separate member."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "GL",
+   "doi": "10.3168/jds.2023-24028",
+   "pmid": "37923199",
+   "value_as_published": "half maximal inhibitory concentration in vitro was 10.20 ± 0.89 ... mM (GL, first of GL/PM/AL/AM listed 'respectively')",
+   "ic50_uM": 10200,
+   "source_species": "Bos taurus (whey)",
+   "readout": "HPLC (abstract: in vitro assay by high-performance liquid chromatography); allowed by criterion 2. Enzyme source not stated in abstract.",
+   "material": "synthetic — abstract states \"The XO activity of these synthetic peptides was tested\"",
+   "designed": false,
+   "access": "abstract",
+   "quote": "4 peptides GL, PM, AL, and AM exhibited higher inhibitory activity, and their half maximal inhibitory concentration in vitro was 10.20 ± 0.89,",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is assigned to GL via a 'respectively' list (GL, PM, AL, AM -> 10.20, 23.82, 34.49, 40.45 mM); the mapping is unambiguous but the abstract does not write 'GL: IC50 = 10.20 mM' as a standalone statement.",
+      "Abstract phrases it as 'half maximal inhibitory concentration ... was 10.20 ± 0.89 ... mM' rather than a literal 'IC50 ='; the recorded 'IC50 = 10.20 ± 0.89 mM' is a faithful but reworded form. Table wording in the full text could not be checked: the gold-OA PDF at journalofdairyscience.org and the ScienceDirect page both returned HTTP 403, and no bypass was attempted.",
+      "Enzyme source (e.g. bovine milk XO) and substrate not stated in the abstract.",
+      "GL is a very common dipeptide; if another paper reports a GL xanthine-oxidase IC50 the cohort rule (median of several papers) would need re-checking. Not searched here, outside this fidelity lens."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is assigned to GL by \"respectively\" ordering (GL, PM, AL, AM → 10.20, 23.82, 34.49, 40.45 mM); GL is first in both lists, so the mapping is unambiguous.",
+      "Enzyme source (e.g. bovine milk) not stated in the abstract; the article is CC BY but both publisher hosts returned HTTP 403 and Unpaywall lists no mirror, so the methods section could not be read.",
+      "Arithmetic OK: 10.20 mM x 1000 = 10200 uM, matches submitted value; no mass-unit conversion involved. Reference MW 188.2263 Da → ≈1.92 mg/mL.",
+      "GL is a generic dipeptide likely to be reported in more than one paper — flag for a cross-batch duplicate check under criterion 6 (median uM) before the cohort is closed."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "ACECD",
+   "doi": "10.1016/j.foodchem.2021.129068",
+   "pmid": "33486365",
+   "value_as_published": "IC50 value of 13.40 mmol/L",
+   "ic50_uM": 13400,
+   "source_species": "Katsuwonus pelamis",
+   "readout": "not observable — abstract does not state substrate or detection method for the IC50 assay; full text is subscription-only",
+   "material": "unknown (abstract does not state whether ACECD was chemically synthesized or purified; it was identified from skipjack tuna hydrolysate by affinity-ultrafiltration + HPLC-MALDI-TOF/TOF-MS)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "A novel XODI peptide (ACECD) was identified with an IC50 value of 13.40 mmol/L",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Full text closed (Unpaywall is_oa=False, no OA copy), so only the PubMed abstract could be read.",
+      "Enzyme source, substrate and IC50 readout are not stated in the abstract.",
+      "Abstract spells the sequence out as alanine-cysteine-glutamic acid-cysteine-aspartic acid, which matches ACECD letter for letter.",
+      "The abstract's '13.40 mmol/L ... decreased by 21.24% and 51.40% compared to those of UF-2 and HS' compares a molar IC50 against fraction/hydrolysate IC50s that are normally in mg/mL; the comparison basis is unclear from the abstract, but the 13.40 mmol/L is unambiguously ACECD's own value."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 1 holds: the 13.40 mmol/L value is attributed to the single defined peptide ACECD, explicitly distinguished from the UF-2 fraction and the HS hydrolysate in the same sentence.",
+      "Criterion 2 only partly verifiable: enzyme is xanthine oxidase, but substrate and readout (absorbance vs HPLC) and enzyme source are not stated in the abstract and the full text is paywalled.",
+      "Unit sanity check: 13.40 mmol/L of ACECD (MW recomputed 539.5755 Da) = 7.23 mg/mL. The abstract's comparison \"decreased by 21.24% and 51.40% compared to those of UF-2 and HS\" implies the fractions were measured in the same units, which is unusual for a hydrolysate fraction (normally mg/mL) — a possible unit inconsistency in the source paper, not resolvable from the abstract.",
+      "Arithmetic OK as read: 13.40 mmol/L x 1000 = 13400 uM, matches submitted value; no conversion performed.",
+      "Criterion 5 material not observable (abstract-only)."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LIFCEK",
+   "doi": "10.1021/acs.jafc.5c05340",
+   "pmid": "41187988",
+   "value_as_published": "IC50 values of 28.06 and 20.32 mM, respectively (LCAFNK, LIFCEK) -> LIFCEK = 20.32 mM",
+   "ic50_uM": 20320,
+   "source_species": "Helianthus annuus",
+   "readout": "not observable — abstract does not state substrate or detection method; full text is subscription-only",
+   "material": "unknown (abstract does not state synthesis or purification; sequence was AI-screened from 29,100 sunflower (Helianthus annuus) protein sequences, so the sequence itself is natural)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "we identified two peptides, LCAFNK and LIFCEK, with IC50 values of 28.06 and 20.32 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Full text closed (Unpaywall is_oa=False, no OA copy), so only the PubMed abstract could be read.",
+      "Value is assigned to LIFCEK via a two-item 'respectively' list; the mapping is unambiguous (LCAFNK=28.06, LIFCEK=20.32 mM) but the abstract does not state 'LIFCEK: IC50 = 20.32 mM' standalone, and gives no ± SD.",
+      "Enzyme source, substrate and readout are not stated in the abstract.",
+      "Sequence was screened from sunflower (Helianthus annuus) protein sequences, so it is a natural-derived sequence, not a de novo design."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is assigned to LIFCEK by \"respectively\" ordering (LCAFNK → 28.06 mM, LIFCEK → 20.32 mM); ordering is unambiguous, LIFCEK is second in both lists.",
+      "Criterion 2 only partly verifiable: enzyme is xanthine oxidase, but substrate, readout and enzyme source are not stated in the abstract and the full text is paywalled.",
+      "Arithmetic OK: 20.32 mM x 1000 = 20320 uM, matches submitted value; no conversion needed. Reference MW 751.9388 Da → ≈15.3 mg/mL, the weakest member of this batch.",
+      "Criterion 5 material not observable (abstract-only). Sibling peptide LCAFNK (28.06 mM) from the same paper is a candidate member not in this batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "PM",
+   "doi": "10.3168/jds.2023-24028",
+   "pmid": "37923199",
+   "value_as_published": "half maximal inhibitory concentration in vitro was 23.82 ± 0.94 mM (for PM, 2nd of GL/PM/AL/AM)",
+   "ic50_uM": 23820,
+   "source_species": "Bos taurus (whey)",
+   "readout": "HPLC (abstract states XO activity tested by high-performance liquid chromatography); uric-acid detection wavelength not visible in abstract",
+   "material": "synthetic (abstract: \"these synthetic peptides\"); sequence is a natural whey α-lactalbumin/β-lactoglobulin fragment found by in-silico hydrolysis + docking",
+   "designed": false,
+   "access": "abstract",
+   "quote": "GL, PM, AL, and AM ... 10.20 ± 0.89, 23.82 ± 0.94, 34.49 ± 0.89, and 40.45 ± 0.92 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is given as \"half maximal inhibitory concentration in vitro was ... mM\" in a respectively-list, not literally as \"IC50 = 23.82 mM\"; the number and unit match the member record exactly.",
+      "Enzyme source (e.g. bovine milk XO) and substrate/detection wavelength not stated in the abstract; article is CC BY but full text is only on ScienceDirect (HTTP 403 for automated access) and is not in PMC/Europe PMC, so these details could not be re-read.",
+      "PM is a dipeptide (Pro-Met); sequence is unambiguous but very short."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 partially unverified: XO source (e.g. bovine milk) and substrate/detection wavelength are not in the abstract; the article is CC-BY gold OA but both ScienceDirect and journalofdairyscience.org return HTTP 403 to automated fetch, so no full text was readable without a login.",
+      "Unit check: 23.82 mM = 23820 uM, no MW conversion needed (dipeptide Pro-Met, MW recomputed 246.3243 for reference only).",
+      "Value order check: abstract lists GL, PM, AL, AM against 10.20, 23.82, 34.49, 40.45 mM — 23.82 is correctly the second (PM).",
+      "No duplicate report of a PM xanthine-oxidase IC50 found in Europe PMC.",
+      "Potency context (not a criterion failure): millimolar-range inhibitor."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "ADIYTE",
+   "doi": "10.1039/c7fo01174a",
+   "pmid": "29019366",
+   "value_as_published": "IC50 = 19.01 ± 0.23 mg mL-1",
+   "ic50_uM": 26746.8,
+   "source_species": "Juglans regia",
+   "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+   "material": "purified natural peptide (purified from dephenolized walnut meal hydrolysate via Sephadex G-15 + RP-HPLC, identified by LC-ESI-MS/MS)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "IC50 values of 17.75 ± 0.12 mg mL-1 (WPPKN) and 19.01 ± 0.23 mg mL-1 (ADIYTE)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Recomputed conversion: MW = 710.7384 Da (ExPASy average residue masses + 18.015), 19.01 mg/mL x 1e6 / 710.7384 = 26746.8 uM — matches the member record; the paper's own stated MW (710.7 Da) agrees.",
+      "Readout method (spectrophotometric nm vs HPLC) and XO enzyme source not visible in the abstract; article is not open access (no PMC/Europe PMC copy, no OA location in Unpaywall), so full text could not be opened under the access rules.",
+      "IC50 is stated per peptide (parenthetical sequence labels), so attribution to the single peptide is explicit."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "MW recomputed from ExPASy average residue masses = 710.7384 Da; paper states 710.7 Da (difference 0.005%, well under 1%).",
+      "Conversion recomputed: 19.01 mg/mL x 1e6 / 710.7384 = 26746.8 uM — matches the supplied value exactly.",
+      "Criterion 2 unverified: enzyme source, substrate and readout (absorbance vs HPLC) are not in the abstract and the full text is paywalled; recorded as unknown rather than estimated.",
+      "Free-termini / unmodified assumption for the mass-to-molar conversion could not be confirmed from the abstract, but a peptide purified from a hydrolysate is the standard free-termini case.",
+      "No independent duplicate: the other Europe PMC hits for ADIYTE (foods14010058, foods12244465, md21040208, md19100538, foods12050982) are reviews or unrelated papers citing or listing this one, not separate measurements."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "WPPKN",
+   "doi": "10.1039/c7fo01174a",
+   "pmid": "29019366",
+   "value_as_published": "IC50 = 17.75 ± 0.12 mg mL-1",
+   "ic50_uM": 27702.4,
+   "source_species": "Juglans regia",
+   "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+   "material": "purified natural peptide (purified from dephenolized walnut meal hydrolysate via Sephadex G-15 + RP-HPLC, identified by LC-ESI-MS/MS)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "IC50 values of 17.75 ± 0.12 mg mL-1 (WPPKN) and 19.01 ± 0.23 mg mL-1 (ADIYTE)",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Recomputed conversion: MW = 640.7395 Da, 17.75 mg/mL x 1e6 / 640.7395 = 27702.4 uM — matches the member record; the paper's own stated MW (640.8 Da) agrees.",
+      "Readout method and XO enzyme source not visible in the abstract; article is not open access, so full text could not be opened under the access rules.",
+      "Same DOI/paper as ADIYTE — two distinct members from one source, each with its own attributed IC50."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "MW recomputed from ExPASy average residue masses = 640.7395 Da; paper states 640.8 Da (difference 0.009%, well under 1%).",
+      "Conversion recomputed: 17.75 mg/mL x 1e6 / 640.7395 = 27702.4 uM — matches the supplied value exactly.",
+      "Criterion 2 unverified: enzyme source, substrate and readout (absorbance vs HPLC) are not in the abstract and the full text is paywalled; recorded as unknown rather than estimated.",
+      "Same source paper as ADIYTE — two distinct sequences, so two distinct members, not a duplicate.",
+      "No independent duplicate measurement found in Europe PMC; the other WPPKN hits are reviews citing this paper."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LCAFNK",
+   "doi": "10.1021/acs.jafc.5c05340",
+   "pmid": "41187988",
+   "value_as_published": "IC50 = 28.06 mM",
+   "ic50_uM": 28060,
+   "source_species": "Helianthus annuus",
+   "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+   "material": "unknown — abstract does not say whether the assayed peptide was chemically synthesized or purified; sequence is a natural sunflower (Helianthus annuus) protein fragment selected by ConPLex AI virtual screening of 29,100 sequences",
+   "designed": false,
+   "access": "abstract",
+   "quote": "two peptides, LCAFNK and LIFCEK, with IC50 values of 28.06 and 20.32 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is a single number with no ± and no range; unit mM as read, 28.06 mM = 28060 uM.",
+      "Readout (uric acid detection method), substrate and XO enzyme source not stated in the abstract; article is not open access (no PMC/Europe PMC copy), so full text could not be opened under the access rules.",
+      "Sequence is derived from natural sunflower protein sequences (screened, not de-novo designed), so designed = false."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Unit check: 28.06 mM = 28060 uM, no MW conversion needed. MW recomputed as 694.8465 Da for reference only; note LCAFNK contains Cys, so a mass-unit conversion would have needed a free-thiol/monomer check — not applicable here.",
+      "Attribution check: the abstract lists LCAFNK and LIFCEK against 28.06 and 20.32 mM \"respectively\", so 28.06 mM is LCAFNK.",
+      "Criterion 2 unverified: enzyme source, substrate and readout are not in the abstract and the full text is paywalled; recorded as unknown rather than estimated.",
+      "Criterion 3 note: value is stated without a ± error term but as a single number, which satisfies the 'IC50: x' form (no range, no inequality, not a figure read).",
+      "No duplicate: LCAFNK returns exactly one Europe PMC hit, this paper.",
+      "Cohort lead (not part of this batch): LIFCEK, same paper, IC50 = 20.32 mM = 20320 uM, same criteria status."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AL",
+   "doi": "10.3168/jds.2023-24028",
+   "pmid": "37923199",
+   "value_as_published": "34.49 ± 0.92... (as read: 34.49 ± 0.89 mM, third of four values for GL, PM, AL, AM)",
+   "ic50_uM": 34490,
+   "source_species": "Bos taurus (whey)",
+   "readout": "HPLC (uric acid quantified by high-performance liquid chromatography; explicitly stated in abstract). Enzyme source and substrate not stated in the abstract.",
+   "material": "synthetic (abstract: \"The XO activity of these synthetic peptides was tested\")",
+   "designed": false,
+   "access": "abstract",
+   "quote": "their half maximal inhibitory concentration in vitro was 10.20 ± 0.89, 23.82 ± 0.94, 34.49 ± 0.89, and 40.45 ± 0.92 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is given positionally in a four-peptide list (GL, PM, AL, AM = 10.20, 23.82, 34.49, 40.45 mM); AL is the third item, so the pairing depends on the stated 'respectively' order.",
+      "Phrased as 'half maximal inhibitory concentration ... was X mM', not literally 'IC50 = X'; single numeric with SD, no range or inequality, so criterion 3 is met in substance.",
+      "XO enzyme source (e.g. bovine milk) and substrate not stated in the abstract; publisher full text returned HTTP 403 to automated access, so Methods were not independently seen.",
+      "Peptides are in-silico (virtual enzymatic hydrolysis + docking) selections from natural whey proteins (alpha-lactalbumin / beta-lactoglobulin), then synthesized — natural-sequence, not non-natural design."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Publisher full text is gold OA (CC BY) but journalofdairyscience.org and sciencedirect.com both return HTTP 403; not in PMC/Europe PMC, so verification is abstract-level only.",
+      "Criterion 2 partially unverifiable: XO source (e.g. bovine milk) and substrate (xanthine) are not named in the abstract. Readout is explicitly HPLC, which criterion 2 allows.",
+      "Value is a mean ± SD, not a range, so criterion 3 is met.",
+      "No unit conversion needed (mM read as given); MW 202.253 Da computed for reference only.",
+      "Same paper also reports GL = 10.20 ± 0.89 mM and PM = 23.82 ± 0.94 mM — two further candidate members not in this batch.",
+      "Two-residue sequence; check the wider cohort for an \"AL\" row from a different paper before counting it once."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "ECFK",
+   "doi": "10.1021/acs.jcim.5c00126",
+   "pmid": "40125929",
+   "value_as_published": "IC50 values of 37.36 and 71.57 mM, respectively (ECFK = 37.36 mM)",
+   "ic50_uM": 37360,
+   "source_species": "Bacillus subtilis (natto)",
+   "readout": "not stated in the abstract — enzyme is xanthine oxidase, but source, substrate and detection method (absorbance vs HPLC) are only in the paywalled full text",
+   "material": "unknown (abstract says the peptide was identified from the Bacillus subtilis proteome by machine-learning screening and experimentally validated; synthesis/purity not stated)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "ECFK and FECK, were identified from the Bacillus subtilis proteome and validated as xanthine oxidase inhibitors with IC50 values of 37.36 and 71.57 mM",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Readout (spectrophotometric vs HPLC), substrate and XO enzyme source are not stated in the abstract; Unpaywall reports is_oa=false (closed), pubs.acs.org returned HTTP 403, so criterion 2 is only partially verified — enzyme identity (xanthine oxidase) is confirmed, assay detail is not.",
+      "Material (synthetic vs purified) not stated in the abstract; criterion 5 records it as unknown, which is not an exclusion.",
+      "Value given positionally in a two-peptide list; ECFK is the first item per the stated 'respectively' order.",
+      "Sequence is an anagram of FECK from the same paper — both are distinct members; no sequence-collision in the cohort."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Article is subscription-only (Unpaywall/Semantic Scholar: CLOSED; no PMC record), so only the abstract could be read. The IC50 itself is stated verbatim there.",
+      "Criterion 2 unverified for readout and enzyme source. Both readouts permitted by criterion 2 are plausible, so this does not by itself fail the criterion, but it is not positively confirmed.",
+      "Stated as \"IC50 values of 37.36 ... mM\", i.e. the 'IC50: x' form with '=' implied; no range, no inequality — criterion 3 met.",
+      "No unit conversion needed (mM read as given); MW 525.620 Da computed for reference only.",
+      "Sequence contains Cys — free thiol could act on the assay non-specifically; not discussed in the abstract.",
+      "ECFK and FECK are anagrams and share MW 525.620 Da; they are distinct sequences, not a duplicate pair."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AM",
+   "doi": "10.3168/jds.2023-24028",
+   "pmid": "37923199",
+   "value_as_published": "40.45 ± 0.92 mM",
+   "ic50_uM": 40450,
+   "source_species": "Bos taurus (whey)",
+   "readout": "HPLC (uric acid quantified by high-performance liquid chromatography; explicitly stated in abstract). Enzyme source and substrate not stated in the abstract.",
+   "material": "synthetic (abstract: \"The XO activity of these synthetic peptides was tested\")",
+   "designed": false,
+   "access": "abstract",
+   "quote": "their half maximal inhibitory concentration in vitro was 10.20 ± 0.89, 23.82 ± 0.94, 34.49 ± 0.89, and 40.45 ± 0.92 mM, respectively",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is given positionally in a four-peptide list (GL, PM, AL, AM); AM is the fourth item, pairing depends on the stated 'respectively' order.",
+      "Phrased as 'half maximal inhibitory concentration ... was X mM', not literally 'IC50 = X'; single numeric with SD, no range or inequality.",
+      "XO enzyme source and substrate not stated in the abstract; publisher full text returned HTTP 403 to automated access, so Methods were not independently seen.",
+      "In-silico screened fragment of natural whey protein, then synthesized — natural sequence, not non-natural design."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Publisher full text is gold OA (CC BY) but journalofdairyscience.org and sciencedirect.com both return HTTP 403; not in PMC/Europe PMC, so verification is abstract-level only.",
+      "Criterion 2 partially unverifiable: XO source and substrate not named in the abstract. Readout explicitly HPLC, allowed by criterion 2.",
+      "Value is a mean ± SD, not a range, so criterion 3 is met.",
+      "No unit conversion needed (mM read as given); MW 220.286 Da computed for reference only.",
+      "Methionine-containing dipeptide — oxidation state not discussed; no effect on the recorded value.",
+      "Distinct from AL, ECFK, FECK; no duplicate within this batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FECK",
+   "doi": "10.1021/acs.jcim.5c00126",
+   "pmid": "40125929",
+   "value_as_published": "IC50 values of 37.36 and 71.57 mM, respectively (FECK = 71.57 mM)",
+   "ic50_uM": 71570,
+   "source_species": "Bacillus subtilis (natto)",
+   "readout": "not stated in the abstract — enzyme is xanthine oxidase, but source, substrate and detection method (absorbance vs HPLC) are only in the paywalled full text",
+   "material": "unknown (identified from the Bacillus subtilis proteome by machine-learning screening and experimentally validated; synthesis/purity not stated)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "ECFK and FECK, were identified from the Bacillus subtilis proteome and validated as xanthine oxidase inhibitors with IC50 values of 37.36 and 71.57 mM",
+   "found_by": "first sweep (2026-10-05)",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Readout, substrate and XO enzyme source not stated in the abstract; closed access (Unpaywall is_oa=false), pubs.acs.org HTTP 403 — enzyme identity confirmed, assay detail not.",
+      "Material not stated; recorded as unknown (not an exclusion under criterion 5).",
+      "Value given positionally in a two-peptide list; FECK is the second item per 'respectively'.",
+      "Anagram of ECFK from the same paper; distinct member."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Article is subscription-only (no OA copy, no PMC record), so only the abstract could be read. The IC50 itself is stated verbatim there.",
+      "Criterion 2 unverified for readout and enzyme source; not positively confirmed, though both allowed readouts remain possible.",
+      "Stated as \"IC50 values of ... 71.57 mM\" — single number, no range or inequality; criterion 3 met.",
+      "No unit conversion needed (mM read as given); MW 525.620 Da computed for reference only.",
+      "Cys-containing peptide; possible non-specific thiol effects not addressed in the abstract.",
+      "Anagram of ECFK with identical MW; distinct sequence, not a duplicate."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "WPDNGFPGPQ",
+   "doi": "10.1016/j.foodres.2025.117870",
+   "pmid": "41360558",
+   "value_as_published": "IC50 3.95 mM",
+   "ic50_uM": 3950,
+   "source_species": null,
+   "readout": "NOT STATED - abstract does not give substrate, wavelength or enzyme source; full text is closed access so uric-acid-by-absorbance vs HPLC could not be determined",
+   "material": "synthetic (abstract: peptides screened in silico then synthesised and activity-validated)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "three peptides, WPDNGFPGPQ, PPNSDIGWRV, and NGPAHW, significantly inhibited XO activity ... with IC50 values of 3.95, 4.85, and 6.39 mM, respectively",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text: Europe PMC reports isOpenAccess=N, inEPMC=N, 'Subscription required' (Elsevier) - verification is abstract-only",
+      "Criterion 2 only partly verifiable: enzyme is xanthine oxidase, but enzyme source, xanthine substrate and uric-acid readout (290-295 nm / HPLC) are not stated in the abstract",
+      "Value given as 'IC50 values of 3.95, 4.85, and 6.39 mM, respectively' - no explicit '=' and no SD; ordering relies on 'respectively'",
+      "Non-marine source (chicken hemoglobin)"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partially verifiable: enzyme is xanthine oxidase (title + abstract) but substrate, readout and enzyme source are not in the abstract. Full text is paywalled - Unpaywall is_oa=false / oa_status=closed, Europe PMC isOpenAccess=N, inPMC=N, no PMCID; Crossref carries no abstract. No OA route exists, so the readout was not read.",
+      "Criterion 3 wording: the abstract says 'with IC50 values of 3.95 ... mM' rather than a literal 'IC50 = 3.95 mM'. It is a definite single number (no range, no > or <, not read from a figure), so it passes, but the '=' is implicit.",
+      "Criterion 4: no MW conversion needed, mM used as read -> 3.95 mM x 1000 = 3950 uM. MW recomputation not applicable.",
+      "Order check: abstract lists WPDNGFPGPQ, PPNSDIGWRV, NGPAHW with 3.95, 4.85, 6.39 mM 'respectively', so 3.95 mM maps to WPDNGFPGPQ.",
+      "Criterion 6: no duplicate within this batch; not one of the 참조기 peptides. Cross-paper duplicate search could not be run (session web-search budget exhausted).",
+      "Correctly excluded by the submitter: the nonapeptide derivative WPDNGFPGP is called strongest but is given no number, so it is not a member."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "PPNSDIGWRV",
+   "doi": "10.1016/j.foodres.2025.117870",
+   "pmid": "41360558",
+   "value_as_published": "IC50 4.85 mM",
+   "ic50_uM": 4850,
+   "source_species": null,
+   "readout": "NOT STATED - same paper as WPDNGFPGPQ; substrate/wavelength/enzyme source absent from the abstract and the full text is closed access",
+   "material": "synthetic (abstract: screened in silico then synthesised and activity-validated)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "three peptides, WPDNGFPGPQ, PPNSDIGWRV, and NGPAHW, significantly inhibited XO activity ... with IC50 values of 3.95, 4.85, and 6.39 mM, respectively",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (subscription, Elsevier) - abstract-only verification",
+      "Enzyme source, substrate and uric-acid readout not stated in the abstract",
+      "No explicit '=' and no SD; ordering relies on 'respectively'",
+      "Non-marine source (chicken hemoglobin)"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partially verifiable: enzyme is xanthine oxidase, but substrate, readout and enzyme source are not stated. Full text closed (Unpaywall is_oa=false; Europe PMC inPMC=N).",
+      "Criterion 3: value given as 'IC50 values of ... 4.85 ... mM' - single definite number, no range or inequality, not figure-read; '=' implicit.",
+      "Criterion 4: mM used as read -> 4.85 mM x 1000 = 4850 uM; no MW conversion needed.",
+      "Criterion 6: second of three peptides in the 'respectively' list, so 4.85 mM maps to PPNSDIGWRV; no duplicate in this batch; cross-paper duplicate check not run (web-search budget exhausted)."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "NGPAHW",
+   "doi": "10.1016/j.foodres.2025.117870",
+   "pmid": "41360558",
+   "value_as_published": "IC50 6.39 mM",
+   "ic50_uM": 6390,
+   "source_species": null,
+   "readout": "NOT STATED - same paper; readout could not be read because the full text is closed access",
+   "material": "synthetic (abstract: screened in silico then synthesised and activity-validated)",
+   "designed": false,
+   "access": "abstract",
+   "quote": "three peptides, WPDNGFPGPQ, PPNSDIGWRV, and NGPAHW, significantly inhibited XO activity ... with IC50 values of 3.95, 4.85, and 6.39 mM, respectively",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "No OA full text (subscription, Elsevier) - abstract-only verification",
+      "Enzyme source, substrate and uric-acid readout not stated in the abstract",
+      "No explicit '=' and no SD; ordering relies on 'respectively'",
+      "Non-marine source (chicken hemoglobin)",
+      "Sister sequence WPDNGFPGP (nonapeptide, called 'strongest') correctly excluded - no number given anywhere in the abstract"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 only partially verifiable: enzyme is xanthine oxidase; substrate, readout and enzyme source not stated in the abstract, full text paywalled (Unpaywall closed, not in PMC/Europe PMC).",
+      "Criterion 3: single definite number, no range or inequality, not figure-read; '=' implicit in 'IC50 values of'.",
+      "Criterion 4: mM used as read -> 6.39 mM x 1000 = 6390 uM; no MW conversion needed.",
+      "Criterion 6: third in the 'respectively' list, so 6.39 mM maps to NGPAHW; no duplicate in this batch; cross-paper duplicate check not run."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "QPSF",
+   "doi": "10.3390/foods14030524",
+   "pmid": "39942117",
+   "value_as_published": "IC50 = 38.392 +/- 7.254 mM",
+   "ic50_uM": 38392,
+   "source_species": null,
+   "readout": "uric acid formation by absorbance at 295 nm (UV spectrophotometer TU-1810PC, Purkinje); reaction stopped with 1 M HCl. NOT HPLC. Enzyme: xanthine oxidase (XOD) from milk, Solarbio, 0.1 U/mL; substrate xanthine 1.5 mM",
+   "material": "synthetic - solid-phase peptide synthesis at Sangon Biotech, stated purity 99%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "peptide QPSF (-9.6 kcal/mol, IC50 = 38.392 +/- 7.254 mM)",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is not in the abstract; it appears only in the Europe PMC OA full text (PMC11817512, section 3.5.1), saved locally as PMC11817512.xml",
+      "Enzyme source recorded as 'Xanthine oxidase (XOD) from milk' - species (bovine) not spelled out",
+      "IC50 is quoted inside a sentence pairing it with the docking score; the in-vitro assay itself is described separately in Methods 2.5.1, so attribution to the peptide's own XO assay holds",
+      "Value is very large (38.392 mM) - in range but far weaker than typical cohort members"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "All six criteria pass on the Europe PMC OA full text (PMC11817512).",
+      "Criterion 2 fully verified: XOD from milk (Solarbio), xanthine substrate 1.5 mM, 37 C, absorbance at 295 nm after HCl stop = uric acid formation, spectrophotometric not HPLC.",
+      "Criterion 3: stated with '=' plus a mean +/- SD, which is not a range; IC50 computed from a regression of inhibition rate vs concentration, not read off a figure.",
+      "Criterion 4: mM used as read -> 38.392 mM x 1000 = 38392 uM; no MW conversion needed. (For reference the submitter's 38392 uM is reproduced exactly.)",
+      "Minor internal inconsistency in rounding only: Results 3.3 gives 38.39 +/- 7.25 mM, Discussion 3.5.1 gives 38.392 +/- 7.254 mM. Same value; the 3-decimal form was used.",
+      "Dose range sanity check: peptides were tested at 10, 20, 40, 80 and 160 mM, so IC50 38.392 mM is interpolated inside the tested range, not extrapolated.",
+      "Value is NOT in the abstract - confirmed only from OA full text, as the submitter said.",
+      "Criterion 6: no duplicate in this batch; cross-paper duplicate check not run (session web-search budget exhausted). The paper's other three peptides (DF 107.64, AGF 48.60, AGDDAPR 65.96 mM) are separate candidates not submitted in this batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AGF",
+   "doi": "10.3390/foods14030524",
+   "pmid": "39942117",
+   "value_as_published": "IC50 = 48.599 +/- 9.947 mM (also stated rounded as 48.60 +/- 9.95 mM in Section 3.3)",
+   "ic50_uM": 48599,
+   "source_species": null,
+   "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+   "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "peptide AGF (-8.7 kcal/mol, IC50 = 48.599 +/- 9.947 mM)",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is in the OA full text only (PMC11817512, Sections 3.3 and 3.5.1); the PubMed abstract contains no IC50 numbers.",
+      "IC50 interpolated from a regression curve over a 10/20/40/80/160 mM peptide series - very weak inhibition, mM range.",
+      "Enzyme source stated only as 'from milk' (Solarbio); bovine is implied but not written."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is in the Discussion (Sec. 3.5.1) of the PMC OA full text, not in the abstract; confirmed verbatim in PMC11817512.",
+      "Enzyme: XOD from milk (Solarbio, Beijing), 0.1 U/mL; substrate xanthine 1.5 mM; 37 °C, 15 min pre-incubation + 20 min reaction.",
+      "Tested concentrations 10–160 mM, so IC50 48.6 mM is interpolated inside the tested range (not extrapolated).",
+      "Units mM used as read → 48.599 mM = 48599 µM; no mass-unit conversion needed, no MW recomputation required.",
+      "No duplicate with the other members of this batch.",
+      "Same paper also reports QPSF (IC 50 = 38.392 ± 7.254 mM = 38392 µM), which meets all six criteria but was NOT submitted in this batch — candidate missing member."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "DF",
+   "doi": "10.3390/foods14030524",
+   "pmid": "39942117",
+   "value_as_published": "IC50 = 107.635 +/- 15.881 mM (also stated rounded as 107.64 +/- 15.88 mM in Section 3.3)",
+   "ic50_uM": 107635,
+   "source_species": null,
+   "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+   "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "peptide DF (-8.6 kcal/mol, IC50 = 107.635 +/- 15.881 mM)",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is in the OA full text only (PMC11817512); the PubMed abstract contains no IC50 numbers.",
+      "IC50 interpolated from a regression curve over a 10/20/40/80/160 mM series; 107.6 mM sits in the upper third of the tested range - weakest of the four peptides in the paper.",
+      "Dipeptide Asp-Phe: a two-residue sequence is at elevated risk of colliding with a same-sequence row from another paper - run the criterion-6 dedup check before adding.",
+      "Enzyme source stated only as 'from milk' (Solarbio)."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Dipeptide Asp-Phe; value stated once in the Discussion of PMC11817512 with '=' and SD, as in vitro XO inhibitory activity.",
+      "Enzyme XOD from milk (Solarbio) 0.1 U/mL, xanthine 1.5 mM, 295 nm.",
+      "IC50 107.6 mM sits inside the tested range 10–160 mM but above the second-highest point (80 mM), so it rests on the top two concentrations only — value accepted as published.",
+      "Units mM as read → 107635 µM; no conversion, no MW check needed.",
+      "No duplicate within the batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "AGDDAPR",
+   "doi": "10.3390/foods14030524",
+   "pmid": "39942117",
+   "value_as_published": "IC50 = 65.962 +/- 10.873 mM (also stated rounded as 65.96 +/- 10.87 mM in Section 3.3)",
+   "ic50_uM": 65962,
+   "source_species": null,
+   "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+   "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "peptide AGDDAPR (-7.0 kcal/mol, IC50 = 65.962 +/- 10.873 mM)",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is in the OA full text only (PMC11817512); the PubMed abstract contains no IC50 numbers.",
+      "IC50 interpolated from a regression curve over a 10/20/40/80/160 mM series - very weak inhibition, mM range.",
+      "Enzyme source stated only as 'from milk' (Solarbio)."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value verbatim in the Discussion of PMC11817512; XOD from milk (Solarbio) 0.1 U/mL, xanthine 1.5 mM, 295 nm.",
+      "Units mM as read → 65962 µM; no mass-unit conversion. (MW recomputed for reference only: 700.706 Da.)",
+      "IC50 inside tested range 10–160 mM.",
+      "No duplicate within the batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LMFP",
+   "doi": "10.3390/foods15061093",
+   "pmid": "41897815",
+   "value_as_published": "IC50 1.94 mg/mL for XOD inhibition (dose-response analysis of LMFP)",
+   "ic50_uM": 3829,
+   "source_species": null,
+   "readout": "uric acid by absorbance at 290 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+   "material": "synthetic — chemically synthesized by Sangon Biotech, purity >95%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "IC50 values of 1.6 mg/mL for DPPH radical scavenging and 1.94 mg/mL for XOD inhibition",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "MW CONFLICT - the paper's own Table 6 gives LMFP 'Mass 928', but the sequence-derived average MW is 506.660. In the same row FEGLFR (published 767.87 vs computed 767.883) and QLPSYR (published 762.85 vs computed 762.863) match their sequences exactly, so only the LMFP mass cell is inconsistent. Conversion per the fixed criterion-4 rule (MW 506.660) gives 3829 uM; if the published 928 were the real MW the value would be 2090 uM instead. Reported as 3829 uM because criterion 4 prescribes computing MW from the stated sequence, and 'LMFP' is stated three independent times (text, synthesis list, Table 6 Sequence row) against one conflicting mass cell.",
+      "Phrasing is 'IC50 values of ... 1.94 mg/mL for XOD inhibition' - no '=' sign, but a single numeric value, no range, no inequality.",
+      "Value is in the OA full text only (PMC13025653, Section 3.5.3); the PubMed abstract contains no IC50 numbers.",
+      "Enzyme species not stated (XOD 50 U/mg, Shanghai Yuanye); assay run at 25 C, which is non-standard for this assay.",
+      "Co-reported peptides FEGLFR and QLPSYR carry only single-concentration % inhibition at 2.5 mg/mL, no individual IC50 - correctly excluded by criterion 3."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is NOT in the abstract; read from Europe PMC OA full text PMC13025653 (Sec. 3, verification of screened corn peptides).",
+      "Wording is 'IC 50 values of ... 1.94 mg/mL for XOD inhibition' rather than a literal '=' sign; it is a single number, not a range, so criterion 3 is met. The Limitations section writes '(1.6–2.41 mg/mL)', but that span merely brackets the three separate DPPH/XOD/ADH values and is not a range for the XO IC50.",
+      "MW recomputed from ExPASy average residue masses: L 113.1594 + M 131.1926 + F 147.1766 + P 97.1167 + 18.015 = 506.6603 Da — matches the submitted 506.660 (<0.01% difference).",
+      "Conversion: 1.94 mg/mL = 1.94e6 µg/L ÷ 506.6603 = 3829.0 µM. Submitted 3829 confirmed.",
+      "Plain standard-residue linear tetrapeptide, free termini, no modification stated — mass-unit conversion is permitted under criterion 4.",
+      "Enzyme: XOD 50 U/mg (Shanghai Yuanye), used at 0.02 U/mL; species/source organism NOT stated by the authors. Substrate xanthine 0.48 mM, 25 °C, 25 min.",
+      "The other two peptides in the paper (FEGLFR, QLPSYR) have no individual IC50 — only a single-concentration 2.5 mg/mL inhibition rate — so they correctly stay out of the cohort.",
+      "No duplicate within the batch."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "LDQW",
+   "doi": "10.1002/fsn3.70171",
+   "pmid": "40255545",
+   "value_as_published": "IC50 of LDQW = 15.5 mM (stated as \"was calculated to be 15.5 mM\", based on LC-MS/MS data)",
+   "ic50_uM": 15500,
+   "source_species": null,
+   "readout": "uric acid quantified by UHPLC separation (XBridge Peptide BEH C18, 2.1 x 250 mm) with tandem-MS PRM detection at m/z 169.03/70.04, absolute calibration curve; NOT absorbance at 290-295 nm. Enzyme: xanthine oxidase from bovine milk (Sigma-Aldrich), 25 U/L final; substrate: xanthine 0.42 mM final; 0.1 M phosphate buffer pH 7.2 + 0.1 M NaCl, 30 min, n = 3",
+   "material": "synthetic - LDQW synthesized by BEX Co. Ltd. (Tokyo, Japan), purity > 95%",
+   "designed": false,
+   "access": "full_text",
+   "quote": "The IC 50 of LDQW was calculated to be 15.5 mM based on the results obtained using LC-MS/MS",
+   "found_by": "full re-screen of PubMed chunk 1",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Value is NOT in the PubMed abstract - abstract reports only 58.0% +/- 2.8% inhibition at 20 mM; the IC50 appears only once, in the Discussion of the OA full text (PMC12006031).",
+      "Phrasing is 'was calculated to be 15.5 mM', not literally 'IC50 ='. Single numeric, no range, no inequality, not read by me off a figure - meets criterion 3 in substance but is a non-standard wording.",
+      "Readout is LC-MS/MS, not the spectrophotometric 290 nm route. Authors explicitly argue the 290 nm method is unreliable here because Trp-containing peptides absorb near 290 nm and interfere with the uric-acid signal; no IC50 was derived from absorptiometry.",
+      "IC50 (15.5 mM) sits just below the top tested concentration (20 mM), i.e. interpolated near the edge of the tested range.",
+      "Source material is bovine whey protein hydrolysate (Morinaga Milk), not marine - member criteria do not exclude it, but it is non-marine for map-context purposes.",
+      "Same paper reports DQW (a predicted digestive fragment) with 'comparable' activity but states no IC50 for it - DQW is not a member."
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 2 borderline: the readout behind the 15.5 mM value is LC-MS/MS (UHPLC + PRM MS/MS on uric acid), not spectrophotometry at ~290-295 nm and not HPLC-UV. The criterion's parenthetical lists 'spectrophotometric ~290-295 nm or HPLC'; the chromatography here is UHPLC but the detector is MS/MS. If the cohort rule means HPLC with UV detection only, this member must be refuted - that is a rule decision, not something I can resolve from the paper.",
+      "Criterion 3 borderline wording: the paper writes 'The IC50 of LDQW was calculated to be 15.5 mM', not 'IC50 = 15.5 mM' or 'IC50: 15.5 mM'. It is a single explicit number with no range, no '>' or '<', so it meets the substance of criterion 3 but not its literal '=' phrasing.",
+      "The 15.5 mM figure appears only once, in the Discussion (section 4), not in the Results or any table; the Results report only the inhibition ratios (LDQW 58.0% +/- 2.8% at 20 mM by LC-MS/MS). No curve-fitting model, equation or fit statistic for the IC50 is reported anywhere in the paper.",
+      "The value is an interpolation inside a 5-point series (1, 2.5, 5, 10, 20 mM) whose maximum inhibition is 58.0% at the top concentration, i.e. only just past 50% - the IC50 rests on a narrow margin above the 50% crossing.",
+      "The parallel absorptiometry gives a much stronger apparent effect (96.4% +/- 7.0% at 20 mM) but no IC50; the authors attribute the discrepancy to sensitivity/specificity and warn that Trp-containing peptides absorb near 290 nm and interfere with the uric-acid absorbance. So the two readouts in this one paper are not interchangeable, and only the LC-MS/MS branch yields the reported IC50.",
+      "Arithmetic check: 15.5 mM = 15500 uM exactly; no mass-unit conversion needed, so no MW step applies (for reference MW(LDQW) = 113.1594 + 115.0886 + 128.1307 + 186.2132 + 18.015 = 560.79 Da).",
+      "Duplicate check: Europe PMC query (LDQW OR \"Leu-Asp-Gln-Trp\") AND xanthine returns 3 hits - this paper, a WPH human trial (10.1002/fsn3.71150, no peptide IC50), and an unrelated 1993 abstract collection. No second paper reports an XO IC50 for LDQW, so no median is needed. The same paper's DQW and ALPM have % inhibition only, no IC50, so they create no further members.",
+      "Not one of the excluded Larimichthys polyactis sequences; sequence is a natural whey-protein-derived peptide, not designed."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  },
+  {
+   "sequence": "FH",
+   "doi": "10.1016/j.foodchem.2018.08.057",
+   "pmid": "30309568",
+   "value_as_published": "IC50 = 25.7 mM (Phe-His)",
+   "ic50_uM": 25700,
+   "source_species": null,
+   "readout": "uric-acid formation measured by an 'improved HPLC method' (abstract wording); HPLC, not 290-295 nm absorbance",
+   "material": "synthetic ('Their XO inhibitory activities were assessed using corresponding synthetic peptides')",
+   "designed": false,
+   "access": "abstract",
+   "quote": "Phe-His having the highest XO inhibitory activity (IC50 = 25.7 mM)",
+   "found_by": "full re-screen of PubMed chunk 2",
+   "checks": {
+    "fidelity": {
+     "verdict": "confirmed",
+     "issues": [
+      "Abstract-only verification: no OA full text (Europe PMC isOpenAccess=N, inPMC=N, no PMCID; Unpaywall is_oa=false), so assay conditions could not be read",
+      "XO enzyme source (e.g. bovine milk) not stated in the abstract",
+      "Substrate xanthine / uric-acid-formation readout not explicitly stated; abstract states only 'an improved HPLC method'",
+      "The other 12 di-/tri-peptides identified have no stated IC50 in the abstract, so only FH is verifiable from this source"
+     ]
+    },
+    "criteria": {
+     "verdict": "confirmed",
+     "issues": [
+      "Criterion 4 arithmetic recomputed: 25.7 mM x 1000 = 25700 uM, matches the listed ic50_uM exactly; no mass-unit conversion needed. MW sanity check only: F 147.1766 + H 137.1411 + 18.015 = 302.33, which matches the 302.33 Da given for FH in review PMC11719947.",
+      "Criterion 2 partially unverifiable: enzyme source (e.g. bovine milk XO) is not stated anywhere in the accessible text, so it could not be recorded. The abstract names only 'an improved HPLC method'; that the HPLC readout quantifies uric acid is standard for XO assays but is not spelled out in any text I could see (Unpaywall is_oa=false, Europe PMC isOpenAccess=N, no OA copy exists).",
+      "Criterion 6 flag (does not refute, but is the one thing that could move the value): review PMC11678060 (Nutrients 2024) Table 1 lists a second row 'FH IC50: 257.0 uM' under reference [79] = Yu et al. 2021, J Sci Food Agric 101:1349-1354, doi 10.1002/jsfa.10745, PMID 32820534. That paper's own abstract reports only EEAK at 173.00 +/- 0.06 uM and never mentions FH; it is paywalled (Unpaywall is_oa=false) so I could not read its full text. Review PMC10742721, which also summarises Yu 2021, reports only EEAK percent-inhibition figures and no FH. 257.0 uM is exactly 100x below 25.70 mM, consistent with a mM->uM garble in that one table. If the 257 uM value is genuine, criterion 6 would make this member median(257, 25700) = 12978.5 uM instead of 25700 uM.",
+      "Duplicate check against the existing cohort (tmp/fill-4.3/croaker-xo-cohort/cohort_uM.json, 36 sequences): FH is absent, so no in-cohort duplicate. Note the cohort's GL 10200, PM 23820, AL 34490, AM 40450 and YNITGW 9780 are listed next to FH in secondary tables but are different sequences, so no collision.",
+      "Value independently corroborated as 25.7 / 25.70 mM by three OA reviews citing He 2019: PMC12006031, PMC11678060, PMC11719947, plus PMC10742721.",
+      "He 2019 reports 13 di-/tri-peptides but only FH's IC50 appears in the abstract; the other 12 values remain unverifiable at this access level (closed access, no OA location)."
+     ]
+    }
+   },
+   "decision": "member",
+   "reason": ""
+  }
+ ]
+}

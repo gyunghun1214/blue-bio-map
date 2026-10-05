@@ -34,8 +34,10 @@ class MatrixReadinessTests(unittest.TestCase):
         # samples' moisture) and 넙치·대구 (Fisheries Agency 'ランク外' as LC-equivalent) join: 12 -> 16 points.
         # verified-4.2 (team-lead decision 2026-10-04): 톳·청각·꽃게 join through the sub-national basis, labelled and with the
         # pre-registered back-test result beside them: 16 -> 19 points.
-        self.assertEqual(placed, [241776, 342067, 372119, 494972, 506159, 836033, 234476, 145086, 231750, 397082, 393716, 836041,
-                                  504357, 413600, 127022, 219984, 275816, 254538, 1061762])
+        # verified-4.3 (team-lead decisions 2026-10-05): every cell is filled (scored Rapid LC, 미역 Primorsky EN, XO stratum,
+        # MBPI floor), so all 30 species are placed: 19 -> 30 points.
+        self.assertEqual(placed, [r["aphia_id"] for r in report["species"]])
+        self.assertEqual(len(placed), 30)
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
@@ -47,8 +49,9 @@ class MatrixReadinessTests(unittest.TestCase):
                          [(145721, 71.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (372119, 45.1), (494972, 74.9), (506159, 35.5),
                           (836033, 83.9), (377084, 41.6), (371986, 65.0), (234476, 53.8), (494853, 37.6), (236157, 59.7), (145086, 18.6),
                           (231750, 59.5), (397082, 35.2), (393716, 46.1),
-                          (836041, 35.0), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (275816, 44.3), (274849, 40.1),
-                          (254538, 49.1), (1061762, 46.2)])  # 4.1: 꽃게 (MCCC1-MTS, origin settled on sequence records)
+                          (836041, 35.0), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (281273, 46.6), (275816, 44.3),
+                          (274849, 40.1), (276651, 25.5), (254538, 49.1), (1061762, 46.2), (534443, 18.9), (1666974, 21.3)])
+        # 4.1: 꽃게 (MCCC1-MTS, origin settled on sequence records). 4.3: 참조기 (XO stratum) and the floor BBVIs of 방어·참문어·갑오징어
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
                          [(145721, 95.3), (241776, 8.7), (250680, 13.5), (342067, 56.9), (372119, 13.5), (494972, 86.6), (506159, 10.1),
@@ -56,8 +59,8 @@ class MatrixReadinessTests(unittest.TestCase):
                           (377084, 26.5), (371986, 67.5), (234476, 73.3), (494853, 21.6), (236157, 49.3), (145086, 0.4), (231750, 58.6),
                           (397082, 15.6), (393716, 36.4), (836041, 13.8),
                           (504357, 75.0), (413600, 56.9),
-                          (127022, 34.9), (219984, 22.6), (275816, 29.2), (274849, 31.7),
-                          (254538, 59.9), (1061762, 30.3)])  # 4.1: 꽃게 AMP row
+                          (127022, 34.9), (219984, 22.6), (281273, 53.8), (275816, 29.2), (274849, 31.7), (276651, 0.0),
+                          (254538, 59.9), (1061762, 30.3), (534443, 0.0), (1666974, 0.0)])  # 4.1: 꽃게 AMP row; 4.3: 참조기 XO, three floors
         # verified-pilot-3.18: the antimicrobial-peptide stratum gives 피조개 (AI-hemocidin 2) and 조피볼락 (TS40) a
         # single-paper MBPI from their MIC percentile, so neither opens a BBVI. 3.19 adds Poor Broth to the cohort's broth
         # list (team-lead decision), which moves them by one tenth (22.1 -> 22.0, 31.6 -> 31.7).
@@ -107,11 +110,14 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.27: 가시파래 joins through Sweden's red list 2025 (LC; distant range state)
         # verified-4.0: 넙치·대구 join through the Fisheries Agency of Japan rarity evaluation ('ランク外' as LC-equivalent)
         self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 5)
-        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 0)
-        # verified-4.2: 톳·청각·꽃게 join through official sub-national lists (labelled, back-test result shown)
-        self.assertEqual(sum(r["mcui_basis"] == "sub_national" for r in report["species"]), 3)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 23)
-        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
+        # verified-4.3 (team-lead decision 2026-10-05): the six species with no official category anywhere score their met
+        # Rapid LC (LC-equivalent 10, failed back-test label)
+        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 6)
+        # verified-4.2: 톳·청각·꽃게 join through official sub-national lists (labelled, back-test result shown);
+        # 4.3: 미역 joins through the Primorsky Krai decree No. 272 (EN)
+        self.assertEqual(sum(r["mcui_basis"] == "sub_national" for r in report["species"]), 4)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 30)
+        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"], 80.0)
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
@@ -177,9 +183,8 @@ class MatrixReadinessTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build(self.assessments, self.catalog, mismatched)
         counterfeit = copy.deepcopy(self.assessments)
-        # a species whose BBVI is withheld (3.12 gives the first species, 미역, an earned BBVI; in 4.0 every operating species
-        # has one, so a research candidate is used)
-        next(s for s in counterfeit["species"] + counterfeit["candidate_species"] if s["scores"]["BBVI"] is None)["scores"]["BBVI"] = 50
+        # a BBVI whose MBPI input is gone (4.3 fills every cell, so the counterfeit removes an input instead of adding a BBVI)
+        next(s for s in counterfeit["candidate_species"] if s["scores"]["BBVI"] is not None)["scores"]["MBPI"] = None
         with self.assertRaises(ValueError):
             build(counterfeit, self.catalog, self.expansion)
 
@@ -197,8 +202,9 @@ class MatrixReadinessTests(unittest.TestCase):
         off = copy.deepcopy(self.assessments)
         off["method"]["matrix"]["include_single_source_bbvi"] = False
         rows = build(off, self.catalog, self.expansion)["species"]
-        # 4.2: 톳 keeps its replicated BBVI, so turning the single-paper policy off leaves three points, not two
-        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [494972, 836033, 393716])
+        # 4.2: 톳 keeps its replicated BBVI, so turning the single-paper policy off leaves three points, not two;
+        # 4.3: 미역 (replicated MBPI) gains its MCUI and joins them
+        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [145721, 494972, 836033, 393716])
         self.assertEqual([r["scores"] for r in rows], [r["scores"] for r in build(self.assessments, self.catalog, self.expansion)["species"]])
 
 

@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 19,
+  "matrix_points": 30,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -12,17 +12,19 @@
       "baseline_survey"
     ],
     "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
+    "include_floor_bbvi": true,
     "include_national_mcui": true,
     "include_single_source_bbvi": true,
     "include_substitute_mcui": [
       "range_state",
-      "sub_national"
+      "sub_national",
+      "preliminary"
     ],
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
     "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI.",
+    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
     "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
     "types": {
       "high_bbvi_high_mcui": {
@@ -43,7 +45,7 @@
       }
     }
   },
-  "method_version": "verified-4.2",
+  "method_version": "verified-4.3",
   "schema_version": 1,
   "species": [
     {
@@ -51,7 +53,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": null,
@@ -114,25 +116,23 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "미역",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "alternative_production",
+      "mcui_basis": "sub_national",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
         "BBVI": 71.0,
         "MBPI": 95.3,
-        "MCUI": null,
+        "MCUI": 80.0,
         "MFPI": 46.7
       },
       "source_urls": [
         "https://api.cellosaurus.org/cell-line/",
-        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
+        "https://docs.cntd.ru/document/494219357",
         "https://doi.org/10.1002/elsc.201700172",
         "https://doi.org/10.1016/S0955-2863(00)00110-8",
         "https://doi.org/10.1016/j.foodchem.2018.07.142",
@@ -145,8 +145,8 @@
         "https://doi.org/10.1271/bbb.58.1767",
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
-        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
+        "https://publication.pravo.gov.ru/document/2501202210260002",
         "https://query.wikidata.org/sparql",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
         "https://www.ebi.ac.uk/chembl/api/data/",
@@ -219,7 +219,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
@@ -249,19 +249,17 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "멍게",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
         "BBVI": 33.2,
         "MBPI": 13.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 52.8
       },
       "source_urls": [
@@ -613,26 +611,24 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "다시마",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Saccharina japonica",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 41.6,
         "MBPI": 26.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 56.7
       },
       "source_urls": [
@@ -650,7 +646,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -659,26 +656,24 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "감태",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "sustainable_use",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 65.0,
         "MBPI": 67.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 62.5
       },
       "source_urls": [
@@ -698,7 +693,8 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986",
         "https://www.marinespecies.org/rest/",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -753,26 +749,24 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "괭생이모자반",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Sargassum horneri",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 37.6,
         "MBPI": 21.6,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 53.5
       },
       "source_urls": [
@@ -800,26 +794,24 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "꼬시래기",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "sustainable_use",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Gracilaria vermiculophylla",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 59.7,
         "MBPI": 49.3,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 70.0
       },
       "source_urls": [
@@ -837,7 +829,8 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
       "unexplored_candidate": null
     },
@@ -1243,30 +1236,25 @@
     {
       "aphia_id": 281273,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
-      "bioactivity_missing_steps": [
-        "origin",
-        "structure_id",
-        "quantitative_endpoint",
-        "comparable_cohort"
-      ],
+      "bioactivity_missing_steps": [],
       "korean_name": "참조기",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
       "mcui_basis": "iucn",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Larimichthys polyactis",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 46.6,
+        "MBPI": 53.8,
         "MCUI": 20.0,
         "MFPI": 39.4
       },
@@ -1275,6 +1263,7 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.12717/DR.2025.29.1.13",
         "https://doi.org/10.3390/foods12050982",
+        "https://pubmed.ncbi.nlm.nih.gov/",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
@@ -1331,32 +1320,31 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "조피볼락",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Sebastes schlegelii",
       "scope": "expansion_22",
       "scores": {
         "BBVI": 40.1,
         "MBPI": 31.7,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 48.5
       },
       "source_urls": [
         "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Sebastes+schlegelii&limit=100",
         "https://api.obis.org/v3/",
+        "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
         "https://dbaasp.org",
         "https://doi.org/10.3390/md20060353",
         "https://doi.org/10.3897/BDJ.8.e47018",
@@ -1373,12 +1361,12 @@
     {
       "aphia_id": 276651,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
         "origin",
@@ -1387,16 +1375,17 @@
         "comparable_cohort"
       ],
       "korean_name": "방어",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "iucn",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Seriola quinqueradiata",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 25.5,
+        "MBPI": 0.0,
         "MCUI": 10.0,
         "MFPI": 51.0
       },
@@ -1503,12 +1492,12 @@
     {
       "aphia_id": 534443,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
         "origin",
@@ -1517,16 +1506,17 @@
         "comparable_cohort"
       ],
       "korean_name": "참문어(동아시아 종)",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "national",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Octopus sinensis",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 18.9,
+        "MBPI": 0.0,
         "MCUI": 35.0,
         "MFPI": 37.8
       },
@@ -1534,6 +1524,7 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Octopus+sinensis&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.fsi.2025.110408",
+        "https://doi.org/10.3390/md20050328",
         "https://opac-t.time.u-tokai.ac.jp/iwjs0018opc/TD00000555",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1550,12 +1541,12 @@
     {
       "aphia_id": 1666974,
       "axis_reasons": {
-        "BBVI": "requires_MFPI_and_MBPI",
-        "MBPI": "compound_origin_assay_chain_or_fixed_cohort_missing",
+        "BBVI": null,
+        "MBPI": null,
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "MBPI 하한값 포함",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [
         "origin",
@@ -1564,16 +1555,17 @@
         "comparable_cohort"
       ],
       "korean_name": "갑오징어",
-      "matrix_eligible": false,
-      "matrix_type": null,
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mbpi_label": "효능 근거 미확인(하한값)",
       "mcui_basis": "national",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Acanthosepion esculentum",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": null,
-        "MBPI": null,
+        "BBVI": 21.3,
+        "MBPI": 0.0,
         "MCUI": 10.0,
         "MFPI": 42.5
       },
@@ -1581,6 +1573,7 @@
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Acanthosepion+esculentum&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.3390/md18100490",
+        "https://doi.org/10.3892/mmr.2017.7068",
         "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",
         "https://www.cmnpd.org",
         "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
@@ -1590,7 +1583,9 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1666974",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
+        "https://www.sciencedirect.com/science/article/pii/S1875536411600563",
+        "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
       ],
       "unexplored_candidate": null
     }

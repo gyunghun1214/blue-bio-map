@@ -365,5 +365,9 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 
 /* 4.2: 지방 목록 참고값 points — a dashed purple marker, apart from the amber national square; a hollow
    single-paper point keeps its white fill so the two signals stay readable together */
-.matrix-point.pilot.subnational{border-radius:5px;border-style:dashed;border-color:#6b3fa0}
+.matrix-point.pilot.national.subnational{border-radius:5px;border-style:dashed;border-color:#6b3fa0}
 .matrix-point.pilot.subnational:not(.single){background:#6b3fa0}
+/* 4.3: 자체 예비평가(Rapid LC) MCUI — grey dotted marker; a BBVI with the floor MBPI (0) — hollow with a grey outline */
+.matrix-point.pilot.national.rapidlc{border-radius:5px;border-style:dotted;border-color:#5f6b73}
+.matrix-point.pilot.rapidlc:not(.single){background:#5f6b73}
+.matrix-point.pilot.floor,.matrix-point.pilot.national.single.floor{border-color:#8a959c}

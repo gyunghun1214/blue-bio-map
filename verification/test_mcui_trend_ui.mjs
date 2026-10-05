@@ -63,23 +63,40 @@ const plain=structuredClone(rows.find(a=>a.scores.MCUI!==null&&!a.occurrence_tre
 assert.equal(ctx.valid(plain,report),false,'a 3.4 row must carry its trend');
 // 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record rides beside a withheld MCUI and is re-checked;
 // a record that carries a value, a report that scores it, or a record below the published thresholds is refused.
-const refRows=rows.filter(a=>a.mcui_substitute?.use==='reference_only');
+// 4.3 (team-lead decision 2026-10-05) scores the check, so the reference-only rules are kept on the archived 4.2 report.
+const arch42=JSON.parse(read('research/verified-indices/archive/assessments-verified-4.2.json'));
+const rows42=[...arch42.species,...arch42.candidate_species];
+const broken42=(a,change)=>{const b=structuredClone(a);change(b,b.occurrence_trend);return ctx.valid(b,arch42);};
+const refRows=rows42.filter(a=>a.mcui_substitute?.use==='reference_only');
 assert.equal(refRows.length,7);  // 3.16: 우뭇가사리, 3.27: 가시파래, 4.0: 넙치·대구 have a range-state MCUI and 4.2 톳·청각·꽃게 a sub-national one, so their Rapid LC records are gone
 assert.ok(refRows.every(a=>a.scores.MCUI===null&&a.mcui_basis===null&&a.mcui_substitute.value===null&&a.withheld_reasons.MCUI==='not_in_red_list'));
 const ref=refRows[0];
-assert.equal(broken(ref,b=>{b.mcui_substitute.value=10;}),false,'a reference-only record carries no value');
-assert.equal(broken(ref,b=>{b.scores.MCUI=10;b.score_status.MCUI='산출됨';b.withheld_reasons.MCUI=null;}),false,'a reference-only record never gives an MCUI');
-assert.equal(broken(ref,b=>{b.mcui_basis='preliminary';}),false,'preliminary is not an MCUI basis');
-assert.equal(broken(ref,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
-assert.equal(broken(ref,b=>{b.mcui_substitute.record.aoo_cells+=1;}),false,'AOO must equal its cells');
-assert.equal(broken(ref,b=>{b.mcui_substitute.record.trend_class='decline_signal';}),false,'a decline signal is never likely LC');
-assert.equal(broken(ref,b=>{b.mcui_substitute.source_ids=['missing_source'];}),false,'every source id must exist');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.value=10;}),false,'a reference-only record carries no value');
+assert.equal(broken42(ref,b=>{b.scores.MCUI=10;b.score_status.MCUI='산출됨';b.withheld_reasons.MCUI=null;}),false,'a reference-only record never gives an MCUI');
+assert.equal(broken42(ref,b=>{b.mcui_basis='preliminary';}),false,'preliminary is not an MCUI basis');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.record.aoo_cells+=1;}),false,'AOO must equal its cells');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.record.trend_class='decline_signal';}),false,'a decline signal is never likely LC');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.source_ids=['missing_source'];}),false,'every source id must exist');
 // attached only where the builder may attach one: never beside an IUCN or national assessment (the back-test's failure mode)
-assert.equal(broken(ref,b=>{b.conservation_trace.iucn_state='assessed';b.conservation_trace.category='EN';b.withheld_reasons.MCUI='current_status_unverified';}),false,'never beside an IUCN assessment');
-assert.equal(broken(ref,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
-assert.equal(broken(ref,b=>{b.mcui_substitute.record.thresholds={...b.mcui_substitute.record.thresholds,eoo_km2:1};}),false,'the record carries the published thresholds');
-assert.equal(broken(ref,b=>{b.mcui_substitute.record.trend_class=b.occurrence_trend?.class==='survey_gap'?'no_clear_decline':'survey_gap';}),false,'the record trend equals the re-checked trend');
-assert.equal(broken(ref,b=>{delete b.mcui_substitute.record.native_box;}),false,'the range box must be present');
+assert.equal(broken42(ref,b=>{b.conservation_trace.iucn_state='assessed';b.conservation_trace.category='EN';b.withheld_reasons.MCUI='current_status_unverified';}),false,'never beside an IUCN assessment');
+assert.equal(broken42(ref,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.record.thresholds={...b.mcui_substitute.record.thresholds,eoo_km2:1};}),false,'the record carries the published thresholds');
+assert.equal(broken42(ref,b=>{b.mcui_substitute.record.trend_class=b.occurrence_trend?.class==='survey_gap'?'no_clear_decline':'survey_gap';}),false,'the record trend equals the re-checked trend');
+assert.equal(broken42(ref,b=>{delete b.mcui_substitute.record.native_box;}),false,'the range box must be present');
+
+// 4.3 (team-lead decision 2026-10-05): a met check is the last basis and scores LC-equivalent 10, labelled, with the failed
+// back-test beside it. It is re-checked like the reference record and refused beside any official basis.
+const lcRows=rows.filter(a=>a.mcui_basis==='preliminary');
+assert.equal(lcRows.length,6);
+assert.ok(lcRows.every(a=>a.scores.MCUI===10&&a.mcui_substitute.use==='scored'&&a.mcui_substitute.backtest.result==='failed'&&a.withheld_reasons.MCUI===null));
+const lc=lcRows[0];
+assert.equal(broken(lc,b=>{b.scores.MCUI=35;}),false,'the scored check is LC-equivalent only');
+assert.equal(broken(lc,b=>{delete b.mcui_substitute.backtest;}),false,'the failed back-test rides with the value');
+assert.equal(broken(lc,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
+assert.equal(broken(lc,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
+assert.equal(broken(lc,b=>{b.conservation_trace.iucn_state='assessed';}),false,'never beside an IUCN assessment');
+assert.equal(broken(lc,b=>{b.mcui_substitute.use='reference_only';}),false,'a scored value must be marked scored');
 
 // Screen text
 for(const a of rows){
@@ -100,11 +117,11 @@ if(!['decline_signal','decline_below_threshold'].includes(cucumber.occurrence_tr
 // 3.15 (team-lead decision 2026-10-02): reference only. A Rapid LC check gives no MCUI, so those species keep the
 // no-assessment reason (8 of the 14 also have low information sufficiency) and no 'preliminary' reason exists.
 assert.ok(rows.every(a=>!a.priority_survey_reasons.includes('preliminary_assessment_only')));
-const onlyNoAssessment0=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
+const onlyNoAssessment0=rows42.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');  // 4.3: none left in the current report
 // 4.0: no species keeps both reasons (감태 gains an MFPI, 꽃게 a reviewed partial record), so the pair is checked on a copy
-const both=rows.find(a=>a.priority_survey_reasons.length===2)||{...onlyNoAssessment0,priority_survey_reasons:['low_information_sufficiency','no_conservation_assessment']};
+const both=rows42.find(a=>a.priority_survey_reasons.length===2)||{...onlyNoAssessment0,priority_survey_reasons:['low_information_sufficiency','no_conservation_assessment']};
 assert.match(ctx.reasons(both),/^정보충분도 낮음\(필수 입력 평균 \d+%, 기준 50% 미만\) · 보전 평가 없음\(IUCN·국가 평가 모두 없어 MCUI 미산출\)$/);
-const onlyNoAssessment=rows.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
+const onlyNoAssessment=rows42.find(a=>a.priority_survey_reasons.join()==='no_conservation_assessment');
 assert.equal(ctx.reasons(onlyNoAssessment),'보전 평가 없음(IUCN·국가 평가 모두 없어 MCUI 미산출)');
 assert.equal(ctx.reasons({...onlyNoAssessment,priority_survey_reasons:['conservation_data_deficient']}),'IUCN 자료 부족(DD) · 국가 평가도 없어 MCUI 미산출');
 assert.equal(rows.filter(a=>a.priority_survey).length,rows.filter(a=>a.priority_survey_reasons.length).length);

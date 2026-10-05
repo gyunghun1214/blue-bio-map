@@ -1,0 +1,774 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "cohort_id": "xo-peptide-literature-2026-10-05",
+ "target": "xanthine oxidase",
+ "endpoint": "IC50",
+ "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
+ "search": {
+  "database": "PubMed (NCBI E-utilities)",
+  "run_on": "2026-10-05",
+  "records_read": 270,
+  "queries": [
+   "\"xanthine oxidase\"[tiab] AND peptide*[tiab]",
+   "(\"xanthine oxidase\"[tiab]) AND (peptide*|hydrolysate*) AND inhibit*[tiab]",
+   "hyperuricemi*[tiab] AND peptide*[tiab] AND (IC50|IC(50))[tiab]",
+   "\"uric acid\"[tiab] AND peptide*[tiab] AND \"xanthine oxidase\"[tiab]"
+  ],
+  "also_read": [
+   "open full texts reached from these records (PMC, MDPI, institutional mirrors)"
+  ],
+  "screening": "All 270 records were read twice: once by the first sweep and once in four chunks by separate readers; every candidate from either pass was checked by two independent reviewers (source fidelity; criteria and arithmetic)."
+ },
+ "member_rule": [
+  "single defined peptide; the IC50 is the peptide's own value against xanthine oxidase",
+  "xanthine substrate, uric-acid readout (absorbance 290-295 nm or HPLC); the readout is recorded, never an exclusion; many abstracts do not state it",
+  "one stated number (no range, inequality, single-concentration %, or figure reading)",
+  "uM/mM/mmol/L as read; mass units converted only for plain standard-residue linear peptides (ExPASy average residue masses + 18.015)",
+  "material recorded (synthetic/purified/unknown), not an exclusion; designed sequences allowed and flagged",
+  "one member per sequence (median uM)",
+  "the scored species' own peptides are never members"
+ ],
+ "built_by": "scripts/build_xo_cohort.py",
+ "size": 46,
+ "median_pIC50": 2.235,
+ "members": [
+  {
+   "sequence": "ACECD",
+   "ic50_uM": 13400,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2021.129068",
+     "pmid": "33486365",
+     "value_as_published": "IC50 value of 13.40 mmol/L",
+     "ic50_uM": 13400,
+     "readout": "not observable — abstract does not state substrate or detection method for the IC50 assay; full text is subscription-only",
+     "material": "unknown (abstract does not state whether ACECD was chemically synthesized or purified; it was identified from skipjack tuna hydrolysate by affinity-ultrafiltration + HPLC-MALDI-TOF/TOF-MS)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "ADIYTE",
+   "ic50_uM": 26746.8,
+   "rows": [
+    {
+     "doi": "10.1039/c7fo01174a",
+     "pmid": "29019366",
+     "value_as_published": "IC50 = 19.01 ± 0.23 mg mL-1",
+     "ic50_uM": 26746.8,
+     "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+     "material": "purified natural peptide (purified from dephenolized walnut meal hydrolysate via Sephadex G-15 + RP-HPLC, identified by LC-ESI-MS/MS)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "AEAQMWR",
+   "ic50_uM": 8850,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.2c07881",
+     "pmid": "36625439",
+     "value_as_published": "AEAQMWR, 891.01 Da, IC50 = 8.85 ± 0.05 mM",
+     "ic50_uM": 8850,
+     "readout": "xanthine oxidase (XO) inhibition, in vitro; enzyme source, substrate and uric-acid detection mode (absorbance ~290-295 nm vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+     "material": "unknown — abstract says 17 novel XO inhibitory peptides were purified from Pacific white shrimp / swimming crab and screened by molecular docking; synthetic vs purified for the assayed AEAQMWR is not stated in the accessible abstract",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "AFYLAGGVPR",
+   "ic50_uM": 536.1,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.6c07558",
+     "pmid": "42715978",
+     "value_as_published": "IC50 = 536.1 μM",
+     "ic50_uM": 536.1,
+     "readout": "unknown - abstract names xanthine oxidase (XO) and mixed-type kinetics but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+     "material": "unknown - abstract does not state synthesis or purity; sequence identified from sesame 11S globulin by nanoUHPLC-ESI-Q-TOF MS/MS",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "AGDDAPR",
+   "ic50_uM": 65962,
+   "rows": [
+    {
+     "doi": "10.3390/foods14030524",
+     "pmid": "39942117",
+     "value_as_published": "IC50 = 65.962 +/- 10.873 mM (also stated rounded as 65.96 +/- 10.87 mM in Section 3.3)",
+     "ic50_uM": 65962,
+     "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+     "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "AGF",
+   "ic50_uM": 48599,
+   "rows": [
+    {
+     "doi": "10.3390/foods14030524",
+     "pmid": "39942117",
+     "value_as_published": "IC50 = 48.599 +/- 9.947 mM (also stated rounded as 48.60 +/- 9.95 mM in Section 3.3)",
+     "ic50_uM": 48599,
+     "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+     "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "AL",
+   "ic50_uM": 34490,
+   "rows": [
+    {
+     "doi": "10.3168/jds.2023-24028",
+     "pmid": "37923199",
+     "value_as_published": "34.49 ± 0.92... (as read: 34.49 ± 0.89 mM, third of four values for GL, PM, AL, AM)",
+     "ic50_uM": 34490,
+     "readout": "HPLC (uric acid quantified by high-performance liquid chromatography; explicitly stated in abstract). Enzyme source and substrate not stated in the abstract.",
+     "material": "synthetic (abstract: \"The XO activity of these synthetic peptides was tested\")",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "ALPM",
+   "ic50_uM": 7230,
+   "rows": [
+    {
+     "doi": "10.1016/j.bioorg.2022.106097",
+     "pmid": "35985156",
+     "value_as_published": "IC50 = 7.23 ± 0.22 mM (ALPM; LWM = 5.01 ± 0.31 mM in same sentence)",
+     "ic50_uM": 7230,
+     "readout": "xanthine oxidase (XO) inhibition, in vitro; enzyme source, substrate and detection mode (absorbance wavelength vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+     "material": "unknown — abstract states ALPM was identified from whey protein isolate hydrolysate and screened by molecular docking; whether the assayed peptide was synthetic or chromatographically purified is not stated in the accessible abstract",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "AM",
+   "ic50_uM": 40450,
+   "rows": [
+    {
+     "doi": "10.3168/jds.2023-24028",
+     "pmid": "37923199",
+     "value_as_published": "40.45 ± 0.92 mM",
+     "ic50_uM": 40450,
+     "readout": "HPLC (uric acid quantified by high-performance liquid chromatography; explicitly stated in abstract). Enzyme source and substrate not stated in the abstract.",
+     "material": "synthetic (abstract: \"The XO activity of these synthetic peptides was tested\")",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "DF",
+   "ic50_uM": 107635,
+   "rows": [
+    {
+     "doi": "10.3390/foods14030524",
+     "pmid": "39942117",
+     "value_as_published": "IC50 = 107.635 +/- 15.881 mM (also stated rounded as 107.64 +/- 15.88 mM in Section 3.3)",
+     "ic50_uM": 107635,
+     "readout": "uric acid by absorbance at 295 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+     "material": "synthetic — solid-phase peptide synthesis, Sangon Biotech, purity 99%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "ECFK",
+   "ic50_uM": 37360,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jcim.5c00126",
+     "pmid": "40125929",
+     "value_as_published": "IC50 values of 37.36 and 71.57 mM, respectively (ECFK = 37.36 mM)",
+     "ic50_uM": 37360,
+     "readout": "not stated in the abstract — enzyme is xanthine oxidase, but source, substrate and detection method (absorbance vs HPLC) are only in the paywalled full text",
+     "material": "unknown (abstract says the peptide was identified from the Bacillus subtilis proteome by machine-learning screening and experimentally validated; synthesis/purity not stated)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "EEAK",
+   "ic50_uM": 173,
+   "rows": [
+    {
+     "doi": "10.1002/jsfa.10745",
+     "pmid": "32820534",
+     "value_as_published": "IC50 of 173.00 ± 0.06 μM",
+     "ic50_uM": 173,
+     "readout": "unknown - abstract names the enzyme as xanthine oxidase (XO) but states no enzyme source, no substrate and no detection method (absorbance vs HPLC)",
+     "material": "unknown - abstract does not state synthesis or purity; peptide was found by virtual screening of tuna protein and then assayed",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "EFDGF",
+   "ic50_uM": 680,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2026.149587",
+     "pmid": "42167182",
+     "value_as_published": "IC50 = 0.68 mM (EF-5 = Glu-Phe-Asp-Gly-Phe)",
+     "ic50_uM": 680,
+     "readout": "not observable - enzyme is named as xanthine oxidase (XO) but substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated in the abstract and the full text is paywalled",
+     "material": "unknown - abstract does not state synthetic vs purified; peptide was identified from Antarctic krill hydrolysate (material is not an exclusion criterion)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FDPLIQ",
+   "ic50_uM": 790,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2026.149587",
+     "pmid": "42167182",
+     "value_as_published": "IC50 = 0.79 mM (FQ-6 = Phe-Asp-Pro-Leu-Ile-Gln)",
+     "ic50_uM": 790,
+     "readout": "not observable - enzyme is named as xanthine oxidase (XO); substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated in the abstract and the full text is paywalled",
+     "material": "unknown - abstract does not state synthetic vs purified; identified from Antarctic krill hydrolysate (material is not an exclusion criterion)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FECK",
+   "ic50_uM": 71570,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jcim.5c00126",
+     "pmid": "40125929",
+     "value_as_published": "IC50 values of 37.36 and 71.57 mM, respectively (FECK = 71.57 mM)",
+     "ic50_uM": 71570,
+     "readout": "not stated in the abstract — enzyme is xanthine oxidase, but source, substrate and detection method (absorbance vs HPLC) are only in the paywalled full text",
+     "material": "unknown (identified from the Bacillus subtilis proteome by machine-learning screening and experimentally validated; synthesis/purity not stated)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FFAFGR",
+   "ic50_uM": 905.8,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.5c01770",
+     "pmid": "40553021",
+     "value_as_published": "IC50: 673.8 μg/mL (peptide No. 117 = FFAFGR), xanthine oxidase (XOD)",
+     "ic50_uM": 905.8,
+     "readout": "not observable - abstract says 'in vitro xanthine oxidase (XOD) inhibition'; enzyme source, substrate and readout (absorbance ~290-295 nm vs HPLC) are not stated and the full text is paywalled",
+     "material": "unknown - screened from rice residue protein hydrolysate by LC-MS/MS and then 'validated'; abstract does not state whether the tested peptide was synthesized or purified (material is not an exclusion criterion)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FGHPEW",
+   "ic50_uM": 617.1,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.5c01770",
+     "pmid": "40553021",
+     "value_as_published": "IC50: 476.3 μg/mL (peptide No. 56, FGHPEW; the companion value 673.8 μg/mL belongs to FFAFGR, No. 117)",
+     "ic50_uM": 617.1,
+     "readout": "unknown - abstract names xanthine oxidase (XOD) in vitro inhibition but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+     "material": "unknown - abstract does not state synthesis or purity; peptide screened from rice residue protein hydrolysate after simulated GI digestion and then 'validated for their biological activity'",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FH",
+   "ic50_uM": 25700,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2018.08.057",
+     "pmid": "30309568",
+     "value_as_published": "IC50 = 25.7 mM (Phe-His)",
+     "ic50_uM": 25700,
+     "readout": "uric-acid formation measured by an 'improved HPLC method' (abstract wording); HPLC, not 290-295 nm absorbance",
+     "material": "synthetic ('Their XO inhibitory activities were assessed using corresponding synthetic peptides')",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "FPAW",
+   "ic50_uM": 3810,
+   "rows": [
+    {
+     "doi": "10.3390/nu17111831",
+     "pmid": "40507101",
+     "value_as_published": "IC50 = 3.81 mM (abstract); 'an IC50 of 3.81 ± 0.18 mM in a previous study [22]' (introduction)",
+     "ic50_uM": 3810,
+     "readout": "not stated in any readable text. The Nutrients paper did not measure this IC50; the primary source (Hou 2022, Food Bioscience 47:101639) is paywalled with no abstract available in Crossref, Semantic Scholar, OpenAlex or Europe PMC, so the uric-acid detection mode and XOD source are unverified.",
+     "material": "synthetic — the Nutrients methods state FPAW \"was synthesized using a solid-phase method by GL Biochemistry Co., Ltd.\", though that synthesis served the in vivo work, not the cited in vitro IC50",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "GGPGDR",
+   "ic50_uM": 1954.9,
+   "rows": [
+    {
+     "doi": "10.1111/1750-3841.71102",
+     "pmid": "42109015",
+     "value_as_published": "IC50 1.09 ± 0.04 mg/mL for GGPGDR (WGNEEF 2.52 ± 0.06 mg/mL)",
+     "ic50_uM": 1954.9,
+     "readout": "not stated in the abstract; closed access, no OA full text (Europe PMC: isOpenAccess N, inPMC N), so uric-acid-absorbance vs HPLC could not be verified",
+     "material": "synthetic — abstract states both peptides were \"screened, synthesized, and experimentally validated\"",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "GL",
+   "ic50_uM": 10200,
+   "rows": [
+    {
+     "doi": "10.3168/jds.2023-24028",
+     "pmid": "37923199",
+     "value_as_published": "half maximal inhibitory concentration in vitro was 10.20 ± 0.89 ... mM (GL, first of GL/PM/AL/AM listed 'respectively')",
+     "ic50_uM": 10200,
+     "readout": "HPLC (abstract: in vitro assay by high-performance liquid chromatography); allowed by criterion 2. Enzyme source not stated in abstract.",
+     "material": "synthetic — abstract states \"The XO activity of these synthetic peptides was tested\"",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "GNQQVHLQSQDM",
+   "ic50_uM": 8775.8,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.3c01131",
+     "pmid": "37161263",
+     "value_as_published": "IC50 value of 12.15 mg/mL (peptide GM-12 = GNQQVHLQSQDM)",
+     "ic50_uM": 8775.8,
+     "readout": "xanthine oxidase (XOD) activity inhibition, in vitro; XOD source, substrate and uric-acid detection mode (absorbance vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy). The abstract separately reports fluorescence quenching of XOD, which is a binding observation, not the IC50 readout.",
+     "material": "unknown — identified and purified from Bacillus licheniformis 8-4 fermented feather-keratin broth; the abstract does not say whether the assayed GM-12 was synthetic or the purified fraction peptide",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "IRW",
+   "ic50_uM": 3935,
+   "rows": [
+    {
+     "doi": "10.3390/pr9050747",
+     "pmid": null,
+     "value_as_published": "Table 3 (xanthine oxidase): IC50 (mg/mL) 1.338 ± 0.015; IC50 (mM) 3.935 — sample IW3 (= IRW, egg white)",
+     "ic50_uM": 3935,
+     "readout": "uric acid formation, spectrophotometric absorbance at 293 nm (Multiskan GO microplate spectrophotometer); substrate xanthine; XO = xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, species not stated",
+     "material": "synthetic (chemically synthesized by TOOLS Biotechnology Co., New Taipei City; >95% purity by HPLC); native source egg white",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "LCAFNK",
+   "ic50_uM": 28060,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.5c05340",
+     "pmid": "41187988",
+     "value_as_published": "IC50 = 28.06 mM",
+     "ic50_uM": 28060,
+     "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+     "material": "unknown — abstract does not say whether the assayed peptide was chemically synthesized or purified; sequence is a natural sunflower (Helianthus annuus) protein fragment selected by ConPLex AI virtual screening of 29,100 sequences",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "LDQW",
+   "ic50_uM": 15500,
+   "rows": [
+    {
+     "doi": "10.1002/fsn3.70171",
+     "pmid": "40255545",
+     "value_as_published": "IC50 of LDQW = 15.5 mM (stated as \"was calculated to be 15.5 mM\", based on LC-MS/MS data)",
+     "ic50_uM": 15500,
+     "readout": "uric acid quantified by UHPLC separation (XBridge Peptide BEH C18, 2.1 x 250 mm) with tandem-MS PRM detection at m/z 169.03/70.04, absolute calibration curve; NOT absorbance at 290-295 nm. Enzyme: xanthine oxidase from bovine milk (Sigma-Aldrich), 25 U/L final; substrate: xanthine 0.42 mM final; 0.1 M phosphate buffer pH 7.2 + 0.1 M NaCl, 30 min, n = 3",
+     "material": "synthetic - LDQW synthesized by BEX Co. Ltd. (Tokyo, Japan), purity > 95%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "LGDF",
+   "ic50_uM": 9700,
+   "rows": [
+    {
+     "doi": "10.1039/d6fo01257d",
+     "pmid": "42148895",
+     "value_as_published": "LGDF ... confirmed by in vitro enzymatic assays (IC50 = 9.7 mM); the hydrolysate SCPH separately IC50 = 20.18 mg/mL",
+     "ic50_uM": 9700,
+     "readout": "xanthine oxidase inhibition, in vitro enzymatic assay; enzyme source, substrate and uric-acid detection mode (absorbance vs HPLC) NOT stated in the abstract and full text is paywalled (Unpaywall is_oa=false, no PMC copy)",
+     "material": "unknown — LGDF was identified from sunflower capitulum protein hydrolysate (SCPH), screened by molecular docking and confirmed in vitro; synthetic vs purified not stated in the accessible abstract",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "LIFCEK",
+   "ic50_uM": 20320,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.5c05340",
+     "pmid": "41187988",
+     "value_as_published": "IC50 values of 28.06 and 20.32 mM, respectively (LCAFNK, LIFCEK) -> LIFCEK = 20.32 mM",
+     "ic50_uM": 20320,
+     "readout": "not observable — abstract does not state substrate or detection method; full text is subscription-only",
+     "material": "unknown (abstract does not state synthesis or purification; sequence was AI-screened from 29,100 sunflower (Helianthus annuus) protein sequences, so the sequence itself is natural)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "LLW",
+   "ic50_uM": 3020,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodres.2022.111959",
+     "pmid": "36461210",
+     "value_as_published": "IC50 = 3.02 ± 0.17 mM",
+     "ic50_uM": 3020,
+     "readout": "not stated in accessible text (abstract only; Food Res Int full text is paywalled, Unpaywall is_oa=false). Enzyme named as xanthine oxidase (XO); source and uric-acid detection mode (A290-295 vs HPLC) not visible.",
+     "material": "unknown (abstract does not state synthesis; peptides were in-silico screened from WPI digest then activity-validated). J Dairy Sci 2023 abstract (10.3168/jds.2023-23369) confirms LLW = Leu-Leu-Trp.",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "LMFP",
+   "ic50_uM": 3829,
+   "rows": [
+    {
+     "doi": "10.3390/foods15061093",
+     "pmid": "41897815",
+     "value_as_published": "IC50 1.94 mg/mL for XOD inhibition (dose-response analysis of LMFP)",
+     "ic50_uM": 3829,
+     "readout": "uric acid by absorbance at 290 nm after 1 M HCl stop (spectrophotometric, not HPLC)",
+     "material": "synthetic — chemically synthesized by Sangon Biotech, purity >95%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "LWM",
+   "ic50_uM": 5010,
+   "rows": [
+    {
+     "doi": "10.1016/j.bioorg.2022.106097",
+     "pmid": "35985156",
+     "value_as_published": "IC50 of LWM = 5.01 ± 0.31 mM (ALPM 7.23 ± 0.22 mM), whey protein isolate hydrolysate-derived",
+     "ic50_uM": 5010,
+     "readout": "NOT VERIFIABLE - the abstract states xanthine oxidase inhibition and Lineweaver-Burk kinetics but does not state substrate, enzyme source or detection wavelength/HPLC; no open full text exists to check",
+     "material": "unknown - peptides identified from whey protein isolate hydrolysate and screened by molecular docking; whether the assayed material was synthetic or purified is not stated in the abstract",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "NGPAHW",
+   "ic50_uM": 6390,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodres.2025.117870",
+     "pmid": "41360558",
+     "value_as_published": "IC50 6.39 mM",
+     "ic50_uM": 6390,
+     "readout": "NOT STATED - same paper; readout could not be read because the full text is closed access",
+     "material": "synthetic (abstract: screened in silico then synthesised and activity-validated)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "PEW",
+   "ic50_uM": 3460,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodres.2022.111959",
+     "pmid": "36461210",
+     "value_as_published": "IC50 = 3.46 ± 0.22 mM",
+     "ic50_uM": 3460,
+     "readout": "not stated in accessible text (abstract only; full text paywalled). Enzyme named as xanthine oxidase (XO); source and uric-acid detection mode not visible.",
+     "material": "unknown (abstract does not state synthesis). J Dairy Sci 2023 abstract confirms PEW = Pro-Glu-Trp.",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "PM",
+   "ic50_uM": 23820,
+   "rows": [
+    {
+     "doi": "10.3168/jds.2023-24028",
+     "pmid": "37923199",
+     "value_as_published": "half maximal inhibitory concentration in vitro was 23.82 ± 0.94 mM (for PM, 2nd of GL/PM/AL/AM)",
+     "ic50_uM": 23820,
+     "readout": "HPLC (abstract states XO activity tested by high-performance liquid chromatography); uric-acid detection wavelength not visible in abstract",
+     "material": "synthetic (abstract: \"these synthetic peptides\"); sequence is a natural whey α-lactalbumin/β-lactoglobulin fragment found by in-silico hydrolysis + docking",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "PPNSDIGWRV",
+   "ic50_uM": 4850,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodres.2025.117870",
+     "pmid": "41360558",
+     "value_as_published": "IC50 4.85 mM",
+     "ic50_uM": 4850,
+     "readout": "NOT STATED - same paper as WPDNGFPGPQ; substrate/wavelength/enzyme source absent from the abstract and the full text is closed access",
+     "material": "synthetic (abstract: screened in silico then synthesised and activity-validated)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "QGDIVAIPSGAAHW",
+   "ic50_uM": 467.2,
+   "rows": [
+    {
+     "doi": "10.1021/acs.jafc.6c07558",
+     "pmid": "42715978",
+     "value_as_published": "IC50 = 467.2 μM",
+     "ic50_uM": 467.2,
+     "readout": "unknown - abstract names xanthine oxidase (XO) and mixed-type kinetics but states no enzyme source, substrate or detection method (absorbance vs HPLC)",
+     "material": "unknown - abstract does not state synthesis or purity; sequence identified from sesame 11S globulin by nanoUHPLC-ESI-Q-TOF MS/MS, IC50 reported for the individual peptide",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "QPSF",
+   "ic50_uM": 38392,
+   "rows": [
+    {
+     "doi": "10.3390/foods14030524",
+     "pmid": "39942117",
+     "value_as_published": "IC50 = 38.392 +/- 7.254 mM",
+     "ic50_uM": 38392,
+     "readout": "uric acid formation by absorbance at 295 nm (UV spectrophotometer TU-1810PC, Purkinje); reaction stopped with 1 M HCl. NOT HPLC. Enzyme: xanthine oxidase (XOD) from milk, Solarbio, 0.1 U/mL; substrate xanthine 1.5 mM",
+     "material": "synthetic - solid-phase peptide synthesis at Sangon Biotech, stated purity 99%",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "TVVW",
+   "ic50_uM": 2500,
+   "rows": [
+    {
+     "doi": "10.12301/spxb202400368",
+     "pmid": null,
+     "value_as_published": "Table 2: TVVW IC50 2.5 ± 0.4 mmol/L (abstract: TVVW IC50 = 2.5 mmol/L)",
+     "ic50_uM": 2500,
+     "readout": "uric-acid formation by absorbance at 290 nm; xanthine substrate 0.48 mmol/L; XO 0.05 U/mL in 50 mmol/L phosphate pH 7.5, 37 C, reaction stopped with 1 mol/L HCl",
+     "material": "synthetic — selected peptides were custom-synthesized (국태/GL-type supplier: 国肽生物科技有限公司) and then assayed",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "VKAGFAWTANQQLS",
+   "ic50_uM": 1804,
+   "rows": [
+    {
+     "doi": "10.3390/pr9050747",
+     "pmid": null,
+     "value_as_published": "Table 3: VS14 IC50 2.740 ± 0.022 mg/mL = 1.804 mM (abstract repeats 1.804 mM)",
+     "ic50_uM": 1804,
+     "readout": "uric-acid formation by absorbance, spectrophotometric at 293 nm (Multiskan GO microplate reader); xanthine substrate; xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, 0.5 U/mL, 0.05 M phosphate pH 7.5, 27 C",
+     "material": "synthetic — 11 peptides synthesized by TOOLS Biotechnology (New Taipei City), >95% purity by HPLC",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "VWWW",
+   "ic50_uM": 5310,
+   "rows": [
+    {
+     "doi": "10.3390/pr9050747",
+     "pmid": null,
+     "value_as_published": "Table 3 (xanthine oxidase): IC50 (mg/mL) 3.611 ± 0.105; IC50 (mM) 5.310 — sample VW4 (= VWWW, mackerel meat, 680 Da)",
+     "ic50_uM": 5310,
+     "readout": "uric acid formation, spectrophotometric absorbance at 293 nm (Multiskan GO microplate spectrophotometer); substrate xanthine; XO = xanthine oxidase EC 1.17.3.2 from Sigma-Aldrich, species not stated",
+     "material": "synthetic (chemically synthesized by TOOLS Biotechnology Co., New Taipei City; >95% purity by HPLC); native source mackerel (Scomber austriasicus) meat",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "VYW",
+   "ic50_uM": 4300,
+   "rows": [
+    {
+     "doi": "10.12301/spxb202400368",
+     "pmid": null,
+     "value_as_published": "Table 2: VYW, Mw 466.222, IC50/(mmol·L-1) 4.3 ± 0.0; abstract states IC50 = 4.3 mmol/L",
+     "ic50_uM": 4300,
+     "readout": "uric acid formation, spectrophotometric absorbance at 290 nm after stopping with 1 mol/L HCl; substrate xanthine 0.48 mmol/L; XO 0.05 U/mL from Shanghai Yuanye Bio-Technology, species not stated",
+     "material": "synthetic (sequence identified from Undaria pinnatifida protein hydrolysate by papain + Aspergillus niger acid protease AnproA1, selected by AutoDock Vina, then chemically synthesized by 国肽生物科技有限公司 and assayed)",
+     "designed": false,
+     "access": "full_text"
+    }
+   ]
+  },
+  {
+   "sequence": "WENWTK",
+   "ic50_uM": 2770,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2026.148589",
+     "pmid": "41780118",
+     "value_as_published": "IC50 = 2.77 ± 0.06 mmol/L for WENWTK (optimized designed peptide WEWTW 1.73 ± 0.13 mmol/L)",
+     "ic50_uM": 2770,
+     "readout": "not stated in the abstract; closed access, no OA full text (Europe PMC: isOpenAccess N, inPMC N), so uric-acid-absorbance vs HPLC could not be verified",
+     "material": "unknown — abstract says the peptides were obtained by enzymatic hydrolysis plus virtual screening; it does not state whether WENWTK was chemically synthesized or purified",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "WEWTW",
+   "ic50_uM": 1730,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2026.148589",
+     "pmid": "41780118",
+     "value_as_published": "IC50 = 1.73 ± 0.13 mmol/L (optimized peptide WEWTW)",
+     "ic50_uM": 1730,
+     "readout": "not observable - enzyme confirmed as xanthine oxidase (XO); substrate, enzyme source and readout (absorbance ~290-295 nm vs HPLC) are not stated and the full text is paywalled",
+     "material": "unknown as stated - necessarily synthetic in practice (a rationally designed Trp-substituted variant cannot be isolated from the hydrolysate), but the abstract does not say so explicitly",
+     "designed": true,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "WGNEEF",
+   "ic50_uM": 3227.5,
+   "rows": [
+    {
+     "doi": "10.1111/1750-3841.71102",
+     "pmid": "42109015",
+     "value_as_published": "IC50 = 2.52 ± 0.06 mg/mL",
+     "ic50_uM": 3227.5,
+     "readout": "not stated in accessible text (abstract only; J Food Sci full text closed, Unpaywall status CLOSED). Enzyme named as xanthine oxidase (XOD); source and uric-acid detection mode (A290-295 vs HPLC) not visible.",
+     "material": "synthetic — abstract states the two peptides were \"screened, synthesized, and experimentally validated\"; sequence is a natural S. japonicus protein fragment selected by virtual screening, so not a designed non-natural sequence",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "WPDNGFPGPQ",
+   "ic50_uM": 3950,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodres.2025.117870",
+     "pmid": "41360558",
+     "value_as_published": "IC50 3.95 mM",
+     "ic50_uM": 3950,
+     "readout": "NOT STATED - abstract does not give substrate, wavelength or enzyme source; full text is closed access so uric-acid-by-absorbance vs HPLC could not be determined",
+     "material": "synthetic (abstract: peptides screened in silico then synthesised and activity-validated)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "WPPKN",
+   "ic50_uM": 27702.4,
+   "rows": [
+    {
+     "doi": "10.1039/c7fo01174a",
+     "pmid": "29019366",
+     "value_as_published": "IC50 = 17.75 ± 0.12 mg mL-1",
+     "ic50_uM": 27702.4,
+     "readout": "not stated in the abstract — cannot confirm absorbance (290-295 nm) vs HPLC; paper is closed access (Unpaywall is_oa=false)",
+     "material": "purified natural peptide (purified from dephenolized walnut meal hydrolysate via Sephadex G-15 + RP-HPLC, identified by LC-ESI-MS/MS)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  },
+  {
+   "sequence": "YNITGW",
+   "ic50_uM": 9780,
+   "rows": [
+    {
+     "doi": "10.1016/j.foodchem.2023.136837",
+     "pmid": "37473632",
+     "value_as_published": "IC50 = 9.78 ± 0.13 mM",
+     "ic50_uM": 9780,
+     "readout": "not observable — abstract does not state substrate or detection method; full text is subscription-only (Unpaywall is_oa=false, no PMC/Europe PMC copy)",
+     "material": "unknown (abstract does not state synthesis or purification; peptide was virtually screened from Pacific white shrimp protein sequences, so the sequence itself is natural)",
+     "designed": false,
+     "access": "abstract"
+    }
+   ]
+  }
+ ],
+ "excluded": []
+}

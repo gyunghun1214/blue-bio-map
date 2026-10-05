@@ -1,0 +1,210 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "aphia_id": 276651,
+ "scientific_name": "Seriola quinqueradiata",
+ "korean_name": "방어",
+ "purpose": "4.3 MBPI search for 방어 (prereg-fill-all-4.3-2026-10-05.md 1.4–1.6). No item met the rules, so the species takes the MBPI floor 0. This record keeps what was searched and why each candidate was not used. It feeds no score.",
+ "route": "ChEMBL small-molecule link (stratum a): species -> defined compound paper -> PubChem CID/InChIKey -> ChEMBL activities -> target x standard_type cohort size and median pChEMBL",
+ "independent_checks_note": "null = ruled out by its own listed rule gaps and not sent to the two separate checks; the three that were sent were refuted on the rules",
+ "searched": [
+  "Reference checkout (read-only): research/verified-indices/mbpi-paper-links-4.0-2026-10-04.json (prior 2026-09-29 record: CMNPD 0, PubChem taxonomy table 404, Europe PMC 54 hits with 25 screened) and mbpi-chembl-stratum-2026-09-29.md (actual activity, layer and qHTS rules)",
+  "Europe PMC REST, all 54 hits of the prior query (TITLE_ABS:\"Seriola quinqueradiata\" OR TITLE_ABS:\"Seriola sparna\") AND (isolated OR isolation OR compounds): all 54 screened, including the 29 not screened before -> epmc_q1_prior54.json",
+  "Europe PMC TITLE_ABS:\"Seriola quinqueradiata\" OR \"Seriola sparna\": 258 hits, all titles screened -> epmc_q2_all_titleabs.json",
+  "Europe PMC full text \"Seriola quinqueradiata\": 763 hits, all titles screened -> epmc_q3_fulltext.json",
+  "Europe PMC TITLE yellowtail / yellow tail / Japanese amberjack / hamachi / buri (excluding kingfish, flounder, rockfish, tuna, lalandi, snapper, damselfish, Limanda): 414 hits -> epmc_q4_yellowtail_title.json",
+  "Europe PMC targeted: bile acids/taurocholate (73), NMR/MS structure (27), metabolome/lipidome (14), anserine/carnosine/selenoneine/ergothioneine (9), steroidogenic/17,20beta/androstenedione/11-KT (72), prostaglandin/eicosanoid (64), retinal/porphyropsin (12), ciguatoxin/TTX/histamine (14), ganglioside/glycolipid/plasmalogen (10), purified compound/substance (33) -> epmc_extra_*.json",
+  "PubMed efetch abstracts: PMIDs 5716311, 3436951, 16635065, 24390795, 36900601, 32290307, 23434904, 12161204, 34822451, 31635314, 36171766",
+  "PubChem taxonomy 8161 PUG-View: sources are COCONUT (Natural Products) and KNApSAcK (Metabolites). The sdqagent table returns 404 again; link_db OrganismChemicalNeighbor gives 25 co-occurring chemicals (water, DHA, TMA, formaldehyde, butyric acid, terramycin, 6-OH-BDE47, ditaurobilirubin, EDTA, taurine, oleic acid, (E)-2-pentenal, 1-pentanol, PFAS, 17,20-dihydroxy-4-pregnen-3-one, and others)",
+  "KNApSAcK organism search Seriola / quinqueradiata / yellowtail / amberjack: only C00022885 tunaxanthin B",
+  "COCONUT API POST /api/search (organism tags): Seriola quinqueradiata 1 (tunaxanthin B CNP0281543.4), Seriola 1, Seriola sparna 0, yellowtail 0",
+  "Wikidata/LOTUS SPARQL P703 for Q1202973 (taxid 8161): 0 compounds; P703 taxon counts for the candidates (androstenedione 5, 11-deoxycortisol 1, bilirubin 1, taurocholic acid 3, biliverdin 2, carnosine 9)",
+  "CMNPD public API HomeSearch: seriola quinqueradiata / seriola / yellowtail return [] (positive control dysidea avara returns CMNPD371430)",
+  "NPAtlas basicSearch: ignores taxon parameter; NPAtlas is microbial-only (not applicable)",
+  "J-STAGE API: abst='Seriola quinqueradiata' (508), article='yellowtail' (646), article='ブリ' (19,565, filtered to standalone ブリ), article='Seriola' (337), article='ハマチ' (188), article='鰤' (0), abst='Seriola quinqueradiata steroid', abst='yellowtail androstenedione'; 1004 unique titles screened by chemistry terms -> jstage_screen_filtered.txt",
+  "J-STAGE landing pages and free PDFs: bbb1961 52:2967, 53:1739, 54:2047, 54:3339; suisan 49:1835; yakushi 69:345; fishsci 68 suppl 686",
+  "CiNii Research OpenSearch: ブリ 胆汁; ハマチ 胆汁; ブリ 単離 構造; ブリ 色素 同定; ハマチ 色素; ブリ ステロール; ブリ 新規化合物; ブリ 成熟誘起ホルモン; Seriola quinqueradiata isolation structure; yellowtail bile alcohol; yellowtail steroidogenesis androstenedione; ブリ 卵濾胞 ステロイド",
+  "Hiroshima Univ. repository API (q=Seriola; bile alcohols yellow tail) and the Une & Hoshita 1994 bile-alcohol review PDF (Hiroshima J Med Sci 43:37), searched for the yellowtail paper",
+  "NDL Search and NDL Digital IIIF for the Rahman 2000 thesis (pid 3175027)",
+  "Crossref: Rahman 2001 abstract; DOIs for Nguyen 2016 Fish Sci, Shima 2006 J Fish Dis",
+  "WebSearch: Hoshita 1968 yellowtail bile alcohols (x3 variants); KoreaScience 방어 분리 동정 화합물 NMR",
+  "PubChem name->CID->InChIKey and ChEMBL REST (molecule by InChIKey, connectivity startswith, name search, all activities, target_chembl_id+standard_type cohort counts raw and with team filters) for: ditaurobilirubin, biliverdin, bilirubin, 17alpha,20beta-DHP, 17,20beta-dihydroxy-5beta-pregnan-3-one, cholic acid, tunaxanthin, anserine, carnosine, taurocholic acid, 11-ketotestosterone, selenoneine, hypoxanthine, inosine, androstenedione, 11-deoxycortisol, 17alpha-hydroxyprogesterone, alpha-estradiol"
+ ],
+ "candidates": [
+  {
+   "substance": "androstenedione (androst-4-ene-3,17-dione)",
+   "stratum": "chembl",
+   "origin": "10.1111/j.1095-8649.2001.tb02265.x (Rahman et al. 2001 J Fish Biol 58:462-474); second link 10.1016/j.heliyon.2020.e04181 (PMC7298419)",
+   "species_name_in_source": "Japanese yellowtail Seriola quinqueradiata",
+   "sample_origin": "Ovarian follicles of untreated and HCG-treated Japanese yellowtail broodstock (Japan; farm/site not stated in abstract). Heliyon 2020: tertiary-yolk-stage ovary fragments of yellowtail, Japan.",
+   "pubchem_cid": "6128",
+   "chembl": "ChEMBL CHEMBL274826 (max_phase -1, not approved). Team filters were applied (pChEMBL present, relation '=', assay type B/F, data_validity none or Manually validated, not potential_duplicate). Protein targets with filtered cohort >= 30: CHEMBL1978 aromatase IC50 n=2, median 6.26, cohort 3097 (docs CHEMBL1127575, CHEMBL5241054); CHEMBL1978 aromatase Ki n=2, median 7.58, cohort 590 (CHEMBL1127575, CHEMBL3751755); CHEMBL3072 androgen receptor (rat) IC50 n=2, median 6.54, cohort 528 (CHEMBL1123274, CHEMBL1141069); CHEMBL4234 HSD17B3 IC50 n=3, median 6.19, cohort 239 (CHEMBL1133052, CHEMBL1135571); CHEMBL6152 alpha-synuclein IC50 4.07, cohort 180 (CHEMBL4699438); CHEMBL3305 SHBG Kd 7.46, cohort 91 (CHEMBL1142400); CHEMBL2421 CBG Ki 5.76, cohort 31 (CHEMBL1148457). Pathogen: CHEMBL364 P. falciparum IC50 5.00, cohort 46757 (CHEMBL1255382). qHTS only (CHEMBL1201862): ALDH1A1 Potency 7.90 (cohort 75926), SMN Potency median 6.85 (33697), NPSR Potency 6.6 (15388), ROR-gamma 5.0 (89091), BLM 3.6 (3397), and others. Excluded target types: UNCHECKED CHEMBL612545, NON-MOLECULAR CHEMBL3879801. Unfiltered totals: aromatase IC50 4413, Ki 653, AR IC50 1460, HSD17B3 301, SHBG Kd 92, CBG Ki 31. Link DOIs 2 and ChEMBL docs >= 2 for several groups, so the BBVI independence count min(link, doc) = 2 if accepted.",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "Ubiquity: endogenous vertebrate sex-steroid intermediate. It is not in the enumerated exclusion list, and Wikidata P703 has only 5 taxa (below the Tukey fence 31), but the link-review 'ubiquitous_metabolite' class (used for agmatine, DHA, formaldehyde) would likely apply. Team-lead decision.",
+    "Origin is an in vitro product: yellowtail ovarian follicles were incubated with exogenous radiolabelled precursors ([3H]pregnenolone, [3H]17-hydroxyprogesterone, [14C]androstenedione) and the products were identified by TLC plus recrystallization to constant specific activity, with no NMR/MS. In the second link (Heliyon 2020), progesterone or 17-OHP was added and androstenedione was measured by time-resolved fluoroimmunoassay, which is not a structural identification.",
+    "Rahman 2001 was seen as abstract only (Crossref; Wiley paywall).",
+    "Several of the highest pChEMBL values are qHTS Potency from PubChem BioAssay (CHEMBL1201862), which the team flagged as non-confirmatory. The non-qHTS protein-target groups are listed in activity_source.",
+    "Percentile and MBPI were not computed here: no estimation; the build script must do it."
+   ],
+   "independent_checks": null
+  },
+  {
+   "substance": "11-deoxycortisol (cortodoxone; 17,21-dihydroxy-4-pregnene-3,20-dione)",
+   "stratum": "chembl",
+   "origin": "10.1111/j.1095-8649.2001.tb02265.x",
+   "species_name_in_source": "Japanese yellowtail Seriola quinqueradiata",
+   "sample_origin": "Post-vitellogenic ovarian follicles of Japanese yellowtail (Japan; site not in abstract)",
+   "pubchem_cid": "440707",
+   "chembl": "ChEMBL CHEMBL253144 CORTODOXONE (max_phase 2). Filtered protein targets: CHEMBL3305 SHBG Kd 7.44, cohort 91 (CHEMBL1142400); CHEMBL2421 CBG Ki 7.88, cohort 31 (CHEMBL1148457). Pathogen: CHEMBL364 P. falciparum IC50 n=2, median 5.00, cohort 46757 (one doc CHEMBL1255382). qHTS only (CHEMBL1201862): BLM helicase Potency 8.55 (3397), prelamin-A/C 6.75 (36672), muscarinic M1 (rat) 5.25 (1212), SMN 4.7 (33697), HSD17B10 4.6 (20562), Bacillus subtilis ffp PPTase 5.0 (24681), PMP22 4.02 (699), E. coli endonuclease IV 4.3 (422). NON-MOLECULAR target excluded.",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "Same ubiquity and in-vitro-precursor gaps as androstenedione: an endogenous corticosteroid intermediate, produced by follicle incubation with exogenous radiolabelled precursors and identified by TLC/recrystallization.",
+    "Single link DOI, so it is single-paper only for BBVI independence.",
+    "Abstract only (Wiley paywall).",
+    "Highest values are qHTS (CHEMBL1201862). Non-qHTS protein targets are only SHBG Kd (cohort 91) and CBG Ki (cohort 31, at the threshold)."
+   ],
+   "independent_checks": null
+  },
+  {
+   "substance": "oestradiol-17alpha as printed in abstract (alfatradiol); probably a rendering of oestradiol-17beta",
+   "stratum": "chembl",
+   "origin": "10.1111/j.1095-8649.2001.tb02265.x",
+   "species_name_in_source": "Japanese yellowtail Seriola quinqueradiata",
+   "sample_origin": "Late-vitellogenic ovarian follicles of Japanese yellowtail (Japan)",
+   "pubchem_cid": "68570",
+   "chembl": "ChEMBL CHEMBL286452 ALFATRADIOL (max_phase 2). Filtered groups: CHEMBL387 MCF7 EC50 9.42, cohort 1307 (CHEMBL1130222); CHEMBL206 ERalpha EC50 n=2, median 7.53, cohort 1090 (CHEMBL1135900); CHEMBL242 ERbeta EC50 n=2, median 7.13, cohort 734 (CHEMBL1135900); CHEMBL3072 AR (rat) IC50 4.12, cohort 528 (CHEMBL1141069). Each group has a single ChEMBL document.",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "Identity uncertain: the Crossref abstract prints 'oestradiol‐17α' twice and 'oestradiol‐17' (no symbol) once, which suggests the β character was lost. Teleost ovaries make 17β-estradiol, an approved drug (ChEMBL max_phase 4) and so excluded. The full text is needed to confirm.",
+    "Ubiquity and in-vitro-precursor gaps as for androstenedione.",
+    "Single link DOI; abstract only."
+   ],
+   "independent_checks": {
+    "source": "uncertain",
+    "rule": "refuted"
+   }
+  },
+  {
+   "substance": "biliverdin IXalpha",
+   "stratum": "chembl",
+   "origin": "10.1271/bbb1961.54.2047 (Sakai, Tabata, Watanabe 1990 Agric Biol Chem 54:2047)",
+   "species_name_in_source": "yellowtail, Seriola quinqueradiata",
+   "sample_origin": "Gallbladder bile of 20 cultured yellowtail (Miyazaki Univ. study, Japan); HPLC/TLC co-chromatography with authentic standards",
+   "pubchem_cid": "5280353",
+   "chembl": "ChEMBL CHEMBL455477 BILIVERDIN: 24 activities. pChEMBL only for Kd to alpha-1-acid glycoprotein (target CHEMBL612558 ADMET, doc CHEMBL1772967). No other pChEMBL groups.",
+   "access": "full_text_read",
+   "decision": "not_used",
+   "why": [
+    "The only pChEMBL group is target CHEMBL612558 'ADMET' (Kd for binding to alpha-1-acid glycoprotein, n=4, median 4.95, raw cohort 239). ADMET target types are excluded by the stratum layer rule, so no eligible cohort remains.",
+    "Structure mapping: the PubChem name 'biliverdin' gives 3 CIDs (5280353, 5353439, 251). The ChEMBL record CHEMBL455477 uses another tautomer InChIKey (QBUVFDKTZJNUPP-BBROENKCSA-N) that PubChem does not hold, so it is not exactly one CID.",
+    "Ubiquitous vertebrate heme catabolite."
+   ],
+   "independent_checks": {
+    "source": "confirmed",
+    "rule": "refuted"
+   }
+  },
+  {
+   "substance": "bilirubin IXalpha",
+   "stratum": "chembl",
+   "origin": "10.1271/bbb1961.53.1739 (Sakai et al. 1989 Agric Biol Chem 53:1739)",
+   "species_name_in_source": "cultured yellowtail, Seriola quinqueradiata",
+   "sample_origin": "Liver of 3 jaundiced cultured yellowtail, fish farm at Ushine, Kagoshima Prefecture, Japan (27 Sep 1988)",
+   "pubchem_cid": "5280352",
+   "chembl": "ChEMBL CHEMBL501680 BILIRUBIN (max_phase 1). Filtered groups, all qHTS CHEMBL1201862: tau Potency median 4.85 (cohort 94769), ALDH1A1 4.55 (75926), KDM4E 4.5 (39941), prelamin-A/C 4.75 (36672), cruzipain 4.4 (30568), caspase-1 4.6 (2960), caspase-7 4.7 (2316), and others. Unfiltered also has OATP1B1 IC50 5.88 (raw cohort 217) and OATP1B3 IC50 5.47 (125), both CHEMBL3039007.",
+   "access": "full_text_read",
+   "decision": "not_used",
+   "why": [
+    "Ubiquitous vertebrate heme catabolite, measured in diseased (jaundiced) fish tissue. Sakai 1990 states bilirubin IXalpha was detected only in red sea bream bile, not in yellowtail bile.",
+    "After the team activity filters, every pChEMBL group is qHTS Potency from CHEMBL1201862 (non-confirmatory). The OATP1B1/1B3 IC50/Ki records (doc CHEMBL3039007) drop out under the filters."
+   ],
+   "independent_checks": {
+    "source": "confirmed",
+    "rule": "refuted"
+   }
+  },
+  {
+   "substance": "ditaurobilirubin",
+   "stratum": "chembl",
+   "origin": "10.1093/oxfordjournals.jbchem.a122117 (Sakai, Watanabe, Kawatsu 1987 J Biochem 102:793-6, PMID 3436951)",
+   "species_name_in_source": "yellowtail, Seriola quinqueradiata",
+   "sample_origin": "Gallbladder bile of yellowtail (Japan)",
+   "pubchem_cid": "6438832",
+   "chembl": "none (no ChEMBL molecule)",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "No ChEMBL record under any variant: InChIKey blocks SORWZIAILHWTAV, LKNJLIDYYPZTNI, KKEKGSQEQHXVPM and JDRVSYVCRZSWOK all return 0, and a name search returns 0.",
+    "PubChem CID 6438832 'Ditaurobilirubin' (disodium salt; parent CID 6913088) shows a C29 skeleton without the 4 methyl and 2 vinyl groups of bilirubin, so the structure and InChIKey are unreliable."
+   ],
+   "independent_checks": null
+  },
+  {
+   "substance": "17alpha,20beta-dihydroxy-4-pregnen-3-one (17,20beta-P, maturation-inducing hormone)",
+   "stratum": "chembl",
+   "origin": "10.2331/fishsci.68.sup1_686 (Ohta et al. 2002 Fish Sci 68 Suppl I); also 10.1111/j.1095-8649.2001.tb02265.x",
+   "species_name_in_source": "Japanese yellowtail, Seriola quinqueradiata",
+   "sample_origin": "Ovarian follicles and gonad membranes of Japanese yellowtail (Japan)",
+   "pubchem_cid": "107701",
+   "chembl": "none (not in ChEMBL)",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "No ChEMBL record: InChIKey connectivity block MASCESDECGBIBB returns 0 molecules, and a name search returns nothing relevant.",
+    "Endogenous teleost steroid hormone; in-vitro product of radiolabelled precursors."
+   ],
+   "independent_checks": null
+  },
+  {
+   "substance": "cholic acid",
+   "stratum": "chembl",
+   "origin": "10.1248/yakushi1947.69.6-10_345 (Minato & Ikeda 1949 Yakugaku Zasshi 69:345)",
+   "species_name_in_source": "Seriola quinqueradiata",
+   "sample_origin": "Bile of yellowtail (Japan, 1949)",
+   "pubchem_cid": "221493",
+   "chembl": "CHEMBL205596 (max_phase 4). For record only: GPBAR1 EC50 n=9, median 4.87, raw cohort 1580; FXR EC50 4.24 (4511); MCF7 IC50 4.3 (57073).",
+   "access": "abstract_only",
+   "decision": "not_used",
+   "why": [
+    "Approved drug: ChEMBL CHEMBL205596 max_phase 4, so it is excluded.",
+    "Ubiquitous vertebrate bile acid. The same paper's taurine and cholesterol are excluded classes.",
+    "The same abstract reports an unnamed sterol-like crystal C24H42O5 (m.p. 164.5) that cannot be resolved to a CID."
+   ],
+   "independent_checks": null
+  }
+ ],
+ "dead_ends": [
+  "Tunaxanthin B (KNApSAcK C00022885 / COCONUT CNP0281543.4, the only database compound for this taxon): carotenoid (excluded class); PubChem CID 6384258; no ChEMBL record.",
+  "Taurine and cholesterol (Minato 1949), trimethylamine and TMAO, creatine, free amino acids: excluded classes (amino-acid amine, C1, amino acids, sterol).",
+  "Hypoxanthine (CHEMBL1427), inosine (CHEMBL1556), IMP, nucleotide-related compounds in heated or stored meat (IND607012863, IND608418319, 31635314): ubiquitous purine metabolites. Most of their ChEMBL groups are qHTS or UNCHECKED.",
+  "Anserine (CHEMBL448301: no pChEMBL) and carnosine (CHEMBL242948, max_phase 3: qHTS plus SLC15A2 Ki cohort 31): ubiquitous muscle dipeptides. No yellowtail paper names them in a title or abstract.",
+  "Taurocholic acid (CHEMBL224867: GPBAR1 EC50 5.30 cohort 1330; NTCP IC50 5.28 cohort 96; ASBT Ki 4.38 cohort 48): no yellowtail paper identifying it was found (Minato 1949 reports cholic acid after workup). Ubiquitous bile salt.",
+  "Selenoneine: the yellowtail study (Nippon Suisan Gakkaishi 79:863, 2013) injected it (administered); no ChEMBL record.",
+  "11-Ketotestosterone, 17,20beta-dihydroxy-5beta-pregnan-3-one: no ChEMBL record (the latter also has no PubChem name hit). Testosterone and 17beta-estradiol: approved drugs (max_phase 4).",
+  "17alpha-hydroxyprogesterone (CHEMBL1062) and pregnenolone: supplied as radiolabelled precursors in Rahman 2001, not identified as yellowtail products.",
+  "Volatiles and oxidation products: 2,3-butanedione, (E,E)-2,4-hexadienal, (E)-2-pentenal, 1-pentanol, 4-hydroxy-2-hexenal, aldehydes and alcohols (IND605890087, IND606275980, 35481592, 34143181, 24390795, 18776665): excluded oxidation or process products.",
+  "Contaminants: organohalogens, OH-PCBs, MeO-PBDEs/6-OH-BDE47 (21782210, diet or pollutant), butyltins (suisan 69:10), PFAS (32510380), mercury.",
+  "Microbial or diet-derived: Pseudoalteromonas nigrifaciens lipooligosaccharide (34822517), Pacific ciguatoxins (diet).",
+  "Vitamins and lipids: alpha-tocopherol, retinol, vitamin D (approved or very common), DHA/EPA/oleic acid (excluded fatty acids), squalene (36900601; very common).",
+  "Gangliosides of yellowtail intestine and brain (Shima 2006 J Fish Dis 29:249, 10.1111/j.1365-2761.2006.00703.x): a lipid class, not a single defined compound.",
+  "Metabolomics papers 34822451 (CE-TOFMS) and 31635314 (GC-MS): only TCA acids, amino acids, sugars, inosine and hypoxanthine.",
+  "Hybrid or extract papers (milt hydrolysate 36069409, fish ingredients HIF screen 32290307, mushroom-extract feeding IND44270340): extracts or diet.",
+  "Wikidata P703 for the species: 0. CMNPD: 0. NPAtlas: not applicable.",
+  "KoreaScience/KCI web search: no Korean compound-isolation paper for 방어.",
+  "Biliverdin and bilirubin fail the ChEMBL layer or qHTS rules (see candidates). Ditaurobilirubin and 17,20beta-P are not in ChEMBL."
+ ],
+ "inaccessible_leads": [
+  "Hoshita T, Yamada T, Yashima H. Stero-bile acids and bile alcohols. 104. Studies on bile alcohols isolated from bile of yellow tail, Seriola quinqueradiata. Hiroshima J Med Sci 1968;17(2):115-22. PMID 5716311. No abstract; not in the Hiroshima Univ. repository; not cited in the Une & Hoshita 1994 review. Names the bile alcohols isolated (C27 polyols); library copy needed to get compound names, then check ChEMBL.",
+  "Rahman MA, Ohta K, Chuda H, Nakano S, Maruyama K, Matsuyama M. Gonadotropin-induced steroidogenic shift towards maturation-inducing hormone in Japanese yellowtail during final oocyte maturation. J Fish Biol 2001;58(2):462-474. doi:10.1111/j.1095-8649.2001.tb02265.x (Wiley paywall). Needed to confirm oestradiol-17alpha vs 17beta and the TLC/recrystallization identification of androstenedione and 11-deoxycortisol.",
+  "Rahman MA. Studies on the Identification and Biosynthesis of the Maturation-Inducing Hormone (MIH) and its Receptor in Yellowtail, Seriola quinqueradiata. Doctoral thesis, ~2000. NDL doi:10.11501/3175027 (IIIF checkResult NG; NDL or library transmission only).",
+  "Nguyen HP, Khaoian P, Furutani T, Nagano J, Fukada H, Masumoto T. Effects of alcohol extract of defatted soybean meal on growth performance and digestive physiology of yellowtail Seriola quinqueradiata. Fish Sci 2017;83:99-106. doi:10.1007/s12562-016-1049-x (Springer paywall). May name the bile-acid species (e.g., taurocholic acid) measured in yellowtail bile.",
+  "Sakai T, Watanabe K, Kawatsu H. Occurrence of ditaurobilirubin ... in the gallbladder bile of yellowtail. J Biochem 1987;102:793-6. doi:10.1093/oxfordjournals.jbchem.a122117. Abstract read; full text not needed because ditaurobilirubin is not in ChEMBL.",
+  "Minato A, Ikeda J. 海産動物膽汁酸成分の研究. Yakugaku Zasshi 1949;69:345. The free PDF was saved but is a scan with no text layer; the unnamed C24H42O5 sterol would need manual reading."
+ ],
+ "prior_record": "research/verified-indices/mbpi-paper-links-4.0-2026-10-04.json (2026-09-29: Europe PMC 54 hits, 25 screened); this search screened all 54",
+ "raw_files": "kept outside the repository (tmp/fill-4.3/yellowtail-chembl/); no library PDF is stored here"
+}

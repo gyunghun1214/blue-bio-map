@@ -1,0 +1,1075 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "prereg": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
+ "purpose": "verified-4.2: 공식 지방 적색목록 범주. 사전 등록대로 빈칸 10종이 아니라 30종 전부를 같은 방법으로 찾았고, 점수가 되는 행·찾았지만 제외한 행·역검증 쌍을 모두 남긴다. 4.3 (2026-10-05): 미역 연해주 행을 점수 행으로 옮겼다. 2002년 주지사령 № 272의 결정문 원문 텍스트를 법령 데이터베이스 사본으로 읽고, 현행 여부를 공식 공보 포털의 723-пп 스캔으로 확인했다(팀장 결정 2026-10-05, 4.3 사전 등록 1.2). 우뭇가사리 역검증 쌍의 연해주 행 국가 표기 오류(Japan → Russia)를 바로잡았다.",
+ "collection": {
+  "aggregator_used_as_lead_only": "jpnrdb.com 통합 검색은 후보를 찾는 데만 쓰고, 범주는 각 지방정부 원문에서 읽었다.",
+  "regions_searched": [
+   "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+   "러시아 극동 연방주체",
+   "중국 연안 성",
+   "한국 시·도"
+  ],
+  "limitations": [
+   "일본은 집계가 지목한 11개 현의 원문을 확인했고, 나머지 현은 집계 결과(해당 종 없음)에 의존한다.",
+   "大分県은 공개 온라인 목록이 2000년도 판이고 해산 패류를 평가하지 않는다. 2022년판의 분류군 범위는 확인하지 못했다.",
+   "佐賀 패류는 2003년판이 현행판이다(이후 개정 없음).",
+   "愛知·佐賀 행은 조사 담당이 원문을 판독했고 이 세션에서 재확인하지 못했다. 두 행 모두 점수에 쓰이지 않는다."
+  ]
+ },
+ "sources": {
+  "ishikawa_rdb2020": {
+   "provider": "石川県 環境部自然環境課",
+   "title": "いしかわレッドデータブック2020〈動物編〉 6. 浅海域の生物",
+   "version": "2020 (현행)",
+   "url": "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "종 설명 페이지의 石川県カテゴリー 칸을 직접 읽음(環境省カテゴリー 칸은 비어 있음)."
+  },
+  "okinawa_rdb3_plants": {
+   "provider": "沖縄県 環境部自然保護課",
+   "title": "レッドデータおきなわ 第3版 菌類編・植物編〈藻類〉",
+   "version": "제3판 2018 (현행)",
+   "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "종 설명을 PDF 텍스트에서 직접 읽음."
+  },
+  "ibaraki_rdb2020_algae": {
+   "provider": "茨城県 県民生活環境部環境政策課",
+   "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
+   "version": "2020 (이 분류군 최초이자 현행판)",
+   "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "종 설명을 PDF 텍스트에서 직접 읽음."
+  },
+  "fukuoka_redlist2024": {
+   "provider": "福岡県 環境部自然環境課",
+   "title": "福岡県レッドリスト2024（動物）",
+   "version": "2024 (현행, 책자 2025-03 발행)",
+   "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "현이 공개한 목록 엑셀을 직접 읽음(책자 PDF는 텍스트층 없는 스캔). 열: 2001 / 2011・2014 / 2024 / 環境省2020 / IUCN2023."
+  },
+  "mie_redlist2024": {
+   "provider": "三重県 環境生活部自然環境課",
+   "title": "三重県レッドリスト2024 〈海産貝類〉",
+   "version": "2024-12-27 공표 (현행)",
+   "url": "https://www.pref.mie.lg.jp/common/content/001184884.xlsx",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "현이 공개한 목록 엑셀을 직접 읽음. 범주 정의표에서 VU=絶滅危惧Ⅱ類 확인."
+  },
+  "kumamoto_redlist2024": {
+   "provider": "熊本県 環境生活部自然保護課",
+   "title": "レッドリストくまもと2024 〈12. 海洋動物〉",
+   "version": "2024-10 (현행)",
+   "url": "https://www.pref.kumamoto.jp/uploaded/attachment/271103.xlsx",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "현이 공개한 목록 엑셀을 직접 읽음."
+  },
+  "okayama_redlist2025": {
+   "provider": "岡山県 環境文化部自然環境課",
+   "title": "岡山県版レッドリスト2025 〈軟体動物門〉",
+   "version": "2025-03 (현행)",
+   "url": "https://www.pref.okayama.jp/uploaded/life/965573_9283602_misc.xlsx",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "현이 공개한 목록 엑셀을 직접 읽음."
+  },
+  "nagasaki_redlist2022": {
+   "provider": "長崎県 環境部自然環境課",
+   "title": "長崎県レッドリスト2022 〈11 貝類〉",
+   "version": "2022-03 (현행)",
+   "url": "https://www.pref.nagasaki.jp/uploads/2022/03/1648644059.pdf",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "PDF 텍스트에서 직접 읽음. 범례 CR=絶滅危惧ⅠA類."
+  },
+  "miyazaki_redlist2025": {
+   "provider": "宮崎県 環境森林部自然環境課",
+   "title": "宮崎県版レッドリスト（2025年度改訂版）〈貝類〉",
+   "version": "2026-03-31 공표 (현행)",
+   "url": "https://www.pref.miyazaki.lg.jp/documents/101538/101538_20260331101659-1.pdf",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "PDF 텍스트에서 직접 읽음. DD-2는 현 고유 세분."
+  },
+  "aichi_redlist2025": {
+   "provider": "愛知県 環境局自然環境課",
+   "title": "レッドリストあいち2025（第五次レッドリスト）〈貝類〉",
+   "version": "2025-03 (현행)",
+   "url": "https://www.pref.aichi.jp/soshiki/shizen/redlist-aichi-2025.html",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "조사 담당이 공식 PDF·CSV를 판독. 이 세션의 재확인은 서버가 막음(403·리다이렉트)."
+  },
+  "primorsky_723pp_2022": {
+   "provider": "Приморский край (연해주) 주정부",
+   "title": "Красная книга Приморского края 식물·균류편 — 현행 개정 постановление № 723-пп",
+   "version": "2022-10-24 결정(2023-01-16 발효), 기준 목록은 2002년 주지사령 № 272",
+   "url": "https://prim-pravo.ru/postanovlenie/2022/10/24/n-723-pp/",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "결정 전문을 직접 읽음. 부록(범주 변경) 33번에서 Gelidium elegans CR → VU. 범주 체계는 IUCN 1994 문자코드."
+  },
+  "saga_redlist2003_molluscs": {
+   "provider": "佐賀県 県民環境部有明海再生・環境課",
+   "title": "佐賀県レッドリスト2003 〈貝類・甲殻類・その他〉",
+   "version": "2003 작성·2004-03 발행 (패류는 이후 개정 없어 현행)",
+   "url": "https://www.pref.saga.lg.jp/kiji00314125/index.html",
+   "accessed": "2026-10-04",
+   "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "조사 담당이 PDF를 300dpi 이미지로 판독(텍스트층 없음). 이 세션의 재확인은 하지 못함."
+  },
+  "primorsky_decree272_2002": {
+   "provider": "Губернатор Приморского края (연해주 주지사)",
+   "title": "Постановление Губернатора Приморского края от 14.05.2002 № 272 «Об утверждении перечня объектов растительного мира и перечня объектов животного мира, занесенных в Красную книгу Приморского края»",
+   "version": "2002-05-14 결정(현행). 통합본은 2023-04-18 개정까지 반영(208-па/2008, 576-пп/2022, 723-пп/2022, 258-пп/2023); 723-пп(2022) 원본 스캔의 부록 1–3(추가·제외·범주 변경)에는 이 종이 없다. 나머지 개정(208-па/2008, 576-пп/2022, 258-пп/2023)이 식물 목록을 고쳤는지는 통합본 본문이 로그인 뒤라 읽지 못했다(2026-10-05 검토 지적)",
+   "url": "https://docs.cntd.ru/document/494219357",
+   "accessed": "2026-10-05",
+   "license": "지방정부 법령. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+   "terms": "docs.cntd.ru(Kodeks 법령 데이터베이스)의 결정문 원문 텍스트를 웹 아카이브 사본(2016-10-30·2018-09-19, 원문판 '14 мая 2002')으로 판독. 서명자·번호·범례(IUCN Red List Categories 1994, УГРОЖАЕМЫЕ - ENDANGERED (EN)) 포함. 2023 통합본 본문은 로그인 뒤라 머리말만 확인. 팀장 결정 2026-10-05로 원문 확인으로 인정(4.3 사전 등록 1.2)."
+  },
+  "primorsky_723pp_2022_official": {
+   "provider": "Правительство Приморского края (연해주 정부), 공식 법령 공보 포털",
+   "title": "Постановление Правительства Приморского края от 24.10.2022 № 723-пп «О видах растительного мира Красной книги Приморского края» 공식 스캔(21쪽)",
+   "version": "2022-10-24 결정, 2023-01-16 발효 (eoNumber 2501202210260002)",
+   "url": "https://publication.pravo.gov.ru/document/2501202210260002",
+   "accessed": "2026-10-05",
+   "license": "공식 공보. 범주 변경 여부만 기록",
+   "terms": "부록 1(추가)·2(제외)·3(범주 변경) 전부 판독. 미역(Undaria pinnatifida)은 어느 부록에도 없어 2002년 범주(EN)가 바뀌지 않았다. 2026-10-05 포털 재검색에서 뒤이은 식물 목록 결정 없음."
+  }
+ },
+ "searched": [
+  {
+   "aphia_id": 145721,
+   "scientific_name": "Undaria pinnatifida",
+   "korean_name": "미역",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "연해주 (EN) — 2002년 주지사령 № 272 결정문 원문 텍스트(4.3에서 채택)"
+   ]
+  },
+  {
+   "aphia_id": 241776,
+   "scientific_name": "Apostichopus japonicus",
+   "korean_name": "해삼",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 250680,
+   "scientific_name": "Halocynthia roretzi",
+   "korean_name": "멍게",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 342067,
+   "scientific_name": "Todarodes pacificus",
+   "korean_name": "살오징어",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 372119,
+   "scientific_name": "Gelidium elegans",
+   "korean_name": "우뭇가사리",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "연해주 VU (CR에서 변경) (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 494972,
+   "scientific_name": "Sargassum fusiforme",
+   "korean_name": "톳",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "오키나와현 絶滅危惧Ⅱ類（VU）",
+    "이시카와현 絶滅危惧Ⅱ類",
+    "효고현 B (제외)"
+   ]
+  },
+  {
+   "aphia_id": 506159,
+   "scientific_name": "Mytilus coruscus",
+   "korean_name": "홍합(참담치)",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "미에현 VU (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 836033,
+   "scientific_name": "Magallana gigas",
+   "korean_name": "참굴",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "korean_name": "다시마",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "이바라키현 絶滅危惧Ⅱ類 (제외)"
+   ]
+  },
+  {
+   "aphia_id": 371986,
+   "scientific_name": "Ecklonia cava",
+   "korean_name": "감태",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "이바라키현 絶滅 (제외)"
+   ]
+  },
+  {
+   "aphia_id": 234476,
+   "scientific_name": "Ulva prolifera",
+   "korean_name": "가시파래",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 494853,
+   "scientific_name": "Sargassum horneri",
+   "korean_name": "괭생이모자반",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 236157,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "korean_name": "꼬시래기",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "오키나와현 情報不足（DD） (제외)"
+   ]
+  },
+  {
+   "aphia_id": 145086,
+   "scientific_name": "Codium fragile",
+   "korean_name": "청각",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "이바라키현 準絶滅危惧"
+   ]
+  },
+  {
+   "aphia_id": 231750,
+   "scientific_name": "Ruditapes philippinarum",
+   "korean_name": "바지락",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "미야자키현 DD-2 (제외)",
+    "후쿠오카현 NT (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 397082,
+   "scientific_name": "Haliotis discus",
+   "korean_name": "전복(종 수준)",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 393716,
+   "scientific_name": "Mizuhopecten yessoensis",
+   "korean_name": "큰가리비",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 836041,
+   "scientific_name": "Magallana sikamea",
+   "korean_name": "시카메굴",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "구마모토현 NT (역검증)",
+    "후쿠오카현 準絶滅危惧（NT） (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 504357,
+   "scientific_name": "Anadara broughtonii",
+   "korean_name": "피조개",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "구마모토현 DD (제외)",
+    "후쿠오카현 NT (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 413600,
+   "scientific_name": "Sinonovacula constricta",
+   "korean_name": "맛조개",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "구마모토현 CR (역검증)",
+    "나가사키현 CR (역검증)",
+    "사가현 絶滅危惧Ⅱ類種 (역검증)",
+    "아이치현 絶滅（EX） (제외)",
+    "오카야마현 絶滅 (제외)",
+    "후쿠오카현 絶滅危惧ⅠA類（CR） (역검증)"
+   ]
+  },
+  {
+   "aphia_id": 127022,
+   "scientific_name": "Scomber japonicus",
+   "korean_name": "고등어",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 219984,
+   "scientific_name": "Engraulis japonicus",
+   "korean_name": "멸치",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 281273,
+   "scientific_name": "Larimichthys polyactis",
+   "korean_name": "참조기",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 275816,
+   "scientific_name": "Paralichthys olivaceus",
+   "korean_name": "넙치",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 274849,
+   "scientific_name": "Sebastes schlegelii",
+   "korean_name": "조피볼락",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "후쿠오카현 DD (제외)"
+   ]
+  },
+  {
+   "aphia_id": 276651,
+   "scientific_name": "Seriola quinqueradiata",
+   "korean_name": "방어",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 254538,
+   "scientific_name": "Gadus macrocephalus",
+   "korean_name": "대구",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 1061762,
+   "scientific_name": "Portunus trituberculatus",
+   "korean_name": "꽃게",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": [
+    "후쿠오카현 NT"
+   ]
+  },
+  {
+   "aphia_id": 534443,
+   "scientific_name": "Octopus sinensis",
+   "korean_name": "참문어(동아시아 종)",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  },
+  {
+   "aphia_id": 1666974,
+   "scientific_name": "Acanthosepion esculentum",
+   "korean_name": "갑오징어",
+   "regions": [
+    "일본 도도부현 47 (집계 jpnrdb.com 전수 스윕 + 지목된 현의 공식 원문)",
+    "러시아 극동 5개 연방주체",
+    "중국 연안 11개 성·시",
+    "한국 16개 시·도"
+   ],
+   "found": null
+  }
+ ],
+ "sub_national": [
+  {
+   "aphia_id": 494972,
+   "scientific_name": "Sargassum fusiforme",
+   "region": "Ishikawa",
+   "region_ko": "이시카와현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "ishikawa_rdb2020",
+   "list": "いしかわレッドデータブック2020〈動物編〉浅海域の生物",
+   "edition": "2020",
+   "name_as_published": "ヒジキ Sargassum fusiforme (Harvey) Setchell",
+   "category_as_published": "絶滅危惧Ⅱ類",
+   "category": "VU",
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "note": "종 설명 페이지의 石川県カテゴリー 칸"
+  },
+  {
+   "aphia_id": 494972,
+   "scientific_name": "Sargassum fusiforme",
+   "region": "Okinawa",
+   "region_ko": "오키나와현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "okinawa_rdb3_plants",
+   "list": "レッドデータおきなわ 第3版〈藻類〉",
+   "edition": "2018",
+   "name_as_published": "ヒジキ Sargassum fusiforme",
+   "category_as_published": "絶滅危惧Ⅱ類（VU）",
+   "category": "VU",
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+  },
+  {
+   "aphia_id": 145086,
+   "scientific_name": "Codium fragile",
+   "region": "Ibaraki",
+   "region_ko": "이바라키현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "ibaraki_rdb2020_algae",
+   "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+   "edition": "2020",
+   "name_as_published": "ミル Codium fragile (Suringar) Hariot",
+   "category_as_published": "準絶滅危惧",
+   "category": "NT",
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+  },
+  {
+   "aphia_id": 1061762,
+   "scientific_name": "Portunus trituberculatus",
+   "region": "Fukuoka",
+   "region_ko": "후쿠오카현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "fukuoka_redlist2024",
+   "list": "福岡県レッドリスト2024（動物）甲殻類等",
+   "edition": "2024",
+   "name_as_published": "ガザミ Portunus trituberculatus",
+   "category_as_published": "NT",
+   "category": "NT",
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "note": "2001·2011・2014 열은 '-', 2024년 신규 등재"
+  },
+  {
+   "aphia_id": 145721,
+   "scientific_name": "Undaria pinnatifida",
+   "region": "Primorsky Krai",
+   "region_ko": "연해주",
+   "country": "Russia",
+   "country_ko": "러시아",
+   "source_id": "primorsky_decree272_2002",
+   "currency_source_id": "primorsky_723pp_2022_official",
+   "list": "Перечень объектов растительного мира, занесенных в Красную книгу Приморского края (주지사령 № 272 부속서)",
+   "edition": "2002 (현행; 2022 개정 723-пп에 이 종 변경 없음)",
+   "name_as_published": "Ундария перистонадрезанная - Undaria pinnatifida (Harv.) Sur.",
+   "category_as_published": "(EN)",
+   "category": "EN",
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "2026-10-05 조사 1회·독립 검증 2회. 법령 데이터베이스 사본으로 판독(팀장 결정 2026-10-05)",
+   "note": "결정문 범례가 IUCN Red List Categories(1994)를 따른다고 밝힌다. 이 종은 세계적으로 흔하고 양식되며 다른 해역에서는 침입종이다. 연해주(표트르대제만)는 자연 분포의 북서쪽 끝이라 이 범주는 그 끝자락 집단의 상태다."
+  }
+ ],
+ "excluded": [
+  {
+   "aphia_id": 371986,
+   "scientific_name": "Ecklonia cava",
+   "region": "Ibaraki",
+   "region_ko": "이바라키현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "ibaraki_rdb2020_algae",
+   "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+   "edition": "2020",
+   "name_as_published": "カジメ Ecklonia cava Kjellman",
+   "category_as_published": "絶滅",
+   "category": null,
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "excluded_reason": "지역 절멸(絶滅)은 전 지구 IUCN 범주가 아니어서 점수표에 대응이 없다 (사전 등록 1.3)"
+  },
+  {
+   "aphia_id": 236157,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "region": "Okinawa",
+   "region_ko": "오키나와현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "okinawa_rdb3_plants",
+   "list": "レッドデータおきなわ 第3版〈藻類〉",
+   "edition": "2018",
+   "name_as_published": "オゴノリ Gracilaria vermiculophylla (Ohmi) Papenfuss",
+   "category_as_published": "情報不足（DD）",
+   "category": null,
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "excluded_reason": "DD(정보 부족)는 점수 없음 (사전 등록 1.3)"
+  },
+  {
+   "aphia_id": 274849,
+   "scientific_name": "Sebastes schlegelii",
+   "region": "Fukuoka",
+   "region_ko": "후쿠오카현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "fukuoka_redlist2024",
+   "list": "福岡県レッドリスト2024（動物）魚類",
+   "edition": "2024",
+   "name_as_published": "クロソイ Sebastes schlegelii",
+   "category_as_published": "DD",
+   "category": null,
+   "species_level": true,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "excluded_reason": "DD(정보 부족)는 점수 없음 (사전 등록 1.3). 2024판 신규 등재"
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "region": "Ibaraki",
+   "region_ko": "이바라키현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "source_id": "ibaraki_rdb2020_algae",
+   "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+   "edition": "2020",
+   "name_as_published": "ホソメコンブ Saccharina japonica var. religiosa",
+   "category_as_published": "絶滅危惧Ⅱ類",
+   "category": null,
+   "species_level": false,
+   "verified_in_original": true,
+   "reviewed": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "excluded_reason": "변종(var. religiosa)에 붙은 범주이고 종 단위가 아니다 (사전 등록 1.1.3)"
+  },
+  {
+   "aphia_id": 494972,
+   "scientific_name": "Sargassum fusiforme",
+   "region": "Hyogo",
+   "region_ko": "효고현",
+   "country": "Japan",
+   "country_ko": "일본",
+   "list": "兵庫県版レッドデータブック2020（藻類）海藻類",
+   "edition": "2020",
+   "url": "https://www.kankyo.pref.hyogo.lg.jp/!drafts/leg_8364",
+   "name_as_published": "ヒジキ Sargassum fusiforme (Harvey) Setchell",
+   "category_as_published": "B",
+   "scope_as_published": "県内日本海沿岸に適用",
+   "category": null,
+   "species_level": true,
+   "verified_in_original": true,
+   "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+   "excluded_reason": "현 고유 등급(A·B·C)이고 이 목록이 IUCN 범주와의 대응을 공표하지 않는다 (사전 등록 1.1.4). 참고: EN으로 대응해 넣어도 톳의 중앙값은 VU로 같다"
+  }
+ ],
+ "backtest_pairs": [
+  {
+   "aphia_id": 413600,
+   "scientific_name": "Sinonovacula constricta",
+   "korean_name": "맛조개",
+   "official_category": "LC",
+   "official_basis": "national",
+   "official_source_id": "nibr_red_data_book_2024",
+   "sub_national": [
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Fukuoka",
+     "region_ko": "후쿠오카현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "fukuoka_redlist2024",
+     "list": "福岡県レッドリスト2024 貝類",
+     "edition": "2024",
+     "name_as_published": "アゲマキ Sinonovacula constricta",
+     "category_as_published": "絶滅危惧ⅠA類（CR）",
+     "category": "CR",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    },
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Kumamoto",
+     "region_ko": "구마모토현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "kumamoto_redlist2024",
+     "list": "レッドリストくまもと2024 海洋動物",
+     "edition": "2024",
+     "name_as_published": "アゲマキ Sinonovacula constricta",
+     "category_as_published": "CR",
+     "category": "CR",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    },
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Nagasaki",
+     "region_ko": "나가사키현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "nagasaki_redlist2022",
+     "list": "長崎県レッドリスト2022 貝類",
+     "edition": "2022",
+     "name_as_published": "アゲマキ Sinonovacula constricta",
+     "category_as_published": "CR",
+     "category": "CR",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    },
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Saga",
+     "region_ko": "사가현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "saga_redlist2003_molluscs",
+     "list": "佐賀県レッドリスト2003 貝類・甲殻類・その他",
+     "edition": "2003",
+     "name_as_published": "アゲマキガイ",
+     "category_as_published": "絶滅危惧Ⅱ類種",
+     "category": "VU",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "조사 담당이 공식 원문을 판독(이 세션에서 재확인하지 못함: 서버가 접근을 막음)"
+    }
+   ],
+   "reviewed": true,
+   "also_listed_not_scored": [
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Aichi",
+     "region_ko": "아이치현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "aichi_redlist2025",
+     "list": "レッドリストあいち2025 貝類",
+     "edition": "2025",
+     "name_as_published": "アゲマキ Sinonovacula constricta",
+     "category_as_published": "絶滅（EX）",
+     "category": null,
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "조사 담당이 공식 원문을 판독(이 세션에서 재확인하지 못함: 서버가 접근을 막음)"
+    },
+    {
+     "aphia_id": 413600,
+     "scientific_name": "Sinonovacula constricta",
+     "region": "Okayama",
+     "region_ko": "오카야마현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "okayama_redlist2025",
+     "list": "岡山県版レッドリスト2025 軟体動物門",
+     "edition": "2025",
+     "name_as_published": "アゲマキ Sinonovacula constricta",
+     "category_as_published": "絶滅",
+     "category": null,
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    }
+   ],
+   "note": "일본 환경성 2020 국가 목록은 이 종을 CR+EN으로 싣는다(후쿠오카·구마모토 목록의 環境省 열에서 확인). 우리 규칙은 한국 국가 평가를 먼저 쓰므로 공식 범주는 LC다. 즉 이 차이는 지방-국가 차이이기도 하지만 한국-일본 국가 간 차이이기도 하다."
+  },
+  {
+   "aphia_id": 504357,
+   "scientific_name": "Anadara broughtonii",
+   "korean_name": "피조개",
+   "official_category": "LC",
+   "official_basis": "national",
+   "official_source_id": "nibr_red_data_book_2024",
+   "sub_national": [
+    {
+     "aphia_id": 504357,
+     "scientific_name": "Anadara broughtonii",
+     "region": "Fukuoka",
+     "region_ko": "후쿠오카현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "fukuoka_redlist2024",
+     "list": "福岡県レッドリスト2024 貝類",
+     "edition": "2024",
+     "name_as_published": "アカガイ Anadara broughtonii",
+     "category_as_published": "NT",
+     "category": "NT",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    }
+   ],
+   "reviewed": true,
+   "also_listed_not_scored": [
+    {
+     "aphia_id": 504357,
+     "scientific_name": "Anadara broughtonii",
+     "region": "Kumamoto",
+     "region_ko": "구마모토현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "kumamoto_redlist2024",
+     "list": "レッドリストくまもと2024 海洋動物",
+     "edition": "2024",
+     "name_as_published": "アカガイ Anadara broughtonii",
+     "category_as_published": "DD",
+     "category": null,
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    }
+   ],
+   "note": "일본 환경성 2020 국가 목록은 NT로 싣는다(후쿠오카 목록의 環境省 열)."
+  },
+  {
+   "aphia_id": 836041,
+   "scientific_name": "Magallana sikamea",
+   "korean_name": "시카메굴",
+   "official_category": "NT",
+   "official_basis": "range_state",
+   "official_source_id": "moe_japan_red_list_2020_molluscs",
+   "sub_national": [
+    {
+     "aphia_id": 836041,
+     "scientific_name": "Magallana sikamea",
+     "region": "Fukuoka",
+     "region_ko": "후쿠오카현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "fukuoka_redlist2024",
+     "list": "福岡県レッドリスト2024 貝類",
+     "edition": "2024",
+     "name_as_published": "シカメガキ Magallana sikamea",
+     "category_as_published": "準絶滅危惧（NT）",
+     "category": "NT",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    },
+    {
+     "aphia_id": 836041,
+     "scientific_name": "Magallana sikamea",
+     "region": "Kumamoto",
+     "region_ko": "구마모토현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "kumamoto_redlist2024",
+     "list": "レッドリストくまもと2024 海洋動物",
+     "edition": "2024",
+     "name_as_published": "シカメガキ Crassostrea sikamea",
+     "category_as_published": "NT",
+     "category": "NT",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    }
+   ],
+   "reviewed": true
+  },
+  {
+   "aphia_id": 231750,
+   "scientific_name": "Ruditapes philippinarum",
+   "korean_name": "바지락",
+   "official_category": "LC",
+   "official_basis": "national",
+   "official_source_id": "nibr_red_data_book_2024",
+   "sub_national": [
+    {
+     "aphia_id": 231750,
+     "scientific_name": "Ruditapes philippinarum",
+     "region": "Fukuoka",
+     "region_ko": "후쿠오카현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "fukuoka_redlist2024",
+     "list": "福岡県レッドリスト2024 貝類",
+     "edition": "2024",
+     "name_as_published": "アサリ Ruditapes philippinarum",
+     "category_as_published": "NT",
+     "category": "NT",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+     "note": "2024판 신규 등재"
+    }
+   ],
+   "reviewed": true,
+   "also_listed_not_scored": [
+    {
+     "aphia_id": 231750,
+     "scientific_name": "Ruditapes philippinarum",
+     "region": "Miyazaki",
+     "region_ko": "미야자키현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "miyazaki_redlist2025",
+     "list": "宮崎県版レッドリスト 2025年度改訂版 貝類",
+     "edition": "2026",
+     "name_as_published": "アサリ Ruditapes philippinarum",
+     "category_as_published": "DD-2",
+     "category": null,
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+    }
+   ]
+  },
+  {
+   "aphia_id": 372119,
+   "scientific_name": "Gelidium elegans",
+   "korean_name": "우뭇가사리",
+   "official_category": "VU",
+   "official_basis": "range_state",
+   "official_source_id": "russia_red_data_book_plants_2023",
+   "sub_national": [
+    {
+     "aphia_id": 372119,
+     "scientific_name": "Gelidium elegans",
+     "region": "Primorsky Krai",
+     "region_ko": "연해주",
+     "country": "Russia",
+     "country_ko": "러시아",
+     "source_id": "primorsky_723pp_2022",
+     "list": "Красная книга Приморского края 식물·균류편 (№ 723-пп 부록 3)",
+     "edition": "2022",
+     "name_as_published": "Гелидиум изящный Gelidium elegans Kutzing",
+     "category_as_published": "VU (CR에서 변경)",
+     "category": "VU",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+     "note": "연방 목록(이미 점수로 쓰는 근거)과는 다른 수준의 별건"
+    }
+   ],
+   "reviewed": true,
+   "note": "공식 범주는 러시아 연방 목록(국가 단위)이고, 연해주 목록은 그보다 아래 단계라 점수를 바꾸지 않는다."
+  },
+  {
+   "aphia_id": 506159,
+   "scientific_name": "Mytilus coruscus",
+   "korean_name": "홍합(참담치)",
+   "official_category": "LC",
+   "official_basis": "national",
+   "official_source_id": "nibr_red_data_book_2024",
+   "sub_national": [
+    {
+     "aphia_id": 506159,
+     "scientific_name": "Mytilus coruscus",
+     "region": "Mie",
+     "region_ko": "미에현",
+     "country": "Japan",
+     "country_ko": "일본",
+     "source_id": "mie_redlist2024",
+     "list": "三重県レッドリスト2024 海産貝類",
+     "edition": "2024",
+     "name_as_published": "イガイ Mytilus coruscus Gould,1850",
+     "category_as_published": "VU",
+     "category": "VU",
+     "species_level": true,
+     "verified_in_original": true,
+     "reviewed": true,
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+     "note": "현 범주 정의표에서 VU=絶滅危惧Ⅱ類"
+    }
+   ],
+   "reviewed": true
+  }
+ ],
+ "amended_by": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md"
+}
