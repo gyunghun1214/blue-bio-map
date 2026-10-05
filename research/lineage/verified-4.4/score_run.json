@@ -1,0 +1,111 @@
+{
+  "run_id": "verified-4.4",
+  "method_version": "verified-4.4",
+  "report_generated_at": "2026-10-05T00:00:00Z",
+  "inputs_as_of": "2026-10-05",
+  "git_commit": "d33fd66",
+  "sources": {
+    "cellosaurus_mbpi": {
+      "provider": "SIB Cellosaurus",
+      "version": "API, queried 2026-09-29 to 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0"
+    },
+    "chembl_mbpi": {
+      "provider": "EMBL-EBI ChEMBL",
+      "version": "ChEMBL_37 (2026-05-01)",
+      "accessed": "2026-10-04",
+      "license": "CC BY-SA 3.0"
+    },
+    "chembl_relaxed_cohorts": {
+      "provider": "ChEMBL (EMBL-EBI), REST API",
+      "version": "ChEMBL_37 (2026-05-01), queried 2026-10-05",
+      "accessed": "2026-10-05",
+      "license": "CC BY-SA 3.0"
+    },
+    "cmnpd_mbpi": {
+      "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
+      "version": "public site search without login",
+      "accessed": "2026-09-29",
+      "license": null
+    },
+    "europepmc_mbpi": {
+      "provider": "EMBL-EBI Europe PMC",
+      "version": "REST search, live",
+      "accessed": "2026-09-29",
+      "license": null
+    },
+    "li_2020_mer_osinensis_genome": {
+      "provider": "Molecular Ecology Resources 20(6):1572-1582 (Wiley), PMID 32603549",
+      "version": "2020",
+      "accessed": "2026-10-05",
+      "license": "Publisher terms; bibliographic data only"
+    },
+    "ncbi_osinensis_genome_nw021826408": {
+      "provider": "NCBI RefSeq / INSDC (genome by Yellow Sea Fisheries Research Institute, Chinese Academy of Fishery Sciences)",
+      "version": "NW_021826408.1 (RefSeq record of 2020-10-08); BioSample SAMN11633729",
+      "accessed": "2026-10-05",
+      "license": "Public INSDC/RefSeq sequence record"
+    },
+    "pubchem_inchikey_mbpi": {
+      "provider": "NCBI PubChem",
+      "version": "queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04",
+      "accessed": "2026-10-04",
+      "license": "NCBI public access"
+    },
+    "wikidata_p703_lotus": {
+      "provider": "Wikidata (LOTUS natural products import)",
+      "version": "query service, queried 2026-09-29 to 2026-09-30; supplement queried 2026-10-04",
+      "accessed": "2026-10-04",
+      "license": "CC0 1.0"
+    },
+    "worms_rest_mbpi": {
+      "provider": "World Register of Marine Species",
+      "version": "queried 2026-09-29 to 2026-09-30",
+      "accessed": "2026-09-30",
+      "license": "CC BY 4.0"
+    }
+  },
+  "parameters": {
+    "bioactivity": {
+      "minimum_compounds_per_stratum": 3,
+      "single_doi_factor": 0.75,
+      "multiple_doi_factor": 1.0,
+      "primary_aggregation": "max",
+      "sensitivity_aggregations": [
+        "median",
+        "mean"
+      ],
+      "eligible_endpoints": [
+        "IC50",
+        "XC50",
+        "EC50",
+        "AC50",
+        "Ki",
+        "Kd",
+        "Potency",
+        "ED50"
+      ]
+    },
+    "chembl_minimum_cohort_records": 30,
+    "chembl_filters": {
+      "assay_types": [
+        "B",
+        "F"
+      ],
+      "data_validity_comments": [
+        null,
+        "Manually validated"
+      ],
+      "exclude_potential_duplicate": true,
+      "standard_relation": "="
+    },
+    "chembl_common_taxon_limit": 30.375,
+    "peptide_bioactivity_minimum": 30,
+    "amp_bioactivity_minimum": 30,
+    "anticancer_bioactivity_minimum": 30,
+    "xo_bioactivity_minimum": 30,
+    "relaxed_bioactivity_minimum": 30
+  },
+  "activity_exclusions_before_snapshot": "ChEMBL rows outside the assay-type / potential-duplicate filters were counted, never stored (snapshot activity_exclusions); they have no record here."
+}

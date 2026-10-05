@@ -2187,6 +2187,32 @@
      "score_delta": null
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.3",
+   "to_run_id": "verified-4.4",
+   "from_commit": "9532125",
+   "to_commit": "d33fd66",
+   "published_on": "2026-10-05",
+   "method_note": "verified-4.3 (2026-10-05). Team-lead order of 2026-10-05 (\"find a way to resolve the cells filled by a fallback, then fill them\"), applied as fixed in research/verified-indices/prereg-4.4-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) is used for the first time. 참문어's cephalotocin (synthetic CYFRNCPIG-NH2, human V1b and V2 receptor EC50, Kim et al. 2022) is ranked in the ChEMBL cohort of the same target and endpoint; its origin is settled on the Octopus sinensis reference genome (NW_021826408.1, a Zhoushan specimen), which encodes the mature peptide with its amidation and cleavage signal (4.1 precedent: a public sequence record of the species' own sample). (2) MBPI: four partial records added (방어 1, 갑오징어 3); each fails two or more conditions, so 방어 and 갑오징어 keep the floor. (3) MCUI: an official-list re-check (2026-10-05) found no category for the six Rapid LC species and no global or national one for 미역; values and labels stay, and the re-check with the next official dates is shown. No cohort, weight, coefficient, threshold or other value changes.",
+   "entries": [
+    {
+     "change_id": "verified-4.4#0001",
+     "entity_type": "assay",
+     "entity_id": "534443|relaxed|SEQ:CYFRNCPIG|ChEMBL_37:CHEMBL1921|EC50",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "ChEMBL_37:CHEMBL1921|EC50",
+     "new_value": "7.999 @ 94.02",
+     "reason": "항목 추가 (기록 2건)",
+     "run_id": "verified-4.4",
+     "from_run_id": "verified-4.3",
+     "score_before": 0.0,
+     "score_after": 70.5,
+     "score_delta": 70.5
+    }
+   ]
   }
  ]
 }

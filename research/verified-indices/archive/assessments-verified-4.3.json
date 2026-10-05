@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1463,7 +1463,7 @@
             }
           ]
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2132,7 +2132,7 @@
             }
           ]
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2679,7 +2679,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3268,7 +3268,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3895,7 +3895,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4753,7 +4753,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5778,7 +5778,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6847,7 +6847,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7868,7 +7868,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8974,7 +8974,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10142,7 +10142,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11274,7 +11274,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12347,7 +12347,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13189,7 +13189,7 @@
       "bioactivity_trace": [
         {
           "adjusted": 37.5,
-          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문·공개 보충자료·초록에서 확인한 것은 33개입니다(4.3 공개 당시 16개; 2026-10-05 원문 재확인 기록 research/verified-indices/xo-cohort-fulltext-recheck-4.4-2026-10-05.json). 확인한 33개만 세어도 최소 30개를 넘어, 4.3이 남겨 둔 엄격 해석으로도 이 층은 성립합니다. 다만 기질 문장과 측정 문장을 둘 다 원문에서 읽은 회원은 26개이고(요산 측정만 확인 7개), 13개는 초록이 XO 억제 시험임까지만 밝힙니다.",
+          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
           "cohort_median_pIC50": 2.235,
           "cohort_members": [
             {
@@ -13547,7 +13547,7 @@
         },
         {
           "adjusted": 53.80434782608695,
-          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문·공개 보충자료·초록에서 확인한 것은 33개입니다(4.3 공개 당시 16개; 2026-10-05 원문 재확인 기록 research/verified-indices/xo-cohort-fulltext-recheck-4.4-2026-10-05.json). 확인한 33개만 세어도 최소 30개를 넘어, 4.3이 남겨 둔 엄격 해석으로도 이 층은 성립합니다. 다만 기질 문장과 측정 문장을 둘 다 원문에서 읽은 회원은 26개이고(요산 측정만 확인 7개), 13개는 초록이 XO 억제 시험임까지만 밝힙니다.",
+          "caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
           "cohort_median_pIC50": 2.235,
           "cohort_members": [
             {
@@ -14042,7 +14042,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15047,7 +15047,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16153,7 +16153,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17041,38 +17041,7 @@
       "aphia_id": 276651,
       "bbvi_label": "MBPI 하한값 포함",
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": true,
-            "structure_id": false
-          },
-          "endpoint": "IC50(DPP-IV 억제, 돼지 DPP-IV·Gly-Pro-pNA)",
-          "exclusion_reason": "조건 둘 이상이 걸려 4.3의 완화 규칙(조건 하나만)을 넘습니다. 방어 자신의 조직에서 나온 첫 효능 수치라 부분 근거로 보입니다.",
-          "material_kind": "방어 껍질 Alcalase 가수분해물의 에탄올 분획(평균 분자량 600, 서열 미동정)",
-          "missing": [
-            "시험 물질이 단일 펩타이드가 아니라 가수분해물 분획(단일 피크 정제도 아님)",
-            "서열을 밝히지 않아 µM로 바꿀 수도, 펩타이드 비교집단에 넣을 수도 없음",
-            "DPP-IV 펩타이드 비교집단 층이 없음"
-          ],
-          "origin_aphia_id": 276651,
-          "origin_scientific_name": "Seriola quinqueradiata",
-          "record_id": "10.22146/ifnp.88534:skin-alcalase-ethanol",
-          "reviewed": true,
-          "source_id": "miyamoto_2024_ifnp_dppiv",
-          "status": "partial_only",
-          "test_system": "효소 시험(돼지 DPP-IV)",
-          "values": [
-            {
-              "material": "Alcalase 가수분해물 에탄올 분획",
-              "unit": "mg/mL",
-              "value": 1.19
-            }
-          ]
-        }
-      ],
+      "bioactivity_partial": [],
       "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
@@ -17215,7 +17184,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -17847,8 +17816,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 2,
-          "ratio": 0.5,
+          "best_record_steps": 0,
+          "ratio": 0.0,
           "required": [
             "origin",
             "structure_id",
@@ -17883,7 +17852,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.83
+        "mean_ratio": 0.67
       },
       "korean_name": "방어",
       "mbpi_floor": {
@@ -18005,7 +17974,6 @@
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
         "mext_sfct_2020",
-        "miyamoto_2024_ifnp_dppiv",
         "obis_trend",
         "rda_db_10_4"
       ],
@@ -18222,7 +18190,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19311,7 +19279,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20145,7 +20113,7 @@
     },
     {
       "aphia_id": 534443,
-      "bbvi_label": "단일 논문",
+      "bbvi_label": "MBPI 하한값 포함",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -20170,342 +20138,43 @@
           "status": "partial_only",
           "test_system": "세균 4종(대장균, 장염비브리오, 황색포도상구균, 고초균)",
           "values": []
-        }
-      ],
-      "bioactivity_trace": [
+        },
         {
-          "adjusted": 70.5179282868526,
-          "caveat": "비교집단은 대부분 합성 저분자와 바소프레신 유사체이며, 해양 펩타이드끼리의 비교가 아닙니다. 기원은 참문어 표준 유전체의 염기서열 기록(성숙 펩타이드와 가공 신호를 암호화)에 기댑니다. 이 자리의 NCBI 주석 단백질은 현재 철회돼 있고, 동아시아 시료에서 성숙 펩타이드를 직접 분리한 기록은 아닙니다. 시험은 사람 수용체 발현 세포의 작용 시험이며, 종 추출물의 효능이 아닙니다.",
-          "cohort_pchembl": [
-            4.02,
-            4.19,
-            4.24,
-            4.34,
-            4.4,
-            4.57,
-            4.62,
-            4.95,
-            5.03,
-            5.08,
-            5.14,
-            5.18,
-            5.27,
-            5.3,
-            5.44,
-            5.5,
-            5.53,
-            5.55,
-            5.58,
-            5.62,
-            5.65,
-            5.75,
-            5.75,
-            5.75,
-            5.82,
-            5.89,
-            5.96,
-            6.0,
-            6.0,
-            6.0,
-            6.01,
-            6.02,
-            6.02,
-            6.03,
-            6.07,
-            6.08,
-            6.09,
-            6.09,
-            6.11,
-            6.12,
-            6.14,
-            6.16,
-            6.18,
-            6.21,
-            6.22,
-            6.23,
-            6.24,
-            6.24,
-            6.24,
-            6.27,
-            6.27,
-            6.28,
-            6.28,
-            6.28,
-            6.28,
-            6.29,
-            6.29,
-            6.3,
-            6.3,
-            6.32,
-            6.32,
-            6.33,
-            6.34,
-            6.34,
-            6.35,
-            6.35,
-            6.36,
-            6.36,
-            6.36,
-            6.37,
-            6.38,
-            6.42,
-            6.42,
-            6.42,
-            6.43,
-            6.43,
-            6.44,
-            6.44,
-            6.44,
-            6.46,
-            6.46,
-            6.46,
-            6.47,
-            6.47,
-            6.48,
-            6.5,
-            6.54,
-            6.58,
-            6.58,
-            6.58,
-            6.58,
-            6.6,
-            6.6,
-            6.6,
-            6.6,
-            6.6,
-            6.62,
-            6.62,
-            6.65,
-            6.66,
-            6.66,
-            6.68,
-            6.68,
-            6.68,
-            6.68,
-            6.68,
-            6.7,
-            6.7,
-            6.71,
-            6.72,
-            6.72,
-            6.75,
-            6.75,
-            6.75,
-            6.77,
-            6.8,
-            6.8,
-            6.82,
-            6.82,
-            6.82,
-            6.82,
-            6.82,
-            6.82,
-            6.83,
-            6.84,
-            6.85,
-            6.85,
-            6.85,
-            6.85,
-            6.85,
-            6.89,
-            6.92,
-            6.92,
-            6.92,
-            6.92,
-            6.92,
-            6.92,
-            6.93,
-            6.93,
-            6.96,
-            6.96,
-            6.96,
-            6.96,
-            6.96,
-            6.96,
-            6.97,
-            6.98,
-            7.0,
-            7.0,
-            7.0,
-            7.0,
-            7.0,
-            7.01,
-            7.01,
-            7.02,
-            7.04,
-            7.06,
-            7.08,
-            7.12,
-            7.12,
-            7.13,
-            7.13,
-            7.15,
-            7.16,
-            7.19,
-            7.19,
-            7.19,
-            7.19,
-            7.2,
-            7.2,
-            7.21,
-            7.21,
-            7.21,
-            7.23,
-            7.23,
-            7.24,
-            7.25,
-            7.25,
-            7.25,
-            7.25,
-            7.3,
-            7.3,
-            7.34,
-            7.34,
-            7.34,
-            7.35,
-            7.36,
-            7.36,
-            7.36,
-            7.38,
-            7.39,
-            7.4,
-            7.41,
-            7.41,
-            7.41,
-            7.42,
-            7.42,
-            7.43,
-            7.43,
-            7.48,
-            7.5,
-            7.5,
-            7.51,
-            7.51,
-            7.52,
-            7.53,
-            7.54,
-            7.54,
-            7.54,
-            7.55,
-            7.55,
-            7.55,
-            7.56,
-            7.58,
-            7.58,
-            7.58,
-            7.59,
-            7.6,
-            7.6,
-            7.61,
-            7.62,
-            7.68,
-            7.68,
-            7.7,
-            7.7,
-            7.71,
-            7.71,
-            7.72,
-            7.75,
-            7.75,
-            7.8,
-            7.8,
-            7.82,
-            7.82,
-            7.96,
-            7.96,
-            8.06,
-            8.06,
-            8.1,
-            8.1,
-            8.12,
-            8.12,
-            8.16,
-            8.37,
-            8.37,
-            8.48,
-            8.61,
-            8.7,
-            8.77,
-            8.82,
-            9.7
-          ],
-          "cohort_records": 251,
-          "evidence_factor": 0.75,
-          "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
-          "measurements": [
-            {
-              "assay": "사람 V1b 수용체 발현 RBL 세포, 세포내 Ca2+ 형광(작용 시험), Eurofins Cerep, 3회 반복",
-              "endpoint": "EC50",
-              "original_paper_doi": "10.3390/md20050328",
-              "relation": "=",
-              "source_id": "kim_2022_md_cephalotocin",
-              "target_chembl_id": "CHEMBL1921",
-              "target_name": "Vasopressin V1b receptor",
-              "unit": "nM",
-              "value": 10.02,
-              "value_as_published": "EC50 of 10.02 nM"
-            },
-            {
-              "assay": "사람 V2 수용체 발현 CHO 세포, cAMP HTRF 30분(작용 시험), Eurofins Cerep, 3회 반복",
-              "endpoint": "EC50",
-              "original_paper_doi": "10.3390/md20050328",
-              "relation": "=",
-              "source_id": "kim_2022_md_cephalotocin",
-              "target_chembl_id": "CHEMBL1790",
-              "target_name": "Vasopressin V2 receptor",
-              "unit": "nM",
-              "value": 12.09,
-              "value_as_published": "EC50 of 12.09 nM"
-            }
-          ],
-          "origin_record": {
-            "accession": "NW_021826408.1",
-            "biosample": "SAMN11633729",
-            "identity_check": "156 nt identical to AB108430.1 (Octopus vulgaris CT gene, Kanda et al. 2003) CDS codons 1-52",
-            "kind": "genome_nucleotide",
-            "locality": "China: littoral waters of Zhoushan, Zhejiang province (2018-01)",
-            "mature_peptide": "CYFRNCPIG-NH2 (aa 29-37, then G amidation donor and KR cleavage)",
-            "region": "8387-8542 (+)",
-            "source_ids": [
-              "ncbi_osinensis_genome_nw021826408",
-              "li_2020_mer_osinensis_genome"
-            ],
-            "translation": "MSQNCFAIVQLLFVLFTVCSLFIATTDGCYFRNCPIGGKRATPMSEQGSNQK"
+          "chain": {
+            "comparable_cohort": false,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
           },
-          "original_paper_dois": [
-            "10.3390/md20050328"
+          "endpoint": "EC50(사람 바소프레신 수용체 작용)",
+          "exclusion_reason": "기원(이 종의 시료) 확인이 안 되어 4.3의 완화 규칙도 적용할 수 없습니다.",
+          "material_kind": "문어 신경 펩타이드 세팔로토신 합성품(CYFRNCPIG-NH2, 순도 98% 이상)",
+          "missing": [
+            "서열을 밝힌 원논문의 시료 채집지가 공개 자료로 확인되지 않아 동아시아산(O. sinensis)으로 볼 근거가 없음(1992년 분리 논문은 독일 연구팀)",
+            "펩타이드는 ChEMBL 화합물 비교집단에 넣지 않음(4.3 완화 (d)를 쓰더라도 기원 조건은 넓히지 않음)"
           ],
-          "other_targets": [
+          "origin_aphia_id": 534443,
+          "origin_scientific_name": "Octopus sinensis",
+          "record_id": "10.3390/md20050328:cephalotocin",
+          "reviewed": true,
+          "source_id": "kim_2022_md_cephalotocin",
+          "status": "partial_only",
+          "test_system": "사람 수용체 발현 세포 작용 시험",
+          "values": [
             {
-              "cohort_records": 297,
-              "pchembl": 7.918,
-              "percentile": 81.48,
-              "standard_type": "EC50",
-              "target_chembl_id": "CHEMBL1790",
-              "target_name": "Vasopressin V2 receptor",
+              "material": "V2 수용체",
               "unit": "nM",
               "value": 12.09
+            },
+            {
+              "material": "V1b 수용체",
+              "unit": "nM",
+              "value": 10.02
             }
-          ],
-          "pchembl": 7.999,
-          "peptide_name": "cephalotocin",
-          "peptide_sequence": "CYFRNCPIG",
-          "percentile": 94.02,
-          "record_ids": [
-            "10.3390/md20050328:cephalotocin:CHEMBL1790",
-            "10.3390/md20050328:cephalotocin:CHEMBL1921"
-          ],
-          "relaxation": "d",
-          "relaxation_label": "펩타이드를 같은 표적·종말점의 ChEMBL 비교집단에서 순위",
-          "sequence_modifications": "C말단 Gly 아미드(-NH2), Cys1–Cys6 이황화 결합",
-          "standard_type": "EC50",
-          "stratum_id": "ChEMBL_37:CHEMBL1921|EC50",
-          "stratum_kind": "relaxed",
-          "target_chembl_id": "CHEMBL1921",
-          "target_name": "Vasopressin V1b receptor",
-          "target_organism": "Homo sapiens"
+          ]
         }
       ],
+      "bioactivity_trace": [],
       "candidate_label": "조사 후보",
       "chembl_links": {
         "counts": {
@@ -20519,11 +20188,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 70.5,
-          "minimum_cohort_10": 70.5,
-          "minimum_cohort_100": 70.5,
-          "no_approved_drug_filter": 70.5,
-          "no_common_metabolite_filter": 70.5
+          "log_scale_common_fence": null,
+          "minimum_cohort_10": null,
+          "minimum_cohort_100": null,
+          "no_approved_drug_filter": null,
+          "no_common_metabolite_filter": null
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -20627,7 +20296,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21292,8 +20961,8 @@
       },
       "information_sufficiency": {
         "MBPI": {
-          "best_record_steps": 4,
-          "ratio": 1.0,
+          "best_record_steps": 2,
+          "ratio": 0.5,
           "required": [
             "origin",
             "structure_id",
@@ -21328,12 +20997,18 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.83
+        "mean_ratio": 0.67
       },
       "korean_name": "참문어(동아시아 종)",
-      "mbpi_floor": null,
-      "mbpi_label": "단일 논문",
-      "mbpi_stratum": "relaxed",
+      "mbpi_floor": {
+        "bbvi_label": "MBPI 하한값 포함",
+        "label": "효능 근거 미확인(하한값)",
+        "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
+        "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
+        "value": 0
+      },
+      "mbpi_label": "효능 근거 미확인(하한값)",
+      "mbpi_stratum": "floor",
       "mcui_basis": "national",
       "mcui_substitute": null,
       "national_assessment": {
@@ -21465,38 +21140,29 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 54.2,
-        "MBPI": 70.5,
+        "BBVI": 18.9,
+        "MBPI": 0.0,
         "MCUI": 35.0,
         "MFPI": 37.8
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 62.3,
-          "0.5": 54.2,
-          "0.75": 46.0
-        },
-        "mean_compound_sensitivity": 70.5,
-        "median_compound_sensitivity": 70.5,
-        "range_from_aggregation": [
-          70.5,
-          70.5
-        ]
+          "0.25": 9.5,
+          "0.5": 18.9,
+          "0.75": 28.3
+        }
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 70.5,
+        "bioactivity_only_MBPI": 0.0,
         "food_only_MFPI": 37.8
       },
       "source_ids": [
-        "chembl_relaxed_cohorts",
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "iucn_redlist_search",
         "kim_2022_md_cephalotocin",
-        "li_2020_mer_osinensis_genome",
         "mabik_national_species_list",
         "mext_sfct_2020_items",
-        "ncbi_osinensis_genome_nw021826408",
         "nibr_red_data_book_2024",
         "obis_trend",
         "rda_db_10_4",
@@ -21640,109 +21306,6 @@
           "status": "partial_only",
           "test_system": "사람 전립선암 세포 PC-3(CCK-8, 5–20 mg/mL, 24·48·72시간)",
           "values": []
-        },
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "EC50(라디칼 소거 항산화 시험)",
-          "exclusion_reason": "조건 둘이 걸려 4.3의 완화 규칙(조건 하나만)을 넘습니다. 항산화 층을 새로 만드는 것은 이번 판에서 하지 않았습니다.",
-          "material_kind": "갑오징어 단백질 파파인 가수분해물에서 RP-HPLC로 정제한 펩타이드 APPENGMAQM(1045.21 Da, 합성품 아님)",
-          "missing": [
-            "항산화 라디칼 소거에는 공통 종말점의 고정 공개 비교집단 층이 없음",
-            "정제품의 mg/mL 값은 µM로 바꾸지 않는다(합성 서열 확정 펩타이드만 환산, 팀장 결정 2026-10-01)"
-          ],
-          "origin_aphia_id": 1666974,
-          "origin_scientific_name": "Acanthosepion esculentum",
-          "record_id": "CN103467568B:APPENGMAQM",
-          "reviewed": true,
-          "source_id": "cn103467568b_sepia_peptide",
-          "status": "partial_only",
-          "test_system": "화학적 라디칼 소거 시험(세포·효소 표적 아님)",
-          "values": [
-            {
-              "material": "DPPH",
-              "unit": "mg/mL",
-              "value": 4.01
-            },
-            {
-              "material": "하이드록실 라디칼",
-              "unit": "mg/mL",
-              "value": 4.66
-            },
-            {
-              "material": "ABTS",
-              "unit": "mg/mL",
-              "value": 3.44
-            },
-            {
-              "material": "슈퍼옥사이드 음이온",
-              "unit": "mg/mL",
-              "value": 6.03
-            }
-          ]
-        },
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": true,
-            "structure_id": true
-          },
-          "endpoint": "LD50(게 치사, 생체 시험)",
-          "exclusion_reason": "조건 둘이 걸려 4.3의 완화 규칙을 넘습니다.",
-          "material_kind": "후타액선에서 정제한 100 kDa 당단백질 독소 SE-cephalotoxin(cDNA 서열 확정)",
-          "missing": [
-            "게 치사 LD50의 공개 비교집단이 없음",
-            "단백질(100 kDa)은 펩타이드·화합물 층 어디에도 들어가지 않음"
-          ],
-          "origin_aphia_id": 1666974,
-          "origin_scientific_name": "Acanthosepion esculentum",
-          "record_id": "10.1016/j.toxicon.2008.07.007:SE-cephalotoxin",
-          "reviewed": true,
-          "source_id": "ueda_2008_toxicon_sectx",
-          "status": "partial_only",
-          "test_system": "게 주사 치사 시험",
-          "values": [
-            {
-              "material": "게",
-              "unit": "µg/kg",
-              "value": 2
-            }
-          ]
-        },
-        {
-          "chain": {
-            "comparable_cohort": false,
-            "origin": true,
-            "quantitative_endpoint": true,
-            "structure_id": false
-          },
-          "endpoint": "IC50(MCF-7 유방암 세포, MTT)",
-          "exclusion_reason": "조건 셋이 걸려 4.3의 완화 규칙을 넘습니다.",
-          "material_kind": "먹물 조단백(SDS-PAGE 띠 4개 단백질 혼합물)",
-          "missing": [
-            "시험 물질이 조단백 혼합물(단일 피크 정제 분획도 아님)",
-            "분자량이 정해지지 않아 µM로 바꿀 수 없음",
-            "단백질은 항암 펩타이드 층에 들어가지 않음"
-          ],
-          "origin_aphia_id": 1666974,
-          "origin_scientific_name": "Acanthosepion esculentum",
-          "record_id": "10.1016/j.micpath.2018.01.039:crude-ink-protein",
-          "reviewed": true,
-          "source_id": "kumar_2018_micpath_ink",
-          "status": "partial_only",
-          "test_system": "사람 유방암 세포 MCF-7",
-          "values": [
-            {
-              "material": "먹물 조단백",
-              "unit": "µg/mL",
-              "value": 65.3
-            }
-          ]
         }
       ],
       "bioactivity_trace": [],
@@ -21874,7 +21437,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22745,18 +22308,15 @@
       },
       "source_ids": [
         "cmnpd_mbpi",
-        "cn103467568b_sepia_peptide",
         "ding_2011_cjnm_qpk",
         "europepmc_mbpi",
         "gbif_iucn_checklist",
         "huang_2017_mmr_shp",
         "iucn_sepia_esculenta_2012",
         "jing_2014_mfst_shp",
-        "kumar_2018_micpath_ink",
         "nibr_red_data_book_2024",
         "obis_trend",
         "rda_db_10_4",
-        "ueda_2008_toxicon_sectx",
         "ufish_1_workbook",
         "yoo_2023_sepia_esculenta",
         "yu_2020_md_sepia"
@@ -22971,8 +22531,8 @@
       ],
       "single_doi_factor": 0.75
     },
-    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.3 (2026-10-05). Team-lead order of 2026-10-05 (\"find a way to resolve the cells filled by a fallback, then fill them\"), applied as fixed in research/verified-indices/prereg-4.4-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) is used for the first time. 참문어's cephalotocin (synthetic CYFRNCPIG-NH2, human V1b and V2 receptor EC50, Kim et al. 2022) is ranked in the ChEMBL cohort of the same target and endpoint; its origin is settled on the Octopus sinensis reference genome (NW_021826408.1, a Zhoushan specimen), which encodes the mature peptide with its amidation and cleavage signal (4.1 precedent: a public sequence record of the species' own sample). (2) MBPI: four partial records added (방어 1, 갑오징어 3); each fails two or more conditions, so 방어 and 갑오징어 keep the floor. (3) MCUI: an official-list re-check (2026-10-05) found no category for the six Rapid LC species and no global or national one for 미역; values and labels stay, and the re-check with the next official dates is shown. No cohort, weight, coefficient, threshold or other value changes.",
+    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.3-2026-10-05.json",
+    "changes_from": "verified-4.2 (2026-10-04). Team-lead decisions of 2026-10-05 (\"fill every value; drop every pilot or withheld state\"), pre-registered before any value was computed in research/verified-indices/prereg-fill-all-4.3-2026-10-05.md: (1) MCUI: when IUCN, the Korean national list, every range-state national list and every sub-national list are silent, a met Rapid LC check (thresholds and snapshot unchanged since 3.15) is scored as LC-equivalent 10 with the label '자체 예비평가(Rapid LC) · 역검증 미통과' and its own matrix marker; this reverses the 2026-10-04 decision that kept it reference-only. (2) MCUI: the 미역 row of the Primorsky Krai governor decree No. 272 (2002), read in the docs.cntd.ru legal-database text and checked current against the official 2022 amendment scan No. 723-пп, counts as read in the original under the 4.2 pre-registration. (3) MBPI: a fourth peptide stratum, xanthine-oxidase (XO) IC50, with a literature-built fixed cohort (members confirmed by two independent checks). (4) MBPI: a species' own single-substance value that fails exactly one condition may be scored with a label naming the relaxed condition. (5) MBPI: a species with no item in any stratum gets the floor value 0 labelled '효능 근거 미확인(하한값)' (meaning: no qualifying evidence yet, not 'no activity'); its BBVI is 0.5 x MFPI, labelled 'MBPI 하한값 포함'. The extensions were decided after seeing which cells they would fill; the pre-registration says so. No cohort, weight, coefficient or threshold of MFPI, of the existing MBPI strata or of IUCN/national/sub-national MCUI changes.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -23216,7 +22776,7 @@
       "label": "효능 근거 미확인(하한값)",
       "meaning": "0점은 '효능이 없다'가 아니라 '규칙을 채우는 효능 근거가 아직 없다'는 뜻입니다. 찾은 부분 근거가 있으면 종 상세에 그대로 보입니다.",
       "prereg": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
-      "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used. 4.4: the relaxation gives 참문어 an item (relaxed_bioactivity), so the floor now applies to 방어 and 갑오징어 only.",
+      "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used.",
       "value": 0
     },
     "mcui_substitutes": {
@@ -23229,24 +22789,6 @@
         "sub_national": "지방 목록 참고값({regions}) · {backtest}"
       },
       "method_source_id": "bachman_2020_rapid_lc",
-      "official_recheck": {
-        "aphia_ids": [
-          250680,
-          377084,
-          371986,
-          494853,
-          236157,
-          274849,
-          145721
-        ],
-        "checked_on": "2026-10-05",
-        "next": [
-          "IUCN 적색목록 2026-2 (2026-11-19 예정)",
-          "일본 환경성 제5차 적색목록 해양 분류군과 수산청 평가 대상 종 결과 (2026년도부터 순차, 조피볼락은 2020년도부터 수산청 자원평가 대상)"
-        ],
-        "record": "research/verified-indices/mcui-official-recheck-4.4-2026-10-05.json",
-        "summary": "2026-10-05 재확인: IUCN(한국 협력 평가 24종 포함), 국가생물종목록 적색목록 칸, 일본 환경성 제5차 조류 목록과 2017 해양 목록 자료, 수산청 위탁 보고서, 북한 생물다양성 국가보고서, 중국 생태환경부·과학원 적색목록, 러시아 연방 목록(명령 162·320)에서도 이 종의 전 지구·국가 수준 공식 범주를 찾지 못했습니다. 지방 목록은 4.2·4.3 조사 결과 그대로입니다."
-      },
       "order": [
         "range_state",
         "sub_national",
@@ -23316,7 +22858,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.4",
+    "method_version": "verified-4.3",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -23695,26 +23237,6 @@
       ],
       "rule": "Only when MFPI and MBPI are both calculated and BBVI is withheld because the MBPI rests on fewer independent papers than bbvi.minimum_independent_mbpi_dois. Never computed from a single axis, never written to scores.BBVI, never placed in the matrix or any ranking."
     },
-    "relaxed_bioactivity": {
-      "allowed_relaxations": {
-        "d": "펩타이드를 같은 표적·종말점의 ChEMBL 비교집단에서 순위"
-      },
-      "cohort_snapshot": "research/verified-indices/snapshots/relaxed-chembl-cohorts-2026-10-05.json",
-      "cohort_source_id": "chembl_relaxed_cohorts",
-      "item_caveats": [
-        "비교집단은 대부분 합성 저분자와 바소프레신 유사체이며, 해양 펩타이드끼리의 비교가 아닙니다.",
-        "기원은 참문어 표준 유전체의 염기서열 기록(성숙 펩타이드와 가공 신호를 암호화)에 기댑니다. 이 자리의 NCBI 주석 단백질은 현재 철회돼 있고, 동아시아 시료에서 성숙 펩타이드를 직접 분리한 기록은 아닙니다.",
-        "시험은 사람 수용체 발현 세포의 작용 시험이며, 종 추출물의 효능이 아닙니다."
-      ],
-      "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
-      "minimum_cohort_records": 30,
-      "origin_rule": "Never relaxed. The species' own public primary sequence record (paper, GenBank/RefSeq/UniProt entry from a specimen with a stated collection record) must encode or produce the tested mature sequence with its processing signals, and the tested material must be a synthetic copy of that sequence (4.1 꽃게 precedent). A nucleotide record counts when no annotated protein exists; that is stated as a limitation.",
-      "prereg": "research/verified-indices/prereg-4.4-2026-10-05.md",
-      "rule": "prereg-fill-all-4.3-2026-10-05.md 1.4 as applied in prereg-4.4-2026-10-05.md 2: a species' own single peptide that fails exactly one condition is scored with that condition named. Only (d) is used: a peptide with no peptide cohort for its target is ranked in the ChEMBL cohort of the same target_chembl_id and standard_type, built with the ChEMBL stratum's filters (pChEMBL present, relation '=', assay type B/F, no data-validity flag other than 'Manually validated', not a potential duplicate), at least minimum_cohort_records, agonist and antagonist assays not split (as in the ChEMBL stratum). Percentile = 100 x (weaker + 0.5 x equal) / n; the same single/multiple-DOI factors; one item per species and peptide, the target with the highest percentile (ties: more records), as in the ChEMBL stratum; the species MBPI is the max over all strata.",
-      "separation_rule": "A relaxed item is ranked only in its own ChEMBL target cohort; it is never pooled with a peptide-stratum cohort or another target.",
-      "supplement": "research/verified-indices/evidence-relaxed-4.4-2026-10-05.json",
-      "value_scale": "p = 9 - log10(value in nM), the pChEMBL scale; higher is more potent"
-    },
     "sensitivity": {
       "mfpi_weights": [
         {
@@ -23763,15 +23285,8 @@
       "cohort_file": "research/verified-indices/xo-cohort-4.3-2026-10-05.json",
       "cohort_rule": "prereg-fill-all-4.3-2026-10-05.md 1.3: single defined peptides whose own XO IC50 is one stated number (criterion 2, xanthine substrate and uric-acid readout, was observed for 16 of 46 members: 11 full texts and 5 abstracts naming HPLC; the other 30 were read at abstract level, where the assay is named as XO inhibition but its substrate and readout are not stated, and were taken as the standard assay); uM/mM used as read, mass units converted only for plain standard-residue linear peptides; one member per sequence (median); material recorded, not an exclusion; the scored species' own peptides are never members. Collected from four PubMed queries (2026-10-05) read in full; each member kept only when two independent checks (source fidelity; criteria and arithmetic) both confirmed it.",
       "cohort_source_id": "xo_peptide_cohort_literature_2026",
-      "criterion2_recheck": {
-        "checked_on": "2026-10-05",
-        "confirmed": 33,
-        "confirmed_substrate_and_readout": 26,
-        "not_obtained": 13,
-        "record": "research/verified-indices/xo-cohort-fulltext-recheck-4.4-2026-10-05.json"
-      },
       "endpoint": "IC50",
-      "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문·공개 보충자료·초록에서 확인한 것은 33개입니다(4.3 공개 당시 16개; 2026-10-05 원문 재확인 기록 research/verified-indices/xo-cohort-fulltext-recheck-4.4-2026-10-05.json). 확인한 33개만 세어도 최소 30개를 넘어, 4.3이 남겨 둔 엄격 해석으로도 이 층은 성립합니다. 다만 기질 문장과 측정 문장을 둘 다 원문에서 읽은 회원은 26개이고(요산 측정만 확인 7개), 13개는 초록이 XO 억제 시험임까지만 밝힙니다.",
+      "item_caveat": "문헌으로 만든 비교집단이라 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다. 회원 46개 가운데 잔틴 기질·요산 측정을 원문에서 확인한 것은 16개이고, 30개는 초록만 읽어 XO 억제 시험이라는 것까지만 확인했습니다. 확인한 16개만 쓰면 최소 30개에 못 미쳐 이 층은 성립하지 않습니다.",
       "label": "잔틴 산화효소(XO) 억제 펩타이드 · 문헌 비교집단",
       "minimum_justification": "Same as the ACE, AMP and anticancer strata: 30 peers keep one rank step at about 3 percentile points.",
       "minimum_peptides": 30,
@@ -23782,7 +23297,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.4",
+  "method_version": "verified-4.3",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -24007,15 +23522,6 @@
       "url": "https://www.ebi.ac.uk/chembl/api/data/",
       "version": "ChEMBL_37 (2026-05-01)"
     },
-    "chembl_relaxed_cohorts": {
-      "accessed": "2026-10-05",
-      "license": "CC BY-SA 3.0",
-      "provider": "ChEMBL (EMBL-EBI), REST API",
-      "terms": "Activity IDs, molecule and document IDs and pChEMBL values only, in research/verified-indices/snapshots/relaxed-chembl-cohorts-2026-10-05.json (scripts/collect_relaxed_cohorts.py), with the ChEMBL stratum's filters. Neither cephalotocin nor its paper is in ChEMBL (molecule and document look-ups return 0).",
-      "title": "ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50",
-      "url": "https://www.ebi.ac.uk/chembl/",
-      "version": "ChEMBL_37 (2026-05-01), queried 2026-10-05"
-    },
     "chen_2003_sea_cucumber_china": {
       "accessed": "2026-10-01",
       "license": "SPC information bulletin, free online; fact, method summary and a short quotation",
@@ -24081,15 +23587,6 @@
       "terms": "CC BY-NC-SA 4.0",
       "url": "https://www.cmnpd.org",
       "version": "public site search without login"
-    },
-    "cn103467568b_sepia_peptide": {
-      "accessed": "2026-10-05",
-      "license": "Patent document; values and wording recorded only",
-      "provider": "CNIPA patent CN103467568B (Google Patents full text), Zhejiang Ocean University",
-      "terms": "Full text read (description). 金乌贼 (Sepia esculenta) protein hydrolysed with papain, 3 kDa ultrafiltration, Sephadex G-25, then RP-HPLC to one peptide APPENGMAQM (1045.21 Da; protein/peptide sequencer and mass spectrometry). EC50 4.01 mg/mL (DPPH), 4.66 mg/mL (hydroxyl), 3.44 mg/mL (ABTS), 6.03 mg/mL (superoxide).",
-      "title": "一种金乌贼蛋白抗氧化肽及其制备方法和用途 (Sepia esculenta protein antioxidant peptide; 王斌·郁迪·徐银峰·胡发远)",
-      "url": "https://patents.google.com/patent/CN103467568B/en",
-      "version": "filed 2013-05-23, granted 2015-07-15; status expired (fee related)"
     },
     "dbaasp_amp_cohort": {
       "accessed": "2026-10-02",
@@ -24564,9 +24061,9 @@
       "accessed": "2026-10-05",
       "doi": "10.3390/md20050328",
       "license": "CC BY 4.0",
-      "provider": "Marine Drugs 20(5):328 (MDPI), full text in PMC9144402",
-      "terms": "Full text read (Europe PMC XML): synthetic cephalotocin CYFRNCPIG-NH2 with a disulfide bond, purity >98% (HPLC, MALDI-TOF; AnyGen, Gwangju); Eurofins Cerep human receptor assays in triplicate, 4-parameter logistic fit; EC50 10.02 nM at V1bR (RBL cells, intracellular Ca2+) and 12.09 nM at V2R (CHO cells, cAMP HTRF) in section 2.2; OXTR and V1aR not activated up to 50 uM. The paper names the species Octopus vulgaris without a sampling region.",
-      "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim Y-J et al. 2022)",
+      "provider": "Marine Drugs 20(5):328 (MDPI)",
+      "terms": "Open full text: synthetic cephalotocin (CYFRNCPIG-NH2, >98%) EC50 at human V2 and V1b receptors in the text. The paper names the source species Octopus vulgaris without a sampling region; the sequence papers (Reich 1992, Univ. Ulm; Takuwa-Kuroda 2003) give no public collection locality.",
+      "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim et al. 2022)",
       "url": "https://doi.org/10.3390/md20050328",
       "version": "2022"
     },
@@ -24606,16 +24103,6 @@
       "title": "レッドリストくまもと2024 〈12. 海洋動物〉",
       "url": "https://www.pref.kumamoto.jp/uploaded/attachment/271103.xlsx",
       "version": "2024-10 (현행)"
-    },
-    "kumar_2018_micpath_ink": {
-      "accessed": "2026-10-05",
-      "doi": "10.1016/j.micpath.2018.01.039",
-      "license": "Publisher copyright; abstract only",
-      "provider": "Microbial Pathogenesis 116:345-350 (Elsevier), abstract on PubMed (PMID 29407235)",
-      "terms": "Abstract read: crude ink protein (four SDS-PAGE bands identified by MALDI-TOF), MCF-7 IC50 65.3 +/- 0.46 ug/mL (MTT).",
-      "title": "Proteomics analysis of crude squid ink isolated from Sepia esculenta for their antimicrobial, antibiofilm and cytotoxic properties (Kumar P et al. 2018)",
-      "url": "https://doi.org/10.1016/j.micpath.2018.01.039",
-      "version": "2018"
     },
     "kwon_cho_1986_anadara": {
       "accessed": "2026-09-30",
@@ -24677,16 +24164,6 @@
       "title": "扇贝裙边ACE抑制肽的分离鉴定及其降血压活性研究 (ACE inhibitory peptide from scallop skirt: isolation, identification and antihypertensive activity)",
       "url": "https://xuebao.dlou.edu.cn/article/2018/2095-1388/201806016.html",
       "version": "2018"
-    },
-    "li_2020_mer_osinensis_genome": {
-      "accessed": "2026-10-05",
-      "doi": "10.1111/1755-0998.13216",
-      "license": "Publisher terms; bibliographic data only",
-      "provider": "Molecular Ecology Resources 20(6):1572-1582 (Wiley), PMID 32603549",
-      "terms": "The genome paper of the assembly that carries NW_021826408.1: a female East Asian common octopus (Octopus sinensis). Abstract read; the sample locality is read from BioSample SAMN11633729.",
-      "title": "Chromosome-level genome assembly of the East Asian common octopus (Octopus sinensis) using PacBio sequencing and Hi-C technology (Li F et al. 2020)",
-      "url": "https://doi.org/10.1111/1755-0998.13216",
-      "version": "2020"
     },
     "li_2022_arca_p6": {
       "accessed": "2026-10-02",
@@ -24847,16 +24324,6 @@
       "url": "https://www.pref.mie.lg.jp/common/content/001184884.xlsx",
       "version": "2024-12-27 공표 (현행)"
     },
-    "miyamoto_2024_ifnp_dppiv": {
-      "accessed": "2026-10-05",
-      "doi": "10.22146/ifnp.88534",
-      "license": "Publisher terms; values and wording recorded only",
-      "provider": "Indonesian Food and Nutrition Progress 21(1):1 (Universitas Gadjah Mada), open PDF",
-      "terms": "Full text read. Yellowtail (Seriola quinqueradiata) skin from fish bought at a market (Kagawa Nutrition University, Saitama); Alcalase hydrolysate, ethanol fraction: DPP-IV IC50 1.19 +/- 0.01 mg/ml (Table 1; porcine DPP-IV, Gly-Pro-pNA). No peptide sequence determined; amino-acid composition only (type I collagen).",
-      "title": "Characterization of Fish Skin Hydrolysates Exhibiting Dipeptidyl Peptidase IV Inhibitory Activity (Miyamoto H, Safitri E, Nagai T, Saito M 2024)",
-      "url": "https://doi.org/10.22146/ifnp.88534",
-      "version": "2024 (published 2024-05-08)"
-    },
     "miyazaki_redlist2025": {
       "accessed": "2026-10-04",
       "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
@@ -24922,15 +24389,6 @@
       "title": "長崎県レッドリスト2022 〈11 貝類〉",
       "url": "https://www.pref.nagasaki.jp/uploads/2022/03/1648644059.pdf",
       "version": "2022-03 (현행)"
-    },
-    "ncbi_osinensis_genome_nw021826408": {
-      "accessed": "2026-10-05",
-      "license": "Public INSDC/RefSeq sequence record",
-      "provider": "NCBI RefSeq / INSDC (genome by Yellow Sea Fisheries Research Institute, Chinese Academy of Fishery Sciences)",
-      "terms": "Nucleotides 8387-8542 (plus strand) translate to MSQNCFAIVQLLFVLFTVCSLFIATTDGCYFRNCPIGGKRATPMSEQGSNQK: the cephalotocin nonapeptide (aa 29-37) followed by the Gly amidation donor and the KR cleavage site. The 156 nt are identical to codons 1-52 of the Japanese Octopus vulgaris cephalotocin gene AB108430.1 (Kanda et al. 2003). BioSample SAMN11633729: Octopus sinensis, 'China: littoral waters of Zhoushan, Zhejiang province', collected 2018-01, isolate Ov201803, liver. The NCBI protein annotation of this locus (LOC115227447) is withdrawn; the evidence is the nucleotide record.",
-      "title": "Octopus sinensis genome assembly ASM634580v1 (GCF_006345805.1), unplaced scaffold NW_021826408.1 (identical to VCDQ01006288.1); BioSample SAMN11633729",
-      "url": "https://www.ncbi.nlm.nih.gov/nuccore/NW_021826408.1",
-      "version": "NW_021826408.1 (RefSeq record of 2020-10-08); BioSample SAMN11633729"
     },
     "ngo_2016_cod_gelatin": {
       "accessed": "2026-10-01",
@@ -25273,16 +24731,6 @@
       "title": "Purification of angiotensin I-converting enzyme inhibitory peptide from Todarodes pacificus skin",
       "url": "https://www.e-kfas.org/Upload/files/kfas/KSSHBC_2011_v44n2_118.pdf",
       "version": "2011 article, volume 44 issue 2 pages 118-125"
-    },
-    "ueda_2008_toxicon_sectx": {
-      "accessed": "2026-10-05",
-      "doi": "10.1016/j.toxicon.2008.07.007",
-      "license": "Publisher copyright; abstract only",
-      "provider": "Toxicon 52(4):574-581 (Elsevier), abstract on PubMed (PMID 18694775)",
-      "terms": "Abstract read: 100 kDa monomeric glycoprotein purified by gel filtration and hydroxyapatite HPLC, LD50 2 microg/kg against crabs; full-length cDNA cloned.",
-      "title": "Purification and molecular cloning of SE-cephalotoxin, a novel proteinaceous toxin from the posterior salivary gland of cuttlefish Sepia esculenta (Ueda A et al. 2008)",
-      "url": "https://doi.org/10.1016/j.toxicon.2008.07.007",
-      "version": "2008"
     },
     "ufish_1": {
       "accessed": "2026-09-25",
@@ -26232,7 +25680,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26895,7 +26343,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27865,7 +27313,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -29037,7 +28485,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30066,7 +29514,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30923,7 +30371,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -31580,7 +31028,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32221,7 +31669,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.4 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.3 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -33039,7 +32487,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.4",
+        "method_version": "verified-4.3",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

@@ -2713,6 +2713,7 @@ V328 = ROOT / "config" / "verified-indices-v3.28.json"  # superseded by 4.0 (rel
 V40 = ROOT / "config" / "verified-indices-v4.0.json"    # superseded by 4.1 (꽃게 AMP row)
 V41 = ROOT / "config" / "verified-indices-v4.1.json"    # superseded by 4.2 (sub-national MCUI basis)
 V42 = ROOT / "config" / "verified-indices-v4.2.json"    # superseded by 4.3 (every cell filled, labelled fallbacks)
+V43 = ROOT / "config" / "verified-indices-v4.3.json"    # superseded by 4.4 (참문어 relaxation (d))
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3005,13 +3006,15 @@ class Verified43Tests(unittest.TestCase):
     any stratum get the labelled floor 0. No existing value changes."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V42))
+        self.report, self.old_report = build(*load_inputs(config=V43)), build(*load_inputs(config=V42))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.3", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.3 report is archived as it was
+        archived43 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.3.json"
+        self.assertEqual(render(self.report), archived43.read_text(encoding="utf-8"))
 
     def test_every_cell_is_filled_and_no_value_moves(self):
         filled = lambda rows: sum(v is not None for s in rows.values() for v in s["scores"].values())
@@ -3102,11 +3105,68 @@ class Verified43Tests(unittest.TestCase):
         self.assertAlmostEqual(rank, x["percentile"], places=2)
 
     def test_floor_species_keep_their_open_bioactivity_steps(self):
-        rows = {r["aphia_id"]: r for r in json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))["species"]}
+        # the readiness rows moved to Verified44Tests: the current dist is the 4.4 run, where 참문어 left the floor
         for a in (276651, 534443, 1666974):
+            self.assertTrue(self.new[a]["mbpi_floor"])
+
+
+class Verified44Tests(unittest.TestCase):
+    """4.4 (team-lead order 2026-10-05, "resolve the fallback cells"): the 4.3 one-condition relaxation (d) is applied for the
+    first time. 참문어's cephalotocin (its genome encodes the mature peptide; synthetic copy, human V1b/V2 EC50) is ranked in
+    the fixed ChEMBL target x endpoint cohort snapshot; MBPI 0 -> 70.5, BBVI 18.9 -> 54.2. Every other cell stays, 방어 and
+    갑오징어 keep the labelled floor, and the MCUI re-check changes no value."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V43))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.4", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_two_octopus_cells_move(self):
+        for a, s in self.new.items():
+            for k, v in self.old[a]["scores"].items():
+                if a == 534443 and k in ("MBPI", "BBVI"):
+                    continue
+                self.assertEqual(s["scores"][k], v, (a, k))
+        self.assertEqual((self.old[534443]["scores"]["MBPI"], self.old[534443]["scores"]["BBVI"]), (0.0, 18.9))
+        self.assertEqual((self.new[534443]["scores"]["MBPI"], self.new[534443]["scores"]["BBVI"]), (70.5, 54.2))
+
+    def test_relaxed_item_re_ranks_and_keeps_the_best_target(self):
+        x = next(t for t in self.new[534443]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+        self.assertEqual((x["relaxation"], x["target_chembl_id"], x["standard_type"]), ("d", "CHEMBL1921", "EC50"))
+        self.assertEqual(len(x["cohort_pchembl"]), x["cohort_records"])
+        rank = 100 * (sum(p < x["pchembl"] for p in x["cohort_pchembl"]) + 0.5 * sum(p == x["pchembl"] for p in x["cohort_pchembl"])) / x["cohort_records"]
+        self.assertAlmostEqual(rank, x["percentile"], places=2)
+        self.assertEqual(x["evidence_factor"], 0.75)  # one paper
+        self.assertAlmostEqual(x["adjusted"], rank * 0.75, places=9)
+        # the origin is never relaxed: the species' own sequence record encodes the tested mature peptide
+        self.assertIn(x["peptide_sequence"], x["origin_record"]["translation"])
+        self.assertIn(x["peptide_sequence"] + "GKR", x["origin_record"]["translation"])  # amidation donor G + KR cleavage
+        # the weaker target stays visible and out of the score
+        self.assertEqual([t["target_chembl_id"] for t in x["other_targets"]], ["CHEMBL1790"])
+        self.assertLess(x["other_targets"][0]["percentile"], x["percentile"])
+
+    def test_floor_now_applies_to_two_species_only(self):
+        self.assertFalse(self.new[534443]["mbpi_floor"])
+        self.assertEqual(self.new[534443]["mbpi_label"], "단일 논문")
+        rows = {r["aphia_id"]: r for r in json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))["species"]}
+        for a in (276651, 1666974):
             self.assertTrue(self.new[a]["mbpi_floor"])
             self.assertEqual(rows[a]["bioactivity_missing_steps"], ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"])
             self.assertEqual(rows[a]["mbpi_label"], self.new[a]["mbpi_label"])
+        self.assertEqual(rows[534443]["bioactivity_missing_steps"], [])
+
+    def test_partial_records_stay_out_of_scores(self):
+        for a, n in ((276651, 1), (1666974, 3)):
+            fresh = [r for r in self.new[a]["bioactivity_partial"] if r["source_id"] not in
+                     {r2["source_id"] for r2 in self.old[a]["bioactivity_partial"]}]
+            self.assertEqual(len(fresh), n, a)
+            for r in fresh:
+                self.assertEqual(r["status"], "partial_only")
+                self.assertGreaterEqual(len(r["missing"]), 2)
 
 
 if __name__ == "__main__":

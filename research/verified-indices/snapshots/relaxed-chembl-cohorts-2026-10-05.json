@@ -1,0 +1,4458 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "queried_on": "2026-10-05",
+ "chembl_version": "ChEMBL_37",
+ "chembl_release_date": "2026-05-01",
+ "prereg": "research/verified-indices/prereg-4.4-2026-10-05.md",
+ "filters": {
+  "standard_relation": "=",
+  "data_validity_comments": [
+   null,
+   "Manually validated"
+  ],
+  "exclude_potential_duplicate": true,
+  "assay_types": [
+   "B",
+   "F"
+  ]
+ },
+ "cohort_rule": "Cohort = every admitted ChEMBL activity with the same target_chembl_id and standard_type (activity level, counted with the ChEMBL API at the snapshot date). Species value = median pChEMBL of the parent compound's admitted activities in that cohort; percentile = 100 x (count below + 0.5 x count equal) / total.",
+ "self_inclusion_checks": [
+  {
+   "document_hits": 0,
+   "molecule_hits": 0,
+   "record_id": "10.3390/md20050328:cephalotocin:CHEMBL1790"
+  },
+  {
+   "document_hits": 0,
+   "molecule_hits": 0,
+   "record_id": "10.3390/md20050328:cephalotocin:CHEMBL1921"
+  }
+ ],
+ "collected_by": "scripts/collect_relaxed_cohorts.py",
+ "cohorts": [
+  {
+   "cohort_id": "ChEMBL_37:CHEMBL1790|EC50",
+   "target_chembl_id": "CHEMBL1790",
+   "target_name": "Vasopressin V2 receptor",
+   "target_type": "SINGLE PROTEIN",
+   "target_organism": "Homo sapiens",
+   "uniprot": [
+    "P30518"
+   ],
+   "standard_type": "EC50",
+   "query": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL1790&standard_type=EC50&pchembl_value__isnull=false",
+   "records_with_pchembl": 307,
+   "size": 297,
+   "documents": 14,
+   "molecules": 246,
+   "antagonist_mode_records": 0,
+   "members": [
+    {
+     "activity_id": 1445457,
+     "pchembl": 5.92,
+     "molecule": "CHEMBL443300",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1445459,
+     "pchembl": 5.75,
+     "molecule": "CHEMBL184696",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1445461,
+     "pchembl": 5.75,
+     "molecule": "CHEMBL185152",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1445463,
+     "pchembl": 6.05,
+     "molecule": "CHEMBL365862",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1445465,
+     "pchembl": 6.07,
+     "molecule": "CHEMBL360648",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448068,
+     "pchembl": 6.24,
+     "molecule": "CHEMBL445393",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448070,
+     "pchembl": 6.7,
+     "molecule": "CHEMBL182627",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448072,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL362382",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448074,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL181487",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448189,
+     "pchembl": 5.89,
+     "molecule": "CHEMBL364994",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1448191,
+     "pchembl": 6.64,
+     "molecule": "CHEMBL362483",
+     "document": "CHEMBL1137196",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1683272,
+     "pchembl": 8.78,
+     "molecule": "CHEMBL201889",
+     "document": "CHEMBL1149468",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1683273,
+     "pchembl": 10.28,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL1149468",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 1683274,
+     "pchembl": 9.13,
+     "molecule": "CHEMBL363910",
+     "document": "CHEMBL1149468",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399188,
+     "pchembl": 8.74,
+     "molecule": "CHEMBL528996",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399189,
+     "pchembl": 7.21,
+     "molecule": "CHEMBL1186989",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399196,
+     "pchembl": 8.5,
+     "molecule": "CHEMBL1187728",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399197,
+     "pchembl": 8.9,
+     "molecule": "CHEMBL1186825",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399198,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL1186826",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399199,
+     "pchembl": 6.98,
+     "molecule": "CHEMBL1186831",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2399200,
+     "pchembl": 6.19,
+     "molecule": "CHEMBL1187505",
+     "document": "CHEMBL1152251",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2418418,
+     "pchembl": 8.74,
+     "molecule": "CHEMBL528996",
+     "document": "CHEMBL1153428",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2418419,
+     "pchembl": 7.8,
+     "molecule": "CHEMBL475684",
+     "document": "CHEMBL1153428",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2418420,
+     "pchembl": 8.38,
+     "molecule": "CHEMBL478902",
+     "document": "CHEMBL1153428",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595898,
+     "pchembl": 7.33,
+     "molecule": "CHEMBL455718",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595899,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL455695",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595900,
+     "pchembl": 7.4,
+     "molecule": "CHEMBL509960",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595901,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL455696",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595902,
+     "pchembl": 8.68,
+     "molecule": "CHEMBL455699",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595903,
+     "pchembl": 8.0,
+     "molecule": "CHEMBL507816",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595904,
+     "pchembl": 7.09,
+     "molecule": "CHEMBL454892",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595905,
+     "pchembl": 7.52,
+     "molecule": "CHEMBL455717",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595906,
+     "pchembl": 6.89,
+     "molecule": "CHEMBL452853",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595907,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL454894",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595908,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL460318",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595909,
+     "pchembl": 7.43,
+     "molecule": "CHEMBL516788",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595910,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL460319",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595911,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL460320",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595912,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL518349",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595913,
+     "pchembl": 6.09,
+     "molecule": "CHEMBL462408",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595914,
+     "pchembl": 6.14,
+     "molecule": "CHEMBL516985",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595915,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL462409",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595916,
+     "pchembl": 6.57,
+     "molecule": "CHEMBL460308",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595917,
+     "pchembl": 7.24,
+     "molecule": "CHEMBL182852",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595918,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL516629",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595919,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL461725",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595920,
+     "pchembl": 6.17,
+     "molecule": "CHEMBL462590",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595921,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL460303",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595922,
+     "pchembl": 6.02,
+     "molecule": "CHEMBL516627",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595923,
+     "pchembl": 6.41,
+     "molecule": "CHEMBL462595",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595924,
+     "pchembl": 7.62,
+     "molecule": "CHEMBL518043",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595925,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL461519",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595926,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL461520",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595927,
+     "pchembl": 8.49,
+     "molecule": "CHEMBL462212",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595928,
+     "pchembl": 8.64,
+     "molecule": "CHEMBL462574",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595929,
+     "pchembl": 8.33,
+     "molecule": "CHEMBL515607",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595930,
+     "pchembl": 8.37,
+     "molecule": "CHEMBL472697",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595931,
+     "pchembl": 7.34,
+     "molecule": "CHEMBL512349",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595932,
+     "pchembl": 8.0,
+     "molecule": "CHEMBL501078",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595933,
+     "pchembl": 7.57,
+     "molecule": "CHEMBL472900",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595934,
+     "pchembl": 7.3,
+     "molecule": "CHEMBL473917",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595935,
+     "pchembl": 7.7,
+     "molecule": "CHEMBL470326",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595936,
+     "pchembl": 6.64,
+     "molecule": "CHEMBL474119",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595937,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL474120",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595938,
+     "pchembl": 5.77,
+     "molecule": "CHEMBL475128",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595939,
+     "pchembl": 6.0,
+     "molecule": "CHEMBL475129",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595940,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL475333",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595941,
+     "pchembl": 7.08,
+     "molecule": "CHEMBL475733",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 2595942,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL523596",
+     "document": "CHEMBL1151753",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078197,
+     "pchembl": 9.0,
+     "molecule": "CHEMBL593325",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078198,
+     "pchembl": 9.01,
+     "molecule": "CHEMBL594026",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078199,
+     "pchembl": 9.0,
+     "molecule": "CHEMBL594488",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078200,
+     "pchembl": 9.0,
+     "molecule": "CHEMBL606464",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078201,
+     "pchembl": 8.62,
+     "molecule": "CHEMBL594953",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3078202,
+     "pchembl": 8.2,
+     "molecule": "CHEMBL478283",
+     "document": "CHEMBL1153110",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3103183,
+     "pchembl": 4.43,
+     "molecule": "CHEMBL24781",
+     "document": "CHEMBL1156912",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3103188,
+     "pchembl": 7.4,
+     "molecule": "CHEMBL363910",
+     "document": "CHEMBL1156912",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 3103198,
+     "pchembl": 8.12,
+     "molecule": "CHEMBL603708",
+     "document": "CHEMBL1156912",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324470,
+     "pchembl": 9.35,
+     "molecule": "CHEMBL1819440",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324471,
+     "pchembl": 8.85,
+     "molecule": "CHEMBL1819441",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324472,
+     "pchembl": 8.04,
+     "molecule": "CHEMBL1819540",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324473,
+     "pchembl": 8.39,
+     "molecule": "CHEMBL1819541",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324474,
+     "pchembl": 6.81,
+     "molecule": "CHEMBL1819542",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324475,
+     "pchembl": 7.14,
+     "molecule": "CHEMBL1819543",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324479,
+     "pchembl": 5.6,
+     "molecule": "CHEMBL1819547",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324480,
+     "pchembl": 6.94,
+     "molecule": "CHEMBL1819548",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324481,
+     "pchembl": 6.69,
+     "molecule": "CHEMBL1819549",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324482,
+     "pchembl": 6.48,
+     "molecule": "CHEMBL1819550",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324484,
+     "pchembl": 6.33,
+     "molecule": "CHEMBL1819552",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324485,
+     "pchembl": 5.91,
+     "molecule": "CHEMBL1819553",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324486,
+     "pchembl": 5.93,
+     "molecule": "CHEMBL1819554",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324487,
+     "pchembl": 6.12,
+     "molecule": "CHEMBL1819555",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324488,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL1819556",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324489,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1819557",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324490,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL1819558",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324491,
+     "pchembl": 5.52,
+     "molecule": "CHEMBL1819559",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324492,
+     "pchembl": 5.77,
+     "molecule": "CHEMBL1819560",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324493,
+     "pchembl": 5.91,
+     "molecule": "CHEMBL1817690",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324494,
+     "pchembl": 6.78,
+     "molecule": "CHEMBL1817691",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324499,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL1817696",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324505,
+     "pchembl": 5.78,
+     "molecule": "CHEMBL1817702",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324506,
+     "pchembl": 6.14,
+     "molecule": "CHEMBL1817703",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324507,
+     "pchembl": 6.55,
+     "molecule": "CHEMBL1817704",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324508,
+     "pchembl": 6.88,
+     "molecule": "CHEMBL1817705",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324509,
+     "pchembl": 6.86,
+     "molecule": "CHEMBL1817706",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324510,
+     "pchembl": 6.59,
+     "molecule": "CHEMBL1817707",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324511,
+     "pchembl": 6.73,
+     "molecule": "CHEMBL1817708",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324512,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL1817709",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324513,
+     "pchembl": 5.95,
+     "molecule": "CHEMBL1817671",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324515,
+     "pchembl": 5.28,
+     "molecule": "CHEMBL1817750",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324516,
+     "pchembl": 5.79,
+     "molecule": "CHEMBL1817751",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324517,
+     "pchembl": 5.43,
+     "molecule": "CHEMBL1817752",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324521,
+     "pchembl": 6.02,
+     "molecule": "CHEMBL1817756",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324526,
+     "pchembl": 6.41,
+     "molecule": "CHEMBL1817761",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324535,
+     "pchembl": 6.01,
+     "molecule": "CHEMBL1817770",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336615,
+     "pchembl": 9.35,
+     "molecule": "CHEMBL1819440",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336616,
+     "pchembl": 8.85,
+     "molecule": "CHEMBL1819441",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336617,
+     "pchembl": 8.04,
+     "molecule": "CHEMBL1819540",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336618,
+     "pchembl": 8.39,
+     "molecule": "CHEMBL1819541",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336619,
+     "pchembl": 6.81,
+     "molecule": "CHEMBL1819542",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336620,
+     "pchembl": 7.14,
+     "molecule": "CHEMBL1819543",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336624,
+     "pchembl": 5.6,
+     "molecule": "CHEMBL1819547",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336625,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL1819548",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336626,
+     "pchembl": 6.7,
+     "molecule": "CHEMBL1819549",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336627,
+     "pchembl": 6.48,
+     "molecule": "CHEMBL1819550",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336629,
+     "pchembl": 6.33,
+     "molecule": "CHEMBL1819552",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336630,
+     "pchembl": 5.92,
+     "molecule": "CHEMBL1819553",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336631,
+     "pchembl": 5.92,
+     "molecule": "CHEMBL1819554",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336632,
+     "pchembl": 6.12,
+     "molecule": "CHEMBL1819555",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336633,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL1819556",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336634,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1819557",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336635,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL1819558",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336636,
+     "pchembl": 5.52,
+     "molecule": "CHEMBL1819559",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336637,
+     "pchembl": 5.77,
+     "molecule": "CHEMBL1819560",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336638,
+     "pchembl": 5.92,
+     "molecule": "CHEMBL1817690",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336639,
+     "pchembl": 6.77,
+     "molecule": "CHEMBL1817691",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336644,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL1817696",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336650,
+     "pchembl": 5.8,
+     "molecule": "CHEMBL1817702",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336651,
+     "pchembl": 6.14,
+     "molecule": "CHEMBL1817703",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336652,
+     "pchembl": 6.54,
+     "molecule": "CHEMBL1817704",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336653,
+     "pchembl": 6.89,
+     "molecule": "CHEMBL1817705",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336654,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL1817706",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336655,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL1817707",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336656,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL1817708",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336657,
+     "pchembl": 5.57,
+     "molecule": "CHEMBL1817709",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336658,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL1817671",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336660,
+     "pchembl": 5.28,
+     "molecule": "CHEMBL1817750",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336661,
+     "pchembl": 5.8,
+     "molecule": "CHEMBL1817751",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336662,
+     "pchembl": 5.43,
+     "molecule": "CHEMBL1817752",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336666,
+     "pchembl": 6.02,
+     "molecule": "CHEMBL1817756",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336671,
+     "pchembl": 6.41,
+     "molecule": "CHEMBL1817761",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336680,
+     "pchembl": 6.01,
+     "molecule": "CHEMBL1817770",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6372984,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL1837037",
+     "document": "CHEMBL1833912",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6372987,
+     "pchembl": 7.51,
+     "molecule": "CHEMBL1837038",
+     "document": "CHEMBL1833912",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6372989,
+     "pchembl": 6.67,
+     "molecule": "CHEMBL1837040",
+     "document": "CHEMBL1833912",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6372992,
+     "pchembl": 7.89,
+     "molecule": "CHEMBL1837041",
+     "document": "CHEMBL1833912",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001002,
+     "pchembl": 7.4,
+     "molecule": "CHEMBL3353935",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001003,
+     "pchembl": 6.17,
+     "molecule": "CHEMBL3353934",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001004,
+     "pchembl": 6.16,
+     "molecule": "CHEMBL3353933",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001005,
+     "pchembl": 8.46,
+     "molecule": "CHEMBL439044",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001006,
+     "pchembl": 6.77,
+     "molecule": "CHEMBL3301668",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001007,
+     "pchembl": 8.14,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001075,
+     "pchembl": 6.35,
+     "molecule": "CHEMBL3353937",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001076,
+     "pchembl": 6.35,
+     "molecule": "CHEMBL3353936",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001077,
+     "pchembl": 9.7,
+     "molecule": "CHEMBL1429",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001079,
+     "pchembl": 8.0,
+     "molecule": "CHEMBL3353930",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001080,
+     "pchembl": 8.38,
+     "molecule": "CHEMBL3353929",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001081,
+     "pchembl": 7.46,
+     "molecule": "CHEMBL3353931",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001082,
+     "pchembl": 8.74,
+     "molecule": "CHEMBL3353932",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001083,
+     "pchembl": 7.11,
+     "molecule": "CHEMBL3353938",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001084,
+     "pchembl": 7.96,
+     "molecule": "CHEMBL3353939",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001085,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL3353940",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001086,
+     "pchembl": 7.24,
+     "molecule": "CHEMBL3353941",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001087,
+     "pchembl": 7.1,
+     "molecule": "CHEMBL3353942",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001088,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL3353943",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001089,
+     "pchembl": 7.47,
+     "molecule": "CHEMBL3353944",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001090,
+     "pchembl": 7.17,
+     "molecule": "CHEMBL3353945",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001091,
+     "pchembl": 7.52,
+     "molecule": "CHEMBL3353946",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001092,
+     "pchembl": 7.08,
+     "molecule": "CHEMBL3353947",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001093,
+     "pchembl": 7.09,
+     "molecule": "CHEMBL3353948",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001094,
+     "pchembl": 7.11,
+     "molecule": "CHEMBL3353949",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001095,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL3353950",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001096,
+     "pchembl": 6.77,
+     "molecule": "CHEMBL3353951",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001097,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL3353952",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001098,
+     "pchembl": 7.18,
+     "molecule": "CHEMBL3353953",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001099,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL3353954",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001100,
+     "pchembl": 7.33,
+     "molecule": "CHEMBL3353955",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001101,
+     "pchembl": 7.24,
+     "molecule": "CHEMBL3353956",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001102,
+     "pchembl": 7.21,
+     "molecule": "CHEMBL3354570",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001103,
+     "pchembl": 7.07,
+     "molecule": "CHEMBL3354571",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001104,
+     "pchembl": 6.64,
+     "molecule": "CHEMBL3354572",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001105,
+     "pchembl": 5.85,
+     "molecule": "CHEMBL3354573",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001106,
+     "pchembl": 5.85,
+     "molecule": "CHEMBL3354574",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001107,
+     "pchembl": 7.16,
+     "molecule": "CHEMBL3354575",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001108,
+     "pchembl": 7.28,
+     "molecule": "CHEMBL3354576",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001109,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL3354577",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001110,
+     "pchembl": 5.89,
+     "molecule": "CHEMBL3354578",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001111,
+     "pchembl": 6.3,
+     "molecule": "CHEMBL3354579",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001112,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL3354580",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001113,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL3352839",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001114,
+     "pchembl": 7.14,
+     "molecule": "CHEMBL3354581",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001115,
+     "pchembl": 7.75,
+     "molecule": "CHEMBL3354582",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001116,
+     "pchembl": 5.7,
+     "molecule": "CHEMBL3354583",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001117,
+     "pchembl": 5.92,
+     "molecule": "CHEMBL3354584",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001118,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL3354585",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001119,
+     "pchembl": 5.68,
+     "molecule": "CHEMBL3354586",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001120,
+     "pchembl": 6.0,
+     "molecule": "CHEMBL3354587",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001121,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL3354588",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001122,
+     "pchembl": 7.44,
+     "molecule": "CHEMBL3354589",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001123,
+     "pchembl": 6.14,
+     "molecule": "CHEMBL3354590",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001124,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL3354591",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001125,
+     "pchembl": 7.26,
+     "molecule": "CHEMBL3354592",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001126,
+     "pchembl": 5.8,
+     "molecule": "CHEMBL3354593",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001127,
+     "pchembl": 6.48,
+     "molecule": "CHEMBL3354594",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001128,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL3354595",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001129,
+     "pchembl": 5.85,
+     "molecule": "CHEMBL3354596",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001130,
+     "pchembl": 6.8,
+     "molecule": "CHEMBL3354597",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001131,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL3354598",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001132,
+     "pchembl": 5.52,
+     "molecule": "CHEMBL3354599",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001133,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL3354600",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001134,
+     "pchembl": 7.52,
+     "molecule": "CHEMBL3354601",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001135,
+     "pchembl": 6.12,
+     "molecule": "CHEMBL3354602",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285600,
+     "pchembl": 7.54,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285601,
+     "pchembl": 5.41,
+     "molecule": "CHEMBL4129142",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285602,
+     "pchembl": 5.43,
+     "molecule": "CHEMBL4128839",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285603,
+     "pchembl": 4.97,
+     "molecule": "CHEMBL4127791",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285604,
+     "pchembl": 4.72,
+     "molecule": "CHEMBL4126100",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561103,
+     "pchembl": 8.4,
+     "molecule": "CHEMBL4205046",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561109,
+     "pchembl": 9.15,
+     "molecule": "CHEMBL363910",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561115,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL332447",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561445,
+     "pchembl": 7.39,
+     "molecule": "CHEMBL4204210",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561453,
+     "pchembl": 6.18,
+     "molecule": "CHEMBL4204210",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561464,
+     "pchembl": 5.17,
+     "molecule": "CHEMBL3301668",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561470,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL3301668",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561480,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561487,
+     "pchembl": 6.09,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561499,
+     "pchembl": 5.64,
+     "molecule": "CHEMBL3763342",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231810,
+     "pchembl": 10.3,
+     "molecule": "CHEMBL435323",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231811,
+     "pchembl": 10.0,
+     "molecule": "CHEMBL4528032",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231812,
+     "pchembl": 10.1,
+     "molecule": "CHEMBL4454891",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231815,
+     "pchembl": 9.85,
+     "molecule": "CHEMBL4532363",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231818,
+     "pchembl": 9.46,
+     "molecule": "CHEMBL4521602",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231819,
+     "pchembl": 9.49,
+     "molecule": "CHEMBL4527761",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231821,
+     "pchembl": 9.72,
+     "molecule": "CHEMBL4459424",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231823,
+     "pchembl": 9.54,
+     "molecule": "CHEMBL4462616",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231826,
+     "pchembl": 9.96,
+     "molecule": "CHEMBL4536454",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231828,
+     "pchembl": 9.57,
+     "molecule": "CHEMBL4451692",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231831,
+     "pchembl": 9.35,
+     "molecule": "CHEMBL4436571",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231840,
+     "pchembl": 9.7,
+     "molecule": "CHEMBL4571464",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231842,
+     "pchembl": 9.59,
+     "molecule": "CHEMBL4555263",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231844,
+     "pchembl": 9.77,
+     "molecule": "CHEMBL4472007",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231845,
+     "pchembl": 9.52,
+     "molecule": "CHEMBL4439313",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231848,
+     "pchembl": 9.72,
+     "molecule": "CHEMBL4444891",
+     "document": "CHEMBL4396873",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021338,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL4462743",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021344,
+     "pchembl": 6.41,
+     "molecule": "CHEMBL4552500",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021350,
+     "pchembl": 6.54,
+     "molecule": "CHEMBL4546884",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021356,
+     "pchembl": 6.48,
+     "molecule": "CHEMBL4445168",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021362,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL4521807",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021368,
+     "pchembl": 7.1,
+     "molecule": "CHEMBL6046074",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021374,
+     "pchembl": 6.51,
+     "molecule": "CHEMBL4438723",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021380,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL4454160",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021386,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL5849041",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021392,
+     "pchembl": 7.16,
+     "molecule": "CHEMBL4468523",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021398,
+     "pchembl": 6.64,
+     "molecule": "CHEMBL4451555",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021404,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL4473843",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021410,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL4539100",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021416,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL4543908",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021422,
+     "pchembl": 6.35,
+     "molecule": "CHEMBL5844597",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021428,
+     "pchembl": 6.64,
+     "molecule": "CHEMBL4531173",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021434,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL6015152",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021440,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL4446853",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021446,
+     "pchembl": 6.54,
+     "molecule": "CHEMBL4557118",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021452,
+     "pchembl": 6.57,
+     "molecule": "CHEMBL6007190",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021458,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL4539370",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021464,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL4462743",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021470,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL5957651",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021476,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL4435502",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021482,
+     "pchembl": 7.1,
+     "molecule": "CHEMBL4474518",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021488,
+     "pchembl": 6.57,
+     "molecule": "CHEMBL4557473",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021494,
+     "pchembl": 6.7,
+     "molecule": "CHEMBL4531173",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021500,
+     "pchembl": 6.5,
+     "molecule": "CHEMBL6061847",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021506,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL4513567",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021512,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL4527761",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021518,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL4579754",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021524,
+     "pchembl": 6.54,
+     "molecule": "CHEMBL5854291",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021530,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL4533159",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021536,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL5971939",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021542,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL4455496",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021548,
+     "pchembl": 6.77,
+     "molecule": "CHEMBL5875120",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021554,
+     "pchembl": 6.52,
+     "molecule": "CHEMBL5785589",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021560,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL5944729",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021566,
+     "pchembl": 6.51,
+     "molecule": "CHEMBL4531053",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021572,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL4544907",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021578,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL4574065",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021584,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL1429",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021590,
+     "pchembl": 7.3,
+     "molecule": "CHEMBL6015151",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021596,
+     "pchembl": 7.4,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    }
+   ]
+  },
+  {
+   "cohort_id": "ChEMBL_37:CHEMBL1921|EC50",
+   "target_chembl_id": "CHEMBL1921",
+   "target_name": "Vasopressin V1b receptor",
+   "target_type": "SINGLE PROTEIN",
+   "target_organism": "Homo sapiens",
+   "uniprot": [
+    "P47901"
+   ],
+   "standard_type": "EC50",
+   "query": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL1921&standard_type=EC50&pchembl_value__isnull=false",
+   "records_with_pchembl": 257,
+   "size": 251,
+   "documents": 11,
+   "molecules": 171,
+   "antagonist_mode_records": 4,
+   "members": [
+    {
+     "activity_id": 6165306,
+     "pchembl": 8.82,
+     "molecule": "CHEMBL1765663",
+     "document": "CHEMBL1765031",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6165307,
+     "pchembl": 8.61,
+     "molecule": "CHEMBL1765664",
+     "document": "CHEMBL1765031",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6165308,
+     "pchembl": 8.16,
+     "molecule": "CHEMBL1789128",
+     "document": "CHEMBL1765031",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6165309,
+     "pchembl": 8.7,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL1765031",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6165310,
+     "pchembl": 7.61,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL1765031",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6165318,
+     "pchembl": 8.77,
+     "molecule": "CHEMBL1765664",
+     "document": "CHEMBL1765031",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324400,
+     "pchembl": 8.37,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324401,
+     "pchembl": 8.12,
+     "molecule": "CHEMBL1819440",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324402,
+     "pchembl": 7.8,
+     "molecule": "CHEMBL1819441",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324403,
+     "pchembl": 7.82,
+     "molecule": "CHEMBL1819540",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324404,
+     "pchembl": 7.25,
+     "molecule": "CHEMBL1819541",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324405,
+     "pchembl": 7.6,
+     "molecule": "CHEMBL1819542",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324406,
+     "pchembl": 7.58,
+     "molecule": "CHEMBL1819543",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324408,
+     "pchembl": 6.71,
+     "molecule": "CHEMBL1819545",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324409,
+     "pchembl": 6.44,
+     "molecule": "CHEMBL1819546",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324410,
+     "pchembl": 6.36,
+     "molecule": "CHEMBL1819547",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324411,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL1819548",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324412,
+     "pchembl": 7.3,
+     "molecule": "CHEMBL1819549",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324413,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1819550",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324415,
+     "pchembl": 7.36,
+     "molecule": "CHEMBL1819552",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324416,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL1819553",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324417,
+     "pchembl": 7.71,
+     "molecule": "CHEMBL1819554",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324418,
+     "pchembl": 8.1,
+     "molecule": "CHEMBL1819555",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324419,
+     "pchembl": 7.2,
+     "molecule": "CHEMBL1819556",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324420,
+     "pchembl": 7.23,
+     "molecule": "CHEMBL1819557",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324421,
+     "pchembl": 7.01,
+     "molecule": "CHEMBL1819558",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324422,
+     "pchembl": 6.83,
+     "molecule": "CHEMBL1819559",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324423,
+     "pchembl": 7.55,
+     "molecule": "CHEMBL1819560",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324424,
+     "pchembl": 6.27,
+     "molecule": "CHEMBL1817690",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324425,
+     "pchembl": 7.15,
+     "molecule": "CHEMBL1817691",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324426,
+     "pchembl": 7.54,
+     "molecule": "CHEMBL1817692",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324427,
+     "pchembl": 7.41,
+     "molecule": "CHEMBL1817693",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324428,
+     "pchembl": 7.53,
+     "molecule": "CHEMBL1817694",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324429,
+     "pchembl": 7.2,
+     "molecule": "CHEMBL1817695",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324430,
+     "pchembl": 7.25,
+     "molecule": "CHEMBL1817696",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324431,
+     "pchembl": 7.59,
+     "molecule": "CHEMBL1817697",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324432,
+     "pchembl": 7.71,
+     "molecule": "CHEMBL1817698",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324433,
+     "pchembl": 7.21,
+     "molecule": "CHEMBL1817699",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324434,
+     "pchembl": 7.56,
+     "molecule": "CHEMBL1817700",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324435,
+     "pchembl": 7.38,
+     "molecule": "CHEMBL1817701",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324436,
+     "pchembl": 7.34,
+     "molecule": "CHEMBL1817702",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324437,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1817703",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324438,
+     "pchembl": 7.35,
+     "molecule": "CHEMBL1817704",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324439,
+     "pchembl": 7.13,
+     "molecule": "CHEMBL1817705",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324440,
+     "pchembl": 7.42,
+     "molecule": "CHEMBL1817706",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324441,
+     "pchembl": 7.5,
+     "molecule": "CHEMBL1817707",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324442,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL1817708",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324443,
+     "pchembl": 6.47,
+     "molecule": "CHEMBL1817709",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324444,
+     "pchembl": 6.02,
+     "molecule": "CHEMBL1817671",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324445,
+     "pchembl": 7.43,
+     "molecule": "CHEMBL1817749",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324446,
+     "pchembl": 8.06,
+     "molecule": "CHEMBL1817750",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324447,
+     "pchembl": 7.68,
+     "molecule": "CHEMBL1817751",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324448,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL1817752",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324449,
+     "pchembl": 7.19,
+     "molecule": "CHEMBL1817753",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324450,
+     "pchembl": 6.93,
+     "molecule": "CHEMBL1817754",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324451,
+     "pchembl": 7.51,
+     "molecule": "CHEMBL1817755",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324452,
+     "pchembl": 6.24,
+     "molecule": "CHEMBL1817756",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324453,
+     "pchembl": 6.28,
+     "molecule": "CHEMBL1817757",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324454,
+     "pchembl": 5.75,
+     "molecule": "CHEMBL1817758",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324455,
+     "pchembl": 6.34,
+     "molecule": "CHEMBL1817759",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324456,
+     "pchembl": 6.65,
+     "molecule": "CHEMBL1817760",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324457,
+     "pchembl": 6.44,
+     "molecule": "CHEMBL1817761",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324458,
+     "pchembl": 6.29,
+     "molecule": "CHEMBL1817762",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324459,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL1817763",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324460,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL1817764",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324461,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL1817765",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324462,
+     "pchembl": 6.98,
+     "molecule": "CHEMBL1817766",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324463,
+     "pchembl": 6.93,
+     "molecule": "CHEMBL1817767",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324464,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL1817768",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324465,
+     "pchembl": 7.12,
+     "molecule": "CHEMBL1817769",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324466,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL1817770",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324467,
+     "pchembl": 6.84,
+     "molecule": "CHEMBL1817771",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6324468,
+     "pchembl": 7.75,
+     "molecule": "CHEMBL1817772",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336545,
+     "pchembl": 8.37,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336546,
+     "pchembl": 8.12,
+     "molecule": "CHEMBL1819440",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336547,
+     "pchembl": 7.8,
+     "molecule": "CHEMBL1819441",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336548,
+     "pchembl": 7.82,
+     "molecule": "CHEMBL1819540",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336549,
+     "pchembl": 7.25,
+     "molecule": "CHEMBL1819541",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336550,
+     "pchembl": 7.6,
+     "molecule": "CHEMBL1819542",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336551,
+     "pchembl": 7.58,
+     "molecule": "CHEMBL1819543",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336553,
+     "pchembl": 6.7,
+     "molecule": "CHEMBL1819545",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336554,
+     "pchembl": 6.44,
+     "molecule": "CHEMBL1819546",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336555,
+     "pchembl": 6.37,
+     "molecule": "CHEMBL1819547",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336556,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL1819548",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336557,
+     "pchembl": 7.3,
+     "molecule": "CHEMBL1819549",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336558,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1819550",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336560,
+     "pchembl": 7.36,
+     "molecule": "CHEMBL1819552",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336561,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL1819553",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336562,
+     "pchembl": 7.7,
+     "molecule": "CHEMBL1819554",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336563,
+     "pchembl": 8.1,
+     "molecule": "CHEMBL1819555",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336564,
+     "pchembl": 7.19,
+     "molecule": "CHEMBL1819556",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336565,
+     "pchembl": 7.23,
+     "molecule": "CHEMBL1819557",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336566,
+     "pchembl": 7.01,
+     "molecule": "CHEMBL1819558",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336567,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL1819559",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336568,
+     "pchembl": 7.55,
+     "molecule": "CHEMBL1819560",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336569,
+     "pchembl": 6.27,
+     "molecule": "CHEMBL1817690",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336570,
+     "pchembl": 7.16,
+     "molecule": "CHEMBL1817691",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336571,
+     "pchembl": 7.54,
+     "molecule": "CHEMBL1817692",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336572,
+     "pchembl": 7.41,
+     "molecule": "CHEMBL1817693",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336573,
+     "pchembl": 7.52,
+     "molecule": "CHEMBL1817694",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336574,
+     "pchembl": 7.21,
+     "molecule": "CHEMBL1817695",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336575,
+     "pchembl": 7.25,
+     "molecule": "CHEMBL1817696",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336576,
+     "pchembl": 7.58,
+     "molecule": "CHEMBL1817697",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336577,
+     "pchembl": 7.72,
+     "molecule": "CHEMBL1817698",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336578,
+     "pchembl": 7.21,
+     "molecule": "CHEMBL1817699",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336579,
+     "pchembl": 7.55,
+     "molecule": "CHEMBL1817700",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336580,
+     "pchembl": 7.39,
+     "molecule": "CHEMBL1817701",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336581,
+     "pchembl": 7.34,
+     "molecule": "CHEMBL1817702",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336582,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL1817703",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336583,
+     "pchembl": 7.36,
+     "molecule": "CHEMBL1817704",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336584,
+     "pchembl": 7.13,
+     "molecule": "CHEMBL1817705",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336585,
+     "pchembl": 7.42,
+     "molecule": "CHEMBL1817706",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336586,
+     "pchembl": 7.5,
+     "molecule": "CHEMBL1817707",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336587,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL1817708",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336588,
+     "pchembl": 6.47,
+     "molecule": "CHEMBL1817709",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336589,
+     "pchembl": 6.02,
+     "molecule": "CHEMBL1817671",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336590,
+     "pchembl": 7.43,
+     "molecule": "CHEMBL1817749",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336591,
+     "pchembl": 8.06,
+     "molecule": "CHEMBL1817750",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336592,
+     "pchembl": 7.68,
+     "molecule": "CHEMBL1817751",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336593,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL1817752",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336594,
+     "pchembl": 7.19,
+     "molecule": "CHEMBL1817753",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336595,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL1817754",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336596,
+     "pchembl": 7.51,
+     "molecule": "CHEMBL1817755",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336597,
+     "pchembl": 6.24,
+     "molecule": "CHEMBL1817756",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336598,
+     "pchembl": 6.28,
+     "molecule": "CHEMBL1817757",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336599,
+     "pchembl": 5.75,
+     "molecule": "CHEMBL1817758",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336600,
+     "pchembl": 6.34,
+     "molecule": "CHEMBL1817759",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336601,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL1817760",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336602,
+     "pchembl": 6.43,
+     "molecule": "CHEMBL1817761",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336603,
+     "pchembl": 6.29,
+     "molecule": "CHEMBL1817762",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336604,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL1817763",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336605,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL1817764",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336606,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL1817765",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336607,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL1817766",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336608,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL1817767",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336609,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL1817768",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336610,
+     "pchembl": 7.12,
+     "molecule": "CHEMBL1817769",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336611,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL1817770",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336612,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL1817771",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 6336613,
+     "pchembl": 7.75,
+     "molecule": "CHEMBL1817772",
+     "document": "CHEMBL1817572",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001203,
+     "pchembl": 6.62,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001205,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL439044",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001208,
+     "pchembl": 5.96,
+     "molecule": "CHEMBL3353935",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001212,
+     "pchembl": 7.96,
+     "molecule": "CHEMBL1429",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001213,
+     "pchembl": 6.16,
+     "molecule": "CHEMBL3353929",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001214,
+     "pchembl": 6.18,
+     "molecule": "CHEMBL3353930",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001215,
+     "pchembl": 6.0,
+     "molecule": "CHEMBL3353931",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001216,
+     "pchembl": 6.3,
+     "molecule": "CHEMBL3353932",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001217,
+     "pchembl": 6.43,
+     "molecule": "CHEMBL3353938",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001218,
+     "pchembl": 6.01,
+     "molecule": "CHEMBL3353939",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001219,
+     "pchembl": 6.33,
+     "molecule": "CHEMBL3353940",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001221,
+     "pchembl": 5.55,
+     "molecule": "CHEMBL3353942",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001223,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL3353944",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001224,
+     "pchembl": 6.54,
+     "molecule": "CHEMBL3353945",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001225,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL3353946",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001226,
+     "pchembl": 6.7,
+     "molecule": "CHEMBL3353947",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001227,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL3353948",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001228,
+     "pchembl": 6.36,
+     "molecule": "CHEMBL3353949",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001229,
+     "pchembl": 5.75,
+     "molecule": "CHEMBL3353950",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001230,
+     "pchembl": 5.89,
+     "molecule": "CHEMBL3353951",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001231,
+     "pchembl": 5.58,
+     "molecule": "CHEMBL3353952",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001232,
+     "pchembl": 6.23,
+     "molecule": "CHEMBL3353953",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001233,
+     "pchembl": 6.11,
+     "molecule": "CHEMBL3353954",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001234,
+     "pchembl": 6.14,
+     "molecule": "CHEMBL3353955",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001235,
+     "pchembl": 6.62,
+     "molecule": "CHEMBL3353956",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001236,
+     "pchembl": 6.03,
+     "molecule": "CHEMBL3354570",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001237,
+     "pchembl": 6.22,
+     "molecule": "CHEMBL3354571",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001241,
+     "pchembl": 5.5,
+     "molecule": "CHEMBL3354575",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001242,
+     "pchembl": 6.08,
+     "molecule": "CHEMBL3354576",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001248,
+     "pchembl": 6.09,
+     "molecule": "CHEMBL3354581",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15001249,
+     "pchembl": 6.35,
+     "molecule": "CHEMBL3354582",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005240,
+     "pchembl": 6.3,
+     "molecule": "CHEMBL3354585",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005241,
+     "pchembl": 5.44,
+     "molecule": "CHEMBL3354586",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005242,
+     "pchembl": 6.0,
+     "molecule": "CHEMBL3354587",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005243,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL3354588",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005244,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL3354589",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005245,
+     "pchembl": 6.36,
+     "molecule": "CHEMBL3354590",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005246,
+     "pchembl": 7.08,
+     "molecule": "CHEMBL3354591",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005247,
+     "pchembl": 7.06,
+     "molecule": "CHEMBL3354592",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005248,
+     "pchembl": 6.21,
+     "molecule": "CHEMBL3354593",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005249,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL3354594",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005250,
+     "pchembl": 7.04,
+     "molecule": "CHEMBL3354595",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005251,
+     "pchembl": 6.12,
+     "molecule": "CHEMBL3354596",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005252,
+     "pchembl": 6.35,
+     "molecule": "CHEMBL3354597",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005253,
+     "pchembl": 6.8,
+     "molecule": "CHEMBL3354598",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005254,
+     "pchembl": 5.82,
+     "molecule": "CHEMBL3354599",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005255,
+     "pchembl": 6.38,
+     "molecule": "CHEMBL3354600",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005256,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL3354601",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 15005257,
+     "pchembl": 6.07,
+     "molecule": "CHEMBL3354602",
+     "document": "CHEMBL3351738",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285595,
+     "pchembl": 7.48,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285596,
+     "pchembl": 5.53,
+     "molecule": "CHEMBL4129142",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285597,
+     "pchembl": 5.65,
+     "molecule": "CHEMBL4128839",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285598,
+     "pchembl": 5.08,
+     "molecule": "CHEMBL4127791",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18285599,
+     "pchembl": 5.03,
+     "molecule": "CHEMBL4126100",
+     "document": "CHEMBL4118114",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561462,
+     "pchembl": 4.57,
+     "molecule": "CHEMBL3301668",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561478,
+     "pchembl": 7.41,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 18561485,
+     "pchembl": 7.54,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4196200",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19193956,
+     "pchembl": 9.7,
+     "molecule": "CHEMBL395429",
+     "document": "CHEMBL4387760",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231867,
+     "pchembl": 7.62,
+     "molecule": "CHEMBL435323",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231868,
+     "pchembl": 6.28,
+     "molecule": "CHEMBL4528032",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231869,
+     "pchembl": 7.24,
+     "molecule": "CHEMBL4454891",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231870,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL4462743",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231871,
+     "pchembl": 7.19,
+     "molecule": "CHEMBL4474518",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231872,
+     "pchembl": 6.42,
+     "molecule": "CHEMBL4532363",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231873,
+     "pchembl": 6.66,
+     "molecule": "CHEMBL4435502",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231874,
+     "pchembl": 6.09,
+     "molecule": "CHEMBL4552500",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231877,
+     "pchembl": 6.77,
+     "molecule": "CHEMBL4546884",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231878,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL4459424",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231880,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL4462616",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231881,
+     "pchembl": 6.58,
+     "molecule": "CHEMBL4579754",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231882,
+     "pchembl": 6.8,
+     "molecule": "CHEMBL4533159",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231883,
+     "pchembl": 7.4,
+     "molecule": "CHEMBL4536454",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231884,
+     "pchembl": 6.28,
+     "molecule": "CHEMBL4539370",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231885,
+     "pchembl": 6.46,
+     "molecule": "CHEMBL4451692",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231886,
+     "pchembl": 6.6,
+     "molecule": "CHEMBL4445168",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231887,
+     "pchembl": 6.92,
+     "molecule": "CHEMBL4455496",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231888,
+     "pchembl": 6.24,
+     "molecule": "CHEMBL4436571",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231889,
+     "pchembl": 6.32,
+     "molecule": "CHEMBL4451555",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231890,
+     "pchembl": 6.5,
+     "molecule": "CHEMBL4473843",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231891,
+     "pchembl": 6.72,
+     "molecule": "CHEMBL4543908",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231892,
+     "pchembl": 6.68,
+     "molecule": "CHEMBL4521807",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231895,
+     "pchembl": 6.32,
+     "molecule": "CHEMBL4531173",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231896,
+     "pchembl": 7.34,
+     "molecule": "CHEMBL4557473",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231897,
+     "pchembl": 6.89,
+     "molecule": "CHEMBL4571464",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231898,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL4539100",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231899,
+     "pchembl": 6.82,
+     "molecule": "CHEMBL4555263",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231900,
+     "pchembl": 6.48,
+     "molecule": "CHEMBL4531053",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231901,
+     "pchembl": 7.02,
+     "molecule": "CHEMBL4472007",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231902,
+     "pchembl": 7.0,
+     "molecule": "CHEMBL4439313",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231903,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL4468523",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231904,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL4438723",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231906,
+     "pchembl": 6.75,
+     "molecule": "CHEMBL4454160",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231907,
+     "pchembl": 6.85,
+     "molecule": "CHEMBL4544907",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 19231908,
+     "pchembl": 6.96,
+     "molecule": "CHEMBL4574065",
+     "document": "CHEMBL4396873",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 22421317,
+     "pchembl": 6.0,
+     "molecule": "CHEMBL4763929",
+     "document": "CHEMBL4673185",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 24981440,
+     "pchembl": 7.96,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL5223184",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 25663354,
+     "pchembl": 6.97,
+     "molecule": "CHEMBL5421960",
+     "document": "CHEMBL5370638",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 25663355,
+     "pchembl": 8.48,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL5370638",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 25663356,
+     "pchembl": 7.7,
+     "molecule": "CHEMBL5421609",
+     "document": "CHEMBL5370638",
+     "assay_type": "F",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 25663365,
+     "pchembl": 4.95,
+     "molecule": "CHEMBL5409525",
+     "document": "CHEMBL5370638",
+     "assay_type": "B",
+     "antagonist_mode": true
+    },
+    {
+     "activity_id": 25663366,
+     "pchembl": 5.3,
+     "molecule": "CHEMBL5407006",
+     "document": "CHEMBL5370638",
+     "assay_type": "B",
+     "antagonist_mode": true
+    },
+    {
+     "activity_id": 25663367,
+     "pchembl": 5.14,
+     "molecule": "CHEMBL5397815",
+     "document": "CHEMBL5370638",
+     "assay_type": "B",
+     "antagonist_mode": true
+    },
+    {
+     "activity_id": 25663368,
+     "pchembl": 5.62,
+     "molecule": "CHEMBL5440823",
+     "document": "CHEMBL5370638",
+     "assay_type": "B",
+     "antagonist_mode": true
+    },
+    {
+     "activity_id": 27021371,
+     "pchembl": 4.24,
+     "molecule": "CHEMBL6046074",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021485,
+     "pchembl": 4.19,
+     "molecule": "CHEMBL4474518",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021491,
+     "pchembl": 4.34,
+     "molecule": "CHEMBL4557473",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021539,
+     "pchembl": 4.4,
+     "molecule": "CHEMBL5971939",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021551,
+     "pchembl": 4.02,
+     "molecule": "CHEMBL5875120",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021587,
+     "pchembl": 5.18,
+     "molecule": "CHEMBL1429",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021593,
+     "pchembl": 4.62,
+     "molecule": "CHEMBL6015151",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    },
+    {
+     "activity_id": 27021599,
+     "pchembl": 5.27,
+     "molecule": "CHEMBL373742",
+     "document": "CHEMBL5725909",
+     "assay_type": "B",
+     "antagonist_mode": false
+    }
+   ]
+  }
+ ]
+}

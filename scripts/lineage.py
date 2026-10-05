@@ -32,8 +32,8 @@ REPORTS = ROOT / "reports"
 CHANGELOG = OUT / "source_changelog.json"
 REPORT_PATH = "dist/assessments.json"
 ROW_KINDS = {"bioactivity": "compound", "peptide_bioactivity": "peptide", "amp_bioactivity": "amp",
-             "anticancer_bioactivity": "anticancer", "xo_bioactivity": "xo"}
-CLASS = {"peptide": "ACE 억제 (펩타이드)", "amp": "항균 (펩타이드 MIC)", "anticancer": "항암 (펩타이드 세포 IC50)", "xo": "잔틴 산화효소 억제 (펩타이드 IC50)", "compound": "원논문 화합물"}
+             "anticancer_bioactivity": "anticancer", "xo_bioactivity": "xo", "relaxed_bioactivity": "relaxed"}
+CLASS = {"peptide": "ACE 억제 (펩타이드)", "amp": "항균 (펩타이드 MIC)", "anticancer": "항암 (펩타이드 세포 IC50)", "xo": "잔틴 산화효소 억제 (펩타이드 IC50)", "relaxed": "완화 산출(d) (펩타이드 · ChEMBL 표적 비교집단)", "compound": "원논문 화합물"}
 AGGREGATION = "item = median p-value of its records -> percentile in the stratum cohort x evidence factor; species MBPI = round1(max item)"
 CHANGE_TYPES = {"fallback": "대체", "dedup": "중복 해소", "identifier": "식별자 변경", "version": "버전 변경",
                 "conversion": "환산 방식 변경", "evidence": "근거 기록 변경", "method": "계산 규칙 변경", "unexplained": "설명 안 됨"}
@@ -63,15 +63,18 @@ def record_ids(item: dict) -> list[str]:
 
 
 def item_value(item: dict) -> float | None:
-    return next((item[k] for k in ("median_pchembl", "pIC50", "pMIC") if k in item), None)
+    return next((item[k] for k in ("median_pchembl", "pIC50", "pMIC", "pchembl") if k in item), None)
 
 
 def pvalue(r: dict) -> float | None:
-    """The p-value the build ranks for one paper row: 6 - log10(uM), after the sequence-mass conversion when used."""
+    """The p-value the build ranks for one paper row: 6 - log10(uM), after the sequence-mass conversion when used;
+    4.4: an nM row (relaxation (d), ranked in a ChEMBL cohort) is 9 - log10(nM) at the precision the build ranks."""
     if r.get("pchembl_value") is not None:
         return r["pchembl_value"]
     if r.get("status") != "approved_for_score" or r.get("value") is None:
         return None
+    if r.get("unit") == "nM":
+        return round(9 - math.log10(r["value"]), 3)
     if r.get("unit") != "uM":
         r = b.converted_peptide(r)
     return round(6 - math.log10(r["value"]), 6)
@@ -163,14 +166,15 @@ def tables(report: dict | None = None) -> dict:
                 "assay_record_id": rid, "compound_key": f"SEQ:{r['sequence']}" if r.get("sequence") else r.get("compound_id") or f"MATERIAL:{rid}",
                 "inchikey": r.get("compound_id", "") if not str(r.get("compound_id", "")).startswith("CID:") else "",
                 "source_db": f"원논문 ({r['source_id']})", "source_record_id": str(r.get("activity_id") or r.get("record_id")),
-                "target_id": r.get("target") or r.get("target_id") or r.get("target_species") or r.get("cell_line") or "",
-                "target_name": r.get("target_strain") or r.get("cancer_type") or "", "organism_of_target": r.get("target_species") or "",
+                "target_id": r.get("target") or r.get("target_id") or r.get("target_chembl_id") or r.get("target_species") or r.get("cell_line") or "",
+                "target_name": r.get("target_strain") or r.get("cancer_type") or r.get("target_name") or "", "organism_of_target": r.get("target_species") or "",
                 "assay_type": " · ".join(str(r[x]) for x in ("method", "substrate", "medium", "test_system") if r.get(x)),
                 "activity_class": CLASS[k], "std_type": r.get("endpoint", ""), "std_value": r.get("value", r.get("raw_value", "")),
                 "std_units": r.get("unit", r.get("raw_unit", "")), "std_relation": r.get("relation", r.get("standard_relation", "")),
                 "pchembl_value": "" if p is None else p,
                 "conversion_method": "환산 불가" if p is None else "원본 pChEMBL" if r.get("pchembl_value") is not None else
-                ("자체 환산: µg/mL → µM (서열 평균질량) → 6 − log10(µM)" if converted else "자체 환산: 6 − log10(µM)"),
+                ("자체 환산: µg/mL → µM (서열 평균질량) → 6 − log10(µM)" if converted else "자체 환산: 9 − log10(nM)" if r.get("unit") == "nM"
+                 else "자체 환산: 6 − log10(µM)"),
                 "stratum_key": used_stratum.get(rid, ""), "reference_doi_or_pmid": r.get("original_paper_doi") or src.get("url", ""),
                 "activity_comment": "", "source_version": src.get("version", ""), "retrieved_at": src.get("accessed", ""),
                 "url": f"https://doi.org/{r['original_paper_doi']}" if r.get("original_paper_doi") else src.get("url", "")}
@@ -179,7 +183,7 @@ def tables(report: dict | None = None) -> dict:
                 link = links.setdefault(lk, {
                     "link_id": lk, "aphia_id": r["origin_aphia_id"], "compound_key": records[rid]["compound_key"], "inchikey": "",
                     "pubchem_cid": "", "chembl_id": "", "link_source": "원논문", "link_source_record_id": "", "reference_doi_or_pmid": "",
-                    "link_type": "서열 기반 합성 펩타이드" if r.get("synthetic") else "직접 분리",
+                    "link_type": "종 유전체 서열 기록 + 합성 펩타이드" if r.get("origin_record") else "서열 기반 합성 펩타이드" if r.get("synthetic") else "직접 분리",
                     "taxon_match_level": "종 일치 (원논문 검수)", "original_taxon_name": r["origin_scientific_name"],
                     "link_status": "not_approved_for_score", "review_class": "", "uncertain": False})
                 link["link_source_record_id"] = ";".join(sorted(set(filter(None, link["link_source_record_id"].split(";"))) | {records[rid]["source_record_id"]}))
@@ -245,13 +249,18 @@ def tables(report: dict | None = None) -> dict:
     head = git("rev-parse", "--short", "HEAD").strip()
     dirty = bool(git("status", "--porcelain", "--", "scripts", "config", "research/verified-indices", REPORT_PATH).strip())
     used_sources = sorted({r["source_db"][6:-1] for r in records.values() if r["source_db"].startswith("원논문 (")}
-                          | set(rule["source_ids"]) | set(rule["paper_source_ids"]))
+                          | set(rule["source_ids"]) | set(rule["paper_source_ids"])
+                          # 4.4: a relaxed item also rests on its ChEMBL cohort and the species' own sequence record
+                          | ({cfg["relaxed_bioactivity"]["cohort_source_id"]} | {s for r in ev.get("relaxed_bioactivity", [])
+                                                                              for s in r["origin_record"]["source_ids"]}
+                             if cfg.get("relaxed_bioactivity") else set()))
     run = {"run_id": run_id, "method_version": run_id, "report_generated_at": report["generated_at"],
            "inputs_as_of": ev.get("inputs_as_of", ev["snapshot_date"]), "git_commit": head + ("+dirty" if dirty else ""),
            "sources": {k: {x: sources[k].get(x) for x in ("provider", "version", "accessed", "license")} for k in used_sources if k in sources},
            "parameters": {"bioactivity": cfg["bioactivity"], "chembl_minimum_cohort_records": rule["minimum_cohort_records"],
                           "chembl_filters": snap["filters"], "chembl_common_taxon_limit": report.get("chembl_common_taxon_limit"),
-                          **{f"{k}_minimum": cfg[k].get("minimum_peptides") for k in ("peptide_bioactivity", "amp_bioactivity", "anticancer_bioactivity", "xo_bioactivity") if cfg.get(k)}},
+                          **{f"{k}_minimum": cfg[k].get("minimum_peptides") for k in ("peptide_bioactivity", "amp_bioactivity", "anticancer_bioactivity", "xo_bioactivity") if cfg.get(k)},
+                          **({"relaxed_bioactivity_minimum": cfg["relaxed_bioactivity"]["minimum_cohort_records"]} if cfg.get("relaxed_bioactivity") else {})},
            "activity_exclusions_before_snapshot": "ChEMBL rows outside the assay-type / potential-duplicate filters were counted, never stored "
                                                    "(snapshot activity_exclusions); they have no record here."}
     return {"run": run, "links": sorted(links.values(), key=lambda l: l["link_id"]),

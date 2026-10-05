@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -357,6 +357,22 @@ function verifiedBioValid(a,report){
     x.cohort_members.every(m=>typeof m.sequence==='string'&&m.sequence!==x.peptide_sequence&&Number.isFinite(m.ic50_uM)&&m.ic50_uM>0)&&
     // the browser re-ranks the shipped members: percentile = 100 x (weaker + 0.5 x equal) / n on pIC50 = 6 - log10(uM)
     (p=>Math.abs(100*(p.filter(v=>v<x.pIC50).length+0.5*p.filter(v=>v===x.pIC50).length)/p.length-x.percentile)<0.01)(x.cohort_members.map(m=>6-Math.log10(m.ic50_uM)));
+  // 4.4 relaxation (d): the species' own peptide ranked in a fixed ChEMBL target x endpoint cohort snapshot; the browser
+  // re-ranks the shipped cohort pChEMBL values and re-derives pchembl = round3(9 - log10(EC50 nM)) of the item's own target row.
+  const rxRule=report?.method?.relaxed_bioactivity;
+  const relaxed=x=>!!rxRule&&x.stratum_kind==='relaxed'&&typeof x.peptide_sequence==='string'&&/^[A-Z]+$/.test(x.peptide_sequence)&&
+    !!rxRule.allowed_relaxations?.[x.relaxation]&&x.label===rxRule.label&&!!x.target_chembl_id&&!!x.standard_type&&
+    Number.isFinite(x.pchembl)&&x.pIC50===undefined&&x.pMIC===undefined&&
+    Number.isInteger(x.cohort_records)&&x.cohort_records>=rxRule.minimum_cohort_records&&
+    typeof x.origin_record?.accession==='string'&&typeof x.origin_record.translation==='string'&&
+    x.origin_record.translation.includes(x.peptide_sequence)&&(x.origin_record.source_ids||[]).every(id=>a.source_ids.includes(id))&&
+    Array.isArray(x.measurements)&&x.measurements.length>0&&
+    x.measurements.every(m=>m.endpoint===x.standard_type&&m.relation==='='&&m.unit==='nM'&&Number.isFinite(m.value)&&m.value>0&&
+      report.sources?.[m.source_id]&&a.source_ids.includes(m.source_id))&&
+    a.source_ids.includes(rxRule.cohort_source_id)&&Array.isArray(x.cohort_pchembl)&&x.cohort_pchembl.length===x.cohort_records&&
+    x.cohort_pchembl.every(Number.isFinite)&&
+    (m=>!!m&&Math.abs(Math.round((9-Math.log10(m.value))*1000)/1000-x.pchembl)<1e-9)(x.measurements.find(m=>m.target_chembl_id===x.target_chembl_id))&&
+    (p=>Math.abs(100*(p.filter(v=>v<x.pchembl).length+0.5*p.filter(v=>v===x.pchembl).length)/p.length-x.percentile)<0.01)(x.cohort_pchembl);
   const replicated=x=>x.independent_dois===undefined||Array.isArray(x.independent_dois)&&Array.isArray(x.potency_replications)&&
     [...mbpiDois(x)].sort().join()===[...new Set([...x.original_paper_dois,...x.potency_replications.filter(r=>r.used).map(r=>r.original_paper_doi)]
       .map(d=>d.toLowerCase()))].sort().join()&&x.potency_replications.every(r=>!r.used||report.sources?.[r.source_id]?.url&&a.source_ids.includes(r.source_id));
@@ -370,10 +386,10 @@ function verifiedBioValid(a,report){
     Math.abs(x.link_factor*x.activity_factor-x.evidence_factor)<1e-9&&
     x.independent_sources===Math.min(mbpiDois(x).size,new Set(x.document_chembl_ids).size)&&rule3.source_ids.every(id=>a.source_ids.includes(id))&&
     (!rule3.link_review||x.link_review==='accepted');
-  if(items.some(x=>!common(x)||!(peptide(x)||compound(x)||chembl(x)||amp(x)||anti(x)||xo(x))||!replicated(x)))return false;
+  if(items.some(x=>!common(x)||!(peptide(x)||compound(x)||chembl(x)||amp(x)||anti(x)||xo(x)||relaxed(x))||!replicated(x)))return false;
   // Peptides and reviewed compounds never share a trace; 3.1 adds the ChEMBL stratum beside either, 3.18 the AMP one and
   // 3.21 the anticancer one, and MBPI is the max over strata.
-  if(new Set(items.filter(x=>!['chembl','amp','anticancer','xo'].includes(x.stratum_kind)).map(x=>x.stratum_kind||'compound')).size>1)return false;
+  if(new Set(items.filter(x=>!['chembl','amp','anticancer','xo','relaxed'].includes(x.stratum_kind)).map(x=>x.stratum_kind||'compound')).size>1)return false;
   if(Math.abs(a.scores.MBPI-Math.max(...items.map(x=>x.adjusted)))>=.06)return false;
   if(singleSourceRule(report.method_version)){
     const rule=report.method?.bbvi, best=bestBio(a);
@@ -677,7 +693,7 @@ const axisLabel = (s,key,info) => key==='MCUI'&&preliminaryMcui(s)?(released(inf
 // the back-test a substitute MCUI carries, and the label pieces that travel with a value wherever no basis line sits beside it
 const mcuiBacktest = s => preliminaryMcui(s)?'역검증 미통과':subNationalMcui(s)?s.assessment.mcui_substitute?.record?.backtest?.label||'':'';
 const basisNote = (s,key) => key==='MCUI'&&separateMcui(s)?' · '+mcuiBasisShort(s)+(subNationalMcui(s)&&mcuiBacktest(s)?' · '+mcuiBacktest(s):''):
-  key==='MBPI'&&pilotScore(s,'MBPI')!==null?(s.assessment?.mbpi_label?' · '+s.assessment.mbpi_label:'')+(bestBio(s.assessment)?.stratum_kind==='xo'?' · XO 문헌 비교집단':''):'';
+  key==='MBPI'&&pilotScore(s,'MBPI')!==null?(s.assessment?.mbpi_label?' · '+s.assessment.mbpi_label:'')+(bestBio(s.assessment)?.stratum_kind==='xo'?' · XO 문헌 비교집단':bestBio(s.assessment)?.stratum_kind==='relaxed'?' · 완화 산출(d)':''):'';
 const axisTag = (s,key,info) => axisLabel(s,key,info)+basisNote(s,key);
 const substituteMcui = s => SUBSTITUTE_BASES.includes(s?.assessment?.mcui_basis)&&pilotScore(s,'MCUI')!==null;
 const separateMcui = s => nationalMcui(s)||substituteMcui(s);
@@ -1005,12 +1021,12 @@ function verifiedFoodDetail(s){
 // Name and raw values of one MBPI item as escaped HTML. The score evidence (verifiedBioTrace) and the comparison tab
 // (showDecision) share it, so each stratum is worded in one place.
 function bioItemHtml(x){
-  const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl', amp=x.stratum_kind==='amp', anti=x.stratum_kind==='anticancer', xo=x.stratum_kind==='xo';
+  const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl', amp=x.stratum_kind==='amp', anti=x.stratum_kind==='anticancer', xo=x.stratum_kind==='xo', rx=x.stratum_kind==='relaxed';
   const m=(x.measurements||[])[0]||{};
-  const name=xo?`잔틴 산화효소 억제 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)})`:anti?`항암 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)})`:amp?`항균 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)}${x.sequence_modifications?' · '+esc(x.sequence_modifications):''})`:peptide?`펩타이드 ${esc(x.peptide_sequence)}`:ch?
+  const name=rx?`완화 산출(d) 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)}${x.sequence_modifications?' · '+esc(x.sequence_modifications):''})`:xo?`잔틴 산화효소 억제 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)})`:anti?`항암 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)})`:amp?`항균 펩타이드 ${esc(x.peptide_name||x.peptide_sequence)} (${esc(x.peptide_sequence)}${x.sequence_modifications?' · '+esc(x.sequence_modifications):''})`:peptide?`펩타이드 ${esc(x.peptide_sequence)}`:ch?
     `${esc(x.compound_name||x.compound_id)} · ${sourceLink(`https://www.ebi.ac.uk/chembl/explore/compound/${x.compound_id}`,x.compound_id)}`:
     `${esc(m.compound_name||x.compound_id)} · ${m.structure_url?sourceLink(m.structure_url,x.compound_id):esc(x.compound_id)}${m.molecular_formula?' · '+esc(m.molecular_formula):''}`;
-  const raw=xo?(x.measurements||[]).map(v=>esc(`XO IC50 ${v.relation} ${peptideValue(v)} · ${v.enzyme_source||''} · ${v.readout||''}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:anti?(x.measurements||[]).map(v=>esc(`${v.cell_line} IC50 ${v.relation} ${num(v.value)} ${v.unit}${v.value_as_published?' ('+v.value_as_published+')':''} · ${v.method}${v.exposure?' '+v.exposure:''}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:
+  const raw=rx?(x.measurements||[]).map(v=>esc(`${v.target_name} ${v.endpoint} ${v.relation} ${num(v.value)} ${v.unit} · ${v.assay||''}`)).join(' / ')+` · pChEMBL 환산 ${esc(x.pchembl)}`:xo?(x.measurements||[]).map(v=>esc(`XO IC50 ${v.relation} ${peptideValue(v)} · ${v.enzyme_source||''} · ${v.readout||''}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:anti?(x.measurements||[]).map(v=>esc(`${v.cell_line} IC50 ${v.relation} ${num(v.value)} ${v.unit}${v.value_as_published?' ('+v.value_as_published+')':''} · ${v.method}${v.exposure?' '+v.exposure:''}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:
     amp?(x.measurements||[]).map(v=>esc(`${v.target_species}${v.target_strain?' '+v.target_strain:''} MIC ${v.relation} ${v.value} ${v.unit} · ${v.medium}`)).join(' / ')+` · pMIC ${esc(x.pMIC)}`:
     peptide?(x.measurements||[]).map(v=>esc(`${v.target} ${v.endpoint} ${v.relation} ${peptideValue(v)} · 기질 ${v.substrate}`)).join(' / ')+` · pIC50 ${esc(x.pIC50)}`:
     ch?`${esc(x.stratum_label)} · 표적 ${esc(x.target_name)} (${esc(x.target_chembl_id)}, ${esc(x.target_type)}${x.target_organism?', '+esc(x.target_organism):''}) · ${esc(x.standard_type)} 중앙 pChEMBL ${esc(x.median_pchembl)} · 활성 ${esc(x.activity_ids.length)}건`:
@@ -1036,16 +1052,16 @@ function verifiedBioTrace(s){
   const SHOWN=12, sorted=[...items].sort((x,y)=>y.adjusted-x.adjusted);
   const rows=sorted.slice(0,SHOWN).map(x=>{
     const used=Math.abs(x.adjusted-top)<1e-9;
-    const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl', amp=x.stratum_kind==='amp', anti=x.stratum_kind==='anticancer', xo=x.stratum_kind==='xo';
+    const peptide=x.stratum_kind==='peptide', ch=x.stratum_kind==='chembl', amp=x.stratum_kind==='amp', anti=x.stratum_kind==='anticancer', xo=x.stratum_kind==='xo', rx=x.stratum_kind==='relaxed';
     const m=(x.measurements||[])[0]||{};
     const {name,raw}=bioItemHtml(x);
-    const cohort=xo?`잔틴 산화효소 IC50 펩타이드 ${esc(x.peer_peptides)}개(문헌 비교집단)`:anti?`${esc(x.cell_line)} IC50 펩타이드 ${esc(x.peer_peptides)}개${x.self_in_cohort?' · 이 펩타이드 자신은 비교집단에서 제외':''}`:
+    const cohort=rx?`${esc(x.target_name)} ${esc(x.standard_type)} ChEMBL 활성 기록 ${esc(x.cohort_records)}건(고정 스냅숏)`:xo?`잔틴 산화효소 IC50 펩타이드 ${esc(x.peer_peptides)}개(문헌 비교집단)`:anti?`${esc(x.cell_line)} IC50 펩타이드 ${esc(x.peer_peptides)}개${x.self_in_cohort?' · 이 펩타이드 자신은 비교집단에서 제외':''}`:
       amp?`${esc(x.target_species)} MIC 펩타이드 ${esc(x.peer_peptides)}개`:peptide?`펩타이드 ${esc(x.peer_peptides)}개`:ch?`ChEMBL 활성 기록 ${esc(x.cohort_records)}건`:`화합물 ${esc(x.peer_compounds)}개`;
     return `<div class="score-fact${used?' score-used':''}"><b>${used?'점수에 쓴 값 · ':''}${name}</b>`+
       `<span>${raw}${m.target_id?' · 표적 '+esc(m.target_id):''}${m.test_system?' · '+esc(m.test_system):''}</span></div>`+
       (m.conditions_key?`<p class="fine">시험 조건: ${esc(m.conditions_key)}</p>`:'')+
       (x.caveat?`<p class="fine">주의: ${esc(x.caveat)}</p>`:'')+
-      ((peptide||amp||anti||xo)?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
+      ((peptide||amp||anti||xo||rx)?(x.measurements||[]).map(v=>{const src=data.assessmentInfo?.sources?.[v.source_id];
         return `<p class="fine">원값 출처: ${verifiedSource(v.source_id,esc(src?.provider||'원논문')+' ↗')} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}</p>`;}).join(''):'')+
       (ch?`<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)}(종 연결 ${esc(x.link_factor)} × 활성 ${esc(x.activity_factor)}) = ${esc(Math.round(x.adjusted*10)/10)} · 종 연결 논문 ${x.original_paper_dois.map(doiLink).join(', ')} · ChEMBL 문서 ${esc(x.document_chembl_ids.join(', '))}</p><p class="fine">${esc(x.label)}</p>`:
       `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)}${x.percentile===0?' · 백분위 0은 비교집단의 모든 값보다 약한 실측값이라는 뜻이며, 자료가 없다는 뜻이 아닙니다':''}${x.percentile===100?` · 백분위 100은 이 비교집단의 ${esc(x.peer_peptides)}개 값보다 모두 강하다는 뜻이며, 더 강한 물질이 없다는 뜻은 아닙니다`:''} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`)+
@@ -1058,10 +1074,11 @@ function verifiedBioTrace(s){
   const ampRule=best.stratum_kind==='amp'?data.assessmentInfo?.method?.amp_bioactivity:null;
   const antiRule=best.stratum_kind==='anticancer'?data.assessmentInfo?.method?.anticancer_bioactivity:null;
   const xoRule=best.stratum_kind==='xo'?data.assessmentInfo?.method?.xo_bioactivity:null;
+  const rxBest=best.stratum_kind==='relaxed'?data.assessmentInfo?.method?.relaxed_bioactivity:null;
   const pep=best.stratum_kind==='peptide'?data.assessmentInfo?.method?.peptide_bioactivity:null;
   const pepSrc=pep?data.assessmentInfo?.sources?.[pep.cohort_source_id]:null;
   const ch=best.stratum_kind==='chembl', rule3=data.assessmentInfo?.method?.chembl_bioactivity;
-  const scope=xoRule?`PubMed 문헌으로 만든 고정 비교집단(잔틴 산화효소 IC50, 펩타이드 ${esc(best.peer_peptides)}개, 중앙 pIC50 ${esc(best.cohort_median_pIC50)}) 안의 상대 순위입니다. 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.`:antiRule?`CancerPPD 2.0에서 고른 고정 비교집단(${esc(best.cell_line)} 세포주 IC50, 펩타이드 ${esc(best.peer_peptides)}개${best.self_in_cohort?' · 이 펩타이드 자신은 제외':''}, 중앙 pIC50 ${esc(best.cohort_median_pIC50)}) 안의 상대 순위입니다.`:
+  const scope=rxBest?`${esc(rxBest.allowed_relaxations?.[best.relaxation]||'완화 산출(d)')} — ChEMBL ${esc(best.target_name)} ${esc(best.standard_type)} 활성 기록 ${esc(best.cohort_records)}건(고정 스냅숏) 안의 상대 순위입니다. ${esc(best.caveat||'')}`:xoRule?`PubMed 문헌으로 만든 고정 비교집단(잔틴 산화효소 IC50, 펩타이드 ${esc(best.peer_peptides)}개, 중앙 pIC50 ${esc(best.cohort_median_pIC50)}) 안의 상대 순위입니다. 측정 조건(효소 출처, 흡광·HPLC)이 회원마다 다릅니다.`:antiRule?`CancerPPD 2.0에서 고른 고정 비교집단(${esc(best.cell_line)} 세포주 IC50, 펩타이드 ${esc(best.peer_peptides)}개${best.self_in_cohort?' · 이 펩타이드 자신은 제외':''}, 중앙 pIC50 ${esc(best.cohort_median_pIC50)}) 안의 상대 순위입니다.`:
     ampRule?`DBAASP에서 고른 고정 비교집단(${esc(best.target_species)} 대상 MIC, 액체배지, 펩타이드 ${esc(best.peer_peptides)}개, 중앙 pMIC ${esc(best.cohort_median_pMIC)}) 안의 상대 순위입니다. 다른 균종 비교집단이나 ACE 비교집단과 섞지 않습니다.`:
     pep?`AHTPDB에서 고른 고정 비교집단(${esc(pep.target)} ${esc(pep.endpoint)}, 기질 ${esc(pep.substrate)}, 펩타이드 ${esc(best.peer_peptides)}개) 안의 상대 순위입니다.`:
     ch?`ChEMBL 같은 표적·같은 종말점(${esc(best.standard_type)}) 활성 기록 ${esc(best.cohort_records)}건 안의 상대 순위입니다.`:
@@ -1075,6 +1092,7 @@ function verifiedBioTrace(s){
     `${single&&!ch?` → 단일 논문 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
     `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 별도 논문의 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}${antiRule?'암세포주 증식 억제 농도(IC50)이며':ampRule?'세균 배양 억제 농도(MIC)이며':ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
     (xoRule?`<p class="fine">비교집단 출처: ${verifiedSource(xoRule.cohort_source_id,(data.assessmentInfo?.sources?.[xoRule.cohort_source_id]?.provider)||'문헌 비교집단')}</p>`+(best.cohort_members?.length?`<details class="fine"><summary>비교집단 회원 ${best.cohort_members.length}개 보기(서열 · IC50 µM · DOI)</summary><p>${best.cohort_members.map(m=>esc(m.sequence)+' '+esc(m.ic50_uM)+' · '+m.dois.map(doiLink).join(', ')).join('<br>')}</p></details>`:''):'')+
+    (rxBest?`<p class="fine">비교집단 출처: ${verifiedSource(rxBest.cohort_source_id,(data.assessmentInfo?.sources?.[rxBest.cohort_source_id]?.provider)||'ChEMBL')} · 활동 ID 전체와 pChEMBL 값은 공개 스냅숏(research/verified-indices/snapshots)에 있고, 이 화면은 함께 실린 pChEMBL ${esc(best.cohort_records)}건으로 백분위를 다시 계산해 검사합니다.</p>`+((best.other_targets||[]).length?`<p class="fine">다른 표적: ${best.other_targets.map(t=>esc(`${t.target_name} ${t.standard_type} ${num(t.value)} ${t.unit} · 백분위 ${t.percentile} (기록 ${t.cohort_records}건)`)).join(' / ')} — 백분위가 가장 높은 표적 하나만 점수에 씁니다.</p>`:''):'')+
     (ampRule?`<p class="fine">비교집단 출처: ${verifiedSource(ampRule.cohort_source_id||'dbaasp_amp',(data.assessmentInfo?.sources?.[ampRule.cohort_source_id||'dbaasp_amp']?.provider)||'DBAASP')} · ${esc((ampRule.limitations||[])[0]||'')}</p>`:'')+
     (ch&&rule3?`<p class="fine">출처: ${rule3.source_ids.map(id=>{const src=data.assessmentInfo?.sources?.[id];return `${verifiedSource(id,(src?.provider||id)+' ↗')} (${esc(src?.license||'이용조건 미확인')}, 조회 ${esc(src?.accessed||'미기재')})`;}).join(' · ')} · ID와 값만 저장했습니다.</p>`:'')+
     (pep?`<p class="fine">비교집단 출처: ${verifiedSource(pep.cohort_source_id,esc(pepSrc?.provider||'AHTPDB')+' ↗')} · ${esc(pepSrc?.citation||'인용 미기재')} · 이용조건 ${esc(pepSrc?.license||'미확인')} · 행 ID와 IC50 값만 써서 백분위로 가공했습니다.</p>`:'');
