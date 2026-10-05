@@ -3,7 +3,7 @@
   "method_version": "verified-4.3",
   "report_generated_at": "2026-10-05T00:00:00Z",
   "inputs_as_of": "2026-10-05",
-  "git_commit": "1abb291",
+  "git_commit": "9532125",
   "sources": {
     "cellosaurus_mbpi": {
       "provider": "SIB Cellosaurus",
