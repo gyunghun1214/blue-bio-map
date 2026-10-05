@@ -1,0 +1,468 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "prereg": "research/verified-indices/prereg-4.4-2026-10-05.md",
+ "purpose": "4.4 re-check of official conservation lists for the seven MCUI cells filled by a fallback in 4.3: the six scored Rapid LC species and 미역 (Primorsky Krai sub-national EN). Only routes the 4.2/4.3 searches had not covered were opened (prereg-4.4 0). Result: no official category of any level for the six species and no global or national one for 미역, so every value and label stays. This record feeds no score; the method text shows its summary and the next official dates.",
+ "conclusion": "No new official category was found for any of the 7 species on any of the 6 routes. The 6 Rapid LC cells and the 미역 Primorsky EN stay as they are.",
+ "species": [
+  {
+   "aphia_id": 250680,
+   "scientific_name": "Halocynthia roretzi",
+   "korean_name": "멍게",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL (NIBR) national red-list field empty (not assessed nationally).",
+    "Japan: no MOE or Fisheries Agency per-species record for マボヤ; the 5th RL marine invertebrate list is not yet published.",
+    "Russia Order 162 and DPRK animal RDB (vertebrates) contain no ascidians; China has no ascidian red list."
+   ],
+   "checked": [
+    "iucn_site_search",
+    "iucn_api_v4",
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "ksbl_nibr_api",
+    "mabik_mof_marine_red_list",
+    "moe_marine_rl_2017_material",
+    "moe_redlist_index_2026",
+    "jfa_rarity_contract_reports",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_162_2020"
+   ]
+  },
+  {
+   "aphia_id": 377084,
+   "scientific_name": "Saccharina japonica",
+   "korean_name": "다시마",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL field empty for the species and for var. religiosa / var. ochotensis.",
+    "IUCN: the only Laminariales species assessed under the Korea partnership is Undaria crenata (DD).",
+    "Japan 5th RL algae: congeners only (S. cichorioides DD, S. kurilensis DD)."
+   ],
+   "checked": [
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "iucn_korea_partnership_news",
+    "ksbl_nibr_api",
+    "moe_5th_rl_algae_2025",
+    "moe_algae_rl_csv_2015_2020",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_320_2023_recheck"
+   ]
+  },
+  {
+   "aphia_id": 371986,
+   "scientific_name": "Ecklonia cava",
+   "korean_name": "감태",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL field empty for the species and for subsp. stolonifera (곰피) and subsp. kurome (검둥감태).",
+    "IUCN genus Ecklonia: 0 assessments; synonym Ecklonia kurome 0 hits."
+   ],
+   "checked": [
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "iucn_korea_partnership_news",
+    "ksbl_nibr_api",
+    "moe_5th_rl_algae_2025",
+    "moe_algae_rl_csv_2015_2020",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_320_2023_recheck"
+   ]
+  },
+  {
+   "aphia_id": 494853,
+   "scientific_name": "Sargassum horneri",
+   "korean_name": "괭생이모자반",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL field empty (no category in any of 31 Sargassum taxa).",
+    "IUCN Sargassum: 4 Galapagos species only."
+   ],
+   "checked": [
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "iucn_korea_partnership_news",
+    "ksbl_nibr_api",
+    "moe_5th_rl_algae_2025",
+    "moe_algae_rl_csv_2015_2020",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_320_2023_recheck"
+   ]
+  },
+  {
+   "aphia_id": 236157,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "korean_name": "꼬시래기",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL field empty.",
+    "IUCN Gracilaria: G. skottsbergii CR and G. ecuadoreanus DD (Galapagos) only; Gracilaria asiatica / Agarophyton vermiculophyllum 0 hits.",
+    "Japan 5th RL algae: congeners only."
+   ],
+   "checked": [
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "iucn_korea_partnership_news",
+    "ksbl_nibr_api",
+    "moe_5th_rl_algae_2025",
+    "moe_algae_rl_csv_2015_2020",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_320_2023_recheck"
+   ]
+  },
+  {
+   "aphia_id": 274849,
+   "scientific_name": "Sebastes schlegelii",
+   "korean_name": "조피볼락",
+   "best_new_official_category": null,
+   "near_misses": [
+    "KSBL field empty (no category in any of 22 Sebastes taxa).",
+    "Japan: クロソイ has been a Fisheries Agency stock-assessment species (Japan Sea block) since FY2020; the Fisheries Agency will evaluate and publish its assessed species for the 5th Red List (not yet published). FRA contract summaries (FY2022 67 spp, FY2023 119 spp) give draft 'カテゴリー外' for unnamed species - not official and not species-named.",
+    "China MEE/CAS vertebrate red list excludes marine fishes; Russia Order 162 has no Scorpaeniformes; DPRK animal RDB fish lists (2002, 2016) not online."
+   ],
+   "checked": [
+    "iucn_site_search",
+    "iucn_api_v4",
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "ksbl_nibr_api",
+    "mabik_mof_marine_red_list",
+    "moe_marine_rl_2017_material",
+    "moe_redlist_index_2026",
+    "jfa_rarity_contract_reports",
+    "shimane_r2_stock_assessment_expansion",
+    "jfa_website",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_162_2020"
+   ]
+  },
+  {
+   "aphia_id": 145721,
+   "scientific_name": "Undaria pinnatifida",
+   "korean_name": "미역",
+   "best_new_official_category": null,
+   "near_misses": [
+    "IUCN genus Undaria: only U. crenata DD (Korea partnership); Alaria/Ulopteryx pinnatifida 0 hits.",
+    "KSBL national field empty.",
+    "Japan 5th RL algae: not listed (ホソバワカメ is Alaria angusta).",
+    "Russia federal plants Order 320: not listed.",
+    "China: no algae red list. DPRK plant RDB: seed plants."
+   ],
+   "checked": [
+    "repo_iucn_recheck_4_0",
+    "gbif_iucn_2026_1_mirror",
+    "iucn_korea_partnership_news",
+    "ksbl_nibr_api",
+    "moe_5th_rl_algae_2025",
+    "moe_algae_rl_csv_2015_2020",
+    "dprk_cbd_national_reports",
+    "china_mee_cas_red_list",
+    "russia_order_320_2023_recheck"
+   ],
+   "current_category_kept": "EN, Primorsky Krai (sub-national); no global or national category found to replace it"
+  }
+ ],
+ "sources": {
+  "iucn_site_search": {
+   "route": 1,
+   "provider": "IUCN Red List website",
+   "url": "https://www.iucnredlist.org/search?query=<name>&searchType=species",
+   "accessed": "2026-10-05",
+   "outcome": "BLOCKED: HTTP 403 (Cloudflare challenge page) for curl and WebFetch. The in-app browser was not used (instruction)."
+  },
+  "iucn_api_v4": {
+   "route": 1,
+   "provider": "IUCN Red List API v4",
+   "url": "https://api.iucnredlist.org/api/v4/taxa/scientific_name?genus_name=Halocynthia&species_name=roretzi",
+   "accessed": "2026-10-05",
+   "outcome": "BLOCKED: HTTP 403 {\"error\":\"Forbidden\"} without a token. No account created."
+  },
+  "repo_iucn_recheck_4_0": {
+   "route": 1,
+   "provider": "project repository (read only)",
+   "url": "research/verified-indices/iucn-recheck-4.0-2026-10-04.json",
+   "accessed": "2026-10-05",
+   "outcome": "Direct IUCN site search of Red List 2026-1 on 2026-10-04: 0 results for all 7 species plus Laminaria japonica, Agarophyton vermiculophyllum, Sebastes schlegeli. Genus notes there: Ecklonia 0; Saccharina/Laminaria 0; Halocynthia/Pyuridae 0; Undaria only U. crenata DD 2023; Gracilaria 2 Galapagos spp; Sargassum 4 Galapagos spp; Sebastes 14 assessments without S. schlegelii. 2026-2 scheduled 2026-11-19. The Red List version has not changed since, so this was not repeated."
+  },
+  "gbif_iucn_2026_1_mirror": {
+   "route": 1,
+   "provider": "GBIF checklist 'The IUCN Red List of Threatened Species' (datasetKey 19491596-35ae-4a91-9a98-85cf505f1bd3; pubDate 2026-07-28, modified 2026-07-30 = Red List 2026-1)",
+   "url": "https://api.gbif.org/v1/species/search?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&q=<name>",
+   "accessed": "2026-10-05",
+   "queries": [
+    "Halocynthia roretzi",
+    "Cynthia roretzi",
+    "Halocynthia",
+    "Saccharina japonica",
+    "Laminaria japonica",
+    "Ecklonia cava",
+    "Ecklonia kurome",
+    "Ecklonia",
+    "Sargassum horneri",
+    "Gracilaria vermiculophylla",
+    "Gracilaria asiatica",
+    "Agarophyton vermiculophyllum",
+    "Sebastes schlegelii",
+    "Sebastes schlegeli",
+    "Undaria pinnatifida",
+    "Alaria pinnatifida",
+    "Ulopteryx pinnatifida",
+    "Undaria"
+   ],
+   "outcome": "0 hits for every species name and synonym. Genus Undaria: only U. crenata (DD). Sebastes: 12 species in the mirror (incl. S. koreanus DD), not S. schlegelii. Full algae listing (Heterokontophyta, Chlorophyta, Rhodophyta): 99 species, none of our 6 seaweeds. Aggregator mirror = lead only; consistent with the team's direct site search."
+  },
+  "iucn_korea_partnership_news": {
+   "route": 1,
+   "provider": "IUCN (iucn.org)",
+   "title": "Advancing Biodiversity Conservation: IUCN-Republic of Korea Global Red List Partnership Completes Successful Project",
+   "url": "https://iucn.org/node/40637",
+   "date": "2024-02-22",
+   "accessed": "2026-10-05",
+   "what_read": "full web page (original)",
+   "outcome": "Project Sept 2020 - Sept 2023; 189 assessments of ROK native species; aim stated as status of 'ROK's endemic species'. 24 seaweed/algae species, 'all species have been assessed for the global Red List': Ceramiales 14, Gelidales 5, Acrochaetiales 1, Ectocarpales 2, Laminariales 1, Bryopsidales 1. The page names no seaweed species and mentions unspecified 'additional draft assessments'. Other groups were freshwater fish and freshwater/terrestrial invertebrates; no marine fishes or ascidians.",
+   "partnership_24_species_from_gbif_mirror": {
+    "Ceramiales (14)": [
+     "Monosporus inkyui DD",
+     "Martensia flammifolia DD",
+     "Melanothamnus flavimarinus DD",
+     "Laurencia succulenta DD",
+     "Laurencia intercalaris DD",
+     "Chondrophycus kangjaewonii DD",
+     "Chondria pellucida LC",
+     "Chondria chejuensis DD",
+     "Symphyocolax koreana DD",
+     "Symphyocladia lithophila DD",
+     "Symphyocladia glabra LC",
+     "Symphyocladia jejuinsula DD",
+     "Ceramium inkyui DD",
+     "Dasysiphonia chejuensis LC"
+    ],
+    "Gelidales (5)": [
+     "Gelidium coreanum LC",
+     "Gelidium jejuensis DD",
+     "Gelidium minimum DD",
+     "Gelidium prostratum DD",
+     "Gelidium eucorneum DD"
+    ],
+    "Acrochaetiales (1)": [
+     "Acrochaetium inkyui DD"
+    ],
+    "Ectocarpales (2)": [
+     "Neoleptonema yongpilii DD",
+     "Elachista falcata DD"
+    ],
+    "Laminariales (1)": [
+     "Undaria crenata DD"
+    ],
+    "Bryopsidales (1)": [
+     "Codium spinulosum DD"
+    ]
+   },
+   "note": "The 24 names are the Korean-described algae in the GBIF mirror of 2026-1; their order counts match the IUCN page exactly. None is one of our species. All are Korean endemics or recently described species, so an 'in review' assessment of our widespread species under this partnership is implausible; none was found."
+  },
+  "ksbl_nibr_api": {
+   "route": 2,
+   "provider": "National Institute of Biological Resources (NIBR), 국가생물종목록 / 한반도의 생물다양성 portal; public search API the site calls without login",
+   "url": "POST https://species.nibr.go.kr/gwsvc/ktsn/api/v1/public/elk/search  body {searchField:<name>, pageIndex:1, pageSize:9, sortBy:'score'}",
+   "accessed": "2026-10-05",
+   "what_read": "database rows (field redlistCategory, shown on the site as '적색목록' with the EX/EW/RE/CR/EN/VU/NT/LC/DD legend)",
+   "outcome": "redlistCategory is EMPTY for all 7 species: 우렁쉥이(멍게) KTSN 120000051045; 다시마 120000000444 (+ var. religiosa 애기다시마 120000000446, var. ochotensis 북방다시마 120000000445); 감태 120000000451 (+ subsp. stolonifera 곰피 120000510350, subsp. kurome 검둥감태 120000527717); 괭생이모자반 120000000390; 꼬시래기 120000001222; 조피볼락 120000058103; 미역 120000000426. Also egspcsGrdNo 'N' (not 멸종위기 야생생물) and mprsSpcsDsgnYn 'N' (not 해양보호생물) for all. Controls show the field carries the KOREAN NATIONAL category: 참문어 Octopus vulgaris NT, 가리맛조개 Sinonovacula constricta LC, 수달 Lutra lutra VU, 둥근전복 Haliotis discus LC, 북방전복 H. d. hannai LC; IUCN-only species stay empty (돌기해삼, 참우뭇가사리 Gelidium coreanum IUCN LC, 다실미역 Undaria crenata IUCN DD). Genus scan: no national category in any taxon of Sebastes (22), Halocynthia (16), Saccharina (5), Ecklonia (7), Sargassum (31), Gracilaria (9), Undaria (12), Styela (8), Gelidium (29), Pyropia (17), Codium (25)."
+  },
+  "mabik_mof_marine_red_list": {
+   "route": 2,
+   "provider": "MABIK / Ministry of Oceans and Fisheries (web searches)",
+   "accessed": "2026-10-05",
+   "queries": [
+    "국립해양생물자원관 해양생물 적색목록 평가 발간 범주",
+    "\"해양생물 적색목록\"",
+    "\"해양수산생물\" \"적색목록\" 평가 국립해양생물자원관 OR 해양수산부",
+    "MABIK national marine red list Korea IUCN criteria assessment marine fishes seaweeds",
+    "국가생물적색자료집 해조류 발간 국립생물자원관",
+    "국가생물적색자료집 2024 2025 해양어류 척삭동물 신규 발간",
+    "\"국가생물적색자료집\" 2025",
+    "국립생물자원관 국가 적색목록 평가 결과 해조류 갈조류 홍조류 범주 2024 OR 2025",
+    "\"적색목록\" 멍게 OR 우렁쉥이 OR 조피볼락 OR 다시마 범주 국가"
+   ],
+   "outcome": "No official Korean marine red list found. Hits were the annual 국가 해양수산생물종 목록집 (species catalogue without categories), MABIK popular books, and a MABIK paper on harmful marine species (Lee & Moh 2020, KJEB 38:691). The integrated national Red Data Book index was searched earlier by the team and was not repeated; the per-species KSBL field (above) is the current check."
+  },
+  "moe_marine_rl_2017_material": {
+   "route": 3,
+   "provider": "Ministry of the Environment, Japan",
+   "title": "環境省版海洋生物レッドリストの公表について (資料3-2; press date 2017-03-17)",
+   "url": "https://www.env.go.jp/council/12nature/y125-15b/mat03_2.pdf",
+   "accessed": "2026-10-05",
+   "what_read": "full PDF (original); also press release https://www.env.go.jp/press/103813.html",
+   "outcome": "About 3,900 fish, 690 corals, 3,000 crustaceans, 230 cephalopods and 2,300 other invertebrates were evaluated, but only listed species were published; there is no per-species 'ランク外' table. Fisheries Agency species were outside the MOE round. No record for クロソイ or マボヤ.",
+   "sha256": "7696a8d3751cc2bbf589c1fbe9d1b9bebf4192db1eb0d4391908f0413f017d07"
+  },
+  "moe_redlist_index_2026": {
+   "route": 3,
+   "provider": "Ministry of the Environment, Japan",
+   "url": "https://www.env.go.jp/nature/kisho/hozen/redlist/index.html",
+   "accessed": "2026-10-05",
+   "what_read": "web page (original)",
+   "outcome": "5th Red List published so far only for plants and fungi (2025-03) and birds, reptiles and amphibians (2026-03). For marine groups the 2017 marine red list is still the latest ('海洋生物にかかる各分類群については、平成29年に公表した海洋生物レッドリストにおける評価が最新'). Species the Fisheries Agency assesses are to be evaluated and published by the Fisheries Agency, with the target list '水産庁ウェブサイト上に掲載予定'. Press release press_03312 (2026-03-17): remaining groups from FY2026 onward."
+  },
+  "moe_5th_rl_algae_2025": {
+   "route": 3,
+   "provider": "Ministry of the Environment, Japan",
+   "title": "第5次レッドリスト（植物・菌類）藻類 (03-5thredlist-algae.pdf) and 別添資料3 第5次レッドリストカテゴリー新旧対照表 (content/000299086.pdf)",
+   "url": "https://www.env.go.jp/nature/kisho/5th-rl-2025-book/03-5thredlist-algae.pdf ; https://www.env.go.jp/content/000299086.pdf",
+   "date": "2025-03-18",
+   "accessed": "2026-10-05",
+   "what_read": "full PDFs (original), text search",
+   "outcome": "None of Saccharina japonica/マコンブ, Ecklonia cava/カジメ, Sargassum horneri/アカモク, Gracilaria vermiculophylla/オゴノリ, Undaria pinnatifida/ワカメ appears in the list or in the old-new table (which marks removed species as '不掲載'). Congeners only (e.g., Saccharina cichorioides DD, S. kurilensis DD, Sargassum segii DD, Alaria angusta ホソバワカメ DD, Gracilaria eucheumatoides NT).",
+   "sha256": {
+    "moe_5th_algae.pdf": "c9a2c4f15d14322623cd1629c825a9a8892beb89bee131e0901d58cd0d2e1dee",
+    "moe_5th_shinkyu.pdf": "b61d3917c0ea98faaafad2f932f0ede8ef6b20bb230817d470a2133b7192021c"
+   }
+  },
+  "moe_algae_rl_csv_2015_2020": {
+   "route": 3,
+   "provider": "Ministry of the Environment, Japan (いきものログ open data)",
+   "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist{2015,2017,2018,2019,2020}/redlist{year}_sorui.csv",
+   "accessed": "2026-10-05",
+   "outcome": "None of our seaweeds in any edition 2015-2020, so no later removal ('ランク外'/'不掲載') record can exist for them. 2012 and 2007 CSVs are not on the server."
+  },
+  "jfa_rarity_contract_reports": {
+   "route": 3,
+   "provider": "Fisheries Agency of Japan, contract project summaries by FRA (水産研究・教育機構)",
+   "title": "絶滅のおそれのある海洋生物の希少性評価(委託)事業 実績報告書（概要）, FY2021 (R3), FY2022 (R4), FY2023 (R5)",
+   "url": "https://www.jfa.maff.go.jp/j/gyosei/supply/seika/attach/pdf/R03_ippan-23.pdf ; https://www.jfa.maff.go.jp/j/gyosei/supply/seika/attach/pdf/R04_ippan-56.pdf ; https://www.jfa.maff.go.jp/j/gyosei/supply/seika/attach/pdf/R05_ippan-57.pdf",
+   "accessed": "2026-10-05",
+   "what_read": "full PDFs (original, 2-3 pages each)",
+   "outcome": "NEAR-MISS, NOT OFFICIAL: draft evaluation reports for 67 species (FY2022: セミクジラ DD proposed, all others 'カテゴリー外') and 119 species (FY2023: イカナゴ VU, サメガレイ NT, ボタンエビ NT, エゾアワビ VU proposed, others 'カテゴリー外'). These are draft 'カテゴリー案' in contractor summaries; the 'カテゴリー外' species are not named. No species-level result for クロソイ or マボヤ. Final results are to be published by the Fisheries Agency with the 5th Red List.",
+   "sha256": {
+    "R04_ippan-56.pdf": "87bf64691618a922af663f32e344acc92504456bd0441442710b948cdf3fc06a",
+    "R05_ippan-57.pdf": "64479974ca218f5e6c3b08d56b5ba5c4a19ce3b690e361c93d10a55034894fb0"
+   }
+  },
+  "shimane_r2_stock_assessment_expansion": {
+   "route": 3,
+   "provider": "Shimane Prefecture Fisheries Technology Center, annual report FY2020 (R2), p.37",
+   "url": "https://www.pref.shimane.lg.jp/industry/suisan/shinkou/suigi/publish/jigyouhou/2020/reiwa2nennpou.data/K16_R2.pdf",
+   "accessed": "2026-10-05",
+   "what_read": "full PDF (1 page)",
+   "outcome": "LEAD: クロソイ is one of 13 species that became stock-assessment targets of the Japan Sea block from FY2020 ('2020（令和2）年度から日本海ブロックの資源評価の対象となった13種'). The Fisheries Agency evaluates the species it assesses for the 5th Red List, so クロソイ may get a published per-species result (possibly 'カテゴリー外') when that list appears.",
+   "sha256": "02bd7947d6f56aafdbf80fa7402871d3cf3b34bdb780e5e4256bb600a41eb06d"
+  },
+  "jfa_website": {
+   "route": 3,
+   "provider": "Fisheries Agency of Japan",
+   "url": "https://www.jfa.maff.go.jp/j/sigen/ (index and guessed redlist pages)",
+   "accessed": "2026-10-05",
+   "outcome": "BLOCKED: HTTP 403 for curl and WebFetch on /j/sigen/. Web searches found no posted 5th-RL target or result list."
+  },
+  "dprk_cbd_national_reports": {
+   "route": 4,
+   "provider": "DPR Korea national reports to the CBD (2nd 2005, 3rd, 4th, 5th, 6th)",
+   "url": "https://www.cbd.int/doc/world/kp/kp-nr-0{2,3,4,5}-en.pdf ; https://www.cbd.int/doc/nr/nr-06/kp-nr-06-en.pdf",
+   "accessed": "2026-10-05",
+   "what_read": "full PDFs (original government reports), text search",
+   "outcome": "Red Data Book of DPRK (Animals) 2002: 183 vertebrates (36 mammals, 100 birds, 10 reptiles, 4 amphibians, 33 fishes; representative fishes named are Acipenser mikadoi, Coregonus ussuriensis, Sarcocheilichthys sinensis); vertebrates only, so no ascidians. Red Data Book (Plants) 2005 covers seed plants ('published in 2005 a Red Book (Plants) on seed plants'), so no algae. 6th report: 'Plant series of Red Data Book DPR Korea was published in 2015 and animal series in 2016'; these editions are not online and their contents are unknown. No report names any of our 7 species as threatened; the 4th report mentions only cultivation of Laminaria japonica and Undaria pinnatifida. 7th report not posted (404).",
+   "sha256": {
+    "kp-nr-06-en.pdf": "76314a164426bf29e1fdaabb45d90e29cb17f6a25a816842f9731b192e98f432"
+   }
+  },
+  "china_mee_cas_red_list": {
+   "route": 5,
+   "provider": "Ministry of Ecology and Environment & Chinese Academy of Sciences, China Biodiversity Red List",
+   "url": "https://www.biodiversity-science.net/EN/Y2022/V30/I10/22445 (Xie Y. 2022, Biodiversity Science 30(10):22445, Table 1); https://paper.people.com.cn/rmrb/html/2023-05/23/nw.D110000renmrb_20230523_2-14.htm (2023-05-22 release of the Higher Plants (2020) and Vertebrates (2020) volumes)",
+   "accessed": "2026-10-05",
+   "what_read": "secondary: journal table and newspaper report (the books were not read)",
+   "outcome": "The vertebrate volume covers vertebrates excluding marine fishes ('不含海洋鱼类'); its fish part is Vol. V Freshwater Fishes (1,591 species). The higher-plant volume has no algae. There is no MEE/CAS volume for marine fishes, marine algae or ascidians, so none of our species can carry a Chinese ministry category. (Wang & Xie 2004 remains excluded as not ministry-published.)"
+  },
+  "russia_order_162_2020": {
+   "route": 6,
+   "provider": "Ministry of Natural Resources and Ecology of the Russian Federation",
+   "title": "Приказ Минприроды России от 24.03.2020 № 162 'Об утверждении Перечня объектов животного мира, занесенных в Красную книгу Российской Федерации' (Minjust 02.04.2020 No. 57940)",
+   "url": "https://faolex.fao.org/docs/pdf/rus198548.pdf (scan of the signed order); https://legalacts.ru/doc/prikaz-minprirody-rossii-ot-24032020-n-162-ob-utverzhdenii/ (consolidated, ред. от 28.05.2026)",
+   "accessed": "2026-10-05",
+   "what_read": "original scan (OCR text) and consolidated text",
+   "outcome": "No Sebastes, no Scorpaeniformes, no Halocynthia, no ascidians. Phyla listed: Annelida, Nemertea, Bryozoa, Brachiopoda, Mollusca, Arthropoda, Chordata (vertebrates from lampreys on). Ray-finned fish rows 162-200 (Acipenseriformes, Clupeiformes, Salmoniformes, Cypriniformes, Gadiformes, Anguilliformes, Gasterosteiformes).",
+   "sha256": "6d964b0b9a7bcb086e8f96cf92c54db3e8522f6fd31b0db3b9bdef94ef191e3a"
+  },
+  "russia_order_320_2023_recheck": {
+   "route": 6,
+   "provider": "Ministry of Natural Resources and Ecology of the Russian Federation",
+   "title": "Приказ Минприроды России от 23.05.2023 № 320 (plants and fungi), section ВОДОРОСЛИ",
+   "url": "https://rulaws.ru/acts/Prikaz-Minprirody-Rossii-ot-23.05.2023-N-320/",
+   "accessed": "2026-10-05",
+   "what_read": "text copy (the team read the original PDF earlier; the rpn.gov.ru link now returns HTML)",
+   "outcome": "Re-check for 미역 at national level: algae rows 590-623 contain no Undaria, Saccharina, Ecklonia, Sargassum or Gracilaria (Laminariaceae rows are Pseudolessonia laminarioides, Cymathaere fibrosa and others)."
+  },
+  "nowpap_dinrac_db": {
+   "route": "extra",
+   "provider": "UNEP NOWPAP DINRAC Endangered Species Database (regional compilation)",
+   "url": "http://dinrac.nowpap.org/",
+   "accessed": "2026-10-05",
+   "outcome": "BLOCKED: HTTP 412. Aggregator (lead only); not pursued."
+  },
+  "web_searches_misc": {
+   "route": "all",
+   "accessed": "2026-10-05",
+   "queries": [
+    "IUCN Red List Republic of Korea partnership NIBR seaweeds assessed 24 species Ceramiales Gelidales 2023",
+    "국립생물자원관 IUCN 적색목록 해조류 24종 등재 평가",
+    "\"Undaria crenata\" IUCN Red List Data Deficient 2023",
+    "참우뭇가사리 OR 다실미역 OR 가시청각 IUCN 적색목록 등재",
+    "\"Gelidium coreanum\" OR \"Codium spinulosum\" OR \"Undaria crenata\" IUCN 2023",
+    "IUCN Republic of Korea Red List partnership second phase 2024 2025 2026",
+    "環境省 海洋生物レッドリスト 2017 公表 評価対象種 一覧 ランク外 別添",
+    "海洋生物レッドリスト クロソイ OR マボヤ 評価 環境省",
+    "水産庁 水産資源の希少性評価 見直し 2024 OR 2025 OR 2026",
+    "環境省 海洋生物レッドリスト 改訂 2025 OR 2026 公表 魚類 甲殻類",
+    "水産庁 第5次レッドリスト 希少性評価 結果 評価対象種 令和8年",
+    "\"第5次レッドリスト\" 海水魚類 公表 2026",
+    "資源評価対象魚種 192種 クロソイ 水産庁 拡大",
+    "\"絶滅のおそれのある海洋生物の希少性評価\" 令和６年度 OR 令和7年度",
+    "DPR Korea Red Data Book animals plants list threatened species marine fish algae",
+    "조선민주주의인민공화국 붉은책 동물 식물 해조류",
+    "\"Red Data Book of DPR Korea\" 2016 animal OR 2015 plant",
+    "조선 붉은책 2016 동물 2015 식물",
+    "中国生物多样性红色名录 脊椎动物卷 2020 生态环境部 公告 2023 内陆鱼类 海洋鱼类",
+    "\"中国生物多样性红色名录\" \"淡水鱼类\" 第五卷",
+    "中国 海洋鱼类 红色名录 许氏平鲉 OR 海鞘 OR 海带 OR 裙带菜",
+    "\"脊椎动物卷（2020）\" 内陆鱼类 OR 淡水鱼类",
+    "Приказ Минприроды России от 24.03.2020 № 162 перечень pdf",
+    "Приказ Минприроды России от 23.05.2023 N 320 водоросли",
+    "NOWPAP endangered marine species Northwest Pacific report 143 species",
+    "IUCN Red List update 2026-2 release date November 2026"
+   ],
+   "outcome": "See per-source outcomes; no search returned an official category for any of the 7 species."
+  }
+ },
+ "next_official_checks": [
+  {
+   "what": "IUCN Red List 2026-2",
+   "when": "2026-11-19 (scheduled)",
+   "why": "the site search of 2026-10-04 and the GBIF mirror of 2026-1 hold none of the seven; re-run the search for all seven"
+  },
+  {
+   "what": "Japan Ministry of the Environment 5th Red List, marine groups, and the Fisheries Agency list of the species it evaluates",
+   "when": "from FY2026, in stages",
+   "why": "クロソイ (조피볼락) has been a Fisheries Agency stock-assessment species of the Japan Sea block since FY2020, so a published per-species result is plausible; the marine fish and other marine invertebrate lists are not yet out"
+  },
+  {
+   "what": "Red Data Book of DPR Korea, plants (2015) and animals (2016)",
+   "when": "published, no public copy",
+   "why": "named in the 6th CBD national report; contents unknown; earlier editions cover seed plants and vertebrates only"
+  }
+ ],
+ "blocked": [
+  "iucnredlist.org (Cloudflare 403)",
+  "api.iucnredlist.org v4 (403 without token)",
+  "jfa.maff.go.jp /j/sigen/ (403)",
+  "dinrac.nowpap.org (412)",
+  "rpn.gov.ru Order 320 PDF now returns HTML (text read from rulaws.ru instead)"
+ ],
+ "rule_notes": "Only official categories counted; aggregators (GBIF mirror, nationalredlist.org, NOWPAP) used as leads only. Draft 'カテゴリー案' in Fisheries Agency contract summaries are not official categories and name no 'カテゴリー外' species.",
+ "collected_by": "Research agent run of 2026-10-05. Spot-checked in this session: the 국가생물종목록 red-list field is empty for 조피볼락 and 우렁쉥이(멍게) while the controls 참문어 (NT) and 가리맛조개 (LC) carry the national category. No value from this record is used."
+}

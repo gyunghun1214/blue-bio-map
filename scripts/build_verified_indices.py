@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.3.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.4.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -788,6 +788,82 @@ def xo_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
+def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
+    """4.4 one-condition relaxation (d) of prereg-fill-all-4.3 1.4, applied as fixed in prereg-4.4 2: a species' own
+    synthetic peptide with no peptide cohort for its target is ranked in the ChEMBL cohort of the same target and
+    endpoint (the ChEMBL stratum's filters, agonist and antagonist assays not split). The origin is never relaxed:
+    a public primary sequence record of the species' own sample must encode the tested mature sequence (4.1 precedent).
+    p = 9 - log10(value nM) on the pChEMBL scale; one item per species and peptide, the target with the highest
+    percentile (ties: more records); a relaxed percentile is never pooled with a peptide stratum or another target."""
+    settings = config.get("relaxed_bioactivity")
+    rows = evidence.get("relaxed_bioactivity", [])
+    if not settings or not rows:
+        return []
+    book = json.loads((ROOT / settings["cohort_snapshot"]).read_text(encoding="utf-8"))
+    cohorts = {c["cohort_id"]: c for c in book["cohorts"]}
+    checks = {c["record_id"]: c for c in book.get("self_inclusion_checks", [])}
+    groups = defaultdict(list)
+    for r in rows:
+        if r.get("status") != "approved_for_score":
+            continue
+        require(r.get("reviewed") is True and r.get("material_kind") == "single_peptide"
+                and PEPTIDE.fullmatch(str(r.get("sequence", ""))) is not None
+                and r.get("sequence_confirmed") is True and r.get("value_in_text") is True and r.get("synthetic") is True
+                and r.get("relaxation") in settings["allowed_relaxations"]
+                and r.get("endpoint") and r.get("target_chembl_id") and r.get("target_name")
+                and r.get("relation") == "=" and r.get("unit") == "nM" and r.get("source_id") in evidence["sources"]
+                and r.get("original_paper_doi") and r.get("origin_aphia_id") and r.get("origin_scientific_name"),
+                f"{r.get('record_id')}: incomplete relaxed origin/sequence/assay chain")
+        origin = r.get("origin_record") or {}
+        require(origin.get("accession") and origin.get("mature_peptide") and origin.get("translation")
+                and origin.get("source_ids") and all(s in evidence["sources"] for s in origin["source_ids"]),
+                f"{r.get('record_id')}: the origin rests on a public sequence record with registered sources")
+        check = checks.get(r["record_id"])
+        require(check is not None and check["molecule_hits"] == 0 and check["document_hits"] == 0,
+                f"{r.get('record_id')}: the tested peptide must be checked absent from its own ChEMBL cohort")
+        finite(r.get("value"), "relaxed EC50", 0.0000001)
+        groups[(r["origin_aphia_id"], r["sequence"])].append(r)
+    out = []
+    for (origin, sequence), own in sorted(groups.items()):
+        ranked = []
+        for r in sorted(own, key=lambda x: x["record_id"]):
+            cohort = cohorts.get(f"{book['chembl_version']}:{r['target_chembl_id']}|{r['endpoint']}")
+            require(cohort is not None and cohort["size"] >= settings["minimum_cohort_records"],
+                    f"{r['record_id']}: no ChEMBL cohort of at least {settings['minimum_cohort_records']} records")
+            peers = [m["pchembl"] for m in cohort["members"]]
+            require(cohort["size"] == len(peers), f"{r['record_id']}: cohort size differs from its member list")
+            value = round(9 - math.log10(r["value"]), 3)
+            ranked.append((percentile(value, peers), cohort, value, r))
+        rank, cohort, value, top = max(ranked, key=lambda x: (x[0], x[1]["size"]))
+        dois = {x["original_paper_doi"].lower() for x in own}
+        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        out.append((origin, {"stratum_kind": "relaxed", "relaxation": top["relaxation"],
+                             "relaxation_label": settings["allowed_relaxations"][top["relaxation"]],
+                             "label": settings["label"], "peptide_sequence": sequence,
+                             "peptide_name": own[0].get("peptide_name"),
+                             "sequence_modifications": own[0].get("sequence_modifications"),
+                             "origin_record": own[0]["origin_record"], "stratum_id": cohort["cohort_id"],
+                             "target_chembl_id": cohort["target_chembl_id"], "target_name": cohort["target_name"],
+                             "target_organism": cohort["target_organism"], "standard_type": cohort["standard_type"],
+                             "record_ids": sorted(x["record_id"] for x in own), "original_paper_dois": sorted(dois),
+                             "cohort_records": cohort["size"], "pchembl": value, "percentile": round(rank, 2),
+                             "evidence_factor": factor, "adjusted": rank * factor,
+                             "caveat": " ".join(settings["item_caveats"]),
+                             # the cohort is a fixed snapshot, so its pChEMBL values ship with the item and the browser re-ranks them
+                             "cohort_pchembl": sorted(m["pchembl"] for m in cohort["members"]),
+                             "other_targets": [{"target_chembl_id": c["target_chembl_id"], "target_name": c["target_name"],
+                                                "standard_type": c["standard_type"], "cohort_records": c["size"],
+                                                "value": x["value"], "unit": x["unit"], "pchembl": v,
+                                                "percentile": round(p, 2)}
+                                               for p, c, v, x in sorted(ranked, key=lambda y: -y[0])[1:]],
+                             "measurements": [{"endpoint": x["endpoint"], "relation": x["relation"], "value": x["value"],
+                                               "unit": x["unit"], "value_as_published": x.get("value_as_published"),
+                                               "target_chembl_id": x["target_chembl_id"], "target_name": x["target_name"],
+                                               "assay": x.get("method"), "source_id": x["source_id"],
+                                               "original_paper_doi": x["original_paper_doi"]} for x in own]}))
+    return out
+
+
 def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
     """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
@@ -979,6 +1055,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
     for origin, item in anticancer_items(evidence, config):  # verified-pilot-3.21
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     for origin, item in xo_items(evidence, config):  # 4.3
+        out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    for origin, item in relaxed_items(evidence, config):  # 4.4
         out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
     chembl = None
     if config.get("chembl_bioactivity"):  # verified-pilot-3.1
@@ -1402,12 +1480,16 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             if item.get("stratum_kind") == "xo":
                 source_ids.add(config["xo_bioactivity"]["cohort_source_id"])
                 source_ids |= {r["source_id"] for r in evidence["xo_bioactivity"] if r["record_id"] in item["record_ids"]}
+            if item.get("stratum_kind") == "relaxed":  # 4.4: the cohort, the paper rows and the origin sequence record
+                source_ids.add(config["relaxed_bioactivity"]["cohort_source_id"])
+                source_ids |= {r["source_id"] for r in evidence["relaxed_bioactivity"] if r["record_id"] in item["record_ids"]}
+                source_ids |= set(item["origin_record"]["source_ids"])
             source_ids |= {r["source_id"] for r in evidence.get("amp_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in evidence.get("anticancer_bioactivity", []) if r["record_id"] in item.get("record_ids", [])}
             source_ids |= {r["source_id"] for r in item.get("potency_replications", []) if r["used"]}
             if item.get("stratum_kind") == "chembl":
                 source_ids |= set(config["chembl_bioactivity"]["source_ids"])
-            elif item.get("stratum_kind") not in ("peptide", "amp", "anticancer", "xo"):
+            elif item.get("stratum_kind") not in ("peptide", "amp", "anticancer", "xo", "relaxed"):
                 source_ids.add(evidence["reviewed_compound_structures"][item["compound_id"]]["source_id"])
         if links and links["counts"].get("linked"):
             source_ids |= set(config["chembl_bioactivity"]["source_ids"])
@@ -1748,6 +1830,16 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         used = {r["source_id"] for r in extra["xo_bioactivity"]} | {xo["cohort_source_id"]}
         require(not used & set(evidence["sources"]), "XO supplement redefines a source")
         evidence = {**evidence, "xo_bioactivity": extra["xo_bioactivity"],
+                    "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+    rx = cfg.get("relaxed_bioactivity")
+    if rx:  # 4.4: relaxation-(d) peptide rows, their papers, the origin sequence record and the ChEMBL cohort source
+        extra = read(ROOT / rx["supplement"])
+        require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "relaxed supplement is older than evidence")
+        used = ({r["source_id"] for r in extra["relaxed_bioactivity"]} | {rx["cohort_source_id"]}
+                | {s for r in extra["relaxed_bioactivity"] for s in (r.get("origin_record") or {}).get("source_ids", [])})
+        require(not used & set(evidence["sources"]), "relaxed supplement redefines a source")
+        evidence = {**evidence, "relaxed_bioactivity": extra["relaxed_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     fa = cfg["nutrition"].get("display_fatty_acids")

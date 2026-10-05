@@ -1,0 +1,127 @@
+{
+ "purpose": "verified-4.4: relaxation-(d) rows of prereg-fill-all-4.3-2026-10-05.md 1.4, applied as fixed in prereg-4.4-2026-10-05.md 2. One row per peptide and ChEMBL target; the build ranks each row in the snapshot cohort of the same target and endpoint and keeps the best target as the item.",
+ "relaxed_bioactivity": [
+  {
+   "endpoint": "EC50",
+   "material_kind": "single_peptide",
+   "method": "사람 V1b 수용체 발현 RBL 세포, 세포내 Ca2+ 형광(작용 시험), Eurofins Cerep, 3회 반복",
+   "origin_aphia_id": 534443,
+   "origin_record": {
+    "accession": "NW_021826408.1",
+    "biosample": "SAMN11633729",
+    "identity_check": "156 nt identical to AB108430.1 (Octopus vulgaris CT gene, Kanda et al. 2003) CDS codons 1-52",
+    "kind": "genome_nucleotide",
+    "locality": "China: littoral waters of Zhoushan, Zhejiang province (2018-01)",
+    "mature_peptide": "CYFRNCPIG-NH2 (aa 29-37, then G amidation donor and KR cleavage)",
+    "region": "8387-8542 (+)",
+    "source_ids": [
+     "ncbi_osinensis_genome_nw021826408",
+     "li_2020_mer_osinensis_genome"
+    ],
+    "translation": "MSQNCFAIVQLLFVLFTVCSLFIATTDGCYFRNCPIGGKRATPMSEQGSNQK"
+   },
+   "origin_scientific_name": "Octopus sinensis",
+   "original_paper_doi": "10.3390/md20050328",
+   "peptide_name": "cephalotocin",
+   "record_id": "10.3390/md20050328:cephalotocin:CHEMBL1921",
+   "relation": "=",
+   "relaxation": "d",
+   "reviewed": true,
+   "sequence": "CYFRNCPIG",
+   "sequence_confirmed": true,
+   "sequence_modifications": "C말단 Gly 아미드(-NH2), Cys1–Cys6 이황화 결합",
+   "source_id": "kim_2022_md_cephalotocin",
+   "status": "approved_for_score",
+   "synthetic": true,
+   "target_chembl_id": "CHEMBL1921",
+   "target_name": "Vasopressin V1b receptor",
+   "target_organism": "Homo sapiens",
+   "unit": "nM",
+   "value": 10.02,
+   "value_as_published": "EC50 of 10.02 nM",
+   "value_in_text": true
+  },
+  {
+   "endpoint": "EC50",
+   "material_kind": "single_peptide",
+   "method": "사람 V2 수용체 발현 CHO 세포, cAMP HTRF 30분(작용 시험), Eurofins Cerep, 3회 반복",
+   "origin_aphia_id": 534443,
+   "origin_record": {
+    "accession": "NW_021826408.1",
+    "biosample": "SAMN11633729",
+    "identity_check": "156 nt identical to AB108430.1 (Octopus vulgaris CT gene, Kanda et al. 2003) CDS codons 1-52",
+    "kind": "genome_nucleotide",
+    "locality": "China: littoral waters of Zhoushan, Zhejiang province (2018-01)",
+    "mature_peptide": "CYFRNCPIG-NH2 (aa 29-37, then G amidation donor and KR cleavage)",
+    "region": "8387-8542 (+)",
+    "source_ids": [
+     "ncbi_osinensis_genome_nw021826408",
+     "li_2020_mer_osinensis_genome"
+    ],
+    "translation": "MSQNCFAIVQLLFVLFTVCSLFIATTDGCYFRNCPIGGKRATPMSEQGSNQK"
+   },
+   "origin_scientific_name": "Octopus sinensis",
+   "original_paper_doi": "10.3390/md20050328",
+   "peptide_name": "cephalotocin",
+   "record_id": "10.3390/md20050328:cephalotocin:CHEMBL1790",
+   "relation": "=",
+   "relaxation": "d",
+   "reviewed": true,
+   "sequence": "CYFRNCPIG",
+   "sequence_confirmed": true,
+   "sequence_modifications": "C말단 Gly 아미드(-NH2), Cys1–Cys6 이황화 결합",
+   "source_id": "kim_2022_md_cephalotocin",
+   "status": "approved_for_score",
+   "synthetic": true,
+   "target_chembl_id": "CHEMBL1790",
+   "target_name": "Vasopressin V2 receptor",
+   "target_organism": "Homo sapiens",
+   "unit": "nM",
+   "value": 12.09,
+   "value_as_published": "EC50 of 12.09 nM",
+   "value_in_text": true
+  }
+ ],
+ "schema_version": 1,
+ "snapshot_date": "2026-10-05",
+ "sources": {
+  "chembl_relaxed_cohorts": {
+   "accessed": "2026-10-05",
+   "license": "CC BY-SA 3.0",
+   "provider": "ChEMBL (EMBL-EBI), REST API",
+   "terms": "Activity IDs, molecule and document IDs and pChEMBL values only, in research/verified-indices/snapshots/relaxed-chembl-cohorts-2026-10-05.json (scripts/collect_relaxed_cohorts.py), with the ChEMBL stratum's filters. Neither cephalotocin nor its paper is in ChEMBL (molecule and document look-ups return 0).",
+   "title": "ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50",
+   "url": "https://www.ebi.ac.uk/chembl/",
+   "version": "ChEMBL_37 (2026-05-01), queried 2026-10-05"
+  },
+  "kim_2022_md_cephalotocin": {
+   "accessed": "2026-10-05",
+   "doi": "10.3390/md20050328",
+   "license": "CC BY 4.0",
+   "provider": "Marine Drugs 20(5):328 (MDPI), full text in PMC9144402",
+   "terms": "Full text read (Europe PMC XML): synthetic cephalotocin CYFRNCPIG-NH2 with a disulfide bond, purity >98% (HPLC, MALDI-TOF; AnyGen, Gwangju); Eurofins Cerep human receptor assays in triplicate, 4-parameter logistic fit; EC50 10.02 nM at V1bR (RBL cells, intracellular Ca2+) and 12.09 nM at V2R (CHO cells, cAMP HTRF) in section 2.2; OXTR and V1aR not activated up to 50 uM. The paper names the species Octopus vulgaris without a sampling region.",
+   "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim Y-J et al. 2022)",
+   "url": "https://doi.org/10.3390/md20050328",
+   "version": "2022"
+  },
+  "li_2020_mer_osinensis_genome": {
+   "accessed": "2026-10-05",
+   "doi": "10.1111/1755-0998.13216",
+   "license": "Publisher terms; bibliographic data only",
+   "provider": "Molecular Ecology Resources 20(6):1572-1582 (Wiley), PMID 32603549",
+   "terms": "The genome paper of the assembly that carries NW_021826408.1: a female East Asian common octopus (Octopus sinensis). Abstract read; the sample locality is read from BioSample SAMN11633729.",
+   "title": "Chromosome-level genome assembly of the East Asian common octopus (Octopus sinensis) using PacBio sequencing and Hi-C technology (Li F et al. 2020)",
+   "url": "https://doi.org/10.1111/1755-0998.13216",
+   "version": "2020"
+  },
+  "ncbi_osinensis_genome_nw021826408": {
+   "accessed": "2026-10-05",
+   "license": "Public INSDC/RefSeq sequence record",
+   "provider": "NCBI RefSeq / INSDC (genome by Yellow Sea Fisheries Research Institute, Chinese Academy of Fishery Sciences)",
+   "terms": "Nucleotides 8387-8542 (plus strand) translate to MSQNCFAIVQLLFVLFTVCSLFIATTDGCYFRNCPIGGKRATPMSEQGSNQK: the cephalotocin nonapeptide (aa 29-37) followed by the Gly amidation donor and the KR cleavage site. The 156 nt are identical to codons 1-52 of the Japanese Octopus vulgaris cephalotocin gene AB108430.1 (Kanda et al. 2003). BioSample SAMN11633729: Octopus sinensis, 'China: littoral waters of Zhoushan, Zhejiang province', collected 2018-01, isolate Ov201803, liver. The NCBI protein annotation of this locus (LOC115227447) is withdrawn; the evidence is the nucleotide record.",
+   "title": "Octopus sinensis genome assembly ASM634580v1 (GCF_006345805.1), unplaced scaffold NW_021826408.1 (identical to VCDQ01006288.1); BioSample SAMN11633729",
+   "url": "https://www.ncbi.nlm.nih.gov/nuccore/NW_021826408.1",
+   "version": "NW_021826408.1 (RefSeq record of 2020-10-08); BioSample SAMN11633729"
+  }
+ }
+}

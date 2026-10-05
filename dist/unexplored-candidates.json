@@ -1,7 +1,7 @@
 {
  "schemaVersion": "unexplored-candidates-1",
  "reviewedOn": "2026-10-04",
- "reportVersion": "verified-4.3",
+ "reportVersion": "verified-4.4",
  "rule": "Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI (default weight) is at least 50. No indicator was collected for it and no score is inferred or copied.",
  "cellRules": "scripts/build_expansion_cells.py (22-candidate review rules), unchanged; a congener of a 4° species is published at 4°",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not distribution, abundance, stock size or value. A listed species is a lead for survey, not a finding.",
@@ -55,6 +55,12 @@
    "label": "맛조개",
    "name": "Sinonovacula constricta",
    "BBVI": 57.3
+  },
+  {
+   "aphiaID": 534443,
+   "label": "참문어(동아시아 종)",
+   "name": "Octopus sinensis",
+   "BBVI": 54.2
   },
   {
    "aphiaID": 234476,
@@ -4336,6 +4342,1441 @@
      "label": "참굴",
      "name": "Magallana gigas",
      "BBVI": 83.9
+    }
+   ]
+  },
+  {
+   "aphiaID": 341963,
+   "name": "Octopus conispadiceus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 2,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Octopus conispadiceus (Sasaki, 1917)"
+    ],
+    "gbif": {
+     "queried": 2,
+     "accepted": 2,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2289646&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 2,
+     "accepted": 0,
+     "excluded": {
+      "duplicate": 2
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=341963&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 36,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2017,
+     "yearEnd": 2017,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "seaAreasFrom": "cell_grid",
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Octopus",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 534443,
+     "label": "참문어(동아시아 종)",
+     "name": "Octopus sinensis",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 341982,
+   "name": "Octopus hongkongensis",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 1,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Octopus hongkongensis (Hoyle, 1885)"
+    ],
+    "gbif": {
+     "queried": 1,
+     "accepted": 1,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2289522&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1,
+     "accepted": 0,
+     "excluded": {
+      "duplicate": 1
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=341982&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 38,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 86511,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Octopus",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 534443,
+     "label": "참문어(동아시아 종)",
+     "name": "Octopus sinensis",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 342002,
+   "name": "Octopus minor",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 161,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Octopus minor",
+     "Octopus minor (Sasaki, 1920)"
+    ],
+    "gbif": {
+     "queried": 159,
+     "accepted": 157,
+     "excluded": {
+      "no_year": 1,
+      "uncertainty_over_10km": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2289697&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 171,
+     "accepted": 4,
+     "excluded": {
+      "license_not_open": 9,
+      "uncertainty_over_10km": 1,
+      "duplicate": 157
+     },
+     "datasets": 4,
+     "openDatasets": 3,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=342002&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2015,
+     "records": 6,
+     "sites": 6,
+     "uncertaintyMissing": 6,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 4,
+     "sites": 4,
+     "uncertaintyMissing": 4,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2022,
+     "yearEnd": 2022,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2015,
+     "records": 42,
+     "sites": 3,
+     "uncertaintyMissing": 42,
+     "seaAreas": [
+      "East China Sea",
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2015,
+     "records": 14,
+     "sites": 9,
+     "uncertaintyMissing": 14,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2022,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 35,
+     "sites": 21,
+     "uncertaintyMissing": 35,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 8,
+     "sites": 4,
+     "uncertaintyMissing": 8,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2015,
+     "records": 4,
+     "sites": 4,
+     "uncertaintyMissing": 4,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 10,
+     "sites": 8,
+     "uncertaintyMissing": 10,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 9,
+     "sites": 7,
+     "uncertaintyMissing": 9,
+     "seaAreas": [
+      "East China Sea",
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 35,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 90059,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2022,
+     "yearEnd": 2022,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 3,
+     "sites": 2,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2025,
+     "records": 11,
+     "sites": 8,
+     "uncertaintyMissing": 11,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF",
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "NIFS_NF",
+       "url": "https://obis.org/dataset/587953dd-0998-48ba-a99e-ed765f7366f4",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 124,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2011,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 2,
+     "sites": 1,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2016,
+     "yearEnd": 2025,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF",
+      "OBIS"
+     ],
+     "citations": [
+      {
+       "title": "NIFS_NF",
+       "url": "https://obis.org/dataset/587953dd-0998-48ba-a99e-ed765f7366f4",
+       "source": "OBIS",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      },
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Octopus",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 534443,
+     "label": "참문어(동아시아 종)",
+     "name": "Octopus sinensis",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 342016,
+   "name": "Octopus parvus",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 1,
+    "historical": 0,
+    "outsideKoreanEEZ": 0,
+    "names": [
+     "Octopus parvus (Sasaki, 1917)"
+    ],
+    "gbif": {
+     "queried": 1,
+     "accepted": 1,
+     "excluded": {},
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2289528&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 1,
+     "accepted": 0,
+     "excluded": {
+      "duplicate": 1
+     },
+     "datasets": 1,
+     "openDatasets": 1,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=342016&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2020,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea",
+      "Yellow Sea"
+     ],
+     "seaAreasFrom": "cell_grid",
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Octopus",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 534443,
+     "label": "참문어(동아시아 종)",
+     "name": "Octopus sinensis",
+     "BBVI": 54.2
+    }
+   ]
+  },
+  {
+   "aphiaID": 140605,
+   "name": "Octopus vulgaris",
+   "sizeDeg": 1,
+   "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
+   "review": {
+    "status": "cells_published",
+    "accepted": 24,
+    "historical": 0,
+    "outsideKoreanEEZ": 1,
+    "names": [
+     "Octopus vulgaris Cuvier, 1797"
+    ],
+    "gbif": {
+     "queried": 28,
+     "accepted": 24,
+     "excluded": {
+      "no_year": 2,
+      "uncertainty_over_10km": 1,
+      "on_land_obis_rule": 1
+     },
+     "genusFallback": false,
+     "query": "https://www.gbif.org/occurrence/search?taxon_key=2289671&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&has_coordinate=true"
+    },
+    "obis": {
+     "queried": 31,
+     "accepted": 0,
+     "excluded": {
+      "license_not_open": 3,
+      "no_year": 2,
+      "uncertainty_over_10km": 1,
+      "on_land_obis_rule": 1,
+      "duplicate": 24
+     },
+     "datasets": 4,
+     "openDatasets": 3,
+     "query": "https://api.obis.org/v3/occurrence?taxonid=140605&geometry=POLYGON%28%28124+33%2C132+33%2C132+38.7%2C124+38.7%2C124+33%29%29&size=0"
+    }
+   },
+   "cells": [
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2015,
+     "records": 8,
+     "sites": 6,
+     "uncertaintyMissing": 8,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 33,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 92288,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2023,
+     "yearEnd": 2023,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea",
+      "Yellow Sea"
+     ],
+     "seaAreasFrom": "cell_grid",
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 125,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2025,
+     "records": 3,
+     "sites": 3,
+     "uncertaintyMissing": 3,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 127,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2020,
+     "yearEnd": 2021,
+     "records": 6,
+     "sites": 2,
+     "uncertaintyMissing": 6,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 34,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 91188,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2022,
+     "yearEnd": 2022,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "East China Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 126,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2022,
+     "yearEnd": 2022,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Yellow Sea"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 36,
+     "lon0": 129,
+     "sizeDeg": 1,
+     "resolutionM": 88904,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2011,
+     "yearEnd": 2012,
+     "records": 2,
+     "sites": 2,
+     "uncertaintyMissing": 2,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 128,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2016–2026",
+     "historical": false,
+     "outsideKoreanEEZ": false,
+     "yearStart": 2021,
+     "yearEnd": 2021,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    },
+    {
+     "lat0": 37,
+     "lon0": 131,
+     "sizeDeg": 1,
+     "resolutionM": 87721,
+     "period": "2000–2015",
+     "historical": false,
+     "outsideKoreanEEZ": true,
+     "yearStart": 2012,
+     "yearEnd": 2012,
+     "records": 1,
+     "sites": 1,
+     "uncertaintyMissing": 1,
+     "seaAreas": [
+      "Sea of Japan"
+     ],
+     "sources": [
+      "GBIF"
+     ],
+     "citations": [
+      {
+       "title": "mabik_mo",
+       "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6",
+       "doi": "10.15468/czav37",
+       "source": "GBIF",
+       "licenses": [
+        "CC BY-NC 4.0"
+       ]
+      }
+     ],
+     "licenses": [
+      "CC BY-NC 4.0"
+     ]
+    }
+   ],
+   "koreanName": null,
+   "genus": "Octopus",
+   "foundIn": [
+    "GBIF",
+    "OBIS"
+   ],
+   "relatives": [
+    {
+     "aphiaID": 534443,
+     "label": "참문어(동아시아 종)",
+     "name": "Octopus sinensis",
+     "BBVI": 54.2
     }
    ]
   },
