@@ -2714,6 +2714,7 @@ V40 = ROOT / "config" / "verified-indices-v4.0.json"    # superseded by 4.1 (꽃
 V41 = ROOT / "config" / "verified-indices-v4.1.json"    # superseded by 4.2 (sub-national MCUI basis)
 V42 = ROOT / "config" / "verified-indices-v4.2.json"    # superseded by 4.3 (every cell filled, labelled fallbacks)
 V43 = ROOT / "config" / "verified-indices-v4.3.json"    # superseded by 4.4 (참문어 relaxation (d))
+V44 = ROOT / "config" / "verified-indices-v4.4.json"    # superseded by 4.5 (방어 sbGnRH·갑오징어 FMRFamide relaxation (d))
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3117,13 +3118,15 @@ class Verified44Tests(unittest.TestCase):
     갑오징어 keep the labelled floor, and the MCUI re-check changes no value."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V43))
+        self.report, self.old_report = build(*load_inputs(config=V44)), build(*load_inputs(config=V43))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.4", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.4 report is archived as it was
+        archived44 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.4.json"
+        self.assertEqual(render(self.report), archived44.read_text(encoding="utf-8"))
 
     def test_only_two_octopus_cells_move(self):
         for a, s in self.new.items():
@@ -3150,14 +3153,11 @@ class Verified44Tests(unittest.TestCase):
         self.assertLess(x["other_targets"][0]["percentile"], x["percentile"])
 
     def test_floor_now_applies_to_two_species_only(self):
+        # the readiness rows moved on to the 4.5 run (no floor species); this class checks its own build only
         self.assertFalse(self.new[534443]["mbpi_floor"])
         self.assertEqual(self.new[534443]["mbpi_label"], "단일 논문")
-        rows = {r["aphia_id"]: r for r in json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))["species"]}
         for a in (276651, 1666974):
             self.assertTrue(self.new[a]["mbpi_floor"])
-            self.assertEqual(rows[a]["bioactivity_missing_steps"], ["origin", "structure_id", "quantitative_endpoint", "comparable_cohort"])
-            self.assertEqual(rows[a]["mbpi_label"], self.new[a]["mbpi_label"])
-        self.assertEqual(rows[534443]["bioactivity_missing_steps"], [])
 
     def test_partial_records_stay_out_of_scores(self):
         for a, n in ((276651, 1), (1666974, 3)):
@@ -3167,6 +3167,81 @@ class Verified44Tests(unittest.TestCase):
             for r in fresh:
                 self.assertEqual(r["status"], "partial_only")
                 self.assertGreaterEqual(len(r["missing"]), 2)
+
+
+class Verified45Tests(unittest.TestCase):
+    """4.5 (team-lead decision cards 2026-10-05): relaxation (d) also covers 방어 (sbGnRH, its genome's own hormone variant,
+    human GnRHR binding IC50 684 nM) and 갑오징어 (FMRFamide, encoded 11 times by its own transcriptome; its own ChEMBL rows,
+    best human NPFF2 Ki 6.6 nM, excluded from their cohorts). Both are clade-common peptides and say so in their caveats.
+    No species of this run takes the floor; every other cell stays."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V44))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.5", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_four_cells_move(self):
+        for a, s in self.new.items():
+            for k, v in self.old[a]["scores"].items():
+                if a in (276651, 1666974) and k in ("MBPI", "BBVI"):
+                    continue
+                self.assertEqual(s["scores"][k], v, (a, k))
+        self.assertEqual((self.new[276651]["scores"]["MBPI"], self.new[276651]["scores"]["BBVI"]), (7.5, 29.3))
+        self.assertEqual((self.new[1666974]["scores"]["MBPI"], self.new[1666974]["scores"]["BBVI"]), (65.8, 54.2))
+
+    def test_no_species_takes_the_floor_and_the_rule_stays(self):
+        self.assertTrue(self.report["method"]["mbpi_floor"])
+        for s in self.new.values():
+            self.assertFalse(s["mbpi_floor"])
+
+    def test_relaxed_items_re_rank_with_their_own_caveats(self):
+        for a, target, n, pchembl in ((276651, "CHEMBL1855", 1844, 6.165), (1666974, "CHEMBL5952", 138, 8.18)):
+            x = next(t for t in self.new[a]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+            self.assertEqual((x["relaxation"], x["target_chembl_id"]), ("d", target))
+            self.assertEqual((x["cohort_records"], len(x["cohort_pchembl"]), x["pchembl"]), (n, n, pchembl))
+            rank = 100 * (sum(p < x["pchembl"] for p in x["cohort_pchembl"]) + 0.5 * sum(p == x["pchembl"] for p in x["cohort_pchembl"])) / n
+            self.assertAlmostEqual(rank, x["percentile"], places=2)
+            self.assertEqual(x["evidence_factor"], 0.75)
+            self.assertIn(x["peptide_sequence"], x["origin_record"]["translation"])
+            # each relaxed item carries its own caveat naming the clade-commonness
+            self.assertIn("공통", x["caveat"])
+            self.assertTrue(all(m["endpoint"] == x["standard_type"] and m["target_chembl_id"] == x["target_chembl_id"]
+                                for m in x["measurements"]))
+        # 갑오징어: the weaker targets stay visible and out of the score
+        x = next(t for t in self.new[1666974]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+        self.assertEqual([(t["target_chembl_id"], t["standard_type"]) for t in x["other_targets"]],
+                         [("CHEMBL5952", "EC50"), ("CHEMBL3309", "IC50")])
+        self.assertTrue(all(t["percentile"] < x["percentile"] for t in x["other_targets"]))
+        # 참문어 keeps its 4.4 value and caveat wording
+        o = next(t for t in self.new[534443]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+        self.assertEqual((o["pchembl"], o["percentile"], self.new[534443]["scores"]["MBPI"]), (7.999, 94.02, 70.5))
+        self.assertEqual(o["caveat"], next(t for t in self.old[534443]["bioactivity_trace"]
+                                           if t["stratum_kind"] == "relaxed")["caveat"])
+
+    def test_self_rows_are_excluded_from_their_cohorts(self):
+        snap = json.loads((ROOT / "research" / "verified-indices" / "snapshots" /
+                           "relaxed-chembl-cohorts-4.5-2026-10-05.json").read_text(encoding="utf-8"))
+        cohorts = {c["cohort_id"]: c for c in snap["cohorts"]}
+        for check in snap["self_inclusion_checks"]:
+            mol = check.get("molecule_chembl_id")
+            if not mol:
+                self.assertEqual((check["document_hits"], check["molecule_hits"]), (0, 0))
+                continue
+            self.assertTrue(check["excluded_activity_ids"])
+            for c in cohorts.values():
+                ids = {m["activity_id"] for m in c["members"]}
+                self.assertFalse(ids & set(check["excluded_activity_ids"]), c["cohort_id"])
+                self.assertTrue(all(m["molecule"] != mol for m in c["members"]), c["cohort_id"])
+
+    def test_floor_rows_leave_the_readiness_steps(self):
+        rows = {r["aphia_id"]: r for r in json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))["species"]}
+        for a in (276651, 534443, 1666974):
+            self.assertEqual(rows[a]["bioactivity_missing_steps"], [])
+            self.assertNotIn("mbpi_label", rows[a])  # the readiness label travels only with the floor
 
 
 if __name__ == "__main__":

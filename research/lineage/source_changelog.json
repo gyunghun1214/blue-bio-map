@@ -2213,6 +2213,64 @@
      "score_delta": 70.5
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.4",
+   "to_run_id": "verified-4.5",
+   "from_commit": "d33fd66",
+   "to_commit": "8595882",
+   "published_on": "2026-10-05",
+   "method_note": "verified-4.4 (2026-10-05). Team-lead decision cards of 2026-10-05 (\"score 방어 by sbGnRH; score 갑오징어 by FMRFamide; reflect as 4.5 at once\"), applied as fixed in research/verified-indices/prereg-4.5-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) now also covers 방어 and 갑오징어. 방어's sbGnRH (pGlu-HWSYGLSPG-NH2) is encoded with its processing signals by the species' reference genome (BDMU01000006.1, a Goto Island specimen); the identical synthetic peptide's wild-type human GnRH-receptor binding IC50 684 nM (Lu et al. 2007, open access, read in full) ranks in the ChEMBL GnRHR x IC50 cohort. 갑오징어's FMRFamide (FMRF-NH2) is encoded 11 times with processing signals by the species' own transcriptome (GGQU01104929.1, a Qingdao specimen); its own ChEMBL rows (human NPFF2 Ki 6.6 nM best) rank in the NPFF2 x Ki cohort with the peptide's rows excluded (prereg-4.5 2.3). Both are clade-common peptides (pan-perciform hormone variant; phylum-wide invertebrate neuropeptide): the team lead ruled they fall outside the letter of the 1.6 ban (vertebrate-common substances), and the commonness is stated in each item's caveat. The 1.6 ban itself, the cohort filters and every other value are unchanged; the floor rule stays registered but no species of this run uses it. (2) Presentation: a relaxed item's caveat now lives on its evidence row (species-specific wording); 참문어's caveat text is unchanged. An item's measurements list only the best target x endpoint's rows; the other targets stay visible beside it with their percentiles.",
+   "entries": [
+    {
+     "change_id": "verified-4.5#0001",
+     "entity_type": "assay",
+     "entity_id": "276651|relaxed|SEQ:QHWSYGLSPG|ChEMBL_37:CHEMBL1855|IC50",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "ChEMBL_37:CHEMBL1855|IC50",
+     "new_value": "6.165 @ 9.98",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.5",
+     "from_run_id": "verified-4.4",
+     "score_before": 0.0,
+     "score_after": 7.5,
+     "score_delta": 7.5
+    },
+    {
+     "change_id": "verified-4.5#0002",
+     "entity_type": "assay",
+     "entity_id": "534443|relaxed|SEQ:CYFRNCPIG|ChEMBL_37:CHEMBL1921|EC50",
+     "change_type": "conversion",
+     "old_source": "ChEMBL_37:CHEMBL1921|EC50",
+     "old_value": "7.999",
+     "new_source": "ChEMBL_37:CHEMBL1921|EC50",
+     "new_value": "7.999",
+     "reason": "같은 기록의 환산값 또는 단위 변환 변경",
+     "run_id": "verified-4.5",
+     "from_run_id": "verified-4.4",
+     "score_before": 70.5,
+     "score_after": 70.5,
+     "score_delta": 0.0
+    },
+    {
+     "change_id": "verified-4.5#0003",
+     "entity_type": "assay",
+     "entity_id": "1666974|relaxed|SEQ:FMRF|ChEMBL_37:CHEMBL5952|Ki",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "ChEMBL_37:CHEMBL5952|Ki",
+     "new_value": "8.18 @ 87.68",
+     "reason": "항목 추가 (기록 3건)",
+     "run_id": "verified-4.5",
+     "from_run_id": "verified-4.4",
+     "score_before": 0.0,
+     "score_after": 65.8,
+     "score_delta": 65.8
+    }
+   ]
   }
  ]
 }
