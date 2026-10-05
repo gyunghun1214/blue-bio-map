@@ -2097,6 +2097,96 @@
    "published_on": "2026-10-05",
    "method_note": "verified-4.1 (2026-10-04). Team-lead decision of 2026-10-04: the competition deadline (2026-10-30) falls before every official route that could fill the ten empty MCUI cells (IUCN 2026-2 on 2026-11-19; the Japanese 5th marine red list from FY2026), so the conservation axis accepts one more basis: an official SUB-NATIONAL red list (prefecture, federal subject, province) of a state in the species' native range. It ranks below every national basis and never overrides one; DD and regional extinction give no score; several regions are reduced by the median (the lower-risk of the two middle categories when the count is even). Every value carries a '지방 목록 참고값' label, its own matrix marker and the result of a pre-registered over-statement back-test (research/verified-indices/prereg-subnational-mcui-2026-10-04.md, committed before the rows were collected). The extension was decided after seeing which cells it would fill; that is stated in the record and on the method tab. No cohort, weight, coefficient or threshold of any other axis changes.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.2",
+   "to_run_id": "verified-4.3",
+   "from_commit": "4f1af11",
+   "to_commit": "1abb291",
+   "published_on": "2026-10-05",
+   "method_note": "verified-4.2 (2026-10-04). Team-lead decisions of 2026-10-05 (\"fill every value; drop every pilot or withheld state\"), pre-registered before any value was computed in research/verified-indices/prereg-fill-all-4.3-2026-10-05.md: (1) MCUI: when IUCN, the Korean national list, every range-state national list and every sub-national list are silent, a met Rapid LC check (thresholds and snapshot unchanged since 3.15) is scored as LC-equivalent 10 with the label '자체 예비평가(Rapid LC) · 역검증 미통과' and its own matrix marker; this reverses the 2026-10-04 decision that kept it reference-only. (2) MCUI: the 미역 row of the Primorsky Krai governor decree No. 272 (2002), read in the docs.cntd.ru legal-database text and checked current against the official 2022 amendment scan No. 723-пп, counts as read in the original under the 4.2 pre-registration. (3) MBPI: a fourth peptide stratum, xanthine-oxidase (XO) IC50, with a literature-built fixed cohort (members confirmed by two independent checks). (4) MBPI: a species' own single-substance value that fails exactly one condition may be scored with a label naming the relaxed condition. (5) MBPI: a species with no item in any stratum gets the floor value 0 labelled '효능 근거 미확인(하한값)' (meaning: no qualifying evidence yet, not 'no activity'); its BBVI is 0.5 x MFPI, labelled 'MBPI 하한값 포함'. The extensions were decided after seeing which cells they would fill; the pre-registration says so. No cohort, weight, coefficient or threshold of MFPI, of the existing MBPI strata or of IUCN/national/sub-national MCUI changes.",
+   "entries": [
+    {
+     "change_id": "verified-4.3#0001",
+     "entity_type": "species",
+     "entity_id": "276651",
+     "change_type": "fallback",
+     "old_source": "",
+     "old_value": "None",
+     "new_source": "mbpi_floor",
+     "new_value": "0.0",
+     "reason": "MBPI 하한값 규칙(4.3 사전 등록 1.5): 어느 층에도 항목 없음",
+     "run_id": "verified-4.3",
+     "from_run_id": "verified-4.2",
+     "score_before": null,
+     "score_after": 0.0,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.3#0002",
+     "entity_type": "assay",
+     "entity_id": "281273|xo|SEQ:APPERKYSVW|xo-peptide-literature-2026-10-05",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "xo-peptide-literature-2026-10-05",
+     "new_value": "2.232 @ 50.0",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.3",
+     "from_run_id": "verified-4.2",
+     "score_before": null,
+     "score_after": 53.8,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.3#0003",
+     "entity_type": "assay",
+     "entity_id": "281273|xo|SEQ:WDDMEKIW|xo-peptide-literature-2026-10-05",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "xo-peptide-literature-2026-10-05",
+     "new_value": "2.5 @ 71.74",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.3",
+     "from_run_id": "verified-4.2",
+     "score_before": null,
+     "score_after": 53.8,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.3#0004",
+     "entity_type": "species",
+     "entity_id": "534443",
+     "change_type": "fallback",
+     "old_source": "",
+     "old_value": "None",
+     "new_source": "mbpi_floor",
+     "new_value": "0.0",
+     "reason": "MBPI 하한값 규칙(4.3 사전 등록 1.5): 어느 층에도 항목 없음",
+     "run_id": "verified-4.3",
+     "from_run_id": "verified-4.2",
+     "score_before": null,
+     "score_after": 0.0,
+     "score_delta": null
+    },
+    {
+     "change_id": "verified-4.3#0005",
+     "entity_type": "species",
+     "entity_id": "1666974",
+     "change_type": "fallback",
+     "old_source": "",
+     "old_value": "None",
+     "new_source": "mbpi_floor",
+     "new_value": "0.0",
+     "reason": "MBPI 하한값 규칙(4.3 사전 등록 1.5): 어느 층에도 항목 없음",
+     "run_id": "verified-4.3",
+     "from_run_id": "verified-4.2",
+     "score_before": null,
+     "score_after": 0.0,
+     "score_delta": null
+    }
+   ]
   }
  ]
 }

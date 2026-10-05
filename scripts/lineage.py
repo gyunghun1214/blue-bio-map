@@ -443,7 +443,7 @@ def diff_markdown(old: dict, new: dict, entries: list[dict], from_run: str, to_r
         es = by_species[a]
         kinds = ", ".join(CHANGE_TYPES[k] for k in sorted({e["change_type"] for e in es}))
         out.append(f"- **{name_of(a, new, old)}** MBPI {show(sa)}→{show(sb)}: {kinds} — "
-                   + "; ".join(f"{e['entity_id'].split('|', 2)[2]}: {e['reason']} [{e['change_id']}]" for e in es[:4])
+                   + "; ".join(f"{e['entity_id'].split('|', 2)[2] if e['entity_type'] == 'assay' else '종 전체'}: {e['reason']} [{e['change_id']}]" for e in es[:4])
                    + (f" 외 {len(es) - 4}건" if len(es) > 4 else ""))
     src = [e for e in entries if e["entity_type"] == "source"]
     if src:
