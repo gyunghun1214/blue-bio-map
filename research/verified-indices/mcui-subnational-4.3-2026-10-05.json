@@ -728,7 +728,7 @@
    "country_ko": "일본",
    "list": "兵庫県版レッドデータブック2020（藻類）海藻類",
    "edition": "2020",
-   "url": "https://www.kankyo.pref.hyogo.lg.jp/!drafts/leg_8364",
+   "url": "https://www.kankyo.pref.hyogo.lg.jp/download_file/view/13580/20725",
    "name_as_published": "ヒジキ Sargassum fusiforme (Harvey) Setchell",
    "category_as_published": "B",
    "scope_as_published": "県内日本海沿岸に適用",
@@ -743,7 +743,7 @@
   {
    "aphia_id": 413600,
    "scientific_name": "Sinonovacula constricta",
-   "korean_name": "맛조개",
+   "korean_name": "가리맛조개",
    "official_category": "LC",
    "official_basis": "national",
    "official_source_id": "nibr_red_data_book_2024",
@@ -910,7 +910,7 @@
      "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
     }
    ],
-   "note": "일본 환경성 2020 국가 목록은 NT로 싣는다(후쿠오카 목록의 環境省 열)."
+   "note": "후쿠오카 목록의 환경성 열 표기(환경성 2020 원본 패류 목록에서는 확인되지 않음)."
   },
   {
    "aphia_id": 836041,
@@ -998,14 +998,15 @@
      "country_ko": "일본",
      "source_id": "miyazaki_redlist2025",
      "list": "宮崎県版レッドリスト 2025年度改訂版 貝類",
-     "edition": "2026",
+     "edition": "2025年度改訂版(2026-03-31 공표)",
      "name_as_published": "アサリ Ruditapes philippinarum",
      "category_as_published": "DD-2",
      "category": null,
      "species_level": true,
      "verified_in_original": true,
      "reviewed": true,
-     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독"
+     "checked_by": "이 세션에서 공식 파일을 직접 내려받아 판독",
+     "note": "목록 이름은 〈貝類〉 구분이지만 실제 파일은 전 분류군 목록 PDF다."
     }
    ]
   },
