@@ -381,3 +381,5 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 /* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
 #comparison{overscroll-behavior-x:contain;scrollbar-width:thin}
 #comparison:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* Phones: a narrow first column leaves room for more than one species, so the sideways scroll is visible */
+@media (max-width:740px){#comparison thead th:first-child,#comparison tbody th{min-width:96px;width:96px;word-break:keep-all}}
