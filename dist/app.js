@@ -2101,10 +2101,24 @@ function valueCellGroups(all=false){
 }
 // Figure 5 legend colours. A cell with several typed species takes the first type in the report's precedence.
 const matrixTypeColour={baseline_survey:'#3f7fcf',sustainable_use:'#2f9a57',conservation_priority:'#d7392f',alternative_production:'#f2b233'};
+const CELL_FILL=.48;  // the map's cell fill; the legend swatches use the same alpha so both read alike
 function cellMatrixType(g){
   const counts={};
   for(const s of g.species.values()){const t=matrixType(s);if(t)counts[t]=(counts[t]||0)+1;}
   return {type:(matrixRule()?.cell_colour_precedence||[]).find(t=>counts[t])||null,counts};
+}
+const cellRange=g=>`${g.lat}–${g.lat+g.size}°N · ${g.lon}–${g.lon+g.size}°E`;
+const colourRuleLine=()=>`셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형(${matrixRule().cell_colour_precedence.map(matrixTypeLabel).join(' > ')})`;
+// The species of the cell's colour type, by name (not a value rank), at most three.
+function colourSpecies(g){
+  const t=cellMatrixType(g).type,names=[...g.species.values()].filter(s=>t&&matrixType(s)===t).map(s=>s.label).sort((a,b)=>a.localeCompare(b,'ko'));
+  return names.slice(0,3).join(', ')+(names.length>3?` 외 ${names.length-3}종`:'');
+}
+// The selected species' own type beside the cell colour, so a cell of another colour explains itself.
+function selectedCellLine(g){
+  if(!selected||!g.species.has(selected.aphiaID)||!matrixRule())return '';
+  const own=matrixType(selected),t=cellMatrixType(g).type,head=`선택 종 ${selected.label}: ${own?matrixTypeLabel(own):'유형 없음'}`;
+  return !t?head+' / 이 셀 색: 유형 없음':own===t?head+' = 이 셀 색':`${head} / 이 셀 색: ${matrixTypeLabel(t)}(같은 셀의 ${colourSpecies(g)} 때문${own?' · 우선순위 규칙':''})`;
 }
 const sufficiencyLayers={priority:false,unexplored:false};
 function valueSpeciesType(s){
@@ -2124,9 +2138,11 @@ function valueSpeciesType(s){
 const valueCellOrder=groups=>[...groups].sort(([,a],[,b])=>b.size-a.size||!!cellMatrixType(a).type-!!cellMatrixType(b).type);
 function valueCellStyle(g,active){
   const {type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
-  return type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
-      fillColor:matrixTypeColour[type],fillOpacity:active?.62:.48}
+  const base=type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
+      fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
     :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
+  // cells holding the selected species get a thick outline; the fill keeps the cell's own colour
+  return selected&&g.species.has(selected.aphiaID)?{...base,color:basemap==='satellite'?'#ffffff':'#102e45',weight:active?4.5:3.5}:base;
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&separateMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
@@ -2180,7 +2196,7 @@ function showValueCell(key){
   if(!group){panel.innerHTML='<p>선택한 공개 격자가 현재 기간의 자료에 없습니다. 지도의 다른 격자를 선택하세요.</p>';return;}
   const species=[...group.species.values()].sort((a,b)=>a.label.localeCompare(b.label,'ko'));
   panel.innerHTML='<h3>선택한 공개 격자 · 종별 근거</h3><p>'+
-    esc(group.lat)+'–'+esc(group.lat+group.size)+'°N · '+esc(group.lon)+'–'+esc(group.lon+group.size)+'°E ('+esc(group.size)+'° 공개 범위)</p>'+
+    esc(cellRange(group))+' ('+esc(group.size)+'° 공개 범위)</p>'+(selectedCellLine(group)?'<p class="value-selected-line">'+esc(selectedCellLine(group))+'</p>':'')+
     cellSummaryHtml(species)+'<p class="fine">연결 종 '+species.length+'종 · 해당 공개 셀에 기록이 있는 종만 표시합니다. 지표는 종 전체에 대한 '+(released()?'값':'시범값')+'이며 이 해역에서 측정한 값이 아닙니다. 셀의 합산 점수·우선순위는 산출하지 않았습니다.'+cellTypeLine(group)+'</p>'+
     species.map(s=>valueSpeciesCard(s,group.records?.get(s.aphiaID))).join('');
   panel.querySelectorAll('[data-value-species]').forEach(button=>button.addEventListener('click',()=>{
@@ -2192,7 +2208,7 @@ function cellTypeLine(g){
   if(!matrixRule())return '';
   const {type,counts}=cellMatrixType(g),kinds=Object.entries(counts),typedN=kinds.reduce((n,[,k])=>n+k,0);
   if(!type)return ' 이 셀에는 매트릭스 유형을 산출한 종이 없어 회색 음영·점선 테두리(유형 없음)로 둡니다.';
-  return ` 셀 색 ${matrixTypeLabel(type)} · 유형 산출 ${typedN}종(${kinds.map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')})${typedNotes(g)}${g.species.size>typedN?' · 유형 없음 '+(g.species.size-typedN)+'종':''}${kinds.length>1?' · 여러 유형이라 우선순위 규칙으로 한 색 선택':''}. 색은 출현 기록 셀 × 종 유형이며 해역의 자원량·분포가 아닙니다.`;
+  return ` 셀 색 ${matrixTypeLabel(type)}(색을 정한 종: ${colourSpecies(g)}) · 유형 산출 ${typedN}종(${kinds.map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')})${typedNotes(g)}${g.species.size>typedN?' · 유형 없음 '+(g.species.size-typedN)+'종':''}${kinds.length>1?' · 여러 유형이라 우선순위 규칙으로 한 색 선택':''}. ${colourRuleLine()}. 색은 출현 기록 셀 × 종 유형이며 해역의 자원량·분포가 아닙니다.`;
 }
 const cellCentre=g=>[g.lat+g.size/2,g.lon+g.size/2];
 function drawSufficiency(g){
@@ -2231,6 +2247,7 @@ function renderValueMap(){
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
   if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
+  renderValueLegend(groups);
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
   $('layer-unexplored-count').textContent=`${layerCounts.unexplored.n}종 · 지도 표시 ${layerCounts.unexplored.shown}종`;
@@ -2249,16 +2266,19 @@ function renderValueMap(){
   // Cells the chips leave out stay as faint grey, so the map shows where the result is and where it is not.
   if(activeUses.size)for(const g of valueCellGroups(true).values())if(!groups.has(valueCellKey(g.lat,g.lon,g.size)))
     L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false}).addTo(overlay);
-  if(!map.getPane('valueGlow')){map.createPane('valueGlow').style.zIndex=390;}
-  for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)L.rectangle([[g.lat-g.size*.15,g.lon-g.size*.15],[g.lat+g.size*1.15,g.lon+g.size*1.15]],{pane:'valueGlow',stroke:false,fillColor:matrixTypeColour[t],fillOpacity:.5,interactive:false}).addTo(overlay);}
   for(const [key,g] of valueCellOrder(groups)){
     const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
     const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
-    layer.bindTooltip('공개 '+g.size+'° 격자 · '+g.species.size+'종 · '+(type?'색 '+matrixTypeLabel(type)+(mixed?' · 유형 혼재 ':' · ')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 없음 '+untyped+'종':''):'유형 산출 종 없음')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g));
+    // range, colour and who set it, the selected species' own type, then the counts and the colour rule
+    const sel=selectedCellLine(g),counted=(type?(mixed?'유형 혼재 ':'')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 없음 '+untyped+'종':''):'')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g);
+    layer.bindTooltip(cellRange(g)+' · 공개 '+g.size+'° 격자 · '+g.species.size+'종<br>'+(type?'<b>색 '+matrixTypeLabel(type)+'</b>(색을 정한 종: '+esc(colourSpecies(g))+')':'유형 산출 종 없음')+
+      (sel?'<br><b>'+esc(sel)+'</b>':'')+'<br>'+counted.replace(/^ · /,'')+(rule?'<br>'+colourRuleLine():''),{className:'value-tip'});
+    layer.on('tooltipopen',({tooltip:t})=>placeTip(t));
     drawSufficiency(g);
-    layer.on('click',()=>{showValueCell(key);renderMap();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+    // renderMap redraws the cells, so the tapped cell's tooltip opens again on its new layer (touch has no hover)
+    layer.on('click',()=>{showValueCell(key);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
   }
   // Outside candidates have no score and no type: a marker per public cell, hidden while use chips filter the species.
   if(sufficiencyLayers.unexplored&&!activeUses.size)for(const g of outsideCells().values()){
@@ -2272,6 +2292,43 @@ function renderValueMap(){
     map.fitBounds([...groups.values()].flatMap(g=>[[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]]),
       {...fitPad(35),maxZoom:7,animate:false});
   }
+}
+// The map sits under the floating legend (#map is its own stacking context, so z-index cannot lift a tooltip over it):
+// open the tooltip on the side that leaves the most of it inside the map and outside the legend.
+function placeTip(t){
+  const legend=document.querySelector('.map-ui-bl')?.getBoundingClientRect(),frame=map.getContainer().getBoundingClientRect();
+  const cut=(a,b)=>({left:Math.max(a.left,b.left),right:Math.min(a.right,b.right),top:Math.max(a.top,b.top),bottom:Math.min(a.bottom,b.bottom)});
+  const area=r=>Math.max(0,r.right-r.left)*Math.max(0,r.bottom-r.top);
+  const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-(legend?area(cut(r,legend)):0);};
+  let best=['auto',-1];
+  for(const d of ['auto','right','left','top','bottom']){t.options.direction=d;t.update();const v=seen();if(v>best[1])best=[d,v];}
+  t.options.direction=best[0];t.update();
+}
+// The 2×2 legend: report labels, the map's own colours and fill, and the cell count per type (sums to the public cells).
+function renderValueLegend(groups){
+  const rule=matrixRule(),tally={},alpha=Math.round(CELL_FILL*255).toString(16);
+  let none=0;for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)tally[t]=(tally[t]||0)+1;else none++;}
+  document.querySelectorAll('#value-legend [data-key]').forEach(el=>{
+    const t=rule?.types?.[el.dataset.key],c=matrixTypeColour[t?.id];if(!t)return;
+    el.querySelector('b').textContent=t.label;el.querySelector('em').textContent=(tally[t.id]||0)+'셀';
+    el.style.background=c+alpha;el.style.borderColor=c;
+  });
+  $('v-none-count').textContent=none+'셀';
+  if(!rule)return;
+  $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
+  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
+  $('v-rule-line').textContent=colourRuleLine();
+}
+// Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
+function renderTypeTable(){
+  const rule=matrixRule(),body=document.querySelector('#type-table tbody');if(!body)return;
+  if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
+  const key=id=>Object.keys(rule.types).find(k=>rule.types[k].id===id),cmp=(id,i)=>key(id).split('_')[i]==='high'?'≥':'<';
+  const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd)=>`<i class="type-swatch" style="background:${bg};border-color:${bd}"></i>`;
+  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td>${esc(matrixTypeLabel(id))}</td>`+
+    `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
+    `<td>우선순위 ${i+1}위${i?'':' · 이 유형 종이 하나라도 있으면 이 색'}</td></tr>`).join('')+
+    `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>유형 없음</td><td>BBVI·MCUI 한 쌍 미산출</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
 }
 function renderOutsideList(){
   const box=$('unexplored-outside');if(!box)return;
@@ -2561,7 +2618,7 @@ async function loadCollection(){
     $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
     $('connection-state').textContent=data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
