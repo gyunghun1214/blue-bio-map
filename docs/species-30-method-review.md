@@ -187,3 +187,70 @@
 
 - 갑오징어(1666974)는 IUCN 전 지구 평가가 DD(2009, *Sepia esculenta*)로 있다. 국가 평가 분기는 이 경우도 덮지만(`category_not_numeric`), 화면은 "IUCN 전 지구 평가 미확인"으로 적어 사실과 달랐다.
 - 화면(`iucnGlobalNote`)은 이제 추적 기록에 IUCN 등급이 있으면 "IUCN 전 지구 DD(2009) · 시범 숫자 없음", 없으면 "IUCN 전 지구 평가 미확인"으로 적는다. 점수·매트릭스·순위 변화 없음(문구만).
+
+## 13. MBPI 후보 재검토·출현 셀 진단 (2026-10-06, 기록과 제안만)
+
+이 절은 데이터·규칙을 바꾸지 않는다. 13-1과 13-2는 **제안**이고, 구현하지 않았다. 소유자가 결정할 사항이다.
+
+- 근거 기록: [research/verified-indices/mbpi-candidates-reviewed-2026-10-06.md](../research/verified-indices/mbpi-candidates-reviewed-2026-10-06.md)
+- 출현 셀 진단: [research/expansion-30/audit-2026-10-06.md](../research/expansion-30/audit-2026-10-06.md)
+
+결과 요약:
+
+- 미역 KNFL과 참굴 AEYLCEAC는 2.2부터 이미 점수 입력이다. 원문 재검증(에이전트 3개)에서 행과 모순되는 문장이 없었고, 값 변화도 없다.
+- 넙치·전복 내장·전복 외투막·해삼 DDQ?HIF·살오징어 IIY/NPPK는 불통과 사유를 원문 문장으로 확인했다.
+  - 전복 외투막은 공개 HTML 전문을 읽을 수 있어 "원문 대기"가 아니다. 해삼과 같은 서열 표기 불일치로 보류한다.
+- 다시마·가시파래·맛조개는 현재 공개 셀이 있다(21·22·9셀). 불확도 결측은 막는 원인이 아니고, 셀은 CC BY-NC 4.0 기록에 의존한다. 그래서 불확도 결측 처리 결정안은 만들지 않았다.
+
+### 13-1. 제안: in silico 유래 합성 펩타이드 인정 여부 (D6 관련)
+
+- **대상**: 살오징어 IIY·NPPK(Yu et al. 2019 *IJMS* 20:4159, 10.3390/ijms20174159).
+  - 미오신 중쇄(GenBank ADU19853.1)를 컴퓨터로 절단해 예측한 서열이다.
+  - 그 서열을 합성해 HHL 기질로 측정했다. 값은 pIC50 4.58·4.41로만 인쇄됐다.
+- **D6와의 관계**
+  - 9월 28일 D6은 천연 정제 펩타이드(살오징어 Wako 1996) 인정 안이었고, 그때는 불채택이었다.
+  - 이후 3.14(팀장 결정 2026-10-01)에서 "서열을 확인한 정제 단일 펩타이드"가 인정됐다. 살오징어 YALPHA·GYALPHA가 그 경로로 점수 입력이 됐다.
+  - 이번 안은 그 다음 단계다: 종 재료에서 검출하지 않은 서열도 인정할지.
+- **현재 규칙 원문**
+  - `config/verified-indices-v4.5.json` `peptide_bioactivity.origin_material_rule`: "a synthetic peptide or, from 3.14, a sequence-confirmed purified single peptide of the species' own material, with an ACE IC50 in uM in the text and HHL as substrate".
+  - IIY·NPPK는 "species' own material"(검출 없음)과 "IC50 in uM in the text"(pIC50만 인쇄) **두 조건**에 걸린다. 그래서 한 조건만 어긋난 경우에 쓰는 4.3 완화(1.4)의 대상도 아니다.
+- **선례**
+  - 같은 종: [verified-pilot-3-method.md](../research/verified-indices/verified-pilot-3-method.md) 54행 "보류: 미오신 서열의 in silico 절단 예측이며, 오징어 재료에서 방출을 관찰하지 않음".
+  - 다른 종: [oyster-mbpi-2026-09-27.md](../research/verified-indices/oyster-mbpi-2026-09-27.md) 98행, 참굴 2023 *Molecules* 28:651 "탈락: in silico — 굴 재료에서 방출을 관찰하지 않았다".
+  - 완화 (d)의 기원 규칙(`relaxed_bioactivity.origin_rule`): "The species' own public primary sequence record … must encode or produce the tested mature sequence with its processing signals"(4.1 꽃게 선례).
+    - 서열 기록만으로 기원을 인정한 유일한 경로다.
+    - 다만 "processing signals"가 있어야 한다. 즉 그 생물이 성숙 펩타이드를 실제로 만든다는 근거가 필요하다. 소화 효소의 절단 예측은 이 조건에 해당하지 않는다.
+- **외부 문헌**
+  - Food Sci Anim Resour 2026 리뷰(PMC12995025, 10.1007/s44463-026-00061-0, CC BY-NC-ND 4.0) 결론 절: "the validation of the in silico-predicted BAPs remains a significant challenge".
+  - 이 문장은 활성 검증에 관한 것이고, 기원(방출)에 관한 표준 문장은 찾지 못했다.
+  - 공개 표준 수준의 지침은 확인하지 못했다.
+
+| 선택지 | 장점 | 단점 | 영향(이번에 확인한 범위) |
+|---|---|---|---|
+| A. 현행 유지 (권장 기본값) | 기원 = 종 재료에서 확인. 3.x~4.5 모든 펩타이드 행과 같은 기준이다. 참굴 2023 *Molecules* 탈락과도 일관된다 | 합성·HHL 측정이 있는 서열을 쓰지 못한다 | 변화 없음 |
+| B. in silico 서열 + 합성 + HHL + µM 값이 있으면 별도 표시로 인정 | 활성 측정 자체는 실험값이다 | 절단 예측은 실제 방출을 보장하지 않는다. 미오신처럼 보존된 단백질의 짧은 조각(IIY 3잔기)은 다른 종에도 있을 수 있어 종 특이성이 약하다(이번에 확인하지 않음). 참굴 탈락 선례를 다시 열어야 한다 | 살오징어 IIY·NPPK는 값이 pIC50뿐이라 B만으로는 여전히 불통과. µM 환산(pIC50 → 10^(6−pIC50) µM)도 따로 정해야 한다 |
+| C. B + pIC50 환산 허용 | 산술 환산이라 분자량 가정이 없다 | 두 규칙을 동시에 완화한다. 원칙 "채움만을 이유로 완화하지 않는다"에 걸릴 수 있다 | 살오징어에 IIY 항목이 생긴다. 점수는 재빌드해야 알 수 있어 이번에는 계산하지 않았다 |
+
+### 13-2. 제안: 원문 안 서열 표기 불일치를 원문 분자량으로 판별할지
+
+- **현재 처리**
+  - 같은 논문에서 서열이 두 가지로 인쇄되면 행에 넣지 않는다.
+  - 선례: 해삼 DDQYHIF(2026-09-28), 멸치 NHP(2026-10-01), 이번 전복 외투막 GPPGPAGAR.
+- **질량을 쓴 선례**
+  - 살오징어 SAGSLVP는 인쇄된 분자량(657 Da)이 서열 계산값(629.7 Da)과 달라 보류됐다([bioactivity-audit.md](../research/verified-indices/bioactivity-audit.md) 6행).
+  - 즉 질량 대조는 이미 **불일치를 찾는 검사**로 쓰고 있다. 제안은 같은 검사를 **표기 불일치를 판별**하는 데도 쓰자는 것이다.
+- **판별 조건 안**
+  - 원문이 서열 옆에 분자량을 인쇄했다.
+  - 후보 서열 가운데 하나만 그 값과 ±0.1 Da(평균 질량) 안에서 맞는다.
+  - IC50 문장의 서열이 판별된 서열과 다르면 그 사실을 행에 적는다.
+  - 순서만 다른 서열(멸치 NHP/NPH)은 질량이 같으므로 계속 제외한다.
+
+| 선택지 | 영향 (같은 AHTPDB 비교집단·백분위 함수로 계산, 전체 재빌드 아님) |
+|---|---|
+| A. 현행 유지 | 변화 없음 |
+| B. 질량 판별 허용 | 해삼 MBPI 8.7 → 14.9 (DDQYHIF, 표 1 936.98 Da = 계산 936.98). 전복 MBPI 15.6 → 22.1 (GPPGPAGAR, 2.5절 778.85 Da = 계산 778.87). 멸치 NHP는 판별 불가. BBVI 등 다른 값은 재빌드로만 확정된다 |
+
+### 13-3. 출현 셀: 결정할 것 없음 (기록)
+
+- 9월 28일 PR 3 안 중 D1(CC BY-NC 4.0)은 #72로, D2는 팀장 결정에 따라 100 m 대신 1 km로 반영됐다(2026-10-01). D4(국가 대체 좌표)는 구현되지 않았다.
+- 불확도 결측을 허용하는 근거는 코드 16행·305행과 map-1 규칙이다. 결측을 제외하면 후보 셀 567개가 54개로 줄고, 7종의 셀이 모두 없어진다(audit 참고).
