@@ -11,8 +11,9 @@ vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
-  'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped});'+
-  'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};',ctx);
+  'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped,'+
+  'CELL_FILL,cellRange,colourSpecies,selectedCellLine});'+
+  'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};globalThis.setSelected=v=>{selected=v};',ctx);
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
@@ -20,10 +21,14 @@ assert.equal(report.method_version,'verified-4.5');  // 4.5 extends the relaxati
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);
-const labels=['기초조사·관찰 대상','지속가능 활용 후보','보전 우선·모니터링','대체생산·배양 연구'];
+// the legend is laid out like the comparison matrix: MCUI high on the top row, BBVI high in the right column
+const labels=['보전 우선·모니터링','대체생산·배양 연구','기초조사·관찰 대상','지속가능 활용 후보'];
 assert.deepEqual(Object.values(rule.types).map(t=>t.label).sort(),[...labels].sort());
 const legend=read('index.html').match(/<div id="value-legend"[^]*?<\/div>/)[0];
-assert.deepEqual([...legend.matchAll(/role="listitem">([^<]+)</g)].map(m=>m[1]),labels);
+const legendItems=[...legend.matchAll(/role="listitem" data-key="([^"]+)"><b>([^<]+)</g)];
+assert.deepEqual(legendItems.map(m=>m[2]),labels);
+for(const [,key,label] of legendItems)assert.equal(rule.types[key].label,label,key+': the fallback label is the report label of that key');
+assert.deepEqual(legendItems.map(m=>m[1]),['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui']);
 assert.match(read('index.html'),/출현 기록이 있는 셀 × 그 셀에 기록된 종의 매트릭스 유형’입니다\. 해역의 자원량·분포·해역 점수가 아닙니다/);
 assert.deepEqual(rule.cell_colour_precedence,['conservation_priority','alternative_production','sustainable_use','baseline_survey']);
 assert.deepEqual(Object.keys(ctx.matrixTypeColour).sort(),[...rule.cell_colour_precedence].sort());
@@ -97,6 +102,21 @@ assert.deepEqual([held.dashArray,held.fillColor],['5 4','#b7c0ca']);
 const g=(size,...species)=>({size,species:new Map(species.map((s,i)=>[i,s]))});
 const order=Array.from(ctx.valueCellOrder(new Map([['typed1',g(1,fake(80,10))],['held4',g(4,fake(null,80))],['held1',g(1,fake(null,80))]])),([k])=>k);
 assert.deepEqual(order,['held4','held1','typed1']);
+
+// (10) Selected species: its cells keep their own colour and fill and get a thick outline; the tooltip line tells the
+// species' own type apart from the colour another species set. Range is the cell extent only.
+const ga={...fake(80,10),label:'가',aphiaID:1},na={...fake(10,80),label:'나',aphiaID:2};
+const both={lat:33,lon:126,size:1,species:new Map([[1,ga],[2,na]])};
+assert.equal(ctx.cellRange(both),'33–34°N · 126–127°E');
+assert.equal(ctx.colourSpecies(both),'나');
+ctx.setSelected(ga);
+const picked=ctx.valueCellStyle(both,false);
+assert.deepEqual([picked.fillColor,picked.fillOpacity,picked.weight,picked.color],[ctx.matrixTypeColour.conservation_priority,ctx.CELL_FILL,3.5,'#ffffff']);
+assert.equal(ctx.selectedCellLine(both),'선택 종 가: 지속가능 활용 후보 / 이 셀 색: 보전 우선·모니터링(같은 셀의 나 때문 · 우선순위 규칙)');
+ctx.setSelected(na);assert.equal(ctx.selectedCellLine(both),'선택 종 나: 보전 우선·모니터링 = 이 셀 색');
+ctx.setSelected(null);assert.equal(ctx.selectedCellLine(both),'');assert.equal(ctx.valueCellStyle(both,false).weight,2);
+const many={lat:30,lon:120,size:4,species:new Map(['라','다','마','가'].map((label,i)=>[i,{...fake(10,80),label,aphiaID:i}]))};
+assert.equal(ctx.colourSpecies(many),'가, 다, 라 외 1종','names, not a value rank');
 
 // (10) Layer counts come from the report; a flagged species without a public cell is listed, never silently dropped.
 const flagged=flag=>next.species.filter(s=>s.assessment?.[flag]);
