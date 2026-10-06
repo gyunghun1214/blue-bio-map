@@ -378,3 +378,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix-point.pilot.national.rapidlc{border-radius:5px;border-style:dotted;border-color:#5f6b73}
 .matrix-point.pilot.rapidlc:not(.single){background:#5f6b73}
 .matrix-point.pilot.floor,.matrix-point.pilot.national.single.floor{border-color:#8a959c}
+/* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
+#comparison{overscroll-behavior-x:contain;scrollbar-width:thin}
+#comparison:focus-visible{outline:2px solid var(--teal);outline-offset:2px}

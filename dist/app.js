@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonPage = 0, matrixReadiness = new Map();
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
 const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
@@ -1335,7 +1335,7 @@ function setView(view,toTop=true) {
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
-  if(view==='compare') requestAnimationFrame(declutterPointLabels);
+  if(view==='compare'){if(data)syncComparison();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
   // toTop=false, so the page does not jump up first and then travel the whole way back down.
   if(changed&&toTop)window.scrollTo(0,0);
@@ -1561,7 +1561,7 @@ function renderList() {
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;comparisonPage=Math.floor(data.species.indexOf(item)/5);periodFilter='all';renderList();renderDetail();renderMap();renderComparison();writeHash();
+  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();writeHash();
 }
 
 function renderDetail() {
@@ -2436,9 +2436,7 @@ function initMap(geography){
 }
 
 function renderComparison(){
-  const compared=data.species.slice(comparisonPage*5,comparisonPage*5+5);
-  $('comparison-page').textContent=`${comparisonPage+1} / ${Math.ceil(data.species.length/5)} · ${comparisonPage*5+1}–${comparisonPage*5+compared.length}종`;
-  $('comparison-prev').disabled=comparisonPage===0;$('comparison-next').disabled=(comparisonPage+1)*5>=data.species.length;
+  const compared=data.species, keep=$('comparison').scrollLeft;
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
@@ -2476,18 +2474,39 @@ function renderComparison(){
   $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${compared.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${compared.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
+  $('comparison').scrollLeft=keep;syncComparison();
+}
+// The table holds every species and scrolls sideways. A species picked elsewhere (comparisonFocus) is brought next to the
+// sticky first column once the tab is visible; the label and buttons follow the columns actually on screen, measured
+// because column widths vary with their content. Hidden or layout-free: nothing to measure, so all N and both buttons off.
+function syncComparison(){
+  const c=$('comparison'),[corner,...heads]=c.querySelectorAll('thead th'),n=data.species.length,shown=c.clientWidth>0&&corner;
+  if(shown&&comparisonFocus){const th=heads[data.species.findIndex(s=>s.aphiaID===comparisonFocus)];if(th)c.scrollLeft+=th.getBoundingClientRect().left-corner.getBoundingClientRect().right;comparisonFocus=null;}
+  let first=1,last=n;
+  if(shown){
+    const from=corner.getBoundingClientRect().right-1,to=c.getBoundingClientRect().left+c.clientWidth+1;
+    const seen=heads.map((th,i)=>{const r=th.getBoundingClientRect(),mid=(r.left+r.right)/2;return mid>=from&&mid<=to?i+1:0;}).filter(Boolean);
+    if(seen.length){first=seen[0];last=seen.at(-1);}
+  }
+  $('comparison-page').textContent=`${first===last?first:first+'–'+last}종 / 총 ${n}종`;
+  $('comparison-prev').disabled=!shown||c.scrollLeft<=1;
+  $('comparison-next').disabled=!shown||c.scrollLeft+c.clientWidth>=c.scrollWidth-1;
+}
+// Prev/next move by one screen of species: the visible width minus the sticky first column.
+function scrollComparison(direction){
+  const c=$('comparison');c.scrollBy({left:direction*(c.clientWidth-(c.querySelector('thead th')?.offsetWidth||0)),behavior:'smooth'});
 }
 // One open behaviour for every comparison button: occurrence opens the map and cell list, an index axis
-// opens its evidence. Collapsed parents are opened, and the return button restores page, scroll and focus.
+// opens its evidence. Collapsed parents are opened, and the return button restores the horizontal scroll and focus.
 function openEvidence(aphia,axis){
-  const page=comparisonPage, returnScroll=$('comparison').scrollLeft;
+  const returnScroll=$('comparison').scrollLeft;
   if(axis==='OCC'){lastFitted=null;if(mapMode!=='occurrence')setMapMode('occurrence');}
   selectSpecies(aphia);setView('explore',false);
   const back=document.createElement('button');
   back.type='button';back.className='text-button comparison-return';back.textContent='← 비교표로 돌아가기';
   $('detail').prepend(back);
   back.addEventListener('click',()=>{
-    comparisonPage=page;renderComparison();setView('compare');
+    setView('compare');
     const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
     cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
     $('comparison').scrollLeft=returnScroll;
@@ -2594,7 +2613,7 @@ function registerTools(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonPage=0;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
+  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
   $('connection-state').textContent='자료를 불러오는 중';
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('axis-pairs').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
@@ -2644,8 +2663,10 @@ document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener
 document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
 for(const id of ['species-group','species-evidence'])$(id).addEventListener('change',()=>{if(data)renderList();});
-$('comparison-prev').addEventListener('click',()=>{comparisonPage=Math.max(0,comparisonPage-1);renderComparison();});
-$('comparison-next').addEventListener('click',()=>{comparisonPage=Math.min(Math.ceil(data.species.length/5)-1,comparisonPage+1);renderComparison();});
+$('comparison-prev').addEventListener('click',()=>scrollComparison(-1));
+$('comparison-next').addEventListener('click',()=>scrollComparison(1));
+let comparisonFrame=0;const queueComparisonSync=()=>{if(data&&!comparisonFrame)comparisonFrame=requestAnimationFrame(()=>{comparisonFrame=0;syncComparison();});};
+$('comparison').addEventListener('scroll',queueComparisonSync,{passive:true});addEventListener('resize',queueComparisonSync);
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
 $('legend-toggle').addEventListener('click',e=>{const folded=e.currentTarget.parentElement.classList.toggle('legend-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!folded));e.currentTarget.title=e.currentTarget.ariaLabel=folded?'범례 펼치기':'범례 접기';});
 for(const [id,layer] of [['layer-priority','priority'],['layer-unexplored','unexplored']])$(id).addEventListener('change',e=>{sufficiencyLayers[layer]=e.target.checked;if(data&&mapMode==='value')renderMap();});

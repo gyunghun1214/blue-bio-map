@@ -95,8 +95,9 @@ const pick=aphia=>evaluate(`document.querySelector('[data-species="${aphia}"]').
 // Operating cells come from the live API (map-3 since 2026-10-01): counts are read from the loaded rows, never typed in.
 const liveMap=aphia=>evaluate(`(()=>{const s=data.species.find(x=>x.aphiaID===${aphia});return {records:cellRecords(s),recordsText:cellRecords(s).toLocaleString(),cells:spatialCells(s).length,rows:s.cells.length,years:cellYears(s)}})()`);
 const detailEl=()=>evaluate(`document.getElementById('detail').scrollIntoView();1`);
-// Every comparison page (5 species each): text, coverage bars and species columns, then back to page 1.
-const walkComparison=()=>evaluate("(()=>{const out=[];comparisonPage=0;renderComparison();for(;;){out.push({label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,cols:document.querySelectorAll('#comparison thead th').length-1,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth});if(document.getElementById('comparison-next').disabled)break;document.getElementById('comparison-next').click();}comparisonPage=0;renderComparison();return out})()");
+// The comparison table: text, coverage bars and species columns.
+// The comparison is one table holding every species (it scrolls sideways), so one read covers it; kept as a list of one.
+const walkComparison=()=>evaluate("(()=>{renderComparison();return [{label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,cols:document.querySelectorAll('#comparison thead th').length-1,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth}]})()");
 try{
   await openWebSocket(await connect());
   await send('Page.enable');await send('Runtime.enable');
@@ -309,7 +310,7 @@ try{
   const oyCard=await evaluate("document.querySelector('#decision-list [data-aphia=\"836033\"] span').textContent");
   // verified-pilot-3.2: the oyster is placed (national MCUI, marked), so its card leads with the published matrix type
   check('Oyster status card leads with its published matrix type, no single-paper label',!!typeLabel(836033)&&oyCard===typeLabel(836033)+' · 정식 산출 · 검증 미통과 · 근거 확인'&&!oyCard.includes('참고값')&&!oyCard.includes('단일 논문'),oyCard);
-  const oyCmp=await evaluate("(()=>{const keep=comparisonPage;comparisonPage=Math.floor(data.species.findIndex(s=>s.aphiaID===836033)/5);renderComparison();const q=a=>document.querySelector('#comparison [data-score-aphia=\"836033\"][data-score-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};comparisonPage=keep;renderComparison();return r})()");
+  const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-score-aphia=\"836033\"][data-score-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
   check('Comparison table: 참굴 MBPI 96.3 and BBVI 83.9 match the report, pilot label kept, no single-paper label',oyCmp.MBPI.startsWith('96.3')&&oyCmp.BBVI.startsWith('83.9')&&oyCmp.MBPI.includes('정식 산출 · 검증 미통과')&&oyCmp.BBVI.includes('정식 산출 · 검증 미통과')&&!oyCmp.MBPI.includes('단일 논문')&&!oyCmp.BBVI.includes('단일 논문'),JSON.stringify(oyCmp));
   // verified-pilot-3.2: the oyster leaves the follow-up chips and becomes a square (national) matrix point with its type
   const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),national:!!p?.classList.contains('national'),title:p?.title||''}})()");
@@ -417,7 +418,7 @@ try{
   check('↻ reload keeps the selected species, use chip and tab',kept.s===274849&&kept.use==='microbe'&&kept.v==='compare',JSON.stringify(kept));
   await evaluate("setUses([]);setView('explore');history.replaceState(null,'',location.pathname);1");
   const bars=await walkComparison();
-  check('A-2 comparison pages show one coverage bar per species column, all species covered',bars.every(p=>p.bars===p.cols&&p.cols>0&&p.cols<=5)&&bars.reduce((a,p)=>a+p.bars,0)===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.cols])));
+  check('A-2 comparison table shows one coverage bar per species column, all species covered',bars.length===1&&bars[0].bars===total&&bars[0].cols===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.cols])));
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
@@ -499,17 +500,22 @@ try{
   await sleep(800);ms=await modeState();
   check('Shared link with t=value restores the value map and its pressed button',ms.mode==='value'&&ms.val==='true'&&ms.valLegend,JSON.stringify(ms));
   await clickMode('occurrence');await evaluate("history.replaceState(null,'',location.pathname);1");
-  // ---------- Comparison pages (5 species each) ----------
-  const pages=await evaluate(`(()=>{setView('compare');const heads=()=>[...document.querySelectorAll('#comparison thead th small')].map(x=>x.textContent);
-    const label=()=>document.getElementById('comparison-page').textContent;selectSpecies(data.species[0].aphiaID);setView('compare');
-    const out=[{label:label(),heads:heads(),prev:document.getElementById('comparison-prev').disabled}];
-    document.getElementById('comparison-next').click();out.push({label:label(),heads:heads()});
-    document.getElementById('comparison-prev').click();out.push({label:label(),heads:heads()});
-    const names=data.species.map(s=>s.name);setView('explore');return {total:data.species.length,names,out};})()`);
-  check('Comparison paging: 5 species per page, next/prev move by one page with matching label',
-    pages.total===expPub+expCand&&pages.out[0].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&pages.out[0].prev&&JSON.stringify(pages.out[0].heads)===JSON.stringify(pages.names.slice(0,5))&&
-    pages.out[1].label===`2 / ${Math.ceil(pages.total/5)} · 6–10종`&&JSON.stringify(pages.out[1].heads)===JSON.stringify(pages.names.slice(5,10))&&
-    pages.out[2].label===`1 / ${Math.ceil(pages.total/5)} · 1–5종`&&JSON.stringify(pages.out[2].heads)===JSON.stringify(pages.names.slice(0,5)),JSON.stringify(pages));
+  // ---------- Comparison: every species in one table that scrolls sideways ----------
+  const cmpState="(()=>{const c=document.getElementById('comparison'),[corner,...h]=c.querySelectorAll('thead th'),cl=c.getBoundingClientRect().left;return {label:document.getElementById('comparison-page').textContent,prev:document.getElementById('comparison-prev').disabled,next:document.getElementById('comparison-next').disabled,left:Math.round(c.scrollLeft),max:c.scrollWidth-c.clientWidth,stuck:Math.abs(corner.getBoundingClientRect().left-cl)<2&&Math.abs(c.querySelector('tbody th').getBoundingClientRect().left-cl)<2,heads:h.map(x=>x.querySelector('small').textContent)}})()";
+  await evaluate("selectSpecies(data.species[0].aphiaID);setView('compare');1");await sleep(200);
+  const sc={start:await evaluate(cmpState),names:await evaluate('data.species.map(s=>s.name)')};
+  await evaluate("document.getElementById('comparison-next').click();1");await sleep(1000);sc.next=await evaluate(cmpState);
+  await evaluate("(()=>{const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;return 1})()");await sleep(300);sc.end=await evaluate(cmpState);
+  await evaluate("document.getElementById('bbvi-weight').dispatchEvent(new Event('input'));1");await sleep(300);sc.redrawn=await evaluate(cmpState);
+  await evaluate("(()=>{setView('explore');document.getElementById('comparison').scrollLeft=0;selectSpecies(data.species.at(-1).aphiaID);setView('compare');return 1})()");await sleep(300);sc.picked=await evaluate(cmpState);
+  await evaluate("selectSpecies(data.species[0].aphiaID);setView('explore');1");
+  const atEnd=p=>p.left>=p.max-1&&p.label.endsWith(`${total}종 / 총 ${total}종`)&&p.next&&!p.prev;
+  check('Comparison scroll: one table with all species, label follows the visible columns, prev/next move a screen and stop at the ends, first column sticks, redraw and a picked species keep the right place',
+    total===expPub+expCand&&JSON.stringify(sc.start.heads)===JSON.stringify(sc.names)&&
+    sc.start.left===0&&sc.start.prev&&!sc.start.next&&/^1(–\d+)?종 \/ 총 \d+종$/.test(sc.start.label)&&sc.start.label.endsWith(`총 ${total}종`)&&
+    sc.next.left>0&&!sc.next.prev&&sc.next.label!==sc.start.label&&
+    atEnd(sc.end)&&sc.end.stuck&&sc.redrawn.left===sc.end.left&&sc.redrawn.label===sc.end.label&&atEnd(sc.picked),
+    JSON.stringify({...sc,names:sc.names.length,start:{...sc.start,heads:sc.start.heads.length},next:{...sc.next,heads:0},end:{...sc.end,heads:0},redrawn:{...sc.redrawn,heads:0},picked:{...sc.picked,heads:0}}));
   // ---------- Background maps: satellite (NASA GIBS, default) / depth (GEBCO); the bundled outline map only replaces failed tiles ----------
   await pick(494972);
   check('Basemap switch: only 위성 and 수심, no 기본 button',(await evaluate("[...document.querySelectorAll('[data-basemap]')].map(b=>b.dataset.basemap+':'+b.textContent).join()"))==='satellite:위성,depth:수심');
@@ -561,7 +567,7 @@ try{
         :f.shapes===emptyPlaces&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.detail.includes('채집 지점 국립생물자원관')&&f.detail.includes('공공누리 제3유형'),f.sel+' | '+f.src+' | '+f.note.slice(0,120));
     await mapShot(noCell?'4-candidate-no-cells':'4-candidate-nibr-cells');
     const walk=await walkComparison();
-    check(`Flow 5 ${tag}: comparison walks ${Math.ceil(total/5)} pages of ≤5, page never overflows`,walk.length===Math.ceil(total/5)&&walk.reduce((a,p)=>a+p.cols,0)===total&&walk.every(p=>p.page),JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
+    check(`Flow 5 ${tag}: comparison shows all ${total} species in one table, page never overflows`,walk.length===1&&walk[0].cols===total&&walk[0].page,JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
     await evaluate("setView('compare');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");
     await pick(836033);await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
     const before=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID})");
@@ -569,12 +575,12 @@ try{
     await evaluate("document.querySelector('[data-map-mode=occurrence]').click();1");await sleep(400);
     const after=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID,mode:mapMode})");
     check(`Flow 6 ${tag}: map mode value → occurrence keeps selection and scroll position`,after.sel===before.sel&&after.mode==='occurrence'&&Math.abs(after.y-before.y)<=4,JSON.stringify({before,after}));
-    // Every species × {occurrence, MFPI, MBPI, MCUI, BBVI} opens its own evidence, on every comparison page, and returns to the same page, horizontal scroll and button.
+    // Every species × {occurrence, MFPI, MBPI, MCUI, BBVI} opens its own evidence and returns to the same horizontal scroll and button.
     // One CDP call per species keeps each call under the 10 s response limit; the assertions are unchanged.
     const opens={n:await evaluate('data.species.length'),bad:[]};
     for(let i=0;i<opens.n;i++)opens.bad.push(...await evaluate(`(()=>{const bad=[],i=${i},s=data.species[i];setView('compare');
       ['OCC','MFPI','MBPI','MCUI','BBVI'].forEach(axis=>{
-        comparisonPage=Math.floor(i/5);renderComparison();setView('compare');const c=document.getElementById('comparison');c.scrollLeft=Math.min(37,c.scrollWidth-c.clientWidth);const left=c.scrollLeft;
+        renderComparison();setView('compare');const c=document.getElementById('comparison');c.scrollLeft=Math.min(37,c.scrollWidth-c.clientWidth);const left=c.scrollLeft;
         const b=c.querySelector('[data-score-aphia="'+s.aphiaID+'"][data-score-axis="'+axis+'"]');if(!b){bad.push([s.label,axis,'no button']);return;}
         b.click();const a=document.activeElement;
         const ok=axis==='OCC'
@@ -583,15 +589,15 @@ try{
         if(!ok||currentView!=='explore'){bad.push([s.label,axis,'target',a.outerHTML.slice(0,80)]);}
         document.querySelector('.comparison-return').click();
         const back=document.activeElement;
-        if(currentView!=='compare'||comparisonPage!==Math.floor(i/5)||c.scrollLeft!==left||back.dataset.scoreAphia!==String(s.aphiaID)||back.dataset.scoreAxis!==axis)bad.push([s.label,axis,'return',comparisonPage,c.scrollLeft,left]);
+        if(currentView!=='compare'||c.scrollLeft!==left||back.dataset.scoreAphia!==String(s.aphiaID)||back.dataset.scoreAxis!==axis)bad.push([s.label,axis,'return',c.scrollLeft,left]);
       });return bad;})()`));
     opens.bad=opens.bad.slice(0,8);
-    check(`Evidence ${tag}: all ${opens.n}×5 comparison buttons open their own evidence (incl. later pages) and return to page, scroll and focus`,opens.n===total&&opens.bad.length===0,JSON.stringify(opens));
-    const late=await evaluate("(()=>{const i=data.species.length-1;comparisonPage=Math.floor(i/5);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
+    check(`Evidence ${tag}: all ${opens.n}×5 comparison buttons open their own evidence (incl. the last columns) and return to scroll and focus`,opens.n===total&&opens.bad.length===0,JSON.stringify(opens));
+    const late=await evaluate("(()=>{const i=data.species.length-1;renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
     // The smooth scroll can outlast a fixed pause on a busy machine (a tab change now starts at the top): wait up to 3 s.
     let seen;for(let t=0;t<15;t++){await sleep(200);seen=await evaluate("(()=>{const r=document.activeElement.getBoundingClientRect();return {top:Math.round(r.top),h:innerHeight,axis:document.activeElement.closest('[data-axis]')?.dataset.axis}})()");if(seen.top>=0&&seen.top<seen.h)break;}
-    check(`Evidence ${tag}: last-page MBPI evidence scrolled into view`,late===1&&seen.axis==='MBPI'&&seen.top>=0&&seen.top<seen.h,JSON.stringify(seen));
-    const occ=await evaluate("(()=>{const s=data.species.find(x=>x.cells?.length);comparisonPage=Math.floor(data.species.indexOf(s)/5);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+s.aphiaID+'\"][data-score-axis=OCC]').click();const sum=document.getElementById('detail-map-summary').innerText,csv=cellCsv(s);return {shapes:document.querySelectorAll('#map path.leaflet-interactive').length,rows:document.querySelectorAll('#cell-table tbody tr').length,period:/기록 연도/.test(sum),source:/출처/.test(sum),sea:/해역/.test(sum),license:/이용조건/.test(sum),csv:csv.includes('sea_areas')&&csv.includes('licenses')}})()");
+    check(`Evidence ${tag}: last-column MBPI evidence scrolled into view`,late===1&&seen.axis==='MBPI'&&seen.top>=0&&seen.top<seen.h,JSON.stringify(seen));
+    const occ=await evaluate("(()=>{const s=data.species.find(x=>x.cells?.length);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+s.aphiaID+'\"][data-score-axis=OCC]').click();const sum=document.getElementById('detail-map-summary').innerText,csv=cellCsv(s);return {shapes:document.querySelectorAll('#map path.leaflet-interactive').length,rows:document.querySelectorAll('#cell-table tbody tr').length,period:/기록 연도/.test(sum),source:/출처/.test(sum),sea:/해역/.test(sum),license:/이용조건/.test(sum),csv:csv.includes('sea_areas')&&csv.includes('licenses')}})()");
     check(`Evidence ${tag}: occurrence button draws the cells and lists period, sea area, source, licence and CSV columns`,occ.shapes>0&&occ.rows>0&&occ.period&&occ.source&&occ.sea&&occ.license&&occ.csv,JSON.stringify(occ));
     await evaluate("setView('explore');1");
   }

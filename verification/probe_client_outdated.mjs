@@ -39,12 +39,7 @@ try{
   await send('Page.navigate',{url});
   const state=await settled();
   await evaluate("document.querySelector('[data-view=compare]').click()");await sleep(300);
-  const cells=[];
-  for(let p=0;p<10;p++){
-    cells.push(...await evaluate(readTable));
-    if(await evaluate("document.getElementById('comparison-next').disabled"))break;
-    await evaluate("document.getElementById('comparison-next').click()");await sleep(150);
-  }
+  const cells=await evaluate(readTable); // one table holds every species
   const count=label=>cells.filter(c=>c.startsWith(label)).length;
   const result={url,state,reloads:navigations-1,axisCells:cells.length,technicalError:count('기술 오류'),newVersion:count('새 버전 있음'),
     banner:await evaluate("document.getElementById('error').hidden?'':document.getElementById('error').textContent"),

@@ -171,7 +171,7 @@ for(const [id,expected] of Object.entries(stages)){
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
-// Same elements as index.html: five species per page with a page label and prev/next buttons.
+// Same elements as index.html: every species in one sideways-scrolling table with a position label and prev/next buttons.
 const el=()=>({innerHTML:'',textContent:'',disabled:false,handlers:{},querySelectorAll(){return []},
   addEventListener(type,fn){this.handlers[type]=fn},click(){this.handlers.click()}});
 const dom={comparison:el(),'comparison-page':el(),'comparison-prev':el(),'comparison-next':el()};
@@ -184,10 +184,11 @@ const headers=()=>[...dom.comparison.innerHTML.matchAll(/<th scope="col">([^<]+)
 const labels=next.species.map(s=>s.label);
 assert.equal(labels.length,8);
 ctx.compare();
-assert.deepEqual(headers(),labels.slice(0,5),'first page shows species 1-5');
-assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종');
-assert.equal(dom['comparison-prev'].disabled,true);assert.equal(dom['comparison-next'].disabled,false);
-// Page 1 happens to hold both cohorts (미역 seaweed, 멍게 animal); assert each against its own column.
+assert.deepEqual(headers(),labels,'one table shows all species in order');
+// No layout here (hidden tab or this test): the label names the whole range and both buttons stay off.
+assert.equal(dom['comparison-page'].textContent,'1–8종 / 총 8종');
+assert.equal(dom['comparison-prev'].disabled,true);assert.equal(dom['comparison-next'].disabled,true);
+// Both cohorts appear (미역 seaweed, 멍게 animal); assert each against its own column.
 assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
 assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
@@ -200,24 +201,12 @@ assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis
 assert.doesNotMatch(dom.comparison.innerHTML,/예비 평가 참고|산출 보류/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
-assert.doesNotMatch(dom.comparison.innerHTML,/71\.6/,'page 2 species must not leak into page 1');
-for(const s of next.species.slice(0,5))assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
-dom['comparison-next'].click();
-assert.deepEqual(headers(),labels.slice(5),'next page shows species 6-8');
-assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종');
-assert.equal(dom['comparison-prev'].disabled,false);assert.equal(dom['comparison-next'].disabled,true);
+for(const s of next.species)assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/>71\.6<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);
 // 3.3: 홍합 zinc comes from uFiSh. 3.6: 톳 (a seaweed; uFiSh covers fish and shellfish only) leaves its blank zinc out of the mean.
 assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'3 of 4 components score');
 assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.9<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'substituted zinc gives a scored MFPI');
-dom['comparison-next'].click();
-assert.equal(dom['comparison-page'].textContent,'2 / 2 · 6–8종','next stops at the last page');
-dom['comparison-prev'].click();
-assert.deepEqual(headers(),labels.slice(0,5),'previous page returns to species 1-5');
-assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종');
-dom['comparison-prev'].click();
-assert.equal(dom['comparison-page'].textContent,'1 / 2 · 1–5종','prev stops at the first page');
 
 const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
@@ -320,7 +309,7 @@ assert.ok(mbpiBody.indexOf('후속 조사 단서')<mbpiBody.indexOf('3CLpro'),'3
 assert.doesNotMatch(mbpiBody,/점수 제외/);
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
-ctx.next=next;vm.runInContext('data=globalThis.next;comparisonPage=0',ctx);ctx.compare();
+ctx.next=next;vm.runInContext('data=globalThis.next;comparisonFocus=null',ctx);ctx.compare();
 assert.match(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*단일 논문/);
 assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 검증 미통과 · 단일 논문 · 근거 보기/);
 const badLabel=report();badLabel.candidate_species.find(s=>s.aphia_id===371986).mbpi_label=null;
