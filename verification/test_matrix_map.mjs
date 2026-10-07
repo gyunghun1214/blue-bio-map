@@ -12,7 +12,7 @@ vm.createContext(ctx);
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
   'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped,'+
-  'CELL_FILL,cellRange,colourSpecies,selectedCellLine});'+
+  'CELL_FILL,HOVER_OUTLINE,cellRange,colourSpecies,selectedCellLine});'+
   'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};globalThis.setSelected=v=>{selected=v};',ctx);
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
@@ -111,7 +111,9 @@ assert.equal(ctx.cellRange(both),'33–34°N · 126–127°E');
 assert.equal(ctx.colourSpecies(both),'나');
 ctx.setSelected(ga);
 const picked=ctx.valueCellStyle(both,false);
-assert.deepEqual([picked.fillColor,picked.fillOpacity,picked.weight,picked.color],[ctx.matrixTypeColour.conservation_priority,ctx.CELL_FILL,3.5,'#ffffff']);
+// the outline is a solid yellow on the dark satellite map, even on a mixed cell (its dashed border would read as hover)
+assert.deepEqual([picked.fillColor,picked.fillOpacity,picked.weight,picked.color,picked.dashArray],[ctx.matrixTypeColour.conservation_priority,ctx.CELL_FILL,3.5,'#ffd166',null]);
+assert.deepEqual([ctx.HOVER_OUTLINE.color,ctx.HOVER_OUTLINE.dashArray],['#ffd166','6 4'],'card hover is the same yellow, dashed');
 assert.equal(ctx.selectedCellLine(both),'선택 종 가: 지속가능 활용 후보 / 이 셀 색: 보전 우선·모니터링(같은 셀의 나 때문 · 우선순위 규칙)');
 ctx.setSelected(na);assert.equal(ctx.selectedCellLine(both),'선택 종 나: 보전 우선·모니터링 = 이 셀 색');
 ctx.setSelected(null);assert.equal(ctx.selectedCellLine(both),'');assert.equal(ctx.valueCellStyle(both,false).weight,2);
