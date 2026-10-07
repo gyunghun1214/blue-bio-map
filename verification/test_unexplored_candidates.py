@@ -68,6 +68,12 @@ class PublishedFile(unittest.TestCase):
                 self.assertEqual(s["name"].split()[0], s["genus"])
                 self.assertGreaterEqual(self.rows[r["aphiaID"]]["scores"]["BBVI"], self.threshold)
 
+    def test_cell_years_are_plausible(self):
+        for s in self.out["species"]:
+            for c in s["cells"]:
+                self.assertTrue(1800 <= c["yearStart"] <= c["yearEnd"] <= 2026, (s["name"], c["period"], c["yearStart"]))
+                self.assertEqual(c["historical"], c["yearEnd"] < 2000)
+
     def test_congeners_of_a_4_degree_species_stay_at_4_degrees(self):
         four = {a for a in u.B.FOUR_DEGREE if a in self.rows}
         for s in self.out["species"]:

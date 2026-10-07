@@ -1799,7 +1799,7 @@ function mapSection(s){
   const excluded=Object.entries(m.outcome||{}).filter(([k])=>k!=='accepted').map(([k,n])=>row(REASONS[k]||k,count(n))).join('')||row('제외','없음');
   const map3=/^map-3/.test(m.rules||'');  // 2026-10-01: CC BY-NC 4.0 records and a 1 km coastline buffer
   const why=m.status==='held_sensitivity_review'?`<div class="withheld"><b>조사 범위 표시</b>출현 셀은 아직 발행되지 않았습니다. 지도에는 자료를 조회한 한반도 주변 범위를 표시합니다. ${esc(m.note)}</div>`:`<ul class="why">
-<li><b>이용조건</b>${map3?`CC0·CC BY·CC BY-NC 4.0 기록을 썼습니다. CC BY-NC ${count(m.nc_records)}은 2026-10-01 결정에 따라 비상업 연구용으로 표시합니다.`:`CC0·CC BY 4.0 기록만 썼습니다. CC BY-NC ${count(m.nc_records)}은 비상업 이용 결정 전이라 쓰지 않았습니다.`}</li>
+<li><b>이용조건</b>${map3?`CC0·CC BY·CC BY-NC 4.0 기록을 썼습니다. CC BY-NC ${count(m.used_licences?.['CC BY-NC 4.0']??m.nc_records)}은 2026-10-01 결정에 따라 비상업 연구용으로 표시합니다.`:`CC0·CC BY 4.0 기록만 썼습니다. CC BY-NC ${count(m.nc_records)}은 비상업 이용 결정 전이라 쓰지 않았습니다.`}</li>
 <li><b>좌표 품질</b>${map3?'OBIS 해안선 거리로 해안선에서 1 km보다 안쪽 육지 좌표를 제외했고(조간대 기록 보존)':'OBIS 해안선 거리로 육지 위 좌표를 제외했고'} 좌표를 옮기지 않았습니다. 불확실성 10 km 초과, 제공처가 흐리게 처리한 좌표, GBIF 좌표 오류 표시도 제외했습니다.</li>
 <li><b>불확실성 결측</b>0으로 보지 않고 ${degree}° 셀에서만 썼습니다.</li>
 <li><b>민감도</b>${degree===4?'채취 압력을 고려해 4° 광역 셀을 적용했습니다.':'아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.'}</li>
@@ -2190,7 +2190,7 @@ function valueSpeciesCard(s,records){
       :cons?' · IUCN '+esc(cons.category||'등급 미기재')+' / 평가 '+esc(cons.assessment_date||cons.assessment_year||'일자 미기재'):'')+'</p>'+
     '<p class="fine">평가 보고서 '+esc(report.generatedAt?.slice(0,10)||'미발행')+
     ' · 출현 자료 '+esc(s.publishedAt?.slice(0,10)||data.collectedAt||'미기재')+
-    ' · 이용조건: '+esc('운영 8종 GBIF CC0·CC BY 4.0 · 후보 22종 GBIF·OBIS CC0·CC BY·CC BY-NC 4.0(비상업 연구용)')+'</p>'+
+    ' · 이용조건: '+esc('운영 8종 GBIF · 후보 22종 GBIF·OBIS · CC0·CC BY·CC BY-NC 4.0(CC BY-NC는 비상업 연구용)')+'</p>'+
     (links?'<details><summary>지표 근거 원문과 이용조건</summary><ul>'+links+'</ul></details>':'<p class="fine">이 종에 연결된 지표 근거 원문은 아직 없습니다.</p>')+
     '<button type="button" class="text-button" data-value-species="'+esc(s.aphiaID)+'">종별 상세 근거 보기 →</button></div></details>';
 }
@@ -2628,7 +2628,7 @@ function registerTools(){
   const lifecycle=new AbortController();window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
   const options={signal:lifecycle.signal};
   for(const tool of [
-    {name:'read_biobio_evidence',title:'후보종 근거 현황 읽기',description:'실제 표시된 종별 근거 연결 현황과 지표 상태를 읽습니다.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute(input){if(!input||Object.keys(input).length)throw new Error('인자가 없어야 합니다.');return {view:currentView,selectedAphiaID:selected?.aphiaID,simulated,species:(data?.species||[]).map(s=>({label:s.label,aphiaID:s.aphiaID,records:s.recordCount,status:s.status,
+    {name:'read_biobio_evidence',title:'후보종 근거 현황 읽기',description:'실제 표시된 종별 근거 연결 현황과 지표 상태를 읽습니다.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute(input){if(!input||Object.keys(input).length)throw new Error('인자가 없어야 합니다.');return {view:currentView,selectedAphiaID:selected?.aphiaID,simulated,species:(data?.species||[]).map(s=>({label:s.label,aphiaID:s.aphiaID,records:s.cells.length?cellRecords(s):s.recordCount,status:s.status,
   axes:Object.fromEntries(['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return [k,{value:st.value,state:st.kind,label:st.label,...(k==='MCUI'&&separateMcui(s)?{basis:nationalMcui(s)?'korea_national':subNationalMcui(s)?'sub_national':preliminaryMcui(s)?'rapid_lc_preliminary':'range_state_national',comparableWithIucnMcui:false}:{}),...(s.assessment?.mbpi_floor&&(k==='MBPI'||k==='BBVI')&&st.value!==null?{floor:true,label:k==='MBPI'?s.assessment.mbpi_label:bbviLabel(s)}:
     {...(k==='BBVI'&&bbviLabel(s)?{singleSource:bbviLabel(s)}:{}),...(k==='MBPI'&&st.value!==null&&s.assessment?.mbpi_label?{singleSource:s.assessment.mbpi_label}:{})})}];})),
   scoreStatus:s.assessment?(released()?'released':'provisional_unvalidated'):s.assessmentState||'unscored'}))};}},
