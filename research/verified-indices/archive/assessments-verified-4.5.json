@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1463,7 +1463,7 @@
             }
           ]
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2132,7 +2132,7 @@
             }
           ]
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2679,7 +2679,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3268,7 +3268,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3895,7 +3895,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4084,8 +4084,7 @@
           ]
         },
         "MCUI": {
-          "basis": "sub_national",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -4110,7 +4109,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "청각",
       "mbpi_floor": null,
@@ -4754,7 +4753,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5779,7 +5778,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6848,7 +6847,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7869,7 +7868,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8975,7 +8974,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10143,7 +10142,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11275,7 +11274,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12348,7 +12347,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14043,7 +14042,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15048,7 +15047,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16154,7 +16153,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19119,7 +19118,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -20130,7 +20129,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21219,7 +21218,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21850,8 +21849,7 @@
           ]
         },
         "MCUI": {
-          "basis": "sub_national",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -21877,7 +21875,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.67
       },
       "korean_name": "꽃게",
       "mbpi_floor": null,
@@ -22524,7 +22522,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23990,7 +23988,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25091,7 +25089,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.5 (2026-10-05). Data audit 2026-10-08: no score, category, type or flag changes. Information sufficiency only: a scored sub-national MCUI (4.2) fell through to the IUCN steps and read 0/3 although its record is an official, reviewed, current-edition list row. It now reads its steps from that row, like a range-state list (unexplored_candidates.subnational_mcui_sufficiency). 미역, 톳, 청각 and 꽃게 move MCUI sufficiency 0.0 -> 1.0; a preliminary Rapid LC stays open.",
+    "changes_from": "verified-4.4 (2026-10-05). Team-lead decision cards of 2026-10-05 (\"score 방어 by sbGnRH; score 갑오징어 by FMRFamide; reflect as 4.5 at once\"), applied as fixed in research/verified-indices/prereg-4.5-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) now also covers 방어 and 갑오징어. 방어's sbGnRH (pGlu-HWSYGLSPG-NH2) is encoded with its processing signals by the species' reference genome (BDMU01000006.1, a Goto Island specimen); the identical synthetic peptide's wild-type human GnRH-receptor binding IC50 684 nM (Lu et al. 2007, open access, read in full) ranks in the ChEMBL GnRHR x IC50 cohort. 갑오징어's FMRFamide (FMRF-NH2) is encoded 11 times with processing signals by the species' own transcriptome (GGQU01104929.1, a Qingdao specimen); its own ChEMBL rows (human NPFF2 Ki 6.6 nM best) rank in the NPFF2 x Ki cohort with the peptide's rows excluded (prereg-4.5 2.3). Both are clade-common peptides (pan-perciform hormone variant; phylum-wide invertebrate neuropeptide): the team lead ruled they fall outside the letter of the 1.6 ban (vertebrate-common substances), and the commonness is stated in each item's caveat. The 1.6 ban itself, the cohort filters and every other value are unchanged; the floor rule stays registered but no species of this run uses it. (2) Presentation: a relaxed item's caveat now lives on its evidence row (species-specific wording); 참문어's caveat text is unchanged. An item's measurements list only the best target x endpoint's rows; the other targets stay visible beside it with their percentiles.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -25435,7 +25433,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.6",
+    "method_version": "verified-4.5",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -25864,8 +25862,7 @@
         "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
         "version": "queried 2026-09-30"
       },
-      "subnational_mcui_sufficiency": "4.6: when mcui_basis is sub_national, the MCUI steps are read from the reviewed sub-national rows that give the MCUI: assessment_record = the rows, each read in the original (verified_in_original); numeric_category = the chosen category is in conservation.category_scores; current_check = every row is the region's current edition (qualification 2 of research/verified-indices/prereg-subnational-mcui-2026-10-04.md). No score changes.",
-      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). Until 4.2 a Rapid LC gave no MCUI (reference only). From 4.3 a met Rapid LC is the scored last basis (preliminary_scored); its steps are still read as for a species without an official assessment, so the official-assessment steps stay open. From 4.6 a sub-national list counts all three as well (subnational_mcui_sufficiency).",
+      "substitute_mcui_sufficiency": "After 3.14: a substitute MCUI reads its steps from the substitute record; an official national list of another range state counts all three (assessment_record = the list row). Until 4.2 a Rapid LC gave no MCUI (reference only). From 4.3 a met Rapid LC is the scored last basis (preliminary_scored); its steps are still read as for a species without an official assessment, so the official-assessment steps stay open.",
       "taxonomy": "research/verified-indices/taxonomy.json (WoRMS AphiaClassificationByAphiaID)",
       "weight_note": "Relatives are judged at the published default BBVI weight (w = 0.5); the screen slider does not move this flag."
     },
@@ -25897,7 +25894,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.6",
+  "method_version": "verified-4.5",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -28393,7 +28390,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28590,8 +28587,7 @@
           ]
         },
         "MCUI": {
-          "basis": "sub_national",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -28617,7 +28613,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.67
       },
       "korean_name": "미역",
       "mbpi_floor": null,
@@ -29057,7 +29053,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30027,7 +30023,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -31199,7 +31195,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32228,7 +32224,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33085,7 +33081,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33299,8 +33295,7 @@
           ]
         },
         "MCUI": {
-          "basis": "sub_national",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -33325,7 +33320,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "톳",
       "mbpi_floor": null,
@@ -33743,7 +33738,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34384,7 +34379,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.6 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.5 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -35202,7 +35197,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.6",
+        "method_version": "verified-4.5",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
