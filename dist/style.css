@@ -53,7 +53,7 @@
 .value-species details{margin:8px 0}.value-species li{overflow-wrap:anywhere}
 @media(max-width:620px){.value-grid,.value-axes{grid-template-columns:1fr}.map-mode button{flex:1}}
 
-#occurrence-legend[hidden],#value-legend[hidden],#value-cell-detail[hidden],#period-filter[hidden]{display:none!important}
+#occurrence-legend[hidden],#value-legend[hidden],#value-mini[hidden],.map-ui-bl[hidden],#value-cell-detail[hidden],#period-filter[hidden]{display:none!important}
 
 .species-filters{display:grid;gap:8px;margin:10px 0}
 .species-filters label{display:grid;gap:3px;font-size:12px;color:#526b7b}

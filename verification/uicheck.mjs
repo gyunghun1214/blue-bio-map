@@ -423,8 +423,8 @@ try{
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
-  const fold=await evaluate("(()=>{const b=document.getElementById('legend-toggle'),box=b.parentElement,key=document.querySelector('.map-key');const vis=e=>e.getBoundingClientRect().height>0;const r={open:vis(key)&&b.getAttribute('aria-expanded')==='true'};b.click();r.folded=!vis(key)&&vis(b)&&b.getAttribute('aria-expanded')==='false'&&b.getBoundingClientRect().width<=44;setMapMode('value');r.valueFolded=!vis(document.getElementById('value-legend'));b.click();r.valueOpen=vis(document.getElementById('value-legend'))&&b.getAttribute('aria-expanded')==='true';setMapMode('occurrence');r.back=vis(key);return r;})()");
-  check('Legend fold: open on load, one button folds both legends to a small icon and reopens them',fold.open&&fold.folded&&fold.valueFolded&&fold.valueOpen&&fold.back,JSON.stringify(fold));
+  const fold=await evaluate("(()=>{const b=document.getElementById('legend-toggle'),box=b.parentElement,key=document.querySelector('.map-key');const vis=e=>e.getBoundingClientRect().height>0;const r={open:vis(key)&&b.getAttribute('aria-expanded')==='true'};b.click();r.folded=!vis(key)&&vis(b)&&b.getAttribute('aria-expanded')==='false'&&b.getBoundingClientRect().width<=44;b.click();setMapMode('value');const mini=document.getElementById('value-mini'),pop=document.getElementById('value-legend'),info=document.getElementById('value-info');r.valueFolded=!vis(b)&&vis(mini)&&!vis(pop)&&info.getAttribute('aria-expanded')==='false';info.click();r.valueOpen=vis(pop)&&info.getAttribute('aria-expanded')==='true';document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));r.escClosed=!vis(pop)&&document.activeElement===info;info.click();document.getElementById('map').click();r.outsideClosed=!vis(pop);setMapMode('occurrence');r.back=vis(key)&&!vis(mini);return r;})()");
+  check('Legend fold: open on load, the button folds the occurrence legend; value mode shows only the corner icon, ⓘ opens the full legend, Esc and an outside click close it',fold.open&&fold.folded&&fold.valueFolded&&fold.valueOpen&&fold.escClosed&&fold.outsideClosed&&fold.back,JSON.stringify(fold));
   await sleep(400);await shot('desktop-live-oyster-cell');await evaluate('map.closePopup();1');await sleep(400);
   t=await pick(494972);
   const hijMap=await liveMap(494972);
@@ -436,7 +436,7 @@ try{
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
   // ---------- Map mode buttons: occurrence <-> utilization × conservation ----------
   const modeState=()=>evaluate(`(()=>{const q=s=>document.querySelector(s),pressed=m=>q('[data-map-mode="'+m+'"]').getAttribute('aria-pressed');
-    return {mode:mapMode,occ:pressed('occurrence'),val:pressed('value'),occLegend:!q('#occurrence-legend').hidden,valLegend:!q('#value-legend').hidden,
+    return {mode:mapMode,occ:pressed('occurrence'),val:pressed('value'),occLegend:!q('#occurrence-legend').hidden,valLegend:!q('#value-mini').hidden,
       panel:!q('#value-cell-detail').hidden,panelText:q('#value-cell-detail').innerText,effortDisabled:q('#effort-toggle').disabled,
       effort:effortLayer?effortLayer.getLayers().length:-1,source:q('#map-source').textContent,judgment:q('#map-judgment').textContent,
       hash:decodeURIComponent(location.hash),shapes:document.querySelectorAll('#map path.leaflet-interactive').length}})()`);
@@ -463,6 +463,26 @@ try{
     (layers.uCount===nU+'종 · 지도 표시 0종'&&nU?layers.noCell.includes('미탐색 후보 중 공개 출현 셀이 없어'):true)&&
     // Once every flagged species has a cell (시카메굴, NIBR points 2026-10-01) there is nothing to list; 3.15 leaves no unexplored candidate.
     (layers.pCount===nP+'종 · 지도 표시 '+nP+'종'&&layers.uCount===nU+'종 · 지도 표시 '+nU+'종'?layers.noCell==='':layers.noCell.includes('종 부재나 분포 없음을 뜻하지 않습니다')),JSON.stringify(layers));
+  // The 2×2 corner icon: the legend's counts and colours, hover dims the other types, clicks filter (several at once), the wheel never zooms the map
+  await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
+  const icon=await evaluate(`(()=>{const q=s=>document.querySelector(s),grid=q('.vm-grid').getBoundingClientRect(),sw=q('.basemap-switch').getBoundingClientRect(),plot=q('.vm-plot').getBoundingClientRect();
+    const legend=[...q('#value-legend').querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.querySelector('em').textContent,e.style.background]);
+    const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number(e.textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
+    return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
+  const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
+  const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>l.options.fillOpacity===.06).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
+  const iconS0=await iconState();
+  await mouse('mouseMoved',typed[0]);await sleep(200);const iconHover=await iconState();
+  await mouse('mousePressed',typed[0]);await mouse('mouseReleased',typed[0]);await sleep(400);const iconOne=await iconState();
+  await mouse('mouseMoved',typed[1]);await mouse('mousePressed',typed[1]);await mouse('mouseReleased',typed[1]);await sleep(400);const iconTwo=await iconState();
+  for(const c of typed.slice(0,2)){await mouse('mouseMoved',c);await mouse('mousePressed',c);await mouse('mouseReleased',c);await sleep(300);}
+  await mouse('mouseWheel',typed[0],{deltaX:0,deltaY:-600,button:'none'});await sleep(500);const iconAfter=await iconState();
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:5,y:5});
+  check('Value map icon: 72px 2×2 under the basemap switch, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone',
+    JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size.every(v=>Math.abs(v-72)<1)&&icon.below&&icon.right&&typed.length>=2&&
+    iconS0.drawn===icon.all&&iconS0.dim===0&&iconHover.dim===icon.all-typed[0].n&&iconHover.tip.includes(typed[0].tip)&&
+    iconOne.drawn===typed[0].n&&JSON.stringify(iconOne.pressed)===JSON.stringify([typed[0].key])&&iconTwo.drawn===typed[0].n+typed[1].n&&iconTwo.pressed.length===2&&
+    iconAfter.drawn===icon.all&&!iconAfter.pressed.length&&iconAfter.zoom===iconS0.zoom&&iconAfter.centre===iconS0.centre,JSON.stringify({icon,iconS0,iconHover,iconOne,iconTwo,iconAfter}));
   // 4.0: the outside candidates' list and purple markers (no score, one marker per public cell; a failed record check says so)
   const outList=await evaluate(`(async()=>{const box=document.querySelector('#layer-unexplored');box.checked=true;box.dispatchEvent(new Event('change'));
     await new Promise(r=>setTimeout(r,300));const d=document.querySelector('#unexplored-outside'),li=[...d.querySelectorAll('li')].map(e=>e.textContent);

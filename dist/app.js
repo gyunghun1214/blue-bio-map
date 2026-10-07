@@ -2242,6 +2242,16 @@ function hoverSpecies(id){
     if(on)layer.bringToFront();
   }
 }
+// The map-corner 2×2 icon: hovering a type dims the other cells, clicking toggles that type in the filter (several at once).
+// Display only: types, colours and counts stay the legend's.
+const typeFilter=new Set();
+function dimTypes(id){
+  for(const [g,layer,active] of valueRects){
+    const base=valueCellStyle(g,active);
+    layer.setStyle(id&&cellMatrixType(g).type!==id?{...base,opacity:.2,fillOpacity:.06}:base);
+  }
+}
+function setValueInfo(open){$('value-legend').hidden=!open;$('value-info').setAttribute('aria-expanded',String(open));}
 function renderValueMap(){
   const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule();
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
@@ -2251,6 +2261,7 @@ function renderValueMap(){
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
   if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
+  if(typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
   renderValueLegend(groups);
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
@@ -2272,6 +2283,7 @@ function renderValueMap(){
     L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false}).addTo(overlay);
   for(const [key,g] of valueCellOrder(groups)){
     const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
+    if(typeFilter.size&&!typeFilter.has(type))continue;
     const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
@@ -2316,6 +2328,11 @@ function renderValueLegend(groups){
     const t=rule?.types?.[el.dataset.key],c=matrixTypeColour[t?.id];if(!t)return;
     el.querySelector('b').textContent=t.label;el.querySelector('em').textContent=(tally[t.id]||0)+'셀';
     el.style.background=c+alpha;el.style.borderColor=c;
+    // the map-corner icon takes the same label, colour and count
+    const mini=document.querySelector(`.vm-grid [data-key="${el.dataset.key}"]`);
+    mini.textContent=tally[t.id]||0;mini.dataset.type=t.id;mini.dataset.tip=t.label;
+    mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 이 유형만 보기`;
+    mini.style.background=c+alpha;mini.style.borderColor=c;
   });
   $('v-none-count').textContent=none+'셀';
   // Name the selected species and draw the swatch in the map's own outline colour, so the outline explains itself.
@@ -2350,7 +2367,8 @@ function setMapMode(mode){
   if(!['occurrence','value'].includes(mode))return;
   mapMode=mode;lastFitted=null;
   document.querySelectorAll('[data-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapMode===mode)));
-  $('occurrence-legend').hidden=mode==='value';$('value-legend').hidden=mode!=='value';
+  $('occurrence-legend').hidden=mode==='value';$('value-mini').hidden=mode!=='value';setValueInfo(false);
+  document.querySelector('.map-ui-bl').hidden=mode==='value'; // only the occurrence legend and its fold button live there
   $('value-cell-detail').hidden=mode!=='value';
   $('effort-toggle').disabled=mode==='value';
   renderMap();writeHash();
@@ -2677,6 +2695,21 @@ let comparisonFrame=0;const queueComparisonSync=()=>{if(data&&!comparisonFrame)c
 $('comparison').addEventListener('scroll',queueComparisonSync,{passive:true});addEventListener('resize',queueComparisonSync);
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
 $('legend-toggle').addEventListener('click',e=>{const folded=e.currentTarget.parentElement.classList.toggle('legend-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!folded));e.currentTarget.title=e.currentTarget.ariaLabel=folded?'범례 펼치기':'범례 접기';});
+document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
+  b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')dimTypes(b.dataset.type);});
+  b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')dimTypes(null);});
+  b.addEventListener('focus',()=>{if(b.matches(':focus-visible'))dimTypes(b.dataset.type);});
+  b.addEventListener('blur',()=>dimTypes(null));
+  b.addEventListener('click',e=>{
+    const id=b.dataset.type;if(!id)return;
+    if(!typeFilter.delete(id))typeFilter.add(id);
+    b.setAttribute('aria-pressed',String(typeFilter.has(id)));
+    renderMap();if(e.pointerType==='mouse'||b.matches(':focus-visible'))dimTypes(id); // the redraw drops the hover dim
+  });
+});
+$('value-info').addEventListener('click',()=>setValueInfo($('value-legend').hidden));
+document.addEventListener('click',e=>{if(!$('value-legend').hidden&&!$('value-mini').contains(e.target))setValueInfo(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('value-legend').hidden){setValueInfo(false);$('value-info').focus();}});
 for(const [id,layer] of [['layer-priority','priority'],['layer-unexplored','unexplored']])$(id).addEventListener('change',e=>{sufficiencyLayers[layer]=e.target.checked;if(data&&mapMode==='value')renderMap();});
 $('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').textContent=m;};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
