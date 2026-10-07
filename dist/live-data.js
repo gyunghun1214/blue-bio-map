@@ -127,7 +127,7 @@ async function loadPublishedProfiles() {
       summary:p.summary,info,productionSummary:p.production_summary,
       sources:[...citations.filter(c=>c.id!=='worms-taxonomy'),
         ...cellsOf(p.species_id).flatMap(c=>c.citations).filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i&&!citations.some(y=>y.id===x.id))
-          .map(x=>asSource(x,'공개 기준을 통과한 기록만 1° 셀로 집계. 원좌표·레코드 ID 미공개.',info.map?.retrieved))],
+          .map(x=>asSource(x,`공개 기준을 통과한 기록만 ${cellsOf(p.species_id)[0]?.sizeDeg||1}° 셀로 집계. 원좌표·레코드 ID 미공개.`,info.map?.retrieved))],
       cells:cellsOf(p.species_id),
       wormsUrl:taxonomy?.url,wormsCitation:taxonomy?.citation||'학명 출처 확인 필요',
       v2,noOccurrences,

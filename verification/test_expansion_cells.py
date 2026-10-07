@@ -86,6 +86,8 @@ class CellRules(unittest.TestCase):
         self.assertEqual([r["catalogNumber"] for r in held], ["NIBRIV11", "NIBRIV12", "NIBRIV15"])  # in-box points only
         self.assertAlmostEqual(held[0]["decimalLatitude"], 34.85, places=6)
         self.assertEqual(held[0]["year"], 2011)  # the portal's collection date, not GBIF's
+        typo = b.nibr_records({"records": nibr["records"][:1], "points": {"NIBRIV11": point(127.52, 34.85, day="0211-02-06")}})
+        self.assertIsNone(typo[0]["year"])  # a portal typo, not year 211: the record is excluded as no_year
         g = {"keys": [9], "genusFallback": None, "records": held, "nibr": {"specimens": 5, "pointsInBox": 3}}
         o = {"total": 0, "datasets": [], "records": []}
         with mock.patch.object(b, "resolves", lambda name, s: name == s["name"]), \

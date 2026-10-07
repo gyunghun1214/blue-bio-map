@@ -224,7 +224,7 @@ def nibr_records(nibr):
             continue
         day = p.get("coll_sdate") or ""
         out.append({**r, "decimalLatitude": lat, "decimalLongitude": lon, "eventDate": day,
-                    "year": int(day[:4]) if re.match(r"\d{4}-\d{2}-\d{2}$", day) else None, "_nibr": p})
+                    "year": int(day[:4]) if re.match(r"(18|19|20)\d{2}-\d{2}-\d{2}$", day) else None, "_nibr": p})  # '0211-02-06' is a typo, not year 211
     return out
 
 

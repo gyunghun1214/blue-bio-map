@@ -13268,17 +13268,17 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 833,
-    "historical": 39,
+    "accepted": 832,
+    "historical": 38,
     "outsideKoreanEEZ": 0,
     "names": [
      "Sargassum muticum (Yendo) Fensholt"
     ],
     "gbif": {
      "queried": 904,
-     "accepted": 833,
+     "accepted": 832,
      "excluded": {
-      "no_year": 59,
+      "no_year": 60,
       "on_land_obis_rule": 12
      },
      "genusFallback": false,
@@ -13286,7 +13286,7 @@
      "nibrPoints": {
       "specimens": 181,
       "pointsInBox": 143,
-      "accepted": 137,
+      "accepted": 136,
       "query": "https://www.gbif.org/occurrence/search?taxon_key=3197314&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
       "points": "https://species.nibr.go.kr/geo/html/index.do"
      }
@@ -13340,50 +13340,6 @@
        "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
-       ]
-      },
-      {
-       "title": "flora & fauna(NIBR)",
-       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
-       "doi": "10.15468/fppdz4",
-       "source": "GBIF",
-       "licenses": [
-        "CC BY-NC 4.0"
-       ]
-      }
-     ],
-     "licenses": [
-      "CC BY-NC 4.0"
-     ]
-    },
-    {
-     "lat0": 33,
-     "lon0": 126,
-     "sizeDeg": 1,
-     "resolutionM": 92288,
-     "period": "2000년 이전",
-     "historical": true,
-     "outsideKoreanEEZ": false,
-     "yearStart": 211,
-     "yearEnd": 211,
-     "records": 1,
-     "sites": 1,
-     "uncertaintyMissing": 1,
-     "seaAreas": [
-      "East China Sea",
-      "Yellow Sea"
-     ],
-     "seaAreasFrom": "cell_grid",
-     "sources": [
-      "GBIF"
-     ],
-     "citations": [
-      {
-       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
-       "url": "https://species.nibr.go.kr/geo/html/index.do",
-       "source": "NIBR",
-       "licenses": [
-        "공공누리 제3유형"
        ]
       },
       {
@@ -32571,8 +32527,8 @@
    "sensitivity": "민감도 미평가: GBIF 지침의 가장 엄격한 공개 수준 1°",
    "review": {
     "status": "cells_published",
-    "accepted": 1159,
-    "historical": 66,
+    "accepted": 1158,
+    "historical": 65,
     "outsideKoreanEEZ": 2,
     "names": [
      "Ulva linza",
@@ -32580,10 +32536,10 @@
     ],
     "gbif": {
      "queried": 1300,
-     "accepted": 1083,
+     "accepted": 1082,
      "excluded": {
       "taxon_not_verified": 1,
-      "no_year": 197,
+      "no_year": 198,
       "on_land_obis_rule": 9,
       "duplicate": 10
      },
@@ -32592,7 +32548,7 @@
      "nibrPoints": {
       "specimens": 385,
       "pointsInBox": 116,
-      "accepted": 109,
+      "accepted": 108,
       "query": "https://www.gbif.org/occurrence/search?taxon_key=5273454&dataset_key=9aa00786-772a-46d4-8fe1-ac6d8926a040&has_coordinate=false",
       "points": "https://species.nibr.go.kr/geo/html/index.do"
      }
@@ -32679,16 +32635,15 @@
      "period": "2000년 이전",
      "historical": true,
      "outsideKoreanEEZ": false,
-     "yearStart": 211,
+     "yearStart": 1984,
      "yearEnd": 1996,
-     "records": 12,
-     "sites": 5,
-     "uncertaintyMissing": 12,
+     "records": 11,
+     "sites": 4,
+     "uncertaintyMissing": 11,
      "seaAreas": [
       "East China Sea"
      ],
      "sources": [
-      "GBIF",
       "OBIS"
      ],
      "citations": [
@@ -32696,23 +32651,6 @@
        "title": "JNUB_YLee",
        "url": "https://obis.org/dataset/a2cf5866-2d37-4372-8172-9c73b389d3fb",
        "source": "OBIS",
-       "licenses": [
-        "CC BY-NC 4.0"
-       ]
-      },
-      {
-       "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
-       "url": "https://species.nibr.go.kr/geo/html/index.do",
-       "source": "NIBR",
-       "licenses": [
-        "공공누리 제3유형"
-       ]
-      },
-      {
-       "title": "flora & fauna(NIBR)",
-       "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040",
-       "doi": "10.15468/fppdz4",
-       "source": "GBIF",
        "licenses": [
         "CC BY-NC 4.0"
        ]
