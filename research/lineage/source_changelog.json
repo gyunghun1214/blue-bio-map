@@ -2192,7 +2192,7 @@
    "from_run_id": "verified-4.3",
    "to_run_id": "verified-4.4",
    "from_commit": "9532125",
-   "to_commit": "d33fd66",
+   "to_commit": "79b6794",
    "published_on": "2026-10-05",
    "method_note": "verified-4.3 (2026-10-05). Team-lead order of 2026-10-05 (\"find a way to resolve the cells filled by a fallback, then fill them\"), applied as fixed in research/verified-indices/prereg-4.4-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) is used for the first time. 참문어's cephalotocin (synthetic CYFRNCPIG-NH2, human V1b and V2 receptor EC50, Kim et al. 2022) is ranked in the ChEMBL cohort of the same target and endpoint; its origin is settled on the Octopus sinensis reference genome (NW_021826408.1, a Zhoushan specimen), which encodes the mature peptide with its amidation and cleavage signal (4.1 precedent: a public sequence record of the species' own sample). (2) MBPI: four partial records added (방어 1, 갑오징어 3); each fails two or more conditions, so 방어 and 갑오징어 keep the floor. (3) MCUI: an official-list re-check (2026-10-05) found no category for the six Rapid LC species and no global or national one for 미역; values and labels stay, and the re-check with the next official dates is shown. No cohort, weight, coefficient, threshold or other value changes.",
    "entries": [
@@ -2217,9 +2217,9 @@
   {
    "from_run_id": "verified-4.4",
    "to_run_id": "verified-4.5",
-   "from_commit": "d33fd66",
-   "to_commit": "8595882",
-   "published_on": "2026-10-05",
+   "from_commit": "79b6794",
+   "to_commit": "7b8c62c",
+   "published_on": "2026-10-06",
    "method_note": "verified-4.4 (2026-10-05). Team-lead decision cards of 2026-10-05 (\"score 방어 by sbGnRH; score 갑오징어 by FMRFamide; reflect as 4.5 at once\"), applied as fixed in research/verified-indices/prereg-4.5-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) now also covers 방어 and 갑오징어. 방어's sbGnRH (pGlu-HWSYGLSPG-NH2) is encoded with its processing signals by the species' reference genome (BDMU01000006.1, a Goto Island specimen); the identical synthetic peptide's wild-type human GnRH-receptor binding IC50 684 nM (Lu et al. 2007, open access, read in full) ranks in the ChEMBL GnRHR x IC50 cohort. 갑오징어's FMRFamide (FMRF-NH2) is encoded 11 times with processing signals by the species' own transcriptome (GGQU01104929.1, a Qingdao specimen); its own ChEMBL rows (human NPFF2 Ki 6.6 nM best) rank in the NPFF2 x Ki cohort with the peptide's rows excluded (prereg-4.5 2.3). Both are clade-common peptides (pan-perciform hormone variant; phylum-wide invertebrate neuropeptide): the team lead ruled they fall outside the letter of the 1.6 ban (vertebrate-common substances), and the commonness is stated in each item's caveat. The 1.6 ban itself, the cohort filters and every other value are unchanged; the floor rule stays registered but no species of this run uses it. (2) Presentation: a relaxed item's caveat now lives on its evidence row (species-specific wording); 참문어's caveat text is unchanged. An item's measurements list only the best target x endpoint's rows; the other targets stay visible beside it with their percentiles.",
    "entries": [
     {
@@ -2271,6 +2271,15 @@
      "score_delta": 65.8
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.5",
+   "to_run_id": "verified-4.6",
+   "from_commit": "7b8c62c",
+   "to_commit": "e82089e",
+   "published_on": "2026-10-08",
+   "method_note": "verified-4.5 (2026-10-05). Data audit 2026-10-08: no score, category, type or flag changes. Information sufficiency only: a scored sub-national MCUI (4.2) fell through to the IUCN steps and read 0/3 although its record is an official, reviewed, current-edition list row. It now reads its steps from that row, like a range-state list (unexplored_candidates.subnational_mcui_sufficiency). 미역, 톳, 청각 and 꽃게 move MCUI sufficiency 0.0 -> 1.0; a preliminary Rapid LC stays open.",
+   "entries": []
   }
  ]
 }
