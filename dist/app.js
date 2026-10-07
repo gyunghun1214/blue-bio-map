@@ -2101,6 +2101,10 @@ function valueCellGroups(all=false){
 }
 // Figure 5 legend colours. A cell with several typed species takes the first type in the report's precedence.
 const matrixTypeColour={baseline_survey:'#3f7fcf',sustainable_use:'#2f9a57',conservation_priority:'#d7392f',alternative_production:'#f2b233'};
+// Selected-species outline and the card-hover outline share the hover yellow; hover is dashed so a hovered
+// species stays apart from the selected one. Change the colour or weight here only.
+const SELECTED_OUTLINE=()=>({color:basemap==='basic'?'#102e45':'#ffd166',dashArray:null,opacity:1});
+const HOVER_OUTLINE={color:'#ffd166',weight:4,dashArray:'6 4',opacity:1};
 const CELL_FILL=.48;  // the map's cell fill; the legend swatches use the same alpha so both read alike
 function cellMatrixType(g){
   const counts={};
@@ -2141,8 +2145,8 @@ function valueCellStyle(g,active){
   const base=type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
       fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
     :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
-  // cells holding the selected species get a thick outline; the fill keeps the cell's own colour
-  return selected&&g.species.has(selected.aphiaID)?{...base,color:basemap==='satellite'?'#ffffff':'#102e45',weight:active?4.5:3.5}:base;
+  // cells holding the selected species get a thick solid outline (yellow on the dark satellite/depth maps); the fill keeps the cell's own colour
+  return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:base;
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&separateMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
@@ -2234,7 +2238,7 @@ let valueRects=[];
 function hoverSpecies(id){
   for(const [g,layer,active] of valueRects){
     const on=id&&g.species.has(id);
-    layer.setStyle(on?{color:'#ffd166',weight:4}:valueCellStyle(g,active));
+    layer.setStyle(on?HOVER_OUTLINE:valueCellStyle(g,active));
     if(on)layer.bringToFront();
   }
 }
@@ -2314,6 +2318,10 @@ function renderValueLegend(groups){
     el.style.background=c+alpha;el.style.borderColor=c;
   });
   $('v-none-count').textContent=none+'셀';
+  // Name the selected species and draw the swatch in the map's own outline colour, so the outline explains itself.
+  const n=selected?[...groups.values()].filter(g=>g.species.has(selected.aphiaID)).length:0;
+  $('v-selected-name').textContent=selected?` · 지금: ${selected.label} ${n}셀`:'';
+  document.querySelector('#value-legend .v-selected').style.borderColor=SELECTED_OUTLINE().color;
   if(!rule)return;
   $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
   $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
