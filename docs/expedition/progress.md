@@ -75,3 +75,13 @@
 - 첫 CI에서 browser 단계의 모션 감소 환경이 느린 Windows 러너에서 키 입력 응답 시간 초과(30초)로 1건 실패했다. 모션 감소 환경의 연속 이동은 버튼 경로로 바꾸고(키보드 경로는 데스크톱에서 검사), 모션 감소일 때는 바뀐 것이 있을 때만 다시 그리게 해 CPU 부담을 줄였다.
 - Cloudflare PR 미리보기: `wrangler.jsonc`가 `preview_urls: false`라 생기지 않는다.
 - 다음 확장 순서: ① `STOPS`에 운영 종(톳·살오징어 등) 추가와 `ROUTE_VIA` 경유점 ② 후보 22종은 `expansion-public-cells.json`을 읽는 분기 추가 ③ 지도 해시에 셀 값을 넣어 노란 선 선택까지 연결(`app.js` 변경 필요) ④ 라이선스 확인한 종 사진.
+
+## 항해 속도 (2026-10-08~)
+
+브랜치 `claude/project-thread-p42tor`(origin/main d9397f2에서 시작, 클라우드 세션). 작업 지시: 프로젝트 공유 폴더 `prompts/expedition-sailing-speed-claude-code.md`.
+
+- S1 기준선(main): `verify.yml` unit 단계 전부 통과, `expedition_check.mjs` 56 PASS, `uicheck.mjs` 151 PASS / 3 FAIL(외부 지도 타일 차단에 따른 기존 실패). 이 환경은 Python 3.12·Node 22, Chromium은 `--no-sandbox` 래퍼로 실행.
+- S2 원인: `step()`의 `speed=.09`가 전체 항로 비율/초라 약 10.5 단위/초, 출발 가속 없음. 구간 2.6–4.4초 대부분을 최고 속도로 달려 카메라가 배를 놓쳤다.
+- S3–S4 결정·구현: `design.md` '항해 속도와 움직임'. 손잡이 `SAIL.avgLegSeconds`(기본 8), `?sail=` 미리보기, 시간 기반 Hermite 항해(속도 이어받기), '바로 도착'(버튼·Space·End), 카메라 물러남·앞당김, 항적·물보라 정규화, 모바일 안내줄 두 줄 허용. 항로·지점·데이터·메인 지도 파일은 그대로.
+- S5 검증: `test_expedition_ui.mjs`에 구간 시간·이징·재지정·바로 도착·`?sail=` 검사를 더하고 대기 시간을 `SAIL`에서 계산. `expedition_check.mjs` 65 PASS(새 9개), uicheck 기준선과 같음. 결과: `verification/2026-10-08-sailing/README.md`.
+- 남은 일: 실제 GPU에서 60 fps와 기본 8초의 체감 확인(팀장 PC).

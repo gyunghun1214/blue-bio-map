@@ -6,8 +6,8 @@
   <meta name="description" content="탐사선을 타고 한반도 서해·남해·동해를 항해하며 공개 관측 기록이 있는 해양생물의 식량·생리활성·보전 가치와 그 근거를 하나씩 확인합니다.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b253c'/%3E%3Cpath d='M5 13q5-6 11 0t11 0M5 21q5-6 11 0t11 0' fill='none' stroke='%233de0c4' stroke-width='3'/%3E%3C/svg%3E">
   <meta name="theme-color" content="#030d1a">
-  <link rel="stylesheet" href="vendor/pretendard/pretendard.css"><link rel="stylesheet" href="expedition.css?v=ee122ea3b1">
-  <script type="module" src="expedition.js?v=04a418d40e"></script>
+  <link rel="stylesheet" href="vendor/pretendard/pretendard.css"><link rel="stylesheet" href="expedition.css?v=9fc4fbe014">
+  <script type="module" src="expedition.js?v=6d6d306ab1"></script>
 </head>
 <body class="is-loading">
 <a class="skip" href="#cards">카드 목록으로 건너뛰기</a>
@@ -31,6 +31,7 @@
   <ul class="x-howto">
     <li><kbd>스크롤</kbd> 또는 <kbd>←</kbd><kbd>→</kbd> 다음·이전 지점</li>
     <li><kbd>스와이프</kbd> 휴대폰에서 이동</li>
+    <li><kbd>Space</kbd> 항해 중 바로 도착</li>
     <li><kbd>Esc</kbd> 상세 닫기</li>
   </ul>
   <p class="x-intro-note">항로와 배는 연출입니다. 실제 조사 항로나 선박 위치가 아닙니다. 지점은 그 종의 공개 1°·4° 집계 셀 중심이며 정확한 관측 좌표가 아닙니다.</p>
@@ -41,6 +42,7 @@
 <div class="x-steer" id="steer" hidden>
   <button id="prev" type="button" aria-label="이전 지점">← 이전</button>
   <span id="steer-label" aria-live="polite"></span>
+  <button id="skip" class="x-skip" type="button" hidden aria-keyshortcuts="Space End">바로 도착<kbd>Space</kbd></button>
   <button id="next" type="button" aria-label="다음 지점">다음 →</button>
 </div>
 

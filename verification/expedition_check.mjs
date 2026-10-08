@@ -1,14 +1,21 @@
 // Browser check of the sea expedition page (expedition.html) in four set-ups, headless Chrome via DevTools (no deps):
 // desktop 1440x900 (WebGL through SwiftShader), phone 390x844 with touch, reduced motion, and WebGL disabled.
-// Flow per set-up: start → sail to stops 1 and 3 → 4 discovery steps → detail open/close → '지도에서 보기' selects the species.
+// Flow per set-up: start → sail to stops 1 and 3 (slow eased sailing, 바로 도착) → 4 discovery steps → detail open/close
+// → '지도에서 보기' selects the species.
 // Usage: node verification/expedition_check.mjs <output-directory>   (site served at URL0, default http://127.0.0.1:8765/)
 import {spawn} from 'node:child_process';
-import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
+import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url'; import vm from 'node:vm';
 const OUT=process.argv[2];
 if(!OUT)throw Error('Usage: node verification/expedition_check.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
 const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8')).stops;
+// Sailing times come from the page's own pure part (SAIL, tripSeconds), so the waits follow the speed setting.
+const pure={};vm.createContext(pure);
+vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('// ---- browser ----')[0]+';Object.assign(globalThis,{SAIL,sampleRoute,tripSeconds});',pure);
+const STOP_T=pure.sampleRoute(stops).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
+// headless SwiftShader can drop to a few fps; the page caps a frame at 0.1 s, so a trip can take ~3× longer than set
+const TRIP_WAIT=Math.max(60000,LONGEST*4000+10000);
 const SEA_CUCUMBER=stops.findIndex(st=>st.aphia_id===241776); // its zinc is missing in the report
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
@@ -47,7 +54,7 @@ async function waitFor(s,expr,timeout=30000){
 const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:82});fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));};
 const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.textContent||'')";
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
-const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13}[k],...(k==='Enter'&&type==='keyDown'?{text:String.fromCharCode(13)}:{})});};
+const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13,' ':32,End:35}[k],...(type==='keyDown'&&(k==='Enter'||k===' ')?{text:k==='Enter'?String.fromCharCode(13):' '}:{})});};
 
 async function run(tag,opts){if(process.env.ONLY&&process.env.ONLY!==tag)return;return run1(tag,opts);}
 async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=true}){
@@ -80,8 +87,17 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         await s.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width/2,y:height*.5}]});await s.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
         await s.evaluate("document.getElementById('start').click()");
       }else await s.evaluate("document.getElementById('start').focus()").then(()=>key(s,'Enter'));
-      if(!reduced){await sleep(1800);await shot(s,`${tag}-2-sailing`);}
-      const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,40000);
+      const routeT="Number(getComputedStyle(document.getElementById('progress')).getPropertyValue('--t'))";
+      if(!reduced){
+        // the ship sails visibly: still under way a second after leaving, then 25 / 50 / 75 % of the first leg
+        await sleep(1000);
+        const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
+        check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]*.5,JSON.stringify(early));
+        const ts=[];
+        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await shot(s,`${tag}-2-sailing-${f}`);}
+        check(`${tag}: the ship moves forward through the first leg`,ts.every((t,i)=>t&&(i===0||t>ts[i-1])),JSON.stringify(ts));
+      }
+      const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
       const lv1=await s.evaluate(level);
       await shot(s,`${tag}-3-stop1-step${lv1}`);
@@ -112,15 +128,25 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         if(await s.evaluate("location.hash==='#stop=2'"))await s.evaluate("document.getElementById('next').click()");
       }else if(reduced){await s.evaluate("document.getElementById('next').click();document.getElementById('next').click()");
       // CI 2026-10-08: on the slow Windows runner a key event timed out here under SwiftShader; the keyboard path is covered on desktop
-      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');if(!reduced)for(const ms of [900,1800,2700]){await sleep(900);await shot(s,`${tag}-6-sailing-${ms}ms`);}}
+      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');}
       const hash3=await waitFor(s,"location.hash==='#stop=3'&&location.hash",3000)||await s.evaluate("location.hash");
       check(`${tag}: two quick moves target stop 3 in the URL`,hash3==='#stop=3',hash3);
-      const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,60000);
+      if(reduced)check(`${tag}: reduced motion moves at once, no 바로 도착 button`,await s.evaluate("document.getElementById('skip').hidden"));
+      else{
+        // 바로 도착 mid-trip: Space on the desktop, the button on the phone
+        await sleep(1500);await shot(s,`${tag}-6-sailing`);
+        const mid=await s.evaluate(`({label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
+        check(`${tag}: sailing to stop 3 shows its route and 바로 도착`,mid.label.includes(`→ ${stops[2].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[2],JSON.stringify(mid));
+        if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');
+        const skipped=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,3000);
+        check(`${tag}: 바로 도착 (${mobile?'button':'Space'}) arrives at once`,!!skipped,await s.evaluate("document.getElementById('steer-label').textContent"));
+      }
+      const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,TRIP_WAIT);
       check(`${tag}: arrives at stop 3 (${stops[2].korean_name}) with its own card`,!!n3,await s.evaluate(cardName));
       await waitFor(s,`${level}>=3`,8000);await shot(s,`${tag}-6-stop3`);
       // back to stop 1: the steps already seen stay (level 4 = detail read), no replay from step 1
       await s.evaluate("document.querySelector('#progress [data-go=\"0\"]').click()");
-      const back=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}`,60000);
+      const back=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}`,TRIP_WAIT);
       check(`${tag}: revisiting stop 1 keeps the discovery state (detail read)`,back===4,`level ${back}`);
       await shot(s,`${tag}-7-stop1-revisit`);
       if(!mobile&&!reduced){

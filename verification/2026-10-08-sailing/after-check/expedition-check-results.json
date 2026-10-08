@@ -1,0 +1,327 @@
+[
+  {
+    "name": "desktop: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "desktop: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1440,\"vw\":1440}"
+  },
+  {
+    "name": "desktop: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "desktop: still sailing one second after leaving (no jump to the stop)",
+    "status": "PASS",
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0006}"
+  },
+  {
+    "name": "desktop: the ship moves forward through the first leg",
+    "status": "PASS",
+    "detail": "[0.0165,0.0328,0.047]"
+  },
+  {
+    "name": "desktop: arrives at stop 1 (톳)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "desktop: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 1"
+  },
+  {
+    "name": "desktop: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "황해1° 셀2016–2021년\n    톳 Sargassum fusiforme\n    대체생산·배양 연구 · 정보충분도 94%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 125–126° · 2016–2026 기간 · 2016–2021년 기록 40건(지점 9곳) · 황해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 ·"
+  },
+  {
+    "name": "desktop: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "desktop: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "desktop: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "desktop: sailing to stop 3 shows its route and 바로 도착",
+    "status": "PASS",
+    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0671}"
+  },
+  {
+    "name": "desktop: 바로 도착 (Space) arrives at once",
+    "status": "PASS",
+    "detail": "살오징어 지점에 도착했습니다."
+  },
+  {
+    "name": "desktop: arrives at stop 3 (살오징어) with its own card",
+    "status": "PASS",
+    "detail": "살오징어"
+  },
+  {
+    "name": "desktop: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "desktop: frame rate and first-load size recorded",
+    "status": "PASS",
+    "detail": "4 fps (headless SwiftShader) · 1759 KB encoded"
+  },
+  {
+    "name": "desktop: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=494972&v=explore&m=8/34.50/125.50"
+  },
+  {
+    "name": "desktop: existing map opens with 톳 selected",
+    "status": "PASS",
+    "detail": "#s=494972&v=explore&b=basic&t=occurrence&m=8%2F34.50%2F125.50"
+  },
+  {
+    "name": "desktop: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험으로 시작"
+  },
+  {
+    "name": "desktop: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "mobile: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390}"
+  },
+  {
+    "name": "mobile: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: still sailing one second after leaving (no jump to the stop)",
+    "status": "PASS",
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.006}"
+  },
+  {
+    "name": "mobile: the ship moves forward through the first leg",
+    "status": "PASS",
+    "detail": "[0.0176,0.0328,0.05]"
+  },
+  {
+    "name": "mobile: arrives at stop 1 (톳)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 1"
+  },
+  {
+    "name": "mobile: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "황해1° 셀2016–2021년\n    톳 Sargassum fusiforme\n    대체생산·배양 연구 · 정보충분도 94%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 125–126° · 2016–2026 기간 · 2016–2021년 기록 40건(지점 9곳) · 황해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 ·"
+  },
+  {
+    "name": "mobile: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "mobile: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "mobile: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "mobile: sailing to stop 3 shows its route and 바로 도착",
+    "status": "PASS",
+    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0804}"
+  },
+  {
+    "name": "mobile: 바로 도착 (button) arrives at once",
+    "status": "PASS",
+    "detail": "살오징어 지점에 도착했습니다."
+  },
+  {
+    "name": "mobile: arrives at stop 3 (살오징어) with its own card",
+    "status": "PASS",
+    "detail": "살오징어"
+  },
+  {
+    "name": "mobile: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "mobile: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=494972&v=explore&m=8/34.50/125.50"
+  },
+  {
+    "name": "mobile: existing map opens with 톳 selected",
+    "status": "PASS",
+    "detail": "#s=494972&v=explore&b=satellite&t=occurrence&m=8%2F34.50%2F125.50"
+  },
+  {
+    "name": "mobile: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험으로 시작"
+  },
+  {
+    "name": "mobile: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "reduced-motion: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1440,\"vw\":1440}"
+  },
+  {
+    "name": "reduced-motion: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: arrives at stop 1 (톳)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 3"
+  },
+  {
+    "name": "reduced-motion: reduced motion shows every step at once",
+    "status": "PASS",
+    "detail": "first level 3"
+  },
+  {
+    "name": "reduced-motion: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "황해1° 셀2016–2021년\n    톳 Sargassum fusiforme\n    대체생산·배양 연구 · 정보충분도 94%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 125–126° · 2016–2026 기간 · 2016–2021년 기록 40건(지점 9곳) · 황해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 ·"
+  },
+  {
+    "name": "reduced-motion: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "reduced-motion: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "reduced-motion: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "reduced-motion: reduced motion moves at once, no 바로 도착 button",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: arrives at stop 3 (살오징어) with its own card",
+    "status": "PASS",
+    "detail": "살오징어"
+  },
+  {
+    "name": "reduced-motion: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "reduced-motion: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=494972&v=explore&m=8/34.50/125.50"
+  },
+  {
+    "name": "reduced-motion: existing map opens with 톳 selected",
+    "status": "PASS",
+    "detail": "#s=494972&v=explore&b=basic&t=occurrence&m=8%2F34.50%2F125.50"
+  },
+  {
+    "name": "reduced-motion: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험으로 시작"
+  },
+  {
+    "name": "reduced-motion: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "no-webgl: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "no-webgl: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1425,\"vw\":1440}"
+  },
+  {
+    "name": "no-webgl: WebGL failure falls back to the card list with every stop and map link",
+    "status": "PASS",
+    "detail": "{\"cards\":true,\"n\":8,\"reason\":\"3D 바다를 열 수 없어 카드 목록으로 보여 줍니다(WebGL을 쓸 수 없는 환경입니다.). 모든 정보와 근거, 지도 링크는 그대로입니다.\",\"maps\":[\"index.html#s=494972&v=explore&m=8/34.50/125.50\",\"index.html#s=836033&v=explore&m=8/34.50/127.50\",\"index.html#s=342067&v=explore&m=8/33.50/127.50\",\"index.html#s=145721&v=explore&m=8/34.50/128.50\",\"index.html#s=506159&v=explore&m=8/34.50/129.50\",\"index.html#s=241776&v=explore&m=6/34.00/130.00\",\"index.html#s=250680&v=explore&m=8/35.50/129.50\",\"index.html#s=372119&v=explore&m=8/37.50/131.50\"]}"
+  },
+  {
+    "name": "no-webgl: detail opens from a card (해삼 zinc shown as 자료 없음, not 0)",
+    "status": "PASS",
+    "detail": "동중국해 · 동해4° 셀2012–2015년\n    해삼 Apostichopus japonicus\n    보전 우선·모니터링 · 정보충분도 94%\n  관측 위치·기간\n    4° 셀 · 북위 32–36° · 동경 128–132° · 2000–2015 기간 · 2012–2015년 기록 116건(지점 14곳) · 동중국해 · 동해\n    공개 집계 셀 · 관측 "
+  },
+  {
+    "name": "no-webgl: Esc closes the detail",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "no-webgl: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=342067&v=explore&m=8/33.50/127.50"
+  },
+  {
+    "name": "no-webgl: existing map opens with 살오징어 selected",
+    "status": "PASS",
+    "detail": "#s=342067&v=explore&b=basic&t=occurrence&m=8%2F33.50%2F127.50"
+  },
+  {
+    "name": "no-webgl: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험으로 시작"
+  },
+  {
+    "name": "no-webgl: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  }
+]
