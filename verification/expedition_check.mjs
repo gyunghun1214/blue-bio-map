@@ -14,8 +14,9 @@ const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'
 const pure={};vm.createContext(pure);
 vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('// ---- browser ----')[0]+';Object.assign(globalThis,{SAIL,sampleRoute,tripSeconds});',pure);
 const STOP_T=pure.sampleRoute(stops).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
-// headless SwiftShader can drop to a few fps; the page caps a frame at 0.1 s, so a trip can take ~3× longer than set
-const TRIP_WAIT=Math.max(60000,LONGEST*4000+10000);
+// headless SwiftShader can drop to 1–4 fps and the page caps a frame at 0.1 s, so a trip can take up to 10× longer
+// than set; this is only the ceiling, a passing run does not wait it out
+const TRIP_WAIT=Math.max(60000,LONGEST*10000);
 const SEA_CUCUMBER=stops.findIndex(st=>st.aphia_id===241776); // its zinc is missing in the report
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
@@ -62,7 +63,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
   try{
     await s.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile});
     if(mobile)await s.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
-    if(reduced)await s.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+    // set both ways: the Windows CI runner has system animations off, which Chrome reports as reduced motion
+    await s.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:reduced?'reduce':'no-preference'}]});
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
     await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const note=await s.evaluate("(()=>{const e=document.getElementById('route-note');const r=e.getBoundingClientRect();return getComputedStyle(e).display!=='none'&&r.width>0&&r.bottom<=innerHeight?e.textContent:''})()");

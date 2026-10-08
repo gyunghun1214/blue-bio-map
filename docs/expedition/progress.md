@@ -85,3 +85,4 @@
 - S3–S4 결정·구현: `design.md` '항해 속도와 움직임'. 손잡이 `SAIL.avgLegSeconds`(기본 8), `?sail=` 미리보기, 시간 기반 Hermite 항해(속도 이어받기), '바로 도착'(버튼·Space·End), 카메라 물러남·앞당김, 항적·물보라 정규화, 모바일 안내줄 두 줄 허용. 항로·지점·데이터·메인 지도 파일은 그대로.
 - S5 검증: `test_expedition_ui.mjs`에 구간 시간·이징·재지정·바로 도착·`?sail=` 검사를 더하고 대기 시간을 `SAIL`에서 계산. `expedition_check.mjs` 65 PASS(새 9개), uicheck 기준선과 같음. 결과: `verification/2026-10-08-sailing/README.md`.
 - 남은 일: 실제 GPU에서 60 fps와 기본 8초의 체감 확인(팀장 PC).
+- 첫 CI(browser): 데스크톱·모바일에서 새 항해 검사 6건 실패. 원인은 Windows 러너가 시스템 애니메이션을 꺼 두어 Chrome이 `prefers-reduced-motion: reduce`로 보고한 것(배가 즉시 도착, '바로 도착' 숨김). 모션 감소를 강제한 로컬 실행에서 같은 3건이 그대로 재현됐다. `expedition_check.mjs`가 모션 감소가 아닌 환경에 `no-preference`를 명시하도록 고쳤다. 이전 CI는 이 때문에 데스크톱·모바일 항해 애니메이션을 사실상 검사하지 못하고 있었다. 느린 러너를 위해 항해 대기 상한을 `LONGEST×10`초로 넓혔다(통과하는 실행은 기다리지 않음).
