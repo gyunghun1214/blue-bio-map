@@ -40,6 +40,12 @@ jobs:
           node verification/test_trait_display_ui.mjs
           node --check dist/chatbot.js
           node verification/test_chatbot_faq.mjs
+          node --check worker/index.mjs
+          node verification/test_ask_worker.mjs
+          node --check dist/expedition.js
+          node --check verification/expedition_check.mjs
+          node verification/test_expedition_ui.mjs
+          python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:
@@ -70,6 +76,9 @@ jobs:
             if (-not $ready) { throw 'Local site did not start on port 8765' }
             node verification/uicheck.mjs verification/ci-ui
             if ($LASTEXITCODE -ne 0) { throw "UI checks failed with exit code $LASTEXITCODE" }
+            # Sea expedition page: desktop / phone / reduced motion (WebGL via SwiftShader) and WebGL disabled
+            node verification/expedition_check.mjs verification/ci-ui/expedition
+            if ($LASTEXITCODE -ne 0) { throw "Expedition checks failed with exit code $LASTEXITCODE" }
           } finally {
             Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
           }
