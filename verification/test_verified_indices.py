@@ -2717,6 +2717,7 @@ V43 = ROOT / "config" / "verified-indices-v4.3.json"    # superseded by 4.4 (참
 V44 = ROOT / "config" / "verified-indices-v4.4.json"    # superseded by 4.5 (방어 sbGnRH·갑오징어 FMRFamide relaxation (d))
 V45 = ROOT / "config" / "verified-indices-v4.5.json"    # superseded by 4.6 (sub-national MCUI sufficiency steps)
 V46 = ROOT / "config" / "verified-indices-v4.6.json"    # superseded by 4.7 (source corrections, trace sources cited)
+V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참문어 national-list page re-check)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3300,13 +3301,15 @@ class Verified47Tests(unittest.TestCase):
     No score, label, type, flag or trace value changes."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V46))
+        self.report, self.old_report = build(*load_inputs(config=V47)), build(*load_inputs(config=V46))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.7", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.7 report is archived as it was
+        archived47 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.7.json"
+        self.assertEqual(render(self.report), archived47.read_text(encoding="utf-8"))
 
     def test_only_sources_move(self):
         for a, s in self.new.items():
@@ -3348,6 +3351,37 @@ class Verified47Tests(unittest.TestCase):
         self.assertNotIn("Zhang M", src["zhang_2022_rockfish_ts40"]["title"])
         self.assertIn("fdNms=", src["rda_10_4_ulva_prolifera_dried"]["url"])
         self.assertIn("not registered", src["ding_2011_cjnm_qpk"]["doi_status"])
+
+
+
+class Verified48Tests(unittest.TestCase):
+    """4.8 (2026-10-08): 참문어 joined the national list on 2026-10-01 (WoRMS crosswalk), after the 2026-09-27 page re-check,
+    so its current_check step stayed open. Its list and index pages were re-read and the row added; only its sufficiency moves."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V47))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.8", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_octopus_sufficiency_moves(self):
+        self.assertEqual(self.old[534443]["information_sufficiency"]["MCUI"]["ratio"], 0.67)
+        self.assertEqual(self.new[534443]["information_sufficiency"]["MCUI"]["ratio"], 1.0)
+        for a, s in self.new.items():
+            for k in set(s) | set(self.old[a]):
+                if k == "food_trace" or (a == 534443 and k == "information_sufficiency"):
+                    continue
+                self.assertEqual(s.get(k), self.old[a].get(k), (a, k))
+
+    def test_every_scored_national_row_is_re_read(self):
+        rows = self.report["method"]["national_red_list"]["page_recheck"]["rows"]
+        for a, s in self.new.items():
+            if s["mcui_basis"] == "national":
+                self.assertIn(str(a), rows, a)
+                self.assertEqual(s["information_sufficiency"]["MCUI"]["ratio"], 1.0, a)
 
 
 if __name__ == "__main__":
