@@ -86,3 +86,4 @@
 - S5 검증: `test_expedition_ui.mjs`에 구간 시간·이징·재지정·바로 도착·`?sail=` 검사를 더하고 대기 시간을 `SAIL`에서 계산. `expedition_check.mjs` 65 PASS(새 9개), uicheck 기준선과 같음. 결과: `verification/2026-10-08-sailing/README.md`.
 - 남은 일: 실제 GPU에서 60 fps와 기본 8초의 체감 확인(팀장 PC).
 - 첫 CI(browser): 데스크톱·모바일에서 새 항해 검사 6건 실패. 원인은 Windows 러너가 시스템 애니메이션을 꺼 두어 Chrome이 `prefers-reduced-motion: reduce`로 보고한 것(배가 즉시 도착, '바로 도착' 숨김). 모션 감소를 강제한 로컬 실행에서 같은 3건이 그대로 재현됐다. `expedition_check.mjs`가 모션 감소가 아닌 환경에 `no-preference`를 명시하도록 고쳤다. 이전 CI는 이 때문에 데스크톱·모바일 항해 애니메이션을 사실상 검사하지 못하고 있었다. 느린 러너를 위해 항해 대기 상한을 `LONGEST×10`초로 넓혔다(통과하는 실행은 기다리지 않음).
+- 두 번째 CI(browser): 모바일·모션 감소·WebGL 없음은 모두 통과, 데스크톱은 항해 중 1440×900 스크린샷이 60초 안에 안 찍혀(Windows 러너 SwiftShader) 중단. 항해 중 사진은 근거 자료일 뿐 검사가 아니므로 20초 넘으면 건너뛰게 하고(`sailShot`), 전진 검사는 사진이 늦어 배가 먼저 도착해도 맞게(첫 표본은 구간 중간, 이후 감소 없음) 고쳤다. 지점 3으로 가는 중간 사진은 뺐다(바로 도착 검사 전에 배가 도착해 버릴 수 있어서).

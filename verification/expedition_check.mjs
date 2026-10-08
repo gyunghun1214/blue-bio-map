@@ -41,7 +41,7 @@ async function session(flags){
     if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);
     if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')errors.push(m.params.args.map(a=>a.value??a.description).join(' '));
   };
-  const send=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},60000);});
+  const send=(method,params={},ms=60000)=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},ms);});
   const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
   await send('Page.enable');await send('Runtime.enable');
   const close=async()=>{ws.close();chrome.kill();await sleep(500);try{fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});}catch{}};
@@ -53,6 +53,9 @@ async function waitFor(s,expr,timeout=30000){
   return v;
 }
 const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:82});fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));};
+// Mid-voyage pictures are evidence, not checks: on the Windows CI runner a 1440×900 SwiftShader frame of the moving
+// sea can take longer than a minute to capture (CI 2026-10-08), so give up after 20 s and carry on.
+const sailShot=async(s,name)=>{try{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:70},20000);fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));}catch(e){console.log(`note: ${name} screenshot skipped (${e.message})`);}};
 const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.textContent||'')";
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
 const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13,' ':32,End:35}[k],...(type==='keyDown'&&(k==='Enter'||k===' ')?{text:k==='Enter'?String.fromCharCode(13):' '}:{})});};
@@ -96,8 +99,9 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
         check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]*.5,JSON.stringify(early));
         const ts=[];
-        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await shot(s,`${tag}-2-sailing-${f}`);}
-        check(`${tag}: the ship moves forward through the first leg`,ts.every((t,i)=>t&&(i===0||t>ts[i-1])),JSON.stringify(ts));
+        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
+        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
+        check(`${tag}: the ship moves forward through the first leg`,ts[0]<STOP_T[0]&&ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&ts[2]>ts[0],JSON.stringify(ts));
       }
       const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
@@ -136,7 +140,7 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       if(reduced)check(`${tag}: reduced motion moves at once, no 바로 도착 button`,await s.evaluate("document.getElementById('skip').hidden"));
       else{
         // 바로 도착 mid-trip: Space on the desktop, the button on the phone
-        await sleep(1500);await shot(s,`${tag}-6-sailing`);
+        await sleep(1500);
         const mid=await s.evaluate(`({label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
         check(`${tag}: sailing to stop 3 shows its route and 바로 도착`,mid.label.includes(`→ ${stops[2].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[2],JSON.stringify(mid));
         if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');

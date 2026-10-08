@@ -17,12 +17,12 @@
   {
     "name": "desktop: still sailing one second after leaving (no jump to the stop)",
     "status": "PASS",
-    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.001}"
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0005}"
   },
   {
     "name": "desktop: the ship moves forward through the first leg",
     "status": "PASS",
-    "detail": "[0.0159,0.0324,0.0487]"
+    "detail": "[0.0159,0.0324,0.047]"
   },
   {
     "name": "desktop: arrives at stop 1 (톳)",
@@ -57,7 +57,7 @@
   {
     "name": "desktop: sailing to stop 3 shows its route and 바로 도착",
     "status": "PASS",
-    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0669}"
+    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0647}"
   },
   {
     "name": "desktop: 바로 도착 (Space) arrives at once",
@@ -77,7 +77,7 @@
   {
     "name": "desktop: frame rate and first-load size recorded",
     "status": "PASS",
-    "detail": "5 fps (headless SwiftShader) · 1759 KB encoded"
+    "detail": "4 fps (headless SwiftShader) · 1759 KB encoded"
   },
   {
     "name": "desktop: map link uses the existing hash format",
@@ -117,12 +117,12 @@
   {
     "name": "mobile: still sailing one second after leaving (no jump to the stop)",
     "status": "PASS",
-    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0042}"
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0062}"
   },
   {
     "name": "mobile: the ship moves forward through the first leg",
     "status": "PASS",
-    "detail": "[0.0173,0.0355,0.0493]"
+    "detail": "[0.018,0.0328,0.0473]"
   },
   {
     "name": "mobile: arrives at stop 1 (톳)",
@@ -157,7 +157,7 @@
   {
     "name": "mobile: sailing to stop 3 shows its route and 바로 도착",
     "status": "PASS",
-    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0784}"
+    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0721}"
   },
   {
     "name": "mobile: 바로 도착 (button) arrives at once",
@@ -182,7 +182,7 @@
   {
     "name": "mobile: existing map opens with 톳 selected",
     "status": "PASS",
-    "detail": "#s=494972&v=explore&b=satellite&t=occurrence&m=8%2F34.50%2F125.50"
+    "detail": "#s=494972&v=explore&b=basic&t=occurrence&m=8%2F34.50%2F125.50"
   },
   {
     "name": "mobile: the map header links back to the expedition",
@@ -312,7 +312,7 @@
   {
     "name": "no-webgl: existing map opens with 살오징어 selected",
     "status": "PASS",
-    "detail": "#s=342067&v=explore&b=basic&t=occurrence&m=8%2F33.50%2F127.50"
+    "detail": "#s=342067&v=explore&b=satellite&t=occurrence&m=8%2F33.50%2F127.50"
   },
   {
     "name": "no-webgl: the map header links back to the expedition",
