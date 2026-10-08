@@ -1,14 +1,22 @@
 // Browser check of the sea expedition page (expedition.html) in four set-ups, headless Chrome via DevTools (no deps):
 // desktop 1440x900 (WebGL through SwiftShader), phone 390x844 with touch, reduced motion, and WebGL disabled.
-// Flow per set-up: start → sail to stops 1 and 3 → 4 discovery steps → detail open/close → '지도에서 보기' selects the species.
+// Flow per set-up: start → sail to stops 1 and 3 (slow eased sailing, 바로 도착) → 4 discovery steps → detail open/close
+// → '지도에서 보기' selects the species.
 // Usage: node verification/expedition_check.mjs <output-directory>   (site served at URL0, default http://127.0.0.1:8765/)
 import {spawn} from 'node:child_process';
-import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
+import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url'; import vm from 'node:vm';
 const OUT=process.argv[2];
 if(!OUT)throw Error('Usage: node verification/expedition_check.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
 const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8')).stops;
+// Sailing times come from the page's own pure part (SAIL, tripSeconds), so the waits follow the speed setting.
+const pure={};vm.createContext(pure);
+vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('// ---- browser ----')[0]+';Object.assign(globalThis,{SAIL,sampleRoute,tripSeconds});',pure);
+const STOP_T=pure.sampleRoute(stops).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
+// headless SwiftShader can drop to 1–4 fps and the page caps a frame at 0.1 s, so a trip can take up to 10× longer
+// than set; this is only the ceiling, a passing run does not wait it out
+const TRIP_WAIT=Math.max(60000,LONGEST*10000);
 const SEA_CUCUMBER=stops.findIndex(st=>st.aphia_id===241776); // its zinc is missing in the report
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
@@ -33,7 +41,7 @@ async function session(flags){
     if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);
     if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')errors.push(m.params.args.map(a=>a.value??a.description).join(' '));
   };
-  const send=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},60000);});
+  const send=(method,params={},ms=60000)=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},ms);});
   const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
   await send('Page.enable');await send('Runtime.enable');
   const close=async()=>{ws.close();chrome.kill();await sleep(500);try{fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});}catch{}};
@@ -45,9 +53,12 @@ async function waitFor(s,expr,timeout=30000){
   return v;
 }
 const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:82});fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));};
+// Mid-voyage pictures are evidence, not checks: on the Windows CI runner a 1440×900 SwiftShader frame of the moving
+// sea can take longer than a minute to capture (CI 2026-10-08), so give up after 20 s and carry on.
+const sailShot=async(s,name)=>{try{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:70},20000);fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));}catch(e){console.log(`note: ${name} screenshot skipped (${e.message})`);}};
 const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.textContent||'')";
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
-const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13}[k],...(k==='Enter'&&type==='keyDown'?{text:String.fromCharCode(13)}:{})});};
+const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13,' ':32,End:35}[k],...(type==='keyDown'&&(k==='Enter'||k===' ')?{text:k==='Enter'?String.fromCharCode(13):' '}:{})});};
 
 async function run(tag,opts){if(process.env.ONLY&&process.env.ONLY!==tag)return;return run1(tag,opts);}
 async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=true}){
@@ -55,7 +66,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
   try{
     await s.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile});
     if(mobile)await s.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
-    if(reduced)await s.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+    // set both ways: the Windows CI runner has system animations off, which Chrome reports as reduced motion
+    await s.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:reduced?'reduce':'no-preference'}]});
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
     await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const note=await s.evaluate("(()=>{const e=document.getElementById('route-note');const r=e.getBoundingClientRect();return getComputedStyle(e).display!=='none'&&r.width>0&&r.bottom<=innerHeight?e.textContent:''})()");
@@ -80,8 +92,18 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         await s.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width/2,y:height*.5}]});await s.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
         await s.evaluate("document.getElementById('start').click()");
       }else await s.evaluate("document.getElementById('start').focus()").then(()=>key(s,'Enter'));
-      if(!reduced){await sleep(1800);await shot(s,`${tag}-2-sailing`);}
-      const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,40000);
+      const routeT="Number(getComputedStyle(document.getElementById('progress')).getPropertyValue('--t'))";
+      if(!reduced){
+        // the ship sails visibly: still under way a second after leaving, then 25 / 50 / 75 % of the first leg
+        await sleep(1000);
+        const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
+        check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]*.5,JSON.stringify(early));
+        const ts=[];
+        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
+        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
+        check(`${tag}: the ship moves forward through the first leg`,ts[0]<STOP_T[0]&&ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&ts[2]>ts[0],JSON.stringify(ts));
+      }
+      const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
       const lv1=await s.evaluate(level);
       await shot(s,`${tag}-3-stop1-step${lv1}`);
@@ -112,15 +134,27 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         if(await s.evaluate("location.hash==='#stop=2'"))await s.evaluate("document.getElementById('next').click()");
       }else if(reduced){await s.evaluate("document.getElementById('next').click();document.getElementById('next').click()");
       // CI 2026-10-08: on the slow Windows runner a key event timed out here under SwiftShader; the keyboard path is covered on desktop
-      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');if(!reduced)for(const ms of [900,1800,2700]){await sleep(900);await shot(s,`${tag}-6-sailing-${ms}ms`);}}
+      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');}
       const hash3=await waitFor(s,"location.hash==='#stop=3'&&location.hash",3000)||await s.evaluate("location.hash");
       check(`${tag}: two quick moves target stop 3 in the URL`,hash3==='#stop=3',hash3);
-      const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,60000);
+      if(reduced)check(`${tag}: reduced motion moves at once, no 바로 도착 button`,await s.evaluate("document.getElementById('skip').hidden"));
+      const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,TRIP_WAIT);
       check(`${tag}: arrives at stop 3 (${stops[2].korean_name}) with its own card`,!!n3,await s.evaluate(cardName));
       await waitFor(s,`${level}>=3`,8000);await shot(s,`${tag}-6-stop3`);
+      if(!reduced){
+        // 바로 도착 mid-trip, on the longest trip (stop 3 → 8 from the route dots) so a slow runner cannot arrive first.
+        // The jump and the first look happen in one evaluate; then Space on the desktop, the button on the phone.
+        const last=stops.length-1;
+        const mid=await s.evaluate(`(async()=>{document.querySelector('#progress [data-go="${last}"]').click();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}};})()`);
+        check(`${tag}: a long trip shows its route and 바로 도착`,mid.label.includes(`${stops[2].korean_name} → ${stops[last].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[last],JSON.stringify(mid));
+        if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');
+        const skipped=await waitFor(s,`${cardName}===${JSON.stringify(stops[last].korean_name)}&&performance.now()`,3000);
+        const tAfter=await s.evaluate(routeT);
+        check(`${tag}: 바로 도착 (${mobile?'button':'Space'}) arrives at once`,!!skipped&&Math.abs(tAfter-1)<1e-3,await s.evaluate("document.getElementById('steer-label').textContent"));
+      }
       // back to stop 1: the steps already seen stay (level 4 = detail read), no replay from step 1
       await s.evaluate("document.querySelector('#progress [data-go=\"0\"]').click()");
-      const back=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}`,60000);
+      const back=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}`,TRIP_WAIT);
       check(`${tag}: revisiting stop 1 keeps the discovery state (detail read)`,back===4,`level ${back}`);
       await shot(s,`${tag}-7-stop1-revisit`);
       if(!mobile&&!reduced){

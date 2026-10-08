@@ -48,34 +48,70 @@ function routeAt(route,t){
   return {x:p.x,z:p.z,dx:pb.x-pa.x,dz:pb.z-pa.z};
 }
 
-function makeState(n,stopT){
-  return {n,stopT,stop:-1,t:0,phase:'intro',reveal:Array(n).fill(0),detailOpen:false,arrived:-1};
+// Sailing speed: change only SAIL.avgLegSeconds (seconds for a leg of average length; default 8).
+// A trip's time follows its length, kept between shortest× and longest× that value, so a long jump from the stop list
+// stays one eased trip. Reduced motion ignores it and moves at once. expedition.html?sail=<seconds> previews another value.
+const SAIL={avgLegSeconds:8,shortest:.5,longest:1.75};
+function sailFromQuery(search,base=SAIL){
+  const m=/[?&]sail=([^&#]*)/.exec(search||''), v=m&&m[1]!==''?Number(m[1]):NaN;
+  return Number.isFinite(v)?{...base,avgLegSeconds:Math.min(30,Math.max(2,v))}:{...base};
 }
-// Every input calls go(): it only changes the target stop. step() moves t toward it.
+// Seconds to sail a route fraction dt with n stops (the average leg is 1/n of the route).
+function tripSeconds(dt,n,sail=SAIL){
+  const a=sail.avgLegSeconds;
+  return Math.min(a*sail.longest,Math.max(a*sail.shortest,Math.abs(dt)*n*a));
+}
+// A trip is a cubic Hermite curve in t over u = 0..1: it leaves with the ship's current speed (0 from rest) and
+// stops on the goal with speed 0. From rest this is smoothstep, i.e. ease-in-out.
+function tripAt(tr,u){
+  const u2=u*u,u3=u2*u;
+  return (2*u3-3*u2+1)*tr.from+(u3-2*u2+u)*tr.m0+(-2*u3+3*u2)*tr.to;
+}
+// Current speed in t per second (0 when not sailing).
+function tripSpeed(tr){
+  if(!tr)return 0;
+  const u=tr.u,u2=u*u;
+  return ((6*u2-6*u)*tr.from+(3*u2-4*u+1)*tr.m0+(-6*u2+6*u)*tr.to)/tr.dur;
+}
+
+function makeState(n,stopT,sail=SAIL){
+  return {n,stopT,sail,stop:-1,t:0,phase:'intro',reveal:Array(n).fill(0),detailOpen:false,arrived:-1,departed:-1,trip:null};
+}
+// Every input calls go(): it only changes the target stop. step() moves t toward it along a timed trip.
 function go(s,i){
   if(!Number.isInteger(i))return s;
   i=Math.min(Math.max(i,0),s.n-1);
   s.detailOpen=false;
-  s.stop=i;
-  if(s.arrived===i&&Math.abs(s.t-s.stopT[i])<1e-6){s.phase='arrived';return s;}
-  s.phase='sailing';s.arrived=-1;
+  if(s.phase==='sailing'&&s.stop===i)return s; // already on the way there
+  if(s.arrived===i&&Math.abs(s.t-s.stopT[i])<1e-6){s.stop=i;s.phase='arrived';s.trip=null;return s;}
+  if(s.phase!=='sailing')s.departed=s.arrived;
+  const to=s.stopT[i], d=to-s.t, dur=tripSeconds(d,s.n,s.sail);
+  // keep the current speed when the target changes mid-trip; in the same direction never more than the curve
+  // can take without overshooting the goal (m0 <= 3·distance keeps a cubic Hermite monotone)
+  let m0=tripSpeed(s.phase==='sailing'?s.trip:null)*dur;
+  if(Math.sign(m0)===Math.sign(d)&&Math.abs(m0)>Math.abs(3*d))m0=3*d;
+  s.trip={from:s.t,to,dur,m0,u:0};
+  s.stop=i;s.phase='sailing';s.arrived=-1;
   return s;
 }
 const next=s=>go(s,s.stop<0?0:s.stop+1);
 const prev=s=>go(s,s.stop<0?0:s.stop-1);
-// Advance t toward the target stop by at most speed*dt (units of t per second), easing in the last stretch.
-// instant=true (reduced motion) jumps. Returns true on the frame the ship arrives.
-function step(s,dt,{speed=.09,instant=false}={}){
+function arrive(s){
+  s.t=s.stopT[s.stop];s.phase='arrived';s.arrived=s.stop;s.trip=null;
+  if(s.reveal[s.stop]<1)s.reveal[s.stop]=1;
+}
+// Advance the trip by dt seconds. instant=true (reduced motion) jumps. Returns true on the frame the ship arrives.
+function step(s,dt,{instant=false}={}){
   if(s.phase!=='sailing'||s.stop<0)return false;
-  const goal=s.stopT[s.stop], gap=goal-s.t;
-  const move=instant?Math.abs(gap):Math.min(Math.abs(gap),Math.max(.004,Math.min(speed,Math.abs(gap)*1.6))*dt);
-  s.t+=Math.sign(gap)*move;
-  if(Math.abs(goal-s.t)<1e-5){
-    s.t=goal;s.phase='arrived';s.arrived=s.stop;
-    if(s.reveal[s.stop]<1)s.reveal[s.stop]=1;
-    return true;
-  }
+  const tr=s.trip;
+  if(instant||!tr||(tr.u+=dt/tr.dur)>=1){arrive(s);return true;}
+  s.t=Math.min(1,Math.max(0,tripAt(tr,tr.u)));
   return false;
+}
+// '바로 도착': end the current trip at its goal now. Returns true when it arrived.
+function skip(s){
+  if(s.phase!=='sailing'||s.stop<0)return false;
+  arrive(s);return true;
 }
 // Discovery steps after arrival: 1 sea area and records, 2 species, 3 values. 4 = detail opened. Never goes back.
 function advanceReveal(s){
@@ -90,7 +126,7 @@ function openDetail(s){
 function closeDetail(s){s.detailOpen=false;}
 // Place the ship on a stop without sailing (deep link, reduced motion, restored session).
 function placeAt(s,i,reveal){
-  go(s,i);s.t=s.stopT[s.stop];s.phase='arrived';s.arrived=s.stop;
+  go(s,i);s.t=s.stopT[s.stop];s.phase='arrived';s.arrived=s.stop;s.trip=null;
   s.reveal[s.stop]=Math.max(s.reveal[s.stop],reveal??1);
 }
 const hashFor=s=>s.stop>=0?`#stop=${s.stop+1}`:'';
@@ -228,7 +264,8 @@ function renderCard(){
   const show=s.phase==='arrived'&&s.arrived>=0&&!document.body.classList.contains('is-cards');
   steer.hidden=s.phase==='intro'||document.body.classList.contains('is-cards');
   $('prev').disabled=s.stop<=0;$('next').disabled=s.stop>=s.n-1;
-  $('steer-label').textContent=s.phase==='sailing'?`${DATA.stops[s.stop].korean_name} 지점으로 항해 중`:s.arrived>=0?`지점 ${s.arrived+1} / ${s.n}`:'';
+  $('steer-label').textContent=s.phase==='sailing'?`${s.departed>=0?DATA.stops[s.departed].korean_name:'출발'} → ${DATA.stops[s.stop].korean_name} 항해 중`:s.arrived>=0?`지점 ${s.arrived+1} / ${s.n}`:'';
+  $('skip').hidden=s.phase!=='sailing'||reduceMotion.matches;
   if(!show){card.hidden=true;card.dataset.stop='';return;}
   const i=s.arrived;
   const key=i+(s.reveal[i]>=REVEAL_DETAIL?':seen':'');
@@ -262,6 +299,8 @@ function doGo(i){
   else if(reduceMotion.matches||!scene){placeAt(STATE,STATE.stop);onArrive();return;}
   render();save();
 }
+// '바로 도착' button, Space or End while sailing: arrive now, the camera catches up quickly.
+function doSkip(){if(skip(STATE)){scene?.catchUp();onArrive();}}
 function leaveIntro(){$('intro').hidden=true;document.body.classList.remove('is-intro');}
 function showDetail(i){
   if(document.body.classList.contains('is-cards')){placeAt(STATE,i,REVEAL_DONE);}
@@ -294,7 +333,7 @@ function bindInput(){
   });
   $('start').onclick=()=>{leaveIntro();doGo(0);};
   $('resume').onclick=()=>{leaveIntro();const s=JSON.parse(sessionStorage.getItem('bbvm-expedition')||'{}');s.reveal?.forEach((r,i)=>STATE.reveal[i]=Math.max(STATE.reveal[i],r|0));placeAt(STATE,s.stop);if(scene)scene.snap();onArrive();};
-  $('prev').onclick=()=>doGo(STATE.stop-1);$('next').onclick=()=>doGo(STATE.stop+1);
+  $('prev').onclick=()=>doGo(STATE.stop-1);$('next').onclick=()=>doGo(STATE.stop+1);$('skip').onclick=doSkip;
   $('detail-close').onclick=()=>hideDetail();
   $('detail').addEventListener('close',()=>{if(STATE.detailOpen)hideDetail();});
   $('view-toggle').onclick=()=>setCards(!document.body.classList.contains('is-cards'),scene?'':'3D 화면을 쓸 수 없어 카드 목록으로 보여 줍니다.');
@@ -304,6 +343,8 @@ function bindInput(){
     if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
     if(document.body.classList.contains('is-cards'))return;
     if(STATE.phase==='intro'){if(e.key==='Enter'&&e.target===document.body){leaveIntro();doGo(0);}return;}
+    // Space on a focused button presses that button; End always skips
+    if(STATE.phase==='sailing'&&(e.key==='End'||(e.key===' '&&!e.target.closest('button,a,summary')))){e.preventDefault();doSkip();return;}
     if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){e.preventDefault();doGo(STATE.stop+1);}
     else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();doGo(STATE.stop-1);}
     else if(/^[1-9]$/.test(e.key)&&Number(e.key)<=STATE.n)doGo(Number(e.key)-1);
@@ -463,7 +504,7 @@ function buildSea(THREE,geo){
   sc.add(ship);
 
   // Wake ribbon from the ship's recent positions: spreads and fades with age, bright edges and a turbulent centre.
-  const HIST=140, hist=[];
+  const HIST=180, hist=[];
   const wakeGeo=new THREE.BufferGeometry(), wakePos=new Float32Array(HIST*2*3), wakeAttr=new Float32Array(HIST*2*2);
   const idx=[];for(let i=0;i<HIST-1;i++){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2);}
   wakeGeo.setIndex(idx);wakeGeo.setAttribute('position',new THREE.BufferAttribute(wakePos,3));wakeGeo.setAttribute('aWake',new THREE.BufferAttribute(wakeAttr,2));
@@ -483,7 +524,10 @@ function buildSea(THREE,geo){
 
   // Camera rig: smoothed look-at and distance. North stays up; the camera looks from the south at about 55°.
   const look=new THREE.Vector3(), camPos=new THREE.Vector3();
-  let lastKey='', lastDraw=0, heading=0, prevHeading=0, bank=0, speedNow=0, last=performance.now(), time=0, frames=0, fpsT=0, lowFps=false;
+  let lastKey='', lastDraw=0, heading=0, prevHeading=0, bank=0, speedNow=0, accel=0, catchUpT=0, last=performance.now(), time=0, frames=0, fpsT=0, lowFps=false;
+  const want=new THREE.Vector3();
+  // Average sailing speed in world units per second: wake, spray and trim are scaled to it, so they look the same at any SAIL.
+  const cruise=ROUTE.total/STATE.n/STATE.sail.avgLegSeconds;
   const start=routeAt(ROUTE,0);
   const routeBox=(()=>{let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;for(const p of routePts){x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);z0=Math.min(z0,p.z);z1=Math.max(z1,p.z);}return {cx:(x0+x1)/2,cz:(z0+z1)/2,w:x1-x0};})();
   function shipPose(){
@@ -494,14 +538,17 @@ function buildSea(THREE,geo){
     if(STATE.phase==='intro')return {x:routeBox.cx,z:routeBox.cz+1,d:routeBox.w*(aspect<1?2.2:1.15)};
     const arrived=STATE.phase==='arrived';
     // Arrived: shift the view so the ship sits beside the card (left of it on desktop, above it on phones).
-    const d=arrived?(mob?4.4:4.0):4.6;
-    return {x:p.x+(arrived&&!mob?d*.17:0),z:p.z+(arrived&&mob?d*.16:0),d};
+    if(arrived){const d=mob?4.4:4.0;return {x:p.x+(mob?0:d*.17),z:p.z+(mob?d*.16:0),d};}
+    // Sailing: in mid-trip pull back and look a little ahead of the bow, so the sea and coast are seen passing by.
+    const pull=STATE.trip?Math.sin(Math.PI*Math.min(1,STATE.trip.u)):0, lead=pull*(mob?.5:1);
+    return {x:p.x+Math.cos(heading)*lead,z:p.z-Math.sin(heading)*lead,d:4.6+pull*(mob?.8:1.6)};
   }
   function placeCamera(tg,k){
     look.x+= (tg.x-look.x)*k;look.z+=(tg.z-look.z)*k;
-    const want=new THREE.Vector3(look.x,tg.d*Math.sin(.98),look.z+tg.d*Math.cos(.98));
+    want.set(look.x,tg.d*Math.sin(.98),look.z+tg.d*Math.cos(.98));
     camPos.lerp(want,k);camera.position.copy(camPos);camera.lookAt(look.x,0,look.z);
   }
+  function catchUp(){catchUpT=.6;}
   function snap(){const tg=target();look.set(tg.x,0,tg.z);camPos.set(tg.x,tg.d*Math.sin(.98),tg.z+tg.d*Math.cos(.98));hist.length=0;}
   function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
   addEventListener('resize',resize);resize();
@@ -524,14 +571,17 @@ function buildSea(THREE,geo){
       heading+=dh*Math.min(1,dt*(still?60:4));
     }
     const turn=Math.atan2(Math.sin(heading-prevHeading),Math.cos(heading-prevHeading))/Math.max(dt,1e-3);prevHeading=heading;
+    const speedWas=speedNow;
     speedNow+=((Math.abs(moved)*ROUTE.total/Math.max(dt,1e-3))-speedNow)*Math.min(1,dt*3);
+    accel+=((speedNow-speedWas)/Math.max(dt,1e-3)-accel)*Math.min(1,dt*2);
+    const sp01=speedNow/cruise; // 1 = average sailing speed, about 1.5 at the middle of a trip
     bank+=(Math.max(-.25,Math.min(.25,-turn*.12))-bank)*Math.min(1,dt*3);
     const p=routeAt(ROUTE,STATE.t);
     ship.position.set(p.x,still?0:Math.sin(time*1.4)*.006,p.z);ship.rotation.y=heading;
-    body.rotation.x=bank+(still?0:Math.sin(time*.9)*.025);body.rotation.z=still?0:Math.sin(time*1.1)*.015-Math.min(speedNow,2)*.01;
+    body.rotation.x=bank+(still?0:Math.sin(time*.9)*.025);body.rotation.z=still?0:Math.sin(time*1.1)*.015+Math.max(-.03,Math.min(.03,accel/cruise*.04))-Math.min(sp01,1.5)*.006; // bow lifts a little when speeding up
     // wake history
     const sternX=p.x-Math.cos(heading)*.22, sternZ=p.z+Math.sin(heading)*.22;
-    // one wake point every 0.025 units of travel, filled in when a slow frame jumps further (wake length stays ~3.5 units)
+    // one wake point every 0.025 units of travel, filled in when a slow frame jumps further (wake length stays ~4.5 units)
     const gap=hist.length?Math.hypot(sternX-hist[0].x,sternZ-hist[0].z):1;
     if(gap>.025){
       const n=hist.length?Math.min(HIST,Math.floor(gap/.025)):1, h0=hist[0];
@@ -544,12 +594,12 @@ function buildSea(THREE,geo){
       wakePos.set([hp.x-nx,.006,hp.z-nz,hp.x+nx,.006,hp.z+nz],i*6);wakeAttr.set([age,-1,age,1],i*4);
     }
     wakeGeo.attributes.position.needsUpdate=true;wakeGeo.attributes.aWake.needsUpdate=true;
-    wakeU.uStrength.value+=((still?.0:Math.min(1,speedNow/1.2))-wakeU.uStrength.value)*Math.min(1,dt*1.5);
+    wakeU.uStrength.value+=((still?.0:Math.min(1,sp01/.6))-wakeU.uStrength.value)*Math.min(1,dt*1.5);
     // bow spray when fast
     const sp=spray.geometry.attributes.position, bowX=p.x+Math.cos(heading)*.26, bowZ=p.z-Math.sin(heading)*.26;
     for(let i=0;i<60;i++){
       sprayLife[i]-=dt;
-      if(sprayLife[i]<=0&&speedNow>.4&&!still&&Math.random()<dt*speedNow*14){
+      if(sprayLife[i]<=0&&sp01>.7&&!still&&Math.random()<dt*sp01*9){
         sprayLife[i]=.5+Math.random()*.4;const side=Math.random()<.5?-1:1;
         sp.setXYZ(i,bowX,.03,bowZ);
         sprayVel.set([Math.sin(heading)*side*.18+(Math.random()-.5)*.05,.25+Math.random()*.15,Math.cos(heading)*side*.18+(Math.random()-.5)*.05],i*3);
@@ -557,12 +607,13 @@ function buildSea(THREE,geo){
       if(sprayLife[i]>0){sp.setXYZ(i,sp.getX(i)+sprayVel[i*3]*dt,Math.max(0,sp.getY(i)+(sprayVel[i*3+1]-=dt*1.2)*dt),sp.getZ(i)+sprayVel[i*3+2]*dt);}
       else sp.setXYZ(i,0,-10,0);
     }
-    sp.needsUpdate=true;spray.material.opacity=Math.min(.85,speedNow*.5);
+    sp.needsUpdate=true;spray.material.opacity=Math.min(.85,Math.max(0,sp01-.5)*.6);
     cells.forEach(({line,ring},i)=>{
       const on=i===STATE.arrived;line.material.opacity=on?.75:.25;
       ring.material.opacity=on?.1:.55;ring.scale.setScalar(on?1+.15*Math.sin(time*2):1);
     });
-    placeCamera(target(),still?1:1-Math.exp(-dt*(STATE.phase==='intro'?1.2:2.4)));
+    catchUpT=Math.max(0,catchUpT-dt);
+    placeCamera(target(),still?1:1-Math.exp(-dt*(STATE.phase==='intro'?1.2:catchUpT>0?8:2.4)));
     // reduced motion: the scene is still, so draw only when something changed (or once a second)
     const key=`${STATE.t}|${STATE.arrived}|${innerWidth}x${innerHeight}`;
     if(!still||key!==lastKey||now-lastDraw>1000){renderer.render(sc,camera);lastKey=key;lastDraw=now;}
@@ -572,7 +623,7 @@ function buildSea(THREE,geo){
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
-  return {snap,renderer};
+  return {snap,catchUp,renderer};
 }
 
 /* ---------- boot ---------- */
@@ -584,7 +635,7 @@ async function boot(){
     document.body.classList.remove('is-loading');document.body.classList.add('is-cards');return;
   }
   ROUTE=sampleRoute(DATA.stops);
-  STATE=makeState(DATA.stops.length,ROUTE.stopT);
+  STATE=makeState(DATA.stops.length,ROUTE.stopT,sailFromQuery(location.search));
   $('intro-count').textContent=DATA.stops.length;
   renderCards();
   let reason='';
