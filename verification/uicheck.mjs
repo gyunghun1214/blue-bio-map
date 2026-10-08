@@ -82,6 +82,15 @@ async function waitForText(expr,accept,timeout=3000){
 const results=[];
 const check=(name,ok,detail='')=>{results.push({name,status:ok?'PASS':'FAIL',detail});console.log(ok?'PASS':'FAIL',name,ok?'':detail);};
 async function viewport(w,h,mobile){await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:mobile?2:1,mobile});}
+
+// Entry screen (dist/intro.js): read its state, wait until it can be entered, press Enter like a keyboard.
+const gateState=()=>evaluate(`(()=>{const g=document.getElementById('site-gate'),a=document.activeElement,held=[...document.body.children].filter(n=>n!==g&&!/^(SCRIPT|LINK)$/.test(n.tagName));
+  return {on:document.documentElement.classList.contains('gate-on'),hidden:g.hidden,ready:g.classList.contains('is-ready'),step:g.querySelector('.gate-step').textContent,
+    note:g.querySelector('.gate-note').hidden?'':g.querySelector('.gate-note').textContent,counts:g.querySelector('.gate-counts').textContent,focus:a?.id||a?.tagName||'',
+    held:held.length,inert:held.filter(n=>n.inert).length,stored:sessionStorage.getItem('bbvm-intro-entered'),
+    enterBox:(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(document.getElementById('gate-enter').getBoundingClientRect()),vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth}})()`);
+async function gateReady(){for(let i=0;i<60;i++){const g=await gateState();if(g.ready||!g.on)return g;await sleep(200);}return gateState();}
+async function pressEnter(){for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});}
 let mock='';
 async function load(){await send('Page.navigate',{url:URL0});
   for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|불러오기 실패|연결 실패/.test(st))return st;}return 'timeout';}
@@ -116,6 +125,19 @@ try{
   const apiIds=await evaluate("fetch(publicApi.url+'/rest/v1/species_profiles?select=aphia_id',{headers:{apikey:publicApi.key},cache:'no-store'}).then(r=>r.json()).then(r=>r.map(x=>Number(x.aphia_id)))");
   const expPub=apiIds.length, expCand=candidatesBeside(apiIds), total=await evaluate('data.species.length');
   check('Desktop live: connection state names published profiles and candidates separately (API + catalog counts)',st===`공개 기준 자료 연결됨 · 운영 발행 ${expPub}종 · 조사 후보 ${expCand}종`&&expPub+expCand===total,`${st} | API ${expPub}, catalog ${expCand}, shown ${total}`);
+
+  // ---------- Entry screen, first open of a fresh tab: loader → entry screen → Enter → map ----------
+  {
+    let g=await gateReady();
+    check('G-1 first open: entry screen over the map, map and chatbot inert, loader reached 3 / 3, counts read from the loaded data',
+      g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step==='3 / 3준비됐어요'&&g.counts===`지금 운영 발행 ${expPub}종과 조사 후보 ${expCand}종을 볼 수 있습니다.`&&g.note===''&&g.stored===null,JSON.stringify(g));
+    check('G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen',g.focus==='gate-enter'&&g.enterBox.bottom<=g.vh&&g.enterBox.top>0,JSON.stringify(g));
+    await sleep(1200);await shot('gate-desktop',false);
+    await pressEnter();await sleep(1100);
+    g=await gateState();
+    check('G-3 Enter opens the map: entry screen gone, nothing inert, focus in the species search, remembered for this tab',
+      !g.on&&g.hidden&&g.inert===0&&g.focus==='search'&&g.stored==='1',JSON.stringify(g));
+  }
   const note=await evaluate("document.getElementById('collection-note').textContent");
   check('Live note uses the same published/candidate counts (not a fixed 2종)',note.includes(`운영 발행 ${expPub}종과 조사 후보 ${expCand}종`)&&!/(^|[^\d])2종/.test(note),note);
   const cards=await evaluate("[...document.querySelectorAll('.species-card')].map(b=>b.innerText.replace(/\\s+/g,' '))");
@@ -676,6 +698,27 @@ try{
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
     await evaluate("window.scrollTo(0,0);1");await shot(tag==='mobile'?`mobile-${name}`:name,false);
   }
+  // ---------- Entry screen: skip rules, phone, failed load ----------
+  if(scriptId)await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
+  await viewport(1560,900,false);
+  await evaluate("sessionStorage.removeItem('bbvm-intro-entered');location.hash='s=241776&v=explore';location.reload();1");await sleep(400);
+  for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+  let gs=await gateState();
+  check('G-4 a shared link (#s=…) opens the map directly, even in a tab that never entered',!gs.on&&gs.hidden&&gs.inert===0&&await evaluate("selected?.aphiaID===241776"),JSON.stringify(gs));
+  await viewport(390,844,true);
+  await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
+  await load();gs=await gateReady();
+  check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
+  await sleep(1200);await shot('gate-mobile',false);
+  await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);gs=await gateState();
+  check('G-5 phone: the button opens the map',!gs.on&&gs.hidden&&gs.inert===0,JSON.stringify(gs));
+  await viewport(1560,900,false);
+  scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
+  await load();gs=await gateReady();
+  check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
+  await pressEnter();await sleep(1100);gs=await gateState();
+  check('G-6 failed load: after Enter the map page shows its own error',!gs.on&&await evaluate("!document.getElementById('error').hidden"),JSON.stringify(gs));
+  await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
 finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();

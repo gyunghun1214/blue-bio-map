@@ -61,7 +61,7 @@ html.gate-on .gate{display:block}
 .gate-enter:hover{transform:translateY(-2px);box-shadow:0 14px 48px rgba(0,0,0,.45)}
 .gate-dot{width:16px;height:16px;border-radius:50%;background:var(--g-warm);box-shadow:0 0 0 0 rgba(240,138,75,.55);animation:gate-pulse 2.4s ease-out infinite}
 @keyframes gate-pulse{0%{box-shadow:0 0 0 0 rgba(240,138,75,.5)}70%,100%{box-shadow:0 0 0 12px rgba(240,138,75,0)}}
-.gate-hint{margin:14px 0 0;font-size:13px;color:var(--g-ink2);text-shadow:0 1px 8px rgba(3,13,26,.9)}
+.gate-hint{margin:14px 0 0;padding:4px 12px 4px 5px;border-radius:999px;background:rgba(3,13,26,.62);font-size:13px;color:var(--g-ink2)}
 .gate-hint kbd{display:inline-block;margin-right:4px;padding:2px 7px;border:1px solid var(--g-line);border-radius:5px;font:600 12px/1.4 inherit;font-family:inherit;color:var(--g-ink)}
 .gate-note{max-width:34em;margin:12px 0 0;padding:8px 14px;border:1px solid rgba(240,138,75,.4);border-radius:10px;background:rgba(3,13,26,.6);font-size:13px;color:#ffd9c2;text-align:center}
 .gate-sources{margin-top:clamp(22px,4.5vh,48px);display:grid;justify-items:center;gap:10px}

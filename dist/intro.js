@@ -1,6 +1,6 @@
 // Loading and entry screen of the main map (index.html): a loader that fills with the app's real loading steps, then an
 // entry screen that opens the map on the button or Enter. Loaded without defer in <head> so the screen is up before the
-// first paint. The part above '// ---- browser ----' is pure and tested in node (verification/test_intro_ui.mjs).
+// first paint. The part above the browser marker below is pure and tested in node (verification/test_intro_ui.mjs).
 const GATE_KEY='bbvm-intro-entered';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 const GATE_MIN_MS=600, GATE_MAX_MS=7000;
@@ -70,6 +70,7 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
   const reduceQuery=matchMedia('(prefers-reduced-motion: reduce)');
   let reduce=reduceQuery.matches,geoRings=[],cells=[],el=null,raf=0,canvas=null,ctx=null,shown=false,left=false;
   const inerted=[];let observer=null;
+  const touch=()=>matchMedia('(pointer:coarse)').matches; // a phone: no focus ring on the button, no keyboard popping up in search
 
   const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();};
   addEventListener('bbvm:progress',e=>{try{
@@ -98,7 +99,7 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
     q('.gate-loader').setAttribute('aria-hidden','true');
     const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
     // keyboard and mouse: focus the button (Enter/Space act on it); touch: the screen itself, so no focus ring on a tap device
-    if(matchMedia('(pointer:fine)').matches)q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
+    if(!touch())q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
   }
   function enter(){
     if(left||gate.phase!=='ready')return;left=true;
@@ -106,8 +107,8 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
     const finish=()=>{
       cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
-      const fine=matchMedia('(pointer:fine)').matches,search=document.getElementById('search'),main=document.querySelector('main');
-      if(fine&&search)search.focus({preventScroll:true});
+      const search=document.getElementById('search'),main=document.querySelector('main');
+      if(!touch()&&search)search.focus({preventScroll:true});
       else if(main){main.tabIndex=-1;main.focus({preventScroll:true});main.addEventListener('blur',()=>main.removeAttribute('tabindex'),{once:true});}
     };
     if(reduce)return finish();
