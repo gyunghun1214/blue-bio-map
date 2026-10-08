@@ -73,11 +73,14 @@ jobs:
           } finally {
             Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
           }
+      # Screenshots only when a check fails: uploading every run filled the artifact quota (2026-10-08), and a full
+      # quota must not turn passing checks red.
       - name: Upload browser results
-        if: always()
+        if: failure()
+        continue-on-error: true
         uses: actions/upload-artifact@v6
         with:
           name: ui-check-results
           path: verification/ci-ui/
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 3

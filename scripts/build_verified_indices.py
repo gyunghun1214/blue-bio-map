@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.6.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.7.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1601,6 +1601,24 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
+    if config.get("source_ids_from_traces"):  # 4.7: every registered source a published trace names is cited with the species
+        def named(node):
+            if isinstance(node, dict):
+                for k, v in node.items():
+                    if k.endswith("source_id") and isinstance(v, str):
+                        yield v
+                    elif k.endswith("source_ids") and isinstance(v, list):
+                        yield from (x for x in v if isinstance(x, str))
+                    else:
+                        yield from named(v)
+            elif isinstance(node, list):
+                for v in node:
+                    yield from named(v)
+        for s in pool:
+            s["source_ids"] = sorted({*s["source_ids"], *(x for x in named(s) if x in sources)})
+    for sid, patch in (config.get("source_corrections") or {}).items():  # 4.7: audited metadata, published registry only
+        require(sid in sources and isinstance(patch, dict) and patch, f"{sid}: correction for an unregistered source")
+        sources = {**sources, sid: {**sources[sid], **patch}}
     cohorts = [{"cohort_id": cid, "role": "primary", "criteria": c["spec"]["criteria"],
                 "food_item_ids": [r["food_item_id"] for r in c["rows"]],
                 "foods": [r["reported_food_name"] for r in c["rows"]], "size": len(c["rows"]),

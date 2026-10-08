@@ -1,5 +1,6 @@
 """Build safe, source-linked audit summaries; no occurrence geometry or record identifiers."""
 import json
+from urllib.parse import quote
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -68,7 +69,7 @@ for s in catalog:
                       "englishName": f.get("english_name") if f else None,
                       "values": f["values"] if f else None,
                       "note": notes.get(key, "종 수준으로 연결할 식품 행을 이번 스냅샷에서 확인하지 못함"),
-                      "rowUrl": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes="+f["code"] if f else None,
+                      "rowUrl": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes="+f["code"]+"&fdNms="+quote(f["name"]) if f else None,  # the site needs fdNms (2026-10-08)
                       "source": "RDA 국가표준식품성분 DB 10.4 (2026), 공개 스냅샷 2026-09-25; 공공누리 제1유형"},
         "bioactivity": {"status": "not_reviewed", "note": "기원종·화합물 구조·정량 assay·원논문 연결 미검수"},
         "scores": {"MFPI": None, "MBPI": None, "MCUI": None, "BBVI": None},
@@ -80,7 +81,7 @@ assert len(out) == 22 and len({s["aphiaID"] for s in out}) == 22
     "sourceNotes": {"gbif": "GBIF API search; individual record licence and dataset licence retained separately",
                     "obis": "API endpoint timed out during representative query; 22 per-species queries not attempted",
                     "iucn": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
-                    "nutrition": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/main"},
+                    "nutrition": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"},
     "species": out,
 }, ensure_ascii=False, separators=(",", ":")) + "\n")
 print("Built", len(out), "safe audit entries")

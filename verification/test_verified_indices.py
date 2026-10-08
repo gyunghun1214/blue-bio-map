@@ -2716,6 +2716,7 @@ V42 = ROOT / "config" / "verified-indices-v4.2.json"    # superseded by 4.3 (eve
 V43 = ROOT / "config" / "verified-indices-v4.3.json"    # superseded by 4.4 (참문어 relaxation (d))
 V44 = ROOT / "config" / "verified-indices-v4.4.json"    # superseded by 4.5 (방어 sbGnRH·갑오징어 FMRFamide relaxation (d))
 V45 = ROOT / "config" / "verified-indices-v4.5.json"    # superseded by 4.6 (sub-national MCUI sufficiency steps)
+V46 = ROOT / "config" / "verified-indices-v4.6.json"    # superseded by 4.7 (source corrections, trace sources cited)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3256,13 +3257,15 @@ class Verified46Tests(unittest.TestCase):
     SUB = (145721, 494972, 145086, 1061762)  # 미역, 톳, 청각, 꽃게
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V45))
+        self.report, self.old_report = build(*load_inputs(config=V46)), build(*load_inputs(config=V45))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.6", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.6 report is archived as it was
+        archived46 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.6.json"
+        self.assertEqual(render(self.report), archived46.read_text(encoding="utf-8"))
 
     def test_sub_national_mcui_counts_its_list_rows(self):
         self.assertEqual({a for a, s in self.new.items() if s["mcui_basis"] == "sub_national"}, set(self.SUB))
@@ -3287,6 +3290,64 @@ class Verified46Tests(unittest.TestCase):
         mean = lambda i: round(sum(i[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
         for a in self.SUB:
             self.assertEqual(self.new[a]["information_sufficiency"]["mean_ratio"], mean(self.new[a]["information_sufficiency"]))
+
+
+
+class Verified47Tests(unittest.TestCase):
+    """4.7 (source audit 2026-10-08): every registered source a published trace names is listed in the species' source_ids,
+    and audited metadata (Crossref titles and first authors, documentation pages for dead API endpoints, missing licences,
+    one unregistered DOI, one licence text per work, the RDA row parameter) is applied to the published registry only.
+    No score, label, type, flag or trace value changes."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V46))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.7", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_sources_move(self):
+        for a, s in self.new.items():
+            o = self.old[a]
+            for k in set(s) | set(o):
+                if k not in ("source_ids", "food_trace"):
+                    self.assertEqual(s.get(k), o.get(k), (a, k))
+            self.assertLessEqual(set(o["source_ids"]), set(s["source_ids"]), a)
+        self.assertEqual({k for k in self.report["sources"] if self.report["sources"][k] != self.old_report["sources"].get(k)},
+                         set(self.report["method"]["source_corrections"]))
+
+    def test_every_named_source_is_cited(self):
+        def named(node):
+            if isinstance(node, dict):
+                for k, v in node.items():
+                    if k.endswith("source_id") and isinstance(v, str):
+                        yield v
+                    elif k.endswith("source_ids") and isinstance(v, list):
+                        yield from v
+                    else:
+                        yield from named(v)
+            elif isinstance(node, list):
+                for v in node:
+                    yield from named(v)
+        for a, s in self.new.items():
+            self.assertLessEqual({x for x in named(s) if x in self.report["sources"]}, set(s["source_ids"]), a)
+        for a in (241776, 393716):  # 해삼 holotoxin and PubChem, 큰가리비 replication papers
+            self.assertTrue({"yun_2018_holotoxin", "pubchem_pugrest"} <= set(self.new[a]["source_ids"]) if a == 241776
+                            else {"lin_2018_chlorella", "kapel_2006_alfalfa", "nomura_2002_thresher"} <= set(self.new[a]["source_ids"]), a)
+
+    def test_corrected_sources_are_complete(self):
+        src = self.report["sources"]
+        for sid in self.report["method"]["source_corrections"]:
+            self.assertTrue(src[sid]["url"].startswith("https://"), sid)
+            self.assertTrue(src[sid].get("license") or src[sid].get("terms"), sid)
+        for sid in ("cmnpd_mbpi", "europepmc_mbpi"):
+            self.assertTrue(src[sid]["license"] and src[sid]["title"], sid)
+        self.assertIn("Liu H", src["zhang_2022_rockfish_ts40"]["title"])
+        self.assertNotIn("Zhang M", src["zhang_2022_rockfish_ts40"]["title"])
+        self.assertIn("fdNms=", src["rda_10_4_ulva_prolifera_dried"]["url"])
+        self.assertIn("not registered", src["ding_2011_cjnm_qpk"]["doi_status"])
 
 
 if __name__ == "__main__":

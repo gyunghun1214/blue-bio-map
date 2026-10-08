@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -668,7 +668,6 @@
         "gbif_rapid_lc",
         "hwang_2018_saccharina_haenam",
         "ibaraki_rdb2020_algae",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "mabik_national_species_list",
         "obis_trend",
@@ -1464,7 +1463,7 @@
             }
           ]
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -1875,7 +1874,6 @@
         "gbif_rapid_lc",
         "hwang_2010_ecklonia_cava_culture",
         "ibaraki_rdb2020_algae",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "kawashima_1983_seaweed_inaa",
         "obis_trend",
@@ -2134,7 +2132,7 @@
             }
           ]
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2681,7 +2679,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3090,7 +3088,6 @@
         "cmnpd_mbpi",
         "europepmc_mbpi",
         "gbif_rapid_lc",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "murakami_2011_sargassum_horneri",
         "obis_trend",
@@ -3271,7 +3268,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3698,7 +3695,6 @@
         "cellosaurus_mbpi",
         "chembl_mbpi",
         "gbif_rapid_lc",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "mabik_national_species_list",
         "obis_trend",
@@ -3899,7 +3895,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4274,7 +4270,6 @@
         "chembl_mbpi",
         "hwang_2008_codium_wando",
         "ibaraki_rdb2020_algae",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "obis_trend",
         "pubchem_inchikey_mbpi",
@@ -4759,7 +4754,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5598,7 +5593,6 @@
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "suetsuna_2002_clam",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
@@ -5785,7 +5779,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6854,7 +6848,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7669,15 +7663,11 @@
         "chembl_mbpi",
         "fao_casp_yesso_scallop",
         "iucn_redlist_search",
-        "kapel_2006_alfalfa",
         "li_2018_scallop_vw",
-        "lin_2018_chlorella",
         "nibr_red_data_book_2024",
-        "nomura_2002_thresher",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "suetsuna_2004_wakame",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
@@ -7879,7 +7869,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8985,7 +8975,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10153,7 +10143,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11285,7 +11275,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12358,7 +12348,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14053,7 +14043,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14834,7 +14824,6 @@
         "iucn_larimichthys_polyactis_2020",
         "obis_trend",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "xo_peptide_cohort_literature_2026"
       ],
       "unexplored_candidate": null,
@@ -15059,7 +15048,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15862,14 +15851,12 @@
         "ahtpdb_ic50_2026",
         "cmnpd_mbpi",
         "europepmc_mbpi",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "jfa_rarity_2017",
         "ko_2016_flounder",
         "obis_trend",
         "oh_2024_flounder",
-        "rda_db_10_4",
-        "rda_db_10_4_fatty_acids"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -16167,7 +16154,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17037,12 +17024,10 @@
         "europepmc_mbpi",
         "fukuoka_redlist2024",
         "gbif_rapid_lc",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "kosis_fish_aquaculture",
         "obis_trend",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "zhang_2022_rockfish_ts40"
       ],
       "unexplored_candidate": null,
@@ -19134,7 +19119,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -19924,15 +19909,13 @@
         "fao_casp_amberjack",
         "gbif_iucn_checklist",
         "iucn_seriola_quinqueradiata_2016",
-        "kosis_fish_aquaculture",
         "lu_2007_jbc_sbgnrh",
         "mext_sfct_2020",
         "miyamoto_2024_ifnp_dppiv",
         "ncbi_squ_cdna_kt229623",
         "ncbi_squ_genome_gca002217815",
         "obis_trend",
-        "rda_db_10_4",
-        "rda_db_10_4_fatty_acids"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -20147,7 +20130,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20994,7 +20977,6 @@
         "ahtpdb_ic50_2026",
         "cellosaurus_mbpi",
         "chembl_mbpi",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "jfa_rarity_2017",
         "kordi_2010_pacific_cod",
@@ -21237,7 +21219,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22057,12 +22039,10 @@
         "europepmc_mbpi",
         "fukuoka_redlist2024",
         "hong_2025_ijms_mts",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "jiang_2025_crab",
         "obis_trend",
-        "rda_db_10_4",
-        "rda_db_10_4_fatty_acids"
+        "rda_db_10_4"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -22544,7 +22524,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24010,7 +23990,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25111,7 +25091,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.6 (2026-10-08). Source audit 2026-10-08: no score, category, type or flag changes. (1) source_ids_from_traces: every registered source that a published trace names (food, bioactivity, conservation, substitute and trend records) is also listed in the species' source_ids, so the species page and matrix-readiness cite it (before: IUCN re-check, RDA fatty-acid table, PubChem and several replication papers were used but not listed). (2) source_corrections: audited metadata applied to the published registry only - titles replaced by the Crossref titles and first authors where the cited text was a paraphrase or named the wrong authors, dead API endpoint links replaced by their documentation pages, a missing licence and title added for CMNPD and Europe PMC, one unregistered DOI marked, the same work given one licence text, and the RDA row link given the parameter the site now needs.",
+    "changes_from": "verified-4.5 (2026-10-05). Data audit 2026-10-08: no score, category, type or flag changes. Information sufficiency only: a scored sub-national MCUI (4.2) fell through to the IUCN steps and read 0/3 although its record is an official, reviewed, current-edition list row. It now reads its steps from that row, like a range-state list (unexplored_candidates.subnational_mcui_sufficiency). 미역, 톳, 청각 and 꽃게 move MCUI sufficiency 0.0 -> 1.0; a preliminary Rapid LC stays open.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -25455,7 +25435,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.7",
+    "method_version": "verified-4.6",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -25863,79 +25843,6 @@
         }
       ]
     },
-    "source_corrections": {
-      "apostichopus_2024_paper": {
-        "title": "Holotoxin A 1 from Apostichopus japonicus inhibited oropharyngeal and intra‐abdominal candidiasis by inducing oxidative damage in Candida albicans (Liao M et al. 2024)"
-      },
-      "cellosaurus_mbpi": {
-        "url": "https://www.cellosaurus.org/"
-      },
-      "cmnpd_mbpi": {
-        "license": "CC BY-NC-SA 4.0",
-        "title": "CMNPD public compound search"
-      },
-      "ding_2011_cjnm_qpk": {
-        "doi_status": "Printed on the article but not registered: doi.org and Crossref return 404 (checked 2026-10-08). The link is the ScienceDirect article page."
-      },
-      "europepmc_fulltext_p703": {
-        "url": "https://europepmc.org/RestfulWebService"
-      },
-      "europepmc_mbpi": {
-        "license": "Europe PMC terms (metadata; article text under each article's own licence)",
-        "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
-        "url": "https://europepmc.org/RestfulWebService"
-      },
-      "gbif_iucn_checklist": {
-        "license_url": "https://creativecommons.org/licenses/by/4.0/legalcode"
-      },
-      "gelidium_2018_extract": {
-        "title": "Gelidium elegans Extract Ameliorates Type 2 Diabetes via Regulation of MAPK and PI3K/Akt Signaling (Choi J et al. 2018)"
-      },
-      "halocynthia_2006_paper": {
-        "title": "Halocynthiaxanthin and fucoxanthinol isolated from Halocynthia roretzi induce apoptosis in human leukemia, breast and colon cancer cells (Konishi I et al. 2006)"
-      },
-      "huang_2017_mmr_shp": {
-        "title": "Isolation and purification of novel peptides derived from Sepia ink: Effects on apoptosis of prostate cancer cell PC-3 (Huang F et al. 2017)"
-      },
-      "iucn_redlist_recheck": {
-        "license": "IUCN Red List terms (non-commercial)",
-        "license_url": "https://www.iucnredlist.org/terms/terms-of-use"
-      },
-      "li_2025_yield": {
-        "title": "A Comprehensive and Comparative Study on the Biochemical Composition and Non-Volatile Taste Compounds of Thirteen Shellfish Species (Li L et al. 2025)"
-      },
-      "magallana_2013_peptide": {
-        "title": "Purification of a Novel Peptide Derived from a Shellfish, Crassostrea gigas, and Evaluation of Its Anticancer Property (Cheong SH et al. 2013)"
-      },
-      "rda_10_4_ulva_prolifera_dried": {
-        "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a&fdNms=%EA%B0%80%EC%8B%9C%ED%8C%8C%EB%9E%98"
-      },
-      "sargassum_2024_fractions": {
-        "title": "Effect of a Steaming Treatment on the Alpha-Glucosidase Inhibitory Components in the Brown Alga Sargassum fusiforme (Liu X et al. 2024)"
-      },
-      "ufish_1": {
-        "license": "FAO copyright; non-commercial research and education use with attribution"
-      },
-      "undaria_2018_paper": {
-        "title": "Inhibition of α-glucosidase activity by selected edible seaweeds and fucoxanthin (Zaharudin N et al. 2019)"
-      },
-      "valenzuela_2022_yield": {
-        "title": "Proximal and fatty acid analysis in Ostrea chilensis, Crassostrea gigas and Mytilus chilensis (Bivalvia: Mollusca) from southern Chile (Valenzuela A et al. 2022)"
-      },
-      "worms_classification": {
-        "url": "https://www.marinespecies.org/rest/"
-      },
-      "zhang_2022_rockfish_ts40": {
-        "title": "Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Liu H et al. 2022)"
-      },
-      "zhang_2022_ulva_htdt": {
-        "title": "Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (Lin X et al. 2022)"
-      },
-      "zhu_2017_sinonovacula_sch": {
-        "title": "Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (Huang F et al. 2017)"
-      }
-    },
-    "source_ids_from_traces": true,
     "status": "released",
     "unexplored_candidates": {
       "national_mcui_sufficiency": "When mcui_basis is national, the MCUI steps are read from the national assessment that gives the MCUI: assessment_record = the reviewed national record, numeric_category = its category is in conservation.category_scores, current_check = its list and index pages were re-read (national_red_list.page_recheck). Otherwise the IUCN steps apply.",
@@ -25990,7 +25897,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.7",
+  "method_version": "verified-4.6",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -26156,7 +26063,7 @@
       "license": "Publisher terms; citation only",
       "provider": "British Journal of Pharmacology article",
       "terms": "Publisher terms; limited factual summary only",
-      "title": "Holotoxin A 1 from Apostichopus japonicus inhibited oropharyngeal and intra‐abdominal candidiasis by inducing oxidative damage in Candida albicans (Liao M et al. 2024)",
+      "title": "Holotoxin A1 antimicrobial assay",
       "url": "https://doi.org/10.1111/bph.16333",
       "version": "Published article, DOI 10.1111/bph.16333"
     },
@@ -26194,7 +26101,7 @@
       "provider": "SIB Cellosaurus",
       "terms": "CC BY 4.0; category field only",
       "title": "Cell-line category for ChEMBL CELL-LINE targets",
-      "url": "https://www.cellosaurus.org/",
+      "url": "https://api.cellosaurus.org/cell-line/",
       "version": "API, queried 2026-09-29 to 2026-09-30"
     },
     "chembl_37": {
@@ -26294,10 +26201,8 @@
     },
     "cmnpd_mbpi": {
       "accessed": "2026-09-29",
-      "license": "CC BY-NC-SA 4.0",
       "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
       "terms": "CC BY-NC-SA 4.0",
-      "title": "CMNPD public compound search",
       "url": "https://www.cmnpd.org",
       "version": "public site search without login"
     },
@@ -26323,7 +26228,6 @@
     "ding_2011_cjnm_qpk": {
       "accessed": "2026-10-05",
       "doi": "10.3724/SP.J.1009.2011.00151",
-      "doi_status": "Printed on the article but not registered: doi.org and Crossref return 404 (checked 2026-10-08). The link is the ScienceDirect article page.",
       "license": "Publisher terms; values and wording recorded only",
       "provider": "Chinese Journal of Natural Medicines 9(2):151-155 (Elsevier)",
       "terms": "Full text read from the team lead's library PDF (sha256 4b7a52b58bac97796fbda5745e17d0ee515d5aa42ba5b9c620138d3059706ba8, not stored in the repository). Species stated as sepia esculenta, identified by Prof. Zhao Shen-Long.",
@@ -26356,16 +26260,14 @@
       "provider": "Europe PMC REST fullTextXML",
       "terms": "CC BY 4.0 articles; compound names, sample origin and DOIs recorded, no text copied",
       "title": "Open-access full texts read for the 3.20 paper links (PMC8794173, PMC9858231)",
-      "url": "https://europepmc.org/RestfulWebService",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/",
       "version": "fullTextXML of PMC8794173 (PLoS ONE 17:e0258980, 2022) and PMC9858231 (Foods 12:244, 2023), read 2026-10-02"
     },
     "europepmc_mbpi": {
       "accessed": "2026-09-29",
-      "license": "Europe PMC terms (metadata; article text under each article's own licence)",
       "provider": "EMBL-EBI Europe PMC",
       "terms": "https://europepmc.org/Copyright (metadata; only IDs, titles and quoted abstract sentences stored)",
-      "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
-      "url": "https://europepmc.org/RestfulWebService",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
       "version": "REST search, live"
     },
     "fao_casp_amberjack": {
@@ -26466,7 +26368,7 @@
     "gbif_iucn_checklist": {
       "accessed": "2026-09-25",
       "license": "CC BY 4.0",
-      "license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+      "license_url": "http://creativecommons.org/licenses/by/4.0/legalcode",
       "provider": "IUCN via GBIF",
       "terms": "CC BY 4.0 dataset licence",
       "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
@@ -26487,7 +26389,7 @@
       "license": "CC BY 4.0",
       "provider": "Choi et al., Nutrients",
       "terms": "CC BY 4.0 article; limited factual summary with citation",
-      "title": "Gelidium elegans Extract Ameliorates Type 2 Diabetes via Regulation of MAPK and PI3K/Akt Signaling (Choi J et al. 2018)",
+      "title": "Gelidium elegans extract in db/db mouse diabetes study",
       "url": "https://pubmed.ncbi.nlm.nih.gov/29316644/",
       "version": "2018 article, Nutrients 10(1):51"
     },
@@ -26497,7 +26399,7 @@
       "license": "Publisher terms; abstract summary",
       "provider": "Konishi et al., Comparative Biochemistry and Physiology C",
       "terms": "Publisher copyright; abstract facts and citation only",
-      "title": "Halocynthiaxanthin and fucoxanthinol isolated from Halocynthia roretzi induce apoptosis in human leukemia, breast and colon cancer cells (Konishi I et al. 2006)",
+      "title": "Halocynthia roretzi carotenoids and HL-60 assay",
       "url": "https://pubmed.ncbi.nlm.nih.gov/16337836/",
       "version": "2006 paper / PubMed abstract"
     },
@@ -26537,7 +26439,7 @@
       "license": "Publisher terms; wording recorded only",
       "provider": "Molecular Medicine Reports 16(4):4222-4228 (Spandidos)",
       "terms": "Full text and publisher XML read: species sepia esculenta (Nanzhen Market, Zhoushan; identified by Prof. Sheng-Long Zhao); sequence LKEENRRRRD, 1371.53 Da; 'IC50' appears nowhere in the text, tables or figure captions; no supplementary files.",
-      "title": "Isolation and purification of novel peptides derived from Sepia ink: Effects on apoptosis of prostate cancer cell PC-3 (Huang F et al. 2017)",
+      "title": "Sepia ink polypeptide SHP (LKEENRRRRD) and PC-3 prostate cancer cells (Huang F, Jing Y, Ding G, Yang Z 2017)",
       "url": "https://doi.org/10.3892/mmr.2017.7068",
       "version": "2017"
     },
@@ -26653,8 +26555,7 @@
     },
     "iucn_redlist_recheck": {
       "accessed": "2026-10-04",
-      "license": "IUCN Red List terms (non-commercial)",
-      "license_url": "https://www.iucnredlist.org/terms/terms-of-use",
+      "license": "IUCN terms of use; search results only, no assessment text",
       "provider": "IUCN Red List of Threatened Species",
       "terms": "Zero-result searches recorded; nothing redistributed",
       "title": "Site search of Red List assessments (version 2026-1)",
@@ -26949,7 +26850,7 @@
       "license": "CC BY 4.0",
       "provider": "Li et al., Foods (MDPI)",
       "terms": "CC BY 4.0 article; cite DOI and method",
-      "title": "A Comprehensive and Comparative Study on the Biochemical Composition and Non-Volatile Taste Compounds of Thirteen Shellfish Species (Li L et al. 2025)",
+      "title": "Species-specific oyster meat yield in Dalian market specimens",
       "url": "https://www.mdpi.com/2304-8158/14/9/1595",
       "version": "Foods 2025 14(9):1595, Table 1"
     },
@@ -27016,7 +26917,7 @@
       "license": "Publisher terms; abstract summary",
       "provider": "Cheong et al., Journal of Agricultural and Food Chemistry",
       "terms": "Publisher copyright; abstract facts and citation only",
-      "title": "Purification of a Novel Peptide Derived from a Shellfish, Crassostrea gigas, and Evaluation of Its Anticancer Property (Cheong SH et al. 2013)",
+      "title": "Anticancer peptide purified from Crassostrea gigas hydrolysate",
       "url": "https://pubmed.ncbi.nlm.nih.gov/24199654/",
       "version": "2013 article / PubMed primary abstract"
     },
@@ -27350,7 +27251,7 @@
       "provider": "Rural Development Administration, National Institute of Crop and Food Science, National Standard Food Composition DB (국가표준식품성분 DB)",
       "terms": "One row's values recorded with attribution",
       "title": "파래, 가시파래, 말린것 (food code L0270010001a)",
-      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a&fdNms=%EA%B0%80%EC%8B%9C%ED%8C%8C%EB%9E%98",
+      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a",
       "version": "DB 10.4 (2026); row source code ('95)"
     },
     "rda_db_10_4": {
@@ -27418,7 +27319,7 @@
       "license": "CC BY 4.0",
       "provider": "Liu et al., Molecules",
       "terms": "CC BY 4.0 article; limited factual summary with citation",
-      "title": "Effect of a Steaming Treatment on the Alpha-Glucosidase Inhibitory Components in the Brown Alga Sargassum fusiforme (Liu X et al. 2024)",
+      "title": "Sargassum fusiforme fractionation and alpha-glucosidase inhibition",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
       "version": "2024 article, Molecules 29(24):6000"
     },
@@ -27546,7 +27447,7 @@
     },
     "ufish_1": {
       "accessed": "2026-09-25",
-      "license": "FAO copyright; non-commercial research and education use with attribution",
+      "license": "FAO database terms; attribution required",
       "license_url": "https://www.fao.org/contact-us/terms/db-terms-of-use/",
       "provider": "FAO/INFOODS",
       "terms": "FAO/INFOODS database terms; third-party source rights may differ",
@@ -27577,7 +27478,7 @@
       "license": "Publisher terms; citation only",
       "provider": "Zaharudin et al., Food Chemistry",
       "terms": "Publisher copyright; record metadata and limited factual summary",
-      "title": "Inhibition of α-glucosidase activity by selected edible seaweeds and fucoxanthin (Zaharudin N et al. 2019)",
+      "title": "Undaria pinnatifida acetone extract and purchased fucoxanthin standard alpha-glucosidase assays",
       "url": "https://doi.org/10.1016/j.foodchem.2018.07.142",
       "version": "2018 paper"
     },
@@ -27587,7 +27488,7 @@
       "license": "CC BY",
       "provider": "Valenzuela et al., PLOS ONE",
       "terms": "CC BY; cite DOI and method",
-      "title": "Proximal and fatty acid analysis in Ostrea chilensis, Crassostrea gigas and Mytilus chilensis (Bivalvia: Mollusca) from southern Chile (Valenzuela A et al. 2022)",
+      "title": "Pacific oyster wet meat yield, Chiloé Island",
       "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825",
       "version": "PLOS ONE 2022, Table 1"
     },
@@ -27652,7 +27553,7 @@
       "provider": "WoRMS Editorial Board, World Register of Marine Species (VLIZ)",
       "terms": "Text open access under CC BY; cite WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170. Re-distribution of the entire database is not permitted; only genus and family of the 30 species are stored.",
       "title": "WoRMS AphiaClassificationByAphiaID (genus and family of the 30 species)",
-      "url": "https://www.marinespecies.org/rest/",
+      "url": "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/",
       "version": "queried 2026-09-30"
     },
     "worms_ecklonia": {
@@ -27774,7 +27675,7 @@
       "license": "CC BY 4.0",
       "provider": "Marine Drugs 20(6):353 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC9228364",
       "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Liu H et al. 2022)",
+      "title": "Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Zhang M, Chen Y, Wang Z, et al. 2022)",
       "url": "https://doi.org/10.3390/md20060353",
       "version": "2022 (PMC9228364)"
     },
@@ -27784,7 +27685,7 @@
       "license": "CC BY 4.0",
       "provider": "Foods 11(21):3507 (MDPI), open access, full text and figures read from the Europe PMC REST fullTextXML of PMC9657784",
       "terms": "CC BY 4.0; sequences and numeric values recorded, no text or tables copied",
-      "title": "Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (Lin X et al. 2022)",
+      "title": "Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (2022)",
       "url": "https://doi.org/10.3390/foods11213507",
       "version": "2022 (PMID 36360120, PMC9657784)"
     },
@@ -27814,7 +27715,7 @@
       "license": "CC BY-NC-ND 4.0",
       "provider": "Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC5865786",
       "terms": "CC BY-NC-ND 4.0; only sequences and numeric values recorded, no text or tables copied",
-      "title": "Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (Huang F et al. 2017)",
+      "title": "Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (2017)",
       "url": "https://doi.org/10.3892/mmr.2017.7418",
       "version": "2017 (PMID 28901516, PMC5865786)"
     }
@@ -28492,7 +28393,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28881,7 +28782,6 @@
         "chen_2016_jfpp",
         "fao_seaweed_guide",
         "feng_2021_knfl",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "kapel_2006_alfalfa",
         "lin_2018_chlorella",
@@ -28893,7 +28793,6 @@
         "primorsky_decree272_2002",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "saito_1994_sake",
         "sato_2002_wakame",
         "suetsuna_2000_wakame",
@@ -29158,7 +29057,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29832,12 +29731,10 @@
         "mfds_food_raw_material_codes",
         "obis_trend",
         "pubchem_inchikey_mbpi",
-        "pubchem_pugrest",
         "rda_db_10_4",
         "wang_2024_apostichopus",
         "wikidata_p703_lotus",
-        "worms_rest_mbpi",
-        "yun_2018_holotoxin"
+        "worms_rest_mbpi"
       ],
       "unexplored_candidate": null,
       "withheld_reasons": {
@@ -30130,7 +30027,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -30985,12 +30882,10 @@
         "gbif_rapid_lc",
         "halocynthia_2006_paper",
         "halorotetin_b_2026",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "shin_2011_seasquirt",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
@@ -31304,7 +31199,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32333,7 +32228,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33190,7 +33085,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33611,7 +33506,6 @@
         "chembl_mbpi",
         "chen_2016_jfpp",
         "ishikawa_rdb2020",
-        "iucn_redlist_recheck",
         "iucn_redlist_search",
         "lee_2024_sargassum_nutrition",
         "li_2022_saringosterol_acetate",
@@ -33849,7 +33743,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34490,7 +34384,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.7 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.6 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -35308,7 +35202,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.7",
+        "method_version": "verified-4.6",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36146,7 +36040,6 @@
         "chen_2022_oyster",
         "dbaasp_amp_cohort",
         "do_2012_oyster_lqp",
-        "fao_korea_oyster",
         "fao_oyster_culture",
         "feng_2022_oyster",
         "iucn_redlist_search",
@@ -36158,7 +36051,6 @@
         "obis_trend",
         "pubchem_inchikey_mbpi",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids",
         "valenzuela_2022_yield",
         "wikidata_p703_lotus",
         "worms_rest_mbpi"
