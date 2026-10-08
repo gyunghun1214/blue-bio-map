@@ -154,6 +154,7 @@ if(typeof document!=='undefined')(function(){
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
     '<header class="bbc-head"><strong id="bbc-title">사용법 안내</strong><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
+    '<p class="bbc-note">FAQ에 없는 질문은 답을 만들기 위해 Cloudflare Workers AI로 보내요.</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
     '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel"><span aria-hidden="true">?</span></button>';
   document.body.append(root);
@@ -188,11 +189,27 @@ if(typeof document!=='undefined')(function(){
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
     log.scrollTop=log.scrollHeight;
   }
+  function unknown(text){add('bbc-bot',text||'이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
+  // FAQ가 못 찾은 질문만 AI(Worker /api/ask, worker/index.mjs)에 묻는다. 시간 초과·오류·한도 초과·정적 서버(404)면 FAQ 안내로 돌아간다.
+  async function askAi(text){
+    const wait=add('bbc-bot bbc-wait','답을 찾는 중이에요…');log.scrollTop=log.scrollHeight;
+    let reply=null,status=0;
+    try{
+      const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),15000);
+      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text}),signal:ctl.signal});
+      clearTimeout(timer);status=r.status;
+      if(r.ok)reply=(await r.json())?.answer;
+    }catch{}
+    wait.remove();
+    if(typeof reply!=='string'||!reply.trim())return unknown(status===429?'질문이 많아 지금은 AI 답변을 쓸 수 없어요. 1분쯤 뒤에 다시 물어보거나 아래 질문 중에서 골라 주세요.':'');
+    const m=add('bbc-bot bbc-ai',reply.trim());
+    const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent='AI 답변 · 참고용 · 화면 글만 근거로 만들었어요';m.append(tag);
+    log.scrollTop=log.scrollHeight;
+  }
   function ask(text,id){
     add('bbc-user',text);
     const f=id?byId(id):chatbotMatch(text);
-    if(f)answer(f);
-    else{add('bbc-bot','이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
+    if(f)answer(f);else if(id)unknown();else askAi(text);
   }
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');
