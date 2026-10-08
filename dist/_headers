@@ -15,6 +15,10 @@
   Cache-Control: public, max-age=31536000, immutable
 /live-data.js
   Cache-Control: public, max-age=31536000, immutable
+/intro.js
+  Cache-Control: public, max-age=31536000, immutable
+/intro.css
+  Cache-Control: public, max-age=31536000, immutable
 /expedition.js
   Cache-Control: public, max-age=31536000, immutable
 /expedition.css

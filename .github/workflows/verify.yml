@@ -45,6 +45,8 @@ jobs:
           node --check dist/expedition.js
           node --check verification/expedition_check.mjs
           node verification/test_expedition_ui.mjs
+          node --check dist/intro.js
+          node verification/test_intro_ui.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
 
