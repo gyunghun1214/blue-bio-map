@@ -38,6 +38,8 @@ jobs:
           node verification/test_mfpi_substitutes_ui.mjs
           node verification/test_mcui_trend_ui.mjs
           node verification/test_trait_display_ui.mjs
+          node --check dist/chatbot.js
+          node verification/test_chatbot_faq.mjs
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:
