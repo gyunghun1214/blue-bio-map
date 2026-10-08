@@ -1,6 +1,6 @@
 /* 사용법 안내 챗봇. 색·글꼴·그림자는 theme.css 변수를 쓴다. 위치(--bbc-right)는 chatbot.js의 place()가 정한다. */
 .bbc{--bbc-right:16px;font-family:var(--font)}
-.bbc-fab{position:fixed;right:var(--bbc-right);bottom:16px;z-index:1200;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:var(--navy);color:#fff;font-size:22px;font-weight:700;box-shadow:var(--shadow);cursor:pointer}
+.bbc-fab{position:fixed;right:var(--bbc-right);bottom:16px;z-index:1200;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:var(--navy);color:#fff;font-size:22px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;overflow:hidden}
 .bbc-fab:hover{background:var(--teal-ink)}
 .bbc-fab:focus-visible,.bbc button:focus-visible,.bbc-input:focus-visible{outline:3px solid var(--teal-fill);outline-offset:2px}
 .bbc-fab[aria-expanded="true"]{background:var(--teal-ink)}
@@ -9,8 +9,16 @@
 .bbc-hint-x,.bbc-close{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:18px;cursor:pointer}
 .bbc-hint-x:hover,.bbc-close:hover{background:var(--bg)}
 .bbc-panel{position:fixed;right:var(--bbc-right);bottom:76px;z-index:1200;display:flex;flex-direction:column;width:360px;height:520px;max-width:calc(100vw - 32px);max-height:calc(100vh - var(--chrome) - 92px);overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-size:13.5px;box-shadow:var(--shadow)}
-.bbc-head{display:flex;align-items:center;justify-content:space-between;padding:10px 10px 10px 16px;border-bottom:1px solid var(--line)}
+.bbc-head{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 12px;border-bottom:1px solid var(--line)}
 .bbc-head strong{font-size:14.5px}
+.bbc-titles{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.bbc-titles small{color:var(--muted);font-size:12px}
+.bbc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* 멍이(chatbotMascot). 머리말 40px·말풍선 옆 34px·여는 버튼 44px. */
+.bbc-mascot{display:block;flex:none}
+.bbc-avatar{flex:none;border-radius:10px;background:rgba(255,255,255,.1)}
+.bbc-row{display:flex;align-items:flex-end;gap:8px;align-self:flex-start;max-width:100%}
+.bbc-row>.bbc-msg{align-self:auto;max-width:calc(100% - 42px)}
 .bbc-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
 .bbc-msg{max-width:88%;padding:9px 12px;border-radius:12px;line-height:1.55;white-space:pre-line}
 .bbc-bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line)}
@@ -29,6 +37,15 @@
 .bbc-flash{outline:3px solid var(--teal-fill)!important;outline-offset:3px;animation:bbc-flash .8s ease-in-out 3}
 @keyframes bbc-flash{50%{outline-color:transparent}}
 @media (prefers-reduced-motion:reduce){.bbc-flash{animation:none}}
+/* 멍이 움직임: 생각 중 거품이 오르고(.bbc-rise), 보여주기 물줄기가 흐른다(.bbc-jet). 움직임 줄이기 설정이면 멈춘 그림. */
+@media (prefers-reduced-motion:no-preference){
+  .bbc-rise{transform-box:fill-box;animation:bbc-rise 1.6s ease-out infinite both}
+  .bbc-rise+.bbc-rise{animation-delay:.5s}
+  .bbc-rise+.bbc-rise+.bbc-rise{animation-delay:1s}
+  @keyframes bbc-rise{from{transform:translateY(10px);opacity:0}30%{opacity:1}to{transform:translateY(-6px);opacity:0}}
+  .bbc-jet{stroke-dasharray:5 4;animation:bbc-jet .9s linear infinite}
+  @keyframes bbc-jet{to{stroke-dashoffset:-9}}
+}
 @media (max-width:767.98px){
   .bbc-panel{left:0;right:0;bottom:0;width:auto;max-width:none;height:min(70vh,520px);max-height:none;border-radius:16px 16px 0 0;border-bottom:0}
   .bbc-input{font-size:16px}

@@ -9,8 +9,8 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const html=read('index.html');
 const ctx={};vm.createContext(ctx);  // document가 없으면 화면 부분은 건너뛴다
-vm.runInContext(read('chatbot.js')+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,chatbotMatch});',ctx);
-const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:starters,chatbotMatch:match}=ctx;
+vm.runInContext(read('chatbot.js')+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,chatbotMatch,chatbotMascot,CHATBOT_MASCOT_STATES});',ctx);
+const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:starters,chatbotMatch:match,chatbotMascot:mascot,CHATBOT_MASCOT_STATES:moods}=ctx;
 
 // (1) id가 겹치지 않고, 대표 질문·이어서 물어볼 질문이 실제 항목을 가리킴
 const ids=faq.map(f=>f.id);
@@ -43,4 +43,12 @@ for(const file of ['chatbot.js','chatbot.css']){
   const expected=crypto.createHash('sha256').update(read(file).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
   assert.deepEqual([...html.matchAll(new RegExp(`["/]${file.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]),[expected],`${file}?v= must be ${expected}`);
 }
-console.log(`PASS: chatbot FAQ ${faq.length}개 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시`);
+// (6) 멍이: 7개 상태 모두 SVG, crop은 입출수공이 잘리지 않는 viewBox, id 속성 없음(여러 번 그려도 충돌 없음)
+assert.equal(Object.keys(moods).length,7);
+for(const s of Object.keys(moods))for(const crop of [false,true]){
+  const svg=mascot(s,40,crop);
+  assert.ok(svg.startsWith('<svg'),`${s}: <svg로 시작해야 함`);
+  assert.ok(!svg.includes(' id='),`${s}: id 속성 금지`);
+  if(crop)assert.ok(svg.includes('viewBox="8 12 104 104"'),`${s}: crop viewBox`);
+}
+console.log(`PASS: chatbot FAQ ${faq.length}개 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태`);
