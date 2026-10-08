@@ -3,7 +3,7 @@
 ## 그래픽 기술: Three.js r170 (WebGL)
 
 - 바다 셰이더·저폴리 배·항적 리본·카메라 추적을 직접 짠 WebGL로 만들면 행렬·메시 코드가 수백 줄 늘어난다. Three.js 하나로 줄인다.
-- `dist/vendor/three/three.module.min.js`(npm `three@0.170.0`, MIT, 692 KB, 압축 전송 약 170 KB)를 고정 버전으로 둔다. CDN·빌드 도구 없음. 출처·해시는 `dist/vendor/three/SOURCE.txt`.
+- `dist/vendor/three-r170/three.module.min.js`(npm `three@0.170.0`, MIT, 692 KB, 압축 전송 약 170 KB)를 고정 버전으로 둔다. CDN·빌드 도구 없음. 출처·해시는 `dist/vendor/three-r170/SOURCE.txt`.
 - 첫 로딩: 화면은 HTML 카드 목록을 먼저 그리고, Three.js는 `import()`로 뒤에 불러온다. 불러오기·WebGL 생성이 실패하면 카드 목록이 그대로 남는다(데이터 접근이 막히지 않음).
 - 기존 지도 화면(`index.html`)은 Three.js를 불러오지 않는다.
 
@@ -47,6 +47,7 @@ state = { stop: 0..2 (목표 지점), t: 항로 위 현재 위치(0..1), phase: 
 
 ## 대체 경로
 
-- WebGL 실패·Three.js 로딩 실패·저성능(첫 2초 평균 20 fps 미만): 카드 목록 화면(정적 바다 배경)으로 바꾸고 이유를 한 줄 알린다.
+- WebGL 실패·Three.js 로딩 실패: 카드 목록 화면(정적 바다 배경)으로 바꾸고 이유를 한 줄 알린다.
+- 저성능(4초 평균 18 fps 미만): 픽셀 비율을 1로 낮추고 '카드 목록'을 한 번 안내한다. 자동으로 바꾸지 않는다(바쁜 순간의 일시적 저하로 화면이 바뀌면 혼란스럽기 때문).
 - `prefers-reduced-motion`: 배는 지점 사이를 즉시 옮기고 물결·흔들림을 멈춘다. 등장도 즉시.
 - '카드 목록으로 보기' 버튼은 3D 화면에서도 늘 있다.
