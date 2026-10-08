@@ -12,7 +12,7 @@
 
 ## 다음 할 일
 
-- C4 설계 결정 → `docs/expedition/design.md`
+- C5 항해·그래픽 구현(`expedition.html/js/css`, `build_expedition_stops.py`)
 
 ## C2 레퍼런스 관찰 (2026-10-08)
 
@@ -44,3 +44,9 @@
 | 근거 링크 | `assessments.sources[source_id].title·url·license` | 링크 없이 "원자료 링크 없음" |
 | 관측 셀 | `live-snapshot.json` `cells[]`(`cell_code`, `period_start/end`, `year_start/end`, `record_count`, `site_count`, `sea_areas`, `citations[].title·url·licenses`) | 해역명은 `cell-sea-areas.json`, 그래도 없으면 "해역명 미확인" |
 | 공개 사본 기준일 | `live-snapshot.json` `fetched_at` | "기준일 미확인" |
+
+## C4 설계 결정 (2026-10-08)
+
+- `docs/expedition/design.md`. Three.js r170을 `dist/vendor/three/`에 고정(MIT, 출처·sha256은 `SOURCE.txt`). 카드 목록을 먼저 그리고 Three.js는 뒤에 불러와, 실패해도 데이터가 보이게 했다.
+- 지점: 참굴(지속가능 활용) → 미역(대체생산·배양) → 해삼(보전 우선). 이유는 design.md 표.
+- `app.js`는 바꾸지 않기로 했다(진입 링크는 `index.html` 헤더).
