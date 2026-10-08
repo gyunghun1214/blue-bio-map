@@ -1,0 +1,282 @@
+[
+  {
+    "name": "desktop: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "desktop: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1440,\"vw\":1440}"
+  },
+  {
+    "name": "desktop: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "desktop: arrives at stop 1 (참굴)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "desktop: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 1"
+  },
+  {
+    "name": "desktop: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "동중국해1° 셀2010–2015년\n    참굴 Magallana gigas\n    지속가능 활용 후보 · 정보충분도 100%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 127–128° · 2000–2015 기간 · 2010–2015년 기록 29건(지점 20곳) · 동중국해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않"
+  },
+  {
+    "name": "desktop: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "desktop: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "desktop: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "desktop: arrives at stop 3 (해삼) with its own card",
+    "status": "PASS",
+    "detail": "해삼"
+  },
+  {
+    "name": "desktop: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "desktop: frame rate and first-load size recorded",
+    "status": "PASS",
+    "detail": "3 fps (headless SwiftShader) · 1585 KB encoded"
+  },
+  {
+    "name": "desktop: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=836033&v=explore&m=8/34.50/127.50"
+  },
+  {
+    "name": "desktop: existing map opens with 참굴 selected",
+    "status": "PASS",
+    "detail": "#s=836033&v=explore&b=satellite&t=occurrence&m=8%2F34.50%2F127.50"
+  },
+  {
+    "name": "desktop: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험"
+  },
+  {
+    "name": "desktop: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "mobile: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":390,\"vw\":390}"
+  },
+  {
+    "name": "mobile: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: arrives at stop 1 (참굴)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mobile: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 1"
+  },
+  {
+    "name": "mobile: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "동중국해1° 셀2010–2015년\n    참굴 Magallana gigas\n    지속가능 활용 후보 · 정보충분도 100%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 127–128° · 2000–2015 기간 · 2010–2015년 기록 29건(지점 20곳) · 동중국해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않"
+  },
+  {
+    "name": "mobile: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "mobile: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "mobile: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "mobile: arrives at stop 3 (해삼) with its own card",
+    "status": "PASS",
+    "detail": "해삼"
+  },
+  {
+    "name": "mobile: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "mobile: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=836033&v=explore&m=8/34.50/127.50"
+  },
+  {
+    "name": "mobile: existing map opens with 참굴 selected",
+    "status": "PASS",
+    "detail": "#s=836033&v=explore&b=satellite&t=occurrence&m=8%2F34.50%2F127.50"
+  },
+  {
+    "name": "mobile: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험"
+  },
+  {
+    "name": "mobile: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "reduced-motion: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1440,\"vw\":1440}"
+  },
+  {
+    "name": "reduced-motion: 3D sea with intro screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: arrives at stop 1 (참굴)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reduced-motion: discovery steps reach 3 (sea area → species → values)",
+    "status": "PASS",
+    "detail": "first level 3"
+  },
+  {
+    "name": "reduced-motion: reduced motion shows every step at once",
+    "status": "PASS",
+    "detail": "first level 3"
+  },
+  {
+    "name": "reduced-motion: detail has observation, food, bioactivity, conservation and DOI links",
+    "status": "PASS",
+    "detail": "동중국해1° 셀2010–2015년\n    참굴 Magallana gigas\n    지속가능 활용 후보 · 정보충분도 100%\n  관측 위치·기간\n    1° 셀 · 북위 34–35° · 동경 127–128° · 2000–2015 기간 · 2010–2015년 기록 29건(지점 20곳) · 동중국해\n    공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않"
+  },
+  {
+    "name": "reduced-motion: no automatic sailing while the detail is open",
+    "status": "PASS",
+    "detail": "{\"hash\":\"#stop=1\",\"open\":true}"
+  },
+  {
+    "name": "reduced-motion: Esc closes the detail and focus returns to 자세히 보기",
+    "status": "PASS",
+    "detail": "{\"open\":false,\"focus\":\"0\"}"
+  },
+  {
+    "name": "reduced-motion: two quick moves target stop 3 in the URL",
+    "status": "PASS",
+    "detail": "#stop=3"
+  },
+  {
+    "name": "reduced-motion: arrives at stop 3 (해삼) with its own card",
+    "status": "PASS",
+    "detail": "해삼"
+  },
+  {
+    "name": "reduced-motion: revisiting stop 1 keeps the discovery state (detail read)",
+    "status": "PASS",
+    "detail": "level 4"
+  },
+  {
+    "name": "reduced-motion: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=836033&v=explore&m=8/34.50/127.50"
+  },
+  {
+    "name": "reduced-motion: existing map opens with 참굴 selected",
+    "status": "PASS",
+    "detail": "#s=836033&v=explore&b=satellite&t=occurrence&m=8%2F34.50%2F127.50"
+  },
+  {
+    "name": "reduced-motion: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험"
+  },
+  {
+    "name": "reduced-motion: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "no-webgl: route disclaimer always visible",
+    "status": "PASS",
+    "detail": "◇ 연출용 항로 · 실제 조사 항로나 선박 위치가 아님"
+  },
+  {
+    "name": "no-webgl: no horizontal overflow",
+    "status": "PASS",
+    "detail": "{\"doc\":1425,\"vw\":1440}"
+  },
+  {
+    "name": "no-webgl: WebGL failure falls back to the card list with every stop and map link",
+    "status": "PASS",
+    "detail": "{\"cards\":true,\"n\":3,\"reason\":\"3D 바다를 열 수 없어 카드 목록으로 보여 줍니다(WebGL을 쓸 수 없는 환경입니다.). 모든 정보와 근거, 지도 링크는 그대로입니다.\",\"maps\":[\"index.html#s=836033&v=explore&m=8/34.50/127.50\",\"index.html#s=145721&v=explore&m=8/34.50/128.50\",\"index.html#s=241776&v=explore&m=6/34.00/130.00\"]}"
+  },
+  {
+    "name": "no-webgl: detail opens from a card (해삼 zinc shown as 자료 없음, not 0)",
+    "status": "PASS",
+    "detail": "동중국해 · 동해4° 셀2012–2015년\n    해삼 Apostichopus japonicus\n    보전 우선·모니터링 · 정보충분도 94%\n  관측 위치·기간\n    4° 셀 · 북위 32–36° · 동경 128–132° · 2000–2015 기간 · 2012–2015년 기록 116건(지점 14곳) · 동중국해 · 동해\n    공개 집계 셀 · 관측 "
+  },
+  {
+    "name": "no-webgl: Esc closes the detail",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "no-webgl: map link uses the existing hash format",
+    "status": "PASS",
+    "detail": "index.html#s=241776&v=explore&m=6/34.00/130.00"
+  },
+  {
+    "name": "no-webgl: existing map opens with 해삼 selected",
+    "status": "PASS",
+    "detail": "#s=241776&v=explore&b=satellite&t=occurrence&m=6%2F34.00%2F129.98"
+  },
+  {
+    "name": "no-webgl: the map header links back to the expedition",
+    "status": "PASS",
+    "detail": "바다 탐험"
+  },
+  {
+    "name": "no-webgl: no uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  }
+]

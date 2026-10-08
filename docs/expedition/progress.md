@@ -12,7 +12,7 @@
 
 ## 다음 할 일
 
-- C7 접근성·대체 경로 점검, 새 테스트(`test_expedition_stops.py`, `test_expedition_ui.mjs`)와 `verify.yml` 추가
+- C8 PR 본문 정리와 최종 보고
 
 ## C2 레퍼런스 관찰 (2026-10-08)
 
@@ -61,3 +61,10 @@
 - 핵심 두 축 = MFPI·MBPI·MCUI 중 큰 두 값(빠진 값은 순위에 넣지 않음). BBVI는 항상 작은 칸에 '종 전체 값 · 이 해역 값 아님'과 함께.
 - 결정: 저성능이면 카드 목록으로 자동 전환하지 않고 한 번 안내만 한다(design.md에 이유). Three.js 폴더는 캐시 무효화를 위해 `vendor/three-r170/`으로 버전을 이름에 넣었다.
 - 기존 화면 변경: `index.html` 헤더에 '바다 탐험' 링크, `theme.css`에 그 모양, `_headers`에 새 파일 캐시. `app.js`는 그대로.
+
+## C7 접근성·대체 경로·검증 (2026-10-08)
+
+- 새 테스트: `verification/test_expedition_stops.py`(재빌드 일치, 값·라벨·유형이 원본과 같음, 빠진 값은 0이 아닌 None, 셀이 바다 위 공개 셀, 지도 링크 형식, '서식' 문구 없음), `verification/test_expedition_ui.mjs`(빠른 연속 이동, 이전 지점 복귀 시 발견 단계 유지, 상세 열림 중 자동 이동 없음, 해시 형식, 항로가 해안선을 넘지 않음, `?v=` 해시). `verify.yml` unit 단계에 둘 다, browser 단계에 `expedition_check.mjs`를 더했다.
+- 브라우저 확인(`verification/expedition_check.mjs`, 4개 환경 56 PASS)과 기존 `uicheck.mjs` 146 PASS. 결과·스크린샷·성능 수치는 `verification/2026-10-08-expedition/README.md`.
+- 접근성: 키보드만으로 시작(Enter)·이동(←/→, 1–3)·상세(Enter)·닫기(Esc) 가능, 상세는 `<dialog>` 모달이라 포커스가 안에 머물고 닫으면 '자세히 보기'로 돌아온다. 도착 안내는 하단 진행 문구(aria-live)로 짧게. 모션 감소는 즉시 이동·물결 정지·단계 즉시 표시. 대비는 어두운 카드의 흰 글자·회청색 보조 글자, 상세는 밝은 종이 바탕에 남색 글자로 맞췄다(자동 대비 도구는 돌리지 않음).
+- 기존 실패: 없음(1단계 기준선과 같음).

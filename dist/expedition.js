@@ -178,7 +178,7 @@ function nutrientRow(n){
 function detailHtml(stop,i){
   const c=stop.cell, f=stop.food, b=stop.bio, m=stop.mcui;
   const pct=v=>v===null||v===undefined?'<span class="x-missing">미확인</span>':`${esc(+(v*100).toFixed(4))}%`;
-  const food=f?`<p>${esc(f.food_name||'식품명 미확인')} · ${esc(f.basis||'')} 기준 (비교 ${esc(f.cohort_species??'미확인')}종)</p>
+  const food=f?`<p>${esc(f.food_name||'식품명 미확인')} · ${esc(f.basis==='100 g edible portion'?'먹는 부분 100 g':f.basis||'기준량 미확인')} 기준 (비교 ${esc(f.cohort_species??'미확인')}종)</p>
       <ul class="x-nutrients">${f.nutrients.map(nutrientRow).join('')}</ul>
       <p>먹는 부분 비율 ${pct(f.edible_fraction)} · 양식 ${f.aquaculture?.feasible===true?'가능 근거 있음':f.aquaculture?.feasible===false?'근거 없음':'<span class="x-missing">미확인</span>'}${f.aquaculture?.method?` <small>(${esc(f.aquaculture.method)})</small>`:''}</p>
       <p class="x-src">${f.source?link(f.source.url,f.source.title||f.source.id):'<span class="x-missing">원자료 미확인</span>'}</p>`:'<p class="x-missing">자료 없음</p>';

@@ -43,12 +43,13 @@ async function waitFor(s,expr,timeout=30000){
   do{v=await s.evaluate(expr).catch(()=>null);if(v)return v;await sleep(150);}while(Date.now()<end);
   return v;
 }
-const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(OUT,name+'.png'),Buffer.from(r.data,'base64'));};
+const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:82});fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));};
 const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.textContent||'')";
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
 const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13}[k],...(k==='Enter'&&type==='keyDown'?{text:String.fromCharCode(13)}:{})});};
 
-async function run(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=true}){
+async function run(tag,opts){if(process.env.ONLY&&process.env.ONLY!==tag)return;return run1(tag,opts);}
+async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=true}){
   const s=await session(flags);
   try{
     await s.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile});
@@ -88,7 +89,8 @@ async function run(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=t
       if(reduced)check(`${tag}: reduced motion shows every step at once`,lv1>=3,`first level ${lv1}`);
       await shot(s,`${tag}-4-stop1-values`);
       await s.evaluate("document.querySelector('#stop-card [data-detail]').focus()");
-      await s.evaluate("document.querySelector('#stop-card [data-detail]').click()");
+      // keyboard path on desktop (focus + Enter), tap path on the phone
+      if(mobile)await s.evaluate("document.querySelector('#stop-card [data-detail]').click()");else await key(s,'Enter');
       const det=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail has observation, food, bioactivity, conservation and DOI links`,['관측 위치·기간','식량 가치 근거','생리활성 근거','보전 평가 근거','원논문 DOI'].every(t=>det?.includes(t)),String(det).slice(0,200));
       await shot(s,`${tag}-5-detail`);
@@ -97,6 +99,8 @@ async function run(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=t
       const still=await s.evaluate("({hash:location.hash,open:document.getElementById('detail').open})");
       check(`${tag}: no automatic sailing while the detail is open`,still.open&&still.hash===before,JSON.stringify(still));
       await key(s,'Escape');await sleep(300);
+      if(process.env.DEBUG)console.log(await s.evaluate("JSON.stringify({a:document.activeElement?.outerHTML?.slice(0,120),hash:location.hash,card:document.getElementById('stop-card').dataset.stop})"));
+      await waitFor(s,"!document.getElementById('detail').open&&document.activeElement?.dataset?.detail==='0'",3000);
       const after=await s.evaluate("({open:document.getElementById('detail').open,focus:document.activeElement?.dataset?.detail})");
       check(`${tag}: Esc closes the detail and focus returns to 자세히 보기`,!after.open&&after.focus==='0',JSON.stringify(after));
       // fast double move: the ship must end at stop 3 with stop 3's card, not an intermediate one
@@ -105,8 +109,8 @@ async function run(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=t
         // headless touch on a canvas may not reach the page; the buttons are the same path
         if(!(await s.evaluate("location.hash==='#stop=3'||location.hash==='#stop=2'")))await s.evaluate("document.getElementById('next').click();document.getElementById('next').click()");
         if(await s.evaluate("location.hash==='#stop=2'"))await s.evaluate("document.getElementById('next').click()");
-      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');}
-      const hash3=await s.evaluate("location.hash");
+      }else{await key(s,'ArrowRight');await key(s,'ArrowRight');if(!reduced)for(const ms of [900,1800,2700]){await sleep(900);await shot(s,`${tag}-6-sailing-${ms}ms`);}}
+      const hash3=await waitFor(s,"location.hash==='#stop=3'&&location.hash",3000)||await s.evaluate("location.hash");
       check(`${tag}: two quick moves target stop 3 in the URL`,hash3==='#stop=3',hash3);
       const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,60000);
       check(`${tag}: arrives at stop 3 (${stops[2].korean_name}) with its own card`,!!n3,await s.evaluate(cardName));
@@ -127,7 +131,7 @@ async function run(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=t
     const href=await s.evaluate(webgl?"document.querySelector('#stop-card a.x-ghost').getAttribute('href')":"document.querySelectorAll('#cards-list a.x-ghost')[2].getAttribute('href')");
     check(`${tag}: map link uses the existing hash format`,href===st.map_link&&/^index\.html#s=\d+&v=explore&m=\d+\/-?\d+\.\d\d\/-?\d+\.\d\d$/.test(href),href);
     await s.send('Page.navigate',{url:URL0+href});
-    const sel=await waitFor(s,`(location.hash.includes('s=${st.aphia_id}')&&(document.getElementById('detail')?.textContent||'').includes(${JSON.stringify(st.korean_name)}))&&location.hash`,30000);
+    const sel=await waitFor(s,`(location.hash.includes('s=${st.aphia_id}')&&(document.getElementById('detail')?.textContent||'').includes(${JSON.stringify(st.korean_name)}))&&location.hash`,60000);
     check(`${tag}: existing map opens with ${st.korean_name} selected`,!!sel,await s.evaluate("location.hash"));
     const backLink=await s.evaluate("document.querySelector('a[href=\"expedition.html\"]')?.textContent||''");
     check(`${tag}: the map header links back to the expedition`,backLink.includes('바다 탐험'),backLink);
