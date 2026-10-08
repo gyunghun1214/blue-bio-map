@@ -2643,6 +2643,10 @@ function registerTools(){
   ])try{Promise.resolve(ctx.registerTool(tool,options)).catch(()=>{});}catch{}
 }
 
+// Loading steps for the entry screen (intro.js): 'map' once the coastline is in, 'done' after every loadCollection outcome.
+const loadProgress=(step,detail={})=>{try{dispatchEvent(new CustomEvent('bbvm:progress',{detail:{step,...detail}}));}catch{/* no listener needed */}};
+const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||null,published:data?.publishedCount,candidates:data?.candidateCount,
+  cells:data?[...new Map(data.species.flatMap(s=>s.cells||[]).map(c=>[`${c.lat0},${c.lon0},${c.sizeDeg}`,{lat:c.lat0,lon:c.lon0,size:c.sizeDeg}])).values()]:[]});
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
@@ -2669,7 +2673,7 @@ async function loadCollection(){
     if(reloadOnceForNewData(next.outdated))return;
     $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
-    if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';return;}
+    if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';loadDone('empty');return;}
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
@@ -2679,14 +2683,15 @@ async function loadCollection(){
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v)applyHash(h);}
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';}
+    loadDone(data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
+  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
-  try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);}catch{$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
+  try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
