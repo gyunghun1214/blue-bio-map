@@ -2715,6 +2715,7 @@ V41 = ROOT / "config" / "verified-indices-v4.1.json"    # superseded by 4.2 (sub
 V42 = ROOT / "config" / "verified-indices-v4.2.json"    # superseded by 4.3 (every cell filled, labelled fallbacks)
 V43 = ROOT / "config" / "verified-indices-v4.3.json"    # superseded by 4.4 (참문어 relaxation (d))
 V44 = ROOT / "config" / "verified-indices-v4.4.json"    # superseded by 4.5 (방어 sbGnRH·갑오징어 FMRFamide relaxation (d))
+V45 = ROOT / "config" / "verified-indices-v4.5.json"    # superseded by 4.6 (sub-national MCUI sufficiency steps)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3176,13 +3177,15 @@ class Verified45Tests(unittest.TestCase):
     No species of this run takes the floor; every other cell stays."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V44))
+        self.report, self.old_report = build(*load_inputs(config=V45)), build(*load_inputs(config=V44))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.5", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.5 report is archived as it was
+        archived45 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.5.json"
+        self.assertEqual(render(self.report), archived45.read_text(encoding="utf-8"))
 
     def test_only_four_cells_move(self):
         for a, s in self.new.items():
@@ -3242,6 +3245,48 @@ class Verified45Tests(unittest.TestCase):
         for a in (276651, 534443, 1666974):
             self.assertEqual(rows[a]["bioactivity_missing_steps"], [])
             self.assertNotIn("mbpi_label", rows[a])  # the readiness label travels only with the floor
+
+
+
+class Verified46Tests(unittest.TestCase):
+    """4.6 (data audit 2026-10-08): a scored sub-national MCUI reads its information-sufficiency steps from its reviewed,
+    current-edition list rows, as a range-state list does, instead of falling through to the IUCN steps (0/3). Only the
+    sufficiency of 미역, 톳, 청각 and 꽃게 moves; no score, label, type or flag changes, and a Rapid LC stays open."""
+
+    SUB = (145721, 494972, 145086, 1061762)  # 미역, 톳, 청각, 꽃게
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V45))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.6", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_sub_national_mcui_counts_its_list_rows(self):
+        self.assertEqual({a for a, s in self.new.items() if s["mcui_basis"] == "sub_national"}, set(self.SUB))
+        for a in self.SUB:
+            self.assertEqual(self.old[a]["information_sufficiency"]["MCUI"]["ratio"], 0.0)
+            self.assertEqual(self.new[a]["information_sufficiency"]["MCUI"], {
+                "required": ["assessment_record", "numeric_category", "current_check"], "ratio": 1.0, "basis": "sub_national"})
+            rows = self.new[a]["mcui_substitute"]["record"]["regions"]
+            self.assertTrue(all(r["reviewed"] and r["verified_in_original"] and r["species_level"] for r in rows))
+        for a, s in self.new.items():  # a Rapid LC is not an official assessment: its steps stay open
+            if s["mcui_basis"] == "preliminary":
+                self.assertEqual(s["information_sufficiency"]["MCUI"]["ratio"], 0.0, a)
+
+    def test_nothing_but_sufficiency_moves(self):
+        for a, s in self.new.items():
+            o = self.old[a]
+            for k in ("scores", "score_status", "withheld_reasons", "mcui_basis", "bbvi_label", "priority_survey",
+                      "priority_survey_reasons", "unexplored_candidate", "sensitivity", "mcui_substitute"):
+                self.assertEqual(s[k], o[k], (a, k))
+            if a not in self.SUB:
+                self.assertEqual(s["information_sufficiency"], o["information_sufficiency"], a)
+        mean = lambda i: round(sum(i[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
+        for a in self.SUB:
+            self.assertEqual(self.new[a]["information_sufficiency"]["mean_ratio"], mean(self.new[a]["information_sufficiency"]))
 
 
 if __name__ == "__main__":

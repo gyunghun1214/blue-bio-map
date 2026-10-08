@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.5.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.6.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1446,10 +1446,14 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                    "BBVI": None if bbvi is not None else "mbpi_single_source" if both else "requires_MFPI_and_MBPI"}
         c = conservation_trace or {}
         national_steps = mcui_basis == "national" and bool((config.get("unexplored_candidates") or {}).get("national_mcui_sufficiency"))
+        subnational_steps = bool((config.get("unexplored_candidates") or {}).get("subnational_mcui_sufficiency"))  # 4.6
         if national_steps:  # verified-pilot-3.2: the national assessment that gives the MCUI is the record counted
             c_steps = [True, national["category"] in config["conservation"]["category_scores"],
                        str(aphia) in config["national_red_list"].get("page_recheck", {}).get("rows", {})]
         elif mcui_basis == "range_state":  # after 3.14: the other state's list row is the record counted, read at the snapshot
+            c_steps = [True, substitute["category"] in config["conservation"]["category_scores"], True]
+        elif mcui_basis == "sub_national" and subnational_steps:  # 4.6: the reviewed sub-national rows are the record counted;
+            # mcui_substitute admits only rows read in the original, and qualification 2 of the 4.2 prereg admits only current editions
             c_steps = [True, substitute["category"] in config["conservation"]["category_scores"], True]
         else:
             c_steps = [c.get("iucn_state") in ("assessed", "data_deficient"),
@@ -1461,7 +1465,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                        max([bio_sufficiency(partial_bio)] + ([links["sufficiency"]] if links else []), key=lambda x: x["best_record_steps"]),
                        "MCUI": {"required": ["assessment_record", "numeric_category", "current_check"],
                                 "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {}),
-                                **({"basis": mcui_basis} if mcui_basis == "range_state" else {})}}
+                                **({"basis": mcui_basis} if mcui_basis == "range_state" or (mcui_basis == "sub_national" and subnational_steps) else {})}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
         sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
                                         for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
