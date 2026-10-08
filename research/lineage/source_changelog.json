@@ -2289,6 +2289,15 @@
    "published_on": "2026-10-08",
    "method_note": "verified-4.6 (2026-10-08). Source audit 2026-10-08: no score, category, type or flag changes. (1) source_ids_from_traces: every registered source that a published trace names (food, bioactivity, conservation, substitute and trend records) is also listed in the species' source_ids, so the species page and matrix-readiness cite it (before: IUCN re-check, RDA fatty-acid table, PubChem and several replication papers were used but not listed). (2) source_corrections: audited metadata applied to the published registry only - titles replaced by the Crossref titles and first authors where the cited text was a paraphrase or named the wrong authors, dead API endpoint links replaced by their documentation pages, a missing licence and title added for CMNPD and Europe PMC, one unregistered DOI marked, the same work given one licence text, and the RDA row link given the parameter the site now needs.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.7",
+   "to_run_id": "verified-4.8",
+   "from_commit": "9f932fa",
+   "to_commit": "419e8c8",
+   "published_on": "2026-10-08",
+   "method_note": "verified-4.7 (2026-10-08). No score, category, type or flag changes. National red list page re-check: the 2026-09-27 re-read covered the seven rows scored then; 참문어 (534443) joined on 2026-10-01 through the WoRMS crosswalk and was never re-read, so its MCUI current_check step stayed open (MCUI sufficiency 0.67). Its list page (printed 1027, viewer 1029) and index page (printed 1484, viewer 1486) were re-read in the NIBR e-catalogue on 2026-10-08: 참문어 Octopus vulgaris Cuvier, 1797, NT -> NT, 유지, page 1027, as recorded. The row is added to national_red_list.page_recheck; 참문어 MCUI sufficiency 0.67 -> 1.0.",
+   "entries": []
   }
  ]
 }
