@@ -1,6 +1,6 @@
 // Browser check of the sea expedition page (expedition.html) in four set-ups, headless Chrome via DevTools (no deps):
 // desktop 1440x900 (WebGL through SwiftShader), phone 390x844 with touch, reduced motion, and WebGL disabled.
-// Flow per set-up: start → sail to 3 stops → 4 discovery steps → detail open/close → '지도에서 보기' selects the species.
+// Flow per set-up: start → sail to stops 1 and 3 → 4 discovery steps → detail open/close → '지도에서 보기' selects the species.
 // Usage: node verification/expedition_check.mjs <output-directory>   (site served at URL0, default http://127.0.0.1:8765/)
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
@@ -9,6 +9,7 @@ if(!OUT)throw Error('Usage: node verification/expedition_check.mjs <output-direc
 fs.mkdirSync(OUT,{recursive:true});
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
 const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8')).stops;
+const SEA_CUCUMBER=stops.findIndex(st=>st.aphia_id===241776); // its zinc is missing in the report
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -65,7 +66,7 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const cards=await s.evaluate("({cards:document.body.classList.contains('is-cards'),n:document.querySelectorAll('#cards-list .x-card').length,reason:document.getElementById('cards-reason').textContent,maps:[...document.querySelectorAll('#cards-list a.x-ghost')].map(a=>a.getAttribute('href'))})");
       check(`${tag}: WebGL failure falls back to the card list with every stop and map link`,cards.cards&&cards.n===stops.length&&cards.reason.includes('카드 목록')&&stops.every((st,i)=>cards.maps[i]===st.map_link),JSON.stringify(cards));
       await shot(s,`${tag}-cards`);
-      await s.evaluate("document.querySelector('#cards-list [data-detail=\"2\"]').click()");
+      await s.evaluate(`document.querySelector('#cards-list [data-detail="${SEA_CUCUMBER}"]').click()`);
       const d=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail opens from a card (해삼 zinc shown as 자료 없음, not 0)`,d&&d.includes('해삼')&&/아연자료없음/.test(d.replace(/\s/g,'')),String(d).slice(0,200));
       await shot(s,`${tag}-detail`);

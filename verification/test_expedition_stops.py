@@ -40,9 +40,17 @@ class ExpeditionStops(unittest.TestCase):
             self.assertEqual(stop["bio"]["dois"], best["original_paper_dois"])
         self.assertEqual(self.out["method_version"], self.report["method_version"])
 
-    def test_three_stops_of_different_matrix_types(self):
-        self.assertEqual(len(self.out["stops"]), 3)
-        self.assertEqual(len({s["matrix_type"]["id"] for s in self.out["stops"]}), 3)
+    def test_every_released_species_is_one_stop_at_its_own_place(self):
+        self.assertEqual(sorted(s["aphia_id"] for s in self.out["stops"]), sorted(self.species))
+        self.assertEqual([s["order"] for s in self.out["stops"]], list(range(1, len(self.species) + 1)))
+        self.assertEqual(len({tuple(s["cell"]["center"]) for s in self.out["stops"]}), len(self.out["stops"]))
+        # every matrix type of the released report is visited
+        self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]}, {t["id"] for t in self.report["method"]["matrix"]["types"].values()})
+
+    def test_v1_stops_keep_their_cell(self):
+        cells = {s["aphia_id"]: s["cell"]["code"] for s in self.out["stops"]}
+        self.assertEqual([cells[a] for a in bes.FIRST_PICK],
+                         ["deg1:N34E127:2000", "deg1:N34E128:2000", "deg4:N32E128:2000"])
 
     def test_missing_values_stay_missing_not_zero(self):
         for stop in self.out["stops"]:
