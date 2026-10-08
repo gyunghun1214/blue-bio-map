@@ -12,9 +12,35 @@
 
 ## 다음 할 일
 
-- C3 현재 코드·데이터 확인과 연결 필드 표
+- C4 설계 결정 → `docs/expedition/design.md`
 
 ## C2 레퍼런스 관찰 (2026-10-08)
 
 - `docs/expedition/reference.md`에 표와 요약. 데스크톱·모바일(390px) 모두 직접 조작했다. draft PR #154를 열었다.
 - 결정: 오디오는 첫 버전에서 뺀다(레퍼런스도 MVP 뒤에 넣었고, 이 플랫폼의 기준인 '근거 확인'과 무관).
+
+## C3 현재 프로젝트 확인 (2026-10-08)
+
+프롬프트의 사실 목록을 코드로 다시 확인했다. 맞음: 빌드 도구 없는 `dist/` 정적 사이트 + `/api/*` Worker, `app.js` 308 KB, Leaflet `dist/vendor/leaflet.js`, 해시 `readHash/writeHash/applyHash`(`app.js` 2068행), 운영 8종 + 후보 22종, `verified-4.7` released, 검사 `verify.yml`.
+다른 점·보탤 점:
+- 운영 8종 셀은 `live-snapshot.json`의 `cells`가 `species_id`로 `profiles`와 이어진다(`aphia_id`는 `profiles`에만 있음). 셀 코드는 `deg1:N37E126:2000` 꼴이고 `N·E` 값이 셀의 남서 모서리, 마지막 숫자는 기간 시작 연도다(`live-data.js` 42행 해석과 같음).
+- 해삼은 민감종이라 4° 셀만 공개된다. 탐험 화면도 4° 칸 그대로 그린다.
+- 미역 MCUI 80은 IUCN이 아니라 연해주 지방 적색목록 참고값이고 라벨 "과대평가 역검증 미통과(6종 비교)"가 붙는다. 화면에 이 라벨을 같이 둔다.
+- `index.html`의 `?v=` 해시는 `test_client_outdated.mjs`가 검사한다. 탐험 화면의 `?v=`도 같은 방식으로 검사한다.
+
+### 연결할 데이터 필드 표
+
+| 화면 요소 | JSON 경로 | 없을 때 표시 |
+|---|---|---|
+| 국명·학명·AphiaID | `assessments.json` `species[].korean_name / scientific_name / aphia_id` | (필수: 없으면 빌드 실패) |
+| 네 지표 값 | `species[].scores.{MFPI,MBPI,MCUI,BBVI}` (표시 소수 1자리, 기존 화면과 같음) | `withheld_reasons[축]` 사유, 사유도 없으면 "자료 없음". 0으로 바꾸지 않음 |
+| BBVI 라벨 | `species[].bbvi_label` (예: 단일 논문) | 라벨 없음 |
+| 축 검증 상태 | `posthoc.validation_sets.{MFPI,MBPI}.result`, BBVI는 둘 다 통과일 때만 통과(`app.js` `validationResult`) | "검증 전" |
+| MCUI 근거 | `mcui_basis` + `conservation_trace`(IUCN 범주·평가 연도·기준) / `national_assessment` / `mcui_substitute.label` | "미확인" |
+| 식량 근거 | `food_trace.reported_food_name`, `nutrients.{protein_g,iron_mg,zinc_mg,calcium_mg}.value·unit·percentile`, `edible_fraction.value`, `aquaculture.feasible·method` | 성분별 "자료 없음"(`omitted_components`) |
+| 생리활성 근거 | `bioactivity_trace` 중 `adjusted` 최대 항목(`app.js` `bestBio`): 표적·종말점·값·단위·서열/화합물·백분위·`original_paper_dois` | "자료 없음" |
+| 매트릭스 유형 | `matrix-readiness.json` `species[].matrix_type` + `assessments.method.matrix.types` 라벨 | "유형 미배정" |
+| 정보충분도 | `species[].information_sufficiency.mean_ratio` | "미확인" |
+| 근거 링크 | `assessments.sources[source_id].title·url·license` | 링크 없이 "원자료 링크 없음" |
+| 관측 셀 | `live-snapshot.json` `cells[]`(`cell_code`, `period_start/end`, `year_start/end`, `record_count`, `site_count`, `sea_areas`, `citations[].title·url·licenses`) | 해역명은 `cell-sea-areas.json`, 그래도 없으면 "해역명 미확인" |
+| 공개 사본 기준일 | `live-snapshot.json` `fetched_at` | "기준일 미확인" |
