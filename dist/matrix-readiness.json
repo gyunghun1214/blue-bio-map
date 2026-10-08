@@ -648,7 +648,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=377084",
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0050000000a&fdNms=%EB%8B%A4%EC%8B%9C%EB%A7%88%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
@@ -831,7 +831,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=236157",
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0040000000a&fdNms=%EA%BC%AC%EC%8B%9C%EB%9E%98%EA%B8%B0%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
@@ -873,7 +873,7 @@
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=145086",
         "https://www.marinespecies.org/rest/",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0230000000a&fdNms=%EC%B2%AD%EA%B0%81%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
@@ -920,7 +920,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=231750",
         "https://www.marinespecies.org/rest/",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a&fdNms=%EB%B0%94%EC%A7%80%EB%9D%BD%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -962,7 +962,7 @@
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/78764186/78772433",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=397082",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a&fdNms=%EC%A0%84%EB%B3%B5%2C%20%EB%91%A5%EA%B7%BC%EC%A0%84%EB%B3%B5%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1009,7 +1009,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=393716",
         "https://www.marinespecies.org/rest/",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4000040000a&fdNms=%EA%B0%80%EB%A6%AC%EB%B9%84%2C%20%ED%81%B0%EA%B0%80%EB%A6%AC%EB%B9%84%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://xuebao.dlou.edu.cn/article/2018/2095-1388/201806016.html"
       ],
@@ -1101,7 +1101,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a&fdNms=%EC%A1%B0%EA%B0%9C%2C%20%ED%94%BC%EC%A1%B0%EA%B0%9C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1145,7 +1145,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=413600",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a&fdNms=%EC%A1%B0%EA%B0%9C%2C%20%EB%A7%9B%EC%A1%B0%EA%B0%9C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1192,7 +1192,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a&fdNms=%EA%B3%A0%EB%93%B1%EC%96%B4%2C%20%EB%82%A8%ED%95%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1234,7 +1234,7 @@
         "https://www.iucnredlist.org/species/98969433/143841777",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=219984",
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a&fdNms=%EB%A9%B8%EC%B9%98%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1275,7 +1275,7 @@
         "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3",
         "https://www.iucnredlist.org/species/49182929/49229050",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=281273",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a&fdNms=%EC%A1%B0%EA%B8%B0%28%EC%B0%B8%EC%A1%B0%EA%B8%B0%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1316,7 +1316,7 @@
         "https://www.iucnredlist.org/search",
         "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=275816",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a&fdNms=%EB%84%99%EC%B9%98%28%EA%B4%91%EC%96%B4%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1359,7 +1359,7 @@
         "https://www.cmnpd.org",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=274849",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a&fdNms=%EB%B3%BC%EB%9D%BD%2C%20%EC%A1%B0%ED%94%BC%EB%B3%BC%EB%9D%BD%28%EC%9A%B0%EB%9F%AD%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1405,7 +1405,7 @@
         "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
         "https://www.ncbi.nlm.nih.gov/nuccore/BDMU01000006.1",
         "https://www.ncbi.nlm.nih.gov/nuccore/KT229623.1",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a&fdNms=%EB%B0%A9%EC%96%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1449,7 +1449,7 @@
         "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=254538",
         "https://www.marinespecies.org/rest/",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a&fdNms=%EB%8C%80%EA%B5%AC%2C%20%EC%88%98%EC%BB%B7%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1490,7 +1490,7 @@
         "https://www.cmnpd.org",
         "https://www.iucnredlist.org/search",
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1061762",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a&fdNms=%EA%B2%8C%2C%20%EA%BD%83%EA%B2%8C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1536,7 +1536,7 @@
         "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html",
         "https://www.ncbi.nlm.nih.gov/nuccore/NW_021826408.1",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a&fdNms=%EB%AC%B8%EC%96%B4%2C%20%EC%B0%B8%EB%AC%B8%EC%96%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
       "unexplored_candidate": null
@@ -1585,7 +1585,7 @@
         "https://www.marinespecies.org/aphia.php?p=taxdetails&id=1666974",
         "https://www.ncbi.nlm.nih.gov/nuccore/GGQU01104929.1",
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
-        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a",
+        "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6230010000a&fdNms=%EC%98%A4%EC%A7%95%EC%96%B4%2C%20%EA%B0%91%EC%98%A4%EC%A7%95%EC%96%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.sciencedirect.com/science/article/pii/S1875536411600563",
         "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
