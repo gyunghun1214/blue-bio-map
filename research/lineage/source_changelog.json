@@ -2280,6 +2280,15 @@
    "published_on": "2026-10-08",
    "method_note": "verified-4.5 (2026-10-05). Data audit 2026-10-08: no score, category, type or flag changes. Information sufficiency only: a scored sub-national MCUI (4.2) fell through to the IUCN steps and read 0/3 although its record is an official, reviewed, current-edition list row. It now reads its steps from that row, like a range-state list (unexplored_candidates.subnational_mcui_sufficiency). 미역, 톳, 청각 and 꽃게 move MCUI sufficiency 0.0 -> 1.0; a preliminary Rapid LC stays open.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.6",
+   "to_run_id": "verified-4.7",
+   "from_commit": "e82089e",
+   "to_commit": "9f932fa",
+   "published_on": "2026-10-08",
+   "method_note": "verified-4.6 (2026-10-08). Source audit 2026-10-08: no score, category, type or flag changes. (1) source_ids_from_traces: every registered source that a published trace names (food, bioactivity, conservation, substitute and trend records) is also listed in the species' source_ids, so the species page and matrix-readiness cite it (before: IUCN re-check, RDA fatty-acid table, PubChem and several replication papers were used but not listed). (2) source_corrections: audited metadata applied to the published registry only - titles replaced by the Crossref titles and first authors where the cited text was a paraphrase or named the wrong authors, dead API endpoint links replaced by their documentation pages, a missing licence and title added for CMNPD and Europe PMC, one unregistered DOI marked, the same work given one licence text, and the RDA row link given the parameter the site now needs.",
+   "entries": []
   }
  ]
 }
