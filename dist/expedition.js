@@ -8,8 +8,8 @@ const project=(lat,lon)=>({x:(lon-PROJ.lon)*PROJ.k*Math.cos(PROJ.lat*Math.PI/180
 // Presentation route (연출용): a start point and waypoints that keep the curve off the coastline in countries.json.
 // ROUTE_VIA[i] lies between stop i-1 and stop i (ROUTE_VIA[0] between the start and the first stop).
 // It is not a survey track; the page always says so. verification/test_expedition_ui.mjs checks it stays at sea.
-const ROUTE_START=[34.0,126.0];
-const ROUTE_VIA=[[[34.05,127.0],[34.3,127.7]],[[34.38,128.0]],[[34.2,129.0],[33.97,129.45]]];
+const ROUTE_START=[33.8,125.3];
+const ROUTE_VIA=[[],[[34.0,125.9],[34.05,127.0]],[[34.3,127.75],[33.9,127.7]],[[34.0,128.1]],[[34.9,129.1],[34.75,129.6]],[],[],[[36.5,130.3]]];
 const REVEAL_DONE=3, REVEAL_DETAIL=4;
 
 function routePoints(stops){
@@ -123,7 +123,12 @@ let DATA=null,STATE=null,ROUTE=null,scene=null,revealTimer=null,lastFocus=null;
 const ART={
   836033:`<svg viewBox="0 0 120 90" role="img" aria-label="참굴 일러스트"><path d="M14 52c4-26 30-40 56-38 22 2 38 14 36 30-2 18-26 32-52 32C30 76 11 68 14 52z" fill="#cfd8d6" stroke="#eef6f4" stroke-width="2"/><path d="M22 52c8-14 24-24 44-25M26 60c12-10 30-17 52-16M34 68c14-6 32-9 50-6" fill="none" stroke="#8fa3a0" stroke-width="2" stroke-linecap="round"/><ellipse cx="78" cy="44" rx="14" ry="8" fill="#e9e1cf" opacity=".7"/></svg>`,
   145721:`<svg viewBox="0 0 120 90" role="img" aria-label="미역 일러스트"><path d="M60 86C58 62 52 40 40 12M60 86c4-24 14-44 30-70M60 86c-2-18 2-34 10-48" fill="none" stroke="#7fb59a" stroke-width="3" stroke-linecap="round"/><path d="M40 12c-10 10-14 24-6 34 6-10 10-22 6-34zM90 16c-2 14-10 24-20 28 0-12 8-24 20-28zM70 38c-10 6-14 16-10 26 8-6 12-16 10-26zM46 40c-12 4-18 14-14 26 8-6 14-14 14-26z" fill="#4f8f6f" stroke="#a9dcc2" stroke-width="1.5"/></svg>`,
-  241776:`<svg viewBox="0 0 120 90" role="img" aria-label="해삼 일러스트"><path d="M12 54c6-18 30-26 54-24 24 2 44 10 42 24-2 12-24 18-48 18S8 68 12 54z" fill="#6d5b4f" stroke="#c8b4a2" stroke-width="2"/><g fill="#a48a76">${[22,34,46,58,70,82,94].map((x,i)=>`<path d="M${x} ${38+(i%2)*2}l4-10 4 10z"/>`).join('')}</g><circle cx="102" cy="52" r="3" fill="#2b211b"/></svg>`
+  241776:`<svg viewBox="0 0 120 90" role="img" aria-label="해삼 일러스트"><path d="M12 54c6-18 30-26 54-24 24 2 44 10 42 24-2 12-24 18-48 18S8 68 12 54z" fill="#6d5b4f" stroke="#c8b4a2" stroke-width="2"/><g fill="#a48a76">${[22,34,46,58,70,82,94].map((x,i)=>`<path d="M${x} ${38+(i%2)*2}l4-10 4 10z"/>`).join('')}</g><circle cx="102" cy="52" r="3" fill="#2b211b"/></svg>`,
+  494972:`<svg viewBox="0 0 120 90" role="img" aria-label="톳 일러스트"><path d="M60 86V14M60 70l-18-16M60 56l20-14M60 42l-16-14M60 30l14-12M42 54l-8-14M80 42l8-12" fill="none" stroke="#8a7a3c" stroke-width="3" stroke-linecap="round"/><g fill="#b39a4a">${[[44,60],[36,46],[50,48],[74,50],[86,36],[46,34],[70,24],[64,62],[56,20],[32,40],[88,28]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="3" ry="5"/>`).join('')}</g></svg>`,
+  342067:`<svg viewBox="0 0 120 90" role="img" aria-label="살오징어 일러스트"><path d="M8 45l18-14 44-6c12 0 22 8 22 20s-10 20-22 20l-44-6z" fill="#e6b8a8" stroke="#f6e2da" stroke-width="2"/><path d="M8 45l-4-12 22-2M8 45l-4 12 22 2" fill="#d79f8d"/><path d="M92 38c10-2 18-4 24-8M92 42c10 0 18 0 24-2M92 48c10 0 18 0 24 2M92 52c10 2 18 4 24 8" fill="none" stroke="#e6b8a8" stroke-width="2.5" stroke-linecap="round"/><circle cx="82" cy="42" r="3.5" fill="#2b211b"/></svg>`,
+  506159:`<svg viewBox="0 0 120 90" role="img" aria-label="홍합 일러스트"><path d="M16 66C20 40 50 16 86 14c14 0 22 8 18 20-6 22-38 40-70 42-12 1-19-3-18-10z" fill="#25324a" stroke="#8ea4c4" stroke-width="2"/><path d="M26 64c16-6 40-20 56-40M38 66c18-8 40-22 54-38" fill="none" stroke="#4b5f80" stroke-width="2" stroke-linecap="round"/><path d="M18 70c10 4 26 2 40-4" fill="none" stroke="#c99a5a" stroke-width="2"/></svg>`,
+  250680:`<svg viewBox="0 0 120 90" role="img" aria-label="멍게 일러스트"><path d="M30 84c-6-20-4-46 10-60 10-10 30-10 40 0 14 14 16 40 10 60z" fill="#d8573a" stroke="#f3b19f" stroke-width="2"/><path d="M44 22l-4-12h12zM74 22l2-12h10z" fill="#e8744f" stroke="#f3b19f" stroke-width="2"/><g fill="#f09a76">${[[44,40],[60,34],[76,42],[50,56],[68,58],[42,72],[60,74],[80,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3"/>`).join('')}</g></svg>`,
+  372119:`<svg viewBox="0 0 120 90" role="img" aria-label="우뭇가사리 일러스트"><path d="M60 86V50M60 50L40 30M60 50l22-22M60 64L36 54M60 64l26-8M40 30l-8-14M40 30l6-16M82 28l-4-14M82 28l12-10M36 54l-14-4M86 56l14-6" fill="none" stroke="#b5405a" stroke-width="2.5" stroke-linecap="round"/><g fill="#d9667f">${[[32,16],[46,14],[78,14],[94,18],[22,50],[100,50]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5"/>`).join('')}</g></svg>`
 };
 const art=stop=>ART[stop.aphia_id]||`<svg viewBox="0 0 120 90" role="img" aria-label="해양생물 일러스트"><circle cx="60" cy="45" r="28" fill="none" stroke="#9fd6d0" stroke-width="2"/></svg>`;
 
