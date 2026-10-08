@@ -742,21 +742,6 @@ function followupDecision(s){
     sourceUrls:Array.isArray(row.source_urls)?row.source_urls.filter(url=>/^https:\/\//.test(url)):[]
   };
 }
-function appendFollowupBrief(s){
-  const plan=followupDecision(s);
-  if(!plan)return;
-  const target=$('detail');
-  if(typeof target?.insertAdjacentHTML!=='function')return;
-  target.insertAdjacentHTML('beforeend',
-    '<details class="followup-brief"><summary>다음 조사 과제</summary><div class="detail-more-body"><h3>현재 판단 가능 범위 · 남은 확인 · 다음 조사</h3>'+
-    '<p><b>현재 판단 가능 범위:</b> '+esc(plan.known.length?plan.known.map(k=>k+'('+axisTag(s,k)+')').join(' / ')+'만 축별로 해석':(released()?'산출된 지표 없음':'산출된 시범 지표 없음'))+
-    '. 실제 BBVI×MCUI 매트릭스 배치 '+(pilotScore(s,'BBVI')!==null&&pilotScore(s,'MCUI')!==null?(released()?'조건 충족':'시범 조건 충족'):'미충족')+'.</p>'+
-    '<p><b>남은 확인:</b> '+esc(plan.blocked.length?plan.blocked.join('·')+' 필수 근거 미충족':'네 지표 모두 산출됨. 실행 판단은 별도 검증 필요')+'. 값에 붙은 라벨(단일 논문·하한값·예비평가·지방 목록)을 함께 읽습니다.</p>'+
-    '<p><b>연구기관:</b> '+plan.research.map(esc).join(' / ')+'</p>'+
-    '<p><b>정부·보전기관:</b> '+plan.conservation.map(esc).join(' / ')+'</p>'+
-    '<p><b>기업 검토:</b> '+esc(plan.industry)+'</p>'+
-    '<p class="fine">점수 또는 실행 우선순위가 아닌 후속 검증 과제. 원문 링크·조회일·이용조건은 위 근거 상세/출처에서 확인합니다. 종 단위 점수를 출현 셀·해역 가치로 전가하지 않습니다.</p></div></details>');
-}
 function renderDecisionList(){
   const list=$('decision-list'), panel=$('decision-detail');
   list.innerHTML=data.species.map(s=>{
@@ -1576,7 +1561,6 @@ function renderDetail() {
   if(s.catalog)renderCandidateDetail(s);else renderLiveDetail(s);
   // The four values first, as gauges under the name; the evidence below stays the reference.
   if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisGauges(s));
-  appendFollowupBrief(s);
 }
 
 // Counts come from the published evidence_summary. A missing key is "정보 없음", never 0.
