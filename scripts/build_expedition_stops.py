@@ -5,7 +5,9 @@ from dist/matrix-readiness.json and the observation cell from dist/live-snapshot
 with its reason; it is never written as zero. --check rebuilds and compares without writing.
 
 A stop sits on the centre of one published cell (1 deg or 4 deg extent, never a record coordinate): the cell inside the
-Korean test box whose centre is at sea, with the most records. Adding a species = adding its AphiaID to STOPS.
+Korean test box whose centre is at sea, with the most records. Two stops never share a centre: cells are handed out one
+species at a time (the first three stops of v1 first, then the others by the record count of their top cell) and a
+centre already taken goes to the species' next cell. Adding a species = adding its AphiaID to STOPS.
 """
 import argparse
 import json
@@ -14,8 +16,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "dist/expedition-stops.json"
-# Order is the sailing order (west -> south -> east). Reasons for the choice: docs/expedition/design.md.
-STOPS = (836033, 145721, 241776)
+# Every species in assessments.json, in sailing order (west -> south -> east). Reasons: docs/expedition/design.md.
+STOPS = (494972, 836033, 342067, 145721, 506159, 241776, 250680, 372119)
+# The three v1 stops pick their cell first so they keep the place they had.
+FIRST_PICK = (836033, 145721, 241776)
 AXES = ("MFPI", "MBPI", "MCUI", "BBVI")
 NUTRIENTS = (("protein_g", "단백질"), ("iron_mg", "철"), ("zinc_mg", "아연"), ("calcium_mg", "칼슘"))
 # Same box as the page's public cell rule (live-data.js validCell).
@@ -142,15 +146,26 @@ def build():
     check["BBVI"] = ("passed" if check["MFPI"] == check["MBPI"] == "passed"
                      else "failed" if "failed" in (check["MFPI"], check["MBPI"]) else None)
     profile = {p["aphia_id"]: p["species_id"] for p in snap["profiles"]}
+    rank = lambda c: (c["records"], c["year_end"], c["code"])
+    cells, candidates = {}, {}
+    for aphia in STOPS:
+        cells[aphia] = [c for c in (_cell(r, sea_names) for r in snap["cells"] if r["species_id"] == profile[aphia]) if c]
+        at_sea = [c for c in cells[aphia] if _in_box(c) and not any(_inside(c["center"][1], c["center"][0], r) for r in rings)]
+        if not at_sea:
+            raise ValueError(f"{aphia}: no public cell with its centre at sea")
+        candidates[aphia] = sorted(at_sea, key=rank, reverse=True)
+    rest = sorted((a for a in STOPS if a not in FIRST_PICK), key=lambda a: rank(candidates[a][0]), reverse=True)
+    chosen, taken = {}, set()
+    for aphia in FIRST_PICK + tuple(rest):
+        free = [c for c in candidates[aphia] if tuple(c["center"]) not in taken]
+        if not free:
+            raise ValueError(f"{aphia}: every public cell centre at sea is already another stop")
+        chosen[aphia] = free[0]
+        taken.add(tuple(free[0]["center"]))
     stops = []
     for order, aphia in enumerate(STOPS, 1):
         sp = species[aphia]
-        cells = [c for c in (_cell(r, sea_names) for r in snap["cells"] if r["species_id"] == profile[aphia]) if c]
-        korean = [c for c in cells if _in_box(c)]
-        at_sea = [c for c in korean if not any(_inside(c["center"][1], c["center"][0], r) for r in rings)]
-        if not at_sea:
-            raise ValueError(f"{aphia}: no public cell with its centre at sea")
-        cell = max(at_sea, key=lambda c: (c["records"], c["year_end"], c["code"]))
+        cell = chosen[aphia]
         zoom = 8 if cell["size_deg"] == 1 else 6
         lat, lon = cell["center"]
         sources = [_source(report["sources"], sid) for sid in sp.get("source_ids") or []]
@@ -161,7 +176,7 @@ def build():
             "score_status": sp.get("score_status"), "withheld_reasons": sp.get("withheld_reasons"),
             "bbvi_label": sp.get("bbvi_label"), "information_sufficiency": (sp.get("information_sufficiency") or {}).get("mean_ratio"),
             "mcui": _mcui(sp, report["sources"]), "food": _food(sp, report["sources"]), "bio": _bio(sp),
-            "cell": cell, "public_cells": len(cells), "public_records": sum(c["records"] for c in cells),
+            "cell": cell, "public_cells": len(cells[aphia]), "public_records": sum(c["records"] for c in cells[aphia]),
             "map_link": f"index.html#s={aphia}&v=explore&m={zoom}/{lat:.2f}/{lon:.2f}",
             "sources": sources})
     return {"schema_version": "expedition-stops-1", "method_version": report["method_version"], "status": report["status"],

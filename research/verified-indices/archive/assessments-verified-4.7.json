@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1464,7 +1464,7 @@
             }
           ]
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2134,7 +2134,7 @@
             }
           ]
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2681,7 +2681,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3271,7 +3271,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3899,7 +3899,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4759,7 +4759,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5785,7 +5785,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6854,7 +6854,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7879,7 +7879,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8985,7 +8985,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10153,7 +10153,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11285,7 +11285,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12358,7 +12358,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14053,7 +14053,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15059,7 +15059,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16167,7 +16167,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19134,7 +19134,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -20147,7 +20147,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21237,7 +21237,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22544,7 +22544,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23220,7 +23220,7 @@
         },
         "MCUI": {
           "basis": "national",
-          "ratio": 1.0,
+          "ratio": 0.67,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -23245,7 +23245,7 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.83
       },
       "korean_name": "참문어(동아시아 종)",
       "mbpi_floor": null,
@@ -24010,7 +24010,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25111,7 +25111,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.7 (2026-10-08). No score, category, type or flag changes. National red list page re-check: the 2026-09-27 re-read covered the seven rows scored then; 참문어 (534443) joined on 2026-10-01 through the WoRMS crosswalk and was never re-read, so its MCUI current_check step stayed open (MCUI sufficiency 0.67). Its list page (printed 1027, viewer 1029) and index page (printed 1484, viewer 1486) were re-read in the NIBR e-catalogue on 2026-10-08: 참문어 Octopus vulgaris Cuvier, 1797, NT -> NT, 유지, page 1027, as recorded. The row is added to national_red_list.page_recheck; 참문어 MCUI sufficiency 0.67 -> 1.0.",
+    "changes_from": "verified-4.6 (2026-10-08). Source audit 2026-10-08: no score, category, type or flag changes. (1) source_ids_from_traces: every registered source that a published trace names (food, bioactivity, conservation, substitute and trend records) is also listed in the species' source_ids, so the species page and matrix-readiness cite it (before: IUCN re-check, RDA fatty-acid table, PubChem and several replication papers were used but not listed). (2) source_corrections: audited metadata applied to the published registry only - titles replaced by the Crossref titles and first authors where the cited text was a paraphrase or named the wrong authors, dead API endpoint links replaced by their documentation pages, a missing licence and title added for CMNPD and Europe PMC, one unregistered DOI marked, the same work given one licence text, and the RDA row link given the parameter the site now needs.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -25455,7 +25455,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.8",
+    "method_version": "verified-4.7",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -25478,7 +25478,6 @@
           "413600": "index p.1453: 가리맛조개 Sinonovacula constricta, LC -> LC, 유지, list p.1370",
           "504357": "index p.1486: 피조개 Scapharca broughtonii, LC -> LC, 유지, list p.1380",
           "506159": "list p.1380, index p.1487: 홍합 Mytilus unguiculatus, LC -> LC, 유지",
-          "534443": "index p.1484: 참문어 Octopus vulgaris, NT -> NT, 유지, list p.1027 (re-read 2026-10-08; the 2026-09-27 re-check predates the 2026-10-01 crosswalk that assigned this row to Octopus sinensis)",
           "836033": "list p.1371, index p.1457: 굴 Magallana gigas, LC -> LC, 유지"
         }
       },
@@ -25991,7 +25990,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.8",
+  "method_version": "verified-4.7",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -28493,7 +28492,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29159,7 +29158,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30131,7 +30130,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -31305,7 +31304,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32334,7 +32333,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33191,7 +33190,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33850,7 +33849,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34491,7 +34490,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.8 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.7 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -35309,7 +35308,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.8",
+        "method_version": "verified-4.7",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

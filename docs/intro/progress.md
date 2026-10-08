@@ -50,8 +50,12 @@
 
 - draft PR #156. 머지하지 않음(머지 = Cloudflare 운영 배포).
 
+## C7 후속: main 병합(2026-10-08)
+
+- #152(verified-4.8)·#155(탐험 8종)가 먼저 머지되어 `origin/main`을 병합했다. 충돌은 `index.html` 머리(캐시 해시)와 README 목록 두 곳. `app.js?v=` 해시를 다시 계산했다.
+- 병합 후 다시 확인: 단위 검사 전부 통과, uicheck 150 PASS / 4 FAIL(같은 타일 항목), expedition_check 56/56.
+
 ## 남은 한계
 
 - 구의 해안선은 `countries.json`(105–150°E · 20–53°N로 잘린 파일) 범위만 그린다. 가장자리는 림 그림자로 가렸지만 범위 밖 대륙은 없다.
-- #152(verified-4.8)가 먼저 머지되면 `app.js?v=` 해시가 충돌한다. 나중에 머지되는 쪽에서 해시만 다시 계산하면 된다.
 - 운영 Supabase가 막힌 환경이라 실제 운영 API로는 CI(Windows)에서 확인된다.
