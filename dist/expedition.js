@@ -478,7 +478,7 @@ function buildSea(THREE,geo){
 
   // Camera rig: smoothed look-at and distance. North stays up; the camera looks from the south at about 55°.
   const look=new THREE.Vector3(), camPos=new THREE.Vector3();
-  let heading=0, prevHeading=0, bank=0, speedNow=0, last=performance.now(), time=0, frames=0, fpsT=0, lowFps=false;
+  let lastKey='', lastDraw=0, heading=0, prevHeading=0, bank=0, speedNow=0, last=performance.now(), time=0, frames=0, fpsT=0, lowFps=false;
   const start=routeAt(ROUTE,0);
   const routeBox=(()=>{let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;for(const p of routePts){x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);z0=Math.min(z0,p.z);z1=Math.max(z1,p.z);}return {cx:(x0+x1)/2,cz:(z0+z1)/2,w:x1-x0};})();
   function shipPose(){
@@ -558,7 +558,9 @@ function buildSea(THREE,geo){
       ring.material.opacity=on?.1:.55;ring.scale.setScalar(on?1+.15*Math.sin(time*2):1);
     });
     placeCamera(target(),still?1:1-Math.exp(-dt*(STATE.phase==='intro'?1.2:2.4)));
-    renderer.render(sc,camera);
+    // reduced motion: the scene is still, so draw only when something changed (or once a second)
+    const key=`${STATE.t}|${STATE.arrived}|${innerWidth}x${innerHeight}`;
+    if(!still||key!==lastKey||now-lastDraw>1000){renderer.render(sc,camera);lastKey=key;lastDraw=now;}
     $('progress').style.setProperty('--t',STATE.t.toFixed(4));
     // A slow device keeps working; it is offered the card list once.
     frames++;fpsT+=dt;if(!lowFps&&fpsT>4){if(frames/fpsT<18){lowFps=true;renderer.setPixelRatio(1);toast('화면이 느리면 상단의 "카드 목록"으로 같은 내용을 볼 수 있습니다.');}frames=0;fpsT=0;}

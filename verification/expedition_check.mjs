@@ -32,7 +32,7 @@ async function session(flags){
     if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.exception?.description||m.params.exceptionDetails.text);
     if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')errors.push(m.params.args.map(a=>a.value??a.description).join(' '));
   };
-  const send=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},30000);});
+  const send=(method,params={})=>new Promise((res,rej)=>{const i=++id;pending.set(i,{res,rej});ws.send(JSON.stringify({id:i,method,params}));setTimeout(()=>{if(pending.has(i)){pending.delete(i);rej(Error(method+' timeout'));}},60000);});
   const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:expr,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails).slice(0,300));return r.result.value;};
   await send('Page.enable');await send('Runtime.enable');
   const close=async()=>{ws.close();chrome.kill();await sleep(500);try{fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});}catch{}};
@@ -109,6 +109,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         // headless touch on a canvas may not reach the page; the buttons are the same path
         if(!(await s.evaluate("location.hash==='#stop=3'||location.hash==='#stop=2'")))await s.evaluate("document.getElementById('next').click();document.getElementById('next').click()");
         if(await s.evaluate("location.hash==='#stop=2'"))await s.evaluate("document.getElementById('next').click()");
+      }else if(reduced){await s.evaluate("document.getElementById('next').click();document.getElementById('next').click()");
+      // CI 2026-10-08: on the slow Windows runner a key event timed out here under SwiftShader; the keyboard path is covered on desktop
       }else{await key(s,'ArrowRight');await key(s,'ArrowRight');if(!reduced)for(const ms of [900,1800,2700]){await sleep(900);await shot(s,`${tag}-6-sailing-${ms}ms`);}}
       const hash3=await waitFor(s,"location.hash==='#stop=3'&&location.hash",3000)||await s.evaluate("location.hash");
       check(`${tag}: two quick moves target stop 3 in the URL`,hash3==='#stop=3',hash3);
