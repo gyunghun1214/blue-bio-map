@@ -40,6 +40,8 @@ jobs:
           node verification/test_trait_display_ui.mjs
           node --check dist/chatbot.js
           node verification/test_chatbot_faq.mjs
+          node --check worker/index.mjs
+          node verification/test_ask_worker.mjs
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:
