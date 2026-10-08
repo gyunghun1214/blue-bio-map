@@ -125,6 +125,47 @@ function chatbotMatch(text){
   return top>=CHATBOT_MIN_SCORE?best:null;
 }
 
+// 안내 캐릭터 '멍이'(멍게 연구원) SVG. 상태: welcome·answer·think·ai·point·unknown·rest. crop이면 바위 없이 몸·입출수공만(아바타용).
+// 입수공 +, 출수공 −는 실제 멍게(Halocynthia roretzi) 모양. 색은 몸 주황 + 앱 남색(--navy)·청록(--teal) 출입증.
+const CHATBOT_MASCOT_STATES={welcome:{e:'happy',m:'open',x:'bub'},answer:{e:'n',m:'smile'},think:{e:'up',m:'o',x:'think'},
+  ai:{e:'n',m:'flat',x:'glasses'},point:{e:'right',m:'smile',x:'jet'},unknown:{e:'small',m:'wavy',x:'sweat',droop:1},rest:{e:'sleep',m:'flat',x:'z'}};
+function chatbotMascot(state,size,crop){
+  const C={body:'#F2734B',dark:'#D9532C',light:'#F9A27F',hole:'#7A2614',navy:'#0b1b2b',cheek:'#FF8E7A',teal:'#0b7a74',rock:'#9DB2C0',water:'#5FB3C9'};
+  const s=CHATBOT_MASCOT_STATES[state]||CHATBOT_MASCOT_STATES.answer;
+  const bumps=[[30,70,3],[27,90,3.4],[38,102,3],[90,68,3],[93,90,3.4],[82,103,3],[60,47,2.4],[46,51,2.3],[74,51,2.3],[34,82,2.1],[86,80,2.1],[60,106,2.2]];
+  const eye=(dx,dy,r)=>[48,72].map(x=>`<circle cx="${x+dx}" cy="${74+dy}" r="${r}" fill="${C.navy}"/><circle cx="${x+dx+1.5}" cy="${72.4+dy}" r="1.5" fill="#fff"/>`).join('');
+  const arc=(y1,y2,w)=>[48,72].map(x=>`<path d="M${x-4.5} ${y1} Q${x} ${y2} ${x+4.5} ${y1}" stroke="${C.navy}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`).join('');
+  const eyes={happy:arc(75.5,69.5,2.6),sleep:arc(74,77.5,2.4),up:eye(0,-2,4.6),right:eye(2,0,4.6),small:eye(0,0,3.8),n:eye(0,0,4.6)}[s.e];
+  const mouth={open:`<path d="M54.5 81.5 Q60 90.5 65.5 81.5 Z" fill="${C.hole}"/>`,
+    smile:`<path d="M55 82.5 Q60 87 65 82.5" stroke="${C.navy}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`,
+    o:`<ellipse cx="60" cy="84.5" rx="2.4" ry="2.8" fill="${C.navy}"/>`,
+    flat:`<path d="M56.5 84 L63.5 84" stroke="${C.navy}" stroke-width="2.2" stroke-linecap="round"/>`,
+    wavy:`<path d="M54 85 Q57 82 60 85 Q63 88 66 85" stroke="${C.navy}" stroke-width="2" fill="none" stroke-linecap="round"/>`}[s.m];
+  const siphon=left=>{
+    const [x,top,base]=left?[42,18,50]:[78,22,48];
+    const t=s.droop?` transform="rotate(${left?-16:16} ${x} ${base})"`:'';
+    const hole=left?`<path d="M${x} ${top+.6} V${top+5.4} M${x-3} ${top+3} H${x+3}" stroke="${C.hole}" stroke-width="1.7" stroke-linecap="round"/>`
+      :`<path d="M${x-3.2} ${top+3} H${x+3.2}" stroke="${C.hole}" stroke-width="1.8" stroke-linecap="round"/>`;
+    return `<g${t}><path d="M${x-7} ${base} L${x-8} ${top+4} Q${x-8} ${top} ${x} ${top} Q${x+8} ${top} ${x+8} ${top+4} L${x+7} ${base} Z" fill="${C.body}"/><ellipse cx="${x}" cy="${top+3}" rx="8" ry="3.6" fill="${C.light}"/>${hole}</g>`;
+  };
+  const b=(x,y,r,cls)=>`<circle${cls?` class="${cls}"`:''} cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".75" stroke="${C.water}" stroke-width="1.3"/>`;
+  const extra={bub:b(36,8,3)+b(31,-2,2.2),
+    think:b(43,8,2.4,'bbc-rise')+b(40,-2,3.2,'bbc-rise')+b(45,-12,3.8,'bbc-rise'),
+    glasses:[48,72].map(x=>`<circle cx="${x}" cy="74" r="7.4" fill="#fff" fill-opacity=".22" stroke="${C.navy}" stroke-width="1.7"/>`).join('')+`<path d="M55.4 73.5 Q60 71.5 64.6 73.5" stroke="${C.navy}" stroke-width="1.7" fill="none"/>`,
+    jet:`<path class="bbc-jet" d="M84 23 Q98 6 113 16" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M108 11 L115 17 L106 19" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    sweat:`<path d="M90 54 Q86 61 90 63.5 Q94 61 90 54 Z" fill="#8FD3E8" stroke="${C.water}" stroke-width="1"/>`,
+    z:`<circle cx="96" cy="10" r="9" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M92.5 6.5 H99.5 L92.5 13.5 H99.5" stroke="${C.navy}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`}[s.x]||'';
+  return `<svg class="bbc-mascot" width="${size}" height="${size}" viewBox="${crop?'8 12 104 104':'0 -18 120 146'}" aria-hidden="true" focusable="false">`+
+    (crop?'':`<ellipse cx="60" cy="114" rx="44" ry="8" fill="${C.rock}"/>`)+siphon(true)+siphon(false)+
+    `<path d="M24 112 C13 92 14 56 34 44 C46 37 74 37 86 44 C106 56 107 92 96 112 Z" fill="${C.body}"/>`+
+    `<ellipse cx="42" cy="58" rx="8" ry="4.5" fill="${C.light}" opacity=".75" transform="rotate(-24 42 58)"/>`+
+    bumps.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${C.dark}"/>`).join('')+
+    `<ellipse cx="39" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/><ellipse cx="81" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/>`+
+    eyes+mouth+
+    `<path d="M51 95 L60 90.5 L69 95" stroke="${C.teal}" stroke-width="1.6" fill="none"/><rect x="52.5" y="94.5" width="15" height="10.5" rx="2.2" fill="${C.teal}"/><path d="M55.5 100.5 q2.2 -2.2 4.5 0 t4.5 0" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/>`+
+    extra+'</svg>';
+}
+
 if(typeof document!=='undefined')(function(){
   const store={get(k){try{return localStorage.getItem(k);}catch{return null;}},set(k,v){try{localStorage.setItem(k,v);}catch{}}};
   const HINT_KEY='bbChatHintSeen';
@@ -150,16 +191,25 @@ if(typeof document!=='undefined')(function(){
   }
 
   const root=document.createElement('div');root.className='bbc';
-  root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
+  root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
-    '<header class="bbc-head"><strong id="bbc-title">사용법 안내</strong><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
+    '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">멍이<span class="bbc-sr"> 사용법 안내</span></strong><small aria-hidden="true">바다 연구원 · 사용법 안내</small></div>'+
+    '<button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
     '<p class="bbc-note">FAQ에 없는 질문은 답을 만들기 위해 Cloudflare Workers AI로 보내요.</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
-    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel"><span aria-hidden="true">?</span></button>';
+    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel"></button>';
   document.body.append(root);
   const [hint,panel,fab]=['.bbc-hint','.bbc-panel','.bbc-fab'].map(s=>root.querySelector(s));
-  const log=root.querySelector('.bbc-log'),input=root.querySelector('.bbc-input');
+  const log=root.querySelector('.bbc-log'),input=root.querySelector('.bbc-input'),avatar=root.querySelector('.bbc-avatar');
+  const fabFace=expanded=>{fab.innerHTML=expanded?'<span aria-hidden="true">×</span>':chatbotMascot('answer',44,true);};
+  // 머리말 멍이 표정. brief면 2.6초 뒤 직전 표정으로 돌아간다('화면에서 보여주기').
+  let face='welcome',faceTimer=0;
+  function mood(state,brief){
+    clearTimeout(faceTimer);avatar.innerHTML=chatbotMascot(state,40,true);
+    if(brief)faceTimer=setTimeout(()=>mood(face),2600);else face=state;
+  }
+  mood(face);fabFace(false);
 
   // 탐색 지도 탭(폭 768px 이상)에서는 버튼과 대화창을 지도 확대/축소 컨트롤 왼쪽에 둔다: 근거 패널과 확대/축소를 가리지 않게.
   function place(){
@@ -177,22 +227,28 @@ if(typeof document!=='undefined')(function(){
     if(top>p.top)panel.style.maxHeight=Math.max(260,p.bottom-top)+'px';
   }
   function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}}
-  function add(cls,text){const p=document.createElement('div');p.className='bbc-msg '+cls;p.textContent=text;log.append(p);return p;}
+  // state가 있으면(챗봇 말풍선) 왼쪽 아래 멍이 미니 아바타와 .bbc-row로 묶고 머리말 표정도 바꾼다. 돌려주는 값은 말풍선.
+  function add(cls,text,state){
+    const p=document.createElement('div');p.className='bbc-msg '+cls;p.textContent=text;
+    if(!state){log.append(p);return p;}
+    const row=document.createElement('div');row.className='bbc-row';row.innerHTML=chatbotMascot(state,34,true);row.append(p);log.append(row);
+    mood(state);return p;
+  }
   function buttons(list,cls){
     const box=document.createElement('div');box.className='bbc-chips '+(cls||'');
     for(const [id,label] of list){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.faq=id;box.append(b);}
     log.append(box);
   }
   function answer(f){
-    const m=add('bbc-bot',fill(f.a));
+    const m=add('bbc-bot',fill(f.a),'answer');
     if(f.show){const b=document.createElement('button');b.type='button';b.className='bbc-show';b.textContent='화면에서 보여주기';b.dataset.show=f.id;m.append(b);}
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
     log.scrollTop=log.scrollHeight;
   }
-  function unknown(text){add('bbc-bot',text||'이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
+  function unknown(text,state){add('bbc-bot',text||'이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.',state||'unknown');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
   // FAQ가 못 찾은 질문만 AI(Worker /api/ask, worker/index.mjs)에 묻는다. 시간 초과·오류·한도 초과·정적 서버(404)면 FAQ 안내로 돌아간다.
   async function askAi(text){
-    const wait=add('bbc-bot bbc-wait','답을 찾는 중이에요…');log.scrollTop=log.scrollHeight;
+    const wait=add('bbc-bot bbc-wait','멍이가 답을 찾는 중이에요…','think');log.scrollTop=log.scrollHeight;
     let reply=null,status=0;
     try{
       const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),15000);
@@ -200,9 +256,9 @@ if(typeof document!=='undefined')(function(){
       clearTimeout(timer);status=r.status;
       if(r.ok)reply=(await r.json())?.answer;
     }catch{}
-    wait.remove();
-    if(typeof reply!=='string'||!reply.trim())return unknown(status===429?'질문이 많아 지금은 AI 답변을 쓸 수 없어요. 1분쯤 뒤에 다시 물어보거나 아래 질문 중에서 골라 주세요.':'');
-    const m=add('bbc-bot bbc-ai',reply.trim());
+    wait.parentElement.remove();
+    if(typeof reply!=='string'||!reply.trim())return status===429?unknown('질문이 많아 지금은 AI 답변을 쓸 수 없어요. 1분쯤 뒤에 다시 물어보거나 아래 질문 중에서 골라 주세요.','rest'):unknown();
+    const m=add('bbc-bot bbc-ai',reply.trim(),'ai');
     const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent='AI 답변 · 참고용 · 화면 글만 근거로 만들었어요';m.append(tag);
     log.scrollTop=log.scrollHeight;
   }
@@ -212,11 +268,11 @@ if(typeof document!=='undefined')(function(){
     if(f)answer(f);else if(id)unknown();else askAi(text);
   }
   function open(){
-    dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');
-    if(!log.childElementCount){add('bbc-bot','안녕하세요! 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.');buttons(CHATBOT_STARTERS);}
+    dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
+    if(!log.childElementCount){add('bbc-bot','안녕하세요! 저는 바다 연구원 멍이예요. 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();input.focus();
   }
-  function close(){panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fab.focus();}
+  function close(){panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
 
   // 기존 버튼을 눌러 이동한 뒤 대상에 잠깐 테두리. 이미 켜진 토글은 다시 누르지 않는다(누르면 꺼지거나 범례가 닫힘).
   // 원래 클릭이 document까지 올라간 뒤 실행해야 ⓘ 범례의 '바깥 클릭이면 닫기'에 걸리지 않는다.
@@ -246,7 +302,7 @@ if(typeof document!=='undefined')(function(){
   root.querySelector('.bbc-form').addEventListener('submit',e=>{e.preventDefault();const t=input.value.trim();if(!t)return;input.value='';ask(t);});
   log.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
-    if(b.dataset.show)show(byId(b.dataset.show));else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
+    if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
   });
   addEventListener('resize',place);
   // 탭은 탭 버튼 말고도(‘선택 종 비교하기’, ‘근거 보기’ 등) 바뀌므로 #explore의 class 변화를 지켜본다.
