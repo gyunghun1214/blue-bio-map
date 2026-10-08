@@ -399,3 +399,7 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 #comparison:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 /* Phones: a narrow first column leaves room for more than one species, so the sideways scroll is visible */
 @media (max-width:740px){#comparison thead th:first-child,#comparison tbody th{min-width:96px;width:96px;word-break:keep-all}}
+/* Entry to the sea expedition page (expedition.html) */
+.expedition-link{flex:none;padding:6px 12px;border:1px solid rgba(94,227,208,.45);border-radius:99px;color:#d7f7f2;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+.expedition-link:hover{background:rgba(94,227,208,.14)}
+@media (max-width:740px){.expedition-link{padding:4px 9px;font-size:12px}}
