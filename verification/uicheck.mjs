@@ -129,8 +129,8 @@ try{
   // ---------- Entry screen, first open of a fresh tab: loader → entry screen → Enter → map ----------
   {
     let g=await gateReady();
-    check('G-1 first open: entry screen over the map, map and chatbot inert, loader reached 3 / 3, counts read from the loaded data',
-      g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step==='3 / 3준비됐어요'&&g.counts===`지금 운영 발행 ${expPub}종과 조사 후보 ${expCand}종을 볼 수 있습니다.`&&g.note===''&&g.stored===null,JSON.stringify(g));
+    check('G-1 first open: entry screen over the map, map and chatbot inert, loader finished with the species total, counts read from the loaded data',
+      g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step===`해양생물 ${total}종 자료를 불러왔어요`&&g.counts===`지금 해양생물 ${total}종을 볼 수 있습니다(운영 발행 ${expPub}종 · 조사 후보 ${expCand}종).`&&g.note===''&&g.stored===null,JSON.stringify(g));
     check('G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen',g.focus==='gate-enter'&&g.enterBox.bottom<=g.vh&&g.enterBox.top>0,JSON.stringify(g));
     await sleep(1200);await shot('gate-desktop',false);
     await pressEnter();await sleep(1100);
