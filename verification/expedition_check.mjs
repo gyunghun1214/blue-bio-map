@@ -138,18 +138,20 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const hash3=await waitFor(s,"location.hash==='#stop=3'&&location.hash",3000)||await s.evaluate("location.hash");
       check(`${tag}: two quick moves target stop 3 in the URL`,hash3==='#stop=3',hash3);
       if(reduced)check(`${tag}: reduced motion moves at once, no 바로 도착 button`,await s.evaluate("document.getElementById('skip').hidden"));
-      else{
-        // 바로 도착 mid-trip: Space on the desktop, the button on the phone
-        await sleep(1500);
-        const mid=await s.evaluate(`({label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
-        check(`${tag}: sailing to stop 3 shows its route and 바로 도착`,mid.label.includes(`→ ${stops[2].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[2],JSON.stringify(mid));
-        if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');
-        const skipped=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,3000);
-        check(`${tag}: 바로 도착 (${mobile?'button':'Space'}) arrives at once`,!!skipped,await s.evaluate("document.getElementById('steer-label').textContent"));
-      }
       const n3=await waitFor(s,`${cardName}===${JSON.stringify(stops[2].korean_name)}`,TRIP_WAIT);
       check(`${tag}: arrives at stop 3 (${stops[2].korean_name}) with its own card`,!!n3,await s.evaluate(cardName));
       await waitFor(s,`${level}>=3`,8000);await shot(s,`${tag}-6-stop3`);
+      if(!reduced){
+        // 바로 도착 mid-trip, on the longest trip (stop 3 → 8 from the route dots) so a slow runner cannot arrive first.
+        // The jump and the first look happen in one evaluate; then Space on the desktop, the button on the phone.
+        const last=stops.length-1;
+        const mid=await s.evaluate(`(async()=>{document.querySelector('#progress [data-go="${last}"]').click();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}};})()`);
+        check(`${tag}: a long trip shows its route and 바로 도착`,mid.label.includes(`${stops[2].korean_name} → ${stops[last].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[last],JSON.stringify(mid));
+        if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');
+        const skipped=await waitFor(s,`${cardName}===${JSON.stringify(stops[last].korean_name)}&&performance.now()`,3000);
+        const tAfter=await s.evaluate(routeT);
+        check(`${tag}: 바로 도착 (${mobile?'button':'Space'}) arrives at once`,!!skipped&&Math.abs(tAfter-1)<1e-3,await s.evaluate("document.getElementById('steer-label').textContent"));
+      }
       // back to stop 1: the steps already seen stay (level 4 = detail read), no replay from step 1
       await s.evaluate("document.querySelector('#progress [data-go=\"0\"]').click()");
       const back=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}`,TRIP_WAIT);

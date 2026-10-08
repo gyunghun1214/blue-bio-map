@@ -17,12 +17,12 @@
   {
     "name": "desktop: still sailing one second after leaving (no jump to the stop)",
     "status": "PASS",
-    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0005}"
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0002}"
   },
   {
     "name": "desktop: the ship moves forward through the first leg",
     "status": "PASS",
-    "detail": "[0.0159,0.0324,0.047]"
+    "detail": "[0.0159,0.0316,0.0473]"
   },
   {
     "name": "desktop: arrives at stop 1 (톳)",
@@ -55,19 +55,19 @@
     "detail": "#stop=3"
   },
   {
-    "name": "desktop: sailing to stop 3 shows its route and 바로 도착",
+    "name": "desktop: arrives at stop 3 (살오징어) with its own card",
     "status": "PASS",
-    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0647}"
+    "detail": "살오징어"
+  },
+  {
+    "name": "desktop: a long trip shows its route and 바로 도착",
+    "status": "PASS",
+    "detail": "{\"label\":\"살오징어 → 우뭇가사리 항해 중\",\"skip\":true,\"t\":0.3488}"
   },
   {
     "name": "desktop: 바로 도착 (Space) arrives at once",
     "status": "PASS",
-    "detail": "살오징어 지점에 도착했습니다."
-  },
-  {
-    "name": "desktop: arrives at stop 3 (살오징어) with its own card",
-    "status": "PASS",
-    "detail": "살오징어"
+    "detail": "우뭇가사리 지점에 도착했습니다."
   },
   {
     "name": "desktop: revisiting stop 1 keeps the discovery state (detail read)",
@@ -117,12 +117,12 @@
   {
     "name": "mobile: still sailing one second after leaving (no jump to the stop)",
     "status": "PASS",
-    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0062}"
+    "detail": "{\"label\":\"출발 → 톳 항해 중\",\"card\":false,\"skip\":true,\"t\":0.0063}"
   },
   {
     "name": "mobile: the ship moves forward through the first leg",
     "status": "PASS",
-    "detail": "[0.018,0.0328,0.0473]"
+    "detail": "[0.0194,0.0328,0.0473]"
   },
   {
     "name": "mobile: arrives at stop 1 (톳)",
@@ -155,19 +155,19 @@
     "detail": "#stop=3"
   },
   {
-    "name": "mobile: sailing to stop 3 shows its route and 바로 도착",
+    "name": "mobile: arrives at stop 3 (살오징어) with its own card",
     "status": "PASS",
-    "detail": "{\"label\":\"톳 → 살오징어 항해 중\",\"skip\":true,\"t\":0.0721}"
+    "detail": "살오징어"
+  },
+  {
+    "name": "mobile: a long trip shows its route and 바로 도착",
+    "status": "PASS",
+    "detail": "{\"label\":\"살오징어 → 우뭇가사리 항해 중\",\"skip\":true,\"t\":0.3487}"
   },
   {
     "name": "mobile: 바로 도착 (button) arrives at once",
     "status": "PASS",
-    "detail": "살오징어 지점에 도착했습니다."
-  },
-  {
-    "name": "mobile: arrives at stop 3 (살오징어) with its own card",
-    "status": "PASS",
-    "detail": "살오징어"
+    "detail": "우뭇가사리 지점에 도착했습니다."
   },
   {
     "name": "mobile: revisiting stop 1 keeps the discovery state (detail read)",
@@ -312,7 +312,7 @@
   {
     "name": "no-webgl: existing map opens with 살오징어 selected",
     "status": "PASS",
-    "detail": "#s=342067&v=explore&b=satellite&t=occurrence&m=8%2F33.50%2F127.50"
+    "detail": "#s=342067&v=explore&b=basic&t=occurrence&m=8%2F33.50%2F127.50"
   },
   {
     "name": "no-webgl: the map header links back to the expedition",
