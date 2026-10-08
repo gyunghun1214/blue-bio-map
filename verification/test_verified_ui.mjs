@@ -19,7 +19,7 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.coverageBar=coverageBar;
   globalThis.nationalMcui=nationalMcui;
   globalThis.iucnGlobalNote=iucnGlobalNote;
-  globalThis.axisPairs=axisPairsHtml;`,ctx);
+  globalThis.plain=plainWords;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -37,10 +37,10 @@ let html=ctx.renderScores(by(836033));
 for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','정식 산출 · 공식 평가 범주','비교하지 않습니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
 // 3.27: the MBPI drug-origin check is computed and failed, so MBPI and the BBVI built on it carry that label
-assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>83\.9 · 정식 산출 · 검증 미통과<\/b>/);
+assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>83\.9 · 정식 산출 · 방법 검증 기준 미충족<\/b>/);
 // 3.27 review: a labelled BBVI is described as a score everywhere, with the factor actually applied and matrix wording only when placed
-{const cov=ctx.coverage(by(241776)).checks.find(c=>c.name==='생리활성').detail;
-  assert.ok(cov.includes("BBVI에도 '단일 논문' 표시를 붙입니다")&&!cov.includes('BBVI에 쓰지 않습니다'),cov);
+{const cov=ctx.plain(ctx.coverage(by(241776)).checks.find(c=>c.name==='생리활성').detail);  // raw text keeps the data's words; the screen rewords it
+  assert.ok(cov.includes("BBVI에도 '근거 논문 1편' 표시를 붙입니다")&&!cov.includes('BBVI에 쓰지 않습니다'),cov);
   const placed=ctx.renderScores(by(241776)),unplaced=ctx.renderScores((s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680))),  // 4.3: 멍게 is placed now, so the unplaced wording is checked on a copy without its MCUI
    squid=ctx.renderScores(by(342067));
   assert.ok(placed.includes('근거 계수(0.75)')&&placed.includes('매트릭스에서는 속이 빈 점입니다'),'placed labelled BBVI note');
@@ -68,12 +68,12 @@ html=ctx.renderScores(by(145721));
 // 4.3 (team-lead decisions 2026-10-05): 미역 takes the Primorsky Krai decree No. 272 (EN); 멍게 the scored Rapid LC check.
 assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>80\.0 · 정식 산출 · 공식 평가 범주 · 지방 목록 참고값\(연해주\)<\/b>/);
 assert.match(html,/연해주\(러시아\) · \(EN\) → EN/);
-assert.match(html,/과대평가 역검증 미통과/);
+assert.match(html,/과대평가 역검증 기준 미충족/);
 assert.doesNotMatch(html,/시범 MCUI|예비 평가 참고/);
 {const sq=ctx.renderScores(by(250680));
-  assert.match(sq,/<b>10\.0 · 정식 산출 · 역검증 미통과 · 자체 예비평가\(Rapid LC\)<\/b>/);
+  assert.match(sq,/<b>10\.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가\(Rapid LC\)<\/b>/);
   assert.match(sq,/Rapid LC 충족 → LC 상당 → 10/);
-  assert.match(sq,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미통과 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
+  assert.match(sq,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미충족 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
   assert.doesNotMatch(sq,/공식 평가 범주 · 자체/);}
 assert.match(html,/결과 0건/);
 html=ctx.renderScores(by(494972));
@@ -83,9 +83,9 @@ for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002
 // outranks it at 65.0; 3.28: Chen 2016 re-measured synthetic GKY (HHL), so the factor 0.75 goes and it is 86.6.
 // The paper-local MCF-7 result stays unscored.
 assert.equal(ctx.score(by(494972),'MBPI'),86.6);
-// 3.27 gave the single-paper item a labelled BBVI (64.2 · 단일 논문); 3.28's replication lifts the label
+// 3.27 gave the single-paper item a labelled BBVI (64.2 · 근거 논문 1편); 3.28's replication lifts the label
 assert.equal(ctx.score(by(494972),'BBVI'),74.9);
-assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>74\.9 · 정식 산출 · 검증 미통과<\/b>/);
+assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>74\.9 · 정식 산출 · 방법 검증 기준 미충족<\/b>/);
 
 // The old operational summary has no IUCN assessment count, despite a separately
 // reviewed MCUI: coverage must follow the accepted report, not the stale counter.
@@ -196,8 +196,8 @@ assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis
 assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);  // 3.15: MFPI labels read the cross-table result
 assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI is the Primorsky value, 멍게's the scored Rapid LC check; no reference-only line is left on the page
-assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · 과대평가 역검증 미통과\(6종 비교\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 미통과 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · 과대평가 역검증 기준 미충족\(6종 비교\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 기준 미충족 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/예비 평가 참고|산출 보류/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
@@ -302,16 +302,16 @@ html=ctx.renderScores(next.species.find(s=>s.aphiaID===371986));
 const mbpiBody=html.slice(html.indexOf('data-axis="MBPI"'),html.indexOf('data-axis="MCUI"'));
 for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL25mM','wijesinghe-2011-cell-free-ACE-IC50','90 × 근거 계수 0.75 = 67.5','10.4162/nrp.2011.5.2.93','독립 원논문 1편','최댓값'])
   assert.ok(mbpiBody.includes(text),`Ecklonia MBPI evidence missing ${text}`);
-assert.match(mbpiBody,/67\.5 · 정식 산출 · 검증 미통과 · 단일 논문/);
-assert.match(ctx.summary(next.species.find(s=>s.aphiaID===371986)),/MBPI 67\.5 \(단일 논문\)/);
+assert.match(mbpiBody,/67\.5 · 정식 산출 · 방법 검증 기준 미충족 · 근거 논문 1편/);
+assert.match(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/MBPI 67\.5 \(근거 논문 1편\)/);
 assert.ok(mbpiBody.indexOf('dieckol')<mbpiBody.indexOf('후속 조사 단서'),'scored ACE evidence precedes the leads');
 assert.ok(mbpiBody.indexOf('후속 조사 단서')<mbpiBody.indexOf('3CLpro'),'3CLpro appears only under follow-up leads');
 assert.doesNotMatch(mbpiBody,/점수 제외/);
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
 ctx.next=next;vm.runInContext('data=globalThis.next;comparisonFocus=null',ctx);ctx.compare();
-assert.match(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*단일 논문/);
-assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 검증 미통과 · 단일 논문 · 근거 보기/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*근거 논문 1편/);
+assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 방법 검증 기준 미충족 · 근거 논문 1편 · 근거 보기/);
 const badLabel=report();badLabel.candidate_species.find(s=>s.aphia_id===371986).mbpi_label=null;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>badLabel});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
@@ -391,22 +391,22 @@ next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInCont
 html=ctx.renderScores(by(145721));
 assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721: scored values are not repeated as unscored raw values');
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  for(const text of ['95.3 · 정식 산출 · 검증 미통과','정제 IW','재현 시료 클로렐라','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
+  for(const text of ['95.3 · 정식 산출 · 방법 검증 기준 미충족','정제 IW','재현 시료 클로렐라','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
     '기질 HHL','효능 재현','합성 IY 2.65 µM','재현 시료 미역','차이 0.362','독립 DOI로 셈','DOI 3편(기원 1 + 효능 재현 2)','합성 IW 1.91 µM','재현 시료 화학 합성 IW','합성 IY 2.4 µM','합성 VW 1.68 µM',
     '펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
     assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
-  assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
+  assert.doesNotMatch(mbpi,/참고값\(근거 논문 1편\)/);}
 assert.equal(ctx.score(by(145721),'MBPI'),95.3);
 assert.equal(ctx.score(by(145721),'BBVI'),71.0);
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 html=ctx.renderScores(by(836033));
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  for(const text of ['96.3 · 정식 산출 · 검증 미통과','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
+  for(const text of ['96.3 · 정식 산출 · 방법 검증 기준 미충족','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
     '효능 재현','합성 LQP 2 µM','재현 시료 옥수수 α-제인','차이 0.229','독립 DOI로 셈','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다',
     'DOI 2편(기원 1 + 효능 재현 1)','펩타이드 352개','doi:10.1093/nar/gku1141'])
     assert.ok(mbpi.includes(text),`oyster MBPI missing ${text}`);
   assert.match(mbpi,/기원 근거는 Do et al\. 2012 \(<a [^>]*>10\.5352\/jls\.2012\.22\.2\.220<\/a>\) 1편뿐입니다/);
-  assert.doesNotMatch(mbpi,/참고값\(단일 논문\)/);}
+  assert.doesNotMatch(mbpi,/참고값\(근거 논문 1편\)/);}
 assert.ok(!html.includes('참고 통합값'),'a real BBVI replaces the reference combination');
 assert.equal(ctx.score(by(836033),'MBPI'),96.3);
 assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 96.3 · MCUI(국가 평가) 10.0');
@@ -421,19 +421,12 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // Peptide partial leads render their sequence and value, not an empty compound row.
 assert.match(ctx.renderScores(by(145721)),/펩타이드 YNKL · ACE IC50 = 21 µM/);
-// Axis pairs: only species with both values; national and IUCN MCUI and different cohorts stay in separate groups.
-const pairs=ctx.axisPairs();
-assert.match(pairs,/MFPI × MCUI\(한국 국가 평가 기반\) · rda-10\.4-raw-marine-animals<\/b> \d+종: [^<]*참굴 MFPI 71\.6 · MCUI 10\.0/);
-assert.match(pairs,/MBPI × MCUI\(한국 국가 평가 기반\) · ahtpdb-ace-ic50-hhl-cushman-cheung<\/b> 1종: 참굴 MBPI 96\.3 · MCUI 10\.0<\/li>/);
-// 3.27: labelled single-paper BBVI scores join the pairs too, with their label
-assert.match(pairs,/BBVI × MCUI\(한국 국가 평가 기반\)[^<]*<\/b> 2종: 홍합\(참담치\) BBVI 35\.5 \(단일 논문\) · MCUI 10\.0 \/ 참굴 BBVI 83\.9 · MCUI 10\.0<\/li>/);
-assert.match(pairs,/BBVI × MCUI\(IUCN 기반\)[^<]*<\/b> 2종: 해삼 BBVI 36\.1 \(단일 논문\) · MCUI 80\.0 \/ 살오징어 BBVI 51\.5 \(단일 논문\) · MCUI 20\.0<\/li>/);
-assert.match(pairs,/MFPI만의 쌍은 BBVI가 아닙니다/);
-assert.doesNotMatch(pairs,/IUCN 기반\) · [^<]*참굴/,'a national MCUI never joins the IUCN group');
+// 2026-10-08: the axis-pairs box was removed; the matrix shows every placed species (team-lead decision).
+assert.equal(typeof ctx.axisPairs,'undefined');
 // Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
 const refReport=report(),refOyster=refReport.species.find(s=>s.aphia_id===836033);
 refOyster.scores.MBPI=67.5;refOyster.score_status.MBPI='산출됨';
-refOyster.mbpi_label=refReport.method.bbvi.single_source_mbpi_label;  // 3.27 label '단일 논문'; the legacy reference path stays tested
+refOyster.mbpi_label=refReport.method.bbvi.single_source_mbpi_label;  // 3.27 label '근거 논문 1편'; the legacy reference path stays tested
 refOyster.withheld_reasons.BBVI='mbpi_single_source';refOyster.scores.BBVI=null;refOyster.score_status.BBVI='산출 보류';
 refOyster.bioactivity_trace=original.candidate_species.find(s=>s.aphia_id===371986).bioactivity_trace;
 refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확인',formula:'w×MFPI+(1−w)×MBPI',inputs:{MFPI:71.6,MBPI:67.5},mfpi_cohort:'rda-10.4-raw-marine-animals',
