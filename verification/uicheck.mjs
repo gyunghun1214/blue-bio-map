@@ -289,7 +289,7 @@ try{
     r.pressed=[...document.querySelectorAll('[data-use][aria-pressed=true]')].map(b=>b.dataset.use).join();r.hash=decodeURIComponent(location.hash.match(/u=([^&]*)/)?.[1]||'');
     r.sum=document.querySelector('.use-sum')?.innerText||'';r.sel=useMatch(selected);
     document.querySelector('[data-use-clear]').click();r.back=n();r.restored=selected.aphiaID===before;r.cleared=activeUses.size;r.view=map.getZoom()+'/'+map.getCenter().lat.toFixed(3)===view;return r})()`);
-  check('Use chips AND: 혈압×고단백 8, 고단백×오메가-3 7, 바이러스×미네랄 4, 혈압×고단백×오메가-3 3, 바이러스×기생충 0 with a turn-last-off button (→ 6) that keeps the map species; badges show what adding a chip leaves; 전체 해제 returns all 30 and the species and map view from before',
+  check('Use chips AND: 혈압×고단백 8, 고단백×오메가-3 7, 바이러스×미네랄 5, 혈압×고단백×오메가-3 3, 바이러스×기생충 0 with a turn-last-off button (→ 6) that keeps the map species; badges show what adding a chip leaves; 전체 해제 returns all 30 and the species and map view from before',
     and['ace+protein_g']===8&&and['protein_g+omega3']===7&&and['virus+mineral']===5&&and['ace+protein_g+omega3']===3&&and['virus+parasite']===0&&
     /기생충’ 끄기 → 7종/.test(and.undo)&&and.kept&&/0종/.test(and.badge)&&and.zero&&and.pressed==='virus,mineral'&&and.hash==='virus,mineral'&&
     /5종/.test(and.sum)&&and.sel&&and.back===30&&and.restored&&and.view&&and.cleared===0,JSON.stringify(and));
