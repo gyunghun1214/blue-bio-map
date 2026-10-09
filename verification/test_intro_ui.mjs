@@ -23,9 +23,10 @@ assert.equal(ctx.shouldShowGate('',null),true);
 // (2) loader steps follow the app's real steps; no fake percent
 let g=ctx.makeGate(0);
 assert.equal(ctx.gateFraction(g),0);
-assert.deepEqual({...ctx.gateStep(g)},{n:1,text:'페이지 준비 중'});
-ctx.gateProgress(g,'page');assert.deepEqual({...ctx.gateStep(g)},{n:2,text:'지도를 불러오는 중'});
-ctx.gateProgress(g,'map');assert.deepEqual({...ctx.gateStep(g)},{n:3,text:'종 자료를 불러오는 중'});
+assert.equal(ctx.gateStep(g),'페이지 준비 중');
+ctx.gateProgress(g,'page');assert.equal(ctx.gateStep(g),'지도를 불러오는 중');
+ctx.gateProgress(g,'map');assert.equal(ctx.gateStep(g),'해양생물 자료를 불러오는 중');
+for(const [,label] of ctx.GATE_STEPS)assert.doesNotMatch(label,/\d/,'no step counter beside 종 자료 (it read as a species count)');
 assert.equal(Math.round(ctx.gateFraction(g)*3),2);
 ctx.gateProgress(g,'bogus');assert.equal(Math.round(ctx.gateFraction(g)*3),2,'unknown steps are ignored');
 
@@ -41,7 +42,10 @@ assert.equal(ctx.gateTick(g,1000+ctx.GATE_MIN_MS-1),'loading','fast data still k
 assert.equal(ctx.gateTick(g,1000+ctx.GATE_MIN_MS),'ready');
 assert.equal(ctx.gateTick(g,0),'ready','ready stays ready');
 assert.equal(ctx.gateNote(g),'');
-assert.equal(ctx.countsLine(g.done),'지금 운영 발행 8종과 조사 후보 22종을 볼 수 있습니다.');
+assert.equal(ctx.gateStep(g),'해양생물 30종 자료를 불러왔어요','species total = published + candidates from the loaded data');
+assert.equal(ctx.countsLine(g.done),'지금 해양생물 30종을 볼 수 있습니다(운영 발행 8종 · 조사 후보 22종).');
+const failed=ctx.makeGate(0);ctx.gateProgress(failed,'done',{state:'error'});
+assert.equal(ctx.gateStep(failed),'준비됐어요','no total typed in when the app has none');
 assert.equal(ctx.countsLine({state:'error'}),'','no counts typed in when the app has none');
 assert.equal(ctx.countsLine(null),'');
 

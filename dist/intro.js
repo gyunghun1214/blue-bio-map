@@ -4,7 +4,7 @@
 const GATE_KEY='bbvm-intro-entered';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 const GATE_MIN_MS=600, GATE_MAX_MS=7000;
-const GATE_STEPS=[['page','페이지 준비 중'],['map','지도를 불러오는 중'],['species','종 자료를 불러오는 중']];
+const GATE_STEPS=[['page','페이지 준비 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
 
 const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace(/^#/,''));return APP_HASH_KEYS.some(k=>q.get(k));}catch{return false;}};
 // No storage (private mode, blocked) only means the screen can't be remembered: it still shows once per load.
@@ -18,7 +18,9 @@ function gateProgress(g,step,detail){
   return g;
 }
 const gateFraction=g=>GATE_STEPS.filter(([k])=>g.steps.has(k)).length/GATE_STEPS.length;
-const gateStep=g=>{const i=GATE_STEPS.findIndex(([k])=>!g.steps.has(k));return i<0?{n:GATE_STEPS.length,text:'준비됐어요'}:{n:i+1,text:GATE_STEPS[i][1]};};
+// No "n / 3" counter: next to 종 자료 it read as a species count. The total comes from the loaded data, once it is there.
+const speciesTotal=d=>Number.isInteger(d?.published)&&Number.isInteger(d?.candidates)?d.published+d.candidates:null;
+const gateStep=g=>{const i=GATE_STEPS.findIndex(([k])=>!g.steps.has(k));if(i>=0)return GATE_STEPS[i][1];const t=speciesTotal(g.done);return t?`해양생물 ${t}종 자료를 불러왔어요`:'준비됐어요';};
 // Ready once the data is in (after a short minimum so the loader never flashes), or after the maximum wait regardless.
 function gateTick(g,now){
   if(g.phase==='loading'){const t=now-g.start;if((g.done&&t>=GATE_MIN_MS)||t>=GATE_MAX_MS)g.phase='ready';}
@@ -33,7 +35,7 @@ function gateNote(g){
   if(d.state==='error')return '자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.';
   return '';
 }
-const countsLine=d=>Number.isInteger(d?.published)&&Number.isInteger(d?.candidates)?`지금 운영 발행 ${d.published}종과 조사 후보 ${d.candidates}종을 볼 수 있습니다.`:'';
+const countsLine=d=>speciesTotal(d)===null?'':`지금 해양생물 ${speciesTotal(d)}종을 볼 수 있습니다(운영 발행 ${d.published}종 · 조사 후보 ${d.candidates}종).`;
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
 const keyAction=(key,{ready,onOtherControl})=>key==='Enter'&&ready&&!onOtherControl?'enter':null;
 
@@ -86,10 +88,9 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
   const q=s=>el.querySelector(s);
 
   function render(){
-    const f=gateFraction(gate),st=gateStep(gate);
+    const f=gateFraction(gate);
     q('.gate-arc').style.strokeDashoffset=String(100-f*100);
-    q('.gate-step-n').textContent=`${st.n} / ${GATE_STEPS.length}`;
-    q('.gate-step-t').textContent=st.text;
+    q('.gate-step').textContent=gateStep(gate);
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
   }
