@@ -131,6 +131,10 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 
 ## 운영 DB 연결 실패 시 저장된 사본 (2026-09-25)
 
-운영 공개 API(Supabase)에 연결하지 못하면(네트워크 끊김·시간 초과·오류 응답) `dist/live-snapshot.json`의 공개 자료 사본을 대신 읽고, 상단에 "연결 실패 · 저장된 사본 사용 (날짜 기준) · 운영 발행 N종 · 조사 후보 M종"과 안내문을 띄운다. 빈 응답(200 `[]`)은 실패가 아니므로 사본으로 바꾸지 않고 "공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 22종"과 함께 보이는 종이 모두 조사 후보임을 알린다. 정상 연결도 운영 발행과 조사 후보를 따로 센다(`live-data.js`의 `publishedCount`·`candidateCount` 한 곳에서 계산). 사본은 공개 API가 주는 `species_profiles`·`species_map_cells` 열 그대로이며 원좌표·레코드 ID가 없다. 인터넷 없이 시연하려면 `python -m http.server 8765 --directory dist`로 로컬에서 연다(기본 배경 지도만 표시).
+운영 공개 API(Supabase)에 연결하지 못하면(네트워크 끊김·시간 초과·오류 응답) `dist/live-snapshot.json`의 공개 자료 사본을 대신 읽고, 상단에 "연결 실패 · 저장된 사본 사용 (날짜 기준) · 운영 발행 N종 · 조사 후보 M종"과 안내문을 띄운다. 빈 응답(200 `[]`)은 실패가 아니므로 사본으로 바꾸지 않고 "공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 22종"과 함께 보이는 종이 모두 조사 후보임을 알린다. 정상 연결도 운영 발행과 조사 후보를 따로 센다(`live-data.js`의 `publishedCount`·`candidateCount` 한 곳에서 계산). 사본은 공개 API가 주는 `species_profiles`·`species_map_cells` 열 그대로이며 원좌표·레코드 ID가 없다. 인터넷 없이 시연하는 방법은 아래 "오프라인 시연"에 있다.
 
 사본 갱신: `python scripts/snapshot_live.py`. URL·키·열 목록은 `dist/live-data.js`에서 읽는다. 운영 자료를 새로 발행한 뒤와 배포 전에 다시 실행한다.
+
+## 오프라인 시연 (2026-10-09)
+
+발표장 인터넷이나 Supabase가 안 될 때를 위한 대비. 행사 전에 인터넷이 될 때 `offline-demo-prepare.cmd`를 한 번 더블클릭해 위성·수심 배경 지도 타일을 `dist/offline-tiles/`에 받아 두고(git·배포 제외), 당일에는 `offline-demo.cmd`를 더블클릭한다. 이 컴퓨터 안(127.0.0.1:8770)에서만 사이트를 열고 `?offline=1` 모드로 띄운다. 이 모드는 네트워크에 아무것도 묻지 않고 `live-snapshot.json`·저장된 타일·FAQ 챗봇만 쓰며, 상단에 "오프라인 시연 · 저장된 공개 자료 사본 (날짜 기준)"을 표시한다. 플래그가 없으면 사이트는 그대로다. 자세한 순서와 점검: [docs/offline-demo.md](docs/offline-demo.md).
