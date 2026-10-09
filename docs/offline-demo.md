@@ -41,4 +41,4 @@ PowerShell 7(`pwsh`)이 있으면 같은 스크립트가 돈다: `pwsh scripts/o
 
 ## 점검
 
-`verification/offline_check.mjs` 가 서버를 띄운 상태에서 외부 요청을 모두 끊은 Chrome으로 16개 항목을 확인한다(자료 사본, 상태 줄, 타일 경로와 범위, 챗봇, 바다 탐험, 외부 요청 0건, `?offline=0` 복귀). CI(`verify.yml`)는 Windows PowerShell 5.1로 `serve.ps1` 을 띄워 이 검사를 돌린다.
+`verification/offline_check.mjs` 가 서버를 띄운 상태에서 외부 요청을 모두 끊은 Chrome으로 17개 항목을 확인한다(30종 목록·비교표·종별 상세, 자료 사본, 상태 줄, 타일 경로와 범위, 챗봇, 바다 탐험, 외부 요청 0건, `?offline=0` 복귀). CI(`verify.yml`)는 Windows PowerShell 5.1로 `serve.ps1` 을 띄워 이 검사를 돌린다.

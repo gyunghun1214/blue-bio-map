@@ -9,6 +9,11 @@ const HERE=path.dirname(fileURLToPath(import.meta.url)), DIST=path.join(HERE,'..
 const OUT=process.argv[2]||fs.mkdtempSync(path.join(os.tmpdir(),'offline-check-'));
 fs.mkdirSync(OUT,{recursive:true});
 const snapshot=JSON.parse(fs.readFileSync(path.join(DIST,'live-snapshot.json'),'utf8'));
+// All species the site shows: published profiles (snapshot) plus catalog candidates not among them (30 on 2026-10-09).
+const catalog=JSON.parse(fs.readFileSync(path.join(DIST,'candidate-catalog.json'),'utf8')).species.map(s=>s.aphiaID);
+const report=JSON.parse(fs.readFileSync(path.join(DIST,'assessments.json'),'utf8'));
+const published=snapshot.profiles.map(p=>Number(p.aphia_id)), allSpecies=published.length+catalog.filter(a=>!published.includes(a)).length;
+const scored=[...report.species,...(report.candidate_species||[])].length;
 const plan=JSON.parse(fs.readFileSync(path.join(HERE,'..','scripts','offline','tile-plan.json'),'utf8'));
 const URL0=process.env.URL0||'http://127.0.0.1:8770/', LOCAL=new URL(URL0).host;
 const tileX=(lon,z)=>Math.floor((lon+180)/360*2**z);
@@ -85,7 +90,13 @@ try{
   check('O-1b Enter opens the map from the offline entry screen',entered===true,String(entered));
   let s=await (async()=>{for(let i=0;i<60;i++){const v=await state();if(v.conn.startsWith('오프라인')&&v.basemapStatus)return v;await sleep(250);}return state();})();
   check('O-2 status line names the offline demo and the snapshot date, no red alert',s.conn.startsWith(`오프라인 시연 · 저장된 공개 자료 사본 (${snapshot.fetched_at} 기준) · ${counts}`)&&!s.error,JSON.stringify(s));
-  check('O-3 every published and candidate species is listed from local files',s.species>snapshot.profiles.length,JSON.stringify(s));
+  const all=await evaluate(`(()=>{renderComparison();return {list:document.querySelectorAll('#species-list [data-species]').length,
+    compare:document.querySelectorAll('#comparison thead th').length-1,assessed:data.species.filter(x=>x.assessment).length}})()`);
+  check(`O-3 all ${allSpecies} species (published ${published.length} + candidates) in the list and the comparison, ${scored} with indices from assessments.json`,
+    s.species===allSpecies&&all.list===allSpecies&&all.compare===allSpecies&&all.assessed===scored,JSON.stringify({...all,species:s.species,allSpecies,scored}));
+  const details=await evaluate(`(()=>{const bad=[];for(const x of data.species){selectSpecies(x.aphiaID);const t=document.getElementById('detail').innerText;
+    if(!t.includes(x.label)||t.length<200)bad.push(x.label);}selectSpecies(data.species[0].aphiaID);return bad;})()`);
+  check('O-3b every species detail opens with its own content',details.length===0,details.join(', '));
   check('O-4 the ?offline=1 flag is not left in the address (shared links stay normal)',!/offline=/.test(s.url)&&s.offline===true,s.url);
   check('O-5 without saved tiles the map falls back to the outline map and says why',s.basemapStatus==='오프라인 시연: 저장된 배경 지도가 없어 경계선만 있는 지도로 바꿨습니다.',s.basemapStatus);
   const sat=tilesOf('satellite');
@@ -116,7 +127,8 @@ try{
 
   // ---------- 4. Expedition page ----------
   await send('Page.navigate',{url:URL0+'expedition.html'});await sleep(3000);
-  check('O-12 expedition page opens from local files',await evaluate("document.readyState==='complete'&&document.body.innerText.length>50"),'');
+  const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8'));
+  check('O-12 expedition page opens from local files with its stop data',await evaluate("document.readyState==='complete'&&document.body.innerText.length>50")&&localPaths.includes('/expedition-stops.json'),JSON.stringify(localPaths.filter(p=>!p.startsWith('/offline-tiles')).slice(-8)));
 
   check('O-13 nothing was requested outside this computer',external.length===0,external.slice(0,8).join(' | '));
   check('O-14 no uncaught page errors',errors.length===0,errors.join(' | '));
