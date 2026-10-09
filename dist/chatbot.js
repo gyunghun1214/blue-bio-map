@@ -248,6 +248,8 @@ if(typeof document!=='undefined')(function(){
   function unknown(text,state){add('bbc-bot',text||'이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.',state||'unknown');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
   // FAQ가 못 찾은 질문만 AI(Worker /api/ask, worker/index.mjs)에 묻는다. 시간 초과·오류·한도 초과·정적 서버(404)면 FAQ 안내로 돌아간다.
   async function askAi(text){
+    // 오프라인 시연(live-data.js)에서는 AI에 묻지 않고 FAQ 안내로 돌아간다.
+    if(globalThis.BBVM_OFFLINE===true)return unknown('오프라인 시연 중이라 AI 답변은 쉬고 있어요. 아래 질문 중에서 골라 주세요.','rest');
     const wait=add('bbc-bot bbc-wait','멍이가 답을 찾는 중이에요…','think');log.scrollTop=log.scrollHeight;
     let reply=null,status=0;
     try{

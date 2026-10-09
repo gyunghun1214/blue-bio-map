@@ -10,3 +10,6 @@ __pycache__/
 !.dev.vars.example
 .env*
 !.env.example
+
+# Offline demo map tiles (scripts/offline/prepare-offline.ps1): local only, never committed
+dist/offline-tiles/

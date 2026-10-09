@@ -1,4 +1,20 @@
 'use strict';
+// Offline demo (?offline=1, kept for this tab; ?offline=0 ends it): no request leaves the computer. Data comes from
+// live-snapshot.json, map tiles from offline-tiles/ (scripts/offline/prepare-offline.ps1), and the chatbot uses the FAQ only.
+// Started by offline-demo.cmd through a local server (docs/offline-demo.md). Without the flag nothing changes.
+const offlineDemo=(()=>{
+  let q,flag;
+  try{q=new URLSearchParams(location.search);flag=q.get('offline');}catch{return false;} // no page (node tests)
+  let on=flag==='1';
+  try{
+    if(flag==='1')sessionStorage.setItem('bbvm-offline','1');else if(flag==='0')sessionStorage.removeItem('bbvm-offline');
+    on=sessionStorage.getItem('bbvm-offline')==='1';
+  }catch{/* no storage: only this load */}
+  // Shared links never carry the flag.
+  if(flag!==null){q.delete('offline');try{history.replaceState(null,'',location.pathname+(q.size?'?'+q:'')+location.hash);}catch{}}
+  return on;
+})();
+globalThis.BBVM_OFFLINE=offlineDemo;
 // Public browser key. RLS and table grants enforce access; no privileged key is used.
 const publicApi = {
   url: 'https://mmsyrshjuaxdvegjhpdz.supabase.co',
@@ -30,7 +46,7 @@ async function fetchPublishedRows() {
   return {rows,cellRows};
 }
 async function loadPublishedProfiles() {
-  const {rows,cellRows,snapshotAt}=await fetchPublishedRows().catch(loadSnapshot);
+  const {rows,cellRows,snapshotAt}=await (offlineDemo?loadSnapshot(new Error('오프라인 시연용 자료 사본(live-snapshot.json)을 찾지 못했습니다.')):fetchPublishedRows().catch(loadSnapshot));
   // 4.0: a cell the operational DB publishes without a sea-area name takes the LME names of the sea points on a 10 x 10
   // grid inside the cell (cell-sea-areas.json, the candidate cells' rule); without that file it stays '해역명 미확인'.
   const cellSea=await fetch('cell-sea-areas.json').then(r=>r.ok?r.json():null).catch(()=>null);
@@ -160,5 +176,5 @@ async function loadPublishedProfiles() {
   const latest=rows.map(p=>String(p.published_at||'').slice(0,10)).filter(Boolean).sort().pop()||'날짜 미기재';
   // The only place the two groups are counted; status texts read these values and never add them into one "N종 연결".
   const publishedCount=rows.length, candidateCount=species.length-rows.length;
-  return {snapshotAt,outdated,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:releaseOutdated?'조사 후보의 출현 검수 파일이 이 화면 코드보다 새 버전이라 새로고침(F5) 전에는 후보 종의 셀을 표시하지 않습니다.':'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표도 운영 종과 같은 지표 보고서에서 불러오며, 영양·생리활성·보전 근거는 운영 종과 같은 규칙으로 검수했습니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 지표와 축별 사후 검증 결과는 별도 보고서(assessments.json)에서 불러오며, 규칙을 다 채우지 못한 값은 라벨과 함께 표시합니다.`};
+  return {snapshotAt,offline:offlineDemo,outdated,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:releaseOutdated?'조사 후보의 출현 검수 파일이 이 화면 코드보다 새 버전이라 새로고침(F5) 전에는 후보 종의 셀을 표시하지 않습니다.':'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표도 운영 종과 같은 지표 보고서에서 불러오며, 영양·생리활성·보전 근거는 운영 종과 같은 규칙으로 검수했습니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 지표와 축별 사후 검증 결과는 별도 보고서(assessments.json)에서 불러오며, 규칙을 다 채우지 못한 값은 라벨과 함께 표시합니다.`};
 }

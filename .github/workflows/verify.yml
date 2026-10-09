@@ -47,13 +47,14 @@ jobs:
           node verification/test_expedition_ui.mjs
           node --check dist/intro.js
           node verification/test_intro_ui.mjs
+          node --check verification/offline_check.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
 
   browser:
     runs-on: windows-2025
     needs: unit
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v7
@@ -81,6 +82,29 @@ jobs:
             # Sea expedition page: desktop / phone / reduced motion (WebGL via SwiftShader) and WebGL disabled
             node verification/expedition_check.mjs verification/ci-ui/expedition
             if ($LASTEXITCODE -ne 0) { throw "Expedition checks failed with exit code $LASTEXITCODE" }
+          } finally {
+            Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
+          }
+      # Offline demo (docs/offline-demo.md): the launcher's server under Windows PowerShell 5.1, every outside request cut off.
+      - name: Run offline demo checks
+        shell: pwsh
+        run: |
+          # The tile cache is never in CI: the plan must still parse and report every tile missing (exit 1).
+          powershell -NoProfile -ExecutionPolicy Bypass -File scripts/offline/prepare-offline.ps1 -Check
+          if ($LASTEXITCODE -ne 1) { throw "prepare-offline.ps1 -Check exited $LASTEXITCODE (expected 1: no tiles in CI)" }
+          $server = Start-Process -FilePath powershell -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File','scripts/offline/serve.ps1','-NoBrowser','-Port','8770') -PassThru -WindowStyle Hidden
+          try {
+            $ready = $false
+            for ($i = 0; $i -lt 60; $i++) {
+              try {
+                Invoke-WebRequest -Uri 'http://127.0.0.1:8770/' -TimeoutSec 2 | Out-Null
+                $ready = $true
+                break
+              } catch { Start-Sleep -Milliseconds 500 }
+            }
+            if (-not $ready) { throw 'Offline demo server did not start on port 8770' }
+            node verification/offline_check.mjs verification/ci-ui/offline
+            if ($LASTEXITCODE -ne 0) { throw "Offline demo checks failed with exit code $LASTEXITCODE" }
           } finally {
             Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
           }

@@ -11,7 +11,7 @@ const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace
 const shouldShowGate=(hash,storage)=>{if(hasAppHash(hash))return false;try{return storage?.getItem(GATE_KEY)!=='1';}catch{return true;}};
 
 const makeGate=start=>({start,steps:new Set(),done:null,phase:'loading'});
-// 'done' arrives from app.js after loadCollection on every outcome (live, snapshot, empty, error); it implies every step.
+// 'done' arrives from app.js after loadCollection on every outcome (live, snapshot, offline, empty, error); it implies every step.
 function gateProgress(g,step,detail){
   if(step==='done'){g.done=detail||{};for(const [k] of GATE_STEPS)g.steps.add(k);}
   else if(GATE_STEPS.some(([k])=>k===step))g.steps.add(step);
@@ -30,6 +30,7 @@ function gateTick(g,now){
 function gateNote(g){
   const d=g.done;
   if(!d)return g.phase==='ready'?'자료를 계속 불러오는 중입니다. 먼저 들어가도 됩니다.':'';
+  if(d.state==='offline')return `오프라인 시연 · ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
   if(d.state==='snapshot')return `운영 DB에 연결하지 못해 ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
   if(d.state==='empty')return '운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.';
   if(d.state==='error')return '자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.';
