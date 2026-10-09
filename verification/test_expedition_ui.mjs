@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const code=read('expedition.js').split('// ---- browser ----')[0];
 const ctx={};vm.createContext(ctx);
-vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtScore,project,routePoints});',ctx);
+vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtScore,plainWords,project,routePoints});',ctx);
 const data=JSON.parse(read('expedition-stops.json'));
 const route=ctx.sampleRoute(data.stops);
 const run=(s,seconds,opts)=>{let arrived=0;for(let i=0;i<seconds*60;i++)arrived+=ctx.step(s,1/60,opts);return arrived;};
@@ -130,9 +130,17 @@ for(const st of data.stops){
 const html=read('expedition.html'),js=read('expedition.js');
 assert.ok(html.includes('연출용 항로 · 실제 조사 항로나 선박 위치가 아님'));
 assert.doesNotMatch(html+js,/살고 있|서식한다|서식 중/);
+// neutral evidence-label wording, as on the main map: every published string passes plainWords before it is shown
+const OLD_WORDS=/검증 미통과|단일 논문/;
+const strings=o=>typeof o==='string'?[o]:o&&typeof o==='object'?Object.values(o).flatMap(strings):[];
+assert.ok(strings(data).some(t=>OLD_WORDS.test(t)),'the published file still carries the older words (the screen maps them)');
+for(const t of strings(data))assert.doesNotMatch(ctx.plainWords(t),OLD_WORDS,t);
+assert.equal(ctx.plainWords('자체 예비평가(Rapid LC) · 역검증 미통과'),'자체 예비평가(Rapid LC) · 역검증 기준 미충족');
+assert.equal(ctx.plainWords('단일 논문'),'근거 논문 1편');
+assert.doesNotMatch(js.split('// ---- browser ----')[1],OLD_WORDS,'no older label words typed into the page code');
 for(const f of ['expedition.js','expedition.css']){
   const expected=crypto.createHash('sha256').update(read(f).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
   assert.deepEqual([...html.matchAll(new RegExp(`${f.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]),[expected],`${f}?v= must be ${expected}`);
 }
 assert.match(read('index.html'),/<a class="expedition-link" href="expedition\.html">바다 탐험<\/a>/);
-console.log('PASS: expedition state (timed eased sailing, retarget keeps speed, skip, fast moves, revisit, no auto-sail while reading), ?sail=, route at sea, hash and map-link formats');
+console.log('PASS: expedition state (timed eased sailing, retarget keeps speed, skip, fast moves, revisit, no auto-sail while reading), ?sail=, route at sea, hash and map-link formats, neutral label wording');

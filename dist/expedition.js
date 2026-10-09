@@ -143,10 +143,14 @@ function headlineAxes(stop){
   return ['MFPI','MBPI','MCUI'].filter(k=>v(k)!==null&&v(k)!==undefined).sort((a,b)=>v(b)-v(a)).slice(0,2);
 }
 const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
+// Published data still carries the older label words; the screen shows the neutral wording, as on the main map
+// (dist/app.js plainWords, team-lead decision 2026-10-08).
+const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'근거 논문 1편')
+  .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 
 // ---- browser ----
 const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=v=>plainWords(String(v??'')).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
 const link=(url,label)=>safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
@@ -176,7 +180,7 @@ function yearsText(c){return c.year_start===c.year_end?`${c.year_start}년`:`${c
 function checkTag(k){
   const r=DATA.axis_checks[k];
   if(k==='MFPI'&&r==='passed')return `방법 검증 통과(${DATA.mfpi_check_n}종 비교)`;
-  return r==='passed'?'검증 통과':r==='failed'?'검증 미통과':'검증 전';
+  return r==='passed'?'검증 통과':r==='failed'?'방법 검증 기준 미충족':'검증 전';
 }
 function mcuiTag(stop){
   const m=stop.mcui;

@@ -78,6 +78,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const cards=await s.evaluate("({cards:document.body.classList.contains('is-cards'),n:document.querySelectorAll('#cards-list .x-card').length,reason:document.getElementById('cards-reason').textContent,maps:[...document.querySelectorAll('#cards-list a.x-ghost')].map(a=>a.getAttribute('href'))})");
       check(`${tag}: WebGL failure falls back to the card list with every stop and map link`,cards.cards&&cards.n===stops.length&&cards.reason.includes('카드 목록')&&stops.every((st,i)=>cards.maps[i]===st.map_link),JSON.stringify(cards));
       await shot(s,`${tag}-cards`);
+      const oldWords=await s.evaluate("(document.getElementById('cards-list').innerText.match(/.{0,20}(검증 미통과|단일 논문).{0,20}/g)||[]).join(' | ')");
+      check(`${tag}: every card shows the neutral label wording (no 검증 미통과 or 단일 논문)`,oldWords==='',oldWords);
       await s.evaluate(`document.querySelector('#cards-list [data-detail="${SEA_CUCUMBER}"]').click()`);
       const d=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail opens from a card (해삼 zinc shown as 자료 없음, not 0)`,d&&d.includes('해삼')&&/아연자료없음/.test(d.replace(/\s/g,'')),String(d).slice(0,200));
@@ -117,6 +119,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const det=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail has observation, food, bioactivity, conservation and DOI links`,['관측 위치·기간','식량 가치 근거','생리활성 근거','보전 평가 근거','원논문 DOI'].every(t=>det?.includes(t)),String(det).slice(0,200));
       await shot(s,`${tag}-5-detail`);
+      const oldDetail=await s.evaluate("((document.getElementById('stop-card').innerText+' '+document.getElementById('detail-body').innerText).match(/.{0,20}(검증 미통과|단일 논문).{0,20}/g)||[]).join(' | ')");
+      check(`${tag}: stop 1 card and detail show the neutral label wording`,oldDetail==='',oldDetail);
       const before=await s.evaluate("location.hash");
       await sleep(2500);
       const still=await s.evaluate("({hash:location.hash,open:document.getElementById('detail').open})");
