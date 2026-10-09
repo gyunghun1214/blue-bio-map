@@ -126,9 +126,11 @@ try{
   await shot('offline-tiles');
 
   // ---------- 4. Expedition page ----------
-  await send('Page.navigate',{url:URL0+'expedition.html'});await sleep(3000);
-  const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8'));
-  check('O-12 expedition page opens from local files with its stop data',await evaluate("document.readyState==='complete'&&document.body.innerText.length>50")&&localPaths.includes('/expedition-stops.json'),JSON.stringify(localPaths.filter(p=>!p.startsWith('/offline-tiles')).slice(-8)));
+  // Poll rather than wait a fixed time: on a slow CI runner the page can still be loading its fonts after 3 s.
+  await send('Page.navigate',{url:URL0+'expedition.html'});
+  let expOk=false;
+  for(let i=0;i<60&&!expOk;i++){await sleep(250);expOk=await evaluate("document.readyState==='complete'&&document.body.innerText.length>50")&&localPaths.includes('/expedition-stops.json');}
+  check('O-12 expedition page opens from local files with its stop data',expOk,JSON.stringify(localPaths.filter(p=>!p.startsWith('/offline-tiles')).slice(-8)));
 
   check('O-13 nothing was requested outside this computer',external.length===0,external.slice(0,8).join(' | '));
   check('O-14 no uncaught page errors',errors.length===0,errors.join(' | '));
