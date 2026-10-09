@@ -675,6 +675,79 @@ try{
   check('Mobile 390px 톳 with cells: no horizontal overflow',pov.doc<=pov.vw&&pov.wide===0,JSON.stringify(pov));
   await shot('mobile-live-hijiki');
 
+  // ---------- 멍이 버튼 옮기기 (chatbot.js): drag vs click, remembered and clamped, reset, phone touch ----------
+  // Real mouse and touch input through DevTools; positions come from the page, not typed in. Clears bbChatFabPos at the end.
+  {
+    const fabState=()=>evaluate(`(()=>{const d=document.documentElement,f=document.querySelector('.bbc-fab'),p=document.querySelector('.bbc-panel'),r=f.getBoundingClientRect(),q=p.getBoundingClientRect(),
+      z=document.querySelector('#explore.active .leaflet-control-zoom'),a=document.activeElement,c=typeof map!=='undefined'?map.getCenter():null;
+      return {x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),right:Math.round(d.clientWidth-r.right),bottom:Math.round(d.clientHeight-r.bottom),vw:d.clientWidth,vh:d.clientHeight,
+        open:!p.hidden,expanded:f.getAttribute('aria-expanded'),panel:p.hidden?null:{l:Math.round(q.left),t:Math.round(q.top),r:Math.round(q.right),b:Math.round(q.bottom)},
+        moved:document.querySelector('.bbc').classList.contains('bbc-moved'),stored:localStorage.getItem('bbChatFabPos'),reset:!document.querySelector('.bbc-reset').hidden,
+        zoomLeft:z&&z.getClientRects().length&&innerWidth>=768?Math.round(z.getBoundingClientRect().left):null,focus:a?.className||a?.tagName||'',doc:d.scrollWidth,scrollY:Math.round(scrollY),
+        mapView:c?c.lat.toFixed(5)+','+c.lng.toFixed(5)+','+map.getZoom():''}})()`);
+    const mid=s=>({x:s.x+s.w/2,y:s.y+s.w/2});
+    const mouseDrag=async(from,to,steps=8)=>{
+      await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:from.x,y:from.y});
+      await send('Input.dispatchMouseEvent',{type:'mousePressed',x:from.x,y:from.y,button:'left',buttons:1,clickCount:1});
+      for(let i=1;i<=steps;i++)await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps,button:'left',buttons:1});
+      await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:to.x,y:to.y,button:'left',buttons:0,clickCount:1});await sleep(300);};
+    const touchDrag=async(from,to,steps=8)=>{
+      await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:from.x,y:from.y}]});
+      for(let i=1;i<=steps;i++)await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps}]});
+      await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await sleep(400);};
+    const key=async(k,code,vk)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk,...(type==='keyDown'&&k==='Enter'?{text:'\r'}:{})});await sleep(200);};
+    const boxesApart=(p,f)=>p.r<=f.x||p.l>=f.x+f.w||p.b<=f.y||p.t>=f.y+f.w;
+    await viewport(1560,900,false);
+    await evaluate("localStorage.removeItem('bbChatFabPos');document.querySelector('[data-view=\"explore\"]').click();window.scrollTo(0,0);1");await sleep(400);
+    let m=await fabState();
+    const defaultRight=m.zoomLeft===null?16:Math.max(16,m.vw-m.zoomLeft+12);
+    let ok=!m.moved&&m.stored===null&&!m.reset&&m.bottom===16&&Math.abs(m.right-defaultRight)<=1;
+    await evaluate("document.querySelector('.bbc-fab').focus();1");await key('Enter','Enter',13);
+    const kOpen=await fabState();await key('Escape','Escape',27);const kClose=await fabState();
+    check('M-1 멍이 default place unchanged (bottom 16px, left of the zoom control on the map tab); keyboard Enter opens, Esc closes and returns focus',
+      ok&&kOpen.open&&kOpen.focus==='bbc-input'&&!kClose.open&&kClose.focus==='bbc-fab',JSON.stringify({m,defaultRight,kOpen:[kOpen.open,kOpen.focus],kClose:[kClose.open,kClose.focus]}));
+    const before=m;
+    await mouseDrag(mid(m),{x:60,y:150});
+    m=await fabState();
+    check('M-2 mouse drag moves 멍이 to the drop point without opening the chat or moving the map',
+      m.moved&&!m.open&&m.expanded==='false'&&m.x===36&&m.y===126&&!!m.stored&&m.mapView===before.mapView,JSON.stringify({m,mapBefore:before.mapView}));
+    await mouseDrag(mid(m),{x:mid(m).x+3,y:mid(m).y},1);
+    m=await fabState();
+    check('M-3 a press that moves under the threshold still opens the chat, beside 멍이, on screen and not covering it',
+      m.open&&m.expanded==='true'&&m.x===36&&m.panel.l>=8&&m.panel.t>=8&&m.panel.r<=m.vw-8&&m.panel.b<=m.vh-8&&boxesApart(m.panel,m)&&m.panel.l===m.x&&m.panel.t>=m.y+m.w&&m.reset,JSON.stringify(m));
+    await sleep(300);await shot('mascot-moved-open',false);
+    await evaluate("document.querySelector('.bbc-close').click();1");
+    await mouseDrag(mid(await fabState()),{x:724,y:404});
+    const dropped=await fabState();
+    await evaluate("location.reload();1");await sleep(400);
+    for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+    const reloaded=await fabState();
+    await viewport(800,400,false);await sleep(400);const small=await fabState();
+    await viewport(1560,900,false);await sleep(400);const big=await fabState();
+    check('M-4 the drop point survives a reload; a small window pulls 멍이 inside, a big one puts it back, the saved value unchanged',
+      dropped.moved&&reloaded.x===dropped.x&&reloaded.y===dropped.y&&small.x===dropped.x&&small.y===small.vh-small.w-8&&small.y<dropped.y&&big.x===dropped.x&&big.y===dropped.y&&big.stored===dropped.stored,
+      JSON.stringify({dropped:[dropped.x,dropped.y],reloaded:[reloaded.x,reloaded.y],small:[small.x,small.y,small.vw,small.vh],big:[big.x,big.y],stored:[dropped.stored,big.stored]}));
+    await mouseDrag(mid(big),{x:mid(big).x,y:mid(big).y});
+    await evaluate("document.querySelector('.bbc-reset').click();1");await sleep(300);
+    m=await fabState();
+    check('M-5 "멍이 원래 자리로" returns to the default place, clears the saved value, hides itself and keeps the chat open',
+      !m.moved&&m.stored===null&&!m.reset&&m.open&&m.bottom===16&&Math.abs(m.right-defaultRight)<=1&&m.focus==='bbc-input',JSON.stringify(m));
+    await evaluate("document.querySelector('.bbc-close').click();1");
+    await viewport(390,844,true);await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});await sleep(500);
+    await evaluate("window.scrollTo(0,400);1");await sleep(300);
+    m=await fabState();
+    await touchDrag(mid(m),{x:50,y:300});
+    const t=await fabState();
+    // Chrome makes no tap from a touch that starts within about a second of the previous touch gesture, so wait like a person would.
+    await sleep(1500);await touchDrag(mid(t),mid(t),1);await sleep(300);
+    const tap=await fabState();
+    await shot('mascot-mobile-sheet',false);
+    check('M-6 phone 390px: a finger drag moves 멍이 without scrolling the page, a tap opens the bottom sheet, no horizontal overflow',
+      !m.moved&&m.right===16&&t.moved&&!t.open&&t.x===26&&t.y===276&&t.scrollY===m.scrollY&&JSON.parse(t.stored).mobile&&JSON.parse(t.stored).desktop===undefined&&
+      tap.open&&tap.panel.l===0&&tap.panel.r===tap.vw&&Math.abs(tap.panel.b-tap.vh)<=1&&tap.doc<=tap.vw,JSON.stringify({m,t,tap}));
+    await evaluate("document.querySelector('.bbc-close').click();localStorage.removeItem('bbChatFabPos');window.scrollTo(0,0);1");
+    await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  }
   // ---------- Failure / empty / v1-only responses (fetch mocked in page) ----------
   await viewport(1560,900,false);
   const mocks={

@@ -95,7 +95,11 @@ const CHATBOT_FAQ=[
   {id:'sources',q:['자료 출처는 어디예요','종과 화합물은 어떻게 연결해요','AphiaID는 뭐예요'],
     k:['출처','자료','데이터','aphiaid','worms','inchikey','pubchem','연결'],
     a:'종은 WoRMS AphiaID로, 화합물은 InChIKey·PubChem CID로 연결해요. 사용한 자료 목록은 {tab:method} 탭 아래 ‘사용한 자료와 수집 방법’에 있어요.',
-    show:{click:['[data-view="method"]'],target:'.source-section'},next:['validation','overview']}
+    show:{click:['[data-view="method"]'],target:'.source-section'},next:['validation','overview']},
+  {id:'move-mascot',q:['멍이가 화면을 가려요','멍이 위치 옮기기','멍이 버튼을 다른 곳으로 옮기고 싶어요'],
+    k:['멍이','옮기','옮겨','가려','가리','끌어','드래그'],
+    a:'멍이 버튼을 누른 채 끌면 원하는 자리로 옮길 수 있어요. 놓은 자리는 이 브라우저에 기억되고, 대화창 위의 ‘멍이 원래 자리로’를 누르면 처음 자리로 돌아가요.',
+    next:['overview']}
 ];
 const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colors','색깔(4가지 유형)은 무슨 뜻이에요?'],['chips','신약·식량 특성으로 종 찾기'],
   ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI·정보충분도가 뭔가요?']];
@@ -166,6 +170,50 @@ function chatbotMascot(state,size,crop){
     extra+'</svg>';
 }
 
+// 멍이 여는 버튼 옮기기(끌기). 계산만 여기 두고 화면 부분이 부른다. 좌표는 화면(뷰포트) 왼쪽 위 기준 px.
+// view={w,h,inset:{top,right,bottom,left}}: inset은 노치·홈 막대(safe-area) 여백.
+const CHATBOT_DRAG={mouse:6,touch:10,margin:8,gap:12,minPanel:260};
+// 누른 점에서 문턱값보다 많이 움직여야 끌기. 그 전에 떼면 누르기(열기/닫기). 손가락은 흔들림이 커서 문턱이 높다.
+function chatbotDragStarted(dx,dy,pointerType){
+  return Math.hypot(dx,dy)>(pointerType==='mouse'?CHATBOT_DRAG.mouse:CHATBOT_DRAG.touch);
+}
+// 버튼(size px 정사각형)을 화면 가장자리에서 margin 이상 떨어진 안쪽으로. 화면이 버튼보다 좁으면 가운데(음수면 0).
+function chatbotClampFab(pos,size,view,margin=CHATBOT_DRAG.margin){
+  const i=view.inset||{},axis=(v,len,a,b)=>{const lo=margin+(a||0),hi=len-size-margin-(b||0);
+    return hi<lo?Math.max(0,Math.round((len-size)/2)):Math.round(Math.min(hi,Math.max(lo,v)));};
+  return {x:axis(+pos.x||0,view.w,i.left,i.right),y:axis(+pos.y||0,view.h,i.top,i.bottom)};
+}
+// 저장은 가까운 가장자리 기준: 오른쪽 아래에 둔 버튼은 창 크기가 바뀌어도 오른쪽 아래에 남는다.
+function chatbotFabAnchor(pos,size,view){
+  const h=pos.x+size/2<=view.w/2?'left':'right',v=pos.y+size/2<=view.h/2?'top':'bottom';
+  return {h,x:Math.max(0,Math.round(h==='left'?pos.x:view.w-pos.x-size)),v,y:Math.max(0,Math.round(v==='top'?pos.y:view.h-pos.y-size))};
+}
+function chatbotFabFromAnchor(a,size,view){
+  return {x:a.h==='left'?a.x:view.w-a.x-size,y:a.v==='top'?a.y:view.h-a.y-size};
+}
+// localStorage 값 검사: {desktop:{h,x,v,y},mobile:{…}} 중 올바른 칸만 남긴다. 깨졌거나 남는 칸이 없으면 null.
+function chatbotReadFabPos(raw){
+  let o;try{o=JSON.parse(raw);}catch{return null;}
+  if(!o||typeof o!=='object')return null;
+  const ok=a=>!!a&&typeof a==='object'&&(a.h==='left'||a.h==='right')&&(a.v==='top'||a.v==='bottom')&&
+    [a.x,a.y].every(n=>typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<1e4);
+  const out={};for(const k of ['desktop','mobile'])if(ok(o[k]))out[k]={h:o[k].h,x:o[k].x,v:o[k].v,y:o[k].y};
+  return Object.keys(out).length?out:null;
+}
+// 옮긴 버튼 옆, 넓은 쪽으로 대화창을 연다. 오른쪽 절반이면 오른쪽 끝을, 왼쪽 절반이면 왼쪽 끝을 버튼에 맞추고,
+// 아래쪽 절반이면 버튼 위로, 위쪽 절반이면 아래로. 높이가 모자라면 줄인다(최소 minPanel, 화면보다 크지 않게).
+function chatbotPanelPlace(fab,panel,view,margin=CHATBOT_DRAG.margin,gap=CHATBOT_DRAG.gap){
+  const w=Math.min(panel.w,view.w-2*margin);
+  let left=fab.x+fab.size/2>view.w/2?fab.x+fab.size-w:fab.x;
+  left=Math.max(margin,Math.min(left,view.w-margin-w));
+  const above=fab.y+fab.size/2>view.h/2;
+  const room=above?fab.y-gap-margin:view.h-margin-(fab.y+fab.size+gap);
+  const h=Math.max(0,Math.min(panel.h,Math.max(CHATBOT_DRAG.minPanel,room),view.h-2*margin));
+  let top=above?fab.y-gap-h:fab.y+fab.size+gap;
+  top=Math.max(margin,Math.min(top,view.h-margin-h));
+  return {left:Math.round(left),top:Math.round(top),maxHeight:Math.round(h)};
+}
+
 if(typeof document!=='undefined')(function(){
   const store={get(k){try{return localStorage.getItem(k);}catch{return null;}},set(k,v){try{localStorage.setItem(k,v);}catch{}}};
   const HINT_KEY='bbChatHintSeen';
@@ -194,14 +242,16 @@ if(typeof document!=='undefined')(function(){
   root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">멍이<span class="bbc-sr"> 사용법 안내</span></strong><small aria-hidden="true">바다 연구원 · 사용법 안내</small></div>'+
-    '<button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
+    '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
     '<p class="bbc-note">FAQ에 없는 질문은 답을 만들기 위해 Cloudflare Workers AI로 보내요.</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
-    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel"></button>';
+    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
+    '<span class="bbc-safe" aria-hidden="true"></span>';
   document.body.append(root);
   const [hint,panel,fab]=['.bbc-hint','.bbc-panel','.bbc-fab'].map(s=>root.querySelector(s));
   const log=root.querySelector('.bbc-log'),input=root.querySelector('.bbc-input'),avatar=root.querySelector('.bbc-avatar');
+  const reset=root.querySelector('.bbc-reset'),safe=root.querySelector('.bbc-safe');
   const fabFace=expanded=>{fab.innerHTML=expanded?'<span aria-hidden="true">×</span>':chatbotMascot('answer',44,true);};
   // 머리말 멍이 표정. brief면 2.6초 뒤 직전 표정으로 돌아간다('화면에서 보여주기').
   let face='welcome',faceTimer=0;
@@ -211,8 +261,47 @@ if(typeof document!=='undefined')(function(){
   }
   mood(face);fabFace(false);
 
+  // 멍이를 옮긴 자리(chatbotReadFabPos 형식). PC와 휴대폰은 화면이 달라 따로 기억한다.
+  // localStorage를 못 쓰면 이 탭에서만 기억한다(posCache). 창이 작아져 잘린 자리는 저장하지 않는다(다시 키우면 원래 자리).
+  const POS_KEY='bbChatFabPos',PANEL={w:360,h:520};
+  let posCache=chatbotReadFabPos(store.get(POS_KEY))||{};
+  const posMode=()=>mobile()?'mobile':'desktop';
+  function savePos(){
+    try{if(Object.keys(posCache).length)localStorage.setItem(POS_KEY,JSON.stringify(posCache));else localStorage.removeItem(POS_KEY);}catch{}
+  }
+  function view(){
+    const s=getComputedStyle(safe),n=k=>parseFloat(s['padding'+k])||0,d=document.documentElement;
+    return {w:d.clientWidth,h:d.clientHeight,inset:{top:n('Top'),right:n('Right'),bottom:n('Bottom'),left:n('Left')}};
+  }
+  const fabSize=()=>fab.offsetWidth||48;
+  function movedPos(){
+    const a=posCache[posMode()];if(!a)return null;
+    const v=view(),size=fabSize();return chatbotClampFab(chatbotFabFromAnchor(a,size,v),size,v);
+  }
+  const clearStyle=(el,keys)=>{for(const k of keys)el.style[k]='';};
+  // 옮긴 자리에 버튼을 두고, 안내 말풍선과 (PC에서 열려 있으면) 대화창을 그 옆으로.
+  function placeMoved(pos){
+    root.classList.add('bbc-moved');
+    root.style.setProperty('--bbc-x',pos.x+'px');root.style.setProperty('--bbc-y',pos.y+'px');
+    const v=view(),size=fabSize(),right=pos.x+size/2>v.w/2;
+    if(!hint.hidden){
+      const room=Math.max(120,right?pos.x-18:v.w-pos.x-size-18);hint.style.maxWidth=room+'px';
+      const hw=hint.offsetWidth,hh=hint.offsetHeight;
+      Object.assign(hint.style,{right:'auto',bottom:'auto',left:Math.max(8,right?pos.x-10-hw:pos.x+size+10)+'px',top:Math.max(8,Math.round(pos.y+(size-hh)/2))+'px'});
+    }
+    if(panel.hidden)return;
+    if(mobile()){clearStyle(panel,['left','top','right','bottom','maxHeight']);return;}
+    const p=chatbotPanelPlace({x:pos.x,y:pos.y,size},PANEL,v);
+    Object.assign(panel.style,{left:p.left+'px',top:p.top+'px',right:'auto',bottom:'auto',maxHeight:p.maxHeight+'px'});
+  }
   // 탐색 지도 탭(폭 768px 이상)에서는 버튼과 대화창을 지도 확대/축소 컨트롤 왼쪽에 둔다: 근거 패널과 확대/축소를 가리지 않게.
+  // 사용자가 멍이를 옮겼으면 그 자리가 이긴다.
   function place(){
+    reset.hidden=!posCache[posMode()];
+    const pos=movedPos();
+    if(pos)return placeMoved(pos);
+    root.classList.remove('bbc-moved');
+    clearStyle(hint,['left','top','right','bottom','maxWidth']);clearStyle(panel,['left','top','right','bottom']);
     let right=16;const z=document.querySelector('.leaflet-control-zoom');
     if(!mobile()&&document.querySelector('#explore.active')&&visible(z))right=Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12);
     root.style.setProperty('--bbc-right',right+'px');
@@ -295,7 +384,49 @@ if(typeof document!=='undefined')(function(){
     },0);
   }
 
-  fab.addEventListener('click',()=>panel.hidden?open():close());
+  // 끌기: Pointer Events로 마우스·손가락·펜을 함께 처리한다. 문턱값(chatbotDragStarted)을 넘기 전에 떼면 보통 누르기.
+  // 끌어다 놓은 직후 브라우저가 보내는 click 한 번은 무시한다(키보드 Enter/Space의 click은 detail 0이라 막지 않음, 다음 누르기가 시작되면 해제).
+  // Esc나 pointercancel이면 처음 자리로 돌아간다.
+  let drag=null,dragEnd=-1e9,frame=0;
+  const dragging=on=>{root.classList.toggle('bbc-dragging',on);document.documentElement.classList.toggle('bbc-drag-doc',on);};
+  function endDrag(save){
+    cancelAnimationFrame(frame);frame=0;dragging(false);
+    if(save){const v=view();posCache[posMode()]=chatbotFabAnchor(drag.pos,fabSize(),v);savePos();}
+    place();
+  }
+  fab.addEventListener('pointerdown',e=>{
+    if(e.button!==0||!e.isPrimary)return;
+    dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
+    const r=fab.getBoundingClientRect();
+    drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,moving:false,cancelled:false,pos:null};
+    try{fab.setPointerCapture(e.pointerId);}catch{}
+  });
+  fab.addEventListener('pointermove',e=>{
+    if(!drag||e.pointerId!==drag.id||drag.cancelled)return;
+    const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
+    if(!drag.moving){if(!chatbotDragStarted(dx,dy,drag.type))return;drag.moving=true;dragging(true);dismissHint();}
+    const v=view();drag.pos=chatbotClampFab({x:drag.ox+dx,y:drag.oy+dy},fabSize(),v);
+    if(!frame)frame=requestAnimationFrame(()=>{frame=0;if(drag?.pos&&!drag.cancelled)placeMoved(drag.pos);});
+  });
+  fab.addEventListener('pointerup',e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    if(drag.moving||drag.cancelled){dragEnd=performance.now();if(drag.moving&&!drag.cancelled)endDrag(true);}
+    drag=null;
+  });
+  fab.addEventListener('pointercancel',e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    if(drag.moving&&!drag.cancelled)endDrag(false);
+    drag=null;
+  });
+  addEventListener('keydown',e=>{
+    if(e.key!=='Escape'||!drag?.moving||drag.cancelled)return;
+    e.preventDefault();e.stopPropagation();drag.cancelled=true;endDrag(false);
+  },true);
+  fab.addEventListener('click',e=>{
+    if(e.detail!==0&&performance.now()-dragEnd<700){dragEnd=-1e9;return;}
+    panel.hidden?open():close();
+  });
+  reset.addEventListener('click',()=>{delete posCache[posMode()];savePos();place();input.focus();});
   root.querySelector('.bbc-close').addEventListener('click',close);
   root.querySelector('.bbc-hint-x').addEventListener('click',dismissHint);
   panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}});
@@ -309,6 +440,6 @@ if(typeof document!=='undefined')(function(){
   const explore=document.getElementById('explore');
   if(explore)new MutationObserver(()=>requestAnimationFrame(place)).observe(explore,{attributes:true,attributeFilter:['class']});
   addEventListener('load',()=>setTimeout(place,300));
-  place();
   if(!store.get(HINT_KEY))hint.hidden=false;
+  place();
 })();

@@ -1,13 +1,23 @@
-/* 사용법 안내 챗봇. 색·글꼴·그림자는 theme.css 변수를 쓴다. 위치(--bbc-right)는 chatbot.js의 place()가 정한다. */
+/* 사용법 안내 챗봇. 색·글꼴·그림자는 theme.css 변수를 쓴다. 위치(--bbc-right, 옮겼으면 .bbc-moved의 --bbc-x/--bbc-y)는 chatbot.js의 place()가 정한다. */
 .bbc{--bbc-right:16px;font-family:var(--font)}
 .bbc-fab{position:fixed;right:var(--bbc-right);bottom:16px;z-index:1200;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:var(--navy);color:#fff;font-size:22px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;overflow:hidden}
 .bbc-fab:hover{background:var(--teal-ink)}
+/* 멍이 끌어서 옮기기: 터치로 끌 때 페이지가 스크롤되거나 길게 누르기 메뉴가 뜨지 않게. 누르는 버튼이 주 기능이라 커서는 pointer 그대로. */
+.bbc-fab{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.bbc-moved .bbc-fab{left:var(--bbc-x);top:var(--bbc-y);right:auto;bottom:auto}
+.bbc-dragging .bbc-fab{cursor:grabbing;box-shadow:0 10px 26px rgba(11,27,43,.35)}
+.bbc-drag-doc,.bbc-drag-doc *{user-select:none!important;-webkit-user-select:none!important;cursor:grabbing!important}
+@media (prefers-reduced-motion:no-preference){.bbc-fab{transition:transform .12s ease-out}.bbc-dragging .bbc-fab{transform:scale(1.08)}}
+.bbc-safe{position:fixed;left:0;top:0;width:0;height:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);visibility:hidden;pointer-events:none}
 .bbc-fab:focus-visible,.bbc button:focus-visible,.bbc-input:focus-visible{outline:3px solid var(--teal-fill);outline-offset:2px}
 .bbc-fab[aria-expanded="true"]{background:var(--teal-ink)}
 .bbc-hint{position:fixed;right:calc(var(--bbc-right) + 58px);bottom:22px;z-index:1200;display:flex;align-items:center;gap:6px;max-width:calc(100vw - var(--bbc-right) - 74px);padding:7px 6px 7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:13px;box-shadow:var(--shadow)}
 .bbc-hint[hidden],.bbc-panel[hidden]{display:none}
 .bbc-hint-x,.bbc-close{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:18px;cursor:pointer}
 .bbc-hint-x:hover,.bbc-close:hover{background:var(--bg)}
+.bbc-reset{flex:none;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:12px;cursor:pointer}
+.bbc-reset:hover{border-color:var(--teal);color:var(--teal-ink)}
+.bbc-reset[hidden]{display:none}
 .bbc-panel{position:fixed;right:var(--bbc-right);bottom:76px;z-index:1200;display:flex;flex-direction:column;width:360px;height:520px;max-width:calc(100vw - 32px);max-height:calc(100vh - var(--chrome) - 92px);overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-size:13.5px;box-shadow:var(--shadow)}
 .bbc-head{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 12px;border-bottom:1px solid var(--line)}
 .bbc-head strong{font-size:14.5px}
