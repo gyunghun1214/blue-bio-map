@@ -78,7 +78,11 @@ try{
   await send('Page.navigate',{url:URL0+'?offline=1'});
   const note=await waitFor("document.querySelector('#site-gate .gate-note')?.hidden===false?document.querySelector('#site-gate .gate-note').textContent:''",v=>v);
   check('O-1 entry screen says it opens the dated saved copy for the offline demo',note===`오프라인 시연 · ${snapshot.fetched_at} 기준 공개 자료 사본으로 엽니다.`,note);
+  // Enter acts only once the entry screen is ready (intro.js GATE_MIN_MS); a fast runner reaches the note before that.
+  await waitFor("document.getElementById('site-gate').classList.contains('is-ready')",v=>v);
   await pressEnter();
+  const entered=await waitFor("document.getElementById('site-gate').hidden&&sessionStorage.getItem('bbvm-intro-entered')==='1'",v=>v,5000);
+  check('O-1b Enter opens the map from the offline entry screen',entered===true,String(entered));
   let s=await (async()=>{for(let i=0;i<60;i++){const v=await state();if(v.conn.startsWith('오프라인')&&v.basemapStatus)return v;await sleep(250);}return state();})();
   check('O-2 status line names the offline demo and the snapshot date, no red alert',s.conn.startsWith(`오프라인 시연 · 저장된 공개 자료 사본 (${snapshot.fetched_at} 기준) · ${counts}`)&&!s.error,JSON.stringify(s));
   check('O-3 every published and candidate species is listed from local files',s.species>snapshot.profiles.length,JSON.stringify(s));
