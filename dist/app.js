@@ -1260,15 +1260,39 @@ function sufficiencyCut(a){
   const cut=data?.assessmentInfo?.method?.unexplored_threshold;
   return Math.round(a.information_sufficiency.mean_ratio*100)+'%'+(Number.isFinite(cut)?', 기준 '+Math.round(cut*100)+'% 미만':'');
 }
-// Half-circle gauges at the top of the species evidence (same values as the disclosures below; visual only).
+// Axis colours and names (species-card mini bars use them too).
 const GAUGE_COLOUR={MFPI:'#0b7a74',MBPI:'#1f9fb8',MCUI:'#e07a3f',BBVI:'#173f62'}, GAUGE_NAME={MFPI:'식량',MBPI:'생리활성',MCUI:'보전 시급성',BBVI:'통합 활용'};
-function axisGauges(s){
-  const len=Math.PI*38;
-  return '<div class="axis-gauges" aria-hidden="true">'+Object.keys(GAUGE_COLOUR).map(k=>{
-    const n=axisState(s,k).value, v=n===null?0:Math.max(0,Math.min(100,n)), ref=k==='BBVI'&&n===null?bbviReference(s):null;
-    return `<figure class="gauge${n===null?' held':''}"><svg viewBox="0 0 100 58"><path d="M12 52a38 38 0 0 1 76 0" class="g-track"/>`+
-      `<path d="M12 52a38 38 0 0 1 76 0" class="g-fill" style="stroke:${GAUGE_COLOUR[k]};stroke-dasharray:${(v/100*len).toFixed(1)} ${len.toFixed(1)}"/>`+
-      `<text x="50" y="51" text-anchor="middle">${n===null?'–':n.toFixed(1)}</text></svg><figcaption>${k}<small>${n===null?(ref!==null?'참고값 '+ref.toFixed(1):'산출 보류'):GAUGE_NAME[k]+(k==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')}</small></figcaption></figure>`;}).join('')+'</div>';
+// Top of the species evidence: the use value (BBVI, built from MFPI and MBPI) and the conservation need (MCUI) as two cards
+// that are never summed, the species' type and where it sits in the 2×2. Same values as the disclosures below, which stay
+// the reference; held axes draw no bar and are never shown as 0.
+const AXIS_QUAD=['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'];
+function axisBar(v,cut,big){
+  return `<span class="ax-bar${big?' big':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${Number.isFinite(cut)?`<b style="left:${cut}%"></b>`:''}</span>`;
+}
+function axisCards(s){
+  const rule=matrixRule(),type=matrixType(s),key=Object.entries(rule?.types||{}).find(([,t])=>t.id===type)?.[0];
+  const held=k=>{const st=axisState(s,k),ref=k==='BBVI'?bbviReference(s):null;return `<span class="ax-held">${esc(ref!==null?'참고값 '+ref.toFixed(1)+' · 점수 아님':st.label)}</span>`;};
+  const main=(k,cut)=>{const v=axisState(s,k).value;return v===null?held(k):`<strong class="ax-num">${v.toFixed(1)}</strong>${axisBar(v,cut,true)}`;};
+  const sub=(k,name,note)=>{const v=axisState(s,k).value;
+    return `<div class="ax-sub"><span>${name} <b>${k}</b></span>${v===null?held(k):`<strong>${v.toFixed(1)}</strong>${axisBar(v)}`}${note?`<small>${esc(note)}</small>`:''}</div>`;};
+  const one=bbviLabel(s),mbpiNote=basisNote(s,'MBPI').replace(/^ · /,''),mfpiNote=s.assessment?.food_trace?.literature_moisture?.label||'';
+  const mcuiNote=axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'');
+  const chip=type?`<p class="ax-type"><i class="${hatchedType(type)?'hatched':''}" style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${esc(matrixTypeLabel(type))}</p>`
+    :`<p class="ax-type none"><i aria-hidden="true"></i>유형 없음 · BBVI·MCUI 한 쌍 미산출</p>`;
+  // where the species' cells sit on the value map: the cell colour is the first type in the cell, so it can differ from the species' own
+  const cells=[...valueCellGroups(true).values()].filter(g=>g.species.has(s.aphiaID)),same=cells.filter(g=>cellMatrixType(g).type===type).length;
+  const where=!cells.length?'':!type?`이 종이 기록된 공개 셀 ${cells.length}개 · 유형이 없어 이 종은 셀 색을 정하지 않습니다.`
+    :same===cells.length?`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개가 모두 이 색으로 칠해집니다.`
+    :`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개 중 ${same}개가 이 색으로 칠해집니다. 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`;
+  const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}${hatchedType(id)?' hatched':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
+  return `<section class="axis-cards" aria-label="두 축 요약 · 아래 지표 칸과 같은 값">${chip}`+
+    `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b></h3><small>${rule?'기준 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
+      `<div class="ax-main">${main('BBVI',rule?.bbvi_threshold)}</div>${one?`<p class="ax-note">${esc(one)}</p>`:''}`+
+      sub('MFPI','식량',mfpiNote)+sub('MBPI','생리활성',mbpiNote)+'</div>'+
+    '<p class="ax-sep"><span>합치지 않고 따로 봅니다</span></p>'+
+    `<div class="ax-card"><div class="ax-head"><h3>보전 시급성 <b>MCUI</b></h3><small>${rule?'기준 '+rule.mcui_threshold:''}</small></div>`+
+      `<div class="ax-main">${main('MCUI',rule?.mcui_threshold)}</div>${mcuiNote?`<p class="ax-note">${esc(mcuiNote)}</p>`:''}</div>`+
+    (rule?`<div class="ax-where">${quad}<p>${esc(where||'이 종은 지금 보는 기간에 공개 셀이 없습니다.')}</p></div>`:'')+'</section>';
 }
 
 function renderVerifiedIndices(s){
@@ -1552,8 +1576,8 @@ function selectSpecies(id) {
 function renderDetail() {
   const s=selected;
   if(s.catalog)renderCandidateDetail(s);else renderLiveDetail(s);
-  // The four values first, as gauges under the name; the evidence below stays the reference.
-  if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisGauges(s));
+  // The two axes first, as separate cards under the name; the evidence below stays the reference.
+  if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisCards(s));
 }
 
 // Counts come from the published evidence_summary. A missing key is "정보 없음", never 0.

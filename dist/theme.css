@@ -348,19 +348,9 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .species-card.selected .card-scores i:not(.held){background:#fff}
 
 /* Half-circle gauges at the top of the species evidence */
-.axis-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 12px}
-.gauge{position:relative;margin:0;text-align:center}
-.gauge svg{display:block;width:100%;height:auto}
-.gauge .g-track{fill:none;stroke:#e9eff3;stroke-width:7;stroke-linecap:round}
-.gauge .g-fill{fill:none;stroke-width:7;stroke-linecap:round}
-.gauge text{font-size:21px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
-.gauge figcaption{display:grid;margin-top:-2px;font-size:12px;font-weight:700;color:var(--ink2)}
-.gauge figcaption small{font-size:11px;font-weight:500;color:var(--muted)}
-.gauge.held text{fill:#9aa8b4;font-weight:500}
-.gauge.held .g-track{stroke-dasharray:3 4}
 
 /* Value map: soft glow under typed cells (figure 5 heat-map look); the crisp cell above keeps the meaning and the click */
-@media (max-width:740px){.axis-gauges{gap:2px}.species-card .card-scores{grid-column:1/-1}}
+@media (max-width:740px){.species-card .card-scores{grid-column:1/-1}}
 
 /* 3.27: a BBVI resting on one paper is a score with its label; hollow matrix point and a dashed card value keep it apart */
 .matrix-point.pilot.single{background:#fff;border:3px solid var(--teal);box-shadow:none}
@@ -407,3 +397,31 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .vm-name{font-size:9.5px;font-weight:600;line-height:1}
 .vm-grid button span,.value-grid span.hatched>*{text-shadow:0 0 2px #fff,0 0 3px #fff}
 @media (max-width:740px){.vm-name{display:none}}
+/* 2026-10-10 디자인 03: 종 상세 위쪽의 두 축 카드(BBVI ← MFPI·MBPI / MCUI). 더하지 않는다는 것을 모양으로 보인다. */
+.axis-cards{display:grid;gap:8px;margin:10px 0 14px}
+.ax-type{display:flex;align-items:center;gap:7px;margin:0;font-size:13px;font-weight:700;color:var(--ink)}
+.ax-type i{flex:none;width:16px;height:16px;border-radius:4px;border:1px solid rgba(15,37,55,.25)}
+.ax-type.none{color:var(--muted);font-weight:600}.ax-type.none i{border:1.5px dashed #657588;background:rgba(183,192,202,.25)}
+.ax-card{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfdfd}
+.ax-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ax-head h3{margin:0;font-size:13px;font-weight:700;color:var(--ink2)}.ax-head h3 b{color:var(--ink)}
+.ax-head small{font-size:11px;color:var(--muted);white-space:nowrap}
+.ax-main{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px;margin:4px 0 2px}
+.ax-num{font-size:26px;font-weight:800;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+.ax-bar{position:relative;display:block;height:6px;border-radius:99px;background:#e9eff3}
+.ax-bar.big{height:10px}
+.ax-bar i{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:var(--teal)}
+.ax-card+.ax-sep+.ax-card .ax-bar i{background:#e07a3f}
+.ax-bar b{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--ink)}
+.ax-note{margin:2px 0 4px;font-size:11.5px;color:var(--muted)}
+.ax-sub{display:grid;grid-template-columns:96px 40px 1fr;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--ink2)}
+.ax-sub strong{font-variant-numeric:tabular-nums;text-align:right}
+.ax-sub small{grid-column:1/-1;margin-top:-3px;font-size:11px;color:var(--muted)}
+.ax-held{grid-column:2/-1;font-size:12px;color:#7a8a98}
+.ax-main .ax-held{grid-column:1/-1;font-size:14px}
+.ax-sep{display:flex;align-items:center;gap:8px;margin:0;font-size:11.5px;font-weight:600;color:var(--muted)}
+.ax-sep::before,.ax-sep::after{content:"";flex:1;border-top:1.5px dashed #b7c0ca}
+.ax-where{display:flex;align-items:center;gap:10px}
+.ax-where p{margin:0;font-size:12px;line-height:1.45;color:var(--ink2)}
+.ax-quad{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:2px;width:34px;height:34px}
+.ax-quad i{border-radius:3px;opacity:.22}.ax-quad i.on{opacity:1;outline:1.5px solid var(--ink)}
