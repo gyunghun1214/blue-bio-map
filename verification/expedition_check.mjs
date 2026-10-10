@@ -16,6 +16,7 @@ vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('/
 // route stops come first; the stop without a published cell at sea (참문어) is listed after them, off the route
 const ROUTE_N=pure.routeStops(stops).length, OFF=stops.findIndex(st=>!st.cell);
 const STOP_T=pure.sampleRoute(stops.slice(0,ROUTE_N)).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
+const FIRST_LEG=pure.tripSeconds(STOP_T[0],ROUTE_N);
 // headless SwiftShader can drop to 1–4 fps and the page caps a frame at 0.1 s, so a trip can take up to 10× longer
 // than set; this is only the ceiling, a passing run does not wait it out
 const TRIP_WAIT=Math.max(60000,LONGEST*10000);
@@ -101,16 +102,20 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const intro=await s.evaluate("!document.getElementById('intro').hidden&&!document.body.classList.contains('is-cards')");
       check(`${tag}: 3D sea with intro screen`,intro);
       await sleep(reduced?300:1500);await shot(s,`${tag}-1-intro`);
+      await s.evaluate("window.__sail0=performance.now()");
       if(mobile){
         await s.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width/2,y:height*.5}]});await s.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
         await s.evaluate("document.getElementById('start').click()");
       }else await s.evaluate("document.getElementById('start').focus()").then(()=>key(s,'Enter'));
       const routeT="Number(getComputedStyle(document.getElementById('progress')).getPropertyValue('--t'))";
       if(!reduced){
-        // the ship sails visibly: still under way a second after leaving, then 25 / 50 / 75 % of the first leg
+        // the ship sails visibly: still under way a second after leaving, then 25 / 50 / 75 % of the first leg.
+        // A slow runner can stall the page for seconds, so the bound is the eased trip at the page time actually
+        // elapsed (a frame never advances more than its own time), not a fixed fraction of the leg.
         await sleep(1000);
-        const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT}})`);
-        check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]*.5,JSON.stringify(early));
+        const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT},s:(performance.now()-window.__sail0)/1000})`);
+        const u=Math.min(1,early.s/FIRST_LEG), eased=STOP_T[0]*u*u*(3-2*u);
+        check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]&&early.t<=eased+1e-6,JSON.stringify({...early,eased}));
         const ts=[];
         for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
         // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
