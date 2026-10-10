@@ -12,8 +12,10 @@ const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
 const stops=JSON.parse(fs.readFileSync(path.join(DIST,'expedition-stops.json'),'utf8')).stops;
 // Sailing times come from the page's own pure part (SAIL, tripSeconds), so the waits follow the speed setting.
 const pure={};vm.createContext(pure);
-vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('// ---- browser ----')[0]+';Object.assign(globalThis,{SAIL,sampleRoute,tripSeconds});',pure);
-const STOP_T=pure.sampleRoute(stops).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
+vm.runInContext(fs.readFileSync(path.join(DIST,'expedition.js'),'utf8').split('// ---- browser ----')[0]+';Object.assign(globalThis,{SAIL,sampleRoute,tripSeconds,routeStops});',pure);
+// route stops come first; the stop without a published cell at sea (참문어) is listed after them, off the route
+const ROUTE_N=pure.routeStops(stops).length, OFF=stops.findIndex(st=>!st.cell);
+const STOP_T=pure.sampleRoute(stops.slice(0,ROUTE_N)).stopT, LONGEST=pure.SAIL.avgLegSeconds*pure.SAIL.longest;
 // headless SwiftShader can drop to 1–4 fps and the page caps a frame at 0.1 s, so a trip can take up to 10× longer
 // than set; this is only the ceiling, a passing run does not wait it out
 const TRIP_WAIT=Math.max(60000,LONGEST*10000);
@@ -86,6 +88,15 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       await shot(s,`${tag}-detail`);
       await key(s,'Escape');
       check(`${tag}: Esc closes the detail`,!(await s.evaluate("document.getElementById('detail').open")));
+      if(OFF>=0){
+        // the stop off the route: a card with its reason, values and a map link without a position
+        const off=await s.evaluate(`(()=>{const c=document.querySelector('#cards-list [data-stop="${OFF}"]');return c&&{text:c.innerText,map:c.querySelector('a.x-ghost')?.getAttribute('href')};})()`);
+        check(`${tag}: the stop off the route is a card (${stops[OFF].korean_name}, 항로 밖, map link without m=)`,!!off&&off.text.includes('항로 밖')&&off.text.includes(stops[OFF].cell_missing_reason)&&off.map===stops[OFF].map_link&&!/[&#]m=/.test(off.map),JSON.stringify(off).slice(0,300));
+        await s.evaluate(`document.querySelector('#cards-list [data-detail="${OFF}"]').click()`);
+        const od=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
+        check(`${tag}: the stop off the route opens its detail with scores and evidence`,!!od&&od.includes(stops[OFF].korean_name)&&od.includes('보전 평가 근거')&&od.includes('원논문 DOI'),String(od).slice(0,200));
+        await key(s,'Escape');
+      }
     }else{
       const intro=await s.evaluate("!document.getElementById('intro').hidden&&!document.body.classList.contains('is-cards')");
       check(`${tag}: 3D sea with intro screen`,intro);
@@ -146,9 +157,9 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       check(`${tag}: arrives at stop 3 (${stops[2].korean_name}) with its own card`,!!n3,await s.evaluate(cardName));
       await waitFor(s,`${level}>=3`,8000);await shot(s,`${tag}-6-stop3`);
       if(!reduced){
-        // 바로 도착 mid-trip, on the longest trip (stop 3 → 8 from the route dots) so a slow runner cannot arrive first.
-        // The jump and the first look happen in one evaluate; then Space on the desktop, the button on the phone.
-        const last=stops.length-1;
+        // 바로 도착 mid-trip, on the longest trip (stop 3 → the last route stop from the route dots) so a slow runner
+        // cannot arrive first. The jump and the first look happen in one evaluate; then Space on the desktop, the button on the phone.
+        const last=ROUTE_N-1;
         const mid=await s.evaluate(`(async()=>{document.querySelector('#progress [data-go="${last}"]').click();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {label:document.getElementById('steer-label').textContent,skip:!document.getElementById('skip').hidden,t:${routeT}};})()`);
         check(`${tag}: a long trip shows its route and 바로 도착`,mid.label.includes(`${stops[2].korean_name} → ${stops[last].korean_name} 항해 중`)&&mid.skip&&mid.t<STOP_T[last],JSON.stringify(mid));
         if(mobile)await s.evaluate("document.getElementById('skip').click()");else await key(s,' ','Space');

@@ -5,12 +5,15 @@
   "MBPI": "failed",
   "MFPI": "passed"
  },
+ "candidate_cells_reviewed": "2026-10-01",
+ "candidate_snapshot": "2026-09-25",
  "cells_snapshot": "2026-10-01",
  "food_weight": 0.5,
  "inputs": [
   "dist/assessments.json",
   "dist/matrix-readiness.json",
   "dist/live-snapshot.json",
+  "dist/expansion-public-cells.json",
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
@@ -21,9 +24,1790 @@
   "mbpi": "보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
   "score": "종 전체 값 · 이 해역 값 아님"
  },
- "schema_version": "expedition-stops-1",
+ "schema_version": "expedition-stops-2",
  "status": "released",
  "stops": [
+  {
+   "aphia_id": 219984,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1007/s13765-015-0129-4"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1007/s13765-015-0129-4"
+    ],
+    "median_pchembl": null,
+    "percentile": 30.11,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "DGGP",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 163.51
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     124.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     }
+    ],
+    "code": "deg1:N37E124:2000",
+    "lat0": 37,
+    "lon0": 124,
+    "period": "2000–2015",
+    "records": 7,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 4,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2009
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Wild broodstock (light-assisted purse seine, Omura Bay, Nagasaki; held in a company's sea cages, then about 700 fish moved to the field station in February 2014) kept in 2 m3 and 20 m3 indoor tanks; eggs collected on 27 May 2014 and the offspring reared from egg on rotifers, Artemia nauplii and commercial pellets to sexual maturity (80-130 days after hatching)"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 1.0,
+    "food_name": "멸치, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 48.08,
+      "unit": "g",
+      "value": 17.7
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 86.54,
+      "unit": "mg",
+      "value": 3.6
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 44.23,
+      "unit": "mg",
+      "value": 1.0
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 98.08,
+      "unit": "mg",
+      "value": 496.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "멸치",
+   "map_link": "index.html#s=219984&v=explore&m=8/37.50/124.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": 2018,
+    "basis": "iucn",
+    "basis_label": "IUCN 전 지구 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": null,
+    "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+    "scope": "Global",
+    "source": {
+     "id": "iucn_engraulis_japonicus_2018",
+     "license": "IUCN Red List terms",
+     "title": "Engraulis japonicus assessment e.T98969433A143841777",
+     "url": "https://www.iucnredlist.org/species/98969433/143841777"
+    }
+   },
+   "on_route": true,
+   "order": 1,
+   "public_cells": 37,
+   "public_records": 489,
+   "scientific_name": "Engraulis japonicus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 48.3,
+    "MBPI": 22.6,
+    "MCUI": 20.0,
+    "MFPI": 74.1
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "iucn_engraulis_japonicus_2018",
+     "license": "IUCN Red List terms",
+     "title": "Engraulis japonicus assessment e.T98969433A143841777",
+     "url": "https://www.iucnredlist.org/species/98969433/143841777"
+    },
+    {
+     "id": "kim_2016_anchovy_sauce",
+     "license": "Publisher copyright",
+     "title": "Identification of four new angiotensin I-converting enzyme inhibitory peptides from fermented anchovy sauce",
+     "url": "https://doi.org/10.1007/s13765-015-0129-4"
+    },
+    {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "yoneda_2025_engraulis_rearing",
+     "license": "CC BY-NC-ND 4.0",
+     "title": "Size-dependent resource allocation to reproduction in Japanese anchovies (Engraulis japonicus), Yoneda M, Katayama S, Yamamoto M, Kono N, Tsuzaki T, Tanaka H, doi:10.1038/s41598-025-99911-y",
+     "url": "https://doi.org/10.1038/s41598-025-99911-y"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 1061762,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/ijms26178546"
+    ],
+    "endpoint": "MIC",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/ijms26178546"
+    ],
+    "median_pchembl": null,
+    "percentile": 40.44,
+    "relation": "=",
+    "stratum_kind": "amp",
+    "subject": "MCCC1-MTS",
+    "target": "Escherichia coli",
+    "unit": "uM",
+    "value": 14.1
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     125.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_cr",
+      "url": "https://www.gbif.org/dataset/bef19e99-90a7-4b3d-a113-bdf4ea6c88f2"
+     }
+    ],
+    "code": "deg1:N37E125:2000",
+    "lat0": 37,
+    "lon0": 125,
+    "period": "2000–2015",
+    "records": 62,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 6,
+    "size_deg": 1,
+    "year_end": 2011,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Intensive pond culture in commercial culture ponds (pond type, size and stocking density not described)"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.24,
+    "food_name": "게, 꽃게, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 34.0,
+      "unit": "g",
+      "value": 16.19
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 46.0,
+      "unit": "mg",
+      "value": 0.74
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 74.0,
+      "unit": "mg",
+      "value": 2.05
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 94.0,
+      "unit": "mg",
+      "value": 127.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "꽃게",
+   "map_link": "index.html#s=1061762&v=explore&m=8/37.50/125.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "sub_national",
+    "basis_label": "지방 목록 참고값",
+    "category": "NT",
+    "criteria": null,
+    "label": "지방 목록 참고값(후쿠오카현) · 과대평가 역검증 미통과(6종 비교)",
+    "mapping": "NT → 35 (후쿠오카현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+    "scope": "후쿠오카현",
+    "source": {
+     "id": "fukuoka_redlist2024",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "福岡県レッドリスト2024（動物）",
+     "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html"
+    }
+   },
+   "on_route": true,
+   "order": 2,
+   "public_cells": 38,
+   "public_records": 402,
+   "scientific_name": "Portunus trituberculatus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 46.2,
+    "MBPI": 30.3,
+    "MCUI": 35.0,
+    "MFPI": 62.0
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "dbaasp_amp_cohort",
+     "license": "Open with attribution (DBAASP Data Access Policy)",
+     "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
+     "url": "https://dbaasp.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "fukuoka_redlist2024",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "福岡県レッドリスト2024（動物）",
+     "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html"
+    },
+    {
+     "id": "hong_2025_ijms_mts",
+     "license": "CC BY 4.0",
+     "title": "Marine-Derived N-Terminal Mitochondrial-Targeting Sequences Exhibit Antimicrobial and Anticancer Activities (Hong SM, Koo TW, Cho HS, et al. 2025)",
+     "url": "https://doi.org/10.3390/ijms26178546"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "jiang_2025_crab",
+     "license": "CC BY 4.0",
+     "title": "A dynamic energy budget model for the non-continuous and biphasic growth of the pond-cultured swimming crab, Portunus trituberculatus",
+     "url": "https://doi.org/10.3390/biology14121682"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 231750,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1039/c8fo01146j"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1039/c8fo01146j"
+    ],
+    "median_pchembl": null,
+    "percentile": 78.12,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "VISDEDGVTH",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 8.16
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     36.5,
+     125.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     }
+    ],
+    "code": "deg1:N36E125:2016",
+    "lat0": 36,
+    "lon0": 125,
+    "period": "2016–2026",
+    "records": 3,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 3,
+    "size_deg": 1,
+    "year_end": 2021,
+    "year_start": 2021
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Intertidal on-bottom culture using wild seed or hatchery seed"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.32,
+    "food_name": "바지락, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 14.0,
+      "unit": "g",
+      "value": 12.27
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 82.0,
+      "unit": "mg",
+      "value": 2.68
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 50.0,
+      "unit": "mg",
+      "value": 1.22
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 90.0,
+      "unit": "mg",
+      "value": 70.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "바지락",
+   "map_link": "index.html#s=231750&v=explore&m=8/36.50/125.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": true,
+   "order": 3,
+   "public_cells": 41,
+   "public_records": 790,
+   "scientific_name": "Ruditapes philippinarum",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 59.5,
+    "MBPI": 58.6,
+    "MCUI": 10.0,
+    "MFPI": 60.4
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "chen_2018_clam_natto",
+     "license": "Publisher copyright",
+     "title": "Isolation, purification and the anti-hypertensive effect of a novel angiotensin I-converting enzyme (ACE) inhibitory peptide from Ruditapes philippinarum fermented with Bacillus natto",
+     "url": "https://doi.org/10.1039/c8fo01146j"
+    },
+    {
+     "id": "fao_casp_ruditapes",
+     "license": "FAO website terms",
+     "title": "Cultured Aquatic Species Information Programme — Ruditapes philippinarum",
+     "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "lee_2005_clam",
+     "license": "Publisher copyright",
+     "title": "Peptide inhibitor for angiotensin-converting enzyme from thermolysin hydrolysate of Manila clam proteins",
+     "url": "https://doi.org/10.5657/fas.2005.8.2.109"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "suetsuna_2002_clam",
+     "license": "Publisher copyright",
+     "title": "Identification of antihypertensive peptides from peptic digest of the short-necked clam Tapes philippinarum and the pearl oyster Pinctada fucata martensii",
+     "url": "https://www.jstage.jst.go.jp/article/fishsci1994/68/1/68_1_233/_article"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 275816,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1016/j.procbio.2016.01.009"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1016/j.procbio.2016.01.009"
+    ],
+    "median_pchembl": null,
+    "percentile": 38.92,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "MEVFVP",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 79
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     35.5,
+     125.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N35E125:2000",
+    "lat0": 35,
+    "lon0": 125,
+    "period": "2000–2015",
+    "records": 7,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 7,
+    "size_deg": 1,
+    "year_end": 2013,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Land-based tank farms (per the title and the Appendix A questionnaire item on fingerlings stocked in tanks; the water-supply system is not described)"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.54,
+    "food_name": "넙치(광어), 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 86.0,
+      "unit": "g",
+      "value": 22.36
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 30.0,
+      "unit": "mg",
+      "value": 0.45
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 26.0,
+      "unit": "mg",
+      "value": 0.52
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 78.0,
+      "unit": "mg",
+      "value": 61.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "넙치",
+   "map_link": "index.html#s=275816&v=explore&m=8/35.50/125.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "range_state",
+    "basis_label": "서식국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "서식국 국가 평가 기반 MCUI",
+    "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+    "scope": null,
+    "source": {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    }
+   },
+   "on_route": true,
+   "order": 4,
+   "public_cells": 41,
+   "public_records": 283,
+   "scientific_name": "Paralichthys olivaceus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 44.3,
+    "MBPI": 29.2,
+    "MCUI": 10.0,
+    "MFPI": 59.4
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
+    {
+     "id": "ko_2016_flounder",
+     "license": "Publisher copyright (Elsevier)",
+     "title": "Angiotensin I-converting enzyme inhibitory peptides from an enzymatic hydrolysate of flounder fish (Paralichthys olivaceus) muscle as a potent anti-hypertensive agent",
+     "url": "https://doi.org/10.1016/j.procbio.2016.01.009"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "oh_2024_flounder",
+     "license": "CC BY 4.0",
+     "title": "Fish welfare-related issues and their relevance in land-based olive flounder (Paralichthys olivaceus) farms in Korea",
+     "url": "https://doi.org/10.3390/ani14111693"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 274849,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md20060353"
+    ],
+    "endpoint": "MIC",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md20060353"
+    ],
+    "median_pchembl": null,
+    "percentile": 42.22,
+    "relation": "=",
+    "stratum_kind": "amp",
+    "subject": "TS40",
+    "target": "Staphylococcus aureus",
+    "unit": "uM",
+    "value": 12.5
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     35.5,
+     124.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     }
+    ],
+    "code": "deg1:N35E124:2000",
+    "lat0": 35,
+    "lon0": 124,
+    "period": "2000–2015",
+    "records": 4,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 4,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Korean fish-farm survey lists 조피볼락 as its own species row with stocking (입식량) of 1,740 thousand fish, all methods, nationwide"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.25,
+    "food_name": "볼락, 조피볼락(우럭), 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 50.0,
+      "unit": "g",
+      "value": 18.41
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 26.0,
+      "unit": "mg",
+      "value": 0.44
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 38.0,
+      "unit": "mg",
+      "value": 0.78
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 66.0,
+      "unit": "mg",
+      "value": 44.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.67,
+   "korean_name": "조피볼락",
+   "map_link": "index.html#s=274849&v=explore&m=8/35.50/124.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    }
+   },
+   "on_route": true,
+   "order": 5,
+   "public_cells": 36,
+   "public_records": 309,
+   "scientific_name": "Sebastes schlegelii",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 40.1,
+    "MBPI": 31.7,
+    "MCUI": 10.0,
+    "MFPI": 48.5
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "dbaasp_amp_cohort",
+     "license": "Open with attribution (DBAASP Data Access Policy)",
+     "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
+     "url": "https://dbaasp.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "fukuoka_redlist2024",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "福岡県レッドリスト2024（動物）",
+     "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_fish_aquaculture",
+     "license": "KOSIS terms of use (공공누리 표시 확인 필요)",
+     "title": "시도·시군구별 양식방법별 어종별 양식현황(입식, 생산, 사육, 먹이를 준 양) DT_1EZ0008",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "zhang_2022_rockfish_ts40",
+     "license": "CC BY 4.0",
+     "title": "Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Liu H et al. 2022)",
+     "url": "https://doi.org/10.3390/md20060353"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 281273,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/foods12050982"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/foods12050982"
+    ],
+    "median_pchembl": null,
+    "percentile": 71.74,
+    "relation": "=",
+    "stratum_kind": "xo",
+    "subject": "WW8",
+    "target": "xanthine oxidase",
+    "unit": "uM",
+    "value": 3160
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     34.5,
+     124.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N34E124:2000",
+    "lat0": 34,
+    "lon0": 124,
+    "period": "2000–2015",
+    "records": 11,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 11,
+    "size_deg": 1,
+    "year_end": 2014,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Net-cage and indoor-tank culture based on artificial seed production (Introduction); the study stock is second-generation cultured broodstock (the authors' term) produced from wild broodstock caught off Younggwang, 600 fish reared 3 years in circular concrete indoor tanks (30 t)"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.58,
+    "food_name": "조기(참조기), 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 62.0,
+      "unit": "g",
+      "value": 19.02
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 22.0,
+      "unit": "mg",
+      "value": 0.43
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 6.0,
+      "unit": "mg",
+      "value": 0.45
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 28.0,
+      "unit": "mg",
+      "value": 19.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "참조기",
+   "map_link": "index.html#s=281273&v=explore&m=8/34.50/124.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": 2016,
+    "basis": "iucn",
+    "basis_label": "IUCN 전 지구 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": null,
+    "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+    "scope": "Global",
+    "source": {
+     "id": "iucn_larimichthys_polyactis_2020",
+     "license": "IUCN Red List terms",
+     "title": "Larimichthys polyactis assessment e.T49182929A49229050",
+     "url": "https://www.iucnredlist.org/species/49182929/49229050"
+    }
+   },
+   "on_route": true,
+   "order": 6,
+   "public_cells": 30,
+   "public_records": 257,
+   "scientific_name": "Larimichthys polyactis",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 46.6,
+    "MBPI": 53.8,
+    "MCUI": 20.0,
+    "MFPI": 39.4
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "chen_2023_foods_xoi",
+     "license": "CC BY 4.0",
+     "title": "Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)",
+     "url": "https://doi.org/10.3390/foods12050982"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "hwang_2025_croaker",
+     "license": "CC BY-NC 4.0",
+     "title": "Morphometric assessment of egg quality for second generation of cultured small yellow croaker, Larimichthys polyactis broodstock",
+     "url": "https://doi.org/10.12717/DR.2025.29.1.13"
+    },
+    {
+     "id": "iucn_larimichthys_polyactis_2020",
+     "license": "IUCN Red List terms",
+     "title": "Larimichthys polyactis assessment e.T49182929A49229050",
+     "url": "https://www.iucnredlist.org/species/49182929/49229050"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "xo_peptide_cohort_literature_2026",
+     "license": "Bibliographic data and published values only",
+     "title": "Xanthine-oxidase inhibitory peptide IC50 cohort (verified-4.3)",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 145086,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1016/s0031-9422(00)90263-2"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.5625,
+    "links": [
+     "https://doi.org/10.1016/s0031-9422(00)90263-2"
+    ],
+    "median_pchembl": 4.06,
+    "percentile": 0.76,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "CHEMBL5287816",
+    "target": "SARS-CoV-2",
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     33.5,
+     124.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     }
+    ],
+    "code": "deg1:N33E124:2016",
+    "lat0": 33,
+    "lon0": 124,
+    "period": "2016–2026",
+    "records": 4,
+    "sea_areas": [
+     "Yellow Sea"
+    ],
+    "sites": 1,
+    "size_deg": 1,
+    "year_end": 2016,
+    "year_start": 2016
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Artificial seed from isolated utricles and medullary filaments on seed fibre (July 2004) and 60 days of tank culture, then nursery (October-December 2004), pre-main (December 2004-May 2005) and main cultivation (May-August 2005) on 100 m horizontal ropes held at 0.5-3 m; at harvest about 7 kg fresh weight per metre of rope at 1 m depth"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 1.0,
+    "food_name": "청각, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 12.5,
+      "unit": "g",
+      "value": 1.4
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 37.5,
+      "unit": "mg",
+      "value": 2.5
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 12.5,
+      "unit": "mg",
+      "value": 37.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "청각",
+   "map_link": "index.html#s=145086&v=explore&m=8/33.50/124.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "sub_national",
+    "basis_label": "지방 목록 참고값",
+    "category": "NT",
+    "criteria": null,
+    "label": "지방 목록 참고값(이바라키현) · 과대평가 역검증 미통과(6종 비교)",
+    "mapping": "NT → 35 (이바라키현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
+    "scope": "이바라키현",
+    "source": {
+     "id": "ibaraki_rdb2020_algae",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
+     "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
+    }
+   },
+   "on_route": true,
+   "order": 7,
+   "public_cells": 47,
+   "public_records": 1250,
+   "scientific_name": "Codium fragile",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 18.6,
+    "MBPI": 0.4,
+    "MCUI": 35.0,
+    "MFPI": 36.7
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "hwang_2008_codium_wando",
+     "license": "Publisher copyright (Springer); fact, method summary and a short quotation",
+     "title": "Cultivation of the green alga, Codium fragile (Suringar) Hariot, by artificial seed production in Korea, Hwang EK, Baek JM, Park CS, doi:10.1007/s10811-007-9265-5",
+     "url": "https://doi.org/10.1007/s10811-007-9265-5"
+    },
+    {
+     "id": "ibaraki_rdb2020_algae",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
+     "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 127022,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1016/j.foodchem.2024.138873"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1016/j.foodchem.2024.138873"
+    ],
+    "median_pchembl": null,
+    "percentile": 46.59,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "PLITT",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 48.73
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     33.5,
+     125.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     }
+    ],
+    "code": "deg1:N33E125:2000",
+    "lat0": 33,
+    "lon0": 125,
+    "period": "2000–2015",
+    "records": 13,
+    "sea_areas": [
+     "East China Sea",
+     "Yellow Sea"
+    ],
+    "sites": 7,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Sea net-cage grow-out (해상가두리): wild juveniles of about 147 g caught by set net off Yokjido were stocked in October 2007 and grown to about 405 g by September 2008, sampled monthly"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.59,
+    "food_name": "고등어, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 71.15,
+      "unit": "g",
+      "value": 20.2
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 71.15,
+      "unit": "mg",
+      "value": 1.6
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 46.15,
+      "unit": "mg",
+      "value": 1.1
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 38.46,
+      "unit": "mg",
+      "value": 26.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "고등어",
+   "map_link": "index.html#s=127022&v=explore&m=8/33.50/125.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": 2022,
+    "basis": "iucn",
+    "basis_label": "IUCN 전 지구 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": null,
+    "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+    "scope": "Global",
+    "source": {
+     "id": "iucn_scomber_japonicus_2023",
+     "license": "IUCN Red List terms",
+     "title": "Scomber japonicus assessment e.T170306A170083106",
+     "url": "https://www.iucnredlist.org/species/170306/170083106"
+    }
+   },
+   "on_route": true,
+   "order": 8,
+   "public_cells": 41,
+   "public_records": 479,
+   "scientific_name": "Scomber japonicus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 47.4,
+    "MBPI": 34.9,
+    "MCUI": 10.0,
+    "MFPI": 59.9
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "iucn_scomber_japonicus_2023",
+     "license": "IUCN Red List terms",
+     "title": "Scomber japonicus assessment e.T170306A170083106",
+     "url": "https://www.iucnredlist.org/species/170306/170083106"
+    },
+    {
+     "id": "mabik_national_species_list",
+     "license": "공공데이터포털 이용허락범위 제한 없음 (data.go.kr 15063771)",
+     "title": "국가 해양수산생물종 목록 (national list of marine and fishery species; 국명 = Korean standard name, 정명 rows)",
+     "url": "https://www.mbris.kr/pub/marine/natilist/nationalist.do"
+    },
+    {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    },
+    {
+     "id": "moon_2010_mackerel_cage",
+     "license": "Publisher copyright (free full text on KoreaScience)",
+     "title": "Changes in the Proximate and Fatty Acid Compositions of Chub Mackerel, Scomber japonicus Muscle during Cultivation (Moon SK, Kim IS, Hong SN, Lim DH, Jeong BY), doi:10.5657/kfas.2010.43.6.589",
+     "url": "https://doi.org/10.5657/kfas.2010.43.6.589"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wang_2024_mackerel_foodchem",
+     "license": "Publisher copyright",
+     "title": "The novel angiotensin-I-converting enzyme inhibitory peptides from Scomber japonicus muscle protein hydrolysates: QSAR-based screening, molecular docking, kinetic and stability studies",
+     "url": "https://doi.org/10.1016/j.foodchem.2024.138873"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    },
+    {
+     "id": "zhang_2025_mackerel_jfs",
+     "license": "Publisher copyright",
+     "title": "Revealing Novel Angiotensin-Converting Enzyme (ACE)-Inhibitory Peptides From Mackerel Hydrolysates and Potential Antihypertensive Mechanism Using Virtual Screening and Network Pharmacology Analysis",
+     "url": "https://doi.org/10.1111/1750-3841.70767"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
   {
    "aphia_id": 494972,
    "bbvi_label": null,
@@ -45,6 +1829,7 @@
     "unit": "uM",
     "value": 3.92
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      34.5,
@@ -86,6 +1871,7 @@
     "year_end": 2021,
     "year_start": 2016
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -132,6 +1918,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.94,
    "korean_name": "톳",
    "map_link": "index.html#s=494972&v=explore&m=8/34.50/125.50",
@@ -155,7 +1942,8 @@
      "url": "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf"
     }
    },
-   "order": 1,
+   "on_route": true,
+   "order": 9,
    "public_cells": 28,
    "public_records": 1032,
    "scientific_name": "Sargassum fusiforme",
@@ -171,6 +1959,7 @@
     "MCUI": 60.0,
     "MFPI": 63.3
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "ahtpdb_ic50_2026",
@@ -289,6 +2078,266 @@
    }
   },
   {
+   "aphia_id": 504357,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md20020110"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md20020110"
+    ],
+    "median_pchembl": null,
+    "percentile": 100.0,
+    "relation": "=",
+    "stratum_kind": "anticancer",
+    "subject": "P6",
+    "target": null,
+    "unit": "uM",
+    "value": 1.5852
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     34.0,
+     126.0
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY 4.0",
+       "CC BY-NC 4.0"
+      ],
+      "title": "iNaturalist Research-grade Observations",
+      "url": "https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     },
+     {
+      "licenses": [
+       "CC0 1.0"
+      ],
+      "title": "2023 ms_specimen_NSMK_228",
+      "url": "https://www.gbif.org/dataset/8b83fe34-18a2-4bd6-b9d0-cc6ef6f916da"
+     },
+     {
+      "licenses": [
+       "CC0 1.0"
+      ],
+      "title": "2021_nsmk_biodiversity_ms_748",
+      "url": "https://www.gbif.org/dataset/8e2be0ac-3b39-45c8-9d0b-33b3dd69a09f"
+     }
+    ],
+    "code": "deg4:N32E124:2016",
+    "lat0": 32,
+    "lon0": 124,
+    "period": "2016–2026",
+    "records": 39,
+    "sea_areas": [
+     "East China Sea",
+     "Yellow Sea"
+    ],
+    "sites": 6,
+    "size_deg": 4,
+    "year_end": 2023,
+    "year_start": 2019
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Bottom culture (바닥식 양성): seed shells (mean 2.5 cm, 2.5 g) planted on bottom mud at 20-40 per m² in March 1982 and grown out to harvest in December 1983"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.46,
+    "food_name": "조개, 피조개, 양식, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 13.46,
+      "unit": "g",
+      "value": 11.8
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 94.23,
+      "unit": "mg",
+      "value": 7.4
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 63.46,
+      "unit": "mg",
+      "value": 1.5
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 75.0,
+      "unit": "mg",
+      "value": 60.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "피조개",
+   "map_link": "index.html#s=504357&v=explore&m=6/34.00/126.00",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": true,
+   "order": 10,
+   "public_cells": 11,
+   "public_records": 219,
+   "scientific_name": "Anadara broughtonii",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 68.5,
+    "MBPI": 75.0,
+    "MCUI": 10.0,
+    "MFPI": 61.9
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "cancerppd_anticancer_cohort",
+     "license": "Open, confirmed by the maintainer by email (2026-10-02)",
+     "title": "CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts",
+     "url": "https://webs.iiitd.edu.in/raghava/cancerppd2/"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "dbaasp_amp_cohort",
+     "license": "Open with attribution (DBAASP Data Access Policy)",
+     "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
+     "url": "https://dbaasp.org"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kwon_cho_1986_anadara",
+     "license": "No open licence shown; fact, method summary and a short quotation only",
+     "title": "Culture of the Ark Shell, Anadara broughtonii in Yoja Bay (여자만에서의 피조개 양성). Kwon Woo-Seop and Cho Chang-Hwan, Tongyeong Fisheries Technical College",
+     "url": "https://www.koreascience.kr/article/JAKO198622105902972.page"
+    },
+    {
+     "id": "li_2017_arca_hemocidin",
+     "license": "CC BY 4.0",
+     "title": "Antibacterial Activity of AI-Hemocidin 2, a Novel N-Terminal Peptide of Hemoglobin Purified from Arca inflata (Li C, Zhu C, Zhang M, et al. 2017)",
+     "url": "https://doi.org/10.3390/md15070205"
+    },
+    {
+     "id": "li_2022_arca_p6",
+     "license": "CC BY 4.0",
+     "title": "A Novel Peptide Derived from Arca inflata Induces Apoptosis in Colorectal Cancer Cells through Mitochondria and the p38 MAPK Pathway (2022)",
+     "url": "https://doi.org/10.3390/md20020110"
+    },
+    {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
    "aphia_id": 836033,
    "bbvi_label": null,
    "bio": {
@@ -309,6 +2358,7 @@
     "unit": "uM",
     "value": 1.18
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      34.5,
@@ -343,6 +2393,7 @@
     "year_end": 2015,
     "year_start": 2010
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -389,6 +2440,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 1.0,
    "korean_name": "참굴",
    "map_link": "index.html#s=836033&v=explore&m=8/34.50/127.50",
@@ -412,7 +2464,8 @@
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
     }
    },
-   "order": 2,
+   "on_route": true,
+   "order": 11,
    "public_cells": 31,
    "public_records": 335,
    "scientific_name": "Magallana gigas",
@@ -428,6 +2481,11 @@
     "MCUI": 10.0,
     "MFPI": 71.6
    },
+   "shared_with": [
+    234476,
+    836041,
+    413600
+   ],
    "sources": [
     {
      "id": "ahtpdb_ic50_2026",
@@ -570,6 +2628,720 @@
    }
   },
   {
+   "aphia_id": 234476,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md22090398"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md22090398"
+    ],
+    "median_pchembl": null,
+    "percentile": 97.73,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "KAF",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 0.63
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     34.5,
+     127.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N34E127:2000",
+    "lat0": 34,
+    "lon0": 127,
+    "period": "2000–2015",
+    "records": 44,
+    "sea_areas": [
+     "East China Sea"
+    ],
+    "sites": 3,
+    "size_deg": 1,
+    "year_end": 2015,
+    "year_start": 2012
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Seed collection and grow-out to harvest. Natural seeding on frames at Yongwon-dong, Jinhae (June, August and October 1999) and artificial seeding from mature thalli (April-May) in 1 t tanks, indoor nursery to August and transfer to the farm in mid-September. Pole culture at Yongwon-dong, Jinhae (65 nets) and floating culture at Wonpo-ri, Hwayang-myeon, Yeosu (28 nets), harvested by hand four to six times; monthly harvest November 1999 to March 2000 (Table 4)."
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 1.0,
+    "food_name": "파래, 가시파래, 말린것 (Ulva prolifera; RDA DB 10.4 L0270010001a)",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 12.5,
+      "unit": "g",
+      "value": 1.58
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 37.5,
+      "unit": "mg",
+      "value": 2.94
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 12.5,
+      "unit": "mg",
+      "value": 51.12
+     }
+    ],
+    "source": {
+     "id": "rda_10_4_ulva_prolifera_dried",
+     "license": "KOGL Type 1 (attribution) for the DB",
+     "title": "파래, 가시파래, 말린것 (food code L0270010001a)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a&fdNms=%EA%B0%80%EC%8B%9C%ED%8C%8C%EB%9E%98"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "가시파래",
+   "map_link": "index.html#s=234476&v=explore&m=8/34.50/127.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "range_state",
+    "basis_label": "서식국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "서식국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (스웨덴 국가 적색목록, 팀 규칙 v4.0)",
+    "scope": null,
+    "source": {
+     "id": "slu_rodlista_2025",
+     "license": "CC0 1.0 (SND dataset)",
+     "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
+     "url": "https://doi.org/10.5878/ffrv-6x57"
+    }
+   },
+   "on_route": true,
+   "order": 12,
+   "public_cells": 22,
+   "public_records": 245,
+   "scientific_name": "Ulva prolifera",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 53.8,
+    "MBPI": 73.3,
+    "MCUI": 10.0,
+    "MFPI": 34.2
+   },
+   "shared_with": [
+    836033,
+    836041,
+    413600
+   ],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cancerppd_anticancer_cohort",
+     "license": "Open, confirmed by the maintainer by email (2026-10-02)",
+     "title": "CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts",
+     "url": "https://webs.iiitd.edu.in/raghava/cancerppd2/"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "li_2024_ulva_kaf",
+     "license": "CC BY 4.0",
+     "title": "Preparation and vasodilation mechanism of angiotensin-I-converting enzyme inhibitory peptide from Ulva prolifera protein",
+     "url": "https://doi.org/10.3390/md22090398"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_10_4_ulva_prolifera_dried",
+     "license": "KOGL Type 1 (attribution) for the DB",
+     "title": "파래, 가시파래, 말린것 (food code L0270010001a)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a&fdNms=%EA%B0%80%EC%8B%9C%ED%8C%8C%EB%9E%98"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "slu_rodlista_2025",
+     "license": "CC0 1.0 (SND dataset)",
+     "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
+     "url": "https://doi.org/10.5878/ffrv-6x57"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    },
+    {
+     "id": "yoon_2003_ulva_prolifera_culture",
+     "license": "Publisher terms (open access on KoreaScience)",
+     "title": "녹조식물 가시파래, Enteromorpha prolifera의 양식연구 (Yoon JT, Cho YC, Gong YG 2003)",
+     "url": "https://www.koreascience.kr/article/JAKO200311921555932.page"
+    },
+    {
+     "id": "zhang_2022_ulva_htdt",
+     "license": "CC BY 4.0",
+     "title": "Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (Lin X et al. 2022)",
+     "url": "https://doi.org/10.3390/foods11213507"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 836041,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1016/s1875-5364(21)60119-x"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.5625,
+    "links": [
+     "https://doi.org/10.1016/s1875-5364(21)60119-x"
+    ],
+    "median_pchembl": 5.62,
+    "percentile": 24.51,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "FLAZINE",
+    "target": "Human immunodeficiency virus 1",
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     34.5,
+     127.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N34E127:2000",
+    "lat0": 34,
+    "lon0": 127,
+    "period": "2000–2015",
+    "records": 40,
+    "sea_areas": [
+     "East China Sea"
+    ],
+    "sites": 2,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Hatchery crosses (two-by-two factorial) of Kumamoto and Portuguese oysters; pure Kumamoto progeny grown out with the hybrids for one year and sampled at one year of age"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.2055,
+    "food_name": "Magallana sikamea (Crassostrea sikamea, Kumamoto oyster)",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 5.77,
+      "unit": "g",
+      "value": 5.96
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 94.23,
+      "unit": "mg",
+      "value": 8.2
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 94.23,
+      "unit": "mg",
+      "value": 141.44
+     }
+    ],
+    "source": {
+     "id": "liu_2021_kumamoto_xiangshan",
+     "license": "CC BY 4.0",
+     "title": "Molecular Basis of Taste and Micronutrient Content in Kumamoto Oysters (Crassostrea sikamea) and Portuguese Oysters (Crassostrea angulata) From Xiangshan Bay (Liu S, Xu H, Jian S, Xue Q, Lin Z), doi:10.3389/fphys.2021.713736",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8353274/"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "시카메굴",
+   "map_link": "index.html#s=836041&v=explore&m=8/34.50/127.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "range_state",
+    "basis_label": "서식국 국가 평가",
+    "category": "NT",
+    "criteria": null,
+    "label": "서식국 국가 평가 기반 MCUI",
+    "mapping": "NT → 35 (일본 국가 적색목록, 팀 규칙 v4.0)",
+    "scope": null,
+    "source": {
+     "id": "moe_japan_red_list_2020_molluscs",
+     "license": "Government open data (政府標準利用規約); category and name facts only",
+     "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
+     "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv"
+    }
+   },
+   "on_route": true,
+   "order": 13,
+   "public_cells": 1,
+   "public_records": 40,
+   "scientific_name": "Magallana sikamea",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 35.0,
+    "MBPI": 13.8,
+    "MCUI": 35.0,
+    "MFPI": 56.1
+   },
+   "shared_with": [
+    836033,
+    234476,
+    413600
+   ],
+   "sources": [
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "liu_2021_kumamoto_xiangshan",
+     "license": "CC BY 4.0",
+     "title": "Molecular Basis of Taste and Micronutrient Content in Kumamoto Oysters (Crassostrea sikamea) and Portuguese Oysters (Crassostrea angulata) From Xiangshan Bay (Liu S, Xu H, Jian S, Xue Q, Lin Z), doi:10.3389/fphys.2021.713736",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8353274/"
+    },
+    {
+     "id": "moe_japan_red_list_2020_molluscs",
+     "license": "Government open data (政府標準利用規約); category and name facts only",
+     "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
+     "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    },
+    {
+     "id": "yan_2018_kumamoto_beihai",
+     "license": "Publisher copyright (Wiley); abstract only, fact and a short quotation",
+     "title": "Growth performance and biochemical composition of the oysters Crassostrea sikamea, Crassostrea angulata and their hybrids in southern China (Yan L, Su J, Wang Z, Zhang Y, Yan X, Yu R), doi:10.1111/are.13549",
+     "url": "https://doi.org/10.1111/are.13549"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 413600,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md14060110"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md14060110"
+    ],
+    "median_pchembl": null,
+    "percentile": 75.85,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "VQY",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 9.8
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     34.5,
+     127.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     }
+    ],
+    "code": "deg1:N34E127:2000",
+    "lat0": 34,
+    "lon0": 127,
+    "period": "2000–2015",
+    "records": 40,
+    "sea_areas": [
+     "East China Sea"
+    ],
+    "sites": 3,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2012
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Integrated pond polyculture with swimming crab and kuruma shrimp: razor clam seed (shell length 18.5 mm, 0.32 g) stocked at 37.5 kg/ha in a 1.33 ha pond and grown for 240 days; biomass from initial and harvesting weights"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.65,
+    "food_name": "＜貝類＞ あげまき 生",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 5.77,
+      "unit": "g",
+      "value": 8.1
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 90.38,
+      "unit": "mg",
+      "value": 4.1
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 63.46,
+      "unit": "mg",
+      "value": 1.5
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 82.69,
+      "unit": "mg",
+      "value": 66.0
+     }
+    ],
+    "source": {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "가리맛조개",
+   "map_link": "index.html#s=413600&v=explore&m=8/34.50/127.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": true,
+   "order": 14,
+   "public_cells": 9,
+   "public_records": 172,
+   "scientific_name": "Sinonovacula constricta",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 57.3,
+    "MBPI": 56.9,
+    "MCUI": 20.0,
+    "MFPI": 57.7
+   },
+   "shared_with": [
+    836033,
+    234476,
+    836041
+   ],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cancerppd_anticancer_cohort",
+     "license": "Open, confirmed by the maintainer by email (2026-10-02)",
+     "title": "CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts",
+     "url": "https://webs.iiitd.edu.in/raghava/cancerppd2/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "dong_2021_pond_razor_clam",
+     "license": "CC BY 4.0",
+     "title": "Assessment of the Carrying Capacity of Integrated Pond Aquaculture of Portunus trituberculatus at the Ecosystem Level (Dong S, Wang F, Zhang D, Yu L, Pu W, Xu X, Xie Y), doi:10.3389/fmars.2021.747891",
+     "url": "https://doi.org/10.3389/fmars.2021.747891"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "li_2016_sinonovacula_vqy",
+     "license": "CC BY 4.0",
+     "title": "Identification of angiotensin I-converting enzyme inhibitory peptides derived from enzymatic hydrolysates of razor clam Sinonovacula constricta",
+     "url": "https://doi.org/10.3390/md14060110"
+    },
+    {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "zhu_2017_sinonovacula_sch",
+     "license": "CC BY-NC-ND 4.0",
+     "title": "Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (Huang F et al. 2017)",
+     "url": "https://doi.org/10.3892/mmr.2017.7418"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
    "aphia_id": 342067,
    "bbvi_label": "단일 논문",
    "bio": {
@@ -590,6 +3362,7 @@
     "unit": "uM",
     "value": 9.8
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      33.5,
@@ -617,6 +3390,7 @@
     "year_end": 2012,
     "year_start": 2011
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": false,
@@ -663,6 +3437,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.94,
    "korean_name": "살오징어",
    "map_link": "index.html#s=342067&v=explore&m=8/33.50/127.50",
@@ -686,7 +3461,8 @@
      "url": "https://www.iucnredlist.org/species/176085/1428473"
     }
    },
-   "order": 3,
+   "on_route": true,
+   "order": 15,
    "public_cells": 26,
    "public_records": 173,
    "scientific_name": "Todarodes pacificus",
@@ -702,6 +3478,7 @@
     "MCUI": 20.0,
     "MFPI": 46.1
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "ahtpdb_ic50_2026",
@@ -790,6 +3567,267 @@
    }
   },
   {
+   "aphia_id": 1666974,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1021/acs.jmedchem.0c00643"
+    ],
+    "endpoint": "Ki",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1021/acs.jmedchem.0c00643"
+    ],
+    "median_pchembl": null,
+    "percentile": 87.68,
+    "relation": "=",
+    "stratum_kind": "relaxed",
+    "subject": "FMRFamide",
+    "target": "Neuropeptide FF receptor 2",
+    "unit": "nM",
+    "value": 6.6
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     33.5,
+     128.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     }
+    ],
+    "code": "deg1:N33E128:2000",
+    "lat0": 33,
+    "lon0": 128,
+    "period": "2000–2015",
+    "records": 2,
+    "sea_areas": [
+     "East China Sea"
+    ],
+    "sites": 2,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2012
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Land-based outdoor open tank/pond (육상호지) grow-out managed as flow-through (유수식), with no heating after early-season plastic covering. Broodstock were spawned in indoor tanks at the East Sea Fisheries Research Institute. About 50,000 attached eggs were stocked in May 2021: the English abstract says early May and the Korean Methods say mid-May (5월 중순). Hatchlings were fed live opossum shrimps (mysids), and frozen shrimp were fed from August."
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.69,
+    "food_name": "오징어, 참갑오징어, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 46.15,
+      "unit": "g",
+      "value": 17.3
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 19.23,
+      "unit": "mg",
+      "value": 0.4
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 86.54,
+      "unit": "mg",
+      "value": 2.9850000000000003
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 19.23,
+      "unit": "mg",
+      "value": 13.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "갑오징어",
+   "map_link": "index.html#s=1666974&v=explore&m=8/33.50/128.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": true,
+   "order": 16,
+   "public_cells": 20,
+   "public_records": 181,
+   "scientific_name": "Acanthosepion esculentum",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 54.2,
+    "MBPI": 65.8,
+    "MCUI": 10.0,
+    "MFPI": 42.5
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "chembl_fmrfamide_npff_rows",
+     "license": "CC BY-SA 3.0",
+     "title": "FMRFamide (CHEMBL262202) activity rows at NPFF2/NPY2 used as the origin measurements",
+     "url": "https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL262202"
+    },
+    {
+     "id": "chembl_relaxed_cohorts",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50",
+     "url": "https://www.ebi.ac.uk/chembl/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "cn103467568b_sepia_peptide",
+     "license": "Patent document; values and wording recorded only",
+     "title": "一种金乌贼蛋白抗氧化肽及其制备方法和用途 (Sepia esculenta protein antioxidant peptide; 王斌·郁迪·徐银峰·胡发远)",
+     "url": "https://patents.google.com/patent/CN103467568B/en"
+    },
+    {
+     "id": "ding_2011_cjnm_qpk",
+     "license": "Publisher terms; values and wording recorded only",
+     "title": "Anticancer activity of an oligopeptide isolated from hydrolysates of Sepia ink (Ding G-F et al. 2011)",
+     "url": "https://www.sciencedirect.com/science/article/pii/S1875536411600563"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "huang_2017_mmr_shp",
+     "license": "Publisher terms; wording recorded only",
+     "title": "Isolation and purification of novel peptides derived from Sepia ink: Effects on apoptosis of prostate cancer cell PC-3 (Huang F et al. 2017)",
+     "url": "https://doi.org/10.3892/mmr.2017.7068"
+    },
+    {
+     "id": "iucn_sepia_esculenta_2012",
+     "license": "IUCN Red List terms",
+     "title": "Sepia esculenta assessment e.T162666A940677",
+     "url": "https://www.iucnredlist.org/species/162666/940677"
+    },
+    {
+     "id": "jing_2014_mfst_shp",
+     "license": "Publisher terms; values recorded only",
+     "title": "乌贼墨多肽诱导人前列腺癌DU-145细胞凋亡的机制研究 (景奕文·杨最素·黄芳芳·郁迪·丁国芳 2014)",
+     "url": "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
+    },
+    {
+     "id": "kumar_2018_micpath_ink",
+     "license": "Publisher copyright; abstract only",
+     "title": "Proteomics analysis of crude squid ink isolated from Sepia esculenta for their antimicrobial, antibiofilm and cytotoxic properties (Kumar P et al. 2018)",
+     "url": "https://doi.org/10.1016/j.micpath.2018.01.039"
+    },
+    {
+     "id": "ncbi_sesculenta_tsa_ggqu",
+     "license": "INSDC (public domain)",
+     "title": "Acanthosepion esculentum transcriptome shotgun assembly GGQU01 (176,390 transcripts), FMRFamide precursor GGQU01104929.1",
+     "url": "https://www.ncbi.nlm.nih.gov/nuccore/GGQU01104929.1"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "ueda_2008_toxicon_sectx",
+     "license": "Publisher copyright; abstract only",
+     "title": "Purification and molecular cloning of SE-cephalotoxin, a novel proteinaceous toxin from the posterior salivary gland of cuttlefish Sepia esculenta (Ueda A et al. 2008)",
+     "url": "https://doi.org/10.1016/j.toxicon.2008.07.007"
+    },
+    {
+     "id": "ufish_1_workbook",
+     "license": "FAO copyright; non-commercial research and education use with attribution",
+     "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
+     "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx"
+    },
+    {
+     "id": "yoo_2023_sepia_esculenta",
+     "license": "No open licence shown; fact, method summary and a short quotation only",
+     "title": "First Report in Korea on Trial Aquaculture of Cuttlefish (Sepia esculenta) Using in the Open Tank (육상호지를 이용한 참갑오징어(Sepia esculenta) 시험양식 국내 첫 보고), Yoo HK, Lee KW, Kim DH, Kim GS, Kim WJ, Lim HJ, Jung MM; 35(6):1131-1136; doi:10.13000/JFMSE.2023.12.35.6.1131",
+     "url": "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497"
+    },
+    {
+     "id": "yu_2020_md_sepia",
+     "license": "CC BY 4.0",
+     "title": "Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)",
+     "url": "https://doi.org/10.3390/md18100490"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
    "aphia_id": 145721,
    "bbvi_label": null,
    "bio": {
@@ -810,6 +3848,7 @@
     "unit": "uM",
     "value": 1.5
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      34.5,
@@ -837,6 +3876,7 @@
     "year_end": 2015,
     "year_start": 2000
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -883,6 +3923,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 1.0,
    "korean_name": "미역",
    "map_link": "index.html#s=145721&v=explore&m=8/34.50/128.50",
@@ -906,7 +3947,8 @@
      "url": "https://docs.cntd.ru/document/494219357"
     }
    },
-   "order": 4,
+   "on_route": true,
+   "order": 17,
    "public_cells": 35,
    "public_records": 886,
    "scientific_name": "Undaria pinnatifida",
@@ -922,6 +3964,7 @@
     "MCUI": 80.0,
     "MFPI": 46.7
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "ahtpdb_ic50_2026",
@@ -1114,6 +4157,7 @@
     "unit": null,
     "value": null
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      34.5,
@@ -1141,6 +4185,7 @@
     "year_end": 2012,
     "year_start": 2011
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -1187,6 +4232,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.94,
    "korean_name": "홍합(참담치)",
    "map_link": "index.html#s=506159&v=explore&m=8/34.50/129.50",
@@ -1210,7 +4256,8 @@
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
     }
    },
-   "order": 5,
+   "on_route": true,
+   "order": 18,
    "public_cells": 37,
    "public_records": 293,
    "scientific_name": "Mytilus coruscus",
@@ -1226,6 +4273,7 @@
     "MCUI": 10.0,
     "MFPI": 60.9
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "cellosaurus_mbpi",
@@ -1340,6 +4388,7 @@
     "unit": "uM",
     "value": 583.6
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      34.0,
@@ -1368,6 +4417,7 @@
     "year_end": 2015,
     "year_start": 2012
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -1414,6 +4464,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.94,
    "korean_name": "해삼",
    "map_link": "index.html#s=241776&v=explore&m=6/34.00/130.00",
@@ -1437,7 +4488,8 @@
      "url": "https://www.iucnredlist.org/species/180424/272708369"
     }
    },
-   "order": 6,
+   "on_route": true,
+   "order": 19,
    "public_cells": 8,
    "public_records": 277,
    "scientific_name": "Apostichopus japonicus",
@@ -1453,6 +4505,7 @@
     "MCUI": 80.0,
     "MFPI": 63.5
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "ahtpdb_ic50_2026",
@@ -1565,6 +4618,231 @@
    }
   },
   {
+   "aphia_id": 254538,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1016/j.procbio.2016.07.006"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1016/j.procbio.2016.07.006"
+    ],
+    "median_pchembl": null,
+    "percentile": 79.83,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "GASSGMPG",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 6.9
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     35.5,
+     130.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_pi",
+      "url": "https://www.gbif.org/dataset/3bd7e9fb-2e43-480d-a7de-681dfd3449f4"
+     }
+    ],
+    "code": "deg1:N35E130:2000",
+    "lat0": 35,
+    "lon0": 130,
+    "period": "2000–2015",
+    "records": 5,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 1,
+    "size_deg": 1,
+    "year_end": 2013,
+    "year_start": 2013
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": false,
+     "method": "Experimental land-based flow-through tank rearing of wild-caught Pacific cod juveniles from set nets. The fish were weaned on frozen krill, then moved to formulated/moist feeds, in 4 m PP circular tanks (10 t) and 2 m³ tanks supplied with deep ocean water held at 5-6 °C. Larvae were also reared in a 12 m³ PP tank to 33 days post-hatch from eggs stripped from wild broodstock landed at Geoje. The planned offshore submerged-cage grow-out was never stocked with cod."
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.48,
+    "food_name": "대구, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 65.38,
+      "unit": "g",
+      "value": 19.5
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 19.23,
+      "unit": "mg",
+      "value": 0.4
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 25.0,
+      "unit": "mg",
+      "value": 0.51
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 57.69,
+      "unit": "mg",
+      "value": 35.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "대구",
+   "map_link": "index.html#s=254538&v=explore&m=8/35.50/130.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "range_state",
+    "basis_label": "서식국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "서식국 국가 평가 기반 MCUI",
+    "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+    "scope": null,
+    "source": {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    }
+   },
+   "on_route": true,
+   "order": 20,
+   "public_cells": 32,
+   "public_records": 223,
+   "scientific_name": "Gadus macrocephalus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 49.1,
+    "MBPI": 59.9,
+    "MCUI": 10.0,
+    "MFPI": 38.3
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
+    {
+     "id": "kordi_2010_pacific_cod",
+     "license": "No open licence shown; fact, method summary and a short quotation only",
+     "title": "외해 심층가두리를 이용한 대구·참치 등 양식기술개발 (Developments of the aquaculture techniques for Pacific Cod and BlueFin Tuna applying to offshore submerged cage system)",
+     "url": "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255"
+    },
+    {
+     "id": "ngo_2016_cod_gelatin",
+     "license": "Publisher copyright",
+     "title": "Angiotensin-I-converting enzyme (ACE) inhibitory peptides from Pacific cod skin gelatin using ultrafiltration membranes",
+     "url": "https://doi.org/10.1016/j.procbio.2016.07.006"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
    "aphia_id": 250680,
    "bbvi_label": "단일 논문",
    "bio": {
@@ -1589,6 +4867,7 @@
     "unit": null,
     "value": null
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      35.5,
@@ -1616,6 +4895,7 @@
     "year_end": 2015,
     "year_start": 2011
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -1662,6 +4942,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.67,
    "korean_name": "멍게",
    "map_link": "index.html#s=250680&v=explore&m=8/35.50/129.50",
@@ -1679,13 +4960,14 @@
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
     "source": {
-     "id": null,
-     "license": null,
-     "title": null,
-     "url": null
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     }
    },
-   "order": 7,
+   "on_route": true,
+   "order": 21,
    "public_cells": 16,
    "public_records": 210,
    "scientific_name": "Halocynthia roretzi",
@@ -1701,6 +4983,7 @@
     "MCUI": 10.0,
     "MFPI": 52.8
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "bachman_2020_rapid_lc",
@@ -1801,6 +5084,1700 @@
    }
   },
   {
+   "aphia_id": 276651,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1074/jbc.m610413200"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1074/jbc.m610413200"
+    ],
+    "median_pchembl": null,
+    "percentile": 9.98,
+    "relation": "=",
+    "stratum_kind": "relaxed",
+    "subject": "sbGnRH([Ser8]GnRH)",
+    "target": "Gonadotropin-releasing hormone receptor",
+    "unit": "nM",
+    "value": 684
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     36.5,
+     129.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "NIFS_NF",
+      "url": "https://obis.org/dataset/587953dd-0998-48ba-a99e-ed765f7366f4"
+     }
+    ],
+    "code": "deg1:N36E129:2016",
+    "lat0": 36,
+    "lon0": 129,
+    "period": "2016–2026",
+    "records": 72,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 1,
+    "size_deg": 1,
+    "year_end": 2025,
+    "year_start": 2025
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Net-cage grow-out mainly from wild-caught seed; the factsheet names the Republic of Korea as the only producer besides Japan reporting to FAO"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.6,
+    "food_name": "방어, 양식, 어린것, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 74.0,
+      "unit": "g",
+      "value": 20.7
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 62.0,
+      "unit": "mg",
+      "value": 1.0
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 42.0,
+      "unit": "mg",
+      "value": 0.8
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 28.0,
+      "unit": "mg",
+      "value": 19.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "방어",
+   "map_link": "index.html#s=276651&v=explore&m=8/36.50/129.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": 2015,
+    "basis": "iucn",
+    "basis_label": "IUCN 전 지구 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": null,
+    "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
+    "scope": "Global (native range incl. Japan; DPRK; Republic of Korea; Russian Federation)",
+    "source": {
+     "id": "iucn_seriola_quinqueradiata_2016",
+     "license": "IUCN Red List terms",
+     "title": "Seriola quinqueradiata assessment page 20435860/115383171",
+     "url": "https://www.iucnredlist.org/species/20435860/115383171"
+    }
+   },
+   "on_route": true,
+   "order": 22,
+   "public_cells": 25,
+   "public_records": 322,
+   "scientific_name": "Seriola quinqueradiata",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 29.3,
+    "MBPI": 7.5,
+    "MCUI": 10.0,
+    "MFPI": 51.0
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "chembl_relaxed_cohorts",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50",
+     "url": "https://www.ebi.ac.uk/chembl/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "fao_casp_amberjack",
+     "license": "FAO website terms",
+     "title": "Cultured Aquatic Species Information Programme — Seriola quinqueradiata",
+     "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japaneseamberjack.htm"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "iucn_seriola_quinqueradiata_2016",
+     "license": "IUCN Red List terms",
+     "title": "Seriola quinqueradiata assessment page 20435860/115383171",
+     "url": "https://www.iucnredlist.org/species/20435860/115383171"
+    },
+    {
+     "id": "kosis_fish_aquaculture",
+     "license": "KOSIS terms of use (공공누리 표시 확인 필요)",
+     "title": "시도·시군구별 양식방법별 어종별 양식현황(입식, 생산, 사육, 먹이를 준 양) DT_1EZ0008",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008"
+    },
+    {
+     "id": "lu_2007_jbc_sbgnrh",
+     "license": "Open Access (JBC/Elsevier open archive)",
+     "title": "Structural determinants for ligand-receptor conformational selection in a peptide GPCR (Lu, Coetsee, White & Millar 2007)",
+     "url": "https://doi.org/10.1074/jbc.M610413200"
+    },
+    {
+     "id": "mext_sfct_2020",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)",
+     "url": "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx"
+    },
+    {
+     "id": "miyamoto_2024_ifnp_dppiv",
+     "license": "Publisher terms; values and wording recorded only",
+     "title": "Characterization of Fish Skin Hydrolysates Exhibiting Dipeptidyl Peptidase IV Inhibitory Activity (Miyamoto H, Safitri E, Nagai T, Saito M 2024)",
+     "url": "https://doi.org/10.22146/ifnp.88534"
+    },
+    {
+     "id": "ncbi_squ_cdna_kt229623",
+     "license": "INSDC (public domain)",
+     "title": "Seriola quinqueradiata sbGnRH mRNA, partial cds (KT229623.1/ALP83362.1)",
+     "url": "https://www.ncbi.nlm.nih.gov/nuccore/KT229623.1"
+    },
+    {
+     "id": "ncbi_squ_genome_gca002217815",
+     "license": "INSDC (public domain)",
+     "title": "Seriola quinqueradiata Squ_2.0 reference genome, contig BDMU01000006.1",
+     "url": "https://www.ncbi.nlm.nih.gov/nuccore/BDMU01000006.1"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 236157,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1371/journal.pone.0029359"
+    ],
+    "endpoint": "Potency",
+    "evidence_factor": 0.5625,
+    "links": [
+     "https://doi.org/10.1371/journal.pone.0029359"
+    ],
+    "median_pchembl": 5.5,
+    "percentile": 87.62,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "PROSTAGLANDIN A2",
+    "target": "DNA polymerase beta",
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     129.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N37E129:2000",
+    "lat0": 37,
+    "lon0": 129,
+    "period": "2000–2015",
+    "records": 32,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 9,
+    "size_deg": 1,
+    "year_end": 2012,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Outdoor 1200 L tanks fed with fishpond effluent in an integrated multi-trophic aquaculture (IMTA) system, stocking 3, 5 and 7 kg per m2 under two water flows; biomass harvested through the year"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 1.0,
+    "food_name": "꼬시래기, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 37.5,
+      "unit": "g",
+      "value": 1.8
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 62.5,
+      "unit": "mg",
+      "value": 6.9
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 87.5,
+      "unit": "mg",
+      "value": 630.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.61,
+   "korean_name": "꼬시래기",
+   "map_link": "index.html#s=236157&v=explore&m=8/37.50/129.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    }
+   },
+   "on_route": true,
+   "order": 23,
+   "public_cells": 28,
+   "public_records": 1004,
+   "scientific_name": "Gracilaria vermiculophylla",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 59.7,
+    "MBPI": 49.3,
+    "MCUI": 10.0,
+    "MFPI": 70.0
+   },
+   "shared_with": [
+    393716
+   ],
+   "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    {
+     "id": "barcelo_2017_gracilaria_imta",
+     "license": "Publisher copyright (Springer); abstract only, fact and a short quotation",
+     "title": "Production of Mycosporine-Like Amino Acids from Gracilaria vermiculophylla (Rhodophyta) Cultured Through One Year in an Integrated Multi-trophic Aquaculture (IMTA) System (Barceló-Villalobos M, Figueroa FL, Korbee N, Álvarez-Gómez F, Abreu MH), doi:10.1007/s10126-017-9746-8",
+     "url": "https://doi.org/10.1007/s10126-017-9746-8"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "mabik_national_species_list",
+     "license": "공공데이터포털 이용허락범위 제한 없음 (data.go.kr 15063771)",
+     "title": "국가 해양수산생물종 목록 (national list of marine and fishery species; 국명 = Korean standard name, 정명 rows)",
+     "url": "https://www.mbris.kr/pub/marine/natilist/nationalist.do"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "okinawa_rdb3_plants",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "レッドデータおきなわ 第3版 菌類編・植物編〈藻類〉",
+     "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 393716,
+   "bbvi_label": null,
+   "bio": {
+    "dois": [
+     "10.16535/j.cnki.dlhyxb.2018.06.016"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 1.0,
+    "links": [
+     "https://doi.org/10.16535/j.cnki.dlhyxb.2018.06.016"
+    ],
+    "median_pchembl": null,
+    "percentile": 36.36,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "VW",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 86.9
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     129.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     },
+     {
+      "licenses": [
+       "CC0 1.0"
+      ],
+      "title": "2015_nsmk_smpl_ms",
+      "url": "https://www.gbif.org/dataset/f4004b04-bdcb-467f-9bbf-878b736a72ce"
+     }
+    ],
+    "code": "deg1:N37E129:2000",
+    "lat0": 37,
+    "lon0": 129,
+    "period": "2000–2015",
+    "records": 31,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 3,
+    "size_deg": 1,
+    "year_end": 2014,
+    "year_start": 2012
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Wild seed collection with suspended (hanging) culture or ground lays; off-bottom methods spread from Japan to other North Pacific Asian countries"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.42,
+    "food_name": "가리비, 큰가리비, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 22.0,
+      "unit": "g",
+      "value": 12.3
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 58.0,
+      "unit": "mg",
+      "value": 0.92
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 78.0,
+      "unit": "mg",
+      "value": 2.15
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 50.0,
+      "unit": "mg",
+      "value": 31.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 1.0,
+   "korean_name": "큰가리비",
+   "map_link": "index.html#s=393716&v=explore&m=8/37.50/129.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": true,
+   "order": 24,
+   "public_cells": 8,
+   "public_records": 77,
+   "scientific_name": "Mizuhopecten yessoensis",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 46.1,
+    "MBPI": 36.4,
+    "MCUI": 10.0,
+    "MFPI": 55.8
+   },
+   "shared_with": [
+    236157
+   ],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "fao_casp_yesso_scallop",
+     "license": "FAO website terms",
+     "title": "Cultured Aquatic Species Information Programme — Patinopecten yessoensis",
+     "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_yessoscallop.htm"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kapel_2006_alfalfa",
+     "license": "Publisher copyright",
+     "title": "Characterization of an antihypertensive peptide from an Alfalfa white protein hydrolysate produced by a continuous enzymatic membrane reactor",
+     "url": "https://doi.org/10.1016/j.procbio.2006.04.019"
+    },
+    {
+     "id": "li_2018_scallop_vw",
+     "license": "Publisher copyright (版权所有 © 《大连海洋大学学报》编辑部; free to read, no CC licence stated)",
+     "title": "扇贝裙边ACE抑制肽的分离鉴定及其降血压活性研究 (ACE inhibitory peptide from scallop skirt: isolation, identification and antihypertensive activity)",
+     "url": "https://xuebao.dlou.edu.cn/article/2018/2095-1388/201806016.html"
+    },
+    {
+     "id": "lin_2018_chlorella",
+     "license": "CC BY 4.0",
+     "title": "Purification and Identification of Angiotensin I-Converting Enzyme Inhibitory Peptides and the Antihypertensive Effect of Chlorella sorokiniana Protein Hydrolysates",
+     "url": "https://doi.org/10.3390/nu10101397"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "nomura_2002_thresher",
+     "license": "Publisher copyright (The Japanese Society of Fisheries Science); free access on J-STAGE, no CC licence stated",
+     "title": "Purification of angiotensin I-converting enzyme inhibitors in pelagic thresher Alopias pelagicus muscle hydrolysate and viscera extracts",
+     "url": "https://doi.org/10.1046/j.1444-2906.2002.00518.x"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "rda_db_10_4_fatty_acids",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "suetsuna_2004_wakame",
+     "license": "Publisher copyright",
+     "title": "Antihypertensive effects of Undaria pinnatifida (wakame) peptide on blood pressure in spontaneously hypertensive rats",
+     "url": "https://doi.org/10.1016/j.jnutbio.2003.11.004"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 377084,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1371/journal.pone.0258980"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.5625,
+    "links": [
+     "https://doi.org/10.1371/journal.pone.0258980"
+    ],
+    "median_pchembl": 5.5,
+    "percentile": 47.14,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "CHEMBL252561",
+    "target": "Trypanosoma brucei brucei",
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     38.5,
+     128.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "공공누리 제3유형"
+      ],
+      "title": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+      "url": "https://species.nibr.go.kr/geo/html/index.do"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     },
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "flora & fauna(NIBR)",
+      "url": "https://www.gbif.org/dataset/9aa00786-772a-46d4-8fe1-ac6d8926a040"
+     }
+    ],
+    "code": "deg1:N38E128:2000",
+    "lat0": 38,
+    "lon0": 128,
+    "period": "2000–2015",
+    "records": 118,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 24,
+    "size_deg": 1,
+    "year_end": 2014,
+    "year_start": 2000
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Zoospores seeded on PVC seed fibre, nursery-reared in the laboratory to micro-sporophytes, then grown on culture ropes at a commercial kelp farm and harvested; Korean (Sugwawon No. 301) and Chinese (Huangguan No. 1) cultivars compared"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 1.0,
+    "food_name": "다시마, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 12.5,
+      "unit": "g",
+      "value": 1.1
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 37.5,
+      "unit": "mg",
+      "value": 2.4
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 87.5,
+      "unit": "mg",
+      "value": 103.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.61,
+   "korean_name": "다시마",
+   "map_link": "index.html#s=377084&v=explore&m=8/38.50/128.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    }
+   },
+   "on_route": true,
+   "order": 25,
+   "public_cells": 21,
+   "public_records": 523,
+   "scientific_name": "Saccharina japonica",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 41.6,
+    "MBPI": 26.5,
+    "MCUI": 10.0,
+    "MFPI": 56.7
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
+    },
+    {
+     "id": "hwang_2018_saccharina_haenam",
+     "license": "CC BY-NC 3.0",
+     "title": "Comparison of the cultivation performance between Korean (Sugwawon No. 301) and Chinese strains (Huangguan No. 1) of kelp Saccharina japonica in an aquaculture farm in Korea (Hwang EK, Liu F, Lee KH, Ha DS, Park CS), doi:10.4490/algae.2018.33.2.4",
+     "url": "https://www.e-algae.org/upload/pdf/algae-2018-33-2-4.pdf"
+    },
+    {
+     "id": "ibaraki_rdb2020_algae",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
+     "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "mabik_national_species_list",
+     "license": "공공데이터포털 이용허락범위 제한 없음 (data.go.kr 15063771)",
+     "title": "국가 해양수산생물종 목록 (national list of marine and fishery species; 국명 = Korean standard name, 정명 rows)",
+     "url": "https://www.mbris.kr/pub/marine/natilist/nationalist.do"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 397082,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.1007/s00217-014-2315-8"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.1007/s00217-014-2315-8"
+    ],
+    "median_pchembl": null,
+    "percentile": 20.74,
+    "relation": "=",
+    "stratum_kind": "peptide",
+    "subject": "AMN",
+    "target": "ACE",
+    "unit": "uM",
+    "value": 317.71
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     38.0,
+     130.0
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_mo",
+      "url": "https://www.gbif.org/dataset/692904d4-b24f-4603-98f8-d6aa409d07a6"
+     }
+    ],
+    "code": "deg4:N36E128:2016",
+    "lat0": 36,
+    "lon0": 128,
+    "period": "2016–2026",
+    "records": 16,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 12,
+    "size_deg": 4,
+    "year_end": 2024,
+    "year_start": 2016
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Sea-based suspended (hanging) net-cage grow-out of H. discus hannai in a submerged culture facility"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.49,
+    "food_name": "전복, 둥근전복, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 25.0,
+      "unit": "g",
+      "value": 14.3
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 76.92,
+      "unit": "mg",
+      "value": 2.0
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 44.23,
+      "unit": "mg",
+      "value": 1.0090000000000001
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 75.0,
+      "unit": "mg",
+      "value": 52.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "전복(종 수준)",
+   "map_link": "index.html#s=397082&v=explore&m=6/38.00/130.00",
+   "matrix_type": {
+    "id": "conservation_priority",
+    "label": "보전 우선·모니터링"
+   },
+   "mcui": {
+    "assessment_year": 2022,
+    "basis": "iucn",
+    "basis_label": "IUCN 전 지구 평가",
+    "category": "EN",
+    "criteria": "A2d",
+    "label": null,
+    "mapping": "EN → 80 (팀 규칙 v4.0, IUCN 점수 아님)",
+    "scope": "Global (native range: Japan; Korea, Republic of)",
+    "source": {
+     "id": "iucn_haliotis_discus_2022",
+     "license": "IUCN Red List terms",
+     "title": "Haliotis discus assessment e.T78764186A78772433",
+     "url": "https://www.iucnredlist.org/species/78764186/78772433"
+    }
+   },
+   "on_route": true,
+   "order": 26,
+   "public_cells": 9,
+   "public_records": 72,
+   "scientific_name": "Haliotis discus",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 35.2,
+    "MBPI": 15.6,
+    "MCUI": 80.0,
+    "MFPI": 54.7
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "ahtpdb_ic50_2026",
+     "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
+     "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
+     "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "gbif_iucn_checklist",
+     "license": "CC BY 4.0",
+     "title": "The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)",
+     "url": "https://www.gbif.org/dataset/19491596-35ae-4a91-9a98-85cf505f1bd3"
+    },
+    {
+     "id": "iucn_haliotis_discus_2022",
+     "license": "IUCN Red List terms",
+     "title": "Haliotis discus assessment e.T78764186A78772433",
+     "url": "https://www.iucnredlist.org/species/78764186/78772433"
+    },
+    {
+     "id": "kang_2019_haliotis_wando",
+     "license": "CC BY 4.0",
+     "title": "Physiological responses of the abalone Haliotis discus hannai to daily and seasonal temperature variations (Kang HY, Lee Y-J, Song W-Y, Kim T-I, Lee W-C, Kim TY, Kang C-K), Sci Rep 9:8019, doi:10.1038/s41598-019-44526-3",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6541628/"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "ufish_1_workbook",
+     "license": "FAO copyright; non-commercial research and education use with attribution",
+     "title": "Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat",
+     "url": "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx"
+    },
+    {
+     "id": "wu_2015_abalone_gonad",
+     "license": "Publisher copyright",
+     "title": "Purification and characterization of a novel angiotensin I-converting enzyme inhibitory peptide derived from abalone (Haliotis discus hannai Ino) gonads (Wu Q, Cai QF, Tao ZP, Sun LC, Shen JD, Zhang LJ, Liu GM, Cao MJ)",
+     "url": "https://doi.org/10.1007/s00217-014-2315-8"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 371986,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.4162/nrp.2011.5.2.93"
+    ],
+    "endpoint": null,
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.4162/nrp.2011.5.2.93"
+    ],
+    "median_pchembl": 2.833,
+    "percentile": 90.0,
+    "relation": "=",
+    "stratum_kind": null,
+    "subject": "CID:3008868",
+    "target": null,
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     130.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     }
+    ],
+    "code": "deg1:N37E130:2000",
+    "lat0": 37,
+    "lon0": 130,
+    "period": "2000–2015",
+    "records": 36,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 8,
+    "size_deg": 1,
+    "year_end": 2015,
+    "year_start": 2011
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Seeded culture from zoospores to two-year-old plants. Mature sporophytes collected in Jeju in October 2005 released zoospores in a tank at the NFRDI Seaweed Research Center test site (정도리, 완도읍); they settled on seed frames and were grown in flowing seawater. Nursery on vertical frames at the 장용리 test farm (약산면, 완도군), January-March 2006 (best at 2 m). Main culture: seed string inserted on longline rope at 20 cm intervals; depth trial March-October 2006 (best at 1 m) and horizontal longline at 1 m, March 2006-March 2007. Biomass 2.6 kg wet wt/m in August 2006 and 3.6 kg/m in December 2006."
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 1.0,
+    "food_name": "Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 12.5,
+      "unit": "mg",
+      "value": 0.33
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 87.5,
+      "unit": "mg",
+      "value": 1.89
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 87.5,
+      "unit": "mg",
+      "value": 159.5
+     }
+    ],
+    "source": {
+     "id": "kawashima_1983_seaweed_inaa",
+     "license": "Publisher copyright (J-STAGE free access)",
+     "title": "Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368",
+     "url": "https://doi.org/10.1246/nikkashi.1983.368"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.61,
+   "korean_name": "감태",
+   "map_link": "index.html#s=371986&v=explore&m=8/37.50/130.50",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    }
+   },
+   "on_route": true,
+   "order": 27,
+   "public_cells": 27,
+   "public_records": 491,
+   "scientific_name": "Ecklonia cava",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 65.0,
+    "MBPI": 67.5,
+    "MCUI": 10.0,
+    "MFPI": 62.5
+   },
+   "shared_with": [
+    494853
+   ],
+   "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
+    },
+    {
+     "id": "hwang_2010_ecklonia_cava_culture",
+     "license": "Publisher terms (open access on KoreaScience)",
+     "title": "Nursery and main culture conditions for mass cultivation of the brown alga Ecklonia cava Kjellman (Hwang EK, Gong YG, Ha DS, Park CS 2010), doi:10.5657/kfas.2010.43.6.687",
+     "url": "https://doi.org/10.5657/kfas.2010.43.6.687"
+    },
+    {
+     "id": "ibaraki_rdb2020_algae",
+     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
+     "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
+     "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kawashima_1983_seaweed_inaa",
+     "license": "Publisher copyright (J-STAGE free access)",
+     "title": "Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368",
+     "url": "https://doi.org/10.1246/nikkashi.1983.368"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "park_2013_dieckol",
+     "license": "Publisher copyright; ChEMBL CC BY-SA 3.0 for the extracted values",
+     "title": "Dieckol, a SARS-CoV 3CL(pro) inhibitor, isolated from the edible brown algae Ecklonia cava",
+     "url": "https://doi.org/10.1016/j.bmc.2013.04.026"
+    },
+    {
+     "id": "pubchem_ecklonia_structures",
+     "license": "NCBI PubChem public compound records",
+     "title": "Compound records for five E. cava phlorotannins",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wijesinghe_2011_ace",
+     "license": "CC BY-NC 3.0",
+     "title": "Effect of phlorotannins isolated from Ecklonia cava on ACE inhibitory activity",
+     "url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_ecklonia",
+     "license": "WoRMS attribution",
+     "title": "Ecklonia cava accepted taxon, AphiaID 371986",
+     "url": "https://www.marinespecies.org/aphia.php?p=taxdetails&id=371986"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 494853,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md19090497",
+     "10.3390/md20010028",
+     "10.3390/md20110710"
+    ],
+    "endpoint": "IC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md19090497",
+     "https://doi.org/10.3390/md20010028",
+     "https://doi.org/10.3390/md20110710"
+    ],
+    "median_pchembl": 5.03,
+    "percentile": 28.77,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "CHEMBL4085945",
+    "target": "Cholinesterase",
+    "unit": null,
+    "value": null
+   },
+   "candidate_label": "조사 후보",
+   "cell": {
+    "center": [
+     37.5,
+     130.5
+    ],
+    "citations": [
+     {
+      "licenses": [
+       "CC BY-NC 4.0"
+      ],
+      "title": "mabik_al",
+      "url": "https://www.gbif.org/dataset/96866224-1d21-4007-98a5-d36259e80e90"
+     }
+    ],
+    "code": "deg1:N37E130:2016",
+    "lat0": 37,
+    "lon0": 130,
+    "period": "2016–2026",
+    "records": 23,
+    "sea_areas": [
+     "Sea of Japan"
+    ],
+    "sites": 12,
+    "size_deg": 1,
+    "year_end": 2022,
+    "year_start": 2016
+   },
+   "cell_missing_reason": null,
+   "food": {
+    "aquaculture": {
+     "feasible": true,
+     "method": "Indoor tank culture of the species through a full generation. Adult male and female plants were sampled in April 2007 at Xiaohuyu, Nanji Islands (27 27 N, 121 04 E), flown to the laboratory in Qingdao within 24 h and precultured in 80 L flow-through polypropylene tanks in tumble culture under reduced solar irradiance. Zygotes were collected on 6 June from one female plant and seeded onto a 0.5 m2 seedling collector; the seedlings were grown to 5-7 cm, re-inserted into a 2 cm nylon/cotton rope and grown on in a 1,000 L flow-through indoor raceway tank (lanes 400 x 40 x 40 cm, sand-filtered and ozone-treated water, 50% renewed daily, KNO3 10 and KH2PO4 1 mg/L every two days, long-lines hung at the surface at 15 cm intervals). The paper reports that the seedlings reached the long-line cultivation stage and that the life cycle in culture was completed in 4.5 months."
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 3,
+    "edible_fraction": 0.6667,
+    "food_name": "Sargassum horneri (괭생이모자반, akamoku)",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 12.5,
+      "unit": "g",
+      "value": 1.04
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": null,
+      "unit": null,
+      "value": null
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 62.5,
+      "unit": "mg",
+      "value": 0.48
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 87.5,
+      "unit": "mg",
+      "value": 147.8
+     }
+    ],
+    "source": {
+     "id": "murakami_2011_sargassum_horneri",
+     "license": "Publisher copyright (Elsevier); read through the Dongguk University library subscription",
+     "title": "Seasonal variation in the chemical composition of a marine brown alga, Sargassum horneri (Turner) C. Agardh (Murakami K, Yamaguchi Y, Noda K, Fujii T, Shinohara N, Ushirokawa T, Sugawa-Katayama Y, Katayama M), doi:10.1016/j.jfca.2010.08.004",
+     "url": "https://doi.org/10.1016/j.jfca.2010.08.004"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.61,
+   "korean_name": "괭생이모자반",
+   "map_link": "index.html#s=494853&v=explore&m=8/37.50/130.50",
+   "matrix_type": {
+    "id": "baseline_survey",
+    "label": "기초조사·관찰 대상"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
+    "criteria": null,
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    }
+   },
+   "on_route": true,
+   "order": 28,
+   "public_cells": 41,
+   "public_records": 1073,
+   "scientific_name": "Sargassum horneri",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 37.6,
+    "MBPI": 21.6,
+    "MCUI": 10.0,
+    "MFPI": 53.5
+   },
+   "shared_with": [
+    371986
+   ],
+   "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    {
+     "id": "cellosaurus_mbpi",
+     "license": "CC BY 4.0",
+     "title": "Cell-line category for ChEMBL CELL-LINE targets",
+     "url": "https://www.cellosaurus.org/"
+    },
+    {
+     "id": "chembl_mbpi",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL molecule, activity, target and cell-line resources",
+     "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
+    },
+    {
+     "id": "iucn_redlist_recheck",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "Site search of Red List assessments (version 2026-1)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "murakami_2011_sargassum_horneri",
+     "license": "Publisher copyright (Elsevier); read through the Dongguk University library subscription",
+     "title": "Seasonal variation in the chemical composition of a marine brown alga, Sargassum horneri (Turner) C. Agardh (Murakami K, Yamaguchi Y, Noda K, Fujii T, Shinohara N, Ushirokawa T, Sugawa-Katayama Y, Katayama M), doi:10.1016/j.jfca.2010.08.004",
+     "url": "https://doi.org/10.1016/j.jfca.2010.08.004"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "pang_2008_sargassum_horneri_culture",
+     "license": "Publisher copyright (Springer); read through a university library subscription",
+     "title": "Cultivation of the brown alga Sargassum horneri: sexual reproduction and seedling production in tank culture under reduced solar irradiance in ambient temperature (Pang SJ, Liu F, Shan TF, Gao SQ, Zhang ZH), doi:10.1007/s10811-008-9386-5",
+     "url": "https://doi.org/10.1007/s10811-008-9386-5"
+    },
+    {
+     "id": "pubchem_inchikey_mbpi",
+     "license": "NCBI public access",
+     "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
+     "url": "https://pubchem.ncbi.nlm.nih.gov/rest/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wikidata_p703_lotus",
+     "license": "CC0 1.0",
+     "title": "P703 found-in-taxon statements and P248 references",
+     "url": "https://query.wikidata.org/sparql"
+    },
+    {
+     "id": "worms_rest_mbpi",
+     "license": "CC BY 4.0",
+     "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
+     "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
    "aphia_id": 372119,
    "bbvi_label": "단일 논문",
    "bio": {
@@ -1821,6 +6798,7 @@
     "unit": null,
     "value": null
    },
+   "candidate_label": null,
    "cell": {
     "center": [
      37.5,
@@ -1848,6 +6826,7 @@
     "year_end": 2024,
     "year_start": 2016
    },
+   "cell_missing_reason": null,
    "food": {
     "aquaculture": {
      "feasible": true,
@@ -1894,6 +6873,7 @@
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
     }
    },
+   "group": "operational",
    "information_sufficiency": 0.94,
    "korean_name": "우뭇가사리",
    "map_link": "index.html#s=372119&v=explore&m=8/37.50/131.50",
@@ -1911,13 +6891,14 @@
     "mapping": "VU → 60 (러시아 국가 적색목록, 팀 규칙 v4.0)",
     "scope": null,
     "source": {
-     "id": null,
-     "license": null,
-     "title": null,
-     "url": null
+     "id": "russia_red_data_book_plants_2023",
+     "license": "Russian federal legal act (official publication); category and name facts only",
+     "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
+     "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf"
     }
    },
-   "order": 8,
+   "on_route": true,
+   "order": 29,
    "public_cells": 29,
    "public_records": 693,
    "scientific_name": "Gelidium elegans",
@@ -1933,6 +6914,7 @@
     "MCUI": 60.0,
     "MFPI": 76.7
    },
+   "shared_with": [],
    "sources": [
     {
      "id": "cellosaurus_mbpi",
@@ -2023,6 +7005,211 @@
      "license": "CC BY 4.0",
      "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
      "url": "https://www.marinespecies.org/rest/"
+    }
+   ],
+   "withheld_reasons": {
+    "BBVI": null,
+    "MBPI": null,
+    "MCUI": null,
+    "MFPI": null
+   }
+  },
+  {
+   "aphia_id": 534443,
+   "bbvi_label": "단일 논문",
+   "bio": {
+    "dois": [
+     "10.3390/md20050328"
+    ],
+    "endpoint": "EC50",
+    "evidence_factor": 0.75,
+    "links": [
+     "https://doi.org/10.3390/md20050328"
+    ],
+    "median_pchembl": null,
+    "percentile": 94.02,
+    "relation": "=",
+    "stratum_kind": "relaxed",
+    "subject": "cephalotocin",
+    "target": "Vasopressin V1b receptor",
+    "unit": "nM",
+    "value": 10.02
+   },
+   "candidate_label": "조사 후보",
+   "cell": null,
+   "cell_missing_reason": "셀 중심이 바다인 공개 셀 없음",
+   "food": {
+    "aquaculture": {
+     "feasible": false,
+     "method": "Paralarvae reared in upwelling cages and 500 L tanks settled as benthic juveniles at about 20 days after hatching; separate feeding and shelter trials used adult octopuses of unstated origin"
+    },
+    "basis": "100 g edible portion",
+    "cohort_species": 25,
+    "edible_fraction": 0.86,
+    "food_name": "문어, 참문어, 생것",
+    "nutrients": [
+     {
+      "key": "protein_g",
+      "label": "단백질",
+      "percentile": 25.0,
+      "unit": "g",
+      "value": 12.7
+     },
+     {
+      "key": "iron_mg",
+      "label": "철",
+      "percentile": 32.69,
+      "unit": "mg",
+      "value": 0.5
+     },
+     {
+      "key": "zinc_mg",
+      "label": "아연",
+      "percentile": 65.38,
+      "unit": "mg",
+      "value": 1.6
+     },
+     {
+      "key": "calcium_mg",
+      "label": "칼슘",
+      "percentile": 32.69,
+      "unit": "mg",
+      "value": 23.0
+     }
+    ],
+    "source": {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    }
+   },
+   "group": "candidate",
+   "information_sufficiency": 0.94,
+   "korean_name": "참문어(동아시아 종)",
+   "map_link": "index.html#s=534443&v=explore",
+   "matrix_type": {
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
+   },
+   "mcui": {
+    "assessment_year": null,
+    "basis": "national",
+    "basis_label": "한국 국가 평가",
+    "category": "NT",
+    "criteria": null,
+    "label": "한국 국가 평가 기반 MCUI",
+    "mapping": "NT → 35 (한국 국가 평가, 팀 규칙 v4.0)",
+    "scope": "national (Republic of Korea)",
+    "source": {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    }
+   },
+   "on_route": false,
+   "order": 30,
+   "public_cells": 2,
+   "public_records": 7,
+   "scientific_name": "Octopus sinensis",
+   "score_status": {
+    "BBVI": "산출됨",
+    "MBPI": "산출됨",
+    "MCUI": "산출됨",
+    "MFPI": "산출됨"
+   },
+   "scores": {
+    "BBVI": 54.2,
+    "MBPI": 70.5,
+    "MCUI": 35.0,
+    "MFPI": 37.8
+   },
+   "shared_with": [],
+   "sources": [
+    {
+     "id": "chembl_relaxed_cohorts",
+     "license": "CC BY-SA 3.0",
+     "title": "ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50",
+     "url": "https://www.ebi.ac.uk/chembl/"
+    },
+    {
+     "id": "cmnpd_mbpi",
+     "license": "CC BY-NC-SA 4.0",
+     "title": "CMNPD public compound search",
+     "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "europepmc_mbpi",
+     "license": "Europe PMC terms (metadata; article text under each article's own licence)",
+     "title": "Europe PMC REST search (IDs, titles and quoted abstract sentences)",
+     "url": "https://europepmc.org/RestfulWebService"
+    },
+    {
+     "id": "iucn_redlist_search",
+     "license": "IUCN Red List terms (non-commercial)",
+     "title": "IUCN Red List species search (Global scope)",
+     "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kim_2022_md_cephalotocin",
+     "license": "CC BY 4.0",
+     "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim Y-J et al. 2022)",
+     "url": "https://doi.org/10.3390/md20050328"
+    },
+    {
+     "id": "li_2020_mer_osinensis_genome",
+     "license": "Publisher terms; bibliographic data only",
+     "title": "Chromosome-level genome assembly of the East Asian common octopus (Octopus sinensis) using PacBio sequencing and Hi-C technology (Li F et al. 2020)",
+     "url": "https://doi.org/10.1111/1755-0998.13216"
+    },
+    {
+     "id": "mabik_national_species_list",
+     "license": "공공데이터포털 이용허락범위 제한 없음 (data.go.kr 15063771)",
+     "title": "국가 해양수산생물종 목록 (national list of marine and fishery species; 국명 = Korean standard name, 정명 rows)",
+     "url": "https://www.mbris.kr/pub/marine/natilist/nationalist.do"
+    },
+    {
+     "id": "mext_sfct_2020_items",
+     "license": "MEXT website terms of use (政府標準利用規約 第2.0版 準拠; CC BY 4.0 compatible)",
+     "title": "日本食品標準成分表2020年版（八訂） 第2章（データ） and 正誤表（データ）",
+     "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_01110.html"
+    },
+    {
+     "id": "ncbi_osinensis_genome_nw021826408",
+     "license": "Public INSDC/RefSeq sequence record",
+     "title": "Octopus sinensis genome assembly ASM634580v1 (GCF_006345805.1), unplaced scaffold NW_021826408.1 (identical to VCDQ01006288.1); BioSample SAMN11633729",
+     "url": "https://www.ncbi.nlm.nih.gov/nuccore/NW_021826408.1"
+    },
+    {
+     "id": "nibr_red_data_book_2024",
+     "license": "Government publication; reuse terms not stated in the viewer",
+     "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
+     "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    {
+     "id": "obis_trend",
+     "license": "Per-dataset licences (CC0, CC BY, CC BY-NC); only aggregate per-cell counts and dataset IDs are stored",
+     "title": "OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025",
+     "url": "https://api.obis.org/v3/"
+    },
+    {
+     "id": "rda_db_10_4",
+     "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
+     "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
+     "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "suzumura_2024_octopus_thesis",
+     "license": "University repository terms",
+     "title": "マダコOctopus sinensisの養殖に関する基礎研究 (Suzumura Y, 2024)",
+     "url": "https://opac-t.time.u-tokai.ac.jp/iwjs0018opc/TD00000555"
+    },
+    {
+     "id": "zhou_2025_fsi_octopus",
+     "license": "Publisher copyright; abstract only",
+     "title": "Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)",
+     "url": "https://doi.org/10.1016/j.fsi.2025.110408"
     }
    ],
    "withheld_reasons": {
