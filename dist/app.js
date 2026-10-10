@@ -2393,6 +2393,7 @@ function setMapMode(mode){
 function renderMapSelected(s){
   const where=s.catalog&&s.cells.length?s.status+' · 현재 분포 아님':s.status;
   $('map-selected').innerHTML=`<b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span> <span>${esc(scoreSummary(s))} · ${esc(where)}</span>`;
+  sheetSummary(s);
 }
 function renderMap() {
   if(selected)renderMapSelected(selected);
@@ -2787,6 +2788,19 @@ function statusPop(id){
   for(const [chip,pop] of [['notice-chip','notice-pop'],['alert-chip','alert-pop']]){const on=pop===id;$(pop).hidden=!on;$(chip).setAttribute('aria-expanded',String(on));}
   openPop=id;
 }
+// Design 07 (2026-10-10): on a phone (≤740px) the map stays at the top and the species pane slides over it as a bottom
+// sheet. The page scroll is the drag; the handle button opens (sheet to the top) and closes (back to the map) for touch and keys.
+const phoneSheet=()=>globalThis.matchMedia?.('(max-width:740px)').matches;
+function sheetSummary(s){
+  const box=$('sheet-summary');if(!box)return;
+  const t=matrixType(s), v=k=>{const x=pilotScore(s,k);return `<i${x===null?' class="held"':''}><small>${k}</small>${x===null?'–':x.toFixed(1)}</i>`;};
+  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span>${t?` <span class="type-chip"><i class="${hatchedType(t)?'hatched':''}" style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:''}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
+}
+function sheetSync(){
+  const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
+  const open=h.getBoundingClientRect().top<stage.getBoundingClientRect().bottom-40;
+  if(b.getAttribute('aria-expanded')!==String(open)){b.setAttribute('aria-expanded',String(open));b.setAttribute('aria-label',open?'종 목록·상세 접고 지도 보기':'종 목록·상세 펼치기');}
+}
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
@@ -2794,7 +2808,7 @@ async function loadCollection(){
   $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
-  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
+  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';$('sheet-summary').textContent='';
   setMapLegend(null);
   $('score-disclaimer').textContent='자료를 불러오는 중입니다.';
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
@@ -2838,6 +2852,14 @@ async function start(){
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
 // link. The tab is left out: loading never changes it, and one picked while a slow reload runs must not be undone.
+$('sheet-handle').addEventListener('click',()=>{
+  const open=$('sheet-handle').getAttribute('aria-expanded')==='true', smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+  scrollTo({top:open?0:scrollY+$('sheet-head').getBoundingClientRect().top,behavior:smooth});
+  setTimeout(sheetSync,smooth==='auto'?0:450);
+});
+addEventListener('scroll',()=>{if(!sheetSync.f)sheetSync.f=requestAnimationFrame(()=>{sheetSync.f=0;sheetSync();});},{passive:true});
+// the map's height changes across the 740px line: tell Leaflet
+globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
 // method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
 document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};

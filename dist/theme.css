@@ -539,3 +539,32 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 #comparison td.cmp-occ{min-width:96px}
 #comparison td .coverage-bar{min-width:200px}#comparison td.cmp-cov{min-width:210px}
 #comparison td .coverage-bar .seg b{font-size:9.5px}
+
+/* Design 07 (2026-10-10): phone layout. The map sits at the top (about 55% of the screen) and stays there; the species pane,
+   map notes and detail slide over it as one bottom sheet (white backdrop from the handle down). Wider screens are unchanged. */
+.sheet-head{display:none}
+@media (max-width:740px){
+  .explorer{overflow:clip}
+  .map-stage{position:sticky;top:0;z-index:1;height:55vh;height:55svh}
+  .sheet-head{display:block;order:2;position:relative;z-index:2;margin-top:-14px;padding:0 12px 6px;border-radius:16px 16px 0 0;background:#fff;box-shadow:0 -6px 16px rgba(9,43,67,.14)}
+  .sheet-head::before{content:"";position:absolute;left:0;right:0;top:14px;height:100000px;background:#fff;z-index:-1;pointer-events:none}
+  .species-pane,.map-caption,.map-review-note,.map-judgment,#value-cell-detail,#cell-table,.detail-pane{position:relative;z-index:2}
+  #map-selected{display:none}
+  .sheet-handle{display:block;width:100%;height:24px;margin:0;padding:0;border:0;background:none;cursor:grab}
+  .sheet-handle span{display:block;width:40px;height:5px;margin:8px auto 0;border-radius:3px;background:#b7c6d0}
+  .sheet-handle:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:8px}
+  .sheet-summary .ss-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:0;font-size:15px}
+  .sheet-summary .kind{font-size:11px}
+  .sheet-summary .type-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--ink2)}
+  .sheet-summary .type-chip i{width:11px;height:11px;border-radius:3px}
+  .sheet-summary .ss-scores{display:flex;gap:4px;margin:6px 0 0}
+  /* 활용 특성 chips: one line that scrolls sideways; the row stops short of 멍이 (48px at 16px from the right) */
+  .use-chips{display:flex;flex-wrap:nowrap;align-items:center;gap:6px;overflow-x:auto;margin-right:60px;padding-bottom:4px;scrollbar-width:thin}
+  .use-title{display:none}
+  .use-row,.use-row-chips{flex:none;flex-wrap:nowrap}
+  .use-group{width:auto;padding:0 2px 0 0}
+  .use-chip{flex:none;white-space:nowrap}
+  /* tab names shorten on a phone; the button text stays the full name (the chatbot reads it), aria-label too */
+  .tabs button[data-short]{font-size:0}
+  .tabs button[data-short]::before{content:attr(data-short);font-size:13px}
+}
