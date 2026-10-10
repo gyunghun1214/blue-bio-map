@@ -393,7 +393,8 @@ function bindInput(){
   $('resume').onclick=()=>{leaveIntro();const s=JSON.parse(sessionStorage.getItem('bbvm-expedition')||'{}');s.reveal?.forEach((r,i)=>STATE.reveal[i]=Math.max(STATE.reveal[i],r|0));placeAt(STATE,s.stop);if(scene)scene.snap();onArrive();};
   $('prev').onclick=()=>doGo(STATE.stop-1);$('next').onclick=()=>doGo(STATE.stop+1);$('skip').onclick=doSkip;
   $('detail-close').onclick=()=>hideDetail();
-  $('detail').addEventListener('close',()=>{if(STATE.detailOpen)hideDetail();});
+  // a close event is queued: if another detail opened before it ran (Esc, then a quick click), it is stale
+  $('detail').addEventListener('close',()=>{if(STATE.detailOpen&&!$('detail').open)hideDetail();});
   $('view-toggle').onclick=()=>setCards(!document.body.classList.contains('is-cards'),scene?'':'3D 화면을 쓸 수 없어 카드 목록으로 보여 줍니다.');
   if(!scene)$('view-toggle').disabled=true;
   document.addEventListener('keydown',e=>{
