@@ -492,3 +492,50 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 @media(max-width:740px){.matrix{height:400px}.mt-grid{grid-template-columns:1fr}.matrix-layout .matrix-point.pilot{width:14px;min-width:14px;height:14px;border-width:2px}.matrix-layout .matrix-point.pilot.single,.matrix-layout .matrix-point.pilot.floor{border-width:2.5px}}
 .matrix-point .point-label.far::before{content:"";position:absolute;top:50%;left:0;width:var(--ll);border-top:1px solid #6d8291;transform-origin:0 0;transform:rotate(var(--la))}
 .matrix-point .point-label.far.left::before{left:auto;right:0;transform-origin:100% 0;transform:rotate(calc(var(--la) - 3.14159rad))}
+
+/* Design 05 (2026-10-10): the comparison is one row per species; the box scrolls down with a sticky header row and the
+   species column stays put if a narrow screen scrolls it sideways. Long cell text lives in each row's 자세히 panel. */
+#comparison{max-height:calc(100vh - 150px);overflow:auto}
+#comparison table{width:100%}
+#comparison th,#comparison td{min-width:0;padding:8px 10px;vertical-align:middle}
+#comparison thead th{top:0;font-size:12.5px;white-space:nowrap;text-align:left}
+#comparison thead th:first-child,#comparison tbody th{min-width:150px;width:150px}
+#comparison tbody th b{display:block;font-size:14px}
+#comparison tbody th small{display:block;font-size:11.5px;font-style:italic;color:var(--muted);font-weight:400;overflow-wrap:anywhere}
+#comparison .cmp-sort{display:inline-flex;align-items:baseline;gap:4px;border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
+#comparison .cmp-sort small{font-weight:500;color:var(--muted);font-size:11px}
+#comparison .cmp-sort i{font-style:normal;font-size:10px;color:var(--muted)}
+#comparison th[aria-sort=ascending] .cmp-sort i,#comparison th[aria-sort=descending] .cmp-sort i{color:var(--teal)}
+#comparison .cmp-sort:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:3px}
+#comparison td.cmp-val{width:92px}
+#comparison .score-cell.cv{display:block;width:100%;min-width:64px;text-align:left;padding:4px 6px}
+#comparison .cv-num{display:block;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+#comparison .cv-bar{display:block;position:relative;height:5px;margin:3px 0 2px;border-radius:3px;background:#e3eaef}
+#comparison .cv-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--teal)}
+#comparison .cv-bar b{position:absolute;top:-3px;width:2px;height:11px;margin-left:-1px;background:var(--ink)}
+#comparison .type-chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
+#comparison .type-chip i{width:12px;height:12px;border-radius:3px;flex:none}
+#comparison .type-chip.none{color:var(--muted)}
+#comparison td.cmp-ev{min-width:170px;max-width:240px}
+#comparison .ev-chip{display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--line);border-radius:10px;background:#f6f9fb;font-size:11.5px;line-height:1.5;white-space:nowrap}
+#comparison .ev-chip.none{color:var(--muted);border-style:dashed;background:none}
+#comparison td.cmp-occ{min-width:120px;font-size:13px}
+#comparison td.cmp-occ .score-cell small{display:block;font-size:11px}
+#comparison td .coverage-bar{min-width:210px}
+#comparison td.cmp-cov{min-width:220px}
+#comparison .cmp-more-btn{border:1px solid #a9c3d0;border-radius:6px;background:#fff;padding:4px 9px;font-size:12.5px;color:var(--ink);white-space:nowrap;cursor:pointer}
+#comparison .cmp-more-btn[aria-expanded=true]{background:#eef6f6;border-color:var(--teal)}
+#comparison .cmp-more-btn::after{content:" ▾"}#comparison .cmp-more-btn[aria-expanded=true]::after{content:" ▴"}
+#comparison tr.cmp-more>td{background:#f7fafb;padding:10px 12px 14px}
+#comparison .cmp-more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;position:sticky;left:12px;max-width:calc(100vw - 80px)}
+#comparison .cmp-more-grid h4{margin:0 0 4px;font-size:12px;color:var(--muted)}
+#comparison .cmp-more-grid small{display:block}
+#comparison .cmp-more-grid .score-cell{display:block;text-align:left;width:100%}
+#comparison tr.cmp-row.flash>*{animation:cmpFlash 1.6s ease-out}
+@keyframes cmpFlash{0%,40%{background:#fff3c4}100%{background:inherit}}
+@media(max-width:740px){#comparison{max-height:75vh}#comparison thead th:first-child,#comparison tbody th{min-width:112px;width:112px}}
+#comparison .ev-chip{white-space:normal}
+#comparison thead th:first-child,#comparison tbody th{min-width:128px;width:128px}
+#comparison td.cmp-occ{min-width:96px}
+#comparison td .coverage-bar{min-width:200px}#comparison td.cmp-cov{min-width:210px}
+#comparison td .coverage-bar .seg b{font-size:9.5px}

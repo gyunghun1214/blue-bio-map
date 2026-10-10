@@ -28,8 +28,8 @@ async function settled(){
     if(/연결됨|불러오기 실패|연결 실패/.test(st)){await sleep(1500);return st;}}
   return 'timeout';
 }
-const readTable=`[...document.querySelectorAll('#comparison tbody tr')].filter(tr=>/MFPI|MBPI|MCUI|BBVI/.test(tr.querySelector('th').innerText))
-  .flatMap(tr=>[...tr.querySelectorAll('td')].map(td=>td.innerText.replace(/\\s+/g,' ').trim()))`;
+// design 05 (2026-10-10): a row per species; the four index values sit in the td.cmp-val cells
+const readTable=`[...document.querySelectorAll('#comparison tbody tr.cmp-row td.cmp-val')].map(td=>td.innerText.replace(/\\s+/g,' ').trim())`;
 try{
   ws=new WebSocket(await connect());await new Promise(r=>ws.onopen=r);
   ws.onmessage=e=>{const m=JSON.parse(e.data);

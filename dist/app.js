@@ -2488,7 +2488,7 @@ function initMap(geography){
 }
 
 function renderComparison(){
-  const compared=data.species, keep=$('comparison').scrollLeft;
+  const compared=cmpSorted(), keep=$('comparison').scrollLeft, keepTop=$('comparison').scrollTop;
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
@@ -2513,45 +2513,92 @@ function renderComparison(){
       (mcuiRef?`<small>${esc(mcuiRef)}</small>`:'')+
       (s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
   };
-  const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
-    ['출현기록',s=>`<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">`+occurrenceCell(s)+'<small>지도·셀 목록 보기</small></button>'],
-  ];
   function occurrenceCell(s){return s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · ${s.info?.map?.source||'GBIF CC0·CC BY'}${flaggedRecords(s,'historical')?` · 2000년 이전 ${flaggedRecords(s,'historical')}건`:''}</small>`:s.catalog?pending(s.review?`${reviewLine(s.review)} · 공개 셀 없음`:releaseMissing(s)):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · 조사 범위 표시<small>${years(s)} · 조회·선별된 자료</small>`;}
-  entries.push(
-    ['식량 근거 · MFPI',s=>axisCell(s,'MFPI')||(s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'))],
-    ['생리활성 · MBPI',s=>axisCell(s,'MBPI')||v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
-    ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
-    ['자료 연결 현황',s=>`<span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}<small>발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed')?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님</small>`],
-    ['통합점수 · BBVI',s=>axisCell(s,'BBVI')||'<strong>산출 보류</strong>']);
-  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${compared.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${compared.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const fallback={
+    MFPI:s=>s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
+    MBPI:s=>v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
+    MCUI:s=>s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''),
+    BBVI:()=>'<strong>산출 보류</strong>'};
+  const titles={MFPI:'식량 근거 · MFPI',MBPI:'생리활성 · MBPI',BBVI:'통합점수 · BBVI',MCUI:'보전 평가 · MCUI'};
+  const rule=matrixRule(), cut={BBVI:rule?.bbvi_threshold,MCUI:rule?.mcui_threshold};
+  // the compact cell: the same button (attributes and aria-label) with the number and a bar; the full button goes to 자세히
+  const valueCell=(s,key)=>{
+    const full=axisCell(s,key);if(!full)return {main:fallback[key](s),more:''};
+    const m=full.match(/^<button([^>]*)>([^<]*)<small>/);if(!m)return {main:full,more:''};
+    const v=pilotScore(s,key);
+    const bar=v!==null?`<span class="cv-bar" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
+    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}</span>${bar}</button>`,
+      more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
+  };
+  const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i class="${hatchedType(t)?'hatched':''}" style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
+  const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'▲':'▼'):'↕'}</i></button></th>`;};
+  const coverageNote=`발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed')?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님`;
+  const row=s=>{
+    const id=s.aphiaID, cells=Object.fromEntries(['MFPI','MBPI','BBVI','MCUI'].map(k=>[k,valueCell(s,k)])), occ=occurrenceCell(s), open=cmpOpen.has(id);
+    const occShort=s.cells.length?cellCountLabel(s):occ.includes('<small>')&&!occ.startsWith('<span')?occ.slice(0,occ.indexOf('<small>')):occ;
+    const more=[['학명·식별자',`WoRMS 확인<small>${esc(s.name)} · AphiaID ${id}</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')],['출현기록',occ],
+      ...['MFPI','MBPI','BBVI','MCUI'].filter(k=>cells[k].more).map(k=>[titles[k],cells[k].more]),['자료 연결 현황',`<small>${coverageNote}</small>`]];
+    return `<tr class="cmp-row" data-aphia="${id}"><th scope="row"><b>${esc(s.label)}</b><small>${esc(s.name)}</small></th><td>${typeChip(s)}</td>`+
+      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val">${cells[k].main}</td>`).join('')+
+      `<td class="cmp-ev">${evidenceChips(s)}</td><td class="cmp-occ"><button class="score-cell" data-score-aphia="${id}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">${occShort}<small>지도·셀 목록 보기</small></button></td>`+
+      `<td class="cmp-cov"><span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}</td>`+
+      `<td><button type="button" class="cmp-more-btn" aria-expanded="${open}" aria-controls="cmp-more-${id}" aria-label="${esc(s.label)} 자세히">자세히</button></td></tr>`+
+      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="10"><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></td></tr>`;
+  };
+  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 자료 연결 현황 · 정렬: ${cmpSortLabel()}</caption>`+
+    `<thead><tr>${sortTh('name','종')}<th scope="col">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('BBVI','BBVI<small>통합</small>')}${sortTh('MCUI','MCUI<small>보전</small>')}<th scope="col">근거 수준</th><th scope="col">출현기록</th><th scope="col">자료 연결 현황</th><th scope="col"><span class="sr-only">자세히</span></th></tr></thead>`+
+    `<tbody>${compared.map(row).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
-  $('comparison').scrollLeft=keep;syncComparison();
+  $('comparison').querySelectorAll('[data-more-aphia]').forEach(button=>button.addEventListener('click',()=>
+    openEvidence(Number(button.dataset.moreAphia),button.dataset.moreAxis)));
+  $('comparison').querySelectorAll('.cmp-more-btn').forEach(button=>button.addEventListener('click',()=>{
+    const id=Number(button.closest('tr').dataset.aphia),open=!cmpOpen.has(id);open?cmpOpen.add(id):cmpOpen.delete(id);
+    button.setAttribute('aria-expanded',String(open));$('cmp-more-'+id).hidden=!open;}));
+  $('comparison').querySelectorAll('.cmp-sort').forEach(button=>button.addEventListener('click',()=>{
+    const k=button.dataset.sort, first=k==='name'?'asc':'desc';
+    cmpSort=cmpSort.key!==k?{key:k,dir:first}:cmpSort.dir===first?{key:k,dir:first==='asc'?'desc':'asc'}:{key:null,dir:null};
+    renderComparison();$('comparison').querySelector(`[data-sort="${k}"]`)?.focus();}));
+  $('comparison').scrollLeft=keep;$('comparison').scrollTop=keepTop;syncComparison();
 }
-// The table holds every species and scrolls sideways. A species picked elsewhere (comparisonFocus) is brought next to the
-// sticky first column once the tab is visible; the label and buttons follow the columns actually on screen, measured
-// because column widths vary with their content. Hidden or layout-free: nothing to measure, so all N and both buttons off.
+// A species picked elsewhere (comparisonFocus) is scrolled into the table box and briefly highlighted once the tab is visible.
 function syncComparison(){
-  const c=$('comparison'),[corner,...heads]=c.querySelectorAll('thead th'),n=data.species.length,shown=c.clientWidth>0&&corner;
-  if(shown&&comparisonFocus){const th=heads[data.species.findIndex(s=>s.aphiaID===comparisonFocus)];if(th)c.scrollLeft+=th.getBoundingClientRect().left-corner.getBoundingClientRect().right;comparisonFocus=null;}
-  let first=1,last=n;
-  if(shown){
-    const from=corner.getBoundingClientRect().right-1,to=c.getBoundingClientRect().left+c.clientWidth+1;
-    const seen=heads.map((th,i)=>{const r=th.getBoundingClientRect(),mid=(r.left+r.right)/2;return mid>=from&&mid<=to?i+1:0;}).filter(Boolean);
-    if(seen.length){first=seen[0];last=seen.at(-1);}
+  const c=$('comparison'),shown=c.clientWidth>0;
+  if(shown&&comparisonFocus){
+    const tr=c.querySelector(`tr.cmp-row[data-aphia="${comparisonFocus}"]`),head=c.querySelector('thead');
+    if(tr&&head){c.scrollTop+=tr.getBoundingClientRect().top-head.getBoundingClientRect().bottom-4;tr.classList.remove('flash');void tr.offsetWidth;tr.classList.add('flash');}
+    comparisonFocus=null;
   }
-  $('comparison-page').textContent=`${first===last?first:first+'–'+last}종 / 총 ${n}종`;
-  $('comparison-prev').disabled=!shown||c.scrollLeft<=1;
-  $('comparison-next').disabled=!shown||c.scrollLeft+c.clientWidth>=c.scrollWidth-1;
+  $('comparison-page').textContent=`총 ${data.species.length}종 · 정렬: ${cmpSortLabel()}`;
 }
-// Prev/next move by one screen of species: the visible width minus the sticky first column.
-function scrollComparison(direction){
-  const c=$('comparison');c.scrollBy({left:direction*(c.clientWidth-(c.querySelector('thead th')?.offsetWidth||0)),behavior:'smooth'});
+// Design 05 (2026-10-10): one row per species, sortable columns. Value cells keep their evidence buttons (number + thin bar,
+// the full label in aria-label); every long line that used to sit in a cell moves, unchanged, to the row's "자세히" panel.
+let cmpSort={key:null,dir:null};const cmpOpen=new Set();
+const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',BBVI:'BBVI',MCUI:'MCUI'};
+const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
+function cmpSorted(){
+  const list=data.species.map((s,i)=>[s,i]);if(!cmpSort.key)return data.species.slice();
+  const k=cmpSort.key, sign=cmpSort.dir==='asc'?1:-1;
+  list.sort(([a,i],[b,j])=>{
+    if(k==='name')return sign*a.label.localeCompare(b.label,'ko')||i-j;
+    const x=pilotScore(a,k),y=pilotScore(b,k);
+    if(x===null||y===null)return (x===null)-(y===null)||i-j;  // values without a score stay last in both directions
+    return sign*(x-y)||i-j;});
+  return list.map(([s])=>s);
+}
+// the labels a species carries, one short chip each (never folded into one "단일 논문 vs 정식" switch)
+function evidenceChips(s){
+  const a=s.assessment||{}, chips=[];
+  if(pilotScore(s,'MFPI')!==null&&a.food_trace?.literature_moisture?.label)chips.push('MFPI '+a.food_trace.literature_moisture.label);
+  if(pilotScore(s,'MBPI')!==null){if(a.mbpi_label)chips.push('MBPI '+a.mbpi_label);const k=bestBio(a)?.stratum_kind;if(k==='xo')chips.push('MBPI XO 문헌 비교집단');if(k==='relaxed')chips.push('MBPI 완화 산출(d)');}
+  if(bbviLabel(s))chips.push('BBVI '+bbviLabel(s));
+  if(pilotScore(s,'MCUI')!==null&&separateMcui(s)){chips.push('MCUI '+mcuiBasisLabel(s).replace(/ 기반$/,''));if(mcuiBacktest(s))chips.push('MCUI '+mcuiBacktest(s));}
+  return chips.length?chips.map(c=>`<span class="ev-chip">${esc(c)}</span>`).join(''):'<span class="ev-chip none">추가 라벨 없음</span>';
 }
 // One open behaviour for every comparison button: occurrence opens the map and cell list, an index axis
 // opens its evidence. Collapsed parents are opened, and the return button restores the horizontal scroll and focus.
 function openEvidence(aphia,axis){
-  const returnScroll=$('comparison').scrollLeft;
+  const returnScroll=$('comparison').scrollLeft, returnTop=$('comparison').scrollTop;
   if(axis==='OCC'){lastFitted=null;if(mapMode!=='occurrence')setMapMode('occurrence');}
   selectSpecies(aphia);setView('explore',false);
   const back=document.createElement('button');
@@ -2560,6 +2607,7 @@ function openEvidence(aphia,axis){
   back.addEventListener('click',()=>{
     setView('compare');
     const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
+    $('comparison').scrollTop=returnTop;
     cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
     $('comparison').scrollLeft=returnScroll;
   });
@@ -2803,8 +2851,6 @@ document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener
 document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
 for(const id of ['species-group','species-evidence'])$(id).addEventListener('change',()=>{if(data)renderList();});
-$('comparison-prev').addEventListener('click',()=>scrollComparison(-1));
-$('comparison-next').addEventListener('click',()=>scrollComparison(1));
 let comparisonFrame=0;const queueComparisonSync=()=>{if(data&&!comparisonFrame)comparisonFrame=requestAnimationFrame(()=>{comparisonFrame=0;syncComparison();});};
 $('comparison').addEventListener('scroll',queueComparisonSync,{passive:true});addEventListener('resize',queueComparisonSync);
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
