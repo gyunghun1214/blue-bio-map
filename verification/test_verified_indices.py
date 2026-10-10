@@ -2718,6 +2718,7 @@ V44 = ROOT / "config" / "verified-indices-v4.4.json"    # superseded by 4.5 (방
 V45 = ROOT / "config" / "verified-indices-v4.5.json"    # superseded by 4.6 (sub-national MCUI sufficiency steps)
 V46 = ROOT / "config" / "verified-indices-v4.6.json"    # superseded by 4.7 (source corrections, trace sources cited)
 V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참문어 national-list page re-check)
+V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (relaxation (d) independent replication)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3359,13 +3360,15 @@ class Verified48Tests(unittest.TestCase):
     so its current_check step stayed open. Its list and index pages were re-read and the row added; only its sufficiency moves."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V47))
+        self.report, self.old_report = build(*load_inputs(config=V48)), build(*load_inputs(config=V47))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.8", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.8 report is archived as it was
+        archived48 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.8.json"
+        self.assertEqual(render(self.report), archived48.read_text(encoding="utf-8"))
 
     def test_only_octopus_sufficiency_moves(self):
         self.assertEqual(self.old[534443]["information_sufficiency"]["MCUI"]["ratio"], 0.67)
@@ -3382,6 +3385,112 @@ class Verified48Tests(unittest.TestCase):
             if s["mcui_basis"] == "national":
                 self.assertIn(str(a), rows, a)
                 self.assertEqual(s["information_sufficiency"]["MCUI"]["ratio"], 1.0, a)
+
+
+class Verified49Tests(unittest.TestCase):
+    """4.9 (prereg-4.9-2026-10-10, team-lead decision card 2026-10-10, option (가)): the ACE stratum's replication device
+    (2.3 cross_origin_potency) now also reads a relaxation (d) item. Bonini 2000's human NPFF2 Ki 4.0 nM for FMRF-amide is a
+    second independent paper behind 갑오징어's item, so its evidence factor goes 0.75 -> 1.0: MBPI 65.8 -> 87.7,
+    BBVI 54.2 -> 65.1, the '단일 논문' label drops. The scored value, percentile and cohort do not move, and no other cell does."""
+
+    def setUp(self):
+        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V48))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        self.new, self.old = rows(self.report), rows(self.old_report)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.9", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+
+    def test_only_the_cuttlefish_evidence_weight_moves(self):
+        self.assertEqual((self.old[1666974]["scores"]["MBPI"], self.old[1666974]["scores"]["BBVI"]), (65.8, 54.2))
+        self.assertEqual((self.new[1666974]["scores"]["MBPI"], self.new[1666974]["scores"]["BBVI"]), (87.7, 65.1))
+        for label in ("bbvi_label", "mbpi_label"):  # the second paper is what the '단일 논문' label was waiting for
+            self.assertEqual((self.old[1666974][label], self.new[1666974].get(label)), ("단일 논문", None), label)
+        self.assertEqual(self.new[1666974]["single_axis_views"], {"bioactivity_only_MBPI": 87.7, "food_only_MFPI": 42.5})
+        self.assertEqual(self.old[1666974]["single_axis_views"]["food_only_MFPI"], 42.5)  # the food axis does not move
+        for a, s in self.new.items():
+            for k in set(s) | set(self.old[a]):
+                # food_trace only carries the method_version string, and every relaxed trace gains the replication list
+                # (test_other_relaxed_items_only_gain_an_empty_replication_list); 갑오징어's score, label and papers do move
+                if k in ("food_trace", "bioactivity_trace") or (a == 1666974 and k in (
+                        "scores", "bbvi_label", "mbpi_label", "single_axis_views", "sensitivity", "chembl_links", "source_ids")):
+                    continue
+                self.assertEqual(s.get(k), self.old[a].get(k), (a, k))
+        # the sensitivity block follows the new MBPI, at every food weight and under both aggregations
+        self.assertEqual(self.new[1666974]["sensitivity"],
+                         {"food_weights": {"0.25": 76.4, "0.5": 65.1, "0.75": 53.8}, "mean_compound_sensitivity": 87.7,
+                          "median_compound_sensitivity": 87.7, "range_from_aggregation": [87.7, 87.7]})
+        # and so does the ChEMBL rule sensitivity, which reports the same MBPI under five loosened ChEMBL rules
+        new, was = (r[1666974]["chembl_links"] for r in (self.new, self.old))
+        self.assertEqual({k: v for k, v in new.items() if k != "rule_sensitivity"},
+                         {k: v for k, v in was.items() if k != "rule_sensitivity"})
+        self.assertEqual(set(new["rule_sensitivity"].values()), {87.7})
+        self.assertEqual(set(was["rule_sensitivity"].values()), {65.8})
+        # the two papers of the replication rows are the only sources any species gains
+        self.assertEqual(set(self.new[1666974]["source_ids"]) - set(self.old[1666974]["source_ids"]),
+                         {"bonini_2000_npff_receptors", "kotani_2001_npff_receptor"})
+
+    def test_other_relaxed_items_only_gain_an_empty_replication_list(self):
+        for a, s in self.new.items():
+            if a == 1666974:
+                continue
+            for item, was in zip(s["bioactivity_trace"], self.old[a]["bioactivity_trace"]):
+                self.assertEqual({k: v for k, v in item.items() if k in was}, was, a)
+                self.assertEqual({k: v for k, v in item.items() if k not in was},
+                                 {"independent_dois": sorted(d.lower() for d in was["original_paper_dois"]),
+                                  "potency_replications": []} if item.get("stratum_kind") == "relaxed" else {}, a)
+
+    def test_the_scored_value_and_its_cohort_do_not_move(self):
+        new = next(t for t in self.new[1666974]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+        old = next(t for t in self.old[1666974]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")
+        for k in ("peptide_sequence", "stratum_id", "standard_type", "target_chembl_id", "cohort_records", "cohort_pchembl",
+                  "pchembl", "percentile", "measurements", "record_ids", "original_paper_dois", "other_targets", "caveat"):
+            self.assertEqual(new.get(k), old.get(k), k)
+        self.assertEqual(new["measurements"][0]["value"], 6.6)  # the scored number is still the item's own Ki
+        self.assertEqual((old["evidence_factor"], new["evidence_factor"]), (0.75, 1.0))
+        self.assertEqual(round(new["adjusted"], 2), new["percentile"])
+        self.assertEqual(round(old["adjusted"], 2), round(new["percentile"] * 0.75, 2))
+        # the item's own paper plus the replication's: a used row adds its DOI and nothing else
+        self.assertEqual(new["independent_dois"], ["10.1021/acs.jmedchem.0c00643", "10.1074/jbc.m004385200"])
+        self.assertNotIn("independent_dois", old)
+        self.assertEqual((independent_sources(old), independent_sources(new)), (1, 2))  # the label rule counts the same two
+
+    def test_the_replication_rows_say_what_they_are(self):
+        rows = next(t for t in self.new[1666974]["bioactivity_trace"] if t["stratum_kind"] == "relaxed")["potency_replications"]
+        self.assertEqual([(r["original_paper_doi"], r["used"], r["p_scale"]) for r in rows],
+                         [("10.1074/jbc.M004385200", True, "pKi"), ("10.1038/sj.bjp.0704038", False, "pKi")])
+        used, held = rows
+        self.assertEqual((used["value"], used["unit"], used["endpoint"], used["target_chembl_id"]), (4.0, "nM", "Ki", "CHEMBL5952"))
+        self.assertEqual((used["p"], used["p_gap"]), (8.398, 0.218))
+        self.assertLessEqual(used["p_gap"], self.report["method"]["relaxed_bioactivity"]["cross_origin_replication"]["max_p_gap"])
+        self.assertIn("합성", used["origin_label"])  # a commercial synthetic peptide, not a cuttlefish sample
+        self.assertIsNone(used["reason"])
+        self.assertTrue(held["reason"])              # the candidate that is not counted says why, in Korean
+        for r in rows:                               # and every row's paper is cited among the species' sources
+            self.assertIn(r["source_id"], self.report["sources"])
+            self.assertIn(r["source_id"], self.new[1666974]["source_ids"])
+
+    def test_a_replication_can_not_become_a_value_or_an_origin(self):
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        for r in evidence["relaxed_replications"]:
+            self.assertNotIn("origin_aphia_id", r)   # a replication never carries a species origin
+            self.assertNotIn("status", r)            # and is never a scorable evidence row
+            self.assertTrue(r["cohort_check"])       # each one shows it is outside the item's cohort snapshot
+        # a row on another sequence, target or endpoint is not a replication of this item at all
+        for key, value in (("sequence", "FMRFG"), ("target_chembl_id", "CHEMBL3309"), ("endpoint", "EC50")):
+            ev = copy.deepcopy(evidence)
+            ev["relaxed_replications"][0][key] = value
+            item = next(t for t in species(build(ev, candidates, config, snapshot, taxonomy), 1666974)["bioactivity_trace"]
+                        if t["stratum_kind"] == "relaxed")
+            self.assertEqual((item["evidence_factor"], item["percentile"]), (0.75, 87.68), key)
+        # and a row that fails its own checks stops the build instead of being skipped quietly
+        for key, value in (("reviewed", False), ("relation", ">"), ("unit", "uM"), ("value_in_text", False), ("synthetic", False),
+                           ("cohort_id", "ChEMBL_37:CHEMBL5952|IC50"), ("cohort_check", ""), ("source_id", "not_registered")):
+            ev = copy.deepcopy(evidence)
+            ev["relaxed_replications"][0][key] = value
+            with self.assertRaises(ValueError, msg=key):
+                build(ev, candidates, config, snapshot, taxonomy)
 
 
 if __name__ == "__main__":
