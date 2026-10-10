@@ -88,4 +88,14 @@ assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
 assert.ok(replicatedSpecies>0,'a candidate with a replicated top item (큰가리비, 3.24) was rendered');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
+
+// 4.9: a relaxed item's replication is ranked on its own endpoint, so the row names its own scale and never says pIC50
+const CUTTLEFISH=1666974;
+$('detail').innerHTML='';T.renderCandidateDetail(next.species.find(s=>s.aphiaID===CUTTLEFISH));
+const reps=$('detail').innerHTML.slice($('detail').innerHTML.indexOf('효능 재현'));
+assert.ok(reps.includes('pKi 8.398 · 차이 0.218'),'갑오징어 replication row names its own pKi scale and gap');
+assert.ok(!reps.includes('pIC50'),'a Ki replication is never labelled pIC50');
+assert.ok(reps.includes('독립 DOI로 셈'),'the used replication says it is counted');
+assert.match(reps,/쓰지 않음: [^<]*[가-힣]/,'the candidate that is not counted says why, in Korean');
+assert.ok(reps.includes('효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'),'the row says it is not an origin or a score');
 console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean`);

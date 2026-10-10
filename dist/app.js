@@ -7,7 +7,7 @@ const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char =>
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -967,7 +967,8 @@ const REASON_KO={
   "No fixed comparable compound stratum for this target/assay in verified-pilot-2":"verified-pilot-2에는 이 표적·시험법에 맞는 비교 가능한 화합물 고정 층이 없음",
   "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved":"기원이 모호함: 논문의 피크별 IC50 목록은 이 값을 진주조개(Pinctada fucata martensii)에 배정하지만, 서열을 설명한 문장은 이 펩타이드를 바지락 것으로 적음. 저자의 배정이 정리될 때까지 점수에 쓰지 않음",
 };
-const reasonKo=t=>REASON_KO[t]||t?.replace(/^pIC50 gap above (\S+)$/,'pIC50 차이가 기준 $1 초과');
+// 4.9: the scale is the row's own (pIC50 in the ACE stratum, pKi/pEC50 in a relaxed one), so the gap reason carries it.
+const reasonKo=t=>REASON_KO[t]||t?.replace(/^(p\w+) gap above (\S+)$/,'$1 차이가 기준 $2 초과');
 const supplementalRecord=o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
   `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
   `${esc(reasonKo(o.exclusion_reason))} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`;
@@ -1055,8 +1056,10 @@ function verifiedBioTrace(s){
       (ch?`<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)}(종 연결 ${esc(x.link_factor)} × 활성 ${esc(x.activity_factor)}) = ${esc(Math.round(x.adjusted*10)/10)} · 종 연결 논문 ${x.original_paper_dois.map(doiLink).join(', ')} · ChEMBL 문서 ${esc(x.document_chembl_ids.join(', '))}</p><p class="fine">${esc(x.label)}</p>`:
       `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)}${x.percentile===0?' · 백분위 0은 비교집단의 모든 값보다 약한 실측값이라는 뜻이며, 자료가 없다는 뜻이 아닙니다':''}${x.percentile===100?` · 백분위 100은 이 비교집단의 ${esc(x.peer_peptides)}개 값보다 모두 강하다는 뜻이며, 더 강한 물질이 없다는 뜻은 아닙니다`:''} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`)+
       (x.potency_replications||[]).map(r=>{const src=data.assessmentInfo?.sources?.[r.source_id];
+        // 4.9: a relaxed item's replication is ranked on its own endpoint, so the row names its scale (pKi, pEC50, …)
+        const scale=r.p_scale||'pIC50';
         return `<div class="score-fact"><b>효능 재현 · ${r.material==='purified_isolate'?'정제':'합성'} ${esc(x.peptide_sequence)} ${esc(peptideValue(r))} · 재현 시료 ${esc(r.origin_label||r.origin_material)}</b>`+
-          `<span>pIC50 ${esc(r.pIC50)} · 차이 ${esc(r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(reasonKo(r.reason))}</span></div>`+
+          `<span>${esc(scale)} ${esc(r.p??r.pIC50)} · 차이 ${esc(r.p_gap??r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(reasonKo(r.reason))}</span></div>`+
           `<p class="fine">출처: ${verifiedSource(r.source_id,esc(src?.provider||'원논문')+' ↗')} · DOI ${doiLink(r.original_paper_doi)} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}. 효능만 재현하며 기원 근거나 점수 값이 되지 않습니다.</p>`;}).join('');
   }).join('');
   // A peptide percentile ranks against the fixed AHTPDB cohort (CC BY-NC 4.0), so the cohort is cited where the rank is shown.

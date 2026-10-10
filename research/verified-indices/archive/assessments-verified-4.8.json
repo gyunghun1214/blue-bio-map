@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1464,7 +1464,7 @@
             }
           ]
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2134,7 +2134,7 @@
             }
           ]
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2681,7 +2681,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3271,7 +3271,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3899,7 +3899,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4759,7 +4759,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5785,7 +5785,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6854,7 +6854,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7879,7 +7879,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8985,7 +8985,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10153,7 +10153,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11285,7 +11285,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12358,7 +12358,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14053,7 +14053,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15059,7 +15059,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16167,7 +16167,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18941,9 +18941,6 @@
           ],
           "cohort_records": 1844,
           "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.1074/jbc.m610413200"
-          ],
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
           "measurements": [
             {
@@ -18982,7 +18979,6 @@
           "peptide_name": "sbGnRH([Ser8]GnRH)",
           "peptide_sequence": "QHWSYGLSPG",
           "percentile": 9.98,
-          "potency_replications": [],
           "record_ids": [
             "10.1074/jbc.M610413200:sbGnRH:CHEMBL1855:IC50"
           ],
@@ -19138,7 +19134,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -20151,7 +20147,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21241,7 +21237,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22364,9 +22360,6 @@
           ],
           "cohort_records": 251,
           "evidence_factor": 0.75,
-          "independent_dois": [
-            "10.3390/md20050328"
-          ],
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
           "measurements": [
             {
@@ -22415,7 +22408,6 @@
           "peptide_name": "cephalotocin",
           "peptide_sequence": "CYFRNCPIG",
           "percentile": 94.02,
-          "potency_replications": [],
           "record_ids": [
             "10.3390/md20050328:cephalotocin:CHEMBL1790",
             "10.3390/md20050328:cephalotocin:CHEMBL1921"
@@ -22552,7 +22544,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23438,7 +23430,7 @@
     },
     {
       "aphia_id": 1666974,
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
       "bioactivity_partial": [
         {
@@ -23672,7 +23664,7 @@
       ],
       "bioactivity_trace": [
         {
-          "adjusted": 87.68115942028986,
+          "adjusted": 65.76086956521739,
           "caveat": "비교집단은 대부분 합성 NPFF 유사체와 RF아마이드 계열 펩타이드·저분자이며, 해양 펩타이드끼리의 비교가 아닙니다. FMRFamide는 갑오징어 자체 전사체(칭다오 표본)가 전구체 한 ORF 안에 11카피 암호화하지만, 연체동물을 포함한 무척추동물 문 전반에 공통인 신경펩타이드입니다(척추동물 공통이 아니어서 1.6 금지 문구에는 해당하지 않음 — 팀장 결정 2026-10-05). 값은 ChEMBL이 총설(J Med Chem 2020)에서 추출한 활동 행이고 원 실험 논문은 총설 경유로만 닿습니다. 시험은 사람(NPFF2)·쥐(NPY2) 수용체 시험이며 종 추출물의 효능이 아닙니다.",
           "cohort_pchembl": [
             5.12,
@@ -23815,11 +23807,7 @@
             10.7
           ],
           "cohort_records": 138,
-          "evidence_factor": 1.0,
-          "independent_dois": [
-            "10.1021/acs.jmedchem.0c00643",
-            "10.1074/jbc.m004385200"
-          ],
+          "evidence_factor": 0.75,
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
           "measurements": [
             {
@@ -23878,42 +23866,6 @@
           "peptide_name": "FMRFamide",
           "peptide_sequence": "FMRF",
           "percentile": 87.68,
-          "potency_replications": [
-            {
-              "endpoint": "Ki",
-              "material": "synthetic",
-              "origin_label": "시판 합성품 (갑오징어 시료 아님)",
-              "origin_material": "시판 합성 FMRF-NH2 (Bachem 구입)",
-              "original_paper_doi": "10.1074/jbc.M004385200",
-              "p": 8.398,
-              "p_gap": 0.218,
-              "p_scale": "pKi",
-              "reason": null,
-              "record_id": "10.1074/jbc.M004385200:FMRFamide:CHEMBL5952:Ki",
-              "source_id": "bonini_2000_npff_receptors",
-              "target_chembl_id": "CHEMBL5952",
-              "unit": "nM",
-              "used": true,
-              "value": 4.0
-            },
-            {
-              "endpoint": "Ki",
-              "material": "synthetic",
-              "origin_label": "합성품 (갑오징어 시료 아님)",
-              "origin_material": "합성 FMRF-NH2",
-              "original_paper_doi": "10.1038/sj.bjp.0704038",
-              "p": 7.979,
-              "p_gap": 0.201,
-              "p_scale": "pKi",
-              "reason": "점수 값의 ChEMBL 문서는 총설(J Med Chem 2020)이고, 그 표가 이 값에 붙인 인용 번호가 PMC·Crossref 참고문헌 번호와 어긋나 원 측정 논문을 확정하지 못했습니다. ChEMBL 시험 설명([125I]EYF 치환, forskolin 유도 cAMP)이 이 논문과 같은 연구 그룹의 방법과 일치해, 같은 그룹의 값일 수 있어 재현으로 세지 않습니다.",
-              "record_id": "10.1038/sj.bjp.0704038:FMRFamide:CHEMBL5952:Ki",
-              "source_id": "kotani_2001_npff_receptor",
-              "target_chembl_id": "CHEMBL5952",
-              "unit": "nM",
-              "used": false,
-              "value": 10.5
-            }
-          ],
           "record_ids": [
             "10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL3309:IC50",
             "10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL5952:EC50",
@@ -23943,11 +23895,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 87.7,
-          "minimum_cohort_10": 87.7,
-          "minimum_cohort_100": 87.7,
-          "no_approved_drug_filter": 87.7,
-          "no_common_metabolite_filter": 87.7
+          "log_scale_common_fence": 65.8,
+          "minimum_cohort_10": 65.8,
+          "minimum_cohort_100": 65.8,
+          "no_approved_drug_filter": 65.8,
+          "no_common_metabolite_filter": 65.8
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -24058,7 +24010,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24778,7 +24730,7 @@
       },
       "korean_name": "갑오징어",
       "mbpi_floor": null,
-      "mbpi_label": null,
+      "mbpi_label": "단일 논문",
       "mbpi_stratum": "relaxed",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -24905,30 +24857,29 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 65.1,
-        "MBPI": 87.7,
+        "BBVI": 54.2,
+        "MBPI": 65.8,
         "MCUI": 10.0,
         "MFPI": 42.5
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 76.4,
-          "0.5": 65.1,
-          "0.75": 53.8
+          "0.25": 60.0,
+          "0.5": 54.2,
+          "0.75": 48.3
         },
-        "mean_compound_sensitivity": 87.7,
-        "median_compound_sensitivity": 87.7,
+        "mean_compound_sensitivity": 65.8,
+        "median_compound_sensitivity": 65.8,
         "range_from_aggregation": [
-          87.7,
-          87.7
+          65.8,
+          65.8
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 87.7,
+        "bioactivity_only_MBPI": 65.8,
         "food_only_MFPI": 42.5
       },
       "source_ids": [
-        "bonini_2000_npff_receptors",
         "chembl_fmrfamide_npff_rows",
         "chembl_relaxed_cohorts",
         "cmnpd_mbpi",
@@ -24939,7 +24890,6 @@
         "huang_2017_mmr_shp",
         "iucn_sepia_esculenta_2012",
         "jing_2014_mfst_shp",
-        "kotani_2001_npff_receptor",
         "kumar_2018_micpath_ink",
         "ncbi_sesculenta_tsa_ggqu",
         "nibr_red_data_book_2024",
@@ -25067,7 +25017,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-10-10T00:00:00Z",
+  "generated_at": "2026-10-05T00:00:00Z",
   "method": {
     "amp_bioactivity": {
       "accepted_materials": [
@@ -25161,7 +25111,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.8 (2026-10-10). One rule addition and one species' two cells. The ACE stratum's replication device (2.3 cross_origin_potency: another paper's measurement of the same synthetic sequence adds its DOI to independent_dois without changing the value) is extended to the relaxation-(d) stratum as cross_origin_replication, on the pChEMBL scale and with the same gap of 1.0. Team-lead decision 2026-10-10, registered in research/verified-indices/prereg-4.9-2026-10-10.md before the values were published. 갑오징어 (1666974) FMRFamide, human NPFF2 Ki 6.6 nM: Bonini et al. 2000 J Biol Chem 275:39324 (10.1074/jbc.M004385200) measured FMRF-NH2 at the same receptor as Ki 4.0 +/- 0.2 nM (Table I), another author group, pKi gap 0.218, and the paper is in neither the cohort nor ChEMBL_37. Its DOI joins independent_dois, so the evidence factor goes 0.75 -> 1.0: MBPI 65.8 -> 87.7, BBVI 54.2 -> 65.1, and the single-paper label drops (26 -> 25 species). The scored value, its percentile and its cohort are unchanged. Kotani et al. 2001 (10.1038/sj.bjp.0704038, Ki 10.5 nM) is recorded as a candidate that is NOT used: the review the ChEMBL row comes from cites the value with reference numbers that do not resolve in its own reference list, and the ChEMBL assay text matches that paper's own group, so it may be the origin of the scored value.",
+    "changes_from": "verified-4.7 (2026-10-08). No score, category, type or flag changes. National red list page re-check: the 2026-09-27 re-read covered the seven rows scored then; 참문어 (534443) joined on 2026-10-01 through the WoRMS crosswalk and was never re-read, so its MCUI current_check step stayed open (MCUI sufficiency 0.67). Its list page (printed 1027, viewer 1029) and index page (printed 1484, viewer 1486) were re-read in the NIBR e-catalogue on 2026-10-08: 참문어 Octopus vulgaris Cuvier, 1797, NT -> NT, 유지, page 1027, as recorded. The row is added to national_red_list.page_recheck; 참문어 MCUI sufficiency 0.67 -> 1.0.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -25505,7 +25455,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.9",
+    "method_version": "verified-4.8",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -25891,17 +25841,6 @@
       },
       "cohort_snapshot": "research/verified-indices/snapshots/relaxed-chembl-cohorts-4.5-2026-10-05.json",
       "cohort_source_id": "chembl_relaxed_cohorts",
-      "cross_origin_replication": {
-        "accepted_materials": [
-          "synthetic",
-          "purified_isolate"
-        ],
-        "gap_justification": "The ACE stratum's max_pIC50_gap (1.0) read on the pChEMBL scale p = 9 - log10(value in nM): the team research assumption that a tenfold difference is the usual spread between laboratories for the same endpoint; larger gaps are treated as non-replication, not averaged. The threshold itself is not changed.",
-        "max_p_gap": 1.0,
-        "prereg": "research/verified-indices/prereg-4.9-2026-10-10.md",
-        "rule": "Replication only, never the origin and never the scored value (prereg-4.9-2026-10-10 2). A row counts when another paper (different DOI, different author group) measured the same mature sequence as a synthetic copy or a sequence-confirmed purified single peptide, on the same target_chembl_id and the same standard_type, relation '=', in nM, within max_p_gap, and the paper is not in the item's cohort snapshot (the row carries that check). A used row only joins independent_dois; the item's value, percentile, cohort and measurements stay as they were. A reviewed exclusion is written in the row and shown with its reason. The rows travel under the ACE stratum's field name (potency_replications) with the endpoint's own scale name (p_scale), so the page validates and draws them the same way.",
-        "supplement": "research/verified-indices/evidence-relaxed-replication-4.9-2026-10-10.json"
-      },
       "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
       "minimum_cohort_records": 30,
       "origin_rule": "Never relaxed. The species' own public primary sequence record (paper, GenBank/RefSeq/UniProt entry from a specimen with a stated collection record) must encode or produce the tested mature sequence with its processing signals, and the tested material must be a synthetic copy of that sequence (4.1 꽃게 precedent). A nucleotide record counts when no annotated protein exists; that is stated as a limitation.",
@@ -26052,7 +25991,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.9",
+  "method_version": "verified-4.8",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -26239,16 +26178,6 @@
       "title": "Production of Mycosporine-Like Amino Acids from Gracilaria vermiculophylla (Rhodophyta) Cultured Through One Year in an Integrated Multi-trophic Aquaculture (IMTA) System (Barceló-Villalobos M, Figueroa FL, Korbee N, Álvarez-Gómez F, Abreu MH), doi:10.1007/s10126-017-9746-8",
       "url": "https://doi.org/10.1007/s10126-017-9746-8",
       "version": "PubMed abstract checked 2026-10-01"
-    },
-    "bonini_2000_npff_receptors": {
-      "accessed": "2026-10-10",
-      "doi": "10.1074/jbc.M004385200",
-      "license": "Open Access (JBC/Elsevier open archive)",
-      "provider": "Journal of Biological Chemistry 275(50):39324-39331 (Bonini et al. 2000), publisher open access on jbc.org",
-      "terms": "Numeric values and short facts only. Table I human NPFF2 Ki: FMRF-amide 4.0 +/- 0.2 nM (also human NPFF1 0.79 nM, rat NPFF1 2.0 nM, rat NPFF2 8.0 nM). Materials: 'NPFF and other commercially available peptides were purchased from Bachem'. Binding: [125I]1DMeNPFF, receptors expressed in COS-7 (saturation) and HEK-293 (competition) cells; IC50 converted to Ki with the Cheng-Prusoff equation, three independent experiments.",
-      "title": "Identification and characterization of two G protein-coupled receptors for neuropeptide FF",
-      "url": "https://doi.org/10.1074/jbc.M004385200",
-      "version": "2000"
     },
     "cancerppd_anticancer_cohort": {
       "accessed": "2026-10-02",
@@ -26892,16 +26821,6 @@
       "title": "시도·시군구별 양식방법별 어종별 양식현황(입식, 생산, 사육, 먹이를 준 양) DT_1EZ0008",
       "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EZ0008",
       "version": "2010 ~ 2026 2/4, table updated 2026-08-31"
-    },
-    "kotani_2001_npff_receptor": {
-      "accessed": "2026-10-10",
-      "doi": "10.1038/sj.bjp.0704038",
-      "license": "Publisher terms; numeric values and short facts only",
-      "provider": "British Journal of Pharmacology 133(1):138-144 (Kotani et al. 2001), full text in PMC1572755",
-      "terms": "Numeric values only. Table 1 (read as the published image): FMRFamide Ki 10.5 +/- 0.90 nM ([125I]-EYF displacement, CHO membranes) and aequorin EC50 641.0 +/- 168.8 nM. Recorded as a candidate that is not used (see the row's exclusion).",
-      "title": "Functional characterization of a human receptor for neuropeptide FF and related peptides",
-      "url": "https://doi.org/10.1038/sj.bjp.0704038",
-      "version": "2001"
     },
     "kumamoto_redlist2024": {
       "accessed": "2026-10-04",
@@ -28574,7 +28493,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29240,7 +29159,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -30212,7 +30131,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -31386,7 +31305,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32415,7 +32334,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33272,7 +33191,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33931,7 +33850,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34572,7 +34491,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.9 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.8 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -35390,7 +35309,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.8",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

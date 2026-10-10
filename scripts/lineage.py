@@ -201,6 +201,19 @@ def tables(report: dict | None = None) -> dict:
             "pchembl_value": round(6 - math.log10(r["value"]), 6), "conversion_method": "자체 환산: 6 − log10(µM)", "stratum_key": "",
             "reference_doi_or_pmid": r["original_paper_doi"], "activity_comment": "", "source_version": src.get("version", ""),
             "retrieved_at": src.get("accessed", ""), "url": f"https://doi.org/{r['original_paper_doi']}"}
+    # 4.9: the same device in a relaxation (d) item, so the row is ranked on its own nM scale and names its own target
+    for r in ev.get("relaxed_replications", []):
+        src = sources.get(r["source_id"], {})
+        records[f"replication:{r['record_id']}"] = {
+            "assay_record_id": f"replication:{r['record_id']}", "compound_key": f"SEQ:{r['sequence']}", "inchikey": "",
+            "source_db": f"원논문 ({r['source_id']})", "source_record_id": r["record_id"], "target_id": r.get("target_chembl_id", ""),
+            "target_name": r.get("target_name", ""), "organism_of_target": r.get("target_organism", "") or "",
+            "assay_type": r.get("assay", ""), "activity_class": "재현 측정 (근거 가중만)",
+            "std_type": r.get("endpoint", ""), "std_value": r["value"], "std_units": r["unit"], "std_relation": r.get("relation", ""),
+            "pchembl_value": round(9 - math.log10(r["value"]), 6), "conversion_method": "자체 환산: 9 − log10(nM)",
+            "stratum_key": r.get("cohort_id", ""), "reference_doi_or_pmid": r["original_paper_doi"], "activity_comment": "",
+            "source_version": src.get("version", ""), "retrieved_at": src.get("accessed", ""),
+            "url": f"https://doi.org/{r['original_paper_doi']}"}
 
     # (c) score contributions
     link_of = {(l["aphia_id"], l["compound_key"]): l["link_id"] for l in sorted(links.values(), key=lambda l: l["link_status"] != "accepted")}

@@ -45,7 +45,7 @@
       }
     }
   },
-  "method_version": "verified-4.8",
+  "method_version": "verified-4.9",
   "schema_version": 1,
   "species": [
     {
@@ -1549,7 +1549,7 @@
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": "단일 논문",
+      "bbvi_label": null,
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "갑오징어",
@@ -1561,8 +1561,8 @@
       "scientific_name": "Acanthosepion esculentum",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": 54.2,
-        "MBPI": 65.8,
+        "BBVI": 65.1,
+        "MBPI": 87.7,
         "MCUI": 10.0,
         "MFPI": 42.5
       },
@@ -1571,6 +1571,8 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.micpath.2018.01.039",
         "https://doi.org/10.1016/j.toxicon.2008.07.007",
+        "https://doi.org/10.1038/sj.bjp.0704038",
+        "https://doi.org/10.1074/jbc.M004385200",
         "https://doi.org/10.3390/md18100490",
         "https://doi.org/10.3892/mmr.2017.7068",
         "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",

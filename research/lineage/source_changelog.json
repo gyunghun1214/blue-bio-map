@@ -2298,6 +2298,32 @@
    "published_on": "2026-10-08",
    "method_note": "verified-4.7 (2026-10-08). No score, category, type or flag changes. National red list page re-check: the 2026-09-27 re-read covered the seven rows scored then; 참문어 (534443) joined on 2026-10-01 through the WoRMS crosswalk and was never re-read, so its MCUI current_check step stayed open (MCUI sufficiency 0.67). Its list page (printed 1027, viewer 1029) and index page (printed 1484, viewer 1486) were re-read in the NIBR e-catalogue on 2026-10-08: 참문어 Octopus vulgaris Cuvier, 1797, NT -> NT, 유지, page 1027, as recorded. The row is added to national_red_list.page_recheck; 참문어 MCUI sufficiency 0.67 -> 1.0.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.8",
+   "to_run_id": "verified-4.9",
+   "from_commit": "419e8c8",
+   "to_commit": "68eed88",
+   "published_on": "2026-10-10",
+   "method_note": "verified-4.8 (2026-10-10). One rule addition and one species' two cells. The ACE stratum's replication device (2.3 cross_origin_potency: another paper's measurement of the same synthetic sequence adds its DOI to independent_dois without changing the value) is extended to the relaxation-(d) stratum as cross_origin_replication, on the pChEMBL scale and with the same gap of 1.0. Team-lead decision 2026-10-10, registered in research/verified-indices/prereg-4.9-2026-10-10.md before the values were published. 갑오징어 (1666974) FMRFamide, human NPFF2 Ki 6.6 nM: Bonini et al. 2000 J Biol Chem 275:39324 (10.1074/jbc.M004385200) measured FMRF-NH2 at the same receptor as Ki 4.0 +/- 0.2 nM (Table I), another author group, pKi gap 0.218, and the paper is in neither the cohort nor ChEMBL_37. Its DOI joins independent_dois, so the evidence factor goes 0.75 -> 1.0: MBPI 65.8 -> 87.7, BBVI 54.2 -> 65.1, and the single-paper label drops (26 -> 25 species). The scored value, its percentile and its cohort are unchanged. Kotani et al. 2001 (10.1038/sj.bjp.0704038, Ki 10.5 nM) is recorded as a candidate that is NOT used: the review the ChEMBL row comes from cites the value with reference numbers that do not resolve in its own reference list, and the ChEMBL assay text matches that paper's own group, so it may be the origin of the scored value.",
+   "entries": [
+    {
+     "change_id": "verified-4.9#0001",
+     "entity_type": "assay",
+     "entity_id": "1666974|relaxed|SEQ:FMRF|ChEMBL_37:CHEMBL5952|Ki",
+     "change_type": "evidence",
+     "old_source": "ChEMBL_37:CHEMBL5952|Ki",
+     "old_value": "0.75",
+     "new_source": "ChEMBL_37:CHEMBL5952|Ki",
+     "new_value": "1.0",
+     "reason": "근거 가중 0.75 → 1.0 (독립 논문 1 → 2)",
+     "run_id": "verified-4.9",
+     "from_run_id": "verified-4.8",
+     "score_before": 65.8,
+     "score_after": 87.7,
+     "score_delta": 21.9
+    }
+   ]
   }
  ]
 }

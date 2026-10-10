@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.8.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.9.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -844,7 +844,11 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
             ranked.append((percentile(value, peers), cohort, value, r))
         rank, cohort, value, top = max(ranked, key=lambda x: (x[0], x[1]["size"]))
         dois = {x["original_paper_doi"].lower() for x in own}
-        factor = config["bioactivity"]["single_doi_factor"] if len(dois) == 1 else config["bioactivity"]["multiple_doi_factor"]
+        # 4.9 (prereg-4.9-2026-10-10 2.2): a replication only adds its DOI; the value, percentile and cohort stay
+        rx = settings.get("cross_origin_replication")
+        replications = relaxed_replications(evidence, rx, sequence, cohort, value, dois) if rx else []
+        independent = dois | {r["original_paper_doi"].lower() for r in replications if r["used"]}
+        factor = config["bioactivity"]["single_doi_factor"] if len(independent) == 1 else config["bioactivity"]["multiple_doi_factor"]
         out.append((origin, {"stratum_kind": "relaxed", "relaxation": top["relaxation"],
                              "relaxation_label": settings["allowed_relaxations"][top["relaxation"]],
                              "label": settings["label"], "peptide_sequence": sequence,
@@ -856,6 +860,8 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
                              "record_ids": sorted(x["record_id"] for x in own), "original_paper_dois": sorted(dois),
                              "cohort_records": cohort["size"], "pchembl": value, "percentile": round(rank, 2),
                              "evidence_factor": factor, "adjusted": rank * factor,
+                             # 4.9: same field name as the ACE stratum, so the page validates and draws it the same way
+                             **({"independent_dois": sorted(independent), "potency_replications": replications} if rx else {}),
                              "caveat": own[0].get("item_caveat") or " ".join(settings["item_caveats"]),
                              # the cohort is a fixed snapshot, so its pChEMBL values ship with the item and the browser re-ranks them
                              "cohort_pchembl": sorted(m["pchembl"] for m in cohort["members"]),
@@ -900,6 +906,37 @@ def potency_replications(evidence: dict, settings: dict, sequence: str, value: f
                     "value": r["value"], "unit": r["unit"], "pIC50": round(p, 3),
                     "pIC50_gap": round(abs(p - value), 3), "used": agrees and not same_paper,
                     "reason": "same paper as the origin measurement" if same_paper else None if agrees else f"pIC50 gap above {gap}"})
+    return out
+
+
+def relaxed_replications(evidence: dict, settings: dict, sequence: str, cohort: dict, value: float, dois: set[str]) -> list[dict]:
+    """4.9 (prereg-4.9-2026-10-10): another paper's measurement of the same mature sequence on the same ChEMBL target
+    and endpoint replicates the value, never the origin and never the scored number. A used row only joins
+    independent_dois. The ACE stratum's device (2.3 cross_origin_potency) read on the pChEMBL scale, same gap."""
+    gap, accepted = settings["max_p_gap"], settings["accepted_materials"]
+    out = []
+    for r in evidence.get("relaxed_replications", []):
+        if (r.get("sequence"), r.get("target_chembl_id"), r.get("endpoint")) != (
+                sequence, cohort["target_chembl_id"], cohort["standard_type"]):
+            continue
+        material = "synthetic" if r.get("synthetic") is True else r.get("material")
+        require(r.get("reviewed") is True and material in accepted and r.get("value_in_text") is True
+                and r.get("relation") == "=" and r.get("unit") == "nM" and r.get("cohort_id") == cohort["cohort_id"]
+                and r.get("cohort_check") and r.get("source_id") in evidence["sources"] and r.get("original_paper_doi"),
+                f"{r.get('record_id')}: incomplete relaxed replication")
+        p = round(9 - math.log10(finite(r.get("value"), "replication value", 0.0000001)), 3)
+        scale = "p" + cohort["standard_type"]
+        same_paper = r["original_paper_doi"].lower() in dois
+        # a reviewed exclusion (e.g. the author group may be the origin of the scored value) is stated, not inferred
+        excluded = (r.get("excluded") or {}).get("reason")
+        agrees = abs(p - value) <= gap
+        out.append({"record_id": r["record_id"], "original_paper_doi": r["original_paper_doi"], "source_id": r["source_id"],
+                    "origin_material": r["origin_material"], "origin_label": r.get("origin_label"), "material": material,
+                    "value": r["value"], "unit": r["unit"], "endpoint": r["endpoint"], "target_chembl_id": r["target_chembl_id"],
+                    "p_scale": scale, "p": p, "p_gap": round(abs(p - value), 3),
+                    "used": agrees and not same_paper and not excluded,
+                    "reason": "same paper as the origin measurement" if same_paper else excluded if excluded
+                    else None if agrees else f"{scale} gap above {gap}"})
     return out
 
 
@@ -1877,6 +1914,16 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "relaxed_bioactivity": extra["relaxed_bioactivity"],
                     "sources": {**evidence["sources"], **{k: extra["sources"][k] for k in used}},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
+        rep = rx.get("cross_origin_replication")
+        if rep:  # 4.9: other papers' measurements of the same sequence, target and endpoint; never items of their own
+            extra = read(ROOT / rep["supplement"])
+            require(extra.get("snapshot_date", "") >= evidence["snapshot_date"], "replication supplement is older than evidence")
+            used = {r["source_id"] for r in extra["relaxed_replications"]}
+            require(used == set(extra["sources"]), "replication supplement registers exactly the sources its rows use")
+            require(not used & set(evidence["sources"]), "replication supplement redefines a source")
+            evidence = {**evidence, "relaxed_replications": extra["relaxed_replications"],
+                        "sources": {**evidence["sources"], **extra["sources"]},
+                        "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), extra["snapshot_date"])}
     fa = cfg["nutrition"].get("display_fatty_acids")
     if fa:  # 3.17: EPA/DHA of the same RDA rows, display only (scripts/collect_rda_fatty_acids.py)
         extra = read(ROOT / fa["snapshot"])
