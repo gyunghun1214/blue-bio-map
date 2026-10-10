@@ -492,7 +492,7 @@ try{
   await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
   const icon=await evaluate(`(()=>{const q=s=>document.querySelector(s),grid=q('.vm-grid').getBoundingClientRect(),sw=q('.basemap-switch').getBoundingClientRect(),plot=q('.vm-plot').getBoundingClientRect();
     const legend=[...q('#value-legend').querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.querySelector('em').textContent,e.style.background]);
-    const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number(e.textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
+    const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number((e.querySelector('.vm-n')||e).textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
     return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
   const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
   const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>l.options.fillOpacity===.06).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
