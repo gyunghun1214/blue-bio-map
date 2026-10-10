@@ -2734,6 +2734,9 @@ async function start(){
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
 // link. The tab is left out: loading never changes it, and one picked while a slow reload runs must not be undone.
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+// method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
+document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
+  g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
 $('notice-chip').addEventListener('click',()=>statusPop(openPop==='notice-pop'?null:'notice-pop'));
 $('alert-chip').addEventListener('click',()=>statusPop(openPop==='alert-pop'?null:'alert-pop'));
 $('alert-reload').addEventListener('click',()=>{statusPop(null);$('reload-data').click();});
