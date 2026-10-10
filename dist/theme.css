@@ -5,7 +5,7 @@
   --teal:#0b7a74;--teal-ink:#0a5f5a;--teal-fill:#12a39a;--teal-soft:#e4f4f2;--coral:#e5484d;
   --amber:#995c08;--amber-soft:#fbf4e4;--blue:#1f6fb2;
   --shadow:0 6px 20px rgba(11,27,43,.14);--shadow-sm:0 1px 2px rgba(11,27,43,.08);
-  --head:56px;--note:36px;--chrome:calc(var(--head) + var(--note));
+  --head:56px;--note:0px;--chrome:calc(var(--head) + var(--note));
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526b7b' stroke-width='1.6'/%3E%3C/svg%3E");
 }
@@ -425,3 +425,19 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .ax-where p{margin:0;font-size:12px;line-height:1.45;color:var(--ink2)}
 .ax-quad{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:2px;width:34px;height:34px}
 .ax-quad i{border-radius:3px;opacity:.22}.ax-quad i.on{opacity:1;outline:1.5px solid var(--ink)}
+/* 2026-10-10 디자인 04: 공지 줄과 저장 사본 배너를 앱 바의 칩 두 개로. 전문은 칩을 누르면 말풍선에 나온다. */
+.status-chips{position:relative;display:flex;align-items:center;gap:6px;flex:none}
+.status-chip{display:inline-flex;align-items:center;gap:4px;max-width:260px;padding:4px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;background:rgba(255,255,255,.08);color:#e6f1f6;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.status-chip:hover,.status-chip[aria-expanded=true]{background:rgba(255,255,255,.18)}
+.status-chip.warn{border-color:#f2c86b;background:#fbf0d2;color:#6b4708}
+.status-chip.warn:hover,.status-chip.warn[aria-expanded=true]{background:#f8e5b4}
+.status-pop{position:absolute;top:calc(100% + 10px);right:0;z-index:1150;width:min(440px,calc(100vw - 24px));padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);box-shadow:var(--shadow);font-size:12.5px;line-height:1.55;white-space:normal}
+.status-pop.warn{border-color:#efe3c8;background:var(--amber-soft)}
+.status-pop p{margin:0 0 6px}
+.status-pop .notice{position:static;display:flex;flex-direction:column;align-items:flex-start;gap:6px;height:auto;margin:0;padding:0;border:0;background:none;white-space:normal}
+.status-pop .notice p{overflow:visible;color:var(--ink2);font-size:12.5px}
+.status-pop .notice-label,.status-pop #connection-state,.status-pop #snapshot-date{display:inline-block!important;font-size:11.5px;color:var(--muted)}
+.error.in-chip{display:none}
+.basemap-status.fallback{display:none}
+.basemap-warn{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:6px;border-radius:6px;background:#fbf0d2;color:#995c08;font-size:13px;cursor:help}
+.basemap-warn[hidden]{display:none}

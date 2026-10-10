@@ -2454,7 +2454,10 @@ function setBasemap(name,failed=false){
   basemap=name;
   $('map').classList.toggle('map-dark',name!=='basic');
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
-  $('basemap-status').textContent=failed?'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.':'';
+  const warn=failed?'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.':'';
+  // the fallback note is a small ⚠ beside 위성·수심 (tooltip and label carry the sentence); #basemap-status keeps the text for checks
+  $('basemap-status').textContent=warn;$('basemap-status').classList.toggle('fallback',failed);
+  $('basemap-warn').hidden=!failed;$('basemap-warn').title=warn;$('basemap-warn').setAttribute('aria-label',warn||'배경 지도 상태');
   try{if(!failed)localStorage.setItem('basemap',name);}catch{}
   renderMap();writeHash();
 }
@@ -2662,11 +2665,28 @@ function registerTools(){
 const loadProgress=(step,detail={})=>{try{dispatchEvent(new CustomEvent('bbvm:progress',{detail:{step,...detail}}));}catch{/* no listener needed */}};
 const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||null,published:data?.publishedCount,candidates:data?.candidateCount,
   cells:data?[...new Map(data.species.flatMap(s=>s.cells||[]).map(c=>[`${c.lat0},${c.lon0},${c.sizeDeg}`,{lat:c.lat0,lon:c.lon0,size:c.sizeDeg}])).values()]:[]});
+// Header status chips: the notice (version · research use) opens its full text; a snapshot or newer-file status gets a
+// yellow chip whose popover holds the banner sentence and the reload button. A load with no data keeps the red banner.
+function updateStatusChips(){
+  const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
+  $('notice-chip-text').textContent=!data?'자료 불러오는 중':info?.version?`${released(info)?'정식 산출':'시범 지표'} ${info.version} · 연구용`:'연구용 프로토타입';
+  const was=!$('alert-chip').hidden;
+  $('alert-chip').hidden=!alert;
+  $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
+  $('alert-text').textContent=alert?err.textContent:'';
+  if(!alert)statusPop(null);
+  if(alert&&!was)$('status-live').textContent=err.textContent;  // announced once, as the banner's role=alert did
+}
+let openPop=null;
+function statusPop(id){
+  for(const [chip,pop] of [['notice-chip','notice-pop'],['alert-chip','alert-pop']]){const on=pop===id;$(pop).hidden=!on;$(chip).setAttribute('aria-expanded',String(on));}
+  openPop=id;
+}
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
-  $('connection-state').textContent='자료를 불러오는 중';
+  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
+  $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
@@ -2686,7 +2706,7 @@ async function loadCollection(){
     await attachPilotAssessments(next);
     if(request!==requestNumber)return;
     if(reloadOnceForNewData(next.outdated))return;
-    $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
+    $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?'<strong>연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.</strong> '+(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';loadDone('empty');return;}
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();
@@ -2696,10 +2716,12 @@ async function loadCollection(){
     if(data.snapshotAt){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
+    // a dated snapshot or a newer data file is a status, not a failure: it moves from the banner into the yellow header chip
+    $('error').classList.toggle('in-chip',!$('error').hidden);updateStatusChips();
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v)applyHash(h);}
     loadDone(data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
+  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
@@ -2712,6 +2734,11 @@ async function start(){
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
 // link. The tab is left out: loading never changes it, and one picked while a slow reload runs must not be undone.
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+$('notice-chip').addEventListener('click',()=>statusPop(openPop==='notice-pop'?null:'notice-pop'));
+$('alert-chip').addEventListener('click',()=>statusPop(openPop==='alert-pop'?null:'alert-pop'));
+$('alert-reload').addEventListener('click',()=>{statusPop(null);$('reload-data').click();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openPop){const chip=openPop==='notice-pop'?'notice-chip':'alert-chip';statusPop(null);$(chip).focus();}});
+document.addEventListener('click',e=>{if(openPop&&!e.target.closest('.status-chips'))statusPop(null);});
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
 document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
@@ -2738,7 +2765,7 @@ $('value-info').addEventListener('click',()=>setValueInfo($('value-legend').hidd
 document.addEventListener('click',e=>{if(!$('value-legend').hidden&&!$('value-mini').contains(e.target))setValueInfo(false);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('value-legend').hidden){setValueInfo(false);$('value-info').focus();}});
 for(const [id,layer] of [['layer-priority','priority'],['layer-unexplored','unexplored']])$(id).addEventListener('change',e=>{sufficiencyLayers[layer]=e.target.checked;if(data&&mapMode==='value')renderMap();});
-$('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').textContent=m;};
+$('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').classList.remove('fallback');$('basemap-status').textContent=m;};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
 $('bbvi-weight').addEventListener('input',event=>{
   bbviWeight=Number(event.target.value);$('bbvi-weight-value').textContent=bbviWeight.toFixed(2);
