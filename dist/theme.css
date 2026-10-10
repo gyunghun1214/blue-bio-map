@@ -354,11 +354,9 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 
 /* 3.27: a BBVI resting on one paper is a score with its label; hollow matrix point and a dashed card value keep it apart */
 .matrix-point.pilot.single{background:#fff;border:3px solid var(--teal);box-shadow:none}
-.matrix-point.pilot.national.single{background:#fff;border-color:var(--amber)}
 .card-scores i.single{background:none;border:1px solid var(--teal)}
 /* 3.27: twelve points instead of two, so the pilot point is smaller (labels move or hide where they would collide, app.js) */
 .matrix-point.pilot{width:22px;min-width:22px;height:22px;padding:0;border-radius:50%}
-.matrix-point.pilot.national{border-radius:5px}
 .matrix-point .point-label{font-size:11.5px}
 /* 4.0: 30종 밖 미탐색 후보 list under the layer switch (collapsed; long genera such as Sargassum scroll) */
 .unexplored-outside{flex-basis:100%;font-size:12.5px}
@@ -373,14 +371,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix-layout .matrix-unplaced{margin:16px 0 0}
 @media(min-width:741px){.matrix-layout{row-gap:0}.matrix-layout>div:first-child{display:contents}.matrix-explanation{grid-column:2;grid-row:1/4}.matrix-layout .matrix-unplaced{grid-column:1/-1}#matrix-note{margin-bottom:0}}
 
-/* 4.2: 지방 목록 참고값 points — a dashed purple marker, apart from the amber national square; a hollow
-   single-paper point keeps its white fill so the two signals stay readable together */
-.matrix-point.pilot.national.subnational{border-radius:5px;border-style:dashed;border-color:#6b3fa0}
-.matrix-point.pilot.subnational:not(.single){background:#6b3fa0}
-/* 4.3: 자체 예비평가(Rapid LC) MCUI — grey dotted marker; a BBVI with the floor MBPI (0) — hollow with a grey outline */
-.matrix-point.pilot.national.rapidlc{border-radius:5px;border-style:dotted;border-color:#5f6b73}
-.matrix-point.pilot.rapidlc:not(.single){background:#5f6b73}
-.matrix-point.pilot.floor,.matrix-point.pilot.national.single.floor{border-color:#8a959c}
 /* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
 #comparison{overscroll-behavior-x:contain;scrollbar-width:thin}
 #comparison:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -464,3 +454,41 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .flow .noadd text{font-size:11.5px;font-weight:700;fill:#a32d22}
 .flow-wrap figcaption{margin-top:8px;font-size:12.5px;color:var(--muted)}
 .method-card.flash{box-shadow:0 0 0 3px var(--teal)}
+
+/* Design 02 (2026-10-10): matrix points take their type colour (filled = BBVI with 2+ papers, hollow = 근거 논문 1편, grey
+   dashed = MBPI floor); the MCUI basis moved from the point's shape to its tooltip and the per-type list below the graph. */
+.matrix{height:380px}
+.matrix .quadrant.typed{background:color-mix(in srgb,var(--qc) 7%,#fff)}
+.matrix .q2,.matrix .q4{align-items:flex-end;text-align:right}
+.matrix .quadrant{padding:10px 12px}
+.matrix-layout .matrix-point.pilot{background:var(--mp,var(--teal));border:2px solid #fff;border-radius:50%;width:18px;min-width:18px;height:18px}
+.matrix-layout .matrix-point.pilot.single{background:#fff;border:3px solid var(--mp,var(--teal))}
+.matrix-layout .matrix-point.pilot.floor{background:#fff;border:3px dashed #8a959c}
+.matrix-point:hover,.matrix-point:focus-visible{z-index:6}
+.matrix-point .point-label.above{top:auto;left:50%;bottom:100%;margin:0 0 3px}
+.matrix-point .point-label.below{top:100%;left:50%;margin:3px 0 0}
+.matrix-point .point-label.hidden-label{visibility:hidden}
+.matrix-point:hover .point-label.hidden-label,.matrix-point:focus-visible .point-label.hidden-label{visibility:visible;z-index:6}
+.matrix-tick{position:absolute;width:0;border-left:1.5px solid #4c6272;transform:translateX(-50%);z-index:1;pointer-events:none}
+.matrix-tick::after{content:"";position:absolute;left:-4.5px;width:8px;border-top:1.5px solid #4c6272}
+.matrix-tick.up::after{bottom:0}.matrix-tick.down::after{top:0}
+.matrix-types:empty{display:none}
+.matrix-types{margin:4px 0 0}
+.mt-key{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+.mt-key span{display:inline-flex;align-items:center;gap:5px}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mt-box{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.mt-box>b{display:flex;align-items:center;gap:7px;font-size:13.5px;margin-bottom:6px}
+.mt-box>b span{color:var(--muted);font-weight:500}
+.mt-box>div{display:flex;flex-wrap:wrap;gap:5px}
+.mt-box button{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:2px 9px;font-size:12.5px;color:var(--ink);cursor:pointer}
+.mt-box button:hover{border-color:var(--teal)}
+.mt-box small{color:var(--muted);font-size:11.5px}
+.mt-box em{font-size:12.5px;color:var(--muted)}
+.mt-sw{width:16px;height:16px;border-radius:4px;flex:none}
+.mt-dot{width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--ink);flex:none;box-sizing:border-box}
+.mt-dot.hollow{background:#fff}
+@media(min-width:741px){.matrix-layout .matrix-types{grid-column:1/-1}}
+@media(max-width:740px){.matrix{height:400px}.mt-grid{grid-template-columns:1fr}.matrix-layout .matrix-point.pilot{width:14px;min-width:14px;height:14px;border-width:2px}.matrix-layout .matrix-point.pilot.single,.matrix-layout .matrix-point.pilot.floor{border-width:2.5px}}
+.matrix-point .point-label.far::before{content:"";position:absolute;top:50%;left:0;width:var(--ll);border-top:1px solid #6d8291;transform-origin:0 0;transform:rotate(var(--la))}
+.matrix-point .point-label.far.left::before{left:auto;right:0;transform-origin:100% 0;transform:rotate(calc(var(--la) - 3.14159rad))}
