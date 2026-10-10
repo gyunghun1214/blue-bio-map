@@ -7,28 +7,46 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const code=read('expedition.js').split('// ---- browser ----')[0];
 const ctx={};vm.createContext(ctx);
-vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtScore,plainWords,project,routePoints});',ctx);
+vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtScore,plainWords,project,routePoints,routeStops,anchor,SHARED_ANCHOR,wa});',ctx);
 const data=JSON.parse(read('expedition-stops.json'));
-const route=ctx.sampleRoute(data.stops);
+// stops on the route (the one without a published cell at sea is listed last, off the route)
+const stops=ctx.routeStops(data.stops);
+const route=ctx.sampleRoute(stops);
 const run=(s,seconds,opts)=>{let arrived=0;for(let i=0;i<seconds*60;i++)arrived+=ctx.step(s,1/60,opts);return arrived;};
 // no trip is longer than this, so every wait below is derived from SAIL instead of a fixed number of seconds
 const LONGEST=ctx.SAIL.avgLegSeconds*ctx.SAIL.longest;
 // frames until arrival, with the per-frame moves
 const sail=s=>{const moves=[];let f=0,t=s.t;while(!ctx.step(s,1/60)){moves.push(s.t-t);t=s.t;if(++f>LONGEST*60+5)throw Error('never arrived');}moves.push(s.t-t);return {seconds:(f+1)/60,moves};};
 
-// route: stops in sailing order, each stop exactly on its cell centre
-assert.ok(route.stopT.every((t,i)=>i===0||t>route.stopT[i-1]),'stop positions increase along the route');
-data.stops.forEach((st,i)=>{const p=ctx.routeAt(route,route.stopT[i]),c=ctx.project(...st.cell.center);assert.ok(Math.hypot(p.x-c.x,p.z-c.z)<1e-6,`stop ${i+1} sits on its cell centre`);});
-
-// the presentation route stays at sea (same outer rings and ray test as the build script)
+// same outer rings and ray test as the build script
 const geo=JSON.parse(read('countries.json'));
 const rings=geo.features.flatMap(f=>(f.geometry.type==='MultiPolygon'?f.geometry.coordinates:[f.geometry.coordinates]).map(p=>p[0]));
 const inside=(lon,lat,r)=>{let hit=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const [x1,y1]=r[j],[x2,y2]=r[i];if((y1>lat)!==(y2>lat)&&lon<x1+(lat-y1)*(x2-x1)/(y2-y1))hit=!hit;}return hit;};
-const onLand=route.samples.filter(q=>rings.some(r=>inside(q.lon,q.lat,r)));
+const atSea=(lat,lon)=>!rings.some(r=>inside(lon,lat,r));
+
+// route: the stops off the route come last; route stops in sailing order. A stop sits exactly on its cell centre;
+// a stop that shares its cell (shared_with) and has a presentation anchor sits inside that cell, at sea.
+assert.deepEqual(data.stops.slice(0,stops.length),stops,'stops off the route are listed after the route');
+assert.ok(data.stops.slice(stops.length).every(st=>st.cell===null&&st.on_route===false&&st.cell_missing_reason),'a stop off the route has no cell and says why');
+assert.ok(route.stopT.every((t,i)=>i===0||t>route.stopT[i-1]),'stop positions increase along the route');
+stops.forEach((st,i)=>{
+  const p=ctx.routeAt(route,route.stopT[i]),[lat,lon]=ctx.anchor(st),q=ctx.project(lat,lon),c=st.cell;
+  assert.ok(Math.hypot(p.x-q.x,p.z-q.z)<1e-6,`stop ${i+1} sits on its anchor`);
+  if(lat===c.center[0]&&lon===c.center[1])return;
+  assert.ok(st.shared_with.length&&ctx.SHARED_ANCHOR[st.aphia_id],`stop ${i+1} leaves its cell centre only when it shares the cell`);
+  assert.ok(lat>c.lat0&&lat<c.lat0+c.size_deg&&lon>c.lon0&&lon<c.lon0+c.size_deg,`stop ${i+1} (${st.korean_name}) anchor inside its cell`);
+  assert.ok(atSea(lat,lon),`stop ${i+1} (${st.korean_name}) anchor at sea`);
+});
+// every centre two stops share keeps its first stop on the centre and moves the others
+{const at={};stops.forEach(st=>{const k=ctx.anchor(st).join();(at[k]??=[]).push(st.korean_name);});
+  assert.deepEqual(Object.values(at).filter(v=>v.length>1),[],'no two route stops anchor at the same place');}
+
+// the presentation route stays at sea
+const onLand=route.samples.filter(q=>!atSea(q.lat,q.lon));
 assert.equal(onLand.length,0,'the presentation route never crosses the coastline in countries.json: '+JSON.stringify(onLand.slice(0,3)));
 
 // start → stop 1: sails, arrives once, discovery step 1
-let s=ctx.makeState(data.stops.length,route.stopT);
+let s=ctx.makeState(stops.length,route.stopT);
 assert.equal(s.phase,'intro');
 ctx.go(s,0);assert.equal(s.phase,'sailing');
 assert.equal(run(s,LONGEST+1),1,'arrives exactly once');
@@ -52,15 +70,15 @@ ctx.prev(s);ctx.prev(s);assert.equal(s.stop,0);run(s,LONGEST+1);
 assert.equal(s.arrived,0);assert.equal(s.reveal[0],4);
 // clamped at both ends, a repeated go to the current stop keeps the arrival
 ctx.prev(s);assert.equal(s.phase,'arrived');assert.equal(s.stop,0);
-ctx.go(s,99);assert.equal(s.stop,data.stops.length-1);
+ctx.go(s,99);assert.equal(s.stop,stops.length-1);
 // reduced motion jumps in one frame
-s=ctx.makeState(data.stops.length,route.stopT);ctx.go(s,2);assert.equal(ctx.step(s,1/60,{instant:true}),true);assert.equal(s.arrived,2);
+s=ctx.makeState(stops.length,route.stopT);ctx.go(s,2);assert.equal(ctx.step(s,1/60,{instant:true}),true);assert.equal(s.arrived,2);
 // deep link placement never lowers a reached step
 s.reveal[1]=4;ctx.placeAt(s,1);assert.equal(s.reveal[1],4);assert.equal(s.phase,'arrived');
 
 // sailing speed: one knob (SAIL.avgLegSeconds), trip time follows the distance within shortest..longest × that value
 {
-  const a=ctx.SAIL.avgLegSeconds, lo=a*ctx.SAIL.shortest, hi=a*ctx.SAIL.longest, n=data.stops.length;
+  const a=ctx.SAIL.avgLegSeconds, lo=a*ctx.SAIL.shortest, hi=a*ctx.SAIL.longest, n=stops.length;
   assert.ok(a>=5&&a<=12,'default leg time is a slow sail, not a jump: '+a);
   const legs=route.stopT.map((t,i)=>({len:t-(i?route.stopT[i-1]:0),sec:ctx.tripSeconds(t-(i?route.stopT[i-1]:0),n)}));
   legs.forEach((l,i)=>assert.ok(l.sec>=lo&&l.sec<=hi,`leg ${i+1}: ${l.sec}s within ${lo}..${hi}`));
@@ -83,7 +101,7 @@ s.reveal[1]=4;ctx.placeAt(s,1);assert.equal(s.reveal[1],4);assert.equal(s.phase,
 }
 // a new target mid-trip keeps the ship's speed: no jump, no restart from 0 in the same direction, no overshoot
 {
-  const n=data.stops.length;s=ctx.makeState(n,route.stopT);ctx.go(s,0);run(s,LONGEST+1);
+  const n=stops.length;s=ctx.makeState(n,route.stopT);ctx.go(s,0);run(s,LONGEST+1);
   ctx.go(s,1);run(s,ctx.tripSeconds(route.stopT[1]-route.stopT[0],n)/2);
   const v=ctx.tripSpeed(s.trip),t1=s.t;ctx.go(s,2);
   assert.ok(Math.abs(ctx.tripSpeed(s.trip)-v)<1e-9*Math.max(1,Math.abs(v)),'same speed right after the new target');
@@ -106,7 +124,7 @@ assert.equal(ctx.sailFromQuery('?x=1&sail=5.5').avgLegSeconds,5.5);
 assert.equal(ctx.sailFromQuery('?sail=0.5').avgLegSeconds,2);assert.equal(ctx.sailFromQuery('?sail=99').avgLegSeconds,30);
 for(const q of ['','?sail=','?sail=abc','?nosail=3'])assert.equal(ctx.sailFromQuery(q).avgLegSeconds,ctx.SAIL.avgLegSeconds,q);
 assert.equal(ctx.sailFromQuery('?sail=12').longest,ctx.SAIL.longest,'only the leg time changes');
-{const n=data.stops.length,a=ctx.makeState(n,route.stopT,ctx.sailFromQuery('?sail=12'));ctx.go(a,0);const sec=sail(a).seconds;assert.ok(Math.abs(sec-ctx.tripSeconds(route.stopT[0],n,ctx.sailFromQuery('?sail=12')))<2/60);}
+{const n=stops.length,a=ctx.makeState(n,route.stopT,ctx.sailFromQuery('?sail=12'));ctx.go(a,0);const sec=sail(a).seconds;assert.ok(Math.abs(sec-ctx.tripSeconds(route.stopT[0],n,ctx.sailFromQuery('?sail=12')))<2/60);}
 
 // URL hash: 1-based, invalid values ignored
 assert.equal(ctx.stopFromHash('#stop=2',3),1);assert.equal(ctx.stopFromHash('#stop=2&view=cards',3),1);assert.equal(ctx.stopFromHash('#view=cards&stop=3',3),2);
@@ -123,8 +141,11 @@ assert.match(app,/function applyHash\(h\)\{[\s\S]*?h\.s[\s\S]*?h\.m[\s\S]*?h\.v/
 for(const st of data.stops){
   const p=new URLSearchParams(st.map_link.split('#')[1]);
   assert.equal(Number(p.get('s')),st.aphia_id);assert.equal(p.get('v'),'explore');
-  assert.match(p.get('m'),/^\d+\/-?\d+\.\d\d\/-?\d+\.\d\d$/);
+  // a stop off the route selects the species without a position (applyHash works without m)
+  if(st.cell)assert.match(p.get('m'),/^\d+\/-?\d+\.\d\d\/-?\d+\.\d\d$/);else assert.equal(p.get('m'),null);
 }
+// 와/과 in "○○와 같은 공개 셀"
+assert.equal(ctx.wa('참굴'),'과');assert.equal(ctx.wa('가리맛조개'),'와');assert.equal(ctx.wa('홍합(참담치)'),'와');assert.equal(ctx.wa('괭생이모자반'),'과');
 
 // page text: disclaimer present, no wording that turns records into presence, ?v= busts the immutable cache
 const html=read('expedition.html'),js=read('expedition.js');

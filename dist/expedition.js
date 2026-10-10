@@ -6,17 +6,25 @@
 const PROJ={lat:35,lon:128,k:10};
 const project=(lat,lon)=>({x:(lon-PROJ.lon)*PROJ.k*Math.cos(PROJ.lat*Math.PI/180),z:-(lat-PROJ.lat)*PROJ.k});
 // Presentation route (연출용): a start point and waypoints that keep the curve off the coastline in countries.json.
-// ROUTE_VIA[i] lies between stop i-1 and stop i (ROUTE_VIA[0] between the start and the first stop).
+// ROUTE_VIA[AphiaID] lies between the previous stop and that stop. Tight spots: the 참굴 cell has an islet just
+// south-west of its centre (34.43–34.45°N 127.47–127.50°E), so the route enters from the east; 울릉도 (37.5°N 130.87°E)
+// is land in countries.json, so the last leg passes south of it; the 멍게 → 방어 leg keeps off the 울산 coast.
 // It is not a survey track; the page always says so. verification/test_expedition_ui.mjs checks it stays at sea.
-const ROUTE_START=[33.8,125.3];
-const ROUTE_VIA=[[],[[34.0,125.9],[34.05,127.0]],[[34.3,127.75],[33.9,127.7]],[[34.0,128.1]],[[34.9,129.1],[34.75,129.6]],[],[],[[36.5,130.3]]];
+const ROUTE_START=[37.0,124.2];
+const ROUTE_VIA={836033:[[34.05,127.0],[34.3,127.6],[34.44,127.6]],506159:[[34.9,129.1],[34.75,129.6]],276651:[[35.9,129.85]],372119:[[37.25,131.0]]};
+// Where the ship anchors at a stop that shares its published cell (연출용 위치): inside the same cell, at sea, apart
+// from the first stop there (which keeps the cell centre). Only read when the stop has shared_with.
+const SHARED_ANCHOR={234476:[34.36,127.70],836041:[34.22,127.74],413600:[34.10,127.64],393716:[37.62,129.38],371986:[37.50,130.36]};
 const REVEAL_DONE=3, REVEAL_DETAIL=4;
 
+const anchor=stop=>stop.shared_with?.length&&SHARED_ANCHOR[stop.aphia_id]||stop.cell.center;
+// Stops on the route (a stop without a published cell at sea is listed after them, off the route).
+const routeStops=stops=>stops.filter(s=>s.on_route!==false&&s.cell);
 function routePoints(stops){
   const pts=[{lat:ROUTE_START[0],lon:ROUTE_START[1],stop:-1}];
   stops.forEach((s,i)=>{
-    for(const [lat,lon] of ROUTE_VIA[i]||[])pts.push({lat,lon,stop:-1});
-    pts.push({lat:s.cell.center[0],lon:s.cell.center[1],stop:i});
+    for(const [lat,lon] of ROUTE_VIA[s.aphia_id]||[])pts.push({lat,lon,stop:-1});
+    const [lat,lon]=anchor(s);pts.push({lat,lon,stop:i});
   });
   return pts;
 }
@@ -145,6 +153,8 @@ function headlineAxes(stop){
 const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
 // Published data still carries the older label words; the screen shows the neutral wording, as on the main map
 // (dist/app.js plainWords, team-lead decision 2026-10-08).
+// 와/과 after a Korean name (the last Hangul syllable decides; "홍합(참담치)" reads 치).
+const wa=name=>{const h=[...String(name)].reverse().find(ch=>ch>='가'&&ch<='힣');return h&&(h.charCodeAt(0)-0xAC00)%28?'과':'와';};
 const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'근거 논문 1편')
   .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 
@@ -156,7 +166,7 @@ const link=(url,label)=>safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel=
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const AXIS={MFPI:'식량자원 잠재력',MBPI:'신약개발(생리활성) 잠재성',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js
-const KIND={peptide:'펩타이드 비교집단',amp:'항균 펩타이드 비교집단(MIC)',chembl:'ChEMBL 화합물 비교집단',xo:'XO 문헌 비교집단',relaxed:'완화 산출'};
+const KIND={peptide:'펩타이드 비교집단',amp:'항균 펩타이드 비교집단(MIC)',chembl:'ChEMBL 화합물 비교집단',xo:'XO 문헌 비교집단',relaxed:'완화 산출',anticancer:'항암 세포주 비교집단'};
 let DATA=null,STATE=null,ROUTE=null,scene=null,revealTimer=null,lastFocus=null;
 
 // Hand-drawn species illustrations (code-generated SVG, no photo in the repository).
@@ -170,7 +180,32 @@ const ART={
   250680:`<svg viewBox="0 0 120 90" role="img" aria-label="멍게 일러스트"><path d="M30 84c-6-20-4-46 10-60 10-10 30-10 40 0 14 14 16 40 10 60z" fill="#d8573a" stroke="#f3b19f" stroke-width="2"/><path d="M44 22l-4-12h12zM74 22l2-12h10z" fill="#e8744f" stroke="#f3b19f" stroke-width="2"/><g fill="#f09a76">${[[44,40],[60,34],[76,42],[50,56],[68,58],[42,72],[60,74],[80,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3"/>`).join('')}</g></svg>`,
   372119:`<svg viewBox="0 0 120 90" role="img" aria-label="우뭇가사리 일러스트"><path d="M60 86V50M60 50L40 30M60 50l22-22M60 64L36 54M60 64l26-8M40 30l-8-14M40 30l6-16M82 28l-4-14M82 28l12-10M36 54l-14-4M86 56l14-6" fill="none" stroke="#b5405a" stroke-width="2.5" stroke-linecap="round"/><g fill="#d9667f">${[[32,16],[46,14],[78,14],[94,18],[22,50],[100,50]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5"/>`).join('')}</g></svg>`
 };
-const art=stop=>ART[stop.aphia_id]||`<svg viewBox="0 0 120 90" role="img" aria-label="해양생물 일러스트"><circle cx="60" cy="45" r="28" fill="none" stroke="#9fd6d0" stroke-width="2"/></svg>`;
+// The 22 survey candidates: one drawing per taxon group, coloured per species [group, body, line].
+const TAXON_ART={
+  seaweed:(c,d)=>`<path d="M60 86C56 64 48 42 52 16c1-8 10-8 11 0 3 26-1 48-3 70z" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M58 70c-14-6-24-18-26-34 12 4 22 16 26 34zM62 56c12-8 22-22 22-36-10 6-18 20-22 36z" fill="${c}" stroke="${d}" stroke-width="1.5" opacity=".85"/><path d="M58 80V24" stroke="${d}" stroke-width="1.5" fill="none"/>`,
+  bivalve:(c,d)=>`<path d="M18 58C18 34 36 18 60 18s42 16 42 40c0 12-20 18-42 18S18 70 18 58z" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M60 74L28 34M60 74L42 24M60 74V20M60 74l18-50M60 74l32-40" stroke="${d}" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M50 74h20l-4 9H54z" fill="${d}"/>`,
+  abalone:(c,d)=>`<ellipse cx="60" cy="47" rx="45" ry="30" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M32 54c-2-16 12-26 28-22s20 18 10 25-22 2-18-8" fill="none" stroke="${d}" stroke-width="2.5" stroke-linecap="round"/><g fill="${d}">${[[34,24],[46,20],[58,18],[70,19],[82,22]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6"/>`).join('')}</g>`,
+  fish:(c,d)=>`<path d="M12 45C28 24 68 21 92 45 68 69 28 66 12 45z" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M92 45l20-17v34z" fill="${d}"/><path d="M48 27c6-8 16-10 24-6-6 2-10 6-12 10zM50 63c4 6 10 8 16 6" fill="${d}" opacity=".8"/><path d="M38 34c4 7 4 15 0 22" fill="none" stroke="${d}" stroke-width="1.5"/><circle cx="26" cy="42" r="3.5" fill="#10202c"/>`,
+  cephalopod:(c,d)=>`<path d="M60 8c17 0 27 13 27 29 0 11-7 19-13 23H46c-6-4-13-12-13-23C33 21 43 8 60 8z" fill="${c}" stroke="${d}" stroke-width="2"/><g fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round">${[[-22,-34],[-12,-20],[-4,-6],[4,6],[12,20],[22,34]].map(([a,b])=>`<path d="M${60+a/2} 58c${a/2} 8 ${b-a} 14 ${b/1.4} 24"/>`).join('')}</g><circle cx="52" cy="46" r="3" fill="#10202c"/><circle cx="68" cy="46" r="3" fill="#10202c"/>`,
+  crab:(c,d)=>`<ellipse cx="60" cy="50" rx="34" ry="18" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M26 46L8 38M94 46l18-8" stroke="${d}" stroke-width="2"/><g fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"><path d="M34 62l-12 14M44 66l-6 16M76 66l6 16M86 62l12 14"/><path d="M38 36c-6-10-14-14-20-12M82 36c6-10 14-14 20-12"/></g><path d="M12 22c4-6 12-6 14 0-4 0-8 2-14 0zM108 22c-4-6-12-6-14 0 4 0 8 2 14 0z" fill="${c}" stroke="${d}" stroke-width="1.5"/><circle cx="52" cy="40" r="2.5" fill="#10202c"/><circle cx="68" cy="40" r="2.5" fill="#10202c"/>`
+};
+const TAXON={377084:['seaweed','#7a6a3a','#c9b47a'],371986:['seaweed','#6b5a2e','#b9a066'],234476:['seaweed','#5fae5a','#a8e2a0'],494853:['seaweed','#8b6e2c','#d0b064'],
+  236157:['seaweed','#a2443e','#e39a8f'],145086:['seaweed','#3f7a4a','#8fc79a'],231750:['bivalve','#b9a48a','#efe2cf'],393716:['bivalve','#d38a5a','#f6c9a6'],
+  836041:['bivalve','#9fa9a3','#e0e8e4'],504357:['bivalve','#6e5a48','#c7ad92'],413600:['bivalve','#c8b77a','#f0e6bd'],397082:['abalone','#5d6b6a','#b8c9c4'],
+  127022:['fish','#3d6f8c','#a9d0e4'],219984:['fish','#8fb2c4','#e1eef4'],281273:['fish','#c9a24a','#f2dc9c'],275816:['fish','#7a6a52','#c9b89c'],
+  274849:['fish','#5c5f66','#b3b7bf'],276651:['fish','#4f7fa0','#e6d27a'],254538:['fish','#8a7c62','#d6c9ae'],534443:['cephalopod','#b9655a','#eab0a6'],
+  1666974:['cephalopod','#a68a72','#e0cdb9'],1061762:['crab','#5f7286','#c2d2e2']};
+const art=stop=>{
+  if(ART[stop.aphia_id])return ART[stop.aphia_id];
+  const t=TAXON[stop.aphia_id];
+  return `<svg viewBox="0 0 120 90" role="img" aria-label="${esc(stop.korean_name)} 일러스트">${t?TAXON_ART[t[0]](t[1],t[2]):'<circle cx="60" cy="45" r="28" fill="none" stroke="#9fd6d0" stroke-width="2"/>'}</svg>`;
+};
+// A stop that shares its published cell: the anchor is a presentation position inside that cell.
+function sharedNote(stop){
+  if(!stop.shared_with?.length)return '';
+  const names=stop.shared_with.map(a=>DATA.stops.find(s=>s.aphia_id===a)?.korean_name).filter(Boolean).join('·');
+  return `${anchor(stop)!==stop.cell.center?'연출용 위치 · ':''}${names}${wa(names)} 같은 공개 셀`;
+}
 
 function seaNames(cell){return (cell.sea_areas||[]).length?cell.sea_areas.map(n=>SEA_KO[n]||n).join(' · '):'해역명 미확인';}
 function cellExtent(c){
@@ -200,15 +235,21 @@ function scoreHtml(stop,k,big){
   return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span><span class="x-tag">${axisTag(stop,k)}</span></div>`;
 }
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
+const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
+const badges=stop=>`${stop.candidate_label?`<span class="x-badge is-candidate">${esc(stop.candidate_label)}</span>`:''}${stop.cell?'':`<span class="x-badge is-off">${esc('항로 밖')}</span>`}`;
 function cardHtml(stop,i,level,mode){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k));
-  return `<article class="x-card" data-stop="${i}" data-level="${level}">
-  <p class="x-step-label">탐사 지점 ${i+1} / ${DATA.stops.length}</p>
-  <div class="x-r" data-r="1"><p class="x-sea">${esc(seaNames(c))}</p>
+  const where=c?`<p class="x-sea">${esc(seaNames(c))}</p>
     <p class="x-obs">이 ${c.size_deg}° 셀에서 ${esc(yearsText(c))} 관측 기록 <b>${esc(c.records)}</b>건 <small>(지점 ${esc(c.sites)}곳)</small></p>
-    <p class="x-fine">${esc(cellExtent(c))} · ${esc(DATA.notes.cell)}</p></div>
+    <p class="x-fine">${esc(cellExtent(c))} · ${esc(DATA.notes.cell)}</p>${stop.shared_with?.length?`<p class="x-fine x-shared">${esc(sharedNote(stop))}</p>`:''}`
+    :`<p class="x-sea">${esc(stop.cell_missing_reason||'공개 셀 위치 없음')}</p>
+    <p class="x-obs">이 종의 공개 셀 <b>${esc(stop.public_cells)}</b>개 · 기록 합계 ${esc(stop.public_records)}건</p>
+    <p class="x-fine">${esc('항로에 넣지 않은 지점 · 점수와 근거는 그대로 · 지도에서는 위치 없이 종만 선택')}</p>`;
+  return `<article class="x-card${c?'':' is-off'}" data-stop="${i}" data-level="${level}">
+  <p class="x-step-label">${onRoute(i)?`탐사 지점 ${i+1} / ${STATE.n}`:'항로 밖 지점'}</p>
+  <div class="x-r" data-r="1">${where}</div>
   <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트 · 사진 자료 없음</span></div>
-    <div><h2 class="x-name">${esc(stop.korean_name)}</h2><p class="x-sci"><i>${esc(stop.scientific_name)}</i> · AphiaID ${esc(stop.aphia_id)}</p>
+    <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(stop.korean_name)}</h2><p class="x-sci"><i>${esc(stop.scientific_name)}</i> · AphiaID ${esc(stop.aphia_id)}</p>
     <p class="x-type">${esc(stop.matrix_type.label||'유형 미배정')}</p></div></div>
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
@@ -236,16 +277,21 @@ function detailHtml(stop,i){
   const cons=`<p>${esc(m.basis_label||'근거 미확인')} · 범주 ${esc(m.category||'미확인')}${m.assessment_year?` · ${esc(m.assessment_year)}년 평가`:''}${m.criteria?` · 기준 ${esc(m.criteria)}`:''}</p>
       ${m.mapping?`<p class="x-fine">점수 환산: ${esc(m.mapping)}</p>`:''}${m.label?`<p class="x-fine">${esc(m.label)}</p>`:''}${m.scope?`<p class="x-fine">범위: ${esc(m.scope)}</p>`:''}
       <p class="x-src">${m.source?link(m.source.url,m.source.title||m.source.id):'<span class="x-missing">원자료 미확인</span>'}</p>`;
-  const cites=(c.citations||[]).map(x=>`<li>${link(x.url,x.title)} <small>${esc((x.licenses||[]).join(' · ')||'라이선스 미확인')}</small></li>`).join('')||'<li class="x-missing">데이터셋 인용 없음</li>';
+  const cites=(c?.citations||[]).map(x=>`<li>${link(x.url,x.title)} <small>${esc((x.licenses||[]).join(' · ')||'라이선스 미확인')}</small></li>`).join('')||'<li class="x-missing">데이터셋 인용 없음</li>';
   const sources=stop.sources.map(s=>`<li>${link(s.url,s.title||s.id)}${s.license?` <small>${esc(s.license)}</small>`:''}</li>`).join('');
-  const nextBtn=i<DATA.stops.length-1?`<button type="button" class="x-primary" data-go="${i+1}">다음 지점: ${esc(DATA.stops[i+1].korean_name)}</button>`:'';
-  return `<header class="x-detail-head"><p class="x-chips"><span>${esc(seaNames(c))}</span><span>${esc(c.size_deg)}° 셀</span><span>${esc(yearsText(c))}</span></p>
-    <h2 id="detail-title">${esc(stop.korean_name)} <i>${esc(stop.scientific_name)}</i></h2>
+  const nextBtn=i<STATE.n-1?`<button type="button" class="x-primary" data-go="${i+1}">다음 지점: ${esc(DATA.stops[i+1].korean_name)}</button>`:'';
+  const snapshot=stop.group==='candidate'?DATA.candidate_cells_reviewed:DATA.cells_snapshot;
+  const chips=c?`<span>${esc(seaNames(c))}</span><span>${esc(c.size_deg)}° 셀</span><span>${esc(yearsText(c))}</span>`:`<span>${esc('항로 밖')}</span>`;
+  const obs=c?`<p>${esc(cellExtent(c))} · ${esc(c.period)} 기간 · ${esc(yearsText(c))} 기록 ${esc(c.records)}건(지점 ${esc(c.sites)}곳) · ${esc(seaNames(c))}</p>
+    ${stop.shared_with?.length?`<p class="x-fine">${esc(sharedNote(stop))}</p>`:''}
+    <p class="x-fine">${esc(DATA.notes.cell)}. 이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>
+    <ul class="x-cites">${cites}</ul>`
+    :`<p class="x-missing">${esc(stop.cell_missing_reason||'공개 셀 위치 없음')}</p>
+    <p class="x-fine">이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}). ${esc('항로에 넣지 않았고, 점수와 근거는 아래와 같습니다.')}</p>`;
+  return `<header class="x-detail-head"><p class="x-chips">${chips}</p>
+    ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${esc(stop.korean_name)} <i>${esc(stop.scientific_name)}</i></h2>
     <p class="x-type">${esc(stop.matrix_type.label||'유형 미배정')} · 정보충분도 ${stop.information_sufficiency===null?'<span class="x-missing">미확인</span>':esc(Math.round(stop.information_sufficiency*100))+'%'}</p></header>
-  <section><h3>관측 위치·기간</h3>
-    <p>${esc(cellExtent(c))} · ${esc(c.period)} 기간 · ${esc(yearsText(c))} 기록 ${esc(c.records)}건(지점 ${esc(c.sites)}곳) · ${esc(seaNames(c))}</p>
-    <p class="x-fine">${esc(DATA.notes.cell)}. 이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(DATA.cells_snapshot)}).</p>
-    <ul class="x-cites">${cites}</ul></section>
+  <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'자료 없음'} · ${checkTag('MFPI')}</small></h3>${food}</section>
   <section><h3>생리활성 근거 <small>MBPI ${fmtScore(stop.scores.MBPI)??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
   <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)??'자료 없음'}</small></h3>${cons}</section>
@@ -259,9 +305,12 @@ function detailHtml(stop,i){
 /* ---------- DOM ---------- */
 function renderProgress(){
   const s=STATE;
-  $('progress').innerHTML=DATA.stops.map((st,i)=>`<li class="${i===s.arrived?'is-here':''}${s.reveal[i]>0?' is-seen':''}"><button type="button" data-go="${i}" aria-label="지점 ${i+1} ${esc(st.korean_name)}${i===s.arrived?' (현재)':''}"><span>${i+1}</span></button></li>`).join('');
+  $('progress').innerHTML=DATA.stops.slice(0,s.n).map((st,i)=>`<li class="${i===s.arrived?'is-here':''}${s.reveal[i]>0?' is-seen':''}"><button type="button" data-go="${i}" aria-label="지점 ${i+1} ${esc(st.korean_name)}${i===s.arrived?' (현재)':''}"><span>${i+1}</span></button></li>`).join('');
   $('progress').style.setProperty('--t',s.t.toFixed(4));
-  $('stop-list-items').innerHTML=DATA.stops.map((st,i)=>`<li><button type="button" data-go="${i}"><b>${i+1}. ${esc(st.korean_name)}</b> <span>${esc(seaNames(st.cell))} · ${esc(st.matrix_type.label||'')}</span></button></li>`).join('');
+  // two groups (released / survey candidates); the numbers are the one sailing order
+  const item=(st,i)=>`<li><button type="button" ${onRoute(i)?`data-go="${i}"`:`data-detail="${i}"`}${i===s.arrived?' aria-current="true"':''}><b>${onRoute(i)?`${i+1}. `:''}${esc(st.korean_name)}</b>${st.cell?'':` <em class="x-badge is-off">${esc('항로 밖')}</em>`} <span>${st.cell?esc(seaNames(st.cell)):esc(st.cell_missing_reason||'')} · ${esc(st.matrix_type.label||'')}</span></button></li>`;
+  const group=(title,g)=>{const rows=DATA.stops.map((st,i)=>[st,i]).filter(([st])=>(st.group||'operational')===g);return rows.length?`<li class="x-group"><h3>${esc(title.replace('N',rows.length))}</h3><ol>${rows.map(([st,i])=>item(st,i)).join('')}</ol></li>`:'';};
+  $('stop-list-items').innerHTML=group('운영 발행 N종','operational')+group('조사 후보 N종','candidate');
 }
 function renderCard(){
   const s=STATE,card=$('stop-card'),steer=$('steer');
@@ -278,7 +327,7 @@ function renderCard(){
   card.hidden=false;
 }
 function renderCards(){
-  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]),'cards')).join('');
+  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('');
 }
 function render(){renderProgress();renderCard();}
 function save(){
@@ -307,8 +356,13 @@ function doGo(i){
 function doSkip(){if(skip(STATE)){scene?.catchUp();onArrive();}}
 function leaveIntro(){$('intro').hidden=true;document.body.classList.remove('is-intro');}
 function showDetail(i){
-  if(document.body.classList.contains('is-cards')){placeAt(STATE,i,REVEAL_DONE);}
-  if(!openDetail(STATE))return;
+  if(!DATA.stops[i])return;
+  // a stop off the route has no place on the route: its detail opens without moving the ship
+  if(!onRoute(i))STATE.detailOpen=true;
+  else{
+    if(document.body.classList.contains('is-cards')){placeAt(STATE,i,REVEAL_DONE);}
+    if(!openDetail(STATE))return;
+  }
   lastFocus=document.activeElement;
   $('detail-body').innerHTML=detailHtml(DATA.stops[i],i);
   const d=$('detail');if(!d.open)d.showModal();
@@ -333,13 +387,14 @@ function setCards(on,reason){
 function bindInput(){
   document.addEventListener('click',e=>{
     const g=e.target.closest('[data-go]');if(g){$('stop-list').hidePopover?.();doGo(Number(g.dataset.go));return;}
-    const d=e.target.closest('[data-detail]');if(d){showDetail(Number(d.dataset.detail));}
+    const d=e.target.closest('[data-detail]');if(d){$('stop-list').hidePopover?.();showDetail(Number(d.dataset.detail));}
   });
   $('start').onclick=()=>{leaveIntro();doGo(0);};
   $('resume').onclick=()=>{leaveIntro();const s=JSON.parse(sessionStorage.getItem('bbvm-expedition')||'{}');s.reveal?.forEach((r,i)=>STATE.reveal[i]=Math.max(STATE.reveal[i],r|0));placeAt(STATE,s.stop);if(scene)scene.snap();onArrive();};
   $('prev').onclick=()=>doGo(STATE.stop-1);$('next').onclick=()=>doGo(STATE.stop+1);$('skip').onclick=doSkip;
   $('detail-close').onclick=()=>hideDetail();
-  $('detail').addEventListener('close',()=>{if(STATE.detailOpen)hideDetail();});
+  // a close event is queued: if another detail opened before it ran (Esc, then a quick click), it is stale
+  $('detail').addEventListener('close',()=>{if(STATE.detailOpen&&!$('detail').open)hideDetail();});
   $('view-toggle').onclick=()=>setCards(!document.body.classList.contains('is-cards'),scene?'':'3D 화면을 쓸 수 없어 카드 목록으로 보여 줍니다.');
   if(!scene)$('view-toggle').disabled=true;
   document.addEventListener('keydown',e=>{
@@ -479,11 +534,11 @@ function buildSea(THREE,geo){
   const routePts=ROUTE.samples.map(s=>{const p=project(s.lat,s.lon);return new THREE.Vector3(p.x,.02,p.z);});
   const routeLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints(routePts),new THREE.LineDashedMaterial({color:'#cfe9f2',transparent:true,opacity:.22,dashSize:.12,gapSize:.16}));
   routeLine.computeLineDistances();sc.add(routeLine);
-  const cells=DATA.stops.map(st=>{
+  const cells=DATA.stops.slice(0,STATE.n).map(st=>{
     const c=st.cell,s=c.size_deg,q=[[c.lat0,c.lon0],[c.lat0,c.lon0+s],[c.lat0+s,c.lon0+s],[c.lat0+s,c.lon0],[c.lat0,c.lon0]].map(([la,lo])=>{const p=project(la,lo);return new THREE.Vector3(p.x,.03,p.z);});
     const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(q),new THREE.LineDashedMaterial({color:'#5ee3d0',transparent:true,opacity:.3,dashSize:.3,gapSize:.18}));
     line.computeLineDistances();sc.add(line);
-    const cp=project(...c.center), ring=new THREE.Mesh(new THREE.RingGeometry(.16,.2,48),new THREE.MeshBasicMaterial({color:'#5ee3d0',transparent:true,opacity:.6,depthWrite:false}));
+    const cp=project(...anchor(st)), ring=new THREE.Mesh(new THREE.RingGeometry(.16,.2,48),new THREE.MeshBasicMaterial({color:'#5ee3d0',transparent:true,opacity:.6,depthWrite:false}));
     ring.rotation.x=-Math.PI/2;ring.position.set(cp.x,.035,cp.z);sc.add(ring);
     return {line,ring};
   });
@@ -634,13 +689,16 @@ function buildSea(THREE,geo){
 async function boot(){
   const res=await fetch('expedition-stops.json').catch(()=>null);
   DATA=res?.ok?await res.json().catch(()=>null):null;
-  if(DATA?.schema_version!=='expedition-stops-1'||!Array.isArray(DATA.stops)||!DATA.stops.length){
+  const route=Array.isArray(DATA?.stops)?routeStops(DATA.stops):[];
+  // stops off the route must follow the route stops, so one index works for both (build_expedition_stops.py checks it)
+  if(DATA?.schema_version!=='expedition-stops-2'||!route.length||DATA.stops.slice(0,route.length).some((s,i)=>s!==route[i])){
     $('cards-list').innerHTML='<p class="x-missing">탐사 지점 자료를 불러오지 못했습니다. <a href="index.html">탐색 지도</a>에서 같은 자료를 볼 수 있습니다.</p>';
     document.body.classList.remove('is-loading');document.body.classList.add('is-cards');return;
   }
-  ROUTE=sampleRoute(DATA.stops);
-  STATE=makeState(DATA.stops.length,ROUTE.stopT,sailFromQuery(location.search));
-  $('intro-count').textContent=DATA.stops.length;
+  ROUTE=sampleRoute(route);
+  STATE=makeState(route.length,ROUTE.stopT,sailFromQuery(location.search));
+  $('intro-count').textContent=route.length;
+  $('intro-off').textContent=plainWords(DATA.stops.length>route.length?`항로에 넣지 못한 ${DATA.stops.length-route.length}종은 지점 목록 끝 '항로 밖' 카드로 봅니다.`:'');
   renderCards();
   let reason='';
   if(!/(^#|&)view=cards/.test(location.hash)){
