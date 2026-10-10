@@ -105,8 +105,9 @@ const pick=aphia=>evaluate(`document.querySelector('[data-species="${aphia}"]').
 const liveMap=aphia=>evaluate(`(()=>{const s=data.species.find(x=>x.aphiaID===${aphia});return {records:cellRecords(s),recordsText:cellRecords(s).toLocaleString(),cells:spatialCells(s).length,rows:s.cells.length,years:cellYears(s)}})()`);
 const detailEl=()=>evaluate(`document.getElementById('detail').scrollIntoView();1`);
 // The comparison table: text, coverage bars and species columns.
-// The comparison is one table holding every species (it scrolls sideways), so one read covers it; kept as a list of one.
-const walkComparison=()=>evaluate("(()=>{renderComparison();return [{label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,cols:document.querySelectorAll('#comparison thead th').length-1,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth}]})()");
+// The comparison is one table holding every species, so one read covers it; kept as a list of one.
+// Design 05 (2026-10-10): a row per species; the long labels sit in each row's 자세히 panel, opened here for the read.
+const walkComparison=()=>evaluate("(()=>{renderComparison();document.querySelectorAll('#comparison tr.cmp-more').forEach(r=>r.hidden=false);const r=[{label:document.getElementById('comparison-page').textContent,text:document.getElementById('comparison').innerText,bars:document.querySelectorAll('#comparison .coverage-bar').length,rows:document.querySelectorAll('#comparison tbody tr.cmp-row').length,page:document.documentElement.scrollWidth<=document.documentElement.clientWidth}];renderComparison();return r})()");
 try{
   await openWebSocket(await connect());
   await send('Page.enable');await send('Runtime.enable');
@@ -171,7 +172,7 @@ try{
   check('Oyster: compounds follow the index report (MBPI 96.3), separate OBIS 26 kept in details',/보고 화합물\s*지표 보고서에서 검토 · MBPI 96\.3/.test(t)&&!/보고 화합물\s*미수집/.test(t)&&/기록 수\s*26건/.test(t),t);
   const nat=await evaluate("document.querySelectorAll('#detail details.score-disclosure').forEach(d=>d.open=true);document.getElementById('detail').innerText");
   // verified-pilot-2.1: with no IUCN global record, the oyster MCUI is the separately labelled Korean national assessment.
-  check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, '+(nationalPlaced?'매트릭스에는 네모 점으로 따로 놓습니다':'매트릭스에도 놓지 않습니다'))&&!nat.includes('IUCN LC'),nat);
+  check('Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI',nat.includes('한국 국가 평가 기반 MCUI: LC')&&nat.includes('목록 1371쪽')&&nat.includes('목록·찾아보기 쪽 재확인 2026-09-27')&&nat.includes('서로 순위를 매기거나 비교하지 않고, '+(nationalPlaced?'매트릭스에는 놓되 툴팁과 유형별 목록에 기반을 따로 적습니다':'매트릭스에도 놓지 않습니다'))&&!nat.includes('IUCN LC'),nat);
   // verified-pilot-2.3: peptide LQP scored in the AHTPDB cohort; a synthetic LQP from another origin replicates the potency, so BBVI is computed (80.9 in 2.3, 83.9 with the 3.6 calcium MFPI).
   check('Oyster: MBPI 96.3 with origin paper, potency replication (Miyoshi 1991, synthetic, other origin) and its one-origin-paper limit',!nat.includes('참고값(근거 논문 1편)')&&!nat.includes('참고 통합값')&&['83.9 · 정식 산출 · 방법 검증 기준 미충족','효능 재현 · 합성 LQP 2 µM · 재현 시료 옥수수 α-제인','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다','독립 DOI 2편(기원 1 + 효능 재현 1)','이 종에서 LQP가 나온다는 기원 근거는 Do et al. 2012 (10.5352/jls.2012.22.2.220) 1편뿐입니다'].every(x=>nat.includes(x)),nat);
   check('Oyster: MBPI 96.3 with paper value and AHTPDB attribution (developer-confirmed public database)',['96.3 · 정식 산출 · 방법 검증 기준 미충족','LQP','1.18 µM','10.5352/jls.2012.22.2.220','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'].every(x=>nat.includes(x)),nat);
@@ -335,11 +336,13 @@ try{
   // 2026-10-08: the screen uses neutral label words; the published data keeps the old ones
   const oldWords=await evaluate("(()=>{const v=currentView,hit=[];for(const x of ['explore','compare','method']){setView(x,false);const t=document.body.textContent;for(const w of ['검증 미통과','단일 논문'])if(t.includes(w))hit.push(x+':'+w);}setView(v,false);return hit})()");
   check('No old label words (검증 미통과, 단일 논문) on any tab',oldWords.length===0,oldWords.join(' | '));
-  const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-score-aphia=\"836033\"][data-score-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
+  // design 05: the value cell shows the number; its full label sits in the row's 자세히 panel (data-more-*)
+  const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-more-aphia=\"836033\"][data-more-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
   check('Comparison table: 참굴 MBPI 96.3 and BBVI 83.9 match the report, pilot label kept, no single-paper label',oyCmp.MBPI.startsWith('96.3')&&oyCmp.BBVI.startsWith('83.9')&&oyCmp.MBPI.includes('정식 산출 · 방법 검증 기준 미충족')&&oyCmp.BBVI.includes('정식 산출 · 방법 검증 기준 미충족')&&!oyCmp.MBPI.includes('근거 논문 1편')&&!oyCmp.BBVI.includes('근거 논문 1편'),JSON.stringify(oyCmp));
-  // verified-pilot-3.2: the oyster leaves the follow-up chips and becomes a square (national) matrix point with its type
-  const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),national:!!p?.classList.contains('national'),title:p?.title||''}})()");
-  check('Oyster: placed as a marked national-MCUI point with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.national&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033)),JSON.stringify(oyPoint));
+  // verified-pilot-3.2: the oyster leaves the follow-up chips and becomes a matrix point with its type; design 02 (2026-10-10)
+  // moves the national-MCUI mark from the point's shape to its tooltip and the per-type list under the graph
+  const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));const li=document.querySelector('#matrix-types [data-aphia=\"836033\"]');return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),title:p?.title||'',list:li?.textContent||'',box:li?.closest('.mt-box')?.querySelector('b')?.textContent||''}})()");
+  check('Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033))&&oyPoint.list.includes('MCUI 국가 평가')&&oyPoint.box.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&!n.includes('보류')&&!n.includes('시범')})()"));
   check('Header/initial copy: no "0.2" version, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("!document.querySelector('.version').textContent.includes('0.2')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
@@ -347,7 +350,7 @@ try{
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
   check('Empty matrix note links straight to the simulated example (still labelled not real); a placed matrix states its count instead',
     readiness.matrix_points?inlineSim==='no button'&&matrixNote.startsWith(`정식 산출 ${readiness.matrix_points}종`)&&
-      matrixNote.includes('네모 점은')===readiness.species.some(r=>r.matrix_eligible&&['national','range_state'].includes(r.mcui_basis))&&matrixNote.includes('한국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&matrixNote.includes('서식국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='range_state'):inlineSim===true,String(inlineSim)+' | '+matrixNote);
+      matrixNote.includes('IUCN 기반과 같은 척도가 아닙니다')===readiness.species.some(r=>r.matrix_eligible&&['national','range_state'].includes(r.mcui_basis))&&matrixNote.includes('한국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&matrixNote.includes('서식국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='range_state'):inlineSim===true,String(inlineSim)+' | '+matrixNote);
   const effortOp=await evaluate("(()=>{const eb=[...document.querySelectorAll('.effort-key .eb')].map(e=>getComputedStyle(e).opacity);const fills=[...new Set(effortLayer.getLayers().map(l=>l.options.fillOpacity))].sort();return {eb,fills}})()");
   check('Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14)',JSON.stringify(effortOp.eb)==='["0.07","0.15","0.25","0.37"]'&&Math.max(...effortOp.fills)<=.14,JSON.stringify(effortOp));
   check('Method tab: back-test cases from the proposal, marked run and failed (3.27)',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(3.27 실행 · 기준 미충족')&&!m.includes('아직 수행 안 함')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
@@ -443,7 +446,7 @@ try{
   check('↻ reload keeps the selected species, use chip and tab',kept.s===274849&&kept.use==='microbe'&&kept.v==='compare',JSON.stringify(kept));
   await evaluate("setUses([]);setView('explore');history.replaceState(null,'',location.pathname);1");
   const bars=await walkComparison();
-  check('A-2 comparison table shows one coverage bar per species column, all species covered',bars.length===1&&bars[0].bars===total&&bars[0].cols===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.cols])));
+  check('A-2 comparison table shows one coverage bar per species row, all species covered',bars.length===1&&bars[0].bars===total&&bars[0].rows===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.rows])));
   const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
@@ -492,7 +495,7 @@ try{
   await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
   const icon=await evaluate(`(()=>{const q=s=>document.querySelector(s),grid=q('.vm-grid').getBoundingClientRect(),sw=q('.basemap-switch').getBoundingClientRect(),plot=q('.vm-plot').getBoundingClientRect();
     const legend=[...q('#value-legend').querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.querySelector('em').textContent,e.style.background]);
-    const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number(e.textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
+    const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number((e.querySelector('.vm-n')||e).textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
     return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
   const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
   const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>l.options.fillOpacity===.06).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
@@ -545,22 +548,26 @@ try{
   await sleep(800);ms=await modeState();
   check('Shared link with t=value restores the value map and its pressed button',ms.mode==='value'&&ms.val==='true'&&ms.valLegend,JSON.stringify(ms));
   await clickMode('occurrence');await evaluate("history.replaceState(null,'',location.pathname);1");
-  // ---------- Comparison: every species in one table that scrolls sideways ----------
-  const cmpState="(()=>{const c=document.getElementById('comparison'),[corner,...h]=c.querySelectorAll('thead th'),cl=c.getBoundingClientRect().left;return {label:document.getElementById('comparison-page').textContent,prev:document.getElementById('comparison-prev').disabled,next:document.getElementById('comparison-next').disabled,left:Math.round(c.scrollLeft),max:c.scrollWidth-c.clientWidth,stuck:Math.abs(corner.getBoundingClientRect().left-cl)<2&&Math.abs(c.querySelector('tbody th').getBoundingClientRect().left-cl)<2,heads:h.map(x=>x.querySelector('small').textContent)}})()";
+  // ---------- Comparison: every species in one table, a row each (design 05, 2026-10-10), sortable by mouse and keyboard ----------
+  const cmpState="(()=>{const c=document.getElementById('comparison'),cr=c.getBoundingClientRect(),rows=[...c.querySelectorAll('tbody tr.cmp-row')];return {label:document.getElementById('comparison-page').textContent,rows:rows.map(r=>Number(r.dataset.aphia)),sort:[...c.querySelectorAll('thead th[aria-sort]')].filter(t=>t.getAttribute('aria-sort')!=='none').map(t=>t.querySelector('[data-sort]').dataset.sort+':'+t.getAttribute('aria-sort')),focus:document.activeElement?.dataset?.sort||'',fits:c.scrollWidth<=c.clientWidth+1,colStuck:Math.abs(c.querySelector('tbody th').getBoundingClientRect().left-cr.left)<2}})()";
   await evaluate("selectSpecies(data.species[0].aphiaID);setView('compare');1");await sleep(200);
-  const sc={start:await evaluate(cmpState),names:await evaluate('data.species.map(s=>s.name)')};
-  await evaluate("document.getElementById('comparison-next').click();1");await sleep(1000);sc.next=await evaluate(cmpState);
-  await evaluate("(()=>{const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;return 1})()");await sleep(300);sc.end=await evaluate(cmpState);
+  const sc={start:await evaluate(cmpState),ids:await evaluate('data.species.map(s=>s.aphiaID)')};
+  sc.byBbvi=await evaluate("data.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=pilotScore(a,'BBVI'),y=pilotScore(b,'BBVI');return x===null||y===null?(x===null)-(y===null)||i-j:y-x||i-j}).map(([s])=>s.aphiaID)");
+  await evaluate("document.querySelector('#comparison [data-sort=BBVI]').click();1");await sleep(200);sc.desc=await evaluate(cmpState);
+  await evaluate("document.querySelector('#comparison [data-sort=BBVI]').focus();1");await pressEnter();await sleep(200);sc.asc=await evaluate(cmpState);  // keyboard
   await evaluate("document.getElementById('bbvi-weight').dispatchEvent(new Event('input'));1");await sleep(300);sc.redrawn=await evaluate(cmpState);
-  await evaluate("(()=>{setView('explore');document.getElementById('comparison').scrollLeft=0;selectSpecies(data.species.at(-1).aphiaID);setView('compare');return 1})()");await sleep(300);sc.picked=await evaluate(cmpState);
+  await evaluate("document.querySelector('#comparison [data-sort=BBVI]').focus();1");await pressEnter();await sleep(200);sc.reset=await evaluate(cmpState);
+  sc.head=await evaluate("(()=>{const c=document.getElementById('comparison');c.scrollTop=600;const d=Math.abs(c.querySelector('thead th').getBoundingClientRect().top-c.getBoundingClientRect().top);const moved=c.scrollTop>0;c.scrollTop=0;return {moved,d:Math.round(d)}})()");
+  await evaluate("(()=>{setView('explore');selectSpecies(data.species.at(-1).aphiaID);setView('compare');return 1})()");await sleep(400);
+  sc.picked=await evaluate("(()=>{const c=document.getElementById('comparison'),tr=c.querySelector('tr.cmp-row[data-aphia=\"'+data.species.at(-1).aphiaID+'\"]'),r=tr.getBoundingClientRect(),cr=c.getBoundingClientRect();return {inBox:r.top>=cr.top-1&&r.bottom<=cr.bottom+1,flash:tr.classList.contains('flash')}})()");
   await evaluate("selectSpecies(data.species[0].aphiaID);setView('explore');1");
-  const atEnd=p=>p.left>=p.max-1&&p.label.endsWith(`${total}종 / 총 ${total}종`)&&p.next&&!p.prev;
-  check('Comparison scroll: one table with all species, label follows the visible columns, prev/next move a screen and stop at the ends, first column sticks, redraw and a picked species keep the right place',
-    total===expPub+expCand&&JSON.stringify(sc.start.heads)===JSON.stringify(sc.names)&&
-    sc.start.left===0&&sc.start.prev&&!sc.start.next&&/^1(–\d+)?종 \/ 총 \d+종$/.test(sc.start.label)&&sc.start.label.endsWith(`총 ${total}종`)&&
-    sc.next.left>0&&!sc.next.prev&&sc.next.label!==sc.start.label&&
-    atEnd(sc.end)&&sc.end.stuck&&sc.redrawn.left===sc.end.left&&sc.redrawn.label===sc.end.label&&atEnd(sc.picked),
-    JSON.stringify({...sc,names:sc.names.length,start:{...sc.start,heads:sc.start.heads.length},next:{...sc.next,heads:0},end:{...sc.end,heads:0},redrawn:{...sc.redrawn,heads:0},picked:{...sc.picked,heads:0}}));
+  const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+  check('Comparison table: one row per species, header sorts by mouse and keyboard (aria-sort, focus kept, high ↔ low → default), sort survives a redraw, sticky header and first column, a picked species is scrolled into the box and highlighted',
+    total===expPub+expCand&&same(sc.start.rows,sc.ids)&&sc.start.label===`총 ${total}종 · 정렬: 기본 순서(운영 발행 → 조사 후보)`&&same(sc.start.sort,[])&&sc.start.colStuck&&
+    same(sc.desc.rows,sc.byBbvi)&&same(sc.desc.sort,['BBVI:descending'])&&sc.desc.focus==='BBVI'&&sc.desc.label.endsWith('BBVI 높은 순')&&
+    same(sc.asc.sort,['BBVI:ascending'])&&sc.asc.label.endsWith('BBVI 낮은 순')&&sc.asc.focus==='BBVI'&&same(sc.redrawn.rows,sc.asc.rows)&&
+    same(sc.reset.rows,sc.ids)&&same(sc.reset.sort,[])&&sc.head.moved&&sc.head.d<2&&sc.picked.inBox&&sc.picked.flash,
+    JSON.stringify({...sc,ids:sc.ids.length,byBbvi:sc.byBbvi.slice(0,3),start:{...sc.start,rows:sc.start.rows.length},desc:{...sc.desc,rows:sc.desc.rows.slice(0,3)},asc:{...sc.asc,rows:sc.asc.rows.slice(0,3)},redrawn:{...sc.redrawn,rows:sc.redrawn.rows.slice(0,3)},reset:{...sc.reset,rows:sc.reset.rows.length}}));
   // ---------- Background maps: satellite (NASA GIBS, default) / depth (GEBCO); the bundled outline map only replaces failed tiles ----------
   await pick(494972);
   check('Basemap switch: only 위성 and 수심, no 기본 button',(await evaluate("[...document.querySelectorAll('[data-basemap]')].map(b=>b.dataset.basemap+':'+b.textContent).join()"))==='satellite:위성,depth:수심');
@@ -596,7 +603,8 @@ try{
   for(const [tag,w,h,mobile] of [['desktop',1560,900,false],['mobile',390,844,true]]){
     await viewport(w,h,mobile);await load();
     const mapShot=async name=>{await evaluate(`document.getElementById('map').scrollIntoView({block:'${mobile?'start':'center'}'});1`);await sleep(600);await shot(`${tag}-flow-${name}`,false);};
-    const flow=async aphia=>{await pick(aphia);await sleep(300);return evaluate("({sel:document.getElementById('map-selected').innerText,src:document.getElementById('map-source').textContent,note:document.getElementById('map-review-note').textContent,shapes:document.querySelectorAll('#map path.leaflet-interactive').length,detail:document.getElementById('detail').innerText})");};
+    // design 07: on a phone #map-selected is hidden (the sheet head shows the selection), so read its text, not its rendering
+    const flow=async aphia=>{await pick(aphia);await sleep(300);return evaluate("({sel:document.getElementById('map-selected').textContent,src:document.getElementById('map-source').textContent,note:document.getElementById('map-review-note').textContent,shapes:document.querySelectorAll('#map path.leaflet-interactive').length,detail:document.getElementById('detail').innerText})");};
     let f=await flow(836033);
     check(`Flow 1 ${tag}: 참굴 MFPI 71.6 above the map and in the panel`,f.sel.includes('참굴')&&f.sel.includes('운영 발행')&&f.sel.includes('MFPI 71.6')&&f.detail.includes('71.6 · 정식 산출 · 방법 검증 통과(11종 비교)'),f.sel);
     await mapShot('1-oyster');
@@ -612,7 +620,7 @@ try{
         :f.shapes===emptyPlaces&&f.sel.includes('조사 후보')&&!f.sel.includes('0점')&&f.detail.includes('채집 지점 국립생물자원관')&&f.detail.includes('공공누리 제3유형'),f.sel+' | '+f.src+' | '+f.note.slice(0,120));
     await mapShot(noCell?'4-candidate-no-cells':'4-candidate-nibr-cells');
     const walk=await walkComparison();
-    check(`Flow 5 ${tag}: comparison shows all ${total} species in one table, page never overflows`,walk.length===1&&walk[0].cols===total&&walk[0].page,JSON.stringify(walk.map(p=>[p.label,p.cols,p.page])));
+    check(`Flow 5 ${tag}: comparison shows all ${total} species in one table, page never overflows`,walk.length===1&&walk[0].rows===total&&walk[0].page,JSON.stringify(walk.map(p=>[p.label,p.rows,p.page])));
     await evaluate("setView('compare');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");
     await pick(836033);await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
     const before=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID})");
@@ -651,8 +659,13 @@ try{
   await viewport(390,844,true);
   await load();
   // Before this change the map started at 952px (0px visible in the 844px first screen).
-  const mob=await evaluate("(()=>{const r=id=>document.getElementById(id).getBoundingClientRect();const m=r('map');const c=document.querySelector('.species-card').getBoundingClientRect();return {top:Math.round(m.top+scrollY),visible:Math.round(Math.min(m.bottom,844)-Math.max(m.top,0)),search:r('search').bottom<=844,card:c.height>0,chips:(u=>u.height>0&&u.top+40<=844)(document.getElementById('use-chips').getBoundingClientRect()),sel:document.getElementById('map-selected').innerText,warn:r('score-disclaimer').height>0&&document.getElementById('score-disclaimer').textContent.includes('정식 산출')&&document.getElementById('score-disclaimer').textContent.includes('검증: MFPI 통과 · MBPI 기준 미충족'),legend:document.querySelector('.map-legend-more').open}})()");
-  check('Mobile 390×844 first screen: search, 활용 특성 chips (species cards just below) and ≥200px of map; selected status by the map; warning kept; legend folded',mob.visible>=200&&mob.search&&mob.card&&mob.chips&&/운영 발행|조사 후보/.test(mob.sel)&&mob.sel.length>4&&mob.warn&&!mob.legend,JSON.stringify(mob));
+  const mob=await evaluate("(()=>{const r=id=>document.getElementById(id).getBoundingClientRect();const m=r('map');const c=document.querySelector('.species-card').getBoundingClientRect();return {top:Math.round(m.top+scrollY),visible:Math.round(Math.min(m.bottom,844)-Math.max(m.top,0)),search:r('search').bottom<=844,card:c.height>0,chips:(u=>u.height>0&&u.top+40<=844)(document.getElementById('use-chips').getBoundingClientRect()),sel:document.getElementById('sheet-summary').innerText,sheet:(h=>({top:Math.round(h.getBoundingClientRect().top),exp:document.getElementById('sheet-handle').getAttribute('aria-expanded')}))(document.getElementById('sheet-head')),tabs:[...document.querySelectorAll('.tabs button')].map(b=>b.textContent+'/'+getComputedStyle(b,'::before').content).join(),warn:(r('score-disclaimer').height>0||r('notice-chip').height>0&&document.getElementById('notice-chip').textContent.includes('연구용'))&&document.getElementById('score-disclaimer').textContent.includes('정식 산출')&&document.getElementById('score-disclaimer').textContent.includes('검증: MFPI 통과 · MBPI 기준 미충족'),legend:document.querySelector('.map-legend-more').open}})()");
+  // design 07 (2026-10-10): the map stays on top and the species pane is a bottom sheet; its head (handle + summary) sits right under the map
+  check('Mobile 390×844 first screen: map ≥200px, then the sheet with the selected summary, search, 활용 특성 chips (species cards just below); warning kept; legend folded; short tab names by CSS only',mob.visible>=200&&mob.search&&mob.card&&mob.chips&&/운영 발행|조사 후보/.test(mob.sel)&&/MFPI[\s\S]*MCUI/.test(mob.sel)&&mob.sheet.exp==='false'&&mob.sheet.top<844-150&&mob.warn&&!mob.legend&&mob.tabs==='탐색 지도/"지도",비교와 지표/"비교",근거와 방법/"방법"',JSON.stringify(mob));
+  const sheet=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const b=document.getElementById('sheet-handle'),stage=document.querySelector('.map-stage');b.click();await wait(900);
+    const open={exp:b.getAttribute('aria-expanded'),top:Math.round(document.getElementById('sheet-head').getBoundingClientRect().top),stage:getComputedStyle(stage).position};b.click();await wait(900);
+    return {open,closed:{exp:b.getAttribute('aria-expanded'),y:Math.round(scrollY)},doc:document.documentElement.scrollWidth,vw:innerWidth}})()`);
+  check('Mobile sheet: the handle button opens the sheet over the pinned map and closes it again (aria-expanded follows), no horizontal overflow',sheet.open.exp==='true'&&Math.abs(sheet.open.top)<=2&&sheet.open.stage==='sticky'&&sheet.closed.exp==='false'&&sheet.closed.y===0&&sheet.doc<=sheet.vw,JSON.stringify(sheet));
   await shot('mobile-first-screen',false);
   // Switching species on the horizontal card list and toggling map mode must not jump or close what the user opened.
   const stab=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const list=document.getElementById('species-list');const cards=[...list.querySelectorAll('.species-card')];

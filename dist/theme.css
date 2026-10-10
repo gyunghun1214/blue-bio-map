@@ -5,7 +5,7 @@
   --teal:#0b7a74;--teal-ink:#0a5f5a;--teal-fill:#12a39a;--teal-soft:#e4f4f2;--coral:#e5484d;
   --amber:#995c08;--amber-soft:#fbf4e4;--blue:#1f6fb2;
   --shadow:0 6px 20px rgba(11,27,43,.14);--shadow-sm:0 1px 2px rgba(11,27,43,.08);
-  --head:56px;--note:36px;--chrome:calc(var(--head) + var(--note));
+  --head:56px;--note:0px;--chrome:calc(var(--head) + var(--note));
   --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526b7b' stroke-width='1.6'/%3E%3C/svg%3E");
 }
@@ -348,27 +348,15 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .species-card.selected .card-scores i:not(.held){background:#fff}
 
 /* Half-circle gauges at the top of the species evidence */
-.axis-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 12px}
-.gauge{position:relative;margin:0;text-align:center}
-.gauge svg{display:block;width:100%;height:auto}
-.gauge .g-track{fill:none;stroke:#e9eff3;stroke-width:7;stroke-linecap:round}
-.gauge .g-fill{fill:none;stroke-width:7;stroke-linecap:round}
-.gauge text{font-size:21px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
-.gauge figcaption{display:grid;margin-top:-2px;font-size:12px;font-weight:700;color:var(--ink2)}
-.gauge figcaption small{font-size:11px;font-weight:500;color:var(--muted)}
-.gauge.held text{fill:#9aa8b4;font-weight:500}
-.gauge.held .g-track{stroke-dasharray:3 4}
 
 /* Value map: soft glow under typed cells (figure 5 heat-map look); the crisp cell above keeps the meaning and the click */
-@media (max-width:740px){.axis-gauges{gap:2px}.species-card .card-scores{grid-column:1/-1}}
+@media (max-width:740px){.species-card .card-scores{grid-column:1/-1}}
 
 /* 3.27: a BBVI resting on one paper is a score with its label; hollow matrix point and a dashed card value keep it apart */
 .matrix-point.pilot.single{background:#fff;border:3px solid var(--teal);box-shadow:none}
-.matrix-point.pilot.national.single{background:#fff;border-color:var(--amber)}
 .card-scores i.single{background:none;border:1px solid var(--teal)}
 /* 3.27: twelve points instead of two, so the pilot point is smaller (labels move or hide where they would collide, app.js) */
 .matrix-point.pilot{width:22px;min-width:22px;height:22px;padding:0;border-radius:50%}
-.matrix-point.pilot.national{border-radius:5px}
 .matrix-point .point-label{font-size:11.5px}
 /* 4.0: 30종 밖 미탐색 후보 list under the layer switch (collapsed; long genera such as Sargassum scroll) */
 .unexplored-outside{flex-basis:100%;font-size:12.5px}
@@ -383,14 +371,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix-layout .matrix-unplaced{margin:16px 0 0}
 @media(min-width:741px){.matrix-layout{row-gap:0}.matrix-layout>div:first-child{display:contents}.matrix-explanation{grid-column:2;grid-row:1/4}.matrix-layout .matrix-unplaced{grid-column:1/-1}#matrix-note{margin-bottom:0}}
 
-/* 4.2: 지방 목록 참고값 points — a dashed purple marker, apart from the amber national square; a hollow
-   single-paper point keeps its white fill so the two signals stay readable together */
-.matrix-point.pilot.national.subnational{border-radius:5px;border-style:dashed;border-color:#6b3fa0}
-.matrix-point.pilot.subnational:not(.single){background:#6b3fa0}
-/* 4.3: 자체 예비평가(Rapid LC) MCUI — grey dotted marker; a BBVI with the floor MBPI (0) — hollow with a grey outline */
-.matrix-point.pilot.national.rapidlc{border-radius:5px;border-style:dotted;border-color:#5f6b73}
-.matrix-point.pilot.rapidlc:not(.single){background:#5f6b73}
-.matrix-point.pilot.floor,.matrix-point.pilot.national.single.floor{border-color:#8a959c}
 /* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
 #comparison{overscroll-behavior-x:contain;scrollbar-width:thin}
 #comparison:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -400,3 +380,191 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .expedition-link{flex:none;padding:6px 12px;border:1px solid rgba(94,227,208,.45);border-radius:99px;color:#d7f7f2;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
 .expedition-link:hover{background:rgba(94,227,208,.14)}
 @media (max-width:740px){.expedition-link{padding:4px 9px;font-size:12px}}
+/* 2026-10-10 디자인 01: 보전 시급(MCUI 높음) 두 유형의 45° 사선 무늬. 지도 셀은 app.js의 SVG <pattern>(#bbvm-hatch)이 같은 모양을 그린다. */
+.hatched{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.8) 0 2px,rgba(16,46,69,.5) 2px 3.2px,transparent 3.2px 7px)!important}
+.v-hatch{display:inline-block;flex:none;width:18px;height:12px;border:1.5px solid #657588;border-radius:3px;background-color:#eef3f6}
+.vm-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.vm-name{font-size:9.5px;font-weight:600;line-height:1}
+.vm-grid button span,.value-grid span.hatched>*{text-shadow:0 0 2px #fff,0 0 3px #fff}
+@media (max-width:740px){.vm-name{display:none}}
+/* 2026-10-10 디자인 03: 종 상세 위쪽의 두 축 카드(BBVI ← MFPI·MBPI / MCUI). 더하지 않는다는 것을 모양으로 보인다. */
+.axis-cards{display:grid;gap:8px;margin:10px 0 14px}
+.ax-type{display:flex;align-items:center;gap:7px;margin:0;font-size:13px;font-weight:700;color:var(--ink)}
+.ax-type i{flex:none;width:16px;height:16px;border-radius:4px;border:1px solid rgba(15,37,55,.25)}
+.ax-type.none{color:var(--muted);font-weight:600}.ax-type.none i{border:1.5px dashed #657588;background:rgba(183,192,202,.25)}
+.ax-card{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfdfd}
+.ax-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ax-head h3{margin:0;font-size:13px;font-weight:700;color:var(--ink2)}.ax-head h3 b{color:var(--ink)}
+.ax-head small{font-size:11px;color:var(--muted);white-space:nowrap}
+.ax-main{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px;margin:4px 0 2px}
+.ax-num{font-size:26px;font-weight:800;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+.ax-bar{position:relative;display:block;height:6px;border-radius:99px;background:#e9eff3}
+.ax-bar.big{height:10px}
+.ax-bar i{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:var(--teal)}
+.ax-card+.ax-sep+.ax-card .ax-bar i{background:#e07a3f}
+.ax-bar b{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--ink)}
+.ax-note{margin:2px 0 4px;font-size:11.5px;color:var(--muted)}
+.ax-sub{display:grid;grid-template-columns:96px 40px 1fr;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--ink2)}
+.ax-sub strong{font-variant-numeric:tabular-nums;text-align:right}
+.ax-sub small{grid-column:1/-1;margin-top:-3px;font-size:11px;color:var(--muted)}
+.ax-held{grid-column:2/-1;font-size:12px;color:#7a8a98}
+.ax-main .ax-held{grid-column:1/-1;font-size:14px}
+.ax-sep{display:flex;align-items:center;gap:8px;margin:0;font-size:11.5px;font-weight:600;color:var(--muted)}
+.ax-sep::before,.ax-sep::after{content:"";flex:1;border-top:1.5px dashed #b7c0ca}
+.ax-where{display:flex;align-items:center;gap:10px}
+.ax-where p{margin:0;font-size:12px;line-height:1.45;color:var(--ink2)}
+.ax-quad{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:2px;width:34px;height:34px}
+.ax-quad i{border-radius:3px;opacity:.22}.ax-quad i.on{opacity:1;outline:1.5px solid var(--ink)}
+/* 2026-10-10 디자인 04: 공지 줄과 저장 사본 배너를 앱 바의 칩 두 개로. 전문은 칩을 누르면 말풍선에 나온다. */
+.status-chips{position:relative;display:flex;align-items:center;gap:6px;flex:none}
+.status-chip{display:inline-flex;align-items:center;gap:4px;max-width:260px;padding:4px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;background:rgba(255,255,255,.08);color:#e6f1f6;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.status-chip:hover,.status-chip[aria-expanded=true]{background:rgba(255,255,255,.18)}
+.status-chip.warn{border-color:#f2c86b;background:#fbf0d2;color:#6b4708}
+.status-chip.warn:hover,.status-chip.warn[aria-expanded=true]{background:#f8e5b4}
+.status-pop{position:absolute;top:calc(100% + 10px);right:0;z-index:1150;width:min(440px,calc(100vw - 24px));padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);box-shadow:var(--shadow);font-size:12.5px;line-height:1.55;white-space:normal}
+.status-pop.warn{border-color:#efe3c8;background:var(--amber-soft)}
+.status-pop p{margin:0 0 6px}
+.status-pop .notice{position:static;display:flex;flex-direction:column;align-items:flex-start;gap:6px;height:auto;margin:0;padding:0;border:0;background:none;white-space:normal}
+.status-pop .notice p{overflow:visible;color:var(--ink2);font-size:12.5px}
+.status-pop .notice-label,.status-pop #connection-state,.status-pop #snapshot-date{display:inline-block!important;font-size:11.5px;color:var(--muted)}
+.error.in-chip{display:none}
+.basemap-status.fallback{display:none}
+.basemap-warn{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:6px;border-radius:6px;background:#fbf0d2;color:#995c08;font-size:13px;cursor:help}
+.basemap-warn[hidden]{display:none}
+/* 2026-10-10 디자인 06: 근거와 방법 탭 맨 위의 지표 흐름도(인라인 SVG). 색은 테마 변수. */
+.flow-wrap{margin:4px 0 22px;padding:14px 16px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.flow-scroll{overflow-x:auto}
+.flow{display:block;width:100%;min-width:860px;height:auto;font-family:inherit}
+.flow .bx rect{fill:#f7fafb;stroke:var(--line);stroke-width:1.5}
+.flow .bx.aux rect{fill:#fff;stroke-dasharray:5 4}
+.flow [data-step]{cursor:pointer;outline:none}
+.flow [data-step]:hover rect,.flow [data-step]:focus-visible rect{stroke:var(--ink);stroke-width:2.2}
+.flow .ft{font-size:13px;font-weight:700;fill:var(--ink)}
+.flow .fs{font-size:11.5px;fill:var(--ink2)}
+.flow .fr{font-size:12px;font-weight:700;fill:var(--muted)}
+.flow .fi{font-size:16px;font-weight:800;fill:var(--ink)}
+.flow .ix.use rect{fill:var(--teal-soft);stroke:var(--teal);stroke-width:1.8}
+.flow .ix.cons rect{fill:#fdf0e7;stroke:#e07a3f;stroke-width:1.8}
+.flow .ix.final rect{fill:#eef3f8;stroke:var(--ink);stroke-width:1.8}
+.flow .fa{fill:none;stroke:#8aa0b0;stroke-width:1.6}
+.flow .fa.dash{stroke-dasharray:4 4}
+.flow .fh{fill:#8aa0b0}
+.flow .noadd path{stroke:#c0392b;stroke-width:1.6;stroke-dasharray:3 3}
+.flow .noadd rect{fill:#fff;stroke:#c0392b;stroke-width:1.5}
+.flow .noadd text{font-size:11.5px;font-weight:700;fill:#a32d22}
+.flow-wrap figcaption{margin-top:8px;font-size:12.5px;color:var(--muted)}
+.method-card.flash{box-shadow:0 0 0 3px var(--teal)}
+
+/* Design 02 (2026-10-10): matrix points take their type colour (filled = BBVI with 2+ papers, hollow = 근거 논문 1편, grey
+   dashed = MBPI floor); the MCUI basis moved from the point's shape to its tooltip and the per-type list below the graph. */
+.matrix{height:380px}
+.matrix .quadrant.typed{background:color-mix(in srgb,var(--qc) 7%,#fff)}
+.matrix .q2,.matrix .q4{align-items:flex-end;text-align:right}
+.matrix .quadrant{padding:10px 12px}
+.matrix-layout .matrix-point.pilot{background:var(--mp,var(--teal));border:2px solid #fff;border-radius:50%;width:18px;min-width:18px;height:18px}
+.matrix-layout .matrix-point.pilot.single{background:#fff;border:3px solid var(--mp,var(--teal))}
+.matrix-layout .matrix-point.pilot.floor{background:#fff;border:3px dashed #8a959c}
+.matrix-point:hover,.matrix-point:focus-visible{z-index:6}
+.matrix-point .point-label.above{top:auto;left:50%;bottom:100%;margin:0 0 3px}
+.matrix-point .point-label.below{top:100%;left:50%;margin:3px 0 0}
+.matrix-point .point-label.hidden-label{visibility:hidden}
+.matrix-point:hover .point-label.hidden-label,.matrix-point:focus-visible .point-label.hidden-label{visibility:visible;z-index:6}
+.matrix-tick{position:absolute;width:0;border-left:1.5px solid #4c6272;transform:translateX(-50%);z-index:1;pointer-events:none}
+.matrix-tick::after{content:"";position:absolute;left:-4.5px;width:8px;border-top:1.5px solid #4c6272}
+.matrix-tick.up::after{bottom:0}.matrix-tick.down::after{top:0}
+.matrix-types:empty{display:none}
+.matrix-types{margin:4px 0 0}
+.mt-key{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+.mt-key span{display:inline-flex;align-items:center;gap:5px}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mt-box{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.mt-box>b{display:flex;align-items:center;gap:7px;font-size:13.5px;margin-bottom:6px}
+.mt-box>b span{color:var(--muted);font-weight:500}
+.mt-box>div{display:flex;flex-wrap:wrap;gap:5px}
+.mt-box button{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:2px 9px;font-size:12.5px;color:var(--ink);cursor:pointer}
+.mt-box button:hover{border-color:var(--teal)}
+.mt-box small{color:var(--muted);font-size:11.5px}
+.mt-box em{font-size:12.5px;color:var(--muted)}
+.mt-sw{width:16px;height:16px;border-radius:4px;flex:none}
+.mt-dot{width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--ink);flex:none;box-sizing:border-box}
+.mt-dot.hollow{background:#fff}
+@media(min-width:741px){.matrix-layout .matrix-types{grid-column:1/-1}}
+@media(max-width:740px){.matrix{height:400px}.mt-grid{grid-template-columns:1fr}.matrix-layout .matrix-point.pilot{width:14px;min-width:14px;height:14px;border-width:2px}.matrix-layout .matrix-point.pilot.single,.matrix-layout .matrix-point.pilot.floor{border-width:2.5px}}
+.matrix-point .point-label.far::before{content:"";position:absolute;top:50%;left:0;width:var(--ll);border-top:1px solid #6d8291;transform-origin:0 0;transform:rotate(var(--la))}
+.matrix-point .point-label.far.left::before{left:auto;right:0;transform-origin:100% 0;transform:rotate(calc(var(--la) - 3.14159rad))}
+
+/* Design 05 (2026-10-10): the comparison is one row per species; the box scrolls down with a sticky header row and the
+   species column stays put if a narrow screen scrolls it sideways. Long cell text lives in each row's 자세히 panel. */
+#comparison{max-height:calc(100vh - 150px);overflow:auto}
+#comparison table{width:100%}
+#comparison th,#comparison td{min-width:0;padding:8px 10px;vertical-align:middle}
+#comparison thead th{top:0;font-size:12.5px;white-space:nowrap;text-align:left}
+#comparison thead th:first-child,#comparison tbody th{min-width:150px;width:150px}
+#comparison tbody th b{display:block;font-size:14px}
+#comparison tbody th small{display:block;font-size:11.5px;font-style:italic;color:var(--muted);font-weight:400;overflow-wrap:anywhere}
+#comparison .cmp-sort{display:inline-flex;align-items:baseline;gap:4px;border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
+#comparison .cmp-sort small{font-weight:500;color:var(--muted);font-size:11px}
+#comparison .cmp-sort i{font-style:normal;font-size:10px;color:var(--muted)}
+#comparison th[aria-sort=ascending] .cmp-sort i,#comparison th[aria-sort=descending] .cmp-sort i{color:var(--teal)}
+#comparison .cmp-sort:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:3px}
+#comparison td.cmp-val{width:92px}
+#comparison .score-cell.cv{display:block;width:100%;min-width:64px;text-align:left;padding:4px 6px}
+#comparison .cv-num{display:block;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+#comparison .cv-bar{display:block;position:relative;height:5px;margin:3px 0 2px;border-radius:3px;background:#e3eaef}
+#comparison .cv-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--teal)}
+#comparison .cv-bar b{position:absolute;top:-3px;width:2px;height:11px;margin-left:-1px;background:var(--ink)}
+#comparison .type-chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
+#comparison .type-chip i{width:12px;height:12px;border-radius:3px;flex:none}
+#comparison .type-chip.none{color:var(--muted)}
+#comparison td.cmp-ev{min-width:170px;max-width:240px}
+#comparison .ev-chip{display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--line);border-radius:10px;background:#f6f9fb;font-size:11.5px;line-height:1.5;white-space:nowrap}
+#comparison .ev-chip.none{color:var(--muted);border-style:dashed;background:none}
+#comparison td.cmp-occ{min-width:120px;font-size:13px}
+#comparison td.cmp-occ .score-cell small{display:block;font-size:11px}
+#comparison td .coverage-bar{min-width:210px}
+#comparison td.cmp-cov{min-width:220px}
+#comparison .cmp-more-btn{border:1px solid #a9c3d0;border-radius:6px;background:#fff;padding:4px 9px;font-size:12.5px;color:var(--ink);white-space:nowrap;cursor:pointer}
+#comparison .cmp-more-btn[aria-expanded=true]{background:#eef6f6;border-color:var(--teal)}
+#comparison .cmp-more-btn::after{content:" ▾"}#comparison .cmp-more-btn[aria-expanded=true]::after{content:" ▴"}
+#comparison tr.cmp-more>td{background:#f7fafb;padding:10px 12px 14px}
+#comparison .cmp-more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;position:sticky;left:12px;max-width:calc(100vw - 80px)}
+#comparison .cmp-more-grid h4{margin:0 0 4px;font-size:12px;color:var(--muted)}
+#comparison .cmp-more-grid small{display:block}
+#comparison .cmp-more-grid .score-cell{display:block;text-align:left;width:100%}
+#comparison tr.cmp-row.flash>*{animation:cmpFlash 1.6s ease-out}
+@keyframes cmpFlash{0%,40%{background:#fff3c4}100%{background:inherit}}
+@media(max-width:740px){#comparison{max-height:75vh}#comparison thead th:first-child,#comparison tbody th{min-width:112px;width:112px}}
+#comparison .ev-chip{white-space:normal}
+#comparison thead th:first-child,#comparison tbody th{min-width:128px;width:128px}
+#comparison td.cmp-occ{min-width:96px}
+#comparison td .coverage-bar{min-width:200px}#comparison td.cmp-cov{min-width:210px}
+#comparison td .coverage-bar .seg b{font-size:9.5px}
+
+/* Design 07 (2026-10-10): phone layout. The map sits at the top (about 55% of the screen) and stays there; the species pane,
+   map notes and detail slide over it as one bottom sheet (white backdrop from the handle down). Wider screens are unchanged. */
+.sheet-head{display:none}
+@media (max-width:740px){
+  .explorer{overflow:clip}
+  .map-stage{position:sticky;top:0;z-index:1;height:55vh;height:55svh}
+  .sheet-head{display:block;order:2;position:relative;z-index:2;margin-top:-14px;padding:0 12px 6px;border-radius:16px 16px 0 0;background:#fff;box-shadow:0 -6px 16px rgba(9,43,67,.14)}
+  .sheet-head::before{content:"";position:absolute;left:0;right:0;top:14px;height:100000px;background:#fff;z-index:-1;pointer-events:none}
+  .species-pane,.map-caption,.map-review-note,.map-judgment,#value-cell-detail,#cell-table,.detail-pane{position:relative;z-index:2}
+  #map-selected{display:none}
+  .sheet-handle{display:block;width:100%;height:24px;margin:0;padding:0;border:0;background:none;cursor:grab}
+  .sheet-handle span{display:block;width:40px;height:5px;margin:8px auto 0;border-radius:3px;background:#b7c6d0}
+  .sheet-handle:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:8px}
+  .sheet-summary .ss-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:0;font-size:15px}
+  .sheet-summary .kind{font-size:11px}
+  .sheet-summary .type-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--ink2)}
+  .sheet-summary .type-chip i{width:11px;height:11px;border-radius:3px}
+  .sheet-summary .ss-scores{display:flex;gap:4px;margin:6px 0 0}
+  /* 활용 특성 chips: one line that scrolls sideways; the row stops short of 멍이 (48px at 16px from the right) */
+  .use-chips{display:flex;flex-wrap:nowrap;align-items:center;gap:6px;overflow-x:auto;margin-right:60px;padding-bottom:4px;scrollbar-width:thin}
+  .use-title{display:none}
+  .use-row,.use-row-chips{flex:none;flex-wrap:nowrap}
+  .use-group{width:auto;padding:0 2px 0 0}
+  .use-chip{flex:none;white-space:nowrap}
+  /* tab names shorten on a phone; the button text stays the full name (the chatbot reads it), aria-label too */
+  .tabs button[data-short]{font-size:0}
+  .tabs button[data-short]::before{content:attr(data-short);font-size:13px}
+}
