@@ -131,43 +131,50 @@ function chatbotMatch(text){
 
 // 안내 캐릭터 '멍이'(멍게 연구원) SVG. 상태: welcome·answer·think·ai·point·unknown·rest. crop이면 바위 없이 몸·입출수공만(아바타용).
 // 입수공 +, 출수공 −는 실제 멍게(Halocynthia roretzi) 모양. 색은 몸 주황 + 앱 남색(--navy)·청록(--teal) 출입증.
+// 움직이는 부위는 <g>로 묶는다(chatbot.css의 bbc-m-*): 몸 전체 all 안에 입수공 sL·출수공 sR·몸통 body·눈 look>eyes·입 mouth·덧그림(땀·안경).
+// 거품·물방울·물줄기·Z는 몸 밖. svg의 상태 클래스(bbc-m-think 등)로 CSS가 상태별 움직임을 고른다. 잘 모르겠어요의 처진 수공도 CSS.
+// face: 'smile'이면 눈·입만 welcome의 것으로(깡충 인사·다 말했어요), 'talk'이면 입만 열린 입으로(말하기). 없으면 상태 그림 그대로.
 const CHATBOT_MASCOT_STATES={welcome:{e:'happy',m:'open',x:'bub'},answer:{e:'n',m:'smile'},think:{e:'up',m:'o',x:'think'},
-  ai:{e:'n',m:'flat',x:'glasses'},point:{e:'right',m:'smile',x:'jet'},unknown:{e:'small',m:'wavy',x:'sweat',droop:1},rest:{e:'sleep',m:'flat',x:'z'}};
-function chatbotMascot(state,size,crop){
+  ai:{e:'n',m:'flat',x:'glasses'},point:{e:'right',m:'smile',x:'jet'},unknown:{e:'small',m:'wavy',x:'sweat'},rest:{e:'sleep',m:'flat',x:'z'}};
+function chatbotMascot(state,size,crop,face){
   const C={body:'#F2734B',dark:'#D9532C',light:'#F9A27F',hole:'#7A2614',navy:'#0b1b2b',cheek:'#FF8E7A',teal:'#0b7a74',rock:'#9DB2C0',water:'#5FB3C9'};
-  const s=CHATBOT_MASCOT_STATES[state]||CHATBOT_MASCOT_STATES.answer;
+  const key=CHATBOT_MASCOT_STATES[state]?state:'answer',s=CHATBOT_MASCOT_STATES[key];
   const bumps=[[30,70,3],[27,90,3.4],[38,102,3],[90,68,3],[93,90,3.4],[82,103,3],[60,47,2.4],[46,51,2.3],[74,51,2.3],[34,82,2.1],[86,80,2.1],[60,106,2.2]];
   const eye=(dx,dy,r)=>[48,72].map(x=>`<circle cx="${x+dx}" cy="${74+dy}" r="${r}" fill="${C.navy}"/><circle cx="${x+dx+1.5}" cy="${72.4+dy}" r="1.5" fill="#fff"/>`).join('');
   const arc=(y1,y2,w)=>[48,72].map(x=>`<path d="M${x-4.5} ${y1} Q${x} ${y2} ${x+4.5} ${y1}" stroke="${C.navy}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`).join('');
-  const eyes={happy:arc(75.5,69.5,2.6),sleep:arc(74,77.5,2.4),up:eye(0,-2,4.6),right:eye(2,0,4.6),small:eye(0,0,3.8),n:eye(0,0,4.6)}[s.e];
+  const eyes={happy:arc(75.5,69.5,2.6),sleep:arc(74,77.5,2.4),up:eye(0,-2,4.6),right:eye(2,0,4.6),small:eye(0,0,3.8),n:eye(0,0,4.6)}[face==='smile'?'happy':s.e];
   const mouth={open:`<path d="M54.5 81.5 Q60 90.5 65.5 81.5 Z" fill="${C.hole}"/>`,
     smile:`<path d="M55 82.5 Q60 87 65 82.5" stroke="${C.navy}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`,
     o:`<ellipse cx="60" cy="84.5" rx="2.4" ry="2.8" fill="${C.navy}"/>`,
     flat:`<path d="M56.5 84 L63.5 84" stroke="${C.navy}" stroke-width="2.2" stroke-linecap="round"/>`,
-    wavy:`<path d="M54 85 Q57 82 60 85 Q63 88 66 85" stroke="${C.navy}" stroke-width="2" fill="none" stroke-linecap="round"/>`}[s.m];
+    wavy:`<path d="M54 85 Q57 82 60 85 Q63 88 66 85" stroke="${C.navy}" stroke-width="2" fill="none" stroke-linecap="round"/>`}[face==='smile'||face==='talk'?'open':s.m];
   const siphon=left=>{
     const [x,top,base]=left?[42,18,50]:[78,22,48];
-    const t=s.droop?` transform="rotate(${left?-16:16} ${x} ${base})"`:'';
     const hole=left?`<path d="M${x} ${top+.6} V${top+5.4} M${x-3} ${top+3} H${x+3}" stroke="${C.hole}" stroke-width="1.7" stroke-linecap="round"/>`
       :`<path d="M${x-3.2} ${top+3} H${x+3.2}" stroke="${C.hole}" stroke-width="1.8" stroke-linecap="round"/>`;
-    return `<g${t}><path d="M${x-7} ${base} L${x-8} ${top+4} Q${x-8} ${top} ${x} ${top} Q${x+8} ${top} ${x+8} ${top+4} L${x+7} ${base} Z" fill="${C.body}"/><ellipse cx="${x}" cy="${top+3}" rx="8" ry="3.6" fill="${C.light}"/>${hole}</g>`;
+    return `<g class="bbc-m-${left?'sL':'sR'}"><path d="M${x-7} ${base} L${x-8} ${top+4} Q${x-8} ${top} ${x} ${top} Q${x+8} ${top} ${x+8} ${top+4} L${x+7} ${base} Z" fill="${C.body}"/><ellipse cx="${x}" cy="${top+3}" rx="8" ry="3.6" fill="${C.light}"/>${hole}</g>`;
   };
-  const b=(x,y,r,cls)=>`<circle${cls?` class="${cls}"`:''} cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".75" stroke="${C.water}" stroke-width="1.3"/>`;
-  const extra={bub:b(36,8,3)+b(31,-2,2.2),
-    think:b(43,8,2.4,'bbc-rise')+b(40,-2,3.2,'bbc-rise')+b(45,-12,3.8,'bbc-rise'),
-    glasses:[48,72].map(x=>`<circle cx="${x}" cy="74" r="7.4" fill="#fff" fill-opacity=".22" stroke="${C.navy}" stroke-width="1.7"/>`).join('')+`<path d="M55.4 73.5 Q60 71.5 64.6 73.5" stroke="${C.navy}" stroke-width="1.7" fill="none"/>`,
-    jet:`<path class="bbc-jet" d="M84 23 Q98 6 113 16" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M108 11 L115 17 L106 19" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
-    sweat:`<path d="M90 54 Q86 61 90 63.5 Q94 61 90 54 Z" fill="#8FD3E8" stroke="${C.water}" stroke-width="1"/>`,
-    z:`<circle cx="96" cy="10" r="9" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M92.5 6.5 H99.5 L92.5 13.5 H99.5" stroke="${C.navy}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`}[s.x]||'';
-  return `<svg class="bbc-mascot" width="${size}" height="${size}" viewBox="${crop?'8 12 104 104':'0 -18 120 146'}" aria-hidden="true" focusable="false">`+
-    (crop?'':`<ellipse cx="60" cy="114" rx="44" ry="8" fill="${C.rock}"/>`)+siphon(true)+siphon(false)+
-    `<path d="M24 112 C13 92 14 56 34 44 C46 37 74 37 86 44 C106 56 107 92 96 112 Z" fill="${C.body}"/>`+
+  const b=(x,y,r,cls,w)=>`<circle${cls?` class="${cls}"`:''} cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".75" stroke="${C.water}" stroke-width="${w||1.3}"/>`;
+  // crop(아바타)에서는 viewBox 위 끝이 y 12라 원래 자리(y 10 위)의 거품·Z가 잘린다: 출수공 위·오른쪽 위 안쪽으로 옮기고 키운다.
+  const over={glasses:[48,72].map(x=>`<circle cx="${x}" cy="74" r="7.4" fill="#fff" fill-opacity=".22" stroke="${C.navy}" stroke-width="1.7"/>`).join('')+`<path d="M55.4 73.5 Q60 71.5 64.6 73.5" stroke="${C.navy}" stroke-width="1.7" fill="none"/>`,
+    sweat:`<path class="bbc-m-sweat" d="M90 54 Q86 61 90 63.5 Q94 61 90 54 Z" fill="#8FD3E8" stroke="${C.water}" stroke-width="1"/>`}[s.x]||'';
+  const out={bub:b(36,8,3)+b(31,-2,2.2),
+    think:crop?b(84,25,2.8,'bbc-rise',1.5)+b(91,19,3.6,'bbc-rise',1.5)+b(99,16,4.3,'bbc-rise',1.6):b(43,8,2.4,'bbc-rise')+b(40,-2,3.2,'bbc-rise')+b(45,-12,3.8,'bbc-rise'),
+    jet:`<g class="bbc-m-jet"><path class="bbc-jet" d="M84 23 Q98 6 113 16" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M108 11 L115 17 L106 19" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+    z:crop?`<circle cx="100" cy="26" r="7.5" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M97.1 23.1 H102.9 L97.1 28.9 H102.9" stroke="${C.navy}" stroke-width="1.7" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`
+      :`<circle cx="96" cy="10" r="9" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M92.5 6.5 H99.5 L92.5 13.5 H99.5" stroke="${C.navy}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`}[s.x]||'';
+  // 가만히 있을 때 출수공 위로 떠오르는 물방울(C). CSS가 움직일 때만 보이게 한다.
+  const drop=['welcome','answer','ai'].includes(key)?b(79,crop?24:18,crop?3.6:2.6,'bbc-m-drop',crop?1.5:1.3):'';
+  return `<svg class="bbc-mascot bbc-m-${key}${crop?' bbc-m-crop':''}" width="${size}" height="${size}" viewBox="${crop?'8 12 104 104':'0 -18 120 146'}" aria-hidden="true" focusable="false">`+
+    (crop?'':`<ellipse cx="60" cy="114" rx="44" ry="8" fill="${C.rock}"/>`)+
+    '<g class="bbc-m-all">'+siphon(true)+siphon(false)+
+    '<g class="bbc-m-body">'+`<path d="M24 112 C13 92 14 56 34 44 C46 37 74 37 86 44 C106 56 107 92 96 112 Z" fill="${C.body}"/>`+
     `<ellipse cx="42" cy="58" rx="8" ry="4.5" fill="${C.light}" opacity=".75" transform="rotate(-24 42 58)"/>`+
     bumps.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${C.dark}"/>`).join('')+
     `<ellipse cx="39" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/><ellipse cx="81" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/>`+
-    eyes+mouth+
-    `<path d="M51 95 L60 90.5 L69 95" stroke="${C.teal}" stroke-width="1.6" fill="none"/><rect x="52.5" y="94.5" width="15" height="10.5" rx="2.2" fill="${C.teal}"/><path d="M55.5 100.5 q2.2 -2.2 4.5 0 t4.5 0" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/>`+
-    extra+'</svg>';
+    `<path d="M51 95 L60 90.5 L69 95" stroke="${C.teal}" stroke-width="1.6" fill="none"/><rect x="52.5" y="94.5" width="15" height="10.5" rx="2.2" fill="${C.teal}"/><path d="M55.5 100.5 q2.2 -2.2 4.5 0 t4.5 0" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></g>`+
+    `<g class="bbc-m-look"><g class="bbc-m-eyes">${eyes}</g></g><g class="bbc-m-mouth">${mouth}</g>`+over+'</g>'+
+    out+drop+'</svg>';
 }
 
 // 멍이 여는 버튼 옮기기(끌기). 계산만 여기 두고 화면 부분이 부른다. 좌표는 화면(뷰포트) 왼쪽 위 기준 px.
@@ -254,12 +261,40 @@ if(typeof document!=='undefined')(function(){
   const reset=root.querySelector('.bbc-reset'),safe=root.querySelector('.bbc-safe');
   const fabFace=expanded=>{fab.innerHTML=expanded?'<span aria-hidden="true">×</span>':chatbotMascot('answer',44,true);};
   // 머리말 멍이 표정. brief면 2.6초 뒤 직전 표정으로 돌아간다('화면에서 보여주기').
+  // 말하기·웃는 얼굴(speak)도 이 faceTimer를 써서, 새 표정이 오면 남은 전환이 함께 취소된다.
   let face='welcome',faceTimer=0;
   function mood(state,brief){
     clearTimeout(faceTimer);avatar.innerHTML=chatbotMascot(state,40,true);
     if(brief)faceTimer=setTimeout(()=>mood(face),2600);else face=state;
   }
   mood(face);fabFace(false);
+  // 한 번 도는 움직임(깡충 .bbc-m-hop): 붙였다가 ms 뒤 뗀다. 이미 붙어 있으면 떼고 다시 붙여 처음부터. 움직임 줄이기면 하지 않는다.
+  function mascotOnce(svg,cls,ms){
+    if(!svg||reduced())return;
+    svg.classList.remove(cls);svg.getBoundingClientRect();svg.classList.add(cls);
+    clearTimeout(svg.bbcOnce);svg.bbcOnce=setTimeout(()=>svg.classList.remove(cls),ms);
+  }
+  // box(머리말 .bbc-avatar 또는 말풍선 행 .bbc-row) 안의 멍이만 다시 그린다. 말풍선과 그 안의 버튼은 그대로.
+  function paint(box,size,state,f){
+    const t=document.createElement('template');t.innerHTML=chatbotMascot(state,size,true,f);
+    const svg=t.content.firstElementChild,old=box.querySelector(':scope>.bbc-mascot');
+    if(old)old.replaceWith(svg);else box.prepend(svg);
+    return svg;
+  }
+  // 말하기(H): ms 동안 열린 입으로 뻐끔거리고, 끝나면(I) 웃으며 한 번 깡충, 1초 뒤 원래 그림. 타이머는 setTimer가 맡는다.
+  function speak(draw,setTimer,ms){
+    draw('talk').classList.add('bbc-m-talk');
+    setTimer(setTimeout(()=>{mascotOnce(draw('smile'),'bbc-m-hop',720);setTimer(setTimeout(()=>draw(),1000));},ms));
+  }
+  // 말풍선 옆 멍이는 마지막 하나(.bbc-live)만 움직인다. 새 말풍선이 오면 이전 것은 남은 전환을 멈추고 멈춘 그림으로.
+  let live=null,rowTimer=0;
+  function retire(){
+    clearTimeout(rowTimer);
+    if(!live)return;
+    live.classList.remove('bbc-live');
+    if(live.isConnected)paint(live,34,live.dataset.state);
+    live=null;
+  }
 
   // 멍이를 옮긴 자리(chatbotReadFabPos 형식). PC와 휴대폰은 화면이 달라 따로 기억한다.
   // localStorage를 못 쓰면 이 탭에서만 기억한다(posCache). 창이 작아져 잘린 자리는 저장하지 않는다(다시 키우면 원래 자리).
@@ -317,11 +352,19 @@ if(typeof document!=='undefined')(function(){
   }
   function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}}
   // state가 있으면(챗봇 말풍선) 왼쪽 아래 멍이 미니 아바타와 .bbc-row로 묶고 머리말 표정도 바꾼다. 돌려주는 값은 말풍선.
+  // 답(answer·ai)과 첫 인사(welcome)는 뜬 직후 머리말과 그 말풍선 옆 멍이가 글 길이만큼 말한다(움직임 줄이기면 안 함).
   function add(cls,text,state){
     const p=document.createElement('div');p.className='bbc-msg '+cls;p.textContent=text;
     if(!state){log.append(p);return p;}
-    const row=document.createElement('div');row.className='bbc-row';row.innerHTML=chatbotMascot(state,34,true);row.append(p);log.append(row);
-    mood(state);return p;
+    retire();
+    const row=document.createElement('div');row.className='bbc-row bbc-live';row.dataset.state=state;row.innerHTML=chatbotMascot(state,34,true);row.append(p);log.append(row);live=row;
+    mood(state);
+    if(['welcome','answer','ai'].includes(state)&&!reduced()){
+      const ms=Math.min(2400,Math.max(900,text.length*25));
+      speak(f=>paint(avatar,40,state,f),t=>{faceTimer=t;},ms);
+      speak(f=>paint(row,34,state,f),t=>{rowTimer=t;},ms);
+    }
+    return p;
   }
   function buttons(list,cls){
     const box=document.createElement('div');box.className='bbc-chips '+(cls||'');
@@ -356,12 +399,13 @@ if(typeof document!=='undefined')(function(){
     const f=id?byId(id):chatbotMatch(text);
     if(f)answer(f);else if(id)unknown();else askAi(text);
   }
+  let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 저는 바다 연구원 멍이예요. 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();input.focus();
   }
-  function close(){panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
+  function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
 
   // 기존 버튼을 눌러 이동한 뒤 대상에 잠깐 테두리. 이미 켜진 토글은 다시 누르지 않는다(누르면 꺼지거나 범례가 닫힘).
   // 원래 클릭이 document까지 올라간 뒤 실행해야 ⓘ 범례의 '바깥 클릭이면 닫기'에 걸리지 않는다.
@@ -395,7 +439,7 @@ if(typeof document!=='undefined')(function(){
     place();
   }
   fab.addEventListener('pointerdown',e=>{
-    if(e.button!==0||!e.isPrimary)return;
+    if(e.button!==0||!e.isPrimary||opening)return;
     dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
     const r=fab.getBoundingClientRect();
     drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,moving:false,cancelled:false,pos:null};
@@ -422,9 +466,14 @@ if(typeof document!=='undefined')(function(){
     if(e.key!=='Escape'||!drag?.moving||drag.cancelled)return;
     e.preventDefault();e.stopPropagation();drag.cancelled=true;endDrag(false);
   },true);
+  // 열 때 깡충 인사(F): 버튼 속 멍이가 웃으며 한 번 뛰고, 거의 다 뛴 600ms 뒤 창을 연다. 움직임 줄이기면 바로 연다. 닫기는 바로.
   fab.addEventListener('click',e=>{
     if(e.detail!==0&&performance.now()-dragEnd<700){dragEnd=-1e9;return;}
-    panel.hidden?open():close();
+    if(opening)return;
+    if(!panel.hidden)return close();
+    if(reduced())return open();
+    fab.innerHTML=chatbotMascot('answer',44,true,'smile');mascotOnce(fab.firstElementChild,'bbc-m-hop',720);
+    opening=setTimeout(()=>{opening=0;open();},600);
   });
   reset.addEventListener('click',()=>{delete posCache[posMode()];savePos();place();input.focus();});
   root.querySelector('.bbc-close').addEventListener('click',close);
