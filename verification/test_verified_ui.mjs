@@ -176,8 +176,8 @@ const el=()=>({innerHTML:'',textContent:'',disabled:false,handlers:{},querySelec
   addEventListener(type,fn){this.handlers[type]=fn},click(){this.handlers.click()}});
 const dom={comparison:el(),'comparison-page':el()};
 ctx.document={getElementById:id=>dom[id]??null};
-// the type chip reads the map's type colours and hatch rule (defined after setView)
-vm.runInContext(app.match(/^const matrixTypeColour=.*$/m)[0]+app.match(/^const hatchedType=.*$/m)[0]+app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
+// the type chip reads the map's type colours (defined after setView)
+vm.runInContext(app.match(/^const matrixTypeColour=.*$/m)[0]+app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
 for(const item of next.species)Object.assign(item,{cells:[],noOccurrences:true,info:{nutrition:{status:'not_collected'},compounds:{status:'not_collected'},conservation:{status:'not_reviewed'}}});
 const headers=()=>[...dom.comparison.innerHTML.matchAll(/<th scope="row"><b>([^<]+)<\/b><small>/g)].map(m=>m[1]);
 const labels=next.species.map(s=>s.label);
