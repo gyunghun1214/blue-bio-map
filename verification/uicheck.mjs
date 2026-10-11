@@ -315,6 +315,21 @@ try{
     and['ace+protein_g']===8&&and['protein_g+omega3']===7&&and['virus+mineral']===5&&and['ace+protein_g+omega3']===3&&and['virus+parasite']===0&&
     /기생충’ 끄기 → 7종/.test(and.undo)&&and.kept&&/0종/.test(and.badge)&&and.zero&&and.pressed==='virus,mineral'&&and.hash==='virus,mineral'&&
     /5종/.test(and.sum)&&and.sel&&and.back===30&&and.restored&&and.view&&and.cleared===0,JSON.stringify(and));
+  // 2026-10-11: five more food chips read values the report already holds (MFDS 30% claim line for each mineral, the
+  // adopted edible fraction and the reviewed aquaculture record). They only show; no score changes.
+  const food=await evaluate(`(()=>{const n=()=>document.querySelectorAll('.species-card').length,ids=()=>[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species)).sort((a,b)=>a-b),r={};
+    renderUseChips();r.chips=Object.fromEntries([...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10)]));
+    r.order=[...document.querySelectorAll('[aria-label="식량 활용 특성"] .use-chip')].map(b=>b.dataset.use).join();
+    setUses(['calcium_mg']);r.calcium=ids();r.calciumNote=document.getElementById('use-extra').innerText;
+    setUses(['whole']);r.whole=n();r.wholeText=[...document.querySelectorAll('.species-card')].every(b=>b.innerText.includes('가식부 100%'));
+    for(const x of [['iron_mg','omega3'],['whole','mineral'],['farmed','protein_g']]){setUses(x);r[x.join('+')]=n();}
+    setUses([]);const q=document.getElementById('search');q.value='칼슘';renderList();r.suggest=document.querySelector('[data-use-suggest]')?.dataset.useSuggest||'';r.suggestText=document.querySelector('[data-use-suggest]')?.innerText||'';q.value='';renderList();
+    const before=selected.aphiaID,view=map.getZoom()+'/'+map.getCenter().lat.toFixed(3);applyHash({u:'calcium_mg,whole'});r.restored=[...activeUses].join();r.hash=decodeURIComponent(location.hash.match(/u=([^&]*)/)?.[1]||'');
+    setUses([]);r.back=selected.aphiaID===before&&map.getZoom()+'/'+map.getCenter().lat.toFixed(3)===view;return r})()`);
+  check('Food chips 8: 고단백 16, 미네랄 11, 칼슘 3, 철분 10, 아연 3, 오메가-3 9, 가식부 100% 9, 양식 가능 27 in that order; 칼슘 shows 참굴·꼬시래기·멸치 with the rest counted as 기준 미달/근거 미확인; AND 철분×오메가-3 2, 가식부×미네랄 4, 양식×고단백 13; searching 칼슘 points at the 칼슘 chip; u=calcium_mg,whole restores both chips',
+    food.order==='protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed'&&food.chips.protein_g===16&&food.chips.mineral===11&&food.chips.calcium_mg===3&&food.chips.iron_mg===10&&food.chips.zinc_mg===3&&food.chips.omega3===9&&food.chips.whole===9&&food.chips.farmed===27&&
+    JSON.stringify(food.calcium)==='[219984,236157,836033]'&&/기준 미달/.test(food.calciumNote)&&/210 mg/.test(food.calciumNote)&&food.whole===9&&food.wholeText&&
+    food['iron_mg+omega3']===2&&food['whole+mineral']===4&&food['farmed+protein_g']===13&&food.suggest==='calcium_mg'&&/식량 · 칼슘/.test(food.suggestText)&&food.restored==='calcium_mg,whole'&&food.hash==='calcium_mg,whole'&&food.back,JSON.stringify(food));
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));

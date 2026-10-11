@@ -1377,7 +1377,12 @@ const USE_TRAITS=[
   {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|phosphatase non-receptor type 1\b|amylase/i.test(targetText(t))},
   {id:'protein_g',group:'식량',label:'고단백'},
   {id:'mineral',group:'식량',label:'미네랄'},
+  {id:'calcium_mg',group:'식량',label:'칼슘'},
+  {id:'iron_mg',group:'식량',label:'철분'},
+  {id:'zinc_mg',group:'식량',label:'아연'},
   {id:'omega3',group:'식량',label:'오메가-3'},
+  {id:'whole',group:'식량',label:'가식부 100%'},
+  {id:'farmed',group:'식량',label:'양식 가능'},
 ];
 // Search words that point at a trait chip, kept apart from the rules so wording can grow without touching evidence.
 const TRAIT_SYNONYMS={
@@ -1393,8 +1398,13 @@ const TRAIT_SYNONYMS={
   antioxidant:['항산화','활성산소'],
   diabetes:['항당뇨','당뇨','혈당'],
   protein_g:['단백질','고단백','protein'],
-  mineral:['미네랄','무기질','칼슘','철','철분','아연'],
+  mineral:['미네랄','무기질'],
+  calcium_mg:['칼슘','calcium'],
+  iron_mg:['철','철분','iron'],
+  zinc_mg:['아연','zinc'],
   omega3:['오메가-3','오메가3','오메가','omega','omega-3','dha','epa','불포화지방'],
+  whole:['가식부','통째로','폐기율','버릴것없는'],
+  farmed:['양식','양식가능','aquaculture'],
 };
 // Chips combine with AND: a species stays only when it has evidence for every chip that is on (insertion order kept,
 // so the last chip turned on is the one the empty-result button turns off).
@@ -1407,7 +1417,7 @@ function traitIdsOf(t){
   return first?[first.id,...USE_TRAITS.filter(c=>c.parent===first.id&&c.match(t)).map(c=>c.id)]:[];
 }
 const overClaim=(a,id)=>{const v=a.food_trace?.nutrients?.[id];return v&&Number.isFinite(v.value)&&v.value>=CLAIM_REF[id]*CLAIM_SHARE[id]?v:null;};
-const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(CLAIM_REF[id]*CLAIM_SHARE[id]*10)/10)} 이상${v.substitute?' · '+v.substitute.label:''}`;
+const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(CLAIM_REF[id]*CLAIM_SHARE[id]*100)/100)} 이상${v.substitute?' · '+v.substitute.label:''}`;
 // Evidence line for one species and one trait, or null. Values are the species' adopted items, never a relative's.
 function useEvidence(s,id){
   const a=s.assessment;if(!a)return null;
@@ -1419,6 +1429,9 @@ function useEvidence(s,id){
   }
   if(traitById(id)?.group==='식량'){
     if(a.axis_errors?.MFPI||pilotScore(s,'MFPI')===null)return null;
+    // 가식부·양식 칩은 MFPI에 이미 들어간 가식부 비율과 양식 사례 기록을 그대로 보여줄 뿐, 점수를 바꾸지 않는다.
+    if(id==='whole'){const ef=a.food_trace?.edible_fraction;return ef&&ef.value===1?{text:`가식부 100%(폐기율 0%) · 출처 ${ef.record_id}`,score:pilotScore(s,'MFPI')}:null;}
+    if(id==='farmed'){const q=a.food_trace?.aquaculture;return q&&q.feasible===true&&q.reviewed===true?{text:`양식 사례 있음 · 출처 ${q.source_id}`,score:pilotScore(s,'MFPI')}:null;}
     const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
     return hits.length?{text:hits.map(([k,v])=>(MINERALS[k]||'단백질')+' '+nutrientLine(v,k)).join(' · '),score:pilotScore(s,'MFPI')}:null;
   }
@@ -1511,11 +1524,14 @@ function useSuggestion(query){
 }
 const useRule=c=>c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
+    :MINERALS[c.id]?`${MINERALS[c.id]}이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%, ${num(Math.round(CLAIM_REF[c.id]*CLAIM_SHARE[c.id]*100)/100)} mg) 이상`
+    :c.id==='whole'?'보고서에 채택된 가식부 비율이 100%(폐기율 0%)인 종. MFPI의 가식부 항목과 같은 값이며, 칩은 보여주기만 합니다'
+    :c.id==='farmed'?'보고서에 채택·검토된 양식 사례 기록이 있는 종(MFPI의 양식 가능성 항목과 같은 근거). 현재 국내 상업 양식 여부나 경제성을 뜻하지 않습니다'
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
     :displayOnly(c.id)?(hasExtractRow(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값이며, 단일 물질 근거가 없는 종은 추출물·분획 시험값입니다(‘추출물’ 표시, 팀장 결정 2026-10-04). ':'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. ')+'팀장 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
 // A food chip hides species with a measured value under the claim line apart from species with no value at all.
-const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
+const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);if(id==='whole')return Number.isFinite(a.food_trace?.edible_fraction?.value);if(id==='farmed')return a.food_trace?.aquaculture?.reviewed===true;return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
 function hiddenLine(on,shown,base){
   const hidden=base.filter(s=>!shown.includes(s)),below=hidden.filter(s=>on.every(c=>useEvidence(s,c.id)||(c.group==='식량'&&measured(s,c.id)))).length;
   return `<p>숨김 ${hidden.length}종: ${below?`기준 미달 ${below}종 · `:''}근거 미확인 ${hidden.length-below}종(가치가 낮다는 뜻 아님).</p>`;
