@@ -366,6 +366,10 @@ try{
   check('Empty matrix note links straight to the simulated example (still labelled not real); a placed matrix states its count instead',
     readiness.matrix_points?inlineSim==='no button'&&matrixNote.startsWith(`정식 산출 ${readiness.matrix_points}종`)&&
       matrixNote.includes('IUCN 기반과 같은 척도가 아닙니다')===readiness.species.some(r=>r.matrix_eligible&&['national','range_state'].includes(r.mcui_basis))&&matrixNote.includes('한국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&matrixNote.includes('서식국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='range_state'):inlineSim===true,String(inlineSim)+' | '+matrixNote);
+  // Navy redesign (2026-10-11, intended change 1): the effort shading starts off and is not kept in the link; the 조사량
+  // box turns it on. It stays on for the shading and B-1 checks below.
+  const effortStart=await evaluate("(()=>{const t=document.getElementById('effort-toggle');const r={checked:t.checked,n:effortLayer?effortLayer.getLayers().length:0,hash:location.hash};t.click();r.on=t.checked&&effortLayer.getLayers().length>100;return r})()");
+  check('B-1 effort layer off on first open and not in the link; the 조사량 box turns it on',!effortStart.checked&&effortStart.n===0&&!/effort/.test(effortStart.hash)&&effortStart.on,JSON.stringify(effortStart));
   const effortOp=await evaluate("(()=>{const eb=[...document.querySelectorAll('.effort-key .eb')].map(e=>getComputedStyle(e).opacity);const fills=[...new Set(effortLayer.getLayers().map(l=>l.options.fillOpacity))].sort();return {eb,fills}})()");
   check('Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14)',JSON.stringify(effortOp.eb)==='["0.07","0.15","0.25","0.37"]'&&Math.max(...effortOp.fills)<=.14,JSON.stringify(effortOp));
   check('Method tab: back-test cases from the proposal, marked run and failed (3.27)',await evaluate("const m=document.getElementById('method').textContent;m.includes('사후 검증 사례(3.27 실행 · 기준 미충족')&&!m.includes('아직 수행 안 함')&&m.includes('Conus magus')&&m.includes('Ecteinascidia turbinata')&&m.includes('Halichondria okadai')"));
@@ -477,6 +481,8 @@ try{
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
+  // The shared-link reload above starts the effort shading off again (2026-10-11): turn it on for the mode round-trip below.
+  await evaluate("(()=>{const t=document.getElementById('effort-toggle');if(!t.checked)t.click();return 1})()");
   // ---------- Map mode buttons: occurrence <-> utilization × conservation ----------
   const modeState=()=>evaluate(`(()=>{const q=s=>document.querySelector(s),pressed=m=>q('[data-map-mode="'+m+'"]').getAttribute('aria-pressed');
     return {mode:mapMode,occ:pressed('occurrence'),val:pressed('value'),occLegend:!q('#occurrence-legend').hidden,valLegend:!q('#value-mini').hidden,
