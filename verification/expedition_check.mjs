@@ -102,18 +102,34 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const intro=await s.evaluate("!document.getElementById('intro').hidden&&!document.body.classList.contains('is-cards')");
       check(`${tag}: 3D sea with intro screen`,intro);
       await sleep(reduced?300:1500);await shot(s,`${tag}-1-intro`);
-      await s.evaluate("window.__sail0=performance.now()");
-      if(mobile){
-        await s.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width/2,y:height*.5}]});await s.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-        await s.evaluate("document.getElementById('start').click()");
-      }else await s.evaluate("document.getElementById('start').focus()").then(()=>key(s,'Enter'));
+      const depart=async()=>{
+        await s.evaluate("window.__sail0=performance.now()");
+        if(mobile){
+          await s.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width/2,y:height*.5}]});await s.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+          await s.evaluate("document.getElementById('start').click()");
+        }else await s.evaluate("document.getElementById('start').focus()").then(()=>key(s,'Enter'));
+      };
+      await depart();
       const routeT="Number(getComputedStyle(document.getElementById('progress')).getPropertyValue('--t'))";
       if(!reduced){
         // the ship sails visibly: still under way a second after leaving, then 25 / 50 / 75 % of the first leg.
         // A slow runner can stall the page for seconds, so the bound is the eased trip at the page time actually
         // elapsed (a frame never advances more than its own time), not a fixed fraction of the leg.
+        const look=`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT},s:(performance.now()-window.__sail0)/1000})`;
         await sleep(1000);
-        const early=await s.evaluate(`({label:document.getElementById('steer-label').textContent,card:!document.getElementById('stop-card').hidden,skip:!document.getElementById('skip').hidden,t:${routeT},s:(performance.now()-window.__sail0)/1000})`);
+        let early=await s.evaluate(look);
+        // CI 2026-10-11: the runner stalled 12.9 s of page time inside this 1 s wait, longer than the whole first leg, so the
+        // ship had fairly reached stop 1 before the first look. Then leave once more from a fresh page; the checks stay the same.
+        // Arrived = the stop card is up and 바로 도착 is gone (--t is written to 4 decimals, so not t). Arriving sooner than
+        // the leg allows is still a jump and fails below.
+        if(early.card&&!early.skip&&early.s>=FIRST_LEG){
+          console.log(`note: ${tag} page time ran ${early.s.toFixed(1)} s before the first look (first leg ${FIRST_LEG.toFixed(1)} s), leaving again`);
+          await s.evaluate("sessionStorage.removeItem('bbvm-expedition');1");
+          await s.send('Page.navigate',{url:URL0+'expedition.html'});
+          await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')&&!document.getElementById('intro').hidden");
+          await sleep(1500);await depart();await sleep(1000);
+          early=await s.evaluate(look);
+        }
         const u=Math.min(1,early.s/FIRST_LEG), eased=STOP_T[0]*u*u*(3-2*u);
         check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]&&early.t<=eased+1e-6,JSON.stringify({...early,eased}));
         const ts=[];
