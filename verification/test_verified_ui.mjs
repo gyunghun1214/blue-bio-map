@@ -171,23 +171,21 @@ for(const [id,expected] of Object.entries(stages)){
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
-// Same elements as index.html: every species in one sideways-scrolling table with a position label and prev/next buttons.
+// Same elements as index.html: every species in one table (design 05, 2026-10-10: a row per species, sortable) with a count/sort label.
 const el=()=>({innerHTML:'',textContent:'',disabled:false,handlers:{},querySelectorAll(){return []},
   addEventListener(type,fn){this.handlers[type]=fn},click(){this.handlers.click()}});
-const dom={comparison:el(),'comparison-page':el(),'comparison-prev':el(),'comparison-next':el()};
+const dom={comparison:el(),'comparison-page':el()};
 ctx.document={getElementById:id=>dom[id]??null};
-vm.runInContext(app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
-// Wire the buttons with the app's own listener lines, not a copy of their logic.
-vm.runInContext(app.split('\n').filter(l=>/^\$\('comparison-(prev|next)'\)\.addEventListener/.test(l)).join('\n'),ctx);
+// the type chip reads the map's type colours and hatch rule (defined after setView)
+vm.runInContext(app.match(/^const matrixTypeColour=.*$/m)[0]+app.match(/^const hatchedType=.*$/m)[0]+app.slice(app.indexOf('function renderComparison(){'),app.indexOf('function toggleSimulation('))+';globalThis.compare=renderComparison',ctx);
 for(const item of next.species)Object.assign(item,{cells:[],noOccurrences:true,info:{nutrition:{status:'not_collected'},compounds:{status:'not_collected'},conservation:{status:'not_reviewed'}}});
-const headers=()=>[...dom.comparison.innerHTML.matchAll(/<th scope="col">([^<]+)<small>/g)].map(m=>m[1]);
+const headers=()=>[...dom.comparison.innerHTML.matchAll(/<th scope="row"><b>([^<]+)<\/b><small>/g)].map(m=>m[1]);
 const labels=next.species.map(s=>s.label);
 assert.equal(labels.length,8);
 ctx.compare();
 assert.deepEqual(headers(),labels,'one table shows all species in order');
-// No layout here (hidden tab or this test): the label names the whole range and both buttons stay off.
-assert.equal(dom['comparison-page'].textContent,'1–8종 / 총 8종');
-assert.equal(dom['comparison-prev'].disabled,true);assert.equal(dom['comparison-next'].disabled,true);
+// The label names the whole count and the current order (default: the catalogue order).
+assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: 기본 순서(운영 발행 → 조사 후보)');
 // Both cohorts appear (미역 seaweed, 멍게 animal); assert each against its own column.
 assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
 assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
@@ -196,17 +194,25 @@ assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis
 assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);  // 3.15: MFPI labels read the cross-table result
 assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI is the Primorsky value, 멍게's the scored Rapid LC check; no reference-only line is left on the page
-assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · 과대평가 역검증 기준 미충족\(6종 비교\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 기준 미충족 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>80\.0<small>정식 산출 · 공식 평가 범주 · 근거 보기<\/small><small>지방 목록 참고값\(연해주\) · 과대평가 역검증 기준 미충족\(6종 비교\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 기준 미충족 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/예비 평가 참고|산출 보류/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 해삼 stays 80.0
-assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*>20\.0<small>/);
+assert.match(dom.comparison.innerHTML,/>80\.0<small>/);assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>20\.0<small>/);assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">20\.0</);
 for(const s of next.species)assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/>71\.6<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);
 // 3.3: 홍합 zinc comes from uFiSh. 3.6: 톳 (a seaweed; uFiSh covers fish and shellfish only) leaves its blank zinc out of the mean.
-assert.match(dom.comparison.innerHTML,/data-score-aphia="494972" data-score-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'3 of 4 components score');
-assert.match(dom.comparison.innerHTML,/data-score-aphia="506159" data-score-axis="MFPI"[^>]*>60\.9<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'substituted zinc gives a scored MFPI');
+assert.match(dom.comparison.innerHTML,/data-more-aphia="494972" data-more-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'3 of 4 components score');
+assert.match(dom.comparison.innerHTML,/data-more-aphia="506159" data-more-axis="MFPI"[^>]*>60\.9<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'substituted zinc gives a scored MFPI');
+
+// design 05: a header sorts the rows (BBVI high → low, values without a score last) and the label says so; back to the default
+vm.runInContext("cmpSort={key:'BBVI',dir:'desc'}",ctx);ctx.compare();
+{const want=next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=ctx.score(a,'BBVI'),y=ctx.score(b,'BBVI');return x===null||y===null?(x===null)-(y===null)||i-j:y-x||i-j;}).map(([s])=>s.label);
+assert.deepEqual(headers(),want,'BBVI high → low');}
+assert.match(dom.comparison.innerHTML,/<th scope="col" aria-sort="descending"><button type="button" class="cmp-sort" data-sort="BBVI">/);
+assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: BBVI 높은 순');
+vm.runInContext("cmpSort={key:null,dir:null}",ctx);ctx.compare();assert.deepEqual(headers(),labels,'default order again');
 
 const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
