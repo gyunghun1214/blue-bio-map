@@ -1656,9 +1656,11 @@ function exclusionLine(s){
   if(s.review)return withheldLine(s.review);
   return Object.entries(s.info?.map?.outcome||{}).filter(([k,n])=>k!=='accepted'&&n>0).map(([k,n])=>`${REASONS[k]||k} ${count(n)}`).join(' · ');
 }
+// The repository has no verified species photos: the detail head shows the taxon group's icon instead (fixed size, theme.css).
+const groupBadge=s=>`<span class="group-icon" data-group="${esc(s.group)}"><i aria-hidden="true"></i><small>${esc(s.group)}</small></span>`;
 function renderCandidateDetail(s){
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
-  const heading=(status)=>`<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">${status}</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`;
+  const heading=(status)=>`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>신규 조사 후보</span><span class="pending">${status}</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`;
   const identity=`<p class="detail-context">AphiaID ${esc(s.aphiaID)} · ${esc(s.group)} · ${sourceLink(s.wormsUrl,'WoRMS 학명 확인 ↗')}</p>`;
   if(s.audit){
     const a=s.audit, n=a.nutrition, i=a.iucn, r=s.review;
@@ -1762,7 +1764,7 @@ function renderLiveDetail(s) {
       .replace('<div class="evidence-item">',`<div class="evidence-item axis axis-${k}" style="--v:${v===null?0:Math.max(0,Math.min(100,v))}%">`);
   }).join('');
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
+  $('detail').innerHTML=`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
     `<div class="detail-summary"><div id="detail-map-summary">${mapSummaryHtml(periodView({...s,cells}))}</div><h3>근거 상태 <span class="fine">판정 아님</span></h3>${axes}<p class="detail-limit">현재 확보한 출현기록이며, 전체 분포·개체수·자원량이 아닙니다.</p></div>`+
     `<div class="detail-more-list">`+
     more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${row('자료 연결 현황','5개 항목의 단계 · 품질 점수 아님')}${coverageBar(s)}<p class="fine">${esc(coverageGuide())}</p>${coverageNotes(s)}<div class="withheld"><b>${pilot?(released()?'분석 주의':'시범 분석 주의'):'통합점수 산출 보류'}</b>${withheld}</div>`)+
@@ -1866,11 +1868,10 @@ function dotsPerDegree(records){
   if(records>=5)return 6;
   return 4;
 }
-// One red for every species so the pattern reads at a glance; the edge adapts to the basemap.
-const DOT_RED='#d7263d';
-const dotStyle=()=>basemap==='basic'
-  ? {color:'#7a0f1d',weight:.4,opacity:.55,fillColor:DOT_RED,fillOpacity:.8}
-  : {color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88};
+// One red for every species so the pattern reads at a glance. 2026-10-11 navy redesign: a lighter red that holds on the navy
+// map, and the light rim on every basemap (the outline fallback is navy too now).
+const DOT_RED='#ff6464';
+const dotStyle=()=>({color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88});
 // Smaller schematic marks reveal the grid pattern; zoom caps and cell click areas stay independent.
 function dotRadius(spacingDeg){
   const z=map.getZoom(), pxPerDeg=256*2**z/360;
@@ -1921,13 +1922,15 @@ function bbviTagText(s){
 }
 function zoomIntoCells(bounds){
   const z=Math.max(BUBBLE_MAX_ZOOM+1,Math.min(map.getMaxZoom(),map.getBoundsZoom(bounds)));
-  map.setView(L.latLngBounds(bounds).getCenter(),z);
+  // Same zoom as before; only the centre shifts so the cells land in the middle of the map the floating panels leave free.
+  const i=mapInsets(), target=L.latLngBounds(bounds).getCenter();
+  map.setView(i.left===i.right?target:map.unproject(map.project(target,z).subtract([(i.left-i.right)/2,0]),z),z);
 }
 function drawBubble(b){
   const n=b.cells.length, band=dotsPerDegree(b.records/n), size=b.cells[0][2];
   const r=Math.min(30,9+5*Math.sqrt(n));
   const bounds=b.cells.flatMap(([lat0,lon0,s])=>[[lat0,lon0],[lat0+s,lon0+s]]);
-  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:basemap==='basic'?'#7a0f1d':'#ffffff',weight:1.5,opacity:.9,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band]});
+  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#ffffff',weight:1.5,opacity:.9,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
   bubble._zoomMark=true;
   bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 ${released()?'값':'시범값'} · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 붉은 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
   bubble.on?.('click',()=>zoomIntoCells(bounds));
@@ -1978,18 +1981,30 @@ function cellPopupNotice(size){
   return `<br><small>붉은 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
 // Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
-// Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap.
-const cellFrame=()=>({color:basemap==='basic'?'#1f4e6b':'#ffffff',weight:1.2,opacity:basemap==='basic'?.75:.9,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:basemap==='basic'?.06:.1});
+// Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap (all navy since 2026-10-11:
+// a quieter light dash, so the frames do not outshine the dots).
+const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:.1});
 function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
   document.querySelector('.map-symbol').hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`붉은 버블 = 기록 칸이 모인 해역 · 확대하면 ${size}° 칸별 붉은 점 (실제 발견 좌표 아님)`;
+  // 2026-10-11: the short key reads without opening the details: bubble = grouped cells and their count, dots = a schematic
+  // of the record band, not discovery coordinates, records are not abundance (wording from the note, tooltip and review note).
+  for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`작은 점 = ${size}° 셀 안 기록 수 구간을 나타낸 도식 무늬 · 실제 발견 좌표 아님`;
   $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸 위의 BBVI는 이 종 전체의 '+(released()?'값':'시범값')+'이며 그 해역의 값이 아닙니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
-function fitPad(p){const h=sel=>document.querySelector?.(sel)?.getBoundingClientRect().height||0;return {paddingTopLeft:[p,p+h('.map-ui-tl')],paddingBottomRight:[p,p+h('.map-ui-bl')]};}
+// From 1281px the species list and the detail float over the map (2026-10-11): their widths are added on each side.
+function fitPad(p){const h=sel=>document.querySelector?.(sel)?.getBoundingClientRect().height||0,i=mapInsets();return {paddingTopLeft:[p+i.left,p+h('.map-ui-tl')],paddingBottomRight:[p+i.right,p+h('.map-ui-bl')]};}
+// Width of the map each floating panel covers, in px; 0 for a panel beside the map (1201–1280px), below it or full width (phones).
+function mapInsets(){
+  const m=document.getElementById?.('map')?.getBoundingClientRect?.(),box=sel=>document.querySelector?.(sel)?.getBoundingClientRect?.();
+  if(!m?.width)return {left:0,right:0};
+  const side=b=>b&&b.width>0&&b.width<m.width/2&&b.right>m.left+1&&b.left<m.right-1?b:null, l=side(box('.species-pane')), r=side(box('#detail'));
+  return {left:l?Math.max(0,Math.round(l.right-m.left)):0,right:r?Math.max(0,Math.round(m.right-r.left)):0};
+}
 function renderCellMap(s,color){
   occurrenceSpecies=s;dotCells=[];cellLayers=[]; // renderMap has cleared the overlay
   const degree=s.cells[0]?.sizeDeg||1;
@@ -2049,7 +2064,8 @@ function renderPeriodFilter(s){
   box.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{periodFilter=b.dataset.period;renderMap();writeHash();}));
 }
 // B-1: survey-effort background (OBIS all-taxa records per 1° cell since 2000). No dots in a lightly surveyed sea can mean no survey.
-let effortData=null, effortLayer=null, effortOn=true;
+// Off on first open since the 2026-10-11 navy redesign (the 조사량 box in the legend turns it on); not kept in the link.
+let effortData=null, effortLayer=null, effortOn=false;
 const effortBand=n=>n>=10000?4:n>=1000?3:n>=100?2:1;
 function effortFor(lat0,lon0,size){
   if(!effortData)return null;
@@ -2064,8 +2080,7 @@ function drawEffort(){
   if(!effortLayer)effortLayer=L.layerGroup().addTo(map);
   effortLayer.clearLayers();
   if(!effortOn)return;
-  const ink=basemap==='basic'?'#35566f':'#ffffff';
-  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:ink,fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
+  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:'#ffffff',fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
 }
 // Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
 function cellCsv(s){
@@ -2128,7 +2143,7 @@ const matrixTypeColour={baseline_survey:'#3f7fcf',sustainable_use:'#2f9a57',cons
 const TYPE_SHORT={conservation_priority:'보전',alternative_production:'대체',baseline_survey:'조사',sustainable_use:'활용'};
 // Selected-species outline and the card-hover outline share the hover yellow; hover is dashed so a hovered
 // species stays apart from the selected one. Change the colour or weight here only.
-const SELECTED_OUTLINE=()=>({color:basemap==='basic'?'#102e45':'#ffd166',dashArray:null,opacity:1});
+const SELECTED_OUTLINE=()=>({color:'#ffd166',dashArray:null,opacity:1}); // every basemap is dark navy since 2026-10-11
 const HOVER_OUTLINE={color:'#ffd166',weight:4,dashArray:'6 4',opacity:1};
 const CELL_FILL=.48;  // the map's cell fill; the legend swatches use the same alpha so both read alike
 function cellMatrixType(g){
@@ -2170,7 +2185,7 @@ function valueCellStyle(g,active){
   const base=type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
       fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
     :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
-  // cells holding the selected species get a thick solid outline (yellow on the dark satellite/depth maps); the fill keeps the cell's own colour
+  // cells holding the selected species get a thick solid yellow outline; the fill keeps the cell's own colour
   return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:base;
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
@@ -2337,7 +2352,8 @@ function renderValueMap(){
 // The map sits under the floating legend (#map is its own stacking context, so z-index cannot lift a tooltip over it):
 // open the tooltip on the side that leaves the most of it inside the map and outside the legend.
 function placeTip(t){
-  const legend=document.querySelector('.map-ui-bl')?.getBoundingClientRect(),frame=map.getContainer().getBoundingClientRect();
+  const legend=document.querySelector('.map-ui-bl')?.getBoundingClientRect(),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
+  const frame={left:m.left+i.left,right:m.right-i.right,top:m.top,bottom:m.bottom}; // the floating panels hide the map's sides
   const cut=(a,b)=>({left:Math.max(a.left,b.left),right:Math.min(a.right,b.right),top:Math.max(a.top,b.top),bottom:Math.min(a.bottom,b.bottom)});
   const area=r=>Math.max(0,r.right-r.left)*Math.max(0,r.bottom-r.top);
   const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-(legend?area(cut(r,legend)):0);};
@@ -2426,24 +2442,27 @@ function renderMap() {
     $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent='테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
-  L.rectangle(studyBounds,{color:basemap==='basic'?'#267bab':'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
+  L.rectangle(studyBounds,{color:'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
     .addTo(overlay).bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`);
-  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30],animate:false});}
+  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;const i=mapInsets();map.fitBounds(studyBounds,{paddingTopLeft:[30+i.left,30],paddingBottomRight:[30+i.right,30],animate:false});}
   $('map-count').textContent='0';$('map-cells').textContent='0';$('map-years').textContent='—';
 }
 
-function fitMap(){if(map)map.fitBounds([[30,122],[43,136]],{padding:[8,8]});}
+function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43,136]],{paddingTopLeft:[8+i.left,8],paddingBottomRight:[8+i.right,8]});}
+// Evidence popups pan into the part of the map the floating panels leave free (read by Leaflet each time a popup opens).
+function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,10);}
 
 // Background maps: satellite (NASA GIBS Blue Marble, the default) and depth (GEBCO WMS).
 // basic (bundled Natural Earth 1:10m outline) has had no button since 2026-10-03: the map falls back to it, and says so, only when external tiles fail to load.
 let basemapLayers, lastFitted;
 function initBasemaps(geography){
   map.createPane('basePane').style.zIndex=250; // above tiles, below cells
-  const land=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fillColor:'#f3f7f6',color:'#acc1ca',weight:1,fillOpacity:1}});
-  const outline=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fill:false,color:'#ffffff',weight:.8,opacity:.55}});
+  // 2026-10-11 navy redesign: the outline fallback is navy sea (the #map background) with blue-grey land.
+  const land=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fillColor:'#263d47',color:'#4d6b79',weight:1,fillOpacity:1}});
+  const outline=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fill:false,color:'#d8e6ee',weight:.8,opacity:.5}});
   const grid=L.layerGroup();
-  for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#adc9d6',weight:.5,opacity:.55,interactive:false}).addTo(grid);
-  for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#adc9d6',weight:.5,opacity:.55,interactive:false}).addTo(grid);
+  for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
+  for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
   const satellite=L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_NextGeneration/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
     {maxNativeZoom:8,maxZoom:8,attribution:'NASA GIBS · Blue Marble'});
   const depth=L.tileLayer.wms('https://wms.gebco.net/mapserv?',{layers:'gebco_latest',format:'image/png',version:'1.3.0',
@@ -2464,6 +2483,7 @@ function setBasemap(name,failed=false){
   for(const l of basemapLayers[name])l.addTo(map);
   basemap=name;
   $('map').classList.toggle('map-dark',name!=='basic');
+  $('map').dataset.tiles=name; // theme.css tints the tiles per basemap (satellite toward navy; depth only darker, no hue shift)
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
   const warn=failed?'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.':'';
   // the fallback note is a small ⚠ beside 위성·수심 (tooltip and label carry the sentence); #basemap-status keeps the text for checks
@@ -2475,7 +2495,9 @@ function setBasemap(name,failed=false){
 
 function initMap(geography){
   prepareLandMask(geography);
-  map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
+  const still=!!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches; // no zoom or fade animation then
+  map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7,zoomAnimation:!still,fadeAnimation:!still,markerZoomAnimation:!still});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
+  syncPopupPad();map.on('resize',syncPopupPad);
   initBasemaps(geography);
   const labels=[['대한민국',36.4,127.4],['북한',40.1,126.6],['일본',35.5,136.8],['중국',39,119.5]];
   for(const [name,lat,lon] of labels)L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:name,iconSize:[70,20],iconAnchor:[25,10]})}).addTo(map);

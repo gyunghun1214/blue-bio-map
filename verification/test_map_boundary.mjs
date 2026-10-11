@@ -75,7 +75,7 @@ assert.match(popup[0],/종 단위 상태\(이 셀의 값 아님\): MFPI 보류 �
 assert.doesNotMatch(popup[0],/90\.0/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
-assert.ok(dots.every(d=>d.options.fillColor==='#d7263d'),'one red for the schematic pattern');
+assert.ok(dots.every(d=>d.options.fillColor==='#ff6464'),'one red for the schematic pattern'); // 2026-10-11 navy map: lighter red (intended change 2)
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=2.6),'zoom 7 dots stay small');
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));

@@ -567,3 +567,200 @@ footer{max-width:none;padding:16px 20px;background:#fff}
   .tabs button[data-short]{font-size:0}
   .tabs button[data-short]::before{content:attr(data-short);font-size:13px}
 }
+
+/* ==========================================================================================================================
+   2026-10-11 navy '탐색 지도' (prompt explore-navy-map v2). Explore view only: the tokens are redefined on #explore, :root keeps
+   its light values, so the compare and method tabs, the entry screen, the expedition page and 멍이 look as before.
+   Red = occurrence bubbles, dots and their key only; teal = UI state only (pressed, selected, focus). The value-map type colours,
+   the yellow selected/hover outlines, the group dots, the axis colours and the BBVI tags keep their meaning colours.
+   Leaflet popups and tooltips stay light (their tokens are reset below), as before.
+   ========================================================================================================================== */
+#explore{
+  --nv-sea:#071d2b;--nv-panel:#0b1f2d;--nv-surface:#102a3a;--nv-raise:#16384c;--nv-edge:rgba(156,178,194,.22);--nv-line2:#2a4659;
+  --ink:#eaf2f6;--ink2:#c6d5df;--muted:#9cb2c2;--line:#1f3a4c;--bg:var(--nv-sea);--surface:var(--nv-panel);
+  --teal:#44d7c0;--teal-ink:#7fe6d6;--teal-fill:#44d7c0;--teal-soft:#123c41;--coral:#ff6464;
+  --amber:#f2c46d;--amber-soft:#2a2414;--blue:#82bdf2;
+  --shadow:0 10px 28px rgba(0,0,0,.42);--shadow-sm:0 1px 2px rgba(0,0,0,.35);
+  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239cb2c2' stroke-width='1.6'/%3E%3C/svg%3E");
+  color-scheme:dark;background:var(--nv-sea);color:var(--ink)
+}
+#explore .leaflet-popup,#explore .leaflet-tooltip{
+  --ink:#0f2537;--ink2:#3e5468;--muted:#526b7b;--line:#e3eaf0;--bg:#f3f6f9;--surface:#fff;--teal:#0b7a74;--teal-ink:#0a5f5a;--teal-fill:#12a39a;
+  --teal-soft:#e4f4f2;--coral:#e5484d;--amber:#995c08;--amber-soft:#fbf4e4;--blue:#1f6fb2;--shadow:0 6px 20px rgba(11,27,43,.14);color-scheme:light
+}
+body:has(#explore.active){background:#071d2b}
+body:has(#explore.active) footer{background:#0b1b2b;border-top-color:#1f3a4c;color:#9cb2c2}
+body:has(#explore.active) footer strong{color:#eaf2f6}
+/* app bar (shared, already navy): the active tab is marked in the UI teal */
+.tabs button.active{background:rgba(68,215,192,.13);color:#5fe3cf;box-shadow:inset 0 -2px 0 #44d7c0}
+.tabs button:focus-visible{outline-color:#44d7c0}
+
+/* map: navy sea under every basemap; the tiles are tinted on their own pane only (markers, dots, cells, labels and controls
+   sit on other panes or outside the map and keep their colours). Satellite: grey-shifted and laid over a deep blue, so the
+   near-black Blue Marble sea reads navy and land a quiet blue-grey. Depth: GEBCO's colours are the depth, so no hue shift,
+   only darker and a little less saturated. The outline fallback has no tiles (navy sea, blue-grey land from app.js). */
+#explore .explorer,#explore .map-pane{background:var(--nv-sea)}
+#explore #map{background:var(--nv-sea)}
+#explore #map[data-tiles="satellite"]{background:#0b4160}
+#explore #map[data-tiles="satellite"] .leaflet-tile-pane{filter:grayscale(.8) brightness(.95) opacity(.6)}
+#explore #map[data-tiles="depth"] .leaflet-tile-pane{filter:saturate(.72) brightness(.62)}
+#explore .geo-label{color:#eaf2f6;text-shadow:0 1px 3px #000,0 0 2px #000}
+#explore .sea-label{color:#a9cadb;text-shadow:0 1px 3px #000;opacity:.9}
+#explore .bbvi-tag{background:#0b1f33e6;color:#ffd5db;border-color:#ff8a98}
+#explore .bubble-count{font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(70,0,12,.9),0 0 4px rgba(70,0,12,.55)}
+#explore .occ-bubble{filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+#explore .leaflet-bar{border:1px solid var(--nv-edge)!important;box-shadow:var(--shadow)!important}
+#explore .leaflet-bar a{background:rgba(11,31,45,.96);color:var(--ink)!important;border-color:var(--line)!important}
+#explore .leaflet-bar a:hover,#explore .leaflet-bar a:focus-visible{background:var(--nv-raise)}
+#explore .leaflet-bar a.leaflet-disabled{background:rgba(11,31,45,.96);color:#557083!important}
+#explore .leaflet-control-attribution{background:rgba(7,29,43,.8)!important;color:#9cb2c2}
+#explore .leaflet-control-attribution a{color:#c6d5df}
+
+/* floating map controls */
+#explore .map-mode,#explore .period-filter,#explore .basemap-switch,#explore .map-title #copy-link,#explore .map-title #reset-map,
+#explore .map-ui-bl .map-key,#explore .value-mini .value-legend,#explore .vm-plot,#explore .legend-collapsed .legend-toggle{background:rgba(11,31,45,.95);border:1px solid var(--nv-edge);box-shadow:var(--shadow)}
+#explore .map-mode button{color:var(--ink2)}
+#explore .map-mode button:hover{color:var(--ink)}
+#explore .map-mode button[aria-pressed="true"]{background:var(--teal);color:#05241f}
+#explore .period-filter button{color:var(--ink2)}
+#explore .period-filter button[aria-pressed=true]{background:var(--teal-soft);color:var(--teal-ink)}
+#explore .basemap-switch button{color:var(--muted)}
+#explore .basemap-switch button:hover{color:var(--ink)}
+#explore .basemap-switch button[aria-pressed=true]{background:var(--teal-soft);color:var(--teal-ink)}
+#explore .map-title #copy-link,#explore .map-title #reset-map{color:var(--ink2)}
+#explore .map-title #copy-link:hover,#explore .map-title #reset-map:hover{background:var(--nv-raise);color:var(--ink)}
+#explore .basemap-warn{background:#3d3012;color:#f6cf7a;box-shadow:0 0 0 1px #8a6a22 inset}
+#explore .basemap-status{color:var(--amber)}
+/* occurrence key: four short lines read without opening the details (bubble = grouped cells and their count; dots = a
+   schematic of the record band, not discovery coordinates; records are not abundance) */
+#explore .map-ui-bl .map-key{color:var(--ink2)}
+#explore .map-key [hidden]{display:none!important}
+#explore #map-symbol-label,#explore .key-bubble b{color:var(--ink);font-size:12.5px;font-weight:600;line-height:1.4}
+#explore .bubble-symbol{flex:none;box-sizing:border-box;width:16px;height:16px;border:1.5px solid #fff;border-radius:50%;background:rgba(255,100,100,.6)}
+#explore .map-ui-bl .map-symbol{border-color:rgba(216,230,238,.6);background:radial-gradient(circle,var(--coral) 1.3px,transparent 1.7px) 0 0/8px 8px,rgba(255,100,100,.1)}
+#explore .key-note{display:block;color:var(--muted);font-size:11.5px;line-height:1.45}
+#explore .map-ui-bl .effort-key{color:var(--ink2)}
+#explore .effort-key .eb{background:#fff}
+#explore .effort-key input,#explore .value-layers input{accent-color:var(--teal)}
+#explore .legend-toggle{color:var(--ink2)}
+#explore .legend-toggle:hover{background:rgba(255,255,255,.08)}
+#explore .legend-collapsed .legend-toggle{color:var(--teal)}
+#explore .map-title .vm-info{background:none;color:var(--teal-ink)}
+#explore .map-title .vm-info:hover,#explore .map-title .vm-info[aria-expanded=true]{background:var(--teal-soft)}
+/* the BBVI × MCUI corner icon and its legend: type colours from app.js stay; the labels turn light on the dark tint */
+#explore .vm-grid button{border-color:#3d566a;background:#132c3c;color:#f3f8fb}
+#explore .vm-grid button span{text-shadow:0 0 2px #071d2b,0 0 3px #071d2b}
+#explore .vm-grid button[aria-pressed=true]{border-color:#fff!important;box-shadow:0 0 0 1px #071d2b inset}
+#explore .vm-grid button:hover::after,#explore .vm-grid button:focus-visible::after{background:#061520;box-shadow:0 0 0 1px var(--nv-edge)}
+#explore .value-grid span{color:#f3f8fb;text-shadow:0 0 2px rgba(7,29,43,.7)}
+#explore .v-none{border-color:#8193a4}
+#explore .unexplored-outside summary{color:#c9a8f5}
+
+/* species pane */
+#explore .species-pane,#explore .detail-pane,#explore .list-foot{background:var(--nv-panel);border-color:var(--line)}
+#explore .pane-title>span{background:var(--nv-surface);color:var(--ink2)}
+#explore .search{background:var(--nv-surface);border:1px solid var(--nv-line2)}
+#explore .search:focus-within{background:var(--nv-surface);border-color:var(--teal);box-shadow:0 0 0 3px rgba(68,215,192,.2)}
+#explore .search input{color:var(--ink)}
+#explore .search input::placeholder{color:#8aa2b3}
+#explore .species-filters label{color:var(--muted)}
+#explore .species-filters select{border-color:var(--nv-line2);background:var(--nv-surface) var(--chev) no-repeat right 9px center;color:var(--ink)}
+#explore .species-filters select:focus-visible{border-color:var(--teal)}
+#explore .species-list{border-top-color:var(--line);overscroll-behavior:contain}
+#explore .species-card{color:var(--ink)}
+#explore .species-card:hover{background:var(--nv-surface)}
+#explore .species-card.selected{background:var(--teal-soft);box-shadow:inset 3px 0 var(--teal)}
+#explore .species-card.selected b{color:var(--teal-ink)}
+#explore .card-scores i{background:var(--nv-surface);color:var(--ink)}
+#explore .card-scores i.held{background:none;border-color:#2e4a5d;color:#8aa2b3}
+#explore .card-scores i.single{background:none;border-color:var(--teal)}
+#explore .species-card.selected .card-scores i:not(.held){background:rgba(7,29,43,.55)}
+#explore .use-chip{background:none;border-color:#2b5a60;color:var(--teal-ink)}
+#explore .use-chip b{background:var(--teal-soft)}
+#explore .use-chip:not([disabled]):hover{border-color:var(--teal)}
+#explore .use-chip.on{border-color:var(--teal);background:var(--teal);color:#05241f;box-shadow:0 0 0 2px rgba(68,215,192,.25)}
+#explore .use-chip.on b{background:rgba(5,36,31,.16)}
+#explore .use-chip.gap{border-color:#2e4656;background:none;color:#8aa0b0}
+#explore .use-chip.gap b{background:#152d3c;color:#8aa0b0}
+#explore .use-note{background:var(--teal-soft);color:var(--ink2)}
+#explore .use-pill,#explore .use-suggest{background:none}
+#explore .use-suggest{border-color:rgba(68,215,192,.5);color:var(--ink2)}
+#explore .use-empty{color:#ffb39b}
+#explore .species-card .use-line{color:var(--ink2)}
+#explore .kind{border-color:#2b6e66;background:#123c41;color:#8eeadb}
+#explore .kind.cand{border-color:#7a5a20;background:#3a2c12;color:#f2d79b}
+
+/* detail: the taxon group's icon (no verified species photos in the repository) beside the name; sections, order and
+   evidence labels as before, only the colours change */
+#explore .detail-pane{overscroll-behavior:contain}
+#explore .detail-head{display:grid;grid-template-columns:56px minmax(0,1fr);grid-template-areas:"top top" "icon name" "icon latin";column-gap:14px;align-items:center;align-content:start;align-self:start}
+#explore .detail-head .detail-top{grid-area:top;margin-bottom:12px}
+#explore .detail-head h2{grid-area:name;align-self:end;margin:0}
+#explore .detail-head .latin{grid-area:latin;align-self:start;margin:3px 0 0}
+.group-icon{grid-area:icon;box-sizing:border-box;display:grid;place-items:center;align-content:center;gap:3px;width:56px;height:56px;border:1px solid color-mix(in srgb,var(--g,#94a3b8) 45%,transparent);border-radius:14px;background:color-mix(in srgb,var(--g,#94a3b8) 16%,#0e2636)}
+.group-icon i{display:block;width:24px;height:24px;background:color-mix(in srgb,var(--g,#94a3b8) 78%,#fff);-webkit-mask:var(--gi) center/contain no-repeat;mask:var(--gi) center/contain no-repeat}
+.group-icon small{max-width:52px;overflow:hidden;color:var(--muted);font-size:9.5px;font-weight:600;line-height:1.1;text-align:center;word-break:keep-all}
+.group-icon:not([data-group="해조류"]):not([data-group="패류"]):not([data-group="어류"]){--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5l2.3 5.3 5.7.5-4.3 3.8 1.3 5.6L12 15.8l-5 2.9 1.3-5.6L4 9.3l5.7-.5z'/%3E%3C/svg%3E")}
+.group-icon[data-group="기타 무척추동물"]{--g:#8b5cf6}
+.group-icon[data-group="해조류"]{--g:#2f9e6e;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21c0-4 3-5.5 3-9s-3-4.5-3-8M8 21c0-3.5-3-4.5-3-7.5S7 9 7 6.5M16.5 21c0-3 2.5-4 2.5-6.5S17.5 11 17.5 9'/%3E%3C/svg%3E")}
+.group-icon[data-group="패류"]{--g:#d9822b;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12.5a7.5 7.5 0 0 1 15 0c0 2.6-1.4 4.6-3.6 5.9H8.1c-2.2-1.3-3.6-3.3-3.6-5.9zM12 5v13.4M9 5.8l1 12.6M15 5.8l-1 12.6M6.3 8.4l2 9.9M17.7 8.4l-2 9.9M9 18.4L8 21h8l-1-2.6'/%3E%3C/svg%3E")}
+.group-icon[data-group="어류"]{--g:#3b7dd8;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12c2.8-4 8.2-5.2 12.6-2.3L20.5 6v12l-4.9-3.7C11.2 17.2 5.8 16 3 12z'/%3E%3Cpath d='M7.6 11.2h.01' stroke-width='2.6'/%3E%3C/svg%3E")}
+#explore .detail-top span,#explore .detail-top .verified{background:var(--nv-surface);color:var(--ink2)}
+#explore .detail-top .verified{background:var(--teal-soft);color:var(--teal-ink)!important}
+#explore .detail-pane .evidence-item{border-bottom-color:var(--line)}
+#explore .detail-pane .evidence-item.axis:after{background:linear-gradient(90deg,var(--c,var(--teal-fill)) 0 var(--v,0%),#1e3a4c var(--v,0%) 100%)}
+#explore .withheld,#explore .score-disclosure,#explore .ax-card{background:var(--nv-surface);border-color:var(--line)}
+#explore .withheld{color:var(--muted)}
+#explore .score-fact{border-bottom-color:var(--line)}
+#explore .ax-bar{background:#1e3a4c}
+#explore .ax-type i{border-color:rgba(234,242,246,.3)}
+#explore .ax-type.none i{border-color:#8193a4}
+#explore .ax-sep::before,#explore .ax-sep::after{border-top-color:#3d566a}
+#explore .ax-held{color:#8aa2b3}
+#explore .coverage-bar .seg{background:#13293a;color:#9cb2c2;border-color:#2e4a5d}
+#explore .coverage-bar .seg.found{background:#3a2c12;color:#f2d79b;border-color:#7a5a20}
+#explore .coverage-bar .seg.linked{background:#12304a;color:#a9d0ef;border-color:#2f6690}
+#explore .coverage-bar .seg.verified{background:#123c41;color:#9eeadf!important;border-color:#2b7d72}
+#explore .coverage-bar .seg.calculated{background:#0f7064;color:#fff;border-color:#2a9d8f}
+#explore .coverage-bar .seg.validated{background:#1f5f8f;color:#fff;border-color:#3a7fb3}
+#explore .coverage-bar .seg.checked_none,#explore .coverage-bar .seg.searched_none{background:#1a2f3e;color:#c6d5df;border-color:#5d7385}
+
+/* under the map: summaries, cell panel and table */
+#explore .map-selected,#explore .value-cell-detail{background:var(--nv-panel);border-color:var(--line)}
+#explore .map-review-note{background:none}
+#explore .map-judgment{background:var(--amber-soft);border-color:#5a4718;color:#ead7a7}
+#explore .value-species{background:var(--nv-surface);border-color:var(--line)}
+#explore .value-axis{background:#0e2533}
+#explore .vs-pill.held{background:#162e3d}
+#explore .catalog-alert{background:#3a2c12;color:#f2d79b}
+#explore .cell-table{background:none}
+#explore thead th{background:var(--nv-surface)}
+#explore .value-cell-detail .cell-summary>div{background:var(--nv-surface)}
+
+/* 1281px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
+   the cell table below is read). Controls move inside the free part; the zoom buttons keep their place, so 멍이's default
+   spot beside them is unchanged. app.js (mapInsets) keeps fits, bubble zooms and popups in the free part. */
+@media (min-width:1281px){
+  #explore .explorer{grid-template-columns:16px 296px minmax(0,1fr) 368px 16px}
+  #explore .map-pane{grid-column:1/-1;grid-row:1}
+  #explore .species-pane,#explore .detail-pane{grid-row:1;position:sticky;top:calc(var(--chrome) + 16px);z-index:20;align-self:start;height:calc(100vh - var(--chrome) - 32px);margin-top:16px;border:1px solid var(--nv-edge);border-radius:16px;box-shadow:0 16px 36px rgba(0,0,0,.45)}
+  #explore .species-pane{grid-column:2}
+  #explore .detail-pane{grid-column:4}
+  #explore .list-foot{border-radius:0 0 15px 15px}
+  #explore .map-ui-tl,#explore .map-ui-bl{left:326px}
+  #explore .map-ui-tr{right:398px;max-width:calc(100% - 740px)}
+  #explore .leaflet-right{right:384px}
+  #explore .map-below{max-width:none;margin:0 400px 0 328px}
+}
+/* phones: the PR #165 sheet, recoloured */
+@media (max-width:740px){
+  #explore .sheet-head{background:var(--nv-panel);box-shadow:0 -6px 16px rgba(0,0,0,.45)}
+  #explore .sheet-head::before{background:var(--nv-panel)}
+  #explore .sheet-handle span{background:#3d566a}
+  #explore .species-card,#explore .species-card+.species-card{border-color:var(--line);background:var(--nv-surface)}
+  #explore .species-card.selected{border-color:var(--teal);background:var(--teal-soft)}
+  #explore #map-selected{border-bottom-color:var(--line)}
+  #explore .detail-pane{border-top-color:var(--nv-sea)}
+  #explore #map-symbol-label,#explore .key-bubble b{font-size:11.5px;line-height:1.35}
+  #explore .key-note{font-size:10.5px;line-height:1.35}
+}
