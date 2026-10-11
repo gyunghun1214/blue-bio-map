@@ -44,11 +44,26 @@ for(const file of ['chatbot.js','chatbot.css']){
   assert.deepEqual([...html.matchAll(new RegExp(`["/]${file.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]),[expected],`${file}?v= must be ${expected}`);
 }
 // (6) 멍이: 7개 상태 모두 SVG, crop은 입출수공이 잘리지 않는 viewBox, id 속성 없음(여러 번 그려도 충돌 없음)
+// 움직임(2026-10-11): 상태 클래스와 부위 <g>(몸 전체·입출수공·눈·입)가 있고, 처진 수공은 SVG 속성이 아니라 CSS(.bbc-m-unknown).
+// face 'smile'은 눈·입만 welcome 것(웃는 눈·열린 입), 'talk'는 입만 열린 입. face가 없으면 상태 그림 그대로.
 assert.equal(Object.keys(moods).length,7);
+const happyEyes='Q48 69.5',openMouth='M54.5 81.5 Q60 90.5 65.5 81.5 Z';
 for(const s of Object.keys(moods))for(const crop of [false,true]){
   const svg=mascot(s,40,crop);
   assert.ok(svg.startsWith('<svg'),`${s}: <svg로 시작해야 함`);
   assert.ok(!svg.includes(' id='),`${s}: id 속성 금지`);
   if(crop)assert.ok(svg.includes('viewBox="8 12 104 104"'),`${s}: crop viewBox`);
+  assert.ok(svg.includes(`class="bbc-mascot bbc-m-${s}${crop?' bbc-m-crop':''}"`),`${s}: 상태 클래스`);
+  for(const part of ['bbc-m-all','bbc-m-sL','bbc-m-sR','bbc-m-body','bbc-m-look','bbc-m-eyes','bbc-m-mouth'])
+    assert.equal(svg.split(`class="${part}"`).length-1,1,`${s}: 부위 ${part} 하나`);
+  assert.ok(!/<g[^>]*transform=/.test(svg),`${s}: 묶음(<g>)에 transform 속성 없음(움직임은 CSS)`);
+  for(const face of ['smile','talk']){
+    const f=mascot(s,40,crop,face);
+    assert.ok(f.startsWith('<svg')&&!f.includes(' id='),`${s}/${face}: <svg·id 없음`);
+    assert.ok(f.includes(openMouth),`${s}/${face}: 열린 입`);
+    assert.equal(f.includes(happyEyes),face==='smile'||moods[s].e==='happy',`${s}/${face}: 눈`);
+    assert.equal(f.replace(/<g class="bbc-m-look">[\s\S]*?<\/g><\/g><g class="bbc-m-mouth">[\s\S]*?<\/g>/,''),svg.replace(/<g class="bbc-m-look">[\s\S]*?<\/g><\/g><g class="bbc-m-mouth">[\s\S]*?<\/g>/,''),`${s}/${face}: 눈·입 밖은 그대로`);
+  }
 }
-console.log(`PASS: chatbot FAQ ${faq.length}개 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태`);
+assert.ok(mascot('unknown',40,true).includes('class="bbc-m-sweat"'),'잘 모르겠어요: 땀방울 클래스');
+console.log(`PASS: chatbot FAQ ${faq.length}개 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);

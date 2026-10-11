@@ -726,22 +726,25 @@ try{
       await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await sleep(400);};
     const key=async(k,code,vk)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk,...(type==='keyDown'&&k==='Enter'?{text:'\r'}:{})});await sleep(200);};
     const boxesApart=(p,f)=>p.r<=f.x||p.l>=f.x+f.w||p.b<=f.y||p.t>=f.y+f.w;
+    // 2026-10-11: pressing 멍이 first plays a short hop and opens the chat about 0.6 s later (at once with reduced motion), so wait for it.
+    const openedState=async()=>{let s;for(let i=0;i<15;i++){s=await fabState();if(s.open)break;await sleep(100);}return s;};
     await viewport(1560,900,false);
     await evaluate("localStorage.removeItem('bbChatFabPos');document.querySelector('[data-view=\"explore\"]').click();window.scrollTo(0,0);1");await sleep(400);
     let m=await fabState();
     const defaultRight=m.zoomLeft===null?16:Math.max(16,m.vw-m.zoomLeft+12);
     let ok=!m.moved&&m.stored===null&&!m.reset&&m.bottom===16&&Math.abs(m.right-defaultRight)<=1;
     await evaluate("document.querySelector('.bbc-fab').focus();1");await key('Enter','Enter',13);
-    const kOpen=await fabState();await key('Escape','Escape',27);const kClose=await fabState();
+    const kOpen=await openedState();await key('Escape','Escape',27);const kClose=await fabState();
     check('M-1 멍이 default place unchanged (bottom 16px, left of the zoom control on the map tab); keyboard Enter opens, Esc closes and returns focus',
       ok&&kOpen.open&&kOpen.focus==='bbc-input'&&!kClose.open&&kClose.focus==='bbc-fab',JSON.stringify({m,defaultRight,kOpen:[kOpen.open,kOpen.focus],kClose:[kClose.open,kClose.focus]}));
     const before=m;
     await mouseDrag(mid(m),{x:60,y:150});
+    await sleep(700);  // a wrongly kept click would open the chat only after the hop
     m=await fabState();
     check('M-2 mouse drag moves 멍이 to the drop point without opening the chat or moving the map',
       m.moved&&!m.open&&m.expanded==='false'&&m.x===36&&m.y===126&&!!m.stored&&m.mapView===before.mapView,JSON.stringify({m,mapBefore:before.mapView}));
     await mouseDrag(mid(m),{x:mid(m).x+3,y:mid(m).y},1);
-    m=await fabState();
+    m=await openedState();
     check('M-3 a press that moves under the threshold still opens the chat, beside 멍이, on screen and not covering it',
       m.open&&m.expanded==='true'&&m.x===36&&m.panel.l>=8&&m.panel.t>=8&&m.panel.r<=m.vw-8&&m.panel.b<=m.vh-8&&boxesApart(m.panel,m)&&m.panel.l===m.x&&m.panel.t>=m.y+m.w&&m.reset,JSON.stringify(m));
     await sleep(300);await shot('mascot-moved-open',false);
@@ -756,7 +759,7 @@ try{
     check('M-4 the drop point survives a reload; a small window pulls 멍이 inside, a big one puts it back, the saved value unchanged',
       dropped.moved&&reloaded.x===dropped.x&&reloaded.y===dropped.y&&small.x===dropped.x&&small.y===small.vh-small.w-8&&small.y<dropped.y&&big.x===dropped.x&&big.y===dropped.y&&big.stored===dropped.stored,
       JSON.stringify({dropped:[dropped.x,dropped.y],reloaded:[reloaded.x,reloaded.y],small:[small.x,small.y,small.vw,small.vh],big:[big.x,big.y],stored:[dropped.stored,big.stored]}));
-    await mouseDrag(mid(big),{x:mid(big).x,y:mid(big).y});
+    await mouseDrag(mid(big),{x:mid(big).x,y:mid(big).y});await openedState();
     await evaluate("document.querySelector('.bbc-reset').click();1");await sleep(300);
     m=await fabState();
     check('M-5 "멍이 원래 자리로" returns to the default place, clears the saved value, hides itself and keeps the chat open',
@@ -766,16 +769,58 @@ try{
     await evaluate("window.scrollTo(0,400);1");await sleep(300);
     m=await fabState();
     await touchDrag(mid(m),{x:50,y:300});
-    const t=await fabState();
     // Chrome makes no tap from a touch that starts within about a second of the previous touch gesture, so wait like a person would.
-    await sleep(1500);await touchDrag(mid(t),mid(t),1);await sleep(300);
-    const tap=await fabState();
+    await sleep(1500);
+    const t=await fabState();
+    await touchDrag(mid(t),mid(t),1);
+    const tap=await openedState();
     await shot('mascot-mobile-sheet',false);
     check('M-6 phone 390px: a finger drag moves 멍이 without scrolling the page, a tap opens the bottom sheet, no horizontal overflow',
       !m.moved&&m.right===16&&t.moved&&!t.open&&t.x===26&&t.y===276&&t.scrollY===m.scrollY&&JSON.parse(t.stored).mobile&&JSON.parse(t.stored).desktop===undefined&&
       tap.open&&tap.panel.l===0&&tap.panel.r===tap.vw&&Math.abs(tap.panel.b-tap.vh)<=1&&tap.doc<=tap.vw,JSON.stringify({m,t,tap}));
     await evaluate("document.querySelector('.bbc-close').click();localStorage.removeItem('bbChatFabPos');window.scrollTo(0,0);1");
     await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+
+    // ---------- 멍이 움직임 (2026-10-11): 깡충 인사 뒤 열기, 말하기 → 웃으며 깡충 → 원래 그림, 움직이는 말풍선 멍이는 하나, 움직임 줄이기 ----------
+    // Classes and computed animation names are read from the page; the chat log is emptied so the welcome message comes again.
+    await viewport(1560,900,false);
+    const freshChat="document.querySelector('.bbc-log').replaceChildren();document.querySelector('[data-view=\"explore\"]').click();window.scrollTo(0,0);1";
+    const press=async()=>{const c=mid(await fabState());
+      await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:c.x,y:c.y});
+      await send('Input.dispatchMouseEvent',{type:'mousePressed',x:c.x,y:c.y,button:'left',buttons:1,clickCount:1});
+      await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:c.x,y:c.y,button:'left',buttons:0,clickCount:1});};
+    const motion=`(()=>{const q=s=>document.querySelector(s),an=s=>q(s)?getComputedStyle(q(s)).animationName:null,cl=s=>q(s)?.getAttribute('class')||'';
+      return {open:!q('.bbc-panel').hidden,fab:cl('.bbc-fab .bbc-mascot'),head:cl('.bbc-avatar .bbc-mascot'),row:cl('.bbc-row.bbc-live .bbc-mascot'),live:document.querySelectorAll('.bbc-row.bbc-live').length,
+        rows:document.querySelectorAll('.bbc-row').length,talking:document.querySelectorAll('.bbc-m-talk').length,headAll:an('.bbc-avatar .bbc-m-all'),headMouth:an('.bbc-avatar .bbc-m-mouth'),headOpenMouth:/Q60 90\\.5/.test(q('.bbc-avatar .bbc-m-mouth')?.innerHTML||''),
+        fabAll:an('.bbc-fab .bbc-m-all'),fabEyes:an('.bbc-fab .bbc-m-eyes'),rowSL:q('.bbc-row.bbc-live .bbc-m-sL')?getComputedStyle(q('.bbc-row.bbc-live .bbc-m-sL')).transform:null}})()`;
+    const until=async(test,ms)=>{let s;for(let t=0;t<=ms;t+=100){s=await evaluate(motion);if(test(s))break;await sleep(100);}return s;};
+    await evaluate(freshChat);await sleep(300);
+    const idle=await evaluate(motion);
+    await press();
+    const hop=await evaluate(motion);
+    const greet=await until(s=>s.open,1500);
+    check('M-7 멍이 breathes and blinks in the button; a press plays the hop first and opens the chat after it, where the welcome is spoken (header and its bubble)',
+      idle.fabAll==='bbc-breathe'&&idle.fabEyes==='bbc-blink'&&/bbc-m-hop/.test(hop.fab)&&!hop.open&&greet.open&&/bbc-m-welcome/.test(greet.head)&&/bbc-m-talk/.test(greet.head)&&
+      greet.headMouth==='bbc-talk'&&/bbc-m-talk/.test(greet.row)&&greet.live===1,JSON.stringify({idle,hop,greet}));
+    await evaluate("document.querySelector('.bbc-log .bbc-chips button').click();1");
+    const said=await evaluate(motion);
+    const done=await until(s=>/bbc-m-hop/.test(s.head),3000);
+    const back=await until(s=>!/bbc-m-(hop|talk)/.test(s.head)&&!s.headOpenMouth&&s.talking===0,2000);
+    check('M-8 an FAQ answer: header and the newest bubble talk (only that bubble moves, the welcome one stops), then hop smiling, then the plain answer face breathing again',
+      /bbc-m-answer/.test(said.head)&&/bbc-m-talk/.test(said.head)&&/bbc-m-talk/.test(said.row)&&said.live===1&&said.talking===2&&said.rows===2&&
+      /bbc-m-hop/.test(done.head)&&!/bbc-m-talk/.test(done.head)&&done.headOpenMouth&&/bbc-m-answer/.test(back.head)&&!back.headOpenMouth&&back.headAll==='bbc-breathe'&&back.live===1,JSON.stringify({said,done,back}));
+    await shot('mascot-motion-answer',false);
+    // Reduced motion: no hop or talking, the chat opens at once, and only the state pictures change (the drooped siphons of 'unknown' stay).
+    await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+    await evaluate("document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
+    await press();
+    const calm=await evaluate(motion);
+    await evaluate("(()=>{const i=document.querySelector('.bbc-input');i.value='zqxj 멍이 시험 질문';document.querySelector('.bbc-form').requestSubmit();})();1");
+    const puzzled=await until(s=>/bbc-m-unknown/.test(s.row),3000);
+    check('M-9 reduced motion: a press opens the chat at once with no hop or talking and no running animation; an unknown answer still shows the drooped siphons',
+      calm.open&&calm.talking===0&&/bbc-m-welcome/.test(calm.head)&&calm.headAll==='none'&&/bbc-m-unknown/.test(puzzled.head)&&puzzled.rowSL&&puzzled.rowSL!=='none'&&puzzled.talking===0,JSON.stringify({calm,puzzled}));
+    await send('Emulation.setEmulatedMedia',{features:[]});
+    await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }
   // ---------- Failure / empty / v1-only responses (fetch mocked in page) ----------
   await viewport(1560,900,false);
