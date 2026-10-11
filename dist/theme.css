@@ -591,24 +591,39 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 body:has(#explore.active){background:#071d2b}
 body:has(#explore.active) footer{background:#0b1b2b;border-top-color:#1f3a4c;color:#9cb2c2}
 body:has(#explore.active) footer strong{color:#eaf2f6}
-/* app bar (shared, already navy): the active tab is marked in the UI teal */
+/* app bar (shared, already navy): the active tab is marked in the UI teal. From 741px (2026-10-11 design concept) the tabs are
+   plain text over the full bar height and the active one is underlined at the bar's lower edge; phones keep the tinted pills. */
 .tabs button.active{background:rgba(68,215,192,.13);color:#5fe3cf;box-shadow:inset 0 -2px 0 #44d7c0}
 .tabs button:focus-visible{outline-color:#44d7c0}
+@media (min-width:741px){
+  .tabs{align-self:stretch;align-items:stretch;gap:2px;padding:0;border-radius:0;background:none}
+  .tabs button{display:flex;align-items:center;padding:0 16px;border-radius:0;background:none;font-size:14px}
+  .tabs button:hover{background:rgba(255,255,255,.04)}
+  .tabs button.active{background:none;color:#5fe3cf;font-weight:700}
+  .tabs button:focus-visible{outline-offset:-4px}
+}
+@media (min-width:741px) and (max-width:960px){.tabs button{padding:0 10px}}
+.expedition-link{display:inline-flex;align-items:center;gap:7px;border-radius:9px}
+.expedition-link::before{content:"";flex:none;width:16px;height:16px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z'/%3E%3C/svg%3E") center/contain no-repeat}
+@media (max-width:740px){.expedition-link::before{width:14px;height:14px}}
 
 /* map: navy sea under every basemap; the tiles are tinted on their own pane only (markers, dots, cells, labels and controls
-   sit on other panes or outside the map and keep their colours). Satellite: grey-shifted and laid over a deep blue, so the
-   near-black Blue Marble sea reads navy and land a quiet blue-grey. Depth: GEBCO's colours are the depth, so no hue shift,
-   only darker and a little less saturated. The outline fallback has no tiles (navy sea, blue-grey land from app.js). */
+   sit on other panes or outside the map and keep their colours). Satellite (2026-10-11 design concept): Blue Marble with shaded
+   relief and bathymetry, recoloured by one colour matrix (#bbm-navy-tint in index.html): sea navy with the shelf lighter than
+   the deep sea, land a teal grey with its relief. Depth: GEBCO's colours are the depth, so no hue shift, only darker and a
+   little less saturated. The outline fallback has no tiles (navy sea, blue-grey land from app.js). */
+.svg-defs{position:absolute;width:0;height:0;overflow:hidden}
 #explore .explorer,#explore .map-pane{background:var(--nv-sea)}
 #explore #map{background:var(--nv-sea)}
-#explore #map[data-tiles="satellite"]{background:#0b4160}
-#explore #map[data-tiles="satellite"] .leaflet-tile-pane{filter:grayscale(.8) brightness(.95) opacity(.6)}
+#explore #map[data-tiles="satellite"]{background:#05243a}
+#explore #map[data-tiles="satellite"] .leaflet-tile-pane{filter:url(#bbm-navy-tint)}
 #explore #map[data-tiles="depth"] .leaflet-tile-pane{filter:saturate(.72) brightness(.62)}
-#explore .geo-label{color:#eaf2f6;text-shadow:0 1px 3px #000,0 0 2px #000}
-#explore .sea-label{color:#a9cadb;text-shadow:0 1px 3px #000;opacity:.9}
+#explore .geo-label{color:rgba(234,242,246,.9);font-size:13px;font-weight:600;letter-spacing:.28em;text-shadow:0 1px 3px #000,0 0 2px #000}
+#explore .sea-label{color:#9cc4d8;font-size:13px;letter-spacing:.42em;text-shadow:0 1px 3px #000;opacity:.92}
 #explore .bbvi-tag{background:#0b1f33e6;color:#ffd5db;border-color:#ff8a98}
-#explore .bubble-count{font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(70,0,12,.9),0 0 4px rgba(70,0,12,.55)}
-#explore .occ-bubble{filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+/* bubbles: a bright red ring with a soft red glow (app.js draws the ring), the white count over it */
+#explore .bubble-count{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(60,0,10,.95),0 0 5px rgba(60,0,10,.6)}
+#explore .occ-bubble{filter:drop-shadow(0 0 6px rgba(255,84,84,.6)) drop-shadow(0 1px 2px rgba(0,0,0,.45))}
 #explore .leaflet-bar{border:1px solid var(--nv-edge)!important;box-shadow:var(--shadow)!important}
 #explore .leaflet-bar a{background:rgba(11,31,45,.96);color:var(--ink)!important;border-color:var(--line)!important}
 #explore .leaflet-bar a:hover,#explore .leaflet-bar a:focus-visible{background:var(--nv-raise)}
@@ -636,7 +651,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .map-ui-bl .map-key{color:var(--ink2)}
 #explore .map-key [hidden]{display:none!important}
 #explore #map-symbol-label,#explore .key-bubble b{color:var(--ink);font-size:12.5px;font-weight:600;line-height:1.4}
-#explore .bubble-symbol{flex:none;box-sizing:border-box;width:16px;height:16px;border:1.5px solid #fff;border-radius:50%;background:rgba(255,100,100,.6)}
+#explore .bubble-symbol{flex:none;box-sizing:border-box;width:18px;height:18px;border:2px solid #ff8d84;border-radius:50%;background:rgba(255,100,100,.45);box-shadow:0 0 6px rgba(255,84,84,.55)}
 #explore .map-ui-bl .map-symbol{border-color:rgba(216,230,238,.6);background:radial-gradient(circle,var(--coral) 1.3px,transparent 1.7px) 0 0/8px 8px,rgba(255,100,100,.1)}
 #explore .key-note{display:block;color:var(--muted);font-size:11.5px;line-height:1.45}
 #explore .map-ui-bl .effort-key{color:var(--ink2)}
@@ -700,11 +715,11 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .group-icon{grid-area:icon;box-sizing:border-box;display:grid;place-items:center;align-content:center;gap:3px;width:56px;height:56px;border:1px solid color-mix(in srgb,var(--g,#94a3b8) 45%,transparent);border-radius:14px;background:color-mix(in srgb,var(--g,#94a3b8) 16%,#0e2636)}
 .group-icon i{display:block;width:24px;height:24px;background:color-mix(in srgb,var(--g,#94a3b8) 78%,#fff);-webkit-mask:var(--gi) center/contain no-repeat;mask:var(--gi) center/contain no-repeat}
 .group-icon small{max-width:52px;overflow:hidden;color:var(--muted);font-size:9.5px;font-weight:600;line-height:1.1;text-align:center;word-break:keep-all}
-.group-icon:not([data-group="해조류"]):not([data-group="패류"]):not([data-group="어류"]){--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5l2.3 5.3 5.7.5-4.3 3.8 1.3 5.6L12 15.8l-5 2.9 1.3-5.6L4 9.3l5.7-.5z'/%3E%3C/svg%3E")}
+:is(.group-icon,.species-card):not([data-group="해조류"]):not([data-group="패류"]):not([data-group="어류"]){--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5l2.3 5.3 5.7.5-4.3 3.8 1.3 5.6L12 15.8l-5 2.9 1.3-5.6L4 9.3l5.7-.5z'/%3E%3C/svg%3E")}
 .group-icon[data-group="기타 무척추동물"]{--g:#8b5cf6}
-.group-icon[data-group="해조류"]{--g:#2f9e6e;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21c0-4 3-5.5 3-9s-3-4.5-3-8M8 21c0-3.5-3-4.5-3-7.5S7 9 7 6.5M16.5 21c0-3 2.5-4 2.5-6.5S17.5 11 17.5 9'/%3E%3C/svg%3E")}
-.group-icon[data-group="패류"]{--g:#d9822b;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12.5a7.5 7.5 0 0 1 15 0c0 2.6-1.4 4.6-3.6 5.9H8.1c-2.2-1.3-3.6-3.3-3.6-5.9zM12 5v13.4M9 5.8l1 12.6M15 5.8l-1 12.6M6.3 8.4l2 9.9M17.7 8.4l-2 9.9M9 18.4L8 21h8l-1-2.6'/%3E%3C/svg%3E")}
-.group-icon[data-group="어류"]{--g:#3b7dd8;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12c2.8-4 8.2-5.2 12.6-2.3L20.5 6v12l-4.9-3.7C11.2 17.2 5.8 16 3 12z'/%3E%3Cpath d='M7.6 11.2h.01' stroke-width='2.6'/%3E%3C/svg%3E")}
+:is(.group-icon,.species-card)[data-group="해조류"]{--g:#2f9e6e;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21c0-4 3-5.5 3-9s-3-4.5-3-8M8 21c0-3.5-3-4.5-3-7.5S7 9 7 6.5M16.5 21c0-3 2.5-4 2.5-6.5S17.5 11 17.5 9'/%3E%3C/svg%3E")}
+:is(.group-icon,.species-card)[data-group="패류"]{--g:#d9822b;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12.5a7.5 7.5 0 0 1 15 0c0 2.6-1.4 4.6-3.6 5.9H8.1c-2.2-1.3-3.6-3.3-3.6-5.9zM12 5v13.4M9 5.8l1 12.6M15 5.8l-1 12.6M6.3 8.4l2 9.9M17.7 8.4l-2 9.9M9 18.4L8 21h8l-1-2.6'/%3E%3C/svg%3E")}
+:is(.group-icon,.species-card)[data-group="어류"]{--g:#3b7dd8;--gi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12c2.8-4 8.2-5.2 12.6-2.3L20.5 6v12l-4.9-3.7C11.2 17.2 5.8 16 3 12z'/%3E%3Cpath d='M7.6 11.2h.01' stroke-width='2.6'/%3E%3C/svg%3E")}
 #explore .detail-top span,#explore .detail-top .verified{background:var(--nv-surface);color:var(--ink2)}
 #explore .detail-top .verified{background:var(--teal-soft);color:var(--teal-ink)!important}
 #explore .detail-pane .evidence-item{border-bottom-color:var(--line)}
@@ -737,20 +752,91 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore thead th{background:var(--nv-surface)}
 #explore .value-cell-detail .cell-summary>div{background:var(--nv-surface)}
 
+/* folds (2026-10-11 design concept, app.js syncFolds): from 1281px the species filters sit under '필터 더 보기' and the evidence
+   below the two axis cards under '근거 자세히 보기'. A folded box is clipped and inert, not display:none, so its text stays laid
+   out; below 1281px nothing folds and the two buttons are not shown. */
+.filter-toggle,.detail-cta,.mm-ico{display:none}
+.filter-fold.folded,.detail-fold.folded{max-height:0;overflow:hidden;opacity:0}
+
 /* 1281px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
-   the cell table below is read). Controls move inside the free part; the zoom buttons keep their place, so 멍이's default
-   spot beside them is unchanged. app.js (mapInsets) keeps fits, bubble zooms and popups in the free part. */
+   the cell table below is read). 2026-10-11 design concept: glass panels; the list ends above the occurrence key, which sits
+   under it at the same width; the detail card is as tall as its content; the mode bar sits at the bottom centre of the free
+   part with the period buttons above it. The zoom buttons keep their place, so 멍이's default spot beside them is unchanged.
+   app.js (mapInsets, fitPad, --key-h) keeps fits, bubble zooms and popups in the free part. */
 @media (min-width:1281px){
-  #explore .explorer{grid-template-columns:16px 296px minmax(0,1fr) 368px 16px}
+  #explore{--pane-l:312px;--pane-r:368px;--glass:rgba(9,29,44,.9)}
+  #explore .explorer{grid-template-columns:16px var(--pane-l) minmax(0,1fr) var(--pane-r) 16px}
   #explore .map-pane{grid-column:1/-1;grid-row:1}
-  #explore .species-pane,#explore .detail-pane{grid-row:1;position:sticky;top:calc(var(--chrome) + 16px);z-index:20;align-self:start;height:calc(100vh - var(--chrome) - 32px);margin-top:16px;border:1px solid var(--nv-edge);border-radius:16px;box-shadow:0 16px 36px rgba(0,0,0,.45)}
-  #explore .species-pane{grid-column:2}
-  #explore .detail-pane{grid-column:4}
-  #explore .list-foot{border-radius:0 0 15px 15px}
-  #explore .map-ui-tl,#explore .map-ui-bl{left:326px}
-  #explore .map-ui-tr{right:398px;max-width:calc(100% - 740px)}
-  #explore .leaflet-right{right:384px}
-  #explore .map-below{max-width:none;margin:0 400px 0 328px}
+  #explore .species-pane,#explore .detail-pane{grid-row:1;position:sticky;top:calc(var(--chrome) + 16px);z-index:20;align-self:start;margin-top:16px;border:1px solid rgba(156,178,194,.24);border-radius:14px;background:var(--glass);box-shadow:0 18px 40px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  #explore .species-pane{grid-column:2;height:calc(100vh - var(--chrome) - 32px - var(--key-h,0px));min-height:260px;padding:18px 16px 0}
+  #explore .detail-pane{grid-column:4;height:auto;max-height:calc(100vh - var(--chrome) - 32px);padding:16px 18px 18px}
+  #explore .list-foot{border-radius:0 0 13px 13px;background:none}
+  #explore .map-ui-tr{right:calc(var(--pane-r) + 30px);max-width:calc(100% - var(--pane-l) - var(--pane-r) - 76px)}
+  #explore .leaflet-right{right:calc(var(--pane-r) + 16px)}
+  #explore .map-below{max-width:none;margin:0 calc(var(--pane-r) + 32px) 0 calc(var(--pane-l) + 32px)}
+
+  /* occurrence key under the species list */
+  #explore .map-ui-bl{left:16px;bottom:16px;width:var(--pane-l);max-width:none}
+  #explore .map-ui-bl .map-key{box-sizing:border-box;width:100%;border-radius:14px;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  #explore .map-ui-bl .effort-key{flex-wrap:wrap;row-gap:2px}
+  #explore .map-ui-bl .effort-key label,#explore .map-ui-bl .effort-key small{white-space:nowrap}
+  /* mode bar: bottom centre of the free part, the period buttons above it */
+  #explore .map-ui-tl{top:auto;bottom:16px;left:calc((100% + var(--pane-l) - var(--pane-r))/2);flex-direction:column-reverse;align-items:center;transform:translateX(-50%)}
+  #explore .map-mode{gap:2px;padding:4px;border-radius:13px;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  #explore .map-mode button{position:relative;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;font-size:13.5px;font-weight:600}
+  #explore .map-mode button+button::before{content:"";position:absolute;left:-2px;top:11px;bottom:11px;width:1px;background:rgba(156,178,194,.28)}
+  #explore .map-mode button[aria-pressed="true"]{background:rgba(68,215,192,.12);color:var(--teal);box-shadow:inset 0 -2px 0 var(--teal)}
+  #explore .mm-ico{display:block;flex:none;width:17px;height:17px}
+  #explore .period-filter{border-radius:11px;background:var(--glass)}
+
+  /* species list: title, search, the filter fold, then name-first cards with the taxon group's icon tile and tag */
+  #explore .pane-title{margin:0 0 14px}
+  #explore .pane-title h2{font-size:19px;letter-spacing:-.01em}
+  #explore .search{height:42px;border-color:#2c4b5f;background:rgba(16,42,58,.75)}
+  #explore .filter-toggle{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 0;padding:10px 4px 10px 6px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:none;color:var(--ink2);font:inherit;font-size:13px;font-weight:600;text-align:left;cursor:pointer}
+  #explore .filter-toggle:hover{color:var(--ink)}
+  #explore .filter-toggle svg{flex:none;width:16px;height:16px;color:var(--muted)}
+  #explore .filter-toggle small{padding:1px 8px;border-radius:99px;background:var(--teal-soft);color:var(--teal-ink);font-size:11.5px;font-weight:700}
+  #explore .filter-toggle::after{content:"";flex:none;width:7px;height:7px;margin:0 6px 0 auto;border-right:1.8px solid var(--muted);border-bottom:1.8px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
+  #explore .filter-toggle[aria-expanded=true]::after{transform:rotate(45deg)}
+  #explore .filter-fold:not(.folded){flex:none;max-height:45%;overflow-y:auto;overscroll-behavior:contain;padding-bottom:10px;border-bottom:1px solid var(--line);scrollbar-width:thin}
+  #explore .species-list{margin:6px -8px 0;padding:4px 8px 12px;gap:2px;border-top:0}
+  #explore .species-card,#explore .species-card+.species-card{grid-template-columns:48px minmax(0,1fr) auto;grid-template-areas:"dot name group" "dot latin group";column-gap:12px;margin:0;padding:9px 10px;border:1px solid transparent;border-radius:12px}
+  #explore .species-card::before{box-sizing:border-box;width:48px;height:48px;border:1px solid color-mix(in srgb,var(--g,#94a3b8) 45%,transparent);border-radius:11px;background:color-mix(in srgb,var(--g,#94a3b8) 16%,#0e2636)}
+  #explore .species-card::after{content:"";grid-area:dot;place-self:center;width:24px;height:24px;background:color-mix(in srgb,var(--g,#94a3b8) 78%,#fff);-webkit-mask:var(--gi) center/contain no-repeat;mask:var(--gi) center/contain no-repeat}
+  #explore .species-card>b{font-size:15px}
+  #explore .species-card>em{font-size:12.5px}
+  #explore .species-card .group{position:static;grid-area:group;align-self:center;width:auto;height:auto;overflow:visible;clip:auto;padding:2px 7px;border:1px solid var(--nv-line2);border-radius:7px;color:var(--ink2);font-size:10.5px;font-weight:600}
+  #explore .species-card .count,#explore .species-card .card-scores{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #explore .species-card .use-line{grid-column:2/-1}
+  #explore .species-card:hover{background:rgba(255,255,255,.05)}
+  #explore .species-card.selected{border-color:var(--teal);background:rgba(68,215,192,.1);box-shadow:none}
+  #explore .list-foot{margin:0 -16px;padding:12px 16px}
+
+  /* detail card: icon tile and name, the two axis summaries as sections, then '근거 자세히 보기' */
+  #explore .detail-head{grid-template-columns:60px minmax(0,1fr);margin-bottom:12px}
+  #explore .detail-head .group-icon{width:60px;height:60px}
+  #explore .detail-pane h2{font-size:25px}
+  #explore .axis-cards{gap:0;margin:0}
+  #explore .ax-type{padding:12px 2px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  #explore .ax-card{padding:12px 2px 10px;border:0;border-radius:0;background:none;--ax-i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 17l5-5 4 4 7-7M15 9h5v5'/%3E%3C/svg%3E")}
+  #explore .ax-card+.ax-sep+.ax-card{--ax-i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 19c0-8.3 5.7-14 14-14 0 8.3-5.7 14-14 14zM5 19l7.5-7.5'/%3E%3C/svg%3E")}
+  #explore .ax-head h3{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:14px}
+  #explore .ax-head h3::before{content:"";flex:none;width:18px;height:18px;background:var(--teal);-webkit-mask:var(--ax-i) center/contain no-repeat;mask:var(--ax-i) center/contain no-repeat}
+  #explore .ax-card+.ax-sep+.ax-card .ax-head h3::before{background:#f0905a}
+  #explore .ax-where{margin-top:4px;padding:12px 2px 2px;border-top:1px solid var(--line)}
+  #explore .detail-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:14px 0 0;padding:12px 16px;border:0;border-radius:10px;background:var(--teal);color:#04231e;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(68,215,192,.22)}
+  #explore .detail-cta::after{content:"";flex:none;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg)}
+  #explore .detail-cta:hover{background:#5fe3cf}
+  #explore .detail-cta[aria-expanded=true]{background:none;color:var(--teal-ink);box-shadow:inset 0 0 0 1px var(--teal)}
+  #explore .detail-cta[aria-expanded=true]::after{margin-top:4px;transform:rotate(-135deg)}
+  #explore .detail-cta:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  #explore .detail-fold:not(.folded){margin-top:6px}
+}
+/* below about 1800px 멍이's first-visit hint (left of 멍이, beside the zoom buttons) would cover the mode bar's right end: the bar
+   stands above the hint while it shows and comes down once it is closed */
+@media (min-width:1281px) and (max-width:1799px){
+  body:has(.bbc:not(.bbc-moved) .bbc-hint:not([hidden])) #explore .map-ui-tl{bottom:76px}
 }
 /* phones: the PR #165 sheet, recoloured */
 @media (max-width:740px){

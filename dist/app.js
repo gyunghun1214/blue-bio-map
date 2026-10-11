@@ -1566,7 +1566,7 @@ function renderList() {
     &&(evidence==='all'||(evidence==='published'?!s.catalog:!!s.catalog))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   const matches=useSorted(base.filter(useMatch));
-  $('species-count').textContent=`${matches.length}종`;
+  $('species-count').textContent=`${matches.length}종`;filterCount();
   const extra=$('use-extra');
   if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches,base);
     extra.querySelector('[data-use-suggest]')?.addEventListener('click',e=>{$('search').value='';setUses([...activeUses,e.currentTarget.dataset.useSuggest]);});
@@ -1594,6 +1594,35 @@ function renderDetail() {
   if(s.catalog)renderCandidateDetail(s);else renderLiveDetail(s);
   // The two axes first, as separate cards under the name; the evidence below stays the reference.
   if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisCards(s));
+  foldDetail();
+}
+// 2026-10-11 design concept (team decision: fold like the concept): on wide screens the floating card shows the name and the
+// two axis cards, and '근거 자세히 보기' opens everything below them. Nothing is removed; the fold is clipped and inert, not
+// display:none, so the text stays laid out (the checks read it), and below 1281px nothing folds. Not in the link.
+let detailOpen=false;
+const wideLayout=()=>!!globalThis.matchMedia?.('(min-width:1281px)').matches;
+function foldDetail(){
+  const d=$('detail'),anchor=d.querySelector('.axis-cards')||d.querySelector('.detail-head');
+  if(!anchor||!anchor.nextElementSibling)return;
+  const fold=document.createElement('div');fold.id='detail-fold';fold.className='detail-fold';
+  while(anchor.nextSibling)fold.append(anchor.nextSibling);
+  anchor.insertAdjacentHTML('afterend','<button type="button" class="detail-cta" aria-controls="detail-fold"><span></span></button>');
+  d.append(fold);
+  d.querySelector('.detail-cta').addEventListener('click',()=>{detailOpen=!detailOpen;syncFolds();});
+  syncFolds();
+}
+// the species pane's selects and 활용 특성 chips fold the same way under '필터 더 보기' (selected chips stay in #use-extra)
+let filtersOpen=false;
+function syncFolds(){
+  const wide=wideLayout(),fold=$('detail-fold'),cta=document.querySelector('#detail .detail-cta');
+  if(fold&&cta){const folded=wide&&!detailOpen;fold.classList.toggle('folded',folded);fold.inert=folded;
+    cta.setAttribute('aria-expanded',String(!folded));cta.firstElementChild.textContent=detailOpen?'근거 접기':'근거 자세히 보기';}
+  const ff=$('filter-fold'),ft=$('filter-toggle');
+  if(ff&&ft){const folded=wide&&!filtersOpen;ff.classList.toggle('folded',folded);ff.inert=folded;ft.setAttribute('aria-expanded',String(!folded));}
+}
+function filterCount(){
+  const n=activeUses.size+($('species-group').value!=='all')+($('species-evidence').value!=='all'),c=$('filter-count');
+  if(c){c.textContent=n?`${n}개 사용 중`:'';c.hidden=!n;}
 }
 
 // Counts come from the published evidence_summary. A missing key is "정보 없음", never 0.
@@ -1930,7 +1959,7 @@ function drawBubble(b){
   const n=b.cells.length, band=dotsPerDegree(b.records/n), size=b.cells[0][2];
   const r=Math.min(30,9+5*Math.sqrt(n));
   const bounds=b.cells.flatMap(([lat0,lon0,s])=>[[lat0,lon0],[lat0+s,lon0+s]]);
-  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#ffffff',weight:1.5,opacity:.9,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
+  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#ff8d84',weight:2.2,opacity:1,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
   bubble._zoomMark=true;
   bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 ${released()?'값':'시범값'} · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 붉은 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
   bubble.on?.('click',()=>zoomIntoCells(bounds));
@@ -1997,7 +2026,17 @@ function setMapLegend(s){
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
 // From 1281px the species list and the detail float over the map (2026-10-11): their widths are added on each side.
-function fitPad(p){const h=sel=>document.querySelector?.(sel)?.getBoundingClientRect().height||0,i=mapInsets();return {paddingTopLeft:[p+i.left,p+h('.map-ui-tl')],paddingBottomRight:[p+i.right,p+h('.map-ui-bl')]};}
+// Fit padding: the floating panels' widths plus the height of each map control box over the free part of the map, on the edge
+// it sits at (from 1281px the mode bar is at the bottom and the key sits under the species list, outside the free part).
+function fitPad(p){
+  const i=mapInsets(),m=document.getElementById?.('map')?.getBoundingClientRect?.(),edge={top:0,bottom:0};
+  for(let [sel,side] of [['.map-ui-tl','top'],['.map-ui-bl','bottom']]){
+    const b=document.querySelector?.(sel)?.getBoundingClientRect();if(!b?.height)continue;
+    if(m?.height){if(b.right<=m.left+i.left+1||b.left>=m.right-i.right-1)continue;side=b.top+b.height/2<m.top+m.height/2?'top':'bottom';}
+    edge[side]=Math.max(edge[side],b.height);
+  }
+  return {paddingTopLeft:[p+i.left,p+edge.top],paddingBottomRight:[p+i.right,p+edge.bottom]};
+}
 // Width of the map each floating panel covers, in px; 0 for a panel beside the map (1201–1280px), below it or full width (phones).
 function mapInsets(){
   const m=document.getElementById?.('map')?.getBoundingClientRect?.(),box=sel=>document.querySelector?.(sel)?.getBoundingClientRect?.();
@@ -2349,14 +2388,14 @@ function renderValueMap(){
       {...fitPad(35),maxZoom:7,animate:false});
   }
 }
-// The map sits under the floating legend (#map is its own stacking context, so z-index cannot lift a tooltip over it):
-// open the tooltip on the side that leaves the most of it inside the map and outside the legend.
+// The map sits under the floating legend and mode bar (#map is its own stacking context, so z-index cannot lift a tooltip over
+// them): open the tooltip on the side that leaves the most of it inside the map and outside those boxes.
 function placeTip(t){
-  const legend=document.querySelector('.map-ui-bl')?.getBoundingClientRect(),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
+  const boxes=['.map-ui-bl','.map-ui-tl'].map(s=>document.querySelector(s)?.getBoundingClientRect()).filter(b=>b?.width),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
   const frame={left:m.left+i.left,right:m.right-i.right,top:m.top,bottom:m.bottom}; // the floating panels hide the map's sides
   const cut=(a,b)=>({left:Math.max(a.left,b.left),right:Math.min(a.right,b.right),top:Math.max(a.top,b.top),bottom:Math.min(a.bottom,b.bottom)});
   const area=r=>Math.max(0,r.right-r.left)*Math.max(0,r.bottom-r.top);
-  const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-(legend?area(cut(r,legend)):0);};
+  const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-boxes.reduce((n,b)=>n+area(cut(r,b)),0);};
   let best=['auto',-1];
   for(const d of ['auto','right','left','top','bottom']){t.options.direction=d;t.update();const v=seen();if(v>best[1])best=[d,v];}
   t.options.direction=best[0];t.update();
@@ -2452,7 +2491,8 @@ function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43
 // Evidence popups pan into the part of the map the floating panels leave free (read by Leaflet each time a popup opens).
 function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,10);}
 
-// Background maps: satellite (NASA GIBS Blue Marble, the default) and depth (GEBCO WMS).
+// Background maps: satellite (NASA GIBS Blue Marble with shaded relief and bathymetry, the default) and depth (GEBCO WMS).
+// 2026-10-11 design concept: the relief and the shelf/deep-sea shading of that Blue Marble read through the navy tint (theme.css).
 // basic (bundled Natural Earth 1:10m outline) has had no button since 2026-10-03: the map falls back to it, and says so, only when external tiles fail to load.
 let basemapLayers, lastFitted;
 function initBasemaps(geography){
@@ -2463,7 +2503,7 @@ function initBasemaps(geography){
   const grid=L.layerGroup();
   for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
   for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
-  const satellite=L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_NextGeneration/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
+  const satellite=L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
     {maxNativeZoom:8,maxZoom:8,attribution:'NASA GIBS · Blue Marble'});
   const depth=L.tileLayer.wms('https://wms.gebco.net/mapserv?',{layers:'gebco_latest',format:'image/png',version:'1.3.0',
     attribution:'GEBCO_2026 Grid · 항해용 아님'});
@@ -2638,6 +2678,7 @@ function openEvidence(aphia,axis){
   });
   const target=axis==='OCC'?($('cell-table').querySelector('details')||$('detail-map-summary')):$('detail').querySelector(`[data-axis="${axis}"]`);
   if(!target){back.focus();return;}
+  if(target.closest('.detail-fold.folded')){detailOpen=true;syncFolds();} // asked for this evidence: open '근거 자세히 보기'
   for(let d=target.closest('details');d;d=d.parentElement?.closest('details'))d.open=true;
   const focus=target.matches('details')?target.querySelector('summary'):target;
   if(!focus.matches('summary,button,a'))focus.tabIndex=-1;
@@ -2884,6 +2925,14 @@ $('sheet-handle').addEventListener('click',()=>{
 addEventListener('scroll',()=>{if(!sheetSync.f)sheetSync.f=requestAnimationFrame(()=>{sheetSync.f=0;sheetSync();});},{passive:true});
 // the map's height changes across the 740px line: tell Leaflet
 globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();});
+// the folds (detail evidence, species filters) apply from 1281px only: re-sync when the window crosses that line
+globalThis.matchMedia?.('(min-width:1281px)').addEventListener?.('change',syncFolds);
+$('filter-toggle')?.addEventListener('click',()=>{filtersOpen=!filtersOpen;syncFolds();});
+syncFolds(); // fold the filters before the data arrives, so the list does not jump when it renders
+// From 1281px the occurrence key sits under the floating species list, which ends above it whatever the key's height (open,
+// folded to its button, details open, hidden in the value mode): theme.css reads --key-h.
+{const key=document.querySelector('.map-ui-bl');
+  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight;$('explore').style.setProperty('--key-h',h?h+12+'px':'0px');}).observe(key);}
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
 // method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
 document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
