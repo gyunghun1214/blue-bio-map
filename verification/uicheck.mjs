@@ -794,6 +794,9 @@ try{
         rows:document.querySelectorAll('.bbc-row').length,talking:document.querySelectorAll('.bbc-m-talk').length,headAll:an('.bbc-avatar .bbc-m-all'),headMouth:an('.bbc-avatar .bbc-m-mouth'),headOpenMouth:/Q60 90\\.5/.test(q('.bbc-avatar .bbc-m-mouth')?.innerHTML||''),
         fabAll:an('.bbc-fab .bbc-m-all'),fabEyes:an('.bbc-fab .bbc-m-eyes'),rowSL:q('.bbc-row.bbc-live .bbc-m-sL')?getComputedStyle(q('.bbc-row.bbc-live .bbc-m-sL')).transform:null}})()`;
     const until=async(test,ms)=>{let s;for(let t=0;t<=ms;t+=100){s=await evaluate(motion);if(test(s))break;await sleep(100);}return s;};
+    // The motion follows the OS setting, and Chrome on the Windows CI runner reports reduced motion (animations off there),
+    // so M-7 and M-8 ask for motion themselves and M-9 for reduced motion; the browser's own value comes back after M-9.
+    await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
     await evaluate(freshChat);await sleep(300);
     const idle=await evaluate(motion);
     await press();
