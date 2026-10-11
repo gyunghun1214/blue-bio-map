@@ -1277,14 +1277,14 @@ function axisCards(s){
     return `<div class="ax-sub"><span>${name} <b>${k}</b></span>${v===null?held(k):`<strong>${v.toFixed(1)}</strong>${axisBar(v)}`}${note?`<small>${esc(note)}</small>`:''}</div>`;};
   const one=bbviLabel(s),mbpiNote=basisNote(s,'MBPI').replace(/^ · /,''),mfpiNote=s.assessment?.food_trace?.literature_moisture?.label||'';
   const mcuiNote=axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'');
-  const chip=type?`<p class="ax-type"><i class="${hatchedType(type)?'hatched':''}" style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${esc(matrixTypeLabel(type))}</p>`
+  const chip=type?`<p class="ax-type"><i style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${esc(matrixTypeLabel(type))}</p>`
     :`<p class="ax-type none"><i aria-hidden="true"></i>유형 없음 · BBVI·MCUI 한 쌍 미산출</p>`;
   // where the species' cells sit on the value map: the cell colour is the first type in the cell, so it can differ from the species' own
   const cells=[...valueCellGroups(true).values()].filter(g=>g.species.has(s.aphiaID)),same=cells.filter(g=>cellMatrixType(g).type===type).length;
   const where=!cells.length?'':!type?`이 종이 기록된 공개 셀 ${cells.length}개 · 유형이 없어 이 종은 셀 색을 정하지 않습니다.`
     :same===cells.length?`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개가 모두 이 색으로 칠해집니다.`
     :`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개 중 ${same}개가 이 색으로 칠해집니다. 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`;
-  const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}${hatchedType(id)?' hatched':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
+  const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
   return `<section class="axis-cards" aria-label="두 축 요약 · 아래 지표 칸과 같은 값">${chip}`+
     `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b></h3><small>${rule?'기준 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
       `<div class="ax-main">${main('BBVI',rule?.bbvi_threshold)}</div>${one?`<p class="ax-note">${esc(one)}</p>`:''}`+
@@ -1819,7 +1819,7 @@ function mapSection(s){
 
 // The public datasets contain only 1° (sea cucumber: 4°) aggregates. Dots are fixed schematic marks,
 // not observations, and never encode individual record coordinates or a 1:1 count.
-let landPolygons=[], dotRenderer, effortRenderer, hatchRenderer;
+let landPolygons=[], dotRenderer, effortRenderer;
 function pointInRing(lon,lat,ring){
   let inside=false;
   for(let i=0,j=ring.length-1;i<ring.length;j=i++){
@@ -2109,9 +2109,6 @@ function valueCellGroups(all=false){
 }
 // Figure 5 legend colours. A cell with several typed species takes the first type in the report's precedence.
 const matrixTypeColour={baseline_survey:'#3f7fcf',sustainable_use:'#2f9a57',conservation_priority:'#d7392f',alternative_production:'#f2b233'};
-// The two high-MCUI types also carry a 45° hatch (map cells, 2×2 icons, legend, swatches), so they stay apart from the
-// low-MCUI types without colour vision (red/green are the closest pair under deuteranopia). Colours and counts are unchanged.
-const hatchedType=id=>!!id&&Object.entries(matrixRule()?.types||{}).some(([k,t])=>t.id===id&&k.endsWith('_high_mcui'));
 const TYPE_SHORT={conservation_priority:'보전',alternative_production:'대체',baseline_survey:'조사',sustainable_use:'활용'};
 // Selected-species outline and the card-hover outline share the hover yellow; hover is dashed so a hovered
 // species stays apart from the selected one. Change the colour or weight here only.
@@ -2246,7 +2243,7 @@ function sufficiencyTip(g){
   return part('priority','priority_survey','우선 조사 대상')+part('unexplored','unexplored_candidate','미탐색 후보');
 }
 // Hovering or focusing a species card outlines the value-map cells that species is recorded in.
-let valueRects=[], hatchRects=[];
+let valueRects=[];
 function hoverSpecies(id){
   for(const [g,layer,active] of valueRects){
     const on=id&&g.species.has(id);
@@ -2262,7 +2259,6 @@ function dimTypes(id){
     const base=valueCellStyle(g,active);
     layer.setStyle(id&&cellMatrixType(g).type!==id?{...base,opacity:.2,fillOpacity:.06}:base);
   }
-  for(const [g,layer] of hatchRects)layer.setStyle({fillOpacity:id&&cellMatrixType(g).type!==id?.15:1});
 }
 function setValueInfo(open){$('value-legend').hidden=!open;$('value-info').setAttribute('aria-expanded',String(open));}
 function renderValueMap(){
@@ -2299,7 +2295,6 @@ function renderValueMap(){
     if(typeFilter.size&&!typeFilter.has(type))continue;
     const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
-    if(hatchRenderer&&hatchedType(type)){hatchRects.push([g,L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{renderer:hatchRenderer,interactive:false,stroke:false,fillColor:'url(#bbvm-hatch)',fillOpacity:1}).addTo(overlay)]);hatchDefs();}
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
     // range, colour and who set it, the selected species' own type, then the counts and the colour rule
     const sel=selectedCellLine(g),counted=(type?(mixed?'유형 혼재 ':'')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 없음 '+untyped+'종':''):'')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g);
@@ -2341,10 +2336,10 @@ function renderValueLegend(groups){
   document.querySelectorAll('#value-legend [data-key]').forEach(el=>{
     const t=rule?.types?.[el.dataset.key],c=matrixTypeColour[t?.id];if(!t)return;
     el.querySelector('b').textContent=t.label;el.querySelector('em').textContent=(tally[t.id]||0)+'셀';
-    el.style.background=c+alpha;el.style.borderColor=c;el.classList.toggle('hatched',hatchedType(t.id));
+    el.style.background=c+alpha;el.style.borderColor=c;
     // the map-corner icon takes the same label, colour and count (short name above the count; the count keeps its own span)
     const mini=document.querySelector(`.vm-grid [data-key="${el.dataset.key}"]`);
-    mini.innerHTML=`<span class="vm-name" aria-hidden="true">${esc(TYPE_SHORT[t.id]||'')}</span><span class="vm-n">${tally[t.id]||0}</span>`;mini.dataset.type=t.id;mini.dataset.tip=t.label;mini.classList.toggle('hatched',hatchedType(t.id));
+    mini.innerHTML=`<span class="vm-name" aria-hidden="true">${esc(TYPE_SHORT[t.id]||'')}</span><span class="vm-n">${tally[t.id]||0}</span>`;mini.dataset.type=t.id;mini.dataset.tip=t.label;
     mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 이 유형만 보기`;
     mini.style.background=c+alpha;mini.style.borderColor=c;
   });
@@ -2356,7 +2351,6 @@ function renderValueLegend(groups){
   if(!rule)return;
   $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
   $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
-  $('v-hatch-cut').textContent=rule.mcui_threshold;
   $('v-rule-line').textContent=colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
@@ -2364,8 +2358,8 @@ function renderTypeTable(){
   const rule=matrixRule(),body=document.querySelector('#type-table tbody');if(!body)return;
   if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
   const key=id=>Object.keys(rule.types).find(k=>rule.types[k].id===id),cmp=(id,i)=>key(id).split('_')[i]==='high'?'≥':'<';
-  const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd,id)=>`<i class="type-swatch${hatchedType(id)?' hatched':''}" style="background:${bg};border-color:${bd}"></i>`;
-  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id],id)}</td><td>${esc(matrixTypeLabel(id))}</td>`+
+  const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd)=>`<i class="type-swatch" style="background:${bg};border-color:${bd}"></i>`;
+  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td>${esc(matrixTypeLabel(id))}</td>`+
     `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
     `<td>우선순위 ${i+1}위${i?'':' · 이 유형 종이 하나라도 있으면 이 색'}</td></tr>`).join('')+
     `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>유형 없음</td><td>BBVI·MCUI 한 쌍 미산출</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
@@ -2400,7 +2394,7 @@ function renderMap() {
   renderPeriodFilter(selected);
   if(mapMode==='value'){$('cell-table').innerHTML='';}else renderCellTable(periodView(selected)); // before the map check: the table also works when the map failed to load
   if(map)map.invalidateSize(); // the detail pane can change the map column height
-  overlay?.clearLayers();dotCells=[];cellLayers=[];valueRects=[];hatchRects=[];occurrenceSpecies=null;
+  overlay?.clearLayers();dotCells=[];cellLayers=[];valueRects=[];occurrenceSpecies=null;
   if(mapMode==='value'){effortLayer?.clearLayers();renderValueMap();return;}
   if(!map)return;
   const s=selected;if(!s)return;const color=colors[data.species.indexOf(s)%colors.length];
@@ -2463,11 +2457,6 @@ function setBasemap(name,failed=false){
   renderMap();writeHash();
 }
 
-function hatchDefs(){
-  const svg=hatchRenderer?._container;if(!svg||svg.querySelector('#bbvm-hatch'))return;
-  svg.insertAdjacentHTML('afterbegin','<defs><pattern id="bbvm-hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">'+
-    '<line x1="1" y1="0" x2="1" y2="8" stroke="#ffffff" stroke-opacity=".8" stroke-width="2"/><line x1="3" y1="0" x2="3" y2="8" stroke="#102e45" stroke-opacity=".55" stroke-width="1.2"/></pattern></defs>');
-}
 function initMap(geography){
   prepareLandMask(geography);
   map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
@@ -2479,9 +2468,6 @@ function initMap(geography){
   dotRenderer=L.canvas({pane:'dotPane',padding:.5});
   const effortPane=map.createPane('effortPane');effortPane.style.zIndex=360;effortPane.style.pointerEvents='none';
   effortRenderer=L.canvas({pane:'effortPane',padding:.5});
-  // the hatch sits in its own SVG pane above the cells and never takes a click; its <pattern> is defined once in that SVG
-  const hatchPane=map.createPane('hatchPane');hatchPane.style.zIndex=410;hatchPane.style.pointerEvents='none';
-  hatchRenderer=L.svg({pane:'hatchPane',padding:.5});
   map.on('moveend',writeHash);
   overlay=L.layerGroup().addTo(map);
   map.on('zoomend',drawOccurrence);
@@ -2531,7 +2517,7 @@ function renderComparison(){
     return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}</span>${bar}</button>`,
       more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
   };
-  const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i class="${hatchedType(t)?'hatched':''}" style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
+  const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
   const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'▲':'▼'):'↕'}</i></button></th>`;};
   const coverageNote=`발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed')?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님`;
   const row=s=>{
@@ -2674,7 +2660,7 @@ function renderMatrixTypes(assessed){
   if(!box)return;
   if(!rule||!assessed.length){box.innerHTML='';return;}
   const cell=key=>{const t=rule.types[key];if(!t)return '';const list=assessed.filter(s=>matrixType(s)===t.id).sort((a,b)=>a.label.localeCompare(b.label,'ko'));
-    return `<div class="mt-box"><b><i class="mt-sw${hatchedType(t.id)?' hatched':''}" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div>`;};
+    return `<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div>`;};
   box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 근거 논문 2편 이상</span><span><i class="mt-dot hollow" aria-hidden="true"></i> BBVI 근거 논문 1편</span><span>MCUI 기반 표시가 없으면 IUCN 기반</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
   box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
 }
@@ -2794,7 +2780,7 @@ const phoneSheet=()=>globalThis.matchMedia?.('(max-width:740px)').matches;
 function sheetSummary(s){
   const box=$('sheet-summary');if(!box)return;
   const t=matrixType(s), v=k=>{const x=pilotScore(s,k);return `<i${x===null?' class="held"':''}><small>${k}</small>${x===null?'–':x.toFixed(1)}</i>`;};
-  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span>${t?` <span class="type-chip"><i class="${hatchedType(t)?'hatched':''}" style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:''}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
+  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span>${t?` <span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:''}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
 }
 function sheetSync(){
   const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
