@@ -3568,13 +3568,13 @@
   },
   {
    "aphia_id": 1666974,
-   "bbvi_label": "단일 논문",
+   "bbvi_label": null,
    "bio": {
     "dois": [
      "10.1021/acs.jmedchem.0c00643"
     ],
     "endpoint": "Ki",
-    "evidence_factor": 0.75,
+    "evidence_factor": 1.0,
     "links": [
      "https://doi.org/10.1021/acs.jmedchem.0c00643"
     ],
@@ -3698,13 +3698,19 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 54.2,
-    "MBPI": 65.8,
+    "BBVI": 65.1,
+    "MBPI": 87.7,
     "MCUI": 10.0,
     "MFPI": 42.5
    },
    "shared_with": [],
    "sources": [
+    {
+     "id": "bonini_2000_npff_receptors",
+     "license": "Open Access (JBC/Elsevier open archive)",
+     "title": "Identification and characterization of two G protein-coupled receptors for neuropeptide FF",
+     "url": "https://doi.org/10.1074/jbc.M004385200"
+    },
     {
      "id": "chembl_fmrfamide_npff_rows",
      "license": "CC BY-SA 3.0",
@@ -3764,6 +3770,12 @@
      "license": "Publisher terms; values recorded only",
      "title": "乌贼墨多肽诱导人前列腺癌DU-145细胞凋亡的机制研究 (景奕文·杨最素·黄芳芳·郁迪·丁国芳 2014)",
      "url": "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
+    },
+    {
+     "id": "kotani_2001_npff_receptor",
+     "license": "Publisher terms; numeric values and short facts only",
+     "title": "Functional characterization of a human receptor for neuropeptide FF and related peptides",
+     "url": "https://doi.org/10.1038/sj.bjp.0704038"
     },
     {
      "id": "kumar_2018_micpath_ink",
