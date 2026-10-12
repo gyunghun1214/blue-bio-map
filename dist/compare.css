@@ -316,6 +316,8 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   /* the basket folds into a bar fixed above the page bottom, left of 멍이 (fab 48px at right 16px) */
   #compare .cmp-tray{position:fixed;left:8px;right:72px;bottom:10px;z-index:900;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"head go" "list list";gap:8px;margin:0;padding:8px 10px 8px 14px;background:#0a2335;box-shadow:0 10px 30px rgba(0,0,0,.55)}
   /* the toggle carries the count on phones; the heading stays for screen readers */
+  /* 멍이's first-visit hint sits at the same height (bottom 22px); the bar waits above it until the hint closes */
+  body:has(.bbc-hint:not([hidden])) #compare .cmp-tray{bottom:76px}
   #compare .ct-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   #compare .ct-toggle{display:inline-flex;grid-area:head;justify-self:start;gap:6px;min-height:40px;padding:0 12px;font-size:13px}
   #compare .ct-toggle b{font-variant-numeric:tabular-nums}
