@@ -251,7 +251,7 @@ try{
     q('#cmp-dialog').close();
     const pair=[];for(const a of data.species)for(const b of data.species)if(!pair.length&&a!==b&&pilotScore(a,'MFPI')!==null&&pilotScore(b,'MFPI')!==null&&pilotScore(a,'MCUI')!==null&&pilotScore(b,'MCUI')!==null&&cohort(a)===cohort(b)&&basis(a)===basis(b))pair.push(a.aphiaID,b.aphiaID);
     cmpBasket=pair;renderCompare();openCompareDialog();const t2=q('#cmp-dialog-body').textContent;
-    r.sameScale=pair.length===2&&!t2.includes('직접 비교 불가')&&document.querySelectorAll('#cmp-dialog .cp-bar.sand').length===2;
+    r.sameScale=pair.length===2&&!/비교집단이 달라|평가 기반이 달라/.test(t2)&&document.querySelectorAll('#cmp-dialog .cp-bar.sand').length===2;
     q('#cmp-dialog').close();cmpBasket=[];renderCompare();
     selectSpecies(274849);setCompareMode('matrix');q('#cmp-profile [data-prof-axis="BBVI"]').click();q('.comparison-return').click();
     r.profileReturn=currentView==='compare'&&cmpMode==='matrix'&&document.activeElement===q('#cmp-profile [data-prof-axis="BBVI"]');
