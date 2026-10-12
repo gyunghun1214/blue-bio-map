@@ -768,6 +768,8 @@ function markDecisionCards(aphia){
 function closeDecision(){
   const card=$('decision-list').querySelector('.decision-card[aria-expanded="true"]');
   markDecisionCards(null);$('decision-detail').hidden=true;
+  // opened from the compare profile ('근거 자세히 보기'): close that region and go back to its button
+  if($('decision-detail').parentElement?.id==='cmp-more'){$('decision-list').after($('decision-detail'));cmpMoreSync();$('cmp-open-more')?.focus({preventScroll:true});return;}
   if(card){card.focus({preventScroll:true});card.scrollIntoView({block:'nearest'});}
 }
 function showDecision(s){
@@ -825,6 +827,7 @@ function showDecision(s){
   html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p><button type="button" class="decision-close">접기</button>';
   const panel=$('decision-detail');
   panel.innerHTML=html;panel.hidden=false;card?.after(panel);
+  if(typeof cmpMoreSync==='function')cmpMoreSync(); // a card opened here: the compare region it may have left closes
 }
 
 // Row counts are an inventory of retrieved records. They do not supply edible
@@ -1586,7 +1589,7 @@ function renderList() {
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();writeHash();
+  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();syncCompareSelection();writeHash();
 }
 
 function renderDetail() {
@@ -2624,7 +2627,7 @@ function renderComparison(){
     const k=button.dataset.sort, first=k==='name'?'asc':'desc';
     cmpSort=cmpSort.key!==k?{key:k,dir:first}:cmpSort.dir===first?{key:k,dir:first==='asc'?'desc':'asc'}:{key:null,dir:null};
     renderComparison();$('comparison').querySelector(`[data-sort="${k}"]`)?.focus();}));
-  $('comparison').scrollLeft=keep;$('comparison').scrollTop=keepTop;syncComparison();
+  $('comparison').scrollLeft=keep;$('comparison').scrollTop=keepTop;if(typeof applyCompareFilter==='function')applyCompareFilter();syncComparison();
 }
 // A species picked elsewhere (comparisonFocus) is scrolled into the table box and briefly highlighted once the tab is visible.
 function syncComparison(){
@@ -2662,15 +2665,19 @@ function evidenceChips(s){
 }
 // One open behaviour for every comparison button: occurrence opens the map and cell list, an index axis
 // opens its evidence. Collapsed parents are opened, and the return button restores the horizontal scroll and focus.
-function openEvidence(aphia,axis){
-  const returnScroll=$('comparison').scrollLeft, returnTop=$('comparison').scrollTop;
+// from: a selector of the button outside the table that opened it (compare profile, side-by-side view); the return goes
+// back to that view and button. Without it the return restores the table as before.
+function openEvidence(aphia,axis,from=null){
+  const returnScroll=$('comparison').scrollLeft, returnTop=$('comparison').scrollTop, returnMode=cmpMode;
   if(axis==='OCC'){lastFitted=null;if(mapMode!=='occurrence')setMapMode('occurrence');}
   selectSpecies(aphia);setView('explore',false);
   const back=document.createElement('button');
-  back.type='button';back.className='text-button comparison-return';back.textContent='← 비교표로 돌아가기';
+  back.type='button';back.className='text-button comparison-return';back.textContent=from?'← 비교와 지표로 돌아가기':'← 비교표로 돌아가기';
   $('detail').prepend(back);
   back.addEventListener('click',()=>{
     setView('compare');
+    if(from){setCompareMode(returnMode);if(from.startsWith('#cmp-dialog-body')&&cmpBasket.length>1)openCompareDialog();const b=document.querySelector(from);b?.focus({preventScroll:true});b?.scrollIntoView({block:'center'});return;}
+    setCompareMode('table');
     const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
     $('comparison').scrollTop=returnTop;
     cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
@@ -2707,23 +2714,23 @@ function matrixBlockerText(s){
   return [...done,food,bio,cons,national].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
-  simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
+  simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);$('compare').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
   $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다.${matrixRule()?' 점 색은 그 종의 유형 색이고, 같은 높이에 몰린 점은 위아래로 조금 비켜 놓은 뒤 짧은 선으로 실제 높이를 가리킵니다.':''}${assessed.some(s=>bbviLabel(s)&&!s.assessment?.mbpi_floor)?' 속이 빈 점은 MBPI 최고 항목의 독립 근거가 1편뿐인 BBVI(근거 논문 1편)입니다.':''}${assessed.some(s=>s.assessment?.mbpi_floor)?' 회색 점선 테두리의 빈 점은 MBPI 하한값(0, 효능 근거 미확인)이 들어간 BBVI입니다.':''}${assessed.some(separateMcui)?' MCUI 기반은 점 툴팁과 아래 유형별 목록에 적습니다.'+(n=>n?' '+n+' 기반 MCUI는 IUCN 기반과 같은 척도가 아닙니다.':'')([assessed.some(nationalMcui)?'한국 국가 평가':'',assessed.some(s=>substituteMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s))?'서식국 국가 평가':''].filter(Boolean).join('·')):''}${assessed.some(subNationalMcui)?' 지방(현·주) 목록 참고값은 국가 평가가 없는 종에만 쓰며 '+esc(assessed.find(subNationalMcui).assessment.mcui_substitute?.record?.backtest?.label||'')+'입니다.':''}${assessed.some(preliminaryMcui)?' 자체 예비평가(Rapid LC) MCUI는 점수가 되는 공식 범주가 어디에도 없는 종에만 쓰며 역검증 기준 미충족입니다.':''} ${released()?'검증 결과'+validationNote().trim():'타당성 미검증'}.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
   const kinds=data?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
   $('matrix-unplaced').innerHTML=unplaced.length?`<b>${matrixRule()?'매트릭스 미배치':'정보 부족 · 후속조사 대상'} ${unplaced.length}종${kinds}${matrixRule()?' (BBVI·MCUI 한 쌍 없음)':''}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.${matrixRule()?' 정보충분도 기준의 ‘우선 조사 대상’과는 다른 목록입니다.':''} 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
-  $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
   const points=[['A',24,74,'보전 우선·모니터링'],['B',77,76,'대체생산·배양 연구'],['C',25,25,'기초조사·관찰 대상'],['D',77,25,'지속가능 활용 후보']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map(s=>{const kind=separateMcui(s)?' · MCUI '+mcuiBasisLabel(s):'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
     const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'';
-    return `<button class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
+    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
-    if(!value){showDecision(assessed[i]);$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+    if(!value){pickCompare(assessed[i].aphiaID);return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
   }));
-  renderMatrixTypes(value?[]:assessed);
+  renderMatrixTypes(value?[]:assessed);syncCompareMatrix();
   if(!value)declutterPointLabels();
 }
 // Design 02: the four quadrants take a faint wash of their type colour and the rule's type name; below the graph, one box
@@ -2741,7 +2748,7 @@ function renderMatrixTypes(assessed){
   const cell=key=>{const t=rule.types[key];if(!t)return '';const list=assessed.filter(s=>matrixType(s)===t.id).sort((a,b)=>a.label.localeCompare(b.label,'ko'));
     return `<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div>`;};
   box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 근거 논문 2편 이상</span><span><i class="mt-dot hollow" aria-hidden="true"></i> BBVI 근거 논문 1편</span><span>MCUI 기반 표시가 없으면 IUCN 기반</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
-  box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
 }
 // Design 02: 17 species share MCUI 10. A point that would overlap one already placed moves up or down (alternating) by the
 // least that clears it, never more than half way to the next MCUI value in use and never across the MCUI threshold; a short
@@ -2790,7 +2797,9 @@ function declutterPointLabels(){
     if(far){const tx=pos==='left'?6:-6;l.style.setProperty('--ll',Math.hypot(tx,dy)+'px');l.style.setProperty('--la',Math.atan2(-dy,tx)+'rad');}};
   // crowded points choose first, so the free space near a cluster goes to the cluster
   const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
-  for(const b of pts.slice().sort((a,c)=>near(c)-near(a)||a.dataset.b-c.dataset.b)){
+  // the selected species places its name first, so its label is the one that stays (compare design, 2026-10-12)
+  const sel=b=>b.getAttribute('aria-current')==='true';
+  for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
     const l=b.querySelector('.point-label');if(!l)continue;
     l.classList.remove('hidden-label');
     place(l,['right',0]);
@@ -2807,6 +2816,145 @@ function declutterPointLabels(){
 }
 globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t);declutterPointLabels.t=setTimeout(declutterPointLabels,150);});
 
+// ---------- 비교와 지표: deep-sea layout (2026-10-12) ----------
+// Presentation only: every value, label, type and placement comes from the functions above. The tab keeps its own search,
+// group filter, view (matrix | table) and a basket of up to three species; none of it enters the URL (the selected species
+// does, as s). A filter dims matrix points instead of removing them, and the note says how many are shown.
+let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all'}, CMP_MAX=3;
+const cmpById=id=>data?.species.find(s=>s.aphiaID===Number(id))||null;
+const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID)].some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
+const cmpFiltered=()=>cmpFilter.group!=='all'||!!cmpFilter.q;
+const cmpCohort=s=>pilotScore(s,'MFPI')===null?null:s.assessment?.food_trace?.cohort_id||null;
+const cmpCohortLabel=c=>c==='rda-10.4-raw-marine-animals'?'수산동물':c==='rda-10.4-raw-seaweeds'?'해조류':c||'';
+const cmpIcon=s=>`<span class="group-icon" data-group="${esc(s.group)}" aria-hidden="true"><i></i></span>`;
+// the labels that travel with one value (the same words the table's 자세히 panel uses), short and next to the number
+function cmpTag(s,k){
+  const info=data?.assessmentInfo||{}, parts=[axisTag(s,k,info)];
+  if(k==='MFPI'&&cmpCohort(s))parts.unshift(cmpCohortLabel(cmpCohort(s))+' 비교집단');
+  if(k==='BBVI'&&bbviLabel(s))parts.push(bbviLabel(s));
+  if(k==='MCUI'&&pilotScore(s,'MCUI')!==null)parts.push(separateMcui(s)?mcuiBasisLabel(s)+' · IUCN 기반 MCUI와 직접 비교 불가':'IUCN 기반');
+  return parts.filter(Boolean).join(' · ');
+}
+function setCompareMode(mode){
+  cmpMode=mode==='table'?'table':'matrix';
+  $('cmp-matrix-view').hidden=cmpMode!=='matrix';$('cmp-table-view').hidden=cmpMode!=='table';
+  document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpMode===cmpMode)));
+  applyCompareFilter();
+  if(cmpMode==='table'){if(data)syncComparison();}else requestAnimationFrame(declutterPointLabels);
+}
+function applyCompareFilter(){
+  if(!data)return;
+  const on=cmpFiltered(), n=data.species.filter(cmpMatch).length, note=$('cmp-filter-note');
+  $('comparison').querySelectorAll('tr.cmp-row').forEach(tr=>{const out=on&&!cmpMatch(cmpById(tr.dataset.aphia));
+    tr.classList.toggle('cmp-out',out);$('cmp-more-'+tr.dataset.aphia)?.classList.toggle('cmp-out',out);});
+  $('matrix-points').querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{const out=on&&!cmpMatch(cmpById(b.dataset.aphia));
+    if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');b.removeAttribute('tabindex');}});
+  $('matrix-types').querySelectorAll('button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
+  if(!note)return;
+  note.innerHTML=!on?'':n?`${data.species.length}종 중 ${n}종 표시${cmpMode==='matrix'?' · 나머지 점은 흐리게 남겨 둡니다':''} <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`:
+    `<b>검색 결과 없음</b> · ${cmpFilter.q?'‘'+esc(cmpFilter.q)+'’에 맞는 ':''}${cmpFilter.group!=='all'?esc(cmpFilter.group)+' ':''}생물이 없습니다. 자료 오류가 아니라 조건에 맞는 종이 없다는 뜻입니다. <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`;
+  note.classList.toggle('empty-result',on&&!n);
+}
+function setCompareFilter(next){
+  Object.assign(cmpFilter,next);
+  document.querySelectorAll('[data-cmp-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpGroup===cmpFilter.group)));
+  if($('cmp-search').value.trim().toLowerCase()!==cmpFilter.q)$('cmp-search').value=cmpFilter.q;
+  applyCompareFilter();
+}
+// The ring, the legend and the dims follow the matrix redraw (weight, simulation) and the selected species.
+function syncCompareMatrix(){
+  const box=$('matrix-points');if(!data||!box?.querySelectorAll)return;
+  box.querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>Number(b.dataset.aphia)===selected?.aphiaID?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current'));
+  const floor=data.species.some(s=>assessedForMatrix(s)&&s.assessment?.mbpi_floor);
+  if($('cmp-legend'))$('cmp-legend').innerHTML=`<span><i class="lg-dot" aria-hidden="true"></i>근거 논문 2편 이상</span><span><i class="lg-dot hollow" aria-hidden="true"></i>BBVI 근거 논문 1편</span>${floor?'<span><i class="lg-dot floor" aria-hidden="true"></i>MBPI 하한값</span>':''}<span><i class="lg-dot sel" aria-hidden="true"></i>선택한 종</span><span class="lg-note">MCUI 기반 표시가 없으면 IUCN 기반(점 설명·유형별 목록에 기반 표시)</span>`;
+  applyCompareFilter();
+}
+function syncCompareSelection(){
+  if(!data||!$('cmp-profile'))return;
+  renderCompareProfile();
+  if(!simulated){syncCompareMatrix();if(currentView==='compare'&&cmpMode==='matrix')declutterPointLabels();}
+  if($('cmp-more')&&!$('cmp-more').hidden&&selected)showCompareMore(false);
+}
+// a point, a list name or a table row picks the species; the profile beside the matrix follows (below it on narrow screens)
+function pickCompare(id){
+  if(!cmpById(id))return;
+  selectSpecies(Number(id));
+  if(globalThis.matchMedia?.('(max-width:1100px)').matches)$('cmp-profile').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+}
+function renderCompareProfile(){
+  const box=$('cmp-profile'), s=selected;if(!box)return;
+  if(!data||!s){box.innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';return;}
+  const t=matrixType(s), inBasket=cmpBasket.includes(s.aphiaID), full=!inBasket&&cmpBasket.length>=CMP_MAX;
+  const num=k=>{const st=axisState(s,k);return st.value===null?`<span class="cp-state">${esc(st.label)}</span>`:st.value.toFixed(1);};
+  const bar=k=>{const v=pilotScore(s,k);return v===null?'':`<span class="cp-bar ${k==='MCUI'?'sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></span>`;};
+  const ev=(k,cls,inner)=>`<button type="button" class="${cls}" data-prof-axis="${k}" aria-label="${esc(s.label)} ${k} ${pilotScore(s,k)===null?esc(axisState(s,k).label):pilotScore(s,k).toFixed(1)} · ${esc(cmpTag(s,k))} · 근거 보기">${inner}</button>`;
+  const sub=(k,name)=>`<div class="cp-sub">${ev(k,'cp-sub-name',`<span>${name}</span>`)}${bar(k)}${ev(k,'cp-sub-num',num(k))}<p class="cp-tag">${esc(cmpTag(s,k))}</p></div>`;
+  box.innerHTML=`<div class="cp-head"><div class="cp-id"><div class="cmp-eyebrow">SPECIES PROFILE</div><h2 id="cmp-profile-name">${esc(s.label)}</h2><p class="cp-latin">${esc(s.name)}</p>`+
+    `<p class="cp-badges">${t?`<span class="cp-type" style="--tc:${matrixTypeColour[t]}">${esc(matrixTypeLabel(t))}</span>`:'<span class="cp-type none">매트릭스 미배치</span>'}<span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
+    `<div class="cp-figure">${cmpIcon(s)}<small>종 사진 없음 · ${esc(s.group)} 아이콘</small></div>`+
+    `<button type="button" id="cmp-add" class="cmp-ghost cp-add" aria-pressed="${inBasket}"${full?' aria-disabled="true"':''} aria-describedby="cmp-add-note">${inBasket?'담김 ✓':'+ 비교 담기'}</button><span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span></div>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3>활용 가치 BBVI</h3>${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI')}<p class="cp-tag">${esc(cmpTag(s,'BBVI'))}</p></div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}</section>`+
+    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3>보전 필요성 MCUI</h3>${ev('MCUI','cp-big sand',num('MCUI'))}${bar('MCUI')}<p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></div></section>`+
+    `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more">근거 자세히 보기 <span aria-hidden="true">→</span></button>`+
+    `<p class="cp-foot">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거 · ${ev('OCC','cmp-link','출현 기록 지도')}</p></div>`;
+}
+// '근거 자세히 보기': the species' follow-up text (showDecision) opens in its own region under the two panels
+function cmpMoreSync(){
+  const box=$('cmp-more');if(!box?.contains)return;
+  const open=box.contains($('decision-detail'))&&!$('decision-detail').hidden;box.hidden=!open;$('cmp-open-more')?.setAttribute('aria-expanded',String(open));
+}
+function showCompareMore(focus=true){
+  const s=selected;if(!s)return;
+  showDecision(s);markDecisionCards(null);const panel=$('decision-detail');$('cmp-more').append(panel);panel.hidden=false;cmpMoreSync();
+  if(focus){$('cmp-more').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+    const h=panel.querySelector('h3');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
+}
+function toggleBasket(id){
+  id=Number(id);
+  if(cmpBasket.includes(id))cmpBasket=cmpBasket.filter(x=>x!==id);else if(cmpBasket.length<CMP_MAX)cmpBasket=[...cmpBasket,id];else return false;
+  renderCompareTray();renderCompareProfile();return true;
+}
+function renderCompareTray(){
+  const box=$('cmp-tray');if(!box||!data)return;
+  const list=cmpBasket.map(cmpById).filter(Boolean), ready=list.length>=2;
+  const slots=[...list.map(s=>`<li class="ct-card">${cmpIcon(s)}<span class="ct-name"><b>${esc(s.label)}</b><em>${esc(s.name)}</em></span><button type="button" class="ct-x" data-basket-remove="${s.aphiaID}" aria-label="${esc(s.label)} 비교에서 빼기">✕</button></li>`),
+    ...Array.from({length:CMP_MAX-list.length},()=>`<li class="ct-slot"><button type="button" class="ct-add" data-basket-add>+ 생물 추가</button></li>`)];
+  box.innerHTML=`<div class="ct-head"><h2>선택한 생물</h2><span class="ct-count">${list.length} / ${CMP_MAX}</span></div>`+
+    `<button type="button" class="ct-toggle cmp-ghost" aria-expanded="${box.classList.contains('open')}" aria-controls="cmp-tray-list">담은 생물 <b>${list.length}/${CMP_MAX}</b> <span aria-hidden="true">▾</span></button><ul id="cmp-tray-list" class="ct-list">${slots.join('')}</ul>`+
+    `<div class="ct-go"><button type="button" id="cmp-compare-go" class="cmp-solid" aria-disabled="${!ready}" aria-describedby="cmp-go-note">선택한 생물 비교하기 <span aria-hidden="true">→</span></button><small id="cmp-go-note">${ready?'담은 순서대로 나란히 봅니다':'2종 이상 담으면 비교할 수 있습니다'}</small></div>`;
+}
+// Side-by-side view of the basket. A bar is drawn only where the values share one scale: MFPI within one comparison group,
+// MCUI within one assessment basis. Otherwise each value stands with its basis and "직접 비교 불가". No total, rank or pick.
+function renderCompareDialog(){
+  const list=cmpBasket.map(cmpById).filter(Boolean), body=$('cmp-dialog-body');if(!body)return;
+  const same=(k,key)=>{const vals=list.filter(s=>pilotScore(s,k)!==null).map(key);return vals.length===list.length&&new Set(vals).size===1;};
+  const together={MFPI:same('MFPI',cmpCohort),MBPI:list.every(s=>pilotScore(s,'MBPI')!==null),BBVI:list.every(s=>pilotScore(s,'BBVI')!==null),MCUI:same('MCUI',s=>s.assessment?.mcui_basis||'iucn')};
+  const why={MFPI:'비교집단이 달라 직접 비교 불가',MCUI:'평가 기반이 달라 직접 비교 불가'};
+  const cell=(s,k)=>{const st=axisState(s,k), v=pilotScore(s,k);
+    return `<td class="cd-val">${v===null?`<span class="cp-state">${esc(st.label)}</span>`:`<b>${v.toFixed(1)}</b>`}${v!==null&&together[k]?`<span class="cp-bar ${k==='MCUI'?'sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></span>`:''}<small>${esc(cmpTag(s,k))}</small>${v!==null&&!together[k]&&why[k]?`<small class="cd-no">${why[k]}</small>`:''}</td>`;};
+  const row=(k,name,cls='')=>`<tr class="${cls}"><th scope="row">${name}</th>${list.map(s=>cell(s,k)).join('')}</tr>`;
+  const text=(name,fn,cls='')=>`<tr class="${cls}"><th scope="row">${name}</th>${list.map(s=>`<td>${fn(s)}</td>`).join('')}</tr>`;
+  const go=s=>['MFPI','MBPI','BBVI','MCUI','OCC'].map(k=>`<button type="button" class="cmp-chip" data-dlg-aphia="${s.aphiaID}" data-dlg-axis="${k}">${k==='OCC'?'출현 기록 지도':k}</button>`).join('');
+  body.innerHTML=`<p class="cd-note">담은 순서대로 놓았습니다. 막대는 같은 척도일 때만 그립니다. 합계·순위·추천은 만들지 않습니다.</p><div class="cd-scroll"><table class="cd-table"><caption class="sr-only">선택한 생물 ${list.length}종 비교</caption>`+
+    `<thead><tr><td></td>${list.map(s=>`<th scope="col">${cmpIcon(s)}<b>${esc(s.label)}</b><em>${esc(s.name)}</em>${matrixType(s)?`<span class="cp-type" style="--tc:${matrixTypeColour[matrixType(s)]}">${esc(matrixTypeLabel(matrixType(s)))}</span>`:''}</th>`).join('')}</tr></thead><tbody>`+
+    `<tr class="cd-sec use"><th scope="rowgroup" colspan="${list.length+1}">활용 가치</th></tr>`+row('BBVI','활용 가치 BBVI','use')+row('MFPI','식량 MFPI','use')+row('MBPI','생리활성 MBPI','use')+
+    text('MFPI 비교집단',s=>cmpCohort(s)?esc(cmpCohortLabel(cmpCohort(s)))+' 고정 비교집단':'—','use')+
+    `<tr class="cd-sec con"><th scope="rowgroup" colspan="${list.length+1}">보전 필요성</th></tr>`+row('MCUI','보전 필요성 MCUI','con')+
+    text('MCUI 평가 기반',s=>pilotScore(s,'MCUI')===null?'—':esc(mcuiBasisLabel(s)),'con')+
+    text('근거 상태',s=>esc(s.catalog?'조사 후보':'운영 발행')+' · '+evidenceChips(s))+text('근거 보기',go)+`</tbody></table></div>`;
+  body.querySelectorAll('[data-dlg-aphia]').forEach(b=>b.addEventListener('click',()=>{const sel=`#cmp-dialog-body [data-dlg-aphia="${b.dataset.dlgAphia}"][data-dlg-axis="${b.dataset.dlgAxis}"]`;
+    $('cmp-dialog').close();openEvidence(Number(b.dataset.dlgAphia),b.dataset.dlgAxis,sel);}));
+}
+function openCompareDialog(){
+  if(cmpBasket.length<2)return false;
+  renderCompareDialog();const d=$('cmp-dialog');if(!d.open)d.showModal();d.querySelector('.cmp-dialog-close').focus();return true;
+}
+function setBasisPop(open){
+  const pop=$('cmp-basis-pop'), b=$('cmp-basis-toggle');if(!pop)return;
+  pop.hidden=!open;b.setAttribute('aria-expanded',String(open));
+}
+const updateBasisNow=()=>{const n=$('cmp-basis-now');if(n)n.textContent=bbviWeight===.5?'':` · 식량 ${bbviWeight.toFixed(2)}`;};
+function renderCompare(){renderCompareProfile();renderCompareTray();syncCompareMatrix();updateBasisNow();}
 function renderSources(){
   const info=data.assessmentInfo;
   $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
@@ -2871,7 +3019,7 @@ async function loadCollection(){
   const request=++requestNumber;
   data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
   $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('cmp-more').hidden=true;$('cmp-profile').innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';$('cmp-tray').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
   $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';$('sheet-summary').textContent='';
   setMapLegend(null);
@@ -2893,7 +3041,7 @@ async function loadCollection(){
     $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?'<strong>연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.</strong> '+(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';loadDone('empty');return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();renderCompare();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
     $('connection-state').textContent=data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
@@ -2905,7 +3053,7 @@ async function loadCollection(){
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v)applyHash(h);}
     loadDone(data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
+  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('cmp-profile').innerHTML='<p class="cmp-error" role="alert">자료를 불러오지 못했습니다. 위의 ↻ 다시 불러오기를 눌러 주세요. 빈 결과가 아니라 연결 오류입니다.</p>';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
@@ -2970,6 +3118,36 @@ $('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basem
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
 $('bbvi-weight').addEventListener('input',event=>{
   bbviWeight=Number(event.target.value);$('bbvi-weight-value').textContent=bbviWeight.toFixed(2);
-  if(data){renderComparison();renderDetail();toggleSimulation(simulated);if(mapMode==='value')renderMap();} // cell types move with the weight
+  if(data){renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap();} // cell types move with the weight
+  updateBasisNow();
 });
+// ---- 비교와 지표 controls (2026-10-12) ----
+document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.addEventListener('click',()=>setCompareMode(b.dataset.cmpMode)));
+document.querySelectorAll('[data-cmp-group]').forEach(b=>b.addEventListener('click',()=>setCompareFilter({group:b.dataset.cmpGroup})));
+$('cmp-search').addEventListener('input',e=>setCompareFilter({q:e.target.value.trim().toLowerCase()}));
+$('cmp-filter-note').addEventListener('click',e=>{if(e.target.closest('[data-cmp-clear]')){setCompareFilter({q:'',group:'all'});$('cmp-search').focus();}});
+$('cmp-basis-toggle').addEventListener('click',()=>setBasisPop($('cmp-basis-pop').hidden));
+$('cmp-weight-reset').addEventListener('click',()=>{const w=$('bbvi-weight');w.value='0.5';w.dispatchEvent(new Event('input'));});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-basis-pop').hidden){setBasisPop(false);$('cmp-basis-toggle').focus();}});
+document.addEventListener('click',e=>{if(!$('cmp-basis-pop').hidden&&!e.target.closest('.cmp-basis'))setBasisPop(false);});
+// one listener per region: the profile and the tray redraw their buttons
+$('cmp-profile').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||!selected)return;
+  if(b.id==='cmp-add'){if(!toggleBasket(selected.aphiaID))$('cmp-add-note').textContent='최대 3종까지 담을 수 있습니다. 아래에서 한 종을 빼 주세요.';else $('cmp-add').focus();return;}
+  if(b.id==='cmp-open-more'){$('cmp-more').hidden?showCompareMore():closeDecision();return;}
+  if(b.dataset.profAxis)openEvidence(selected.aphiaID,b.dataset.profAxis,`#cmp-profile [data-prof-axis="${b.dataset.profAxis}"]${b.classList.contains('cp-sub-num')?'.cp-sub-num':b.classList.contains('cp-sub-name')?'.cp-sub-name':''}`);
+});
+$('cmp-tray').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.basketRemove){const i=cmpBasket.indexOf(Number(b.dataset.basketRemove));toggleBasket(b.dataset.basketRemove);
+    ($('cmp-tray').querySelectorAll('.ct-x')[Math.min(i,cmpBasket.length-1)]||$('cmp-tray').querySelector('.ct-add'))?.focus();return;}
+  if(b.hasAttribute('data-basket-add')){if(selected&&!cmpBasket.includes(selected.aphiaID)){toggleBasket(selected.aphiaID);$('cmp-tray').querySelector('.ct-add,.ct-x')?.focus();}else $('cmp-search').focus();return;}
+  if(b.classList.contains('ct-toggle')){const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));$('cmp-tray').classList.toggle('open',open);return;}
+  if(b.id==='cmp-compare-go'&&!openCompareDialog())$('cmp-go-note').textContent='2종 이상 담으면 비교할 수 있습니다. 종 상세의 ‘+ 비교 담기’를 눌러 주세요.';
+});
+$('cmp-dialog').querySelector('.cmp-dialog-close').addEventListener('click',()=>$('cmp-dialog').close());
+$('cmp-dialog').addEventListener('click',e=>{if(e.target===$('cmp-dialog'))$('cmp-dialog').close();}); // the backdrop
+$('cmp-dialog').addEventListener('close',()=>{if(currentView==='compare')$('cmp-compare-go')?.focus();});
+// a row's species name in the table picks it too (the value buttons keep opening their evidence)
+$('comparison').addEventListener('click',e=>{const th=e.target.closest('tbody tr.cmp-row th');if(th)pickCompare(Number(th.parentElement.dataset.aphia));});
 start();

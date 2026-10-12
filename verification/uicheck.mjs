@@ -207,13 +207,59 @@ try{
     // 3.27: the sea cucumber's single-paper BBVI and the squid's MBPI are scores now, so neither species has a withheld reason left
     Object.keys(stale.cuc).length===0&&Object.keys(stale.sq).length===0&&!JSON.stringify(stale).includes('검수된 영양 값 미확인'),JSON.stringify(stale));
 
-  await evaluate("document.querySelector('[data-view=compare]').click();1");await sleep(300);
+  // 2026-10 compare redesign: the tab opens on the matrix, so the table checks switch to the 데이터 표 view first.
+  await evaluate("document.querySelector('[data-view=compare]').click();setCompareMode('table');1");await sleep(300);
   const cmp=(await walkComparison()).map(p=>p.text).join('\n');
   // 4.5: the floor label left the table (no species takes the floor); the relaxation-(d) tag is required instead
   check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','정식 산출 · 역검증 기준 미충족 · 근거 보기','자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가','지방 목록 참고값(연해주)','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 근거 논문 1편 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!cmp.replaceAll('효능 근거 미확인','').includes('미확인')&&!cmp.includes('산출 보류')&&!cmp.includes('예비 평가 참고'),cmp);
   const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),g=c.querySelector('.coverage-guide');c.scrollLeft=c.scrollWidth;const guideSticks=Math.abs(g.getBoundingClientRect().left-c.getBoundingClientRect().left)<4;c.scrollLeft=0;const badge=c.querySelector('.seg.calculated'),small=badge.querySelector('small');const contrast=getComputedStyle(small).color==='rgb(255, 255, 255)'&&getComputedStyle(badge).backgroundColor==='rgb(15, 112, 100)';const currentGuide=!g.textContent.includes('종전 2/5')&&g.textContent.includes('완성률이나 근거 품질 점수가 아닙니다');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {guideSticks,contrast,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
   check('Comparison guide, badge contrast and keyboard return',Object.values(compareUx).every(Boolean),JSON.stringify(compareUx));
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
+  // ---------- 비교와 지표 (2026-10 deep-sea redesign): matrix first, species profile, basket of up to 3, side-by-side view ----------
+  {const ux=await evaluate(`(()=>{const r={},q=s=>document.querySelector(s),total=data.species.length;
+    setView('compare');setCompareFilter({q:'',group:'all'});setCompareMode('matrix');
+    r.matrixFirst=!q('#cmp-matrix-view').hidden&&q('#cmp-table-view').hidden;
+    const last=data.species.at(-1);setView('explore');selectSpecies(last.aphiaID);setView('compare');
+    r.fromExplore=q('#cmp-profile-name').textContent===last.label&&q('#matrix-points [aria-current]')?.dataset.aphia===String(last.aphiaID);
+    q('#matrix-points [data-aphia="836033"]').click();
+    r.ring=q('#matrix-points [data-aphia="836033"]').getAttribute('aria-current')==='true'&&document.querySelectorAll('#matrix-points [aria-current]').length===1;
+    const p=q('#cmp-profile').textContent;
+    r.profile=q('#cmp-profile-name').textContent==='참굴'&&p.includes('83.9')&&p.includes('한국 국가 평가')&&p.includes('IUCN 기반 MCUI와 직접 비교 불가');
+    cmpBasket=[];renderCompare();toggleBasket(836033);toggleBasket(836033);r.pressTwiceRemoves=cmpBasket.length===0;
+    const ids=data.species.map(s=>s.aphiaID);ids.slice(0,3).forEach(toggleBasket);const fourth=toggleBasket(ids[3]);
+    r.max3=fourth===false&&cmpBasket.length===3&&new Set(cmpBasket).size===3&&q('#cmp-tray .ct-count').textContent.trim()==='3 / 3'&&!q('#cmp-tray [data-basket-add]');
+    selectSpecies(ids[3]);r.addDisabledWhenFull=q('#cmp-add').getAttribute('aria-disabled')==='true';
+    q('#cmp-tray [data-basket-remove="'+ids[0]+'"]').click();r.remove=cmpBasket.join()===ids.slice(1,3).join()&&!!q('#cmp-tray [data-basket-add]');
+    setCompareMode('table');setCompareMode('matrix');r.modeKeepsState=cmpBasket.length===2&&selected.aphiaID===ids[3];
+    setCompareFilter({group:'해조류'});const n=data.species.filter(s=>s.group==='해조류').length,note=q('#cmp-filter-note').textContent;
+    r.filter=n>0&&note.includes(total+'종 중 '+n+'종 표시')&&document.querySelectorAll('#matrix-points .matrix-point.pilot[data-dim]').length===total-n&&document.querySelectorAll('#comparison tr.cmp-row:not(.cmp-out)').length===n;
+    setCompareFilter({q:'없는생물이름',group:'all'});r.empty=q('#cmp-filter-note').textContent.includes('검색 결과 없음');
+    setCompareFilter({q:'',group:'all'});r.cleared=!document.querySelector('#matrix-points [data-dim]')&&q('#cmp-filter-note').textContent==='';
+    return r})()`);
+  check('Compare tab: matrix first, a species picked on the explore map shows in the profile and the ring, point click rings it and fills the profile, basket holds 3 without repeats, mode switch keeps state, filter dims points and counts',Object.values(ux).every(Boolean),JSON.stringify(ux));
+  // Bars only on one scale: MFPI within one comparison group, MCUI within one assessment basis; never a total or a pick.
+  const side=await evaluate(`(()=>{const r={},q=s=>document.querySelector(s),cohort=s=>s.assessment?.food_trace?.cohort_id,basis=s=>s.assessment?.mcui_basis||'iucn';
+    cmpBasket=[836033,145721,274849];renderCompare();q('#cmp-compare-go').click();
+    const t=q('#cmp-dialog-body').textContent;
+    r.open=q('#cmp-dialog').open&&document.activeElement===q('.cmp-dialog-close');
+    r.notComparable=t.includes('비교집단이 달라 직접 비교 불가')&&t.includes('평가 기반이 달라 직접 비교 불가')&&document.querySelectorAll('#cmp-dialog .cp-bar.sand').length===0;
+    r.noScore=!/합산|종합 점수|추천 종|1위/.test(t.replace('합계·순위·추천은 만들지 않습니다',''));
+    q('#cmp-dialog-body [data-dlg-aphia="836033"][data-dlg-axis="MCUI"]').click();
+    r.evidence=currentView==='explore'&&!q('#cmp-dialog').open&&q('.comparison-return').textContent.includes('비교와 지표로 돌아가기');
+    q('.comparison-return').click();
+    r.backToDialog=currentView==='compare'&&q('#cmp-dialog').open&&document.activeElement===q('#cmp-dialog-body [data-dlg-aphia="836033"][data-dlg-axis="MCUI"]');
+    q('#cmp-dialog').close();
+    const pair=[];for(const a of data.species)for(const b of data.species)if(!pair.length&&a!==b&&pilotScore(a,'MFPI')!==null&&pilotScore(b,'MFPI')!==null&&pilotScore(a,'MCUI')!==null&&pilotScore(b,'MCUI')!==null&&cohort(a)===cohort(b)&&basis(a)===basis(b))pair.push(a.aphiaID,b.aphiaID);
+    cmpBasket=pair;renderCompare();openCompareDialog();const t2=q('#cmp-dialog-body').textContent;
+    r.sameScale=pair.length===2&&!/비교집단이 달라|평가 기반이 달라/.test(t2)&&document.querySelectorAll('#cmp-dialog .cp-bar.sand').length===2;
+    q('#cmp-dialog').close();cmpBasket=[];renderCompare();
+    selectSpecies(274849);setCompareMode('matrix');q('#cmp-profile [data-prof-axis="BBVI"]').click();q('.comparison-return').click();
+    r.profileReturn=currentView==='compare'&&cmpMode==='matrix'&&document.activeElement===q('#cmp-profile [data-prof-axis="BBVI"]');
+    return r})()`);
+  check('Compare tab: side-by-side view draws bars only on a shared scale, says 직접 비교 불가 otherwise, no total or pick; evidence returns to the dialog and to the profile',Object.values(side).every(Boolean),JSON.stringify(side));
+  await evaluate("selectSpecies(836033);toggleBasket(836033);toggleBasket(145721);setCompareMode('matrix');window.scrollTo(0,0);1");await sleep(300);await shot('desktop-compare-matrix');
+  await evaluate("toggleBasket(274849);openCompareDialog();1");await sleep(200);await shot('desktop-compare-dialog');
+  await evaluate("document.getElementById('cmp-dialog').close();cmpBasket=[];renderCompare();setCompareMode('table');1");}
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   const src=await evaluate("document.getElementById('all-sources').innerText");
   check('Sources: AFCD/CMNPD show their own change notes, not OBIS labels',src.includes('해삼 기원 보고 화합물 개수만 집계')&&src.includes('데이터셋 원문')&&!src.includes('OBIS 데이터셋'),src.slice(0,400));
@@ -466,7 +512,7 @@ try{
   await evaluate("setUses([]);setView('explore');history.replaceState(null,'',location.pathname);1");
   const bars=await walkComparison();
   check('A-2 comparison table shows one coverage bar per species row, all species covered',bars.length===1&&bars[0].bars===total&&bars[0].rows===total,JSON.stringify(bars.map(p=>[p.label,p.bars,p.rows])));
-  const stickyCompare=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
+  const stickyCompare=await evaluate("(()=>{setView('compare');setCompareMode('table');const c=document.getElementById('comparison');c.scrollLeft=c.scrollWidth;const left=c.getBoundingClientRect().left;const row=c.querySelector('tbody th').getBoundingClientRect().left;const head=c.querySelector('thead th').getBoundingClientRect().left;const label=getComputedStyle(c.querySelector('.coverage-bar .seg b'));const result={left,row,head,wrap:label.whiteSpace,overflow:label.overflow};c.scrollLeft=0;setView('explore');return result})()");
   check('Comparison labels remain visible after horizontal scroll and badges wrap',Math.abs(stickyCompare.row-stickyCompare.left)<4&&Math.abs(stickyCompare.head-stickyCompare.left)<4&&stickyCompare.wrap==='normal'&&stickyCompare.overflow==='visible',JSON.stringify(stickyCompare));
   t=await pick(836033);
   check('Legend: red dots are a schematic of published cells, not discovery coordinates',await evaluate("!document.querySelector('.map-key').hidden&&document.getElementById('map-legend-note').textContent.includes('점 간격')&&document.getElementById('map-symbol-label').textContent.includes('실제 발견 좌표 아님')&&document.getElementById('map-judgment').textContent.includes('매트릭스 유형')"));
@@ -571,7 +617,7 @@ try{
   await clickMode('occurrence');await evaluate("history.replaceState(null,'',location.pathname);1");
   // ---------- Comparison: every species in one table, a row each (design 05, 2026-10-10), sortable by mouse and keyboard ----------
   const cmpState="(()=>{const c=document.getElementById('comparison'),cr=c.getBoundingClientRect(),rows=[...c.querySelectorAll('tbody tr.cmp-row')];return {label:document.getElementById('comparison-page').textContent,rows:rows.map(r=>Number(r.dataset.aphia)),sort:[...c.querySelectorAll('thead th[aria-sort]')].filter(t=>t.getAttribute('aria-sort')!=='none').map(t=>t.querySelector('[data-sort]').dataset.sort+':'+t.getAttribute('aria-sort')),focus:document.activeElement?.dataset?.sort||'',fits:c.scrollWidth<=c.clientWidth+1,colStuck:Math.abs(c.querySelector('tbody th').getBoundingClientRect().left-cr.left)<2}})()";
-  await evaluate("selectSpecies(data.species[0].aphiaID);setView('compare');1");await sleep(200);
+  await evaluate("selectSpecies(data.species[0].aphiaID);setView('compare');setCompareMode('table');1");await sleep(200);
   const sc={start:await evaluate(cmpState),ids:await evaluate('data.species.map(s=>s.aphiaID)')};
   sc.byBbvi=await evaluate("data.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=pilotScore(a,'BBVI'),y=pilotScore(b,'BBVI');return x===null||y===null?(x===null)-(y===null)||i-j:y-x||i-j}).map(([s])=>s.aphiaID)");
   await evaluate("document.querySelector('#comparison [data-sort=BBVI]').click();1");await sleep(200);sc.desc=await evaluate(cmpState);
@@ -615,9 +661,9 @@ try{
   for(const [w,h,mobile] of [[390,844,true],[768,1024,false],[1280,900,false],[1560,900,false]]){
     await viewport(w,h,mobile);await load();
     const widths=await evaluate("['explore','compare','method'].map(v=>{setView(v);const d=document.documentElement;return v+' '+d.scrollWidth+'/'+d.clientWidth+(d.scrollWidth<=d.clientWidth?'':' OVER')})");
-    const cmpScroll=await evaluate("(()=>{setView('compare');const c=document.getElementById('comparison'),s=getComputedStyle(c);const r={own:c.scrollWidth>c.clientWidth?s.overflowX:'fits',pageX:getComputedStyle(document.body).overflowX+'/'+getComputedStyle(document.documentElement).overflowX};setView('explore');return r})()");
+    const cmpScroll=await evaluate("(()=>{setView('compare');setCompareMode('table');const c=document.getElementById('comparison'),s=getComputedStyle(c);const r={own:c.scrollWidth>c.clientWidth?s.overflowX:'fits',pageX:getComputedStyle(document.body).overflowX+'/'+getComputedStyle(document.documentElement).overflowX};setView('explore');return r})()");
     check(`Page width ${w}px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page)`,widths.every(x=>!x.endsWith('OVER'))&&['fits','auto','scroll'].includes(cmpScroll.own)&&!cmpScroll.pageX.includes('hidden'),widths.join(' | ')+' '+JSON.stringify(cmpScroll));
-    if(w===1560){await evaluate("setView('compare');window.scrollTo(0,0);1");await shot('desktop-1560-compare',false);await evaluate("setView('explore');1");}
+    if(w===1560){await evaluate("setView('compare');setCompareMode('table');window.scrollTo(0,0);1");await shot('desktop-1560-compare',false);await evaluate("setView('explore');1");}
   }
 
   // ---------- The eight demo flows, desktop and mobile (screenshots in OUT) ----------
@@ -642,7 +688,7 @@ try{
     await mapShot(noCell?'4-candidate-no-cells':'4-candidate-nibr-cells');
     const walk=await walkComparison();
     check(`Flow 5 ${tag}: comparison shows all ${total} species in one table, page never overflows`,walk.length===1&&walk[0].rows===total&&walk[0].page,JSON.stringify(walk.map(p=>[p.label,p.rows,p.page])));
-    await evaluate("setView('compare');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");
+    await evaluate("setView('compare');setCompareMode('table');window.scrollTo(0,0);1");await shot(`${tag}-flow-5-compare`,false);await evaluate("setView('explore');1");
     await pick(836033);await evaluate("document.getElementById('map').scrollIntoView({block:'center'});1");await sleep(300);
     const before=await evaluate("({y:Math.round(scrollY),sel:selected.aphiaID})");
     await evaluate("document.querySelector('[data-map-mode=value]').click();1");await sleep(400);await shot(`${tag}-flow-6-value-mode`,false); // no scrollIntoView here: the check measures scroll drift
@@ -652,7 +698,7 @@ try{
     // Every species × {occurrence, MFPI, MBPI, MCUI, BBVI} opens its own evidence and returns to the same horizontal scroll and button.
     // One CDP call per species keeps each call under the 10 s response limit; the assertions are unchanged.
     const opens={n:await evaluate('data.species.length'),bad:[]};
-    for(let i=0;i<opens.n;i++)opens.bad.push(...await evaluate(`(()=>{const bad=[],i=${i},s=data.species[i];setView('compare');
+    for(let i=0;i<opens.n;i++)opens.bad.push(...await evaluate(`(()=>{const bad=[],i=${i},s=data.species[i];setView('compare');setCompareMode('table');
       ['OCC','MFPI','MBPI','MCUI','BBVI'].forEach(axis=>{
         renderComparison();setView('compare');const c=document.getElementById('comparison');c.scrollLeft=Math.min(37,c.scrollWidth-c.clientWidth);const left=c.scrollLeft;
         const b=c.querySelector('[data-score-aphia="'+s.aphiaID+'"][data-score-axis="'+axis+'"]');if(!b){bad.push([s.label,axis,'no button']);return;}
@@ -667,11 +713,11 @@ try{
       });return bad;})()`));
     opens.bad=opens.bad.slice(0,8);
     check(`Evidence ${tag}: all ${opens.n}×5 comparison buttons open their own evidence (incl. the last columns) and return to scroll and focus`,opens.n===total&&opens.bad.length===0,JSON.stringify(opens));
-    const late=await evaluate("(()=>{const i=data.species.length-1;renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
+    const late=await evaluate("(()=>{const i=data.species.length-1;renderComparison();setView('compare');setCompareMode('table');document.querySelector('[data-score-aphia=\"'+data.species[i].aphiaID+'\"][data-score-axis=MBPI]').click();return 1})()");
     // The smooth scroll can outlast a fixed pause on a busy machine (a tab change now starts at the top): wait up to 3 s.
     let seen;for(let t=0;t<15;t++){await sleep(200);seen=await evaluate("(()=>{const r=document.activeElement.getBoundingClientRect();return {top:Math.round(r.top),h:innerHeight,axis:document.activeElement.closest('[data-axis]')?.dataset.axis}})()");if(seen.top>=0&&seen.top<seen.h)break;}
     check(`Evidence ${tag}: last-column MBPI evidence scrolled into view`,late===1&&seen.axis==='MBPI'&&seen.top>=0&&seen.top<seen.h,JSON.stringify(seen));
-    const occ=await evaluate("(()=>{const s=data.species.find(x=>x.cells?.length);renderComparison();setView('compare');document.querySelector('[data-score-aphia=\"'+s.aphiaID+'\"][data-score-axis=OCC]').click();const sum=document.getElementById('detail-map-summary').innerText,csv=cellCsv(s);return {shapes:document.querySelectorAll('#map path.leaflet-interactive').length,rows:document.querySelectorAll('#cell-table tbody tr').length,period:/기록 연도/.test(sum),source:/출처/.test(sum),sea:/해역/.test(sum),license:/이용조건/.test(sum),csv:csv.includes('sea_areas')&&csv.includes('licenses')}})()");
+    const occ=await evaluate("(()=>{const s=data.species.find(x=>x.cells?.length);renderComparison();setView('compare');setCompareMode('table');document.querySelector('[data-score-aphia=\"'+s.aphiaID+'\"][data-score-axis=OCC]').click();const sum=document.getElementById('detail-map-summary').innerText,csv=cellCsv(s);return {shapes:document.querySelectorAll('#map path.leaflet-interactive').length,rows:document.querySelectorAll('#cell-table tbody tr').length,period:/기록 연도/.test(sum),source:/출처/.test(sum),sea:/해역/.test(sum),license:/이용조건/.test(sum),csv:csv.includes('sea_areas')&&csv.includes('licenses')}})()");
     check(`Evidence ${tag}: occurrence button draws the cells and lists period, sea area, source, licence and CSV columns`,occ.shapes>0&&occ.rows>0&&occ.period&&occ.source&&occ.sea&&occ.license&&occ.csv,JSON.stringify(occ));
     await evaluate("setView('explore');1");
   }
