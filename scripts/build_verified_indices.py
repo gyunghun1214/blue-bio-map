@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.9.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.10.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1380,6 +1380,28 @@ def independent_sources(item: dict) -> int:
     return len({d.lower() for d in item.get("independent_dois", item["original_paper_dois"])})
 
 
+def mbpi_rx(trace: list[dict], rule: dict) -> dict:
+    """4.10 MBPI-Rx (research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md): the published MBPI rule (each item's own
+    adjusted value, the species maximum, round1) over the items whose stratum is classified 'include'. A secondary,
+    exploratory value beside MBPI: the 4.3 floor does not apply, so a species without such an item gets null and a reason,
+    never 0 or another species' value. A stratum missing from the classification stops the build (a new stratum needs a
+    new pre-registration)."""
+    classes = rule["classified_strata"]
+    for item in trace:
+        require(item["stratum_id"] in classes, f"{item['stratum_id']}: stratum not classified for MBPI-Rx (new pre-registration needed)")
+    kept = [(n, item) for n, item in enumerate(trace) if classes[item["stratum_id"]] == "include"]
+    out = {"value": None, "stratum_kind": None, "stratum_id": None, "top_item": None,
+           "excluded_item_count": len(trace) - len(kept), "reason": None}
+    if not kept:
+        return {**out, "reason": rule["reasons"]["only_excluded" if trace else "no_item"]}
+    n, best = max(kept, key=lambda x: x[1]["adjusted"])  # first of equal items, as for MBPI itself
+    ident = {"compound_id": best["compound_id"]} if "compound_id" in best else {"record_ids": best["record_ids"]}
+    return {**out, "value": round1(best["adjusted"]), "stratum_kind": best.get("stratum_kind", "small_molecule"),
+            "stratum_id": best["stratum_id"],
+            "top_item": {"trace_index": n, **ident, "adjusted": best["adjusted"], "percentile": best["percentile"],
+                         "evidence_factor": best["evidence_factor"]}}
+
+
 def bio_sufficiency(partials: list[dict]) -> dict:
     steps = ("origin", "structure_id", "quantitative_endpoint", "comparable_cohort")
     best = max((sum(bool((p.get("chain") or {}).get(s)) for s in steps) for p in partials), default=0)
@@ -1432,6 +1454,12 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
     for c in catalog.get("species", []):
         known_identities.setdefault(c["aphiaID"], {"aphia_id": c["aphiaID"], "scientific_name": c["name"]})
     assay, chembl = bio_scores(evidence, config, known_identities)
+    rx_rule = config.get("mbpi_rx")
+    if rx_rule:  # 4.10: the classification is fixed by its pre-registration; the excluded list must be its 'exclude' rows
+        classes = rx_rule["classified_strata"]
+        require(set(classes.values()) <= {"include", "exclude"}
+                and set(rx_rule["excluded_strata"]) == {k for k, v in classes.items() if v == "exclude"},
+                "MBPI-Rx excluded strata differ from the classification")
     def assess(candidate: dict) -> dict:
         aphia = candidate["aphia_id"]
         mfpi_value, food_trace, food_reason = food_axis(candidate, evidence, config, rows, primary, cross)
@@ -1576,6 +1604,8 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             row["mbpi_floor"] = mbpi_floor
             if mbpi_floor:
                 row["mbpi_label"], row["bbvi_label"] = mbpi_floor["label"], mbpi_floor["bbvi_label"] if bbvi is not None else None
+        if rx_rule:  # 4.10: secondary and exploratory, beside MBPI; never in scores, BBVI, labels or the matrix
+            row["mbpi_rx"] = mbpi_rx(bio_trace, rx_rule)
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
             row["mbpi_stratum"] = "floor" if mbpi_floor else None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
