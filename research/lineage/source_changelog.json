@@ -2324,6 +2324,15 @@
      "score_delta": 21.9
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.9",
+   "to_run_id": "verified-4.10",
+   "from_commit": "68eed88",
+   "to_commit": "ff49c42",
+   "published_on": "2026-10-12",
+   "method_note": "verified-4.9 (2026-10-12). No score, label, type or flag changes. Adds a secondary, exploratory MBPI-Rx beside MBPI (mbpi_rx), registered in research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md in its own commit before the code: the published MBPI rule over the items outside the two strata whose comparison groups collect food-protein functional peptides (the AHTPDB ACE peptide stratum and the xanthine-oxidase peptide literature cohort). The 4.3 floor does not apply, so a species left without an item gets null with a reason (11 of 30). Every stratum is classified before the run (52 rows); an unclassified stratum stops the build. The MBPI post-hoc check is re-run with MBPI-Rx for the same operating species and cases (posthoc.validation_sets.MBPI_RX, exploratory: the rule was proposed after the MBPI check failed, and its result could be and was computed before registration). It never changes an axis label, MBPI, BBVI or the matrix.",
+   "entries": []
   }
  ]
 }

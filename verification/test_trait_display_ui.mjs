@@ -9,7 +9,8 @@ const app=read('app.js'), report=JSON.parse(read('assessments.json')), traits=JS
 const ctx={};vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+';'+app.slice(app.indexOf('// ---------- 활용 특성으로 찾기'),app.indexOf('function traitChip'))+
   ';globalThis.ue=useEvidence;globalThis.count=useCount;globalThis.only=displayOnly;globalThis.rows=traitDisplayRows;'+
-  'globalThis.setData=d=>{data=d};globalThis.setTraits=f=>{traitDisplay=traitDisplayRows(f,[])};',ctx);
+  'globalThis.setData=d=>{data=d};globalThis.setTraits=f=>{traitDisplay=traitDisplayRows(f,[])};'+
+  'globalThis.traitIds=traitIdsOf;globalThis.stratum=mbpiStratum;globalThis.USE=USE_TRAITS;globalThis.GROUPS=USE_GROUPS;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,name:a.korean_name,assessment:{...a,report_version:report.method_version}}));
 ctx.setData({species,assessmentInfo:{method:report.method,sources:report.sources}});
 const ids=id=>species.filter(s=>ctx.ue(s,id)).map(s=>s.aphiaID).sort((a,b)=>a-b);
@@ -48,4 +49,35 @@ let out=[];assert.equal(ctx.rows({...traits,schema_version:'trait-display-eviden
 assert.deepEqual(JSON.parse(JSON.stringify(out)),[{file:'trait-evidence.json',version:'trait-display-evidence-2'}]);
 out=[];assert.equal(ctx.rows({...traits,schema_version:'other'},out).size,0);assert.equal(out.length,0);
 assert.equal(ctx.rows({...traits,records:[{...traits.records[0],relation:'<'}]},[]).size,0);
-console.log('PASS: trait chips: 내성균 from adopted MRSA rows; 항산화·항당뇨·항진균·진통 from labelled display-only rows (extract tier labelled); adopted first; schema gate');
+// 2026-10-12: 혈압(ACE 저해) and 항산화 move to the '기능성(식품 소재)' row. Only the group changes: the array order (traitIdsOf
+// takes the first match), ids and rules stay, so every chip keeps its count and old links (u=ace) keep working.
+ctx.setTraits(traits);
+assert.deepEqual([...ctx.GROUPS],['신약','기능성(식품 소재)','식량']);
+assert.deepEqual([...ctx.USE].map(c=>c.id),['ace','virus','dementia','parasite','cancer','microbe','resistant','fungus','pain','antioxidant','diabetes',
+  'protein_g','mineral','calcium_mg','iron_mg','zinc_mg','omega3','whole','farmed']);
+assert.deepEqual([...ctx.USE].filter(c=>c.group==='기능성(식품 소재)').map(c=>c.id),['ace','antioxidant']);
+assert.ok(ctx.USE.every(c=>ctx.GROUPS.includes(c.group)),'every chip sits in a drawn row');
+assert.deepEqual(Object.fromEntries(ctx.USE.map(c=>[c.id,ctx.count(c.id)])),{ace:15,virus:7,dementia:2,parasite:2,cancer:3,microbe:4,resistant:1,fungus:3,
+  pain:1,antioxidant:2,diabetes:2,protein_g:16,mineral:11,calcium_mg:3,iron_mg:10,zinc_mg:3,omega3:9,whole:9,farmed:27});
+// The MBPI stratum names the top item's comparison group from one dictionary; every published stratum is registered, the
+// numbers come from the item, and the ACE names are exactly the top items the 'ace' chip reads.
+for(const s of species){
+  const a=s.assessment, st=ctx.stratum(a), top=a.bioactivity_trace.reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
+  assert.ok(st&&st.key,`${s.name}: stratum registered`);
+  assert.ok(!/ahtpdb|ChEMBL_37|미등록|undefined/.test(st.short+st.long),`${s.name}: ${st.long}`);
+  assert.equal(st.ace,ctx.traitIds(top).includes('ace'),`${s.name}: stratum ${st.key} vs chip ${ctx.traitIds(top)}`);
+}
+const byName=n=>species.find(s=>s.name===n).assessment;
+assert.equal(ctx.stratum(byName('미역')).short,'ACE 펩타이드');
+assert.match(ctx.stratum(byName('미역')).long,/^ACE 저해 펩타이드\(AHTPDB 352개 안 순위/);
+assert.equal(ctx.stratum(byName('감태')).long,'ACE 저해 화합물(감태 논문 1편의 분리 화합물 5개 안 순위)');
+assert.equal(ctx.stratum(byName('참조기')).short,'잔틴 산화효소 펩타이드');
+assert.equal(ctx.stratum(byName('갑오징어')).short,'ChEMBL 표적(펩타이드)');
+assert.equal(ctx.stratum(byName('참굴')).short,'ACE 펩타이드');
+assert.equal(ctx.stratum(byName('피조개')).short,'항암 펩타이드');
+assert.equal(ctx.stratum(byName('멍게')).short,'ChEMBL 화합물');
+assert.equal(species.filter(s=>ctx.stratum(s.assessment).ace).length,15,'15 species lead with an ACE item (14 AHTPDB + 감태)');
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.stratum({bioactivity_trace:[{adjusted:1,stratum_id:'new-stratum',stratum_kind:'new'}],mbpi_stratum:'new'}))),
+  {key:null,ace:false,short:'층 이름 미등록',long:'층 이름 미등록'});
+assert.equal(ctx.stratum({bioactivity_trace:[]}),null);
+console.log('PASS: trait chips: 내성균 from adopted MRSA rows; 항산화·항당뇨·항진균·진통 from labelled display-only rows (extract tier labelled); adopted first; schema gate; 기능성(식품 소재) row keeps ids, order and counts; MBPI strata registered and in step with the ACE chip');

@@ -376,6 +376,56 @@ try{
     food.order==='protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed'&&food.chips.protein_g===16&&food.chips.mineral===11&&food.chips.calcium_mg===3&&food.chips.iron_mg===10&&food.chips.zinc_mg===3&&food.chips.omega3===9&&food.chips.whole===9&&food.chips.farmed===27&&
     JSON.stringify(food.calcium)==='[219984,236157,836033]'&&/기준 미달/.test(food.calciumNote)&&/210 mg/.test(food.calciumNote)&&food.whole===9&&food.wholeText&&
     food['iron_mg+omega3']===2&&food['whole+mineral']===4&&food['farmed+protein_g']===13&&food.suggest==='calcium_mg'&&/식량 · 칼슘/.test(food.suggestText)&&food.restored==='calcium_mg,whole'&&food.hash==='calcium_mg,whole'&&food.back,JSON.stringify(food));
+  // 2026-10-12: 혈압(ACE 저해) and 항산화 sit in a third row '기능성(식품 소재)' with the same ids, rules and counts, old links still
+  // turn them on, and every card and the species detail name the stratum of the MBPI's top item next to the value.
+  const strat=await evaluate(`(()=>{const r={},before=selected.aphiaID;setUses([]);renderUseChips();
+    r.rows=[...document.querySelectorAll('#use-chips .use-row')].map(x=>x.getAttribute('aria-label')+':'+[...x.querySelectorAll('.use-chip')].map(b=>b.dataset.use).join(','));
+    r.title=document.querySelector('#use-chips .use-row:nth-of-type(2) .use-group')?.textContent||'';
+    r.counts=Object.fromEntries([...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10)]));
+    r.links={};for(const u of ['ace','antioxidant','ace,omega3']){applyHash({u});r.links[u]=[...activeUses].join();}setUses([]);
+    renderList();r.cards=document.querySelectorAll('.species-card').length;r.strata=[...document.querySelectorAll('.species-card .card-stratum')].map(x=>x.textContent);
+    // the detail is rendered off-screen for 미역, so the selected species and the map stay as the later checks expect
+    const wak=data.species.find(x=>x.aphiaID===145721),box=document.createElement('div');box.innerHTML=renderVerifiedIndices(wak);
+    const m=box.querySelector('[data-axis="MBPI"]');r.summary=m?.querySelector('summary')?.textContent||'';r.first=m?.querySelector('.mbpi-first')?.textContent||'';
+    box.innerHTML=axisCards(wak);r.axis=box.textContent;r.kept=selected.aphiaID===before;
+    renderCompareProfile();r.profile=document.querySelector('#cmp-profile .cp-use')?.textContent||'';r.profileStratum=mbpiStratumOf(selected)?.short||'';return r})()`);
+  check('MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts unchanged (혈압 15, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 cards name their MBPI stratum (15 ACE: 14 ACE 펩타이드 + 감태 ACE 화합물); 미역 detail opens with the published post-hoc result, the 19.6–95.3 aggregation range and the AHTPDB stratum; the compare profile names the selected species\' stratum too',
+    JSON.stringify(strat.rows)===JSON.stringify(['신약 활용 특성:virus,dementia,parasite,cancer,microbe,resistant,fungus,pain,diabetes','기능성(식품 소재) 활용 특성:ace,antioxidant','식량 활용 특성:protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed'])&&
+    strat.title==='기능성(식품 소재)'&&strat.counts.ace===15&&strat.counts.antioxidant===2&&strat.counts.virus===7&&strat.counts.protein_g===16&&
+    strat.links.ace==='ace'&&strat.links.antioxidant==='antioxidant'&&strat.links['ace,omega3']==='ace,omega3'&&
+    strat.cards===30&&strat.strata.length===30&&strat.strata.every(t=>/^MBPI 근거 · /.test(t)&&!/미등록/.test(t))&&
+    strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===14&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===1&&
+    /95\.3 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드/.test(strat.summary)&&
+    strat.first.startsWith('사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–95.3근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
+    /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
+  // 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx is one line under the detail's MBPI (opening to its reason and the
+  // pre-registration), one sortable column in the compare data table and a line in #method-03, and nowhere else on the page.
+  const rx=await evaluate(`(()=>{const r={},keep={view:currentView,mode:cmpMode,sort:{...cmpSort},basket:[...cmpBasket],sel:selected.aphiaID};
+    const box=document.createElement('div'),one=id=>data.species.find(x=>x.aphiaID===id);
+    box.innerHTML=renderVerifiedIndices(one(836033));const d=box.querySelector('details.rx-disclosure');
+    r.order=[...box.querySelectorAll('details.score-disclosure')].map(x=>x.dataset.axis||'RX').join();r.oy=d?.querySelector('summary')?.textContent||'';r.body=d?.querySelector('.score-disclosure-body')?.textContent||'';
+    box.innerHTML=renderVerifiedIndices(one(145721));r.wak=box.querySelector('details.rx-disclosure summary')?.textContent||'';
+    setView('compare',false);setCompareMode('table');cmpSort={key:null,dir:null};renderComparison();const c=document.getElementById('comparison'),cells=()=>[...c.querySelectorAll('tbody tr.cmp-row')].map(tr=>tr.querySelector('td.cmp-rx')?.textContent);
+    r.heads=[...c.querySelectorAll('thead [data-sort]')].map(b=>b.dataset.sort).join();r.rxHead=c.querySelector('[data-sort=MBPI_RX]')?.textContent||'';r.start=cells();
+    c.querySelector('[data-sort=MBPI_RX]').click();r.desc=cells();r.label=document.getElementById('comparison-page').textContent;r.focus=document.activeElement?.dataset?.sort||'';
+    c.querySelector('[data-sort=MBPI_RX]').click();r.asc=cells();c.querySelector('[data-sort=MBPI_RX]').click();r.reset=cells();
+    cmpBasket=[836033,145721];renderCompare();renderCompareDialog();setCompareMode('matrix');renderList();
+    r.elsewhere=['.species-list','#cmp-profile','#cmp-tray','#cmp-dialog-body','#matrix-points','#matrix-types','#map'].filter(q=>{const e=document.querySelector(q);if(!e)return false;
+      const t=e.textContent+' '+[...e.querySelectorAll('[title],[aria-label]')].map(x=>(x.title||'')+' '+(x.getAttribute('aria-label')||'')).join(' ');return /의약 후보|MBPI-Rx/.test(t);});
+    r.method=document.getElementById('method-03')?.textContent||'';
+    cmpSort=keep.sort;cmpBasket=keep.basket;setCompareMode(keep.mode);renderComparison();renderCompare();setView(keep.view,false);r.kept=selected.aphiaID===keep.sel;return r})()`);
+  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='–없음'?null:Number(x),vals=rxAll.filter(v=>v!==null);
+    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (19 values, 11 –, – last both ways); #method-03 names it; no card, profile, basket, dialog, matrix or map text mentions it',
+      rx.order==='MFPI,MBPI,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색적)62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)'&&
+      ['층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산)','사전 등록: research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md'].every(t=>rx.body.includes(t))&&
+      rx.wak==='의약 후보 MBPI(보조, 탐색적)없음 · 제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토)'&&
+      rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx보조·탐색적/.test(rx.rxHead)&&rx.start.length===total&&n===11&&vals.length===19&&
+      rx.start.filter(x=>x==='–없음').length===11&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
+      JSON.stringify(rx.desc.map(num))===JSON.stringify([...vals].sort((a,b)=>b-a).concat(Array(11).fill(null)))&&
+      JSON.stringify(rx.asc.map(num))===JSON.stringify([...vals].sort((a,b)=>a-b).concat(Array(11).fill(null)))&&
+      rx.label===`총 ${total}종 · 정렬: MBPI-Rx 높은 순`&&rx.focus==='MBPI_RX'&&JSON.stringify(rx.reset)===JSON.stringify(rx.start)&&
+      rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(보조) · 기준 미충족')&&rx.method.includes('prereg-mbpi-rx-4.10-2026-10-12.md')&&rx.kept,
+      JSON.stringify({...rx,start:rx.start.slice(0,8),desc:rx.desc.slice(0,5),asc:rx.asc.slice(0,5),reset:undefined,body:rx.body.slice(0,120),method:rx.method.slice(-200)}));}
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
@@ -395,8 +445,8 @@ try{
   // verified-pilot-3.2: the oyster is placed (national MCUI, marked), so its card leads with the published matrix type
   check('Oyster status card shows only its published matrix type (2026-10-08: evidence labels stay in the detail)',!!typeLabel(836033)&&oyCard===typeLabel(836033)&&!oyCard.includes('검증')&&!oyCard.includes('참고값')&&!oyCard.includes('근거 논문 1편'),oyCard);
   // 2026-10-08: the screen uses neutral label words; the published data keeps the old ones
-  const oldWords=await evaluate("(()=>{const v=currentView,hit=[];for(const x of ['explore','compare','method']){setView(x,false);const t=document.body.textContent;for(const w of ['검증 미통과','단일 논문'])if(t.includes(w))hit.push(x+':'+w);}setView(v,false);return hit})()");
-  check('No old label words (검증 미통과, 단일 논문) on any tab',oldWords.length===0,oldWords.join(' | '));
+  const oldWords=await evaluate("(()=>{const v=currentView,hit=[];for(const x of ['explore','compare','method']){setView(x,false);const t=document.body.textContent;for(const w of ['검증 미통과','단일 논문','미통과'])if(t.includes(w))hit.push(x+':'+w);}setView(v,false);return hit})()");
+  check('No old label words (검증 미통과, 단일 논문, 2026-10-12 any 미통과 such as the MBPI reason\'s 기준 미통과) on any tab',oldWords.length===0,oldWords.join(' | '));
   // design 05: the value cell shows the number; its full label sits in the row's 자세히 panel (data-more-*)
   const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-more-aphia=\"836033\"][data-more-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
   check('Comparison table: 참굴 MBPI 96.3 and BBVI 83.9 match the report, pilot label kept, no single-paper label',oyCmp.MBPI.startsWith('96.3')&&oyCmp.BBVI.startsWith('83.9')&&oyCmp.MBPI.includes('정식 산출 · 방법 검증 기준 미충족')&&oyCmp.BBVI.includes('정식 산출 · 방법 검증 기준 미충족')&&!oyCmp.MBPI.includes('근거 논문 1편')&&!oyCmp.BBVI.includes('근거 논문 1편'),JSON.stringify(oyCmp));

@@ -2,6 +2,7 @@
 import json
 import re
 import sys
+import tempfile
 import unittest
 from unittest import mock
 from pathlib import Path
@@ -56,6 +57,14 @@ class PublishedFile(unittest.TestCase):
         self.assertEqual((self.out["schemaVersion"], self.out["reportVersion"]), ("unexplored-candidates-1", self.version))
         self.assertEqual(sorted(r["aphiaID"] for r in self.out["relatives"]),
                          sorted(a for a, s in self.rows.items() if (s["scores"]["BBVI"] or 0) >= self.threshold))
+        # 2026-10-12: the relatives carry the report's own BBVI in the build's order (high to low, report order on ties), in
+        # the file and in each species' list. 4.9 moved 갑오징어 54.2 -> 65.1 while the file kept 54.2; --report-only now
+        # rewrites them for a release that keeps the same relatives.
+        relatives = sorted((s for s in self.rows.values() if (s["scores"]["BBVI"] or 0) >= self.threshold), key=lambda s: -s["scores"]["BBVI"])
+        self.assertEqual(self.out["relatives"], u.relative_rows(relatives))
+        for s in self.out["species"]:
+            mine = {r["aphiaID"] for r in s["relatives"]}
+            self.assertEqual(s["relatives"], [r for r in self.out["relatives"] if r["aphiaID"] in mine], s["name"])
 
     def test_outside_the_30_same_genus_and_never_scored(self):
         for s in self.out["species"]:
@@ -79,6 +88,23 @@ class PublishedFile(unittest.TestCase):
         for s in self.out["species"]:
             sizes = {c["sizeDeg"] for c in s["cells"]}
             self.assertLessEqual(sizes, {4} if any(r["aphiaID"] in four for r in s["relatives"]) else {1})
+
+
+class ReportOnly(unittest.TestCase):
+    def test_rewrites_the_relatives_from_the_report_and_refuses_a_new_set(self):
+        row = lambda a, bbvi: {"aphiaID": a, "label": f"K{a}", "name": f"G s{a}", "BBVI": bbvi}
+        sp = lambda a, bbvi: {"aphia_id": a, "korean_name": f"K{a}", "scientific_name": f"G s{a}", "scores": {"BBVI": bbvi}}
+        old = {"reportVersion": "v1", "relatives": [row(1, 60.0), row(2, 54.2)],
+               "species": [{"aphiaID": 9, "cells": [{"lat0": 34}], "relatives": [row(1, 60.0), row(2, 54.2)]},
+                           {"aphiaID": 8, "cells": [], "relatives": [row(2, 54.2)]}]}
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(u, "OUT", Path(d) / "out.json"):
+            u.OUT.write_text(json.dumps(old), encoding="utf-8")
+            out = u.refresh_from_report({"method_version": "v2"}, [sp(2, 65.1), sp(1, 60.0)])
+            self.assertEqual((out["reportVersion"], out["relatives"]), ("v2", [row(2, 65.1), row(1, 60.0)]))
+            self.assertEqual([(s["aphiaID"], s["cells"], s["relatives"]) for s in out["species"]],
+                             [(9, [{"lat0": 34}], [row(2, 65.1), row(1, 60.0)]), (8, [], [row(2, 65.1)])])
+            with self.assertRaises(SystemExit):  # a species crossing the threshold needs new congener and cell reviews
+                u.refresh_from_report({"method_version": "v2"}, [sp(1, 60.0)])
 
 
 if __name__ == "__main__":

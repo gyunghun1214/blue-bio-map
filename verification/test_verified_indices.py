@@ -2719,6 +2719,7 @@ V45 = ROOT / "config" / "verified-indices-v4.5.json"    # superseded by 4.6 (sub
 V46 = ROOT / "config" / "verified-indices-v4.6.json"    # superseded by 4.7 (source corrections, trace sources cited)
 V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참문어 national-list page re-check)
 V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (relaxation (d) independent replication)
+V49 = ROOT / "config" / "verified-indices-v4.9.json"    # superseded by 4.10 (secondary MBPI-Rx, exploratory)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3394,13 +3395,17 @@ class Verified49Tests(unittest.TestCase):
     BBVI 54.2 -> 65.1, the '단일 논문' label drops. The scored value, percentile and cohort do not move, and no other cell does."""
 
     def setUp(self):
-        self.report, self.old_report = build(*load_inputs()), build(*load_inputs(config=V48))
+        self.report, self.old_report = build(*load_inputs(config=V49)), build(*load_inputs(config=V48))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         self.new, self.old = rows(self.report), rows(self.old_report)
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.9", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        # the published 4.9 report is archived as it was; its config has no mbpi_rx key, so no species carries one (4.10)
+        archived49 = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.9.json"
+        self.assertEqual(render(self.report), archived49.read_text(encoding="utf-8"))
+        self.assertFalse(any("mbpi_rx" in s for s in self.new.values()))
+        self.assertNotIn("MBPI_RX", self.report["method"]["posthoc"]["validation_sets"])
 
     def test_only_the_cuttlefish_evidence_weight_moves(self):
         self.assertEqual((self.old[1666974]["scores"]["MBPI"], self.old[1666974]["scores"]["BBVI"]), (65.8, 54.2))
@@ -3472,7 +3477,7 @@ class Verified49Tests(unittest.TestCase):
             self.assertIn(r["source_id"], self.new[1666974]["source_ids"])
 
     def test_a_replication_can_not_become_a_value_or_an_origin(self):
-        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V49)
         for r in evidence["relaxed_replications"]:
             self.assertNotIn("origin_aphia_id", r)   # a replication never carries a species origin
             self.assertNotIn("status", r)            # and is never a scorable evidence row
@@ -3491,6 +3496,167 @@ class Verified49Tests(unittest.TestCase):
             ev["relaxed_replications"][0][key] = value
             with self.assertRaises(ValueError, msg=key):
                 build(ev, candidates, config, snapshot, taxonomy)
+
+
+class Verified410Tests(unittest.TestCase):
+    """4.10 (research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md, registered in its own commit before the code): a
+    secondary, exploratory MBPI-Rx beside MBPI. It is the published MBPI rule over the items outside the two strata whose
+    comparison groups collect food-protein functional peptides (AHTPDB ACE peptides, the XO peptide literature cohort);
+    the 4.3 floor does not apply, so a species left without an item gets null and a reason. The MBPI post-hoc check is
+    re-run with it (MBPI_RX, exploratory). No score, label, type, flag or trace value moves."""
+
+    EXCLUDED = {"ahtpdb-ace-ic50-hhl-cushman-cheung", "xo-peptide-literature-2026-10-05"}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.report, cls.old_report = build(*load_inputs()), build(*load_inputs(config=V49))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.rule = cls.report["method"]["mbpi_rx"]
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.10", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.10.json")
+
+    def test_only_mbpi_rx_and_version_strings_move(self):
+        # every species object is 4.9's plus mbpi_rx; the only other change is the method_version string inside food_trace
+        for a, s in self.new.items():
+            rest = {k: v for k, v in s.items() if k != "mbpi_rx"}
+            self.assertEqual(json.dumps(rest, ensure_ascii=False, sort_keys=True).replace("verified-4.10", "verified-4.9"),
+                             json.dumps(self.old[a], ensure_ascii=False, sort_keys=True), a)
+            self.assertIn("mbpi_rx", s, a)
+        self.assertEqual(list(self.new), list(self.old))
+        for k in set(self.report) | set(self.old_report):
+            if k not in ("method_version", "method", "posthoc", "species", "candidate_species"):
+                self.assertEqual(self.report[k], self.old_report.get(k), k)
+        # the method gains the rule and the exploratory post-hoc block, nothing else
+        method, was = self.report["method"], self.old_report["method"]
+        self.assertEqual({k for k in set(method) | set(was) if method.get(k) != was.get(k)},
+                         {"method_version", "changes_from", "mbpi_rx", "posthoc"})
+        sets, old_sets = method["posthoc"]["validation_sets"], was["posthoc"]["validation_sets"]
+        self.assertEqual({k: v for k, v in sets.items() if k != "MBPI_RX"}, old_sets)
+        self.assertEqual(self.report["posthoc"], method["posthoc"])
+
+    def test_classification_is_complete_and_fixed(self):
+        classes = self.rule["classified_strata"]
+        self.assertEqual(len(classes), 52)
+        self.assertEqual({k for k, v in classes.items() if v == "exclude"}, self.EXCLUDED)
+        self.assertEqual(set(self.rule["excluded_strata"]), self.EXCLUDED)
+        self.assertEqual(set(classes.values()), {"include", "exclude"})
+        used = {i["stratum_id"] for s in self.new.values() for i in s["bioactivity_trace"]}
+        self.assertEqual(len(used), 33)
+        self.assertLessEqual(used, set(classes))
+        # every classified id is written in the pre-registration, which was committed on its own before the code
+        doc = (ROOT / self.rule["prereg"]).read_text(encoding="utf-8").replace("\\|", "|")
+        for sid in classes:
+            self.assertIn(f"`{sid}`", doc, sid)
+        self.assertEqual((self.rule["status"], self.rule["label"]), ("exploratory_secondary", "의약 후보 MBPI(보조, 탐색적)"))
+
+    def test_mbpi_rx_is_the_mbpi_rule_without_the_excluded_strata(self):
+        for a, s in self.new.items():
+            rx, trace = s["mbpi_rx"], s["bioactivity_trace"]
+            kept = [i for i in trace if i["stratum_id"] not in self.EXCLUDED]
+            self.assertEqual(rx["excluded_item_count"], len(trace) - len(kept), a)
+            if not kept:
+                continue
+            best = max(kept, key=lambda i: i["adjusted"])
+            top = rx["top_item"]
+            self.assertEqual(trace[top["trace_index"]], best, a)
+            self.assertNotIn(best["stratum_id"], self.EXCLUDED, a)  # no excluded item is ever used
+            self.assertEqual(rx["value"], round1(best["adjusted"]), a)
+            self.assertEqual((rx["stratum_id"], rx["stratum_kind"]), (best["stratum_id"], best.get("stratum_kind", "small_molecule")), a)
+            self.assertEqual((top["adjusted"], top["percentile"], top["evidence_factor"]),
+                             (best["adjusted"], best["percentile"], best["evidence_factor"]), a)
+            self.assertEqual(top.get("compound_id"), best.get("compound_id"), a)
+            self.assertEqual(top.get("record_ids"), best.get("record_ids"), a)
+            self.assertIsNone(rx["reason"], a)
+            # never above MBPI, and equal to it when the top item survives
+            self.assertLessEqual(rx["value"], s["scores"]["MBPI"], a)
+            if max(trace, key=lambda i: i["adjusted"]) is best:
+                self.assertEqual(rx["value"], s["scores"]["MBPI"], a)
+
+    def test_null_has_a_reason_and_is_never_zero(self):
+        nulls = sorted(s["korean_name"] for s in self.new.values() if s["mbpi_rx"]["value"] is None)
+        self.assertEqual(nulls, sorted(["미역", "해삼", "살오징어", "바지락", "전복(종 수준)", "큰가리비", "고등어", "멸치", "참조기", "넙치", "대구"]))
+        for s in self.new.values():
+            rx = s["mbpi_rx"]
+            if rx["value"] is None:
+                self.assertEqual(rx["reason"], self.rule["reasons"]["only_excluded"], s["korean_name"])
+                self.assertEqual((rx["stratum_id"], rx["stratum_kind"], rx["top_item"]), (None, None, None))
+                self.assertGreater(rx["excluded_item_count"], 0)
+            else:
+                self.assertGreater(rx["value"], 0, s["korean_name"])  # the lowest values are 0.4 (청각) and 2.3 (가시파래)
+        # no floor: a species without any item gets null and the no-item reason, not the 0-point floor
+        from build_verified_indices import mbpi_rx
+        self.assertEqual(mbpi_rx([], self.rule)["value"], None)
+        self.assertEqual(mbpi_rx([], self.rule)["reason"], "MBPI 항목이 없습니다")
+
+    def test_values_are_the_registered_expectations(self):
+        # prereg 5.1 and 5.3, computed from the published 4.9 report before registration; the run gives the same values
+        expected = {"미역": None, "해삼": None, "멍게": 13.5, "살오징어": None, "우뭇가사리": 13.5, "톳": 45.3, "홍합(참담치)": 10.1,
+                    "참굴": 62.6, "다시마": 26.5, "감태": 67.5, "가시파래": 2.3, "괭생이모자반": 21.6, "꼬시래기": 49.3, "청각": 0.4,
+                    "바지락": None, "전복(종 수준)": None, "큰가리비": None, "시카메굴": 13.8, "피조개": 75.0, "가리맛조개": 3.3,
+                    "고등어": None, "멸치": None, "참조기": None, "넙치": None, "조피볼락": 31.7, "방어": 7.5, "대구": None,
+                    "꽃게": 30.3, "참문어(동아시아 종)": 70.5, "갑오징어": 87.7}
+        self.assertEqual({n: s["mbpi_rx"]["value"] for n, s in self.by_name.items()}, expected)
+        # 감태 keeps its ACE item: the comparison group is one paper's five isolated compounds, not a peptide collection
+        self.assertEqual(self.by_name["감태"]["mbpi_rx"]["stratum_id"], "wijesinghe-2011-cell-free-ACE-IC50")
+        self.assertEqual(self.by_name["참굴"]["mbpi_rx"]["stratum_id"], "amp-dbaasp-mic-broth-staphylococcus-aureus")
+
+    def test_an_unclassified_stratum_stops_the_build(self):
+        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        for sid in ("amp-dbaasp-mic-broth-staphylococcus-aureus", "ChEMBL_37:CHEMBL247|IC50", "wijesinghe-2011-cell-free-ACE-IC50"):
+            cfg = copy.deepcopy(config)
+            del cfg["mbpi_rx"]["classified_strata"][sid]
+            with self.assertRaisesRegex(ValueError, "not classified for MBPI-Rx", msg=sid):
+                build(evidence, candidates, cfg, snapshot, taxonomy)
+        # the excluded list is the classification's 'exclude' rows, never a separate list to edit after the run
+        cfg = copy.deepcopy(config)
+        cfg["mbpi_rx"]["excluded_strata"] = ["ahtpdb-ace-ic50-hhl-cushman-cheung"]
+        with self.assertRaisesRegex(ValueError, "excluded strata differ"):
+            build(evidence, candidates, cfg, snapshot, taxonomy)
+        cfg = copy.deepcopy(config)
+        cfg["mbpi_rx"]["classified_strata"]["xo-peptide-literature-2026-10-05"] = "maybe"
+        with self.assertRaisesRegex(ValueError, "excluded strata differ"):
+            build(evidence, candidates, cfg, snapshot, taxonomy)
+
+    def test_mbpi_rx_never_reaches_scores_or_bbvi(self):
+        for a, s in self.new.items():
+            self.assertEqual((s["scores"], s.get("mbpi_label"), s.get("bbvi_label")),
+                             (self.old[a]["scores"], self.old[a].get("mbpi_label"), self.old[a].get("bbvi_label")), a)
+        # nor any other published file: the matrix, the expedition stops and page, unexplored candidates, the chatbot
+        for name in ("matrix-readiness.json", "expedition-stops.json", "unexplored-candidates.json", "expedition.js", "chatbot.js", "live-data.js"):
+            text = (ROOT / "dist" / name).read_text(encoding="utf-8")
+            for word in ("mbpi_rx", "MBPI_RX", "MBPI-Rx", "의약 후보"):
+                self.assertNotIn(word, text, name)
+
+    def test_posthoc_rx_record_matches_its_computation(self):
+        import posthoc_validation as P
+        sets = self.report["method"]["posthoc"]["validation_sets"]
+        block, check = sets["MBPI_RX"], P.mbpi_rx_check(self.report, self.report["method"])
+        self.assertEqual((block["result"], check["result"], block["expected_result"]), ("failed", "failed", "failed"))
+        self.assertEqual((block["n"], block["computed"]), (check["n"], check["computed"]))
+        cases = {r["scientific_name"]: r["mbpi_rx"] for r in check["rows"]}
+        self.assertEqual(cases, {"Conus magus": None, "Halichondria (Halichondria) okadai": 73.8, "Ecteinascidia turbinata": 56.1})
+        self.assertEqual(block["case_mbpi"], {"Conus magus": None, "Halichondria okadai": 73.8, "Ecteinascidia turbinata": 56.1})
+        self.assertEqual(block["case_mbpi"], sets["MBPI"]["case_mbpi"])  # every case item is a ChEMBL stratum
+        self.assertEqual(block["operating_max_mbpi"], max(check["operating_mbpi_rx"].values()))
+        self.assertEqual((block["operating_max_mbpi"], block["operating_max_species"]), (62.6, "참굴"))
+        self.assertEqual(sorted(block["operating_without_value"]), sorted(check["operating_without_mbpi_rx"]))
+        # the three operating species with only excluded items leave the comparison; the other five stay in it
+        self.assertEqual(check["operating_without_mbpi_rx"], ["미역", "살오징어", "해삼"])
+        self.assertEqual(len(check["operating_mbpi_rx"]) + len(check["operating_without_mbpi_rx"]), len(self.report["species"]))
+        self.assertEqual((block["criterion"], block["cases"]), (sets["MBPI"]["criterion"], sets["MBPI"]["cases"]))
+        self.assertIs(block["exploratory"], True)
+        self.assertEqual(block["prereg"], self.rule["prereg"])
+        self.assertTrue((ROOT / block["prereg"]).exists())
+        record = json.loads((ROOT / block["record"]).read_text(encoding="utf-8"))
+        self.assertEqual((record["report_version"], record["MBPI_RX"]), ("verified-4.10", check))
+        self.assertNotIn("미통과", block["reason"])  # neutral wording (2026-10-08)
+        # the axis checks keep their own results; the exploratory block is never one of them
+        self.assertEqual((sets["MBPI"]["result"], sets["MFPI"]["result"]), ("failed", "passed"))
 
 
 if __name__ == "__main__":

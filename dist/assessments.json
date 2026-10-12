@@ -241,7 +241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -461,6 +461,20 @@
       "korean_name": "다시마",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 26.51519337016575,
+          "compound_id": "CHEMBL252561",
+          "evidence_factor": 0.5625,
+          "percentile": 47.14,
+          "trace_index": 1
+        },
+        "value": 26.5
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -1464,7 +1478,7 @@
             }
           ]
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -1681,6 +1695,20 @@
       "korean_name": "감태",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "wijesinghe-2011-cell-free-ACE-IC50",
+        "stratum_kind": "small_molecule",
+        "top_item": {
+          "adjusted": 67.5,
+          "compound_id": "CID:3008868",
+          "evidence_factor": 0.75,
+          "percentile": 90.0,
+          "trace_index": 3
+        },
+        "value": 67.5
+      },
       "mbpi_stratum": "small_molecule",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -2134,7 +2162,7 @@
             }
           ]
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2352,6 +2380,22 @@
       "korean_name": "가시파래",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 1,
+        "reason": null,
+        "stratum_id": "anticancer-cancerppd-ic50-a-549",
+        "stratum_kind": "anticancer",
+        "top_item": {
+          "adjusted": 2.2556390977443606,
+          "evidence_factor": 0.75,
+          "percentile": 3.01,
+          "record_ids": [
+            "10.3390/foods11213507:HTDT-6-2-3-2:A-549"
+          ],
+          "trace_index": 1
+        },
+        "value": 2.3
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "range_state",
       "mcui_substitute": {
@@ -2681,7 +2725,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2898,6 +2942,20 @@
       "korean_name": "괭생이모자반",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL5763|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 21.579186893203882,
+          "compound_id": "CHEMBL4085945",
+          "evidence_factor": 0.75,
+          "percentile": 28.77,
+          "trace_index": 0
+        },
+        "value": 21.6
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -3271,7 +3329,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3491,6 +3549,20 @@
       "korean_name": "꼬시래기",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL2392|Potency",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 49.28519180754227,
+          "compound_id": "CHEMBL1084643",
+          "evidence_factor": 0.5625,
+          "percentile": 87.62,
+          "trace_index": 0
+        },
+        "value": 49.3
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -3899,7 +3971,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4119,6 +4191,20 @@
       "korean_name": "청각",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL4303835|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 0.42521598272138234,
+          "compound_id": "CHEMBL5287816",
+          "evidence_factor": 0.5625,
+          "percentile": 0.76,
+          "trace_index": 0
+        },
+        "value": 0.4
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "sub_national",
       "mcui_substitute": {
@@ -4759,7 +4845,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5440,6 +5526,14 @@
       "korean_name": "바지락",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 7,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -5785,7 +5879,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6487,6 +6581,14 @@
       "korean_name": "전복(종 수준)",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 1,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -6854,7 +6956,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7517,6 +7619,14 @@
       "korean_name": "큰가리비",
       "mbpi_floor": null,
       "mbpi_label": null,
+      "mbpi_rx": {
+        "excluded_item_count": 1,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -7879,7 +7989,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -8429,6 +8539,20 @@
       "korean_name": "시카메굴",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 13.787276226695111,
+          "compound_id": "CHEMBL1822160",
+          "evidence_factor": 0.5625,
+          "percentile": 24.51,
+          "trace_index": 0
+        },
+        "value": 13.8
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "range_state",
       "mcui_substitute": {
@@ -8985,7 +9109,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9690,6 +9814,22 @@
       "korean_name": "피조개",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "anticancer-cancerppd-ic50-ht-29",
+        "stratum_kind": "anticancer",
+        "top_item": {
+          "adjusted": 75.0,
+          "evidence_factor": 0.75,
+          "percentile": 100.0,
+          "record_ids": [
+            "10.3390/md20020110:P6:HT-29"
+          ],
+          "trace_index": 7
+        },
+        "value": 75.0
+      },
       "mbpi_stratum": "anticancer",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -10153,7 +10293,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10841,6 +10981,24 @@
       "korean_name": "가리맛조개",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 1,
+        "reason": null,
+        "stratum_id": "anticancer-cancerppd-ic50-pc-3",
+        "stratum_kind": "anticancer",
+        "top_item": {
+          "adjusted": 3.260869565217391,
+          "evidence_factor": 0.75,
+          "percentile": 4.35,
+          "record_ids": [
+            "10.3892/mmr.2017.7418:SCH-P10:PC-3:12h",
+            "10.3892/mmr.2017.7418:SCH-P10:PC-3:24h",
+            "10.3892/mmr.2017.7418:SCH-P10:PC-3:6h"
+          ],
+          "trace_index": 1
+        },
+        "value": 3.3
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -11285,7 +11443,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11990,6 +12148,14 @@
       "korean_name": "고등어",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 4,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -12358,7 +12524,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13062,6 +13228,14 @@
       "korean_name": "멸치",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 3,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -14053,7 +14227,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14715,6 +14889,14 @@
       "korean_name": "참조기",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 2,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "xo",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -15059,7 +15241,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15722,6 +15904,14 @@
       "korean_name": "넙치",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 2,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "range_state",
       "mcui_substitute": {
@@ -16167,7 +16357,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16829,6 +17019,22 @@
       "korean_name": "조피볼락",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+        "stratum_kind": "amp",
+        "top_item": {
+          "adjusted": 31.664787371134018,
+          "evidence_factor": 0.75,
+          "percentile": 42.22,
+          "record_ids": [
+            "10.3390/md20060353:TS40:S.aureus"
+          ],
+          "trace_index": 0
+        },
+        "value": 31.7
+      },
       "mbpi_stratum": "amp",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -19138,7 +19344,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -19811,6 +20017,22 @@
       "korean_name": "방어",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL1855|IC50",
+        "stratum_kind": "relaxed",
+        "top_item": {
+          "adjusted": 7.483731019522777,
+          "evidence_factor": 0.75,
+          "percentile": 9.98,
+          "record_ids": [
+            "10.1074/jbc.M610413200:sbGnRH:CHEMBL1855:IC50"
+          ],
+          "trace_index": 0
+        },
+        "value": 7.5
+      },
       "mbpi_stratum": "relaxed",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -20151,7 +20373,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -20858,6 +21080,14 @@
       "korean_name": "대구",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 2,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "range_state",
       "mcui_substitute": {
@@ -21241,7 +21471,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21904,6 +22134,22 @@
       "korean_name": "꽃게",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
+        "stratum_kind": "amp",
+        "top_item": {
+          "adjusted": 30.331342039455404,
+          "evidence_factor": 0.75,
+          "percentile": 40.44,
+          "record_ids": [
+            "10.3390/ijms26178546:MCCC1-MTS:E.coli"
+          ],
+          "trace_index": 0
+        },
+        "value": 30.3
+      },
       "mbpi_stratum": "amp",
       "mcui_basis": "sub_national",
       "mcui_substitute": {
@@ -22552,7 +22798,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23258,6 +23504,23 @@
       "korean_name": "참문어(동아시아 종)",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL1921|EC50",
+        "stratum_kind": "relaxed",
+        "top_item": {
+          "adjusted": 70.5179282868526,
+          "evidence_factor": 0.75,
+          "percentile": 94.02,
+          "record_ids": [
+            "10.3390/md20050328:cephalotocin:CHEMBL1790",
+            "10.3390/md20050328:cephalotocin:CHEMBL1921"
+          ],
+          "trace_index": 0
+        },
+        "value": 70.5
+      },
       "mbpi_stratum": "relaxed",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -24058,7 +24321,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24779,6 +25042,24 @@
       "korean_name": "갑오징어",
       "mbpi_floor": null,
       "mbpi_label": null,
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL5952|Ki",
+        "stratum_kind": "relaxed",
+        "top_item": {
+          "adjusted": 87.68115942028986,
+          "evidence_factor": 1.0,
+          "percentile": 87.68,
+          "record_ids": [
+            "10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL3309:IC50",
+            "10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL5952:EC50",
+            "10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL5952:Ki"
+          ],
+          "trace_index": 0
+        },
+        "value": 87.7
+      },
       "mbpi_stratum": "relaxed",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -25161,7 +25442,7 @@
       "single_doi_factor": 0.75
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.8 (2026-10-10). One rule addition and one species' two cells. The ACE stratum's replication device (2.3 cross_origin_potency: another paper's measurement of the same synthetic sequence adds its DOI to independent_dois without changing the value) is extended to the relaxation-(d) stratum as cross_origin_replication, on the pChEMBL scale and with the same gap of 1.0. Team-lead decision 2026-10-10, registered in research/verified-indices/prereg-4.9-2026-10-10.md before the values were published. 갑오징어 (1666974) FMRFamide, human NPFF2 Ki 6.6 nM: Bonini et al. 2000 J Biol Chem 275:39324 (10.1074/jbc.M004385200) measured FMRF-NH2 at the same receptor as Ki 4.0 +/- 0.2 nM (Table I), another author group, pKi gap 0.218, and the paper is in neither the cohort nor ChEMBL_37. Its DOI joins independent_dois, so the evidence factor goes 0.75 -> 1.0: MBPI 65.8 -> 87.7, BBVI 54.2 -> 65.1, and the single-paper label drops (26 -> 25 species). The scored value, its percentile and its cohort are unchanged. Kotani et al. 2001 (10.1038/sj.bjp.0704038, Ki 10.5 nM) is recorded as a candidate that is NOT used: the review the ChEMBL row comes from cites the value with reference numbers that do not resolve in its own reference list, and the ChEMBL assay text matches that paper's own group, so it may be the origin of the scored value.",
+    "changes_from": "verified-4.9 (2026-10-12). No score, label, type or flag changes. Adds a secondary, exploratory MBPI-Rx beside MBPI (mbpi_rx), registered in research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md in its own commit before the code: the published MBPI rule over the items outside the two strata whose comparison groups collect food-protein functional peptides (the AHTPDB ACE peptide stratum and the xanthine-oxidase peptide literature cohort). The 4.3 floor does not apply, so a species left without an item gets null with a reason (11 of 30). Every stratum is classified before the run (52 rows); an unclassified stratum stops the build. The MBPI post-hoc check is re-run with MBPI-Rx for the same operating species and cases (posthoc.validation_sets.MBPI_RX, exploratory: the rule was proposed after the MBPI check failed, and its result could be and was computed before registration). It never changes an axis label, MBPI, BBVI or the matrix.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -25408,6 +25689,77 @@
       "rule": "Team-lead decision 2026-10-05 (prereg 1.5): a species with no item in any MBPI stratum, the XO stratum or the one-condition relaxation gets MBPI 0 with this label; BBVI = 0.5 x MFPI with its own label. Relatives' values and taxon medians are never used. 4.4: the relaxation gives 참문어 an item (relaxed_bioactivity), so the floor now applies to 방어 and 갑오징어 only. 4.5: 방어 and 갑오징어 also gained relaxation-(d) items, so no species of this run takes the floor; the rule stays registered for any future gap.",
       "value": 0
     },
+    "mbpi_rx": {
+      "classified_strata": {
+        "ChEMBL_37:CHEMBL1790|EC50": "include",
+        "ChEMBL_37:CHEMBL1855|IC50": "include",
+        "ChEMBL_37:CHEMBL1914|IC50": "include",
+        "ChEMBL_37:CHEMBL1921|EC50": "include",
+        "ChEMBL_37:CHEMBL2392|Potency": "include",
+        "ChEMBL_37:CHEMBL247|EC50": "include",
+        "ChEMBL_37:CHEMBL247|IC50": "include",
+        "ChEMBL_37:CHEMBL2808|EC50": "include",
+        "ChEMBL_37:CHEMBL3309|IC50": "include",
+        "ChEMBL_37:CHEMBL335|IC50": "include",
+        "ChEMBL_37:CHEMBL378|EC50": "include",
+        "ChEMBL_37:CHEMBL378|IC50": "include",
+        "ChEMBL_37:CHEMBL395|IC50": "include",
+        "ChEMBL_37:CHEMBL398|IC50": "include",
+        "ChEMBL_37:CHEMBL4303835|IC50": "include",
+        "ChEMBL_37:CHEMBL4822|IC50": "include",
+        "ChEMBL_37:CHEMBL5118|IC50": "include",
+        "ChEMBL_37:CHEMBL5118|Ki": "include",
+        "ChEMBL_37:CHEMBL5763|IC50": "include",
+        "ChEMBL_37:CHEMBL5952|EC50": "include",
+        "ChEMBL_37:CHEMBL5952|Ki": "include",
+        "ChEMBL_37:CHEMBL5980|EC50": "include",
+        "ChEMBL_37:CHEMBL612851|IC50": "include",
+        "ChEMBL_37:CHEMBL613966|EC50": "include",
+        "ahtpdb-ace-ic50-hhl-cushman-cheung": "exclude",
+        "amp-dbaasp-mic-broth-bacillus-subtilis": "include",
+        "amp-dbaasp-mic-broth-escherichia-coli": "include",
+        "amp-dbaasp-mic-broth-pseudomonas-aeruginosa": "include",
+        "amp-dbaasp-mic-broth-staphylococcus-aureus": "include",
+        "amp-dbaasp-mic-broth-streptococcus-agalactiae": "include",
+        "amp-dbaasp-mic-broth-vibrio-anguillarum": "include",
+        "amp-dbaasp-mic-broth-vibrio-parahaemolyticus": "include",
+        "anticancer-cancerppd-ic50-a-549": "include",
+        "anticancer-cancerppd-ic50-ccrf-cem": "include",
+        "anticancer-cancerppd-ic50-h-157": "include",
+        "anticancer-cancerppd-ic50-h-838": "include",
+        "anticancer-cancerppd-ic50-hct-116": "include",
+        "anticancer-cancerppd-ic50-hela": "include",
+        "anticancer-cancerppd-ic50-hepg-2": "include",
+        "anticancer-cancerppd-ic50-hmler": "include",
+        "anticancer-cancerppd-ic50-hmler-shecad": "include",
+        "anticancer-cancerppd-ic50-ht-29": "include",
+        "anticancer-cancerppd-ic50-jurkat": "include",
+        "anticancer-cancerppd-ic50-k-562": "include",
+        "anticancer-cancerppd-ic50-mcf-7": "include",
+        "anticancer-cancerppd-ic50-mda-mb-231": "include",
+        "anticancer-cancerppd-ic50-pc-3": "include",
+        "anticancer-cancerppd-ic50-sw": "include",
+        "anticancer-cancerppd-ic50-u-2-os": "include",
+        "anticancer-cancerppd-ic50-u-251-mg": "include",
+        "wijesinghe-2011-cell-free-ACE-IC50": "include",
+        "xo-peptide-literature-2026-10-05": "exclude"
+      },
+      "criterion": "그 층의 비교집단이 식품 단백질(가수분해·발효 포함) 유래 기능성 펩타이드를 모은 DB 또는 문헌 집합인가. 그렇다면 제외, 아니면 포함한다. 비교집단 파일·출처 기록과 출처 논문 초록으로만 판단하고 종의 점수는 보지 않는다.",
+      "excluded_label": "ACE·잔틴 산화효소 펩타이드",
+      "excluded_strata": [
+        "ahtpdb-ace-ic50-hhl-cushman-cheung",
+        "xo-peptide-literature-2026-10-05"
+      ],
+      "label": "의약 후보 MBPI(보조, 탐색적)",
+      "new_strata": "A stratum missing from classified_strata stops the build and the MBPI-Rx post-hoc check; it is classified in a new pre-registration, never by default.",
+      "prereg": "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md",
+      "reasons": {
+        "no_item": "MBPI 항목이 없습니다",
+        "only_excluded": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다"
+      },
+      "rule": "MBPI-Rx = the published MBPI rule (each bioactivity_trace item's own adjusted value = within-stratum percentile x evidence factor, the species maximum, round1) over the items whose stratum is classified 'include'. Nothing is recomputed and no item, cohort or factor is added. The 4.3 floor (mbpi_floor) does not apply: with no remaining item the value is null with a reason, never 0 or another species' value. Secondary and exploratory: never in scores, BBVI, labels, the matrix, use chips, the map, the expedition or unexplored candidates.",
+      "status": "exploratory_secondary"
+    },
     "mcui_substitutes": {
       "applies_when_reason": [
         "not_in_red_list"
@@ -25505,7 +25857,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.9",
+    "method_version": "verified-4.10",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -25817,6 +26169,38 @@
           "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
           "result": "failed"
         },
+        "MBPI_RX": {
+          "case_mbpi": {
+            "Conus magus": null,
+            "Ecteinascidia turbinata": 56.1,
+            "Halichondria okadai": 73.8
+          },
+          "cases": [
+            "Conus magus (ziconotide)",
+            "Halichondria okadai (eribulin; halichondrin B)",
+            "Ecteinascidia turbinata (trabectedin)"
+          ],
+          "caveats": [
+            "All case items are ChEMBL strata, so the case values and their caveats are those of MBPI (validation_sets.MBPI.caveats)."
+          ],
+          "computed": 2,
+          "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+          "expected_result": "failed",
+          "exploratory": true,
+          "n": 3,
+          "operating_max_mbpi": 62.6,
+          "operating_max_species": "참굴",
+          "operating_without_value": [
+            "미역",
+            "살오징어",
+            "해삼"
+          ],
+          "prereg": "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md",
+          "reading": "Read as for MBPI: a computed case species must rank above every operating species that has an MBPI-Rx; an operating species with a null MBPI-Rx (no item outside the excluded strata) leaves the comparison.",
+          "reason": "ACE 저해·잔틴 산화효소 펩타이드 층을 뺀 MBPI-Rx로 같은 사후 검증을 다시 했습니다. 운영 8종 중 미역·살오징어·해삼은 그 층 밖의 항목이 없어 비교에서 빠졌고, 남은 5종의 최댓값은 참굴 62.6(항균 펩타이드 Cg-BigDef1)입니다. Halichondria okadai 73.8은 그보다 높지만 Ecteinascidia turbinata 56.1은 낮아 기준 미충족입니다. Conus magus는 기존과 같이 계산되지 않습니다. 사전 등록 때 미리 계산해 적어 둔 예상과 같습니다. 기존 결과를 본 뒤 제안한 규칙이라 확증이 아닌 탐색적 재검토이며, 기본 MBPI·BBVI와 그 라벨은 바뀌지 않습니다.",
+          "record": "research/verified-indices/posthoc-validation-mbpi-rx-4.10-2026-10-12.json",
+          "result": "failed"
+        },
         "MCUI": {
           "cases": [
             "Apostichopus japonicus"
@@ -26052,7 +26436,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.9",
+  "method_version": "verified-4.10",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -26102,6 +26486,38 @@
         "reading": "Read literally as above every operating species that has an MBPI; the wording was registered without a numeric threshold.",
         "reason": "약물이 나온 해양생물 3종을 지금의 MBPI 규칙 그대로 계산했습니다. Halichondria okadai는 73.8(okadaic acid), Ecteinascidia turbinata는 56.1(ET-770)로 둘 다 운영 종 참굴 96.3·미역 95.3보다 낮아 기준 미통과입니다. Conus magus는 Wikidata에 이 종(이명 포함)과 화합물을 잇는 P703 연결이 없어 계산되지 않습니다(ziconotide도 연결되지 않았고, 연결되더라도 승인 약물 제외 규칙으로 빠집니다). 낮게 나온 주원인은 효능이 아니라 근거 계수입니다(연결 논문·활성 문서가 1편이면 0.75). 계수를 곱하기 전 백분위는 99.75·98.34로 참굴 96.31보다 높습니다. 결과를 보고 계수나 기준을 바꾸지 않았습니다.",
         "record": "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
+        "result": "failed"
+      },
+      "MBPI_RX": {
+        "case_mbpi": {
+          "Conus magus": null,
+          "Ecteinascidia turbinata": 56.1,
+          "Halichondria okadai": 73.8
+        },
+        "cases": [
+          "Conus magus (ziconotide)",
+          "Halichondria okadai (eribulin; halichondrin B)",
+          "Ecteinascidia turbinata (trabectedin)"
+        ],
+        "caveats": [
+          "All case items are ChEMBL strata, so the case values and their caveats are those of MBPI (validation_sets.MBPI.caveats)."
+        ],
+        "computed": 2,
+        "criterion": "Origin species of a marine-derived drug at or beyond clinical stage should rank above operating candidates.",
+        "expected_result": "failed",
+        "exploratory": true,
+        "n": 3,
+        "operating_max_mbpi": 62.6,
+        "operating_max_species": "참굴",
+        "operating_without_value": [
+          "미역",
+          "살오징어",
+          "해삼"
+        ],
+        "prereg": "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md",
+        "reading": "Read as for MBPI: a computed case species must rank above every operating species that has an MBPI-Rx; an operating species with a null MBPI-Rx (no item outside the excluded strata) leaves the comparison.",
+        "reason": "ACE 저해·잔틴 산화효소 펩타이드 층을 뺀 MBPI-Rx로 같은 사후 검증을 다시 했습니다. 운영 8종 중 미역·살오징어·해삼은 그 층 밖의 항목이 없어 비교에서 빠졌고, 남은 5종의 최댓값은 참굴 62.6(항균 펩타이드 Cg-BigDef1)입니다. Halichondria okadai 73.8은 그보다 높지만 Ecteinascidia turbinata 56.1은 낮아 기준 미충족입니다. Conus magus는 기존과 같이 계산되지 않습니다. 사전 등록 때 미리 계산해 적어 둔 예상과 같습니다. 기존 결과를 본 뒤 제안한 규칙이라 확증이 아닌 탐색적 재검토이며, 기본 MBPI·BBVI와 그 라벨은 바뀌지 않습니다.",
+        "record": "research/verified-indices/posthoc-validation-mbpi-rx-4.10-2026-10-12.json",
         "result": "failed"
       },
       "MCUI": {
@@ -28574,7 +28990,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28803,6 +29219,14 @@
       "korean_name": "미역",
       "mbpi_floor": null,
       "mbpi_label": null,
+      "mbpi_rx": {
+        "excluded_item_count": 8,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "sub_national",
       "mcui_substitute": {
@@ -29240,7 +29664,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -29792,6 +30216,14 @@
       "korean_name": "해삼",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 1,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -30212,7 +30644,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -30874,6 +31306,20 @@
       "korean_name": "멍게",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 13.463154492566257,
+          "compound_id": "CHEMBL450953",
+          "evidence_factor": 0.75,
+          "percentile": 17.95,
+          "trace_index": 0
+        },
+        "value": 13.5
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "preliminary",
       "mcui_substitute": {
@@ -31386,7 +31832,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32090,6 +32536,14 @@
       "korean_name": "살오징어",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 2,
+        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
+        "stratum_id": null,
+        "stratum_kind": null,
+        "top_item": null,
+        "value": null
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "iucn",
       "mcui_substitute": null,
@@ -32415,7 +32869,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32670,6 +33124,20 @@
       "korean_name": "우뭇가사리",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 13.542053149058528,
+          "compound_id": "CHEMBL510103",
+          "evidence_factor": 0.5625,
+          "percentile": 24.07,
+          "trace_index": 0
+        },
+        "value": 13.5
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "range_state",
       "mcui_substitute": {
@@ -33272,7 +33740,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33517,6 +33985,20 @@
       "korean_name": "톳",
       "mbpi_floor": null,
       "mbpi_label": null,
+      "mbpi_rx": {
+        "excluded_item_count": 3,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL2808|EC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 45.26820231958763,
+          "compound_id": "CHEMBL275911",
+          "evidence_factor": 0.5625,
+          "percentile": 80.48,
+          "trace_index": 5
+        },
+        "value": 45.3
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "sub_national",
       "mcui_substitute": {
@@ -33931,7 +34413,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34572,7 +35054,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.9 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.10 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -34696,6 +35178,20 @@
       "korean_name": "홍합(참담치)",
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
+      "mbpi_rx": {
+        "excluded_item_count": 0,
+        "reason": null,
+        "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
+        "stratum_kind": "chembl",
+        "top_item": {
+          "adjusted": 10.097365869424692,
+          "compound_id": "CHEMBL450953",
+          "evidence_factor": 0.5625,
+          "percentile": 17.95,
+          "trace_index": 0
+        },
+        "value": 10.1
+      },
       "mbpi_stratum": "chembl",
       "mcui_basis": "national",
       "mcui_substitute": null,
@@ -35390,7 +35886,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.9",
+        "method_version": "verified-4.10",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36075,6 +36571,28 @@
       "korean_name": "참굴",
       "mbpi_floor": null,
       "mbpi_label": null,
+      "mbpi_rx": {
+        "excluded_item_count": 2,
+        "reason": null,
+        "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+        "stratum_kind": "amp",
+        "top_item": {
+          "adjusted": 62.628865979381445,
+          "evidence_factor": 0.75,
+          "percentile": 83.51,
+          "record_ids": [
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MRSA 31/01/14-B-5284",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MRSA strain 53863",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MRSA strain 7877",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MRSA, GISA 24/11/08-B-1347",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MSSA 07/02/14-B-5264",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:Newman",
+            "10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:SG511"
+          ],
+          "trace_index": 2
+        },
+        "value": 62.6
+      },
       "mbpi_stratum": "peptide",
       "mcui_basis": "national",
       "mcui_substitute": null,
