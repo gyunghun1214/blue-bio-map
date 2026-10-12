@@ -33,6 +33,12 @@
    "BBVI": 68.5
   },
   {
+   "aphiaID": 1666974,
+   "label": "갑오징어",
+   "name": "Acanthosepion esculentum",
+   "BBVI": 65.1
+  },
+  {
    "aphiaID": 371986,
    "label": "감태",
    "name": "Ecklonia cava",
@@ -60,12 +66,6 @@
    "aphiaID": 534443,
    "label": "참문어(동아시아 종)",
    "name": "Octopus sinensis",
-   "BBVI": 54.2
-  },
-  {
-   "aphiaID": 1666974,
-   "label": "갑오징어",
-   "name": "Acanthosepion esculentum",
    "BBVI": 54.2
   },
   {
@@ -122,7 +122,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 65.1
     }
    ]
   },
@@ -204,7 +204,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 65.1
     }
    ]
   },
@@ -286,7 +286,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 65.1
     }
    ]
   },
