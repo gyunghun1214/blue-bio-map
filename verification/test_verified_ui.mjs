@@ -404,6 +404,16 @@ assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721:
   assert.doesNotMatch(mbpi,/참고값\(근거 논문 1편\)/);}
 assert.equal(ctx.score(by(145721),'MBPI'),95.3);
 assert.equal(ctx.score(by(145721),'BBVI'),71.0);
+// 2026-10-12: the MBPI section opens with one line from published values only (the post-hoc result, the aggregation range),
+// then the top item's stratum; the summary names the stratum too, and the reason paragraph below stays.
+{const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
+  assert.match(mbpi,/<b>95\.3 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드<\/b><\/summary>/);
+  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–95.3</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)</p>'),'wakame first line');
+  assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('사후 검증(약물 기원종'),'the first line sits above the reason paragraph');
+  assert.ok(mbpi.includes('기준 미충족입니다'),'the published reason reads in the neutral words');}
+assert.doesNotMatch(html,/미통과/);
+{const mbpi=ctx.renderScores(by(241776)).split('data-axis="MBPI"')[1].split('data-axis="MCUI"')[0];
+  assert.ok(mbpi.includes('<b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 바뀌지 않음(항목 1개)</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');}
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 html=ctx.renderScores(by(836033));
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
