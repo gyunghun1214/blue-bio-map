@@ -542,6 +542,15 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 #comparison td.cmp-occ{min-width:96px}
 #comparison td .coverage-bar{min-width:200px}#comparison td.cmp-cov{min-width:210px}
 #comparison td .coverage-bar .seg b{font-size:9.5px}
+/* 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx. In the detail it sits under MBPI, indented with a dashed edge so it
+   reads as a note on MBPI rather than a fifth indicator; in the table it is a number and a grey bar without a button. */
+.score-disclosure.rx-disclosure{margin:-4px 0 10px 18px;border-style:dashed}
+.score-disclosure.rx-disclosure summary{padding:8px 0}
+.score-disclosure.rx-disclosure summary span{color:var(--muted);font-size:12.5px;font-weight:600}
+.score-disclosure.rx-disclosure summary b{font-size:12px}
+#comparison .rx-cv{display:block;min-width:64px;padding:4px 6px}
+#comparison .rx-cv .cv-bar i{background:#8aa0b0}
+#comparison .rx-none{color:var(--muted);font-weight:500}
 
 /* Design 07 (2026-10-10): phone layout. The map sits at the top (about 55% of the screen) and stays there; the species pane,
    map notes and detail slide over it as one bottom sheet (white backdrop from the handle down). Wider screens are unchanged. */

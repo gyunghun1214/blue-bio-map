@@ -32,14 +32,31 @@ const MBPI_STRATUM_LABELS={
 };
 const MBPI_STRATUM_KEYS={id:{'ahtpdb-ace-ic50-hhl-cushman-cheung':'ace_peptide','wijesinghe-2011-cell-free-ACE-IC50':'ace_compound'},
   kind:{peptide:'ace_peptide',chembl:'chembl',relaxed:'relaxed',anticancer:'anticancer',amp:'amp',xo:'xo'},species:{small_molecule:'compound'}};
-// The stratum of the species' top MBPI item, or null without an item; an unregistered stratum never shows its raw id.
-const mbpiStratum = a => {
-  const t=bestBio(a);if(!t)return null;
+// The stratum of one trace item; an unregistered stratum never shows its raw id.
+const itemStratum = (t,a) => {
   const key=MBPI_STRATUM_KEYS.id[t.stratum_id]||MBPI_STRATUM_KEYS.kind[t.stratum_kind]||MBPI_STRATUM_KEYS.species[a.mbpi_stratum]||null, e=MBPI_STRATUM_LABELS[key];
   return e?{key,ace:!!e.ace,short:e.short,long:e.long(t)}:{key:null,ace:false,short:'층 이름 미등록',long:'층 이름 미등록'};
 };
+// The stratum of the species' top MBPI item, or null without an item.
+const mbpiStratum = a => {const t=bestBio(a);return t?itemStratum(t,a):null;};
 // Named only beside an MBPI that comes from an item: never beside a withheld MBPI or the 0-point floor.
 const mbpiStratumOf = s => !s?.assessment||axisState(s,'MBPI').value===null||s.assessment.mbpi_floor?null:mbpiStratum(s.assessment);
+// 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx (method.mbpi_rx) is the MBPI rule over the trace items whose stratum
+// the pre-registration classed 'include' (ACE and xanthine-oxidase peptide strata out). The browser re-derives it from the
+// trace as it does MBPI and shows it only in the species detail, the compare data table and #method-03, never in BBVI, cards,
+// the map, the matrix or the expedition. {value, stratum} or {value:null, reason}; null when absent, MBPI hidden or a fault.
+const mbpiRxOf = s => {
+  const a=s?.assessment, rule=data?.assessmentInfo?.method?.mbpi_rx, rx=a?.mbpi_rx;
+  if(!rule||!rx||a.axis_errors?.MBPI||axisState(s,'MBPI').value===null)return null;
+  const items=a.bioactivity_trace||[], cls=rule.classified_strata||{};
+  if(items.some(x=>!['include','exclude'].includes(cls[x.stratum_id])))return null;
+  const kept=items.filter(x=>cls[x.stratum_id]==='include');
+  if(rx.excluded_item_count!==items.length-kept.length)return null;
+  if(!kept.length)return rx.value===null&&!!rx.reason&&rx.reason===rule.reasons?.[items.length?'only_excluded':'no_item']?{value:null,reason:rx.reason}:null;
+  const best=Math.max(...kept.map(x=>x.adjusted)), top=items[rx.top_item?.trace_index];
+  if(!top||cls[top.stratum_id]!=='include'||top.adjusted!==best||top.stratum_id!==rx.stratum_id||!Number.isFinite(rx.value)||Math.abs(rx.value-best)>=.06)return null;
+  return {value:rx.value,stratum:itemStratum(top,a)};
+};
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -1332,6 +1349,20 @@ function mbpiFirstLine(s){
     Array.isArray(range)&&range.length===2?(range[0]===range[1]?`집계 방식에 따라 바뀌지 않음(항목 ${(a.bioactivity_trace||[]).length}개)`:`집계 방식에 따라 ${range.join('–')}`):''].filter(Boolean);
   return parts.length||st?`<p class="fine mbpi-first">${parts.length?`<b>${esc(parts.join(' · '))}</b>`:''}${st?`${parts.length?'<br>':''}근거 층: ${esc(st.long)}`:''}</p>`:'';
 }
+// 4.10: one line under the MBPI section for the secondary MBPI-Rx (mbpiRxOf); it opens to the published post-hoc reason, the
+// classification criterion and the pre-registration. A null value reads 없음 with the published reason, never 0.
+function mbpiRxLine(s){
+  const r=mbpiRxOf(s), rule=data.assessmentInfo?.method?.mbpi_rx, v=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI_RX;
+  if(!r)return '';
+  const check=['passed','failed'].includes(v?.result)?`사후 검증 ${v.result==='passed'?'통과':'기준 미충족'}(탐색적 재검토)`:'';
+  const head=[r.value===null?'없음 · '+r.reason:r.value.toFixed(1)+' · '+r.stratum.short,check].filter(Boolean).join(' · ');
+  return `<details class="score-disclosure rx-disclosure"><summary><span>${esc(rule.label)}</span><b>${esc(head)}</b></summary><div class="score-disclosure-body">`+
+    `<p class="fine">MBPI와 같은 규칙으로 모으되 ${esc(rule.excluded_label)} 층의 항목은 뺀 값입니다(이 종에서 뺀 항목 ${esc(s.assessment.mbpi_rx.excluded_item_count)}개). 남는 항목이 없으면 0점 하한값 대신 '없음'으로 둡니다. 기본 MBPI·BBVI·매트릭스에는 쓰지 않습니다.</p>`+
+    (r.value===null?'':`<p class="fine">근거 층: ${esc(r.stratum.long)}</p>`)+
+    `<p class="fine">층 분류 기준: ${esc(rule.criterion)}</p>`+
+    (check&&v.reason?`<p class="fine">사후 검증(약물 기원종 ${esc(v.n)}종 중 ${esc(v.computed)}종 계산): ${esc(v.reason)}</p>`:'')+
+    `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
+}
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
@@ -1358,7 +1389,7 @@ function renderVerifiedIndices(s){
         `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
-        `</div></details>`;
+        `</div></details>`+(key==='MBPI'?mbpiRxLine(s):'');
     }).join('')}${unexplored}<p class="fine">정보충분도: ${sufficiencyText(a)} `+
     `민감도 범위는 통계적 신뢰구간이 아닙니다.</p></section>`;
 }
@@ -2639,23 +2670,30 @@ function renderComparison(){
     return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}</span>${bar}</button>`,
       more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
   };
+  // 4.10: the secondary MBPI-Rx, a number and a bar (no evidence button: its line and reason sit under the detail's MBPI);
+  // '–' when the species has none. Its sort key keeps those rows last in both directions.
+  const rxCell=s=>{const r=mbpiRxOf(s);return r&&r.value!==null?`<span class="cv rx-cv"><span class="cv-num">${r.value.toFixed(1)}</span><span class="cv-bar" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,r.value))}%"></i></span></span>`
+    :'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">없음</span></span>';};
+  const rxMore=s=>{const r=mbpiRxOf(s),v=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI_RX;if(!r)return null;
+    const check=['passed','failed'].includes(v?.result)?` · 사후 검증 ${v.result==='passed'?'통과':'기준 미충족'}(탐색적 재검토)`:'';
+    return r.value===null?`없음<small>${esc(r.reason)}${check} · 점수 아님</small>`:`${r.value.toFixed(1)}<small>${esc(r.stratum.short)}${check} · MBPI·BBVI에 쓰지 않음</small>`;};
   const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
   const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'▲':'▼'):'↕'}</i></button></th>`;};
   const coverageNote=`발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed'&&!v.exploratory)?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님`;
   const row=s=>{
-    const id=s.aphiaID, cells=Object.fromEntries(['MFPI','MBPI','BBVI','MCUI'].map(k=>[k,valueCell(s,k)])), occ=occurrenceCell(s), open=cmpOpen.has(id);
+    const id=s.aphiaID, cells=Object.fromEntries(['MFPI','MBPI','BBVI','MCUI'].map(k=>[k,valueCell(s,k)])), occ=occurrenceCell(s), open=cmpOpen.has(id), rx=rxMore(s);
     const occShort=s.cells.length?cellCountLabel(s):occ.includes('<small>')&&!occ.startsWith('<span')?occ.slice(0,occ.indexOf('<small>')):occ;
     const more=[['학명·식별자',`WoRMS 확인<small>${esc(s.name)} · AphiaID ${id}</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')],['출현기록',occ],
-      ...['MFPI','MBPI','BBVI','MCUI'].filter(k=>cells[k].more).map(k=>[titles[k],cells[k].more]),['자료 연결 현황',`<small>${coverageNote}</small>`]];
+      ...['MFPI','MBPI','BBVI','MCUI'].flatMap(k=>[...cells[k].more?[[titles[k],cells[k].more]]:[],...k==='MBPI'&&rx?[['의약 후보 MBPI · 보조, 탐색적',rx]]:[]]),['자료 연결 현황',`<small>${coverageNote}</small>`]];
     return `<tr class="cmp-row" data-aphia="${id}"><th scope="row"><b>${esc(s.label)}</b><small>${esc(s.name)}</small></th><td>${typeChip(s)}</td>`+
-      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val">${cells[k].main}</td>`).join('')+
+      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val">${cells[k].main}</td>`+(k==='MBPI'?`<td class="cmp-val cmp-rx">${rxCell(s)}</td>`:'')).join('')+
       `<td class="cmp-ev">${evidenceChips(s)}</td><td class="cmp-occ"><button class="score-cell" data-score-aphia="${id}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">${occShort}<small>지도·셀 목록 보기</small></button></td>`+
       `<td class="cmp-cov"><span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}</td>`+
       `<td><button type="button" class="cmp-more-btn" aria-expanded="${open}" aria-controls="cmp-more-${id}" aria-label="${esc(s.label)} 자세히">자세히</button></td></tr>`+
-      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="10"><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></td></tr>`;
+      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="11"><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></td></tr>`;
   };
   $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 자료 연결 현황 · 정렬: ${cmpSortLabel()}</caption>`+
-    `<thead><tr>${sortTh('name','종')}<th scope="col">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('BBVI','BBVI<small>통합</small>')}${sortTh('MCUI','MCUI<small>보전</small>')}<th scope="col">근거 수준</th><th scope="col">출현기록</th><th scope="col">자료 연결 현황</th><th scope="col"><span class="sr-only">자세히</span></th></tr></thead>`+
+    `<thead><tr>${sortTh('name','종')}<th scope="col">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>보조·탐색적</small>')}${sortTh('BBVI','BBVI<small>통합</small>')}${sortTh('MCUI','MCUI<small>보전</small>')}<th scope="col">근거 수준</th><th scope="col">출현기록</th><th scope="col">자료 연결 현황</th><th scope="col"><span class="sr-only">자세히</span></th></tr></thead>`+
     `<tbody>${compared.map(row).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
@@ -2683,15 +2721,15 @@ function syncComparison(){
 // Design 05 (2026-10-10): one row per species, sortable columns. Value cells keep their evidence buttons (number + thin bar,
 // the full label in aria-label); every long line that used to sit in a cell moves, unchanged, to the row's "자세히" panel.
 let cmpSort={key:null,dir:null};const cmpOpen=new Set();
-const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',BBVI:'BBVI',MCUI:'MCUI'};
-const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
+const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',MBPI_RX:'MBPI-Rx',BBVI:'BBVI',MCUI:'MCUI'};
+const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${CMP_SORT_NAME[cmpSort.key]||cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
 function cmpSorted(){
   const list=data.species.map((s,i)=>[s,i]);if(!cmpSort.key)return data.species.slice();
   const k=cmpSort.key, sign=cmpSort.dir==='asc'?1:-1;
   list.sort(([a,i],[b,j])=>{
     if(k==='name')return sign*a.label.localeCompare(b.label,'ko')||i-j;
-    const x=pilotScore(a,k),y=pilotScore(b,k);
-    if(x===null||y===null)return (x===null)-(y===null)||i-j;  // values without a score stay last in both directions
+    const val=s=>k==='MBPI_RX'?mbpiRxOf(s)?.value??null:pilotScore(s,k), x=val(a),y=val(b);
+    if(x===null||y===null)return (x===null)-(y===null)||i-j;  // values without a score (MBPI-Rx '–' too) stay last in both directions
     return sign*(x-y)||i-j;});
   return list.map(([s])=>s);
 }

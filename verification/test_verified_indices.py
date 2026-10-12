@@ -3626,6 +3626,11 @@ class Verified410Tests(unittest.TestCase):
         for a, s in self.new.items():
             self.assertEqual((s["scores"], s.get("mbpi_label"), s.get("bbvi_label")),
                              (self.old[a]["scores"], self.old[a].get("mbpi_label"), self.old[a].get("bbvi_label")), a)
+        # nor any other published file: the matrix, the expedition stops and page, unexplored candidates, the chatbot
+        for name in ("matrix-readiness.json", "expedition-stops.json", "unexplored-candidates.json", "expedition.js", "chatbot.js", "live-data.js"):
+            text = (ROOT / "dist" / name).read_text(encoding="utf-8")
+            for word in ("mbpi_rx", "MBPI_RX", "MBPI-Rx", "의약 후보"):
+                self.assertNotIn(word, text, name)
 
     def test_posthoc_rx_record_matches_its_computation(self):
         import posthoc_validation as P

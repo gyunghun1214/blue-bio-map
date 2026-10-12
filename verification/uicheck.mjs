@@ -398,6 +398,34 @@ try{
     /95\.3 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드/.test(strat.summary)&&
     strat.first.startsWith('사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–95.3근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
+  // 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx is one line under the detail's MBPI (opening to its reason and the
+  // pre-registration), one sortable column in the compare data table and a line in #method-03, and nowhere else on the page.
+  const rx=await evaluate(`(()=>{const r={},keep={view:currentView,mode:cmpMode,sort:{...cmpSort},basket:[...cmpBasket],sel:selected.aphiaID};
+    const box=document.createElement('div'),one=id=>data.species.find(x=>x.aphiaID===id);
+    box.innerHTML=renderVerifiedIndices(one(836033));const d=box.querySelector('details.rx-disclosure');
+    r.order=[...box.querySelectorAll('details.score-disclosure')].map(x=>x.dataset.axis||'RX').join();r.oy=d?.querySelector('summary')?.textContent||'';r.body=d?.querySelector('.score-disclosure-body')?.textContent||'';
+    box.innerHTML=renderVerifiedIndices(one(145721));r.wak=box.querySelector('details.rx-disclosure summary')?.textContent||'';
+    setView('compare',false);setCompareMode('table');cmpSort={key:null,dir:null};renderComparison();const c=document.getElementById('comparison'),cells=()=>[...c.querySelectorAll('tbody tr.cmp-row')].map(tr=>tr.querySelector('td.cmp-rx')?.textContent);
+    r.heads=[...c.querySelectorAll('thead [data-sort]')].map(b=>b.dataset.sort).join();r.rxHead=c.querySelector('[data-sort=MBPI_RX]')?.textContent||'';r.start=cells();
+    c.querySelector('[data-sort=MBPI_RX]').click();r.desc=cells();r.label=document.getElementById('comparison-page').textContent;r.focus=document.activeElement?.dataset?.sort||'';
+    c.querySelector('[data-sort=MBPI_RX]').click();r.asc=cells();c.querySelector('[data-sort=MBPI_RX]').click();r.reset=cells();
+    cmpBasket=[836033,145721];renderCompare();renderCompareDialog();setCompareMode('matrix');renderList();
+    r.elsewhere=['.species-list','#cmp-profile','#cmp-tray','#cmp-dialog-body','#matrix-points','#matrix-types','#map'].filter(q=>{const e=document.querySelector(q);if(!e)return false;
+      const t=e.textContent+' '+[...e.querySelectorAll('[title],[aria-label]')].map(x=>(x.title||'')+' '+(x.getAttribute('aria-label')||'')).join(' ');return /의약 후보|MBPI-Rx/.test(t);});
+    r.method=document.getElementById('method-03')?.textContent||'';
+    cmpSort=keep.sort;cmpBasket=keep.basket;setCompareMode(keep.mode);renderComparison();renderCompare();setView(keep.view,false);r.kept=selected.aphiaID===keep.sel;return r})()`);
+  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='–없음'?null:Number(x),vals=rxAll.filter(v=>v!==null);
+    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (19 values, 11 –, – last both ways); #method-03 names it; no card, profile, basket, dialog, matrix or map text mentions it',
+      rx.order==='MFPI,MBPI,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색적)62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)'&&
+      ['층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산)','사전 등록: research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md'].every(t=>rx.body.includes(t))&&
+      rx.wak==='의약 후보 MBPI(보조, 탐색적)없음 · 제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토)'&&
+      rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx보조·탐색적/.test(rx.rxHead)&&rx.start.length===total&&n===11&&vals.length===19&&
+      rx.start.filter(x=>x==='–없음').length===11&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
+      JSON.stringify(rx.desc.map(num))===JSON.stringify([...vals].sort((a,b)=>b-a).concat(Array(11).fill(null)))&&
+      JSON.stringify(rx.asc.map(num))===JSON.stringify([...vals].sort((a,b)=>a-b).concat(Array(11).fill(null)))&&
+      rx.label===`총 ${total}종 · 정렬: MBPI-Rx 높은 순`&&rx.focus==='MBPI_RX'&&JSON.stringify(rx.reset)===JSON.stringify(rx.start)&&
+      rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(보조) · 기준 미충족')&&rx.method.includes('prereg-mbpi-rx-4.10-2026-10-12.md')&&rx.kept,
+      JSON.stringify({...rx,start:rx.start.slice(0,8),desc:rx.desc.slice(0,5),asc:rx.asc.slice(0,5),reset:undefined,body:rx.body.slice(0,120),method:rx.method.slice(-200)}));}
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
   const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
