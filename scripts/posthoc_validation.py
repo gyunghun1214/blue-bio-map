@@ -10,6 +10,7 @@ The criteria are fixed before any result is read and nothing is tuned to pass:
   MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin), scored offline with the published ChEMBL
         rule from the stored case snapshot (3.27; before: not computable). Pass: a case species ranks above every operating
         species that has an MBPI.
+  (4.11: `--only mbpi` re-runs the MBPI check alone, after a rule change moved the operating species' values.)
   MBPI_RX  (4.10, exploratory) the same MBPI check with MBPI-Rx, the MBPI without the strata the pre-registration classifies
         as food-protein functional peptide collections (research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md). Same
         cases, case snapshot, operating species and reading; an operating species with a null MBPI-Rx leaves the comparison.
@@ -235,7 +236,8 @@ def mbpi_rx_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=ROOT / "dist" / "assessments.json")
-    parser.add_argument("--only", choices=["mbpi-rx"], help="run one check alone (4.10: mbpi-rx needs neither --mext nor --rapid-lc)")
+    parser.add_argument("--only", choices=["mbpi", "mbpi-rx"],
+                        help="run one check alone (4.10: mbpi-rx, 4.11: mbpi; neither needs --mext or --rapid-lc)")
     parser.add_argument("--mext", type=Path, help="MEXT 2020 chapter 2 workbook (20201225-mxt_kagsei-mext_01110_012.xlsx)")
     parser.add_argument("--rapid-lc", type=Path, help="Rapid LC back-test snapshot of the assessed species")
     parser.add_argument("--out", type=Path)
@@ -249,6 +251,14 @@ def main() -> None:
         out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print({"MBPI_RX": out["MBPI_RX"]["result"]}, {r["scientific_name"]: r["mbpi_rx"] for r in out["MBPI_RX"]["rows"]},
               max(out["MBPI_RX"]["operating_mbpi_rx"].values(), default=None))
+        return
+    if args.only == "mbpi":  # 4.11: the MBPI check re-run after a rule change moved the operating species' MBPI
+        version = report["method_version"].removeprefix("verified-")
+        out_path = args.out or ROOT / "research" / "verified-indices" / f"posthoc-validation-mbpi-{version}-{date.today()}.json"
+        out = {"generated_on": str(date.today()), "report_version": report["method_version"], "MBPI": mbpi_check(report, report["method"])}
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print({"MBPI": out["MBPI"]["result"]}, {r["scientific_name"]: r["mbpi"] for r in out["MBPI"]["rows"]},
+              max(out["MBPI"]["operating_mbpi"].values(), default=None))
         return
     if not (args.mext and args.rapid_lc):
         parser.error("--mext and --rapid-lc are required unless --only is given")

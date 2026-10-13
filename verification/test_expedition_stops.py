@@ -50,8 +50,10 @@ class ExpeditionStops(unittest.TestCase):
             self.assertEqual(stop["bio"]["percentile"], best["percentile"])
             self.assertEqual(stop["bio"]["dois"], best["original_paper_dois"])
         self.assertEqual(self.out["method_version"], self.report["method_version"])
-        # 큰가리비 has no BBVI label in the report: it stays without one
-        self.assertIsNone(next(s for s in self.out["stops"] if s["aphia_id"] == 393716)["bbvi_label"])
+        # 4.11: 큰가리비's VW replication came from wakame, another origin, so it carries the report's '단일 논문' label;
+        # 미역 (its own purified VW) is the one stop without it
+        self.assertEqual(next(s for s in self.out["stops"] if s["aphia_id"] == 393716)["bbvi_label"], "단일 논문")
+        self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["bbvi_label"] is None], [145721])
         self.assertTrue(all(s["candidate_label"] == "조사 후보" for s in self.out["stops"] if s["group"] == "candidate"))
 
     def test_mcui_source_is_read_from_the_record_never_an_all_null_dict(self):
@@ -59,8 +61,12 @@ class ExpeditionStops(unittest.TestCase):
             src = stop["mcui"]["source"]
             self.assertTrue(src is None or (src["id"] and src["title"] and src["url"]), (stop["korean_name"], src))
         ids = {s["aphia_id"]: (s["mcui"]["source"] or {}).get("id") for s in self.out["stops"]}
-        # the two released stops whose source was empty before: 멍게 (preliminary) and 우뭇가사리 (range_state)
-        self.assertEqual(ids[250680], "bachman_2020_rapid_lc")
+        # the two released stops whose source was empty before: 멍게 (preliminary) and 우뭇가사리 (range_state).
+        # 4.11: 멍게's Rapid LC is not scored (reporting rate at the decline ratio), so it names no source and says why
+        self.assertIsNone(ids[250680])
+        ascidian = next(s for s in self.out["stops"] if s["aphia_id"] == 250680)["mcui"]
+        self.assertEqual((ascidian["basis"], ascidian["category"]), (None, None))
+        self.assertIn("감소 기준", ascidian["label"])
         self.assertEqual(ids[372119], "russia_red_data_book_plants_2023")
         for stop in self.out["stops"]:
             rec = (self.species[stop["aphia_id"]].get("mcui_substitute") or {}).get("record") or {}
@@ -76,7 +82,11 @@ class ExpeditionStops(unittest.TestCase):
         self.assertEqual([s["order"] for s in self.out["stops"]], list(range(1, 31)))
         self.assertEqual(len(self.route), 29)
         self.assertEqual(self.out["stops"][:29], self.route, "stops off the route come last")
-        self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]}, {t["id"] for t in self.report["method"]["matrix"]["types"].values()})
+        # 4.11: no species is in the alternative-production quadrant (it held only the two sub-national species), and
+        # 멍게 has no MCUI, so no type
+        self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]},
+                         {t["id"] for t in self.report["method"]["matrix"]["types"].values()} - {"alternative_production"} | {None})
+        self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] is None], [250680])
 
     def test_centres_are_shared_only_where_shared_with_says_so(self):
         at = {}

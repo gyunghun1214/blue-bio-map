@@ -34,7 +34,8 @@ const report=JSON.parse(read('assessments.json'));
 const traces=new Map([...report.species,...report.candidate_species||[]].map(r=>[r.aphia_id,r.scores?.MBPI==null?[]:r.bioactivity_trace||[]]));
 const ECKLONIA=371986, CAPTION='감태 유래 분리 화합물';
 const N=(traces.get(ECKLONIA)||[]).filter(t=>!t.stratum_kind).reduce((a,t)=>a+(t.measurements||[]).length,0);
-assert.ok(N>0,'감태 has reviewed compound measurements');
+// 4.11 (prereg 3): the 6-compound 감태 cohort is below the 30-compound stratum minimum, so it gives no MBPI item and no table.
+assert.equal(N,0,'감태 compound cohort below the stratum minimum');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
 // A template that puts its own period after a source sentence that already ends in one prints '..' ('cod..'); '...' stays.
 const DOTS=/[^.]\.\.(?!\.)/g;
@@ -62,13 +63,14 @@ for(const s of next.species){
     if(en.length)p.push(`${en.length}× English reason or 누락 item (${en.map(r=>r.slice(0,40)).join(' | ')})`);
     const dots=[...h.matchAll(DOTS)].map(m=>h.slice(Math.max(0,m.index-20),m.index+3));
     if(dots.length)p.push(`${dots.length}× double period (${dots.join(' | ')})`);
-    const own=place==='detail'&&s.aphiaID===ECKLONIA, at=h.indexOf(CAPTION);
+    const own=place==='detail'&&s.aphiaID===ECKLONIA&&N>0, at=h.indexOf(CAPTION);
     if((at>=0)!==own)p.push(own?'감태 caption missing':'감태 caption');
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
     if(h.includes('github.com/gyunghun1214'))p.push('private repo link');
     // 3.24: a candidate whose top MBPI item rests on a used potency replication names it beside the origin papers
     const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null), used=(top?.potency_replications||[]).filter(r=>r.used).length;
-    if(place==='detail'&&s.catalog&&used){replicatedSpecies++;if(!h.includes(`효능 재현 ${used}편`))p.push('potency replication missing from the MBPI summary');}
+    // an operating species names it in the score-basis independence line instead (4.11: 미역's purified VW)
+    if(place==='detail'&&used){replicatedSpecies++;if(!h.includes(s.catalog?`효능 재현 ${used}편`:`효능 재현 ${used})`))p.push('potency replication missing from the MBPI summary');}
     if(place==='decision'){
       // Every MBPI item is named, with its stratum and, when it has measurements, a number. A field the shared helper
       // misses prints '' rather than 'undefined', so a stratum without its own branch shows up only here.
@@ -86,7 +88,7 @@ console.log(`findings ${findings.length} (detail ${count.detail} · decision ${c
 findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
-assert.ok(replicatedSpecies>0,'a candidate with a replicated top item (큰가리비, 3.24) was rendered');
+assert.ok(replicatedSpecies>0,'a species with a counted replication of its top item (미역 purified VW, 4.11) was rendered');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
 
 // 4.9: a relaxed item's replication is ranked on its own endpoint, so the row names its own scale and never says pIC50
@@ -95,7 +97,9 @@ $('detail').innerHTML='';T.renderCandidateDetail(next.species.find(s=>s.aphiaID=
 const reps=$('detail').innerHTML.slice($('detail').innerHTML.indexOf('효능 재현'));
 assert.ok(reps.includes('pKi 8.398 · 차이 0.218'),'갑오징어 replication row names its own pKi scale and gap');
 assert.ok(!reps.includes('pIC50'),'a Ki replication is never labelled pIC50');
-assert.ok(reps.includes('독립 DOI로 셈'),'the used replication says it is counted');
+// 4.11 (prereg 2): the commercial synthetic FMRFamide is another origin, so the row is shown and not counted
+assert.ok(!reps.includes('독립 DOI로 셈'),'a cross-origin replication is not counted from 4.11');
+assert.ok(reps.includes('다른 기원의 측정이라 효능만 재현합니다'),'the row says why it is not counted');
 assert.match(reps,/쓰지 않음: [^<]*[가-힣]/,'the candidate that is not counted says why, in Korean');
 assert.ok(reps.includes('효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'),'the row says it is not an origin or a score');
 console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean`);
