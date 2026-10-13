@@ -1,0 +1,221 @@
+{
+ "rim": {
+  "cx": 1259.5,
+  "cy": 695.7,
+  "R": 718.4,
+  "cx_w": 0.7533,
+  "cy_h": 0.7393,
+  "R_h": 0.7634,
+  "points": 154,
+  "median_residual_px": 0.58
+ },
+ "circle": {
+  "cx": 1254.0,
+  "cy": 681.8,
+  "R": 732.8,
+  "cx_w": 0.75,
+  "cy_h": 0.7246,
+  "R_h": 0.7787
+ },
+ "camera": {
+  "lon0": 136.823,
+  "lat0": 20.345,
+  "P": 2.7122,
+  "horizon_deg": 68.36
+ },
+ "korea_9deg_px": 147.1,
+ "landmarks": [
+  {
+   "name": "한반도 남단(땅끝)",
+   "lon": 126.53,
+   "lat": 34.3,
+   "design": [
+    1097,
+    436
+   ],
+   "model": [
+    1098.6,
+    423.0
+   ],
+   "error_px": 13.1,
+   "limit_px": 15,
+   "pass": true
+  },
+  {
+   "name": "제주 중심",
+   "lon": 126.55,
+   "lat": 33.38,
+   "design": [
+    1103,
+    465
+   ],
+   "model": [
+    1096.9,
+    438.9
+   ],
+   "error_px": 26.8,
+   "limit_px": 15,
+   "pass": false
+  },
+  {
+   "name": "산둥반도 끝",
+   "lon": 122.7,
+   "lat": 37.4,
+   "design": [
+    1043,
+    367
+   ],
+   "model": [
+    1052.7,
+    368.5
+   ],
+   "error_px": 9.8,
+   "limit_px": 15,
+   "pass": true
+  },
+  {
+   "name": "대만 북단",
+   "lon": 121.55,
+   "lat": 25.3,
+   "design": [
+    1003,
+    575
+   ],
+   "model": [
+    1002.0,
+    578.7
+   ],
+   "error_px": 3.8,
+   "limit_px": 15,
+   "pass": true
+  },
+  {
+   "name": "대만 남단",
+   "lon": 120.85,
+   "lat": 21.9,
+   "design": [
+    983,
+    640
+   ],
+   "model": [
+    983.9,
+    639.9
+   ],
+   "error_px": 0.9,
+   "limit_px": 15,
+   "pass": true
+  },
+  {
+   "name": "보하이만 안쪽",
+   "lon": 117.7,
+   "lat": 38.95,
+   "design": [
+    982,
+    341
+   ],
+   "model": [
+    993.2,
+    339.9
+   ],
+   "error_px": 11.3,
+   "limit_px": 30,
+   "pass": true
+  },
+  {
+   "name": "랴오둥반도 끝",
+   "lon": 121.15,
+   "lat": 38.72,
+   "design": [
+    1026,
+    340
+   ],
+   "model": [
+    1036.6,
+    346.1
+   ],
+   "error_px": 12.2,
+   "limit_px": 30,
+   "pass": true
+  },
+  {
+   "name": "하이난 남단",
+   "lon": 109.55,
+   "lat": 18.2,
+   "design": [
+    840,
+    651
+   ],
+   "model": [
+    810.2,
+    682.5
+   ],
+   "error_px": 43.4,
+   "limit_px": 30,
+   "pass": false
+  },
+  {
+   "name": "루손 북단",
+   "lon": 120.9,
+   "lat": 18.55,
+   "design": [
+    990,
+    683
+   ],
+   "model": [
+    979.0,
+    701.6
+   ],
+   "error_px": 21.6,
+   "limit_px": 30,
+   "pass": true
+  },
+  {
+   "name": "홋카이도 동단",
+   "lon": 145.82,
+   "lat": 43.38,
+   "design": [
+    1459,
+    211
+   ],
+   "model": [
+    1370.7,
+    277.1
+   ],
+   "error_px": 110.3,
+   "limit_px": 30,
+   "pass": false
+  },
+  {
+   "name": "규슈 남단",
+   "lon": 130.66,
+   "lat": 31.0,
+   "design": [
+    1195,
+    502
+   ],
+   "model": [
+    1156.0,
+    483.0
+   ],
+   "error_px": 43.4,
+   "limit_px": 30,
+   "pass": false
+  },
+  {
+   "name": "사할린 남단",
+   "lon": 142.08,
+   "lat": 45.9,
+   "design": [
+    1397,
+    152
+   ],
+   "model": [
+    1319.0,
+    241.2
+   ],
+   "error_px": 118.4,
+   "limit_px": 30,
+   "pass": false
+  }
+ ]
+}

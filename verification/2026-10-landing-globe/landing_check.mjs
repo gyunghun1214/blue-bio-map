@@ -136,7 +136,7 @@ try{
   fs.writeFileSync(path.join(OUT,'contrast.json'),JSON.stringify(contrastLog,null,1));
   // the clipped coastline file's box sides (105°E, 53°N, 20°N, 150°E) must not show as straight lines: crops to look at
   await open({w:1672,h:941});await waitReady();await sleep(2200);
-  const spots=await evaluate(`(()=>{const f=globeFrame(innerWidth,innerHeight,null);return [[105,42],[105,30],[120,53],[110,20],[150,47],[150,58]].map(([lon,lat])=>{const p=orthographic(lon,lat,...GLOBE_CENTER);return p&&{lon,lat,x:Math.round(f.cx+p.x*f.R),y:Math.round(f.cy-p.y*f.R)};})})()`);
+  const spots=await evaluate(`(()=>{const f=globeFrame(innerWidth,innerHeight,null);return [[105,42],[105,30],[120,53],[110,20],[150,47],[150,58]].map(([lon,lat])=>{const p=project(lon,lat);return p&&{lon,lat,x:Math.round(f.cx+p.x*f.R),y:Math.round(f.cy-p.y*f.R)};})})()`);
   for(const s of spots.filter(Boolean)){const x=Math.max(0,Math.min(1672-240,s.x-120)),y=Math.max(0,Math.min(941-160,s.y-80));await shot(`cut-${s.lon}E-${s.lat}N`,{x,y,width:240,height:160});}
   check('Cut-side crops captured on screen (105°E, 53°N, 20°N, 150°E)',spots.filter(Boolean).length>=4,JSON.stringify(spots));
   if(ONLY==='shots')throw 'done';

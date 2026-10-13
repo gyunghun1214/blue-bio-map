@@ -49,14 +49,24 @@ const arrival=(target,touch)=>{const view=target==='compare'||target==='method'?
 // The motion switch starts from the system setting; once flipped here it is remembered ('1' still, '0' moving).
 const motionPref=(stored,system)=>stored==='1'||(stored!=='0'&&!!system);
 
-// Orthographic projection (the globe seen from afar). Unit-disc coordinates, x right, y up, r=1 on the horizon; null
-// behind it, or with toRim the point pushed out onto the rim: an area running behind the globe is then closed along the
-// rim instead of being dropped whole.
-function orthographic(lon,lat,lon0,lat0,toRim){
+// Vertical perspective (the globe seen from P radii off its centre). Unit-disc coordinates, x right, y up, r=1 on the
+// horizon (acos(1/P) from the centre); null behind it, or with toRim the point pushed out onto the rim: an area running
+// behind the globe is then closed along the rim instead of being dropped whole. scripts/bake_globe.py bakes the picture
+// with the same formula.
+function perspective(lon,lat,lon0,lat0,P,toRim){
   const r=Math.PI/180,f=lat*r,f0=lat0*r,dl=(lon-lon0)*r,cf=Math.cos(f);
   const x=cf*Math.sin(dl),y=Math.cos(f0)*Math.sin(f)-Math.sin(f0)*cf*Math.cos(dl);
-  if(Math.sin(f0)*Math.sin(f)+Math.cos(f0)*cf*Math.cos(dl)>=0)return {x,y};
+  const cosc=Math.sin(f0)*Math.sin(f)+Math.cos(f0)*cf*Math.cos(dl);
+  if(cosc>=1/P){const k=(P-1)/(P-cosc)/Math.sqrt((P-1)/(P+1));return {x:x*k,y:y*k};}
   if(!toRim)return null;const k=1/(Math.hypot(x,y)||1);return {x:x*k,y:y*k,back:true};
+}
+// Its inverse (Snyder 1987, p. 175): the place under a unit-disc point, null off the disc.
+function inversePerspective(x,y,lon0,lat0,P){
+  if(Math.hypot(x,y)>1)return null;
+  const r=Math.PI/180,f0=lat0*r,s=Math.sqrt((P-1)/(P+1)),X=x*s,Y=y*s,rho=Math.hypot(X,Y);
+  if(rho<1e-15)return {lon:lon0,lat:lat0};
+  const sinc=(P-Math.sqrt(Math.max(0,1-rho*rho*(P+1)/(P-1))))/((P-1)/rho+rho/(P-1)),cosc=Math.sqrt(1-sinc*sinc);
+  return {lon:lon0+Math.atan2(X*sinc,rho*Math.cos(f0)*cosc-Y*Math.sin(f0)*sinc)/r,lat:Math.asin(cosc*Math.sin(f0)+Y*sinc*Math.cos(f0)/rho)/r};
 }
 // Drop vertices closer than minDeg to the last kept one: the 1:10m coastline is far finer than the screen. Vertices on
 // the file's own cut lines always stay, so the cut edges keep both ends on the line (cutEdge) and are never stroked.
@@ -78,19 +88,23 @@ const cutEdge=(a,b,cut)=>cut.lon.some(v=>a[0]===v&&b[0]===v)||cut.lat.some(v=>a[
 // outline passes through (not its whole box, which also holds northern Viet Nam and Laos that it does not have).
 const cellOf=p=>Math.floor(p[0])*200+Math.floor(p[1])+100;
 
-// The globe faces 141°E 14°N, which puts Korea where the design has it. Side by side with the copy: centre 75.9% ·
-// 72.6% of the screen, radius 77.4% of its height (a circle fitted to the design image's rim) but at most 55% of its
-// width (4:3 tablets). The copy then keeps clear of the rim as in the design: a title line may reach over it by 6% of
-// the width, every other line stays 2% away, so a relatively wide copy pushes the centre right. copy: text boxes
-// {r,t,b,title} in px. Stacked (phone, upright tablet): a little wider than the screen, Korea in the middle of the free
-// band under the buttons.
+// The camera, fitted to the design image (verification/2026-10-landing-globe-texture/fit_camera.py): it looks at
+// 136.8°E 20.3°N from 2.71 radii off the centre (horizon 68°), the same numbers as vendor/globe-v2/camera.json, which
+// the baked picture was made with (test_intro_ui.mjs keeps the two equal). Side by side with the copy: centre 75% ·
+// 72.5% of the screen, radius 77.9% of its height (the design's rim, within 2%) but at most 55% of its width (4:3
+// tablets). The copy then keeps clear of the rim as in the design: a title line may reach over it by 6% of the width,
+// every other line stays 2% away, so a relatively wide copy pushes the centre right. copy: text boxes {r,t,b,title}
+// in px. Stacked (phone, upright tablet): a little wider than the screen, Korea in the middle of the free band under
+// the buttons.
 // ANCHOR is the card's point: open sea inside the map's study frame (STUDY), not a record. countries.json is clipped to
 // COUNTRIES_CUT (scripts/prepare_basemap.py).
-const GLOBE_CENTER=[141,14], KOREA=[127.5,36], ANCHOR=[128,34], STUDY=[[124,33],[132,38.7]], COUNTRIES_CUT={lon:[105,150],lat:[20,53]};
+const CAMERA={lon0:136.823,lat0:20.345,P:2.7122}, FRAME={cx:.75,cy:.7246,R:.7786};
+const KOREA=[127.5,36], ANCHOR=[128,34], STUDY=[[124,33],[132,38.7]], COUNTRIES_CUT={lon:[105,150],lat:[20,53]};
+const project=(lon,lat,toRim)=>perspective(lon,lat,CAMERA.lon0,CAMERA.lat0,CAMERA.P,toRim);
 function globeFrame(w,h,band,copy=[]){
-  if(band){const R=Math.min(w*.6,h*.5),k=orthographic(KOREA[0],KOREA[1],GLOBE_CENTER[0],GLOBE_CENTER[1]);
+  if(band){const R=Math.min(w*.6,h*.5),k=project(...KOREA);
     return {cx:w/2-k.x*R,cy:(band.top+band.bottom)/2+k.y*R,R};}
-  const R=Math.min(h*.774,w*.55),cy=h*.726;let cx=w*.759;
+  const R=Math.min(h*FRAME.R,w*.55),cy=h*FRAME.cy;let cx=w*FRAME.cx;
   for(const b of copy){const dy=Math.max(0,b.t-cy,cy-b.b);if(dy<R)cx=Math.max(cx,b.r+(b.title?-.06:.02)*w+Math.sqrt(R*R-dy*dy));}
   return {cx,cy,R};
 }
@@ -98,7 +112,7 @@ function globeFrame(w,h,band,copy=[]){
 // the screen edge while its leader line still runs right), with a bent line from its point; under the point instead
 // when it does not fit. Top-left and line, in px.
 function cardPlace(dot,korea,card,view,s){
-  const m=12;let x=Math.min(korea.x+193*s,view.w-m-card.w),y=korea.y+50*s;
+  const m=12;let x=Math.min(korea.x+207*s,view.w-m-card.w),y=korea.y+60*s;
   if(x>=dot.x+60*s&&y+card.h<=view.bottom-m){const ly=y+27*s;return {x,y,line:[[dot.x,dot.y],[Math.max(dot.x+12*s,x-75*s),ly],[x,ly]]};}
   x=Math.min(Math.max(m,dot.x-card.w*.3),view.w-m-card.w);y=dot.y+64*s;
   return {x,y,line:[[dot.x,dot.y],[Math.min(Math.max(dot.x,x+16),x+card.w-16),y]]};
@@ -119,8 +133,7 @@ function cardPlace(dot,korea,card,view,s){
   const touch=()=>matchMedia('(pointer:coarse)').matches; // a phone: no focus ring on the button, no keyboard popping up in search
 
   // The globe: projected once (the view never turns), scaled per screen size, redrawn only when something changed.
-  const [LON0,LAT0]=GLOBE_CENTER;
-  const prep=(rings,cut)=>rings.map(r=>r.map((p,i)=>({...orthographic(p[0],p[1],LON0,LAT0,true),cut:i>0&&cutEdge(r[i-1],p,cut),cell:cellOf(p)})));
+  const prep=(rings,cut)=>rings.map(r=>r.map((p,i)=>({...project(p[0],p[1],true),cut:i>0&&cutEdge(r[i-1],p,cut),cell:cellOf(p)})));
   let land=null,borders=[],depth=[],kr=[],krCells=new Set(),cellBoxes=[],failed=false,frame=null,lead=null,size={w:0,h:0,dpr:1};
   // The files load only now that the screen shows (a shared link never fetches them); each may fail on its own. Without
   // land the globe stays a plain sphere; the copy, the card and every way in work the same.
@@ -139,7 +152,7 @@ function cardPlace(dot,korea,card,view,s){
     const d=e.detail||{};
     if(d.step==='map'&&d.geography){const r=geographyRings(d.geography,.08,COUNTRIES_CUT);kr=prep(r,COUNTRIES_CUT);krCells=new Set(r.flat().map(cellOf));}
     if(d.step==='done'&&Array.isArray(d.cells))cellBoxes=d.cells.map(c=>[[c.lon,c.lat],[c.lon+c.size,c.lat],[c.lon+c.size,c.lat+c.size],[c.lon,c.lat+c.size]]
-      .map(p=>orthographic(p[0],p[1],LON0,LAT0))).filter(b=>b.every(Boolean));
+      .map(p=>project(p[0],p[1]))).filter(b=>b.every(Boolean));
     gateProgress(gate,d.step,d.step==='done'?d:null);
     if(el){render();kick();}
   }catch{fail();}});
@@ -194,11 +207,11 @@ function cardPlace(dot,korea,card,view,s){
     const w=innerWidth,h=innerHeight,band=q('.gate-globe'),call=q('.gate-callout'),bar=q('.gate-bar').getBoundingClientRect();
     const stacked=getComputedStyle(band).display!=='none',b=band.getBoundingClientRect();
     frame=globeFrame(w,h,stacked?{top:b.top,bottom:b.bottom}:null,stacked?[]:copyBoxes());
-    const {cx,cy,R}=frame,at=(lon,lat)=>{const p=orthographic(lon,lat,LON0,LAT0);return {x:cx+p.x*R,y:cy-p.y*R};};
+    const {cx,cy,R}=frame,at=(lon,lat)=>{const p=project(lon,lat);return {x:cx+p.x*R,y:cy-p.y*R};};
     const dot=at(...ANCHOR),k=at(...KOREA),c=call.getBoundingClientRect();
     if(!call.getClientRects().length)lead=null; // a short screen hides the card
     else if(stacked){const r=q('.gate-card').getBoundingClientRect();lead=[[dot.x,dot.y],[Math.min(Math.max(dot.x,r.left+16),r.right-16),r.top]];}
-    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom,bottom:q('.gate-foot').getBoundingClientRect().top},Math.min(1.2,Math.max(.75,R/728)));
+    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom,bottom:q('.gate-foot').getBoundingClientRect().top},Math.min(1.2,Math.max(.75,R/733)));
       call.style.left=p.x+'px';call.style.top=p.y+'px';lead=p.line;}
     el.style.setProperty('--kx',k.x+'px');el.style.setProperty('--ky',k.y+'px'); // the leave zoom heads for Korea
   }
@@ -243,7 +256,7 @@ function cardPlace(dot,korea,card,view,s){
     const [a,b]=STUDY,box=[];
     for(let x=a[0];x<=b[0];x+=.5)box.push([x,a[1]]);for(let y=a[1];y<=b[1];y+=.3)box.push([b[0],y]);
     for(let x=b[0];x>=a[0];x-=.5)box.push([x,b[1]]);for(let y=b[1];y>=a[1];y-=.3)box.push([a[0],y]);
-    ctx.beginPath();box.map(p=>orthographic(p[0],p[1],LON0,LAT0)).forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();
+    ctx.beginPath();box.map(p=>project(p[0],p[1])).forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();
     ctx.setLineDash([3,5]);ctx.strokeStyle='rgba(140,215,208,.4)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
     // the card's point and leader line
     if(!lead)return;
