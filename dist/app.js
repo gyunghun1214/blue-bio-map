@@ -730,6 +730,8 @@ const matrixTypeLabel=id=>Object.values(matrixRule()?.types||{}).find(t=>t.id===
 const MATRIX_PLAIN={sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함',alternative_production:'키워서 써야 함',conservation_priority:'지켜야 함'};
 const matrixTypePlain=id=>MATRIX_PLAIN[id]||'유형 없음';
 const matrixPlainNote=()=>{const r=matrixRule();return '연구용 유형 요약 · 채집·이용 권고 아님'+(r?` · BBVI ${r.bbvi_threshold} 이상이면 활용 높음, MCUI ${r.mcui_threshold} 이상이면 보전 높음`:'');};
+// the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '유형 없음' in grey
+const verdictWord=t=>`<b class="verdict vd-${t||'none'}">${esc(matrixTypePlain(t))}</b>`;
 // A Korean national-assessment MCUI is its own stratum: labelled apart and never ranked or plotted with IUCN-based MCUI.
 const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'MCUI')!==null;
 // After 3.14: another range state's national list. Like the Korean national basis, it is its own stratum: labelled, drawn with
@@ -1342,13 +1344,15 @@ function axisCards(s){
     return `<div class="ax-sub"><span>${name} <b>${k}</b></span>${v===null?held(k):`<strong>${v.toFixed(1)}</strong>${axisBar(v)}`}${note?`<small>${esc(note)}</small>`:''}</div>`;};
   const one=bbviLabel(s),mbpiNote=[mbpiStratumOf(s)?.short,basisNote(s,'MBPI').replace(/^ · /,'')].filter(Boolean).join(' · '),mfpiNote=s.assessment?.food_trace?.literature_moisture?.label||'';
   const mcuiNote=axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'');
-  const chip=type?`<p class="ax-type"><i style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${esc(matrixTypeLabel(type))}</p>`
+  const chip=type?`<p class="ax-type" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${verdictWord(type)}<span class="ax-type-name">${esc(matrixTypeLabel(type))}</span></p>`
     :`<p class="ax-type none"><i aria-hidden="true"></i>유형 없음 · BBVI·MCUI 한 쌍 미산출</p>`;
   // where the species' cells sit on the value map: the cell colour is the first type in the cell, so it can differ from the species' own
   const cells=[...valueCellGroups(true).values()].filter(g=>g.species.has(s.aphiaID)),same=cells.filter(g=>cellMatrixType(g).type===type).length;
-  const where=!cells.length?'':!type?`이 종이 기록된 공개 셀 ${cells.length}개 · 유형이 없어 이 종은 셀 색을 정하지 않습니다.`
-    :same===cells.length?`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개가 모두 이 색으로 칠해집니다.`
-    :`‘활용 × 보전’ 지도에서 이 종이 기록된 공개 셀 ${cells.length}개 중 ${same}개가 이 색으로 칠해집니다. 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`;
+  // 2026-10-13: '활용 × 보전' opens on the species view (its own cells in its own colour); the all-species view keeps the cell rule
+  const where=!cells.length?'':!type?`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 회색(유형 없음)으로 칠합니다. 유형이 없어 ‘모든 종 겹쳐 보기’의 셀 색은 정하지 않습니다.`
+    :`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 이 색으로 칠합니다. `+(same===cells.length?'‘모든 종 겹쳐 보기’에서도 모두 이 색입니다.'
+      :same?`‘모든 종 겹쳐 보기’에서는 그중 ${same}개가 이 색이고, 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`
+      :'‘모든 종 겹쳐 보기’에서는 모두 같은 셀에 있는 우선순위가 높은 유형의 색입니다.');
   const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
   return `<section class="axis-cards" aria-label="두 축 요약 · 아래 지표 칸과 같은 값">${chip}`+
     `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b></h3><small>${rule?'기준 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
@@ -1663,6 +1667,17 @@ const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MC
   return `<i class="${n===null?'held':one?'single':''}" title="${GAUGE_NAME[k]}${one?' · '+esc(one):''}"><small>${k}</small>${n===null?'–':n.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;}).join('')+
   // the MBPI's stratum on its own line under the four values, hidden and shown with them
   ((st=>st?`<span class="card-stratum" title="MBPI 1위 항목의 근거 층 · ${esc(st.long)}">MBPI 근거 · ${esc(st.short)}</span>`:'')(mbpiStratumOf(s)))+'</span>':'';
+// 2026-10-13 design 2 (card shape A): the use and conservation values and the verdict on one line, so the list compares at a
+// glance. Never summed; the same values as the four card scores. Screen readers hear the full names, the BBVI's paper label,
+// the MCUI basis and the formal type name (sr-only text, so the card's innerText keeps every word the checks read).
+function cardLine(s){
+  if(!s.assessment)return '';
+  const rule=matrixRule(),t=matrixType(s),b=axisState(s,'BBVI').value,m=axisState(s,'MCUI').value,one=b!==null&&bbviLabel(s);
+  const basis=m===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):''),num=v=>v===null?'–':v.toFixed(1);
+  return `<span class="card-line"><span class="cl-v${one?' single':''}" title="통합 활용 BBVI ${num(b)}${one?' · '+esc(one):''}"><span class="sr-only">BBVI 통합 활용 </span><span aria-hidden="true">활용 </span><b>${num(b)}</b>${one?`<span class="sr-only"> ${esc(one)}</span>`:''}</span>`+
+    `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">보전 </span><b>${num(m)}</b>${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
+    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span></span>`;
+}
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
   const group=$('species-group').value, evidence=$('species-evidence').value;
@@ -1678,7 +1693,7 @@ function renderList() {
     extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUses([]));}
   // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
   const list=$('species-list'),left=list.scrollLeft,top=list.scrollTop,refocus=list.contains(document.activeElement);
-  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
+  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" data-type="${matrixType(s)||'none'}"${matrixType(s)?` style="--tc:${matrixTypeColour[matrixType(s)]}"`:''} aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em>${cardLine(s)}<span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>{
     button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species)));
     for(const [ev,on] of [['mouseenter',1],['focus',1],['mouseleave',0],['blur',0]])button.addEventListener(ev,()=>hoverSpecies(on&&Number(button.dataset.species)));
@@ -2047,8 +2062,8 @@ function cellBubbles(cells,zoom){
   }
   return [...groups.values()].map(g=>({...g,lat:g.lat/g.cells.length,lon:g.lon/g.cells.length}));
 }
-// Species-level pilot BBVI beside the red dots (team-lead request 2026-10-03). It is the same number on every cell of the
-// species, labelled as such: a species value, not this sea area's value. The single-paper label travels with it.
+// Species-level pilot BBVI with its single-paper label, for the bubble tooltip: a species value, not this sea area's value.
+// From 2026-10-03 (PR #122) it was also a tag on every cell; on 2026-10-13 (design 2) one map chip took their place (setMapChip).
 function bbviTagText(s){
   const v=s?pilotScore(s,'BBVI'):null;
   return v===null?'BBVI 미산출':'BBVI '+v.toFixed(1)+(bbviLabel(s)?' · '+bbviLabel(s):'');
@@ -2071,18 +2086,22 @@ function drawBubble(b){
   const count=L.marker([b.lat,b.lon],{interactive:false,keyboard:false,icon:L.divIcon({className:'bubble-count',html:String(n),iconSize:[40,20]})});
   count._zoomMark=true;count.addTo(overlay);
 }
-function drawBbviTag([lat0,lon0,size]){
-  const tag=L.marker([lat0+size*.92,lon0+size/2],{interactive:false,keyboard:false,icon:L.divIcon({className:'bbvi-tag'+(pilotScore(occurrenceSpecies,'BBVI')===null?' held':''),html:esc(bbviTagText(occurrenceSpecies)),iconSize:null})});
-  tag._zoomMark=true;tag.addTo(overlay);
+// 2026-10-13 design 2: the legend's first line names what the map shows at this zoom, bubbles or dots. Species with cells only:
+// the query-extent and candidate lines stay setMapLegend's and renderMap's.
+function setKeyLine(bubbles){
+  if(!occurrenceSpecies?.cells?.length)return;
+  const size=occurrenceSpecies.cells[0].sizeDeg||1;
+  $('key-bubble-mark').hidden=!bubbles;$('key-dot-mark').hidden=bubbles;
+  $('map-symbol-label').textContent=(bubbles?'버블 = 공개 셀 묶음 · 숫자 = 셀 수':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)`)+'\n실제 생물 발견 좌표 아님';
 }
 function drawOccurrence(){
   if(!map||!overlay)return;
   overlay.eachLayer(l=>{if(l._schematicDot||l._zoomMark)overlay.removeLayer(l);});
-  const bubbles=bubbleView();
+  const bubbles=bubbleView();setKeyLine(bubbles);
   // The cell frames carry the evidence popups; they come back with the dots so every cell stays clickable when zoomed in.
   for(const frame of cellLayers){if(bubbles)overlay.removeLayer(frame);else if(!overlay.hasLayer(frame))frame.addTo(overlay);}
   if(bubbles){for(const b of cellBubbles(dotCells,map.getZoom()))drawBubble(b);return;}
-  for(const c of dotCells){drawCellDots(...c);if(occurrenceSpecies)drawBbviTag(c);}
+  for(const c of dotCells)drawCellDots(...c);
 }
 // 2026-10-03 team-lead request: one glance per grid cell. Counts species by their species-level pilot values; a species can
 // sit in more than one group. Nothing here is a value measured in this cell or a sea-area score.
@@ -2120,12 +2139,12 @@ const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fill
 function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
-  document.querySelector('.map-symbol').hidden=!!extentOnly;
-  // 2026-10-11: the short key reads without opening the details: bubble = grouped cells and their count, dots = a schematic
-  // of the record band, not discovery coordinates, records are not abundance (wording from the note, tooltip and review note).
+  // 2026-10-13 design 2: two lines stay open, the mark and its label (bubbles or dots by zoom: setKeyLine) and the effort row;
+  // the bubble row, the note and the full text sit in 'ⓘ 범례'.
+  $('key-dot-mark').hidden=!!extentOnly;$('key-bubble-mark').hidden=true;
   for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`작은 점 = ${size}° 셀 안 기록 수 구간을 나타낸 도식 무늬 · 실제 생물 발견 좌표 아님`;
-  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸 위의 BBVI는 이 종 전체의 '+(released()?'값':'시범값')+'이며 그 해역의 값이 아닙니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님`;
+  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
@@ -2134,10 +2153,11 @@ function setMapLegend(s){
 // it sits at (from 1281px the mode bar is at the bottom and the key sits under the species list, outside the free part).
 function fitPad(p){
   const i=mapInsets(),m=document.getElementById?.('map')?.getBoundingClientRect?.(),edge={top:0,bottom:0};
-  for(let [sel,side] of [['.map-ui-tl','top'],['.map-ui-bl','bottom']]){
+  for(let [sel,side] of [['.map-ui-tl','top'],['.map-ui-bl','bottom'],['#map-chip','top']]){
     const b=document.querySelector?.(sel)?.getBoundingClientRect();if(!b?.height)continue;
     if(m?.height){if(b.right<=m.left+i.left+1||b.left>=m.right-i.right-1)continue;side=b.top+b.height/2<m.top+m.height/2?'top':'bottom';}
-    edge[side]=Math.max(edge[side],b.height);
+    // the summary chip sits below the mode bar from 741 to 1280px: keep fitted cells clear of its lower edge, not just its height
+    edge[side]=Math.max(edge[side],m?.height&&sel==='#map-chip'?(side==='top'?b.bottom-m.top:m.bottom-b.top):b.height);
   }
   return {paddingTopLeft:[p+i.left,p+edge.top],paddingBottomRight:[p+i.right,p+edge.bottom]};
 }
@@ -2147,6 +2167,14 @@ function mapInsets(){
   if(!m?.width)return {left:0,right:0};
   const side=b=>b&&b.width>0&&b.width<m.width/2&&b.right>m.left+1&&b.left<m.right-1?b:null, l=side(box('.species-pane')), r=side(box('#detail'));
   return {left:l?Math.max(0,Math.round(l.right-m.left)):0,right:r?Math.max(0,Math.round(m.right-r.left)):0};
+}
+// 2026-10-13 design 2: one chip over the map names the selected species with its cells, records and years (the values of
+// #map-count, #map-cells and #map-years, written at the same places) in place of a BBVI tag on every cell. Display only.
+function setMapChip(s,text){
+  const chip=$('map-chip');if(!chip)return;
+  chip.hidden=!text;if(!text)return;
+  const t=s?matrixType(s):null;
+  chip.innerHTML=(s?`<i class="mc-dot${t?'':' none'}"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(s.label)}</b> `:'')+`<span>${esc(text)}</span>`;
 }
 function renderCellMap(s,color){
   occurrenceSpecies=s;dotCells=[];cellLayers=[]; // renderMap has cleared the overlay
@@ -2165,6 +2193,7 @@ function renderCellMap(s,color){
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:7,animate:false});}
   drawOccurrence();
   $('map-count').textContent=cellRecords(s).toLocaleString();$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=cellYears(s);
+  setMapChip(s,`기록 셀 ${spatialCells(s).length}개 · ${cellRecords(s).toLocaleString()}건 · ${cellYears(s)}`);
 }
 // The same cell evidence as the popups, as a table: reachable by keyboard and screen readers, and without the map.
 let cellLayers=[];
@@ -2331,6 +2360,13 @@ function valueCellStyle(g,active){
   // cells holding the selected species get a thick solid yellow outline; the fill keeps the cell's own colour
   return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:base;
 }
+// 2026-10-13 species view: the selected species' cells only, in its own type colour with a dashed border of the same colour.
+// Every drawn cell is the selected species', so no yellow outline; an untyped species keeps the held grey of the all-species map.
+function speciesCellStyle(type,active){
+  const c=matrixTypeColour[type];
+  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:active?.62:CELL_FILL}
+    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
+}
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&separateMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
 // 3.27: typed species whose BBVI carries the single-paper label
@@ -2377,9 +2413,9 @@ function valueSpeciesCard(s,records){
     (links?'<details><summary>지표 근거 원문과 이용조건</summary><ul>'+links+'</ul></details>':'<p class="fine">이 종에 연결된 지표 근거 원문은 아직 없습니다.</p>')+
     '<button type="button" class="text-button" data-value-species="'+esc(s.aphiaID)+'">종별 상세 근거 보기 →</button></div></details>';
 }
-function showValueCell(key){
+function showValueCell(key,all=false){
   selectedValueCell=key;
-  const group=valueCellGroups().get(key),panel=$('value-cell-detail');
+  const group=valueCellGroups(all).get(key),panel=$('value-cell-detail');
   if(!group){panel.innerHTML='<p>선택한 공개 격자가 현재 기간의 자료에 없습니다. 지도의 다른 격자를 선택하세요.</p>';return;}
   const species=[...group.species.values()].sort((a,b)=>a.label.localeCompare(b.label,'ko'));
   panel.innerHTML='<h3>선택한 공개 격자 · 종별 근거</h3><p>'+
@@ -2417,8 +2453,16 @@ function sufficiencyTip(g){
   return part('priority','priority_survey','우선 조사 대상')+part('unexplored','unexplored_candidate','미탐색 후보');
 }
 // Hovering or focusing a species card outlines the value-map cells that species is recorded in.
-let valueRects=[];
+let valueRects=[],hoverRects=[];
 function hoverSpecies(id){
+  // species view: the hovered species' cells as yellow dashed outlines over the selected species' colours, gone on leave
+  for(const l of hoverRects)overlay?.removeLayer(l);hoverRects=[];
+  if(ownView()){
+    if(!id||id===selected.aphiaID||!map)return;
+    for(const g of valueCellGroups(true).values())if(g.species.has(id))
+      hoverRects.push(L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{...HOVER_OUTLINE,fill:false,interactive:false}).addTo(overlay));
+    return;
+  }
   for(const [g,layer,active] of valueRects){
     const on=id&&g.species.has(id);
     layer.setStyle(on?HOVER_OUTLINE:valueCellStyle(g,active));
@@ -2428,7 +2472,12 @@ function hoverSpecies(id){
 // The map-corner 2×2 icon: hovering a type dims the other cells, clicking toggles that type in the filter (several at once).
 // Display only: types, colours and counts stay the legend's.
 const typeFilter=new Set();
+// 2026-10-13: two views of the value map. 'species' (the default each time the mode opens) colours only the selected species'
+// cells in its type colour; 'all' is the map from before, every species overlaid. Not in the link: t=value opens the species view.
+let valueView='species';
+const ownView=()=>mapMode==='value'&&valueView==='species'&&!!selected;
 function dimTypes(id){
+  if(ownView())return; // one colour on the species view; a type button switches to the all-species view
   for(const [g,layer,active] of valueRects){
     const base=valueCellStyle(g,active);
     layer.setStyle(id&&cellMatrixType(g).type!==id?{...base,opacity:.2,fillOpacity:.06}:base);
@@ -2436,23 +2485,27 @@ function dimTypes(id){
 }
 function setValueInfo(open){$('value-legend').hidden=!open;$('value-info').setAttribute('aria-expanded',String(open));}
 function renderValueMap(){
-  const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule();
+  const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule(),own=ownView();
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
-  $('map-source').textContent='활용 × 보전 · GBIF 공개 격자';
+  $('map-source').textContent=own?'활용 × 보전 · 선택 종 · GBIF 공개 격자':'활용 × 보전 · GBIF 공개 격자';
   const cut=data.assessmentInfo?.method?.unexplored_threshold;
   $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
-  if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
-  if(typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
-  renderValueLegend(groups);
+  if(own){const t=matrixType(selected);
+    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:'유형 없음(BBVI·MCUI 한 쌍 미산출) · 회색으로 칠했습니다.')+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
+  else if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
+  if(!own&&typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
+  renderValueLegend(groups,own);
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
   $('layer-unexplored-count').textContent=`${layerCounts.unexplored.n}종 · 지도 표시 ${layerCounts.unexplored.shown}종`;
   const noCell=[['우선 조사 대상',layerCounts.priority],['미탐색 후보',layerCounts.unexplored]].filter(([,c])=>c.missing.length);
   $('layer-nocell').textContent=noCell.map(([name,c])=>`${name} 중 공개 출현 셀이 없어 지도에 표시되지 않는 종 ${c.missing.length}종: ${c.missing.join(', ')}`).join(' · ')+
     (noCell.length?'. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다.':'');
+  if(own)return renderSpeciesValueMap();
   $('map-count').textContent='—';$('map-cells').textContent=String(groups.size);$('map-years').textContent='—';
+  setMapChip(null,`모든 종 겹쳐 보기 · 공개 격자 ${groups.size}곳`+(selected?` · ${selected.label} 셀 ${[...groups.values()].filter(g=>g.species.has(selected.aphiaID)).length}개(노란 실선)`:''));
   if(!groups.size)panel.innerHTML=activeUses.size?'<h3>조건을 모두 만족하는 종의 격자 없음</h3><p>선택한 활용 특성을 모두 가진 종이 없습니다. 종 목록에서 마지막 항목을 끄거나 전체 해제하세요.</p>'
     :'<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';
   else{
@@ -2492,10 +2545,44 @@ function renderValueMap(){
       {...fitPad(35),maxZoom:7,animate:false});
   }
 }
+// The species view: the selected species' cells (period filter only; the use chips select species, not cells) in its type
+// colour. The panel opens on its first cell and lists every species there; the flags and the outside candidates stay as in
+// the all-species view.
+function renderSpeciesValueMap(){
+  const s=selected,id=s.aphiaID,pv=periodView(s),t=matrixType(s),panel=$('value-cell-detail');
+  const mine=new Map([...valueCellGroups(true)].filter(([,g])=>g.species.has(id))),n=spatialCells(pv).length;
+  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:'유형 없음(BBVI·MCUI 한 쌍 미산출)';
+  $('map-count').textContent=n?cellRecords(pv).toLocaleString():'—';$('map-cells').textContent=String(n);$('map-years').textContent=n?cellYears(pv):'—';
+  setMapChip(s,n?`기록 셀 ${n}개 · ${cellRecords(pv).toLocaleString()}건 · ${cellYears(pv)}`:'공개 셀 없음 · '+verdict);
+  if(!mine.size)panel.innerHTML='<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 지도에 칠할 셀이 없습니다. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다. ‘모든 종 겹쳐 보기’에서 다른 종의 격자를 볼 수 있습니다.</p>';
+  else{if(!mine.has(selectedValueCell))selectedValueCell=mine.keys().next().value;showValueCell(selectedValueCell,true);}
+  if(!map)return;
+  for(const [key,g] of valueCellOrder(mine)){
+    const active=key===selectedValueCell,cellType=cellMatrixType(g).type,k=g.records.get(id);
+    const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],speciesCellStyle(t,active)).addTo(overlay);
+    valueRects.push([g,layer,active]);
+    const flags=sufficiencyTip(g).replace(/^ · /,'');
+    layer.bindTooltip(cellRange(g)+' · 공개 '+g.size+'° 격자<br><b>'+esc(s.label)+(Number.isFinite(k)?' 기록 '+k.toLocaleString()+'건':'')+'</b> · '+esc(verdict)+
+      '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 없음')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
+    layer.on('tooltipopen',({tooltip:x})=>placeTip(x));
+    drawSufficiency(g);
+    layer.on('click',()=>{showValueCell(key,true);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+  }
+  if(sufficiencyLayers.unexplored&&!activeUses.size)for(const g of outsideCells().values()){
+    const names=[...g.species.values()].map(outsideLabel);
+    L.circleMarker(cellCentre(g),{color:'#6b3fa0',fillColor:'#efe6fa',radius:5,weight:2,dashArray:'2 2',fillOpacity:.9})
+      .bindTooltip(`미탐색 후보(30종 밖) ${names.length}종 · ${esc(names.join(', '))} · 점수 없음, 근연종 BBVI를 옮기지 않음`).addTo(overlay);
+  }
+  renderOutsideList();
+  if(lastFitted!=='value:'+id){
+    lastFitted='value:'+id;
+    if(mine.size)map.fitBounds([...mine.values()].flatMap(g=>[[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]]),{...fitPad(35),maxZoom:7,animate:false});else fitMap();
+  }
+}
 // The map sits under the floating legend and mode bar (#map is its own stacking context, so z-index cannot lift a tooltip over
 // them): open the tooltip on the side that leaves the most of it inside the map and outside those boxes.
 function placeTip(t){
-  const boxes=['.map-ui-bl','.map-ui-tl'].map(s=>document.querySelector(s)?.getBoundingClientRect()).filter(b=>b?.width),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
+  const boxes=['.map-ui-bl','.map-ui-tl','#map-chip'].map(s=>document.querySelector(s)?.getBoundingClientRect()).filter(b=>b?.width),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
   const frame={left:m.left+i.left,right:m.right-i.right,top:m.top,bottom:m.bottom}; // the floating panels hide the map's sides
   const cut=(a,b)=>({left:Math.max(a.left,b.left),right:Math.min(a.right,b.right),top:Math.max(a.top,b.top),bottom:Math.min(a.bottom,b.bottom)});
   const area=r=>Math.max(0,r.right-r.left)*Math.max(0,r.bottom-r.top);
@@ -2505,9 +2592,13 @@ function placeTip(t){
   t.options.direction=best[0];t.update();
 }
 // The 2×2 legend: report labels, the map's own colours and fill, and the cell count per type (sums to the public cells).
-function renderValueLegend(groups){
-  const rule=matrixRule(),tally={},alpha=Math.round(CELL_FILL*255).toString(16);
-  let none=0;for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)tally[t]=(tally[t]||0)+1;else none++;}
+function renderValueLegend(groups,own=false){
+  const rule=matrixRule(),tally={},alpha=Math.round(CELL_FILL*255).toString(16),mine=own?[...valueCellGroups(true).values()].filter(g=>g.species.has(selected.aphiaID)).length:0;
+  let none=0;
+  // the counts follow the colours drawn: the species view has one colour on its own cells, the all-species view one per cell
+  if(own){const t=matrixType(selected);if(t)tally[t]=mine;else none=mine;}
+  else for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)tally[t]=(tally[t]||0)+1;else none++;}
+  const ownType=own?matrixType(selected):null;
   document.querySelectorAll('#value-legend [data-key]').forEach(el=>{
     const t=rule?.types?.[el.dataset.key],c=matrixTypeColour[t?.id];if(!t)return;
     el.querySelector('b').textContent=t.label;el.querySelector('em').textContent=(tally[t.id]||0)+'셀';
@@ -2515,18 +2606,31 @@ function renderValueLegend(groups){
     // the map-corner icon takes the same label, colour and count (short name above the count; the count keeps its own span)
     const mini=document.querySelector(`.vm-grid [data-key="${el.dataset.key}"]`);
     mini.innerHTML=`<span class="vm-name" aria-hidden="true">${esc(TYPE_SHORT[t.id]||'')}</span><span class="vm-n">${tally[t.id]||0}</span>`;mini.dataset.type=t.id;mini.dataset.tip=t.label;
-    mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 이 유형만 보기`;
+    mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 `+(own?'모든 종 겹쳐 보기에서 ':'')+'이 유형만 보기';
     mini.style.background=c+alpha;mini.style.borderColor=c;
+    mini.classList.toggle('vm-own',own&&ownType===t.id);mini.classList.toggle('vm-zero',own&&ownType!==t.id);
+    mini.setAttribute('aria-pressed',String(!own&&typeFilter.has(t.id)));
   });
   $('v-none-count').textContent=none+'셀';
   // Name the selected species and draw the swatch in the map's own outline colour, so the outline explains itself.
   const n=selected?[...groups.values()].filter(g=>g.species.has(selected.aphiaID)).length:0;
   $('v-selected-name').textContent=selected?` · 지금: ${selected.label} ${n}셀`:'';
-  document.querySelector('#value-legend .v-selected').style.borderColor=SELECTED_OUTLINE().color;
+  const sw=document.querySelector('#value-legend .v-selected');
+  sw.style.borderColor=own?matrixTypeColour[ownType]||'#657588':SELECTED_OUTLINE().color;sw.style.borderStyle=own?'dashed':'';
+  $('v-selected-all').hidden=own;$('v-selected-species').hidden=!own;
+  // the one-line key under the species list: what the cell colour is in this view, and the switch between the views
+  const key=$('value-key-swatch'),c=matrixTypeColour[ownType];
+  // all-species view: the four type colours as the corner icon lays them out, in the selected species' yellow outline
+  const quad=['high_bbvi_high_mcui','high_bbvi_low_mcui','low_bbvi_low_mcui','low_bbvi_high_mcui'].map((k,i)=>`${matrixTypeColour[rule?.types?.[k]?.id]||'#b7c0ca'}${alpha} ${i*25}% ${i*25+25}%`).join(',');
+  key.className='vk-swatch'+(own?(c?'':' none'):' all');key.style.background=own?(c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
+  $('value-key-text').innerHTML=!own?'셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형 · 노란 실선 = 선택 종'
+    :ownType?`셀 색 = ${esc(selected.label)}의 유형 ${verdictWord(ownType)} <span class="vk-type">(${esc(matrixTypeLabel(ownType))})</span>`
+    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(BBVI·MCUI 한 쌍 미산출)</span>`;
+  $('value-view').setAttribute('aria-pressed',String(!own));
   if(!rule)return;
   $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
   $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
-  $('v-rule-line').textContent=colourRuleLine();
+  $('v-rule-line').textContent=own?'셀 색 = 선택 종의 유형(종 단위, 셀 값 아님)':colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
 function renderTypeTable(){
@@ -2534,7 +2638,7 @@ function renderTypeTable(){
   if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
   const key=id=>Object.keys(rule.types).find(k=>rule.types[k].id===id),cmp=(id,i)=>key(id).split('_')[i]==='high'?'≥':'<';
   const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd)=>`<i class="type-swatch" style="background:${bg};border-color:${bd}"></i>`;
-  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td>${esc(matrixTypeLabel(id))}</td>`+
+  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td><b>${esc(matrixTypePlain(id))}</b> · ${esc(matrixTypeLabel(id))}</td>`+
     `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
     `<td>우선순위 ${i+1}위${i?'':' · 이 유형 종이 하나라도 있으면 이 색'}</td></tr>`).join('')+
     `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>유형 없음</td><td>BBVI·MCUI 한 쌍 미산출</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
@@ -2550,9 +2654,11 @@ function renderOutsideList(){
 function setMapMode(mode){
   if(!['occurrence','value'].includes(mode))return;
   mapMode=mode;lastFitted=null;
+  if(mode==='value'){valueView='species';typeFilter.clear();} // 2026-10-13: the value mode opens on the selected species' cells
   document.querySelectorAll('[data-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapMode===mode)));
   $('occurrence-legend').hidden=mode==='value';$('value-mini').hidden=mode!=='value';setValueInfo(false);
-  document.querySelector('.map-ui-bl').hidden=mode==='value'; // only the occurrence legend and its fold button live there
+  // the legend box stays in both modes: the occurrence key with its fold button, or the one-line value key with the view switch
+  $('legend-toggle').hidden=mode==='value';$('value-key').hidden=mode!=='value';
   $('value-cell-detail').hidden=mode!=='value';
   $('effort-toggle').disabled=mode==='value';
   renderMap();writeHash();
@@ -2582,13 +2688,13 @@ function renderMap() {
   if(s.cells.length)return renderCellMap(periodView(s),color);
   // verified-pilot-3.2: the type line replaces the old 'both withheld' wording, which no longer holds once a candidate is typed
   if(s.catalog){if(matrixRule())mapJudgmentStatus(s);else $('map-judgment').textContent=(pilotScore(s,'MBPI')!==null?'종별 '+P_()+'MBPI만 산출 · BBVI·MCUI와 해역 판단 보류 · ':'종별 점수와 해역 판단 모두 보류 · ')+(s.review?'공개 가능한 출현기록 없음':'출현 '+releaseMissing(s));$('map-review-note').textContent=s.review?`${reviewLine(s.review)}. 제외 사유: ${withheldLine(s.review)}. 셀이 없는 것은 종 부재나 전체 분포를 뜻하지 않습니다.`:'출현 검수 파일을 확인하지 못해 셀을 표시하지 않습니다. 종 부재가 아닙니다.';
-    $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
+    $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';setMapChip(s,'공개 셀 없음');return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent='테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
   L.rectangle(studyBounds,{color:'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
     .addTo(overlay).bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`);
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;const i=mapInsets();map.fitBounds(studyBounds,{paddingTopLeft:[30+i.left,30],paddingBottomRight:[30+i.right,30],animate:false});}
-  $('map-count').textContent='0';$('map-cells').textContent='0';$('map-years').textContent='—';
+  $('map-count').textContent='0';$('map-cells').textContent='0';$('map-years').textContent='—';setMapChip(s,'공개 셀 없음');
 }
 
 function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43,136]],{paddingTopLeft:[8+i.left,8],paddingBottomRight:[8+i.right,8]});}
@@ -3279,7 +3385,8 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 // yellow chip whose popover holds the banner sentence and the reload button. A load with no data keeps the red banner.
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
-  $('notice-chip-text').textContent=!data?'자료 불러오는 중':info?.version?`${released(info)?'정식 산출':'시범 지표'} ${info.version} · 연구용`:'연구용 프로토타입';
+  // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
+  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -3297,8 +3404,10 @@ function statusPop(id){
 const phoneSheet=()=>globalThis.matchMedia?.('(max-width:740px)').matches;
 function sheetSummary(s){
   const box=$('sheet-summary');if(!box)return;
-  const t=matrixType(s), v=k=>{const x=pilotScore(s,k);return `<i${x===null?' class="held"':''}><small>${k}</small>${x===null?'–':x.toFixed(1)}</i>`;};
-  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span>${t?` <span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:''}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
+  const t=matrixType(s), v=k=>{const x=pilotScore(s,k),one=k==='BBVI'&&x!==null&&bbviLabel(s);
+    return `<i class="${x===null?'held':one?'single':''}"${one?` title="${GAUGE_NAME[k]} · ${esc(one)}"`:''}><small>${k}</small>${x===null?'–':x.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;};
+  const chip=t?`<span class="type-chip" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${verdictWord(t)} ${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none"><i aria-hidden="true"></i>유형 없음</span>';
+  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span> ${chip}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
 }
 function sheetSync(){
   const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
@@ -3308,7 +3417,7 @@ function sheetSync(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
+  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();setMapChip(null,'');lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
   $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('cmp-more').hidden=true;$('cmp-profile').innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';$('cmp-tray').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
@@ -3370,8 +3479,13 @@ $('filter-toggle')?.addEventListener('click',()=>{filtersOpen=!filtersOpen;syncF
 syncFolds(); // fold the filters before the data arrives, so the list does not jump when it renders
 // From 1281px the occurrence key sits under the floating species list, which ends above it whatever the key's height (open,
 // folded to its button, details open, hidden in the value mode): theme.css reads --key-h.
+// 2026-10-13 design 2: the key is attached to the list (no gap) unless it is folded to its button.
 {const key=document.querySelector('.map-ui-bl');
-  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight;$('explore').style.setProperty('--key-h',h?h+12+'px':'0px');}).observe(key);}
+  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight,gap=key.classList.contains('legend-collapsed')&&$('value-key').hidden?12:0;$('explore').style.setProperty('--key-h',h?h+gap+'px':'0px');}).observe(key);}
+// From 741 to 1280px the summary chip sits under the mode and period bar, whatever its height (theme.css reads --tl-h).
+{const bar=document.querySelector('.map-ui-tl');
+  if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
+$('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
 // method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
 document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
@@ -3396,6 +3510,7 @@ document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
   b.addEventListener('blur',()=>dimTypes(null));
   b.addEventListener('click',e=>{
     const id=b.dataset.type;if(!id)return;
+    if(ownView()){valueView='all';typeFilter.clear();} // species view: open the all-species view on this type
     if(!typeFilter.delete(id))typeFilter.add(id);
     b.setAttribute('aria-pressed',String(typeFilter.has(id)));
     renderMap();if(e.pointerType==='mouse'||b.matches(':focus-visible'))dimTypes(id); // the redraw drops the hover dim

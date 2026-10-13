@@ -119,17 +119,24 @@ assert.equal(dots.length,1,'zoom 5: one bubble, no schematic dots');
 assert.ok(dots[0].options.radius>=9&&dots[0].options.fillOpacity===.75,'500 records in one cell -> darkest band');
 assert.deepEqual(JSON.parse(JSON.stringify(dots[0].latlng)),[34,126],'bubble sits on the published cell centre');
 assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon.className)).length,0,'no per-cell BBVI tag on bubbles');
+// 2026-10-13 design 2: the legend's first line names what the map shows at this zoom (bubbles here), with the standing note
+assert.equal(nodes.get('key-bubble-mark').hidden,false);assert.equal(nodes.get('key-dot-mark').hidden,true);
+assert.equal(nodes.get('map-symbol-label').textContent,'버블 = 공개 셀 묶음 · 숫자 = 셀 수\n실제 생물 발견 좌표 아님');
 // Bubbles group published cells by region: size = cells, never a species score.
 vm.runInContext('globalThis.bubbles=cellBubbles;globalThis.tag=bbviTagText;globalThis.summary=cellSummaryHtml',context);
 const grouped=context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],5);
 assert.equal(grouped.length,2,'two nearby cells share a 4° block, the far one stands alone');
 assert.equal(grouped.find(b=>b.cells.length===2).records,39);
 assert.equal(context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],6).length,3,'zoom 6 uses 2° blocks');
-// Zoomed in: each cell carries the species-level BBVI tag, labelled apart from the popup text.
+// Zoomed in: no tag on the cells (2026-10-13 design 2, reverses PR #122); one chip over the map names the species with its
+// cells, records and years, the same values as the numbers under the map. The species BBVI stays in the bubble tooltip.
 markers.length=0;dots.length=0;context.mapStub.zoom=7;context.draw(species,'#123456');
-const tags=markers.filter(m=>/bbvi-tag/.test(m.options.icon.className));
-assert.equal(tags.length,1,'one BBVI tag per spatial cell');
-assert.equal(tags[0].options.icon.html,'BBVI 90.0');
+assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon?.className)).length,0,'no per-cell BBVI tag');
+assert.equal(nodes.get('map-chip').hidden,false);
+assert.equal(nodes.get('map-chip').innerHTML,'<i class="mc-dot none" aria-hidden="true"></i><b>시험 종</b> <span>기록 셀 1개 · 500건 · 2015–2020</span>','no type without a report rule: grey dot');
+assert.deepEqual([nodes.get('map-cells').textContent,nodes.get('map-count').textContent,nodes.get('map-years').textContent],[1,'500','2015–2020']);
+assert.equal(nodes.get('key-bubble-mark').hidden,true);assert.equal(nodes.get('key-dot-mark').hidden,false);
+assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님','the cell size comes from the cells');
 assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 51.5 · 단일 논문','single-paper label travels with the value');
 assert.equal(context.tag({assessment:{scores:{}}}),'BBVI 미산출');
 // A cell's species summary: confirmed, usable, conservation priority, evidence gap.
