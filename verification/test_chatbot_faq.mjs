@@ -1,5 +1,5 @@
 // 사용법 안내 챗봇(FAQ): id 중복 없음, '화면에서 보여주기' 선택자가 index.html에 있음, 대표 질문 매칭과 '모르겠어요',
-// 답변에 유형·탭 이름과 기준값 하드코딩 없음, chatbot.js/css의 ?v= 해시.
+// 답변에 유형·탭 이름·판단문과 기준값 하드코딩 없음({plain:} 자리표시), chatbot.js/css의 ?v= 해시.
 // Run: node verification/test_chatbot_faq.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -37,6 +37,22 @@ for(const f of faq){
   for(const name of [...tabs,...types])assert.ok(!f.a.includes(name),`${f.id}: 하드코딩된 이름 '${name}'`);
   assert.ok(!/\b50\b|#[0-9a-f]{3,6}\b/i.test(f.a),`${f.id}: 기준값이나 색 코드 하드코딩`);
 }
+
+// (4b) 2026-10-13 판단문(‘써도 됨’ 등)도 답변에 직접 쓰지 않고 {plain:사분면 키}로 app.js의 matrixTypePlain에서 읽음(문구는 한 곳에서 관리).
+// 앱 함수가 없으면 종 카드를 보라고 안내. 판단문 FAQ는 네 판단문을 모두 자리표시로 부름
+const app=read('app.js'),matrix=JSON.parse(read('assessments.json')).method.matrix;
+const plainLines=[/^const MATRIX_PLAIN=.*$/m,/^const matrixTypePlain=.*$/m].map(r=>app.match(r)[0]);
+const plainWords=Object.values(vm.runInNewContext('('+plainLines[0].replace(/^const MATRIX_PLAIN=/,'').replace(/;$/,'')+')'));
+assert.equal(plainWords.length,4);
+for(const f of faq)for(const w of plainWords)assert.ok(!f.a.includes(w),`${f.id}: 하드코딩된 판단문 '${w}'`);
+assert.equal(vm.runInContext("chatbotPlain('high_bbvi_low_mcui')",ctx),'종 카드에 적힌 판단문','앱 함수가 없을 때');
+vm.runInContext(plainLines.join('\n'),ctx);ctx.matrixRule=()=>matrix;
+for(const [key,t] of Object.entries(matrix.types))
+  assert.equal(vm.runInContext(`chatbotPlain('${key}')`,ctx),vm.runInContext(`matrixTypePlain('${t.id}')`,ctx),`{plain:${key}}`);
+assert.equal(vm.runInContext("chatbotPlain('no_such_key')",ctx),'종 카드에 적힌 판단문');
+const verdict=faq.find(f=>f.id==='verdict');
+assert.deepEqual([...verdict.a.matchAll(/\{plain:(\w+)\}/g)].map(m=>m[1]).sort(),Object.keys(matrix.types).sort(),'판단문 FAQ: 네 판단문');
+for(const f of faq)for(const [,k] of f.a.matchAll(/\{(?:plain|type):(\w+)\}/g))assert.ok(matrix.types[k],`${f.id}: 없는 사분면 키 ${k}`);
 
 // (5) ?v=는 LF로 맞춘 파일의 sha256 앞 10자리
 for(const file of ['chatbot.js','chatbot.css']){

@@ -1,6 +1,6 @@
 'use strict';
 // 사용법 안내 챗봇(FAQ만). 서버가 없으므로 AI 답변은 하지 않는다.
-// 답변 속 {tab:id}·{type:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
+// 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
 // 화면 이동은 상태를 직접 바꾸지 않고 기존 버튼을 .click()해서 앱의 처리 로직을 그대로 탄다.
 // app.js와 같은 전역 렉시컬 범위를 쓰므로 최상위 이름은 모두 CHATBOT_/chatbot 접두어를 붙인다.
 const CHATBOT_FAQ=[
@@ -10,15 +10,19 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="explore"]'],target:'.tabs'},next:['map-modes','colors','indices']},
   {id:'map-modes',q:['출현 기록과 활용 × 보전 모드는 뭐가 달라요','지도 모드 바꾸기','출현 기록 모드는 뭐예요'],
     k:['모드','출현기록','활용보전','왼쪽위','지도내용','전환'],
-    a:'지도 아래쪽 가운데(좁은 화면에서는 지도 왼쪽 위)에서 ‘출현 기록’과 ‘활용 × 보전’을 바꿀 수 있어요. ‘출현 기록’은 선택한 종의 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주고, ‘활용 × 보전’은 출현기록이 있는 셀을 4가지 유형 색으로 칠해요.',
+    a:'지도 아래쪽 가운데(좁은 화면에서는 지도 왼쪽 위)에서 ‘출현 기록’과 ‘활용 × 보전’을 바꿀 수 있어요. ‘출현 기록’은 선택한 종의 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주고, ‘활용 × 보전’은 먼저 선택한 종의 셀만 그 종의 유형 색으로 칠해요. 범례 줄의 ‘모든 종 겹쳐 보기’를 누르면 모든 종의 셀을 4가지 유형 색으로 겹쳐 볼 수 있어요.',
     show:{click:['[data-view="explore"]'],target:'.map-mode'},next:['colors','red-dots']},
   {id:'colors',q:['색깔(4가지 유형)은 무슨 뜻이에요?','셀 색이 무슨 의미예요','네 가지 유형이 뭐예요','회색 셀은 뭐예요','점선 테두리는 뭐예요'],
     k:['색','색깔','유형','4가지','네가지','회색','점선','셀색','범례'],
-    a:'‘활용 × 보전’에서는 셀을 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형 색으로 칠해요. {rule} 셀 색은 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나이고, 해역의 자원량이나 해역 점수가 아니에요. 유형이 섞인 셀은 촘촘한 점선 테두리, 회색은 ‘유형 없음’(BBVI·MCUI 한 쌍이 없음)이에요.',
-    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['mini-grid','sea-score']},
+    a:'‘활용 × 보전’의 색은 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형이에요. {rule} 처음 보기에서는 선택한 종의 셀만 그 종의 유형 색(같은 색 점선 테두리)으로 칠하고, ‘모든 종 겹쳐 보기’에서는 셀 색이 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나예요. 어느 쪽도 해역의 자원량이나 해역 점수가 아니에요. 겹쳐 보기에서 유형이 섞인 셀은 촘촘한 점선 테두리이고, 회색은 ‘유형 없음’(BBVI·MCUI 한 쌍이 없음)이에요.',
+    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['verdict','mini-grid']},
+  {id:'verdict',q:['‘써도 됨’은 무슨 뜻이에요?','지켜야 함은 채집하면 안 된다는 뜻인가요','카드의 판단문은 어떻게 정해요'],
+    k:['써도됨','지켜야함','더알아봐야','키워서써야','판단문','권고','채집'],
+    a:'종 카드와 근거 패널의 {plain:high_bbvi_low_mcui}, {plain:low_bbvi_low_mcui}, {plain:high_bbvi_high_mcui}, {plain:low_bbvi_high_mcui}은 네 유형 {type:high_bbvi_low_mcui}, {type:low_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}을 짧게 줄인 연구용 요약이에요. 채집하거나 이용해도 된다는 권고가 아니에요. {rule} 두 값이 한 쌍으로 없는 종은 ‘유형 없음’이에요.',
+    show:{click:['[data-view="explore"]'],target:'#species-list'},next:['colors','indices']},
   {id:'mini-grid',q:['오른쪽 위 2×2 아이콘은 뭐예요','사분면 아이콘 사용법','한 유형만 보고 싶어요','ⓘ 버튼은 뭐예요'],
     k:['2×2','2x2','사분면','아이콘','ⓘ','한유형만','유형만','오른쪽위'],
-    a:'‘활용 × 보전’ 모드에서는 오른쪽 위 ‘위성’·‘수심’ 버튼 아래에 2×2 아이콘이 나와요. 칸마다 짧은 유형 이름과 셀 수가 적혀 있고, 마우스를 올리면 전체 유형 이름이 뜨고, 누르면 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ⓘ를 누르면 자세한 범례와 ‘우선 조사 대상’·‘미탐색 후보’ 체크박스가 나와요.',
+    a:'‘활용 × 보전’ 모드에서는 오른쪽 위 ‘위성’·‘수심’ 버튼 아래에 2×2 아이콘이 나와요. 칸마다 짧은 유형 이름과 지금 칠한 셀 수가 적혀 있어요(처음 보기에서는 선택한 종의 유형 칸에만 수가 있어요). 마우스를 올리면 전체 유형 이름이 뜨고, 누르면 ‘모든 종 겹쳐 보기’에서 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ⓘ를 누르면 자세한 범례와 ‘우선 조사 대상’·‘미탐색 후보’ 체크박스가 나와요.',
     show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['sufficiency','unexplored']},
   {id:'chips',q:['신약·기능성·식량 특성으로 종 찾기','신약·식량 특성으로 종 찾기','활용 특성 칩은 어떻게 써요','식량으로 쓸 수 있는 종만 보고 싶어요','칩을 여러 개 켜면 어떻게 돼요','결과가 하나도 없어요'],
     k:['칩','신약','기능성','식량','활용특성','특성','찾기','필터','결과없'],
@@ -26,7 +30,7 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="explore"]','#filter-toggle'],target:'#use-chips'},next:['select-species','compare']},
   {id:'select-species',q:['종을 골라서 지도에서 보기','종 선택은 어떻게 해요','특정 종을 검색하고 싶어요','종 카드를 누르면 어떻게 돼요'],
     k:['종선택','고르','골라','검색','카드','학명','종이름','탐색후보'],
-    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 근거 패널이 그 종으로 바뀌어요. 검색창에 종 이름이나 학명을 넣거나 분류군·근거 상태(넓은 화면에서는 ‘필터 더 보기’ 안)로 좁힐 수 있어요. ‘활용 × 보전’ 모드에서는 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, 선택한 종의 셀은 굵은 실선 테두리로 보여요.',
+    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 근거 패널이 그 종으로 바뀌어요. 검색창에 종 이름이나 학명을 넣거나 분류군·근거 상태(넓은 화면에서는 ‘필터 더 보기’ 안)로 좁힐 수 있어요. ‘활용 × 보전’에서는 처음에 선택한 종의 셀만 그 종의 유형 색으로 칠하고, 다른 카드를 누르면 그 종으로 다시 칠해요. 다른 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, ‘모든 종 겹쳐 보기’에서는 선택한 종의 셀이 노란 굵은 실선 테두리로 보여요.',
     show:{click:['[data-view="explore"]'],target:'#species-list'},next:['cell-click','compare']},
   {id:'cell-click',q:['셀을 누르면 뭐가 나와요','격자를 클릭하면 어떻게 돼요','확인 종 활용 가능 종 숫자는 뭐예요'],
     k:['셀','격자','클릭','누르면','확인종','활용가능종','보전우선종','근거부족종'],
@@ -117,6 +121,11 @@ function chatbotSimilar(a,b){
 // 점수 = 가장 비슷한 질문 예시(바이그램 Dice) + 들어 있는 키워드 수 × 0.3. 기준 미달이면 null(모르겠어요).
 // ponytail: 단순 바이그램·키워드 일치. 항목이 수백 개로 늘거나 오답이 잦으면 가중치 학습이나 AI 연결을 검토.
 const CHATBOT_MIN_SCORE=.45;
+// {plain:<사분면 키>}: 판단문(유형 앞의 짧은 말)은 app.js의 matrixTypePlain 한 곳에서 읽는다. 읽을 수 없으면 카드를 보라고 안내.
+function chatbotPlain(key){
+  try{const id=typeof matrixRule==='function'?matrixRule()?.types?.[key]?.id:null;if(id&&typeof matrixTypePlain==='function')return matrixTypePlain(id);}catch{}
+  return '종 카드에 적힌 판단문';
+}
 function chatbotMatch(text){
   const q=chatbotNormalize(text);if(q.length<2)return null;
   let best=null,top=0;
@@ -240,6 +249,7 @@ if(typeof document!=='undefined')(function(){
   function fill(text){
     return text.replace(/\{tab:(\w+)\}/g,(_,v)=>q(document.querySelector(`.tabs button[data-view="${v}"]`)?.textContent.trim()||v))
       .replace(/\{type:(\w+)\}/g,(_,k)=>q(typeLabel(k)))
+      .replace(/\{plain:(\w+)\}/g,(_,k)=>q(chatbotPlain(k)))
       .replace(/\{rule\}/g,()=>{const r=rule(),b=r?.bbvi_threshold,m=r?.mcui_threshold;
         return Number.isFinite(b)&&Number.isFinite(m)?(b===m?`BBVI(활용가치)와 MCUI(보전 시급성)가 각각 ${b} 이상이면 ‘높음’으로 봐요.`:`BBVI(활용가치) ${b}, MCUI(보전 시급성) ${m} 이상이면 ‘높음’으로 봐요.`)
           :'‘높음’의 기준은 범례 ⓘ에서 확인하세요.';});
