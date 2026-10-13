@@ -108,6 +108,25 @@ function globeFrame(w,h,band,copy=[]){
   for(const b of copy){const dy=Math.max(0,b.t-cy,cy-b.b);if(dy<R)cx=Math.max(cx,b.r+(b.title?-.06:.02)*w+Math.sqrt(R*R-dy*dy));}
   return {cx,cy,R};
 }
+// The baked picture (vendor/globe-v2, scripts/bake_globe.py) for a globe drawn R css px in radius: the smallest file
+// that is not much enlarged at this pixel ratio (at most 2), the largest only on a connection that is not saving data
+// or slow. pad: the 2400 file has 12 transparent px round the disc (its glow edge meets the screen's own glow there).
+const GLOBE_PAD={900:0,1600:0,2400:12};
+function globeFile(R,dpr,conn){
+  const d=2*R*Math.min(2,dpr||1),slow=!!conn&&(!!conn.saveData||/2g|3g/.test(conn.effectiveType||''));
+  return d<=1000?900:d<=1900||slow?1600:2400;
+}
+// Vertices that two countries of countries.json share lie on a land border; the coast line drawn over the picture
+// around Korea (NEAR: the study frame grown 4°) leaves them out.
+function borderVertices(geo){
+  const seen=new Map();
+  (geo?.features||[]).forEach((f,i)=>{const g=f.geometry;const polys=g?.type==='MultiPolygon'?g.coordinates:g?.type==='Polygon'?[g.coordinates]:[];
+    for(const poly of polys)for(const v of poly[0]){const k=v[0]+','+v[1],o=seen.get(k);seen.set(k,o===undefined||o===i?i:-1);}});
+  return new Set([...seen].filter(([,i])=>i===-1).map(([k])=>k));
+}
+const NEAR=[[120,29],[136,42.7]];
+const nearKorea=p=>p[0]>=NEAR[0][0]&&p[0]<=NEAR[1][0]&&p[1]>=NEAR[0][1]&&p[1]<=NEAR[1][1];
+
 // The info card: right of Korea as in the design (offsets from the 1672×941 image, scaled with the globe; pulled in to
 // the screen edge while its leader line still runs right), with a bent line from its point; under the point instead
 // when it does not fit. Top-left and line, in px.
@@ -126,15 +145,28 @@ function cardPlace(dot,korea,card,view,s){
   let show=false;try{show=shouldShowGate(location.hash,store);}catch{}
   if(!show)return;
   root.classList.add('gate-on');
+  // The picture is asked for now, before the page is parsed, so it mostly arrives during the loader's 0.6 s minimum;
+  // its size comes from the globe this window will draw (the stacked query is intro.css's). A shared link (no screen)
+  // never fetches it. Until it is there, or if it fails, the vector globe below is drawn instead.
+  let photo=null,photoAt=0,img=null;
+  try{
+    const stacked=matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
+    const file=globeFile(globeFrame(innerWidth,innerHeight,stacked?{top:0,bottom:0}:null).R,devicePixelRatio,navigator.connection);
+    img=new Image();img.decoding='async';img.fetchPriority='high';
+    img.onload=()=>img.decode().then(()=>{if(left||!img)return;photo={img,pad:GLOBE_PAD[file]/file};photoAt=shown?performance.now():0;
+      performance.mark?.('bbvm-globe-decoded');kick();},()=>{img=null;});
+    img.onerror=()=>{img=null;};
+    img.src=`vendor/globe-v2/globe-${file}.webp`;
+  }catch{img=null;}
   const gate=makeGate(performance.now());
   let reduce=false;try{reduce=motionPref(local?.getItem(MOTION_KEY),matchMedia('(prefers-reduced-motion: reduce)').matches);}catch{}
-  let el=null,raf=0,canvas=null,ctx=null,shown=false,left=false,dirty=true;
+  let el=null,raf=0,canvas=null,ctx=null,shown=false,left=false,dirty=true,drawnPhoto=false;
   const inerted=[];let observer=null;
   const touch=()=>matchMedia('(pointer:coarse)').matches; // a phone: no focus ring on the button, no keyboard popping up in search
 
   // The globe: projected once (the view never turns), scaled per screen size, redrawn only when something changed.
   const prep=(rings,cut)=>rings.map(r=>r.map((p,i)=>({...project(p[0],p[1],true),cut:i>0&&cutEdge(r[i-1],p,cut),cell:cellOf(p)})));
-  let land=null,borders=[],depth=[],kr=[],krCells=new Set(),cellBoxes=[],failed=false,frame=null,lead=null,size={w:0,h:0,dpr:1};
+  let land=null,borders=[],depth=[],kr=[],krCells=new Set(),krCoast=[],cellBoxes=[],failed=false,frame=null,lead=null,size={w:0,h:0,dpr:1};
   // The files load only now that the screen shows (a shared link never fetches them); each may fail on its own. Without
   // land the globe stays a plain sphere; the copy, the card and every way in work the same.
   const getJSON=u=>fetch(u).then(r=>{if(!r.ok)throw Error(u);return r.json();});
@@ -150,7 +182,8 @@ function cardPlace(dot,korea,card,view,s){
   const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();};
   addEventListener('bbvm:progress',e=>{try{
     const d=e.detail||{};
-    if(d.step==='map'&&d.geography){const r=geographyRings(d.geography,.08,COUNTRIES_CUT);kr=prep(r,COUNTRIES_CUT);krCells=new Set(r.flat().map(cellOf));}
+    if(d.step==='map'&&d.geography){const r=geographyRings(d.geography,.08,COUNTRIES_CUT),bv=borderVertices(d.geography);kr=prep(r,COUNTRIES_CUT);krCells=new Set(r.flat().map(cellOf));
+      krCoast=r.map(ring=>ring.map(p=>({...project(p[0],p[1],true),border:bv.has(p[0]+','+p[1]),near:nearKorea(p)})));}
     if(d.step==='done'&&Array.isArray(d.cells))cellBoxes=d.cells.map(c=>[[c.lon,c.lat],[c.lon+c.size,c.lat],[c.lon+c.size,c.lat+c.size],[c.lon,c.lat+c.size]]
       .map(p=>project(p[0],p[1]))).filter(b=>b.every(Boolean));
     gateProgress(gate,d.step,d.step==='done'?d:null);
@@ -184,7 +217,7 @@ function cardPlace(dot,korea,card,view,s){
     try{store?.setItem(GATE_KEY,'1');}catch{}
     const finish=()=>{
       cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
-      canvas.width=canvas.height=0; // the picture is not needed again: give its memory back
+      canvas.width=canvas.height=0;photo=img=null; // the picture is not needed again: give its memory back
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
       const a=arrival(target,touch());
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
@@ -220,17 +253,10 @@ function cardPlace(dot,korea,card,view,s){
     if(w===size.w&&h===size.h&&dpr===size.dpr)return;
     size={w,h,dpr};canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
   }
-  // sea by depth (shelf under 200 m, slope to 2000 m, deep), land a shade above the deep sea
+  // The vector globe, drawn until the picture is in or if it fails: sea by depth (shelf under 200 m, slope to 2000 m,
+  // deep), land a shade above the deep sea, coasts and borders, light from the upper left.
   const SEA={shelf:'#2a6c76',slope:'#154364',deep:'#0c2846',land:'#1c2a35'};
-  function draw(){
-    const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed;
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
-    // the air: a thin rim of light (1–3% of the radius), brightest on the lit upper left
-    const glow=ctx.createRadialGradient(cx,cy,R*.985,cx,cy,R*1.03),side=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
-    glow.addColorStop(0,'rgba(165,220,240,.55)');glow.addColorStop(1,'rgba(165,220,240,0)');
-    side.addColorStop(0,'#000');side.addColorStop(1,'rgba(0,0,0,.15)');
-    ctx.fillStyle=glow;ctx.fillRect(cx-R*1.04,cy-R*1.04,R*2.08,R*2.08);
-    ctx.globalCompositeOperation='destination-in';ctx.fillStyle=side;ctx.fillRect(0,0,w,h);ctx.globalCompositeOperation='source-over';
+  function vectorGlobe(X,Y,cx,cy,R,geo){
     ctx.save();ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=geo&&depth.length?SEA.shelf:SEA.deep;ctx.fill();ctx.clip();
     const fill=(rings,color)=>{ctx.beginPath();for(const r of rings){r.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}ctx.fillStyle=color;ctx.fill('evenodd');};
     // coasts and borders stop at the horizon and never trace a file's own cut; around Korea the finer countries.json draws them
@@ -242,17 +268,48 @@ function cardPlace(dot,korea,card,view,s){
       fill(land,SEA.land);fill(kr,SEA.land);
       stroke(borders,'rgba(255,255,255,.1)',.6,true);stroke(land,'rgba(255,255,255,.18)',.6,true);stroke(kr,'rgba(255,255,255,.18)',.7,false);
     }
-    // light from the upper left, the limb darkening toward the rim
     const shade=ctx.createRadialGradient(cx-R*.32,cy-R*.4,R*.05,cx,cy,R);
     shade.addColorStop(0,'rgba(150,220,215,.12)');shade.addColorStop(.6,'rgba(3,12,21,0)');shade.addColorStop(.88,'rgba(3,12,21,.3)');shade.addColorStop(1,'rgba(3,12,21,.72)');
     ctx.fillStyle=shade;ctx.fillRect(cx-R,cy-R,R*2,R*2);ctx.restore();
     const rim=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
     rim.addColorStop(0,'rgba(175,228,242,.6)');rim.addColorStop(1,'rgba(175,228,242,.06)');
     ctx.beginPath();ctx.arc(cx,cy,R-.75,0,Math.PI*2);ctx.strokeStyle=rim;ctx.lineWidth=1.5;ctx.stroke();
-    if(!geo)return;
-    // the public cells the app loaded (outline only, never shaded by record counts) and the map's study frame
-    ctx.beginPath();for(const b of cellBoxes){b.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}
-    ctx.strokeStyle='rgba(140,215,208,.34)';ctx.lineWidth=.8;ctx.stroke();
+  }
+  function draw(){
+    const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+    // the air outside the rim: a soft blue glow out to 4.5% of the radius, brightest on the lit upper left, faded on the
+    // far side (no stars, no space). The baked picture has the band inside the rim.
+    const glow=ctx.createRadialGradient(cx,cy,R*.97,cx,cy,R*1.045),side=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
+    glow.addColorStop(0,'rgba(143,200,232,.6)');glow.addColorStop(.45,'rgba(143,200,232,.2)');glow.addColorStop(1,'rgba(143,200,232,0)');
+    side.addColorStop(0,'#000');side.addColorStop(1,'rgba(0,0,0,.12)');
+    ctx.fillStyle=glow;ctx.fillRect(cx-R*1.05,cy-R*1.05,R*2.1,R*2.1);
+    ctx.save();ctx.shadowColor='rgba(143,200,232,.5)';ctx.shadowBlur=R*.03*dpr; // shadowBlur is in device pixels
+    ctx.beginPath();ctx.arc(cx,cy,R*.995,0,Math.PI*2);ctx.fillStyle='#0a2032';ctx.fill();ctx.restore();
+    ctx.globalCompositeOperation='destination-in';ctx.fillStyle=side;ctx.fillRect(0,0,w,h);ctx.globalCompositeOperation='source-over';
+    // the globe: the picture (faded in over 0.6 s if it comes after the screen is up), the vector globe until then
+    const t=photo?(reduce?1:Math.min(1,(performance.now()-photoAt)/600)):0;
+    if(t<1)vectorGlobe(X,Y,cx,cy,R,geo);
+    if(photo){
+      try{const s=R*(1+2*photo.pad);ctx.globalAlpha=t;ctx.drawImage(photo.img,cx-s,cy-s,2*s,2*s);}
+      catch{photo=img=null;return draw();} // a picture that does not draw: the vector globe
+      finally{ctx.globalAlpha=1;}
+      if(t<1)kick();else if(!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
+      // over the picture, only Korea's coast, a hairline (the land borders and the wider coasts are left to the picture)
+      ctx.beginPath();for(const r of krCoast)for(let i=1;i<r.length;i++){const a=r[i-1],b=r[i];
+        if(a.back||b.back||!a.near||!b.near||(a.border&&b.border))continue;ctx.moveTo(X(a),Y(a));ctx.lineTo(X(b),Y(b));}
+      ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=.7;ctx.stroke();
+    }
+    if(!geo&&!photo)return;
+    // the public cells the app loaded, every one alike (never shaded by record counts): a faint fill, a glow inside the
+    // cells, a fine outline; overlapping 1° and 4° sides are one path, so drawn once
+    if(cellBoxes.length){
+      ctx.beginPath();for(const b of cellBoxes){b.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}
+      ctx.fillStyle='rgba(140,215,208,.1)';ctx.fill();
+      ctx.save();ctx.clip();ctx.shadowColor='rgba(140,215,208,.8)';ctx.shadowBlur=8*dpr;ctx.strokeStyle='rgba(140,215,208,.3)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+      ctx.strokeStyle='rgba(140,215,208,.55)';ctx.lineWidth=.9;ctx.stroke();
+    }
+    // the map's study frame
     const [a,b]=STUDY,box=[];
     for(let x=a[0];x<=b[0];x+=.5)box.push([x,a[1]]);for(let y=a[1];y<=b[1];y+=.3)box.push([b[0],y]);
     for(let x=b[0];x>=a[0];x-=.5)box.push([x,b[1]]);for(let y=b[1];y>=a[1];y-=.3)box.push([a[0],y]);
