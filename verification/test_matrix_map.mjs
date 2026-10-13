@@ -12,7 +12,7 @@ vm.createContext(ctx);
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
   'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped,'+
-  'CELL_FILL,HOVER_OUTLINE,cellRange,colourSpecies,selectedCellLine});'+
+  'CELL_FILL,HOVER_OUTLINE,cellRange,colourSpecies,selectedCellLine,speciesCellStyle,matrixTypePlain,matrixPlainNote});'+
   'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};globalThis.setSelected=v=>{selected=v};',ctx);
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
@@ -133,4 +133,21 @@ assert.deepEqual([...counts.unexplored.missing],flagged('unexplored_candidate').
 assert.equal(flagged('unexplored_candidate').length,0);
 assert.equal(ctx.unexploredLine({rank:'genus',taxon:'Magallana',relatives:['참굴']}),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
 assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 근연종(Nomen novum)이 있습니다');
+// (12) 2026-10-13 species view ('활용 × 보전' default): only the selected species' cells, in its type colour with a dashed border
+// of the same colour; the chosen cell is heavier; an untyped species keeps the held grey; never the selected/hover yellow.
+for(const t of rule.cell_colour_precedence){
+  const st=ctx.speciesCellStyle(t,false),on=ctx.speciesCellStyle(t,true);
+  assert.deepEqual([st.color,st.fillColor,st.dashArray,st.fillOpacity],[ctx.matrixTypeColour[t],ctx.matrixTypeColour[t],'3 3',ctx.CELL_FILL],t);
+  assert.deepEqual([on.color,on.fillColor,on.dashArray],[st.color,st.fillColor,st.dashArray],t+': same colour when chosen');
+  assert.ok(on.weight>st.weight&&on.fillOpacity>st.fillOpacity,t+': the chosen cell is heavier');
+}
+const heldOwn=ctx.speciesCellStyle(null,false);
+assert.deepEqual([heldOwn.color,heldOwn.fillColor,heldOwn.dashArray,heldOwn.fillOpacity],['#657588','#b7c0ca','5 4',.25],'untyped: the held grey of the all-species map');
+assert.ok([null,...rule.cell_colour_precedence].flatMap(t=>[false,true].map(a=>ctx.speciesCellStyle(t,a))).every(x=>x.color!==ctx.HOVER_OUTLINE.color&&x.fillColor!==ctx.HOVER_OUTLINE.color),'no yellow in the species view');
+// (13) Plain verdicts are display aliases of the type ids (data, hash and CSV keep the ids); anything else reads '유형 없음'.
+assert.deepEqual(Object.fromEntries(rule.cell_colour_precedence.map(t=>[t,ctx.matrixTypePlain(t)])),
+  {conservation_priority:'지켜야 함',alternative_production:'키워서 써야 함',sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함'});
+assert.equal(ctx.matrixTypePlain(null),'유형 없음');assert.equal(ctx.matrixTypePlain('unknown_type'),'유형 없음');
+assert.equal(ctx.matrixPlainNote(),`연구용 유형 요약 · 채집·이용 권고 아님 · BBVI ${rule.bbvi_threshold} 이상이면 활용 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 높음`);
+ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구용 유형 요약 · 채집·이용 권고 아님','no rule: no thresholds');ctx.setData(next);
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');

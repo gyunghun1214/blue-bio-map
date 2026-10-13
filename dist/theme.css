@@ -30,8 +30,6 @@ main{max-width:none;margin:0;padding:0}
 .collection-control{position:relative;margin:0 0 0 auto;gap:6px;flex-wrap:nowrap;font-size:12.5px}
 #reload-data{display:grid;place-items:center;width:30px;height:30px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:none;color:#d6e6ee;font-size:14px;font-weight:700;line-height:1}
 #reload-data:hover{background:rgba(255,255,255,.08)}
-.project-tag{margin:0;font-size:11px;font-weight:600;letter-spacing:.06em;color:#6f8da2;white-space:nowrap}
-.version{padding:3px 8px;border:1px solid rgba(255,255,255,.16);border-radius:6px;color:#afc6d3;font-size:11.5px;white-space:nowrap}
 
 /* ---------- Pilot notice: one slim line ---------- */
 .notice{position:sticky;top:var(--head);z-index:1050;height:var(--note);margin:0;padding:0 20px;gap:10px;background:var(--amber-soft);border-bottom:1px solid #efe3c8;font-size:12.5px;white-space:nowrap}
@@ -68,7 +66,7 @@ main{max-width:none;margin:0;padding:0}
 .species-card .count strong{color:var(--ink2);font-weight:600}
 .species-card:hover{background:#f4f7fa;border-color:transparent}
 .species-card.selected{background:var(--teal-soft);box-shadow:none}
-.species-card.selected b{color:var(--teal-ink)}
+.species-card.selected>b,.species-card.selected .use-line b{color:var(--teal-ink)}
 .list-foot{flex:none;margin:0 -16px;padding:10px 16px;border-top:1px solid var(--line);background:#fff}
 .list-foot .text-button{font-size:13px;font-weight:600}
 
@@ -126,7 +124,7 @@ main{max-width:none;margin:0;padding:0}
 .legend-toggle .ico-open,.legend-collapsed .legend-toggle .ico-fold{display:none}
 .legend-collapsed .legend-toggle .ico-open{display:block}
 .map-ui-bl .map-key>:first-child{padding-right:26px}
-.map-ui-bl.legend-collapsed>:not(.legend-toggle){display:none!important}
+.map-ui-bl.legend-collapsed>:not(.legend-toggle):not(#value-key){display:none!important}
 .legend-collapsed .legend-toggle{position:static;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--teal)}
 .legend-collapsed .legend-toggle svg{width:20px;height:20px}
 /* BBVI × MCUI icon under the basemap switch: 2×2 type filter, the full legend opens from ⓘ */
@@ -241,11 +239,9 @@ main{max-width:none;margin:0;padding:0}
 footer{max-width:none;padding:16px 20px;background:#fff}
 
 /* ---------- Narrower screens ---------- */
-@media (max-width:1280px){.project-tag{display:none}}
 @media (max-width:1200px){
   .explorer{grid-template-columns:280px minmax(0,1fr)}
   .detail-pane{grid-column:1/-1;position:static;height:auto;border-left:0;border-top:1px solid var(--line)}
-  .version{display:none}
 }
 @media (max-width:960px){
   .header{gap:14px}
@@ -586,7 +582,8 @@ footer{max-width:none;padding:16px 20px;background:#fff}
    2026-10-11 navy '탐색 지도' (prompt explore-navy-map v2). Explore view only: the tokens are redefined on #explore, :root keeps
    its light values, so the compare and method tabs, the entry screen, the expedition page and 멍이 look as before.
    Red = occurrence bubbles, dots and their key only; teal = UI state only (pressed, selected, focus). The value-map type colours,
-   the yellow selected/hover outlines, the group dots, the axis colours and the BBVI tags keep their meaning colours.
+   the yellow selected/hover outlines, the group dots and the axis colours keep their meaning colours (the per-cell BBVI tags
+   gave way to one map chip on 2026-10-13).
    Leaflet popups and tooltips stay light (their tokens are reset below), as before.
    ========================================================================================================================== */
 #explore{
@@ -634,7 +631,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore #map[data-tiles="depth"] .leaflet-tile-pane{filter:saturate(.72) brightness(.62)}
 #explore .geo-label{color:rgba(234,242,246,.9);font-size:13px;font-weight:600;letter-spacing:.28em;text-shadow:0 1px 3px #000,0 0 2px #000}
 #explore .sea-label{color:#9cc4d8;font-size:13px;letter-spacing:.42em;text-shadow:0 1px 3px #000;opacity:.92}
-#explore .bbvi-tag{background:#0b1f33e6;color:#ffd5db;border-color:#ff8a98}
 /* bubbles: a bright red ring with a soft red glow (app.js draws the ring), the white count over it */
 #explore .bubble-count{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(60,0,10,.95),0 0 5px rgba(60,0,10,.6)}
 #explore .occ-bubble{filter:drop-shadow(0 0 6px rgba(255,84,84,.6)) drop-shadow(0 1px 2px rgba(0,0,0,.45))}
@@ -699,7 +695,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .species-card{color:var(--ink)}
 #explore .species-card:hover{background:var(--nv-surface)}
 #explore .species-card.selected{background:var(--teal-soft);box-shadow:inset 3px 0 var(--teal)}
-#explore .species-card.selected b{color:var(--teal-ink)}
+#explore .species-card.selected>b,#explore .species-card.selected .use-line b{color:var(--teal-ink)}
 #explore .card-scores i{background:var(--nv-surface);color:var(--ink)}
 #explore .card-scores i.held{background:none;border-color:#2e4a5d;color:#8aa2b3}
 #explore .card-scores i.single{background:none;border-color:var(--teal)}
@@ -803,7 +799,9 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .mm-ico{display:block;flex:none;width:17px;height:17px}
   #explore .period-filter{border-radius:11px;background:var(--glass)}
 
-  /* species list: title, search, the filter fold, then name-first cards with the taxon group's icon tile and tag */
+  /* species list: title, search, the filter fold, then name-first cards. 2026-10-13 design 2, card shape A: a type dot, the name
+     and latin name on one line, '활용 · 보전 · verdict' on the next. The group's icon tile and tag gave way; the group stays in
+     the card for screen readers and in the '필터 더 보기' filter. */
   #explore .pane-title{margin:0 0 14px}
   #explore .pane-title h2{font-size:19px;letter-spacing:-.01em}
   #explore .search{height:42px;border-color:#2c4b5f;background:rgba(16,42,58,.75)}
@@ -815,16 +813,18 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .filter-toggle[aria-expanded=true]::after{transform:rotate(45deg)}
   #explore .filter-fold:not(.folded){flex:none;max-height:45%;overflow-y:auto;overscroll-behavior:contain;padding-bottom:10px;border-bottom:1px solid var(--line);scrollbar-width:thin}
   #explore .species-list{margin:6px -8px 0;padding:4px 8px 12px;gap:2px;border-top:0}
-  #explore .species-card,#explore .species-card+.species-card{grid-template-columns:48px minmax(0,1fr) auto;grid-template-areas:"dot name group" "dot latin group";column-gap:12px;margin:0;padding:9px 10px;border:1px solid transparent;border-radius:12px}
-  #explore .species-card::before{box-sizing:border-box;width:48px;height:48px;border:1px solid color-mix(in srgb,var(--g,#94a3b8) 45%,transparent);border-radius:11px;background:color-mix(in srgb,var(--g,#94a3b8) 16%,#0e2636)}
-  #explore .species-card::after{content:"";grid-area:dot;place-self:center;width:24px;height:24px;background:color-mix(in srgb,var(--g,#94a3b8) 78%,#fff);-webkit-mask:var(--gi) center/contain no-repeat;mask:var(--gi) center/contain no-repeat}
+  #explore .species-card,#explore .species-card+.species-card{grid-template-columns:8px auto minmax(0,1fr);grid-template-areas:"dot name latin" "line line line";align-items:baseline;column-gap:8px;row-gap:4px;margin:0;padding:10px 12px 9px;border:1px solid transparent;border-radius:12px}
+  #explore .species-card::before{align-self:center;box-sizing:border-box;width:8px;height:8px;background:var(--tc,#8193a4)}
+  #explore .species-card[data-type="none"]::before{border:1.5px solid #8193a4;background:none}
   #explore .species-card>b{font-size:15px}
   #explore .species-card>em{font-size:12.5px}
-  #explore .species-card .group{position:static;grid-area:group;align-self:center;width:auto;height:auto;overflow:visible;clip:auto;padding:2px 7px;border:1px solid var(--nv-line2);border-radius:7px;color:var(--ink2);font-size:10.5px;font-weight:600}
+  #explore .species-card .card-line{grid-area:line}
+  #explore .species-card .card-line .cl-v{display:inline}
   #explore .species-card .count,#explore .species-card .card-scores{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  #explore .species-card .use-line{grid-column:2/-1}
+  #explore .species-card .use-line{grid-column:1/-1}
   #explore .species-card:hover{background:rgba(255,255,255,.05)}
   #explore .species-card.selected{border-color:var(--teal);background:rgba(68,215,192,.1);box-shadow:none}
+  #explore .species-card:focus-visible{outline:2px solid #fff;outline-offset:2px}
   #explore .list-foot{margin:0 -16px;padding:12px 16px}
 
   /* detail card: icon tile and name, the two axis summaries as sections, then '근거 자세히 보기' */
@@ -863,6 +863,100 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .detail-pane{border-top-color:var(--nv-sea)}
   #explore #map-symbol-label,#explore .key-bubble b{font-size:11.5px;line-height:1.35}
   #explore .key-note{font-size:10.5px;line-height:1.35}
+}
+
+/* ==========================================================================================================================
+   2026-10-13 design 2 ('개선된 시안2', prompt explore-cards-cells): verdict-first type chips, cards with the two axes and a
+   verdict, one header chip, a map summary chip instead of per-cell BBVI tags, a two-line legend and the '활용 × 보전' species
+   view. Swatches and dots keep the type colours (app.js matrixTypeColour); verdict words take a light tint of their type
+   colour so they stay AA (4.5:1 or more) on the dark panels. Leaflet tooltips stay light and never use these tints.
+   ========================================================================================================================== */
+#explore .verdict{font-weight:700}
+#explore .vd-sustainable_use{color:#5fd68c}
+#explore .vd-baseline_survey{color:#7fb4f5}
+#explore .vd-alternative_production{color:#f6c453}
+#explore .vd-conservation_priority{color:#ff8079}
+#explore .vd-none{color:#9cb2c2;font-weight:600}
+/* type chip above the two axis cards: '■ 써도 됨 지속가능 활용 후보' */
+#explore .ax-type{gap:8px}
+#explore .ax-type .verdict{font-size:15px}
+#explore .ax-type-name{color:var(--muted);font-size:12.5px;font-weight:500}
+#explore .sheet-summary .type-chip .verdict{font-size:12.5px}
+#explore .sheet-summary .type-chip.none i{box-sizing:border-box;border:1.5px dashed #8193a4}
+/* card line: '활용 71.9 · 보전 10.0 … 써도 됨'. Below 1281px the four score pills stay and only the verdict is added. */
+.species-card .card-line{grid-column:2/-1;display:flex;align-items:baseline;gap:12px;min-width:0;font-size:12px;line-height:1.3;color:var(--muted)}
+.species-card .card-line .cl-v{display:none;white-space:nowrap}
+.species-card .card-line .cl-v>b{display:inline;margin:0;color:var(--ink);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.species-card .card-line .cl-v.single>b{text-decoration:underline dotted;text-decoration-thickness:1.5px;text-underline-offset:4px}
+#explore .species-card .card-line .cl-v.high>b{color:#ff8079}
+.species-card .card-verdict{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
+.species-card .card-verdict .verdict{display:inline;font-size:inherit;line-height:inherit}
+.species-card .card-verdict::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--tc,transparent)}
+.species-card[data-type="none"] .card-verdict::before{box-sizing:border-box;border:1.5px solid #8193a4}
+@media (min-width:1281px){#explore .species-card .card-verdict{margin-left:auto}#explore .species-card .card-verdict::before{display:none}}
+/* header: one chip '● 연구 프로토타입 · verified-4.11 · OCEAN 20 ▾' (the dot turns amber while the connection chip shows) */
+.status-chip#notice-chip{max-width:none}
+#notice-chip::before{content:"";flex:none;width:7px;height:7px;margin-right:3px;border-radius:50%;background:#44d7c0}
+.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before{background:#f2b233}
+.status-pop .pop-project{margin:0 0 8px;color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.04em}
+/* the team tag gives way where the tabs shrink (960px and below); phones keep the chip inside the screen */
+@media (max-width:960px){.chip-tail{display:none}}
+@media (max-width:740px){.status-chip#notice-chip{max-width:calc(100vw - 80px)}}
+
+/* map summary chip over the free part of the map: '● 참굴 기록 셀 19개 · 335건 · 2010–2026' (one line, display only). From 741 to
+   1280px it sits under the mode and period bar (app.js passes that bar's height as --tl-h); phones show the same in the sheet. */
+.map-chip{position:absolute;z-index:500;top:calc(var(--tl-h,36px) + 24px);left:14px;box-sizing:border-box;max-width:calc(100% - 28px);padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--ink2);font-size:13px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.map-chip b{color:var(--ink);font-weight:700}
+.map-chip span{font-variant-numeric:tabular-nums}
+.mc-dot{display:inline-block;width:9px;height:9px;margin-right:8px;border-radius:50%;vertical-align:0}
+.mc-dot.none{box-sizing:border-box;border:1.5px solid #8193a4}
+#explore .map-chip{border:1px solid var(--nv-edge);background:rgba(11,31,45,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media (max-width:740px){.map-chip{display:none!important}}
+@media (min-width:1281px){
+  #explore .map-chip{top:16px;left:calc(var(--pane-l) + 32px);max-width:calc(100% - var(--pane-l) - var(--pane-r) - 64px)}
+}
+/* where the top-right buttons would meet the chip (the free part is narrow), the chip steps below them */
+@media (min-width:1281px) and (max-width:1439px){#explore .map-chip{top:62px}}
+/* legend in two lines (design 2): the mark and what the map shows now, then 조사량 with its date and 'ⓘ 범례' at the right end.
+   The scale shows while the shading is on; the bubble row, the note and the full text open from 'ⓘ 범례'. */
+.map-ui-bl .key-line{align-items:flex-start}
+.map-ui-bl .key-line>i{margin-top:1px}
+/* the label's second line is the standing note '실제 생물 발견 좌표 아님' (PR #174), a step quieter than what the mark means */
+#map-symbol-label,#explore #map-symbol-label{white-space:pre-line;word-break:keep-all;color:var(--ink2);font-weight:500}
+#map-symbol-label::first-line,#explore #map-symbol-label::first-line{color:var(--ink);font-weight:600}
+.key-foot{position:relative;display:block;width:100%}
+.key-foot .effort-key{padding-right:62px}
+.key-foot .map-legend-more>summary{position:absolute;top:0;right:0;line-height:20px;white-space:nowrap}
+.key-foot .map-legend-more>summary:hover{text-decoration:underline}
+.key-foot .map-legend-more>summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+.effort-key .eb-scale{display:none}
+.effort-key:has(#effort-toggle:checked) .eb-scale{display:inline-flex}
+/* '활용 × 보전' key in the same place: what the cell colour is in this view, and the switch to the all-species overlay */
+.vkey{display:flex;flex-direction:column;align-items:flex-start;gap:9px;box-sizing:border-box;max-width:100%;padding:11px 14px 12px;border-radius:14px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--ink2);font-size:12.5px;line-height:1.45}
+.vk-line{display:flex;align-items:flex-start;gap:8px;margin:0;color:var(--ink);font-weight:600;word-break:keep-all}
+.vk-swatch{flex:none;box-sizing:border-box;width:14px;height:14px;margin-top:2px;border:1.5px dashed transparent;border-radius:3px}
+.vk-swatch.none{border-color:#657588;background:rgba(183,192,202,.25)}
+.vk-swatch.all{border:2px solid #ffd166}
+.vk-type{color:var(--muted);font-weight:500}
+.vk-view{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--ink2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.vk-view::before{content:"";flex:none;width:15px;height:15px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l9 5-9 5-9-5 9-5z'/%3E%3Cpath d='M3 13l9 5 9-5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l9 5-9 5-9-5 9-5z'/%3E%3Cpath d='M3 13l9 5 9-5'/%3E%3C/svg%3E") center/contain no-repeat}
+.vk-view:hover{color:var(--ink)}
+.vk-view[aria-pressed=true]{border-color:var(--teal);background:var(--teal-soft);color:var(--teal-ink)}
+.vk-view:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+#explore .vkey{border:1px solid var(--nv-edge);background:rgba(11,31,45,.95)}
+#explore .vk-view{border-color:#35566b}
+/* species view on the corner icon: the selected species' type square stands out, the empty types step back */
+#explore .vm-grid button.vm-zero{opacity:.38}
+#explore .vm-grid button.vm-own{border-style:dashed;border-color:#fff!important}
+@media (max-width:740px){.vkey{padding:9px 11px;gap:7px;font-size:12px}.vk-view{padding:5px 10px;font-size:12px}}
+/* From 1281px the key hangs under the species list as one panel: square corners where they meet, one thin divider, no gap.
+   Folded to its button (occurrence mode) it stands apart again, 12px under the list (app.js --key-h). */
+@media (min-width:1281px){
+  #explore .species-pane{border-bottom-color:transparent;border-bottom-left-radius:0;border-bottom-right-radius:0}
+  #explore .list-foot{border-radius:0}
+  #explore .map-ui-bl .map-key,#explore .vkey{box-sizing:border-box;width:100%;border-color:rgba(156,178,194,.24);border-top-color:rgba(156,178,194,.14);border-radius:0 0 14px 14px;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+  #explore:has(.map-ui-bl.legend-collapsed #value-key[hidden]) .species-pane{border-bottom-color:rgba(156,178,194,.24);border-radius:14px}
+  #explore:has(.map-ui-bl.legend-collapsed #value-key[hidden]) .list-foot{border-radius:0 0 13px 13px}
 }
 /* BBVI 통합 가중치 (2026-10-13): above the value map's small legend while the weight is not the official one */
 .value-mini{flex-wrap:wrap}
