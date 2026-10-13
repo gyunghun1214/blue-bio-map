@@ -726,6 +726,10 @@ function matrixType(s){
   return rule.types?.[key]?.id||null;
 }
 const matrixTypeLabel=id=>Object.values(matrixRule()?.types||{}).find(t=>t.id===id)?.label||id;
+// 2026-10-13 design 2: a plain verdict before the formal type name (display only; data, hash and CSV keep the type id)
+const MATRIX_PLAIN={sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함',alternative_production:'키워서 써야 함',conservation_priority:'지켜야 함'};
+const matrixTypePlain=id=>MATRIX_PLAIN[id]||'유형 없음';
+const matrixPlainNote=()=>{const r=matrixRule();return '연구용 유형 요약 · 채집·이용 권고 아님'+(r?` · BBVI ${r.bbvi_threshold} 이상이면 활용 높음, MCUI ${r.mcui_threshold} 이상이면 보전 높음`:'');};
 // A Korean national-assessment MCUI is its own stratum: labelled apart and never ranked or plotted with IUCN-based MCUI.
 const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'MCUI')!==null;
 // After 3.14: another range state's national list. Like the Korean national basis, it is its own stratum: labelled, drawn with
@@ -1430,7 +1434,7 @@ function setView(view,toTop=true) {
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
-  if(view==='compare'){if(data)syncComparison();requestAnimationFrame(declutterPointLabels);}
+  if(view==='compare'){if(data)syncComparison();loadCompareStops();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
   // toTop=false, so the page does not jump up first and then travel the whole way back down.
   if(changed&&toTop)window.scrollTo(0,0);
@@ -2818,7 +2822,7 @@ function matrixBlockerText(s){
   return [...done,food,bio,cons,national].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
-  simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);$('compare').classList.toggle('simulating',value);
+  closeClusterPop(false);simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);$('compare').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
   $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다.${matrixRule()?' 점 색은 그 종의 유형 색이고, 같은 높이에 몰린 점은 위아래로 조금 비켜 놓은 뒤 짧은 선으로 실제 높이를 가리킵니다.':''}${assessed.some(s=>bbviLabel(s)&&!s.assessment?.mbpi_floor)?' 속이 빈 점은 MBPI 최고 항목의 독립 근거가 1편뿐인 BBVI(근거 논문 1편)입니다.':''}${assessed.some(s=>s.assessment?.mbpi_floor)?' 회색 점선 테두리의 빈 점은 MBPI 하한값(0, 효능 근거 미확인)이 들어간 BBVI입니다.':''}${assessed.some(separateMcui)?' MCUI 기반은 점 툴팁과 아래 유형별 목록에 적습니다.'+(n=>n?' '+n+' 기반 MCUI는 IUCN 기반과 같은 척도가 아닙니다.':'')([assessed.some(nationalMcui)?'한국 국가 평가':'',assessed.some(s=>substituteMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s))?'서식국 국가 평가':''].filter(Boolean).join('·')):''}${assessed.some(subNationalMcui)?' 지방(현·주) 목록 참고값은 국가 평가가 없는 종에만 쓰며 '+esc(assessed.find(subNationalMcui).assessment.mcui_substitute?.record?.backtest?.label||'')+'입니다.':''}${assessed.some(preliminaryMcui)?' 자체 예비평가(Rapid LC) MCUI는 점수가 되는 공식 범주가 어디에도 없는 종에만 쓰며 역검증 기준 미충족입니다.':''} ${released()?'검증 결과'+validationNote().trim():'타당성 미검증'}.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
@@ -2826,10 +2830,11 @@ function toggleSimulation(value){
   const kinds=data?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
   $('matrix-unplaced').innerHTML=unplaced.length?`<b>${matrixRule()?'매트릭스 미배치':'정보 부족 · 후속조사 대상'} ${unplaced.length}종${kinds}${matrixRule()?' (BBVI·MCUI 한 쌍 없음)':''}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.${matrixRule()?' 정보충분도 기준의 ‘우선 조사 대상’과는 다른 목록입니다.':''} 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
+  const count=$('cmp-types-count');if(count)count.textContent=value?'가상 예시를 보는 동안 비워 둡니다':`${assessed.length}종 배치${unplaced.length?` · 미배치 ${unplaced.length}종`:''} · 사분면 색 기준`;
   const points=[['A',24,74,'보전 우선·모니터링'],['B',77,76,'대체생산·배양 연구'],['C',25,25,'기초조사·관찰 대상'],['D',77,25,'지속가능 활용 후보']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map(s=>{const kind=separateMcui(s)?' · MCUI '+mcuiBasisLabel(s):'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
     const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'';
-    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
+    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" data-type="${type||''}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
     if(!value){pickCompare(assessed[i].aphiaID);return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
@@ -2839,18 +2844,28 @@ function toggleSimulation(value){
 }
 // Design 02: the four quadrants take a faint wash of their type colour and the rule's type name; below the graph, one box
 // per type lists its species (a reading path without colour). Names are buttons that open the same evidence as the point.
+// 2026-10-13 design 3: a quadrant shows its plain verdict over the formal name (never instead of it), an empty one says
+// '현재 0종', and the '읽는 법' table pairs the two names with the old quadrant notes.
 const QUADRANT_KEYS={q1:'low_bbvi_high_mcui',q2:'high_bbvi_high_mcui',q3:'low_bbvi_low_mcui',q4:'high_bbvi_low_mcui'};
+const typeOfficial=t=>t.label.replace(/\s*·\s*/g,' · ');
 function renderMatrixTypes(assessed){
   const rule=matrixRule(), box=$('matrix-types');
   for(const [q,key] of Object.entries(QUADRANT_KEYS)){
     const el=document.querySelector?.('#matrix .'+q), t=rule?.types?.[key];if(!el)continue;
     el.style.setProperty('--qc',t?matrixTypeColour[t.id]||'':'');el.classList.toggle('typed',!!t);
-    if(t)el.querySelector('strong').textContent=t.label;
+    if(!t)continue;
+    const plain=MATRIX_PLAIN[t.id], row=document.querySelector?.(`#cmp-read-types [data-q="${q}"]`);el.dataset.type=t.id;
+    if(el.querySelector('strong'))el.querySelector('strong').textContent=plain||t.label;
+    if(el.querySelector('span'))el.querySelector('span').textContent=plain?typeOfficial(t):'';
+    if(el.querySelector('.q-empty'))el.querySelector('.q-empty').hidden=!assessed.length||assessed.some(s=>matrixType(s)===t.id);
+    if(row?.querySelector('th')){row.dataset.type=t.id;row.querySelector('th').innerHTML=`<i class="mt-sw" style="background-color:${matrixTypeColour[t.id]||''}" aria-hidden="true"></i>${esc(matrixTypePlain(t.id))}`;row.querySelector('td').textContent=t.label;}
   }
+  if($('cmp-read-plain'))$('cmp-read-plain').textContent=matrixPlainNote();
   if(!box)return;
   if(!rule||!assessed.length){box.innerHTML='';return;}
   const cell=key=>{const t=rule.types[key];if(!t)return '';const list=assessed.filter(s=>matrixType(s)===t.id).sort((a,b)=>a.label.localeCompare(b.label,'ko'));
-    return `<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div>`;};
+    // design 3: the plain verdict heads the card, above the box with the formal name (the box itself reads as before)
+    return `<section class="mt-cell" data-type="${t.id}">${MATRIX_PLAIN[t.id]?`<p class="mt-plain">${esc(matrixTypePlain(t.id))}</p>`:''}<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div></section>`;};
   box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 근거 논문 2편 이상</span><span><i class="mt-dot hollow" aria-hidden="true"></i> BBVI 근거 논문 1편</span><span>MCUI 기반 표시가 없으면 IUCN 기반</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
   box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
 }
@@ -2861,7 +2876,10 @@ function spreadMatrixPoints(){
   const box=$('matrix-points'), frame=box?.parentElement?.getBoundingClientRect?.();
   if(!frame?.width||simulated)return;
   box.querySelectorAll('.matrix-tick').forEach(t=>t.remove());
-  const pts=[...box.querySelectorAll('.matrix-point.pilot')];if(!pts.length)return;
+  // design 3: a point in a 'N종 밀집' box stays at its true height (the box marks the group); the others spread as before
+  const all=[...box.querySelectorAll('.matrix-point.pilot')], pts=all.filter(b=>!b.hasAttribute('data-clustered'));
+  all.filter(b=>b.hasAttribute('data-clustered')).forEach(b=>{b.style.bottom=b.dataset.m+'%';b.dataset.dy=0;});
+  if(!pts.length)return;
   const W=frame.width, H=frame.height, size=pts[0].offsetWidth||22, gap=size+2, r=size/2, cut=matrixRule()?.mcui_threshold;
   const rows=[...new Set(pts.map(b=>+b.dataset.m))].sort((a,b)=>a-b), placed=[];
   const order=pts.slice().sort((a,b)=>a.dataset.b-b.dataset.b||a.dataset.name.localeCompare(b.dataset.name,'ko'));
@@ -2886,37 +2904,68 @@ function spreadMatrixPoints(){
 }
 // 3.27: twelve points share the low-MCUI band. A label that would cover another label or point, or leave the matrix, moves
 // to the other side of its point, then up or down by its own height, else hides; the point keeps its title, aria-label and click.
+// 2026-10-13 design 3: a crowded group (matrixClusters) with any label that hid or needed a leader line is drawn as one dashed
+// box and an 'N종 밀집 · 펼치기' button; its points keep their place (small, faint, out of the tab order, still clickable)
+// and the other labels are placed again around the box. The simulated example is never grouped.
 function declutterPointLabels(){
   const box=$('matrix-points'), frame=box?.parentElement?.getBoundingClientRect();  // points are placed in the .matrix frame
   if(!frame?.width)return;  // the comparison tab is hidden; setView and resize run it again
+  closeClusterPop(false);
   spreadMatrixPoints();
-  const pts=[...box.querySelectorAll('.matrix-point.pilot')], taken=pts.map(b=>b.getBoundingClientRect());
-  const blocked=r=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
-    taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top);
+  box.querySelectorAll('.matrix-cluster,.matrix-cluster-btn').forEach(e=>e.remove());
+  box.querySelectorAll('[data-clustered]').forEach(b=>{b.removeAttribute('data-clustered');if(b.matches('.matrix-point')&&!b.hasAttribute('data-dim'))b.removeAttribute('tabindex');});
+  const all=[...box.querySelectorAll('.matrix-point.pilot')];
   // design 02: right, left, above, below; then beside the point one or two label heights up or down
   const place=(l,[pos,dy])=>{l.classList.toggle('left',pos==='left');l.classList.toggle('above',pos==='above');l.classList.toggle('below',pos==='below');
     l.style.transform=pos==='above'||pos==='below'?`translate(-50%,${dy}px)`:`translateY(calc(-50% + ${dy}px))`;
     // a label moved off its point's height keeps a thin leader line back to the point
     const far=dy&&(pos==='left'||pos==='right');l.classList.toggle('far',!!far);
     if(far){const tx=pos==='left'?6:-6;l.style.setProperty('--ll',Math.hypot(tx,dy)+'px');l.style.setProperty('--la',Math.atan2(-dy,tx)+'rad');}};
-  // crowded points choose first, so the free space near a cluster goes to the cluster
-  const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
   // the selected species places its name first, so its label is the one that stays (compare design, 2026-10-12)
   const sel=b=>b.getAttribute('aria-current')==='true';
-  for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
-    const l=b.querySelector('.point-label');if(!l)continue;
-    l.classList.remove('hidden-label');
-    place(l,['right',0]);
-    const h=l.getBoundingClientRect().height+2;
-    const fit=[['right',0],['left',0],['above',0],['below',0],['right',-h],['right',h],['left',-h],['left',h],['above',-h],['below',h],['right',-2*h],['right',2*h],['left',-2*h],['left',2*h]]
-      .find(c=>{place(l,c);return !blocked(l.getBoundingClientRect());});
-    if(fit)taken.push(l.getBoundingClientRect());
-    else{place(l,[parseFloat(b.dataset.b)>=50?'left':'right',0]);l.classList.add('hidden-label');}
+  const placeLabels=(pts,extra)=>{
+    const taken=[...all.map(b=>b.getBoundingClientRect()),...extra];
+    const blocked=r=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
+      taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top);
+    // crowded points choose first, so the free space near a cluster goes to the cluster
+    const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
+    for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
+      const l=b.querySelector('.point-label');if(!l)continue;
+      l.classList.remove('hidden-label');
+      place(l,['right',0]);
+      const h=l.getBoundingClientRect().height+2;
+      const fit=[['right',0],['left',0],['above',0],['below',0],['right',-h],['right',h],['left',-h],['left',h],['above',-h],['below',h],['right',-2*h],['right',2*h],['left',-2*h],['left',2*h]]
+        .find(c=>{place(l,c);return !blocked(l.getBoundingClientRect());});
+      if(fit)taken.push(l.getBoundingClientRect());
+      else{place(l,[parseFloat(b.dataset.b)>=50?'left':'right',0]);l.classList.add('hidden-label');}
+    }
+  };
+  placeLabels(all,[]);
+  let groups=[];
+  if(!simulated){
+    const byId=new Map(all.map(b=>[Number(b.dataset.aphia),b])), loose=id=>{const l=byId.get(id)?.querySelector('.point-label');return !!l&&(l.classList.contains('hidden-label')||l.classList.contains('far'));};
+    groups=matrixClusters(all.map(b=>({aphia:Number(b.dataset.aphia),b:+b.dataset.b,m:+b.dataset.m,type:b.dataset.type||'',selected:sel(b)}))).filter(g=>g.ids.some(loose));
+    // on a narrow plot two boxed groups of one row and quadrant whose boxes would touch become one box
+    const cutV=matrixRule()?.bbvi_threshold??50, px=v=>v/100*frame.width;
+    groups=groups.reduce((out,g)=>{const p=out.at(-1);
+      if(p&&p.m===g.m&&(p.max<cutV)===(g.max<cutV)&&px(g.min-p.max)<30)out[out.length-1]={...p,max:g.max,ids:[...p.ids,...g.ids]};else out.push(g);return out;},[]);
+    if(groups.length){
+      for(const id of groups.flatMap(g=>g.ids)){const b=byId.get(id);if(!b)continue;b.setAttribute('data-clustered','');b.tabIndex=-1;
+        const l=b.querySelector('.point-label');if(l){l.classList.remove('far','above','below','left');l.style.transform='';l.classList.add('hidden-label');}}
+      spreadMatrixPoints();  // the rest spread again without the boxed points
+      // the selected label is placed again around the boxes, before the buttons; the boxes, buttons and that label are what
+      // the other labels then avoid
+      let keep=[];
+      const shapes=drawMatrixClusters(groups,byId,frame,boxes=>{const s=all.filter(sel);placeLabels(s,boxes);return keep=s.map(b=>b.querySelector('.point-label')?.getBoundingClientRect()).filter(Boolean);});
+      placeLabels(all.filter(b=>!sel(b)&&!b.hasAttribute('data-clustered')),[...shapes,...keep]);
+    }
   }
-  const hidden=pts.filter(b=>b.querySelector('.point-label.hidden-label')).length, note=$('matrix-note');
+  syncClusterDims();
+  const hidden=all.filter(b=>!b.hasAttribute('data-clustered')&&b.querySelector('.point-label.hidden-label')).length, boxed=groups.reduce((n,g)=>n+g.ids.length,0), note=$('matrix-note');
   let line=$('matrix-hidden');
-  if(!line&&note&&hidden){line=document.createElement('span');line.id='matrix-hidden';note.append(line);}
-  if(line)line.textContent=hidden?` 이름표가 겹치는 점 ${hidden}개는 이름을 숨겼습니다. 점에 마우스를 올리거나 키보드로 고르면 이름이 보이고, 누르면 종 상세가 열립니다.`:'';
+  if(!line&&note&&(hidden||boxed)){line=document.createElement('span');line.id='matrix-hidden';note.append(line);}
+  if(line)line.textContent=(boxed?` 점이 몰린 ${groups.length}곳(${boxed}종)은 상자로 묶었습니다. ‘펼치기’를 누르면 종 목록이 열리고, 상자 안 점도 누를 수 있습니다.`:'')+
+    (hidden?` 이름표가 겹치는 점 ${hidden}개는 이름을 숨겼습니다. 점에 마우스를 올리거나 키보드로 고르면 이름이 보이고, 누르면 종 상세가 열립니다.`:'');
 }
 globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t);declutterPointLabels.t=setTimeout(declutterPointLabels,150);});
 
@@ -2940,6 +2989,131 @@ function cmpTag(s,k){
   if(k==='MCUI'&&pilotScore(s,'MCUI')!==null)parts.push(separateMcui(s)?mcuiBasisLabel(s)+' · IUCN 기반 MCUI와 직접 비교 불가':'IUCN 기반');
   return parts.filter(Boolean).join(' · ');
 }
+// 2026-10-13 design 3: one short chip beside a value's heading. MCUI shows its basis in short ('한국 국가 평가', 'IUCN 평가');
+// other axes the first label piece after '정식 산출', which every species shares. The pieces are cmpTag's own words.
+const cmpPieces=(s,k)=>cmpTag(s,k).split(' · ').filter(p=>p&&p!=='정식 산출');
+const cmpMcuiChip=s=>pilotScore(s,'MCUI')===null?'':mcuiBasisLabel(s).replace(/\(.*\)$/,'').replace(/ 기반$/,'').replace(/^IUCN$/,'IUCN 평가');
+const cmpChip=(s,k)=>k==='MCUI'&&cmpMcuiChip(s)||cmpPieces(s,k)[0]||'';
+// The use labels no chip carries, on one line under the use block: the MBPI stratum first, then each remaining piece once,
+// led by the axes it belongs to (참굴: 생리활성 근거: ACE 펩타이드 · BBVI·MBPI 근거 논문 1편 · …). Nothing is dropped or new.
+function cmpUseRest(s){
+  const st=mbpiStratumOf(s)?.short, chip=cmpChip(s,'BBVI'), seen=new Map();
+  for(const k of ['BBVI','MBPI','MFPI'])for(const p of cmpPieces(s,k)){
+    if((k==='BBVI'&&p===chip)||(k==='MBPI'&&p===st))continue;
+    const key=/ 비교집단$/.test(p)?'식량 비교집단: '+p.replace(/ 비교집단$/,''):p;
+    seen.set(key,[...(seen.get(key)||[]),k]);
+  }
+  return [st?'생리활성 근거: '+st:'',...[...seen].map(([p,ks])=>p.startsWith('식량 비교집단: ')?p:ks.join('·')+' '+p)].filter(Boolean).join(' · ');
+}
+// '바다 탐험에서 보기': expedition.html opens a route stop by #stop=N (1-based over the route stops, which lead the file);
+// a stop off the route has no such link, so the page opens with the label saying so; a species with no stop gets no link.
+let cmpStops=null, cmpStopsLoad=null;
+const cmpExpeditionLink=(stops,aphia)=>{if(!Array.isArray(stops))return null;const i=stops.filter(s=>s.on_route!==false&&s.cell).findIndex(s=>s.aphia_id===aphia);
+  return i>=0?{href:`expedition.html#stop=${i+1}`,text:'바다 탐험에서 보기'}:stops.some(s=>s.aphia_id===aphia)?{href:'expedition.html',text:'바다 탐험 열기(항로 밖 지점)'}:null;};
+function syncExpeditionLink(){
+  const a=$('cmp-expedition'), go=selected?cmpExpeditionLink(cmpStops,selected.aphiaID):null;if(!a)return;
+  a.hidden=!go;if(go){a.href=go.href;a.textContent=go.text;}
+}
+function loadCompareStops(){  // once, when the tab is first shown; a failed load only hides the link
+  cmpStopsLoad??=fetch('expedition-stops.json').then(r=>r.ok?r.json():null).then(d=>{cmpStops=Array.isArray(d?.stops)?d.stops:[];},()=>{cmpStops=[];}).then(syncExpeditionLink);
+}
+// Crowded points: the same MCUI value on the same side of the BBVI threshold (one quadrant), chained in BBVI order while
+// neighbours are under CLUSTER_GAP apart; a chain of CLUSTER_MIN or more is a candidate. The selected species never joins.
+// Pure: points are [{aphia,b,m,type,selected}], groups are [{m,min,max,ids}] (ids in BBVI order; groups low MCUI first, then left to right).
+const CLUSTER_GAP=4, CLUSTER_MIN=4;
+function matrixClusters(points){
+  const cut=matrixRule()?.bbvi_threshold??50, rows=new Map(), out=[];
+  for(const p of points){if(p.selected)continue;const key=`${p.m}|${p.b>=cut}|${p.type||''}`;if(!rows.has(key))rows.set(key,[]);rows.get(key).push(p);}
+  for(const row of rows.values()){
+    row.sort((a,c)=>a.b-c.b||a.aphia-c.aphia);
+    let run=[];
+    for(const p of row){if(run.length&&p.b-run.at(-1).b>=CLUSTER_GAP){if(run.length>=CLUSTER_MIN)out.push(run);run=[];}run.push(p);}
+    if(run.length>=CLUSTER_MIN)out.push(run);
+  }
+  return out.map(run=>({m:run[0].m,min:run[0].b,max:run.at(-1).b,ids:run.map(p=>p.aphia)})).sort((a,c)=>a.m-c.m||a.min-c.min);
+}
+const fmt1=v=>String(+Number(v).toFixed(1));
+// The box hugs its points (at their true height) and stops short of the BBVI threshold line and of a box beside it. Its
+// button sits just above or below it, centred if it can, else slid sideways while it still covers more of its own box than
+// of any other, clear of the other points, the kept label, the quadrant names and earlier buttons; on a narrow plot one or
+// two rows higher; else inside its box. Pointing at or opening a button lights its box. placeKeep(boxes) places the
+// selected label once the boxes are known and returns the rectangles the buttons must leave clear.
+function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
+  const box=$('matrix-points'), shapes=[], pills=[], pad=7, gap=8, cutV=matrixRule()?.bbvi_threshold??50, cut=frame.left+cutV/100*frame.width;
+  const hit=(r,list)=>list.some(o=>r.left<o.right+gap&&r.right+gap>o.left&&r.top<o.bottom+gap&&r.bottom+gap>o.top);
+  const inGroup=new Set(groups.flatMap(g=>g.ids));
+  const free=[...box.querySelectorAll('.matrix-point.pilot')].filter(b=>!inGroup.has(Number(b.dataset.aphia))).map(b=>b.getBoundingClientRect());
+  // the quadrant names' text, not their full-width boxes
+  const names=[...box.parentElement.querySelectorAll('.quadrant :is(strong,span)')].filter(e=>e.textContent.trim()).map(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();});
+  const rects=groups.map(g=>{
+    const rs=g.ids.map(id=>byId.get(id)?.getBoundingClientRect()).filter(Boolean), pl=Math.min(...rs.map(r=>r.left)), pr=Math.max(...rs.map(r=>r.right));
+    let L=pl-pad, R=pr+pad;if(g.max<cutV)R=Math.min(R,cut-2);else L=Math.max(L,cut+2);
+    return {pl,pr,L:Math.max(frame.left+1,L),R:Math.min(frame.right-1,R),T:Math.max(frame.top+1,Math.min(...rs.map(r=>r.top))-pad),B:Math.min(frame.bottom-1,Math.max(...rs.map(r=>r.bottom))+pad)};
+  });
+  // two boxes on one row meet half way between their nearest points
+  const byLeft=rects.slice().sort((a,c)=>a.L-c.L);
+  for(let i=0;i<byLeft.length;i++)for(let j=i+1;j<byLeft.length;j++){const a=byLeft[i],c=byLeft[j];
+    if(a.T<c.B&&c.T<a.B&&a.R+2>c.L){const mid=(a.pr+c.pl)/2;a.R=Math.min(a.R,mid-1);c.L=Math.max(c.L,mid+1);}}
+  const keep=placeKeep(rects.map(r=>({left:r.L,top:r.T,right:r.R,bottom:r.B})));
+  groups.forEach((g,i)=>{
+    const {L,R,T,B}=rects[i], rect=document.createElement('span');
+    rect.className='matrix-cluster';rect.dataset.cluster=g.ids.join(',');rect.setAttribute('aria-hidden','true');
+    rect.style.cssText=`left:${L-frame.left}px;top:${T-frame.top}px;width:${R-L}px;height:${B-T}px`;box.prepend(rect);
+    const btn=document.createElement('button');  // '· 펼치기' folds away on a phone; the aria-label keeps it
+    btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');btn.innerHTML=`${g.ids.length}종 밀집<span class="mcb-act"> · 펼치기</span>`;
+    btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','matrix-cluster-pop');
+    btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${fmt1(g.min)}–${fmt1(g.max)} · MCUI ${fmt1(g.m)} · 종 목록 펼치기`);
+    btn.addEventListener('click',()=>btn.getAttribute('aria-expanded')==='true'?closeClusterPop(true):openClusterPop(btn));
+    const lit=on=>()=>rect.toggleAttribute('data-hot',on||btn.getAttribute('aria-expanded')==='true');
+    btn.addEventListener('pointerenter',lit(true));btn.addEventListener('pointerleave',lit(false));btn.addEventListener('focus',lit(true));btn.addEventListener('blur',lit(false));
+    box.append(btn);
+    const w=btn.offsetWidth, h=btn.offsetHeight, block=[...free,...keep,...names,...pills];
+    const span=(r,o)=>Math.min(r.right,o.R)-Math.max(r.left,o.L);
+    const other=r=>Math.max(0,...rects.filter((o,j)=>j!==i&&o.T<B&&o.B>T).map(o=>span(r,o)));  // the boxes on its own row
+    const ok=r=>r.top>=frame.top+2&&r.bottom<=frame.bottom-2&&!hit(r,block)&&span(r,rects[i])>other(r)&&!rects.some(o=>r.left<o.R&&r.right>o.L&&r.top<o.B&&r.bottom>o.T);
+    const m=Math.min(24,(R-L)/2), lo=Math.max(frame.left+2,L-w+m), hi=Math.min(frame.right-w-2,R-m), cx=Math.min(Math.max((L+R-w)/2,lo),hi);
+    const row=y=>[cx,...block.filter(o=>o.top<y+h+gap&&o.bottom+gap>y).flatMap(o=>[o.right+gap,o.left-gap-w])].filter(x=>x>=lo&&x<=hi)
+      .sort((a,c)=>Math.abs(a-cx)-Math.abs(c-cx)).map(x=>({left:x,top:y,right:x+w,bottom:y+h}));
+    const up=row(T-h-3), down=row(B+3), up2=row(T-2*h-3-gap), up3=row(T-3*h-3-2*gap);
+    const ix=Math.min(Math.max((L+R-w)/2,frame.left+2),frame.right-w-2), iy=(T+B-h)/2;
+    const spot=[up[0],down[0],...up.slice(1),...down.slice(1),...up2,...up3].find(r=>r&&ok(r))||{left:ix,top:iy,right:ix+w,bottom:iy+h};
+    btn.style.left=spot.left-frame.left+'px';btn.style.top=spot.top-frame.top+'px';
+    pills.push(spot);shapes.push({left:L,top:T,right:R,bottom:B},spot);
+  });
+  return shapes;
+}
+// '펼치기': the group's species as buttons in point order (left to right: BBVI, then name), never numbered or ranked. A row
+// picks the species like its point; it leaves the group and gets its label. Esc or a click outside closes it.
+function openClusterPop(btn){
+  const pop=$('matrix-cluster-pop'), frame=pop?.parentElement;if(!pop||!frame)return;
+  const list=btn.dataset.cluster.split(',').map(cmpById).filter(Boolean).sort((a,c)=>pilotScore(a,'BBVI')-pilotScore(c,'BBVI')||a.label.localeCompare(c.label,'ko'));
+  if(!list.length)return;
+  closeClusterPop(false);setBasisPop(false);setReadPop(false);
+  const b=list.map(s=>pilotScore(s,'BBVI'));
+  pop.innerHTML=`<p class="mc-head">BBVI ${fmt1(Math.min(...b))}–${fmt1(Math.max(...b))} · MCUI ${fmt1(pilotScore(list[0],'MCUI'))} · ${list.length}종 · 점 위치 순(왼쪽부터)</p><ul class="mc-list">${list.map(s=>{const t=matrixType(s);
+    return `<li><button type="button" data-aphia="${s.aphiaID}"><i class="mc-dot${bbviLabel(s)?' hollow':''}${s.assessment?.mbpi_floor?' floor':''}" style="--mp:${t?matrixTypeColour[t]:'#a9bbc6'}" aria-hidden="true"></i><b>${esc(s.label)}</b><span>BBVI ${fmt1(pilotScore(s,'BBVI'))} · MCUI ${fmt1(pilotScore(s,'MCUI'))}</span><small>${esc([bbviLabel(s)?'BBVI '+bbviLabel(s):'',s.assessment?.mbpi_floor?'MBPI 하한값':'',cmpMcuiChip(s)].filter(Boolean).join(' · '))}</small></button></li>`;}).join('')}</ul>`;
+  pop.hidden=false;btn.setAttribute('aria-expanded','true');btn.querySelector('.mcb-act').textContent=' · 접기';syncClusterDims();
+  btn.parentElement.querySelector(`.matrix-cluster[data-cluster="${btn.dataset.cluster}"]`)?.setAttribute('data-hot','');
+  // beside the box (right, else left), else above it; on a phone across the screen, 8px from each edge
+  const f=frame.getBoundingClientRect(), r=(btn.parentElement.querySelector(`.matrix-cluster[data-cluster="${btn.dataset.cluster}"]`)||btn).getBoundingClientRect(), w=pop.offsetWidth, h=pop.offsetHeight, vw=document.documentElement.clientWidth;
+  let left=r.right+10, top=r.top+r.height/2-h/2;
+  if(left+w>Math.min(f.right,vw-8)){left=r.left-10-w;if(left<Math.max(f.left,8)){left=r.left+r.width/2-w/2;top=r.top-10-h;}}
+  left=Math.min(Math.max(left,8),vw-8-w);top=Math.max(top,f.top-40);
+  pop.style.left=left-f.left+'px';pop.style.top=top-f.top+'px';
+  pop.querySelector('button')?.focus({preventScroll:true});
+}
+function closeClusterPop(focus=true){
+  const pop=$('matrix-cluster-pop');if(!pop||pop.hidden)return;
+  pop.hidden=true;pop.innerHTML='';
+  const b=document.querySelector?.('#matrix-points .matrix-cluster-btn[aria-expanded="true"]');
+  if(b){b.setAttribute('aria-expanded','false');b.querySelector('.mcb-act').textContent=' · 펼치기';b.parentElement.querySelector(`.matrix-cluster[data-cluster="${b.dataset.cluster}"]`)?.toggleAttribute('data-hot',b.matches(':hover'));if(focus)b.focus();}
+}
+// a group's button and its list rows dim like the points when the filter leaves none (or not that species) shown
+function syncClusterDims(){
+  const on=cmpFiltered();
+  document.querySelectorAll?.('#matrix-points .matrix-cluster-btn').forEach(b=>b.toggleAttribute('data-dim',on&&!b.dataset.cluster.split(',').some(id=>cmpMatch(cmpById(id)))));
+  document.querySelectorAll?.('#matrix-cluster-pop button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
+}
 function setCompareMode(mode){
   cmpMode=mode==='table'?'table':'matrix';
   $('cmp-matrix-view').hidden=cmpMode!=='matrix';$('cmp-table-view').hidden=cmpMode!=='table';
@@ -2953,7 +3127,8 @@ function applyCompareFilter(){
   $('comparison').querySelectorAll('tr.cmp-row').forEach(tr=>{const out=on&&!cmpMatch(cmpById(tr.dataset.aphia));
     tr.classList.toggle('cmp-out',out);$('cmp-more-'+tr.dataset.aphia)?.classList.toggle('cmp-out',out);});
   $('matrix-points').querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{const out=on&&!cmpMatch(cmpById(b.dataset.aphia));
-    if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');b.removeAttribute('tabindex');}});
+    if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');if(!b.hasAttribute('data-clustered'))b.removeAttribute('tabindex');}});
+  syncClusterDims();
   $('matrix-types').querySelectorAll('button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
   if(!note)return;
   note.innerHTML=!on?'':n?`${data.species.length}종 중 ${n}종 표시${cmpMode==='matrix'?' · 나머지 점은 흐리게 남겨 둡니다':''} <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`:
@@ -2971,7 +3146,7 @@ function syncCompareMatrix(){
   const box=$('matrix-points');if(!data||!box?.querySelectorAll)return;
   box.querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>Number(b.dataset.aphia)===selected?.aphiaID?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current'));
   const floor=data.species.some(s=>assessedForMatrix(s)&&s.assessment?.mbpi_floor);
-  if($('cmp-legend'))$('cmp-legend').innerHTML=`<span><i class="lg-dot" aria-hidden="true"></i>근거 논문 2편 이상</span><span><i class="lg-dot hollow" aria-hidden="true"></i>BBVI 근거 논문 1편</span>${floor?'<span><i class="lg-dot floor" aria-hidden="true"></i>MBPI 하한값</span>':''}<span><i class="lg-dot sel" aria-hidden="true"></i>선택한 종</span><span class="lg-note">MCUI 기반 표시가 없으면 IUCN 기반(점 설명·유형별 목록에 기반 표시)</span>`;
+  if($('cmp-legend'))$('cmp-legend').innerHTML=`<span><i class="lg-dot" aria-hidden="true"></i>근거 논문 2편 이상</span><span><i class="lg-dot hollow" aria-hidden="true"></i>BBVI 근거 논문 1편</span>${floor?'<span><i class="lg-dot floor" aria-hidden="true"></i>MBPI 하한값</span>':''}<span><i class="lg-dot sel" aria-hidden="true"></i>선택한 종</span>`;
   applyCompareFilter();
 }
 function syncCompareSelection(){
@@ -2989,19 +3164,24 @@ function pickCompare(id){
 function renderCompareProfile(){
   const box=$('cmp-profile'), s=selected;if(!box)return;
   if(!data||!s){box.innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';return;}
-  const t=matrixType(s), inBasket=cmpBasket.includes(s.aphiaID), full=!inBasket&&cmpBasket.length>=CMP_MAX;
+  if(currentView==='compare')loadCompareStops();
+  const t=matrixType(s), inBasket=cmpBasket.includes(s.aphiaID), full=!inBasket&&cmpBasket.length>=CMP_MAX, rule=matrixRule(), go=cmpExpeditionLink(cmpStops,s.aphiaID);
   const num=k=>{const st=axisState(s,k);return st.value===null?`<span class="cp-state">${esc(st.label)}</span>`:st.value.toFixed(1);};
-  const bar=k=>{const v=pilotScore(s,k);return v===null?'':`<span class="cp-bar ${k==='MCUI'?'sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></span>`;};
+  // design 3: the two main bars mark the type threshold (matrixRule) with a white tick; a missing value draws no bar
+  const bar=(k,cut=null)=>{const v=pilotScore(s,k);return v===null?'':`<span class="cp-bar${k==='MCUI'?' sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut==null?'':`<b class="cp-cut" style="left:${cut}%"></b>`}</span>`;};
   const ev=(k,cls,inner)=>`<button type="button" class="${cls}" data-prof-axis="${k}" aria-label="${esc(s.label)} ${k} ${pilotScore(s,k)===null?esc(axisState(s,k).label):pilotScore(s,k).toFixed(1)} · ${esc(cmpTag(s,k))} · 근거 보기">${inner}</button>`;
-  const sub=(k,name)=>`<div class="cp-sub">${ev(k,'cp-sub-name',`<span>${name}</span>`)}${bar(k)}${ev(k,'cp-sub-num',num(k))}<p class="cp-tag">${esc(cmpTag(s,k))}</p></div>`;
-  box.innerHTML=`<div class="cp-head"><div class="cp-id"><div class="cmp-eyebrow">SPECIES PROFILE</div><h2 id="cmp-profile-name">${esc(s.label)}</h2><p class="cp-latin">${esc(s.name)}</p>`+
-    `<p class="cp-badges">${t?`<span class="cp-type" style="--tc:${matrixTypeColour[t]}">${esc(matrixTypeLabel(t))}</span>`:'<span class="cp-type none">매트릭스 미배치</span>'}<span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
-    `<div class="cp-figure">${cmpIcon(s)}<small>종 사진 없음 · ${esc(s.group)} 아이콘</small></div>`+
-    `<button type="button" id="cmp-add" class="cmp-ghost cp-add" aria-pressed="${inBasket}"${full?' aria-disabled="true"':''} aria-describedby="cmp-add-note">${inBasket?'담김 ✓':'+ 비교 담기'}</button><span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span></div>`+
-    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3>활용 가치 BBVI</h3>${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI')}<p class="cp-tag">${esc(cmpTag(s,'BBVI'))}</p></div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}</section>`+
-    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3>보전 필요성 MCUI</h3>${ev('MCUI','cp-big sand',num('MCUI'))}${bar('MCUI')}<p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></div></section>`+
-    `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more">근거 자세히 보기 <span aria-hidden="true">→</span></button>`+
-    `<p class="cp-foot">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거 · ${ev('OCC','cmp-link','출현 기록 지도')}</p></div>`;
+  const sub=(k,name)=>`<div class="cp-sub">${ev(k,'cp-sub-name',`<span>${name}</span>`)}${bar(k)}${ev(k,'cp-sub-num',num(k))}</div>`;
+  const chip=k=>cmpChip(s,k)?`<span class="cp-chip">${esc(cmpChip(s,k))}</span>`:'', rest=cmpUseRest(s);
+  box.innerHTML=`<div class="cp-head"><div class="cp-id"><div class="cmp-eyebrow">SPECIES PROFILE</div><h2 id="cmp-profile-name">${esc(s.label)}</h2><p class="cp-latin">${esc(s.name)}</p></div>`+
+    `<button type="button" id="cmp-add" class="cmp-ghost cp-add" aria-pressed="${inBasket}"${full?' aria-disabled="true"':''} aria-describedby="cmp-add-note">${inBasket?'담김 ✓':'+ 비교 담기'}</button>`+
+    `<span class="cp-tile" role="img" aria-label="종 사진 없음 · ${esc(s.group)} 아이콘">${cmpIcon(s)}</span>`+
+    `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
+    // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 없음 and why)
+    `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}</section>`+
+    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></section>`+
+    `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거</span>`+
+    `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;
 }
 // '근거 자세히 보기': the species' follow-up text (showDecision) opens in its own region under the two panels
 function cmpMoreSync(){
@@ -3022,6 +3202,8 @@ function toggleBasket(id){
 function renderCompareTray(){
   const box=$('cmp-tray');if(!box||!data)return;
   const list=cmpBasket.map(cmpById).filter(Boolean), ready=list.length>=2;
+  box.classList.toggle('empty',!list.length);
+  if(!list.length){box.innerHTML=`<p class="ct-empty"><b>선택한 생물 0 / ${CMP_MAX}</b> <span>프로필의 ‘+ 비교 담기’로 종을 모으면 여기서 나란히 비교할 수 있습니다.</span></p>`;return;}
   const slots=[...list.map(s=>`<li class="ct-card">${cmpIcon(s)}<span class="ct-name"><b>${esc(s.label)}</b><em>${esc(s.name)}</em></span><button type="button" class="ct-x" data-basket-remove="${s.aphiaID}" aria-label="${esc(s.label)} 비교에서 빼기">✕</button></li>`),
     ...Array.from({length:CMP_MAX-list.length},()=>`<li class="ct-slot"><button type="button" class="ct-add" data-basket-add>+ 생물 추가</button></li>`)];
   box.innerHTML=`<div class="ct-head"><h2>선택한 생물</h2><span class="ct-count">${list.length} / ${CMP_MAX}</span></div>`+
@@ -3056,7 +3238,11 @@ function openCompareDialog(){
 }
 function setBasisPop(open){
   const pop=$('cmp-basis-pop'), b=$('cmp-basis-toggle');if(!pop)return;
-  pop.hidden=!open;b.setAttribute('aria-expanded',String(open));
+  pop.hidden=!open;b.setAttribute('aria-expanded',String(open));if(open){setReadPop(false);closeClusterPop(false);}
+}
+function setReadPop(open){
+  const pop=$('cmp-read-pop'), b=$('cmp-read-toggle');if(!pop)return;
+  pop.hidden=!open;b?.setAttribute('aria-expanded',String(open));if(open){setBasisPop(false);closeClusterPop(false);}
 }
 const updateBasisNow=()=>{const n=$('cmp-basis-now');if(n)n.textContent=bbviWeight===.5?'':` · 식량 ${bbviWeight.toFixed(2)}`;};
 function renderCompare(){renderCompareProfile();renderCompareTray();syncCompareMatrix();updateBasisNow();}
@@ -3235,6 +3421,14 @@ $('cmp-basis-toggle').addEventListener('click',()=>setBasisPop($('cmp-basis-pop'
 $('cmp-weight-reset').addEventListener('click',()=>{const w=$('bbvi-weight');w.value='0.5';w.dispatchEvent(new Event('input'));});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-basis-pop').hidden){setBasisPop(false);$('cmp-basis-toggle').focus();}});
 document.addEventListener('click',e=>{if(!$('cmp-basis-pop').hidden&&!e.target.closest('.cmp-basis'))setBasisPop(false);});
+$('cmp-read-toggle').addEventListener('click',()=>setReadPop($('cmp-read-pop').hidden));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-read-pop').hidden){setReadPop(false);$('cmp-read-toggle').focus();}});
+document.addEventListener('click',e=>{if(!$('cmp-read-pop').hidden&&!e.target.closest('.cmp-read'))setReadPop(false);});
+// the group list: a row picks the species (it leaves the box and gets its label), then focus goes to its point
+$('matrix-cluster-pop').addEventListener('click',e=>{const b=e.target.closest('button[data-aphia]');if(!b)return;pickCompare(Number(b.dataset.aphia));
+  $('matrix-points').querySelector('.matrix-point[aria-current="true"]')?.focus({preventScroll:true});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('matrix-cluster-pop').hidden)closeClusterPop(true);});
+document.addEventListener('click',e=>{if(!$('matrix-cluster-pop').hidden&&!e.target.closest('#matrix-cluster-pop,.matrix-cluster-btn'))closeClusterPop(false);});
 // one listener per region: the profile and the tray redraw their buttons
 $('cmp-profile').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b||!selected)return;
@@ -3245,7 +3439,7 @@ $('cmp-profile').addEventListener('click',e=>{
 $('cmp-tray').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.basketRemove){const i=cmpBasket.indexOf(Number(b.dataset.basketRemove));toggleBasket(b.dataset.basketRemove);
-    ($('cmp-tray').querySelectorAll('.ct-x')[Math.min(i,cmpBasket.length-1)]||$('cmp-tray').querySelector('.ct-add'))?.focus();return;}
+    ($('cmp-tray').querySelectorAll('.ct-x')[Math.min(i,cmpBasket.length-1)]||$('cmp-tray').querySelector('.ct-add')||$('cmp-add'))?.focus();return;}
   if(b.hasAttribute('data-basket-add')){if(selected&&!cmpBasket.includes(selected.aphiaID)){toggleBasket(selected.aphiaID);$('cmp-tray').querySelector('.ct-add,.ct-x')?.focus();}else $('cmp-search').focus();return;}
   if(b.classList.contains('ct-toggle')){const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));$('cmp-tray').classList.toggle('open',open);return;}
   if(b.id==='cmp-compare-go'&&!openCompareDialog())$('cmp-go-note').textContent='2종 이상 담으면 비교할 수 있습니다. 종 상세의 ‘+ 비교 담기’를 눌러 주세요.';
