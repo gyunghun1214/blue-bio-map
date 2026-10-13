@@ -32,7 +32,8 @@
 
 - 새 `verification/test_weight_slider.mjs`(CI unit 단계 추가): 21단계 합 1.00, w 0/0.5/1 = MBPI/보고서 BBVI/MFPI(30종), w 0.25/0.75 = 보고서 민감도(±0.1, 양쪽 모두 소수 한 자리 반올림), 보류 BBVI 유지, 공식값 병기, 유형 바뀐 종 = 독립 계산, 하한값 안내, 링크 `w` 읽기·쓰기 → PASS
 - CI node 검사 전부 PASS, `python3.12 -m unittest` 372개 OK(skip 1)
-- uicheck: 174 PASS / 4 FAIL. FAIL 4건은 클라우드에서 지도 타일 호스트(GIBS·GEBCO)가 막혀 생기는 환경 실패(위성·수심 타일, 저장된 '기본' 기본값, A-5 공유 링크의 수심 복원)로 main에서도 같음. 새 uicheck 3건: 슬라이더 전체 흐름, `#…&w=0.70`/`w=abc` 링크 복원, 390px 넘침 없음.
+- uicheck(PR #178·#179가 들어간 main e2289bd·1737abf를 merge한 뒤): 188 PASS / 4 FAIL. FAIL 4건은 클라우드에서 지도 타일 호스트(GIBS·GEBCO)가 막혀 생기는 환경 실패(위성·수심 타일, A-5 공유 링크의 수심 복원)와 저장된 '기본' 기본값 검사의 타이밍 경합으로 main에서도 같음. 새 uicheck 3건: 슬라이더 전체 흐름(탐색 지도 종 카드 포함), `#…&w=0.70`/`w=abc` 링크 복원, 390px 넘침 없음.
+- 최신 main을 받은 뒤 고친 것: 탐색 지도 종 카드(시안2의 '활용 값 · 판단문')도 가중치를 따라 다시 그림.
 - `verification/2026-10-compare-redesign/measure.mjs`: main과 비교해 w 0.50에서 화면 데이터 동일(가중치 라벨 글자만 다름), 0.25·0.75에서는 추가된 공식값 병기 외 동일.
 
 ## 캡처

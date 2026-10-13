@@ -3386,7 +3386,7 @@ function setBbviStep(k){
 }
 function redrawForWeight(){
   const before=matrixPositions();
-  renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap(); // cell types move with the weight
+  renderList();renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap(); // cell types move with the weight; explore cards carry 활용 and the verdict
   updateBasisNow();syncWeightControl();writeHash();slideMatrixPoints(before);
 }
 // The panel, the badges and the list of species whose type differs from the official one.
