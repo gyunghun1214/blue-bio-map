@@ -1,0 +1,112 @@
+{
+  "generated_on": "2026-10-13",
+  "report_version": "verified-4.11",
+  "MBPI": {
+    "result": "failed",
+    "n": 3,
+    "computed": 2,
+    "operating_mbpi": {
+      "미역": 89.2,
+      "해삼": 8.7,
+      "멍게": 13.5,
+      "살오징어": 56.9,
+      "우뭇가사리": 13.5,
+      "톳": 65.0,
+      "홍합(참담치)": 10.1,
+      "참굴": 72.2
+    },
+    "rows": [
+      {
+        "aphia_id": 215429,
+        "scientific_name": "Conus magus",
+        "mbpi": null,
+        "counts": {
+          "scored_compounds": 0
+        },
+        "best": null,
+        "above_every_operating_species": false,
+        "operating_species_below": []
+      },
+      {
+        "aphia_id": 165849,
+        "scientific_name": "Halichondria (Halichondria) okadai",
+        "mbpi": 73.8,
+        "counts": {
+          "linked": 18,
+          "with_reference_doi": 17,
+          "common_metabolite": 0,
+          "approved_drug": 0,
+          "scored_compounds": 1
+        },
+        "best": {
+          "compound_id": "CHEMBL280487",
+          "compound_name": "OKADAIC ACID",
+          "target_chembl_id": "CHEMBL335",
+          "target_name": "Tyrosine-protein phosphatase non-receptor type 1",
+          "standard_type": "IC50",
+          "median_pchembl": 7.845,
+          "cohort_records": 3497,
+          "percentile": 98.34,
+          "link_factor": 0.75,
+          "activity_factor": 1.0,
+          "original_paper_dois": [
+            "10.1007/bf00172811"
+          ],
+          "document_chembl_ids": [
+            "CHEMBL1130173",
+            "CHEMBL1135037",
+            "CHEMBL1150469"
+          ]
+        },
+        "above_every_operating_species": false,
+        "operating_species_below": [
+          "멍게",
+          "살오징어",
+          "우뭇가사리",
+          "참굴",
+          "톳",
+          "해삼",
+          "홍합(참담치)"
+        ]
+      },
+      {
+        "aphia_id": 103756,
+        "scientific_name": "Ecteinascidia turbinata",
+        "mbpi": 56.1,
+        "counts": {
+          "linked": 13,
+          "with_reference_doi": 13,
+          "common_metabolite": 0,
+          "approved_drug": 1,
+          "rejected_by_review": 1,
+          "scored_compounds": 1
+        },
+        "best": {
+          "compound_id": "CHEMBL448144",
+          "compound_name": "ECTEINASCIDIN 770",
+          "target_chembl_id": "CHEMBL398",
+          "target_name": "KB",
+          "standard_type": "IC50",
+          "median_pchembl": 10.47,
+          "cohort_records": 5343,
+          "percentile": 99.75,
+          "link_factor": 0.75,
+          "activity_factor": 0.75,
+          "original_paper_dois": [
+            "10.1021/jo00302a007"
+          ],
+          "document_chembl_ids": [
+            "CHEMBL1150603"
+          ]
+        },
+        "above_every_operating_species": false,
+        "operating_species_below": [
+          "멍게",
+          "우뭇가사리",
+          "해삼",
+          "홍합(참담치)"
+        ]
+      }
+    ]
+  }
+}

@@ -43,6 +43,14 @@ if(declined){
   assert.equal(broken(declined,(b,t)=>{t.class='survey_gap';t.label=rule.labels.survey_gap;}),false,'the class follows the counts');
   assert.equal(broken(declined,b=>{b.scores.MCUI=b.occurrence_trend.mcui_base;}),false,'MCUI must include the published adjustment');
 }
+// 4.11 (prereg 5.3): the +10 is suspended. A decline signal keeps its class and numbers, adds nothing, and says why on screen.
+const paused=rows.filter(a=>a.occurrence_trend.class==='decline_signal');
+assert.equal(report.method.conservation.effort_adjustment,0);
+assert.ok(paused.length>0&&paused.every(a=>a.occurrence_trend.mcui_adjustment===0));
+for(const a of paused){
+  assert.equal(broken(a,(b,t)=>{t.mcui_adjustment=10;if(b.scores.MCUI!==null)b.scores.MCUI+=10;}),false,`${a.korean_name}: the suspended +10 cannot come back`);
+  assert.ok(ctx.trendDetail({assessment:a}).includes(report.method.conservation.effort_adjustment_suspended.note),`${a.korean_name} states the suspension`);
+}
 for(const cls of Object.keys(rule.labels)){
   const a=rows.find(x=>x.occurrence_trend.class===cls&&x.scores.MCUI!==null)||rows.find(x=>x.occurrence_trend.class===cls);
   if(!a)continue;
@@ -88,7 +96,7 @@ assert.equal(broken42(ref,b=>{delete b.mcui_substitute.record.native_box;}),fals
 // 4.3 (team-lead decision 2026-10-05): a met check is the last basis and scores LC-equivalent 10, labelled, with the failed
 // back-test beside it. It is re-checked like the reference record and refused beside any official basis.
 const lcRows=rows.filter(a=>a.mcui_basis==='preliminary');
-assert.equal(lcRows.length,6);
+assert.equal(lcRows.length,9);  // 4.11 (prereg 5): 미역·톳·청각·꽃게 move from failed sub-national lists to Rapid LC; 멍게 (ratio 0.655) leaves it
 assert.ok(lcRows.every(a=>a.scores.MCUI===10&&a.mcui_substitute.use==='scored'&&a.mcui_substitute.backtest.result==='failed'&&a.withheld_reasons.MCUI===null));
 const lc=lcRows[0];
 assert.equal(broken(lc,b=>{b.scores.MCUI=35;}),false,'the scored check is LC-equivalent only');

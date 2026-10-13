@@ -12,12 +12,12 @@ vm.createContext(ctx);
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
   'cellMatrixType,valueSpeciesType,matrixTypeLabel,matrixTypeColour,valueCellOrder,valueCellStyle,sufficiencyCounts,unexploredLine,nationalTyped,'+
-  'CELL_FILL,HOVER_OUTLINE,cellRange,colourSpecies,selectedCellLine});'+
+  'CELL_FILL,HOVER_OUTLINE,cellRange,colourSpecies,selectedCellLine,speciesCellStyle,matrixTypePlain,matrixPlainNote});'+
   'globalThis.setData=v=>{data=v};globalThis.setWeight=w=>{bbviWeight=w};globalThis.setSelected=v=>{selected=v};',ctx);
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-4.8');  // 4.8 adds 참문어's national-list page re-check row; 4.7 corrects source metadata and lists every source a trace names; 4.6 only reads a sub-national MCUI's sufficiency steps from its list rows; 4.5 extends the relaxation (d) to 방어 (sbGnRH) and 갑오징어 (FMRFamide, its own ChEMBL rows); 4.4 scores 참문어 under the 4.3 relaxation (d) (cephalotocin in a ChEMBL target cohort, origin on the O. sinensis genome); 4.3 fills every cell (scored Rapid LC, 미역 Primorsky EN, XO stratum, MBPI floor); 4.2 adds the sub-national MCUI basis (labelled, back-test shown), 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-4.11');  // 4.11 (prereg-4.11) counts only same-origin replications, raises the small-molecule stratum minimum to 30, shows MBPI breadth, makes failed sub-national lists reference only, blocks Rapid LC at the decline ratio and suspends the +10 trend adjustment; 4.10 adds the secondary MBPI-Rx beside MBPI (exploratory, never in BBVI or the matrix); 4.9 lets a relaxed item count an independent replication of its own value (갑오징어 FMRFamide), value unchanged; 4.8 adds 참문어's national-list page re-check row; 4.7 corrects source metadata and lists every source a trace names; 4.6 only reads a sub-national MCUI's sufficiency steps from its list rows; 4.5 extends the relaxation (d) to 방어 (sbGnRH) and 갑오징어 (FMRFamide, its own ChEMBL rows); 4.4 scores 참문어 under the 4.3 relaxation (d) (cephalotocin in a ChEMBL target cohort, origin on the O. sinensis genome); 4.3 fills every cell (scored Rapid LC, 미역 Primorsky EN, XO stratum, MBPI floor); 4.2 adds the sub-national MCUI basis (labelled, back-test shown), 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);
@@ -133,4 +133,21 @@ assert.deepEqual([...counts.unexplored.missing],flagged('unexplored_candidate').
 assert.equal(flagged('unexplored_candidate').length,0);
 assert.equal(ctx.unexploredLine({rank:'genus',taxon:'Magallana',relatives:['참굴']}),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
 assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 근연종(Nomen novum)이 있습니다');
+// (12) 2026-10-13 species view ('활용 × 보전' default): only the selected species' cells, in its type colour with a dashed border
+// of the same colour; the chosen cell is heavier; an untyped species keeps the held grey; never the selected/hover yellow.
+for(const t of rule.cell_colour_precedence){
+  const st=ctx.speciesCellStyle(t,false),on=ctx.speciesCellStyle(t,true);
+  assert.deepEqual([st.color,st.fillColor,st.dashArray,st.fillOpacity],[ctx.matrixTypeColour[t],ctx.matrixTypeColour[t],'3 3',ctx.CELL_FILL],t);
+  assert.deepEqual([on.color,on.fillColor,on.dashArray],[st.color,st.fillColor,st.dashArray],t+': same colour when chosen');
+  assert.ok(on.weight>st.weight&&on.fillOpacity>st.fillOpacity,t+': the chosen cell is heavier');
+}
+const heldOwn=ctx.speciesCellStyle(null,false);
+assert.deepEqual([heldOwn.color,heldOwn.fillColor,heldOwn.dashArray,heldOwn.fillOpacity],['#657588','#b7c0ca','5 4',.25],'untyped: the held grey of the all-species map');
+assert.ok([null,...rule.cell_colour_precedence].flatMap(t=>[false,true].map(a=>ctx.speciesCellStyle(t,a))).every(x=>x.color!==ctx.HOVER_OUTLINE.color&&x.fillColor!==ctx.HOVER_OUTLINE.color),'no yellow in the species view');
+// (13) Plain verdicts are display aliases of the type ids (data, hash and CSV keep the ids); anything else reads '유형 없음'.
+assert.deepEqual(Object.fromEntries(rule.cell_colour_precedence.map(t=>[t,ctx.matrixTypePlain(t)])),
+  {conservation_priority:'지켜야 함',alternative_production:'키워서 써야 함',sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함'});
+assert.equal(ctx.matrixTypePlain(null),'유형 없음');assert.equal(ctx.matrixTypePlain('unknown_type'),'유형 없음');
+assert.equal(ctx.matrixPlainNote(),`연구용 유형 요약 · 채집·이용 권고 아님 · BBVI ${rule.bbvi_threshold} 이상이면 활용 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 높음`);
+ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구용 유형 요약 · 채집·이용 권고 아님','no rule: no thresholds');ctx.setData(next);
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');

@@ -10,7 +10,13 @@ The criteria are fixed before any result is read and nothing is tuned to pass:
   MBPI  the config's drug-origin cases (ziconotide, halichondrin B, trabectedin), scored offline with the published ChEMBL
         rule from the stored case snapshot (3.27; before: not computable). Pass: a case species ranks above every operating
         species that has an MBPI.
-Writes research/verified-indices/posthoc-validation-<date>.json; the config copies each result into posthoc.validation_sets.
+  (4.11: `--only mbpi` re-runs the MBPI check alone, after a rule change moved the operating species' values.)
+  MBPI_RX  (4.10, exploratory) the same MBPI check with MBPI-Rx, the MBPI without the strata the pre-registration classifies
+        as food-protein functional peptide collections (research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md). Same
+        cases, case snapshot, operating species and reading; an operating species with a null MBPI-Rx leaves the comparison.
+        `--only mbpi-rx` runs it alone (it needs neither the MEXT workbook nor the Rapid LC snapshot).
+Writes research/verified-indices/posthoc-validation-<date>.json (MBPI-Rx: posthoc-validation-mbpi-rx-<version>-<date>.json);
+the config copies each result into posthoc.validation_sets.
 """
 from __future__ import annotations
 
@@ -157,11 +163,10 @@ def mcui_check(report: dict, rapid: dict) -> dict:
 MBPI_CASES = ROOT / "research" / "verified-indices" / "posthoc-3.27" / "mbpi-drug-origin"
 
 
-def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
+def case_items(report: dict, config: dict, cases: Path = MBPI_CASES):
     """3.27: the drug-origin cases scored offline with the published ChEMBL rule (build_verified_indices.chembl_items, the
     report's commonness fence, the same filters, the 3.20 comment exclusion) from the stored case snapshot, collected with
-    collect_mbpi_links.py's own functions (cases/collect_cases.py, ChEMBL_37). Criterion as registered: a case species ranks
-    above the operating candidates, read literally as above every operating species that has an MBPI."""
+    collect_mbpi_links.py's own functions (cases/collect_cases.py, ChEMBL_37). Shared by the MBPI and MBPI-Rx checks."""
     import sys
     sys.path.insert(0, str(ROOT / "scripts"))
     import build_verified_indices as B
@@ -172,6 +177,17 @@ def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
             "activities": [a for a in snap["activities"] if (snap["activity_comments"][str(a["activity_id"])] or "").lower() not in drop]}
     items, summary = B.chembl_items({"chembl_links": snap}, config, limit=report["chembl_common_taxon_limit"])
     B.require(all(i["link_review"] == "accepted" for _, i in items), "a case ChEMBL item rests on a link without an accepted review")
+    return B, snap, items, summary
+
+
+CASE_BEST_KEYS = ("compound_id", "compound_name", "target_chembl_id", "target_name", "standard_type", "median_pchembl",
+                  "cohort_records", "percentile", "link_factor", "activity_factor", "original_paper_dois", "document_chembl_ids")
+
+
+def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
+    """3.27: the drug-origin cases scored offline (case_items). Criterion as registered: a case species ranks above the
+    operating candidates, read literally as above every operating species that has an MBPI."""
+    B, snap, items, summary = case_items(report, config, cases)
     operating = {s["korean_name"]: s["scores"]["MBPI"] for s in report["species"] if s["scores"]["MBPI"] is not None}
     rows = []
     for s in snap["species"]:
@@ -180,9 +196,7 @@ def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
         mbpi = best and B.round1(best["adjusted"])
         rows.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"], "mbpi": mbpi,
                      "counts": summary["species"][s["aphia_id"]]["counts"],
-                     "best": best and {k: best[k] for k in ("compound_id", "compound_name", "target_chembl_id", "target_name", "standard_type",
-                                                            "median_pchembl", "cohort_records", "percentile", "link_factor", "activity_factor",
-                                                            "original_paper_dois", "document_chembl_ids")},
+                     "best": best and {k: best[k] for k in CASE_BEST_KEYS},
                      "above_every_operating_species": mbpi is not None and all(mbpi > v for v in operating.values()),
                      "operating_species_below": sorted(k for k, v in operating.items() if mbpi is not None and v < mbpi)})
     computed = [r for r in rows if r["mbpi"] is not None]
@@ -190,14 +204,65 @@ def mbpi_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
             "n": len(rows), "computed": len(computed), "operating_mbpi": operating, "rows": rows}
 
 
+def mbpi_rx_check(report: dict, config: dict, cases: Path = MBPI_CASES) -> dict:
+    """4.10 (prereg-mbpi-rx-4.10-2026-10-12, exploratory): mbpi_check with MBPI-Rx. The same case snapshot, ChEMBL rule,
+    operating species (report["species"], the eight pilot species) and reading; only the operating values become
+    mbpi_rx.value, and a species whose MBPI-Rx is null leaves the comparison. The case items lose the excluded strata too
+    (all of them are ChEMBL strata, so the case values equal MBPI). A case item in a stratum the pre-registration did not
+    classify stops the run, as in the build."""
+    B, snap, items, summary = case_items(report, config, cases)
+    classes = config["mbpi_rx"]["classified_strata"]
+    B.require(all(i["stratum_id"] in classes for _, i in items), "a case item's stratum is not classified for MBPI-Rx")
+    B.require(all("mbpi_rx" in s for s in report["species"]), "the report carries no MBPI-Rx (build it with a 4.10 or later config)")
+    operating = {s["korean_name"]: s["mbpi_rx"]["value"] for s in report["species"] if s["mbpi_rx"]["value"] is not None}
+    rows = []
+    for s in snap["species"]:
+        own = [i for a, i in items if a == s["aphia_id"]]
+        kept = [i for i in own if classes[i["stratum_id"]] == "include"]
+        best = max(kept, key=lambda i: i["adjusted"], default=None)
+        value = best and B.round1(best["adjusted"])
+        rows.append({"aphia_id": s["aphia_id"], "scientific_name": s["scientific_name"], "mbpi_rx": value,
+                     "excluded_item_count": len(own) - len(kept), "counts": summary["species"][s["aphia_id"]]["counts"],
+                     "best": best and {**{k: best[k] for k in CASE_BEST_KEYS}, "stratum_id": best["stratum_id"]},
+                     "above_every_operating_species": value is not None and all(value > v for v in operating.values()),
+                     "operating_species_below": sorted(k for k, v in operating.items() if value is not None and v < value)})
+    computed = [r for r in rows if r["mbpi_rx"] is not None]
+    return {"result": ("passed" if all(r["above_every_operating_species"] for r in computed) else "failed") if computed else "not_computable",
+            "n": len(rows), "computed": len(computed), "operating_mbpi_rx": operating,
+            "operating_without_mbpi_rx": sorted(s["korean_name"] for s in report["species"] if s["mbpi_rx"]["value"] is None),
+            "exploratory": True, "prereg": config["mbpi_rx"]["prereg"], "rows": rows}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=ROOT / "dist" / "assessments.json")
-    parser.add_argument("--mext", type=Path, required=True, help="MEXT 2020 chapter 2 workbook (20201225-mxt_kagsei-mext_01110_012.xlsx)")
-    parser.add_argument("--rapid-lc", type=Path, required=True, help="Rapid LC back-test snapshot of the assessed species")
-    parser.add_argument("--out", type=Path, default=ROOT / "research" / "verified-indices" / f"posthoc-validation-{date.today()}.json")
+    parser.add_argument("--only", choices=["mbpi", "mbpi-rx"],
+                        help="run one check alone (4.10: mbpi-rx, 4.11: mbpi; neither needs --mext or --rapid-lc)")
+    parser.add_argument("--mext", type=Path, help="MEXT 2020 chapter 2 workbook (20201225-mxt_kagsei-mext_01110_012.xlsx)")
+    parser.add_argument("--rapid-lc", type=Path, help="Rapid LC back-test snapshot of the assessed species")
+    parser.add_argument("--out", type=Path)
     args = parser.parse_args()
     report = json.loads(args.report.read_text(encoding="utf-8"))
+    if args.only == "mbpi-rx":
+        version = report["method_version"].removeprefix("verified-")
+        out_path = args.out or ROOT / "research" / "verified-indices" / f"posthoc-validation-mbpi-rx-{version}-{date.today()}.json"
+        out = {"generated_on": str(date.today()), "report_version": report["method_version"],
+               "MBPI_RX": mbpi_rx_check(report, report["method"])}
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print({"MBPI_RX": out["MBPI_RX"]["result"]}, {r["scientific_name"]: r["mbpi_rx"] for r in out["MBPI_RX"]["rows"]},
+              max(out["MBPI_RX"]["operating_mbpi_rx"].values(), default=None))
+        return
+    if args.only == "mbpi":  # 4.11: the MBPI check re-run after a rule change moved the operating species' MBPI
+        version = report["method_version"].removeprefix("verified-")
+        out_path = args.out or ROOT / "research" / "verified-indices" / f"posthoc-validation-mbpi-{version}-{date.today()}.json"
+        out = {"generated_on": str(date.today()), "report_version": report["method_version"], "MBPI": mbpi_check(report, report["method"])}
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print({"MBPI": out["MBPI"]["result"]}, {r["scientific_name"]: r["mbpi"] for r in out["MBPI"]["rows"]},
+              max(out["MBPI"]["operating_mbpi"].values(), default=None))
+        return
+    if not (args.mext and args.rapid_lc):
+        parser.error("--mext and --rapid-lc are required unless --only is given")
+    args.out = args.out or ROOT / "research" / "verified-indices" / f"posthoc-validation-{date.today()}.json"
     out = {"generated_on": str(date.today()), "report_version": report["method_version"], "criteria": CRITERIA,
            "MFPI": mfpi_check(report, mext_items(args.mext)),
            "MCUI": mcui_check(report, json.loads(args.rapid_lc.read_text(encoding="utf-8"))),

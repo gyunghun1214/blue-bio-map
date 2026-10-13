@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 30,
+  "matrix_points": 29,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -45,7 +45,7 @@
       }
     }
   },
-  "method_version": "verified-4.8",
+  "method_version": "verified-4.11",
   "schema_version": 1,
   "species": [
     {
@@ -117,19 +117,20 @@
       "bioactivity_missing_steps": [],
       "korean_name": "미역",
       "matrix_eligible": true,
-      "matrix_type": "alternative_production",
-      "mcui_basis": "sub_national",
+      "matrix_type": "sustainable_use",
+      "mcui_basis": "preliminary",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
-        "BBVI": 71.0,
-        "MBPI": 95.3,
-        "MCUI": 80.0,
+        "BBVI": 68.0,
+        "MBPI": 89.2,
+        "MCUI": 10.0,
         "MFPI": 46.7
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
         "https://docs.cntd.ru/document/494219357",
         "https://doi.org/10.1002/elsc.201700172",
@@ -144,6 +145,7 @@
         "https://doi.org/10.1271/bbb.58.1767",
         "https://doi.org/10.3390/md19030177",
         "https://doi.org/10.3390/nu10101397",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://publication.pravo.gov.ru/document/2501202210260002",
         "https://query.wikidata.org/sparql",
@@ -221,7 +223,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
@@ -251,17 +253,19 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "멍게",
-      "matrix_eligible": true,
-      "matrix_type": "baseline_survey",
-      "mcui_basis": "preliminary",
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "matrix_eligible": false,
+      "matrix_type": null,
+      "mcui_basis": null,
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
         "BBVI": 33.2,
         "MBPI": 13.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 52.8
       },
       "source_urls": [
@@ -337,7 +341,7 @@
       "scores": {
         "BBVI": 51.5,
         "MBPI": 56.9,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": 46.1
       },
       "source_urls": [
@@ -421,7 +425,7 @@
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [
         {
           "chain": {
@@ -449,21 +453,23 @@
       "bioactivity_missing_steps": [],
       "korean_name": "톳",
       "matrix_eligible": true,
-      "matrix_type": "alternative_production",
-      "mcui_basis": "sub_national",
+      "matrix_type": "sustainable_use",
+      "mcui_basis": "preliminary",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
-        "BBVI": 74.9,
-        "MBPI": 86.6,
-        "MCUI": 60.0,
+        "BBVI": 64.2,
+        "MBPI": 65.0,
+        "MCUI": 10.0,
         "MFPI": 63.3
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1111/jfpp.12628",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://koreascience.kr/article/JAKO200011921114207.page",
         "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
         "https://pmc.ncbi.nlm.nih.gov/articles/PMC11678123/",
@@ -544,7 +550,7 @@
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [
         {
           "chain": {
@@ -579,8 +585,8 @@
       "scientific_name": "Magallana gigas",
       "scope": "operating_8",
       "scores": {
-        "BBVI": 83.9,
-        "MBPI": 96.3,
+        "BBVI": 71.9,
+        "MBPI": 72.2,
         "MCUI": 10.0,
         "MFPI": 71.6
       },
@@ -674,8 +680,8 @@
       "scientific_name": "Ecklonia cava",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": 65.0,
-        "MBPI": 67.5,
+        "BBVI": 59.7,
+        "MBPI": 56.8,
         "MCUI": 10.0,
         "MFPI": 62.5
       },
@@ -687,8 +693,6 @@
         "https://doi.org/10.1246/nikkashi.1983.368",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://doi.org/10.5657/kfas.2010.43.6.687",
-        "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93",
-        "https://pubchem.ncbi.nlm.nih.gov/",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cellosaurus.org/",
@@ -851,7 +855,7 @@
       "korean_name": "청각",
       "matrix_eligible": true,
       "matrix_type": "baseline_survey",
-      "mcui_basis": "sub_national",
+      "mcui_basis": "preliminary",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Codium fragile",
@@ -859,13 +863,15 @@
       "scores": {
         "BBVI": 18.6,
         "MBPI": 0.4,
-        "MCUI": 35.0,
+        "MCUI": 10.0,
         "MFPI": 36.7
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Codium+fragile&limit=100",
         "https://api.obis.org/v3/",
         "https://doi.org/10.1007/s10811-007-9265-5",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
         "https://query.wikidata.org/sparql",
         "https://www.cellosaurus.org/",
@@ -975,7 +981,7 @@
         "MCUI": null,
         "MFPI": null
       },
-      "bbvi_label": null,
+      "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
       "korean_name": "큰가리비",
@@ -987,8 +993,8 @@
       "scientific_name": "Mizuhopecten yessoensis",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": 46.1,
-        "MBPI": 36.4,
+        "BBVI": 41.6,
+        "MBPI": 27.3,
         "MCUI": 10.0,
         "MFPI": 55.8
       },
@@ -1128,7 +1134,7 @@
       "scores": {
         "BBVI": 57.3,
         "MBPI": 56.9,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": 57.7
       },
       "source_urls": [
@@ -1219,7 +1225,7 @@
       "scores": {
         "BBVI": 48.3,
         "MBPI": 22.6,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": 74.1
       },
       "source_urls": [
@@ -1261,7 +1267,7 @@
       "scores": {
         "BBVI": 46.6,
         "MBPI": 53.8,
-        "MCUI": 20.0,
+        "MCUI": 10.0,
         "MFPI": 39.4
       },
       "source_urls": [
@@ -1468,7 +1474,7 @@
       "korean_name": "꽃게",
       "matrix_eligible": true,
       "matrix_type": "baseline_survey",
-      "mcui_basis": "sub_national",
+      "mcui_basis": "preliminary",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Portunus trituberculatus",
@@ -1476,16 +1482,18 @@
       "scores": {
         "BBVI": 46.2,
         "MBPI": 30.3,
-        "MCUI": 35.0,
+        "MCUI": 10.0,
         "MFPI": 62.0
       },
       "source_urls": [
+        "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence",
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Portunus+trituberculatus&limit=100",
         "https://api.obis.org/v3/",
         "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
         "https://dbaasp.org",
         "https://doi.org/10.3390/biology14121682",
         "https://doi.org/10.3390/ijms26178546",
+        "https://doi.org/10.3897/BDJ.8.e47018",
         "https://europepmc.org/RestfulWebService",
         "https://www.cmnpd.org",
         "https://www.iucnredlist.org/search",
@@ -1571,6 +1579,8 @@
         "https://api.obis.org/v3/",
         "https://doi.org/10.1016/j.micpath.2018.01.039",
         "https://doi.org/10.1016/j.toxicon.2008.07.007",
+        "https://doi.org/10.1038/sj.bjp.0704038",
+        "https://doi.org/10.1074/jbc.M004385200",
         "https://doi.org/10.3390/md18100490",
         "https://doi.org/10.3892/mmr.2017.7068",
         "https://english.ksfme.or.kr/_PR/view/?aidx=38803&bidx=3497",

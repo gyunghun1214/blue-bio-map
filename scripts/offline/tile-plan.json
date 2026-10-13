@@ -7,7 +7,7 @@
   "layers": {
     "satellite": {
       "path": "satellite/{z}/{y}/{x}.jpeg",
-      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_NextGeneration/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg"
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg"
     },
     "depth": {
       "path": "depth/{z}/{x}/{y}.png",

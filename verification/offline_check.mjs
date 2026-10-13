@@ -63,7 +63,7 @@ async function onPaused({requestId,request}){
     else await send('Fetch.continueRequest',{requestId});
   }catch{/* page navigated away */}
 }
-const state=()=>evaluate(`({conn:document.getElementById('connection-state')?.textContent||'',error:document.getElementById('error')?.hidden===false?document.getElementById('error').textContent:'',
+const state=()=>evaluate(`({conn:document.getElementById('connection-state')?.textContent||'',chip:document.getElementById('notice-chip-text')?.textContent||'',alertChip:document.getElementById('alert-chip')?.hidden===false,error:document.getElementById('error')?.hidden===false?document.getElementById('error').textContent:'',
   basemapStatus:document.getElementById('basemap-status')?.textContent||'',url:location.href,offline:globalThis.BBVM_OFFLINE,
   species:typeof data!=='undefined'&&data?data.species.length:0,tiles:document.querySelectorAll('#map img.leaflet-tile-loaded').length})`);
 const counts=`운영 발행 ${snapshot.profiles.length}종 · 조사 후보`;
@@ -89,9 +89,9 @@ try{
   const entered=await waitFor("document.getElementById('site-gate').hidden&&sessionStorage.getItem('bbvm-intro-entered')==='1'",v=>v,5000);
   check('O-1b Enter opens the map from the offline entry screen',entered===true,String(entered));
   let s=await (async()=>{for(let i=0;i<60;i++){const v=await state();if(v.conn.startsWith('오프라인')&&v.basemapStatus)return v;await sleep(250);}return state();})();
-  check('O-2 status line names the offline demo and the snapshot date, no red alert',s.conn.startsWith(`오프라인 시연 · 저장된 공개 자료 사본 (${snapshot.fetched_at} 기준) · ${counts}`)&&!s.error,JSON.stringify(s));
+  check('O-2 status line and header chip name the offline demo and the snapshot date, no alert',s.conn.startsWith(`오프라인 시연 · 저장된 공개 자료 사본 (${snapshot.fetched_at} 기준) · ${counts}`)&&s.chip.startsWith('오프라인 시연 · ')&&!s.alertChip&&!s.error,JSON.stringify(s));
   const all=await evaluate(`(()=>{renderComparison();return {list:document.querySelectorAll('#species-list [data-species]').length,
-    compare:document.querySelectorAll('#comparison thead th').length-1,assessed:data.species.filter(x=>x.assessment).length}})()`);
+    compare:new Set([...document.querySelectorAll('#comparison tr.cmp-row[data-aphia]')].map(r=>r.dataset.aphia)).size,assessed:data.species.filter(x=>x.assessment).length}})()`);
   check(`O-3 all ${allSpecies} species (published ${published.length} + candidates) in the list and the comparison, ${scored} with indices from assessments.json`,
     s.species===allSpecies&&all.list===allSpecies&&all.compare===allSpecies&&all.assessed===scored,JSON.stringify({...all,species:s.species,allSpecies,scored}));
   const details=await evaluate(`(()=>{const bad=[];for(const x of data.species){selectSpecies(x.aphiaID);const t=document.getElementById('detail').innerText;
@@ -139,7 +139,7 @@ try{
   await send('Page.navigate',{url:URL0+'?offline=0'});
   s=await (async()=>{for(let i=0;i<80;i++){const v=await state();if(/연결 실패|연결됨/.test(v.conn))return v;await sleep(250);}return state();})();
   check('O-15 ?offline=0 returns to the normal page: asks the live API first, then the existing saved-copy fallback',
-    s.offline===false&&s.conn.startsWith(`연결 실패 · 저장된 사본 사용 (${snapshot.fetched_at} 기준)`)&&external.some(u=>u.includes('.supabase.co/rest/v1/species_profiles')),JSON.stringify(s));
+    s.offline===false&&!s.chip.startsWith('오프라인')&&s.alertChip&&s.conn.startsWith(`연결 실패 · 저장된 사본 사용 (${snapshot.fetched_at} 기준)`)&&external.some(u=>u.includes('.supabase.co/rest/v1/species_profiles')),JSON.stringify(s));
 }catch(e){check('Harness',false,e.stack);}
 finally{
   fs.writeFileSync(path.join(OUT,'offline-check-results.json'),JSON.stringify(results,null,2));

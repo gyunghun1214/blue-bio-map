@@ -2,12 +2,12 @@
 const $ = id => document.getElementById(id);
 // Published data still carries the older label words; the screen shows the neutral wording (team-lead decision 2026-10-08).
 const plainWords = text => text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'근거 논문 1편')
-  .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
+  .replace(/기준 미통과/g,'기준 미충족').replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -15,6 +15,48 @@ const mbpiDois = x => new Set((x.independent_dois||x.original_paper_dois).map(d=
 // 3.1: a ChEMBL item needs both the species link and the activity on separate papers, so the weaker side counts.
 const mbpiSources = x => x.stratum_kind==='chembl'?x.independent_sources:mbpiDois(x).size;
 const bestBio = a => (a?.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
+// 2026-10-12: MBPI is the highest of percentiles taken inside separate strata, and each stratum ranks against its own
+// comparison group, so a value is shown with the stratum of its top item (bestBio). One dictionary for every place that
+// names it: stratum_id first, then stratum_kind, then the species' mbpi_stratum. The two ACE rows are the items the 'ace'
+// use chip reads (USE_TRAITS); test_trait_display_ui.mjs keeps the two in step. 'Food' is said only of the two strata whose
+// collections are mostly food-protein peptides (AHTPDB abstract: 35 sources such as milk, egg, fish; XO members' records).
+const MBPI_STRATUM_LABELS={
+  ace_peptide:{ace:true,short:'ACE 펩타이드',long:t=>`ACE 저해 펩타이드(AHTPDB ${t.peer_peptides}개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)`},
+  ace_compound:{ace:true,short:'ACE 화합물',long:t=>`ACE 저해 화합물(감태 논문 1편의 분리 화합물 ${t.peer_compounds}개 안 순위)`},
+  xo:{short:'잔틴 산화효소 펩타이드',long:t=>`잔틴 산화효소 억제 펩타이드(문헌 비교집단 ${t.peer_peptides}개 안 순위 · 식품 단백질에서 찾은 서열이 많은 모음)`},
+  chembl:{short:'ChEMBL 화합물',long:t=>`ChEMBL 화합물(같은 표적·같은 종말점 활성 기록 ${t.cohort_records}건 안 순위)`},
+  relaxed:{short:'ChEMBL 표적(펩타이드)',long:t=>`펩타이드를 ChEMBL 표적 비교집단(활성 기록 ${t.cohort_records}건)에서 순위(완화 산출 d)`},
+  anticancer:{short:'항암 펩타이드',long:t=>`항암 펩타이드(CancerPPD 2.0 ${t.cell_line} 세포주 ${t.peer_peptides}개 안 순위)`},
+  amp:{short:'항균 펩타이드',long:t=>`항균 펩타이드(DBAASP ${t.target_species} MIC ${t.peer_peptides}개 안 순위)`},
+  compound:{short:'분리 화합물',long:()=>'분리 화합물(같은 논문·같은 시험 조건 안 순위)'},
+};
+const MBPI_STRATUM_KEYS={id:{'ahtpdb-ace-ic50-hhl-cushman-cheung':'ace_peptide','wijesinghe-2011-cell-free-ACE-IC50':'ace_compound'},
+  kind:{peptide:'ace_peptide',chembl:'chembl',relaxed:'relaxed',anticancer:'anticancer',amp:'amp',xo:'xo'},species:{small_molecule:'compound'}};
+// The stratum of one trace item; an unregistered stratum never shows its raw id.
+const itemStratum = (t,a) => {
+  const key=MBPI_STRATUM_KEYS.id[t.stratum_id]||MBPI_STRATUM_KEYS.kind[t.stratum_kind]||MBPI_STRATUM_KEYS.species[a.mbpi_stratum]||null, e=MBPI_STRATUM_LABELS[key];
+  return e?{key,ace:!!e.ace,short:e.short,long:e.long(t)}:{key:null,ace:false,short:'층 이름 미등록',long:'층 이름 미등록'};
+};
+// The stratum of the species' top MBPI item, or null without an item.
+const mbpiStratum = a => {const t=bestBio(a);return t?itemStratum(t,a):null;};
+// Named only beside an MBPI that comes from an item: never beside a withheld MBPI or the 0-point floor.
+const mbpiStratumOf = s => !s?.assessment||axisState(s,'MBPI').value===null||s.assessment.mbpi_floor?null:mbpiStratum(s.assessment);
+// 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx (method.mbpi_rx) is the MBPI rule over the trace items whose stratum
+// the pre-registration classed 'include' (ACE and xanthine-oxidase peptide strata out). The browser re-derives it from the
+// trace as it does MBPI and shows it only in the species detail, the compare data table and #method-03, never in BBVI, cards,
+// the map, the matrix or the expedition. {value, stratum} or {value:null, reason}; null when absent, MBPI hidden or a fault.
+const mbpiRxOf = s => {
+  const a=s?.assessment, rule=data?.assessmentInfo?.method?.mbpi_rx, rx=a?.mbpi_rx;
+  if(!rule||!rx||a.axis_errors?.MBPI||axisState(s,'MBPI').value===null)return null;
+  const items=a.bioactivity_trace||[], cls=rule.classified_strata||{};
+  if(items.some(x=>!['include','exclude'].includes(cls[x.stratum_id])))return null;
+  const kept=items.filter(x=>cls[x.stratum_id]==='include');
+  if(rx.excluded_item_count!==items.length-kept.length)return null;
+  if(!kept.length)return rx.value===null&&!!rx.reason&&rx.reason===rule.reasons?.[items.length?'only_excluded':'no_item']?{value:null,reason:rx.reason}:null;
+  const best=Math.max(...kept.map(x=>x.adjusted)), top=items[rx.top_item?.trace_index];
+  if(!top||cls[top.stratum_id]!=='include'||top.adjusted!==best||top.stratum_id!==rx.stratum_id||!Number.isFinite(rx.value)||Math.abs(rx.value-best)>=.06)return null;
+  return {value:rx.value,stratum:itemStratum(top,a)};
+};
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
 const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -42,7 +84,7 @@ const pilotLabel = (key,info) => released(info)
   ? ({passed:'정식 산출 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'정식 산출 · 방법 검증 기준 미충족'})[validationResult(key,info)]||(key==='MCUI'?'정식 산출 · 공식 평가 범주':'정식 산출')
   : ({passed:'시범 지표 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'시범 지표 · 사후 검증 기준 미충족'})[validationResult(key,info)]||'검증 전 시범 지표';
 const validationNote = info => released(info)
-  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 지방 목록·자체 예비평가':'')+')'
+  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+')'
   : ' (사후 검증: '+['MFPI','MBPI','MCUI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+')';
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
@@ -298,7 +340,9 @@ function verifiedConservationValid(a,report){
     r?.eoo_km2>t.eoo_km2&&r.aoo_km2>t.aoo_km2&&r.aoo_km2===r.aoo_cells*t.aoo_cell_km**2&&r.records>=t.records&&r.trend_class!=='decline_signal'&&
     a.conservation_trace?.iucn_state==='not_in_red_list'&&!a.national_assessment&&['eoo_km2','aoo_km2','aoo_cell_km','records'].every(k=>r.thresholds?.[k]===t[k])&&
     (!a.occurrence_trend||r.trend_class===a.occurrence_trend.class)&&Array.isArray(r.native_box?.lat)&&Array.isArray(r.native_box?.lon)&&
-    (r.official_unscored||[]).every(x=>x.category===null&&(!x.source_id||!!report.sources?.[x.source_id]));
+    (r.official_unscored||[]).every(x=>x.category===null&&(!x.source_id||!!report.sources?.[x.source_id]))&&
+    // 4.11 (prereg 5.2): never scored once the OBIS reporting-rate ratio reaches the decline threshold
+    !(rule.preliminary_trend_block&&a.occurrence_trend?.reporting_rate_ratio<=report.method.conservation?.trend?.decline_ratio);
   if(substituted)return !!sub&&!!rule&&sub.basis==='range_state'&&sourced()&&r?.reviewed===true&&!!r.country&&!!r.name_as_published&&
     r.category===sub.category&&scores[sub.category]===a.scores.MCUI;
   // National branch: a Korean national assessment is its own stratum, never mixed with global IUCN.
@@ -675,13 +719,33 @@ function assessedForMatrix(s){
     &&(!bbviLabel(s)||!!matrixRule()?.include_single_source_bbvi);
 }
 // Type from the on-screen BBVI (slider weight) and MCUI; the report's thresholds, a value at the threshold is high.
-function matrixType(s){
+// matrixTypeAt takes the BBVI to judge, so the official type (the report's BBVI) uses the same rule.
+function matrixType(s){return matrixTypeAt(s,pilotScore(s,'BBVI'));}
+function matrixTypeAt(s,bbvi){
   const rule=matrixRule();
   if(!rule||!assessedForMatrix(s))return null;
-  const key=(pilotScore(s,'BBVI')>=rule.bbvi_threshold?'high':'low')+'_bbvi_'+(pilotScore(s,'MCUI')>=rule.mcui_threshold?'high':'low')+'_mcui';
+  const key=(bbvi>=rule.bbvi_threshold?'high':'low')+'_bbvi_'+(pilotScore(s,'MCUI')>=rule.mcui_threshold?'high':'low')+'_mcui';
   return rule.types?.[key]?.id||null;
 }
 const matrixTypeLabel=id=>Object.values(matrixRule()?.types||{}).find(t=>t.id===id)?.label||id;
+// BBVI 통합 가중치 helpers (2026-10-13; the panel and its redraws sit with the '비교와 지표' code below)
+const W_STEPS=20;
+const officialWeight=()=>{const w=data?.assessmentInfo?.foodWeight;return Number.isFinite(w)&&w>=0&&w<=1?w:.5;};
+const weightStep=w=>Math.round(w*W_STEPS);
+const weightOff=()=>weightStep(bbviWeight)!==weightStep(officialWeight());
+const weightPair=(w=bbviWeight)=>{const k=weightStep(w);return `MBPI ${((W_STEPS-k)/W_STEPS).toFixed(2)} · MFPI ${(k/W_STEPS).toFixed(2)}`;};
+// the report's own BBVI beside an on-screen re-mix ('공식 55.1'), only when the weight is not the official one and the two differ
+const officialBbvi=s=>pilotScore(s,'BBVI')===null?null:VERIFIED.includes(s.assessment?.report_version)?s.assessment.scores.BBVI:pilotScore(s,'BBVI');
+const officialType=s=>matrixTypeAt(s,officialBbvi(s));
+const officialNote=s=>{const o=officialBbvi(s);return weightOff()&&o!==null&&o!==pilotScore(s,'BBVI')?`공식 ${o.toFixed(1)}`:'';};
+// a shared link's w: a number in 0–1 snaps to the nearest step; anything else is the official weight
+const hashWeightStep=v=>{const n=Number(v);return String(v??'').trim()!==''&&Number.isFinite(n)&&n>=0&&n<=1?weightStep(n):weightStep(officialWeight());};
+// 2026-10-13 design 2: a plain verdict before the formal type name (display only; data, hash and CSV keep the type id)
+const MATRIX_PLAIN={sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함',alternative_production:'키워서 써야 함',conservation_priority:'지켜야 함'};
+const matrixTypePlain=id=>MATRIX_PLAIN[id]||'유형 없음';
+const matrixPlainNote=()=>{const r=matrixRule();return '연구용 유형 요약 · 채집·이용 권고 아님'+(r?` · BBVI ${r.bbvi_threshold} 이상이면 활용 높음, MCUI ${r.mcui_threshold} 이상이면 보전 높음`:'');};
+// the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '유형 없음' in grey
+const verdictWord=t=>`<b class="verdict vd-${t||'none'}">${esc(matrixTypePlain(t))}</b>`;
 // A Korean national-assessment MCUI is its own stratum: labelled apart and never ranked or plotted with IUCN-based MCUI.
 const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'MCUI')!==null;
 // After 3.14: another range state's national list. Like the Korean national basis, it is its own stratum: labelled, drawn with
@@ -768,6 +832,8 @@ function markDecisionCards(aphia){
 function closeDecision(){
   const card=$('decision-list').querySelector('.decision-card[aria-expanded="true"]');
   markDecisionCards(null);$('decision-detail').hidden=true;
+  // opened from the compare profile ('근거 자세히 보기'): close that region and go back to its button
+  if($('decision-detail').parentElement?.id==='cmp-more'){$('decision-list').after($('decision-detail'));cmpMoreSync();$('cmp-open-more')?.focus({preventScroll:true});return;}
   if(card){card.focus({preventScroll:true});card.scrollIntoView({block:'nearest'});}
 }
 function showDecision(s){
@@ -825,6 +891,7 @@ function showDecision(s){
   html+='<p class="fine">실험값은 사람 대상 약효가 아니며, 지도 출현 셀은 개체수·자원량·채집 지점이 아닙니다.</p><button type="button" class="decision-close">접기</button>';
   const panel=$('decision-detail');
   panel.innerHTML=html;panel.hidden=false;card?.after(panel);
+  if(typeof cmpMoreSync==='function')cmpMoreSync(); // a card opened here: the compare region it may have left closes
 }
 
 // Row counts are an inventory of retrieved records. They do not supply edible
@@ -967,7 +1034,8 @@ const REASON_KO={
   "No fixed comparable compound stratum for this target/assay in verified-pilot-2":"verified-pilot-2에는 이 표적·시험법에 맞는 비교 가능한 화합물 고정 층이 없음",
   "Origin ambiguous: the paper's peak-by-peak IC50 list assigns this value to the pearl oyster (Pinctada fucata martensii), while its sequence sentence lists the peptide for the clam; not scored until the authors' assignment is resolved":"기원이 모호함: 논문의 피크별 IC50 목록은 이 값을 진주조개(Pinctada fucata martensii)에 배정하지만, 서열을 설명한 문장은 이 펩타이드를 바지락 것으로 적음. 저자의 배정이 정리될 때까지 점수에 쓰지 않음",
 };
-const reasonKo=t=>REASON_KO[t]||t?.replace(/^pIC50 gap above (\S+)$/,'pIC50 차이가 기준 $1 초과');
+// 4.9: the scale is the row's own (pIC50 in the ACE stratum, pKi/pEC50 in a relaxed one), so the gap reason carries it.
+const reasonKo=t=>REASON_KO[t]||t?.replace(/^(p\w+) gap above (\S+)$/,'$1 차이가 기준 $2 초과');
 const supplementalRecord=o=>`<p class="fine">별도 원값 ${esc(o.record_id)} · ${esc(o.sample_state)} · ${esc(o.basis)}: `+
   `${Object.entries(o.values||{}).map(([key,v])=>`${esc(nutrientNames[key]||key)} ${esc(v.value)} ${esc(v.unit)}`).join(' / ')}. `+
   `${esc(reasonKo(o.exclusion_reason))} ${verifiedSource(o.source_id,'원자료 ↗')}</p>`;
@@ -1055,8 +1123,10 @@ function verifiedBioTrace(s){
       (ch?`<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)}(종 연결 ${esc(x.link_factor)} × 활성 ${esc(x.activity_factor)}) = ${esc(Math.round(x.adjusted*10)/10)} · 종 연결 논문 ${x.original_paper_dois.map(doiLink).join(', ')} · ChEMBL 문서 ${esc(x.document_chembl_ids.join(', '))}</p><p class="fine">${esc(x.label)}</p>`:
       `<p class="fine">비교 코호트 ${esc(x.stratum_id)} (${cohort}) · 백분위 ${esc(x.percentile)} × 근거 계수 ${esc(x.evidence_factor)} = ${esc(Math.round(x.adjusted*10)/10)}${x.percentile===0?' · 백분위 0은 비교집단의 모든 값보다 약한 실측값이라는 뜻이며, 자료가 없다는 뜻이 아닙니다':''}${x.percentile===100?` · 백분위 100은 이 비교집단의 ${esc(x.peer_peptides)}개 값보다 모두 강하다는 뜻이며, 더 강한 물질이 없다는 뜻은 아닙니다`:''} · 원논문 ${(x.original_paper_dois||[]).map(doiLink).join(', ')}</p>`)+
       (x.potency_replications||[]).map(r=>{const src=data.assessmentInfo?.sources?.[r.source_id];
+        // 4.9: a relaxed item's replication is ranked on its own endpoint, so the row names its scale (pKi, pEC50, …)
+        const scale=r.p_scale||'pIC50';
         return `<div class="score-fact"><b>효능 재현 · ${r.material==='purified_isolate'?'정제':'합성'} ${esc(x.peptide_sequence)} ${esc(peptideValue(r))} · 재현 시료 ${esc(r.origin_label||r.origin_material)}</b>`+
-          `<span>pIC50 ${esc(r.pIC50)} · 차이 ${esc(r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(reasonKo(r.reason))}</span></div>`+
+          `<span>${esc(scale)} ${esc(r.p??r.pIC50)} · 차이 ${esc(r.p_gap??r.pIC50_gap)} · ${r.used?'독립 DOI로 셈':'쓰지 않음: '+esc(reasonKo(r.reason))}</span></div>`+
           `<p class="fine">출처: ${verifiedSource(r.source_id,esc(src?.provider||'원논문')+' ↗')} · DOI ${doiLink(r.original_paper_doi)} · 이용조건 ${esc(src?.license||'미확인')} · 조회 ${esc(src?.accessed||'미기재')}. 효능만 재현하며 기원 근거나 점수 값이 되지 않습니다.</p>`;}).join('');
   }).join('');
   // A peptide percentile ranks against the fixed AHTPDB cohort (CC BY-NC 4.0), so the cohort is cited where the rank is shown.
@@ -1079,7 +1149,7 @@ function verifiedBioTrace(s){
   return `<h4>점수 근거 · ${esc(items.length)}개 측정값${items.length>SHOWN?` (상위 ${SHOWN}개 표시, 전체는 공개 JSON)`:''}</h4>${rows}`+
     `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${independence}`+
     `${single&&!ch?` → 근거 논문 1편 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
-    `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 별도 논문의 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}${antiRule?'암세포주 증식 억제 농도(IC50)이며':ampRule?'세균 배양 억제 농도(MIC)이며':ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
+    `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?((best.potency_replications||[]).length&&data.assessmentInfo?.method?.bioactivity?.replication_origin_rule?'이 종의 시료로 잰 독립 재현 논문이 아직 없습니다(다른 기원의 효능 재현은 세지 않음). ':'독립 재현 논문이 아직 없습니다. '):reps.length?(data.assessmentInfo?.method?.bioactivity?.replication_origin_rule?`독립 DOI로 센 효능 재현은 이 종에서 정제한 시료를 다른 논문이 잰 값입니다(4.11부터 다른 기원의 측정은 세지 않음). `:`효능 재현은 별도 논문의 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `):''}${antiRule?'암세포주 증식 억제 농도(IC50)이며':ampRule?'세균 배양 억제 농도(MIC)이며':ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
     (xoRule?`<p class="fine">비교집단 출처: ${verifiedSource(xoRule.cohort_source_id,(data.assessmentInfo?.sources?.[xoRule.cohort_source_id]?.provider)||'문헌 비교집단')}</p>`+(best.cohort_members?.length?`<details class="fine"><summary>비교집단 회원 ${best.cohort_members.length}개 보기(서열 · IC50 µM · DOI)</summary><p>${best.cohort_members.map(m=>esc(m.sequence)+' '+esc(m.ic50_uM)+' · '+m.dois.map(doiLink).join(', ')).join('<br>')}</p></details>`:''):'')+
     (rxBest?`<p class="fine">비교집단 출처: ${verifiedSource(rxBest.cohort_source_id,(data.assessmentInfo?.sources?.[rxBest.cohort_source_id]?.provider)||'ChEMBL')} · 활동 ID 전체와 pChEMBL 값은 공개 스냅숏(research/verified-indices/snapshots)에 있고, 이 화면은 함께 실린 pChEMBL ${esc(best.cohort_records)}건으로 백분위를 다시 계산해 검사합니다.</p>`+((best.other_targets||[]).length?`<p class="fine">다른 표적: ${best.other_targets.map(t=>esc(`${t.target_name} ${t.standard_type} ${num(t.value)} ${t.unit} · 백분위 ${t.percentile} (기록 ${t.cohort_records}건)`)).join(' / ')} — 백분위가 가장 높은 표적 하나만 점수에 씁니다.</p>`:''):'')+
     (ampRule?`<p class="fine">비교집단 출처: ${verifiedSource(ampRule.cohort_source_id||'dbaasp_amp',(data.assessmentInfo?.sources?.[ampRule.cohort_source_id||'dbaasp_amp']?.provider)||'DBAASP')} · ${esc((ampRule.limitations||[])[0]||'')}</p>`:'')+
@@ -1136,7 +1206,7 @@ function verifiedNationalFact(s){
     `목록 ${esc(b.list_page_printed)}쪽(뷰어 ${esc(b.list_page_viewer)}쪽) · 범위 ${esc(b.scope)} · ${esc(b.assessment_basis)} · ${verifiedSource(b.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
     (data.assessmentInfo?.method?.national_red_list?.page_recheck?.checked_on?`<p class="fine">목록·찾아보기 쪽 재확인 ${esc(data.assessmentInfo.method.national_red_list.page_recheck.checked_on)} · 초판·개정판 등급 ${esc(b.first_edition_category||'미기재')} → ${esc(b.category)} (${esc(b.change||'변동 미기재')})</p>`:'')+
     (b.crosswalk?`<p class="fine">학명 대응(확인 ${esc(b.crosswalk.checked_on)}): ${esc(b.crosswalk.evidence)}</p>`:'')+
-    '<p class="fine">국가 평가 점수는 전 지구 IUCN 기반 MCUI와 범위가 달라 서로 순위를 매기거나 비교하지 않고, '+(matrixRule()?.include_national_mcui?'매트릭스에는 네모 점으로 따로 놓습니다.':'매트릭스에도 놓지 않습니다.')+'</p>';
+    '<p class="fine">국가 평가 점수는 전 지구 IUCN 기반 MCUI와 범위가 달라 서로 순위를 매기거나 비교하지 않고, '+(matrixRule()?.include_national_mcui?'매트릭스에는 놓되 툴팁과 유형별 목록에 기반을 따로 적습니다.':'매트릭스에도 놓지 않습니다.')+'</p>';
   // After 3.14: another range state's national list gives a separately labelled MCUI (shown with its inputs).
   const sub=s.assessment.mcui_substitute;
   if(subNationalMcui(s)&&sub){
@@ -1153,7 +1223,7 @@ function verifiedNationalFact(s){
       `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       (r.official_unscored?.length?`<p class="fine">공식 목록에 이름은 있으나 점수 범주가 아닌 기록(점수에 쓰지 않음):</p><ul class="fine">${r.official_unscored.map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||'')}) · ${esc(x.category_as_published)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${esc(x.excluded_reason)}${x.source_id?' · '+verifiedSource(x.source_id,'원목록 ↗'):x.url?' · '+sourceLink(x.url,'원목록 ↗'):''}</li>`).join('')}</ul>`:'')+
       `<p class="fine">IUCN·한국 국가·서식국 국가·지방 목록 어디에도 이 종의 점수가 되는 범주가 없어 쓰는 마지막 근거입니다(팀장 결정 2026-10-05).${r.official_unscored?.length?' 이름은 있지만 점수 범주가 아닌 공식 목록 기록은 아래에 따로 적었습니다.':''} GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했고, OBIS 보고율 추세는 ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}입니다. `+
-      `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+
+      `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
         `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. ${esc(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
@@ -1173,9 +1243,22 @@ function verifiedNationalFact(s){
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
         `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. ${esc(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
+  // 4.11 (prereg 5.2): the OBIS reporting-rate ratio reached the decline threshold, so the met Rapid LC check gives no MCUI.
+  if(pilotScore(s,'MCUI')===null&&sub?.result==='decline_ratio_reached'){
+    const r=sub.record, rule=data.assessmentInfo?.method?.conservation?.trend;
+    return `<p><b>자체 예비평가(Rapid LC) 쓰지 않음 · MCUI 없음</b>: OBIS 보고율 비(${esc(Number(r.reporting_rate_ratio).toFixed(3))})가 감소 기준(${esc(rule?.decline_ratio)}) 이하입니다.</p>`+
+      `<p class="fine">가장 큰 데이터셋 안에서 감소가 확인되지 않았더라도, 확인되지 않은 감소를 '감소 없음'으로 읽지 않습니다(사전 등록 ${esc(data.assessmentInfo?.method?.mcui_substitutes?.preliminary_trend_block?.prereg||'')}). 분포 기록(EOO ${esc(r.eoo_km2.toLocaleString())} km² · AOO ${esc(r.aoo_km2.toLocaleString())} km² · 좌표 기록 ${esc(r.records)}건)은 참고로만 적습니다.</p>`;
+  }
   const n=s.assessment.national_red_list_fact;
   return n?`<p>국가 평가(한국 범위): ${esc(n.category)} · 게재명 ${esc(n.name_as_published)} · 목록 ${esc(n.list_page_printed)}쪽 · ${verifiedSource(n.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
     '<p class="fine">국가 평가는 전 지구 IUCN 평가와 범위가 달라 MCUI 점수에 넣지 않는 사실 정보입니다.</p>':'';
+}
+// 4.11 (prereg 5.1): a sub-national list whose back-test failed is shown as reference beside the next basis, never as the score.
+function subNationalReference(sub){
+  const ref=sub?.sub_national_reference;
+  if(!ref)return '';
+  const rows=(ref.regions||[]).map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||x.country)}) · ${esc(x.category_as_published)} → ${esc(x.category)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${verifiedSource(x.source_id,'원목록 ↗')}${x.note?'<br>'+esc(x.note):''}</li>`).join('');
+  return `<p class="fine"><b>지방 목록 참고값 · MCUI 점수 아님</b>: ${esc(ref.chosen_category)} · ${esc(ref.backtest?.label||'')}. 과대평가 역검증을 통과하지 못한 지방 목록은 4.11부터 점수에 쓰지 않습니다.</p><ul class="fine">${rows}</ul>`;
 }
 function verifiedConservationDetail(s){
   const c=s.assessment.conservation_trace;
@@ -1197,7 +1280,8 @@ function occurrenceTrendDetail(s){
   const p=rule.periods,n=t.species_records,e=t.effort_records,yr=x=>x.slice(0,4),f2=x=>Number(x).toFixed(2);
   const ratio=Number.isFinite(t.reporting_rate_ratio)?` · 보고율 비 ${f2(t.reporting_rate_ratio)} (95% 구간 ${f2(t.ci[0])}–${f2(t.ci[1])}) · 같은 강 기록 변화 ×${f2(t.effort_ratio)} · 전체 분류군 기준 민감도 ${f2(t.all_taxa_sensitivity?.reporting_rate_ratio)}`:'';
   const gain=t.mcui_base===null?0:Math.min(100,t.mcui_base+t.mcui_adjustment)-t.mcui_base;
-  const effect=t.mcui_adjustment?(gain?`감소 신호라 MCUI ${t.mcui_base.toFixed(1)}에 +${gain}을 더했습니다.`:`감소 신호이지만 MCUI가 이미 상한 100이라 바뀌지 않았습니다.`)
+  const paused=data.assessmentInfo?.method?.conservation?.effort_adjustment_suspended;
+  const effect=t.class==='decline_signal'&&!t.mcui_adjustment&&paused?paused.note+(t.mcui_base===null?'':' MCUI에 더하거나 빼지 않았습니다.'):t.mcui_adjustment?(gain?`감소 신호라 MCUI ${t.mcui_base.toFixed(1)}에 +${gain}을 더했습니다.`:`감소 신호이지만 MCUI가 이미 상한 100이라 바뀌지 않았습니다.`)
     :t.mcui_base===null?'MCUI 기반 평가가 없어 이 결과로 MCUI를 만들지 않습니다.':'MCUI에 더하거나 빼지 않았습니다.';
   const tv=data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_trend;
   const checked=t.mcui_adjustment&&tv?.result==='failed'?`<p class="fine">추세 요소(+${esc(t.mcui_adjustment)}) 사후 검증: 기준 미충족. ${esc(tv.reason)}</p>`:'';
@@ -1257,17 +1341,75 @@ function sufficiencyCut(a){
   const cut=data?.assessmentInfo?.method?.unexplored_threshold;
   return Math.round(a.information_sufficiency.mean_ratio*100)+'%'+(Number.isFinite(cut)?', 기준 '+Math.round(cut*100)+'% 미만':'');
 }
-// Half-circle gauges at the top of the species evidence (same values as the disclosures below; visual only).
+// Axis colours and names (species-card mini bars use them too).
 const GAUGE_COLOUR={MFPI:'#0b7a74',MBPI:'#1f9fb8',MCUI:'#e07a3f',BBVI:'#173f62'}, GAUGE_NAME={MFPI:'식량',MBPI:'생리활성',MCUI:'보전 시급성',BBVI:'통합 활용'};
-function axisGauges(s){
-  const len=Math.PI*38;
-  return '<div class="axis-gauges" aria-hidden="true">'+Object.keys(GAUGE_COLOUR).map(k=>{
-    const n=axisState(s,k).value, v=n===null?0:Math.max(0,Math.min(100,n)), ref=k==='BBVI'&&n===null?bbviReference(s):null;
-    return `<figure class="gauge${n===null?' held':''}"><svg viewBox="0 0 100 58"><path d="M12 52a38 38 0 0 1 76 0" class="g-track"/>`+
-      `<path d="M12 52a38 38 0 0 1 76 0" class="g-fill" style="stroke:${GAUGE_COLOUR[k]};stroke-dasharray:${(v/100*len).toFixed(1)} ${len.toFixed(1)}"/>`+
-      `<text x="50" y="51" text-anchor="middle">${n===null?'–':n.toFixed(1)}</text></svg><figcaption>${k}<small>${n===null?(ref!==null?'참고값 '+ref.toFixed(1):'산출 보류'):GAUGE_NAME[k]+(k==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')}</small></figcaption></figure>`;}).join('')+'</div>';
+// Top of the species evidence: the use value (BBVI, built from MFPI and MBPI) and the conservation need (MCUI) as two cards
+// that are never summed, the species' type and where it sits in the 2×2. Same values as the disclosures below, which stay
+// the reference; held axes draw no bar and are never shown as 0.
+const AXIS_QUAD=['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'];
+function axisBar(v,cut,big){
+  return `<span class="ax-bar${big?' big':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${Number.isFinite(cut)?`<b style="left:${cut}%"></b>`:''}</span>`;
+}
+function axisCards(s){
+  const rule=matrixRule(),type=matrixType(s),key=Object.entries(rule?.types||{}).find(([,t])=>t.id===type)?.[0];
+  const held=k=>{const st=axisState(s,k),ref=k==='BBVI'?bbviReference(s):null;return `<span class="ax-held">${esc(ref!==null?'참고값 '+ref.toFixed(1)+' · 점수 아님':st.label)}</span>`;};
+  const main=(k,cut)=>{const v=axisState(s,k).value;return v===null?held(k):`<strong class="ax-num">${v.toFixed(1)}</strong>${axisBar(v,cut,true)}`;};
+  const sub=(k,name,note)=>{const v=axisState(s,k).value;
+    return `<div class="ax-sub"><span>${name} <b>${k}</b></span>${v===null?held(k):`<strong>${v.toFixed(1)}</strong>${axisBar(v)}`}${note?`<small>${esc(note)}</small>`:''}</div>`;};
+  const one=bbviLabel(s),mbpiNote=[mbpiStratumOf(s)?.short,basisNote(s,'MBPI').replace(/^ · /,'')].filter(Boolean).join(' · '),mfpiNote=s.assessment?.food_trace?.literature_moisture?.label||'';
+  const mcuiNote=axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'');
+  const chip=type?`<p class="ax-type" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${verdictWord(type)}<span class="ax-type-name">${esc(matrixTypeLabel(type))}</span></p>`
+    :`<p class="ax-type none"><i aria-hidden="true"></i>유형 없음 · BBVI·MCUI 한 쌍 미산출</p>`;
+  // where the species' cells sit on the value map: the cell colour is the first type in the cell, so it can differ from the species' own
+  const cells=[...valueCellGroups(true).values()].filter(g=>g.species.has(s.aphiaID)),same=cells.filter(g=>cellMatrixType(g).type===type).length;
+  // 2026-10-13: '활용 × 보전' opens on the species view (its own cells in its own colour); the all-species view keeps the cell rule
+  const where=!cells.length?'':!type?`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 회색(유형 없음)으로 칠합니다. 유형이 없어 ‘모든 종 겹쳐 보기’의 셀 색은 정하지 않습니다.`
+    :`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 이 색으로 칠합니다. `+(same===cells.length?'‘모든 종 겹쳐 보기’에서도 모두 이 색입니다.'
+      :same?`‘모든 종 겹쳐 보기’에서는 그중 ${same}개가 이 색이고, 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`
+      :'‘모든 종 겹쳐 보기’에서는 모두 같은 셀에 있는 우선순위가 높은 유형의 색입니다.');
+  const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
+  return `<section class="axis-cards" aria-label="두 축 요약 · 아래 지표 칸과 같은 값">${chip}`+
+    `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b></h3><small>${rule?'기준 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
+      `<div class="ax-main">${main('BBVI',rule?.bbvi_threshold)}</div>${one?`<p class="ax-note">${esc(one)}</p>`:''}${officialNote(s)?`<p class="ax-note">탐색 보기(${esc(weightPair())}) · ${esc(officialNote(s))}</p>`:''}`+
+      sub('MFPI','식량',mfpiNote)+sub('MBPI','생리활성',mbpiNote)+'</div>'+
+    '<p class="ax-sep"><span>합치지 않고 따로 봅니다</span></p>'+
+    `<div class="ax-card"><div class="ax-head"><h3>보전 시급성 <b>MCUI</b></h3><small>${rule?'기준 '+rule.mcui_threshold:''}</small></div>`+
+      `<div class="ax-main">${main('MCUI',rule?.mcui_threshold)}</div>${mcuiNote?`<p class="ax-note">${esc(mcuiNote)}</p>`:''}</div>`+
+    (rule?`<div class="ax-where">${quad}<p>${esc(where||'이 종은 지금 보는 기간에 공개 셀이 없습니다.')}</p></div>`:'')+'</section>';
 }
 
+// 2026-10-12: the MBPI section opens with one line: the post-hoc result and the aggregation range as published (nothing
+// recomputed), then the stratum of the scored item. The reason paragraph and the aggregation line below stay as they were.
+function mbpiFirstLine(s){
+  const a=s.assessment, bv=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI, r=validationResult('MBPI');
+  const range=a.sensitivity?.range_from_aggregation, st=mbpiStratumOf(s);
+  const parts=[r&&bv?`사후 검증 ${r==='passed'?'통과':'기준 미충족'}(약물 기원종 ${bv.n}종 중 ${bv.computed}종 계산)`:'',
+    Array.isArray(range)&&range.length===2?(range[0]===range[1]?`집계 방식에 따라 바뀌지 않음(항목 ${(a.bioactivity_trace||[]).length}개)`:`집계 방식에 따라 ${range.join('–')}`):''].filter(Boolean);
+  return parts.length||st?`<p class="fine mbpi-first">${parts.length?`<b>${esc(parts.join(' · '))}</b>`:''}${st?`${parts.length?'<br>':''}근거 층: ${esc(st.long)}`:''}</p>`:'';
+}
+// 4.10: one line under the MBPI section for the secondary MBPI-Rx (mbpiRxOf); it opens to the published post-hoc reason, the
+// classification criterion and the pre-registration. A null value reads 없음 with the published reason, never 0.
+function mbpiRxLine(s){
+  const r=mbpiRxOf(s), rule=data.assessmentInfo?.method?.mbpi_rx, v=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI_RX;
+  if(!r)return '';
+  const check=['passed','failed'].includes(v?.result)?`사후 검증 ${v.result==='passed'?'통과':'기준 미충족'}(탐색적 재검토)`:'';
+  const head=[r.value===null?'없음 · '+r.reason:r.value.toFixed(1)+' · '+r.stratum.short,check].filter(Boolean).join(' · ');
+  return `<details class="score-disclosure rx-disclosure"><summary><span>${esc(rule.label)}</span><b>${esc(head)}</b></summary><div class="score-disclosure-body">`+
+    `<p class="fine">MBPI와 같은 규칙으로 모으되 ${esc(rule.excluded_label)} 층의 항목은 뺀 값입니다(이 종에서 뺀 항목 ${esc(s.assessment.mbpi_rx.excluded_item_count)}개). 남는 항목이 없으면 0점 하한값 대신 '없음'으로 둡니다. 기본 MBPI·BBVI·매트릭스에는 쓰지 않습니다.</p>`+
+    (r.value===null?'':`<p class="fine">근거 층: ${esc(r.stratum.long)}</p>`)+
+    `<p class="fine">층 분류 기준: ${esc(rule.criterion)}</p>`+
+    (check&&v.reason?`<p class="fine">사후 검증(약물 기원종 ${esc(v.n)}종 중 ${esc(v.computed)}종 계산): ${esc(v.reason)}</p>`:'')+
+    `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
+}
+// 4.11 (prereg 4): MBPI is the maximum over items, so the spread of the scored items is shown beside it, display only.
+function mbpiBreadthLine(s){
+  const b=s.assessment?.mbpi_breadth, rule=data.assessmentInfo?.method?.mbpi_breadth;
+  if(!b||!rule||!b.item_count||pilotScore(s,'MBPI')===null)return '';
+  const head=`항목 ${b.item_count}개 · 중앙값 ${Number(b.median).toFixed(1)} · 상위 2개 평균 ${Number(b.top2_mean).toFixed(1)}`;
+  return `<details class="score-disclosure breadth-disclosure"><summary><span>${esc(rule.label)} · 탐색적</span><b>${esc(head)}</b></summary><div class="score-disclosure-body">`+
+    `<p class="fine">MBPI는 점수 항목 중 가장 높은 값이라, 시험된 항목이 많은 종일수록 높게 나오기 쉽습니다(4.10에서 항목 수와 MBPI의 순위상관 0.64). 그래서 점수 항목 전체의 중앙값과 상위 두 항목 평균을 함께 보입니다. 기본 MBPI·BBVI·매트릭스·순위에는 쓰지 않습니다.</p>`+
+    `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
+}
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
@@ -1276,7 +1418,7 @@ function renderVerifiedIndices(s){
   // 3.27: the drug-origin check is computed; its result and reason open the MBPI section, as the MFPI scope note does
   const mbpiScope=validationResult('MBPI')&&bv?.reason?`<p class="fine">사후 검증(약물 기원종 ${esc(bv.n)}종 중 ${esc(bv.computed)}종 계산): ${validationResult('MBPI')==='passed'?'통과':'기준 미충족'}. ${esc(bv.reason)}</p>`:'';
   const mfpiScope=validationResult('MFPI')==='passed'&&mv?`<p class="fine">방법 검증: RDA 값과 같은 종의 일본 식품성분표 2020 값으로 각각 계산한 영양 순위를 ${esc(mv.n)}종에서 비교했습니다(Spearman ρ ${esc(mv.spearman_rho)}, 단측 p ${esc(mv.permutation_p_one_sided)}). 성분표에 따라 순위가 바뀌는지만 본 것이며, 이 종의 값이나 가중치를 따로 검증한 것은 아닙니다.</p>`:'';
-  const bodies={MFPI:mfpiScope+verifiedFoodDetail(s),MBPI:mbpiScope+verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s)+occurrenceTrendDetail(s),
+  const bodies={MFPI:mfpiScope+verifiedFoodDetail(s),MBPI:mbpiFirstLine(s)+mbpiScope+verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s)+occurrenceTrendDetail(s),
     BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'+
       (a.mbpi_floor?'<p class="fine">BBVI '+esc(bbviLabel(s)||'')+': MBPI가 하한값 '+esc(a.mbpi_floor.value)+'점이라 BBVI = w × MFPI + (1−w) × '+esc(a.mbpi_floor.value)+'입니다. '+esc(a.mbpi_floor.meaning)+' 규칙을 채우는 MBPI 근거가 생기면 그 값으로 바뀝니다.'+(assessedForMatrix(s)?' 매트릭스에서는 회색 테두리의 빈 점입니다.':'')+'</p>':
        bbviLabel(s)?'<p class="fine">BBVI '+esc(bbviLabel(s))+': MBPI 최고 항목의 독립 근거가 1편뿐입니다'+(bestBio(a)?.stratum_kind==='chembl'?'(ChEMBL 항목은 종 연결 원논문과 활성 문서 중 적은 쪽)':'')+'. MBPI에는 이 근거 계수('+esc(bestBio(a)?.evidence_factor)+')가 이미 곱해져 있습니다. 팀장 결정(2026-10-03)에 따라 '+(assessedForMatrix(s)?'점수·매트릭스·지도에 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. 매트릭스에서는 속이 빈 점입니다.':'점수로 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. '+(pilotScore(s,'MCUI')===null?'MCUI가 없어 ':'')+'매트릭스·지도 색에는 들어가지 않습니다.')+'</p>':'')+referenceCombination(s)};
@@ -1291,10 +1433,10 @@ function renderVerifiedIndices(s){
       const label=key==='MCUI'&&value!==null&&separateMcui(s)?' · '+mcuiBasisLabel(s):'';
       const note=axisStateNote[st.kind];
       return `<details class="score-disclosure" data-axis="${key}"><summary><span>${esc(key)} · ${esc(names[key])}</span>`+
-        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
+        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
-        `</div></details>`;
+        `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s):'');
     }).join('')}${unexplored}<p class="fine">정보충분도: ${sufficiencyText(a)} `+
     `민감도 범위는 통계적 신뢰구간이 아닙니다.</p></section>`;
 }
@@ -1310,7 +1452,7 @@ function setView(view,toTop=true) {
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
-  if(view==='compare'){if(data)syncComparison();requestAnimationFrame(declutterPointLabels);}
+  if(view==='compare'){if(data)syncComparison();loadCompareStops();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
   // toTop=false, so the page does not jump up first and then travel the whole way back down.
   if(changed&&toTop)window.scrollTo(0,0);
@@ -1336,8 +1478,13 @@ const RESISTANT=/resistan|MRSA|VRE|MDR/i;
 const resistantRows=t=>t.stratum_kind==='amp'?(t.measurements||[]).filter(m=>RESISTANT.test(m.target_strain||'')):[];
 // An MBPI item takes the first drug trait whose rule matches (the precedence the 3.12 counts were checked with);
 // a trait with a parent (내성균 under 항균) is counted under its parent as well.
+// 2026-10-12: 혈압(ACE 저해) and 항산화 sit in their own row, '기능성(식품 소재)': the ACE stratum ranks food-protein
+// antihypertensive peptides, and the 항산화 rows are display-only literature values. Only the group moved; the array order
+// (traitIdsOf takes the first matching chip), ids, rules and link parameters (u=ace) are unchanged.
+const USE_GROUPS=['신약','기능성(식품 소재)','식량'];
+const useGroupLabel = g => {const i=g.indexOf('(');return i<0?esc(g):esc(g.slice(0,i))+'<small>'+esc(g.slice(i))+'</small>';};
 const USE_TRAITS=[
-  {id:'ace',group:'신약',label:'혈압(ACE 저해)',match:t=>t.stratum_kind==='peptide'||/wijesinghe|ACE/i.test(t.stratum_id||'')||/angiotensin/i.test(targetText(t))},
+  {id:'ace',group:'기능성(식품 소재)',label:'혈압(ACE 저해)',match:t=>t.stratum_kind==='peptide'||/wijesinghe|ACE/i.test(t.stratum_id||'')||/angiotensin/i.test(targetText(t))},
   {id:'virus',group:'신약',label:'바이러스',match:t=>/virus|SARS|HIV|dengue|influenza/i.test(targetText(t))},
   {id:'dementia',group:'신약',label:'치매 관련 효소',match:t=>/cholinesterase|beta-secretase/i.test(targetText(t))},
   {id:'parasite',group:'신약',label:'기생충',match:t=>/Trypanosoma|Plasmodium|Leishmania|Toxoplasma|Schistosoma|Giardia/i.test(targetText(t))},
@@ -1346,11 +1493,16 @@ const USE_TRAITS=[
   {id:'resistant',group:'신약',label:'내성균',parent:'microbe',match:t=>t.target_type==='ORGANISM'&&RESISTANT.test(targetText(t))||resistantRows(t).length>0},
   {id:'fungus',group:'신약',label:'항진균',match:t=>t.target_type==='ORGANISM'&&FUNGI.test(targetText(t))},
   {id:'pain',group:'신약',label:'진통',match:t=>/opioid receptor|TRPV1|cyclooxygenase/i.test(targetText(t))},
-  {id:'antioxidant',group:'신약',label:'항산화',match:t=>/DPPH|ABTS|radical/i.test(targetText(t))},
+  {id:'antioxidant',group:'기능성(식품 소재)',label:'항산화',match:t=>/DPPH|ABTS|radical/i.test(targetText(t))},
   {id:'diabetes',group:'신약',label:'항당뇨',match:t=>/glucosidase|dipeptidyl peptidase|PTP1B|phosphatase non-receptor type 1\b|amylase/i.test(targetText(t))},
   {id:'protein_g',group:'식량',label:'고단백'},
   {id:'mineral',group:'식량',label:'미네랄'},
+  {id:'calcium_mg',group:'식량',label:'칼슘'},
+  {id:'iron_mg',group:'식량',label:'철분'},
+  {id:'zinc_mg',group:'식량',label:'아연'},
   {id:'omega3',group:'식량',label:'오메가-3'},
+  {id:'whole',group:'식량',label:'가식부 100%'},
+  {id:'farmed',group:'식량',label:'양식 가능'},
 ];
 // Search words that point at a trait chip, kept apart from the rules so wording can grow without touching evidence.
 const TRAIT_SYNONYMS={
@@ -1366,8 +1518,13 @@ const TRAIT_SYNONYMS={
   antioxidant:['항산화','활성산소'],
   diabetes:['항당뇨','당뇨','혈당'],
   protein_g:['단백질','고단백','protein'],
-  mineral:['미네랄','무기질','칼슘','철','철분','아연'],
+  mineral:['미네랄','무기질'],
+  calcium_mg:['칼슘','calcium'],
+  iron_mg:['철','철분','iron'],
+  zinc_mg:['아연','zinc'],
   omega3:['오메가-3','오메가3','오메가','omega','omega-3','dha','epa','불포화지방'],
+  whole:['가식부','통째로','폐기율','버릴것없는'],
+  farmed:['양식','양식가능','aquaculture'],
 };
 // Chips combine with AND: a species stays only when it has evidence for every chip that is on (insertion order kept,
 // so the last chip turned on is the one the empty-result button turns off).
@@ -1380,7 +1537,7 @@ function traitIdsOf(t){
   return first?[first.id,...USE_TRAITS.filter(c=>c.parent===first.id&&c.match(t)).map(c=>c.id)]:[];
 }
 const overClaim=(a,id)=>{const v=a.food_trace?.nutrients?.[id];return v&&Number.isFinite(v.value)&&v.value>=CLAIM_REF[id]*CLAIM_SHARE[id]?v:null;};
-const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(CLAIM_REF[id]*CLAIM_SHARE[id]*10)/10)} 이상${v.substitute?' · '+v.substitute.label:''}`;
+const nutrientLine=(v,id)=>`${num(v.value)} ${v.unit||''}/100 g · 기준 ${num(Math.round(CLAIM_REF[id]*CLAIM_SHARE[id]*100)/100)} 이상${v.substitute?' · '+v.substitute.label:''}`;
 // Evidence line for one species and one trait, or null. Values are the species' adopted items, never a relative's.
 function useEvidence(s,id){
   const a=s.assessment;if(!a)return null;
@@ -1392,6 +1549,9 @@ function useEvidence(s,id){
   }
   if(traitById(id)?.group==='식량'){
     if(a.axis_errors?.MFPI||pilotScore(s,'MFPI')===null)return null;
+    // 가식부·양식 칩은 MFPI에 이미 들어간 가식부 비율과 양식 사례 기록을 그대로 보여줄 뿐, 점수를 바꾸지 않는다.
+    if(id==='whole'){const ef=a.food_trace?.edible_fraction;return ef&&ef.value===1?{text:`가식부 100%(폐기율 0%) · 출처 ${ef.record_id}`,score:pilotScore(s,'MFPI')}:null;}
+    if(id==='farmed'){const q=a.food_trace?.aquaculture;return q&&q.feasible===true&&q.reviewed===true?{text:`양식 사례 있음 · 출처 ${q.source_id}`,score:pilotScore(s,'MFPI')}:null;}
     const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
     return hits.length?{text:hits.map(([k,v])=>(MINERALS[k]||'단백질')+' '+nutrientLine(v,k)).join(' · '),score:pilotScore(s,'MFPI')}:null;
   }
@@ -1442,7 +1602,7 @@ function traitChip(c,n){
 function renderUseChips(){
   const box=$('use-chips');if(!box||!data)return;
   const focus=box.contains(document.activeElement)?document.activeElement.dataset.use:null;
-  box.innerHTML='<p class="use-title">활용 특성으로 찾기 · 여러 개를 켜면 모두 만족하는 종</p>'+['신약','식량'].map(g=>`<div class="use-row" role="group" aria-label="${g} 활용 특성"><span class="use-group">${g}</span><span class="use-row-chips">`+
+  box.innerHTML='<p class="use-title">활용 특성으로 찾기 · 여러 개를 켜면 모두 만족하는 종</p>'+USE_GROUPS.map(g=>`<div class="use-row" role="group" aria-label="${esc(g)} 활용 특성"><span class="use-group">${useGroupLabel(g)}</span><span class="use-row-chips">`+
     USE_TRAITS.filter(c=>c.group===g).map(c=>traitChip(c,useCount(c.id))).join('')+'</span></div>').join('');
   box.querySelectorAll('[data-use]:not([disabled])').forEach(b=>b.addEventListener('click',()=>toggleUse(b.dataset.use)));
   if(focus)box.querySelector(`[data-use="${focus}"]`)?.focus(); // keyboard toggling keeps its place
@@ -1484,11 +1644,14 @@ function useSuggestion(query){
 }
 const useRule=c=>c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.protein_g*100)}%) 이상`
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
+    :MINERALS[c.id]?`${MINERALS[c.id]}이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%, ${num(Math.round(CLAIM_REF[c.id]*CLAIM_SHARE[c.id]*100)/100)} mg) 이상`
+    :c.id==='whole'?'보고서에 채택된 가식부 비율이 100%(폐기율 0%)인 종. MFPI의 가식부 항목과 같은 값이며, 칩은 보여주기만 합니다'
+    :c.id==='farmed'?'보고서에 채택·검토된 양식 사례 기록이 있는 종(MFPI의 양식 가능성 항목과 같은 근거). 현재 국내 상업 양식 여부나 경제성을 뜻하지 않습니다'
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
     :displayOnly(c.id)?(hasExtractRow(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값이며, 단일 물질 근거가 없는 종은 추출물·분획 시험값입니다(‘추출물’ 표시, 팀장 결정 2026-10-04). ':'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. ')+'팀장 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
 // A food chip hides species with a measured value under the claim line apart from species with no value at all.
-const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
+const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);if(id==='whole')return Number.isFinite(a.food_trace?.edible_fraction?.value);if(id==='farmed')return a.food_trace?.aquaculture?.reviewed===true;return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
 function hiddenLine(on,shown,base){
   const hidden=base.filter(s=>!shown.includes(s)),below=hidden.filter(s=>on.every(c=>useEvidence(s,c.id)||(c.group==='식량'&&measured(s,c.id)))).length;
   return `<p>숨김 ${hidden.length}종: ${below?`기준 미달 ${below}종 · `:''}근거 미확인 ${hidden.length-below}종(가치가 낮다는 뜻 아님).</p>`;
@@ -1515,7 +1678,20 @@ function useCardLine(s){
 // Four axis values on every card ('–' = withheld, never 0), so the list can be scanned without opening a species.
 const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MCUI','BBVI'].map(k=>{const n=axisState(s,k).value;
   const one=k==='BBVI'&&bbviLabel(s);
-  return `<i class="${n===null?'held':one?'single':''}" title="${GAUGE_NAME[k]}${one?' · '+esc(one):''}"><small>${k}</small>${n===null?'–':n.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;}).join('')+'</span>':'';
+  return `<i class="${n===null?'held':one?'single':''}" title="${GAUGE_NAME[k]}${one?' · '+esc(one):''}"><small>${k}</small>${n===null?'–':n.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;}).join('')+
+  // the MBPI's stratum on its own line under the four values, hidden and shown with them
+  ((st=>st?`<span class="card-stratum" title="MBPI 1위 항목의 근거 층 · ${esc(st.long)}">MBPI 근거 · ${esc(st.short)}</span>`:'')(mbpiStratumOf(s)))+'</span>':'';
+// 2026-10-13 design 2 (card shape A): the use and conservation values and the verdict on one line, so the list compares at a
+// glance. Never summed; the same values as the four card scores. Screen readers hear the full names, the BBVI's paper label,
+// the MCUI basis and the formal type name (sr-only text, so the card's innerText keeps every word the checks read).
+function cardLine(s){
+  if(!s.assessment)return '';
+  const rule=matrixRule(),t=matrixType(s),b=axisState(s,'BBVI').value,m=axisState(s,'MCUI').value,one=b!==null&&bbviLabel(s);
+  const basis=m===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):''),num=v=>v===null?'–':v.toFixed(1);
+  return `<span class="card-line"><span class="cl-v${one?' single':''}" title="통합 활용 BBVI ${num(b)}${one?' · '+esc(one):''}"><span class="sr-only">BBVI 통합 활용 </span><span aria-hidden="true">활용 </span><b>${num(b)}</b>${one?`<span class="sr-only"> ${esc(one)}</span>`:''}</span>`+
+    `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">보전 </span><b>${num(m)}</b>${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
+    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span></span>`;
+}
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
   const group=$('species-group').value, evidence=$('species-evidence').value;
@@ -1523,7 +1699,7 @@ function renderList() {
     &&(evidence==='all'||(evidence==='published'?!s.catalog:!!s.catalog))
     &&[s.label,s.name,s.group,String(s.aphiaID)].some(v=>v.toLowerCase().includes(query)));
   const matches=useSorted(base.filter(useMatch));
-  $('species-count').textContent=`${matches.length}종`;
+  $('species-count').textContent=`${matches.length}종`;filterCount();
   const extra=$('use-extra');
   if(extra){extra.innerHTML=useSuggestion($('search').value)+useNote(matches,base);
     extra.querySelector('[data-use-suggest]')?.addEventListener('click',e=>{$('search').value='';setUses([...activeUses,e.currentTarget.dataset.useSuggest]);});
@@ -1531,7 +1707,7 @@ function renderList() {
     extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUses([]));}
   // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
   const list=$('species-list'),left=list.scrollLeft,top=list.scrollTop,refocus=list.contains(document.activeElement);
-  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em><span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
+  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" data-type="${matrixType(s)||'none'}"${matrixType(s)?` style="--tc:${matrixTypeColour[matrixType(s)]}"`:''} aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em>${cardLine(s)}<span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>{
     button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species)));
     for(const [ev,on] of [['mouseenter',1],['focus',1],['mouseleave',0],['blur',0]])button.addEventListener(ev,()=>hoverSpecies(on&&Number(button.dataset.species)));
@@ -1543,14 +1719,43 @@ function renderList() {
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();writeHash();
+  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();syncCompareSelection();writeHash();
 }
 
 function renderDetail() {
   const s=selected;
   if(s.catalog)renderCandidateDetail(s);else renderLiveDetail(s);
-  // The four values first, as gauges under the name; the evidence below stays the reference.
-  if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisGauges(s));
+  // The two axes first, as separate cards under the name; the evidence below stays the reference.
+  if(s.assessment)$('detail').querySelector('.detail-head')?.insertAdjacentHTML('afterend',axisCards(s));
+  foldDetail();
+}
+// 2026-10-11 design concept (team decision: fold like the concept): on wide screens the floating card shows the name and the
+// two axis cards, and '근거 자세히 보기' opens everything below them. Nothing is removed; the fold is clipped and inert, not
+// display:none, so the text stays laid out (the checks read it), and below 1281px nothing folds. Not in the link.
+let detailOpen=false;
+const wideLayout=()=>!!globalThis.matchMedia?.('(min-width:1281px)').matches;
+function foldDetail(){
+  const d=$('detail'),anchor=d.querySelector('.axis-cards')||d.querySelector('.detail-head');
+  if(!anchor||!anchor.nextElementSibling)return;
+  const fold=document.createElement('div');fold.id='detail-fold';fold.className='detail-fold';
+  while(anchor.nextSibling)fold.append(anchor.nextSibling);
+  anchor.insertAdjacentHTML('afterend','<button type="button" class="detail-cta" aria-controls="detail-fold"><span></span></button>');
+  d.append(fold);
+  d.querySelector('.detail-cta').addEventListener('click',()=>{detailOpen=!detailOpen;syncFolds();});
+  syncFolds();
+}
+// the species pane's selects and 활용 특성 chips fold the same way under '필터 더 보기' (selected chips stay in #use-extra)
+let filtersOpen=false;
+function syncFolds(){
+  const wide=wideLayout(),fold=$('detail-fold'),cta=document.querySelector('#detail .detail-cta');
+  if(fold&&cta){const folded=wide&&!detailOpen;fold.classList.toggle('folded',folded);fold.inert=folded;
+    cta.setAttribute('aria-expanded',String(!folded));cta.firstElementChild.textContent=detailOpen?'근거 접기':'근거 자세히 보기';}
+  const ff=$('filter-fold'),ft=$('filter-toggle');
+  if(ff&&ft){const folded=wide&&!filtersOpen;ff.classList.toggle('folded',folded);ff.inert=folded;ft.setAttribute('aria-expanded',String(!folded));}
+}
+function filterCount(){
+  const n=activeUses.size+($('species-group').value!=='all')+($('species-evidence').value!=='all'),c=$('filter-count');
+  if(c){c.textContent=n?`${n}개 사용 중`:'';c.hidden=!n;}
 }
 
 // Counts come from the published evidence_summary. A missing key is "정보 없음", never 0.
@@ -1613,9 +1818,11 @@ function exclusionLine(s){
   if(s.review)return withheldLine(s.review);
   return Object.entries(s.info?.map?.outcome||{}).filter(([k,n])=>k!=='accepted'&&n>0).map(([k,n])=>`${REASONS[k]||k} ${count(n)}`).join(' · ');
 }
+// The repository has no verified species photos: the detail head shows the taxon group's icon instead (fixed size, theme.css).
+const groupBadge=s=>`<span class="group-icon" data-group="${esc(s.group)}"><i aria-hidden="true"></i><small>${esc(s.group)}</small></span>`;
 function renderCandidateDetail(s){
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
-  const heading=(status)=>`<div class="detail-head"><div class="detail-top"><span>신규 조사 후보</span><span class="pending">${status}</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`;
+  const heading=(status)=>`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>신규 조사 후보</span><span class="pending">${status}</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`;
   const identity=`<p class="detail-context">AphiaID ${esc(s.aphiaID)} · ${esc(s.group)} · ${sourceLink(s.wormsUrl,'WoRMS 학명 확인 ↗')}</p>`;
   if(s.audit){
     const a=s.audit, n=a.nutrition, i=a.iucn, r=s.review;
@@ -1719,7 +1926,7 @@ function renderLiveDetail(s) {
       .replace('<div class="evidence-item">',`<div class="evidence-item axis axis-${k}" style="--v:${v===null?0:Math.max(0,Math.min(100,v))}%">`);
   }).join('');
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
-  $('detail').innerHTML=`<div class="detail-head"><div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
+  $('detail').innerHTML=`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
     `<div class="detail-summary"><div id="detail-map-summary">${mapSummaryHtml(periodView({...s,cells}))}</div><h3>근거 상태 <span class="fine">판정 아님</span></h3>${axes}<p class="detail-limit">현재 확보한 출현기록이며, 전체 분포·개체수·자원량이 아닙니다.</p></div>`+
     `<div class="detail-more-list">`+
     more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${row('자료 연결 현황','5개 항목의 단계 · 품질 점수 아님')}${coverageBar(s)}<p class="fine">${esc(coverageGuide())}</p>${coverageNotes(s)}<div class="withheld"><b>${pilot?(released()?'분석 주의':'시범 분석 주의'):'통합점수 산출 보류'}</b>${withheld}</div>`)+
@@ -1823,11 +2030,10 @@ function dotsPerDegree(records){
   if(records>=5)return 6;
   return 4;
 }
-// One red for every species so the pattern reads at a glance; the edge adapts to the basemap.
-const DOT_RED='#d7263d';
-const dotStyle=()=>basemap==='basic'
-  ? {color:'#7a0f1d',weight:.4,opacity:.55,fillColor:DOT_RED,fillOpacity:.8}
-  : {color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88};
+// One red for every species so the pattern reads at a glance. 2026-10-11 navy redesign: a lighter red that holds on the navy
+// map, and the light rim on every basemap (the outline fallback is navy too now).
+const DOT_RED='#ff6464';
+const dotStyle=()=>({color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88});
 // Smaller schematic marks reveal the grid pattern; zoom caps and cell click areas stay independent.
 function dotRadius(spacingDeg){
   const z=map.getZoom(), pxPerDeg=256*2**z/360;
@@ -1870,21 +2076,23 @@ function cellBubbles(cells,zoom){
   }
   return [...groups.values()].map(g=>({...g,lat:g.lat/g.cells.length,lon:g.lon/g.cells.length}));
 }
-// Species-level pilot BBVI beside the red dots (team-lead request 2026-10-03). It is the same number on every cell of the
-// species, labelled as such: a species value, not this sea area's value. The single-paper label travels with it.
+// Species-level pilot BBVI with its single-paper label, for the bubble tooltip: a species value, not this sea area's value.
+// From 2026-10-03 (PR #122) it was also a tag on every cell; on 2026-10-13 (design 2) one map chip took their place (setMapChip).
 function bbviTagText(s){
   const v=s?pilotScore(s,'BBVI'):null;
   return v===null?'BBVI 미산출':'BBVI '+v.toFixed(1)+(bbviLabel(s)?' · '+bbviLabel(s):'');
 }
 function zoomIntoCells(bounds){
   const z=Math.max(BUBBLE_MAX_ZOOM+1,Math.min(map.getMaxZoom(),map.getBoundsZoom(bounds)));
-  map.setView(L.latLngBounds(bounds).getCenter(),z);
+  // Same zoom as before; only the centre shifts so the cells land in the middle of the map the floating panels leave free.
+  const i=mapInsets(), target=L.latLngBounds(bounds).getCenter();
+  map.setView(i.left===i.right?target:map.unproject(map.project(target,z).subtract([(i.left-i.right)/2,0]),z),z);
 }
 function drawBubble(b){
   const n=b.cells.length, band=dotsPerDegree(b.records/n), size=b.cells[0][2];
   const r=Math.min(30,9+5*Math.sqrt(n));
   const bounds=b.cells.flatMap(([lat0,lon0,s])=>[[lat0,lon0],[lat0+s,lon0+s]]);
-  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:basemap==='basic'?'#7a0f1d':'#ffffff',weight:1.5,opacity:.9,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band]});
+  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#ff8d84',weight:2.2,opacity:1,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
   bubble._zoomMark=true;
   bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 ${released()?'값':'시범값'} · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 붉은 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
   bubble.on?.('click',()=>zoomIntoCells(bounds));
@@ -1892,18 +2100,22 @@ function drawBubble(b){
   const count=L.marker([b.lat,b.lon],{interactive:false,keyboard:false,icon:L.divIcon({className:'bubble-count',html:String(n),iconSize:[40,20]})});
   count._zoomMark=true;count.addTo(overlay);
 }
-function drawBbviTag([lat0,lon0,size]){
-  const tag=L.marker([lat0+size*.92,lon0+size/2],{interactive:false,keyboard:false,icon:L.divIcon({className:'bbvi-tag'+(pilotScore(occurrenceSpecies,'BBVI')===null?' held':''),html:esc(bbviTagText(occurrenceSpecies)),iconSize:null})});
-  tag._zoomMark=true;tag.addTo(overlay);
+// 2026-10-13 design 2: the legend's first line names what the map shows at this zoom, bubbles or dots. Species with cells only:
+// the query-extent and candidate lines stay setMapLegend's and renderMap's.
+function setKeyLine(bubbles){
+  if(!occurrenceSpecies?.cells?.length)return;
+  const size=occurrenceSpecies.cells[0].sizeDeg||1;
+  $('key-bubble-mark').hidden=!bubbles;$('key-dot-mark').hidden=bubbles;
+  $('map-symbol-label').textContent=(bubbles?'버블 = 공개 셀 묶음 · 숫자 = 셀 수':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)`)+'\n실제 생물 발견 좌표 아님';
 }
 function drawOccurrence(){
   if(!map||!overlay)return;
   overlay.eachLayer(l=>{if(l._schematicDot||l._zoomMark)overlay.removeLayer(l);});
-  const bubbles=bubbleView();
+  const bubbles=bubbleView();setKeyLine(bubbles);
   // The cell frames carry the evidence popups; they come back with the dots so every cell stays clickable when zoomed in.
   for(const frame of cellLayers){if(bubbles)overlay.removeLayer(frame);else if(!overlay.hasLayer(frame))frame.addTo(overlay);}
   if(bubbles){for(const b of cellBubbles(dotCells,map.getZoom()))drawBubble(b);return;}
-  for(const c of dotCells){drawCellDots(...c);if(occurrenceSpecies)drawBbviTag(c);}
+  for(const c of dotCells)drawCellDots(...c);
 }
 // 2026-10-03 team-lead request: one glance per grid cell. Counts species by their species-level pilot values; a species can
 // sit in more than one group. Nothing here is a value measured in this cell or a sea-area score.
@@ -1935,18 +2147,49 @@ function cellPopupNotice(size){
   return `<br><small>붉은 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
 // Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
-// Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap.
-const cellFrame=()=>({color:basemap==='basic'?'#1f4e6b':'#ffffff',weight:1.2,opacity:basemap==='basic'?.75:.9,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:basemap==='basic'?.06:.1});
+// Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap (all navy since 2026-10-11:
+// a quieter light dash, so the frames do not outshine the dots).
+const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:.1});
 function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
-  document.querySelector('.map-symbol').hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`붉은 버블 = 기록 칸이 모인 해역 · 확대하면 ${size}° 칸별 붉은 점 (실제 발견 좌표 아님)`;
-  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸 위의 BBVI는 이 종 전체의 '+(released()?'값':'시범값')+'이며 그 해역의 값이 아닙니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
+  // 2026-10-13 design 2: two lines stay open, the mark and its label (bubbles or dots by zoom: setKeyLine) and the effort row;
+  // the bubble row, the note and the full text sit in 'ⓘ 범례'.
+  $('key-dot-mark').hidden=!!extentOnly;$('key-bubble-mark').hidden=true;
+  for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님`;
+  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
-function fitPad(p){const h=sel=>document.querySelector?.(sel)?.getBoundingClientRect().height||0;return {paddingTopLeft:[p,p+h('.map-ui-tl')],paddingBottomRight:[p,p+h('.map-ui-bl')]};}
+// From 1281px the species list and the detail float over the map (2026-10-11): their widths are added on each side.
+// Fit padding: the floating panels' widths plus the height of each map control box over the free part of the map, on the edge
+// it sits at (from 1281px the mode bar is at the bottom and the key sits under the species list, outside the free part).
+function fitPad(p){
+  const i=mapInsets(),m=document.getElementById?.('map')?.getBoundingClientRect?.(),edge={top:0,bottom:0};
+  for(let [sel,side] of [['.map-ui-tl','top'],['.map-ui-bl','bottom'],['#map-chip','top']]){
+    const b=document.querySelector?.(sel)?.getBoundingClientRect();if(!b?.height)continue;
+    if(m?.height){if(b.right<=m.left+i.left+1||b.left>=m.right-i.right-1)continue;side=b.top+b.height/2<m.top+m.height/2?'top':'bottom';}
+    // the summary chip sits below the mode bar from 741 to 1280px: keep fitted cells clear of its lower edge, not just its height
+    edge[side]=Math.max(edge[side],m?.height&&sel==='#map-chip'?(side==='top'?b.bottom-m.top:m.bottom-b.top):b.height);
+  }
+  return {paddingTopLeft:[p+i.left,p+edge.top],paddingBottomRight:[p+i.right,p+edge.bottom]};
+}
+// Width of the map each floating panel covers, in px; 0 for a panel beside the map (1201–1280px), below it or full width (phones).
+function mapInsets(){
+  const m=document.getElementById?.('map')?.getBoundingClientRect?.(),box=sel=>document.querySelector?.(sel)?.getBoundingClientRect?.();
+  if(!m?.width)return {left:0,right:0};
+  const side=b=>b&&b.width>0&&b.width<m.width/2&&b.right>m.left+1&&b.left<m.right-1?b:null, l=side(box('.species-pane')), r=side(box('#detail'));
+  return {left:l?Math.max(0,Math.round(l.right-m.left)):0,right:r?Math.max(0,Math.round(m.right-r.left)):0};
+}
+// 2026-10-13 design 2: one chip over the map names the selected species with its cells, records and years (the values of
+// #map-count, #map-cells and #map-years, written at the same places) in place of a BBVI tag on every cell. Display only.
+function setMapChip(s,text){
+  const chip=$('map-chip');if(!chip)return;
+  chip.hidden=!text;if(!text)return;
+  const t=s?matrixType(s):null;
+  chip.innerHTML=(s?`<i class="mc-dot${t?'':' none'}"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(s.label)}</b> `:'')+`<span>${esc(text)}</span>`;
+}
 function renderCellMap(s,color){
   occurrenceSpecies=s;dotCells=[];cellLayers=[]; // renderMap has cleared the overlay
   const degree=s.cells[0]?.sizeDeg||1;
@@ -1964,6 +2207,7 @@ function renderCellMap(s,color){
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:7,animate:false});}
   drawOccurrence();
   $('map-count').textContent=cellRecords(s).toLocaleString();$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=cellYears(s);
+  setMapChip(s,`기록 셀 ${spatialCells(s).length}개 · ${cellRecords(s).toLocaleString()}건 · ${cellYears(s)}`);
 }
 // The same cell evidence as the popups, as a table: reachable by keyboard and screen readers, and without the map.
 let cellLayers=[];
@@ -2006,7 +2250,8 @@ function renderPeriodFilter(s){
   box.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{periodFilter=b.dataset.period;renderMap();writeHash();}));
 }
 // B-1: survey-effort background (OBIS all-taxa records per 1° cell since 2000). No dots in a lightly surveyed sea can mean no survey.
-let effortData=null, effortLayer=null, effortOn=true;
+// Off on first open since the 2026-10-11 navy redesign (the 조사량 box in the legend turns it on); not kept in the link.
+let effortData=null, effortLayer=null, effortOn=false;
 const effortBand=n=>n>=10000?4:n>=1000?3:n>=100?2:1;
 function effortFor(lat0,lon0,size){
   if(!effortData)return null;
@@ -2021,8 +2266,7 @@ function drawEffort(){
   if(!effortLayer)effortLayer=L.layerGroup().addTo(map);
   effortLayer.clearLayers();
   if(!effortOn)return;
-  const ink=basemap==='basic'?'#35566f':'#ffffff';
-  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:ink,fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
+  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:'#ffffff',fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
 }
 // Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
 function cellCsv(s){
@@ -2034,7 +2278,7 @@ function cellCsv(s){
     return `"${safe.replace(/"/g,'""')}"`;
   };
   const head=['species_label','scientific_name','aphia_id','cell_south','cell_north','cell_west','cell_east','cell_deg','period','year_start','year_end','records','sites','sources','licenses','sea_areas','note'];
-  const note='공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 안 함';
+  const note='공개 집계 셀 · 실제 생물 발견 좌표 아님 · 해역별 판단 안 함';
   const rows=s.cells.map(c=>[s.label,s.name,s.aphiaID,c.lat0,c.lat0+c.sizeDeg,c.lon0,c.lon0+c.sizeDeg,c.sizeDeg,c.period,c.yearStart,c.yearEnd,c.records,c.sites,(c.citations||[]).map(x=>x.title).join('; '),(c.licenses||[...new Set((c.citations||[]).flatMap(x=>x.licenses||[]))]).join('; '),(c.seaAreas||[]).join('; '),note+(c.historical?' · 2000년 이전 과거 기록':'')+(c.outsideKoreanEEZ?' · 한국·북한 EEZ 밖':'')]);
   return '﻿'+[head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
 }
@@ -2045,11 +2289,13 @@ function writeHash(){
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
   if(periodFilter!=='all')p.set('p',periodFilter);
   if(activeUses.size)p.set('u',[...activeUses].join(','));
+  if(weightOff())p.set('w',(weightStep(bbviWeight)/W_STEPS).toFixed(2)); // the official weight stays out of the link
   if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
   try{history.replaceState(null,'','#'+p.toString());}catch{}
 }
 function applyHash(h){
   const s=data?.species.find(x=>x.aphiaID===Number(h.s));
+  if('w' in h)setBbviStep(hashWeightStep(h.w));
   if(h.u)setUses(h.u.split(',')); // before the species, so the linked species wins; a chip without evidence stays off
   if(s)selectSpecies(s.aphiaID);
   if(h.p&&selected?.cells.some(c=>c.period===h.p)){periodFilter=h.p;renderMap();}
@@ -2082,9 +2328,10 @@ function valueCellGroups(all=false){
 }
 // Figure 5 legend colours. A cell with several typed species takes the first type in the report's precedence.
 const matrixTypeColour={baseline_survey:'#3f7fcf',sustainable_use:'#2f9a57',conservation_priority:'#d7392f',alternative_production:'#f2b233'};
+const TYPE_SHORT={conservation_priority:'보전',alternative_production:'대체',baseline_survey:'조사',sustainable_use:'활용'};
 // Selected-species outline and the card-hover outline share the hover yellow; hover is dashed so a hovered
 // species stays apart from the selected one. Change the colour or weight here only.
-const SELECTED_OUTLINE=()=>({color:basemap==='basic'?'#102e45':'#ffd166',dashArray:null,opacity:1});
+const SELECTED_OUTLINE=()=>({color:'#ffd166',dashArray:null,opacity:1}); // every basemap is dark navy since 2026-10-11
 const HOVER_OUTLINE={color:'#ffd166',weight:4,dashArray:'6 4',opacity:1};
 const CELL_FILL=.48;  // the map's cell fill; the legend swatches use the same alpha so both read alike
 function cellMatrixType(g){
@@ -2109,7 +2356,7 @@ const sufficiencyLayers={priority:false,unexplored:false};
 function valueSpeciesType(s){
   const t=matrixType(s),a=s.assessment,i=a?.information_sufficiency;
   const nationalOff=!t&&nationalMcui(s)&&pilotScore(s,'BBVI')!==null&&matrixRule()&&!matrixRule().include_national_mcui;
-  const type=t?`매트릭스 유형 <b>${esc(matrixTypeLabel(t))}</b> · BBVI ${pilotScore(s,'BBVI').toFixed(1)}(현재 가중치${bbviLabel(s)?' · '+esc(bbviLabel(s)):''}) × MCUI ${pilotScore(s,'MCUI').toFixed(1)}${separateMcui(s)?'('+mcuiBasisLabel(s)+')':''}`
+  const type=t?`매트릭스 유형 <b>${esc(matrixTypeLabel(t))}</b> · BBVI ${pilotScore(s,'BBVI').toFixed(1)}(현재 가중치${bbviLabel(s)?' · '+esc(bbviLabel(s)):''}${officialNote(s)?' · '+esc(officialNote(s)):''}) × MCUI ${pilotScore(s,'MCUI').toFixed(1)}${separateMcui(s)?'('+mcuiBasisLabel(s)+')':''}`
     :nationalOff?'매트릭스 유형 없음 · 국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외(두 값은 산출됨)'
     :'매트릭스 유형 없음 · BBVI·MCUI 한 쌍 미산출(낮은 가치라는 뜻이 아님)';
   // 3.4: the label has two reasons; only the sufficiency reason quotes the 50% cut
@@ -2126,8 +2373,15 @@ function valueCellStyle(g,active){
   const base=type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
       fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
     :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
-  // cells holding the selected species get a thick solid outline (yellow on the dark satellite/depth maps); the fill keeps the cell's own colour
+  // cells holding the selected species get a thick solid yellow outline; the fill keeps the cell's own colour
   return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:base;
+}
+// 2026-10-13 species view: the selected species' cells only, in its own type colour with a dashed border of the same colour.
+// Every drawn cell is the selected species', so no yellow outline; an untyped species keeps the held grey of the all-species map.
+function speciesCellStyle(type,active){
+  const c=matrixTypeColour[type];
+  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:active?.62:CELL_FILL}
+    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&separateMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
@@ -2175,9 +2429,9 @@ function valueSpeciesCard(s,records){
     (links?'<details><summary>지표 근거 원문과 이용조건</summary><ul>'+links+'</ul></details>':'<p class="fine">이 종에 연결된 지표 근거 원문은 아직 없습니다.</p>')+
     '<button type="button" class="text-button" data-value-species="'+esc(s.aphiaID)+'">종별 상세 근거 보기 →</button></div></details>';
 }
-function showValueCell(key){
+function showValueCell(key,all=false){
   selectedValueCell=key;
-  const group=valueCellGroups().get(key),panel=$('value-cell-detail');
+  const group=valueCellGroups(all).get(key),panel=$('value-cell-detail');
   if(!group){panel.innerHTML='<p>선택한 공개 격자가 현재 기간의 자료에 없습니다. 지도의 다른 격자를 선택하세요.</p>';return;}
   const species=[...group.species.values()].sort((a,b)=>a.label.localeCompare(b.label,'ko'));
   panel.innerHTML='<h3>선택한 공개 격자 · 종별 근거</h3><p>'+
@@ -2215,8 +2469,16 @@ function sufficiencyTip(g){
   return part('priority','priority_survey','우선 조사 대상')+part('unexplored','unexplored_candidate','미탐색 후보');
 }
 // Hovering or focusing a species card outlines the value-map cells that species is recorded in.
-let valueRects=[];
+let valueRects=[],hoverRects=[];
 function hoverSpecies(id){
+  // species view: the hovered species' cells as yellow dashed outlines over the selected species' colours, gone on leave
+  for(const l of hoverRects)overlay?.removeLayer(l);hoverRects=[];
+  if(ownView()){
+    if(!id||id===selected.aphiaID||!map)return;
+    for(const g of valueCellGroups(true).values())if(g.species.has(id))
+      hoverRects.push(L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{...HOVER_OUTLINE,fill:false,interactive:false}).addTo(overlay));
+    return;
+  }
   for(const [g,layer,active] of valueRects){
     const on=id&&g.species.has(id);
     layer.setStyle(on?HOVER_OUTLINE:valueCellStyle(g,active));
@@ -2226,7 +2488,12 @@ function hoverSpecies(id){
 // The map-corner 2×2 icon: hovering a type dims the other cells, clicking toggles that type in the filter (several at once).
 // Display only: types, colours and counts stay the legend's.
 const typeFilter=new Set();
+// 2026-10-13: two views of the value map. 'species' (the default each time the mode opens) colours only the selected species'
+// cells in its type colour; 'all' is the map from before, every species overlaid. Not in the link: t=value opens the species view.
+let valueView='species';
+const ownView=()=>mapMode==='value'&&valueView==='species'&&!!selected;
 function dimTypes(id){
+  if(ownView())return; // one colour on the species view; a type button switches to the all-species view
   for(const [g,layer,active] of valueRects){
     const base=valueCellStyle(g,active);
     layer.setStyle(id&&cellMatrixType(g).type!==id?{...base,opacity:.2,fillOpacity:.06}:base);
@@ -2234,23 +2501,27 @@ function dimTypes(id){
 }
 function setValueInfo(open){$('value-legend').hidden=!open;$('value-info').setAttribute('aria-expanded',String(open));}
 function renderValueMap(){
-  const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule();
+  const groups=valueCellGroups(),panel=$('value-cell-detail'),rule=matrixRule(),own=ownView();
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
-  $('map-source').textContent='활용 × 보전 · GBIF 공개 격자';
+  $('map-source').textContent=own?'활용 × 보전 · 선택 종 · GBIF 공개 격자':'활용 × 보전 · GBIF 공개 격자';
   const cut=data.assessmentInfo?.method?.unexplored_threshold;
   $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
-  if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
-  if(typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
-  renderValueLegend(groups);
+  if(own){const t=matrixType(selected);
+    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:'유형 없음(BBVI·MCUI 한 쌍 미산출) · 회색으로 칠했습니다.')+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
+  else if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
+  if(!own&&typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
+  renderValueLegend(groups,own);
   const layerCounts=sufficiencyCounts(groups);
   $('layer-priority-count').textContent=`${layerCounts.priority.n}종 · 지도 표시 ${layerCounts.priority.shown}종`;
   $('layer-unexplored-count').textContent=`${layerCounts.unexplored.n}종 · 지도 표시 ${layerCounts.unexplored.shown}종`;
   const noCell=[['우선 조사 대상',layerCounts.priority],['미탐색 후보',layerCounts.unexplored]].filter(([,c])=>c.missing.length);
   $('layer-nocell').textContent=noCell.map(([name,c])=>`${name} 중 공개 출현 셀이 없어 지도에 표시되지 않는 종 ${c.missing.length}종: ${c.missing.join(', ')}`).join(' · ')+
     (noCell.length?'. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다.':'');
+  if(own)return renderSpeciesValueMap();
   $('map-count').textContent='—';$('map-cells').textContent=String(groups.size);$('map-years').textContent='—';
+  setMapChip(null,`모든 종 겹쳐 보기 · 공개 격자 ${groups.size}곳`+(selected?` · ${selected.label} 셀 ${[...groups.values()].filter(g=>g.species.has(selected.aphiaID)).length}개(노란 실선)`:''));
   if(!groups.size)panel.innerHTML=activeUses.size?'<h3>조건을 모두 만족하는 종의 격자 없음</h3><p>선택한 활용 특성을 모두 가진 종이 없습니다. 종 목록에서 마지막 항목을 끄거나 전체 해제하세요.</p>'
     :'<h3>공개 격자 없음</h3><p>이 자료와 기간에는 공개된 출현 격자가 없어 종을 해역에 연결할 수 없습니다. 종 목록에서 개별 근거를 확인하세요.</p>';
   else{
@@ -2290,40 +2561,92 @@ function renderValueMap(){
       {...fitPad(35),maxZoom:7,animate:false});
   }
 }
-// The map sits under the floating legend (#map is its own stacking context, so z-index cannot lift a tooltip over it):
-// open the tooltip on the side that leaves the most of it inside the map and outside the legend.
+// The species view: the selected species' cells (period filter only; the use chips select species, not cells) in its type
+// colour. The panel opens on its first cell and lists every species there; the flags and the outside candidates stay as in
+// the all-species view.
+function renderSpeciesValueMap(){
+  const s=selected,id=s.aphiaID,pv=periodView(s),t=matrixType(s),panel=$('value-cell-detail');
+  const mine=new Map([...valueCellGroups(true)].filter(([,g])=>g.species.has(id))),n=spatialCells(pv).length;
+  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:'유형 없음(BBVI·MCUI 한 쌍 미산출)';
+  $('map-count').textContent=n?cellRecords(pv).toLocaleString():'—';$('map-cells').textContent=String(n);$('map-years').textContent=n?cellYears(pv):'—';
+  setMapChip(s,n?`기록 셀 ${n}개 · ${cellRecords(pv).toLocaleString()}건 · ${cellYears(pv)}`:'공개 셀 없음 · '+verdict);
+  if(!mine.size)panel.innerHTML='<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 지도에 칠할 셀이 없습니다. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다. ‘모든 종 겹쳐 보기’에서 다른 종의 격자를 볼 수 있습니다.</p>';
+  else{if(!mine.has(selectedValueCell))selectedValueCell=mine.keys().next().value;showValueCell(selectedValueCell,true);}
+  if(!map)return;
+  for(const [key,g] of valueCellOrder(mine)){
+    const active=key===selectedValueCell,cellType=cellMatrixType(g).type,k=g.records.get(id);
+    const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],speciesCellStyle(t,active)).addTo(overlay);
+    valueRects.push([g,layer,active]);
+    const flags=sufficiencyTip(g).replace(/^ · /,'');
+    layer.bindTooltip(cellRange(g)+' · 공개 '+g.size+'° 격자<br><b>'+esc(s.label)+(Number.isFinite(k)?' 기록 '+k.toLocaleString()+'건':'')+'</b> · '+esc(verdict)+
+      '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 없음')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
+    layer.on('tooltipopen',({tooltip:x})=>placeTip(x));
+    drawSufficiency(g);
+    layer.on('click',()=>{showValueCell(key,true);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+  }
+  if(sufficiencyLayers.unexplored&&!activeUses.size)for(const g of outsideCells().values()){
+    const names=[...g.species.values()].map(outsideLabel);
+    L.circleMarker(cellCentre(g),{color:'#6b3fa0',fillColor:'#efe6fa',radius:5,weight:2,dashArray:'2 2',fillOpacity:.9})
+      .bindTooltip(`미탐색 후보(30종 밖) ${names.length}종 · ${esc(names.join(', '))} · 점수 없음, 근연종 BBVI를 옮기지 않음`).addTo(overlay);
+  }
+  renderOutsideList();
+  if(lastFitted!=='value:'+id){
+    lastFitted='value:'+id;
+    if(mine.size)map.fitBounds([...mine.values()].flatMap(g=>[[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]]),{...fitPad(35),maxZoom:7,animate:false});else fitMap();
+  }
+}
+// The map sits under the floating legend and mode bar (#map is its own stacking context, so z-index cannot lift a tooltip over
+// them): open the tooltip on the side that leaves the most of it inside the map and outside those boxes.
 function placeTip(t){
-  const legend=document.querySelector('.map-ui-bl')?.getBoundingClientRect(),frame=map.getContainer().getBoundingClientRect();
+  const boxes=['.map-ui-bl','.map-ui-tl','#map-chip'].map(s=>document.querySelector(s)?.getBoundingClientRect()).filter(b=>b?.width),m=map.getContainer().getBoundingClientRect(),i=mapInsets();
+  const frame={left:m.left+i.left,right:m.right-i.right,top:m.top,bottom:m.bottom}; // the floating panels hide the map's sides
   const cut=(a,b)=>({left:Math.max(a.left,b.left),right:Math.min(a.right,b.right),top:Math.max(a.top,b.top),bottom:Math.min(a.bottom,b.bottom)});
   const area=r=>Math.max(0,r.right-r.left)*Math.max(0,r.bottom-r.top);
-  const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-(legend?area(cut(r,legend)):0);};
+  const seen=()=>{const r=cut(t.getElement().getBoundingClientRect(),frame);return area(r)-boxes.reduce((n,b)=>n+area(cut(r,b)),0);};
   let best=['auto',-1];
   for(const d of ['auto','right','left','top','bottom']){t.options.direction=d;t.update();const v=seen();if(v>best[1])best=[d,v];}
   t.options.direction=best[0];t.update();
 }
 // The 2×2 legend: report labels, the map's own colours and fill, and the cell count per type (sums to the public cells).
-function renderValueLegend(groups){
-  const rule=matrixRule(),tally={},alpha=Math.round(CELL_FILL*255).toString(16);
-  let none=0;for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)tally[t]=(tally[t]||0)+1;else none++;}
+function renderValueLegend(groups,own=false){
+  const rule=matrixRule(),tally={},alpha=Math.round(CELL_FILL*255).toString(16),mine=own?[...valueCellGroups(true).values()].filter(g=>g.species.has(selected.aphiaID)).length:0;
+  let none=0;
+  // the counts follow the colours drawn: the species view has one colour on its own cells, the all-species view one per cell
+  if(own){const t=matrixType(selected);if(t)tally[t]=mine;else none=mine;}
+  else for(const g of groups.values()){const t=cellMatrixType(g).type;if(t)tally[t]=(tally[t]||0)+1;else none++;}
+  const ownType=own?matrixType(selected):null;
   document.querySelectorAll('#value-legend [data-key]').forEach(el=>{
     const t=rule?.types?.[el.dataset.key],c=matrixTypeColour[t?.id];if(!t)return;
     el.querySelector('b').textContent=t.label;el.querySelector('em').textContent=(tally[t.id]||0)+'셀';
     el.style.background=c+alpha;el.style.borderColor=c;
-    // the map-corner icon takes the same label, colour and count
+    // the map-corner icon takes the same label, colour and count (short name above the count; the count keeps its own span)
     const mini=document.querySelector(`.vm-grid [data-key="${el.dataset.key}"]`);
-    mini.textContent=tally[t.id]||0;mini.dataset.type=t.id;mini.dataset.tip=t.label;
-    mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 이 유형만 보기`;
+    mini.innerHTML=`<span class="vm-name" aria-hidden="true">${esc(TYPE_SHORT[t.id]||'')}</span><span class="vm-n">${tally[t.id]||0}</span>`;mini.dataset.type=t.id;mini.dataset.tip=t.label;
+    mini.ariaLabel=`${t.label} ${tally[t.id]||0}셀 · 누르면 `+(own?'모든 종 겹쳐 보기에서 ':'')+'이 유형만 보기';
     mini.style.background=c+alpha;mini.style.borderColor=c;
+    mini.classList.toggle('vm-own',own&&ownType===t.id);mini.classList.toggle('vm-zero',own&&ownType!==t.id);
+    mini.setAttribute('aria-pressed',String(!own&&typeFilter.has(t.id)));
   });
   $('v-none-count').textContent=none+'셀';
   // Name the selected species and draw the swatch in the map's own outline colour, so the outline explains itself.
   const n=selected?[...groups.values()].filter(g=>g.species.has(selected.aphiaID)).length:0;
   $('v-selected-name').textContent=selected?` · 지금: ${selected.label} ${n}셀`:'';
-  document.querySelector('#value-legend .v-selected').style.borderColor=SELECTED_OUTLINE().color;
+  const sw=document.querySelector('#value-legend .v-selected');
+  sw.style.borderColor=own?matrixTypeColour[ownType]||'#657588':SELECTED_OUTLINE().color;sw.style.borderStyle=own?'dashed':'';
+  $('v-selected-all').hidden=own;$('v-selected-species').hidden=!own;
+  // the one-line key under the species list: what the cell colour is in this view, and the switch between the views
+  const key=$('value-key-swatch'),c=matrixTypeColour[ownType];
+  // all-species view: the four type colours as the corner icon lays them out, in the selected species' yellow outline
+  const quad=['high_bbvi_high_mcui','high_bbvi_low_mcui','low_bbvi_low_mcui','low_bbvi_high_mcui'].map((k,i)=>`${matrixTypeColour[rule?.types?.[k]?.id]||'#b7c0ca'}${alpha} ${i*25}% ${i*25+25}%`).join(',');
+  key.className='vk-swatch'+(own?(c?'':' none'):' all');key.style.background=own?(c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
+  $('value-key-text').innerHTML=!own?'셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형 · 노란 실선 = 선택 종'
+    :ownType?`셀 색 = ${esc(selected.label)}의 유형 ${verdictWord(ownType)} <span class="vk-type">(${esc(matrixTypeLabel(ownType))})</span>`
+    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(BBVI·MCUI 한 쌍 미산출)</span>`;
+  $('value-view').setAttribute('aria-pressed',String(!own));
   if(!rule)return;
   $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
   $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
-  $('v-rule-line').textContent=colourRuleLine();
+  $('v-rule-line').textContent=own?'셀 색 = 선택 종의 유형(종 단위, 셀 값 아님)':colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
 function renderTypeTable(){
@@ -2331,7 +2654,7 @@ function renderTypeTable(){
   if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
   const key=id=>Object.keys(rule.types).find(k=>rule.types[k].id===id),cmp=(id,i)=>key(id).split('_')[i]==='high'?'≥':'<';
   const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd)=>`<i class="type-swatch" style="background:${bg};border-color:${bd}"></i>`;
-  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td>${esc(matrixTypeLabel(id))}</td>`+
+  body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td><b>${esc(matrixTypePlain(id))}</b> · ${esc(matrixTypeLabel(id))}</td>`+
     `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
     `<td>우선순위 ${i+1}위${i?'':' · 이 유형 종이 하나라도 있으면 이 색'}</td></tr>`).join('')+
     `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>유형 없음</td><td>BBVI·MCUI 한 쌍 미산출</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
@@ -2347,9 +2670,11 @@ function renderOutsideList(){
 function setMapMode(mode){
   if(!['occurrence','value'].includes(mode))return;
   mapMode=mode;lastFitted=null;
+  if(mode==='value'){valueView='species';typeFilter.clear();} // 2026-10-13: the value mode opens on the selected species' cells
   document.querySelectorAll('[data-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapMode===mode)));
   $('occurrence-legend').hidden=mode==='value';$('value-mini').hidden=mode!=='value';setValueInfo(false);
-  document.querySelector('.map-ui-bl').hidden=mode==='value'; // only the occurrence legend and its fold button live there
+  // the legend box stays in both modes: the occurrence key with its fold button, or the one-line value key with the view switch
+  $('legend-toggle').hidden=mode==='value';$('value-key').hidden=mode!=='value';
   $('value-cell-detail').hidden=mode!=='value';
   $('effort-toggle').disabled=mode==='value';
   renderMap();writeHash();
@@ -2359,6 +2684,7 @@ function setMapMode(mode){
 function renderMapSelected(s){
   const where=s.catalog&&s.cells.length?s.status+' · 현재 분포 아님':s.status;
   $('map-selected').innerHTML=`<b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span> <span>${esc(scoreSummary(s))} · ${esc(where)}</span>`;
+  sheetSummary(s);
 }
 function renderMap() {
   if(selected)renderMapSelected(selected);
@@ -2378,30 +2704,34 @@ function renderMap() {
   if(s.cells.length)return renderCellMap(periodView(s),color);
   // verified-pilot-3.2: the type line replaces the old 'both withheld' wording, which no longer holds once a candidate is typed
   if(s.catalog){if(matrixRule())mapJudgmentStatus(s);else $('map-judgment').textContent=(pilotScore(s,'MBPI')!==null?'종별 '+P_()+'MBPI만 산출 · BBVI·MCUI와 해역 판단 보류 · ':'종별 점수와 해역 판단 모두 보류 · ')+(s.review?'공개 가능한 출현기록 없음':'출현 '+releaseMissing(s));$('map-review-note').textContent=s.review?`${reviewLine(s.review)}. 제외 사유: ${withheldLine(s.review)}. 셀이 없는 것은 종 부재나 전체 분포를 뜻하지 않습니다.`:'출현 검수 파일을 확인하지 못해 셀을 표시하지 않습니다. 종 부재가 아닙니다.';
-    $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';return;}
+    $('map-count').textContent='—';$('map-cells').textContent='0';$('map-years').textContent='—';setMapChip(s,'공개 셀 없음');return;}
   mapJudgmentStatus(s);
   $('map-review-note').textContent='테두리는 자료를 조회한 범위(124–132°E · 33–38.7°N)입니다. 이 종의 출현 위치나 분포를 뜻하지 않습니다.';
-  L.rectangle(studyBounds,{color:basemap==='basic'?'#267bab':'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
+  L.rectangle(studyBounds,{color:'#ffd166',weight:2,dashArray:'10 7',fillColor:'#267bab',fillOpacity:.07})
     .addTo(overlay).bindPopup(`<strong>${esc(s.label)} · 자료 조회 범위</strong><br>124–132°E · 33–38.7°N<br><small>출현 위치나 분포 범위가 아닙니다.</small>`);
-  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(studyBounds,{padding:[30,30],animate:false});}
-  $('map-count').textContent='0';$('map-cells').textContent='0';$('map-years').textContent='—';
+  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;const i=mapInsets();map.fitBounds(studyBounds,{paddingTopLeft:[30+i.left,30],paddingBottomRight:[30+i.right,30],animate:false});}
+  $('map-count').textContent='0';$('map-cells').textContent='0';$('map-years').textContent='—';setMapChip(s,'공개 셀 없음');
 }
 
-function fitMap(){if(map)map.fitBounds([[30,122],[43,136]],{padding:[8,8]});}
+function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43,136]],{paddingTopLeft:[8+i.left,8],paddingBottomRight:[8+i.right,8]});}
+// Evidence popups pan into the part of the map the floating panels leave free (read by Leaflet each time a popup opens).
+function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,10);}
 
-// Background maps: satellite (NASA GIBS Blue Marble, the default) and depth (GEBCO WMS).
+// Background maps: satellite (NASA GIBS Blue Marble with shaded relief and bathymetry, the default) and depth (GEBCO WMS).
+// 2026-10-11 design concept: the relief and the shelf/deep-sea shading of that Blue Marble read through the navy tint (theme.css).
 // basic (bundled Natural Earth 1:10m outline) has had no button since 2026-10-03: the map falls back to it, and says so, only when external tiles fail to load.
 let basemapLayers, lastFitted;
 function initBasemaps(geography){
   map.createPane('basePane').style.zIndex=250; // above tiles, below cells
-  const land=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fillColor:'#f3f7f6',color:'#acc1ca',weight:1,fillOpacity:1}});
-  const outline=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fill:false,color:'#ffffff',weight:.8,opacity:.55}});
+  // 2026-10-11 navy redesign: the outline fallback is navy sea (the #map background) with blue-grey land.
+  const land=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fillColor:'#263d47',color:'#4d6b79',weight:1,fillOpacity:1}});
+  const outline=L.geoJSON(geography,{pane:'basePane',interactive:false,style:{fill:false,color:'#d8e6ee',weight:.8,opacity:.5}});
   const grid=L.layerGroup();
-  for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#adc9d6',weight:.5,opacity:.55,interactive:false}).addTo(grid);
-  for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#adc9d6',weight:.5,opacity:.55,interactive:false}).addTo(grid);
+  for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
+  for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
   // Offline demo (live-data.js): the same imagery saved beforehand as tiles under offline-tiles/ (scripts/offline/prepare-offline.ps1).
   const offline=globalThis.BBVM_OFFLINE===true;
-  const satellite=L.tileLayer(offline?'offline-tiles/satellite/{z}/{y}/{x}.jpeg':'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_NextGeneration/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
+  const satellite=L.tileLayer(offline?'offline-tiles/satellite/{z}/{y}/{x}.jpeg':'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
     {maxNativeZoom:8,maxZoom:8,attribution:'NASA GIBS · Blue Marble'});
   const depth=offline?L.tileLayer('offline-tiles/depth/{z}/{x}/{y}.png',{maxNativeZoom:8,maxZoom:8,attribution:'GEBCO_2026 Grid · 항해용 아님'})
     :L.tileLayer.wms('https://wms.gebco.net/mapserv?',{layers:'gebco_latest',format:'image/png',version:'1.3.0',
@@ -2422,15 +2752,21 @@ function setBasemap(name,failed=false){
   for(const l of basemapLayers[name])l.addTo(map);
   basemap=name;
   $('map').classList.toggle('map-dark',name!=='basic');
+  $('map').dataset.tiles=name; // theme.css tints the tiles per basemap (satellite toward navy; depth only darker, no hue shift)
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
-  $('basemap-status').textContent=!failed?'':globalThis.BBVM_OFFLINE===true?'오프라인 시연: 저장된 배경 지도가 없어 경계선만 있는 지도로 바꿨습니다.':'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.';
+  const warn=!failed?'':globalThis.BBVM_OFFLINE===true?'오프라인 시연: 저장된 배경 지도가 없어 경계선만 있는 지도로 바꿨습니다.':'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.';
+  // the fallback note is a small ⚠ beside 위성·수심 (tooltip and label carry the sentence); #basemap-status keeps the text for checks
+  $('basemap-status').textContent=warn;$('basemap-status').classList.toggle('fallback',failed);
+  $('basemap-warn').hidden=!failed;$('basemap-warn').title=warn;$('basemap-warn').setAttribute('aria-label',warn||'배경 지도 상태');
   try{if(!failed)localStorage.setItem('basemap',name);}catch{}
   renderMap();writeHash();
 }
 
 function initMap(geography){
   prepareLandMask(geography);
-  map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
+  const still=!!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches; // no zoom or fade animation then
+  map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7,zoomAnimation:!still,fadeAnimation:!still,markerZoomAnimation:!still});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
+  syncPopupPad();map.on('resize',syncPopupPad);
   initBasemaps(geography);
   const labels=[['대한민국',36.4,127.4],['북한',40.1,126.6],['일본',35.5,136.8],['중국',39,119.5]];
   for(const [name,lat,lon] of labels)L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:name,iconSize:[70,20],iconAnchor:[25,10]})}).addTo(map);
@@ -2446,7 +2782,7 @@ function initMap(geography){
 }
 
 function renderComparison(){
-  const compared=data.species, keep=$('comparison').scrollLeft;
+  const compared=cmpSorted(), keep=$('comparison').scrollLeft, keepTop=$('comparison').scrollTop;
   const pending=t=>`<span class="pending">${t}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
@@ -2471,58 +2807,119 @@ function renderComparison(){
       (mcuiRef?`<small>${esc(mcuiRef)}</small>`:'')+
       (s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
   };
-  const entries=[['학명·식별자',s=>`WoRMS 확인<small>AphiaID ${s.aphiaID}</small>`],
-    ['출현기록',s=>`<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">`+occurrenceCell(s)+'<small>지도·셀 목록 보기</small></button>'],
-  ];
   function occurrenceCell(s){return s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · ${s.info?.map?.source||'GBIF CC0·CC BY'}${flaggedRecords(s,'historical')?` · 2000년 이전 ${flaggedRecords(s,'historical')}건`:''}</small>`:s.catalog?pending(s.review?`${reviewLine(s.review)} · 공개 셀 없음`:releaseMissing(s)):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · 조사 범위 표시<small>${years(s)} · 조회·선별된 자료</small>`;}
-  entries.push(
-    ['식량 근거 · MFPI',s=>axisCell(s,'MFPI')||(s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'))],
-    ['생리활성 · MBPI',s=>axisCell(s,'MBPI')||v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인')],
-    ['보전 평가 · MCUI',s=>axisCell(s,'MCUI')||(s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''))],
-    ['자료 연결 현황',s=>`<span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}<small>발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed')?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님</small>`],
-    ['통합점수 · BBVI',s=>axisCell(s,'BBVI')||'<strong>산출 보류</strong>']);
-  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 자료 연결 현황</caption><thead><tr><th scope="col">확인 항목</th>${compared.map(s=>`<th scope="col">${esc(s.label)}<small>${esc(s.name)}</small></th>`).join('')}</tr></thead><tbody>${entries.map(([title,cell])=>`<tr><th scope="row">${title}</th>${compared.map(s=>`<td>${cell(s)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const fallback={
+    MFPI:s=>s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
+    MBPI:s=>v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
+    MCUI:s=>s.catalog&&s.audit?.iucn?.record?.category?pending('IUCN 체크리스트 '+s.audit.iucn.record.category+' · 점수 보류'):v2(s,({conservation:k={}})=>pending({withheld_insufficient_evidence:'근거 부족으로 보류',not_reviewed:'미검토'}[k.status]||'정보 없음'),IUCN_HISTORICAL[s.aphiaID]?'산출 보류':'평가 미조회')+(IUCN_HISTORICAL[s.aphiaID]?`<small>IUCN ${IUCN_HISTORICAL[s.aphiaID].category} · ${IUCN_HISTORICAL[s.aphiaID].published}년 발표 · 역사적 평가 · 현행 평가 확인 보류</small>`:''),
+    BBVI:()=>'<strong>산출 보류</strong>'};
+  const titles={MFPI:'식량 근거 · MFPI',MBPI:'생리활성 · MBPI',BBVI:'통합점수 · BBVI',MCUI:'보전 평가 · MCUI'};
+  const rule=matrixRule(), cut={BBVI:rule?.bbvi_threshold,MCUI:rule?.mcui_threshold};
+  // the compact cell: the same button (attributes and aria-label) with the number and a bar; the full button goes to 자세히
+  const valueCell=(s,key)=>{
+    const full=axisCell(s,key);if(!full)return {main:fallback[key](s),more:''};
+    const m=full.match(/^<button([^>]*)>([^<]*)<small>/);if(!m)return {main:full,more:''};
+    const v=pilotScore(s,key);
+    const bar=v!==null?`<span class="cv-bar" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
+    const off=key==='BBVI'?officialNote(s):'';
+    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
+      more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
+  };
+  // 4.10: the secondary MBPI-Rx, a number and a bar (no evidence button: its line and reason sit under the detail's MBPI);
+  // '–' when the species has none. Its sort key keeps those rows last in both directions.
+  const rxCell=s=>{const r=mbpiRxOf(s);return r&&r.value!==null?`<span class="cv rx-cv"><span class="cv-num">${r.value.toFixed(1)}</span><span class="cv-bar" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,r.value))}%"></i></span></span>`
+    :'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">없음</span></span>';};
+  const rxMore=s=>{const r=mbpiRxOf(s),v=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI_RX;if(!r)return null;
+    const check=['passed','failed'].includes(v?.result)?` · 사후 검증 ${v.result==='passed'?'통과':'기준 미충족'}(탐색적 재검토)`:'';
+    return r.value===null?`없음<small>${esc(r.reason)}${check} · 점수 아님</small>`:`${r.value.toFixed(1)}<small>${esc(r.stratum.short)}${check} · MBPI·BBVI에 쓰지 않음</small>`;};
+  const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
+  const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'▲':'▼'):'↕'}</i></button></th>`;};
+  const coverageNote=`발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed'&&!v.exploratory)?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님`;
+  const row=s=>{
+    const id=s.aphiaID, cells=Object.fromEntries(['MFPI','MBPI','BBVI','MCUI'].map(k=>[k,valueCell(s,k)])), occ=occurrenceCell(s), open=cmpOpen.has(id), rx=rxMore(s);
+    const occShort=s.cells.length?cellCountLabel(s):occ.includes('<small>')&&!occ.startsWith('<span')?occ.slice(0,occ.indexOf('<small>')):occ;
+    const more=[['학명·식별자',`WoRMS 확인<small>${esc(s.name)} · AphiaID ${id}</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')],['출현기록',occ],
+      ...['MFPI','MBPI','BBVI','MCUI'].flatMap(k=>[...cells[k].more?[[titles[k],cells[k].more]]:[],...k==='MBPI'&&rx?[['의약 후보 MBPI · 보조, 탐색적',rx]]:[]]),['자료 연결 현황',`<small>${coverageNote}</small>`]];
+    return `<tr class="cmp-row" data-aphia="${id}"><th scope="row"><b>${esc(s.label)}</b><small>${esc(s.name)}</small></th><td>${typeChip(s)}</td>`+
+      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val">${cells[k].main}</td>`+(k==='MBPI'?`<td class="cmp-val cmp-rx">${rxCell(s)}</td>`:'')).join('')+
+      `<td class="cmp-ev">${evidenceChips(s)}</td><td class="cmp-occ"><button class="score-cell" data-score-aphia="${id}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">${occShort}<small>지도·셀 목록 보기</small></button></td>`+
+      `<td class="cmp-cov"><span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}</td>`+
+      `<td><button type="button" class="cmp-more-btn" aria-expanded="${open}" aria-controls="cmp-more-${id}" aria-label="${esc(s.label)} 자세히">자세히</button></td></tr>`+
+      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="11"><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></td></tr>`;
+  };
+  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 자료 연결 현황 · 정렬: ${cmpSortLabel()}</caption>`+
+    `<thead><tr>${sortTh('name','종')}<th scope="col">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>보조·탐색적</small>')}${sortTh('BBVI','BBVI<small>통합</small>')}${sortTh('MCUI','MCUI<small>보전</small>')}<th scope="col">근거 수준</th><th scope="col">출현기록</th><th scope="col">자료 연결 현황</th><th scope="col"><span class="sr-only">자세히</span></th></tr></thead>`+
+    `<tbody>${compared.map(row).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
-  $('comparison').scrollLeft=keep;syncComparison();
+  $('comparison').querySelectorAll('[data-more-aphia]').forEach(button=>button.addEventListener('click',()=>
+    openEvidence(Number(button.dataset.moreAphia),button.dataset.moreAxis)));
+  $('comparison').querySelectorAll('.cmp-more-btn').forEach(button=>button.addEventListener('click',()=>{
+    const id=Number(button.closest('tr').dataset.aphia),open=!cmpOpen.has(id);open?cmpOpen.add(id):cmpOpen.delete(id);
+    button.setAttribute('aria-expanded',String(open));$('cmp-more-'+id).hidden=!open;}));
+  $('comparison').querySelectorAll('.cmp-sort').forEach(button=>button.addEventListener('click',()=>{
+    const k=button.dataset.sort, first=k==='name'?'asc':'desc';
+    cmpSort=cmpSort.key!==k?{key:k,dir:first}:cmpSort.dir===first?{key:k,dir:first==='asc'?'desc':'asc'}:{key:null,dir:null};
+    renderComparison();$('comparison').querySelector(`[data-sort="${k}"]`)?.focus();}));
+  $('comparison').scrollLeft=keep;$('comparison').scrollTop=keepTop;if(typeof applyCompareFilter==='function')applyCompareFilter();syncComparison();
 }
-// The table holds every species and scrolls sideways. A species picked elsewhere (comparisonFocus) is brought next to the
-// sticky first column once the tab is visible; the label and buttons follow the columns actually on screen, measured
-// because column widths vary with their content. Hidden or layout-free: nothing to measure, so all N and both buttons off.
+// A species picked elsewhere (comparisonFocus) is scrolled into the table box and briefly highlighted once the tab is visible.
 function syncComparison(){
-  const c=$('comparison'),[corner,...heads]=c.querySelectorAll('thead th'),n=data.species.length,shown=c.clientWidth>0&&corner;
-  if(shown&&comparisonFocus){const th=heads[data.species.findIndex(s=>s.aphiaID===comparisonFocus)];if(th)c.scrollLeft+=th.getBoundingClientRect().left-corner.getBoundingClientRect().right;comparisonFocus=null;}
-  let first=1,last=n;
-  if(shown){
-    const from=corner.getBoundingClientRect().right-1,to=c.getBoundingClientRect().left+c.clientWidth+1;
-    const seen=heads.map((th,i)=>{const r=th.getBoundingClientRect(),mid=(r.left+r.right)/2;return mid>=from&&mid<=to?i+1:0;}).filter(Boolean);
-    if(seen.length){first=seen[0];last=seen.at(-1);}
+  const c=$('comparison'),shown=c.clientWidth>0;
+  if(shown&&comparisonFocus){
+    const tr=c.querySelector(`tr.cmp-row[data-aphia="${comparisonFocus}"]`),head=c.querySelector('thead');
+    if(tr&&head){c.scrollTop+=tr.getBoundingClientRect().top-head.getBoundingClientRect().bottom-4;tr.classList.remove('flash');void tr.offsetWidth;tr.classList.add('flash');}
+    comparisonFocus=null;
   }
-  $('comparison-page').textContent=`${first===last?first:first+'–'+last}종 / 총 ${n}종`;
-  $('comparison-prev').disabled=!shown||c.scrollLeft<=1;
-  $('comparison-next').disabled=!shown||c.scrollLeft+c.clientWidth>=c.scrollWidth-1;
+  $('comparison-page').textContent=`총 ${data.species.length}종 · 정렬: ${cmpSortLabel()}`;
 }
-// Prev/next move by one screen of species: the visible width minus the sticky first column.
-function scrollComparison(direction){
-  const c=$('comparison');c.scrollBy({left:direction*(c.clientWidth-(c.querySelector('thead th')?.offsetWidth||0)),behavior:'smooth'});
+// Design 05 (2026-10-10): one row per species, sortable columns. Value cells keep their evidence buttons (number + thin bar,
+// the full label in aria-label); every long line that used to sit in a cell moves, unchanged, to the row's "자세히" panel.
+let cmpSort={key:null,dir:null};const cmpOpen=new Set();
+const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',MBPI_RX:'MBPI-Rx',BBVI:'BBVI',MCUI:'MCUI'};
+const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${CMP_SORT_NAME[cmpSort.key]||cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
+function cmpSorted(){
+  const list=data.species.map((s,i)=>[s,i]);if(!cmpSort.key)return data.species.slice();
+  const k=cmpSort.key, sign=cmpSort.dir==='asc'?1:-1;
+  list.sort(([a,i],[b,j])=>{
+    if(k==='name')return sign*a.label.localeCompare(b.label,'ko')||i-j;
+    const val=s=>k==='MBPI_RX'?mbpiRxOf(s)?.value??null:pilotScore(s,k), x=val(a),y=val(b);
+    if(x===null||y===null)return (x===null)-(y===null)||i-j;  // values without a score (MBPI-Rx '–' too) stay last in both directions
+    return sign*(x-y)||i-j;});
+  return list.map(([s])=>s);
+}
+// the labels a species carries, one short chip each (never folded into one "단일 논문 vs 정식" switch)
+function evidenceChips(s){
+  const a=s.assessment||{}, chips=[];
+  if(pilotScore(s,'MFPI')!==null&&a.food_trace?.literature_moisture?.label)chips.push('MFPI '+a.food_trace.literature_moisture.label);
+  if(pilotScore(s,'MBPI')!==null){if(a.mbpi_label)chips.push('MBPI '+a.mbpi_label);const k=bestBio(a)?.stratum_kind;if(k==='xo')chips.push('MBPI XO 문헌 비교집단');if(k==='relaxed')chips.push('MBPI 완화 산출(d)');}
+  if(bbviLabel(s))chips.push('BBVI '+bbviLabel(s));
+  if(pilotScore(s,'MCUI')!==null&&separateMcui(s)){chips.push('MCUI '+mcuiBasisLabel(s).replace(/ 기반$/,''));if(mcuiBacktest(s))chips.push('MCUI '+mcuiBacktest(s));}
+  return chips.length?chips.map(c=>`<span class="ev-chip">${esc(c)}</span>`).join(''):'<span class="ev-chip none">추가 라벨 없음</span>';
 }
 // One open behaviour for every comparison button: occurrence opens the map and cell list, an index axis
 // opens its evidence. Collapsed parents are opened, and the return button restores the horizontal scroll and focus.
-function openEvidence(aphia,axis){
-  const returnScroll=$('comparison').scrollLeft;
+// from: a selector of the button outside the table that opened it (compare profile, side-by-side view); the return goes
+// back to that view and button. Without it the return restores the table as before.
+function openEvidence(aphia,axis,from=null){
+  const returnScroll=$('comparison').scrollLeft, returnTop=$('comparison').scrollTop, returnMode=cmpMode;
   if(axis==='OCC'){lastFitted=null;if(mapMode!=='occurrence')setMapMode('occurrence');}
   selectSpecies(aphia);setView('explore',false);
   const back=document.createElement('button');
-  back.type='button';back.className='text-button comparison-return';back.textContent='← 비교표로 돌아가기';
+  back.type='button';back.className='text-button comparison-return';back.textContent=from?'← 비교와 지표로 돌아가기':'← 비교표로 돌아가기';
   $('detail').prepend(back);
   back.addEventListener('click',()=>{
     setView('compare');
+    if(from){setCompareMode(returnMode);if(from.startsWith('#cmp-dialog-body')&&cmpBasket.length>1)openCompareDialog();const b=document.querySelector(from);b?.focus({preventScroll:true});b?.scrollIntoView({block:'center'});return;}
+    setCompareMode('table');
     const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
+    $('comparison').scrollTop=returnTop;
     cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
     $('comparison').scrollLeft=returnScroll;
   });
   const target=axis==='OCC'?($('cell-table').querySelector('details')||$('detail-map-summary')):$('detail').querySelector(`[data-axis="${axis}"]`);
   if(!target){back.focus();return;}
+  if(target.closest('.detail-fold.folded')){detailOpen=true;syncFolds();} // asked for this evidence: open '근거 자세히 보기'
   for(let d=target.closest('details');d;d=d.parentElement?.closest('details'))d.open=true;
   const focus=target.matches('details')?target.querySelector('summary'):target;
   if(!focus.matches('summary,button,a'))focus.tabIndex=-1;
@@ -2535,6 +2932,8 @@ function updateWeightControl(){
   const n=data.species.filter(s=>pilotScore(s,'BBVI')!==null).length;
   $('bbvi-weight').disabled=!n;
   $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · MFPI·MBPI와 BBVI의 독립 근거 조건을 모두 충족하면 조절됩니다';
+  document.querySelectorAll('[data-w-preset]').forEach(b=>b.disabled=!n);
+  syncWeightControl();
 }
 const matrixReasonLabel={food_row_not_species_specific:'종별 식품 원값 연결 필요',component_missing_in_source:'필수 영양 성분 결측',not_in_red_list:'공식 평가 없음(IUCN·국가 목록 확인)',assessment_lookup_failed:'IUCN 원평가 조회 필요',origin:'기원종',structure_id:'확정 구조',quantitative_endpoint:'정량 시험',comparable_cohort:'동일 조건 비교집단',species_link:'식품 행의 종 연결',raw_nutrition:'영양 원값',complete_raw_nutrition:'단백질·철·아연 원값',edible_fraction:'가식부 비율',aquaculture:'양식 근거',fixed_comparable_cohort:'고정 비교집단',comparable_nutrition_missing:'고정 비교집단의 종 행',requires_MFPI_and_MBPI:'MFPI·MBPI 둘 다 필요',mbpi_single_source:'MBPI 독립 원논문 부족',aquaculture_method_unverified:'양식 근거',category_not_numeric:'IUCN DD · 숫자 없음'};
 function matrixBlockerText(s){
@@ -2551,49 +2950,487 @@ function matrixBlockerText(s){
   return [...done,food,bio,cons,national].filter(Boolean).join(' / ');
 }
 function toggleSimulation(value){
-  simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);
+  closeClusterPop(false);simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);$('compare').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
-  $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다.${assessed.some(separateMcui)?' 네모 점은 '+[assessed.some(nationalMcui)?'한국 국가 평가':'',assessed.some(s=>substituteMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s))?'서식국 국가 평가':''].filter(Boolean).join('·')+' 기반 MCUI로, IUCN 기반과 같은 척도가 아닙니다.':''}${assessed.some(subNationalMcui)?' 보라색 점선 점은 지방(현·주) 목록 참고값으로, 국가 평가가 없는 종에만 쓰며 '+esc(assessed.find(subNationalMcui).assessment.mcui_substitute?.record?.backtest?.label||'')+'입니다.':''}${assessed.some(preliminaryMcui)?' 회색 점선 점은 자체 예비평가(Rapid LC) MCUI로, 점수가 되는 공식 범주가 어디에도 없는 종에만 쓰며 역검증 기준 미충족입니다.':''}${assessed.some(s=>bbviLabel(s)&&!s.assessment?.mbpi_floor)?' 속이 빈 점은 MBPI 최고 항목의 독립 근거가 1편뿐인 BBVI(근거 논문 1편)입니다.':''}${assessed.some(s=>s.assessment?.mbpi_floor)?' 회색 테두리의 빈 점은 MBPI 하한값(0, 효능 근거 미확인)이 들어간 BBVI입니다.':''} ${released()?'검증 결과'+validationNote().trim():'타당성 미검증'}.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
+  $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종 · BBVI와 MCUI가 모두 산출된 종만 표시합니다.${matrixRule()?' 점 색은 그 종의 유형 색이고, 같은 높이에 몰린 점은 위아래로 조금 비켜 놓은 뒤 짧은 선으로 실제 높이를 가리킵니다.':''}${assessed.some(s=>bbviLabel(s)&&!s.assessment?.mbpi_floor)?' 속이 빈 점은 MBPI 최고 항목의 독립 근거가 1편뿐인 BBVI(근거 논문 1편)입니다.':''}${assessed.some(s=>s.assessment?.mbpi_floor)?' 회색 점선 테두리의 빈 점은 MBPI 하한값(0, 효능 근거 미확인)이 들어간 BBVI입니다.':''}${assessed.some(separateMcui)?' MCUI 기반은 점 툴팁과 아래 유형별 목록에 적습니다.'+(n=>n?' '+n+' 기반 MCUI는 IUCN 기반과 같은 척도가 아닙니다.':'')([assessed.some(nationalMcui)?'한국 국가 평가':'',assessed.some(s=>substituteMcui(s)&&!subNationalMcui(s)&&!preliminaryMcui(s))?'서식국 국가 평가':''].filter(Boolean).join('·')):''}${assessed.some(subNationalMcui)?' 지방(현·주) 목록 참고값은 국가 평가가 없는 종에만 쓰며 '+esc(assessed.find(subNationalMcui).assessment.mcui_substitute?.record?.backtest?.label||'')+'입니다.':''}${assessed.some(preliminaryMcui)?' 자체 예비평가(Rapid LC) MCUI는 점수가 되는 공식 범주가 어디에도 없는 종에만 쓰며 역검증 기준 미충족입니다.':''} ${released()?'검증 결과'+validationNote().trim():'타당성 미검증'}.`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
   const kinds=data?` (운영 발행 ${unplaced.filter(s=>!s.catalog).length}종 · 조사 후보 ${unplaced.filter(s=>s.catalog).length}종)`:'';
   $('matrix-unplaced').innerHTML=unplaced.length?`<b>${matrixRule()?'매트릭스 미배치':'정보 부족 · 후속조사 대상'} ${unplaced.length}종${kinds}${matrixRule()?' (BBVI·MCUI 한 쌍 없음)':''}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.${matrixRule()?' 정보충분도 기준의 ‘우선 조사 대상’과는 다른 목록입니다.':''} 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
-  $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{showDecision(data.species.find(s=>s.aphiaID===Number(b.dataset.aphia)));$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
+  const count=$('cmp-types-count');if(count)count.textContent=value?'가상 예시를 보는 동안 비워 둡니다':`${assessed.length}종 배치${unplaced.length?` · 미배치 ${unplaced.length}종`:''} · 사분면 색 기준`;
   const points=[['A',24,74,'보전 우선·모니터링'],['B',77,76,'대체생산·배양 연구'],['C',25,25,'기초조사·관찰 대상'],['D',77,25,'지속가능 활용 후보']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map(s=>{const kind=separateMcui(s)?' · MCUI '+mcuiBasisLabel(s):'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
     const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'';
-    return `<button class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
+    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" data-type="${type||''}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
-    if(!value){showDecision(assessed[i]);$('decision-detail').scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+    if(!value){pickCompare(assessed[i].aphiaID);return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
   }));
+  renderMatrixTypes(value?[]:assessed);syncCompareMatrix();
   if(!value)declutterPointLabels();
+}
+// Design 02: the four quadrants take a faint wash of their type colour and the rule's type name; below the graph, one box
+// per type lists its species (a reading path without colour). Names are buttons that open the same evidence as the point.
+// 2026-10-13 design 3: a quadrant shows its plain verdict over the formal name (never instead of it), an empty one says
+// '현재 0종', and the '읽는 법' table pairs the two names with the old quadrant notes.
+const QUADRANT_KEYS={q1:'low_bbvi_high_mcui',q2:'high_bbvi_high_mcui',q3:'low_bbvi_low_mcui',q4:'high_bbvi_low_mcui'};
+const typeOfficial=t=>t.label.replace(/\s*·\s*/g,' · ');
+function renderMatrixTypes(assessed){
+  const rule=matrixRule(), box=$('matrix-types');
+  for(const [q,key] of Object.entries(QUADRANT_KEYS)){
+    const el=document.querySelector?.('#matrix .'+q), t=rule?.types?.[key];if(!el)continue;
+    el.style.setProperty('--qc',t?matrixTypeColour[t.id]||'':'');el.classList.toggle('typed',!!t);
+    if(!t)continue;
+    const plain=MATRIX_PLAIN[t.id], row=document.querySelector?.(`#cmp-read-types [data-q="${q}"]`);el.dataset.type=t.id;
+    if(el.querySelector('strong'))el.querySelector('strong').textContent=plain||t.label;
+    if(el.querySelector('span'))el.querySelector('span').textContent=plain?typeOfficial(t):'';
+    if(el.querySelector('.q-empty'))el.querySelector('.q-empty').hidden=!assessed.length||assessed.some(s=>matrixType(s)===t.id);
+    if(row?.querySelector('th')){row.dataset.type=t.id;row.querySelector('th').innerHTML=`<i class="mt-sw" style="background-color:${matrixTypeColour[t.id]||''}" aria-hidden="true"></i>${esc(matrixTypePlain(t.id))}`;row.querySelector('td').textContent=t.label;}
+  }
+  if($('cmp-read-plain'))$('cmp-read-plain').textContent=matrixPlainNote();
+  if(!box)return;
+  if(!rule||!assessed.length){box.innerHTML='';return;}
+  const cell=key=>{const t=rule.types[key];if(!t)return '';const list=assessed.filter(s=>matrixType(s)===t.id).sort((a,b)=>a.label.localeCompare(b.label,'ko'));
+    // design 3: the plain verdict heads the card, above the box with the formal name (the box itself reads as before)
+    return `<section class="mt-cell" data-type="${t.id}">${MATRIX_PLAIN[t.id]?`<p class="mt-plain">${esc(matrixTypePlain(t.id))}</p>`:''}<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div></section>`;};
+  box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 근거 논문 2편 이상</span><span><i class="mt-dot hollow" aria-hidden="true"></i> BBVI 근거 논문 1편</span><span>MCUI 기반 표시가 없으면 IUCN 기반</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
+  box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
+}
+// Design 02: 17 species share MCUI 10. A point that would overlap one already placed moves up or down (alternating) by the
+// least that clears it, never more than half way to the next MCUI value in use and never across the MCUI threshold; a short
+// line points back to its true height. Order is fixed: BBVI ascending, then name. Title and aria-label keep the true values.
+function spreadMatrixPoints(){
+  const box=$('matrix-points'), frame=box?.parentElement?.getBoundingClientRect?.();
+  if(!frame?.width||simulated)return;
+  box.querySelectorAll('.matrix-tick').forEach(t=>t.remove());
+  // design 3: a point in a 'N종 밀집' box stays at its true height (the box marks the group); the others spread as before
+  const all=[...box.querySelectorAll('.matrix-point.pilot')], pts=all.filter(b=>!b.hasAttribute('data-clustered'));
+  all.filter(b=>b.hasAttribute('data-clustered')).forEach(b=>{b.style.bottom=b.dataset.m+'%';b.dataset.dy=0;});
+  if(!pts.length)return;
+  const W=frame.width, H=frame.height, size=pts[0].offsetWidth||22, gap=size+2, r=size/2, cut=matrixRule()?.mcui_threshold;
+  const rows=[...new Set(pts.map(b=>+b.dataset.m))].sort((a,b)=>a-b), placed=[];
+  const order=pts.slice().sort((a,b)=>a.dataset.b-b.dataset.b||a.dataset.name.localeCompare(b.dataset.name,'ko'));
+  let flip=false;
+  for(const b of order){
+    const m=+b.dataset.m, x=b.dataset.b/100*W, y=m/100*H, i=rows.indexOf(m);
+    let up=Math.min(i<rows.length-1?(rows[i+1]-m)/200*H:Infinity,H-y-r), down=Math.min(i>0?(m-rows[i-1])/200*H:Infinity,y-r);
+    if(cut!=null){if(m<cut)up=Math.min(up,(cut-m)/100*H-r);else down=Math.min(down,(m-cut)/100*H-r);}
+    up=Math.max(0,Math.floor(up));down=Math.max(0,Math.floor(down));
+    const clear=dy=>Math.min(Infinity,...placed.map(([px,py])=>Math.hypot(px-x,py-y-dy)));
+    let dy=null, best=[-1,0];
+    for(let k=0;k<=Math.max(up,down)&&dy===null;k++)for(const c of flip?[-k,k]:[k,-k]){
+      if(c>up||-c>down)continue;const d=clear(c);if(d>=gap){dy=c;break;}if(d>best[0])best=[d,c];
+    }
+    if(dy===null)dy=best[1];
+    if(dy)flip=!flip;
+    placed.push([x,y+dy]);
+    b.style.bottom=dy?`calc(${m}% + ${dy}px)`:m+'%';b.dataset.dy=dy;
+    if(Math.abs(dy)>r){const t=document.createElement('span');t.className='matrix-tick'+(dy>0?' up':' down');t.setAttribute('aria-hidden','true');
+      t.style.cssText=`left:${b.dataset.b}%;bottom:calc(${m}% + ${Math.min(0,dy)}px);height:${Math.abs(dy)}px`;box.prepend(t);}
+  }
 }
 // 3.27: twelve points share the low-MCUI band. A label that would cover another label or point, or leave the matrix, moves
 // to the other side of its point, then up or down by its own height, else hides; the point keeps its title, aria-label and click.
+// 2026-10-13 design 3: a crowded group (matrixClusters) with any label that hid or needed a leader line is drawn as one dashed
+// box and an 'N종 밀집 · 펼치기' button; its points keep their place (small, faint, out of the tab order, still clickable)
+// and the other labels are placed again around the box. The simulated example is never grouped.
 function declutterPointLabels(){
   const box=$('matrix-points'), frame=box?.parentElement?.getBoundingClientRect();  // points are placed in the .matrix frame
   if(!frame?.width)return;  // the comparison tab is hidden; setView and resize run it again
-  const pts=[...box.querySelectorAll('.matrix-point.pilot')], taken=pts.map(b=>b.getBoundingClientRect());
-  const blocked=r=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
-    taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top);
-  for(const b of pts){
-    const l=b.querySelector('.point-label');if(!l)continue;
-    const side=b.style.left&&parseFloat(b.style.left)>=50;
-    l.style.visibility='';
-    const h=l.getBoundingClientRect().height+2;
-    const fit=[[side,0],[!side,0],[side,-h],[side,h],[!side,-h],[!side,h],[side,-2*h],[side,2*h]].find(([left,dy])=>{
-      l.classList.toggle('left',left);l.style.transform=`translateY(calc(-50% + ${dy}px))`;return !blocked(l.getBoundingClientRect());});
-    if(fit)taken.push(l.getBoundingClientRect());
-    else{l.classList.toggle('left',side);l.style.transform='';l.style.visibility='hidden';}
+  closeClusterPop(false);
+  spreadMatrixPoints();
+  box.querySelectorAll('.matrix-cluster,.matrix-cluster-btn').forEach(e=>e.remove());
+  box.querySelectorAll('[data-clustered]').forEach(b=>{b.removeAttribute('data-clustered');if(b.matches('.matrix-point')&&!b.hasAttribute('data-dim'))b.removeAttribute('tabindex');});
+  const all=[...box.querySelectorAll('.matrix-point.pilot')];
+  // design 02: right, left, above, below; then beside the point one or two label heights up or down
+  const place=(l,[pos,dy])=>{l.classList.toggle('left',pos==='left');l.classList.toggle('above',pos==='above');l.classList.toggle('below',pos==='below');
+    l.style.transform=pos==='above'||pos==='below'?`translate(-50%,${dy}px)`:`translateY(calc(-50% + ${dy}px))`;
+    // a label moved off its point's height keeps a thin leader line back to the point
+    const far=dy&&(pos==='left'||pos==='right');l.classList.toggle('far',!!far);
+    if(far){const tx=pos==='left'?6:-6;l.style.setProperty('--ll',Math.hypot(tx,dy)+'px');l.style.setProperty('--la',Math.atan2(-dy,tx)+'rad');}};
+  // the selected species places its name first, so its label is the one that stays (compare design, 2026-10-12)
+  const sel=b=>b.getAttribute('aria-current')==='true';
+  const placeLabels=(pts,extra)=>{
+    const taken=[...all.map(b=>b.getBoundingClientRect()),...extra];
+    const blocked=r=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
+      taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top);
+    // crowded points choose first, so the free space near a cluster goes to the cluster
+    const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
+    for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
+      const l=b.querySelector('.point-label');if(!l)continue;
+      l.classList.remove('hidden-label');
+      place(l,['right',0]);
+      const h=l.getBoundingClientRect().height+2;
+      const fit=[['right',0],['left',0],['above',0],['below',0],['right',-h],['right',h],['left',-h],['left',h],['above',-h],['below',h],['right',-2*h],['right',2*h],['left',-2*h],['left',2*h]]
+        .find(c=>{place(l,c);return !blocked(l.getBoundingClientRect());});
+      if(fit)taken.push(l.getBoundingClientRect());
+      else{place(l,[parseFloat(b.dataset.b)>=50?'left':'right',0]);l.classList.add('hidden-label');}
+    }
+  };
+  placeLabels(all,[]);
+  let groups=[];
+  if(!simulated){
+    const byId=new Map(all.map(b=>[Number(b.dataset.aphia),b])), loose=id=>{const l=byId.get(id)?.querySelector('.point-label');return !!l&&(l.classList.contains('hidden-label')||l.classList.contains('far'));};
+    groups=matrixClusters(all.map(b=>({aphia:Number(b.dataset.aphia),b:+b.dataset.b,m:+b.dataset.m,type:b.dataset.type||'',selected:sel(b)}))).filter(g=>g.ids.some(loose));
+    // on a narrow plot two boxed groups of one row and quadrant whose boxes would touch become one box
+    const cutV=matrixRule()?.bbvi_threshold??50, px=v=>v/100*frame.width;
+    groups=groups.reduce((out,g)=>{const p=out.at(-1);
+      if(p&&p.m===g.m&&(p.max<cutV)===(g.max<cutV)&&px(g.min-p.max)<30)out[out.length-1]={...p,max:g.max,ids:[...p.ids,...g.ids]};else out.push(g);return out;},[]);
+    if(groups.length){
+      for(const id of groups.flatMap(g=>g.ids)){const b=byId.get(id);if(!b)continue;b.setAttribute('data-clustered','');b.tabIndex=-1;
+        const l=b.querySelector('.point-label');if(l){l.classList.remove('far','above','below','left');l.style.transform='';l.classList.add('hidden-label');}}
+      spreadMatrixPoints();  // the rest spread again without the boxed points
+      // the selected label is placed again around the boxes, before the buttons; the boxes, buttons and that label are what
+      // the other labels then avoid
+      let keep=[];
+      const shapes=drawMatrixClusters(groups,byId,frame,boxes=>{const s=all.filter(sel);placeLabels(s,boxes);return keep=s.map(b=>b.querySelector('.point-label')?.getBoundingClientRect()).filter(Boolean);});
+      placeLabels(all.filter(b=>!sel(b)&&!b.hasAttribute('data-clustered')),[...shapes,...keep]);
+    }
   }
-  const hidden=pts.filter(b=>b.querySelector('.point-label')?.style.visibility==='hidden').length, note=$('matrix-note');
+  syncClusterDims();
+  const hidden=all.filter(b=>!b.hasAttribute('data-clustered')&&b.querySelector('.point-label.hidden-label')).length, boxed=groups.reduce((n,g)=>n+g.ids.length,0), note=$('matrix-note');
   let line=$('matrix-hidden');
-  if(!line&&note&&hidden){line=document.createElement('span');line.id='matrix-hidden';note.append(line);}
-  if(line)line.textContent=hidden?` 이름표가 겹치는 점 ${hidden}개는 이름을 숨겼습니다. 점을 누르면 종 상세가 열립니다.`:'';
+  if(!line&&note&&(hidden||boxed)){line=document.createElement('span');line.id='matrix-hidden';note.append(line);}
+  if(line)line.textContent=(boxed?` 점이 몰린 ${groups.length}곳(${boxed}종)은 상자로 묶었습니다. ‘펼치기’를 누르면 종 목록이 열리고, 상자 안 점도 누를 수 있습니다.`:'')+
+    (hidden?` 이름표가 겹치는 점 ${hidden}개는 이름을 숨겼습니다. 점에 마우스를 올리거나 키보드로 고르면 이름이 보이고, 누르면 종 상세가 열립니다.`:'');
 }
 globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t);declutterPointLabels.t=setTimeout(declutterPointLabels,150);});
 
+// ---------- 비교와 지표: deep-sea layout (2026-10-12) ----------
+// Presentation only: every value, label, type and placement comes from the functions above. The tab keeps its own search,
+// group filter, view (matrix | table) and a basket of up to three species; none of it enters the URL (the selected species
+// does, as s). A filter dims matrix points instead of removing them, and the note says how many are shown.
+let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all'}, CMP_MAX=3;
+const cmpById=id=>data?.species.find(s=>s.aphiaID===Number(id))||null;
+const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID)].some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
+const cmpFiltered=()=>cmpFilter.group!=='all'||!!cmpFilter.q;
+const cmpCohort=s=>pilotScore(s,'MFPI')===null?null:s.assessment?.food_trace?.cohort_id||null;
+const cmpCohortLabel=c=>c==='rda-10.4-raw-marine-animals'?'수산동물':c==='rda-10.4-raw-seaweeds'?'해조류':c||'';
+const cmpIcon=s=>`<span class="group-icon" data-group="${esc(s.group)}" aria-hidden="true"><i></i></span>`;
+// the labels that travel with one value (the same words the table's 자세히 panel uses), short and next to the number
+function cmpTag(s,k){
+  const info=data?.assessmentInfo||{}, parts=[axisTag(s,k,info)];
+  if(k==='MFPI'&&cmpCohort(s))parts.unshift(cmpCohortLabel(cmpCohort(s))+' 비교집단');
+  if(k==='BBVI'&&bbviLabel(s))parts.push(bbviLabel(s));
+  if(k==='MBPI'&&mbpiStratumOf(s))parts.push(mbpiStratumOf(s).short); // 2026-10-12: the top item's stratum, as on cards and in the detail
+  if(k==='MCUI'&&pilotScore(s,'MCUI')!==null)parts.push(separateMcui(s)?mcuiBasisLabel(s)+' · IUCN 기반 MCUI와 직접 비교 불가':'IUCN 기반');
+  return parts.filter(Boolean).join(' · ');
+}
+// 2026-10-13 design 3: one short chip beside a value's heading. MCUI shows its basis in short ('한국 국가 평가', 'IUCN 평가');
+// other axes the first label piece after '정식 산출', which every species shares. The pieces are cmpTag's own words.
+const cmpPieces=(s,k)=>cmpTag(s,k).split(' · ').filter(p=>p&&p!=='정식 산출');
+const cmpMcuiChip=s=>pilotScore(s,'MCUI')===null?'':mcuiBasisLabel(s).replace(/\(.*\)$/,'').replace(/ 기반$/,'').replace(/^IUCN$/,'IUCN 평가');
+const cmpChip=(s,k)=>k==='MCUI'&&cmpMcuiChip(s)||cmpPieces(s,k)[0]||'';
+// The use labels no chip carries, on one line under the use block: the MBPI stratum first, then each remaining piece once,
+// led by the axes it belongs to (참굴: 생리활성 근거: ACE 펩타이드 · BBVI·MBPI 근거 논문 1편 · …). Nothing is dropped or new.
+function cmpUseRest(s){
+  const st=mbpiStratumOf(s)?.short, chip=cmpChip(s,'BBVI'), seen=new Map();
+  for(const k of ['BBVI','MBPI','MFPI'])for(const p of cmpPieces(s,k)){
+    if((k==='BBVI'&&p===chip)||(k==='MBPI'&&p===st))continue;
+    const key=/ 비교집단$/.test(p)?'식량 비교집단: '+p.replace(/ 비교집단$/,''):p;
+    seen.set(key,[...(seen.get(key)||[]),k]);
+  }
+  return [st?'생리활성 근거: '+st:'',...[...seen].map(([p,ks])=>p.startsWith('식량 비교집단: ')?p:ks.join('·')+' '+p)].filter(Boolean).join(' · ');
+}
+// '바다 탐험에서 보기': expedition.html opens a route stop by #stop=N (1-based over the route stops, which lead the file);
+// a stop off the route has no such link, so the page opens with the label saying so; a species with no stop gets no link.
+let cmpStops=null, cmpStopsLoad=null;
+const cmpExpeditionLink=(stops,aphia)=>{if(!Array.isArray(stops))return null;const i=stops.filter(s=>s.on_route!==false&&s.cell).findIndex(s=>s.aphia_id===aphia);
+  return i>=0?{href:`expedition.html#stop=${i+1}`,text:'바다 탐험에서 보기'}:stops.some(s=>s.aphia_id===aphia)?{href:'expedition.html',text:'바다 탐험 열기(항로 밖 지점)'}:null;};
+function syncExpeditionLink(){
+  const a=$('cmp-expedition'), go=selected?cmpExpeditionLink(cmpStops,selected.aphiaID):null;if(!a)return;
+  a.hidden=!go;if(go){a.href=go.href;a.textContent=go.text;}
+}
+function loadCompareStops(){  // once, when the tab is first shown; a failed load only hides the link
+  cmpStopsLoad??=fetch('expedition-stops.json').then(r=>r.ok?r.json():null).then(d=>{cmpStops=Array.isArray(d?.stops)?d.stops:[];},()=>{cmpStops=[];}).then(syncExpeditionLink);
+}
+// Crowded points: the same MCUI value on the same side of the BBVI threshold (one quadrant), chained in BBVI order while
+// neighbours are under CLUSTER_GAP apart; a chain of CLUSTER_MIN or more is a candidate. The selected species never joins.
+// Pure: points are [{aphia,b,m,type,selected}], groups are [{m,min,max,ids}] (ids in BBVI order; groups low MCUI first, then left to right).
+const CLUSTER_GAP=4, CLUSTER_MIN=4;
+function matrixClusters(points){
+  const cut=matrixRule()?.bbvi_threshold??50, rows=new Map(), out=[];
+  for(const p of points){if(p.selected)continue;const key=`${p.m}|${p.b>=cut}|${p.type||''}`;if(!rows.has(key))rows.set(key,[]);rows.get(key).push(p);}
+  for(const row of rows.values()){
+    row.sort((a,c)=>a.b-c.b||a.aphia-c.aphia);
+    let run=[];
+    for(const p of row){if(run.length&&p.b-run.at(-1).b>=CLUSTER_GAP){if(run.length>=CLUSTER_MIN)out.push(run);run=[];}run.push(p);}
+    if(run.length>=CLUSTER_MIN)out.push(run);
+  }
+  return out.map(run=>({m:run[0].m,min:run[0].b,max:run.at(-1).b,ids:run.map(p=>p.aphia)})).sort((a,c)=>a.m-c.m||a.min-c.min);
+}
+const fmt1=v=>String(+Number(v).toFixed(1));
+// The box hugs its points (at their true height) and stops short of the BBVI threshold line and of a box beside it. Its
+// button sits just above or below it, centred if it can, else slid sideways while it still covers more of its own box than
+// of any other, clear of the other points, the kept label, the quadrant names and earlier buttons; on a narrow plot one or
+// two rows higher; else inside its box. Pointing at or opening a button lights its box. placeKeep(boxes) places the
+// selected label once the boxes are known and returns the rectangles the buttons must leave clear.
+function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
+  const box=$('matrix-points'), shapes=[], pills=[], pad=7, gap=8, cutV=matrixRule()?.bbvi_threshold??50, cut=frame.left+cutV/100*frame.width;
+  const hit=(r,list)=>list.some(o=>r.left<o.right+gap&&r.right+gap>o.left&&r.top<o.bottom+gap&&r.bottom+gap>o.top);
+  const inGroup=new Set(groups.flatMap(g=>g.ids));
+  const free=[...box.querySelectorAll('.matrix-point.pilot')].filter(b=>!inGroup.has(Number(b.dataset.aphia))).map(b=>b.getBoundingClientRect());
+  // the quadrant names' text, not their full-width boxes
+  const names=[...box.parentElement.querySelectorAll('.quadrant :is(strong,span)')].filter(e=>e.textContent.trim()).map(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();});
+  const rects=groups.map(g=>{
+    const rs=g.ids.map(id=>byId.get(id)?.getBoundingClientRect()).filter(Boolean), pl=Math.min(...rs.map(r=>r.left)), pr=Math.max(...rs.map(r=>r.right));
+    let L=pl-pad, R=pr+pad;if(g.max<cutV)R=Math.min(R,cut-2);else L=Math.max(L,cut+2);
+    return {pl,pr,L:Math.max(frame.left+1,L),R:Math.min(frame.right-1,R),T:Math.max(frame.top+1,Math.min(...rs.map(r=>r.top))-pad),B:Math.min(frame.bottom-1,Math.max(...rs.map(r=>r.bottom))+pad)};
+  });
+  // two boxes on one row meet half way between their nearest points
+  const byLeft=rects.slice().sort((a,c)=>a.L-c.L);
+  for(let i=0;i<byLeft.length;i++)for(let j=i+1;j<byLeft.length;j++){const a=byLeft[i],c=byLeft[j];
+    if(a.T<c.B&&c.T<a.B&&a.R+2>c.L){const mid=(a.pr+c.pl)/2;a.R=Math.min(a.R,mid-1);c.L=Math.max(c.L,mid+1);}}
+  const keep=placeKeep(rects.map(r=>({left:r.L,top:r.T,right:r.R,bottom:r.B})));
+  groups.forEach((g,i)=>{
+    const {L,R,T,B}=rects[i], rect=document.createElement('span');
+    rect.className='matrix-cluster';rect.dataset.cluster=g.ids.join(',');rect.setAttribute('aria-hidden','true');
+    rect.style.cssText=`left:${L-frame.left}px;top:${T-frame.top}px;width:${R-L}px;height:${B-T}px`;box.prepend(rect);
+    const btn=document.createElement('button');  // '· 펼치기' folds away on a phone; the aria-label keeps it
+    btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');btn.innerHTML=`${g.ids.length}종 밀집<span class="mcb-act"> · 펼치기</span>`;
+    btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','matrix-cluster-pop');
+    btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${fmt1(g.min)}–${fmt1(g.max)} · MCUI ${fmt1(g.m)} · 종 목록 펼치기`);
+    btn.addEventListener('click',()=>btn.getAttribute('aria-expanded')==='true'?closeClusterPop(true):openClusterPop(btn));
+    const lit=on=>()=>rect.toggleAttribute('data-hot',on||btn.getAttribute('aria-expanded')==='true');
+    btn.addEventListener('pointerenter',lit(true));btn.addEventListener('pointerleave',lit(false));btn.addEventListener('focus',lit(true));btn.addEventListener('blur',lit(false));
+    box.append(btn);
+    const w=btn.offsetWidth, h=btn.offsetHeight, block=[...free,...keep,...names,...pills];
+    const span=(r,o)=>Math.min(r.right,o.R)-Math.max(r.left,o.L);
+    const other=r=>Math.max(0,...rects.filter((o,j)=>j!==i&&o.T<B&&o.B>T).map(o=>span(r,o)));  // the boxes on its own row
+    const ok=r=>r.top>=frame.top+2&&r.bottom<=frame.bottom-2&&!hit(r,block)&&span(r,rects[i])>other(r)&&!rects.some(o=>r.left<o.R&&r.right>o.L&&r.top<o.B&&r.bottom>o.T);
+    const m=Math.min(24,(R-L)/2), lo=Math.max(frame.left+2,L-w+m), hi=Math.min(frame.right-w-2,R-m), cx=Math.min(Math.max((L+R-w)/2,lo),hi);
+    const row=y=>[cx,...block.filter(o=>o.top<y+h+gap&&o.bottom+gap>y).flatMap(o=>[o.right+gap,o.left-gap-w])].filter(x=>x>=lo&&x<=hi)
+      .sort((a,c)=>Math.abs(a-cx)-Math.abs(c-cx)).map(x=>({left:x,top:y,right:x+w,bottom:y+h}));
+    const up=row(T-h-3), down=row(B+3), up2=row(T-2*h-3-gap), up3=row(T-3*h-3-2*gap);
+    const ix=Math.min(Math.max((L+R-w)/2,frame.left+2),frame.right-w-2), iy=(T+B-h)/2;
+    const spot=[up[0],down[0],...up.slice(1),...down.slice(1),...up2,...up3].find(r=>r&&ok(r))||{left:ix,top:iy,right:ix+w,bottom:iy+h};
+    btn.style.left=spot.left-frame.left+'px';btn.style.top=spot.top-frame.top+'px';
+    pills.push(spot);shapes.push({left:L,top:T,right:R,bottom:B},spot);
+  });
+  return shapes;
+}
+// '펼치기': the group's species as buttons in point order (left to right: BBVI, then name), never numbered or ranked. A row
+// picks the species like its point; it leaves the group and gets its label. Esc or a click outside closes it.
+function openClusterPop(btn){
+  const pop=$('matrix-cluster-pop'), frame=pop?.parentElement;if(!pop||!frame)return;
+  const list=btn.dataset.cluster.split(',').map(cmpById).filter(Boolean).sort((a,c)=>pilotScore(a,'BBVI')-pilotScore(c,'BBVI')||a.label.localeCompare(c.label,'ko'));
+  if(!list.length)return;
+  closeClusterPop(false);setBasisPop(false);setReadPop(false);
+  const b=list.map(s=>pilotScore(s,'BBVI'));
+  pop.innerHTML=`<p class="mc-head">BBVI ${fmt1(Math.min(...b))}–${fmt1(Math.max(...b))} · MCUI ${fmt1(pilotScore(list[0],'MCUI'))} · ${list.length}종 · 점 위치 순(왼쪽부터)</p><ul class="mc-list">${list.map(s=>{const t=matrixType(s);
+    return `<li><button type="button" data-aphia="${s.aphiaID}"><i class="mc-dot${bbviLabel(s)?' hollow':''}${s.assessment?.mbpi_floor?' floor':''}" style="--mp:${t?matrixTypeColour[t]:'#a9bbc6'}" aria-hidden="true"></i><b>${esc(s.label)}</b><span>BBVI ${fmt1(pilotScore(s,'BBVI'))} · MCUI ${fmt1(pilotScore(s,'MCUI'))}</span><small>${esc([bbviLabel(s)?'BBVI '+bbviLabel(s):'',s.assessment?.mbpi_floor?'MBPI 하한값':'',cmpMcuiChip(s)].filter(Boolean).join(' · '))}</small></button></li>`;}).join('')}</ul>`;
+  pop.hidden=false;btn.setAttribute('aria-expanded','true');btn.querySelector('.mcb-act').textContent=' · 접기';syncClusterDims();
+  btn.parentElement.querySelector(`.matrix-cluster[data-cluster="${btn.dataset.cluster}"]`)?.setAttribute('data-hot','');
+  // beside the box (right, else left), else above it; on a phone across the screen, 8px from each edge
+  const f=frame.getBoundingClientRect(), r=(btn.parentElement.querySelector(`.matrix-cluster[data-cluster="${btn.dataset.cluster}"]`)||btn).getBoundingClientRect(), w=pop.offsetWidth, h=pop.offsetHeight, vw=document.documentElement.clientWidth;
+  let left=r.right+10, top=r.top+r.height/2-h/2;
+  if(left+w>Math.min(f.right,vw-8)){left=r.left-10-w;if(left<Math.max(f.left,8)){left=r.left+r.width/2-w/2;top=r.top-10-h;}}
+  left=Math.min(Math.max(left,8),vw-8-w);top=Math.max(top,f.top-40);
+  pop.style.left=left-f.left+'px';pop.style.top=top-f.top+'px';
+  pop.querySelector('button')?.focus({preventScroll:true});
+}
+function closeClusterPop(focus=true){
+  const pop=$('matrix-cluster-pop');if(!pop||pop.hidden)return;
+  pop.hidden=true;pop.innerHTML='';
+  const b=document.querySelector?.('#matrix-points .matrix-cluster-btn[aria-expanded="true"]');
+  if(b){b.setAttribute('aria-expanded','false');b.querySelector('.mcb-act').textContent=' · 펼치기';b.parentElement.querySelector(`.matrix-cluster[data-cluster="${b.dataset.cluster}"]`)?.toggleAttribute('data-hot',b.matches(':hover'));if(focus)b.focus();}
+}
+// a group's button and its list rows dim like the points when the filter leaves none (or not that species) shown
+function syncClusterDims(){
+  const on=cmpFiltered();
+  document.querySelectorAll?.('#matrix-points .matrix-cluster-btn').forEach(b=>b.toggleAttribute('data-dim',on&&!b.dataset.cluster.split(',').some(id=>cmpMatch(cmpById(id)))));
+  document.querySelectorAll?.('#matrix-cluster-pop button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
+}
+function setCompareMode(mode){
+  cmpMode=mode==='table'?'table':'matrix';
+  $('cmp-matrix-view').hidden=cmpMode!=='matrix';$('cmp-table-view').hidden=cmpMode!=='table';
+  document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpMode===cmpMode)));
+  applyCompareFilter();
+  if(cmpMode==='table'){if(data)syncComparison();}else requestAnimationFrame(declutterPointLabels);
+}
+function applyCompareFilter(){
+  if(!data)return;
+  const on=cmpFiltered(), n=data.species.filter(cmpMatch).length, note=$('cmp-filter-note');
+  $('comparison').querySelectorAll('tr.cmp-row').forEach(tr=>{const out=on&&!cmpMatch(cmpById(tr.dataset.aphia));
+    tr.classList.toggle('cmp-out',out);$('cmp-more-'+tr.dataset.aphia)?.classList.toggle('cmp-out',out);});
+  $('matrix-points').querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{const out=on&&!cmpMatch(cmpById(b.dataset.aphia));
+    if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');if(!b.hasAttribute('data-clustered'))b.removeAttribute('tabindex');}});
+  syncClusterDims();
+  $('matrix-types').querySelectorAll('button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
+  if(!note)return;
+  note.innerHTML=!on?'':n?`${data.species.length}종 중 ${n}종 표시${cmpMode==='matrix'?' · 나머지 점은 흐리게 남겨 둡니다':''} <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`:
+    `<b>검색 결과 없음</b> · ${cmpFilter.q?'‘'+esc(cmpFilter.q)+'’에 맞는 ':''}${cmpFilter.group!=='all'?esc(cmpFilter.group)+' ':''}생물이 없습니다. 자료 오류가 아니라 조건에 맞는 종이 없다는 뜻입니다. <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`;
+  note.classList.toggle('empty-result',on&&!n);
+}
+function setCompareFilter(next){
+  Object.assign(cmpFilter,next);
+  document.querySelectorAll('[data-cmp-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpGroup===cmpFilter.group)));
+  if($('cmp-search').value.trim().toLowerCase()!==cmpFilter.q)$('cmp-search').value=cmpFilter.q;
+  applyCompareFilter();
+}
+// The ring, the legend and the dims follow the matrix redraw (weight, simulation) and the selected species.
+function syncCompareMatrix(){
+  const box=$('matrix-points');if(!data||!box?.querySelectorAll)return;
+  box.querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>Number(b.dataset.aphia)===selected?.aphiaID?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current'));
+  const floor=data.species.some(s=>assessedForMatrix(s)&&s.assessment?.mbpi_floor);
+  if($('cmp-legend'))$('cmp-legend').innerHTML=`<span><i class="lg-dot" aria-hidden="true"></i>근거 논문 2편 이상</span><span><i class="lg-dot hollow" aria-hidden="true"></i>BBVI 근거 논문 1편</span>${floor?'<span><i class="lg-dot floor" aria-hidden="true"></i>MBPI 하한값</span>':''}<span><i class="lg-dot sel" aria-hidden="true"></i>선택한 종</span>`;
+  markWeightPoints();
+  applyCompareFilter();
+}
+function syncCompareSelection(){
+  if(!data||!$('cmp-profile'))return;
+  renderCompareProfile();
+  if(!simulated){syncCompareMatrix();if(currentView==='compare'&&cmpMode==='matrix')declutterPointLabels();}
+  if($('cmp-more')&&!$('cmp-more').hidden&&selected)showCompareMore(false);
+}
+// a point, a list name or a table row picks the species; the profile beside the matrix follows (below it on narrow screens)
+function pickCompare(id){
+  if(!cmpById(id))return;
+  selectSpecies(Number(id));
+  if(globalThis.matchMedia?.('(max-width:1100px)').matches)$('cmp-profile').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+}
+function renderCompareProfile(){
+  const box=$('cmp-profile'), s=selected;if(!box)return;
+  if(!data||!s){box.innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';return;}
+  if(currentView==='compare')loadCompareStops();
+  const t=matrixType(s), inBasket=cmpBasket.includes(s.aphiaID), full=!inBasket&&cmpBasket.length>=CMP_MAX, rule=matrixRule(), go=cmpExpeditionLink(cmpStops,s.aphiaID);
+  const num=k=>{const st=axisState(s,k);return st.value===null?`<span class="cp-state">${esc(st.label)}</span>`:st.value.toFixed(1);};
+  // design 3: the two main bars mark the type threshold (matrixRule) with a white tick; a missing value draws no bar
+  const bar=(k,cut=null)=>{const v=pilotScore(s,k);return v===null?'':`<span class="cp-bar${k==='MCUI'?' sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut==null?'':`<b class="cp-cut" style="left:${cut}%"></b>`}</span>`;};
+  const ev=(k,cls,inner)=>`<button type="button" class="${cls}" data-prof-axis="${k}" aria-label="${esc(s.label)} ${k} ${pilotScore(s,k)===null?esc(axisState(s,k).label):pilotScore(s,k).toFixed(1)} · ${esc(cmpTag(s,k))} · 근거 보기">${inner}</button>`;
+  const sub=(k,name)=>`<div class="cp-sub">${ev(k,'cp-sub-name',`<span>${name}</span>`)}${bar(k)}${ev(k,'cp-sub-num',num(k))}</div>`;
+  const chip=k=>cmpChip(s,k)?`<span class="cp-chip">${esc(cmpChip(s,k))}</span>`:'', rest=cmpUseRest(s);
+  box.innerHTML=`<div class="cp-head"><div class="cp-id"><div class="cmp-eyebrow">SPECIES PROFILE</div><h2 id="cmp-profile-name">${esc(s.label)}</h2><p class="cp-latin">${esc(s.name)}</p></div>`+
+    `<button type="button" id="cmp-add" class="cmp-ghost cp-add" aria-pressed="${inBasket}"${full?' aria-disabled="true"':''} aria-describedby="cmp-add-note">${inBasket?'담김 ✓':'+ 비교 담기'}</button>`+
+    `<span class="cp-tile" role="img" aria-label="종 사진 없음 · ${esc(s.group)} 아이콘">${cmpIcon(s)}</span>`+
+    `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
+    // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 없음 and why)
+    `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}</section>`+
+    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></section>`+
+    `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거</span>`+
+    `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;
+}
+// '근거 자세히 보기': the species' follow-up text (showDecision) opens in its own region under the two panels
+function cmpMoreSync(){
+  const box=$('cmp-more');if(!box?.contains)return;
+  const open=box.contains($('decision-detail'))&&!$('decision-detail').hidden;box.hidden=!open;$('cmp-open-more')?.setAttribute('aria-expanded',String(open));
+}
+function showCompareMore(focus=true){
+  const s=selected;if(!s)return;
+  showDecision(s);markDecisionCards(null);const panel=$('decision-detail');$('cmp-more').append(panel);panel.hidden=false;cmpMoreSync();
+  if(focus){$('cmp-more').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+    const h=panel.querySelector('h3');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
+}
+function toggleBasket(id){
+  id=Number(id);
+  if(cmpBasket.includes(id))cmpBasket=cmpBasket.filter(x=>x!==id);else if(cmpBasket.length<CMP_MAX)cmpBasket=[...cmpBasket,id];else return false;
+  renderCompareTray();renderCompareProfile();return true;
+}
+function renderCompareTray(){
+  const box=$('cmp-tray');if(!box||!data)return;
+  const list=cmpBasket.map(cmpById).filter(Boolean), ready=list.length>=2;
+  box.classList.toggle('empty',!list.length);
+  if(!list.length){box.innerHTML=`<p class="ct-empty"><b>선택한 생물 0 / ${CMP_MAX}</b> <span>프로필의 ‘+ 비교 담기’로 종을 모으면 여기서 나란히 비교할 수 있습니다.</span></p>`;return;}
+  const slots=[...list.map(s=>`<li class="ct-card">${cmpIcon(s)}<span class="ct-name"><b>${esc(s.label)}</b><em>${esc(s.name)}</em></span><button type="button" class="ct-x" data-basket-remove="${s.aphiaID}" aria-label="${esc(s.label)} 비교에서 빼기">✕</button></li>`),
+    ...Array.from({length:CMP_MAX-list.length},()=>`<li class="ct-slot"><button type="button" class="ct-add" data-basket-add>+ 생물 추가</button></li>`)];
+  box.innerHTML=`<div class="ct-head"><h2>선택한 생물</h2><span class="ct-count">${list.length} / ${CMP_MAX}</span></div>`+
+    `<button type="button" class="ct-toggle cmp-ghost" aria-expanded="${box.classList.contains('open')}" aria-controls="cmp-tray-list">담은 생물 <b>${list.length}/${CMP_MAX}</b> <span aria-hidden="true">▾</span></button><ul id="cmp-tray-list" class="ct-list">${slots.join('')}</ul>`+
+    `<div class="ct-go"><button type="button" id="cmp-compare-go" class="cmp-solid" aria-disabled="${!ready}" aria-describedby="cmp-go-note">선택한 생물 비교하기 <span aria-hidden="true">→</span></button><small id="cmp-go-note">${ready?'담은 순서대로 나란히 봅니다':'2종 이상 담으면 비교할 수 있습니다'}</small></div>`;
+}
+// Side-by-side view of the basket. A bar is drawn only where the values share one scale: MFPI within one comparison group,
+// MCUI within one assessment basis. Otherwise each value stands with its basis and "직접 비교 불가". No total, rank or pick.
+function renderCompareDialog(){
+  const list=cmpBasket.map(cmpById).filter(Boolean), body=$('cmp-dialog-body');if(!body)return;
+  const same=(k,key)=>{const vals=list.filter(s=>pilotScore(s,k)!==null).map(key);return vals.length===list.length&&new Set(vals).size===1;};
+  const together={MFPI:same('MFPI',cmpCohort),MBPI:list.every(s=>pilotScore(s,'MBPI')!==null),BBVI:list.every(s=>pilotScore(s,'BBVI')!==null),MCUI:same('MCUI',s=>s.assessment?.mcui_basis||'iucn')};
+  const why={MFPI:'비교집단이 달라 직접 비교 불가',MCUI:'평가 기반이 달라 직접 비교 불가'};
+  const cell=(s,k)=>{const st=axisState(s,k), v=pilotScore(s,k);
+    return `<td class="cd-val">${v===null?`<span class="cp-state">${esc(st.label)}</span>`:`<b>${v.toFixed(1)}</b>${k==='BBVI'&&officialNote(s)?`<small class="cd-official">(${esc(officialNote(s))})</small>`:''}`}${v!==null&&together[k]?`<span class="cp-bar ${k==='MCUI'?'sand':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></span>`:''}<small>${esc(cmpTag(s,k))}</small>${v!==null&&!together[k]&&why[k]?`<small class="cd-no">${why[k]}</small>`:''}</td>`;};
+  const row=(k,name,cls='')=>`<tr class="${cls}"><th scope="row">${name}</th>${list.map(s=>cell(s,k)).join('')}</tr>`;
+  const text=(name,fn,cls='')=>`<tr class="${cls}"><th scope="row">${name}</th>${list.map(s=>`<td>${fn(s)}</td>`).join('')}</tr>`;
+  const go=s=>['MFPI','MBPI','BBVI','MCUI','OCC'].map(k=>`<button type="button" class="cmp-chip" data-dlg-aphia="${s.aphiaID}" data-dlg-axis="${k}">${k==='OCC'?'출현 기록 지도':k}</button>`).join('');
+  body.innerHTML=`<p class="cd-note">담은 순서대로 놓았습니다. 막대는 같은 척도일 때만 그립니다. 합계·순위·추천은 만들지 않습니다.</p><div class="cd-scroll"><table class="cd-table"><caption class="sr-only">선택한 생물 ${list.length}종 비교</caption>`+
+    `<thead><tr><td></td>${list.map(s=>`<th scope="col">${cmpIcon(s)}<b>${esc(s.label)}</b><em>${esc(s.name)}</em>${matrixType(s)?`<span class="cp-type" style="--tc:${matrixTypeColour[matrixType(s)]}">${esc(matrixTypeLabel(matrixType(s)))}</span>`:''}</th>`).join('')}</tr></thead><tbody>`+
+    `<tr class="cd-sec use"><th scope="rowgroup" colspan="${list.length+1}">활용 가치</th></tr>`+row('BBVI','활용 가치 BBVI','use')+row('MFPI','식량 MFPI','use')+row('MBPI','생리활성 MBPI','use')+
+    text('MFPI 비교집단',s=>cmpCohort(s)?esc(cmpCohortLabel(cmpCohort(s)))+' 고정 비교집단':'—','use')+
+    `<tr class="cd-sec con"><th scope="rowgroup" colspan="${list.length+1}">보전 필요성</th></tr>`+row('MCUI','보전 필요성 MCUI','con')+
+    text('MCUI 평가 기반',s=>pilotScore(s,'MCUI')===null?'—':esc(mcuiBasisLabel(s)),'con')+
+    text('근거 상태',s=>esc(s.catalog?'조사 후보':'운영 발행')+' · '+evidenceChips(s))+text('근거 보기',go)+`</tbody></table></div>`;
+  body.querySelectorAll('[data-dlg-aphia]').forEach(b=>b.addEventListener('click',()=>{const sel=`#cmp-dialog-body [data-dlg-aphia="${b.dataset.dlgAphia}"][data-dlg-axis="${b.dataset.dlgAxis}"]`;
+    $('cmp-dialog').close();openEvidence(Number(b.dataset.dlgAphia),b.dataset.dlgAxis,sel);}));
+}
+function openCompareDialog(){
+  if(cmpBasket.length<2)return false;
+  renderCompareDialog();const d=$('cmp-dialog');if(!d.open)d.showModal();d.querySelector('.cmp-dialog-close').focus();return true;
+}
+function setBasisPop(open){
+  const pop=$('cmp-basis-pop'), b=$('cmp-basis-toggle');if(!pop)return;
+  pop.hidden=!open;b.setAttribute('aria-expanded',String(open));if(open){setReadPop(false);closeClusterPop(false);}
+}
+function setReadPop(open){
+  const pop=$('cmp-read-pop'), b=$('cmp-read-toggle');if(!pop)return;
+  pop.hidden=!open;b?.setAttribute('aria-expanded',String(open));if(open){setBasisPop(false);closeClusterPop(false);}
+}
+// phones drop the MBPI half so the panel title keeps its line
+const updateBasisNow=()=>{const n=$('cmp-basis-now');if(n)n.innerHTML=weightOff()?weightPair().replace(/^(MBPI \S+ · )/,' · <span class="bn-long">$1</span>'):'';};
+function renderCompare(){renderCompareProfile();renderCompareTray();syncCompareMatrix();updateBasisNow();}
+// ---- BBVI 통합 가중치 (2026-10-13) ----
+// One integer step: MFPI weight w = step/20, MBPI weight = (20 − step)/20, so the two shown weights always add up to 1.00.
+// The report's food_weight is the official weight; any other step is an exploratory view and is marked as such everywhere
+// a re-mixed BBVI is shown. MFPI·MBPI·MCUI, the thresholds and the unexplored candidates (report values) never move.
+let weightFrame=0;
+function setBbviStep(k){
+  k=Number(k);k=Number.isFinite(k)?Math.max(0,Math.min(W_STEPS,Math.round(k))):weightStep(officialWeight());
+  bbviWeight=k/W_STEPS;syncWeightControl();
+  // a drag fires many input events: redraw once per frame
+  if(data&&!weightFrame)weightFrame=(globalThis.requestAnimationFrame||(f=>setTimeout(f,16)))(()=>{weightFrame=0;redrawForWeight();});
+}
+function redrawForWeight(){
+  const before=matrixPositions();
+  renderList();renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap(); // cell types move with the weight; explore cards carry 활용 and the verdict
+  updateBasisNow();syncWeightControl();writeHash();slideMatrixPoints(before);
+}
+// The panel, the badges and the list of species whose type differs from the official one.
+function syncWeightControl(){
+  const el=$('bbvi-weight');if(!el)return;
+  const k=weightStep(bbviWeight), off=weightOff(), k0=weightStep(officialWeight());
+  el.value=String(k);el.setAttribute('aria-valuetext',weightPair().replace(' · ',', '));
+  el.style.setProperty('--w',k/W_STEPS*100+'%');el.style.setProperty('--w0',k0/W_STEPS*100+'%');
+  $('bbvi-weight-value').textContent=weightPair();
+  document.querySelectorAll('[data-w-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.wPreset)===k)));
+  document.querySelectorAll('[data-w-reset]').forEach(b=>{b.disabled=!off;if(b.id==='cmp-weight-reset')b.textContent=`공식값 ${officialWeight().toFixed(2)}으로`;});
+  document.querySelectorAll('.w-badge').forEach(b=>{b.hidden=!off;const t=b.querySelector('.w-badge-text');if(t)t.textContent=`탐색 보기 · 사용자 가중치 ${weightPair()} · 공식 산출값(${officialWeight().toFixed(2)}) 아님`;});
+  const floor=$('bbvi-weight-floor');if(floor)floor.hidden=!data?.species.some(s=>pilotScore(s,'BBVI')!==null&&s.assessment?.mbpi_floor);
+  const moved=$('bbvi-weight-moved');if(!moved)return;
+  const list=off&&data?data.species.filter(s=>matrixType(s)!==officialType(s)):[];
+  moved.hidden=!off;
+  moved.textContent=!off?'':list.length?`공식값과 유형이 다른 종 ${list.length}종: ${list.slice(0,6).map(s=>s.label).join(' · ')}${list.length>6?` 외 ${list.length-6}종`:''}`:'모든 종이 공식값과 같은 유형입니다.';
+}
+// A point whose type differs from the official one gets a dashed ring, and every re-mixed point names its official value.
+function markWeightPoints(){
+  const box=$('matrix-points');if(!box?.querySelectorAll||simulated)return;
+  let any=false;
+  box.querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{
+    const s=cmpById(b.dataset.aphia);if(!s)return;
+    const was=officialType(s), moved=weightOff()&&was!==matrixType(s), note=officialNote(s);
+    b.classList.toggle('w-moved',moved);any||=moved;
+    if(note&&!b.dataset.wNote){const add=` · ${note}${moved?' · 공식 유형 '+matrixTypeLabel(was):''}`;b.title+=add;b.setAttribute('aria-label',(b.getAttribute('aria-label')||'')+add);b.dataset.wNote='1';}
+  });
+  // the legend is rewritten just before this runs, so the key is added at most once
+  if(any)$('cmp-legend')?.insertAdjacentHTML?.('beforeend',`<span><i class="lg-dot wmove" aria-hidden="true"></i>공식값(${officialWeight().toFixed(2)})과 유형이 다른 종</span>`);
+}
+// The points are redrawn from scratch: each one starts where it was and slides to its new place (about 300 ms).
+const matrixPositions=()=>new Map([...($('matrix-points')?.querySelectorAll?.('.matrix-point.pilot[data-aphia]')||[])].map(b=>[b.dataset.aphia,b.getBoundingClientRect()]));
+function slideMatrixPoints(before){
+  if(!before.size||simulated||globalThis.matchMedia?.('(prefers-reduced-motion:reduce)').matches)return;
+  $('matrix-points').querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{
+    const r0=before.get(b.dataset.aphia), r1=b.getBoundingClientRect();if(!r0||!b.animate)return;
+    const dx=r0.left-r1.left, dy=r0.top-r1.top;
+    if(Math.abs(dx)>.5||Math.abs(dy)>.5)b.animate([{translate:`${dx}px ${dy}px`},{translate:'0 0'}],{duration:300,easing:'ease-out'});
+  });
+}
 function renderSources(){
   const info=data.assessmentInfo;
   $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
@@ -2623,14 +3460,47 @@ function registerTools(){
 const loadProgress=(step,detail={})=>{try{dispatchEvent(new CustomEvent('bbvm:progress',{detail:{step,...detail}}));}catch{/* no listener needed */}};
 const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||null,published:data?.publishedCount,candidates:data?.candidateCount,
   cells:data?[...new Map(data.species.flatMap(s=>s.cells||[]).map(c=>[`${c.lat0},${c.lon0},${c.sizeDeg}`,{lat:c.lat0,lon:c.lon0,size:c.sizeDeg}])).values()]:[]});
+// Header status chips: the notice (version · research use) opens its full text; a snapshot or newer-file status gets a
+// yellow chip whose popover holds the banner sentence and the reload button. A load with no data keeps the red banner.
+function updateStatusChips(){
+  const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
+  // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
+  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  const was=!$('alert-chip').hidden;
+  $('alert-chip').hidden=!alert;
+  $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
+  $('alert-text').textContent=alert?err.textContent:'';
+  if(!alert)statusPop(null);
+  if(alert&&!was)$('status-live').textContent=err.textContent;  // announced once, as the banner's role=alert did
+}
+let openPop=null;
+function statusPop(id){
+  for(const [chip,pop] of [['notice-chip','notice-pop'],['alert-chip','alert-pop']]){const on=pop===id;$(pop).hidden=!on;$(chip).setAttribute('aria-expanded',String(on));}
+  openPop=id;
+}
+// Design 07 (2026-10-10): on a phone (≤740px) the map stays at the top and the species pane slides over it as a bottom
+// sheet. The page scroll is the drag; the handle button opens (sheet to the top) and closes (back to the map) for touch and keys.
+const phoneSheet=()=>globalThis.matchMedia?.('(max-width:740px)').matches;
+function sheetSummary(s){
+  const box=$('sheet-summary');if(!box)return;
+  const t=matrixType(s), v=k=>{const x=pilotScore(s,k),one=k==='BBVI'&&x!==null&&bbviLabel(s);
+    return `<i class="${x===null?'held':one?'single':''}"${one?` title="${GAUGE_NAME[k]} · ${esc(one)}"`:''}><small>${k}</small>${x===null?'–':x.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;};
+  const chip=t?`<span class="type-chip" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${verdictWord(t)} ${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none"><i aria-hidden="true"></i>유형 없음</span>';
+  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span> ${chip}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
+}
+function sheetSync(){
+  const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
+  const open=h.getBoundingClientRect().top<stage.getBoundingClientRect().bottom-40;
+  if(b.getAttribute('aria-expanded')!==String(open)){b.setAttribute('aria-expanded',String(open));b.setAttribute('aria-label',open?'종 목록·상세 접고 지도 보기':'종 목록·상세 펼치기');}
+}
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;
-  $('connection-state').textContent='자료를 불러오는 중';
-  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
+  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();setMapChip(null,'');lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
+  $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
+  $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('cmp-more').hidden=true;$('cmp-profile').innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';$('cmp-tray').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
-  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';
+  $('map-review-note').textContent='자료를 확인하는 중입니다.';$('value-cell-detail').textContent='';$('map-selected').textContent='';$('sheet-summary').textContent='';
   setMapLegend(null);
   $('score-disclaimer').textContent='자료를 불러오는 중입니다.';
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
@@ -2647,10 +3517,10 @@ async function loadCollection(){
     await attachPilotAssessments(next);
     if(request!==requestNumber)return;
     if(reloadOnceForNewData(next.outdated))return;
-    $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'. 연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
+    $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?'<strong>연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.</strong> '+(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';loadDone('empty');return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();renderCompare();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
     // Offline demo: the snapshot is the plan, not a failure, so its date stays in the status line without the alert.
@@ -2659,10 +3529,12 @@ async function loadCollection(){
     if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt&&!data.offline?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
+    // a dated snapshot or a newer data file is a status, not a failure: it moves from the banner into the yellow header chip
+    $('error').classList.toggle('in-chip',!$('error').hidden);updateStatusChips();
     toggleSimulation(false);updateWeightControl();
-    if(startHash){const h=startHash;startHash=null;if(h.s||h.v)applyHash(h);}
+    if(startHash){const h=startHash;startHash=null;if(h.s||h.v||h.w)applyHash(h);}
     loadDone(data.offline?'offline':data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
+  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('cmp-profile').innerHTML='<p class="cmp-error" role="alert">자료를 불러오지 못했습니다. 위의 ↻ 다시 불러오기를 눌러 주세요. 빈 결과가 아니라 연결 오류입니다.</p>';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
@@ -2674,13 +3546,40 @@ async function start(){
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
 // link. The tab is left out: loading never changes it, and one picked while a slow reload runs must not be undone.
+$('sheet-handle').addEventListener('click',()=>{
+  const open=$('sheet-handle').getAttribute('aria-expanded')==='true', smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+  scrollTo({top:open?0:scrollY+$('sheet-head').getBoundingClientRect().top,behavior:smooth});
+  setTimeout(sheetSync,smooth==='auto'?0:450);
+});
+addEventListener('scroll',()=>{if(!sheetSync.f)sheetSync.f=requestAnimationFrame(()=>{sheetSync.f=0;sheetSync();});},{passive:true});
+// the map's height changes across the 740px line: tell Leaflet
+globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();});
+// the folds (detail evidence, species filters) apply from 1281px only: re-sync when the window crosses that line
+globalThis.matchMedia?.('(min-width:1281px)').addEventListener?.('change',syncFolds);
+$('filter-toggle')?.addEventListener('click',()=>{filtersOpen=!filtersOpen;syncFolds();});
+syncFolds(); // fold the filters before the data arrives, so the list does not jump when it renders
+// From 1281px the occurrence key sits under the floating species list, which ends above it whatever the key's height (open,
+// folded to its button, details open, hidden in the value mode): theme.css reads --key-h.
+// 2026-10-13 design 2: the key is attached to the list (no gap) unless it is folded to its button.
+{const key=document.querySelector('.map-ui-bl');
+  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight,gap=key.classList.contains('legend-collapsed')&&$('value-key').hidden?12:0;$('explore').style.setProperty('--key-h',h?h+gap+'px':'0px');}).observe(key);}
+// From 741 to 1280px the summary chip sits under the mode and period bar, whatever its height (theme.css reads --tl-h).
+{const bar=document.querySelector('.map-ui-tl');
+  if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
+$('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+// method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
+document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
+  g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+$('notice-chip').addEventListener('click',()=>statusPop(openPop==='notice-pop'?null:'notice-pop'));
+$('alert-chip').addEventListener('click',()=>statusPop(openPop==='alert-pop'?null:'alert-pop'));
+$('alert-reload').addEventListener('click',()=>{statusPop(null);$('reload-data').click();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openPop){const chip=openPop==='notice-pop'?'notice-chip':'alert-chip';statusPop(null);$(chip).focus();}});
+document.addEventListener('click',e=>{if(openPop&&!e.target.closest('.status-chips'))statusPop(null);});
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
 document.querySelectorAll('[data-map-mode]').forEach(button=>button.addEventListener('click',()=>setMapMode(button.dataset.mapMode)));
 $('search').addEventListener('input',()=>{if(data)renderList();});
 for(const id of ['species-group','species-evidence'])$(id).addEventListener('change',()=>{if(data)renderList();});
-$('comparison-prev').addEventListener('click',()=>scrollComparison(-1));
-$('comparison-next').addEventListener('click',()=>scrollComparison(1));
 let comparisonFrame=0;const queueComparisonSync=()=>{if(data&&!comparisonFrame)comparisonFrame=requestAnimationFrame(()=>{comparisonFrame=0;syncComparison();});};
 $('comparison').addEventListener('scroll',queueComparisonSync,{passive:true});addEventListener('resize',queueComparisonSync);
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
@@ -2692,6 +3591,7 @@ document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
   b.addEventListener('blur',()=>dimTypes(null));
   b.addEventListener('click',e=>{
     const id=b.dataset.type;if(!id)return;
+    if(ownView()){valueView='all';typeFilter.clear();} // species view: open the all-species view on this type
     if(!typeFilter.delete(id))typeFilter.add(id);
     b.setAttribute('aria-pressed',String(typeFilter.has(id)));
     renderMap();if(e.pointerType==='mouse'||b.matches(':focus-visible'))dimTypes(id); // the redraw drops the hover dim
@@ -2701,10 +3601,46 @@ $('value-info').addEventListener('click',()=>setValueInfo($('value-legend').hidd
 document.addEventListener('click',e=>{if(!$('value-legend').hidden&&!$('value-mini').contains(e.target))setValueInfo(false);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('value-legend').hidden){setValueInfo(false);$('value-info').focus();}});
 for(const [id,layer] of [['layer-priority','priority'],['layer-unexplored','unexplored']])$(id).addEventListener('change',e=>{sufficiencyLayers[layer]=e.target.checked;if(data&&mapMode==='value')renderMap();});
-$('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').textContent=m;};
+$('copy-link').addEventListener('click',()=>{writeHash();const done=m=>{$('basemap-status').classList.remove('fallback');$('basemap-status').textContent=m;};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(location.href).then(()=>done('현재 화면 링크를 복사했습니다.'),()=>done('주소창의 링크를 복사하세요.'));else done('주소창의 링크를 복사하세요.');});$('reset-map').addEventListener('click',fitMap);$('go-compare').addEventListener('click',()=>setView('compare'));$('simulate').addEventListener('click',()=>toggleSimulation(!simulated));
-$('bbvi-weight').addEventListener('input',event=>{
-  bbviWeight=Number(event.target.value);$('bbvi-weight-value').textContent=bbviWeight.toFixed(2);
-  if(data){renderComparison();renderDetail();toggleSimulation(simulated);if(mapMode==='value')renderMap();} // cell types move with the weight
+$('bbvi-weight').addEventListener('input',event=>setBbviStep(event.target.value));
+// presets and '공식값으로' (the panel, the matrix and table badges, the value-map legend)
+document.addEventListener('click',e=>{const b=e.target.closest('[data-w-preset],[data-w-reset]');if(!b||b.disabled)return;
+  setBbviStep(b.dataset.wPreset??weightStep(officialWeight()));});
+// ---- 비교와 지표 controls (2026-10-12) ----
+document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.addEventListener('click',()=>setCompareMode(b.dataset.cmpMode)));
+document.querySelectorAll('[data-cmp-group]').forEach(b=>b.addEventListener('click',()=>setCompareFilter({group:b.dataset.cmpGroup})));
+$('cmp-search').addEventListener('input',e=>setCompareFilter({q:e.target.value.trim().toLowerCase()}));
+$('cmp-filter-note').addEventListener('click',e=>{if(e.target.closest('[data-cmp-clear]')){setCompareFilter({q:'',group:'all'});$('cmp-search').focus();}});
+$('cmp-basis-toggle').addEventListener('click',()=>setBasisPop($('cmp-basis-pop').hidden));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-basis-pop').hidden){setBasisPop(false);$('cmp-basis-toggle').focus();}});
+document.addEventListener('click',e=>{if(!$('cmp-basis-pop').hidden&&!e.target.closest('.cmp-basis'))setBasisPop(false);});
+$('cmp-read-toggle').addEventListener('click',()=>setReadPop($('cmp-read-pop').hidden));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-read-pop').hidden){setReadPop(false);$('cmp-read-toggle').focus();}});
+document.addEventListener('click',e=>{if(!$('cmp-read-pop').hidden&&!e.target.closest('.cmp-read'))setReadPop(false);});
+// the group list: a row picks the species (it leaves the box and gets its label), then focus goes to its point
+$('matrix-cluster-pop').addEventListener('click',e=>{const b=e.target.closest('button[data-aphia]');if(!b)return;pickCompare(Number(b.dataset.aphia));
+  $('matrix-points').querySelector('.matrix-point[aria-current="true"]')?.focus({preventScroll:true});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('matrix-cluster-pop').hidden)closeClusterPop(true);});
+document.addEventListener('click',e=>{if(!$('matrix-cluster-pop').hidden&&!e.target.closest('#matrix-cluster-pop,.matrix-cluster-btn'))closeClusterPop(false);});
+// one listener per region: the profile and the tray redraw their buttons
+$('cmp-profile').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||!selected)return;
+  if(b.id==='cmp-add'){if(!toggleBasket(selected.aphiaID))$('cmp-add-note').textContent='최대 3종까지 담을 수 있습니다. 아래에서 한 종을 빼 주세요.';else $('cmp-add').focus();return;}
+  if(b.id==='cmp-open-more'){$('cmp-more').hidden?showCompareMore():closeDecision();return;}
+  if(b.dataset.profAxis)openEvidence(selected.aphiaID,b.dataset.profAxis,`#cmp-profile [data-prof-axis="${b.dataset.profAxis}"]${b.classList.contains('cp-sub-num')?'.cp-sub-num':b.classList.contains('cp-sub-name')?'.cp-sub-name':''}`);
 });
+$('cmp-tray').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.basketRemove){const i=cmpBasket.indexOf(Number(b.dataset.basketRemove));toggleBasket(b.dataset.basketRemove);
+    ($('cmp-tray').querySelectorAll('.ct-x')[Math.min(i,cmpBasket.length-1)]||$('cmp-tray').querySelector('.ct-add')||$('cmp-add'))?.focus();return;}
+  if(b.hasAttribute('data-basket-add')){if(selected&&!cmpBasket.includes(selected.aphiaID)){toggleBasket(selected.aphiaID);$('cmp-tray').querySelector('.ct-add,.ct-x')?.focus();}else $('cmp-search').focus();return;}
+  if(b.classList.contains('ct-toggle')){const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));$('cmp-tray').classList.toggle('open',open);return;}
+  if(b.id==='cmp-compare-go'&&!openCompareDialog())$('cmp-go-note').textContent='2종 이상 담으면 비교할 수 있습니다. 종 상세의 ‘+ 비교 담기’를 눌러 주세요.';
+});
+$('cmp-dialog').querySelector('.cmp-dialog-close').addEventListener('click',()=>$('cmp-dialog').close());
+$('cmp-dialog').addEventListener('click',e=>{if(e.target===$('cmp-dialog'))$('cmp-dialog').close();}); // the backdrop
+$('cmp-dialog').addEventListener('close',()=>{if(currentView==='compare')$('cmp-compare-go')?.focus();});
+// a row's species name in the table picks it too (the value buttons keep opening their evidence)
+$('comparison').addEventListener('click',e=>{const th=e.target.closest('tbody tr.cmp-row th');if(th)pickCompare(Number(th.parentElement.dataset.aphia));});
 start();

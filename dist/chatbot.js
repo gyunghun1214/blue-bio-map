@@ -1,6 +1,6 @@
 'use strict';
 // 사용법 안내 챗봇(FAQ만). 서버가 없으므로 AI 답변은 하지 않는다.
-// 답변 속 {tab:id}·{type:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
+// 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
 // 화면 이동은 상태를 직접 바꾸지 않고 기존 버튼을 .click()해서 앱의 처리 로직을 그대로 탄다.
 // app.js와 같은 전역 렉시컬 범위를 쓰므로 최상위 이름은 모두 CHATBOT_/chatbot 접두어를 붙인다.
 const CHATBOT_FAQ=[
@@ -10,44 +10,48 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="explore"]'],target:'.tabs'},next:['map-modes','colors','indices']},
   {id:'map-modes',q:['출현 기록과 활용 × 보전 모드는 뭐가 달라요','지도 모드 바꾸기','출현 기록 모드는 뭐예요'],
     k:['모드','출현기록','활용보전','왼쪽위','지도내용','전환'],
-    a:'지도 왼쪽 위에서 ‘출현 기록’과 ‘활용 × 보전’을 바꿀 수 있어요. ‘출현 기록’은 선택한 종의 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주고, ‘활용 × 보전’은 출현기록이 있는 셀을 4가지 유형 색으로 칠해요.',
+    a:'지도 아래쪽 가운데(좁은 화면에서는 지도 왼쪽 위)에서 ‘출현 기록’과 ‘활용 × 보전’을 바꿀 수 있어요. ‘출현 기록’은 선택한 종의 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주고, ‘활용 × 보전’은 먼저 선택한 종의 셀만 그 종의 유형 색으로 칠해요. 범례 줄의 ‘모든 종 겹쳐 보기’를 누르면 모든 종의 셀을 4가지 유형 색으로 겹쳐 볼 수 있어요.',
     show:{click:['[data-view="explore"]'],target:'.map-mode'},next:['colors','red-dots']},
   {id:'colors',q:['색깔(4가지 유형)은 무슨 뜻이에요?','셀 색이 무슨 의미예요','네 가지 유형이 뭐예요','회색 셀은 뭐예요','점선 테두리는 뭐예요'],
     k:['색','색깔','유형','4가지','네가지','회색','점선','셀색','범례'],
-    a:'‘활용 × 보전’에서는 셀을 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형 색으로 칠해요. {rule} 셀 색은 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나이고, 해역의 자원량이나 해역 점수가 아니에요. 유형이 섞인 셀은 촘촘한 점선 테두리, 회색은 ‘유형 없음’(BBVI·MCUI 한 쌍이 없음)이에요.',
-    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['mini-grid','sea-score']},
+    a:'‘활용 × 보전’의 색은 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형이에요. {rule} 처음 보기에서는 선택한 종의 셀만 그 종의 유형 색(같은 색 점선 테두리)으로 칠하고, ‘모든 종 겹쳐 보기’에서는 셀 색이 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나예요. 어느 쪽도 해역의 자원량이나 해역 점수가 아니에요. 겹쳐 보기에서 유형이 섞인 셀은 촘촘한 점선 테두리이고, 회색은 ‘유형 없음’(BBVI·MCUI 한 쌍이 없음)이에요.',
+    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['verdict','mini-grid']},
+  {id:'verdict',q:['‘써도 됨’은 무슨 뜻이에요?','지켜야 함은 채집하면 안 된다는 뜻인가요','카드의 판단문은 어떻게 정해요'],
+    k:['써도됨','지켜야함','더알아봐야','키워서써야','판단문','권고','채집'],
+    a:'종 카드와 근거 패널의 {plain:high_bbvi_low_mcui}, {plain:low_bbvi_low_mcui}, {plain:high_bbvi_high_mcui}, {plain:low_bbvi_high_mcui}은 네 유형 {type:high_bbvi_low_mcui}, {type:low_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}을 짧게 줄인 연구용 요약이에요. 채집하거나 이용해도 된다는 권고가 아니에요. {rule} 두 값이 한 쌍으로 없는 종은 ‘유형 없음’이에요.',
+    show:{click:['[data-view="explore"]'],target:'#species-list'},next:['colors','indices']},
   {id:'mini-grid',q:['오른쪽 위 2×2 아이콘은 뭐예요','사분면 아이콘 사용법','한 유형만 보고 싶어요','ⓘ 버튼은 뭐예요'],
     k:['2×2','2x2','사분면','아이콘','ⓘ','한유형만','유형만','오른쪽위'],
-    a:'‘활용 × 보전’ 모드에서는 오른쪽 위 ‘위성’·‘수심’ 버튼 아래에 2×2 아이콘이 나와요. 칸에 마우스를 올리면 유형 이름이 뜨고, 누르면 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ⓘ를 누르면 자세한 범례와 ‘우선 조사 대상’·‘미탐색 후보’ 체크박스가 나와요.',
+    a:'‘활용 × 보전’ 모드에서는 오른쪽 위 ‘위성’·‘수심’ 버튼 아래에 2×2 아이콘이 나와요. 칸마다 짧은 유형 이름과 지금 칠한 셀 수가 적혀 있어요(처음 보기에서는 선택한 종의 유형 칸에만 수가 있어요). 마우스를 올리면 전체 유형 이름이 뜨고, 누르면 ‘모든 종 겹쳐 보기’에서 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ⓘ를 누르면 자세한 범례와 ‘우선 조사 대상’·‘미탐색 후보’ 체크박스가 나와요.',
     show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['sufficiency','unexplored']},
-  {id:'chips',q:['신약·식량 특성으로 종 찾기','활용 특성 칩은 어떻게 써요','식량으로 쓸 수 있는 종만 보고 싶어요','칩을 여러 개 켜면 어떻게 돼요','결과가 하나도 없어요'],
-    k:['칩','신약','식량','활용특성','특성','찾기','필터','결과없'],
-    a:'왼쪽 ‘탐색 후보’ 목록 위의 활용 특성 칩(신약·식량)을 켜면 그 특성의 근거가 채택된 종만 남아요. 여러 개를 켜면 모두 만족하는 종만 남아요. 결과가 없으면 안내에 나오는 ‘끄기’ 버튼으로 칩 하나를 꺼 보세요.',
-    show:{click:['[data-view="explore"]'],target:'#use-chips'},next:['select-species','compare']},
+  {id:'chips',q:['신약·기능성·식량 특성으로 종 찾기','신약·식량 특성으로 종 찾기','활용 특성 칩은 어떻게 써요','식량으로 쓸 수 있는 종만 보고 싶어요','칩을 여러 개 켜면 어떻게 돼요','결과가 하나도 없어요'],
+    k:['칩','신약','기능성','식량','활용특성','특성','찾기','필터','결과없'],
+    a:'왼쪽 ‘탐색 후보’ 목록 위의 활용 특성 칩(신약·기능성(식품 소재)·식량 세 줄, 넓은 화면에서는 ‘필터 더 보기’ 안)을 켜면 그 특성의 근거가 채택된 종만 남아요. 혈압(ACE 저해)과 항산화는 식품 기능성 성격이라 ‘기능성(식품 소재)’ 줄에 있어요. 여러 개를 켜면 모두 만족하는 종만 남아요. 결과가 없으면 안내에 나오는 ‘끄기’ 버튼으로 칩 하나를 꺼 보세요.',
+    show:{click:['[data-view="explore"]','#filter-toggle'],target:'#use-chips'},next:['select-species','compare']},
   {id:'select-species',q:['종을 골라서 지도에서 보기','종 선택은 어떻게 해요','특정 종을 검색하고 싶어요','종 카드를 누르면 어떻게 돼요'],
     k:['종선택','고르','골라','검색','카드','학명','종이름','탐색후보'],
-    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 근거 패널이 그 종으로 바뀌어요. 검색창에 종 이름이나 학명을 넣거나 분류군·근거 상태로 좁힐 수 있어요. ‘활용 × 보전’ 모드에서는 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, 선택한 종의 셀은 굵은 실선 테두리로 보여요.',
+    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 근거 패널이 그 종으로 바뀌어요. 검색창에 종 이름이나 학명을 넣거나 분류군·근거 상태(넓은 화면에서는 ‘필터 더 보기’ 안)로 좁힐 수 있어요. ‘활용 × 보전’에서는 처음에 선택한 종의 셀만 그 종의 유형 색으로 칠하고, 다른 카드를 누르면 그 종으로 다시 칠해요. 다른 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, ‘모든 종 겹쳐 보기’에서는 선택한 종의 셀이 노란 굵은 실선 테두리로 보여요.',
     show:{click:['[data-view="explore"]'],target:'#species-list'},next:['cell-click','compare']},
   {id:'cell-click',q:['셀을 누르면 뭐가 나와요','격자를 클릭하면 어떻게 돼요','확인 종 활용 가능 종 숫자는 뭐예요'],
     k:['셀','격자','클릭','누르면','확인종','활용가능종','보전우선종','근거부족종'],
     a:'지도의 셀을 누르면 그 격자의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수와 종 이름이 나와요. 이 수는 종별 지표로 센 것이고, 셀이나 해역에 매긴 점수가 아니에요.',
     show:{click:['[data-view="explore"]'],target:'#map'},next:['sea-score','colors']},
   {id:'compare',q:['종끼리 비교하기','여러 종을 비교하고 싶어요','비교표는 어떻게 봐요','근거 보기 버튼은 뭐예요'],
-    k:['비교','비교표','나란히','근거보기','지도셀목록','이전','다음','가로스크롤'],
-    a:'{tab:compare} 탭의 종 비교표(‘무엇을 알고, 무엇이 부족한가’)에서 모든 종을 나란히 볼 수 있어요. 왼쪽 확인 항목 열은 고정되고 종 열은 가로로 스크롤되며, ‘이전’·‘다음’ 버튼은 한 화면씩 넘겨요. 칸의 ‘근거 보기’를 누르면 그 종의 근거 패널이, ‘지도·셀 목록 보기’를 누르면 그 종의 지도 셀이 열려요.',
-    show:{click:['[data-view="compare"]'],target:'#comparison'},next:['matrix','labels']},
+    k:['비교','비교표','데이터표','나란히','근거보기','지도셀목록','정렬','자세히','이전','다음','가로스크롤','담기','선택한생물'],
+    a:'{tab:compare} 탭 위쪽의 ‘데이터 표’를 누르면 모든 종을 한 표에서 나란히 볼 수 있어요. 매트릭스에서 고른 종을 ‘+ 비교 담기’로 3종까지 담아 ‘선택한 생물 비교하기’로 볼 수도 있어요. 한 행이 한 종이고, 지표 머리글을 누르면 높은 순·낮은 순으로 정렬돼요(한 번 더 누르면 기본 순서). 값 칸을 누르면 그 종의 근거 패널이, ‘지도·셀 목록 보기’를 누르면 그 종의 지도 셀이 열려요. 비교집단·MCUI 기반 같은 긴 설명은 행 끝 ‘자세히’에서 펼쳐요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['matrix','labels']},
   {id:'matrix',q:['활용 × 보전 매트릭스는 뭐예요','매트릭스 점은 어떻게 읽어요','왜 두 지표를 합치지 않나요'],
     k:['매트릭스','합치지','따로','두축'],
-    a:'{tab:compare} 탭의 ‘활용 × 보전 매트릭스’는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 합치지 않아요. 활용가치가 높다고 보전 필요성이 가려지면 안 되기 때문이에요.',
-    show:{click:['[data-view="compare"]'],target:'#matrix'},next:['indices','colors']},
+    a:'{tab:compare} 탭 첫 화면의 ‘활용 × 보전’ 매트릭스는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 합치지 않아요. 활용가치가 높다고 보전 필요성이 가려지면 안 되기 때문이에요. 사분면마다 쉬운 이름과 공식 유형 이름이 함께 적혀 있어요. 점 색은 그 종의 유형 색이고, 속이 빈 점은 근거 논문 1편 라벨이 붙은 값이에요. 한 줄에 몰린 점들은 ‘N종 밀집 · 펼치기’ 상자로 묶여 있고, 누르면 그 종 목록이 열려요. 나머지 같은 높이 점은 위아래로 조금 비켜 놓고 짧은 선으로 실제 높이를 가리켜요. 읽는 법은 그래프 오른쪽 위 ‘ⓘ 읽는 법’ 버튼에 있어요. MCUI 기반(국가 평가·지방 목록·자체 예비평가)은 점 툴팁과 그래프 아래 ‘유형별 종 목록’에서 볼 수 있고, 이 목록으로 색 없이도 같은 내용을 읽을 수 있어요. 점을 누르면 오른쪽 종 프로필에 그 종의 값과 라벨이 나와요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['indices','colors']},
   {id:'indices',q:['BBVI·MCUI·정보충분도가 뭔가요?','지표가 뭐예요','점수는 어떻게 매겨요'],
     k:['지표','bbvi','mcui','정보충분도','점수','약어'],
     a:'BBVI(활용가치)는 식량 지표 MFPI와 신약 지표 MBPI를 합친 값이고, MCUI(보전 시급성)는 보전 평가 범주를 점수로 옮긴 값이에요(공식 평가가 없으면 자체 예비평가). 두 값은 합치지 않고 따로 보여 줘요. 정보충분도는 자료가 얼마나 갖춰졌는지 보여 주는 별도 표시로, 점수와 섞지 않아요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
     show:{click:['[data-view="method"]'],target:'.method-grid'},next:['mfpi','mbpi','mcui']},
   {id:'bbvi',q:['BBVI는 어떻게 계산해요','활용가치는 뭐예요','식량 가중치 슬라이더는 뭐예요'],
     k:['bbvi','활용가치','가중치','슬라이더','통합'],
-    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(신약)를 합친 값이에요. {tab:compare} 탭의 ‘기본 통합 BBVI 식량 가중치’ 슬라이더로 두 축의 비중을 바꿔 볼 수 있어요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
-    show:{click:['[data-view="compare"]'],target:'.weight-control'},next:['mfpi','mbpi']},
+    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(신약)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 가중치 슬라이더와 프리셋(신약 중심·균형·식량 중심)으로 두 축의 비중을 바꿔 볼 수 있어요. 공식 산출값의 가중치는 고정이고, 바꾼 값은 ‘탐색 보기’ 표시와 함께 공식값을 나란히 보여 줘요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]','#cmp-basis-toggle'],target:'.weight-control'},next:['mfpi','mbpi']},
   {id:'mfpi',q:['MFPI는 뭐예요','식량 지표는 어떻게 매겨요','EPA DHA는 점수에 들어가요'],
     k:['mfpi','식량지표','영양','식품성분','epa','dha','ufish'],
     a:'MFPI(식량 지표)는 국가표준식품성분 DB 10.4의 고정 비교집단과 견줘 매긴 값이에요. 빠진 성분은 같은 종 부표본이나 FAO/INFOODS uFiSh 값으로 채우고 표시해요. EPA·DHA는 보여 주기만 하고 점수에는 넣지 않아요.',
@@ -67,7 +71,7 @@ const CHATBOT_FAQ=[
   {id:'labels',q:['값 옆의 라벨은 무슨 뜻이에요','근거 논문 1편 하한값 라벨이 뭐예요','지방 목록 예비평가 라벨'],
     k:['라벨','단일논문','하한값','예비평가','지방목록'],
     a:'값 옆의 라벨(근거 논문 1편·하한값·예비평가·지방 목록)은 근거의 수준을 알려 주는 표시이고, 가치가 높고 낮음을 뜻하지 않아요. 규칙을 다 채우지 못한 값에 붙어요.',
-    show:{click:['[data-view="compare"]'],target:'#comparison'},next:['validation','compare']},
+    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['validation','compare']},
   {id:'sufficiency',q:['정보충분도는 뭐예요','우선 조사 대상은 뭐예요','우선 조사 체크박스는 뭐예요'],
     k:['정보충분도','우선조사','조사대상','충분도','자료부족'],
     a:'정보충분도는 지표에 필요한 자료가 얼마나 갖춰졌는지 보여 주는 표시예요. ‘우선 조사 대상’은 정보충분도가 낮거나 보전 평가가 없는 종으로, 2×2 아이콘의 ⓘ 범례에서 체크박스로 지도에 켤 수 있어요. 둘 다 점수와 섞지 않는 별도 표시예요.',
@@ -78,7 +82,7 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="explore"]','[data-map-mode="value"]','#value-info'],target:'.value-layers'},next:['sufficiency','bbvi']},
   {id:'period-effort',q:['기간 필터는 뭐예요','회색 음영 조사량은 뭐예요','점이 없는 바다는 종이 없는 건가요'],
     k:['기간','조사량','음영','회색음영','조사가부족','없는바다'],
-    a:'지도 왼쪽 위의 기간 버튼은 기록을 모은 기간이 여러 개인 종을 기간별로 나눠 볼 때 써요. 회색 음영 ‘조사량’은 그 바다가 얼마나 조사됐는지 보여 주며, 이 종의 기록 수와는 관계없어요. 음영이 옅은 바다에 점이 없다면 종이 없어서가 아니라 조사가 부족해서일 수 있어요.',
+    a:'기간 버튼은 ‘출현 기록’·‘활용 × 보전’ 버튼 바로 위(좁은 화면에서는 바로 아래)에 나오고, 기록을 모은 기간이 여러 개인 종을 기간별로 나눠 볼 때 써요. 회색 음영 ‘조사량’은 그 바다가 얼마나 조사됐는지 보여 주며, 이 종의 기록 수와는 관계없어요. 처음 화면에서는 꺼져 있고, 지도 왼쪽 아래 범례의 ‘조사량’ 칸을 켜면 보여요. 음영이 옅은 바다에 점이 없다면 종이 없어서가 아니라 조사가 부족해서일 수 있어요.',
     show:{click:['[data-view="explore"]','[data-map-mode="occurrence"]'],target:'#occurrence-legend'},next:['red-dots','map-modes']},
   {id:'map-buttons',q:['위성 수심 배경 바꾸기','링크 복사는 뭐예요','전체 보기 버튼','확대 축소는 어떻게 해요'],
     k:['위성','수심','배경','링크복사','공유','전체보기','확대','축소'],
@@ -95,9 +99,13 @@ const CHATBOT_FAQ=[
   {id:'sources',q:['자료 출처는 어디예요','종과 화합물은 어떻게 연결해요','AphiaID는 뭐예요'],
     k:['출처','자료','데이터','aphiaid','worms','inchikey','pubchem','연결'],
     a:'종은 WoRMS AphiaID로, 화합물은 InChIKey·PubChem CID로 연결해요. 사용한 자료 목록은 {tab:method} 탭 아래 ‘사용한 자료와 수집 방법’에 있어요.',
-    show:{click:['[data-view="method"]'],target:'.source-section'},next:['validation','overview']}
+    show:{click:['[data-view="method"]'],target:'.source-section'},next:['validation','overview']},
+  {id:'move-mascot',q:['멍이가 화면을 가려요','멍이 위치 옮기기','멍이 버튼을 다른 곳으로 옮기고 싶어요'],
+    k:['멍이','옮기','옮겨','가려','가리','끌어','드래그'],
+    a:'멍이 버튼을 누른 채 끌면 원하는 자리로 옮길 수 있어요. 놓은 자리는 이 브라우저에 기억되고, 대화창 위의 ‘멍이 원래 자리로’를 누르면 처음 자리로 돌아가요.',
+    next:['overview']}
 ];
-const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colors','색깔(4가지 유형)은 무슨 뜻이에요?'],['chips','신약·식량 특성으로 종 찾기'],
+const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colors','색깔(4가지 유형)은 무슨 뜻이에요?'],['chips','신약·기능성·식량 특성으로 종 찾기'],
   ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI·정보충분도가 뭔가요?']];
 const CHATBOT_PARTICLES=['으로','에서','이랑','하고','까지','부터','한테','은','는','이','가','을','를','의','에','로','도','요','와','과','만'];
 // 소문자 → 낱말마다 끝 조사 하나 제거(조사보다 2글자 이상 긴 낱말만) → 공백·문장부호 없이 이어 붙임.
@@ -113,6 +121,11 @@ function chatbotSimilar(a,b){
 // 점수 = 가장 비슷한 질문 예시(바이그램 Dice) + 들어 있는 키워드 수 × 0.3. 기준 미달이면 null(모르겠어요).
 // ponytail: 단순 바이그램·키워드 일치. 항목이 수백 개로 늘거나 오답이 잦으면 가중치 학습이나 AI 연결을 검토.
 const CHATBOT_MIN_SCORE=.45;
+// {plain:<사분면 키>}: 판단문(유형 앞의 짧은 말)은 app.js의 matrixTypePlain 한 곳에서 읽는다. 읽을 수 없으면 카드를 보라고 안내.
+function chatbotPlain(key){
+  try{const id=typeof matrixRule==='function'?matrixRule()?.types?.[key]?.id:null;if(id&&typeof matrixTypePlain==='function')return matrixTypePlain(id);}catch{}
+  return '종 카드에 적힌 판단문';
+}
 function chatbotMatch(text){
   const q=chatbotNormalize(text);if(q.length<2)return null;
   let best=null,top=0;
@@ -127,43 +140,94 @@ function chatbotMatch(text){
 
 // 안내 캐릭터 '멍이'(멍게 연구원) SVG. 상태: welcome·answer·think·ai·point·unknown·rest. crop이면 바위 없이 몸·입출수공만(아바타용).
 // 입수공 +, 출수공 −는 실제 멍게(Halocynthia roretzi) 모양. 색은 몸 주황 + 앱 남색(--navy)·청록(--teal) 출입증.
+// 움직이는 부위는 <g>로 묶는다(chatbot.css의 bbc-m-*): 몸 전체 all 안에 입수공 sL·출수공 sR·몸통 body·눈 look>eyes·입 mouth·덧그림(땀·안경).
+// 거품·물방울·물줄기·Z는 몸 밖. svg의 상태 클래스(bbc-m-think 등)로 CSS가 상태별 움직임을 고른다. 잘 모르겠어요의 처진 수공도 CSS.
+// face: 'smile'이면 눈·입만 welcome의 것으로(깡충 인사·다 말했어요), 'talk'이면 입만 열린 입으로(말하기). 없으면 상태 그림 그대로.
 const CHATBOT_MASCOT_STATES={welcome:{e:'happy',m:'open',x:'bub'},answer:{e:'n',m:'smile'},think:{e:'up',m:'o',x:'think'},
-  ai:{e:'n',m:'flat',x:'glasses'},point:{e:'right',m:'smile',x:'jet'},unknown:{e:'small',m:'wavy',x:'sweat',droop:1},rest:{e:'sleep',m:'flat',x:'z'}};
-function chatbotMascot(state,size,crop){
+  ai:{e:'n',m:'flat',x:'glasses'},point:{e:'right',m:'smile',x:'jet'},unknown:{e:'small',m:'wavy',x:'sweat'},rest:{e:'sleep',m:'flat',x:'z'}};
+function chatbotMascot(state,size,crop,face){
   const C={body:'#F2734B',dark:'#D9532C',light:'#F9A27F',hole:'#7A2614',navy:'#0b1b2b',cheek:'#FF8E7A',teal:'#0b7a74',rock:'#9DB2C0',water:'#5FB3C9'};
-  const s=CHATBOT_MASCOT_STATES[state]||CHATBOT_MASCOT_STATES.answer;
+  const key=CHATBOT_MASCOT_STATES[state]?state:'answer',s=CHATBOT_MASCOT_STATES[key];
   const bumps=[[30,70,3],[27,90,3.4],[38,102,3],[90,68,3],[93,90,3.4],[82,103,3],[60,47,2.4],[46,51,2.3],[74,51,2.3],[34,82,2.1],[86,80,2.1],[60,106,2.2]];
   const eye=(dx,dy,r)=>[48,72].map(x=>`<circle cx="${x+dx}" cy="${74+dy}" r="${r}" fill="${C.navy}"/><circle cx="${x+dx+1.5}" cy="${72.4+dy}" r="1.5" fill="#fff"/>`).join('');
   const arc=(y1,y2,w)=>[48,72].map(x=>`<path d="M${x-4.5} ${y1} Q${x} ${y2} ${x+4.5} ${y1}" stroke="${C.navy}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`).join('');
-  const eyes={happy:arc(75.5,69.5,2.6),sleep:arc(74,77.5,2.4),up:eye(0,-2,4.6),right:eye(2,0,4.6),small:eye(0,0,3.8),n:eye(0,0,4.6)}[s.e];
+  const eyes={happy:arc(75.5,69.5,2.6),sleep:arc(74,77.5,2.4),up:eye(0,-2,4.6),right:eye(2,0,4.6),small:eye(0,0,3.8),n:eye(0,0,4.6)}[face==='smile'?'happy':s.e];
   const mouth={open:`<path d="M54.5 81.5 Q60 90.5 65.5 81.5 Z" fill="${C.hole}"/>`,
     smile:`<path d="M55 82.5 Q60 87 65 82.5" stroke="${C.navy}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`,
     o:`<ellipse cx="60" cy="84.5" rx="2.4" ry="2.8" fill="${C.navy}"/>`,
     flat:`<path d="M56.5 84 L63.5 84" stroke="${C.navy}" stroke-width="2.2" stroke-linecap="round"/>`,
-    wavy:`<path d="M54 85 Q57 82 60 85 Q63 88 66 85" stroke="${C.navy}" stroke-width="2" fill="none" stroke-linecap="round"/>`}[s.m];
+    wavy:`<path d="M54 85 Q57 82 60 85 Q63 88 66 85" stroke="${C.navy}" stroke-width="2" fill="none" stroke-linecap="round"/>`}[face==='smile'||face==='talk'?'open':s.m];
   const siphon=left=>{
     const [x,top,base]=left?[42,18,50]:[78,22,48];
-    const t=s.droop?` transform="rotate(${left?-16:16} ${x} ${base})"`:'';
     const hole=left?`<path d="M${x} ${top+.6} V${top+5.4} M${x-3} ${top+3} H${x+3}" stroke="${C.hole}" stroke-width="1.7" stroke-linecap="round"/>`
       :`<path d="M${x-3.2} ${top+3} H${x+3.2}" stroke="${C.hole}" stroke-width="1.8" stroke-linecap="round"/>`;
-    return `<g${t}><path d="M${x-7} ${base} L${x-8} ${top+4} Q${x-8} ${top} ${x} ${top} Q${x+8} ${top} ${x+8} ${top+4} L${x+7} ${base} Z" fill="${C.body}"/><ellipse cx="${x}" cy="${top+3}" rx="8" ry="3.6" fill="${C.light}"/>${hole}</g>`;
+    return `<g class="bbc-m-${left?'sL':'sR'}"><path d="M${x-7} ${base} L${x-8} ${top+4} Q${x-8} ${top} ${x} ${top} Q${x+8} ${top} ${x+8} ${top+4} L${x+7} ${base} Z" fill="${C.body}"/><ellipse cx="${x}" cy="${top+3}" rx="8" ry="3.6" fill="${C.light}"/>${hole}</g>`;
   };
-  const b=(x,y,r,cls)=>`<circle${cls?` class="${cls}"`:''} cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".75" stroke="${C.water}" stroke-width="1.3"/>`;
-  const extra={bub:b(36,8,3)+b(31,-2,2.2),
-    think:b(43,8,2.4,'bbc-rise')+b(40,-2,3.2,'bbc-rise')+b(45,-12,3.8,'bbc-rise'),
-    glasses:[48,72].map(x=>`<circle cx="${x}" cy="74" r="7.4" fill="#fff" fill-opacity=".22" stroke="${C.navy}" stroke-width="1.7"/>`).join('')+`<path d="M55.4 73.5 Q60 71.5 64.6 73.5" stroke="${C.navy}" stroke-width="1.7" fill="none"/>`,
-    jet:`<path class="bbc-jet" d="M84 23 Q98 6 113 16" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M108 11 L115 17 L106 19" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
-    sweat:`<path d="M90 54 Q86 61 90 63.5 Q94 61 90 54 Z" fill="#8FD3E8" stroke="${C.water}" stroke-width="1"/>`,
-    z:`<circle cx="96" cy="10" r="9" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M92.5 6.5 H99.5 L92.5 13.5 H99.5" stroke="${C.navy}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`}[s.x]||'';
-  return `<svg class="bbc-mascot" width="${size}" height="${size}" viewBox="${crop?'8 12 104 104':'0 -18 120 146'}" aria-hidden="true" focusable="false">`+
-    (crop?'':`<ellipse cx="60" cy="114" rx="44" ry="8" fill="${C.rock}"/>`)+siphon(true)+siphon(false)+
-    `<path d="M24 112 C13 92 14 56 34 44 C46 37 74 37 86 44 C106 56 107 92 96 112 Z" fill="${C.body}"/>`+
+  const b=(x,y,r,cls,w)=>`<circle${cls?` class="${cls}"`:''} cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".75" stroke="${C.water}" stroke-width="${w||1.3}"/>`;
+  // crop(아바타)에서는 viewBox 위 끝이 y 12라 원래 자리(y 10 위)의 거품·Z가 잘린다: 출수공 위·오른쪽 위 안쪽으로 옮기고 키운다.
+  const over={glasses:[48,72].map(x=>`<circle cx="${x}" cy="74" r="7.4" fill="#fff" fill-opacity=".22" stroke="${C.navy}" stroke-width="1.7"/>`).join('')+`<path d="M55.4 73.5 Q60 71.5 64.6 73.5" stroke="${C.navy}" stroke-width="1.7" fill="none"/>`,
+    sweat:`<path class="bbc-m-sweat" d="M90 54 Q86 61 90 63.5 Q94 61 90 54 Z" fill="#8FD3E8" stroke="${C.water}" stroke-width="1"/>`}[s.x]||'';
+  const out={bub:b(36,8,3)+b(31,-2,2.2),
+    think:crop?b(84,25,2.8,'bbc-rise',1.5)+b(91,19,3.6,'bbc-rise',1.5)+b(99,16,4.3,'bbc-rise',1.6):b(43,8,2.4,'bbc-rise')+b(40,-2,3.2,'bbc-rise')+b(45,-12,3.8,'bbc-rise'),
+    jet:`<g class="bbc-m-jet"><path class="bbc-jet" d="M84 23 Q98 6 113 16" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M108 11 L115 17 L106 19" stroke="${C.water}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+    z:crop?`<circle cx="100" cy="26" r="7.5" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M97.1 23.1 H102.9 L97.1 28.9 H102.9" stroke="${C.navy}" stroke-width="1.7" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`
+      :`<circle cx="96" cy="10" r="9" fill="#fff" fill-opacity=".85" stroke="${C.water}" stroke-width="1.3"/><path d="M92.5 6.5 H99.5 L92.5 13.5 H99.5" stroke="${C.navy}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`}[s.x]||'';
+  // 가만히 있을 때 출수공 위로 떠오르는 물방울(C). CSS가 움직일 때만 보이게 한다.
+  const drop=['welcome','answer','ai'].includes(key)?b(79,crop?24:18,crop?3.6:2.6,'bbc-m-drop',crop?1.5:1.3):'';
+  return `<svg class="bbc-mascot bbc-m-${key}${crop?' bbc-m-crop':''}" width="${size}" height="${size}" viewBox="${crop?'8 12 104 104':'0 -18 120 146'}" aria-hidden="true" focusable="false">`+
+    (crop?'':`<ellipse cx="60" cy="114" rx="44" ry="8" fill="${C.rock}"/>`)+
+    '<g class="bbc-m-all">'+siphon(true)+siphon(false)+
+    '<g class="bbc-m-body">'+`<path d="M24 112 C13 92 14 56 34 44 C46 37 74 37 86 44 C106 56 107 92 96 112 Z" fill="${C.body}"/>`+
     `<ellipse cx="42" cy="58" rx="8" ry="4.5" fill="${C.light}" opacity=".75" transform="rotate(-24 42 58)"/>`+
     bumps.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${C.dark}"/>`).join('')+
     `<ellipse cx="39" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/><ellipse cx="81" cy="83" rx="5" ry="3" fill="${C.cheek}" opacity=".55"/>`+
-    eyes+mouth+
-    `<path d="M51 95 L60 90.5 L69 95" stroke="${C.teal}" stroke-width="1.6" fill="none"/><rect x="52.5" y="94.5" width="15" height="10.5" rx="2.2" fill="${C.teal}"/><path d="M55.5 100.5 q2.2 -2.2 4.5 0 t4.5 0" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/>`+
-    extra+'</svg>';
+    `<path d="M51 95 L60 90.5 L69 95" stroke="${C.teal}" stroke-width="1.6" fill="none"/><rect x="52.5" y="94.5" width="15" height="10.5" rx="2.2" fill="${C.teal}"/><path d="M55.5 100.5 q2.2 -2.2 4.5 0 t4.5 0" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></g>`+
+    `<g class="bbc-m-look"><g class="bbc-m-eyes">${eyes}</g></g><g class="bbc-m-mouth">${mouth}</g>`+over+'</g>'+
+    out+drop+'</svg>';
+}
+
+// 멍이 여는 버튼 옮기기(끌기). 계산만 여기 두고 화면 부분이 부른다. 좌표는 화면(뷰포트) 왼쪽 위 기준 px.
+// view={w,h,inset:{top,right,bottom,left}}: inset은 노치·홈 막대(safe-area) 여백.
+const CHATBOT_DRAG={mouse:6,touch:10,margin:8,gap:12,minPanel:260};
+// 누른 점에서 문턱값보다 많이 움직여야 끌기. 그 전에 떼면 누르기(열기/닫기). 손가락은 흔들림이 커서 문턱이 높다.
+function chatbotDragStarted(dx,dy,pointerType){
+  return Math.hypot(dx,dy)>(pointerType==='mouse'?CHATBOT_DRAG.mouse:CHATBOT_DRAG.touch);
+}
+// 버튼(size px 정사각형)을 화면 가장자리에서 margin 이상 떨어진 안쪽으로. 화면이 버튼보다 좁으면 가운데(음수면 0).
+function chatbotClampFab(pos,size,view,margin=CHATBOT_DRAG.margin){
+  const i=view.inset||{},axis=(v,len,a,b)=>{const lo=margin+(a||0),hi=len-size-margin-(b||0);
+    return hi<lo?Math.max(0,Math.round((len-size)/2)):Math.round(Math.min(hi,Math.max(lo,v)));};
+  return {x:axis(+pos.x||0,view.w,i.left,i.right),y:axis(+pos.y||0,view.h,i.top,i.bottom)};
+}
+// 저장은 가까운 가장자리 기준: 오른쪽 아래에 둔 버튼은 창 크기가 바뀌어도 오른쪽 아래에 남는다.
+function chatbotFabAnchor(pos,size,view){
+  const h=pos.x+size/2<=view.w/2?'left':'right',v=pos.y+size/2<=view.h/2?'top':'bottom';
+  return {h,x:Math.max(0,Math.round(h==='left'?pos.x:view.w-pos.x-size)),v,y:Math.max(0,Math.round(v==='top'?pos.y:view.h-pos.y-size))};
+}
+function chatbotFabFromAnchor(a,size,view){
+  return {x:a.h==='left'?a.x:view.w-a.x-size,y:a.v==='top'?a.y:view.h-a.y-size};
+}
+// localStorage 값 검사: {desktop:{h,x,v,y},mobile:{…}} 중 올바른 칸만 남긴다. 깨졌거나 남는 칸이 없으면 null.
+function chatbotReadFabPos(raw){
+  let o;try{o=JSON.parse(raw);}catch{return null;}
+  if(!o||typeof o!=='object')return null;
+  const ok=a=>!!a&&typeof a==='object'&&(a.h==='left'||a.h==='right')&&(a.v==='top'||a.v==='bottom')&&
+    [a.x,a.y].every(n=>typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<1e4);
+  const out={};for(const k of ['desktop','mobile'])if(ok(o[k]))out[k]={h:o[k].h,x:o[k].x,v:o[k].v,y:o[k].y};
+  return Object.keys(out).length?out:null;
+}
+// 옮긴 버튼 옆, 넓은 쪽으로 대화창을 연다. 오른쪽 절반이면 오른쪽 끝을, 왼쪽 절반이면 왼쪽 끝을 버튼에 맞추고,
+// 아래쪽 절반이면 버튼 위로, 위쪽 절반이면 아래로. 높이가 모자라면 줄인다(최소 minPanel, 화면보다 크지 않게).
+function chatbotPanelPlace(fab,panel,view,margin=CHATBOT_DRAG.margin,gap=CHATBOT_DRAG.gap){
+  const w=Math.min(panel.w,view.w-2*margin);
+  let left=fab.x+fab.size/2>view.w/2?fab.x+fab.size-w:fab.x;
+  left=Math.max(margin,Math.min(left,view.w-margin-w));
+  const above=fab.y+fab.size/2>view.h/2;
+  const room=above?fab.y-gap-margin:view.h-margin-(fab.y+fab.size+gap);
+  const h=Math.max(0,Math.min(panel.h,Math.max(CHATBOT_DRAG.minPanel,room),view.h-2*margin));
+  let top=above?fab.y-gap-h:fab.y+fab.size+gap;
+  top=Math.max(margin,Math.min(top,view.h-margin-h));
+  return {left:Math.round(left),top:Math.round(top),maxHeight:Math.round(h)};
 }
 
 if(typeof document!=='undefined')(function(){
@@ -185,6 +249,7 @@ if(typeof document!=='undefined')(function(){
   function fill(text){
     return text.replace(/\{tab:(\w+)\}/g,(_,v)=>q(document.querySelector(`.tabs button[data-view="${v}"]`)?.textContent.trim()||v))
       .replace(/\{type:(\w+)\}/g,(_,k)=>q(typeLabel(k)))
+      .replace(/\{plain:(\w+)\}/g,(_,k)=>q(chatbotPlain(k)))
       .replace(/\{rule\}/g,()=>{const r=rule(),b=r?.bbvi_threshold,m=r?.mcui_threshold;
         return Number.isFinite(b)&&Number.isFinite(m)?(b===m?`BBVI(활용가치)와 MCUI(보전 시급성)가 각각 ${b} 이상이면 ‘높음’으로 봐요.`:`BBVI(활용가치) ${b}, MCUI(보전 시급성) ${m} 이상이면 ‘높음’으로 봐요.`)
           :'‘높음’의 기준은 범례 ⓘ에서 확인하세요.';});
@@ -194,25 +259,94 @@ if(typeof document!=='undefined')(function(){
   root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">멍이<span class="bbc-sr"> 사용법 안내</span></strong><small aria-hidden="true">바다 연구원 · 사용법 안내</small></div>'+
-    '<button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
+    '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
     '<p class="bbc-note">FAQ에 없는 질문은 답을 만들기 위해 Cloudflare Workers AI로 보내요.</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
-    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel"></button>';
+    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
+    '<span class="bbc-safe" aria-hidden="true"></span>';
   document.body.append(root);
   const [hint,panel,fab]=['.bbc-hint','.bbc-panel','.bbc-fab'].map(s=>root.querySelector(s));
   const log=root.querySelector('.bbc-log'),input=root.querySelector('.bbc-input'),avatar=root.querySelector('.bbc-avatar');
+  const reset=root.querySelector('.bbc-reset'),safe=root.querySelector('.bbc-safe');
   const fabFace=expanded=>{fab.innerHTML=expanded?'<span aria-hidden="true">×</span>':chatbotMascot('answer',44,true);};
   // 머리말 멍이 표정. brief면 2.6초 뒤 직전 표정으로 돌아간다('화면에서 보여주기').
+  // 말하기·웃는 얼굴(speak)도 이 faceTimer를 써서, 새 표정이 오면 남은 전환이 함께 취소된다.
   let face='welcome',faceTimer=0;
   function mood(state,brief){
     clearTimeout(faceTimer);avatar.innerHTML=chatbotMascot(state,40,true);
     if(brief)faceTimer=setTimeout(()=>mood(face),2600);else face=state;
   }
   mood(face);fabFace(false);
+  // 한 번 도는 움직임(깡충 .bbc-m-hop): 붙였다가 ms 뒤 뗀다. 이미 붙어 있으면 떼고 다시 붙여 처음부터. 움직임 줄이기면 하지 않는다.
+  function mascotOnce(svg,cls,ms){
+    if(!svg||reduced())return;
+    svg.classList.remove(cls);svg.getBoundingClientRect();svg.classList.add(cls);
+    clearTimeout(svg.bbcOnce);svg.bbcOnce=setTimeout(()=>svg.classList.remove(cls),ms);
+  }
+  // box(머리말 .bbc-avatar 또는 말풍선 행 .bbc-row) 안의 멍이만 다시 그린다. 말풍선과 그 안의 버튼은 그대로.
+  function paint(box,size,state,f){
+    const t=document.createElement('template');t.innerHTML=chatbotMascot(state,size,true,f);
+    const svg=t.content.firstElementChild,old=box.querySelector(':scope>.bbc-mascot');
+    if(old)old.replaceWith(svg);else box.prepend(svg);
+    return svg;
+  }
+  // 말하기(H): ms 동안 열린 입으로 뻐끔거리고, 끝나면(I) 웃으며 한 번 깡충, 1초 뒤 원래 그림. 타이머는 setTimer가 맡는다.
+  function speak(draw,setTimer,ms){
+    draw('talk').classList.add('bbc-m-talk');
+    setTimer(setTimeout(()=>{mascotOnce(draw('smile'),'bbc-m-hop',720);setTimer(setTimeout(()=>draw(),1000));},ms));
+  }
+  // 말풍선 옆 멍이는 마지막 하나(.bbc-live)만 움직인다. 새 말풍선이 오면 이전 것은 남은 전환을 멈추고 멈춘 그림으로.
+  let live=null,rowTimer=0;
+  function retire(){
+    clearTimeout(rowTimer);
+    if(!live)return;
+    live.classList.remove('bbc-live');
+    if(live.isConnected)paint(live,34,live.dataset.state);
+    live=null;
+  }
 
+  // 멍이를 옮긴 자리(chatbotReadFabPos 형식). PC와 휴대폰은 화면이 달라 따로 기억한다.
+  // localStorage를 못 쓰면 이 탭에서만 기억한다(posCache). 창이 작아져 잘린 자리는 저장하지 않는다(다시 키우면 원래 자리).
+  const POS_KEY='bbChatFabPos',PANEL={w:360,h:520};
+  let posCache=chatbotReadFabPos(store.get(POS_KEY))||{};
+  const posMode=()=>mobile()?'mobile':'desktop';
+  function savePos(){
+    try{if(Object.keys(posCache).length)localStorage.setItem(POS_KEY,JSON.stringify(posCache));else localStorage.removeItem(POS_KEY);}catch{}
+  }
+  function view(){
+    const s=getComputedStyle(safe),n=k=>parseFloat(s['padding'+k])||0,d=document.documentElement;
+    return {w:d.clientWidth,h:d.clientHeight,inset:{top:n('Top'),right:n('Right'),bottom:n('Bottom'),left:n('Left')}};
+  }
+  const fabSize=()=>fab.offsetWidth||48;
+  function movedPos(){
+    const a=posCache[posMode()];if(!a)return null;
+    const v=view(),size=fabSize();return chatbotClampFab(chatbotFabFromAnchor(a,size,v),size,v);
+  }
+  const clearStyle=(el,keys)=>{for(const k of keys)el.style[k]='';};
+  // 옮긴 자리에 버튼을 두고, 안내 말풍선과 (PC에서 열려 있으면) 대화창을 그 옆으로.
+  function placeMoved(pos){
+    root.classList.add('bbc-moved');
+    root.style.setProperty('--bbc-x',pos.x+'px');root.style.setProperty('--bbc-y',pos.y+'px');
+    const v=view(),size=fabSize(),right=pos.x+size/2>v.w/2;
+    if(!hint.hidden){
+      const room=Math.max(120,right?pos.x-18:v.w-pos.x-size-18);hint.style.maxWidth=room+'px';
+      const hw=hint.offsetWidth,hh=hint.offsetHeight;
+      Object.assign(hint.style,{right:'auto',bottom:'auto',left:Math.max(8,right?pos.x-10-hw:pos.x+size+10)+'px',top:Math.max(8,Math.round(pos.y+(size-hh)/2))+'px'});
+    }
+    if(panel.hidden)return;
+    if(mobile()){clearStyle(panel,['left','top','right','bottom','maxHeight']);return;}
+    const p=chatbotPanelPlace({x:pos.x,y:pos.y,size},PANEL,v);
+    Object.assign(panel.style,{left:p.left+'px',top:p.top+'px',right:'auto',bottom:'auto',maxHeight:p.maxHeight+'px'});
+  }
   // 탐색 지도 탭(폭 768px 이상)에서는 버튼과 대화창을 지도 확대/축소 컨트롤 왼쪽에 둔다: 근거 패널과 확대/축소를 가리지 않게.
+  // 사용자가 멍이를 옮겼으면 그 자리가 이긴다.
   function place(){
+    reset.hidden=!posCache[posMode()];
+    const pos=movedPos();
+    if(pos)return placeMoved(pos);
+    root.classList.remove('bbc-moved');
+    clearStyle(hint,['left','top','right','bottom','maxWidth']);clearStyle(panel,['left','top','right','bottom']);
     let right=16;const z=document.querySelector('.leaflet-control-zoom');
     if(!mobile()&&document.querySelector('#explore.active')&&visible(z))right=Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12);
     root.style.setProperty('--bbc-right',right+'px');
@@ -228,11 +362,19 @@ if(typeof document!=='undefined')(function(){
   }
   function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}}
   // state가 있으면(챗봇 말풍선) 왼쪽 아래 멍이 미니 아바타와 .bbc-row로 묶고 머리말 표정도 바꾼다. 돌려주는 값은 말풍선.
+  // 답(answer·ai)과 첫 인사(welcome)는 뜬 직후 머리말과 그 말풍선 옆 멍이가 글 길이만큼 말한다(움직임 줄이기면 안 함).
   function add(cls,text,state){
     const p=document.createElement('div');p.className='bbc-msg '+cls;p.textContent=text;
     if(!state){log.append(p);return p;}
-    const row=document.createElement('div');row.className='bbc-row';row.innerHTML=chatbotMascot(state,34,true);row.append(p);log.append(row);
-    mood(state);return p;
+    retire();
+    const row=document.createElement('div');row.className='bbc-row bbc-live';row.dataset.state=state;row.innerHTML=chatbotMascot(state,34,true);row.append(p);log.append(row);live=row;
+    mood(state);
+    if(['welcome','answer','ai'].includes(state)&&!reduced()){
+      const ms=Math.min(2400,Math.max(900,text.length*25));
+      speak(f=>paint(avatar,40,state,f),t=>{faceTimer=t;},ms);
+      speak(f=>paint(row,34,state,f),t=>{rowTimer=t;},ms);
+    }
+    return p;
   }
   function buttons(list,cls){
     const box=document.createElement('div');box.className='bbc-chips '+(cls||'');
@@ -269,12 +411,13 @@ if(typeof document!=='undefined')(function(){
     const f=id?byId(id):chatbotMatch(text);
     if(f)answer(f);else if(id)unknown();else askAi(text);
   }
+  let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 저는 바다 연구원 멍이예요. 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();input.focus();
   }
-  function close(){panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
+  function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
 
   // 기존 버튼을 눌러 이동한 뒤 대상에 잠깐 테두리. 이미 켜진 토글은 다시 누르지 않는다(누르면 꺼지거나 범례가 닫힘).
   // 원래 클릭이 document까지 올라간 뒤 실행해야 ⓘ 범례의 '바깥 클릭이면 닫기'에 걸리지 않는다.
@@ -297,7 +440,54 @@ if(typeof document!=='undefined')(function(){
     },0);
   }
 
-  fab.addEventListener('click',()=>panel.hidden?open():close());
+  // 끌기: Pointer Events로 마우스·손가락·펜을 함께 처리한다. 문턱값(chatbotDragStarted)을 넘기 전에 떼면 보통 누르기.
+  // 끌어다 놓은 직후 브라우저가 보내는 click 한 번은 무시한다(키보드 Enter/Space의 click은 detail 0이라 막지 않음, 다음 누르기가 시작되면 해제).
+  // Esc나 pointercancel이면 처음 자리로 돌아간다.
+  let drag=null,dragEnd=-1e9,frame=0;
+  const dragging=on=>{root.classList.toggle('bbc-dragging',on);document.documentElement.classList.toggle('bbc-drag-doc',on);};
+  function endDrag(save){
+    cancelAnimationFrame(frame);frame=0;dragging(false);
+    if(save){const v=view();posCache[posMode()]=chatbotFabAnchor(drag.pos,fabSize(),v);savePos();}
+    place();
+  }
+  fab.addEventListener('pointerdown',e=>{
+    if(e.button!==0||!e.isPrimary||opening)return;
+    dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
+    const r=fab.getBoundingClientRect();
+    drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,moving:false,cancelled:false,pos:null};
+    try{fab.setPointerCapture(e.pointerId);}catch{}
+  });
+  fab.addEventListener('pointermove',e=>{
+    if(!drag||e.pointerId!==drag.id||drag.cancelled)return;
+    const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
+    if(!drag.moving){if(!chatbotDragStarted(dx,dy,drag.type))return;drag.moving=true;dragging(true);dismissHint();}
+    const v=view();drag.pos=chatbotClampFab({x:drag.ox+dx,y:drag.oy+dy},fabSize(),v);
+    if(!frame)frame=requestAnimationFrame(()=>{frame=0;if(drag?.pos&&!drag.cancelled)placeMoved(drag.pos);});
+  });
+  fab.addEventListener('pointerup',e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    if(drag.moving||drag.cancelled){dragEnd=performance.now();if(drag.moving&&!drag.cancelled)endDrag(true);}
+    drag=null;
+  });
+  fab.addEventListener('pointercancel',e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    if(drag.moving&&!drag.cancelled)endDrag(false);
+    drag=null;
+  });
+  addEventListener('keydown',e=>{
+    if(e.key!=='Escape'||!drag?.moving||drag.cancelled)return;
+    e.preventDefault();e.stopPropagation();drag.cancelled=true;endDrag(false);
+  },true);
+  // 열 때 깡충 인사(F): 버튼 속 멍이가 웃으며 한 번 뛰고, 거의 다 뛴 600ms 뒤 창을 연다. 움직임 줄이기면 바로 연다. 닫기는 바로.
+  fab.addEventListener('click',e=>{
+    if(e.detail!==0&&performance.now()-dragEnd<700){dragEnd=-1e9;return;}
+    if(opening)return;
+    if(!panel.hidden)return close();
+    if(reduced())return open();
+    fab.innerHTML=chatbotMascot('answer',44,true,'smile');mascotOnce(fab.firstElementChild,'bbc-m-hop',720);
+    opening=setTimeout(()=>{opening=0;open();},600);
+  });
+  reset.addEventListener('click',()=>{delete posCache[posMode()];savePos();place();input.focus();});
   root.querySelector('.bbc-close').addEventListener('click',close);
   root.querySelector('.bbc-hint-x').addEventListener('click',dismissHint);
   panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}});
@@ -311,6 +501,6 @@ if(typeof document!=='undefined')(function(){
   const explore=document.getElementById('explore');
   if(explore)new MutationObserver(()=>requestAnimationFrame(place)).observe(explore,{attributes:true,attributeFilter:['class']});
   addEventListener('load',()=>setTimeout(place,300));
-  place();
   if(!store.get(HINT_KEY))hint.hidden=false;
+  place();
 })();

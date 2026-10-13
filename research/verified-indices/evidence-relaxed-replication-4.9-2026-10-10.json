@@ -1,0 +1,85 @@
+{
+ "schema_version": 1,
+ "snapshot_date": "2026-10-10",
+ "purpose": "4.9 (prereg-4.9-2026-10-10.md): independent replications of a relaxation-(d) item's own value. A row here never becomes an item, never changes the scored value, percentile or cohort, and never carries the species origin; a used row only adds its DOI to the item's independent_dois. Same mature sequence, same ChEMBL target and standard_type, relation '=', nM, p gap within 1.0, another author group and DOI, and the paper must not be in the item's cohort snapshot.",
+ "sources": {
+  "bonini_2000_npff_receptors": {
+   "provider": "Journal of Biological Chemistry 275(50):39324-39331 (Bonini et al. 2000), publisher open access on jbc.org",
+   "title": "Identification and characterization of two G protein-coupled receptors for neuropeptide FF",
+   "version": "2000",
+   "doi": "10.1074/jbc.M004385200",
+   "url": "https://doi.org/10.1074/jbc.M004385200",
+   "accessed": "2026-10-10",
+   "license": "Open Access (JBC/Elsevier open archive)",
+   "terms": "Numeric values and short facts only. Table I human NPFF2 Ki: FMRF-amide 4.0 +/- 0.2 nM (also human NPFF1 0.79 nM, rat NPFF1 2.0 nM, rat NPFF2 8.0 nM). Materials: 'NPFF and other commercially available peptides were purchased from Bachem'. Binding: [125I]1DMeNPFF, receptors expressed in COS-7 (saturation) and HEK-293 (competition) cells; IC50 converted to Ki with the Cheng-Prusoff equation, three independent experiments."
+  },
+  "kotani_2001_npff_receptor": {
+   "provider": "British Journal of Pharmacology 133(1):138-144 (Kotani et al. 2001), full text in PMC1572755",
+   "title": "Functional characterization of a human receptor for neuropeptide FF and related peptides",
+   "version": "2001",
+   "doi": "10.1038/sj.bjp.0704038",
+   "url": "https://doi.org/10.1038/sj.bjp.0704038",
+   "accessed": "2026-10-10",
+   "license": "Publisher terms; numeric values and short facts only",
+   "terms": "Numeric values only. Table 1 (read as the published image): FMRFamide Ki 10.5 +/- 0.90 nM ([125I]-EYF displacement, CHO membranes) and aequorin EC50 641.0 +/- 168.8 nM. Recorded as a candidate that is not used (see the row's exclusion)."
+  }
+ },
+ "relaxed_replications": [
+  {
+   "record_id": "10.1074/jbc.M004385200:FMRFamide:CHEMBL5952:Ki",
+   "sequence": "FMRF",
+   "sequence_modifications": "C말단 아미드(-NH2)",
+   "peptide_name": "FMRFamide",
+   "target_chembl_id": "CHEMBL5952",
+   "target_name": "Neuropeptide FF receptor 2",
+   "target_organism": "Homo sapiens",
+   "endpoint": "Ki",
+   "relation": "=",
+   "value": 4.0,
+   "unit": "nM",
+   "value_as_published": "Ki 4.0 ± 0.2 nM (Table I, 사람 NPFF2 열)",
+   "value_in_text": true,
+   "synthetic": true,
+   "origin_material": "시판 합성 FMRF-NH2 (Bachem 구입)",
+   "origin_label": "시판 합성품 (갑오징어 시료 아님)",
+   "assay": "사람 NPFF2 발현 세포막, [125I]1DMeNPFF 치환 결합(COS-7 포화·HEK-293 경쟁), Cheng-Prusoff로 Ki 환산, 독립 실험 3회",
+   "location": "Table I, 'FMRF-amide' 행의 사람 NPFF2 열",
+   "cohort_id": "ChEMBL_37:CHEMBL5952|Ki",
+   "cohort_check": "비교집단 138건의 출처 ChEMBL 문서 8건(2012·2014·2015·2016·2020·2021·2024·2024)에 이 논문이 없다. ChEMBL_37에 이 논문의 활동 행 자체가 없다(CHEMBL262202 × CHEMBL5952 활동은 22978138·22978140 두 건뿐이며 둘 다 총설 문서 CHEMBL4765381).",
+   "source_id": "bonini_2000_npff_receptors",
+   "original_paper_doi": "10.1074/jbc.M004385200",
+   "reviewed": true,
+   "verification": "원문 직접 확인 2026-10-10 (jbc.org 공개 본문). 저자 그룹(Synaptic Pharmaceutical)은 점수 값의 ChEMBL 문서인 총설(J Med Chem 2020)의 저자와 겹치지 않고, 아래 쓰지 않은 Kotani 2001의 저자와도 겹치지 않는다. 방사성 리간드와 세포주는 점수 값의 시험과 다르다([125I]EYF·CHO 세포막 대 [125I]1DMeNPFF·HEK-293): 같은 표적·같은 종말점의 다른 연구실 측정이라는 뜻이며, 같은 조건의 반복이 아니다."
+  },
+  {
+   "record_id": "10.1038/sj.bjp.0704038:FMRFamide:CHEMBL5952:Ki",
+   "sequence": "FMRF",
+   "sequence_modifications": "C말단 아미드(-NH2)",
+   "peptide_name": "FMRFamide",
+   "target_chembl_id": "CHEMBL5952",
+   "target_name": "Neuropeptide FF receptor 2",
+   "target_organism": "Homo sapiens",
+   "endpoint": "Ki",
+   "relation": "=",
+   "value": 10.5,
+   "unit": "nM",
+   "value_as_published": "Ki 10.5 ± 0.90 nM (Table 1, 'Other peptides' 구역)",
+   "value_in_text": true,
+   "synthetic": true,
+   "origin_material": "합성 FMRF-NH2",
+   "origin_label": "합성품 (갑오징어 시료 아님)",
+   "assay": "사람 NPFF2(HLWAR77) 발현 CHO 세포막, [125I]-EYF 치환 결합",
+   "location": "Table 1 (게재 이미지에서 직접 읽음); 같은 표의 aequorin EC50 641.0 ± 168.8 nM",
+   "cohort_id": "ChEMBL_37:CHEMBL5952|Ki",
+   "cohort_check": "비교집단 문서 8건에 이 논문도 없다.",
+   "source_id": "kotani_2001_npff_receptor",
+   "original_paper_doi": "10.1038/sj.bjp.0704038",
+   "reviewed": true,
+   "excluded": {
+    "code": "author_group_may_be_the_origin",
+    "reason": "점수 값의 ChEMBL 문서는 총설(J Med Chem 2020)이고, 그 표가 이 값에 붙인 인용 번호가 PMC·Crossref 참고문헌 번호와 어긋나 원 측정 논문을 확정하지 못했습니다. ChEMBL 시험 설명([125I]EYF 치환, forskolin 유도 cAMP)이 이 논문과 같은 연구 그룹의 방법과 일치해, 같은 그룹의 값일 수 있어 재현으로 세지 않습니다."
+   },
+   "verification": "원문 Table 1 직접 확인 2026-10-10 (PMC1572755). 값 자체는 기준 안이다(pKi 7.979, 차이 0.201). 원 측정 논문을 확정하면 다시 검토할 거리로 남긴다."
+  }
+ ]
+}

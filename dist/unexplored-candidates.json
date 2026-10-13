@@ -1,7 +1,7 @@
 {
  "schemaVersion": "unexplored-candidates-1",
  "reviewedOn": "2026-10-04",
- "reportVersion": "verified-4.8",
+ "reportVersion": "verified-4.11",
  "rule": "Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI (default weight) is at least 50. No indicator was collected for it and no score is inferred or copied.",
  "cellRules": "scripts/build_expansion_cells.py (22-candidate review rules), unchanged; a congener of a 4° species is published at 4°",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not distribution, abundance, stock size or value. A listed species is a lead for survey, not a finding.",
@@ -12,19 +12,7 @@
    "aphiaID": 836033,
    "label": "참굴",
    "name": "Magallana gigas",
-   "BBVI": 83.9
-  },
-  {
-   "aphiaID": 494972,
-   "label": "톳",
-   "name": "Sargassum fusiforme",
-   "BBVI": 74.9
-  },
-  {
-   "aphiaID": 145721,
-   "label": "미역",
-   "name": "Undaria pinnatifida",
-   "BBVI": 71.0
+   "BBVI": 71.9
   },
   {
    "aphiaID": 504357,
@@ -33,10 +21,22 @@
    "BBVI": 68.5
   },
   {
+   "aphiaID": 145721,
+   "label": "미역",
+   "name": "Undaria pinnatifida",
+   "BBVI": 68.0
+  },
+  {
+   "aphiaID": 494972,
+   "label": "톳",
+   "name": "Sargassum fusiforme",
+   "BBVI": 64.2
+  },
+  {
    "aphiaID": 371986,
    "label": "감태",
    "name": "Ecklonia cava",
-   "BBVI": 65.0
+   "BBVI": 59.7
   },
   {
    "aphiaID": 236157,
@@ -1109,7 +1109,7 @@
      "aphiaID": 371986,
      "label": "감태",
      "name": "Ecklonia cava",
-     "BBVI": 65.0
+     "BBVI": 59.7
     }
    ]
   },
@@ -3991,7 +3991,7 @@
      "aphiaID": 836033,
      "label": "참굴",
      "name": "Magallana gigas",
-     "BBVI": 83.9
+     "BBVI": 71.9
     }
    ]
   },
@@ -4555,7 +4555,7 @@
      "aphiaID": 836033,
      "label": "참굴",
      "name": "Magallana gigas",
-     "BBVI": 83.9
+     "BBVI": 71.9
     }
    ]
   },
@@ -6572,7 +6572,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -7496,7 +7496,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -8236,7 +8236,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -9106,7 +9106,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -9192,7 +9192,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -10652,7 +10652,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -10734,7 +10734,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -10778,7 +10778,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -11479,7 +11479,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -12528,7 +12528,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -12574,7 +12574,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -12618,7 +12618,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -13257,7 +13257,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -14645,7 +14645,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -15007,7 +15007,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -15194,7 +15194,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -15453,7 +15453,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -16008,7 +16008,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -16680,7 +16680,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -17435,7 +17435,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -17727,7 +17727,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -18293,7 +18293,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -18341,7 +18341,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -18946,7 +18946,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -19642,7 +19642,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -21159,7 +21159,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -21203,7 +21203,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -21354,7 +21354,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -22805,7 +22805,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -22851,7 +22851,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -23318,7 +23318,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -24403,7 +24403,7 @@
      "aphiaID": 494972,
      "label": "톳",
      "name": "Sargassum fusiforme",
-     "BBVI": 74.9
+     "BBVI": 64.2
     }
    ]
   },
@@ -35631,7 +35631,7 @@
      "aphiaID": 145721,
      "label": "미역",
      "name": "Undaria pinnatifida",
-     "BBVI": 71.0
+     "BBVI": 68.0
     }
    ]
   }

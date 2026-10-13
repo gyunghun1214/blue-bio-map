@@ -8,6 +8,9 @@ sufficiency 0). No score is inferred or copied from the relative.
 Occurrence cells follow the 22-candidate review rules of scripts/build_expansion_cells.py unchanged (licences, identity,
 coordinates, duplicates, 1 km land buffer, NIBR holder points). A congener of a species published only at 4° is published
 at 4° too. Raw responses are cached in the ignored tmp/unexplored/cells/; only generalized cells reach dist/.
+
+`--report-only` (no network): for a report release that keeps the same set of relatives, rewrite reportVersion and the
+relatives' BBVI and order from the report and keep the reviewed species and cells as they are.
 """
 import json
 import re
@@ -97,15 +100,42 @@ def korean_name(name):
     return hits.pop() if len(hits) == 1 else None
 
 
+def relative_rows(relatives):
+    return [{"aphiaID": s["aphia_id"], "label": s["korean_name"], "name": s["scientific_name"], "BBVI": s["scores"]["BBVI"]}
+            for s in relatives]
+
+
+def refresh_from_report(report, relatives):
+    """--report-only: a release whose relatives (BBVI at least the threshold) are the same species needs no new congener or
+    cell review. reportVersion and every relatives list (values and order) come from the report; the species, their cells
+    and their genus groups stay as last reviewed. A different set of relatives needs the full run."""
+    out = json.loads(OUT.read_text(encoding="utf-8"))
+    rows = {r["aphiaID"]: r for r in relative_rows(relatives)}
+    if set(rows) != {r["aphiaID"] for r in out["relatives"]}:
+        raise SystemExit("the relatives (BBVI at least the threshold) changed: run the full build without --report-only")
+    out["reportVersion"], out["relatives"] = report["method_version"], list(rows.values())
+    for s in out["species"]:
+        mine = {r["aphiaID"] for r in s["relatives"]}
+        s["relatives"] = [r for a, r in rows.items() if a in mine]
+    return out
+
+
+def write(out):
+    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
 def main():
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     rule = report["method"]["unexplored_candidates"]
     threshold = rule["relative_min_bbvi"]
     species30 = report["species"] + report["candidate_species"]
     ids30 = {s["aphia_id"] for s in species30}
+    relatives = sorted((s for s in species30 if (s["scores"]["BBVI"] or 0) >= threshold), key=lambda s: -s["scores"]["BBVI"])
+    if "--report-only" in sys.argv[1:]:
+        write(refresh_from_report(report, relatives))
+        return
     for d in ("worms", "nibr_name"):
         (B.CACHE / d).mkdir(parents=True, exist_ok=True)
-    relatives = sorted((s for s in species30 if (s["scores"]["BBVI"] or 0) >= threshold), key=lambda s: -s["scores"]["BBVI"])
     by_genus = {}
     for s in relatives:
         g = genus_of(s["aphia_id"])
@@ -134,11 +164,10 @@ def main():
             entry["koreanName"] = korean_name(c["name"])
             entry["genus"] = g["genus"]["name"]
             entry["foundIn"] = sorted(c["found_in"])
-            entry["relatives"] = [{"aphiaID": s["aphia_id"], "label": s["korean_name"], "name": s["scientific_name"],
-                                   "BBVI": s["scores"]["BBVI"]} for s in g["relatives"]]
+            entry["relatives"] = relative_rows(g["relatives"])
             result.append(entry)
             print(f'{c["name"]}\t{entry["koreanName"]}\t{len(entry["cells"])} cells\t{entry["review"].get("accepted", entry["review"]["status"])}', flush=True)
-    OUT.write_text(json.dumps({
+    write({
         "schemaVersion": "unexplored-candidates-1", "reviewedOn": REVIEWED, "reportVersion": report["method_version"],
         "rule": ("Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF "
                  "species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI "
@@ -148,9 +177,8 @@ def main():
                   "or value. A listed species is a lead for survey, not a finding."),
         "queryBox": "124–132°E · 33–38.7°N",
         "koreanNames": "NIBR species portal (species.nibr.go.kr), exact binomial match; null when absent or ambiguous",
-        "relatives": [{"aphiaID": s["aphia_id"], "label": s["korean_name"], "name": s["scientific_name"], "BBVI": s["scores"]["BBVI"]}
-                      for s in relatives],
-        "species": result}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        "relatives": relative_rows(relatives),
+        "species": result})
     print("species", len(result), "with cells", sum(bool(s["cells"]) for s in result), "cells", sum(len(s["cells"]) for s in result))
 
 
