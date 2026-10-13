@@ -1,0 +1,8 @@
+{
+ "about": "Camera of the entry-screen globe (dist/intro.js CAMERA/FRAME keep the same numbers). Vertical perspective looking at lon0/lat0 from P radii off the centre; fitted to the design image by verification/2026-10-landing-globe-texture/fit_camera.py.",
+ "lon0": 136.823,
+ "lat0": 20.345,
+ "P": 2.7122,
+ "frame": {"cx": 0.75, "cy": 0.7246, "R": 0.7786},
+ "bake": {"sizes": [900, 1600, 2400], "pad": {"900": 0, "1600": 0, "2400": 12}}
+}

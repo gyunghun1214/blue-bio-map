@@ -10,7 +10,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,orthographic,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,GLOBE_CENTER,KOREA,ANCHOR,STUDY,COUNTRIES_CUT});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -80,17 +80,28 @@ assert.equal(ctx.motionPref('1',false),true,'kept still although the system allo
 assert.equal(ctx.motionPref('0',true),false,'moving although the system asks for less (the person chose it here)');
 assert.equal(ctx.motionPref('junk',true),true,'anything else falls back to the system');
 
-// (6) the globe projection (orthographic since 2026-10-13; it was a 24° vertical perspective): centre at the origin, east
-// right, north up, horizon at r=1, far side hidden (or pushed onto the rim for filling); coastline simplified, not invented
-const [L0,F0]=ctx.GLOBE_CENTER,ortho=(lon,lat,rim)=>ctx.orthographic(lon,lat,L0,F0,rim),r1=p=>Math.hypot(p.x,p.y);
+// (6) the globe projection (a vertical perspective fitted to the design since 2026-10-13 v2; before it, orthographic):
+// centre at the origin, east right, north up, horizon at r=1 (acos(1/P) from the centre), far side hidden (or pushed
+// onto the rim for filling), the inverse its exact undo; coastline simplified, not invented
+const {lon0:L0,lat0:F0,P}=ctx.CAMERA,ortho=(lon,lat,rim)=>ctx.project(lon,lat,rim),r1=p=>Math.hypot(p.x,p.y);
+const cam=JSON.parse(read('vendor/globe-v2/camera.json'));
+assert.deepEqual([cam.lon0,cam.lat0,cam.P],[L0,F0,P],'intro.js CAMERA = vendor/globe-v2/camera.json (the picture was baked with it)');
+assert.deepEqual(cam.frame,JSON.parse(JSON.stringify(ctx.FRAME)),'intro.js FRAME = camera.json frame');
 const c=ortho(L0,F0);assert.ok(Math.abs(c.x)<1e-12&&Math.abs(c.y)<1e-12);
-const east=ctx.orthographic(150,0,140,0),north=ctx.orthographic(140,10,140,0);
+const east=ctx.perspective(150,0,140,0,P),north=ctx.perspective(140,10,140,0,P);
 assert.ok(east.x>0&&Math.abs(east.y)<1e-12&&north.y>0&&Math.abs(north.x)<1e-12,'east is right, north is up');
-const edge=ctx.orthographic(140+89.9,0,140,0);assert.ok(edge&&r1(edge)<=1&&r1(edge)>.9999,'horizon at r≈1');
-assert.equal(ctx.orthographic(140+90.5,0,140,0),null,'beyond the horizon is not drawn');
+const hz=Math.acos(1/P)*180/Math.PI;
+const edge=ctx.perspective(140+hz-.01,0,140,0,P);assert.ok(edge&&r1(edge)<=1&&r1(edge)>.999,'horizon at r≈1');
+assert.equal(ctx.perspective(140+hz+.5,0,140,0,P),null,'beyond the horizon is not drawn');
 assert.equal(ortho(L0+180,-F0),null,'the far side is not drawn');
-const rim=ctx.orthographic(140+100,20,140,0,true);assert.ok(rim.back&&Math.abs(r1(rim)-1)<1e-12,'with toRim a hidden point sits on the rim');
-assert.ok(!ctx.orthographic(150,20,140,0,true).back,'a visible point is not moved');
+const rim=ctx.perspective(140+100,20,140,0,P,true);assert.ok(rim.back&&Math.abs(r1(rim)-1)<1e-12,'with toRim a hidden point sits on the rim');
+assert.ok(!ctx.perspective(150,20,140,0,P,true).back,'a visible point is not moved');
+let worst=0;
+for(let lon=L0-hz+1;lon<L0+hz;lon+=3.7)for(let lat=-60;lat<=88;lat+=3.1){const q=ortho(lon,lat);if(!q)continue;
+  const g=ctx.inversePerspective(q.x,q.y,L0,F0,P);worst=Math.max(worst,Math.abs(g.lon-lon),Math.abs(g.lat-lat));}
+assert.ok(worst<1e-9,`perspective → inverse round trip within 1e-9° (worst ${worst})`);
+assert.equal(JSON.stringify(ctx.inversePerspective(0,0,L0,F0,P)),JSON.stringify({lon:L0,lat:F0}),'the centre maps back to the camera');
+assert.equal(ctx.inversePerspective(.8,.7,L0,F0,P),null,'off the disc is nowhere');
 // orientation of the real view: China west of Korea, Japan east of it, the Russian far east north of it (no mirror)
 const kr=ortho(...ctx.KOREA),beijing=ortho(116.4,39.9),tokyo=ortho(139.7,35.7),vlad=ortho(131.9,43.1),manila=ortho(121,14.6);
 assert.ok(beijing.x<kr.x&&tokyo.x>kr.x&&vlad.y>kr.y&&manila.y<kr.y,'east is right and north is up on the globe');
@@ -199,7 +210,9 @@ assert.ok(nearKorea.length>0,'the 50m land has the Korean peninsula');
 
 // (11) where things sit: the design's globe and Korea, the card's point at sea, the card on screen
 const design=ctx.globeFrame(1672,941,null),toPx=(f,p)=>({x:f.cx+p.x*f.R,y:f.cy-p.y*f.R});
-assert.ok(Math.abs(design.cx/1672-.759)<1e-9&&Math.abs(design.cy/941-.726)<1e-9&&Math.abs(design.R/941-.774)<1e-9);
+assert.ok(Math.abs(design.cx/1672-.75)<1e-9&&Math.abs(design.cy/941-.7246)<1e-9&&Math.abs(design.R/941-.7786)<1e-9);
+// the design's rim measured by fit_camera.py: centre 75.33% · 73.93%, radius 76.34% of the height; within 2% of each
+assert.ok(Math.abs(design.cx/(.7533*1672)-1)<=.02&&Math.abs(design.cy/(.7393*941)-1)<=.02&&Math.abs(design.R/(.7634*941)-1)<=.02,'the globe within 2% of the design rim');
 const k=toPx(design,kr);
 assert.ok(Math.abs(k.x/1672-.676)<.02&&Math.abs(k.y/941-.43)<.02,`Korea within 2% of its spot in the design (${(k.x/1672*100).toFixed(1)}%, ${(k.y/941*100).toFixed(1)}%)`);
 const inside=(pt,ring)=>{let c=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const [xi,yi]=ring[i],[xj,yj]=ring[j];if((yi>pt[1])!==(yj>pt[1])&&pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi)+xi)c=!c;}return c;};
@@ -210,7 +223,7 @@ const placed=ctx.cardPlace(dot,k,card,{w:1672,top:75,bottom:848},1);
 assert.ok(Math.abs(placed.x-1323)<6&&Math.abs(placed.y-455)<6,`design size: the card where the design has it (${placed.x.toFixed(0)}, ${placed.y.toFixed(0)})`);
 assert.equal(JSON.stringify(placed.line[0]),JSON.stringify([dot.x,dot.y]));assert.equal(placed.line.at(-1)[0],placed.x,'the line ends on the card edge');
 for(const [w,h] of [[1440,900],[1920,1080],[1280,800],[1024,768],[1100,700],[2560,1080]]){
-  const f=ctx.globeFrame(w,h,null),s=Math.min(1.2,Math.max(.75,f.R/728)),p=ctx.cardPlace(toPx(f,ortho(...ctx.ANCHOR)),toPx(f,kr),card,{w,top:60,bottom:h*.9},s);
+  const f=ctx.globeFrame(w,h,null),s=Math.min(1.2,Math.max(.75,f.R/733)),p=ctx.cardPlace(toPx(f,ortho(...ctx.ANCHOR)),toPx(f,kr),card,{w,top:60,bottom:h*.9},s);
   assert.ok(p.x>=12&&p.x+card.w<=w-12&&p.y>0&&p.y+card.h<=h*.9,`${w}×${h}: the card stays on screen`);
   assert.ok(p.line.every(([x,y])=>x>=0&&x<=w&&y>=0&&y<=h),`${w}×${h}: the line stays on screen`);
 }
@@ -222,11 +235,50 @@ const designCopy=[{r:650,t:232,b:352,title:true},{r:630,t:352,b:472,title:true},
 assert.equal(JSON.stringify(ctx.globeFrame(1672,941,null,designCopy)),JSON.stringify(design),'the design size keeps the design globe');
 const tabletCopy=[{r:391,t:196,b:269,title:true},{r:380,t:269,b:342,title:true},{r:335,t:375,b:423},{r:357,t:458,b:508},{r:365,t:555,b:575}];
 const f43=ctx.globeFrame(1024,768,null,tabletCopy);
-assert.ok(f43.R<=1024*.55+1e-9&&f43.R<768*.774&&f43.cx>1024*.759,'4:3: a smaller globe, pushed right');
+assert.ok(f43.R<=1024*.55+1e-9&&f43.R<768*.7786&&f43.cx>1024*.75,'4:3: a smaller globe, pushed right');
 for(const b of tabletCopy)assert.ok(leftRim(f43,b)>=b.r+(b.title?-.06:.02)*1024-1e-6,`4:3: ${JSON.stringify(b)} clear of the rim`);
-const p43=ctx.cardPlace(toPx(f43,ortho(...ctx.ANCHOR)),toPx(f43,kr),card,{w:1024,top:56,bottom:680},Math.min(1.2,Math.max(.75,f43.R/728)));
+const p43=ctx.cardPlace(toPx(f43,ortho(...ctx.ANCHOR)),toPx(f43,kr),card,{w:1024,top:56,bottom:680},Math.min(1.2,Math.max(.75,f43.R/733)));
 assert.ok(p43.x>=12&&p43.x+card.w<=1024-12&&p43.y+card.h<=680&&p43.x>Math.max(...tabletCopy.map(b=>b.r)),'4:3: the card on screen, right of the copy');
 const band={top:420,bottom:640},phone=ctx.globeFrame(390,844,band),kp=toPx(phone,kr);
 assert.ok(Math.abs(kp.x-195)<1e-9&&Math.abs(kp.y-530)<1e-9&&phone.R>195,'phone: Korea in the middle of the band, the globe a little wider than the screen');
 
-console.log('PASS: entry screen skip rules, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout');
+
+// (12) the baked picture: which file for which globe, pixel ratio and connection (vendor/globe-v2, scripts/bake_globe.py)
+assert.deepEqual(cam.bake.sizes,[900,1600,2400],'three sizes');
+assert.equal(JSON.stringify(Object.fromEntries(cam.bake.sizes.map(n=>[n,cam.bake.pad[n]]))),JSON.stringify(ctx.GLOBE_PAD),'intro.js GLOBE_PAD = camera.json pad');
+const dR=ctx.globeFrame(1672,941,null).R,pR=ctx.globeFrame(390,844,{top:420,bottom:640}).R;
+assert.equal(ctx.globeFile(pR,2),900,`phone at 2x (${(2*pR*2).toFixed(0)} px across): 900`);
+assert.equal(ctx.globeFile(pR,1),900,'phone at 1x: 900');
+assert.equal(ctx.globeFile(dR,1),1600,`design size at 1x (${(2*dR).toFixed(0)} px): 1600`);
+assert.equal(ctx.globeFile(dR,2),2400,'design size at 2x: 2400');
+assert.equal(ctx.globeFile(dR,3),2400,'a 3x screen is drawn as 2x');
+assert.equal(ctx.globeFile(dR,2,{saveData:true}),1600,'save-data: never the 2400 file');
+for(const t of ['slow-2g','2g','3g'])assert.equal(ctx.globeFile(dR,2,{effectiveType:t}),1600,`${t}: never the 2400 file`);
+assert.equal(ctx.globeFile(dR,2,{effectiveType:'4g',saveData:false}),2400,'4g: the 2400 file');
+assert.equal(ctx.globeFile(500,1),900,'1000 px across: 900');assert.equal(ctx.globeFile(501,1),1600);
+assert.equal(ctx.globeFile(950,1),1600,'1900 px across: 1600');assert.equal(ctx.globeFile(951,1),2400);
+for(const n of cam.bake.sizes)assert.ok(fs.existsSync(new URL(`../dist/vendor/globe-v2/globe-${n}.webp`,import.meta.url)),`globe-${n}.webp is there`);
+// fetched only once the screen is known to show (a shared link never asks for it), from this site
+const browser=intro.split('// ---- browser ----')[1];
+assert.ok(browser.indexOf('new Image()')>browser.indexOf('if(!show)return;'),'the picture is asked for after the skip rules');
+assert.match(browser,/img\.src=`vendor\/globe-v2\/globe-\$\{file\}\.webp`/,'from vendor/globe-v2 on this site');
+// over the picture only Korea's coast is drawn: vertices two countries share are land borders and are left out
+const bv=ctx.borderVertices(geo);
+assert.ok(bv.has('124.37,40.1')&&bv.has('124.53,40.215'),'the Yalu (North Korea–China) is a border');
+const southKorea=geo.features.find(f=>f.properties.name==='South Korea');
+const skPolys=southKorea.geometry.type==='MultiPolygon'?southKorea.geometry.coordinates:[southKorea.geometry.coordinates];
+const skv=skPolys.flatMap(p=>p[0]);
+assert.ok(skv.filter(v=>v[1]<37.5).every(v=>!bv.has(v.join())),'South Korea south of the DMZ is all coast');
+assert.ok(skv.some(v=>v[1]>37.7&&bv.has(v.join())),'the DMZ line is a border');
+assert.ok(bv.size>500&&bv.size<raw.flat().length/4,'borders are a small part of the outline');
+assert.ok(ctx.nearKorea([129.4,35.6])&&ctx.nearKorea([124.4,40.1])&&!ctx.nearKorea([139.7,35.7])&&!ctx.nearKorea([116.4,39.9]),'near Korea: the study frame grown 4°');
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.NEAR)),[[sa[0]-4,sa[1]-4],[sb[0]+4,+(sb[1]+4).toFixed(1)]],'NEAR is STUDY grown 4°');
+// the leader line drops at the design's angle (38°: from its point down to the card's line, then flat into the card)
+const [l0,l1,l2]=placed.line,ang=Math.atan2(l1[1]-l0[1],l1[0]-l0[0])*180/Math.PI;
+assert.ok(Math.abs(ang-38.4)<2&&l1[1]===l2[1]&&l2[0]-l1[0]>=12,`the leader line drops at ${ang.toFixed(1)}° (design 38°), then runs flat`);
+// the focus ring: none until the keyboard is used (the button has focus on arrival, a mouse visitor should not see it)
+assert.match(css,/\.gate :focus-visible\{outline:none\}/,'no ring before the keyboard is used');
+assert.match(css,/html\.kb \.gate :focus-visible\{outline:2px solid var\(--g-teal\);outline-offset:4px\}/,'the teal ring once it is');
+assert.match(browser,/e\.key==='Tab'\|\|e\.key\.startsWith\('Arrow'\)\)root\.classList\.add\('kb'\)/,'Tab or an arrow key turns it on');
+
+console.log('PASS: entry screen skip rules, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring');
