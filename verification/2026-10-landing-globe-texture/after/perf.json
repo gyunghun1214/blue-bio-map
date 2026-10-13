@@ -1,0 +1,71 @@
+[
+ {
+  "size": "1672x941@1",
+  "file": "globe-1600.webp",
+  "bytes": 227074,
+  "ms": 8,
+  "decoded": 443,
+  "drawn": 1504,
+  "R": 733
+ },
+ {
+  "size": "1672x941@2",
+  "file": "globe-2400.webp",
+  "bytes": 351696,
+  "ms": 11,
+  "decoded": 755,
+  "drawn": 2042,
+  "R": 733
+ },
+ {
+  "size": "1920x1080@1",
+  "file": "globe-1600.webp",
+  "bytes": 227074,
+  "ms": 11,
+  "decoded": 833,
+  "drawn": 2722,
+  "R": 841
+ },
+ {
+  "size": "1440x900@2",
+  "file": "globe-2400.webp",
+  "bytes": 351696,
+  "ms": 20,
+  "decoded": 1340,
+  "drawn": 2938,
+  "R": 701
+ },
+ {
+  "size": "390x844@2",
+  "file": "globe-900.webp",
+  "bytes": 91974,
+  "ms": 15,
+  "decoded": 784,
+  "drawn": 2024,
+  "R": 215
+ },
+ {
+  "size": "390x844@1",
+  "file": "globe-900.webp",
+  "bytes": 91974,
+  "ms": 3,
+  "decoded": 447,
+  "drawn": 1400,
+  "R": 215
+ },
+ {
+  "size": "360x640@3",
+  "file": "globe-900.webp",
+  "bytes": 91974,
+  "ms": 6,
+  "decoded": 289,
+  "drawn": 1751,
+  "R": 198
+ },
+ {
+  "slowPhone": {
+   "readyMs": 21125,
+   "enterToGoneMs": 1523
+  }
+ }
+]

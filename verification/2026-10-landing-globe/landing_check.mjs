@@ -49,8 +49,8 @@ const RAF_COUNTER="window.__introRaf=0;{const o=window.requestAnimationFrame;win
 const CELLS_SPY="addEventListener('bbvm:progress',e=>{if(e.detail?.step==='done')window.__doneCells=e.detail.cells;});";
 // A first visit in this tab: storage is cleared on the site's origin, then the page is loaded from a blank page (a
 // hash-only change of the same URL would not reload it).
-async function open({w=1440,h=900,mobile=false,hash='',keep=false,motion=null}={}){
-  await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile});
+async function open({w=1440,h=900,mobile=false,hash='',keep=false,motion=null,dpr=1}={}){
+  await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:dpr,mobile});
   if(!keep){
     if(!(await evaluate('location.href')).startsWith(URL0)){await send('Page.navigate',{url:URL0});await sleep(200);}
     await evaluate(`try{sessionStorage.clear();${motion===null?"localStorage.removeItem('bbvm-reduce-motion')":`localStorage.setItem('bbvm-reduce-motion','${motion}')`}}catch{};1`);
@@ -136,7 +136,7 @@ try{
   fs.writeFileSync(path.join(OUT,'contrast.json'),JSON.stringify(contrastLog,null,1));
   // the clipped coastline file's box sides (105°E, 53°N, 20°N, 150°E) must not show as straight lines: crops to look at
   await open({w:1672,h:941});await waitReady();await sleep(2200);
-  const spots=await evaluate(`(()=>{const f=globeFrame(innerWidth,innerHeight,null);return [[105,42],[105,30],[120,53],[110,20],[150,47],[150,58]].map(([lon,lat])=>{const p=orthographic(lon,lat,...GLOBE_CENTER);return p&&{lon,lat,x:Math.round(f.cx+p.x*f.R),y:Math.round(f.cy-p.y*f.R)};})})()`);
+  const spots=await evaluate(`(()=>{const f=globeFrame(innerWidth,innerHeight,null);return [[105,42],[105,30],[120,53],[110,20],[150,47],[150,58]].map(([lon,lat])=>{const p=project(lon,lat);return p&&{lon,lat,x:Math.round(f.cx+p.x*f.R),y:Math.round(f.cy-p.y*f.R)};})})()`);
   for(const s of spots.filter(Boolean)){const x=Math.max(0,Math.min(1672-240,s.x-120)),y=Math.max(0,Math.min(941-160,s.y-80));await shot(`cut-${s.lon}E-${s.lat}N`,{x,y,width:240,height:160});}
   check('Cut-side crops captured on screen (105°E, 53°N, 20°N, 150°E)',spots.filter(Boolean).length>=4,JSON.stringify(spots));
   if(ONLY==='shots')throw 'done';
@@ -188,9 +188,15 @@ try{
   const linked=await evaluate("({sel:selected?.aphiaID,view:currentView,zoom:map.getZoom(),c:map.getCenter()})");
   check('Shared link: no entry screen, opens 비교와 지표 with the linked species and map position',!g.on&&g.hidden&&linked.sel===274849&&linked.view==='compare'&&linked.zoom===6&&Math.abs(linked.c.lat-35.21)<.02&&Math.abs(linked.c.lng-127.63)<.02,JSON.stringify({g,linked}));
   check('Shared link: the globe files are never requested',!requests.some(u=>u.includes('globe-v1')),requests.filter(u=>u.includes('vendor')).join(' '));
+  check('Shared link: the baked picture (globe-v2) is never requested',!requests.some(u=>u.includes('globe-v2')),requests.filter(u=>u.includes('vendor')).join(' '));
 
   // ---------- keyboard: order, focus ring, Enter on another control ----------
   await open();await waitReady();await sleep(300);
+  const ringOf="(()=>{const a=document.activeElement,s=getComputedStyle(a);return {id:a.id||a.className,fv:a.matches(':focus-visible'),style:s.outlineStyle,kb:document.documentElement.classList.contains('kb')}})()";
+  const ring0=await evaluate(ringOf);await key('Tab');const ring1=await evaluate(ringOf);
+  check('Focus ring: the button has focus on arrival but no ring (mouse visitor); the first Tab turns the ring on',
+    ring0.id==='gate-enter'&&ring0.style==='none'&&!ring0.kb&&ring1.kb&&ring1.style==='solid',JSON.stringify({ring0,ring1}));
+  await shot('gate-after-tab',{x:0,y:520,width:700,height:200});
   await evaluate("document.querySelector('.gate-nav button').focus();1");
   const order=[await evaluate("document.activeElement.textContent.trim()")];
   for(let i=0;i<16;i++){await key('Tab');order.push(await evaluate("(a=>a.closest('#site-gate')?(a.textContent.trim()||a.getAttribute('aria-label')):'(outside)')(document.activeElement)"));}
@@ -226,6 +232,67 @@ try{
   await click('#gate-enter');g=await waitLeft();
   check('Globe file blocked: entering still works',!g.on&&g.view==='explore',JSON.stringify(g));
   await send('Network.setBlockedURLs',{urls:[]});
+
+  // ---------- the baked picture (vendor/globe-v2): one file per visit, sized for the globe and the pixel ratio ----------
+  const perf=[];
+  for(const [w,h,dpr,mobile,want] of [[1672,941,1,false,1600],[1672,941,2,false,2400],[1920,1080,1,false,1600],[1440,900,2,false,2400],[390,844,2,true,900],[390,844,1,true,900],[360,640,3,true,900]]){
+    await open({w,h,dpr,mobile});await waitReady();await sleep(1500);
+    const got=requests.filter(u=>u.includes('/vendor/globe-v2/'));
+    const p=await evaluate(`(()=>{const r=performance.getEntriesByType('resource').find(e=>e.name.includes('globe-v2')),m=n=>performance.getEntriesByName(n)[0]?.startTime;
+      return {file:r&&r.name.split('/').pop(),bytes:r?.encodedBodySize,ms:r&&Math.round(r.responseEnd-r.startTime),decoded:Math.round(m('bbvm-globe-decoded')),drawn:Math.round(m('bbvm-globe-drawn')),R:Math.round(globeFrame(innerWidth,innerHeight,null).R)}})()`);
+    perf.push({size:`${w}x${h}@${dpr}`,...p});
+    check(`${w}×${h} @${dpr}x: one picture asked for, globe-${want}.webp, decoded and drawn`,got.length===1&&got[0].endsWith(`globe-${want}.webp`)&&p.drawn>0,JSON.stringify({got,p}));
+    if(w===1672&&dpr===2){
+      await shot('gate-1672x941@2x');
+      // the overlay and the picture share one projection and placement: the canvas over northern Japan (no cells, no
+      // coast line, no card there) is the picture drawn where intro.js puts it, at no other offset within ±4 device px
+      const al=await evaluate(`(async()=>{const c=document.querySelector('.gate-sea'),x=c.getContext('2d'),k=c.width/innerWidth,f=globeFrame(innerWidth,innerHeight,null);
+        const file=globeFile(f.R,devicePixelRatio,navigator.connection),pad=GLOBE_PAD[file]/file,im=new Image();im.src='vendor/globe-v2/globe-'+file+'.webp';await im.decode();
+        const a=project(137,44),b=project(145,35),X=q=>Math.round((f.cx+q.x*f.R)*k),Y=q=>Math.round((f.cy-q.y*f.R)*k);
+        const x0=X(a),y0=Y(a),w=X(b)-x0,h=Y(b)-y0,lum=d=>{const o=new Float32Array(d.length/4);for(let i=0;i<o.length;i++)o[i]=d[4*i]*.3+d[4*i+1]*.59+d[4*i+2]*.11;return o;};
+        const ref=lum(x.getImageData(x0,y0,w,h).data);let best=null;
+        for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const o=new OffscreenCanvas(c.width,c.height),ox=o.getContext('2d'),s=f.R*(1+2*pad);
+          ox.drawImage(im,(f.cx-s)*k+dx,(f.cy-s)*k+dy,2*s*k,2*s*k);const t=lum(ox.getImageData(x0,y0,w,h).data);let e=0;for(let i=0;i<t.length;i++)e+=(t[i]-ref[i])**2;e/=t.length;
+          if(!best||e<best.e)best={dx,dy,e:Math.round(e*100)/100};}
+        return {box:[x0,y0,w,h],...best};})()`);
+      check('The picture and the drawn data line up: the best match of the picture is at its own place (within 2 device px)',Math.abs(al.dx)<=2&&Math.abs(al.dy)<=2&&al.e<4,JSON.stringify(al));
+      // no warm bright points over the sea (the fishing fleets of the East and Yellow Seas are not on the picture); faint
+      // lights on land. Sea = inside the disc, off the Natural Earth land grown 2 px, away from the card's orange point.
+      const lit=await evaluate(`(async()=>{const c=document.querySelector('.gate-sea'),x=c.getContext('2d'),k=c.width/innerWidth,f=globeFrame(innerWidth,innerHeight,null);
+        const L=await (await fetch('vendor/globe-v1/land-50m.json')).json(),m=new OffscreenCanvas(c.width,c.height),mx=m.getContext('2d');mx.setTransform(k,0,0,k,0,0);
+        mx.beginPath();for(const r of decodeRings(L.land,L.scale)){r.forEach((p,i)=>{const q=project(p[0],p[1],true),X=f.cx+q.x*f.R,Y=f.cy-q.y*f.R;i?mx.lineTo(X,Y):mx.moveTo(X,Y);});mx.closePath();}
+        mx.fillStyle='#fff';mx.fill('evenodd');mx.lineWidth=4;mx.strokeStyle='#fff';mx.stroke();
+        const md=mx.getImageData(0,0,m.width,m.height).data,d=x.getImageData(0,0,c.width,c.height).data,an=project(...ANCHOR),ax=(f.cx+an.x*f.R)*k,ay=(f.cy-an.y*f.R)*k;
+        let sea=0,warmSea=0,land=0,warmLand=0;const warm=i=>d[i]>=90&&d[i]-d[i+2]>=30&&d[i]>=d[i+1];
+        for(let y=0;y<c.height;y++)for(let x_=0;x_<c.width;x_++){const r=Math.hypot(x_/k-f.cx,y/k-f.cy)/f.R;if(r>.97)continue;const i=4*(y*c.width+x_);
+          if(md[i+3]>0){land++;if(d[i]>=70&&d[i]>=d[i+2])warmLand++;continue;}
+          if(Math.hypot(x_-ax,y-ay)<16*k)continue;sea++;if(warm(i))warmSea++;}
+        return {sea,warmSea,land,warmLand};})()`);
+      check('No warm bright points over the sea; faint lights on land',lit.sea>1e5&&lit.warmSea===0&&lit.warmLand>200,JSON.stringify(lit));
+      await shot('zoom-korea@2x',{x:980,y:300,width:300,height:220});await shot('zoom-east-yellow-sea@2x',{x:1000,y:280,width:280,height:200});
+      await shot('zoom-rim@2x',{x:560,y:120,width:320,height:260});
+    }
+  }
+  fs.writeFileSync(path.join(OUT,'perf.json'),JSON.stringify(perf,null,1));
+  // blocked picture: the vector globe, and everything still works
+  await send('Network.setBlockedURLs',{urls:['*globe-v2*']});
+  await open({w:1672,h:941});g=await waitReady();await sleep(1500);await shot('gate-picture-blocked');
+  const vec=await evaluate(`(()=>{const c=document.querySelector('.gate-sea'),x=c.getContext('2d'),f=globeFrame(innerWidth,innerHeight,null),q=project(150,25),d=x.getImageData(Math.round(f.cx+q.x*f.R),Math.round(f.cy-q.y*f.R),1,1).data;
+    return {drawn:performance.getEntriesByName('bbvm-globe-drawn').length,px:[...d]}})()`);
+  check('Picture blocked: the vector globe instead (deep-sea blue, opaque), the screen works',g.on&&g.ready&&vec.drawn===0&&vec.px[3]===255&&vec.px[2]>vec.px[0]+20,JSON.stringify({vec,g}));
+  await click('#gate-enter');g=await waitLeft();
+  check('Picture blocked: entering still works',!g.on&&g.view==='explore',JSON.stringify(g));
+  await send('Network.setBlockedURLs',{urls:[]});
+  // a slow phone (CPU 4x slower): the loader still ends after its minimum and the button answers at once
+  await send('Emulation.setCPUThrottlingRate',{rate:4});
+  const t0=Date.now();await open({w:390,h:844,dpr:2,mobile:true});g=await waitReady();const tReady=Date.now()-t0;
+  const t1=Date.now();await click('#gate-enter');g=await waitLeft();const tLeave=Date.now()-t1;
+  await send('Emulation.setCPUThrottlingRate',{rate:1});
+  perf.push({slowPhone:{readyMs:tReady,enterToGoneMs:tLeave}});fs.writeFileSync(path.join(OUT,'perf.json'),JSON.stringify(perf,null,1));
+  // (ready itself waits for the app's data up to GATE_MAX_MS from intro.js start; at 4x it lands near that on main too)
+  check(`Phone at CPU 4x: ready after ${tReady} ms, then the button answers at once (gone ${tLeave} ms later, the 0.82 s leave included)`,g.view==='explore'&&!g.on&&tLeave<2500,JSON.stringify({tReady,tLeave}));
+  // after leaving: no frames, no picture kept
+  check('After leaving: the picture is let go (canvas emptied)',await evaluate("document.querySelector('.gate-sea').width===0"));
 
   // ---------- data states: the note says what happened, numbers only when the app has them ----------
   const mocks={
