@@ -1,0 +1,20 @@
+Natural Earth (https://www.naturalearthdata.com/), public domain. Release v5.1.2 GeoJSON from
+https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/
+
+Made by scripts/prepare_globe.py for the entry-screen globe (dist/intro.js) only:
+clipped to 28..254 degrees E (west of the antimeridian shifted +360) and -62..90 degrees N, which holds
+everything within about 80 degrees of the globe centre 141E 14N; Douglas-Peucker simplified (land and borders
+0.04 degree, depth areas 0.05 degree); rings smaller than 0.25 degree (land) or 0.4 degree (depth) dropped;
+every edge longer than 1 degree split (so the cut edges bend with the sphere); integers in 1/100 degree,
+delta-encoded.
+
+Inputs (sha256):
+  ne_50m_land.geojson e874b27a51d146452be360cafb3cc50c86001074a67d534113e6534682f9826b
+  ne_50m_admin_0_boundary_lines_land.geojson 2faac4f6b34386f3d21b6e018cf151f241f00e5c936d44dd17d7d9bfb147fa48
+  ne_10m_bathymetry_K_200.geojson 5c6c182da8608153ea2dce22dfb32c987e5390e0bd4a122266143ba181a7b636
+  ne_10m_bathymetry_I_2000.geojson cdedc746ce06e1a051cb8905e8f07855225ccbd3560ce3a66607651fc6953ce2
+Outputs (sha256, bytes):
+  land-50m.json d6562ed8c587c6b59a121a9ec968d4bd4609a2647a96a246cdca9fd2295129d3 92710
+  bathymetry-10m.json 0b88a9c47be2feaa2bc82394d18fe447470bba918e8b0e13dcb2f34f682d362e 189734
+
+Not for navigation or for judging jurisdiction.
