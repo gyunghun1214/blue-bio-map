@@ -2729,9 +2729,12 @@ function initBasemaps(geography){
   const grid=L.layerGroup();
   for(let lat=25;lat<=50;lat+=5)L.polyline([[lat,110],[lat,150]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
   for(let lon=115;lon<=145;lon+=5)L.polyline([[22,lon],[52,lon]],{pane:'basePane',color:'#3c5a6c',weight:.5,opacity:.6,interactive:false}).addTo(grid);
-  const satellite=L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
+  // Offline demo (live-data.js): the same imagery saved beforehand as tiles under offline-tiles/ (scripts/offline/prepare-offline.ps1).
+  const offline=globalThis.BBVM_OFFLINE===true;
+  const satellite=L.tileLayer(offline?'offline-tiles/satellite/{z}/{y}/{x}.jpeg':'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
     {maxNativeZoom:8,maxZoom:8,attribution:'NASA GIBS · Blue Marble'});
-  const depth=L.tileLayer.wms('https://wms.gebco.net/mapserv?',{layers:'gebco_latest',format:'image/png',version:'1.3.0',
+  const depth=offline?L.tileLayer('offline-tiles/depth/{z}/{x}/{y}.png',{maxNativeZoom:8,maxZoom:8,attribution:'GEBCO_2026 Grid · 항해용 아님'})
+    :L.tileLayer.wms('https://wms.gebco.net/mapserv?',{layers:'gebco_latest',format:'image/png',version:'1.3.0',
     attribution:'GEBCO_2026 Grid · 항해용 아님'});
   basemapLayers={basic:[land,grid],satellite:[satellite,outline],depth:[depth,outline]};
   // Counted per activation: a server that worked earlier can still fail now.
@@ -2751,7 +2754,7 @@ function setBasemap(name,failed=false){
   $('map').classList.toggle('map-dark',name!=='basic');
   $('map').dataset.tiles=name; // theme.css tints the tiles per basemap (satellite toward navy; depth only darker, no hue shift)
   document.querySelectorAll('[data-basemap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.basemap===name)));
-  const warn=failed?'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.':'';
+  const warn=!failed?'':globalThis.BBVM_OFFLINE===true?'오프라인 시연: 저장된 배경 지도가 없어 경계선만 있는 지도로 바꿨습니다.':'배경 지도를 불러오지 못해 경계선만 있는 지도로 바꿨습니다.';
   // the fallback note is a small ⚠ beside 위성·수심 (tooltip and label carry the sentence); #basemap-status keeps the text for checks
   $('basemap-status').textContent=warn;$('basemap-status').classList.toggle('fallback',failed);
   $('basemap-warn').hidden=!failed;$('basemap-warn').title=warn;$('basemap-warn').setAttribute('aria-label',warn||'배경 지도 상태');
@@ -3462,7 +3465,7 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -3520,15 +3523,17 @@ async function loadCollection(){
     selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();renderCompare();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
-    $('connection-state').textContent=data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
-    if(data.snapshotAt){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
+    // Offline demo: the snapshot is the plan, not a failure, so its date stays in the status line without the alert.
+    $('connection-state').textContent=data.offline?`오프라인 시연 · 저장된 공개 자료 사본 (${data.snapshotAt} 기준) · ${counts}`
+      :data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
+    if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
-    if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
+    if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt&&!data.offline?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
     // a dated snapshot or a newer data file is a status, not a failure: it moves from the banner into the yellow header chip
     $('error').classList.toggle('in-chip',!$('error').hidden);updateStatusChips();
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v||h.w)applyHash(h);}
-    loadDone(data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
+    loadDone(data.offline?'offline':data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
   }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('cmp-profile').innerHTML='<p class="cmp-error" role="alert">자료를 불러오지 못했습니다. 위의 ↻ 다시 불러오기를 눌러 주세요. 빈 결과가 아니라 연결 오류입니다.</p>';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
