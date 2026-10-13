@@ -714,6 +714,11 @@ try{
     const cmpScroll=await evaluate("(()=>{setView('compare');setCompareMode('table');const c=document.getElementById('comparison'),s=getComputedStyle(c);const r={own:c.scrollWidth>c.clientWidth?s.overflowX:'fits',pageX:getComputedStyle(document.body).overflowX+'/'+getComputedStyle(document.documentElement).overflowX};setView('explore');return r})()");
     check(`Page width ${w}px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page)`,widths.every(x=>!x.endsWith('OVER'))&&['fits','auto','scroll'].includes(cmpScroll.own)&&!cmpScroll.pageX.includes('hidden'),widths.join(' | ')+' '+JSON.stringify(cmpScroll));
     if(w===1560){await evaluate("setView('compare');setCompareMode('table');window.scrollTo(0,0);1");await shot('desktop-1560-compare',false);await evaluate("setView('explore');1");}
+    // 2026-10-13: the y-axis name '보전 필요성 MCUI' read as '필요성50' on a phone; it now sits on one line above the plot, clear of every tick number
+    const yl=await evaluate(`(()=>{setView('compare');setCompareMode('matrix');toggleSimulation(true);const b=e=>e.getBoundingClientRect(),l=b(document.querySelector('#compare .matrix-ylabel')),p=b(document.getElementById('matrix')),f=b(document.querySelector('#compare .cmp-sim-flag'));
+      const gap=t=>Math.max(t.left-l.right,l.left-t.right,t.top-l.bottom,l.top-t.bottom);const ticks=[...document.querySelectorAll('#compare .matrix-ticks i,#compare .matrix-ticks b')].map(b);
+      const r={text:document.querySelector('#compare .matrix-ylabel').textContent,oneLine:l.height<26,minGap:Math.round(Math.min(...ticks.map(gap))),abovePlot:Math.round(p.top-l.bottom),flagGap:Math.round(gap(f))};toggleSimulation(false);setView('explore');return r})()`);
+    check(`Matrix ${w}px: y-axis name '보전 필요성 MCUI' on one line above the plot, ≥8px from every tick number and from the 가상 예시 flag`,yl.text==='보전 필요성 MCUI'&&yl.oneLine&&yl.minGap>=8&&yl.abovePlot>=8&&yl.flagGap>=8,JSON.stringify(yl));
   }
 
   // ---------- The eight demo flows, desktop and mobile (screenshots in OUT) ----------
