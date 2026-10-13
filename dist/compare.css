@@ -241,11 +241,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 
 /* ---------- table view ---------- */
 #compare .cmp-table-view{margin-top:18px}
-#compare .comparison-controls span:first-child{color:var(--cs-ink2)}
-#compare #comparison-page{color:var(--cs-ink2)}
-/* the data table keeps its light card (coverage chips are tuned for it), so text returns to the light-theme ink */
-#compare #comparison{color:#0f2537;color-scheme:light}
-#compare #comparison :focus-visible{outline-color:#0f7f73}
+/* 2026-10-13: the data table follows the page (dark), per the '비교와 지표 · 데이터 표' mockup; the rules are at the end */
 #compare tr.cmp-out{display:none}
 #compare tbody tr.cmp-row th{cursor:pointer}
 
@@ -444,4 +440,147 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .matrix-point.pilot.w-moved{outline:2px dashed #f1cf9f;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
   #compare *,#compare *::before,#compare *::after{transition:none!important;animation:none!important}
+}
+
+/* ---------- data table, dark (2026-10-13 '비교와 지표 · 데이터 표') ----------
+   Colours reuse the --cs-* tokens and the type colours ([data-type] --qt); --dt-* are the few the table adds. */
+#compare{--dt-head:#0a2236;--dt-open:#0a2438;--dt-well:#061727;--dt-row:rgba(150,180,200,.10);--dt-chip:rgba(150,180,200,.24);--dt-cut:#f2b84b;--dt-warn:#f2c56b;--dt-warn-line:rgba(242,184,75,.5);--dt-hi:#ff8a8e;--dt-lo:#c7d4dc;--dt-rx:#7d93a1;--dt-ink:#f4f8fa;--dt-ink2:#c7d4dc;--dt-ink3:#8fa5b2}
+/* tool panel: group counts and the weight row show in the table view only */
+#compare .cmp-gn{margin-left:6px;color:var(--cs-ink2);font-weight:500;font-variant-numeric:tabular-nums}
+#compare:not([data-cmp-mode=table]) .cmp-gn{display:none}
+#compare[data-cmp-mode=table] .cmp-bar{border-bottom-color:transparent;border-radius:12px 12px 0 0}
+#compare .cmp-wrow{padding:0 8px 8px;border:1px solid var(--cs-line);border-top:0;border-radius:0 0 12px 12px;background:var(--cs-panel)}
+#compare .cmp-wrow[hidden]{display:none}
+#compare .cmp-wrow-in{display:flex;align-items:center;gap:10px 20px;padding:10px 16px;border:1px solid var(--cs-line);border-radius:9px;background:var(--dt-well)}
+#compare .cmp-wrow-t{display:grid;flex:none;margin:0;color:var(--cs-ink);font-size:12.5px;line-height:1.45}
+#compare .cmp-wrow-t b{font-weight:600}
+#compare .cmp-wrow-t small{color:var(--cs-ink2);font-size:12px}
+#compare .cmp-wrow-s{display:flex;flex:1 1 auto;align-items:center;gap:12px;min-width:0}
+#compare .w-v-bio,#compare .w-v-food{flex:none;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+#compare .w-v-bio{color:var(--cs-bio)}
+#compare .w-v-food{color:var(--cs-accent-hi)}
+#compare .cmp-w-slot{display:flex;flex:1 1 auto;min-width:120px}
+#compare .cmp-w-slot .w-range{--w:50%;--w0:50%;-webkit-appearance:none;appearance:none;width:100%;height:30px;margin:0;cursor:pointer;background:linear-gradient(#eaf2f5,#eaf2f5) var(--w0) 50%/2px 16px no-repeat}
+#compare .cmp-w-slot .w-range:disabled{cursor:not-allowed}
+#compare .w-range:focus-visible{outline:2px solid var(--cs-accent-hi);outline-offset:2px;border-radius:4px}
+#compare .cmp-wrow-note{flex:none;margin:0;color:var(--cs-ink2);font-size:12px}
+/* five type cards; a pressed card keeps only its type in the table */
+#compare .dt-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 18px}
+#compare .dt-card{display:grid;align-content:start;gap:3px;min-height:44px;padding:12px 14px;border:1px solid var(--cs-line);border-radius:10px;background:var(--cs-panel);color:var(--cs-ink);font:inherit;text-align:left;cursor:pointer;transition:background-color .2s,border-color .2s}
+#compare .dt-card:hover{background:#0c2639}
+#compare .dt-card[aria-pressed=true]{border-color:var(--qt,var(--dt-lo));background:var(--cs-sel);box-shadow:inset 0 0 0 1px var(--qt,var(--dt-lo))}
+#compare .dt-card-name{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700}
+#compare .dt-card-name i{flex:none;width:9px;height:9px;border-radius:2px;background:var(--qt,#8fa3b0)}
+#compare .dt-card-n{color:var(--cs-ink2);font-size:13px}
+#compare .dt-card-n b{margin-right:2px;color:var(--dt-ink);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+#compare .dt-card-sub{color:var(--cs-ink2);font-size:12px}
+#compare :is(.dt-card,.cmp-mode button,.cmp-groups button):focus-visible{outline:2px solid var(--cs-accent-hi);outline-offset:2px}
+/* the line above the table */
+#compare .cmp-table-view .comparison-controls{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin:0 2px 10px}
+#compare #comparison-page{margin:0;color:var(--cs-ink);font-size:14px;font-weight:700}
+#compare .dt-hint{color:var(--cs-ink2);font-size:12px}
+/* the table */
+#compare #comparison{border:1px solid var(--cs-line);border-radius:14px;background:var(--cs-panel);color:var(--cs-ink);color-scheme:dark}
+#compare #comparison:focus-visible,#compare #comparison :focus-visible{outline:2px solid var(--cs-accent-hi);outline-offset:2px}
+#compare #comparison table{min-width:1060px}
+#compare #comparison :is(th,td){border-bottom:0}
+#compare #comparison thead th{padding:12px 14px;border-bottom:1px solid var(--cs-line);background:var(--dt-head);color:var(--cs-ink2);font-size:12.5px;vertical-align:bottom}
+#compare #comparison thead th:first-child,#compare #comparison tbody th{width:auto;min-width:200px;background:var(--cs-panel);box-shadow:none}
+#compare #comparison thead th:first-child{background:var(--dt-head)}
+#compare #comparison thead th:nth-child(2){width:160px}
+#compare #comparison thead th:is(:nth-child(3),:nth-child(4),:nth-child(5)){width:110px}
+#compare #comparison thead th:nth-child(6){width:150px}
+#compare #comparison thead th:nth-child(7){width:140px}
+#compare #comparison thead th:nth-child(8){width:56px}
+#compare #comparison .cmp-sort{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 5px;color:var(--cs-ink);font-size:13px;font-weight:700;text-align:left}
+#compare #comparison .cmp-sort small{order:3;flex-basis:100%;color:var(--dt-ink3);font-size:11.5px;font-weight:500}
+#compare #comparison .cmp-sort i{order:2;color:var(--dt-ink3);font-size:11px}
+#compare #comparison th[aria-sort=ascending] .cmp-sort i,#compare #comparison th[aria-sort=descending] .cmp-sort i{color:var(--cs-accent-hi)}
+#compare #comparison th.cmp-type-h{color:var(--cs-ink);font-size:13px;font-weight:700}
+#compare #comparison tbody tr.cmp-row>*{padding:14px;border-top:1px solid var(--dt-row);background:var(--cs-panel);vertical-align:middle}
+#compare #comparison tbody tr.cmp-row:first-child>*{border-top:0}
+#compare #comparison tbody tr.cmp-row:hover>*{background:#0a2236}
+#compare #comparison tbody tr.cmp-row:has(+tr.cmp-more:not([hidden]))>*{background:var(--dt-open)}
+#compare #comparison tbody th b{color:var(--dt-ink);font-size:16px}
+#compare #comparison tbody th small{margin-top:2px;color:var(--dt-ink2);font-size:12px}
+#compare #comparison .dt-meta{display:block;margin-top:3px;color:var(--dt-ink3);font-size:11.5px;font-weight:400}
+#compare #comparison tr.cmp-row.flash>*{animation:dtFlash 1.6s ease-out}
+@keyframes dtFlash{0%,40%{background:#1d4448}100%{background:inherit}}
+/* type badge: the plain verdict in its colour over the formal name; none = grey, no box */
+#compare #comparison .dt-type{display:inline-grid;gap:2px;padding:5px 9px;border:1px solid color-mix(in srgb,var(--qt) 60%,transparent);border-radius:7px;background:color-mix(in srgb,var(--qt) 8%,transparent)}
+#compare #comparison .dt-type b{display:flex;align-items:center;gap:6px;color:var(--qt);font-size:12.5px;white-space:nowrap}
+#compare #comparison .dt-type b i{flex:none;width:7px;height:7px;border-radius:2px;background:var(--qt)}
+#compare #comparison .dt-type small{color:var(--dt-ink2);font-size:11px;white-space:nowrap}
+#compare #comparison .dt-type.none{padding-left:0;border-color:transparent;background:none}
+#compare #comparison .dt-type.none b{color:var(--dt-ink2)}
+/* value cells: number + thin bar; BBVI and MCUI larger, with the type threshold as a yellow tick */
+#compare #comparison .score-cell{color:inherit}
+#compare #comparison .score-cell.cv{min-width:0;padding:2px 0}
+#compare #comparison .cv-num{color:var(--dt-ink);font-size:15px;font-weight:700}
+#compare #comparison td:is([data-k=BBVI],[data-k=MCUI]) .cv-num{font-size:20px}
+#compare #comparison .cv-bar{width:80px;height:4px;margin:6px 0 0;border-radius:99px;background:rgba(150,180,200,.16)}
+#compare #comparison .cv-bar i{border-radius:99px}
+#compare #comparison td[data-k=MFPI] .cv-bar i{background:var(--cs-accent-hi)}
+#compare #comparison td[data-k=MBPI] .cv-bar i{background:var(--cs-bio)}
+#compare #comparison .rx-cv{min-width:0;padding:2px 0}
+#compare #comparison .rx-cv .cv-num{color:var(--dt-ink2);font-weight:600}
+#compare #comparison .rx-cv .cv-bar i{background:var(--dt-rx)}
+#compare #comparison .rx-none{color:var(--dt-ink3)}
+#compare #comparison td[data-k=BBVI] .cv-bar{width:110px;height:6px}
+#compare #comparison td[data-k=BBVI] .cv-bar i{background:var(--dt-ink)}
+#compare #comparison td[data-k=MCUI] .cv-bar{width:100px;height:6px}
+#compare #comparison td[data-k=MCUI] .cv-bar i{background:var(--dt-lo)}
+#compare #comparison td[data-k=MCUI] .cv-bar.hi i{background:var(--dt-hi)}
+#compare #comparison td[data-k=MCUI] .cv:has(.cv-bar.hi) .cv-num{color:var(--dt-hi)}
+#compare #comparison .cv-bar b{top:-3px;width:2px;height:calc(100% + 6px);border-radius:1px;background:var(--dt-cut)}
+#compare #comparison .score-cell.cv:not(:has(.cv-bar)) .cv-num{color:var(--cs-accent-hi);font-size:16px}
+#compare #comparison .score-cell.cv>small{color:var(--dt-ink2);font-size:12px;text-decoration:underline;text-underline-offset:3px}
+/* the expand button (44×44, turns over when open) */
+#compare #comparison td.cmp-x{text-align:right}
+#compare #comparison .cmp-more-btn{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--cs-line);border-radius:9px;background:var(--dt-well);color:var(--cs-ink)}
+#compare #comparison .cmp-more-btn::after{content:none}
+#compare #comparison .cmp-more-btn svg{width:12px;height:8px;transition:transform .2s}
+#compare #comparison .cmp-more-btn[aria-expanded=true]{border-color:var(--cs-sel-line);background:var(--cs-sel);color:var(--cs-accent-hi)}
+#compare #comparison .cmp-more-btn[aria-expanded=true] svg{transform:rotate(180deg)}
+/* the expanded row: three boxes, the evidence-level chips, then the full labels folded */
+#compare #comparison tr.cmp-more>td{padding:2px 14px 16px;background:var(--dt-open)}
+#compare #comparison .dt-x{position:sticky;left:14px;display:grid;gap:12px;width:min(100%,calc(100vw - 64px))}
+#compare #comparison .dt-x3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#compare #comparison .dt-x3 section{padding:14px 16px;border:1px solid var(--cs-line);border-radius:10px;background:var(--dt-well)}
+#compare #comparison .dt-x h4{margin:0 0 8px;color:var(--dt-ink2);font-size:12px;font-weight:600}
+#compare #comparison .dt-x-main{margin:0;color:var(--dt-ink);font-size:13.5px;line-height:1.55}
+#compare #comparison .dt-x-sum{font-variant-numeric:tabular-nums}
+#compare #comparison .dt-x-sub{margin:6px 0 0;color:var(--dt-ink2);font-size:12px;line-height:1.5}
+#compare #comparison .dt-x-link{display:inline-flex;align-items:center;gap:4px;min-height:44px;color:var(--cs-accent-hi);font-size:13px;font-weight:700}
+#compare #comparison .dt-x-ev{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+#compare #comparison .dt-x-ev>b{margin-right:4px;color:var(--dt-ink2);font-size:12px;font-weight:600}
+#compare #comparison .ev-chip{margin:0;padding:3px 9px;border:1px solid var(--dt-chip);border-radius:6px;background:none;color:var(--dt-ink2);font-size:12px;white-space:normal}
+#compare #comparison .ev-chip.warn{border-color:var(--dt-warn-line);color:var(--dt-warn)}
+#compare #comparison .ev-chip.none{border-style:dashed}
+#compare #comparison .dt-x-all{margin:0;padding:4px 0 0;border:0;border-top:1px solid var(--dt-row);border-radius:0;background:none}
+#compare #comparison .dt-x-all summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:0;color:var(--cs-ink);font-size:13px;font-weight:600;list-style:none;cursor:pointer}
+#compare #comparison .dt-x-all summary::-webkit-details-marker{display:none}
+#compare #comparison .dt-x-all summary::before{content:'';width:7px;height:7px;margin:0 3px 0 2px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+#compare #comparison .dt-x-all[open] summary::before{transform:rotate(45deg)}
+#compare #comparison .dt-x-all summary small{color:var(--dt-ink3);font-weight:400}
+#compare #comparison .cmp-more-grid{position:static;max-width:none;margin-top:4px}
+#compare #comparison .cmp-more-grid>div{padding:10px 12px;border:1px solid var(--dt-row);border-radius:8px;background:var(--dt-well);color:var(--dt-ink2);font-size:12.5px;line-height:1.5}
+#compare #comparison .cmp-more-grid h4{color:var(--dt-ink3)}
+#compare #comparison .cmp-more-grid .score-cell{color:var(--cs-accent-hi)}
+#compare #comparison .cmp-more-grid small{color:var(--dt-ink2)}
+#compare #comparison .pending{color:var(--dt-ink3)}
+@media (max-width:900px){
+  #compare .dt-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #compare .dt-card{padding:10px 12px}
+  #compare .dt-card-n b{font-size:20px}
+  #compare .dt-card[data-cmp-type=none]{grid-column:1/-1}
+  #compare #comparison .dt-x3{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  #compare .cmp-wrow-in{flex-wrap:wrap}
+  #compare .cmp-wrow-s{flex:1 1 100%;order:2}
+  #compare .cmp-wrow-note{order:3}
+}
+@media (max-width:740px){
+  #compare #comparison thead th:first-child,#compare #comparison tbody th{min-width:140px;width:140px}
 }

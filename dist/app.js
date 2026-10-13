@@ -2820,7 +2820,7 @@ function renderComparison(){
     const full=axisCell(s,key);if(!full)return {main:fallback[key](s),more:''};
     const m=full.match(/^<button([^>]*)>([^<]*)<small>/);if(!m)return {main:full,more:''};
     const v=pilotScore(s,key);
-    const bar=v!==null?`<span class="cv-bar" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
+    const bar=v!==null?`<span class="cv-bar${key==='MCUI'&&cut.MCUI!=null&&v>=cut.MCUI?' hi':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
     const off=key==='BBVI'?officialNote(s):'';
     return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
       more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
@@ -2832,23 +2832,48 @@ function renderComparison(){
   const rxMore=s=>{const r=mbpiRxOf(s),v=data.assessmentInfo?.method?.posthoc?.validation_sets?.MBPI_RX;if(!r)return null;
     const check=['passed','failed'].includes(v?.result)?` · 사후 검증 ${v.result==='passed'?'통과':'기준 미충족'}(탐색적 재검토)`:'';
     return r.value===null?`없음<small>${esc(r.reason)}${check} · 점수 아님</small>`:`${r.value.toFixed(1)}<small>${esc(r.stratum.short)}${check} · MBPI·BBVI에 쓰지 않음</small>`;};
-  const typeChip=s=>{const t=matrixType(s);return t?`<span class="type-chip"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none">미배치</span>';};
-  const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'▲':'▼'):'↕'}</i></button></th>`;};
-  const coverageNote=`발견·종 연결·원문 확인·${Object.values(data.assessmentInfo?.method?.posthoc?.validation_sets||{}).some(v=>v.result==='passed'&&!v.exploratory)?(released()?'정식':'시범')+' 산출·방법 검증 통과를':(released()?'정식':'시범')+' 산출을'} 구분 · 점수 아님`;
+  // 2026-10-13 dark data table: the plain verdict over the formal type name, in the type colour ([data-type] --qt in compare.css)
+  const typeBadge=s=>{const t=matrixType(s);return t?`<span class="dt-type" data-type="${t}" title="${esc(matrixPlainNote())}"><b><i aria-hidden="true"></i>${esc(matrixTypePlain(t))}</b><small>${esc(matrixTypeLabel(t))}</small></span>`
+    :'<span class="dt-type none"><b>유형 없음</b><small>매트릭스 미배치</small></span>';};
+  const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'↑':'↓'):'↕'}</i></button></th>`;};
+  // The expanded row: BBVI as the sum it is (current weight), the MCUI basis sentence, the public cells; then the evidence-level
+  // chips, then every long label the cells used to carry, folded. All words come from the same helpers as the detail pane.
+  const wk=weightStep(bbviWeight), wFood=(wk/W_STEPS).toFixed(2), wBio=((W_STEPS-wk)/W_STEPS).toFixed(2);
+  const bbviBox=s=>{
+    const v=pilotScore(s,'BBVI'), f=pilotScore(s,'MFPI'), b=pilotScore(s,'MBPI');
+    if(v===null||f===null||b===null||!VERIFIED.includes(s.assessment?.report_version))
+      return `<p class="dt-x-main">${esc(axisState(s,'BBVI').label)}</p><p class="dt-x-sub">${esc(shortReason[s.assessment?.withheld_reasons?.BBVI]||'근거·보류 사유는 BBVI 값을 눌러 봅니다')}</p>`;
+    // the same mix as pilotScore, on the shown one-decimal inputs; '≈' if rounding ever makes the two differ
+    const f1=Number(f.toFixed(1)), b1=Number(b.toFixed(1)), calc=Math.round((bbviWeight*f1+(1-bbviWeight)*b1)*10)/10;
+    return `<p class="dt-x-main dt-x-sum">${wFood} × MFPI ${f1.toFixed(1)} + ${wBio} × MBPI ${b1.toFixed(1)} ${calc===v?'=':'≈'} <b>${v.toFixed(1)}</b></p>`+
+      `<p class="dt-x-sub">${esc([axisLabel(s,'BBVI'),bbviLabel(s),officialNote(s)?'탐색 보기 · '+officialNote(s):''].filter(Boolean).join(' · '))}</p>`;
+  };
+  const mcuiBox=s=>{
+    const c=evidenceCoverage(s).checks.find(x=>x.name==='보전'), v=pilotScore(s,'MCUI');
+    const sub=v===null?shortReason[s.assessment?.withheld_reasons?.MCUI]||'근거·보류 사유는 MCUI 값을 눌러 봅니다'
+      :[axisLabel(s,'MCUI'),separateMcui(s)?mcuiBasisLabel(s)+(subNationalMcui(s)&&mcuiBacktest(s)?' · '+mcuiBacktest(s):'')+' · IUCN 기반 MCUI와 비교 불가':'IUCN 기반'].join(' · ');
+    return `<p class="dt-x-main">${esc(c?.detail||'')}</p><p class="dt-x-sub">${esc(sub)}</p>`;
+  };
+  const occBox=(s,occ)=>(s.cells.length?`<p class="dt-x-main">공개 ${s.cells[0].sizeDeg}° 셀 ${spatialCells(s).length.toLocaleString()}곳 · 기록 ${cellRecords(s).toLocaleString()}건</p><p class="dt-x-sub">기록 수는 개체수·자원량이 아닙니다.</p>`:`<p class="dt-x-main">${occ}</p>`)+
+    `<button type="button" class="score-cell dt-x-link" data-score-aphia="${s.aphiaID}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">탐색 지도에서 보기 <span aria-hidden="true">→</span></button>`;
+  const chipRow=s=>{
+    const list=evidenceChipList(s), cov=evidenceCoverage(s).checks.find(x=>x.name==='보전');
+    if(cov?.stage==='checked_none')list.push('보전 '+stageName(cov.stage));  // the coverage column left the table; this stage stays
+    return `<div class="dt-x-ev"><b>근거 수준</b>${list.length?list.map(c=>`<span class="ev-chip${/예비평가|역검증|평가 없음/.test(c)?' warn':''}">${esc(c)}</span>`).join(''):'<span class="ev-chip none">추가 라벨 없음</span>'}</div>`;
+  };
   const row=s=>{
     const id=s.aphiaID, cells=Object.fromEntries(['MFPI','MBPI','BBVI','MCUI'].map(k=>[k,valueCell(s,k)])), occ=occurrenceCell(s), open=cmpOpen.has(id), rx=rxMore(s);
-    const occShort=s.cells.length?cellCountLabel(s):occ.includes('<small>')&&!occ.startsWith('<span')?occ.slice(0,occ.indexOf('<small>')):occ;
     const more=[['학명·식별자',`WoRMS 확인<small>${esc(s.name)} · AphiaID ${id}</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')],['출현기록',occ],
-      ...['MFPI','MBPI','BBVI','MCUI'].flatMap(k=>[...cells[k].more?[[titles[k],cells[k].more]]:[],...k==='MBPI'&&rx?[['의약 후보 MBPI · 보조, 탐색적',rx]]:[]]),['자료 연결 현황',`<small>${coverageNote}</small>`]];
-    return `<tr class="cmp-row" data-aphia="${id}"><th scope="row"><b>${esc(s.label)}</b><small>${esc(s.name)}</small></th><td>${typeChip(s)}</td>`+
-      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val">${cells[k].main}</td>`+(k==='MBPI'?`<td class="cmp-val cmp-rx">${rxCell(s)}</td>`:'')).join('')+
-      `<td class="cmp-ev">${evidenceChips(s)}</td><td class="cmp-occ"><button class="score-cell" data-score-aphia="${id}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">${occShort}<small>지도·셀 목록 보기</small></button></td>`+
-      `<td class="cmp-cov"><span class="sr-only">5개 항목의 검증 단계 · 점수 아님</span>${coverageBar(s)}</td>`+
-      `<td><button type="button" class="cmp-more-btn" aria-expanded="${open}" aria-controls="cmp-more-${id}" aria-label="${esc(s.label)} 자세히">자세히</button></td></tr>`+
-      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="11"><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></td></tr>`;
+      ...['MFPI','MBPI','BBVI','MCUI'].flatMap(k=>[...cells[k].more?[[titles[k],cells[k].more]]:[],...k==='MBPI'&&rx?[['의약 후보 MBPI · 보조, 탐색적',rx]]:[]])];
+    return `<tr class="cmp-row" data-aphia="${id}"><th scope="row"><b>${esc(s.label)}</b><small>${esc(s.name)}</small><span class="dt-meta">${esc(s.group)} · ${s.catalog?'조사 후보':'운영 발행'}</span></th><td class="cmp-type">${typeBadge(s)}</td>`+
+      ['MFPI','MBPI','BBVI','MCUI'].map(k=>`<td class="cmp-val" data-k="${k}">${cells[k].main}</td>`+(k==='MBPI'?`<td class="cmp-val cmp-rx">${rxCell(s)}</td>`:'')).join('')+
+      `<td class="cmp-x"><button type="button" class="cmp-more-btn" aria-expanded="${open}" aria-controls="cmp-more-${id}" aria-label="${esc(s.label)} 근거 자세히"><svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.5 6 6l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></td></tr>`+
+      `<tr class="cmp-more" id="cmp-more-${id}"${open?'':' hidden'}><td colspan="8"><div class="dt-x"><div class="dt-x3"><section><h4>BBVI 계산</h4>${bbviBox(s)}</section><section><h4>MCUI 기반</h4>${mcuiBox(s)}</section><section><h4>출현 기록</h4>${occBox(s,occ)}</section></div>${chipRow(s)}`+
+      `<details class="dt-x-all" data-aphia="${id}"${cmpAllOpen.has(id)?' open':''}><summary>지표별 근거 전문 <small>비교집단 · 라벨 · 원문 근거</small></summary><div class="cmp-more-grid">${more.map(([t,h])=>`<div><h4>${t}</h4>${h}</div>`).join('')}</div></details></div></td></tr>`;
   };
-  $('comparison').innerHTML=`<p class="fine coverage-guide">${esc(coverageGuide())} 각 지표 칸을 누르면 원값·원문·라벨 근거가 열립니다.</p><table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 자료 연결 현황 · 정렬: ${cmpSortLabel()}</caption>`+
-    `<thead><tr>${sortTh('name','종')}<th scope="col">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>보조·탐색적</small>')}${sortTh('BBVI','BBVI<small>통합</small>')}${sortTh('MCUI','MCUI<small>보전</small>')}<th scope="col">근거 수준</th><th scope="col">출현기록</th><th scope="col">자료 연결 현황</th><th scope="col"><span class="sr-only">자세히</span></th></tr></thead>`+
+  $('comparison').innerHTML=`<table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 유형 · 정렬: ${cmpSortLabel()}</caption>`+
+    `<thead><tr>${sortTh('name','종')}<th scope="col" class="cmp-type-h">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>보조·탐색적</small>')}`+
+    `${sortTh('BBVI',`BBVI<small>통합${cut.BBVI!=null?' · 기준 '+cut.BBVI:''}</small>`)}${sortTh('MCUI',`MCUI<small>보전${cut.MCUI!=null?' · 기준 '+cut.MCUI:''}</small>`)}<th scope="col" class="cmp-x-h"><span class="sr-only">근거 자세히</span></th></tr></thead>`+
     `<tbody>${compared.map(row).join('')}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
@@ -2857,6 +2882,7 @@ function renderComparison(){
   $('comparison').querySelectorAll('.cmp-more-btn').forEach(button=>button.addEventListener('click',()=>{
     const id=Number(button.closest('tr').dataset.aphia),open=!cmpOpen.has(id);open?cmpOpen.add(id):cmpOpen.delete(id);
     button.setAttribute('aria-expanded',String(open));$('cmp-more-'+id).hidden=!open;}));
+  $('comparison').querySelectorAll('details.dt-x-all').forEach(d=>d.addEventListener('toggle',()=>{const id=Number(d.dataset.aphia);d.open?cmpAllOpen.add(id):cmpAllOpen.delete(id);}));
   $('comparison').querySelectorAll('.cmp-sort').forEach(button=>button.addEventListener('click',()=>{
     const k=button.dataset.sort, first=k==='name'?'asc':'desc';
     cmpSort=cmpSort.key!==k?{key:k,dir:first}:cmpSort.dir===first?{key:k,dir:first==='asc'?'desc':'asc'}:{key:null,dir:null};
@@ -2871,11 +2897,16 @@ function syncComparison(){
     if(tr&&head){c.scrollTop+=tr.getBoundingClientRect().top-head.getBoundingClientRect().bottom-4;tr.classList.remove('flash');void tr.offsetWidth;tr.classList.add('flash');}
     comparisonFocus=null;
   }
-  $('comparison-page').textContent=`총 ${data.species.length}종 · 정렬: ${cmpSortLabel()}`;
+  cmpPageLine();
+}
+// '총 n종': the rows the search, group and type filters leave in the table (cmpRowShown sits with the compare code below)
+function cmpPageLine(){
+  const n=typeof cmpRowShown==='function'?data.species.filter(cmpRowShown).length:data.species.length;
+  $('comparison-page').textContent=`총 ${n}종 · 정렬: ${cmpSortLabel()}`;
 }
 // Design 05 (2026-10-10): one row per species, sortable columns. Value cells keep their evidence buttons (number + thin bar,
 // the full label in aria-label); every long line that used to sit in a cell moves, unchanged, to the row's "자세히" panel.
-let cmpSort={key:null,dir:null};const cmpOpen=new Set();
+let cmpSort={key:null,dir:null};const cmpOpen=new Set(), cmpAllOpen=new Set();
 const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',MBPI_RX:'MBPI-Rx',BBVI:'BBVI',MCUI:'MCUI'};
 const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${CMP_SORT_NAME[cmpSort.key]||cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
 function cmpSorted(){
@@ -2889,12 +2920,16 @@ function cmpSorted(){
   return list.map(([s])=>s);
 }
 // the labels a species carries, one short chip each (never folded into one "단일 논문 vs 정식" switch)
-function evidenceChips(s){
+function evidenceChipList(s){
   const a=s.assessment||{}, chips=[];
   if(pilotScore(s,'MFPI')!==null&&a.food_trace?.literature_moisture?.label)chips.push('MFPI '+a.food_trace.literature_moisture.label);
   if(pilotScore(s,'MBPI')!==null){if(a.mbpi_label)chips.push('MBPI '+a.mbpi_label);const k=bestBio(a)?.stratum_kind;if(k==='xo')chips.push('MBPI XO 문헌 비교집단');if(k==='relaxed')chips.push('MBPI 완화 산출(d)');}
   if(bbviLabel(s))chips.push('BBVI '+bbviLabel(s));
   if(pilotScore(s,'MCUI')!==null&&separateMcui(s)){chips.push('MCUI '+mcuiBasisLabel(s).replace(/ 기반$/,''));if(mcuiBacktest(s))chips.push('MCUI '+mcuiBacktest(s));}
+  return chips;
+}
+function evidenceChips(s){
+  const chips=evidenceChipList(s);
   return chips.length?chips.map(c=>`<span class="ev-chip">${esc(c)}</span>`).join(''):'<span class="ev-chip none">추가 라벨 없음</span>';
 }
 // One open behaviour for every comparison button: occurrence opens the map and cell list, an index axis
@@ -2912,7 +2947,8 @@ function openEvidence(aphia,axis,from=null){
     setView('compare');
     if(from){setCompareMode(returnMode);if(from.startsWith('#cmp-dialog-body')&&cmpBasket.length>1)openCompareDialog();const b=document.querySelector(from);b?.focus({preventScroll:true});b?.scrollIntoView({block:'center'});return;}
     setCompareMode('table');
-    const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`);
+    const cell=$('comparison').querySelector(`[data-score-aphia="${aphia}"][data-score-axis="${axis}"]`), more=cell?.closest('tr.cmp-more');
+    if(more?.hidden){cmpOpen.add(aphia);more.hidden=false;$('comparison').querySelector(`tr.cmp-row[data-aphia="${aphia}"] .cmp-more-btn`)?.setAttribute('aria-expanded','true');} // the map button sits in the expanded row
     $('comparison').scrollTop=returnTop;
     cell?.focus({preventScroll:true});cell?.scrollIntoView({block:'center'});
     $('comparison').scrollLeft=returnScroll;
@@ -2932,6 +2968,7 @@ function updateWeightControl(){
   const n=data.species.filter(s=>pilotScore(s,'BBVI')!==null).length;
   $('bbvi-weight').disabled=!n;
   $('bbvi-weight-status').textContent=n?`BBVI 산출 종 ${n}종`:'BBVI 산출 종 0종 · MFPI·MBPI와 BBVI의 독립 근거 조건을 모두 충족하면 조절됩니다';
+  if($('cmp-w-status'))$('cmp-w-status').textContent='비교집단은 고정됩니다 · '+$('bbvi-weight-status').textContent;
   document.querySelectorAll('[data-w-preset]').forEach(b=>b.disabled=!n);
   syncWeightControl();
 }
@@ -3101,10 +3138,13 @@ globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t)
 // Presentation only: every value, label, type and placement comes from the functions above. The tab keeps its own search,
 // group filter, view (matrix | table) and a basket of up to three species; none of it enters the URL (the selected species
 // does, as s). A filter dims matrix points instead of removing them, and the note says how many are shown.
-let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all'}, CMP_MAX=3;
+let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all',type:null}, CMP_MAX=3;
 const cmpById=id=>data?.species.find(s=>s.aphiaID===Number(id))||null;
 const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID)].some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
 const cmpFiltered=()=>cmpFilter.group!=='all'||!!cmpFilter.q;
+// the data table also takes a type card ('none' = 유형 없음); the matrix keeps dimming by group and search only
+const cmpTypeOf=s=>matrixType(s)||'none';
+const cmpRowShown=s=>cmpMatch(s)&&(!cmpFilter.type||cmpTypeOf(s)===cmpFilter.type);
 const cmpCohort=s=>pilotScore(s,'MFPI')===null?null:s.assessment?.food_trace?.cohort_id||null;
 const cmpCohortLabel=c=>c==='rda-10.4-raw-marine-animals'?'수산동물':c==='rda-10.4-raw-seaweeds'?'해조류':c||'';
 const cmpIcon=s=>`<span class="group-icon" data-group="${esc(s.group)}" aria-hidden="true"><i></i></span>`;
@@ -3245,29 +3285,63 @@ function syncClusterDims(){
 function setCompareMode(mode){
   cmpMode=mode==='table'?'table':'matrix';
   $('cmp-matrix-view').hidden=cmpMode!=='matrix';$('cmp-table-view').hidden=cmpMode!=='table';
+  if($('compare')?.dataset)$('compare').dataset.cmpMode=cmpMode;placeWeightSlider();
   document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpMode===cmpMode)));
   applyCompareFilter();
   if(cmpMode==='table'){if(data)syncComparison();}else requestAnimationFrame(declutterPointLabels);
 }
 function applyCompareFilter(){
   if(!data)return;
-  const on=cmpFiltered(), n=data.species.filter(cmpMatch).length, note=$('cmp-filter-note');
-  $('comparison').querySelectorAll('tr.cmp-row').forEach(tr=>{const out=on&&!cmpMatch(cmpById(tr.dataset.aphia));
+  const typed=cmpMode==='table'&&!!cmpFilter.type, on=cmpFiltered()||typed, n=data.species.filter(cmpMode==='table'?cmpRowShown:cmpMatch).length, note=$('cmp-filter-note');
+  $('comparison').querySelectorAll('tr.cmp-row').forEach(tr=>{const out=!cmpRowShown(cmpById(tr.dataset.aphia));
     tr.classList.toggle('cmp-out',out);$('cmp-more-'+tr.dataset.aphia)?.classList.toggle('cmp-out',out);});
   $('matrix-points').querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>{const out=on&&!cmpMatch(cmpById(b.dataset.aphia));
     if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');if(!b.hasAttribute('data-clustered'))b.removeAttribute('tabindex');}});
   syncClusterDims();
   $('matrix-types').querySelectorAll('button[data-aphia]').forEach(b=>b.toggleAttribute('data-dim',on&&!cmpMatch(cmpById(b.dataset.aphia))));
+  renderTypeCards();syncGroupCounts();cmpPageLine();
   if(!note)return;
   note.innerHTML=!on?'':n?`${data.species.length}종 중 ${n}종 표시${cmpMode==='matrix'?' · 나머지 점은 흐리게 남겨 둡니다':''} <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`:
-    `<b>검색 결과 없음</b> · ${cmpFilter.q?'‘'+esc(cmpFilter.q)+'’에 맞는 ':''}${cmpFilter.group!=='all'?esc(cmpFilter.group)+' ':''}생물이 없습니다. 자료 오류가 아니라 조건에 맞는 종이 없다는 뜻입니다. <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`;
+    `<b>검색 결과 없음</b> · ${cmpFilter.q?'‘'+esc(cmpFilter.q)+'’에 맞는 ':''}${cmpFilter.group!=='all'?esc(cmpFilter.group)+' ':''}${typed?'‘'+esc(matrixTypePlain(cmpFilter.type==='none'?null:cmpFilter.type))+'’ 유형 ':''}생물이 없습니다. 자료 오류가 아니라 조건에 맞는 종이 없다는 뜻입니다. <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`;
   note.classList.toggle('empty-result',on&&!n);
 }
 function setCompareFilter(next){
   Object.assign(cmpFilter,next);
+  document.querySelectorAll('[data-cmp-type]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpType===cmpFilter.type)));
   document.querySelectorAll('[data-cmp-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpGroup===cmpFilter.group)));
   if($('cmp-search').value.trim().toLowerCase()!==cmpFilter.q)$('cmp-search').value=cmpFilter.q;
   applyCompareFilter();
+}
+// Data table (2026-10-13): five type cards counting the species the group and search leave, by the type at the current weight;
+// a card keeps only its type in the table. Built once, then counts and pressed states are updated in place (focus stays).
+const CMP_TYPE_ORDER=['sustainable_use','alternative_production','conservation_priority','baseline_survey'];
+function renderTypeCards(){
+  const box=$('cmp-type-cards');if(!box?.dataset||!data)return;
+  const known=Object.values(matrixRule()?.types||{}).map(t=>t.id);
+  const ids=[...CMP_TYPE_ORDER.filter(id=>known.includes(id)),...known.filter(id=>!CMP_TYPE_ORDER.includes(id)),'none'];
+  if(box.dataset.ids!==ids.join()){
+    box.dataset.ids=ids.join();
+    box.innerHTML=ids.map(id=>`<button type="button" class="dt-card" data-cmp-type="${id}"${id==='none'?'':` data-type="${id}"`} aria-pressed="false"><span class="dt-card-name"><i aria-hidden="true"></i>${esc(matrixTypePlain(id==='none'?null:id))}</span>`+
+      `<span class="dt-card-n"><b></b> 종</span><span class="dt-card-sub">${esc(id==='none'?'BBVI·MCUI 한 쌍 미산출':matrixTypeLabel(id))}</span></button>`).join('');
+  }
+  const base=data.species.filter(cmpMatch);
+  box.querySelectorAll('[data-cmp-type]').forEach(b=>{b.querySelector('.dt-card-n b').textContent=String(base.filter(s=>cmpTypeOf(s)===b.dataset.cmpType).length);
+    b.setAttribute('aria-pressed',String(b.dataset.cmpType===cmpFilter.type));});
+}
+// species per group on the group buttons (shown in the data table only, compare.css)
+function syncGroupCounts(){
+  document.querySelectorAll?.('[data-cmp-group]').forEach(b=>{if(!b.querySelector)return;let n=b.querySelector('.cmp-gn');if(!n){n=document.createElement('span');n.className='cmp-gn';b.append(n);}
+    const g=b.dataset.cmpGroup;n.textContent=String(data.species.filter(s=>g==='all'||s.group===g).length);});
+}
+// One slider: the same #bbvi-weight (handlers, steps, aria) sits in the table's tool row in 데이터 표 and goes back to the
+// '비교 기준' panel in 매트릭스, so the two views never hold two weights.
+let weightHome=null;
+function placeWeightSlider(){
+  const el=$('bbvi-weight'), slot=$('cmp-w-slot');if(!el||!slot?.append)return;
+  weightHome||={parent:el.parentNode,next:el.nextSibling};
+  if(cmpMode==='table'){if(el.parentNode!==slot)slot.append(el);}
+  else if(el.parentNode!==weightHome.parent)weightHome.parent.insertBefore(el,weightHome.next);
+  $('cmp-wrow').hidden=cmpMode!=='table';
 }
 // The ring, the legend and the dims follow the matrix redraw (weight, simulation) and the selected species.
 function syncCompareMatrix(){
@@ -3399,6 +3473,7 @@ function syncWeightControl(){
   el.value=String(k);el.setAttribute('aria-valuetext',weightPair().replace(' · ',', '));
   el.style.setProperty('--w',k/W_STEPS*100+'%');el.style.setProperty('--w0',k0/W_STEPS*100+'%');
   $('bbvi-weight-value').textContent=weightPair();
+  const [wb,wf]=weightPair().split(' · ');if($('cmp-w-bio')){$('cmp-w-bio').textContent=wb;$('cmp-w-food').textContent=wf;$('cmp-w-official').textContent=officialWeight().toFixed(2);}
   document.querySelectorAll('[data-w-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.wPreset)===k)));
   document.querySelectorAll('[data-w-reset]').forEach(b=>{b.disabled=!off;if(b.id==='cmp-weight-reset')b.textContent=`공식값 ${officialWeight().toFixed(2)}으로`;});
   document.querySelectorAll('.w-badge').forEach(b=>{b.hidden=!off;const t=b.querySelector('.w-badge-text');if(t)t.textContent=`탐색 보기 · 사용자 가중치 ${weightPair()} · 공식 산출값(${officialWeight().toFixed(2)}) 아님`;});
@@ -3611,7 +3686,8 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-w-preset],
 document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.addEventListener('click',()=>setCompareMode(b.dataset.cmpMode)));
 document.querySelectorAll('[data-cmp-group]').forEach(b=>b.addEventListener('click',()=>setCompareFilter({group:b.dataset.cmpGroup})));
 $('cmp-search').addEventListener('input',e=>setCompareFilter({q:e.target.value.trim().toLowerCase()}));
-$('cmp-filter-note').addEventListener('click',e=>{if(e.target.closest('[data-cmp-clear]')){setCompareFilter({q:'',group:'all'});$('cmp-search').focus();}});
+$('cmp-filter-note').addEventListener('click',e=>{if(e.target.closest('[data-cmp-clear]')){setCompareFilter({q:'',group:'all',type:null});$('cmp-search').focus();}});
+$('cmp-type-cards').addEventListener('click',e=>{const b=e.target.closest('[data-cmp-type]');if(b)setCompareFilter({type:cmpFilter.type===b.dataset.cmpType?null:b.dataset.cmpType});});
 $('cmp-basis-toggle').addEventListener('click',()=>setBasisPop($('cmp-basis-pop').hidden));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('cmp-basis-pop').hidden){setBasisPop(false);$('cmp-basis-toggle').focus();}});
 document.addEventListener('click',e=>{if(!$('cmp-basis-pop').hidden&&!e.target.closest('.cmp-basis'))setBasisPop(false);});
