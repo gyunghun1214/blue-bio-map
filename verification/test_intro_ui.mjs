@@ -55,6 +55,8 @@ assert.equal(ctx.countsLine(null),'');
 // (4) every load outcome can enter; the note says the same thing as the app's connection state
 const note=d=>{const x=ctx.makeGate(0);ctx.gateProgress(x,'done',d);ctx.gateTick(x,ctx.GATE_MIN_MS);return [x.phase,ctx.gateNote(x)];};
 assert.deepEqual(note({state:'snapshot',snapshotAt:'2026-09-24'}),['ready','운영 DB에 연결하지 못해 2026-09-24 기준 공개 자료 사본으로 엽니다.']);
+// Offline demo (?offline=1): the saved copy is the plan, so the note says so instead of 연결하지 못해.
+assert.deepEqual(note({state:'offline',snapshotAt:'2026-10-01'}),['ready','오프라인 시연 · 2026-10-01 기준 공개 자료 사본으로 엽니다.']);
 assert.deepEqual(note({state:'empty',published:0,candidates:22}),['ready','운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.']);
 assert.deepEqual(note({state:'error'}),['ready','자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.']);
 
@@ -175,7 +177,7 @@ assert.ok(!/<li><a[^>]*>(OBIS|GBIF)</.test(gateHtml),'OBIS and GBIF are names on
 // (9) app.js reports its steps: the coastline once (with or without the file), and 'done' on every loadCollection outcome
 assert.equal((app.match(/loadProgress\('map'/g)||[]).length,2,"'map' on success and on a missing coastline");
 assert.match(app,/loadDone\('empty'\);return;/,'0 species published at all');
-assert.match(app,/loadDone\(data\.snapshotAt\?'snapshot':data\.publishedCount\?'live':'empty'\)/,'live, snapshot, 0 published');
+assert.match(app,/loadDone\(data\.offline\?'offline':data\.snapshotAt\?'snapshot':data\.publishedCount\?'live':'empty'\)/,'offline demo, live, snapshot, 0 published');
 assert.match(app,/loadDone\('error'\);\}/,'load failure');
 
 // (10) the globe files: Natural Earth, inside the stated box, the hashes SOURCE.txt records, under a versioned folder

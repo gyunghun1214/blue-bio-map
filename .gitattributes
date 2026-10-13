@@ -1,2 +1,6 @@
 # Post-hoc validation records keep the exact bytes their sha256 books were written over
 research/verified-indices/posthoc-3.27/** -text
+
+# Windows launchers for the offline demo: CRLF in every checkout and ZIP download
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
