@@ -281,12 +281,12 @@ function cardPlace(dot,korea,card,view,s){
   function draw(){
     const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed;
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
-    // the air outside the rim: a soft blue glow out to 4.5% of the radius, brightest on the lit upper left, faded on the
-    // far side (no stars, no space). The baked picture has the band inside the rim.
-    const glow=ctx.createRadialGradient(cx,cy,R*.97,cx,cy,R*1.045),side=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
-    glow.addColorStop(0,'rgba(143,200,232,.6)');glow.addColorStop(.45,'rgba(143,200,232,.2)');glow.addColorStop(1,'rgba(143,200,232,0)');
+    // the air outside the rim: a soft blue glow out to 6% of the radius (faint past 2.4%, where the copy may come),
+    // brightest on the lit upper left, faded on the far side (no stars, no space). The picture has the band inside the rim.
+    const glow=ctx.createRadialGradient(cx,cy,R*.97,cx,cy,R*1.06),side=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
+    glow.addColorStop(0,'rgba(143,200,232,.75)');glow.addColorStop(.35,'rgba(143,200,232,.3)');glow.addColorStop(.6,'rgba(143,200,232,.1)');glow.addColorStop(1,'rgba(143,200,232,0)');
     side.addColorStop(0,'#000');side.addColorStop(1,'rgba(0,0,0,.12)');
-    ctx.fillStyle=glow;ctx.fillRect(cx-R*1.05,cy-R*1.05,R*2.1,R*2.1);
+    ctx.fillStyle=glow;ctx.fillRect(cx-R*1.06,cy-R*1.06,R*2.12,R*2.12);
     ctx.save();ctx.shadowColor='rgba(143,200,232,.5)';ctx.shadowBlur=R*.03*dpr; // shadowBlur is in device pixels
     ctx.beginPath();ctx.arc(cx,cy,R*.995,0,Math.PI*2);ctx.fillStyle='#0a2032';ctx.fill();ctx.restore();
     ctx.globalCompositeOperation='destination-in';ctx.fillStyle=side;ctx.fillRect(0,0,w,h);ctx.globalCompositeOperation='source-over';
@@ -308,8 +308,8 @@ function cardPlace(dot,korea,card,view,s){
     // cells, a fine outline; overlapping 1° and 4° sides are one path, so drawn once
     if(cellBoxes.length){
       ctx.beginPath();for(const b of cellBoxes){b.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}
-      ctx.fillStyle='rgba(140,215,208,.1)';ctx.fill();
-      ctx.save();ctx.clip();ctx.shadowColor='rgba(140,215,208,.8)';ctx.shadowBlur=8*dpr;ctx.strokeStyle='rgba(140,215,208,.3)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+      ctx.fillStyle='rgba(140,215,208,.08)';ctx.fill();
+      ctx.save();ctx.clip();ctx.shadowColor='rgba(140,215,208,.7)';ctx.shadowBlur=8*dpr;ctx.strokeStyle='rgba(140,215,208,.22)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
       ctx.strokeStyle='rgba(140,215,208,.55)';ctx.lineWidth=.9;ctx.stroke();
     }
     // the map's study frame

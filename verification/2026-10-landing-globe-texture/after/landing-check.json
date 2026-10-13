@@ -1,0 +1,367 @@
+[
+  {
+    "name": "1672×941: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1672×941: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1672×941: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 5.49:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1440×900: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1440×900: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1440×900: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 5.65:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1920×1080: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1920×1080: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1920×1080: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 5.58:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1280×800: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1280×800: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1280×800: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 5.49:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1180×820: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1180×820: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1180×820: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.12:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1024×768: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1024×768: the globe keeps clear of the copy (title lines may touch it by 6% of the width, as in the design)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1024×768: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.25:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "820×1180: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "820×1180: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.18:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "768×1024: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "768×1024: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.19:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "390×844: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "390×844: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.18:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "360×640: entry screen up, button in the first screen, nothing clipped or overlapping, no sideways scroll",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "360×640: every text on the entry screen meets WCAG AA against the pixels behind it (lowest 6.41:1)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Cut-side crops captured on screen (105°E, 53°N, 20°N, 150°E)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Fresh tab: loader then entry screen, button focused, counts from the app (published/candidate split shown)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Fresh tab: the globe files are fetched (the entry screen shows)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Globe cells are exactly the public cells the app loaded (1° and sensitive 4°), none added",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Idle entry screen: no drawing loop (no intro.js animation frames while nothing changes)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "A resize redraws once and stops again",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "바다 탐색하기: leaves with the zoom, lands on 탐색 지도 with focus in search, remembered for this tab",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "After leaving: the entry screen requests no more frames and gives back its canvas",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Same tab, reload: no entry screen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "헤더 탐색 지도 → explore, focus #search",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "헤더 비교와 지표 → compare, focus #cmp-search",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "지표 살펴보기 → compare, focus #cmp-search",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "카드 지도에서 살펴보기 → explore, focus #search",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "전체 출처·방법 보기 → method, focus #all-sources",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Entering 비교와 지표 keeps the app state: hash written by the app (s, v=compare), species selected by the app",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Shared link: no entry screen, opens 비교와 지표 with the linked species and map position",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Shared link: the globe files are never requested",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Shared link: the baked picture (globe-v2) is never requested",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Focus ring: the button has focus on arrival but no ring (mouse visitor); the first Tab turns the ring on",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Tab order follows the screen: menus → switch → buttons → card → sources → footer",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Keyboard focus is visible (2px teal outline)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Enter on the motion switch flips it and does not enter",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Enter elsewhere enters at once when still (no leave animation)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "A remembered \"still\" survives a new visit: switch on, globe fade/zoom off",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Flipping it back is remembered too",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "System \"reduce motion\" and nothing remembered: the switch starts on",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "System \"reduce motion\": entering is instant",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "System \"reduce motion\" but motion chosen here: the choice wins",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Globe file blocked: entry screen, card and counts still there",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Globe file blocked: entering still works",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1672×941 @1x: one picture asked for, globe-1600.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1672×941 @2x: one picture asked for, globe-2400.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "The picture and the drawn data line up: the best match of the picture is at its own place (within 2 device px)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "No warm bright points over the sea; faint lights on land",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1920×1080 @1x: one picture asked for, globe-1600.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "1440×900 @2x: one picture asked for, globe-2400.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "390×844 @2x: one picture asked for, globe-900.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "390×844 @1x: one picture asked for, globe-900.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "360×640 @3x: one picture asked for, globe-900.webp, decoded and drawn",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Picture blocked: the vector globe instead (deep-sea blue, opaque), the screen works",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Picture blocked: entering still works",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Phone at CPU 4x: ready after 21125 ms, then the button answers at once (gone 1523 ms later, the 0.82 s leave included)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "After leaving: the picture is let go (canvas emptied)",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Data error: honest note, counts only from the app",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Data snapshot: honest note, counts only from the app",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "Data empty: honest note, counts only from the app",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "No uncaught page errors or console.error",
+    "status": "PASS",
+    "detail": ""
+  }
+]

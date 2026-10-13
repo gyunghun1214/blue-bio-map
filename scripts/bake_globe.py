@@ -82,8 +82,8 @@ PARAMS = {
     'shade_lo': -.35, 'shade_hi': .8, 'shade_min': .3,
     'limb_r': .86, 'limb_min': .5,
     'air_color': (.275, .578, .807),  # #8FC8E8 in linear light
-    'air_amax': .6,               # added (not screened, so the land under it keeps its relief)
-    'air_exp': 2.0,               # (1 - n.v)^exp: half strength at r = .94, a band 6% of the radius
+    'air_amax': 1.0,              # added (not screened, so the land under it keeps its relief)
+    'air_exp': 2.5,               # (1 - n.v)^exp: half strength at r = .955, a band ~5-8% of the radius
     'air_back': .08,              # the side away from the light gets this share
     'air_r0': .82,                # no air inside this radius (the Fresnel tail would veil the whole disc)
     'exposure': 1.0,
@@ -358,8 +358,7 @@ def tone(base, lights, alpha, cam, N):
     out = sea_rgb * (1 - L[..., None]) + land_rgb * L[..., None]
     del sea_rgb, land_rgb, chroma
     # the shelf: brightened and turned teal (its floor keeps its texture), a soft halo past its edge, a little onto the
-    # coast, all stronger around Korea; and a thin
-    # bright line of shallow water along every coast
+    # coast, all stronger around Korea; and a thin bright line of shallow water along every coast
     s1, s2 = (x * N for x in p['shelf_sigma'])
     G = (1 - p['shelf_wide_w']) * gaussian_filter(S, s1) + p['shelf_wide_w'] * gaussian_filter(S, s2)
     boost = 1 + (p['korea_boost'] - 1) * korea
