@@ -23,7 +23,8 @@ const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,queryS
 vm.createContext(ctx);
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={toggleBasket,setCompareMode,setCompareFilter,renderCompareTray,renderCompareDialog,renderCompareProfile,'+
   'get basket(){return cmpBasket},set basket(v){cmpBasket=v},get mode(){return cmpMode},get filter(){return {...cmpFilter}},get selected(){return selected},set selected(v){selected=v},cmpMatch,pilotScore,'+
-  'plainWords,MATRIX_PLAIN,matrixTypePlain,matrixPlainNote,matrixType,matrixTypeLabel,cmpTag,cmpPieces,cmpChip,cmpUseRest,matrixClusters,cmpExpeditionLink,set stops(v){cmpStops=v}};',ctx);
+  'plainWords,MATRIX_PLAIN,matrixTypePlain,matrixPlainNote,matrixType,matrixTypeLabel,cmpTag,cmpPieces,cmpChip,cmpUseRest,matrixClusters,cmpExpeditionLink,set stops(v){cmpStops=v},'+
+  'renderComparison,cmpRowShown,cmpTypeOf,evidenceChipList,evidenceCoverage,weightPair,set w(v){bbviWeight=v}};',ctx);
 const T=ctx.T;
 const data=await vm.runInContext(`(async()=>{const next=await loadPublishedProfiles();next.outdated??=[];await attachPilotAssessments(next);return data=next;})()`,ctx);
 const S=data.species, total=S.length, by=id=>S.find(s=>s.aphiaID===id);
@@ -84,7 +85,7 @@ const n=S.filter(T.cmpMatch).length;
 assert.equal(n,S.filter(s=>s.group==='해조류').length);assert.ok(n>0&&n<total);
 assert.ok(strip($('cmp-filter-note').innerHTML).includes(`${total}종 중 ${n}종 표시`),'note counts the shown species');
 T.setCompareMode('table');T.setCompareMode('matrix');
-assert.equal(T.mode,'matrix');assert.deepEqual({...T.filter},{q:'',group:'해조류'});assert.deepEqual([...T.basket],[OYSTER,WAKAME]);assert.equal(T.selected.aphiaID,ROCKFISH);
+assert.equal(T.mode,'matrix');assert.deepEqual({...T.filter},{q:'',group:'해조류',type:null});assert.deepEqual([...T.basket],[OYSTER,WAKAME]);assert.equal(T.selected.aphiaID,ROCKFISH);
 T.setCompareFilter({group:'all',q:'없는생물이름'});
 assert.equal(S.filter(T.cmpMatch).length,0);assert.ok(strip($('cmp-filter-note').innerHTML).includes('검색 결과 없음'),'an empty result says so, not an error');
 T.setCompareFilter({group:'all',q:''});assert.equal($('cmp-filter-note').innerHTML,'','no note without a filter');
@@ -131,4 +132,31 @@ assert.equal(T.cmpExpeditionLink(stops,1),null);assert.equal(T.cmpExpeditionLink
 T.stops=stops;T.selected=by(OYSTER);T.renderCompareProfile();
 assert.match($('cmp-profile').innerHTML,new RegExp(`<a id="cmp-expedition" class="cmp-link" href="expedition.html#stop=${route.findIndex(st=>st.aphia_id===OYSTER)+1}">바다 탐험에서 보기</a>`));
 
-console.log(`PASS: 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 직접 비교 불가 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시 · 쉬운 이름 옆 공식 이름 · 칩이 지운 라벨 없음 · 밀집 ${G.map(g=>g.ids.length).join('·')}종(조피볼락 선택) · 바다 탐험 링크`);
+// 2026-10-13 dark data table: 8 columns (종·유형·5 values·⌄). The expanded row holds BBVI as the sum it is at the current weight,
+// the MCUI basis sentence, the public cells with the map button, the evidence-level chips (plus '보전 평가 없음 확인' where the
+// coverage column said so) and the old full labels, folded. A type card keeps only its type in the table, never on the matrix.
+const moreOf=(h,id)=>h.split(`id="cmp-more-${id}"`)[1].split('</tr>')[0];
+for(const k of [0,10,20]){
+  T.w=k/20;T.renderComparison();const h=$('comparison').innerHTML,[wb,wf]=T.weightPair().match(/\d\.\d\d/g);
+  assert.equal((h.match(/<th scope="col"/g)||[]).length,8);assert.equal(Math.round(Number(wb)*100)+Math.round(Number(wf)*100),100);
+  for(const s of S){
+    const part=moreOf(h,s.aphiaID), v=T.pilotScore(s,'BBVI'), cov=T.evidenceCoverage(s).checks.find(c=>c.name==='보전');
+    if(v!==null)assert.ok(part.includes(`${wf} × MFPI ${T.pilotScore(s,'MFPI').toFixed(1)} + ${wb} × MBPI ${T.pilotScore(s,'MBPI').toFixed(1)} = <b>${v.toFixed(1)}</b>`),`${s.label} BBVI at w ${k/20}`);
+    assert.ok(part.includes(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`)&&part.includes('<h4>MCUI 기반</h4>')&&part.includes(cov.detail.slice(0,20)),s.label+' occurrence button and MCUI basis');
+    for(const c of T.evidenceChipList(s))assert.ok(part.includes(`">${T.plainWords(c)}</span>`),`${s.label} keeps chip ${c}`);
+    assert.equal(part.includes('>보전 평가 없음 확인</span>'),cov.stage==='checked_none',s.label+' 보전 평가 없음 확인');
+    assert.ok(part.includes('<details class="dt-x-all"')&&part.includes('<h4>학명·식별자</h4>'),s.label+' full labels folded');
+  }
+}
+T.w=.5;T.renderComparison();
+assert.ok(!$('comparison').innerHTML.includes('coverage-bar')&&!$('comparison').innerHTML.includes('자료 연결 현황'),'the coverage column left the table');
+T.setCompareFilter({group:'all',q:'',type:null});T.setCompareMode('table');
+const types=[...new Set(S.map(T.cmpTypeOf))];assert.ok(types.length>=2);
+for(const t of types){T.setCompareFilter({type:t});const shown=S.filter(T.cmpRowShown);
+  assert.ok(shown.length>0&&shown.every(s=>T.cmpTypeOf(s)===t)&&strip($('cmp-filter-note').innerHTML).includes(`${total}종 중 ${shown.length}종 표시`),'type card '+t);}
+T.setCompareFilter({group:'해조류',type:types[0]});
+assert.deepEqual(S.filter(T.cmpRowShown).map(s=>s.aphiaID),S.filter(s=>s.group==='해조류'&&T.cmpTypeOf(s)===types[0]).map(s=>s.aphiaID),'group × type');
+T.setCompareMode('matrix');assert.ok(strip($('cmp-filter-note').innerHTML).includes(`${total}종 중 ${S.filter(T.cmpMatch).length}종 표시`),'the matrix ignores the type card');
+T.setCompareFilter({group:'all',q:'',type:null});assert.equal($('cmp-filter-note').innerHTML,'');
+
+console.log(`PASS: 데이터 표 8열·펼친 행(BBVI 계산·MCUI 기반·출현 기록·근거 수준)·유형 카드 필터 · 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 직접 비교 불가 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시 · 쉬운 이름 옆 공식 이름 · 칩이 지운 라벨 없음 · 밀집 ${G.map(g=>g.ids.length).join('·')}종(조피볼락 선택) · 바다 탐험 링크`);

@@ -525,7 +525,8 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   vm.runInContext("cmpSort={key:null,dir:null}",ctx);ctx.compare();
   let t=dom.comparison.innerHTML;
   assert.deepEqual([...t.matchAll(/data-sort="([A-Za-z_]+)"/g)].map(m=>m[1]),['name','MFPI','MBPI','MBPI_RX','BBVI','MCUI']);
-  assert.ok(t.includes('MBPI-Rx<small>보조·탐색적</small>')&&(t.match(/<th scope="col"/g)||[]).length===11&&!t.includes('colspan="10"')&&t.includes('colspan="11"'));
+  // 2026-10-13 dark data table: 종·유형·5 values·expand (근거 수준·출현기록·자료 연결 현황 moved into the expanded row)
+  assert.ok(t.includes('MBPI-Rx<small>보조·탐색적</small>')&&(t.match(/<th scope="col"/g)||[]).length===8&&!t.includes('colspan="11"')&&t.includes('colspan="8"'));
   const cell=id=>t.split(`<tr class="cmp-row" data-aphia="${id}">`)[1].split('cmp-rx">')[1].split('</td>')[0];
   assert.match(cell(836033),/^<span class="cv rx-cv"><span class="cv-num">62\.6<\/span><span class="cv-bar" aria-hidden="true"><i style="width:62\.6%"><\/i><\/span><\/span>$/);
   assert.match(cell(504357),/<span class="cv-num">75\.0<\/span>/);
