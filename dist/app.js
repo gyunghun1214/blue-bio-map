@@ -7,7 +7,7 @@ const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char =>
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -84,7 +84,7 @@ const pilotLabel = (key,info) => released(info)
   ? ({passed:'정식 산출 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'정식 산출 · 방법 검증 기준 미충족'})[validationResult(key,info)]||(key==='MCUI'?'정식 산출 · 공식 평가 범주':'정식 산출')
   : ({passed:'시범 지표 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'시범 지표 · 사후 검증 기준 미충족'})[validationResult(key,info)]||'검증 전 시범 지표';
 const validationNote = info => released(info)
-  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 지방 목록·자체 예비평가':'')+')'
+  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+')'
   : ' (사후 검증: '+['MFPI','MBPI','MCUI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+')';
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
@@ -340,7 +340,9 @@ function verifiedConservationValid(a,report){
     r?.eoo_km2>t.eoo_km2&&r.aoo_km2>t.aoo_km2&&r.aoo_km2===r.aoo_cells*t.aoo_cell_km**2&&r.records>=t.records&&r.trend_class!=='decline_signal'&&
     a.conservation_trace?.iucn_state==='not_in_red_list'&&!a.national_assessment&&['eoo_km2','aoo_km2','aoo_cell_km','records'].every(k=>r.thresholds?.[k]===t[k])&&
     (!a.occurrence_trend||r.trend_class===a.occurrence_trend.class)&&Array.isArray(r.native_box?.lat)&&Array.isArray(r.native_box?.lon)&&
-    (r.official_unscored||[]).every(x=>x.category===null&&(!x.source_id||!!report.sources?.[x.source_id]));
+    (r.official_unscored||[]).every(x=>x.category===null&&(!x.source_id||!!report.sources?.[x.source_id]))&&
+    // 4.11 (prereg 5.2): never scored once the OBIS reporting-rate ratio reaches the decline threshold
+    !(rule.preliminary_trend_block&&a.occurrence_trend?.reporting_rate_ratio<=report.method.conservation?.trend?.decline_ratio);
   if(substituted)return !!sub&&!!rule&&sub.basis==='range_state'&&sourced()&&r?.reviewed===true&&!!r.country&&!!r.name_as_published&&
     r.category===sub.category&&scores[sub.category]===a.scores.MCUI;
   // National branch: a Korean national assessment is its own stratum, never mixed with global IUCN.
@@ -1127,7 +1129,7 @@ function verifiedBioTrace(s){
   return `<h4>점수 근거 · ${esc(items.length)}개 측정값${items.length>SHOWN?` (상위 ${SHOWN}개 표시, 전체는 공개 JSON)`:''}</h4>${rows}`+
     `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':esc(cfg.primary_aggregation||'미기재')} · 점수에 쓴 값의 독립 ${independence}`+
     `${single&&!ch?` → 근거 논문 1편 계수 ${esc(cfg.single_doi_factor??items[0].evidence_factor)}`:''} · 민감도 ${esc((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+esc(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
-    `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?'독립 재현 논문이 아직 없습니다. ':reps.length?`효능 재현은 별도 논문의 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `:''}${antiRule?'암세포주 증식 억제 농도(IC50)이며':ampRule?'세균 배양 억제 농도(MIC)이며':ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
+    `<p class="fine">한계: 백분위는 ${scope} ${chemblLimit}${single?((best.potency_replications||[]).length&&data.assessmentInfo?.method?.bioactivity?.replication_origin_rule?'이 종의 시료로 잰 독립 재현 논문이 아직 없습니다(다른 기원의 효능 재현은 세지 않음). ':'독립 재현 논문이 아직 없습니다. '):reps.length?(data.assessmentInfo?.method?.bioactivity?.replication_origin_rule?`독립 DOI로 센 효능 재현은 이 종에서 정제한 시료를 다른 논문이 잰 값입니다(4.11부터 다른 기원의 측정은 세지 않음). `:`효능 재현은 별도 논문의 펩타이드 측정이고, 이 종에서 ${esc(best.peptide_sequence)}가 나온다는 기원 근거는 ${originNames} ${origin.length}편뿐입니다. `):''}${antiRule?'암세포주 증식 억제 농도(IC50)이며':ampRule?'세균 배양 억제 농도(MIC)이며':ch?'시험관·세포·병원체 시험값이며':'세포 밖(효소) 시험값이며'} 임상 효과나 제품 가치가 아닙니다.</p>`+
     (xoRule?`<p class="fine">비교집단 출처: ${verifiedSource(xoRule.cohort_source_id,(data.assessmentInfo?.sources?.[xoRule.cohort_source_id]?.provider)||'문헌 비교집단')}</p>`+(best.cohort_members?.length?`<details class="fine"><summary>비교집단 회원 ${best.cohort_members.length}개 보기(서열 · IC50 µM · DOI)</summary><p>${best.cohort_members.map(m=>esc(m.sequence)+' '+esc(m.ic50_uM)+' · '+m.dois.map(doiLink).join(', ')).join('<br>')}</p></details>`:''):'')+
     (rxBest?`<p class="fine">비교집단 출처: ${verifiedSource(rxBest.cohort_source_id,(data.assessmentInfo?.sources?.[rxBest.cohort_source_id]?.provider)||'ChEMBL')} · 활동 ID 전체와 pChEMBL 값은 공개 스냅숏(research/verified-indices/snapshots)에 있고, 이 화면은 함께 실린 pChEMBL ${esc(best.cohort_records)}건으로 백분위를 다시 계산해 검사합니다.</p>`+((best.other_targets||[]).length?`<p class="fine">다른 표적: ${best.other_targets.map(t=>esc(`${t.target_name} ${t.standard_type} ${num(t.value)} ${t.unit} · 백분위 ${t.percentile} (기록 ${t.cohort_records}건)`)).join(' / ')} — 백분위가 가장 높은 표적 하나만 점수에 씁니다.</p>`:''):'')+
     (ampRule?`<p class="fine">비교집단 출처: ${verifiedSource(ampRule.cohort_source_id||'dbaasp_amp',(data.assessmentInfo?.sources?.[ampRule.cohort_source_id||'dbaasp_amp']?.provider)||'DBAASP')} · ${esc((ampRule.limitations||[])[0]||'')}</p>`:'')+
@@ -1201,7 +1203,7 @@ function verifiedNationalFact(s){
       `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       (r.official_unscored?.length?`<p class="fine">공식 목록에 이름은 있으나 점수 범주가 아닌 기록(점수에 쓰지 않음):</p><ul class="fine">${r.official_unscored.map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||'')}) · ${esc(x.category_as_published)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${esc(x.excluded_reason)}${x.source_id?' · '+verifiedSource(x.source_id,'원목록 ↗'):x.url?' · '+sourceLink(x.url,'원목록 ↗'):''}</li>`).join('')}</ul>`:'')+
       `<p class="fine">IUCN·한국 국가·서식국 국가·지방 목록 어디에도 이 종의 점수가 되는 범주가 없어 쓰는 마지막 근거입니다(팀장 결정 2026-10-05).${r.official_unscored?.length?' 이름은 있지만 점수 범주가 아닌 공식 목록 기록은 아래에 따로 적었습니다.':''} GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했고, OBIS 보고율 추세는 ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}입니다. `+
-      `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+
+      `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
         `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. ${esc(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
@@ -1221,9 +1223,22 @@ function verifiedNationalFact(s){
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
         `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. ${esc(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
+  // 4.11 (prereg 5.2): the OBIS reporting-rate ratio reached the decline threshold, so the met Rapid LC check gives no MCUI.
+  if(pilotScore(s,'MCUI')===null&&sub?.result==='decline_ratio_reached'){
+    const r=sub.record, rule=data.assessmentInfo?.method?.conservation?.trend;
+    return `<p><b>자체 예비평가(Rapid LC) 쓰지 않음 · MCUI 없음</b>: OBIS 보고율 비(${esc(Number(r.reporting_rate_ratio).toFixed(3))})가 감소 기준(${esc(rule?.decline_ratio)}) 이하입니다.</p>`+
+      `<p class="fine">가장 큰 데이터셋 안에서 감소가 확인되지 않았더라도, 확인되지 않은 감소를 '감소 없음'으로 읽지 않습니다(사전 등록 ${esc(data.assessmentInfo?.method?.mcui_substitutes?.preliminary_trend_block?.prereg||'')}). 분포 기록(EOO ${esc(r.eoo_km2.toLocaleString())} km² · AOO ${esc(r.aoo_km2.toLocaleString())} km² · 좌표 기록 ${esc(r.records)}건)은 참고로만 적습니다.</p>`;
+  }
   const n=s.assessment.national_red_list_fact;
   return n?`<p>국가 평가(한국 범위): ${esc(n.category)} · 게재명 ${esc(n.name_as_published)} · 목록 ${esc(n.list_page_printed)}쪽 · ${verifiedSource(n.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
     '<p class="fine">국가 평가는 전 지구 IUCN 평가와 범위가 달라 MCUI 점수에 넣지 않는 사실 정보입니다.</p>':'';
+}
+// 4.11 (prereg 5.1): a sub-national list whose back-test failed is shown as reference beside the next basis, never as the score.
+function subNationalReference(sub){
+  const ref=sub?.sub_national_reference;
+  if(!ref)return '';
+  const rows=(ref.regions||[]).map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||x.country)}) · ${esc(x.category_as_published)} → ${esc(x.category)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${verifiedSource(x.source_id,'원목록 ↗')}${x.note?'<br>'+esc(x.note):''}</li>`).join('');
+  return `<p class="fine"><b>지방 목록 참고값 · MCUI 점수 아님</b>: ${esc(ref.chosen_category)} · ${esc(ref.backtest?.label||'')}. 과대평가 역검증을 통과하지 못한 지방 목록은 4.11부터 점수에 쓰지 않습니다.</p><ul class="fine">${rows}</ul>`;
 }
 function verifiedConservationDetail(s){
   const c=s.assessment.conservation_trace;
@@ -1245,7 +1260,8 @@ function occurrenceTrendDetail(s){
   const p=rule.periods,n=t.species_records,e=t.effort_records,yr=x=>x.slice(0,4),f2=x=>Number(x).toFixed(2);
   const ratio=Number.isFinite(t.reporting_rate_ratio)?` · 보고율 비 ${f2(t.reporting_rate_ratio)} (95% 구간 ${f2(t.ci[0])}–${f2(t.ci[1])}) · 같은 강 기록 변화 ×${f2(t.effort_ratio)} · 전체 분류군 기준 민감도 ${f2(t.all_taxa_sensitivity?.reporting_rate_ratio)}`:'';
   const gain=t.mcui_base===null?0:Math.min(100,t.mcui_base+t.mcui_adjustment)-t.mcui_base;
-  const effect=t.mcui_adjustment?(gain?`감소 신호라 MCUI ${t.mcui_base.toFixed(1)}에 +${gain}을 더했습니다.`:`감소 신호이지만 MCUI가 이미 상한 100이라 바뀌지 않았습니다.`)
+  const paused=data.assessmentInfo?.method?.conservation?.effort_adjustment_suspended;
+  const effect=t.class==='decline_signal'&&!t.mcui_adjustment&&paused?paused.note+(t.mcui_base===null?'':' MCUI에 더하거나 빼지 않았습니다.'):t.mcui_adjustment?(gain?`감소 신호라 MCUI ${t.mcui_base.toFixed(1)}에 +${gain}을 더했습니다.`:`감소 신호이지만 MCUI가 이미 상한 100이라 바뀌지 않았습니다.`)
     :t.mcui_base===null?'MCUI 기반 평가가 없어 이 결과로 MCUI를 만들지 않습니다.':'MCUI에 더하거나 빼지 않았습니다.';
   const tv=data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_trend;
   const checked=t.mcui_adjustment&&tv?.result==='failed'?`<p class="fine">추세 요소(+${esc(t.mcui_adjustment)}) 사후 검증: 기준 미충족. ${esc(tv.reason)}</p>`:'';
@@ -1363,6 +1379,15 @@ function mbpiRxLine(s){
     (check&&v.reason?`<p class="fine">사후 검증(약물 기원종 ${esc(v.n)}종 중 ${esc(v.computed)}종 계산): ${esc(v.reason)}</p>`:'')+
     `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
 }
+// 4.11 (prereg 4): MBPI is the maximum over items, so the spread of the scored items is shown beside it, display only.
+function mbpiBreadthLine(s){
+  const b=s.assessment?.mbpi_breadth, rule=data.assessmentInfo?.method?.mbpi_breadth;
+  if(!b||!rule||!b.item_count||pilotScore(s,'MBPI')===null)return '';
+  const head=`항목 ${b.item_count}개 · 중앙값 ${Number(b.median).toFixed(1)} · 상위 2개 평균 ${Number(b.top2_mean).toFixed(1)}`;
+  return `<details class="score-disclosure breadth-disclosure"><summary><span>${esc(rule.label)} · 탐색적</span><b>${esc(head)}</b></summary><div class="score-disclosure-body">`+
+    `<p class="fine">MBPI는 점수 항목 중 가장 높은 값이라, 시험된 항목이 많은 종일수록 높게 나오기 쉽습니다(4.10에서 항목 수와 MBPI의 순위상관 0.64). 그래서 점수 항목 전체의 중앙값과 상위 두 항목 평균을 함께 보입니다. 기본 MBPI·BBVI·매트릭스·순위에는 쓰지 않습니다.</p>`+
+    `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
+}
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
@@ -1389,7 +1414,7 @@ function renderVerifiedIndices(s){
         `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
-        `</div></details>`+(key==='MBPI'?mbpiRxLine(s):'');
+        `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s):'');
     }).join('')}${unexplored}<p class="fine">정보충분도: ${sufficiencyText(a)} `+
     `민감도 범위는 통계적 신뢰구간이 아닙니다.</p></section>`;
 }

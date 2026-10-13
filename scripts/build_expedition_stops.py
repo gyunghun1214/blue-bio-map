@@ -116,6 +116,9 @@ def _mcui(sp, sources):
         t = sp["national_assessment"]
         out.update(category=t.get("category"), scope=t.get("scope"), mapping=t.get("pilot_mapping"),
                    label=t.get("label"), source=_source(sources, t.get("source_id")))
+    elif not basis and (sp.get("mcui_substitute") or {}).get("result") == "decline_ratio_reached":
+        # 4.11 (prereg-4.11-2026-10-13 5.2): the Rapid LC record exists but gives no MCUI; say so instead of its label
+        out.update(label="보전 평가 없음 · OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 쓰지 않음")
     elif sp.get("mcui_substitute"):
         t = sp["mcui_substitute"]
         record = t.get("record") or {}

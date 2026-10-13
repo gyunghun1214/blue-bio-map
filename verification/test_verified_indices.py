@@ -2720,6 +2720,7 @@ V46 = ROOT / "config" / "verified-indices-v4.6.json"    # superseded by 4.7 (sou
 V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참문어 national-list page re-check)
 V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (relaxation (d) independent replication)
 V49 = ROOT / "config" / "verified-indices-v4.9.json"    # superseded by 4.10 (secondary MBPI-Rx, exploratory)
+V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (2026-10-13 audit: rules 1-5)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3509,7 +3510,7 @@ class Verified410Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.report, cls.old_report = build(*load_inputs()), build(*load_inputs(config=V49))
+        cls.report, cls.old_report = build(*load_inputs(config=V410)), build(*load_inputs(config=V49))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
         cls.rule = cls.report["method"]["mbpi_rx"]
@@ -3517,8 +3518,10 @@ class Verified410Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.10", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.10.json")
+        # the published 4.10 report is archived as it was; its config has none of the 4.11 keys (Verified411Tests)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.10.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
+        self.assertFalse(any("mbpi_breadth" in s for s in self.new.values()))
 
     def test_only_mbpi_rx_and_version_strings_move(self):
         # every species object is 4.9's plus mbpi_rx; the only other change is the method_version string inside food_trace
@@ -3606,7 +3609,7 @@ class Verified410Tests(unittest.TestCase):
         self.assertEqual(self.by_name["참굴"]["mbpi_rx"]["stratum_id"], "amp-dbaasp-mic-broth-staphylococcus-aureus")
 
     def test_an_unclassified_stratum_stops_the_build(self):
-        evidence, candidates, config, snapshot, taxonomy = load_inputs()
+        evidence, candidates, config, snapshot, taxonomy = load_inputs(config=V410)
         for sid in ("amp-dbaasp-mic-broth-staphylococcus-aureus", "ChEMBL_37:CHEMBL247|IC50", "wijesinghe-2011-cell-free-ACE-IC50"):
             cfg = copy.deepcopy(config)
             del cfg["mbpi_rx"]["classified_strata"][sid]
@@ -3657,6 +3660,167 @@ class Verified410Tests(unittest.TestCase):
         self.assertNotIn("미통과", block["reason"])  # neutral wording (2026-10-08)
         # the axis checks keep their own results; the exploratory block is never one of them
         self.assertEqual((sets["MBPI"]["result"], sets["MFPI"]["result"]), ("failed", "passed"))
+
+
+class Verified411Tests(unittest.TestCase):
+    """4.11 (research/verified-indices/prereg-4.11-2026-10-13.md, registered in its own commit before the code; team-lead
+    decision 2026-10-13 after the data audit): (1) a potency replication joins independent_dois only when it measured a
+    purified isolate of the scored species itself; peptides of three residues or fewer carry a caveat; (2) the small-molecule
+    stratum needs 30 compounds like every other stratum; (3) mbpi_breadth beside MBPI (exploratory, display only); (4) a
+    sub-national list whose back-test did not pass is reference only; (5) a Rapid LC is not scored at a reporting-rate ratio at
+    or below the decline ratio, and the OBIS +10 adjustment is suspended."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs()
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V410))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+
+    def rebuild(self, edit):
+        evidence, candidates, config, snapshot, taxonomy = self.inputs
+        cfg = copy.deepcopy(config)
+        edit(cfg)
+        return {s["korean_name"]: s for r in [build(evidence, candidates, cfg, snapshot, taxonomy)]
+                for s in r["species"] + r["candidate_species"]}
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.11", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.11.json")
+
+    def test_values_are_the_registered_expectations(self):
+        # prereg 6, computed by hand from the published 4.10 report before registration (BBVI there from rounded MBPI,
+        # so 감태 59.6, 큰가리비 41.5 and 갑오징어 54.1 come out 59.7, 41.6 and 54.2 from the unrounded value)
+        moved = {"미역": ((89.2, 68.0, 10.0), None, "preliminary"), "톳": ((65.0, 64.2, 10.0), "단일 논문", "preliminary"),
+                 "참굴": ((72.2, 71.9, 10.0), "단일 논문", "national"), "큰가리비": ((27.3, 41.6, 10.0), "단일 논문", "national"),
+                 "갑오징어": ((65.8, 54.2, 10.0), "단일 논문", "national"), "감태": ((56.8, 59.7, 10.0), "단일 논문", "preliminary"),
+                 "청각": ((0.4, 18.6, 10.0), "단일 논문", "preliminary"), "꽃게": ((30.3, 46.2, 10.0), "단일 논문", "preliminary"),
+                 "멍게": ((13.5, 33.2, None), "단일 논문", None), "살오징어": ((56.9, 51.5, 10.0), "단일 논문", "iucn"),
+                 "멸치": ((22.6, 48.3, 10.0), "단일 논문", "iucn"), "참조기": ((53.8, 46.6, 10.0), "단일 논문", "iucn"),
+                 "가리맛조개": ((56.9, 57.3, 10.0), "단일 논문", "national")}
+        for name, (scores, label, basis) in moved.items():
+            s = self.by_name[name]
+            self.assertEqual((tuple(s["scores"][k] for k in ("MBPI", "BBVI", "MCUI")), s["bbvi_label"], s["mcui_basis"]),
+                             (scores, label, basis), name)
+        # every other species keeps its 4.10 scores, labels and basis; MFPI never moves
+        for a, s in self.new.items():
+            self.assertEqual(s["scores"]["MFPI"], self.old[a]["scores"]["MFPI"], a)
+            if s["korean_name"] not in moved:
+                for k in ("scores", "bbvi_label", "mbpi_label", "mcui_basis"):
+                    self.assertEqual(s.get(k), self.old[a].get(k), (s["korean_name"], k))
+        # only 미역 keeps a top item on two independent papers, through its own purified VW
+        self.assertEqual(sorted(s["korean_name"] for s in self.new.values() if s["bbvi_label"] is None), ["미역"])
+
+    def test_only_a_purified_isolate_of_the_species_counts_as_an_independent_paper(self):
+        rule = self.report["method"]["bioactivity"]["replication_origin_rule"]
+        self.assertEqual(rule["same_origin_isolates"], {"10.1016/j.jnutbio.2003.11.004:Table1:VW-purified": 145721})
+        seen = 0
+        for a, s in self.new.items():
+            for item in s["bioactivity_trace"]:
+                for r in item.get("potency_replications", []):
+                    seen += 1
+                    if r["used"]:
+                        self.assertEqual(rule["same_origin_isolates"].get(r["record_id"]), a, (a, r["record_id"]))
+                        self.assertEqual(r.get("material"), "purified_isolate")
+                    elif r["reason"] == rule["reason"]:
+                        self.assertNotEqual(rule["same_origin_isolates"].get(r["record_id"]), a)
+                if "independent_dois" in item:  # the label rule counts the item's own papers plus used rows only
+                    self.assertEqual(item["independent_dois"], sorted({d.lower() for d in item["original_paper_dois"]}
+                                     | {r["original_paper_doi"].lower() for r in item["potency_replications"] if r["used"]}))
+        self.assertEqual(seen, 18)
+        # the same wakame row is another organism for 큰가리비's VW
+        vw = next(i for i in self.by_name["큰가리비"]["bioactivity_trace"] if i.get("peptide_sequence") == "VW")
+        wakame = next(r for r in vw["potency_replications"] if "jnutbio" in r["record_id"])
+        self.assertEqual((wakame["used"], wakame["reason"]), (False, rule["reason"]))
+        # without the rule the 4.10 values come back
+        old = self.rebuild(lambda c: c["bioactivity"].pop("replication_origin_rule"))
+        self.assertEqual({n: old[n]["scores"]["MBPI"] for n in ("참굴", "톳", "큰가리비", "갑오징어")},
+                         {"참굴": 96.3, "톳": 86.6, "큰가리비": 36.4, "갑오징어": 87.7})
+
+    def test_short_peptides_carry_the_specificity_caveat(self):
+        note = self.report["method"]["bioactivity"]["specificity_note"]
+        flagged = set()
+        for s in self.new.values():
+            for item in s["bioactivity_trace"]:
+                seq = item.get("peptide_sequence") or ""
+                if seq and len(seq) <= note["max_residues"]:
+                    self.assertTrue(item["caveat"].endswith(note["caveat"]), (s["korean_name"], seq))
+                    flagged.add(seq)
+                else:
+                    self.assertNotIn(note["caveat"], item.get("caveat") or "", (s["korean_name"], seq))
+        self.assertLessEqual({"IW", "VW", "LQP", "GKY", "KAF", "AMN", "VQY"}, flagged)
+        self.assertNotIn("FMRF", flagged)  # four residues; its own caveat already says it is a shared neuropeptide
+
+    def test_the_small_molecule_stratum_needs_thirty_compounds(self):
+        self.assertEqual(self.report["method"]["bioactivity"]["minimum_compounds_per_stratum"], 30)
+        used = {i["stratum_id"] for s in self.new.values() for i in s["bioactivity_trace"]}
+        self.assertNotIn("wijesinghe-2011-cell-free-ACE-IC50", used)
+        ecklonia = self.by_name["감태"]
+        self.assertEqual((ecklonia["mbpi_stratum"], ecklonia["mbpi_rx"]["value"]), ("chembl", 56.8))
+        old = self.rebuild(lambda c: c["bioactivity"].update(minimum_compounds_per_stratum=3))
+        self.assertEqual(old["감태"]["scores"]["MBPI"], 67.5)
+
+    def test_mbpi_breadth_is_display_only(self):
+        for s in self.new.values():
+            ranked = sorted((i["adjusted"] for i in s["bioactivity_trace"]), reverse=True)
+            b = s["mbpi_breadth"]
+            self.assertEqual(b, {"item_count": len(ranked), "median": round1(median(ranked)),
+                                 "top2_mean": round1(sum(ranked[:2]) / len(ranked[:2])), "exploratory": True}, s["korean_name"])
+            self.assertEqual(s["scores"]["MBPI"], round1(ranked[0]))  # MBPI is still the top item
+        for name in ("matrix-readiness.json", "expedition-stops.json", "unexplored-candidates.json", "chatbot.js", "expedition.js"):
+            self.assertNotIn("mbpi_breadth", (ROOT / "dist" / name).read_text(encoding="utf-8"), name)
+
+    def test_a_sub_national_list_that_failed_its_back_test_is_reference_only(self):
+        refs = {s["korean_name"]: s["mcui_substitute"] for s in self.new.values() if (s.get("mcui_substitute") or {}).get("sub_national_reference")}
+        self.assertEqual(sorted(refs), sorted(["미역", "톳", "청각", "꽃게"]))
+        self.assertFalse(any(s["mcui_basis"] == "sub_national" for s in self.new.values()))
+        for name, sub in refs.items():
+            ref = sub["sub_national_reference"]
+            self.assertEqual((ref["use"], ref["value"], ref["backtest"]["result"]), ("reference_only", None, "failed"), name)
+            self.assertEqual((sub["basis"], sub["use"], sub["value"]), ("preliminary", "scored", 10.0), name)
+            self.assertLessEqual(set(ref["source_ids"]), set(sub["source_ids"]))
+        self.assertEqual(refs["미역"]["sub_national_reference"]["chosen_category"], "EN")
+        # the alternative-production quadrant is empty now: it only ever held the two sub-national species
+        matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        types = {s["korean_name"]: s["matrix_type"] for s in matrix["species"]}
+        self.assertNotIn("alternative_production", types.values())
+        self.assertEqual((types["미역"], types["톳"]), ("sustainable_use", "sustainable_use"))
+        self.assertEqual(matrix["matrix_points"], 29)
+
+    def test_a_fall_to_the_decline_ratio_blocks_rapid_lc(self):
+        ascidian = self.by_name["멍게"]
+        sub, trend = ascidian["mcui_substitute"], ascidian["occurrence_trend"]
+        self.assertEqual((trend["class"], trend["reporting_rate_ratio"]), ("undetermined", 0.655))
+        self.assertEqual((sub["result"], sub["value"], sub["basis"]), ("decline_ratio_reached", None, None))
+        self.assertEqual((ascidian["scores"]["MCUI"], ascidian["withheld_reasons"]["MCUI"]), (None, "not_in_red_list"))
+        self.assertEqual(ascidian["priority_survey_reasons"], ["no_conservation_assessment"])
+        # every scored Rapid LC sits above the decline ratio
+        ratio = self.report["method"]["conservation"]["trend"]["decline_ratio"]
+        for s in self.new.values():
+            if s["mcui_basis"] == "preliminary":
+                self.assertGreater(s["occurrence_trend"]["reporting_rate_ratio"], ratio, s["korean_name"])
+
+    def test_the_trend_adjustment_is_suspended(self):
+        self.assertEqual(self.report["method"]["conservation"]["effort_adjustment"], 0)
+        self.assertEqual(self.report["method"]["conservation"]["effort_adjustment_suspended"]["previous_value"], 10)
+        signals = sorted(s["korean_name"] for s in self.new.values() if s["occurrence_trend"]["class"] == "decline_signal")
+        self.assertEqual(signals, sorted(["살오징어", "가리맛조개", "멸치", "참조기"]))
+        for s in self.new.values():
+            self.assertEqual(s["occurrence_trend"]["mcui_adjustment"], 0, s["korean_name"])
+            self.assertEqual(s["occurrence_trend"]["mcui_base"], s["scores"]["MCUI"], s["korean_name"])
+
+    def test_posthoc_mbpi_record_matches_its_computation(self):
+        import posthoc_validation as P
+        block, check = self.report["method"]["posthoc"]["validation_sets"]["MBPI"], P.mbpi_check(self.report, self.report["method"])
+        self.assertEqual((block["result"], check["result"]), ("failed", "failed"))
+        self.assertEqual(block["operating_max_mbpi"], max(check["operating_mbpi"].values()))
+        self.assertEqual((block["operating_max_mbpi"], block["operating_max_species"]), (89.2, "미역"))
+        record = json.loads((ROOT / block["record"]).read_text(encoding="utf-8"))
+        self.assertEqual((record["report_version"], record["MBPI"]), ("verified-4.11", check))
+        rx = self.report["method"]["posthoc"]["validation_sets"]["MBPI_RX"]
+        self.assertEqual(rx["operating_max_mbpi"], max(P.mbpi_rx_check(self.report, self.report["method"])["operating_mbpi_rx"].values()))
 
 
 if __name__ == "__main__":

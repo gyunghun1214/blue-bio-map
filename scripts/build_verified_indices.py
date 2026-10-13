@@ -30,7 +30,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.10.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.11.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -599,7 +599,8 @@ def peptide_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         value = median(6 - math.log10(r["value"]) for r in own)
         rank = percentile(value, peers)
         dois = {r["original_paper_doi"].lower() for r in own}
-        replications = potency_replications(evidence, settings, sequence, value, dois) if xo else []
+        replications = potency_replications(evidence, settings, sequence, value, dois,
+                                            origin=origin, origin_rule=config["bioactivity"].get("replication_origin_rule")) if xo else []
         independent = dois | {r["original_paper_doi"].lower() for r in replications if r["used"]}
         factor = config["bioactivity"]["single_doi_factor"] if len(independent) == 1 else config["bioactivity"]["multiple_doi_factor"]
         out.append((origin, {"stratum_kind": "peptide", "peptide_sequence": sequence, "stratum_id": cohort["cohort_id"],
@@ -846,7 +847,8 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
         dois = {x["original_paper_doi"].lower() for x in own}
         # 4.9 (prereg-4.9-2026-10-10 2.2): a replication only adds its DOI; the value, percentile and cohort stay
         rx = settings.get("cross_origin_replication")
-        replications = relaxed_replications(evidence, rx, sequence, cohort, value, dois) if rx else []
+        replications = relaxed_replications(evidence, rx, sequence, cohort, value, dois,
+                                            origin=origin, origin_rule=config["bioactivity"].get("replication_origin_rule")) if rx else []
         independent = dois | {r["original_paper_doi"].lower() for r in replications if r["used"]}
         factor = config["bioactivity"]["single_doi_factor"] if len(independent) == 1 else config["bioactivity"]["multiple_doi_factor"]
         out.append((origin, {"stratum_kind": "relaxed", "relaxation": top["relaxation"],
@@ -883,7 +885,14 @@ def relaxed_items(evidence: dict, config: dict) -> list[tuple[int, dict]]:
     return out
 
 
-def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str]) -> list[dict]:
+def same_origin(record_id: str, origin: int | None, origin_rule: dict | None) -> bool:
+    """4.11 (prereg-4.11-2026-10-13 2): without the rule every agreeing replication counts, as up to 4.10. With it, only a
+    reviewed purified isolate of the scored species itself joins independent_dois."""
+    return origin_rule is None or origin_rule["same_origin_isolates"].get(record_id) == origin
+
+
+def potency_replications(evidence: dict, settings: dict, sequence: str, value: float, dois: set[str],
+                         origin: int | None = None, origin_rule: dict | None = None) -> list[dict]:
     """A synthetic (3.14: or accepted purified) peptide re-measured in another paper replicates potency, never origin or value."""
     gap = settings["cross_origin_potency"]["max_pIC50_gap"]
     # 3.14: a config may also accept sequence-confirmed purified peptides; older configs stay synthetic-only
@@ -901,15 +910,18 @@ def potency_replications(evidence: dict, settings: dict, sequence: str, value: f
         p = 6 - math.log10(finite(r.get("value"), "replication IC50", 0.0000001))
         same_paper = r["original_paper_doi"].lower() in dois
         agrees = abs(p - value) <= gap
+        own = same_origin(r["record_id"], origin, origin_rule)
         out.append({"record_id": r["record_id"], "original_paper_doi": r["original_paper_doi"], "source_id": r["source_id"],
                     "origin_material": r["origin_material"], "origin_label": r.get("origin_label"), **({"material": material} if "material" in r else {}),
                     "value": r["value"], "unit": r["unit"], "pIC50": round(p, 3),
-                    "pIC50_gap": round(abs(p - value), 3), "used": agrees and not same_paper,
-                    "reason": "same paper as the origin measurement" if same_paper else None if agrees else f"pIC50 gap above {gap}"})
+                    "pIC50_gap": round(abs(p - value), 3), "used": agrees and not same_paper and own,
+                    "reason": "same paper as the origin measurement" if same_paper else f"pIC50 gap above {gap}" if not agrees
+                    else None if own else origin_rule["reason"]})
     return out
 
 
-def relaxed_replications(evidence: dict, settings: dict, sequence: str, cohort: dict, value: float, dois: set[str]) -> list[dict]:
+def relaxed_replications(evidence: dict, settings: dict, sequence: str, cohort: dict, value: float, dois: set[str],
+                         origin: int | None = None, origin_rule: dict | None = None) -> list[dict]:
     """4.9 (prereg-4.9-2026-10-10): another paper's measurement of the same mature sequence on the same ChEMBL target
     and endpoint replicates the value, never the origin and never the scored number. A used row only joins
     independent_dois. The ACE stratum's device (2.3 cross_origin_potency) read on the pChEMBL scale, same gap."""
@@ -930,13 +942,14 @@ def relaxed_replications(evidence: dict, settings: dict, sequence: str, cohort: 
         # a reviewed exclusion (e.g. the author group may be the origin of the scored value) is stated, not inferred
         excluded = (r.get("excluded") or {}).get("reason")
         agrees = abs(p - value) <= gap
+        own = same_origin(r["record_id"], origin, origin_rule)
         out.append({"record_id": r["record_id"], "original_paper_doi": r["original_paper_doi"], "source_id": r["source_id"],
                     "origin_material": r["origin_material"], "origin_label": r.get("origin_label"), "material": material,
                     "value": r["value"], "unit": r["unit"], "endpoint": r["endpoint"], "target_chembl_id": r["target_chembl_id"],
                     "p_scale": scale, "p": p, "p_gap": round(abs(p - value), 3),
-                    "used": agrees and not same_paper and not excluded,
+                    "used": agrees and not same_paper and not excluded and own,
                     "reason": "same paper as the origin measurement" if same_paper else excluded if excluded
-                    else None if agrees else f"{scale} gap above {gap}"})
+                    else f"{scale} gap above {gap}" if not agrees else None if own else origin_rule["reason"]})
     return out
 
 
@@ -1124,7 +1137,11 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
                                            if other or any(a == aphia for a, _ in v) else None for name, v in variants.items()}
         for origin, item in items:
             out[origin] = (None, out.get(origin, (None, [], {}))[1] + [item], {})
+    note = config["bioactivity"].get("specificity_note")
     for aphia, (_, items, _) in list(out.items()):
+        if note:  # 4.11 (prereg-4.11-2026-10-13 2): a short peptide is not evidence about one species; the value stays
+            items = [{**i, "caveat": " ".join(filter(None, [i.get("caveat"), note["caveat"]]))}
+                     if len(i.get("peptide_sequence") or "") and len(i["peptide_sequence"]) <= note["max_residues"] else i for i in items]
         adjusted = [i["adjusted"] for i in items]
         primary = max(adjusted)
         out[aphia] = (round1(primary), items,
@@ -1276,6 +1293,18 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
         category = subnational_category(sub_rows)
         regions = ", ".join(r.get("region_ko") or r["region"] for r in sub_rows)
         back = evidence["mcui_subnational_backtest"]
+        scored_results = rule["sub_national"].get("scored_backtest_results")
+        if scored_results is not None and back["result"] not in scored_results:
+            # 4.11 (prereg-4.11-2026-10-13 5.1): a list whose back-test did not pass is reference only; the next basis applies
+            reference = {"regions": sub_rows, "chosen_category": category, "value": None, "use": "reference_only",
+                         "rule": rule["sub_national"]["unscored_rule"], "label": rule["labels"]["sub_national"].format(regions=regions, backtest=back["label"]),
+                         "backtest": {k: back[k] for k in ("result", "n", "label", "criterion", "prereg")},
+                         "source_ids": sorted({r["source_id"] for r in sub_rows} | {r["currency_source_id"] for r in sub_rows if r.get("currency_source_id")})}
+            nxt = mcui_substitute(aphia, {**evidence, "mcui_substitutes": {**evidence["mcui_substitutes"], "sub_national": []}}, config, trend)
+            if nxt is None:
+                return {"basis": None, "category": None, "value": None, "label": reference["label"], "record": {},
+                        "source_ids": reference["source_ids"], "sub_national_reference": reference}
+            return {**nxt, "source_ids": sorted(set(nxt["source_ids"]) | set(reference["source_ids"])), "sub_national_reference": reference}
         return {"basis": "sub_national", "label": rule["labels"]["sub_national"].format(regions=regions, backtest=back["label"]),
                 "category": category, "value": float(scores[category]),
                 "record": {"regions": sub_rows, "chosen_category": category, "rule": rule["sub_national"]["median_rule"],
@@ -1293,12 +1322,16 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
     require(met == lc["likely_least_concern"] and lc["aoo_km2"] == lc["aoo_cells"] * t["aoo_cell_km"] ** 2,
             f"{aphia}: Rapid LC flag differs from the published thresholds")
     decline = bool(trend and trend["class"] == "decline_signal")
+    block = rule.get("preliminary_trend_block")  # 4.11 (prereg-4.11-2026-10-13 5.2): an unconfirmed fall is not read as no fall
+    ratio = (trend or {}).get("reporting_rate_ratio")
+    reached = bool(block) and not decline and ratio is not None and ratio <= config["conservation"]["trend"]["decline_ratio"]
     record = {**{k: lc[k] for k in ("records", "eoo_km2", "aoo_km2", "aoo_cells", "native_box", "countries_gbif", "gbif", "obis")},
-              "thresholds": t, "trend_class": trend and trend["class"], "method_source_id": rule["method_source_id"]}
+              "thresholds": t, "trend_class": trend and trend["class"], "method_source_id": rule["method_source_id"],
+              **({"reporting_rate_ratio": ratio, "trend_block_rule": block["rule"]} if block else {})}
     out = {"label": rule["labels"]["preliminary"], "record": record, "source_ids": [rule["snapshot_source_id"], rule["method_source_id"]]}
-    if not met or decline:
+    if not met or decline or reached:
         return {**out, "basis": None, "category": None, "value": None,
-                "result": "decline_signal" if decline else "thresholds_not_met"}
+                "result": "decline_signal" if decline else block["result"] if reached else "thresholds_not_met"}
     category = rule["preliminary_category"]
     if rule.get("preliminary_scored"):  # 4.3 (team-lead decision 2026-10-05): the last basis, scored with its failed back-test label
         # official lists that name the species without a scored category (regional extinction, DD, variety) travel with the value
@@ -1606,6 +1639,11 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 row["mbpi_label"], row["bbvi_label"] = mbpi_floor["label"], mbpi_floor["bbvi_label"] if bbvi is not None else None
         if rx_rule:  # 4.10: secondary and exploratory, beside MBPI; never in scores, BBVI, labels or the matrix
             row["mbpi_rx"] = mbpi_rx(bio_trace, rx_rule)
+        if config.get("mbpi_breadth"):  # 4.11 (prereg-4.11-2026-10-13 4): display only, beside MBPI
+            ranked = sorted((i["adjusted"] for i in bio_trace), reverse=True)
+            row["mbpi_breadth"] = {"item_count": len(ranked), "median": round1(median(ranked)) if ranked else None,
+                                   "top2_mean": round1(sum(ranked[:2]) / len(ranked[:2])) if ranked else None,
+                                   "exploratory": True}
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
             row["mbpi_stratum"] = "floor" if mbpi_floor else None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
