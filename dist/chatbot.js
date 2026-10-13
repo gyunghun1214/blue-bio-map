@@ -46,7 +46,7 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="method"]'],target:'.method-grid'},next:['mfpi','mbpi','mcui']},
   {id:'bbvi',q:['BBVI는 어떻게 계산해요','활용가치는 뭐예요','식량 가중치 슬라이더는 뭐예요'],
     k:['bbvi','활용가치','가중치','슬라이더','통합'],
-    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(신약)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 식량 가중치 슬라이더로 두 축의 비중을 바꿔 볼 수 있어요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
+    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(신약)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 가중치 슬라이더와 프리셋(신약 중심·균형·식량 중심)으로 두 축의 비중을 바꿔 볼 수 있어요. 공식 산출값의 가중치는 고정이고, 바꾼 값은 ‘탐색 보기’ 표시와 함께 공식값을 나란히 보여 줘요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
     show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]','#cmp-basis-toggle'],target:'.weight-control'},next:['mfpi','mbpi']},
   {id:'mfpi',q:['MFPI는 뭐예요','식량 지표는 어떻게 매겨요','EPA DHA는 점수에 들어가요'],
     k:['mfpi','식량지표','영양','식품성분','epa','dha','ufish'],

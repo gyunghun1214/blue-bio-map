@@ -260,6 +260,46 @@ try{
     r.profileReturn=currentView==='compare'&&cmpMode==='matrix'&&document.activeElement===q('#cmp-profile [data-prof-axis="BBVI"]');
     return r})()`);
   check('Compare tab: side-by-side view draws bars only on a shared scale, says 직접 비교 불가 otherwise, no total or pick; evidence returns to the dialog and to the profile',Object.values(side).every(Boolean),JSON.stringify(side));
+  // BBVI 통합 가중치 (2026-10-13): MBPI + MFPI = 1.00, presets, 탐색 보기 badges, official value beside a re-mix, points slide and
+  // mark a moved type, value-map cell colours follow, the link carries w, the official weight brings back the first screen
+  const wt=await evaluate(`(async()=>{const r={},q=s=>document.querySelector(s),wait=ms=>new Promise(f=>setTimeout(f,ms)),vis=e=>!!e&&!e.hidden&&e.getClientRects().length>0;
+    setView('compare');setCompareFilter({q:'',group:'all'});setCompareMode('matrix');selectSpecies(836033);await wait(200);
+    const table0=(setCompareMode('table'),q('#comparison').textContent);setCompareMode('matrix');
+    const cellTypes=()=>{const n={};for(const g of valueCellGroups(true).values()){const t=cellMatrixType(g).type||'none';n[t]=(n[t]||0)+1;}return JSON.stringify(n);};
+    setView('explore');setMapMode('value');await wait(300);const cells0=cellTypes(),cand0=document.getElementById('layer-unexplored-count')?.textContent;setMapMode('occurrence');setView('compare');setCompareMode('matrix');await wait(200);
+    q('#cmp-basis-toggle').click();r.panel=vis(q('#bbvi-weight'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&!vis(q('#cmp-weight-badge'))&&!vis(q('#cmp-matrix-badge'))&&q('#cmp-weight-reset').disabled;
+    const left0=q('#matrix-points [data-aphia="241776"]')?.style.left;
+    r.sum=[...Array(21).keys()].every(k=>{const m=weightPair(k/20).match(/MBPI (\\S+) · MFPI (\\S+)/);return Math.round(Number(m[1])*100)+Math.round(Number(m[2])*100)===100;});
+    q('[data-w-preset="16"]').click();await wait(250);
+    r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80'&&q('[data-w-preset="16"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.20, MFPI 0.80';
+    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.20 · MFPI 0.80 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.20 · MFPI 0.80';
+    const moved=data.species.filter(s=>matrixType(s)!==officialType(s));
+    r.moved=moved.length>0&&q('#bbvi-weight-moved').textContent.startsWith('공식값과 유형이 다른 종 '+moved.length+'종')&&document.querySelectorAll('#matrix-points .matrix-point.w-moved').length===moved.filter(assessedForMatrix).length;
+    const pt=q('#matrix-points [data-aphia="241776"]');r.point=!!pt&&pt.style.left!==left0&&pt.title.includes('공식 ');
+    r.hash=/[#&]w=0\\.80(&|$)/.test(location.hash);
+    r.profile=q('#cmp-profile').textContent.includes('공식 71.9');
+    setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&vis(q('#cmp-table-badge'));setCompareMode('matrix');
+    r.cells=cellTypes()!==cells0;
+    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.20 · MFPI 0.80');
+    r.candidates=document.getElementById('layer-unexplored-count')?.textContent===cand0;
+    q('#value-weight-badge [data-w-reset]').click();await wait(250);r.mapReset=!vis(q('#value-weight-badge'))&&bbviWeight===.5;
+    setMapMode('occurrence');setView('compare');setCompareMode('matrix');
+    q('[data-w-preset="4"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.80 · MFPI 0.20'&&/[#&]w=0\\.20(&|$)/.test(location.hash);
+    q('#cmp-weight-reset').click();await wait(250);
+    setCompareMode('table');const table1=q('#comparison').textContent;setCompareMode('matrix');
+    r.resetBadge=!vis(q('#cmp-matrix-badge'))&&q('#cmp-basis-now').textContent==='';r.resetHash=!/[#&]w=/.test(location.hash);r.resetTable=table1===table0;r.resetCells=cellTypes()===cells0;r.resetPoints=!document.querySelector('#matrix-points .w-moved');
+    setBasisPop(false);return r})()`);
+  check('BBVI weight slider: MBPI + MFPI = 1.00 at 21 steps, presets, 탐색 보기 badges (panel, matrix, table, value map), official value beside a re-mix, moved-type list and dashed points, cell colours follow, unexplored count fixed, link w, official weight restores the first screen',Object.values(wt).every(Boolean),JSON.stringify(wt));
+  await evaluate("location.hash='s=836033&v=compare&w=0.70';location.reload();1");
+  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await sleep(800);
+  const wl=await evaluate("({w:bbviWeight,text:document.getElementById('bbvi-weight-value').textContent,badge:!document.getElementById('cmp-matrix-badge').hidden,hash:location.hash})");
+  await evaluate("location.hash='s=836033&v=compare&w=abc';location.reload();1");
+  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await sleep(800);
+  const wb=await evaluate("({w:bbviWeight,badge:!document.getElementById('cmp-matrix-badge').hidden,hash:location.hash})");
+  check('BBVI weight link: #…&w=0.70 opens at MBPI 0.30 · MFPI 0.70 with the badge; w=abc opens at the official weight and drops w',wl.w===.7&&wl.text==='MBPI 0.30 · MFPI 0.70'&&wl.badge&&wl.hash.includes('w=0.70')&&wb.w===.5&&!wb.badge&&!wb.hash.includes('w='),JSON.stringify({wl,wb}));
+  await evaluate("setBbviStep(10);1");await sleep(300);
   await evaluate("selectSpecies(836033);toggleBasket(836033);toggleBasket(145721);setCompareMode('matrix');window.scrollTo(0,0);1");await sleep(300);await shot('desktop-compare-matrix');
   await evaluate("toggleBasket(274849);openCompareDialog();1");await sleep(200);await shot('desktop-compare-dialog');
   await evaluate("document.getElementById('cmp-dialog').close();cmpBasket=[];renderCompare();setCompareMode('table');1");}
@@ -792,6 +832,12 @@ try{
     const open={exp:b.getAttribute('aria-expanded'),top:Math.round(document.getElementById('sheet-head').getBoundingClientRect().top),stage:getComputedStyle(stage).position};b.click();await wait(900);
     return {open,closed:{exp:b.getAttribute('aria-expanded'),y:Math.round(scrollY)},doc:document.documentElement.scrollWidth,vw:innerWidth}})()`);
   check('Mobile sheet: the handle button opens the sheet over the pinned map and closes it again (aria-expanded follows), no horizontal overflow',sheet.open.exp==='true'&&Math.abs(sheet.open.top)<=2&&sheet.open.stage==='sticky'&&sheet.closed.exp==='false'&&sheet.closed.y===0&&sheet.doc<=sheet.vw,JSON.stringify(sheet));
+  // BBVI 통합 가중치 on a phone: the panel and the matrix badge fit 390px, no sideways scroll
+  const wm=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s);setView('compare');setCompareMode('matrix');q('#cmp-basis-toggle').click();
+    setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-matrix-badge').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());
+    const r={pop:[Math.round(pop.left),Math.round(pop.right)],badge:[Math.round(badge.left),Math.round(badge.right),Math.round(badge.height)],presets:pre.every(b=>b.left>=pop.left-1&&b.right<=pop.right+1),doc:document.documentElement.scrollWidth,vw:innerWidth};
+    setBbviStep(10);setBasisPop(false);await wait(200);setView('explore');return r})()`);
+  check('BBVI weight panel at 390px: popover, presets and the matrix badge stay inside the screen, no horizontal overflow',wm.pop[0]>=0&&wm.pop[1]<=wm.vw&&wm.badge[0]>=0&&wm.badge[1]<=wm.vw&&wm.badge[2]>0&&wm.presets&&wm.doc<=wm.vw,JSON.stringify(wm));
   await shot('mobile-first-screen',false);
   // Switching species on the horizontal card list and toggling map mode must not jump or close what the user opened.
   const stab=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const list=document.getElementById('species-list');const cards=[...list.querySelectorAll('.species-card')];

@@ -334,6 +334,34 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare .ct-go small{display:none}
   #compare .cmp-dialog{width:calc(100vw - 16px);max-height:calc(100vh - 16px)}
 }
+/* BBVI 통합 가중치 (2026-10-13): one range, MBPI share on the left in violet, MFPI share on the right in the accent colour; the
+   thin mark is the official weight. Badges show only while the weight is not the official one. */
+#compare{--cs-bio:#b49ae6}
+#compare .cmp-pop .weight-control label{flex-wrap:wrap;align-items:baseline}
+#compare .cmp-pop .w-range{--w:50%;--w0:50%;-webkit-appearance:none;appearance:none;height:22px;margin:10px 0 2px;background:transparent;cursor:pointer}
+#compare .cmp-pop .w-range:disabled{cursor:not-allowed}
+#compare .w-range::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--cs-bio) 0 var(--w),var(--cs-accent-hi) var(--w) 100%)}
+#compare .w-range::-moz-range-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--cs-bio) 0 var(--w),var(--cs-accent-hi) var(--w) 100%)}
+#compare .w-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-6px;border:3px solid #0c2638;border-radius:50%;background:#f2f7f9;box-shadow:0 0 0 1px var(--cs-line2)}
+#compare .w-range::-moz-range-thumb{width:14px;height:14px;border:3px solid #0c2638;border-radius:50%;background:#f2f7f9}
+#compare .cmp-pop .weight-control{position:relative;display:block}
+#compare .cmp-pop .w-range{background:linear-gradient(#eaf2f5,#eaf2f5) var(--w0) 50%/2px 16px no-repeat}
+#compare .w-ends{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600}
+#compare .w-end-bio{color:var(--cs-bio)}
+#compare .w-end-food{color:var(--cs-accent-hi);text-align:right}
+#compare .w-presets{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+#compare .w-presets .cmp-ghost{min-height:30px;padding:0 10px;font-size:12.5px}
+#compare .w-presets .cmp-ghost[aria-pressed=true]{border-color:var(--cs-accent-hi);background:rgba(106,150,170,.18);color:#dff0f5}
+#compare .cmp-pop .weight-control .w-moved-list{margin:6px 0 0;color:var(--cs-ink);font-size:12.5px}
+#compare .w-badge{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 10px;padding:6px 8px 6px 12px;border:1px solid var(--cs-sand);border-radius:10px;background:#2a2316;color:#f1cf9f;font-size:12.5px;font-weight:700;line-height:1.4}
+#compare .w-badge-reset{min-height:28px;padding:0 10px;border:1px solid rgba(241,207,159,.5);border-radius:7px;background:transparent;color:#f1cf9f;font:inherit;font-size:12px;cursor:pointer}
+#compare #cmp-matrix-badge{width:fit-content;max-width:100%;margin:12px 0 0}
+#compare .lg-dot.wmove{background:transparent;border:2px dashed #f1cf9f}
+@media (max-width:740px){#compare #cmp-basis-now .bn-long{display:none}}
+#compare.simulating #cmp-matrix-badge{display:none}
+#compare .cv-official,#compare .cd-official{display:block;color:#f1cf9f;font-size:11px;font-weight:600}
+#compare .cp-official{margin:4px 0 0;color:#f1cf9f;font-size:12.5px;font-weight:600}
+#compare .matrix-point.pilot.w-moved{outline:2px dashed #f1cf9f;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
   #compare *,#compare *::before,#compare *::after{transition:none!important;animation:none!important}
 }
