@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.10",
+ "method_version": "verified-4.11",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -161,7 +161,7 @@
    "scores": {
     "BBVI": 48.3,
     "MBPI": 22.6,
-    "MCUI": 20.0,
+    "MCUI": 10.0,
     "MFPI": 74.1
    },
    "shared_with": [],
@@ -331,7 +331,7 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 1.0,
+   "information_sufficiency": 0.67,
    "korean_name": "꽃게",
    "map_link": "index.html#s=1061762&v=explore&m=8/37.50/125.50",
    "matrix_type": {
@@ -340,18 +340,18 @@
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "sub_national",
-    "basis_label": "지방 목록 참고값",
-    "category": "NT",
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
     "criteria": null,
-    "label": "지방 목록 참고값(후쿠오카현) · 과대평가 역검증 미통과(6종 비교)",
-    "mapping": "NT → 35 (후쿠오카현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
-    "scope": "후쿠오카현",
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
     "source": {
-     "id": "fukuoka_redlist2024",
-     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-     "title": "福岡県レッドリスト2024（動物）",
-     "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html"
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     }
    },
    "on_route": true,
@@ -368,11 +368,17 @@
    "scores": {
     "BBVI": 46.2,
     "MBPI": 30.3,
-    "MCUI": 35.0,
+    "MCUI": 10.0,
     "MFPI": 62.0
    },
    "shared_with": [],
    "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     {
      "id": "cmnpd_mbpi",
      "license": "CC BY-NC-SA 4.0",
@@ -396,6 +402,12 @@
      "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
      "title": "福岡県レッドリスト2024（動物）",
      "url": "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
     },
     {
      "id": "hong_2025_ijms_mts",
@@ -1284,7 +1296,7 @@
    "scores": {
     "BBVI": 46.6,
     "MBPI": 53.8,
-    "MCUI": 20.0,
+    "MCUI": 10.0,
     "MFPI": 39.4
    },
    "shared_with": [],
@@ -1454,7 +1466,7 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "청각",
    "map_link": "index.html#s=145086&v=explore&m=8/33.50/124.50",
    "matrix_type": {
@@ -1463,18 +1475,18 @@
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "sub_national",
-    "basis_label": "지방 목록 참고값",
-    "category": "NT",
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
     "criteria": null,
-    "label": "지방 목록 참고값(이바라키현) · 과대평가 역검증 미통과(6종 비교)",
-    "mapping": "NT → 35 (이바라키현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
-    "scope": "이바라키현",
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
     "source": {
-     "id": "ibaraki_rdb2020_algae",
-     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-     "title": "茨城における絶滅のおそれのある野生生物 蘚苔類・藻類・地衣類・菌類編 2020年版",
-     "url": "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     }
    },
    "on_route": true,
@@ -1491,11 +1503,17 @@
    "scores": {
     "BBVI": 18.6,
     "MBPI": 0.4,
-    "MCUI": 35.0,
+    "MCUI": 10.0,
     "MFPI": 36.7
    },
    "shared_with": [],
    "sources": [
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     {
      "id": "cellosaurus_mbpi",
      "license": "CC BY 4.0",
@@ -1507,6 +1525,12 @@
      "license": "CC BY-SA 3.0",
      "title": "ChEMBL molecule, activity, target and cell-line resources",
      "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
     },
     {
      "id": "hwang_2008_codium_wando",
@@ -1810,13 +1834,13 @@
   },
   {
    "aphia_id": 494972,
-   "bbvi_label": null,
+   "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
      "10.2331/suisan.64.862"
     ],
     "endpoint": "IC50",
-    "evidence_factor": 1.0,
+    "evidence_factor": 0.75,
     "links": [
      "https://doi.org/10.2331/suisan.64.862"
     ],
@@ -1919,27 +1943,27 @@
     }
    },
    "group": "operational",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "톳",
    "map_link": "index.html#s=494972&v=explore&m=8/34.50/125.50",
    "matrix_type": {
-    "id": "alternative_production",
-    "label": "대체생산·배양 연구"
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "sub_national",
-    "basis_label": "지방 목록 참고값",
-    "category": "VU",
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
     "criteria": null,
-    "label": "지방 목록 참고값(이시카와현, 오키나와현) · 과대평가 역검증 미통과(6종 비교)",
-    "mapping": "VU → 60 (이시카와현, 오키나와현 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
-    "scope": "이시카와현",
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
     "source": {
-     "id": "ishikawa_rdb2020",
-     "license": "지방정부 발행 자료. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-     "title": "いしかわレッドデータブック2020〈動物編〉 6. 浅海域の生物",
-     "url": "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf"
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     }
    },
    "on_route": true,
@@ -1954,9 +1978,9 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 74.9,
-    "MBPI": 86.6,
-    "MCUI": 60.0,
+    "BBVI": 64.2,
+    "MBPI": 65.0,
+    "MCUI": 10.0,
     "MFPI": 63.3
    },
    "shared_with": [],
@@ -1966,6 +1990,12 @@
      "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
      "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
      "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     },
     {
      "id": "cellosaurus_mbpi",
@@ -1984,6 +2014,12 @@
      "license": "Publisher copyright (Wiley); subscription access",
      "title": "Simultaneous Determination of 8 Small Antihypertensive Peptides with Tyrosine at the C-Terminal in Laminaria japonica Hydrolysates by RP-HPLC Method",
      "url": "https://doi.org/10.1111/jfpp.12628"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
     },
     {
      "id": "ishikawa_rdb2020",
@@ -2339,13 +2375,13 @@
   },
   {
    "aphia_id": 836033,
-   "bbvi_label": null,
+   "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
      "10.5352/jls.2012.22.2.220"
     ],
     "endpoint": "IC50",
-    "evidence_factor": 1.0,
+    "evidence_factor": 0.75,
     "links": [
      "https://doi.org/10.5352/jls.2012.22.2.220"
     ],
@@ -2476,8 +2512,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 83.9,
-    "MBPI": 96.3,
+    "BBVI": 71.9,
+    "MBPI": 72.2,
     "MCUI": 10.0,
     "MFPI": 71.6
    },
@@ -3252,7 +3288,7 @@
    "scores": {
     "BBVI": 57.3,
     "MBPI": 56.9,
-    "MCUI": 20.0,
+    "MCUI": 10.0,
     "MFPI": 57.7
    },
    "shared_with": [
@@ -3475,7 +3511,7 @@
    "scores": {
     "BBVI": 51.5,
     "MBPI": 56.9,
-    "MCUI": 20.0,
+    "MCUI": 10.0,
     "MFPI": 46.1
    },
    "shared_with": [],
@@ -3568,13 +3604,13 @@
   },
   {
    "aphia_id": 1666974,
-   "bbvi_label": null,
+   "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
      "10.1021/acs.jmedchem.0c00643"
     ],
     "endpoint": "Ki",
-    "evidence_factor": 1.0,
+    "evidence_factor": 0.75,
     "links": [
      "https://doi.org/10.1021/acs.jmedchem.0c00643"
     ],
@@ -3698,8 +3734,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 65.1,
-    "MBPI": 87.7,
+    "BBVI": 54.2,
+    "MBPI": 65.8,
     "MCUI": 10.0,
     "MFPI": 42.5
    },
@@ -3852,13 +3888,13 @@
      "https://doi.org/10.1021/jf020482t"
     ],
     "median_pchembl": null,
-    "percentile": 95.31,
+    "percentile": 89.2,
     "relation": "=",
     "stratum_kind": "peptide",
-    "subject": "IW",
+    "subject": "VW",
     "target": "ACE",
     "unit": "uM",
-    "value": 1.5
+    "value": 3.3
    },
    "candidate_label": null,
    "cell": {
@@ -3936,27 +3972,27 @@
     }
    },
    "group": "operational",
-   "information_sufficiency": 1.0,
+   "information_sufficiency": 0.67,
    "korean_name": "미역",
    "map_link": "index.html#s=145721&v=explore&m=8/34.50/128.50",
    "matrix_type": {
-    "id": "alternative_production",
-    "label": "대체생산·배양 연구"
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "sub_national",
-    "basis_label": "지방 목록 참고값",
-    "category": "EN",
+    "basis": "preliminary",
+    "basis_label": "자체 예비평가",
+    "category": "LC",
     "criteria": null,
-    "label": "지방 목록 참고값(연해주) · 과대평가 역검증 미통과(6종 비교)",
-    "mapping": "EN → 80 (연해주 지방 적색목록, 팀 규칙 v4.2 · 국가 평가 아님)",
-    "scope": "연해주",
+    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "scope": null,
     "source": {
-     "id": "primorsky_decree272_2002",
-     "license": "지방정부 법령. 범주와 게재명만 기록하고 본문은 옮기지 않음",
-     "title": "Постановление Губернатора Приморского края от 14.05.2002 № 272 «Об утверждении перечня объектов растительного мира и перечня объектов животного мира, занесенных в Красную книгу Приморского края»",
-     "url": "https://docs.cntd.ru/document/494219357"
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     }
    },
    "on_route": true,
@@ -3971,9 +4007,9 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 71.0,
-    "MBPI": 95.3,
-    "MCUI": 80.0,
+    "BBVI": 68.0,
+    "MBPI": 89.2,
+    "MCUI": 10.0,
     "MFPI": 46.7
    },
    "shared_with": [],
@@ -3983,6 +4019,12 @@
      "license": "공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능",
      "title": "AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)",
      "url": "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php"
+    },
+    {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
     },
     {
      "id": "cellosaurus_mbpi",
@@ -4013,6 +4055,12 @@
      "license": "CC BY 4.0",
      "title": "Affinity purification of ACE inhibitory peptides from wakame (Undaria pinnatifida)",
      "url": "https://doi.org/10.3390/md19030177"
+    },
+    {
+     "id": "gbif_rapid_lc",
+     "license": "records are CC0, CC BY 4.0 or CC BY-NC 4.0 per dataset; only counts and areas are stored",
+     "title": null,
+     "url": "https://api.gbif.org/v1/occurrence/search ; https://api.obis.org/v3/occurrence"
     },
     {
      "id": "iucn_redlist_recheck",
@@ -4959,24 +5007,19 @@
    "korean_name": "멍게",
    "map_link": "index.html#s=250680&v=explore&m=8/35.50/129.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "label": "보전 평가 없음 · OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 쓰지 않음",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
-    }
+    "source": null
    },
    "on_route": true,
    "order": 21,
@@ -4986,13 +5029,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 33.2,
     "MBPI": 13.5,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 52.8
    },
    "shared_with": [],
@@ -5091,7 +5134,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -5581,13 +5624,13 @@
   },
   {
    "aphia_id": 393716,
-   "bbvi_label": null,
+   "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
      "10.16535/j.cnki.dlhyxb.2018.06.016"
     ],
     "endpoint": "IC50",
-    "evidence_factor": 1.0,
+    "evidence_factor": 0.75,
     "links": [
      "https://doi.org/10.16535/j.cnki.dlhyxb.2018.06.016"
     ],
@@ -5718,8 +5761,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 46.1,
-    "MBPI": 36.4,
+    "BBVI": 41.6,
+    "MBPI": 27.3,
     "MCUI": 10.0,
     "MFPI": 55.8
    },
@@ -6294,19 +6337,27 @@
    "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
-     "10.4162/nrp.2011.5.2.93"
+     "10.1016/j.bmc.2009.01.031",
+     "10.1016/j.bmc.2011.10.078",
+     "10.1016/j.bmc.2013.04.026",
+     "10.1155/2011/140462",
+     "10.1248/bpb.27.544"
     ],
-    "endpoint": null,
+    "endpoint": "Ki",
     "evidence_factor": 0.75,
     "links": [
-     "https://doi.org/10.4162/nrp.2011.5.2.93"
+     "https://doi.org/10.1016/j.bmc.2009.01.031",
+     "https://doi.org/10.1016/j.bmc.2011.10.078",
+     "https://doi.org/10.1016/j.bmc.2013.04.026",
+     "https://doi.org/10.1155/2011/140462",
+     "https://doi.org/10.1248/bpb.27.544"
     ],
-    "median_pchembl": 2.833,
-    "percentile": 90.0,
-    "relation": "=",
-    "stratum_kind": null,
-    "subject": "CID:3008868",
-    "target": null,
+    "median_pchembl": 5.62,
+    "percentile": 75.71,
+    "relation": null,
+    "stratum_kind": "chembl",
+    "subject": "DIECKOL",
+    "target": "Replicase polyprotein 1ab",
     "unit": null,
     "value": null
    },
@@ -6421,8 +6472,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 65.0,
-    "MBPI": 67.5,
+    "BBVI": 59.7,
+    "MBPI": 56.8,
     "MCUI": 10.0,
     "MFPI": 62.5
    },
@@ -6497,12 +6548,6 @@
      "url": "https://doi.org/10.1016/j.bmc.2013.04.026"
     },
     {
-     "id": "pubchem_ecklonia_structures",
-     "license": "NCBI PubChem public compound records",
-     "title": "Compound records for five E. cava phlorotannins",
-     "url": "https://pubchem.ncbi.nlm.nih.gov/"
-    },
-    {
      "id": "pubchem_inchikey_mbpi",
      "license": "NCBI public access",
      "title": "PUG REST InChIKey -> CID and taxonomy 'Natural Products' section",
@@ -6513,12 +6558,6 @@
      "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
      "title": "National Standard Food Composition DB 10.4 (국가표준식품성분 DB)",
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
-    },
-    {
-     "id": "wijesinghe_2011_ace",
-     "license": "CC BY-NC 3.0",
-     "title": "Effect of phlorotannins isolated from Ecklonia cava on ACE inhibitory activity",
-     "url": "https://e-nrp.org/DOIx.php?id=10.4162/nrp.2011.5.2.93"
     },
     {
      "id": "wikidata_p703_lotus",
