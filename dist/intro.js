@@ -128,11 +128,13 @@ const NEAR=[[120,29],[136,42.7]];
 const nearKorea=p=>p[0]>=NEAR[0][0]&&p[0]<=NEAR[1][0]&&p[1]>=NEAR[0][1]&&p[1]<=NEAR[1][1];
 
 // The info card: right of Korea as in the design (offsets from the 1672×941 image, scaled with the globe; pulled in to
-// the screen edge while its leader line still runs right), with a bent line from its point; under the point instead
+// the screen edge while its leader line still runs right), with a bent line from its point that drops at the design's
+// 38° (run 1.26 × fall) before running flat into the card; under the point instead
 // when it does not fit. Top-left and line, in px.
 function cardPlace(dot,korea,card,view,s){
   const m=12;let x=Math.min(korea.x+207*s,view.w-m-card.w),y=korea.y+60*s;
-  if(x>=dot.x+60*s&&y+card.h<=view.bottom-m){const ly=y+27*s;return {x,y,line:[[dot.x,dot.y],[Math.max(dot.x+12*s,x-75*s),ly],[x,ly]]};}
+  if(x>=dot.x+60*s&&y+card.h<=view.bottom-m){const ly=y+27*s,bend=Math.min(x-12*s,Math.max(dot.x+12*s,dot.x+(ly-dot.y)*1.26));
+    return {x,y,line:[[dot.x,dot.y],[bend,ly],[x,ly]]};}
   x=Math.min(Math.max(m,dot.x-card.w*.3),view.w-m-card.w);y=dot.y+64*s;
   return {x,y,line:[[dot.x,dot.y],[Math.min(Math.max(dot.x,x+16),x+card.w-16),y]]};
 }
@@ -207,7 +209,8 @@ function cardPlace(dot,korea,card,view,s){
     q('.gate-loader').setAttribute('aria-hidden','true');
     const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
     layout();
-    // keyboard and mouse: focus the button (Enter/Space act on it); touch: the screen itself, so no focus ring on a tap device
+    // keyboard and mouse: focus the button (Enter/Space act on it), its ring shown only once the keyboard is used (html.kb);
+    // touch: the screen itself, so no focus ring on a tap device
     if(!touch())q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
   }
   // One way in, whichever button: 'explore' (default), 'compare' or 'method'. The app keeps its own state (species,
@@ -354,6 +357,7 @@ function cardPlace(dot,korea,card,view,s){
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     document.addEventListener('keydown',e=>{
+      if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('kb'); // from now on the focus ring shows (intro.css)
       if(left||e.defaultPrevented)return;
       const t=e.target,other=t!==q('#gate-enter')&&!!t.closest?.('button,a,input,select,textarea,summary');
       if(keyAction(e.key,{ready:gate.phase==='ready',onOtherControl:other})==='enter'){e.preventDefault();enter('explore');}

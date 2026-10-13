@@ -10,7 +10,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -242,4 +242,43 @@ assert.ok(p43.x>=12&&p43.x+card.w<=1024-12&&p43.y+card.h<=680&&p43.x>Math.max(..
 const band={top:420,bottom:640},phone=ctx.globeFrame(390,844,band),kp=toPx(phone,kr);
 assert.ok(Math.abs(kp.x-195)<1e-9&&Math.abs(kp.y-530)<1e-9&&phone.R>195,'phone: Korea in the middle of the band, the globe a little wider than the screen');
 
-console.log('PASS: entry screen skip rules, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout');
+
+// (12) the baked picture: which file for which globe, pixel ratio and connection (vendor/globe-v2, scripts/bake_globe.py)
+assert.deepEqual(cam.bake.sizes,[900,1600,2400],'three sizes');
+assert.equal(JSON.stringify(Object.fromEntries(cam.bake.sizes.map(n=>[n,cam.bake.pad[n]]))),JSON.stringify(ctx.GLOBE_PAD),'intro.js GLOBE_PAD = camera.json pad');
+const dR=ctx.globeFrame(1672,941,null).R,pR=ctx.globeFrame(390,844,{top:420,bottom:640}).R;
+assert.equal(ctx.globeFile(pR,2),900,`phone at 2x (${(2*pR*2).toFixed(0)} px across): 900`);
+assert.equal(ctx.globeFile(pR,1),900,'phone at 1x: 900');
+assert.equal(ctx.globeFile(dR,1),1600,`design size at 1x (${(2*dR).toFixed(0)} px): 1600`);
+assert.equal(ctx.globeFile(dR,2),2400,'design size at 2x: 2400');
+assert.equal(ctx.globeFile(dR,3),2400,'a 3x screen is drawn as 2x');
+assert.equal(ctx.globeFile(dR,2,{saveData:true}),1600,'save-data: never the 2400 file');
+for(const t of ['slow-2g','2g','3g'])assert.equal(ctx.globeFile(dR,2,{effectiveType:t}),1600,`${t}: never the 2400 file`);
+assert.equal(ctx.globeFile(dR,2,{effectiveType:'4g',saveData:false}),2400,'4g: the 2400 file');
+assert.equal(ctx.globeFile(500,1),900,'1000 px across: 900');assert.equal(ctx.globeFile(501,1),1600);
+assert.equal(ctx.globeFile(950,1),1600,'1900 px across: 1600');assert.equal(ctx.globeFile(951,1),2400);
+for(const n of cam.bake.sizes)assert.ok(fs.existsSync(new URL(`../dist/vendor/globe-v2/globe-${n}.webp`,import.meta.url)),`globe-${n}.webp is there`);
+// fetched only once the screen is known to show (a shared link never asks for it), from this site
+const browser=intro.split('// ---- browser ----')[1];
+assert.ok(browser.indexOf('new Image()')>browser.indexOf('if(!show)return;'),'the picture is asked for after the skip rules');
+assert.match(browser,/img\.src=`vendor\/globe-v2\/globe-\$\{file\}\.webp`/,'from vendor/globe-v2 on this site');
+// over the picture only Korea's coast is drawn: vertices two countries share are land borders and are left out
+const bv=ctx.borderVertices(geo);
+assert.ok(bv.has('124.37,40.1')&&bv.has('124.53,40.215'),'the Yalu (North Korea–China) is a border');
+const southKorea=geo.features.find(f=>f.properties.name==='South Korea');
+const skPolys=southKorea.geometry.type==='MultiPolygon'?southKorea.geometry.coordinates:[southKorea.geometry.coordinates];
+const skv=skPolys.flatMap(p=>p[0]);
+assert.ok(skv.filter(v=>v[1]<37.5).every(v=>!bv.has(v.join())),'South Korea south of the DMZ is all coast');
+assert.ok(skv.some(v=>v[1]>37.7&&bv.has(v.join())),'the DMZ line is a border');
+assert.ok(bv.size>500&&bv.size<raw.flat().length/4,'borders are a small part of the outline');
+assert.ok(ctx.nearKorea([129.4,35.6])&&ctx.nearKorea([124.4,40.1])&&!ctx.nearKorea([139.7,35.7])&&!ctx.nearKorea([116.4,39.9]),'near Korea: the study frame grown 4°');
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.NEAR)),[[sa[0]-4,sa[1]-4],[sb[0]+4,+(sb[1]+4).toFixed(1)]],'NEAR is STUDY grown 4°');
+// the leader line drops at the design's angle (38°: from its point down to the card's line, then flat into the card)
+const [l0,l1,l2]=placed.line,ang=Math.atan2(l1[1]-l0[1],l1[0]-l0[0])*180/Math.PI;
+assert.ok(Math.abs(ang-38.4)<2&&l1[1]===l2[1]&&l2[0]-l1[0]>=12,`the leader line drops at ${ang.toFixed(1)}° (design 38°), then runs flat`);
+// the focus ring: none until the keyboard is used (the button has focus on arrival, a mouse visitor should not see it)
+assert.match(css,/\.gate :focus-visible\{outline:none\}/,'no ring before the keyboard is used');
+assert.match(css,/html\.kb \.gate :focus-visible\{outline:2px solid var\(--g-teal\);outline-offset:4px\}/,'the teal ring once it is');
+assert.match(browser,/e\.key==='Tab'\|\|e\.key\.startsWith\('Arrow'\)\)root\.classList\.add\('kb'\)/,'Tab or an arrow key turns it on');
+
+console.log('PASS: entry screen skip rules, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring');

@@ -12,7 +12,10 @@
 html.gate-on,html.gate-on body{overflow:hidden}
 html.gate-on .gate{display:block}
 .gate [hidden]{display:none!important}
-.gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
+.gate :focus-visible{outline:none}
+/* the button gets focus on arrival (Enter acts on it); its ring shows once the keyboard is in use (intro.js adds html.kb on
+   the first Tab or arrow key), not to a mouse or touch visitor who never pressed one */
+html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate button{font-family:inherit;cursor:pointer}
 .gate-sea{position:absolute;inset:0;width:100%;height:100%;opacity:0;transform:scale(.96);transform-origin:var(--kx,68%) var(--ky,45%);
   transition:opacity 1.2s ease .1s,transform 1.6s cubic-bezier(.2,.7,.2,1) .1s}

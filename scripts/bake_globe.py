@@ -35,6 +35,7 @@ SOURCES = {
     'lights': ('BlackMarble_2016_3km_gray.jpg',
                'https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144897/BlackMarble_2016_3km_gray.jpg'),
 }
+LIT = {'land_px': 0}
 LIMITS = {900: 250_000, 1600: 600_000, 2400: 1_100_000}  # bytes: phone, desktop 1x, desktop 2x
 KOREA = (127.5, 36.0)
 STUDY = ((124, 33), (132, 38.7))
@@ -75,7 +76,7 @@ PARAMS = {
     'lights_color': (.89, .79, .60),  # #F2E6CC in linear light
     'lights_gain': 1.0,
     'lights_gamma': 2.0,          # >1 keeps the bright cores, drops the dim sprawl
-    'lights_amax': .08,           # lights: largest added value
+    'lights_amax': .12,           # lights: largest added value
     'lights_erode_px': 2,
     'light_dir': (-.45, .55, .7), # light from the upper left, in front
     'shade_lo': -.35, 'shade_hi': .8, 'shade_min': .3,
@@ -382,7 +383,7 @@ def tone(base, lights, alpha, cam, N):
     out = out * shade[..., None] * p['exposure']
     out = out + np.asarray(p['air_color'], np.float32) * (air * p['air_amax'])[..., None]
     sea_lights = float(lit[sea > .5].max()) if (sea > .5).any() else 0.0
-    return out, alpha, {'sea_lights_max': sea_lights}
+    return out, alpha, {'sea_lights_max': sea_lights, 'land_lit_px': int((lit > .01).sum())}
 
 
 def encode(rgb, alpha, size, pad, q):
@@ -434,7 +435,7 @@ def write_source(cam, src_info, outputs, d1_meta, world_meta):
         'worked in linear RGB: sea toned to a night blue with local contrast on the sea floor relief, land darkened to a',
         'blue-grey with local contrast, a teal glow from the Natural Earth 200 m shelf (stronger around Korea) and a thin',
         'shallow-water line along the coasts, Black Marble city lights added on land only (the land mask eroded 2 px, so the',
-        'fishing fleets in the East and Yellow Seas are dropped; checked: largest light over the sea = 0), soft light from the',
+        f'fishing fleets in the East and Yellow Seas are dropped; checked: largest light over the sea = 0; {LIT["land_px"]} land px lit above 1%), soft light from the',
         'upper left, limb darkening and a Fresnel air band inside the rim. No outer glow (the screen draws it). sRGB WebP.',
         'PARAMS: ' + json.dumps(p, ensure_ascii=False),
         '',
@@ -607,7 +608,8 @@ def main():
     rgb, alpha, info = tone(base.astype(np.float32), lights.astype(np.float32), alpha.astype(np.float32), cam, N)
     del base, lights
     assert info['sea_lights_max'] == 0, f'city lights over the sea: {info["sea_lights_max"]}'
-    print('check: largest light over the sea =', info['sea_lights_max'])
+    print('check: largest light over the sea =', info['sea_lights_max'], '; land pixels lit above 1% =', info['land_lit_px'])
+    LIT['land_px'] = info['land_lit_px']
     outputs = {}
     d1_meta = {'decoded': (10800, 10800)}
     world_meta = {'decoded': (10800, 5400)}
