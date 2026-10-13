@@ -1,0 +1,32 @@
+Entry-screen globe (dist/intro.js), baked by scripts/bake_globe.py from NASA imagery. Background picture, not data.
+
+Sources (downloaded 2026-10-13 from the NASA Earth Observatory pages below; kept outside the repository):
+  world.topo.bathy.200408.3x21600x10800.jpg  21600x10800  27216225 bytes  sha256 05d984f723776f3d44fc473cc3d9eb67a48c425e82a56d7133e3761b2e231e86
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography-bathymetry/august/world.topo.bathy.200408.3x21600x10800.jpg
+  world.topo.bathy.200408.3x21600x21600.D1.jpg  21600x21600  69167032 bytes  sha256 89bb1fb179220e226aacab885a763b81fee72cca6ab89ecdef87ef32961fe2b0
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography-bathymetry/august/world.topo.bathy.200408.3x21600x21600.D1.jpg
+  BlackMarble_2016_3km_gray.jpg  13500x6750  3064569 bytes  sha256 3fbc8aae3529dc1ebfcf3aa9361bd3dfc11d19950a6af6d8ed2df61bd8b0134d
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144897/BlackMarble_2016_3km_gray.jpg
+  Blue Marble Next Generation w/ Topography and Bathymetry, August 2004 (world 2 km and 500 m tile D1 = 90-180E, 0-90N):
+    https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography-bathymetry/
+  Black Marble 2016 grayscale, 3 km: https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/
+  Land and 200 m shelf masks: dist/vendor/globe-v1/land-50m.json, bathymetry-10m.json (Natural Earth, public domain).
+
+Terms (https://www.nasa.gov/nasa-brand-center/images-and-media/, read 2026-10-13): NASA imagery is generally not
+subject to copyright in the United States and may be used on web pages for educational or informational purposes;
+factual use that does not imply endorsement needs no permission; NASA should be acknowledged as the source. The
+NASA insignia, logotype and identifiers are protected and are not used. Credited on the entry screen ("지구 영상:
+NASA Blue Marble·Black Marble") and in the app's 근거와 방법 source list.
+
+Processing: vertical perspective of camera.json, 2x2 supersampled; D1 decoded at 10800x10800 (1 km, libjpeg DCT 1/2) within 25.0 degrees of Korea, blended 3.0 degrees into the world decoded at 10800x5400 (4 km);
+worked in linear RGB: sea toned to a night blue with local contrast on the sea floor relief, land darkened to a
+blue-grey with local contrast, a teal glow from the Natural Earth 200 m shelf (stronger around Korea) and a thin
+shallow-water line along the coasts, Black Marble city lights added on land only (the land mask eroded 2 px, so the
+fishing fleets in the East and Yellow Seas are dropped; checked: largest light over the sea = 0), soft light from the
+upper left, limb darkening and a Fresnel air band inside the rim. No outer glow (the screen draws it). sRGB WebP.
+PARAMS: {"ss": 2, "d1_radius": 25.0, "d1_feather": 3.0, "lc_sigma": 0.02, "fine_sigma": 0.003, "sea_luma": 0.016, "sea_gains": [0.3, 0.8, 2.6], "shelf_gains": [0.3, 1.4, 3.0], "sea_max": 3.0, "sea_tint": [0.005, 0.018, 0.031], "sea_tint_w": 0.8, "land_luma": 0.008, "land_gains": [0.8, 1.4, 4.0], "land_max": 3.0, "land_tint": [0.011, 0.017, 0.026], "land_sat": 0.35, "land_tint_w": 0.7, "shelf_sigma": [0.006, 0.018], "shelf_color": [0.262, 0.686, 0.631], "shelf_gain": 3.2, "shelf_tint": 0.85, "shelf_amax": 0.1, "shelf_wide_w": 0.5, "shelf_on_land": 0.7, "coast_px": 2, "coast_color": [0.42, 0.8, 0.76], "coast_amax": 0.18, "korea_boost": 1.5, "lights_color": [0.89, 0.79, 0.6], "lights_gain": 1.0, "lights_gamma": 2.0, "lights_amax": 0.08, "lights_erode_px": 2, "light_dir": [-0.45, 0.55, 0.7], "shade_lo": -0.35, "shade_hi": 0.8, "shade_min": 0.3, "limb_r": 0.86, "limb_min": 0.5, "air_color": [0.275, 0.578, 0.807], "air_amax": 0.6, "air_exp": 2.0, "air_back": 0.08, "air_r0": 0.82, "exposure": 1.0, "quality": {"900": 82, "1600": 82, "2400": 80}}
+
+Outputs (file  sha256  bytes  WxH):
+  globe-900.webp  811f2419528df80746b6ae40badf086daf29f92f57706743a2aaf30074e6986f  91014  900x900
+  globe-1600.webp  2850a373c4ee4fe1ea9cad0d1e3958b1a182887fff0b2d9300daa3dcd8b83e0c  224350  1600x1600
+  globe-2400.webp  a6beceb81d5d9af6f8fdaa7ca2ae58093d81ff52e0dbbdac3bb3336547037f51  346918  2424x2424
