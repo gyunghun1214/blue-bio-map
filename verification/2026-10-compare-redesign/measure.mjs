@@ -30,7 +30,7 @@ const evaluate=async expr=>{const r=await send('Runtime.evaluate',{expression:ex
 // Read inside the page at one weight. Functions only (no layout), plus the text the table, points and lists carry.
 const READ=`async w=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms)), el=document.getElementById('bbvi-weight');
-  el.value=String(w);el.dispatchEvent(new Event('input'));await wait(120);
+  if(typeof setBbviStep==='function')setBbviStep(Math.round(w*20));else{el.value=String(w);el.dispatchEvent(new Event('input'));}await wait(160); // the 2026-10-13 slider counts 0–20 steps
   const info=data.assessmentInfo||{};
   const species=data.species.map(s=>({aphia:s.aphiaID,label:s.label,name:s.name,group:s.group,catalog:!!s.catalog,
     axes:Object.fromEntries(['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return [k,{value:pilotScore(s,k),state:st.value,label:st.label,kind:st.kind,tag:axisTag(s,k,info)}]})),
