@@ -2,6 +2,8 @@
 // the basket holds up to 3 species without repeats and can drop one; the side-by-side view draws a bar only where the values
 // share one scale (MFPI within one comparison group, MCUI within one assessment basis) and says "직접 비교 불가" otherwise;
 // switching matrix ↔ table keeps the search, group, selected species and basket; the filter note counts what is shown.
+// Design 3 (2026-10-13): plain verdicts only ever sit beside the formal type name; the profile chips drop no label; crowded
+// points group by MCUI row and quadrant (the selected species never joins); '바다 탐험에서 보기' opens the species' route stop.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -20,7 +22,8 @@ const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,queryS
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={toggleBasket,setCompareMode,setCompareFilter,renderCompareTray,renderCompareDialog,renderCompareProfile,'+
-  'get basket(){return cmpBasket},set basket(v){cmpBasket=v},get mode(){return cmpMode},get filter(){return {...cmpFilter}},get selected(){return selected},set selected(v){selected=v},cmpMatch,pilotScore};',ctx);
+  'get basket(){return cmpBasket},set basket(v){cmpBasket=v},get mode(){return cmpMode},get filter(){return {...cmpFilter}},get selected(){return selected},set selected(v){selected=v},cmpMatch,pilotScore,'+
+  'plainWords,MATRIX_PLAIN,matrixTypePlain,matrixPlainNote,matrixType,matrixTypeLabel,cmpTag,cmpPieces,cmpChip,cmpUseRest,matrixClusters,cmpExpeditionLink,set stops(v){cmpStops=v}};',ctx);
 const T=ctx.T;
 const data=await vm.runInContext(`(async()=>{const next=await loadPublishedProfiles();next.outdated??=[];await attachPilotAssessments(next);return data=next;})()`,ctx);
 const S=data.species, total=S.length, by=id=>S.find(s=>s.aphiaID===id);
@@ -86,4 +89,46 @@ T.setCompareFilter({group:'all',q:'없는생물이름'});
 assert.equal(S.filter(T.cmpMatch).length,0);assert.ok(strip($('cmp-filter-note').innerHTML).includes('검색 결과 없음'),'an empty result says so, not an error');
 T.setCompareFilter({group:'all',q:''});assert.equal($('cmp-filter-note').innerHTML,'','no note without a filter');
 
-console.log(`PASS: 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 직접 비교 불가 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시`);
+// Design 3: the plain verdict is a display alias of the four type ids ('유형 없음' otherwise) and says it is no permission.
+assert.deepEqual(Object.keys(T.MATRIX_PLAIN).sort(),['alternative_production','baseline_survey','conservation_priority','sustainable_use']);
+assert.equal(T.matrixTypePlain('sustainable_use'),'써도 됨');assert.equal(T.matrixTypePlain(null),'유형 없음');assert.equal(T.matrixTypePlain('other'),'유형 없음');
+assert.ok(T.matrixPlainNote().startsWith('연구용 유형 요약 · 채집·이용 권고 아님')&&T.matrixPlainNote().includes('이상이면 활용 높음'));
+T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=$('cmp-profile').innerHTML;
+const oysterType=T.matrixType(by(OYSTER));
+assert.ok(new RegExp(`<b>${T.matrixTypePlain(oysterType)}</b><span>${T.matrixTypeLabel(oysterType)}</span>`).test(prof),'the profile type line: plain verdict, then the formal type name');
+// Chips: one short label beside a value, never the shared '정식 산출' or '단일 논문'; every other label piece stays on the profile.
+for(const s of S)for(const k of ['BBVI','MFPI','MBPI','MCUI']){const c=T.cmpChip(s,k);assert.ok(c!=='정식 산출'&&!T.plainWords(c).includes('단일 논문'),`${s.label} ${k} chip "${c}"`);}
+for(const s of S){
+  T.selected=s;T.renderCompareProfile();const text=strip($('cmp-profile').innerHTML);
+  for(const k of ['BBVI','MFPI','MBPI','MCUI'])for(const piece of T.cmpPieces(s,k)){
+    const shown=T.plainWords(piece).replace(/^(.+) 비교집단$/,'식량 비교집단: $1');  // the screen's own wording (esc)
+    assert.ok(text.includes(shown)||(k==='MCUI'&&text.includes(T.plainWords(T.cmpChip(s,k)))),`${s.label}: '${shown}' (${k}) stays on the profile`);
+  }
+}
+T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+assert.ok(['비교집단','근거 논문 1편','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, paper count and basis note');
+T.selected=by(250680);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+assert.ok(prof.includes('유형 없음')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 없음 and why');
+// Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
+const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});
+assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,13,10,'a'),P(3,16,10,'a'),P(4,19.9,10,'a')])].map(g=>[...g.ids]),[[1,2,3,4]]);
+assert.equal(T.matrixClusters([P(1,10,10,'a'),P(2,13,10,'a'),P(3,16,10,'a'),P(4,20,10,'a')]).length,0,'a gap of exactly 4 breaks the run; 3 are too few');
+assert.equal(T.matrixClusters([P(1,46,10,'a'),P(2,47.5,10,'a'),P(3,50,10,'b'),P(4,51.5,10,'b')]).length,0,'never across the BBVI threshold');
+assert.equal(T.matrixClusters([P(1,10,10,'a'),P(2,11,10,'a'),P(3,12,20,'a'),P(4,13,10,'a')]).length,0,'never across MCUI rows');
+assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,11.5,10,'a'),P(3,13,10,'a',true),P(4,14.5,10,'a'),P(5,16,10,'a')])].map(g=>[...g.ids]),[[1,2,4,5]],'the selected point stays out');
+const pts=sel=>S.filter(s=>T.matrixType(s)).map(s=>P(s.aphiaID,T.pilotScore(s,'BBVI'),T.pilotScore(s,'MCUI'),T.matrixType(s),s.aphiaID===sel));
+let G=[...T.matrixClusters(pts(OYSTER))];
+assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,11,'35.5','49.1'],[10,7,'51.5','59.7']],'참굴 picked: 11 below the threshold, 7 above it');
+G=[...T.matrixClusters(pts(ROCKFISH))];
+assert.deepEqual(G.map(g=>g.ids.length),[8,7,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours');
+assert.ok(G.every(g=>!g.ids.includes(ROCKFISH)));
+// '바다 탐험에서 보기': #stop=N over the route stops (1-based); an off-route stop opens the page; no stop, no link.
+const stops=JSON.parse(read('expedition-stops.json')).stops, route=stops.filter(st=>st.on_route!==false&&st.cell);
+const OCTOPUS=stops.find(st=>!route.includes(st))?.aphia_id;
+assert.deepEqual({...T.cmpExpeditionLink(stops,OYSTER)},{href:`expedition.html#stop=${route.findIndex(st=>st.aphia_id===OYSTER)+1}`,text:'바다 탐험에서 보기'});
+assert.deepEqual({...T.cmpExpeditionLink(stops,OCTOPUS)},{href:'expedition.html',text:'바다 탐험 열기(항로 밖 지점)'});
+assert.equal(T.cmpExpeditionLink(stops,1),null);assert.equal(T.cmpExpeditionLink(null,OYSTER),null);
+T.stops=stops;T.selected=by(OYSTER);T.renderCompareProfile();
+assert.match($('cmp-profile').innerHTML,new RegExp(`<a id="cmp-expedition" class="cmp-link" href="expedition.html#stop=${route.findIndex(st=>st.aphia_id===OYSTER)+1}">바다 탐험에서 보기</a>`));
+
+console.log(`PASS: 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 직접 비교 불가 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시 · 쉬운 이름 옆 공식 이름 · 칩이 지운 라벨 없음 · 밀집 ${G.map(g=>g.ids.length).join('·')}종(조피볼락 선택) · 바다 탐험 링크`);

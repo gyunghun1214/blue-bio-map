@@ -797,11 +797,40 @@ try{
       const boxes=['.map-ui-tl','.basemap-switch','#copy-link','#reset-map','.map-ui-bl','#detail','.species-pane'].filter(s=>{const e=q(s);return e&&r(e).height>0&&getComputedStyle(e).display!=='none'});
       return {header:h.scrollWidth<=h.clientWidth,chip:shown,hits:shown?boxes.filter(s=>ov(c,r(q(s)))):[],cut:chip.scrollWidth>chip.clientWidth}})()`);
     check(`Design 2 ${w}px: the header fits; the map chip ${mobile?'is hidden (the sheet head shows the species)':'shows in one line, clear of the map controls and panels'}`,d2.header&&(mobile?!d2.chip:d2.chip&&!d2.hits.length&&!d2.cut),JSON.stringify(d2));
-    // 2026-10-13: the y-axis name '보전 필요성 MCUI' read as '필요성50' on a phone; it now sits on one line above the plot, clear of every tick number
-    const yl=await evaluate(`(()=>{setView('compare');setCompareMode('matrix');toggleSimulation(true);const b=e=>e.getBoundingClientRect(),l=b(document.querySelector('#compare .matrix-ylabel')),p=b(document.getElementById('matrix')),f=b(document.querySelector('#compare .cmp-sim-flag'));
+    // 2026-10-13: the y-axis name '보전 필요성 MCUI' read as '필요성50' on a phone (PR #175). Design 3 moved it into the one caption
+    // line under the plot ('활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑'); the guard is the same: one line, clear of every tick number
+    const yl=await evaluate(`(()=>{setView('compare');setCompareMode('matrix');toggleSimulation(true);const b=e=>e.getBoundingClientRect(),cap=document.querySelector('#compare .matrix .axis-x'),l=b(cap),p=b(document.getElementById('matrix')),f=b(document.querySelector('#compare .cmp-sim-flag'));
       const gap=t=>Math.max(t.left-l.right,l.left-t.right,t.top-l.bottom,l.top-t.bottom);const ticks=[...document.querySelectorAll('#compare .matrix-ticks i,#compare .matrix-ticks b')].map(b);
-      const r={text:document.querySelector('#compare .matrix-ylabel').textContent,oneLine:l.height<26,minGap:Math.round(Math.min(...ticks.map(gap))),abovePlot:Math.round(p.top-l.bottom),flagGap:Math.round(gap(f))};toggleSimulation(false);setView('explore');return r})()`);
-    check(`Matrix ${w}px: y-axis name '보전 필요성 MCUI' on one line above the plot, ≥8px from every tick number and from the 가상 예시 flag`,yl.text==='보전 필요성 MCUI'&&yl.oneLine&&yl.minGap>=8&&yl.abovePlot>=8&&yl.flagGap>=8,JSON.stringify(yl));
+      const r={text:cap.textContent,oneLine:l.height<26,minGap:Math.round(Math.min(...ticks.map(gap))),belowPlot:Math.round(l.top-p.bottom),flagGap:Math.round(gap(f)),inside:l.left>=0&&l.right<=document.documentElement.clientWidth};toggleSimulation(false);setView('explore');return r})()`);
+    check(`Matrix ${w}px: axis caption '활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑' on one line under the plot, ≥8px from every tick number, the plot and the 가상 예시 flag`,yl.text==='활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑'&&yl.oneLine&&yl.minGap>=8&&yl.belowPlot>=8&&yl.flagGap>=8&&yl.inside,JSON.stringify(yl));
+    // 2026-10-13 design 3: every quadrant shows its plain verdict and its formal type name; crowded points sit in 'N종 밀집 · 펼치기'
+    // boxes and no visible label, button or box covers another; a button opens its list and a row picks that species, which then
+    // leaves the box with its label; with nothing chosen the basket is one line in the page, not a bar under 멍이
+    if(w===390||w===1560){
+      const d3=await evaluate(`(()=>{const r={},b=e=>e.getBoundingClientRect(),vis=e=>{if(!e||e.closest('[hidden]'))return false;const c=b(e);return c.width>0&&c.height>0&&getComputedStyle(e).visibility!=='hidden';};
+        const over=(a,c)=>a.left<c.right-.5&&a.right>c.left+.5&&a.top<c.bottom-.5&&a.bottom>c.top+.5;
+        setView('compare');setCompareFilter({q:'',group:'all'});setCompareMode('matrix');cmpBasket=[];renderCompare();
+        r.names=[...document.querySelectorAll('#matrix .quadrant')].map(q=>{const s=q.querySelector('strong'),f=q.querySelector('span');return vis(s)&&vis(f)&&!!s.textContent.trim()&&!!f.textContent.trim()&&s.textContent!==f.textContent?1:0;}).join('');
+        const layout=()=>{const labels=[...document.querySelectorAll('#matrix-points .matrix-point.pilot:not([data-clustered]) .point-label:not(.hidden-label)')].filter(vis).map(b),
+            pills=[...document.querySelectorAll('#matrix-points .matrix-cluster-btn')].map(b),boxes=[...document.querySelectorAll('#matrix-points .matrix-cluster')].map(b);let n=0;
+          labels.forEach((l,i)=>{for(const o of [...labels.slice(i+1),...pills,...boxes])if(over(l,o))n++;});pills.forEach((p,i)=>{for(const o of [...pills.slice(i+1),...boxes])if(over(p,o))n++;});
+          return {boxes:boxes.length,pills:pills.length,labels:labels.length,overlaps:n};};
+        selectSpecies(836033);declutterPointLabels();r.oyster=layout();
+        selectSpecies(274849);declutterPointLabels();r.rockfish=layout();
+        selectSpecies(836033);declutterPointLabels();
+        const pill=document.querySelector('#matrix-points .matrix-cluster-btn'),n=pill?pill.dataset.cluster.split(',').length:0;pill?.click();
+        const pop=document.getElementById('matrix-cluster-pop'),rows=[...pop.querySelectorAll('button[data-aphia]')];
+        r.list=!!pill&&!pop.hidden&&rows.length===n&&pill.getAttribute('aria-expanded')==='true'&&pill.textContent.includes('접기')&&document.activeElement===rows[0]&&vis(pop);
+        const id=rows[1]?.dataset.aphia;rows[1]?.click();declutterPointLabels();const pt=document.querySelector('#matrix-points [data-aphia="'+id+'"]');
+        r.pick=!!id&&pop.hidden&&String(selected.aphiaID)===id&&document.getElementById('cmp-profile-name').textContent===cmpById(id).label&&pt?.getAttribute('aria-current')==='true'&&!pt.hasAttribute('data-clustered')&&vis(pt.querySelector('.point-label'));
+        selectSpecies(836033);
+        const tray=document.getElementById('cmp-tray'),fab=document.querySelector('.bbc-fab');tray.scrollIntoView({block:'center'});
+        r.tray={empty:tray.classList.contains('empty'),position:getComputedStyle(tray).position,lineHeight:Math.round(b(tray.querySelector('.ct-empty')).height),clearOfFab:!!fab&&!over(b(tray),b(fab))};
+        window.scrollTo(0,0);setView('explore');return r})()`);
+      const okLayout=x=>x.boxes>0&&x.pills===x.boxes&&x.overlaps===0;
+      check(`Compare ${w}px (design 3): plain and formal names in all 4 quadrants, 'N종 밀집' boxes with no overlapping label/button/box (참굴, 조피볼락 picked), a button opens its list and a row picks that species, empty basket is one line in the page clear of 멍이`,
+        d3.names==='1111'&&okLayout(d3.oyster)&&okLayout(d3.rockfish)&&d3.list&&d3.pick&&d3.tray.empty&&d3.tray.position==='static'&&d3.tray.clearOfFab&&(w<741||d3.tray.lineHeight<26),JSON.stringify(d3));
+    }
   }
 
   // ---------- The eight demo flows, desktop and mobile (screenshots in OUT) ----------
