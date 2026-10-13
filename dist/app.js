@@ -2095,7 +2095,7 @@ function setMapLegend(s){
   // 2026-10-11: the short key reads without opening the details: bubble = grouped cells and their count, dots = a schematic
   // of the record band, not discovery coordinates, records are not abundance (wording from the note, tooltip and review note).
   for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
-  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`작은 점 = ${size}° 셀 안 기록 수 구간을 나타낸 도식 무늬 · 실제 발견 좌표 아님`;
+  $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`작은 점 = ${size}° 셀 안 기록 수 구간을 나타낸 도식 무늬 · 실제 생물 발견 좌표 아님`;
   $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸 위의 BBVI는 이 종 전체의 '+(released()?'값':'시범값')+'이며 그 해역의 값이 아닙니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
@@ -2206,7 +2206,7 @@ function cellCsv(s){
     return `"${safe.replace(/"/g,'""')}"`;
   };
   const head=['species_label','scientific_name','aphia_id','cell_south','cell_north','cell_west','cell_east','cell_deg','period','year_start','year_end','records','sites','sources','licenses','sea_areas','note'];
-  const note='공개 집계 셀 · 실제 발견 좌표 아님 · 해역별 판단 안 함';
+  const note='공개 집계 셀 · 실제 생물 발견 좌표 아님 · 해역별 판단 안 함';
   const rows=s.cells.map(c=>[s.label,s.name,s.aphiaID,c.lat0,c.lat0+c.sizeDeg,c.lon0,c.lon0+c.sizeDeg,c.sizeDeg,c.period,c.yearStart,c.yearEnd,c.records,c.sites,(c.citations||[]).map(x=>x.title).join('; '),(c.licenses||[...new Set((c.citations||[]).flatMap(x=>x.licenses||[]))]).join('; '),(c.seaAreas||[]).join('; '),note+(c.historical?' · 2000년 이전 과거 기록':'')+(c.outsideKoreanEEZ?' · 한국·북한 EEZ 밖':'')]);
   return '﻿'+[head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
 }
