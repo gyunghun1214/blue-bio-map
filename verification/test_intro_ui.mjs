@@ -9,7 +9,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,perspective,geographyRings});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,perspective,geographyRings});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -60,6 +60,17 @@ assert.equal(ctx.keyAction('Enter',{ready:true,onOtherControl:false}),'enter');
 assert.equal(ctx.keyAction('Enter',{ready:false,onOtherControl:false}),null,'not while loading');
 assert.equal(ctx.keyAction('Enter',{ready:true,onOtherControl:true}),null,'the focused control keeps its own Enter');
 assert.equal(ctx.keyAction(' ',{ready:true,onOtherControl:false}),null,'Space only through the focused button');
+// the ways in: each one opens its tab; a phone gets <main> instead of a search box; the source list is scrolled to and
+// keeps focus everywhere; anything else falls back to the map
+const way=(t,touch)=>JSON.stringify(ctx.arrival(t,touch));
+assert.equal(way('explore',false),JSON.stringify({view:'explore',focus:'#search',scroll:null}));
+assert.equal(way('explore',true),JSON.stringify({view:'explore',focus:'main',scroll:null}));
+assert.equal(way('compare',false),JSON.stringify({view:'compare',focus:'#cmp-search',scroll:null}));
+assert.equal(way('compare',true),JSON.stringify({view:'compare',focus:'main',scroll:null}));
+for(const touch of [false,true])assert.equal(way('method',touch),JSON.stringify({view:'method',focus:'#all-sources',scroll:'.source-section'}));
+for(const t of [undefined,'','toString','expedition'])assert.equal(ctx.arrival(t,false).view,'explore',String(t));
+for(const sel of ['id="search"','id="cmp-search"','id="all-sources"','class="source-section"'])assert.ok(html.includes(sel),`${sel} is in index.html`);
+assert.match(app,/^function setView\(view,toTop=true\)/m,'setView is a global function the entry screen can call');
 
 // (6) the sea lens projection: centre at the origin, horizon at r=1, far side hidden; coastline simplified, not invented
 const P=1/Math.cos(24*Math.PI/180);

@@ -38,6 +38,12 @@ function gateNote(g){
 const countsLine=d=>speciesTotal(d)===null?'':`지금 해양생물 ${speciesTotal(d)}종을 볼 수 있습니다(운영 발행 ${d.published}종 · 조사 후보 ${d.candidates}종).`;
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
 const keyAction=(key,{ready,onOtherControl})=>key==='Enter'&&ready&&!onOtherControl?'enter':null;
+// The ways in: the app tab each one opens and what gets focus there. A phone gets <main> rather than a search box (no
+// keyboard popping up); the source list is not a text field, so it keeps focus everywhere and is scrolled to like the
+// app's own 출처 link (setView('method',false) then its section).
+const GATE_VIEWS={explore:'#search',compare:'#cmp-search',method:'#all-sources'};
+const arrival=(target,touch)=>{const view=Object.hasOwn(GATE_VIEWS,target)?target:'explore';
+  return {view,focus:view==='method'||!touch?GATE_VIEWS[view]:'main',scroll:view==='method'?'.source-section':null};};
 
 // Vertical perspective projection (a view of the sphere from height P-1 earth radii). Returns unit-disc coordinates:
 // x right, y up, r=1 on the horizon; null when the point is behind the horizon.
@@ -102,15 +108,20 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
     // keyboard and mouse: focus the button (Enter/Space act on it); touch: the screen itself, so no focus ring on a tap device
     if(!touch())q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
   }
-  function enter(){
+  // One way in, whichever button: 'explore' (default), 'compare' or 'method'. The app keeps its own state (species,
+  // chips, map view); only the tab changes, through app.js setView (deferred, so it is there once the screen is ready).
+  function enter(target){
     if(left||gate.phase!=='ready')return;left=true;
     try{store?.setItem(GATE_KEY,'1');}catch{}
     const finish=()=>{
       cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
-      const search=document.getElementById('search'),main=document.querySelector('main');
-      if(!touch()&&search)search.focus({preventScroll:true});
-      else if(main){main.tabIndex=-1;main.focus({preventScroll:true});main.addEventListener('blur',()=>main.removeAttribute('tabindex'),{once:true});}
+      const a=arrival(target,touch());
+      if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
+      if(a.scroll)document.querySelector(a.scroll)?.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'});
+      const t=document.querySelector(a.focus)||document.querySelector('main');if(!t)return;
+      if(t.tagName==='MAIN'){t.tabIndex=-1;t.addEventListener('blur',()=>t.removeAttribute('tabindex'),{once:true});}
+      t.focus({preventScroll:true});
     };
     if(reduce)return finish();
     root.classList.add('gate-leaving');setTimeout(finish,820);
@@ -186,11 +197,12 @@ const geographyRings=(geo,minDeg=.08)=>(geo?.features||[]).flatMap(f=>{
     const motion=q('.gate-motion'),setMotion=v=>{reduce=v;lastDraw=-1;motion.setAttribute('aria-pressed',String(v));el.classList.toggle('is-still',v);};
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce));
-    q('#gate-enter').addEventListener('click',enter);
+    q('#gate-enter').addEventListener('click',()=>enter('explore'));
+    for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     document.addEventListener('keydown',e=>{
       if(left||e.defaultPrevented)return;
       const t=e.target,other=t!==q('#gate-enter')&&!!t.closest?.('button,a,input,select,textarea,summary');
-      if(keyAction(e.key,{ready:gate.phase==='ready',onOtherControl:other})==='enter'){e.preventDefault();enter();}
+      if(keyAction(e.key,{ready:gate.phase==='ready',onOtherControl:other})==='enter'){e.preventDefault();enter('explore');}
     });
     const status=q('.gate-share-status');
     q('.gate-share').addEventListener('click',async()=>{
