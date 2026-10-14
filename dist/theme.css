@@ -963,3 +963,25 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .value-mini>.w-badge{flex:0 0 100%;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:4px 8px;max-width:340px;margin:0 0 6px auto;padding:6px 8px 6px 10px;border:1px solid #d9a86c;border-radius:10px;background:#2a2316;color:#f1cf9f;font-size:12px;font-weight:700;line-height:1.4;box-shadow:var(--shadow)}
 .value-mini>.w-badge[hidden]{display:none}
 .value-mini .w-badge-reset{min-height:26px;padding:0 8px;border:1px solid rgba(241,207,159,.5);border-radius:7px;background:transparent;color:#f1cf9f;font:inherit;font-size:11.5px;cursor:pointer}
+/* 4.12: KOSIS catch-trend (stock-decline) element of MCUI: amber and a diamond, apart from the IUCN/national basis colours */
+.stock-decline{margin:12px 0;padding:10px 12px;border:1px dashed var(--line);border-radius:8px}
+.stock-decline.scored{border:1px solid #f2b84b;border-left-width:4px}
+.stock-decline h4{margin:0 0 6px;font-size:13.5px}
+.stock-decline h4 b{color:inherit}
+.stock-decline.scored h4 b{color:#f2b84b}
+.stock-decline .sd-mark{margin-right:6px;color:#8a959c;font-style:normal}
+.stock-decline.scored .sd-mark{color:#f2b84b}
+.stock-decline .sd-compare{margin:0 0 6px;font-weight:600}
+.stock-decline .sd-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.stock-decline .sd-row>div{flex:1 1 220px;min-width:0}
+.stock-decline .sd-means{margin:0 0 4px}
+.sd-spark{flex:none;width:264px;max-width:100%;height:auto;overflow:visible}
+.sd-spark .sd-win{fill:currentColor;opacity:.08}
+.sd-spark .sd-line{fill:none;stroke:#8a959c;stroke-width:2;stroke-linejoin:round}
+.sd-spark.scored .sd-line{stroke:#f2b84b}
+.sd-spark .sd-ref{fill:none;stroke:#8a959c;stroke-width:1.5;stroke-dasharray:3 3}
+.sd-spark .sd-refdot{fill:none;stroke:#8a959c;stroke-width:1.5}
+.sd-spark text{fill:currentColor;opacity:.7;font-size:9.5px}
+.mt-dot.stock,.lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
+.matrix-point.pilot.stock{border-radius:2px}
+.flow .bx.stock rect{fill:#fff8ea;stroke:#f2b84b;stroke-width:1.8}

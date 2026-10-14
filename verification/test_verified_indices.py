@@ -2721,6 +2721,7 @@ V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참
 V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (relaxation (d) independent replication)
 V49 = ROOT / "config" / "verified-indices-v4.9.json"    # superseded by 4.10 (secondary MBPI-Rx, exploratory)
 V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (2026-10-13 audit: rules 1-5)
+V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (KOSIS stock-decline MCUI basis)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3672,7 +3673,7 @@ class Verified411Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V411)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V410))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -3687,8 +3688,10 @@ class Verified411Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.11", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.11.json")
+        # the published 4.11 report is archived as it was; its config has none of the 4.12 keys (Verified412Tests)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.11.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
+        self.assertFalse(any("stock_decline" in s for s in self.new.values()))
 
     def test_values_are_the_registered_expectations(self):
         # prereg 6, computed by hand from the published 4.10 report before registration (BBVI there from rounded MBPI,
@@ -3782,10 +3785,11 @@ class Verified411Tests(unittest.TestCase):
             self.assertEqual((sub["basis"], sub["use"], sub["value"]), ("preliminary", "scored", 10.0), name)
             self.assertLessEqual(set(ref["source_ids"]), set(sub["source_ids"]))
         self.assertEqual(refs["미역"]["sub_national_reference"]["chosen_category"], "EN")
-        # the alternative-production quadrant is empty now: it only ever held the two sub-national species
+        # the alternative-production quadrant lost the two sub-national species; since 4.12 it holds only 살오징어, placed by
+        # the stock-decline signal (Verified412Tests)
         matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
         types = {s["korean_name"]: s["matrix_type"] for s in matrix["species"]}
-        self.assertNotIn("alternative_production", types.values())
+        self.assertEqual([n for n, t in types.items() if t == "alternative_production"], ["살오징어"])
         self.assertEqual((types["미역"], types["톳"]), ("sustainable_use", "sustainable_use"))
         self.assertEqual(matrix["matrix_points"], 29)
 
@@ -3821,6 +3825,145 @@ class Verified411Tests(unittest.TestCase):
         self.assertEqual((record["report_version"], record["MBPI"]), ("verified-4.11", check))
         rx = self.report["method"]["posthoc"]["validation_sets"]["MBPI_RX"]
         self.assertEqual(rx["operating_max_mbpi"], max(P.mbpi_rx_check(self.report, self.report["method"])["operating_mbpi_rx"].values()))
+
+
+class Verified412Tests(unittest.TestCase):
+    """4.12 (research/verified-indices/prereg-4.12-2026-10-14.md, registered in its own commit before the code; LKH's request
+    2026-10-14): a second MCUI basis from the KOSIS DT_1EW0004 coastal catch (2015~2024). D = 1 - mean(2022~24) / mean(2015~17);
+    30·50·80% give 35·60·80 points (a broader item is capped at 60); an item mostly farmed (share >= 50%), with a baseline
+    under 100 t or with three or more blank years gets no score. MCUI = max(extinction-risk value, stock-decline score)."""
+
+    # prereg 4: match level, D (%), recent aquaculture share (%), score, unscored reason
+    TABLE = {"미역": ("broader", -39.4, 99.3, None, "aquaculture_dominant"), "해삼": ("broader", 23.3, 0.3, None, None),
+             "멍게": ("species", 19.0, 94.6, None, "aquaculture_dominant"), "살오징어": ("species", 79.8, 0.0, 60.0, None),
+             "우뭇가사리": ("species", 90.2, 0.0, 80.0, None), "톳": ("species", 74.5, 97.8, None, "aquaculture_dominant"),
+             "홍합(참담치)": ("broader", 66.2, 99.2, None, "aquaculture_dominant"),
+             "참굴": ("broader", -18.3, 94.0, None, "aquaculture_dominant"),
+             "다시마": ("broader", -129.3, 100.0, None, "aquaculture_dominant"), "감태": ("none", None, None, None, "no_match"),
+             "가시파래": ("broader", 69.6, 96.3, None, "aquaculture_dominant"), "괭생이모자반": ("none", None, None, None, "no_match"),
+             "꼬시래기": ("broader", 83.5, 0.0, None, "small_catch"), "청각": ("species", 31.6, 97.1, None, "aquaculture_dominant"),
+             "바지락": ("species", -37.7, 37.6, None, None), "전복(종 수준)": ("broader", 23.0, 99.6, None, "aquaculture_dominant"),
+             "큰가리비": ("broader", -5.1, 99.7, None, "aquaculture_dominant"),
+             "시카메굴": ("broader", -18.3, 94.0, None, "aquaculture_dominant"),
+             "피조개": ("species", -41.1, 88.2, None, "aquaculture_dominant"), "가리맛조개": ("broader", 14.5, 0.0, None, None),
+             "고등어": ("species", 3.5, 0.2, None, None), "멸치": ("species", 29.0, 0.0, None, None),
+             "참조기": ("species", 31.4, 0.3, 35.0, None), "넙치": ("broader", 1.6, 91.9, None, "aquaculture_dominant"),
+             "조피볼락": ("species", 31.9, 90.8, None, "aquaculture_dominant"), "방어": ("broader", -74.0, 3.1, None, None),
+             "대구": ("species", 2.6, 0.0, None, None), "꽃게": ("species", -69.9, 0.0, None, None),
+             "참문어(동아시아 종)": ("broader", 7.4, 0.0, None, None), "갑오징어": ("broader", -28.6, 0.0, None, None)}
+    MOVED = {"살오징어": (10.0, 60.0), "우뭇가사리": (60.0, 80.0), "참조기": (10.0, 35.0)}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs()
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V411))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.rule = cls.report["method"]["mcui_stock_decline"]
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+
+    def rebuild(self, edit_config=None, edit_evidence=None):
+        evidence, candidates, config, snapshot, taxonomy = self.inputs
+        cfg, ev = copy.deepcopy(config), copy.deepcopy(evidence)
+        if edit_config:
+            edit_config(cfg)
+        if edit_evidence:
+            edit_evidence(ev)
+        return build(ev, candidates, cfg, snapshot, taxonomy)
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.12", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.12.json")
+        self.assertEqual(self.rule["prereg"], "research/verified-indices/prereg-4.12-2026-10-14.md")
+        self.assertTrue((ROOT / self.rule["prereg"]).exists())
+        self.assertIn(self.rule["source"]["id"], self.report["sources"])
+
+    def test_values_are_the_registered_table(self):
+        self.assertEqual(len(self.new), 30)
+        got = {s["korean_name"]: tuple(s["stock_decline"][k] for k in ("match_level", "decline_pct", "aquaculture_share_recent_pct",
+                                                                          "score", "unscored_reason")) for s in self.new.values()}
+        self.assertEqual(got, self.TABLE)
+        for s in self.new.values():
+            d = s["stock_decline"]
+            self.assertEqual((d["not_iucn"], d["stock_assessment"], d["source_id"]), (True, "확인 전", self.rule["source"]["id"]))
+            self.assertEqual(d["label"], next(b["label"] for b in self.rule["bands"] if b["score"] == d["score"]) if d["score"]
+                             else self.rule["labels"][d["unscored_reason"] or "no_signal"], s["korean_name"])
+            # the record names its source even when no item matches (4.7: every source a trace names is cited)
+            self.assertIn(self.rule["source"]["id"], s["source_ids"], s["korean_name"])
+
+    def test_only_three_mcui_values_move_and_nothing_else(self):
+        for a, s in self.new.items():
+            old, name = self.old[a], s["korean_name"]
+            self.assertEqual(s["mcui_extinction_risk"], old["scores"]["MCUI"], name)
+            if name in self.MOVED:
+                self.assertEqual((old["scores"]["MCUI"], s["scores"]["MCUI"], s["mcui_driver"]), (*self.MOVED[name], "stock_decline"))
+            else:
+                self.assertEqual(s["scores"]["MCUI"], old["scores"]["MCUI"], name)
+                self.assertNotEqual(s["mcui_driver"], "stock_decline", name)
+            for k in ("MFPI", "MBPI", "BBVI"):
+                self.assertEqual(s["scores"][k], old["scores"][k], (name, k))
+            for k in ("mcui_basis", "conservation_label", "bbvi_label", "mbpi_label", "mcui_substitute", "occurrence_trend"):
+                self.assertEqual(s.get(k), old.get(k), (name, k))
+        # 멍게 still has no MCUI: its KOSIS item is mostly farmed
+        self.assertEqual((self.by_name["멍게"]["scores"]["MCUI"], self.by_name["멍게"]["mcui_driver"]), (None, None))
+
+    def test_matrix_moves_only_the_squid(self):
+        matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        counts = {}
+        for s in matrix["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"baseline_survey": 14, "sustainable_use": 11, "conservation_priority": 3,
+                                  "alternative_production": 1, None: 1})
+        self.assertEqual(next(s["matrix_type"] for s in matrix["species"] if s["korean_name"] == "살오징어"), "alternative_production")
+        self.assertEqual(matrix["matrix_points"], 29)
+
+    def test_broader_links_are_capped_and_the_reasons_come_in_order(self):
+        level = lambda name: next(a for a, s in self.new.items() if s["korean_name"] == name)
+        def relink(name, **edit):
+            return lambda ev: ev["stock_decline"]["mapping"][level(name)].update(edit)
+        rows = lambda r: {s["korean_name"]: s for s in r["species"] + r["candidate_species"]}
+        # 우뭇가사리 read as a broader item keeps 60 (capped), not 80; its MCUI is then its extinction-risk 60, a tie
+        agar = rows(self.rebuild(edit_evidence=relink("우뭇가사리", match_level="broader")))["우뭇가사리"]
+        self.assertEqual((agar["stock_decline"]["score"], agar["stock_decline"]["capped_broader"], agar["scores"]["MCUI"], agar["mcui_driver"]),
+                         (60.0, True, 60.0, "tie"))
+        # an item mostly farmed is never scored, whatever its decline (톳 −74.5%)
+        self.assertEqual(self.by_name["톳"]["stock_decline"]["score"], None)
+        # a lower aquaculture limit is the only thing that would let 바지락 (37.6%) be judged on its catch; it rose, so no signal
+        clam = rows(self.rebuild(edit_config=lambda c: c["mcui_stock_decline"].update(aquaculture_share_max=0.3)))["바지락"]
+        self.assertEqual(clam["stock_decline"]["unscored_reason"], "aquaculture_dominant")
+
+    def test_the_inputs_are_checked(self):
+        from build_verified_indices import read_stock_decline
+        self.assertEqual(len(read_stock_decline(self.rule)["mapping"]), 30)
+        with self.assertRaisesRegex(ValueError, "KOSIS table lacks"):
+            read_stock_decline({**self.rule, "reference_column": "2026p"})
+        with self.assertRaisesRegex(ValueError, "KOSIS table lacks"):
+            read_stock_decline({**self.rule, "years": [2014, 2024]})
+        evidence, candidates, config, snapshot, taxonomy = self.inputs
+        ev = copy.deepcopy(evidence)
+        ev["stock_decline"]["mapping"].pop(next(iter(ev["stock_decline"]["mapping"])))
+        with self.assertRaises(ValueError):
+            build(ev, candidates, config, snapshot, taxonomy)
+
+    def test_without_the_rule_the_411_scores_come_back(self):
+        old = self.rebuild(edit_config=lambda c: c.pop("mcui_stock_decline"))
+        for s in old["species"] + old["candidate_species"]:
+            self.assertEqual(s["scores"], self.old[s["aphia_id"]]["scores"], s["korean_name"])
+            self.assertNotIn("stock_decline", s)
+
+    def test_posthoc_is_a_same_data_consistency_check(self):
+        block = self.report["method"]["posthoc"]["validation_sets"]["MCUI_stock_decline"]
+        self.assertEqual(block["result"], "consistent_same_data")
+        self.assertIn("독립 검증 아님", block["result_label"])
+        ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
+        squid = self.by_name["살오징어"]["scores"]["MCUI"]
+        self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, len(ranked)))
+        self.assertEqual((ranked.index(squid) + 1, len(ranked)), (4, 29))
+        for name in ("고등어", "대구"):
+            self.assertIsNone(self.by_name[name]["stock_decline"]["score"], name)
+        # the stock-decline score never changes the OBIS trend adjustment, which stays suspended
+        self.assertEqual(self.report["method"]["conservation"]["effort_adjustment"], 0)
 
 
 if __name__ == "__main__":

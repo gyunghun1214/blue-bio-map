@@ -82,10 +82,12 @@ class ExpeditionStops(unittest.TestCase):
         self.assertEqual([s["order"] for s in self.out["stops"]], list(range(1, 31)))
         self.assertEqual(len(self.route), 29)
         self.assertEqual(self.out["stops"][:29], self.route, "stops off the route come last")
-        # 4.11: no species is in the alternative-production quadrant (it held only the two sub-national species), and
+        # every quadrant has a stop (4.12: 살오징어 is the one alternative-production species, by its stock-decline MCUI), and
         # 멍게 has no MCUI, so no type
         self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]},
-                         {t["id"] for t in self.report["method"]["matrix"]["types"].values()} - {"alternative_production"} | {None})
+                         {t["id"] for t in self.report["method"]["matrix"]["types"].values()} | {None})
+        self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] == "alternative_production"],
+                         [s["aphia_id"] for s in self.report["species"] if s["korean_name"] == "살오징어"])
         self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] is None], [250680])
 
     def test_centres_are_shared_only_where_shared_with_says_so(self):
