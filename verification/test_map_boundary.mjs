@@ -22,7 +22,13 @@ const context={
   L:{rectangle(bounds,options){
     rectangles.push({bounds,options});
     return {addTo(){return this},bindPopup(body){popup.push(body);return this}};
-  },circleMarker(latlng,options){
+  },
+  // 2026-10-14 land mask: 4° cells (and 1° cells with a sea part) are drawn by cellShape's L.Rectangle subclass
+  Rectangle:{extend(){return function(bounds,info,style){
+    const r={bounds,info,options:{},addTo(){return this},bindPopup(body){popup.push(body);return this},
+      setStyle(s){this.options=context.cellStyles(info.sea,info.wide,s)[0];return this}};
+    rectangles.push(r);return r.setStyle(style);
+  };}},circleMarker(latlng,options){
     const dot={latlng,options,addTo(){dots.push(this);return this}};return dot;
   },marker(latlng,options){
     const m={latlng,options,addTo(){markers.push(this);return this}};return m;
@@ -86,6 +92,20 @@ species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
 context.draw(species,'#123456');
 assert.match(popup[0],/선별 출현기록 4° 셀/);
 assert.match(popup[0],/4°×4°/);
+// 2026-10-14: a 4° cell is a dashed outline in the cell's own colour with no fill, still the full click area, and says why it is wide
+const wide=rectangles.at(-1);
+assert.deepEqual(JSON.parse(JSON.stringify(wide.bounds)),[[32,124],[36,128]]);
+assert.equal(wide.options.fillOpacity,0);assert.equal(wide.options.fill,true,'no fill, but the whole square still takes the click');
+assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#ff6464');
+assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로만 공개합니다\. 테두리 안 바다 어딘가에 기록이 있다는 뜻이며, 육지에 사는 것이 아닙니다\./);
+// any later style (hover, dim) keeps a 4° cell unfilled; a 1° cell's sea part takes the fill, the square keeps a faint edge
+assert.equal(context.cellStyles(null,true,{color:'#ffd166',fillOpacity:.6})[0].fillOpacity,0);
+const sea={type:'Polygon',coordinates:[],seaFraction:.5};
+const [sq,fill]=context.cellStyles(sea,false,{color:'#2f9a57',weight:1.5,opacity:1,fillColor:'#2f9a57',fillOpacity:.48,edge:'plain'});
+assert.deepEqual([sq.fillOpacity,sq.weight,sq.opacity,fill.fillColor,fill.fillOpacity,fill.stroke],[0,1,.45,'#2f9a57',.48,false]);
+assert.deepEqual(context.cellStyles({seaFraction:1},false,{fillOpacity:.48,edge:'plain'})[1],null,'an all-sea cell fills its square');
+assert.equal(context.cellStyles(sea,false,{color:'#ffd166',weight:4,dashArray:'6 4'})[0].weight,4,'hover and selected outlines are not thinned');
+assert.equal('fillOpacity' in context.cellStyles(sea,false,{color:'#ffd166'})[1],false,'a hover style keeps the sea fill as it was');
 assert.equal(dots.length,256,'4° cell keeps the 1° density (16x16 for the 1–4 band), not a few point-like marks');
 assert.ok(dots.some(({latlng:[lat]})=>lat>35)&&dots.every(({latlng:[lat,lon]})=>lat>32&&lat<36&&lon>124&&lon<128),'dots spread over, and stay inside, the 4° cell');
 assert.ok(dots.every(d=>d.options.interactive===false));
