@@ -28,7 +28,9 @@ async function open({w=1672,h=941,mobile=false,dpr=1,hash='',motion='0',system=n
   await C.send('Emulation.setTouchEmulationEnabled',{enabled:mobile});
   await C.send('Emulation.setEmulatedMedia',{features:system?[{name:'prefers-reduced-motion',value:system}]:[]});
   const store=motion===null?"localStorage.removeItem('bbvm-reduce-motion')":`localStorage.setItem('bbvm-reduce-motion','${motion}')`;
-  await C.onNewDocument(`try{sessionStorage.clear();${store}}catch{}`,RAF_COUNTER,GL_SPY,...scripts);
+  // a fresh tab per open(); a later load in it (the logo) keeps its session storage
+  const tok=Math.random().toString(36).slice(2);
+  await C.onNewDocument(`try{if(sessionStorage.getItem('__mc')!=='${tok}'){sessionStorage.clear();sessionStorage.setItem('__mc','${tok}');}${store}}catch{}`,RAF_COUNTER,GL_SPY,...scripts);
   await C.send('Page.navigate',{url:'about:blank'});await sleep(100);
   C.requests.length=0;
   await C.send('Page.navigate',{url:URL0+hash});
@@ -167,7 +169,18 @@ try{
   await C.evaluate("document.getElementById('gate-enter').click();1");await sleep(150);await shot('1672x941-10-leave-150ms');
   let s=await waitGone();await sleep(300);
   r0=(await state()).raf;await sleep(1500);r1=(await state()).raf;s=await state();
-  check(`After leaving: no more intro.js frames (${r1-r0} in 1.5 s), the WebGL context lost on purpose, the canvas emptied, on the map`,!s.on&&r1===r0&&s.lost.length===1&&s.lost[0]===true&&s.canvas===0&&s.view==='explore',JSON.stringify(s));
+  const lateStill=()=>C.requests.filter(u=>/globe-v2\//.test(u));
+  check(`After leaving: no more intro.js frames (${r1-r0} in 1.5 s), the WebGL context lost on purpose (not taken for a failure, the still picture not fetched), the canvas emptied, on the map`,
+    !s.on&&r1===r0&&s.lost.length===1&&s.lost[0]===true&&s.canvas===0&&s.view==='explore'&&!s.marks.includes('bbvm-globe-gl-failed')&&!lateStill().length,JSON.stringify({s,still:lateStill()}));
+  // the logo (PR #188) brings the entry screen back in the same tab: a new load, so the globe turns again, and leaves again cleanly
+  C.requests.length=0;
+  await C.evaluate("document.querySelector('a.brand').click();1");await sleep(400);
+  for(let i=0;i<150;i++){const t=await state().catch(()=>null);if(t&&t.on&&t.ready)break;await sleep(100);}
+  await sleep(2500);const h0=await state();await sleep(2000);const h1=await state();
+  check(`Logo from the map: the entry screen again with the turning globe (${h1.raf-h0.raf} frames in 2 s, WebGL ready)`,h1.on&&h1.ready&&h1.gls===1&&h1.marks.includes('bbvm-globe-gl-ready')&&!h1.marks.includes('bbvm-globe-gl-failed')&&h1.raf-h0.raf>=3,JSON.stringify({h0,h1}));
+  await C.evaluate("document.getElementById('gate-enter').click();1");s=await waitGone();await sleep(300);
+  r0=(await state()).raf;await sleep(1500);r1=(await state()).raf;s=await state();
+  check(`Entering again after the logo: frames stop (${r1-r0}), context let go, no failure, no still picture`,!s.on&&r1===r0&&s.lost[0]===true&&!s.marks.includes('bbvm-globe-gl-failed')&&!lateStill().length,JSON.stringify({s,still:lateStill()}));
   // the share of the screen's transfer the globe takes, per screen
   const xfer=async(o)=>{await open({...o,motion:'1'});await waitReady();await sleep(800);
     return C.evaluate("performance.getEntriesByType('resource').filter(e=>/vendor\\/globe-v[23]\\//.test(e.name)).map(e=>({file:e.name.split('/vendor/')[1],bytes:e.encodedBodySize}))");};

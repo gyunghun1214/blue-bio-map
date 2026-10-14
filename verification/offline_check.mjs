@@ -132,6 +132,20 @@ try{
   for(let i=0;i<60&&!expOk;i++){await sleep(250);expOk=await evaluate("document.readyState==='complete'&&document.body.innerText.length>50")&&localPaths.includes('/expedition-stops.json');}
   check('O-12 expedition page opens from local files with its stop data',expOk,JSON.stringify(localPaths.filter(p=>!p.startsWith('/offline-tiles')).slice(-8)));
 
+  // ---------- 4b. The logo goes home: the globe entry screen again, still the offline demo, then the map ----------
+  for(const [page,sel] of [['expedition.html','a.x-brand'],['','header a.brand']]){
+    if(page)await waitFor(`!!document.querySelector('${sel}')`,v=>v);
+    else await waitFor("document.getElementById('site-gate').hidden&&(document.getElementById('connection-state')?.textContent||'').startsWith('오프라인')",v=>v);
+    const lp=await evaluate(`(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('${sel}').getBoundingClientRect())`);
+    for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
+    await sleep(400);
+    const home=await waitFor("document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden?document.querySelector('#site-gate .gate-note').textContent:''",v=>v);
+    check(`O-12b ${page?'expedition page':'map page'}: the logo opens the globe entry screen, still in offline demo mode`,home===`오프라인 시연 · ${snapshot.fetched_at} 기준 공개 자료 사본으로 엽니다.`,home);
+    await pressEnter();
+    const back=await waitFor("document.getElementById('site-gate').hidden&&(document.getElementById('connection-state')?.textContent||'').startsWith('오프라인')",v=>v,8000);
+    check(`O-12b ${page?'expedition page':'map page'}: Enter from there opens the offline map`,back===true,String(back));
+  }
+
   check('O-13 nothing was requested outside this computer',external.length===0,external.slice(0,8).join(' | '));
   check('O-14 no uncaught page errors',errors.length===0,errors.join(' | '));
 

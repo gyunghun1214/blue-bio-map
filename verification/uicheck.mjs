@@ -1187,6 +1187,55 @@ try{
   await pressEnter();await sleep(1100);gs=await gateState();
   check('G-6 failed load: after Enter the map page shows its own error',!gs.on&&await evaluate("!document.getElementById('error').hidden"),JSON.stringify(gs));
   await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
+  // ---------- G-7 the header logo goes home: the entry screen with the globe, from every tab, in a tab that entered ----------
+  // Real mouse clicks (on the mark, then on the words) and the keyboard (focus + Enter). The page loads afresh: the app
+  // writes its own first-visit hash again (default species, explore), none of the state before the click is kept.
+  {
+    const logo=part=>evaluate(`(()=>{const a=document.querySelector('header a.brand'),r=(${JSON.stringify(part)}==='mark'?a.querySelector('.brand-mark'):a.querySelector('strong')).getBoundingClientRect();
+      return {x:r.left+r.width/2,y:r.top+r.height/2,cursor:getComputedStyle(a).cursor,name:a.getAttribute('aria-label')}})()`);
+    const clickAt=async p=>{for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:p.x,y:p.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});};
+    // after the click the page is a new document: wait for its entry screen (or for the map, if it did not show)
+    const home=async()=>{await sleep(500);let g;for(let i=0;i<80;i++){try{g=await gateState();if(g.ready||(!g.on&&/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"))))break;}catch{}await sleep(250);}
+      return {...g,hash:await evaluate('location.hash'),signal:await evaluate("sessionStorage.getItem('bbvm-intro-home')"),globe:await evaluate("!!document.querySelector('#site-gate .gate-hero:not([hidden]) .gate-globe')&&document.querySelector('#site-gate .gate-sea').width>0")};};
+    const atGlobe=(g,old)=>g.on&&!g.hidden&&g.ready&&g.globe&&g.inert===g.held&&!g.hash.includes(old)&&!/v=(compare|method)/.test(g.hash)&&g.signal===null&&g.stored==='1';
+    const back=async()=>{await pressEnter();await sleep(1100);return gateState();};
+    // explore, a species chosen through a shared link
+    await evaluate("sessionStorage.setItem('bbvm-intro-entered','1');1");
+    await send('Page.navigate',{url:URL0+'#s=241776&v=explore'});
+    for(let i=0;i<80&&!await evaluate("/연결됨|불러오기 실패|연결 실패/.test(document.getElementById('connection-state')?.textContent||'')&&selected?.aphiaID===241776").catch(()=>false);i++)await sleep(250);
+    let p=await logo('mark');
+    check('G-7 logo: one link round the mark and the words, pointer cursor, named for where it goes',p.cursor==='pointer'&&p.name==='Blue-bio Value Map 첫 화면으로'&&await evaluate("(()=>{const a=document.querySelector('header a.brand');return a.contains(a.querySelector('.brand-mark svg'))&&a.textContent.trim()==='Blue-bio Value Map'})()"),JSON.stringify(p));
+    const before=await evaluate("({gate:document.documentElement.classList.contains('gate-on'),hash:location.hash})");
+    await clickAt(p);let g=await home();
+    check('G-7 explore (sea cucumber chosen, shared-link hash): clicking the logo mark shows the globe entry screen, not the map; the chosen species is gone',!before.gate&&before.hash.includes('s=241776')&&atGlobe(g,'s=241776'),JSON.stringify({before,g}));
+    await sleep(1200);await shot('logo-home-desktop',false);
+    g=await back();
+    check('G-7 Enter from that screen opens the map as on a first visit (no species from before, explore tab)',!g.on&&g.hidden&&g.inert===0&&await evaluate("document.getElementById('explore').classList.contains('active')&&!location.hash.includes('s=241776')"),JSON.stringify(g));
+    // 비교와 지표, through its tab, then the words of the logo
+    await evaluate("document.querySelector('.tabs [data-view=\"compare\"]').click();1");await sleep(400);
+    const cmp=await evaluate("document.getElementById('compare').classList.contains('active')");
+    await clickAt(await logo('words'));g=await home();
+    check('G-7 비교와 지표: clicking the logo words shows the globe entry screen',cmp&&atGlobe(g,'v=compare'),JSON.stringify({cmp,g}));
+    await back();
+    // 근거와 방법, keyboard only: the logo takes focus and Enter follows it
+    await evaluate("document.querySelector('.tabs [data-view=\"method\"]').click();1");await sleep(400);
+    const met=await evaluate("document.getElementById('method').classList.contains('active')&&(document.querySelector('header a.brand').focus(),document.activeElement.matches('header a.brand'))");
+    await pressEnter();g=await home();
+    check('G-7 근거와 방법: the logo by keyboard (focus, Enter) shows the globe entry screen',met&&atGlobe(g,'v=method'),JSON.stringify({met,g}));
+    await back();
+    // the signal is used once: a reload afterwards opens the map as before
+    await load();g=await gateState();
+    check('G-7 a reload after coming back opens the map directly (the logo signal is used once)',!g.on&&g.hidden&&await evaluate("sessionStorage.getItem('bbvm-intro-home')===null"),JSON.stringify(g));
+    // phone 390px, on 비교와 지표
+    await viewport(390,844,true);
+    await send('Page.navigate',{url:URL0+'#v=compare'});
+    for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+    await clickAt(await logo('mark'));g=await home();
+    check('G-7 phone 390px (비교와 지표): tapping the logo shows the globe entry screen',atGlobe(g,'v=compare')&&g.doc<=g.vw,JSON.stringify(g));
+    await sleep(1200);await shot('logo-home-mobile',false);
+    await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);
+    await viewport(1560,900,false);
+  }
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
 finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();

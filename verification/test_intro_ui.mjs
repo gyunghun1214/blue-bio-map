@@ -1,6 +1,6 @@
 // Loading and entry screen of the main map (dist/intro.js), run on its pure part (no browser), plus static checks of
 // the markup in index.html, the progress events in app.js and the globe files in dist/vendor/globe-v1. The browser flow
-// is in uicheck.mjs (G-1…G-6) and verification/2026-10-landing-globe/landing_check.mjs.
+// is in uicheck.mjs (G-1…G-7, G-7 the logo going home) and verification/2026-10-landing-globe/landing_check.mjs.
 // Run: node verification/test_intro_ui.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -10,7 +10,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -20,6 +20,16 @@ for(const h of ['','#','#top','#x=1','#s=']) assert.equal(ctx.shouldShowGate(h,s
 assert.equal(ctx.shouldShowGate('',storage('1')),false,'already entered in this tab');
 assert.equal(ctx.shouldShowGate('',{getItem(){throw Error('blocked');}}),true,'storage blocked: still shown (only not remembered)');
 assert.equal(ctx.shouldShowGate('',null),true);
+// the site logo goes home: its one-time signal shows the screen again in a tab that entered; a shared link still wins
+const both=(entered,home)=>({getItem:k=>k===ctx.GATE_KEY?entered:k===ctx.HOME_KEY?home:null});
+assert.equal(ctx.HOME_KEY,'bbvm-intro-home');
+assert.equal(ctx.shouldShowGate('',both('1','1')),true,'logo clicked in a tab that entered: entry screen again');
+assert.equal(ctx.shouldShowGate('',both('1',null)),false,'signal used up: a reload opens the map as before');
+assert.equal(ctx.shouldShowGate('#s=241776',both('1','1')),false,'a shared link still opens the map');
+const click=(o={})=>({button:0,metaKey:false,ctrlKey:false,shiftKey:false,altKey:false,defaultPrevented:false,...o});
+assert.equal(ctx.homeClick(click()),true,'a plain click (or Enter on the link) goes home in this tab');
+for(const o of [{button:1},{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{defaultPrevented:true}])
+  assert.equal(ctx.homeClick(click(o)),false,'new tab/window or cancelled: this tab stays as it is '+JSON.stringify(o));
 
 // (2) loader steps follow the app's real steps; no fake percent
 let g=ctx.makeGate(0);
@@ -152,6 +162,18 @@ assert.match(gateMarkup,/<button class="gate-enter" id="gate-enter" type="button
 assert.match(css,/\.gate\.is-still \.gate-sea/,'the switch stops the globe fading and zooming');
 assert.ok(!/three/i.test(intro)&&!/three/i.test(gateMarkup)&&!/<script[^>]+three/i.test(html),'no Three.js on the main page');
 assert.ok(!/https?:\/\//.test(intro.replace(/\/\/[^\n]*/g,'')),'intro.js loads nothing from another site');
+
+// the header logo: one link (icon and words) to this page without a hash, its name says where it goes; intro.js marks
+// a plain click on it, before the early return a tab that entered takes; expedition.html's logo leaves the same signal
+const brand=html.match(/<a class="brand"[^>]*>[\s\S]*?<\/a>/)[0];
+assert.match(brand,/^<a class="brand" href="\.\/" aria-label="Blue-bio Value Map 첫 화면으로">/);
+assert.match(brand,/class="brand-mark"[\s\S]*<svg[\s\S]*Blue-bio <strong>Value Map<\/strong><\/span><\/a>$/,'icon and words inside the one link');
+const introBrowser=intro.split('// ---- browser ----')[1];
+assert.ok(introBrowser.indexOf("closest?.('a.brand')")>0&&introBrowser.indexOf("closest?.('a.brand')")<introBrowser.indexOf('if(!show)return;'),'the logo is marked on every load, not only when the screen shows');
+assert.ok(introBrowser.indexOf('removeItem(HOME_KEY)')<introBrowser.indexOf('if(!show)return;'),'the signal is used once');
+const xhtml=read('expedition.html'),xjs=read('expedition.js');
+assert.match(xhtml,/<a class="x-brand" href="index\.html" aria-label="Blue-bio Value Map 첫 화면으로">/);
+assert.match(xjs,/closest\?\.\('a\.x-brand'\)[\s\S]{0,140}sessionStorage\.setItem\('bbvm-intro-home','1'\)/,'expedition logo: same signal as intro.js HOME_KEY');
 
 // (8) copy: records are not presence, no reference-site name, the named sources are ones the site really cites
 const gateHtml=html.slice(html.indexOf('<div id="site-gate"'),html.indexOf('<header'));
@@ -364,4 +386,5 @@ assert.match(browser,/back=reduce\?null:/,'still: a released drag goes straight 
 assert.match(css,/\.gate-hero\{touch-action:pan-y pinch-zoom\}/,'a finger turns it sideways only; upward swipes and zoom stay the page\'s');
 assert.ok(!/three/i.test(ctx.globeShader()),'one hand-written shader, no Three.js');
 
-console.log('PASS: entry screen skip rules, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks)');
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks)');
+

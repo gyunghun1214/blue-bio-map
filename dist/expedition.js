@@ -720,4 +720,11 @@ async function boot(){
   render();
   if(!$('intro').hidden)$('start').focus({preventScroll:true});
 }
+// The logo goes to the site's first screen (the globe of index.html), not the map: the same one-time signal as
+// intro.js HOME_KEY, left by a plain click only (a modified or middle click opens a new tab). Bound before the data
+// loads, so it also works while loading or after a failure.
+if(typeof document!=='undefined')document.addEventListener('click',e=>{
+  if(e.target.closest?.('a.x-brand')&&e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey&&!e.defaultPrevented)
+    try{sessionStorage.setItem('bbvm-intro-home','1');}catch{}
+});
 if(typeof document!=='undefined')boot();
