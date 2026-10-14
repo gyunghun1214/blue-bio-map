@@ -1,0 +1,287 @@
+[
+ {
+  "name": "1440px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px: scope numbers = loaded data (전체·운영·후보)",
+  "ok": true,
+  "detail": {
+   "counts": [
+    "30",
+    "8",
+    "22"
+   ],
+   "data": [
+    "30",
+    "8",
+    "22"
+   ]
+  }
+ },
+ {
+  "name": "1440px: folds closed on arrival",
+  "ok": true,
+  "detail": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "name": "1440px: journey links drawn (5)",
+  "ok": true,
+  "detail": {
+   "links": 5
+  }
+ },
+ {
+  "name": "quadrant names from the matrix rule",
+  "ok": true,
+  "detail": [
+   "low_bbvi_high_mcui:보전 지표 높음/보전 연구 우선 검토",
+   "high_bbvi_high_mcui:두 지표 모두 높음/활용·보전 병행 검토",
+   "low_bbvi_low_mcui:두 지표 모두 낮음/기초조사 검토",
+   "high_bbvi_low_mcui:활용 지표 높음/활용 연구 검토"
+  ]
+ },
+ {
+  "name": "journey links start on their source box and end on their target box (no BBVI–MCUI line)",
+  "ok": true,
+  "detail": [
+   {
+    "a": "mfpi",
+    "b": "bbvi",
+    "startOnA": true,
+    "endOnB": true
+   },
+   {
+    "a": "mbpi",
+    "b": "bbvi",
+    "startOnA": true,
+    "endOnB": true
+   },
+   {
+    "a": "cons",
+    "b": "mcui",
+    "startOnA": true,
+    "endOnB": true
+   },
+   {
+    "a": "bbvi",
+    "b": "quad",
+    "startOnA": true,
+    "endOnB": true
+   },
+   {
+    "a": "mcui",
+    "b": "quad",
+    "startOnA": true,
+    "endOnB": true
+   }
+  ]
+ },
+ {
+  "name": "지표 흐름 살펴보기 → journey section at the top, hash unchanged",
+  "ok": true,
+  "detail": {
+   "same": true,
+   "y": 526,
+   "journey": 128,
+   "src": 1405,
+   "focus": "",
+   "open2": false,
+   "flow": 1305
+  }
+ },
+ {
+  "name": "자료 출처 보기 → sources section, #all-sources focused",
+  "ok": true,
+  "detail": {
+   "same": true,
+   "y": 1803,
+   "journey": -1149,
+   "src": 128,
+   "focus": "all-sources",
+   "open2": false,
+   "flow": 28
+  }
+ },
+ {
+  "name": "전체 산출 흐름 보기 → fold 02 opens, flow chart at the top",
+  "ok": true,
+  "detail": {
+   "same": true,
+   "y": 1703,
+   "journey": -1049,
+   "src": 1504,
+   "focus": "",
+   "open2": true,
+   "flow": 128
+  }
+ },
+ {
+  "name": "flow box (MBPI) → fold 03 opens, #method-03 flashes and comes to the top",
+  "ok": true,
+  "detail": {
+   "open3": true,
+   "flash": true,
+   "top": 128
+  }
+ },
+ {
+  "name": "keyboard: Enter on a flow box opens fold 01; Enter on its summary closes it",
+  "ok": true,
+  "detail": {
+   "k1": true,
+   "k2": false
+  }
+ },
+ {
+  "name": "1440px all folds open: no page overflow",
+  "ok": true,
+  "detail": {
+   "o": 0
+  }
+ },
+ {
+  "name": "sources: WoRMS citations for every species with links, map/font credits kept",
+  "ok": true,
+  "detail": {
+   "cites": 279,
+   "species": 30,
+   "worms": 62,
+   "fine": true
+  }
+ },
+ {
+  "name": "other tabs: compare keeps its own background, explore unaffected, back to method redraws links",
+  "ok": true,
+  "detail": {
+   "cbg": "radial-gradient(70% 420px at 50% -60px, ",
+   "ebg": "rgb(7, 29, 43)",
+   "mtVisible": 0,
+   "hash": "#s=836033&v=method&b=basic&t=occurrence&m=6%2F35.21%2F129.11",
+   "links": 5,
+   "mbg": "radial-gradient(70% 460px at 50% -60px, "
+  }
+ },
+ {
+  "name": "1440px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "768px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "768px: scope numbers = loaded data (전체·운영·후보)",
+  "ok": true,
+  "detail": {
+   "counts": [
+    "30",
+    "8",
+    "22"
+   ],
+   "data": [
+    "30",
+    "8",
+    "22"
+   ]
+  }
+ },
+ {
+  "name": "768px: folds closed on arrival",
+  "ok": true,
+  "detail": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "name": "768px: journey links hidden, stacked with arrows",
+  "ok": true,
+  "detail": {
+   "links": 0
+  }
+ },
+ {
+  "name": "768px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "390px: scope numbers = loaded data (전체·운영·후보)",
+  "ok": true,
+  "detail": {
+   "counts": [
+    "30",
+    "8",
+    "22"
+   ],
+   "data": [
+    "30",
+    "8",
+    "22"
+   ]
+  }
+ },
+ {
+  "name": "390px: folds closed on arrival",
+  "ok": true,
+  "detail": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "name": "390px: journey links hidden, stacked with arrows",
+  "ok": true,
+  "detail": {
+   "links": 0
+  }
+ },
+ {
+  "name": "390px all folds open: page does not overflow, the flow chart scrolls in its own box",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "flow": true,
+   "small": []
+  }
+ },
+ {
+  "name": "390px: buttons and fold headers are at least 44px tall",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "멍이 show(): a target in a closed fold becomes visible once its fold opens",
+  "ok": true,
+  "detail": {
+   "visible": true,
+   "open": true
+  }
+ }
+]

@@ -3906,7 +3906,7 @@ async function loadCollection(){
     $('score-disclaimer').innerHTML=next.species.some(s=>s.assessment)?'<strong>연구용 산출이며 채집·정책·투자 판단에 바로 사용하지 마세요.</strong> '+(released(next.assessmentInfo)?'지표는 <strong>정식 산출</strong>('+esc(next.assessmentInfo.version)+')입니다':'일부 종에 <strong>시범 지표</strong>가 있습니다')+validationNote(next.assessmentInfo)+'.':'이 자료에는 활용가치·보전 지표를 <strong>산출하지 않았습니다.</strong> 학명·출현 근거만 봅니다.';
     data=next;
     if(!data.species?.length){$('species-list').textContent='아직 발행된 종이 없습니다.';$('connection-state').textContent='연결됨 · 발행 자료 없음';$('map-review-note').textContent='발행된 자료가 없습니다.';loadDone('empty');return;}
-    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();renderCompare();
+    selected=data.species.find(s=>s.cells?.length)||data.species[0];mapJudgmentStatus(selected);renderUseChips();renderList();renderDetail();renderMap();renderComparison();renderDecisionList();renderSources();renderTypeTable();renderCompare();if(typeof renderMethodPage==='function')renderMethodPage();
     // Three live states: connected, connected but 0 published (not a failure, no snapshot), unreachable (dated snapshot).
     const counts=`운영 발행 ${data.publishedCount}종 · 조사 후보 ${data.candidateCount}종`;
     // Offline demo: the snapshot is the plan, not a failure, so its date stays in the status line without the alert.
@@ -3956,9 +3956,38 @@ syncFolds(); // fold the filters before the data arrives, so the list does not j
   if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
 $('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
-// method-tab flow chart: a box opens its explanation card below (click or Enter/Space)
-document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
+// method-tab flow chart: a box opens the fold that holds its explanation card, then goes there (click or Enter/Space)
+document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);methodGo(card);card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
   g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+// ---------- 근거와 방법 (deep-sea design, 2026-10-15) ----------
+// In-page moves are buttons, not href="#…": the URL hash keeps the tab, species and map state. A target inside a closed
+// fold opens it first.
+const smoothScroll=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+function methodGo(el){if(!el)return;const d=el.closest('details');if(d)d.open=true;el.scrollIntoView({behavior:smoothScroll(),block:'start'});}
+const METHOD_GO={journey:()=>$('mt-journey'),sources:()=>document.querySelector('#method .source-section'),flow:()=>document.querySelector('#method .flow-wrap')};
+document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',()=>{const t=METHOD_GO[b.dataset.mtGo]?.();methodGo(t);
+  if(b.dataset.mtGo==='sources')$('all-sources')?.focus({preventScroll:true});}));
+// Research scope numbers (운영 발행 · 조사 후보 from the loaded collection; '—' until then or after a failure) and the
+// four quadrant names from the report's matrix rule. The diagram places no species, points or scores.
+function renderMethodPage(){
+  const n=v=>Number.isFinite(v)?String(v):'—';
+  $('mt-total').textContent=n(data?.species?.length);$('mt-published').textContent=n(data?.publishedCount);$('mt-candidates').textContent=n(data?.candidateCount);
+  const rule=matrixRule();if(!rule)return;
+  document.querySelectorAll('#method .mt-q').forEach(q=>{const t=rule.types?.[q.dataset.q];if(!t)return;q.dataset.type=t.id;q.querySelector('b').textContent=matrixTypePlain(t.id);q.querySelector('span').textContent=t.label;});
+  $('mt-quad-rule').textContent=`각각 ${rule.bbvi_threshold===rule.mcui_threshold?rule.bbvi_threshold:'BBVI '+rule.bbvi_threshold+' · MCUI '+rule.mcui_threshold} 이상이면 높음 · 지표 쌍이 없으면 유형 미산출`;
+}
+// Journey links, drawn from where the boxes actually are: MFPI → BBVI, MBPI → BBVI, 보전 → MCUI, BBVI → 두 축, MCUI → 두 축.
+// No line joins BBVI and MCUI. Redrawn whenever the panel changes size (also when the tab first shows it).
+function drawMethodLinks(){
+  const flow=document.querySelector('#method .mt-flow'),g=flow?.querySelector('.mt-links g');if(!g)return;
+  const box=flow.getBoundingClientRect(),node=k=>flow.querySelector(`[data-node="${k}"]`)?.getBoundingClientRect();
+  if(!box.width||getComputedStyle(flow.querySelector('.mt-links')).display==='none'){g.innerHTML='';return;}
+  const link=(a,b)=>{const r1=node(a),r2=node(b);if(!r1||!r2)return '';
+    const x1=r1.right-box.left,y1=r1.top+r1.height/2-box.top,x2=r2.left-box.left-2,y2=b==='quad'?y1:r2.top+r2.height/2-box.top,m=(x1+x2)/2;
+    return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} C${m.toFixed(1)} ${y1.toFixed(1)} ${m.toFixed(1)} ${y2.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}" marker-end="url(#mt-arrow)"/>`;};
+  g.innerHTML=[['mfpi','bbvi'],['mbpi','bbvi'],['cons','mcui'],['bbvi','quad'],['mcui','quad']].map(([a,b])=>link(a,b)).join('');
+}
+{const flow=document.querySelector('#method .mt-flow');if(flow&&globalThis.ResizeObserver)new ResizeObserver(drawMethodLinks).observe(flow);}
 $('notice-chip').addEventListener('click',()=>statusPop(openPop==='notice-pop'?null:'notice-pop'));
 $('alert-chip').addEventListener('click',()=>statusPop(openPop==='alert-pop'?null:'alert-pop'));
 $('alert-reload').addEventListener('click',()=>{statusPop(null);$('reload-data').click();});
