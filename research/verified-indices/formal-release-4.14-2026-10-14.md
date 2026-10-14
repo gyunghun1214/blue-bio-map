@@ -50,7 +50,7 @@ MFPI·MBPI의 계산과 값 전체(30종 모두 4.13과 같음, 계보 `diff --f
 ## 검사
 
 - `python3.12 scripts/build_verified_indices.py --check`, `build_matrix_readiness.py --check`, `build_expedition_stops.py --check`: 재현 일치.
-- `PYTHONUTF8=1 python3.12 -m unittest discover -s verification -p "test_*.py"`: 407개 통과(건너뜀 1). 새 `Verified414Tests`(4.13 대비 변화 포함), 4.12·4.13 보관본 재현.
+- `PYTHONUTF8=1 python3.12 -m unittest discover -s verification -p "test_*.py"`: 411개 통과(건너뜀 2). 새 `Verified414Tests`(4.13 대비 변화 포함), 4.12·4.13 보관본 재현.
 - `node verification/test_*.mjs` 22개 통과.
 - `node verification/uicheck.mjs`(클라우드, 고정 스냅숏): 189 통과 / 4 실패. 실패 4개는 위성(GIBS)·수심(GEBCO) 타일 차단에 따른 환경 실패로 4.12 이전과 같다.
 - 계보: `lineage.py export` · `diff --from verified-4.13 --to verified-4.14`(MBPI 자료원 변화 0건) · `changelog` · `validate` 통과.
