@@ -1,7 +1,7 @@
 // The turning entry-screen globe (dist/intro.js, 2026-10-14) in headless Chrome over the DevTools protocol (cdp.mjs):
 // the start pose against the still picture, the entry turn, the sway (fast-forwarded), dragging with a mouse and a
 // finger, the motion switch and the system setting, leaving (frames and the WebGL context let go), a shared link, and
-// the same screen without WebGL. The card's orange point is found in each capture: it sits on the globe near Korea, so
+// the same screen without WebGL or on a software renderer. The card's orange point is found in each capture: it sits on the globe near Korea, so
 // its travel is Korea's travel on screen.
 // Run with the site on http://127.0.0.1:8765/ (CHROME_PATH: a Chrome or Chromium; in a container add the SwiftShader
 // flags --use-angle=swiftshader --enable-unsafe-swiftshader so WebGL runs without a GPU):
@@ -22,15 +22,20 @@ const FRAME_TIMER="window.__ft=[];{const o=window.requestAnimationFrame;window.r
 // fast-forward: intro.js frames see time run __warp times faster (its clock steps at most 100 ms a frame)
 const WARP="window.__warp=1;{const o=window.requestAnimationFrame;let b=null;window.requestAnimationFrame=function(cb){if(!/intro\\.js/.test(new Error().stack||''))return o.call(this,cb);return o.call(this,t=>{if(b===null)b=t;cb(b+(t-b)*window.__warp);});};}";
 
+// intro.js keeps the still picture on a software renderer (SOFTWARE_GL), and this headless Chrome draws WebGL with
+// SwiftShader: so the page is told it has a GPU (the renderer name only; the drawing is still SwiftShader's).
+// open({software:true}) leaves the real name and checks that rule.
+const HW_GL="{for(const P of [window.WebGLRenderingContext,window.WebGL2RenderingContext].filter(Boolean)){const o=P.prototype.getParameter;P.prototype.getParameter=function(p){return p===0x9246?'motion_check GPU':o.call(this,p);};}}";
+
 let C=null;
-async function open({w=1672,h=941,mobile=false,dpr=1,hash='',motion='0',system=null,scripts=[]}={}){
+async function open({w=1672,h=941,mobile=false,dpr=1,hash='',motion='0',system=null,scripts=[],software=false}={}){
   await C.send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:dpr,mobile});
   await C.send('Emulation.setTouchEmulationEnabled',{enabled:mobile});
   await C.send('Emulation.setEmulatedMedia',{features:system?[{name:'prefers-reduced-motion',value:system}]:[]});
   const store=motion===null?"localStorage.removeItem('bbvm-reduce-motion')":`localStorage.setItem('bbvm-reduce-motion','${motion}')`;
   // a fresh tab per open(); a later load in it (the logo) keeps its session storage
   const tok=Math.random().toString(36).slice(2);
-  await C.onNewDocument(`try{if(sessionStorage.getItem('__mc')!=='${tok}'){sessionStorage.clear();sessionStorage.setItem('__mc','${tok}');}${store}}catch{}`,RAF_COUNTER,GL_SPY,...scripts);
+  await C.onNewDocument(`try{if(sessionStorage.getItem('__mc')!=='${tok}'){sessionStorage.clear();sessionStorage.setItem('__mc','${tok}');}${store}}catch{}`,RAF_COUNTER,GL_SPY,software?'1':HW_GL,...scripts);
   await C.send('Page.navigate',{url:'about:blank'});await sleep(100);
   C.requests.length=0;
   await C.send('Page.navigate',{url:URL0+hash});
@@ -190,6 +195,10 @@ try{
   // ---------- a shared link: no screen, nothing fetched, no context ----------
   await open({hash:'#s=274849&v=compare'});await sleep(2500);s=await state();
   check('Shared link (#s=274849&v=compare): no entry screen, no WebGL context, neither globe-v3 nor globe-v2 fetched',!s.on&&s.gls===0&&!C.requests.some(u=>/globe-v[23]/.test(u)),JSON.stringify({s,req:C.requests.filter(u=>u.includes('vendor'))}));
+  // ---------- a software renderer (SwiftShader named as such): the still picture, no textures, no frames ----------
+  await open({motion:'0',software:true});s=await waitReady();await sleep(2500);
+  {const reqs=C.requests.filter(u=>/globe-v[23]/.test(u));const q0=(await state()).raf;await sleep(1500);const q1=(await state()).raf;
+    check(`Software renderer (WebGL on the CPU): the still picture (globe-v2), no textures, no frames once shown (${q1-q0})`,s.gls===1&&reqs.length===1&&/globe-v2\/globe-\d+\.webp/.test(reqs[0])&&q1-q0<=1,JSON.stringify(reqs));}
   check('No uncaught page errors or console.error (WebGL run)',C.errors.length===0,C.errors.join(' | '));
   C.close();
 

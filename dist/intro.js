@@ -161,6 +161,9 @@ const TEXTURES={feather:3,sets:{
   full:{detail:{file:'detail-2048.webp',lon:[95,180],lat:[-5,62],size:[2048,1608]},world:{file:'world-2048.webp',lon:[-180,180],lat:[-90,90],size:[2048,1024]}},
   small:{detail:{file:'detail-1024.webp',lon:[95,180],lat:[-5,62],size:[1024,804]},world:{file:'world-1024.webp',lon:[-180,180],lat:[-90,90],size:[1024,512]}}}};
 // small for a globe drawn under 1100 device px across (phones) or a connection that saves data or is slow
+// WebGL drawn by the CPU (the GPU's renderer string names a software rasteriser): the globe keeps the still picture
+// there, as a full-screen shader at 30 fps would load the whole page (also headless test browsers without a GPU)
+const SOFTWARE_GL=/swiftshader|llvmpipe|softpipe|software|basic render driver/i;
 function textureSet(R,dpr,conn){
   const d=2*R*Math.min(2,dpr||1),slow=!!conn&&(!!conn.saveData||/2g|3g/.test(conn.effectiveType||''));
   return d<=1100||slow?'small':'full';
@@ -280,10 +283,14 @@ void main(){
     for(const i of Object.values(G.img)){i.onload=i.onerror=null;}G.img={};G.tex={};
   }
   function initGL(){
-    const c=document.createElement('canvas'),o={alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false};
+    // failIfMajorPerformanceCaveat: no context where WebGL would run on the CPU (a software renderer, a blocked GPU);
+    // there a full-screen shader at 30 fps would load the whole page, so those screens keep the still picture
+    const c=document.createElement('canvas'),o={alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false,failIfMajorPerformanceCaveat:true};
     const gl=c.getContext('webgl2',o)||c.getContext('webgl',o);
     if(!gl)throw Error('no WebGL');
     if(!gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT)?.precision)throw Error('no highp');
+    const dbg=gl.getExtension('WEBGL_debug_renderer_info');
+    if(dbg&&SOFTWARE_GL.test(String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))))throw Error('software renderer');
     const sh=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(x));return x;};
     const prog=gl.createProgram(),vs=sh(gl.VERTEX_SHADER,GLOBE_VS),fs=sh(gl.FRAGMENT_SHADER,globeShader());
     gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.bindAttribLocation(prog,0,'a');gl.linkProgram(prog);
