@@ -84,7 +84,7 @@ const pilotLabel = (key,info) => released(info)
   ? ({passed:'정식 산출 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'정식 산출 · 방법 검증 기준 미충족'})[validationResult(key,info)]||(key==='MCUI'?'정식 산출 · 공식 평가 범주':'정식 산출')
   : ({passed:'시범 지표 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'시범 지표 · 사후 검증 기준 미충족'})[validationResult(key,info)]||'검증 전 시범 지표';
 const validationNote = info => released(info)
-  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
+  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_scope?'(IUCN 전 지구·한국 국가 평가만, 없으면 보전평가 미확인)':(info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
   : ' (사후 검증: '+['MFPI','MBPI','MCUI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+')';
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
@@ -836,6 +836,8 @@ const consShort=(s,long)=>{const c=s?.assessment?.conservation_status;if(!c||!da
   if(c.state==='official_scored')return '공식 '+c.category+(long&&c.category==='LC'?'(낮은 위험 범주)':'')+(stockMcui(s)?' · 자원 감소':'');
   if(c.mcui_role==='stock_decline_lower_bound')return long?c.mcui_role_label:'평가 미확인 · 자원 감소 하한';
   return c.state==='official_dd'?'공식 DD(정보 부족)':c.state==='official_ne'?'공식 NE(미평가)':c.state==='lookup_failed'?'조회 실패':long?c.label:'보전평가 미확인';};
+// 4.14: why a species has no type, in words: an unassessed MCUI is not a missing BBVI and never a low risk
+const untypedReason=s=>s&&pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인'?(pilotScore(s,'BBVI')===null?'BBVI 미산출 · 보전평가 미확인':'보전평가 미확인 · MCUI 미산출'):'BBVI·MCUI 한 쌍 미산출';
 const untypedWhy=s=>s&&pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인'?'유형 미산출 · 보전평가 미확인':'유형 미산출 · BBVI·MCUI 한 쌍 미산출';
 // the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '유형 미산출' in grey
 const verdictWord=t=>`<b class="verdict vd-${t||'none'}">${esc(matrixTypePlain(t))}</b>`;
@@ -1366,7 +1368,7 @@ function verifiedNationalFactBody(s){
   if(ref&&ref.basis!=='preliminary')return '';
   if(ref){
     const r=ref.record, t=r.thresholds||{};
-    return `<p><b>예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님</b>: ${esc(ref.category)} 가능성 · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
+    return `<p><b>자체 예비검토(Rapid LC) 참고 정보 · 공식 평가 아님 · MCUI 점수 아님</b>: 넓은 분포·기록 수 기준만 확인(낮은 멸종위험을 확정하지 않음) · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
       `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}. `+
       `공식 IUCN 평가가 아니며, 어획 등에 따른 감소(기준 A)는 OBIS 추세로만 확인했습니다. MCUI 점수·매트릭스·지도 색·순위에 쓰지 않습니다.</p>`+
@@ -1627,7 +1629,7 @@ function renderVerifiedIndices(s){
       const label=key==='MCUI'&&value!==null&&separateMcui(s)?' · '+mcuiBasisLabel(s):'';
       const note=axisStateNote[st.kind];
       return `<details class="score-disclosure" data-axis="${key}"><summary><span>${esc(key)} · ${esc(names[key])}</span>`+
-        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · ${mcuiReference(s).basis==='range_state'?`다른 나라 평가 참고 ${esc(mcuiReference(s).record?.country_ko||'')} ${esc(mcuiReference(s).record?.category_as_published||mcuiReference(s).category)}`:`예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''}`} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
+        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · ${mcuiReference(s).basis==='range_state'?`다른 나라 평가 참고 ${esc(mcuiReference(s).record?.country_ko||'')} ${esc(mcuiReference(s).record?.category_as_published||mcuiReference(s).category)}`:`자체 예비검토 참고(공식 평가 아님${rapidLcCheck()?' · '+rapidLcCheck():''})`} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
         `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s):'');
@@ -1961,7 +1963,7 @@ function indexReviewRow(s,key,label){
   const seen=a&&{MFPI:a.food_trace?.observed_rows?.length,MBPI:a.bioactivity_trace?.length||a.bioactivity_partial?.length,MCUI:a.conservation_trace?.reviewed}[key];
   if(!seen)return null;
   const v=pilotScore(s,key);
-  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?'산출 보류':v.toFixed(1)}${key==='MCUI'&&separateMcui(s)?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
+  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?(key==='MCUI'&&s.assessment?.conservation_status?'미산출 · '+consShort(s,true):'산출 보류'):v.toFixed(1)}${key==='MCUI'&&separateMcui(s)?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
     `<p class="fine">운영 요약(발행 ${esc((s.publishedAt||'').slice(0,10)||'날짜 미확인')})은 지표 보고서보다 먼저 작성되어 이 항목을 반영하지 않았습니다. 원값과 근거는 위 ${key} 항목에서 확인합니다.</p>`;
 }
 function liveEvidence(s) {
@@ -2155,7 +2157,7 @@ const sitesLabel=s=>spatialCells(s).length===s.cells.length?'조사 지점':'조
 // Species-level status shown with each cell: the proposal's "zoom in to see indicators and conservation status".
 function speciesAxesLine(s){
   // Status only, never the value: a species score printed on a cell would read as that sea area's score (PR #8).
-  const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return `${k} ${st.value!==null?(released()?'산출값 있음':'시범값 있음'):st.kind==='withheld'?'보류':st.label}`;}).join(' · ');
+  const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return `${k} ${st.value!==null?(released()?'산출값 있음':'시범값 있음'):st.kind==='withheld'&&!(k==='MCUI'&&s.assessment?.conservation_status)?'보류':st.label}`;}).join(' · ');
   const h=IUCN_HISTORICAL[s.aphiaID], k=s.info?.conservation||{};
   const iucn=h?(h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published}년 발표(원문 검수 전, 2013 평가 대체)`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.criteria||''} ${s.assessment.conservation_trace.publication_year}년 발표(원문 검수 · ${P_()}MCUI, 2013 평가 대체)`:`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':released()?'현행 재확인':'현행 재확인 · 시범'})`))
     :reportConservation(s)?`보전 ${reportConservation(s)}(지표 보고서)`
@@ -2552,7 +2554,7 @@ function valueSpeciesType(s){
   const nationalOff=!t&&nationalMcui(s)&&pilotScore(s,'BBVI')!==null&&matrixRule()&&!matrixRule().include_national_mcui;
   const type=t?`매트릭스 유형 <b>${esc(matrixTypeLabel(t))}</b> · BBVI ${pilotScore(s,'BBVI').toFixed(1)}(현재 가중치${bbviLabel(s)?' · '+esc(bbviLabel(s)):''}${officialNote(s)?' · '+esc(officialNote(s)):''}) × MCUI ${pilotScore(s,'MCUI').toFixed(1)}${separateMcui(s)?'('+mcuiBasisLabel(s)+')':''}`
     :nationalOff?'매트릭스 유형 미산출 · 국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외(두 값은 산출됨)'
-    :'매트릭스 유형 미산출 · BBVI·MCUI 한 쌍 미산출(낮은 가치라는 뜻이 아님)';
+    :`매트릭스 유형 미산출 · ${untypedReason(s)}(낮은 가치·낮은 위험이라는 뜻이 아님)`;
   // 3.4: the label has two reasons; only the sufficiency reason quotes the 50% cut
   const why=a?.priority_survey_reasons||['low_information_sufficiency'];
   const survey=!a?.priority_survey?Math.round(i?.mean_ratio*100)+'%'
@@ -2699,11 +2701,11 @@ function renderValueMap(){
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
   $('map-source').textContent=own?'활용 × 보전 · 선택 종 · GBIF 공개 격자':'활용 × 보전 · GBIF 공개 격자';
   const cut=data.assessmentInfo?.method?.unexplored_threshold;
-  $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
+  $('value-rule').textContent=rule?`${thresholdWord()}: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(검증된 기준 아님 · BBVI는 현재 가중치에서 반올림 전 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
   if(own){const t=matrixType(selected);
-    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:'유형 미산출(BBVI·MCUI 한 쌍 미산출) · 회색으로 칠했습니다.')+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
+    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:`유형 미산출(${untypedReason(selected)}) · 회색으로 칠했습니다.`)+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
   else if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
   if(!own&&typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
   renderValueLegend(groups,own);
@@ -2761,7 +2763,7 @@ function renderValueMap(){
 function renderSpeciesValueMap(){
   const s=selected,id=s.aphiaID,pv=periodView(s),t=matrixType(s),panel=$('value-cell-detail');
   const mine=new Map([...valueCellGroups(true)].filter(([,g])=>g.species.has(id))),n=spatialCells(pv).length;
-  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:'유형 미산출(BBVI·MCUI 한 쌍 미산출)';
+  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:`유형 미산출(${untypedReason(s)})`;
   $('map-count').textContent=n?cellRecords(pv).toLocaleString():'—';$('map-cells').textContent=String(n);$('map-years').textContent=n?cellYears(pv):'—';
   setMapChip(s,n?`기록 셀 ${n}개 · ${cellRecords(pv).toLocaleString()}건 · ${cellYears(pv)}`:'공개 셀 없음 · '+verdict);
   if(!mine.size)panel.innerHTML='<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 지도에 칠할 셀이 없습니다. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다. ‘모든 종 겹쳐 보기’에서 다른 종의 격자를 볼 수 있습니다.</p>';
@@ -2835,11 +2837,11 @@ function renderValueLegend(groups,own=false){
   key.className='vk-swatch'+(own?(c?'':' none'):' all');key.style.background=own?(c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
   $('value-key-text').innerHTML=!own?'셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형 · 노란 실선 = 선택 종'
     :ownType?`셀 색 = ${esc(selected.label)}의 유형 ${verdictWord(ownType)} <span class="vk-type">(${esc(matrixTypeLabel(ownType))})</span>`
-    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(BBVI·MCUI 한 쌍 미산출)</span>`;
+    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(${esc(untypedReason(selected))})</span>`;
   $('value-view').setAttribute('aria-pressed',String(!own));
   if(!rule)return;
-  $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
-  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
+  $('v-axis-x').textContent=`BBVI(활용가치) → · ${thresholdWord()} ${rule.bbvi_threshold}`;
+  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${thresholdWord()} ${rule.mcui_threshold}`;
   $('v-rule-line').textContent=own?'셀 색 = 선택 종의 유형(종 단위, 셀 값 아님)':colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
@@ -2994,7 +2996,7 @@ function renderComparison(){
     const mbpiLabel=key==='MBPI'&&value!==null?basisNote(s,key).replace(/^ · /,'')||null:key==='BBVI'&&value!==null?bbviLabel(s):key==='MFPI'&&value!==null?s.assessment.food_trace?.literature_moisture?.label||null:null;
     // 4.14: another country's list is named as such, never as a Rapid LC 'likely' category
     const mcuiRef=key==='MCUI'&&value===null&&mcuiReference(s)?(r=>r.basis==='range_state'?`다른 나라 평가 참고 · ${r.record?.country_ko||r.record?.country||''} ${r.record?.category_as_published||r.category} · 점수 아님`
-      :`예비 평가 참고 · ${r.category} 가능성${rapidLcCheck()?' · '+rapidLcCheck():''} · 점수 아님`)(mcuiReference(s)):null;
+      :`자체 예비검토 참고 · 공식 평가 아님${rapidLcCheck()?' · '+rapidLcCheck():''} · 점수 아님`)(mcuiReference(s)):null;
     const reference=key==='BBVI'&&value===null?bbviReference(s):null;
     if(reference!==null)return `<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="${key}" aria-label="${esc(s.label)} BBVI 참고값 ${reference.toFixed(1)} · ${esc(s.assessment.mbpi_label||'근거 논문 1편')} · 점수·매트릭스 미사용 근거 보기">`+
       `${reference.toFixed(1)}<small>BBVI 참고값 · ${esc(s.assessment.mbpi_label||'근거 논문 1편')} · 점수·매트릭스 미사용 · 보기</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
