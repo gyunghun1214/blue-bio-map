@@ -90,12 +90,12 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
    (통과 · 기준 미충족). The 의약 후보 MBPI line keeps bare <li><b> markup (test_verified_ui reads it), so it stays neutral. */
 #method #method-03 li{margin:0 0 10px;padding:11px 14px 11px 34px;border:1px solid var(--mt-line);border-radius:10px;background:var(--mt-low)}
 #method #method-03 li::before{left:12px;top:15px;width:12px;height:12px;border-radius:50%;background:none;border:2px solid var(--mt-ink3);box-sizing:border-box}
-#method .method-card li.st-ok{border-color:rgba(68,215,192,.32);background:var(--mt-accent-soft)}
-#method .method-card li.st-ok::before{border:0;background:var(--mt-accent);box-shadow:0 0 0 3px rgba(68,215,192,.18)}
-#method .method-card li.st-ok>b:first-child{color:var(--mt-accent)}
-#method .method-card li.st-no{border-color:rgba(255,138,138,.26);background:var(--mt-no-soft)}
-#method .method-card li.st-no::before{border-color:var(--mt-no)}
-#method .method-card li.st-no>b:first-child{color:var(--mt-no)}
+#method #method-03 li.st-ok{border-color:rgba(68,215,192,.32);background:var(--mt-accent-soft)}
+#method #method-03 li.st-ok::before{border:0;background:var(--mt-accent);box-shadow:0 0 0 3px rgba(68,215,192,.18)}
+#method #method-03 li.st-ok>b:first-child{color:var(--mt-accent)}
+#method #method-03 li.st-no{border-color:rgba(255,138,138,.26);background:var(--mt-no-soft)}
+#method #method-03 li.st-no::before{border-color:var(--mt-no)}
+#method #method-03 li.st-no>b:first-child{color:var(--mt-no)}
 #method .method-card.flash{border-color:var(--mt-card);box-shadow:0 0 0 3px color-mix(in srgb,var(--mt-card) 45%,transparent),0 18px 40px -24px rgba(0,0,0,.6)}
 
 /* ---------- reading notes + type table ---------- */
