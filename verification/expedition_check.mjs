@@ -210,8 +210,9 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
     check(`${tag}: the map header links back to the expedition`,backLink.includes('바다 탐험'),backLink);
     await sleep(1200);await shot(s,`${tag}-8-map`);
     // the logo goes to the site's first screen (the globe of index.html), even in a tab that already entered the map
+    // (the map page left behind also reads complete and has no is-loading: wait for this page's own script to have run)
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
-    await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
+    await waitFor(s,"location.pathname.endsWith('/expedition.html')&&document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const lp=await s.evaluate("sessionStorage.setItem('bbvm-intro-entered','1');(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('a.x-brand').getBoundingClientRect())");
     if(mobile)for(const type of ['touchStart','touchEnd'])await s.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x:lp.x,y:lp.y}]});
     else for(const type of ['mousePressed','mouseReleased'])await s.send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});

@@ -1202,7 +1202,7 @@ try{
     // explore, a species chosen through a shared link
     await evaluate("sessionStorage.setItem('bbvm-intro-entered','1');1");
     await send('Page.navigate',{url:URL0+'#s=241776&v=explore'});
-    for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+    for(let i=0;i<80&&!await evaluate("/연결됨|불러오기 실패|연결 실패/.test(document.getElementById('connection-state')?.textContent||'')&&selected?.aphiaID===241776").catch(()=>false);i++)await sleep(250);
     let p=await logo('mark');
     check('G-7 logo: one link round the mark and the words, pointer cursor, named for where it goes',p.cursor==='pointer'&&p.name==='Blue-bio Value Map 첫 화면으로'&&await evaluate("(()=>{const a=document.querySelector('header a.brand');return a.contains(a.querySelector('.brand-mark svg'))&&a.textContent.trim()==='Blue-bio Value Map'})()"),JSON.stringify(p));
     const before=await evaluate("({gate:document.documentElement.classList.contains('gate-on'),hash:location.hash})");
