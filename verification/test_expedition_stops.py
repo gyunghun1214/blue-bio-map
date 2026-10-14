@@ -66,8 +66,14 @@ class ExpeditionStops(unittest.TestCase):
         self.assertIsNone(ids[250680])
         ascidian = next(s for s in self.out["stops"] if s["aphia_id"] == 250680)["mcui"]
         self.assertEqual((ascidian["basis"], ascidian["category"]), (None, None))
-        self.assertIn("감소 기준", ascidian["label"])
-        self.assertEqual(ids[372119], "russia_red_data_book_plants_2023")
+        # 4.14 (prereg-4.14 2): every species without an IUCN global or Korean national category says its state instead
+        self.assertTrue(ascidian["label"].startswith("보전평가 미확인"), ascidian["label"])
+        self.assertEqual(ascidian["status"]["state"], "self_preliminary_only")
+        for stop in self.out["stops"]:
+            st = self.species[stop["aphia_id"]]["conservation_status"]
+            self.assertEqual(stop["mcui"]["status"], {"state": st["state"], "label": st["label"]})
+        # 4.14: 우뭇가사리's Russian list is a reference only, so it names no scored source
+        self.assertIsNone(ids[372119])
         for stop in self.out["stops"]:
             rec = (self.species[stop["aphia_id"]].get("mcui_substitute") or {}).get("record") or {}
             if stop["mcui"]["basis"] == "range_state":
@@ -83,12 +89,14 @@ class ExpeditionStops(unittest.TestCase):
         self.assertEqual(len(self.route), 29)
         self.assertEqual(self.out["stops"][:29], self.route, "stops off the route come last")
         # every quadrant has a stop (4.12: 살오징어 is the one alternative-production species, by its stock-decline MCUI), and
-        # 멍게 has no MCUI, so no type
+        # 4.14: every species with no MCUI (no IUCN global or Korean national category, no stock lower bound) has no type
         self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]},
                          {t["id"] for t in self.report["method"]["matrix"]["types"].values()} | {None})
         self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] == "alternative_production"],
                          [s["aphia_id"] for s in self.report["species"] if s["korean_name"] == "살오징어"])
-        self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] is None], [250680])
+        untyped = [s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] is None]
+        self.assertEqual(untyped, [s["aphia_id"] for s in self.out["stops"] if s["scores"]["MCUI"] is None])
+        self.assertEqual(len(untyped), 14)
 
     def test_centres_are_shared_only_where_shared_with_says_so(self):
         at = {}

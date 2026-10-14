@@ -1,7 +1,7 @@
 {
  "schemaVersion": "unexplored-candidates-1",
  "reviewedOn": "2026-10-04",
- "reportVersion": "verified-4.13",
+ "reportVersion": "verified-4.14",
  "rule": "Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI (default weight) is at least 50. No indicator was collected for it and no score is inferred or copied.",
  "cellRules": "scripts/build_expansion_cells.py (22-candidate review rules), unchanged; a congener of a 4° species is published at 4°",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not distribution, abundance, stock size or value. A listed species is a lead for survey, not a finding.",
@@ -24,7 +24,7 @@
    "aphiaID": 145721,
    "label": "미역",
    "name": "Undaria pinnatifida",
-   "BBVI": 68.0
+   "BBVI": 67.9
   },
   {
    "aphiaID": 494972,
@@ -36,13 +36,13 @@
    "aphiaID": 371986,
    "label": "감태",
    "name": "Ecklonia cava",
-   "BBVI": 59.7
+   "BBVI": 59.6
   },
   {
    "aphiaID": 236157,
    "label": "꼬시래기",
    "name": "Gracilaria vermiculophylla",
-   "BBVI": 59.7
+   "BBVI": 59.6
   },
   {
    "aphiaID": 231750,
@@ -66,13 +66,13 @@
    "aphiaID": 1666974,
    "label": "갑오징어",
    "name": "Acanthosepion esculentum",
-   "BBVI": 54.2
+   "BBVI": 54.1
   },
   {
    "aphiaID": 234476,
    "label": "가시파래",
    "name": "Ulva prolifera",
-   "BBVI": 53.8
+   "BBVI": 53.7
   },
   {
    "aphiaID": 342067,
@@ -128,7 +128,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 54.1
     }
    ]
   },
@@ -210,7 +210,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 54.1
     }
    ]
   },
@@ -292,7 +292,7 @@
      "aphiaID": 1666974,
      "label": "갑오징어",
      "name": "Acanthosepion esculentum",
-     "BBVI": 54.2
+     "BBVI": 54.1
     }
    ]
   },
@@ -1115,7 +1115,7 @@
      "aphiaID": 371986,
      "label": "감태",
      "name": "Ecklonia cava",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -1159,7 +1159,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -1203,7 +1203,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -1247,7 +1247,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -1645,7 +1645,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -1869,7 +1869,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -2332,7 +2332,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -2693,7 +2693,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -2740,7 +2740,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -3871,7 +3871,7 @@
      "aphiaID": 236157,
      "label": "꼬시래기",
      "name": "Gracilaria vermiculophylla",
-     "BBVI": 59.7
+     "BBVI": 59.6
     }
    ]
   },
@@ -24501,7 +24501,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -24590,7 +24590,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -25065,7 +25065,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -26962,7 +26962,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -27168,7 +27168,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -27562,7 +27562,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -28940,7 +28940,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -29839,7 +29839,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -29883,7 +29883,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -30012,7 +30012,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -30104,7 +30104,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -31572,7 +31572,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -32522,7 +32522,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -33977,7 +33977,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -34363,7 +34363,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -34497,7 +34497,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -34579,7 +34579,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -34696,7 +34696,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -35385,7 +35385,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -35464,7 +35464,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -35614,7 +35614,7 @@
      "aphiaID": 234476,
      "label": "가시파래",
      "name": "Ulva prolifera",
-     "BBVI": 53.8
+     "BBVI": 53.7
     }
    ]
   },
@@ -35637,7 +35637,7 @@
      "aphiaID": 145721,
      "label": "미역",
      "name": "Undaria pinnatifida",
-     "BBVI": 68.0
+     "BBVI": 67.9
     }
    ]
   }

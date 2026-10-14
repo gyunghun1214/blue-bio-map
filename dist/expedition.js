@@ -146,9 +146,11 @@ function stopFromHash(hash,n){
 // The existing map opens this species with its published cell in view (index.html readHash/applyHash format).
 const mapHref=stop=>stop.map_link;
 // The two largest of the three axes lead the card; the rest stay small. A missing value is never ranked as 0.
+// 4.14 (prereg-4.14-2026-10-14 8): the two large values follow a fixed order, never the larger numbers: MFPI, MBPI and MCUI sit
+// in different cohorts and scales, so comparing their numbers says nothing
 function headlineAxes(stop){
   const v=k=>stop.scores[k];
-  return ['MFPI','MBPI','MCUI'].filter(k=>v(k)!==null&&v(k)!==undefined).sort((a,b)=>v(b)-v(a)).slice(0,2);
+  return ['MFPI','MBPI','MCUI'].filter(k=>v(k)!==null&&v(k)!==undefined).slice(0,2);
 }
 const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
 // Published data still carries the older label words; the screen shows the neutral wording, as on the main map
@@ -220,7 +222,7 @@ function checkTag(k){
 function mcuiTag(stop){
   const m=stop.mcui;
   // 4.12: an MCUI set by the KOSIS catch trend says so first, then the extinction-risk basis it was compared with
-  if(m.driver==='stock_decline'&&m.stock_decline)return `자원 감소 신호 · 어획량 −${esc(m.stock_decline.decline_pct)}% (IUCN 평가 아님) · 멸종위험 근거 ${esc(m.extinction_risk??'없음')}점`;
+  if(m.driver==='stock_decline'&&m.stock_decline)return `자원 감소 신호 · 어획량 −${esc(m.stock_decline.decline_pct)}% (IUCN 평가 아님) · ${m.extinction_risk===null||m.extinction_risk===undefined?'멸종위험 평가 미확인 · 하한으로만 씀':`멸종위험 근거 ${esc(m.extinction_risk)}점`}`;
   if(m.basis==='iucn')return `공식 평가 범주 · IUCN ${esc(m.category)}${m.assessment_year?` (${esc(m.assessment_year)} 평가)`:''}`;
   if(m.basis==='national')return `국가 평가 · 한국 ${esc(m.category||'범주 미확인')}`;
   return esc(m.label||m.basis_label||'근거 미확인');
@@ -276,7 +278,7 @@ function detailHtml(stop,i){
       <dt>비교집단 백분위</dt><dd>${esc(b.percentile??'미확인')}</dd><dt>근거 계수</dt><dd>${esc(b.evidence_factor??'미확인')}</dd></dl>
       <p class="x-src">${b.links.length?b.links.map((u,j)=>link(u,'원논문 DOI '+b.dois[j])).join('<br>'):'<span class="x-missing">원논문 링크 없음</span>'}</p>
       <p class="x-fine">${esc(DATA.notes.mbpi)}</p>`:'<p class="x-missing">자료 없음</p>';
-  const cons=`<p>${esc(m.basis_label||'근거 미확인')} · 범주 ${esc(m.category||'미확인')}${m.assessment_year?` · ${esc(m.assessment_year)}년 평가`:''}${m.criteria?` · 기준 ${esc(m.criteria)}`:''}</p>
+  const cons=`<p>${!m.basis&&m.status?esc(m.status.label):`${esc(m.basis_label||'근거 미확인')} · 범주 ${esc(m.category||'미확인')}`}${m.assessment_year?` · ${esc(m.assessment_year)}년 평가`:''}${m.criteria?` · 기준 ${esc(m.criteria)}`:''}</p>
       ${m.mapping?`<p class="x-fine">점수 환산: ${esc(m.mapping)}</p>`:''}${m.label?`<p class="x-fine">${esc(m.label)}</p>`:''}${m.scope?`<p class="x-fine">범위: ${esc(m.scope)}</p>`:''}
       <p class="x-src">${m.source?link(m.source.url,m.source.title||m.source.id):'<span class="x-missing">원자료 미확인</span>'}</p>`;
   const cites=(c?.citations||[]).map(x=>`<li>${link(x.url,x.title)} <small>${esc((x.licenses||[]).join(' · ')||'라이선스 미확인')}</small></li>`).join('')||'<li class="x-missing">데이터셋 인용 없음</li>';

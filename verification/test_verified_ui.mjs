@@ -71,16 +71,21 @@ html=ctx.renderScores(by(145721));
 // 4.3 (team-lead decisions 2026-10-05): 미역 took the Primorsky Krai decree No. 272 (EN); 멍게 the scored Rapid LC check.
 // 4.11 (prereg 5.1·5.2): the failed back-test makes the Primorsky row reference only, so 미역 falls to the met Rapid LC check;
 // 멍게's reporting-rate ratio 0.655 reached the decline threshold, so its check gives no MCUI.
-assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>10\.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가\(Rapid LC\)<\/b>/);
-assert.match(html,/지방 목록 참고값 · MCUI 점수 아님<\/b>: EN · 과대평가 역검증 기준 미충족/);
-assert.match(html,/연해주\(러시아\) · \(EN\) → EN/);
-assert.doesNotMatch(html,/시범 MCUI|예비 평가 참고/);
+// 4.14 (prereg-4.14 2·3): neither the Primorsky row nor the Rapid LC check is an IUCN global or Korean national category, so
+// 미역 has no MCUI; the state is said in words and both lists stay visible as references
+assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인 · 자체 예비검토 참고\(공식 평가 아님 · 역검증 기준 미충족\) · 점수 아님/);
+// 4.14: a Rapid LC reference never reads as a likely low-risk category
+assert.doesNotMatch(html,/LC 가능성|예비 평가 참고/);
+assert.match(html,/<b>보전평가 상태: 보전평가 미확인 · 다른 나라·지역 평가 참고<\/b>/);
+assert.match(html,/다른 나라 지방 평가 \(연해주, 러시아\) · [^<]*\(EN\) \(EN에 해당하는 이름 · 숫자로 바꾸지 않음\) · 참고 · MCUI·유형·지도 색에 쓰지 않음/);
+assert.match(html,/자체 예비검토\(Rapid LC\) · 공식 평가 아님<\/b>/);
+assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가/);
 {const sq=ctx.renderScores(by(250680));
-  assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>산출 보류<\/b>/);
+  assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인<\/b>/);
   assert.match(sq,/자체 예비평가\(Rapid LC\) 쓰지 않음 · MCUI 없음<\/b>: OBIS 보고율 비\(0\.655\)가 감소 기준\(0\.7\) 이하입니다/);
   assert.doesNotMatch(sq,/Rapid LC 충족 → LC 상당 → 10/);}
 {const lc=ctx.renderScores(by(145721));
-  assert.match(lc,/Rapid LC 충족 → LC 상당 → 10/);
+  assert.doesNotMatch(lc,/Rapid LC 충족 → LC 상당 → 10/,'4.14: the met check gives no number');
   assert.match(lc,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미충족 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
   assert.doesNotMatch(lc,/공식 평가 범주 · 자체/);}
 assert.match(html,/결과 0건/);
@@ -160,7 +165,8 @@ const stages={
   // reference only (team-lead decision 2026-10-02), so a species without an IUCN or national category keeps MCUI 'unavailable'.
   // 4.0: the zero-result IUCN search was repeated on 2026-10-04, so the stage reads '평가 없음 확인' (checked_none), not 미확인
   // 4.2: 톳 gets a sub-national MCUI (Ishikawa/Okinawa VU), so the conservation stage is calculated, not '평가 없음 확인'.
-  494972:['verified','linked','validated','calculated','calculated'],
+  // 4.14: the sub-national list is a reference again, so 톳's conservation stage is '평가 없음 확인' (IUCN and Korean lists searched)
+  494972:['verified','linked','validated','calculated','checked_none'],
   // 3.16: Russia's Red Data Book gives 우뭇가사리 a range-state MCUI, so its conservation check reaches '시범 산출'
   // 4.0: pheophorbide A (Korean 'G. amansii' mapped to G. elegans) gives 우뭇가사리 a single-paper ChEMBL MBPI
   372119:['verified','linked','validated','calculated','calculated'],
@@ -170,13 +176,13 @@ const stages={
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
   241776:['verified','linked','validated','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI; 2.3 gives the oyster a BBVI; 3.12 replicates wakame IY, 3.14 IW (BBVI 71.0); 4.11 counts only the wakame-purified VW (BBVI 68.0).
-  145721:['verified','linked','validated','calculated','calculated']  // 4.3: Primorsky Krai EN; 4.11: the met Rapid LC check
+  145721:['verified','linked','validated','calculated','checked_none']  // 4.3: Primorsky Krai EN; 4.11: the met Rapid LC check; 4.14: both references
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
   assert.deepEqual(Array.from(ctx.coverage(s).checks,c=>c.stage),expected,`${s.label}: published snapshot versus report`);
   // 3.27: a labelled single-paper BBVI is a score too
-  assert.equal(ctx.score(s,'BBVI'),{836033:71.9,145721:68.0,241776:36.1,250680:33.2,342067:51.5,494972:64.2,506159:35.5,372119:45.1}[id]??null);
+  assert.equal(ctx.score(s,'BBVI'),{836033:71.9,145721:67.9,241776:36.1,250680:33.1,342067:51.5,494972:64.2,506159:35.5,372119:45.1}[id]??null);
 }
 
 // The side-by-side table must name each incompatible MFPI cohort where a number appears.
@@ -204,9 +210,11 @@ assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 방법 검�
 assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI was the Primorsky value, 멍게's the scored Rapid LC check. 4.11: 미역 takes the Rapid LC check (the failed
 // back-test makes the Primorsky row reference only) and 멍게 has none (reporting-rate ratio at the decline threshold).
-assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>10\.0<small>정식 산출 · 역검증 기준 미충족 · 근거 보기<\/small><small>자체 예비평가\(Rapid LC\) · IUCN 기반 MCUI와 비교 불가<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>산출 보류<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small>/);
-assert.doesNotMatch(dom.comparison.innerHTML,/예비 평가 참고/);
+// 4.14 (prereg-4.14 2·7): both are '보전평가 미확인' in words; 미역's Rapid LC check rides along as a reference, never a number
+assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small><small>자체 예비검토 참고 · 공식 평가 아님 · 역검증 기준 미충족 · 점수 아님<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0<small>/,'우뭇가사리 keeps its stock-decline lower bound');
+assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.
 // 4.12: the KOSIS catch fell 79.8% (2015-17 -> 2022-24), so the stock-decline signal 60 is the higher value; a diamond marks it
 assert.match(dom.comparison.innerHTML,/>80\.0<small>/);
@@ -227,8 +235,19 @@ vm.runInContext("cmpSort={key:'BBVI',dir:'desc'}",ctx);ctx.compare();
 {const want=next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=ctx.score(a,'BBVI'),y=ctx.score(b,'BBVI');return x===null||y===null?(x===null)-(y===null)||i-j:y-x||i-j;}).map(([s])=>s.label);
 assert.deepEqual(headers(),want,'BBVI high → low');}
 assert.match(dom.comparison.innerHTML,/<th scope="col" aria-sort="descending"><button type="button" class="cmp-sort" data-sort="BBVI">/);
-assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: BBVI 높은 순');
+// 4.14 (prereg-4.14 8): a BBVI sort says it mixes cohorts and is no validated order, on the label and atop the rows
+assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: BBVI 높은 순 (탐색적 · 검증된 우열 아님)');
+assert.match(dom.comparison.innerHTML,/<tbody><tr class="cmp-group mixed"><th colspan="8" scope="rowgroup">탐색적 합성지표 · 비교집단이 다른 점수를 섞은 순서 · 검증된 우열 아님<\/th><\/tr>/);
+// an MFPI sort groups by RDA cohort first (seaweed and animal rows never interleave) and orders only inside a group
+vm.runInContext("cmpSort={key:'MFPI',dir:'desc'}",ctx);ctx.compare();
+{const cohortOf=l=>next.species.find(s=>s.label===l).assessment.food_trace.cohort_id, seq=headers().map(cohortOf);
+  assert.equal(seq.filter((c,i)=>i&&c!==seq[i-1]).length,1,'two cohort blocks, one change');
+  for(const c of new Set(seq)){const v=headers().filter(l=>cohortOf(l)===c).map(l=>ctx.score(next.species.find(s=>s.label===l),'MFPI'));
+    assert.deepEqual(v,[...v].sort((a,b)=>b-a),'high → low inside '+c);}
+  assert.equal((dom.comparison.innerHTML.match(/<tr class="cmp-group"><th colspan="8" scope="rowgroup">비교집단 /g)||[]).length,2);
+  assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: MFPI 높은 순 (비교집단별)');}
 vm.runInContext("cmpSort={key:null,dir:null}",ctx);ctx.compare();assert.deepEqual(headers(),labels,'default order again');
+assert.doesNotMatch(dom.comparison.innerHTML,/cmp-group/,'no divider rows in the default order');
 
 const bad=report();
 bad.species.find(s=>s.aphia_id===836033).scores.MFPI=99;
@@ -268,12 +287,13 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>badMcui});
 next={live:true,species:[sp(241776,'Apostichopus japonicus','해삼')]};await ctx.attach(next);
 assert.equal(ctx.score(next.species[0],'MCUI'),null,'MCUI must equal the pilot mapping of its IUCN category');
 assert.deepEqual(Object.keys(next.species[0].assessment.axis_errors),['MCUI'],'an MCUI fault leaves MFPI, MBPI and BBVI untouched');
-// 4.3 (team-lead decision 2026-10-05): the scored Rapid LC value is re-checked; a value other than LC-equivalent, a record
-// marked reference-only or one without its failed back-test is refused as an MCUI fault.
-for(const [forge,why] of [[a=>{a.mcui_substitute.value=35;},'a value other than LC-equivalent'],
-    [a=>{a.mcui_substitute.use='reference_only';},'a record marked reference only'],
-    [a=>{delete a.mcui_substitute.backtest;},'a value without its back-test']]){
-  const forged=report();forge(forged.species.find(s=>s.aphia_id===145721));  // 4.11: 미역 holds the scored check now
+// 4.14 (prereg-4.14 2·3): 미역's Rapid LC check is a reference with no number. A reference that carries a value, a check scored
+// again, or a state that claims an official category is refused as an MCUI fault (and never read as a low MCUI).
+for(const [forge,why] of [[a=>{a.mcui_substitute.value=10;},'a reference carrying a value'],
+    [a=>{a.mcui_substitute.use='scored';a.mcui_substitute.value=10;a.mcui_basis='preliminary';a.scores.MCUI=10;a.score_status.MCUI='산출됨';},'a Rapid LC check scored again'],
+    [a=>{a.conservation_status.state='official_scored';a.conservation_status.label='공식 평가';},'a state claiming an official category'],
+    [a=>{a.conservation_status.assessments[0].used_for_mcui=true;},'a regional list used for MCUI']]){
+  const forged=report();forge(forged.species.find(s=>s.aphia_id===145721));
   ctx.fetch=async()=>({status:200,ok:true,json:async()=>forged});
   next={live:true,species:[sp(145721,'Undaria pinnatifida','미역')]};await ctx.attach(next);
   assert.equal(ctx.score(next.species[0],'MCUI'),null,`${why} is never an MCUI`);
@@ -298,11 +318,13 @@ const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:
 next={live:true,species:[cand(231750,'Ruditapes philippinarum','바지락'),cand(274849,'Sebastes schlegelii','조피볼락'),sp(397082,'Haliotis discus','전복(종 수준)')]};
 await ctx.attach(next);
 assert.equal(ctx.score(next.species[0],'MFPI'),60.4);
-// 4.3 (team-lead decision 2026-10-05): not in the Red List and no official list anywhere, so the met Rapid LC check scores 10
-assert.equal(ctx.score(next.species[1],'MCUI'),10);
-assert.equal(next.species[1].assessment.withheld_reasons.MCUI,null);
-assert.equal(next.species[1].assessment.mcui_basis,'preliminary');
-assert.equal(next.species[1].assessment.mcui_substitute.use,'scored');
+// 4.3 scored the met Rapid LC check 10; 4.14 (prereg-4.14 2) keeps it as a reference: no MCUI, '보전평가 미확인'
+assert.equal(ctx.score(next.species[1],'MCUI'),null);
+assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
+assert.equal(next.species[1].assessment.mcui_basis,null);
+assert.equal(next.species[1].assessment.mcui_substitute.use,'reference_only');
+assert.equal(next.species[1].assessment.conservation_status.state,'self_preliminary_only');
+assert.equal(ctx.state(next.species[1],'MCUI').label,'보전평가 미확인');
 assert.equal(next.species[1].assessment.conservation_trace.iucn_state,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
 assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'validated');
@@ -427,7 +449,7 @@ assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721:
     assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
   assert.doesNotMatch(mbpi,/참고값\(근거 논문 1편\)/);}
 assert.equal(ctx.score(by(145721),'MBPI'),89.2);
-assert.equal(ctx.score(by(145721),'BBVI'),68);
+assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.0 from the rounded 46.7 and 89.2)
 // 2026-10-12: the MBPI section opens with one line from published values only (the post-hoc result, the aggregation range),
 // then the top item's stratum; the summary names the stratum too, and the reason paragraph below stays.
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
@@ -540,14 +562,19 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">없음</span></span>',r.korean_name);
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>62.6<small>항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) · MBPI·BBVI에 쓰지 않음</small>'),'oyster 자세히');
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
-  // sorting by it: high → low and low → high, the 10 species without a value last in catalogue order both ways
-  const want=dir=>next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=rxv(a),y=rxv(b);return x===null||y===null?(x===null)-(y===null)||i-j:(dir==='desc'?y-x:x-y)||i-j;}).map(([s])=>s.label);
+  // sorting by it (4.14, prereg-4.14 8): grouped by the top item's stratum (groups in catalogue order of first appearance), high → low
+  // or low → high only inside a group, the species without a value (10 since 4.13) last in catalogue order both ways
+  vm.runInContext('globalThis.rxGroup=s=>cmpGroup(s,"MBPI_RX")',ctx);
+  const order=[];for(const s of next.species){const g=ctx.rxGroup(s);if(g&&!order.includes(g))order.push(g);}
+  const rank=s=>{const g=ctx.rxGroup(s);return g?order.indexOf(g):Infinity;};
+  const want=dir=>next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{if(rank(a)!==rank(b))return rank(a)-rank(b);const x=rxv(a),y=rxv(b);return x===null||y===null?(x===null)-(y===null)||i-j:(dir==='desc'?y-x:x-y)||i-j;}).map(([s])=>s.label);
+  assert.ok(order.length>1,'MBPI-Rx values sit in more than one stratum');
   for(const dir of ['desc','asc']){vm.runInContext(`cmpSort={key:'MBPI_RX',dir:'${dir}'}`,ctx);ctx.compare();t=dom.comparison.innerHTML;
     assert.deepEqual(headers(),want(dir),`MBPI-Rx ${dir}`);
-    assert.deepEqual(headers().slice(-10),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
-    assert.equal(headers()[dir==='desc'?0:19],'피조개','75.0 is the highest MBPI-Rx (4.11: 갑오징어 back to 65.8; 4.13: 넙치 gains a value)');
+    assert.deepEqual(headers().slice(-next.species.filter(s=>rxv(s)===null).length),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
+    assert.equal((t.match(/<tr class="cmp-group"><th colspan="8" scope="rowgroup">층 /g)||[]).length,order.length,'one head per stratum');
     assert.match(t,new RegExp(`aria-sort="${dir==='desc'?'descending':'ascending'}"><button type="button" class="cmp-sort" data-sort="MBPI_RX">`));
-    assert.equal(dom['comparison-page'].textContent,`총 30종 · 정렬: MBPI-Rx ${dir==='desc'?'높은 순':'낮은 순'}`);}
+    assert.equal(dom['comparison-page'].textContent,`총 30종 · 정렬: MBPI-Rx ${dir==='desc'?'높은 순':'낮은 순'} (층별)`);}
   vm.runInContext("cmpSort={key:null,dir:null}",ctx);
   // #method-03 states the published result and the pre-registration path
   const page=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),m3=page.slice(page.indexOf('id="method-03"'),page.indexOf('</article>',page.indexOf('id="method-03"')));
@@ -559,11 +586,14 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.aphia_id,s.scientific_name,s.korean_name))]};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 {const h=ctx.renderScores(by(836033)),i=h.indexOf('breadth-disclosure');
   assert.ok(h.indexOf('rx-disclosure')<i&&i<h.indexOf('data-axis="MCUI"'),'the breadth line sits under MBPI, after MBPI-Rx');
-  assert.ok(h.includes('<summary><span>MBPI 근거 폭 · 탐색적</span><b>항목 6개 · 중앙값 24.6 · 상위 2개 평균 67.4</b></summary>'));
+  // 4.14 (prereg-4.14 8): independent papers, max and mean join the line; the material classes and the floor note sit below it
+  assert.ok(h.includes('<summary><span>MBPI 근거 폭 · 탐색적</span><b>항목 6개 · 독립 논문 4편 · 중앙값 24.6 · 최댓값 72.2 · 평균 32.5 · 상위 2개 평균 67.4</b></summary>'));
+  assert.ok(h.includes('소재 구분: 가수분해물 서열의 합성품 2개 · 유전자 서열(천연 펩타이드)의 합성품 1개 · 종에서 분리한 물질 3개')&&h.includes('치료 효과·식품 안전성·제품 가치를 뜻하지 않습니다'));
   assert.ok(h.includes('기본 MBPI·BBVI·매트릭스·순위에는 쓰지 않습니다'));
   for(const r of [...original.species,...original.candidate_species].filter(r=>r.scores.MBPI!==null&&r.mbpi_breadth?.item_count)){
     const b=r.mbpi_breadth,x=ctx.renderScores(by(r.aphia_id));
-    assert.ok(x.includes(`항목 ${b.item_count}개 · 중앙값 ${b.median.toFixed(1)} · 상위 2개 평균 ${b.top2_mean.toFixed(1)}`),r.korean_name);}
+    assert.ok(x.includes(`항목 ${b.item_count}개 · 독립 논문 ${b.independent_paper_count}편 · 중앙값 ${b.median.toFixed(1)} · 최댓값 ${b.max.toFixed(1)} · 평균 ${b.mean.toFixed(1)} · 상위 2개 평균 ${b.top2_mean.toFixed(1)}`),r.korean_name);
+    assert.equal(b.max,r.scores.MBPI,r.korean_name+': the max is the MBPI');}
   const r=report();r.species.find(s=>s.aphia_id===836033).scores.MBPI=99;ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});
   const n={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(n);vm.runInContext('data=globalThis.n',Object.assign(ctx,{n}));
   assert.ok(!ctx.renderScores(n.species[0]).includes('breadth-disclosure'),'no breadth line beside a hidden MBPI');}

@@ -2722,7 +2722,8 @@ V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (rel
 V49 = ROOT / "config" / "verified-indices-v4.9.json"    # superseded by 4.10 (secondary MBPI-Rx, exploratory)
 V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (2026-10-13 audit: rules 1-5)
 V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (MCUI stock-decline basis)
-V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)  # superseded by 4.12 (KOSIS stock-decline MCUI basis)
+V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)
+V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3791,8 +3792,9 @@ class Verified411Tests(unittest.TestCase):
         matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
         types = {s["korean_name"]: s["matrix_type"] for s in matrix["species"]}
         self.assertEqual([n for n, t in types.items() if t == "alternative_production"], ["살오징어"])
-        self.assertEqual((types["미역"], types["톳"]), ("sustainable_use", "sustainable_use"))
-        self.assertEqual(matrix["matrix_points"], 29)
+        # 4.14 (prereg-4.14 3): their Rapid LC is a reference again, so 미역·톳 have no MCUI and no type (16 points)
+        self.assertEqual((types["미역"], types["톳"]), (None, None))
+        self.assertEqual(matrix["matrix_points"], 16)
 
     def test_a_fall_to_the_decline_ratio_blocks_rapid_lc(self):
         ascidian = self.by_name["멍게"]
@@ -3979,7 +3981,7 @@ class Verified413Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V413)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V412))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -3987,8 +3989,9 @@ class Verified413Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.13", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.13.json")
+        # the published 4.13 report is archived as it was (superseded by 4.14)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.13.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
 
     def test_values_are_the_registered_expectations(self):
         # prereg 7: only 넙치 moves, and the rest of the report is 4.11's
@@ -4017,7 +4020,10 @@ class Verified413Tests(unittest.TestCase):
         self.assertEqual(round(top["adjusted"], 1), 43.2)
 
     def test_the_matrix_file_moves_only_the_flounder(self):
-        matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        # the 4.13 matrix, rebuilt from the 4.13 report (the published file is 4.14 now)
+        from build_matrix_readiness import build as build_matrix
+        read = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
+        matrix = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
         counts = {}
         for s in matrix["species"]:
             counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
@@ -4062,6 +4068,128 @@ class Verified413Tests(unittest.TestCase):
             self.assertNotIn("미통과", text)
         shown = {k for s in self.new.values() for i in s["bioactivity_trace"] if i.get("caveat") for k in i.get("inchikeys", [])}
         self.assertIn("SUCKEYMKNGZJHK-ZARIWKGHSA-N", shown)
+
+
+class Verified414Tests(unittest.TestCase):
+    """4.14 (research/verified-indices/prereg-4.14-2026-10-14.md, registered in its own commit before the code; LKH's method review
+    2026-10-14): the extinction-risk part of MCUI comes only from an IUCN global or Korean national category. Another region's list
+    and the Rapid LC check stay as references with no number, type or map colour; a stock decline alone counts only as a lower
+    bound at or above the matrix line. BBVI is mixed from the unrounded MFPI·MBPI and rounded once."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs()
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V413))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+        cls.scope = cls.report["method"]["mcui_scope"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.14", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.14.json")
+        self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.14-2026-10-14.md")
+        self.assertTrue((ROOT / self.scope["prereg"]).exists())
+
+    def test_only_an_official_global_or_korean_category_scores(self):
+        self.assertEqual(self.scope["scored_bases"], ["iucn", "national"])
+        unknown = [s for s in self.new.values() if s["scores"]["MCUI"] is None]
+        self.assertEqual(len(unknown), 14)
+        for s in self.new.values():
+            st, name = s["conservation_status"], s["korean_name"]
+            self.assertEqual(st["label"], self.scope["state_labels"][st["state"]], name)
+            self.assertEqual(st["mapping_note"], self.scope["mapping_note"], name)
+            used = [x for x in st["assessments"] if x["used_for_mcui"]]
+            self.assertLessEqual(len(used), 1, name)
+            self.assertTrue(all(x["scope"] in ("global", "korea") for x in used), name)
+            for x in st["assessments"]:
+                if x["scope"] not in ("global", "korea"):  # another country's or region's list: never a number
+                    self.assertEqual((x["used_for_mcui"], x["why_not"]), (False, "other_population"), name)
+            self.assertIn(s["mcui_basis"], (None, "iucn", "national"), name)
+            self.assertEqual(st["state"] == "official_scored", s["mcui_basis"] is not None, name)
+            # a missing MCUI is never 0, and its state never reads as a low risk
+            self.assertNotEqual(s["scores"]["MCUI"], 0, name)
+            if s["mcui_basis"] is None:
+                self.assertIsNone(s["mcui_extinction_risk"], name)
+                self.assertNotIn("LC", st["label"], name)
+        # the Rapid LC record stays whole as a reference, with no number
+        for s in self.new.values():
+            sub = s.get("mcui_substitute") or {}
+            if sub.get("basis") in self.scope["reference_bases"]:
+                self.assertEqual((sub["use"], sub["value"], sub["reference_note"]),
+                                 ("reference_only", None, self.scope["reference_notes"][sub["basis"]]), s["korean_name"])
+
+    def test_the_stock_decline_alone_is_a_lower_bound_at_the_line(self):
+        line = self.report["method"]["matrix"]["mcui_threshold"]
+        agar = self.by_name["우뭇가사리"]
+        self.assertEqual((agar["mcui_basis"], agar["mcui_extinction_risk"], agar["scores"]["MCUI"]), (None, None, 80.0))
+        self.assertEqual(agar["conservation_status"]["state"], "other_region_only")
+        self.assertEqual(agar["conservation_status"]["mcui_role"], "stock_decline_lower_bound")
+        for s in self.new.values():
+            score = (s.get("stock_decline") or {}).get("score")
+            if s["mcui_extinction_risk"] is None:
+                self.assertEqual(s["scores"]["MCUI"], score if score is not None and score >= line else None, s["korean_name"])
+            else:
+                self.assertEqual(s["scores"]["MCUI"], max(s["mcui_extinction_risk"], score or 0), s["korean_name"])
+
+    def test_bbvi_and_types_come_from_the_unrounded_values(self):
+        w = self.report["method"]["bbvi"]["default_food_weight"]
+        for s in self.new.values():
+            raw, name = s.get("scores_unrounded"), s["korean_name"]
+            if s["scores"]["BBVI"] is None:
+                continue
+            for k in ("MFPI", "MBPI", "BBVI"):
+                self.assertEqual(round1(raw[k]), s["scores"][k], (name, k))
+            self.assertAlmostEqual(raw["BBVI"], w * raw["MFPI"] + (1 - w) * raw["MBPI"], places=9, msg=name)
+
+    def test_what_moved_from_413(self):
+        lost, bbvi = [], []
+        for a, s in self.new.items():
+            old, name = self.old[a], s["korean_name"]
+            for k in ("MFPI", "MBPI"):
+                self.assertEqual(s["scores"][k], old["scores"][k], (name, k))
+            if s["scores"]["BBVI"] != old["scores"]["BBVI"]:
+                self.assertAlmostEqual(abs(s["scores"]["BBVI"] - old["scores"]["BBVI"]), 0.1, places=6, msg=name)
+                bbvi.append(name)
+            if s["scores"]["MCUI"] != old["scores"]["MCUI"]:
+                self.assertIsNone(s["scores"]["MCUI"], name)
+                lost.append(name)
+        # 13 species lose an MCUI that came from another region or the Rapid LC (멍게 had none in 4.12)
+        self.assertEqual(len(lost), 13)
+        self.assertIsNone(self.old[250680]["scores"]["MCUI"])
+        self.assertEqual(len(bbvi), 11)
+
+    def test_types_are_neutral_research_labels(self):
+        matrix = self.report["method"]["matrix"]
+        self.assertEqual({t["id"]: (t["label"], t["plain"]) for t in matrix["types"].values()},
+                         {"sustainable_use": ("활용 연구 검토", "활용 지표 높음"),
+                          "alternative_production": ("활용·보전 병행 검토", "두 지표 모두 높음"),
+                          "conservation_priority": ("보전 연구 우선 검토", "보전 지표 높음"),
+                          "baseline_survey": ("기초조사 검토", "두 지표 모두 낮음")})
+        self.assertEqual(matrix["threshold_label"], "탐색적 구분선")
+        self.assertIn("지속가능성 판정이 아님", matrix["type_note"])
+        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        counts = {}
+        for s in published["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"sustainable_use": 6, "alternative_production": 1, "baseline_survey": 6,
+                                  "conservation_priority": 3, None: 14})
+        self.assertEqual(published["matrix_points"], 16)
+
+    def test_mbpi_breadth_counts_items_papers_and_materials(self):
+        for s in self.new.values():
+            b = s.get("mbpi_breadth")
+            if not b:
+                continue
+            self.assertTrue(b["exploratory"], s["korean_name"])
+            self.assertEqual(sum(b["material_counts"].values()), b["item_count"], s["korean_name"])
+
+    def test_the_posthoc_rank_counts_only_scored_species(self):
+        block = self.report["method"]["posthoc"]["validation_sets"]["MCUI_stock_decline"]
+        ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
+        squid = self.by_name["살오징어"]["scores"]["MCUI"]
+        self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, 16))
 
 
 if __name__ == "__main__":

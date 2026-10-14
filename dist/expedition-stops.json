@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.13",
+ "method_version": "verified-4.14",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -129,7 +129,7 @@
    "map_link": "index.html#s=219984&v=explore&m=8/37.50/124.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": 2018,
@@ -147,6 +147,10 @@
      "license": "IUCN Red List terms",
      "title": "Engraulis japonicus assessment e.T98969433A143841777",
      "url": "https://www.iucnredlist.org/species/98969433/143841777"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 29.0,
@@ -355,25 +359,24 @@
    "korean_name": "꽃게",
    "map_link": "index.html#s=1061762&v=explore&m=8/37.50/125.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": -69.9,
@@ -396,13 +399,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 46.2,
     "MBPI": 30.3,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 62.0
    },
    "shared_with": [],
@@ -495,7 +498,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -601,7 +604,7 @@
    "map_link": "index.html#s=231750&v=explore&m=8/36.50/125.50",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -619,6 +622,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -37.7,
@@ -873,29 +880,28 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 1.0,
+   "information_sufficiency": 0.67,
    "korean_name": "넙치",
    "map_link": "index.html#s=275816&v=explore&m=8/35.50/125.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "range_state",
-    "basis_label": "서식국 국가 평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "서식국 국가 평가 기반 MCUI",
-    "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "jfa_rarity_2017",
-     "license": "Government publication (政府標準利用規約); category and name facts only",
-     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
-     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 1.6,
@@ -918,13 +924,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 51.3,
     "MBPI": 43.2,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 59.4
    },
    "shared_with": [],
@@ -1023,7 +1029,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -1128,25 +1134,24 @@
    "korean_name": "조피볼락",
    "map_link": "index.html#s=274849&v=explore&m=8/35.50/124.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
     },
     "stock_decline": {
      "decline_pct": 31.9,
@@ -1169,13 +1174,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 40.1,
     "MBPI": 31.7,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 48.5
    },
    "shared_with": [],
@@ -1274,7 +1279,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -1394,7 +1399,7 @@
    "map_link": "index.html#s=281273&v=explore&m=8/34.50/124.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": 2016,
@@ -1412,6 +1417,10 @@
      "license": "IUCN Red List terms",
      "title": "Larimichthys polyactis assessment e.T49182929A49229050",
      "url": "https://www.iucnredlist.org/species/49182929/49229050"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 31.4,
@@ -1620,25 +1629,24 @@
    "korean_name": "청각",
    "map_link": "index.html#s=145086&v=explore&m=8/33.50/124.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 31.6,
@@ -1661,13 +1669,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 18.6,
+    "BBVI": 18.5,
     "MBPI": 0.4,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 36.7
    },
    "shared_with": [],
@@ -1760,7 +1768,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -1867,7 +1875,7 @@
    "map_link": "index.html#s=127022&v=explore&m=8/33.50/125.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": 2022,
@@ -1885,6 +1893,10 @@
      "license": "IUCN Red List terms",
      "title": "Scomber japonicus assessment e.T170306A170083106",
      "url": "https://www.iucnredlist.org/species/170306/170083106"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 3.5,
@@ -2137,25 +2149,24 @@
    "korean_name": "톳",
    "map_link": "index.html#s=494972&v=explore&m=8/34.50/125.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 74.5,
@@ -2178,13 +2189,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 64.2,
     "MBPI": 65.0,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 63.3
    },
    "shared_with": [],
@@ -2319,7 +2330,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -2448,7 +2459,7 @@
    "map_link": "index.html#s=504357&v=explore&m=6/34.00/126.00",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -2466,6 +2477,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -41.1,
@@ -2712,7 +2727,7 @@
    "map_link": "index.html#s=836033&v=explore&m=8/34.50/127.50",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -2730,6 +2745,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -18.3,
@@ -3036,29 +3055,28 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "가시파래",
    "map_link": "index.html#s=234476&v=explore&m=8/34.50/127.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "range_state",
-    "basis_label": "서식국 국가 평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "서식국 국가 평가 기반 MCUI",
-    "mapping": "LC → 10 (스웨덴 국가 적색목록, 팀 규칙 v4.0)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "slu_rodlista_2025",
-     "license": "CC0 1.0 (SND dataset)",
-     "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
-     "url": "https://doi.org/10.5878/ffrv-6x57"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 69.6,
@@ -3081,13 +3099,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 53.8,
+    "BBVI": 53.7,
     "MBPI": 73.3,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 34.2
    },
    "shared_with": [
@@ -3202,7 +3220,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -3310,29 +3328,28 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "시카메굴",
    "map_link": "index.html#s=836041&v=explore&m=8/34.50/127.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "range_state",
-    "basis_label": "서식국 국가 평가",
-    "category": "NT",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 35.0,
-    "label": "서식국 국가 평가 기반 MCUI",
-    "mapping": "NT → 35 (일본 국가 적색목록, 팀 규칙 v4.0)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "moe_japan_red_list_2020_molluscs",
-     "license": "Government open data (政府標準利用規約); category and name facts only",
-     "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
-     "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": -18.3,
@@ -3355,13 +3372,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 35.0,
+    "BBVI": 34.9,
     "MBPI": 13.8,
-    "MCUI": 35.0,
+    "MCUI": null,
     "MFPI": 56.1
    },
    "shared_with": [
@@ -3458,7 +3475,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -3564,7 +3581,7 @@
    "map_link": "index.html#s=413600&v=explore&m=8/34.50/127.50",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -3582,6 +3599,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 14.5,
@@ -3807,7 +3828,7 @@
    "map_link": "index.html#s=342067&v=explore&m=8/33.50/127.50",
    "matrix_type": {
     "id": "alternative_production",
-    "label": "대체생산·배양 연구"
+    "label": "활용·보전 병행 검토"
    },
    "mcui": {
     "assessment_year": 2010,
@@ -3825,6 +3846,10 @@
      "license": "IUCN Red List terms",
      "title": "Todarodes pacificus assessment e.T176085A1428473",
      "url": "https://www.iucnredlist.org/species/176085/1428473"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 79.8,
@@ -4052,7 +4077,7 @@
    "map_link": "index.html#s=1666974&v=explore&m=8/33.50/128.50",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -4070,6 +4095,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -28.6,
@@ -4096,7 +4125,7 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 54.2,
+    "BBVI": 54.1,
     "MBPI": 65.8,
     "MCUI": 10.0,
     "MFPI": 42.5
@@ -4344,25 +4373,24 @@
    "korean_name": "미역",
    "map_link": "index.html#s=145721&v=explore&m=8/34.50/128.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": -39.4,
@@ -4385,13 +4413,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 68.0,
+    "BBVI": 67.9,
     "MBPI": 89.2,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 46.7
    },
    "shared_with": [],
@@ -4580,7 +4608,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -4686,7 +4714,7 @@
    "map_link": "index.html#s=506159&v=explore&m=8/34.50/129.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -4704,6 +4732,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 66.2,
@@ -4938,7 +4970,7 @@
    "map_link": "index.html#s=241776&v=explore&m=6/34.00/130.00",
    "matrix_type": {
     "id": "conservation_priority",
-    "label": "보전 우선·모니터링"
+    "label": "보전 연구 우선 검토"
    },
    "mcui": {
     "assessment_year": 2025,
@@ -4956,6 +4988,10 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "Apostichopus japonicus assessment e.T180424A272708369",
      "url": "https://www.iucnredlist.org/species/180424/272708369"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 23.3,
@@ -5202,29 +5238,28 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "대구",
    "map_link": "index.html#s=254538&v=explore&m=8/35.50/130.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "range_state",
-    "basis_label": "서식국 국가 평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "서식국 국가 평가 기반 MCUI",
-    "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "jfa_rarity_2017",
-     "license": "Government publication (政府標準利用規約); category and name facts only",
-     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
-     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 2.6,
@@ -5247,13 +5282,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 49.1,
     "MBPI": 59.9,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 38.3
    },
    "shared_with": [],
@@ -5352,7 +5387,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -5472,10 +5507,14 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전 평가 없음 · OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 쓰지 않음",
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
+    },
     "stock_decline": {
      "decline_pct": 19.0,
      "kosis_item": "우렁쉥이",
@@ -5501,7 +5540,7 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 33.2,
+    "BBVI": 33.1,
     "MBPI": 13.5,
     "MCUI": null,
     "MFPI": 52.8
@@ -5714,7 +5753,7 @@
    "map_link": "index.html#s=276651&v=explore&m=8/36.50/129.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": 2015,
@@ -5732,6 +5771,10 @@
      "license": "IUCN Red List terms",
      "title": "Seriola quinqueradiata assessment page 20435860/115383171",
      "url": "https://www.iucnredlist.org/species/20435860/115383171"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -74.0,
@@ -5984,25 +6027,24 @@
    "korean_name": "꼬시래기",
    "map_link": "index.html#s=236157&v=explore&m=8/37.50/129.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
     },
     "stock_decline": {
      "decline_pct": 83.5,
@@ -6025,13 +6067,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 59.7,
+    "BBVI": 59.6,
     "MBPI": 49.3,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 70.0
    },
    "shared_with": [
@@ -6132,7 +6174,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -6245,7 +6287,7 @@
    "map_link": "index.html#s=393716&v=explore&m=8/37.50/129.50",
    "matrix_type": {
     "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -6263,6 +6305,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": -5.1,
@@ -6289,7 +6335,7 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 41.6,
+    "BBVI": 41.5,
     "MBPI": 27.3,
     "MCUI": 10.0,
     "MFPI": 55.8
@@ -6529,25 +6575,24 @@
    "korean_name": "다시마",
    "map_link": "index.html#s=377084&v=explore&m=8/38.50/128.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
     },
     "stock_decline": {
      "decline_pct": -129.3,
@@ -6570,13 +6615,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 41.6,
     "MBPI": 26.5,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 56.7
    },
    "shared_with": [],
@@ -6675,7 +6720,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -6781,7 +6826,7 @@
    "map_link": "index.html#s=397082&v=explore&m=6/38.00/130.00",
    "matrix_type": {
     "id": "conservation_priority",
-    "label": "보전 우선·모니터링"
+    "label": "보전 연구 우선 검토"
    },
    "mcui": {
     "assessment_year": 2022,
@@ -6799,6 +6844,10 @@
      "license": "IUCN Red List terms",
      "title": "Haliotis discus assessment e.T78764186A78772433",
      "url": "https://www.iucnredlist.org/species/78764186/78772433"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 23.0,
@@ -6825,7 +6874,7 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 35.2,
+    "BBVI": 35.1,
     "MBPI": 15.6,
     "MCUI": 80.0,
     "MFPI": 54.7
@@ -7015,25 +7064,24 @@
    "korean_name": "감태",
    "map_link": "index.html#s=371986&v=explore&m=8/37.50/130.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
     },
     "stock_decline": {
      "decline_pct": null,
@@ -7051,13 +7099,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 59.7,
+    "BBVI": 59.6,
     "MBPI": 56.8,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 62.5
    },
    "shared_with": [
@@ -7170,7 +7218,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -7279,25 +7327,24 @@
    "korean_name": "괭생이모자반",
    "map_link": "index.html#s=494853&v=explore&m=8/37.50/130.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": null,
+    "label": null
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "preliminary",
-    "basis_label": "자체 예비평가",
-    "category": "LC",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
-    "driver": "extinction_risk",
-    "extinction_risk": 10.0,
-    "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-    "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+    "driver": null,
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "bachman_2020_rapid_lc",
-     "license": "CC BY 4.0",
-     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
-     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "state": "self_preliminary_only"
     },
     "stock_decline": {
      "decline_pct": null,
@@ -7315,13 +7362,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출됨",
+    "MCUI": "산출 보류",
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 37.6,
+    "BBVI": 37.5,
     "MBPI": 21.6,
-    "MCUI": 10.0,
+    "MCUI": null,
     "MFPI": 53.5
    },
    "shared_with": [
@@ -7428,7 +7475,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": null,
+    "MCUI": "not_in_red_list",
     "MFPI": null
    }
   },
@@ -7529,29 +7576,28 @@
     }
    },
    "group": "operational",
-   "information_sufficiency": 0.94,
+   "information_sufficiency": 0.61,
    "korean_name": "우뭇가사리",
    "map_link": "index.html#s=372119&v=explore&m=8/37.50/131.50",
    "matrix_type": {
     "id": "conservation_priority",
-    "label": "보전 우선·모니터링"
+    "label": "보전 연구 우선 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": "range_state",
-    "basis_label": "서식국 국가 평가",
-    "category": "VU",
+    "basis": null,
+    "basis_label": null,
+    "category": null,
     "criteria": null,
     "driver": "stock_decline",
-    "extinction_risk": 60.0,
-    "label": "서식국 국가 평가 기반 MCUI",
-    "mapping": "VU → 60 (러시아 국가 적색목록, 팀 규칙 v4.0)",
+    "extinction_risk": null,
+    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고 · 멸종위험 평가 미확인 · 자원 감소 신호(하한)",
+    "mapping": null,
     "scope": null,
-    "source": {
-     "id": "russia_red_data_book_plants_2023",
-     "license": "Russian federal legal act (official publication); category and name facts only",
-     "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
-     "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf"
+    "source": null,
+    "status": {
+     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "state": "other_region_only"
     },
     "stock_decline": {
      "decline_pct": 90.2,
@@ -7765,7 +7811,7 @@
    "map_link": "index.html#s=534443&v=explore",
    "matrix_type": {
     "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
@@ -7783,6 +7829,10 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "status": {
+     "label": "공식 평가",
+     "state": "official_scored"
     },
     "stock_decline": {
      "decline_pct": 7.4,

@@ -7,7 +7,7 @@ const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char =>
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -84,7 +84,7 @@ const pilotLabel = (key,info) => released(info)
   ? ({passed:'정식 산출 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'정식 산출 · 방법 검증 기준 미충족'})[validationResult(key,info)]||(key==='MCUI'?'정식 산출 · 공식 평가 범주':'정식 산출')
   : ({passed:'시범 지표 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'시범 지표 · 사후 검증 기준 미충족'})[validationResult(key,info)]||'검증 전 시범 지표';
 const validationNote = info => released(info)
-  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
+  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_scope?'(IUCN 전 지구·한국 국가 평가만, 없으면 보전평가 미확인)':(info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
   : ' (사후 검증: '+['MFPI','MBPI','MCUI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+')';
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
@@ -118,7 +118,7 @@ function evidenceCoverage(s) {
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null&&!a?.mbpi_floor?(validationResult('MBPI')==='passed'?'validated':'calculated'):bioLinked?'linked':partial.length||compounds.status==='available'?'found':released()&&a?.chembl_links?.paper_search?.searched_on?'searched_none':'unavailable',
       detail:pilotScore(s,'MBPI')!==null&&a?.mbpi_floor?`${a.mbpi_label}: 어느 비교집단 층에도 규칙을 채우는 항목이 없어 하한값 ${a.mbpi_floor.value}을 썼습니다(팀장 결정 2026-10-05). ${a.mbpi_floor.meaning}`:pilotScore(s,'MBPI')!==null?`${bestBio(a)?.stratum_kind==='chembl'?`종→화합물 공개 연결(LOTUS·원논문)과 ChEMBL 같은 표적·종말점 비교집단으로 ${released()?'정식':'시범'} MBPI를 산출했습니다(${bestBio(a).label}).`:'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 '+(released()?'정식':'시범')+' MBPI를 산출했습니다.'}${a.mbpi_label?(bbviLabel(s)?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에도 '${bbviLabel(s)}' 표시를 붙입니다.`:data?.assessmentInfo?.method?.bbvi?.single_source_policy==='score_with_label'?'':` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`):''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?(validationResult('MCUI')==='passed'?'validated':'calculated'):conservation?.iucn_state==='assessed'?'linked':conservation?.recheck?'checked_none':'unavailable',
-      detail:(stockMcui(s)?stockLead(s)+' ':'')+(nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:preliminaryMcui(s)?`${iucnGlobalNote(s)}이고 한국·서식국·지방 공식 목록에도 점수가 되는 범주가 없어, 분포 기록으로 확인한 자체 예비평가(Rapid LC, 역검증 기준 미충족)으로 MCUI를 산출했습니다. 공식 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:substituteMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(mcuiBasisLabel(s))} ${released()?'정식':'시범'} MCUI를 산출했습니다. 공식 IUCN 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 '+(released()?'정식':'시범')+' MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?(conservation.recheck?`IUCN 적색목록(${conservation.recheck.red_list_version})과 한국·서식국 공식 목록을 ${conservation.recheck.checked_on}에 다시 확인했으나 이 종의 평가 기록이 없습니다(IUCN 미평가). 낮은 점수가 아니며, IUCN 2026-2는 2026-11-19 공개 예정입니다.`:'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.'):'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.')}
+      detail:(stockMcui(s)?stockLead(s)+' ':'')+(s.assessment?.conservation_status&&data?.assessmentInfo?.method?.mcui_scope&&!s.assessment.mcui_basis?conservationStatusSentence(s):nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:preliminaryMcui(s)?`${iucnGlobalNote(s)}이고 한국·서식국·지방 공식 목록에도 점수가 되는 범주가 없어, 분포 기록으로 확인한 자체 예비평가(Rapid LC, 역검증 기준 미충족)으로 MCUI를 산출했습니다. 공식 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:substituteMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(mcuiBasisLabel(s))} ${released()?'정식':'시범'} MCUI를 산출했습니다. 공식 IUCN 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 '+(released()?'정식':'시범')+' MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?(conservation.recheck?`IUCN 적색목록(${conservation.recheck.red_list_version})과 한국·서식국 공식 목록을 ${conservation.recheck.checked_on}에 다시 확인했으나 이 종의 평가 기록이 없습니다(IUCN 미평가). 낮은 점수가 아니며, IUCN 2026-2는 2026-11-19 공개 예정입니다.`:'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.'):'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.')}
   ];
   return {checks};
 }
@@ -162,14 +162,27 @@ function foodTraceValid(s,a,sources) {
   return true;
 }
 
+// the builder's one-decimal rule (Decimal(str(x)) ROUND_HALF_UP): toPrecision drops the float tail first, so 64.15 → 64.2
+const round1=x=>Math.round(Number((x*10).toPrecision(12)))/10;
+// 4.14 (prereg-4.14-2026-10-14 6): the unrounded MFPI and MBPI the report computed BBVI from, when it carries them and they
+// round to its published values; an older report re-mixes its rounded values as before
+const unroundedInputs=s=>{const a=s.assessment,u=a?.scores_unrounded,f=a?.scores?.MFPI,b=a?.scores?.MBPI;
+  return u&&Number.isFinite(u.MFPI)&&Number.isFinite(u.MBPI)&&round1(u.MFPI)===f&&round1(u.MBPI)===b?[u.MFPI,u.MBPI]:null;};
+// BBVI at food weight w before display rounding (null where the report holds it). Types are judged on this value.
+const bbviRawAt=(s,w)=>{
+  if(!VERIFIED.includes(s.assessment?.report_version)){const v=pilotScore(s,'BBVI');return v;}
+  const a=s.assessment, f=a.scores?.MFPI, b=a.scores?.MBPI;
+  if(a.score_status?.BBVI!=='산출됨'||!Number.isFinite(f)||!Number.isFinite(b)||!Number.isFinite(a.scores?.BBVI))return null;
+  const u=unroundedInputs(s);
+  return u?w*u[0]+(1-w)*u[1]:round1(w*f+(1-w)*b);
+};
 const pilotScore = (s,key) => {
   const value=s.assessment?.scores?.[key];
   if(!Number.isFinite(value)||value<0||value>100)return null;
   // A held report BBVI stays held. The weight only re-mixes a BBVI the report itself found eligible.
   if(key==='BBVI' && VERIFIED.includes(s.assessment.report_version)){
-    const food=s.assessment.scores.MFPI, bio=s.assessment.scores.MBPI;
-    return s.assessment.score_status?.BBVI==='산출됨'&&Number.isFinite(food)&&Number.isFinite(bio)
-      ? Math.round((bbviWeight*food+(1-bbviWeight)*bio)*10)/10 : null;
+    const raw=bbviRawAt(s,bbviWeight);
+    return raw===null?null:round1(raw);
   }
   return value;
 };
@@ -181,6 +194,7 @@ function axisState(s,key){
   if(s.assessmentState==='lookup_failed')return {value,kind:'lookup_failed',label:'조회 실패'};
   if(s.assessmentState==='client_outdated')return {value,kind:'client_outdated',label:'새 버전 있음'};
   if(s.assessmentState==='technical_error'||s.assessment?.axis_errors?.[key])return {value,kind:'technical_error',label:'기술 오류'};
+  if(key==='MCUI'&&consShort(s)&&consShort(s)!=='조회 실패')return {value,kind:'withheld',label:consShort(s)};
   return {value,kind:'withheld',label:s.assessment?.score_status?.[key]||'산출 보류'};
 }
 const axisStateNote={lookup_failed:'지표 보고서를 불러오지 못했습니다. 산출 보류가 아니며, 다시 불러오기로 재시도할 수 있습니다.',
@@ -338,14 +352,40 @@ function verifiedConservationValid(a,report){
   const ext=a.mcui_extinction_risk,stock=stockDeclineRecheck(a.stock_decline,rule)?.score;
   if(stock===undefined||!(ext===null||Number.isFinite(ext))||!extinctionConservationValid({...a,scores:{...a.scores,MCUI:ext}},report))return false;
   if(a.stock_decline.kosis_item!==null&&!(a.source_ids||[]).includes(rule.source?.id))return false;
-  const up=stock!==null&&(ext===null||stock>ext), mcui=up?stock:ext;
+  // 4.14 (prereg-4.14-2026-10-14 4): with no extinction-risk component the decline is a lower bound, used only at or above
+  // the matrix MCUI line; below it the MCUI stays unknown and the decline is a reference
+  const scope=report.method?.mcui_scope, bound=!scope||ext!==null||stock>=report.method?.matrix?.mcui_threshold;
+  const up=stock!==null&&(ext===null||stock>ext)&&bound, mcui=up?stock:ext;
+  if(scope&&!conservationStatusValid(a,report,ext,up))return false;
   return a.scores.MCUI===mcui&&a.mcui_driver===(mcui===null?null:up?'stock_decline':stock===ext?'tie':'extinction_risk');
+}
+// 4.14 (prereg-4.14-2026-10-14 2·3): one conservation state; only an IUCN global or a Korean national category gives the
+// extinction-risk number, and every other list (another country, a region, a Rapid LC check) rides along without one.
+function conservationStatusValid(a,report,ext,up){
+  const scope=report.method.mcui_scope, c=a.conservation_status, found=c?.assessments;
+  if(!c||!scope.state_labels?.[c.state]||c.label!==scope.state_labels[c.state]||!Array.isArray(found)||c.mapping_note!==scope.mapping_note)return false;
+  const scored=found.filter(x=>x.used_for_mcui===true), basis=a.mcui_basis??null;
+  if(scored.length>1||scored.some(x=>!['global','korea'].includes(x.scope))||found.some(x=>typeof x.used_for_mcui!=='boolean'))return false;
+  if(!(basis===null||(scope.scored_bases||[]).includes(basis))||(basis===null)!==(ext===null))return false;
+  if(ext!==null)return c.state==='official_scored'&&scored.length===1&&scored[0].scope===(basis==='iucn'?'global':'korea')&&c.category===scored[0].category;
+  if(c.state==='official_scored'||scored.length)return false;
+  const sub=a.mcui_substitute;
+  if(sub&&sub.value!==null&&sub.value!==undefined)return false;
+  if(sub?.use==='reference_only'&&!(scope.reference_bases||[]).includes(sub.basis))return false;
+  const stock=a.stock_decline?.score??null;
+  if(up)return c.mcui_role==='stock_decline_lower_bound'&&c.mcui_role_label===scope.stock_lower_bound_label;
+  return stock===null?!c.mcui_role:c.mcui_role==='stock_decline_reference'&&c.mcui_role_label===scope.stock_reference_label;
 }
 function extinctionConservationValid(a,report){
   const adjust=trendAdjustment(a,report);
   if(adjust===null)return false;
   const sub=a.mcui_substitute, rule=report.method?.mcui_substitutes, r=sub?.record, t=rule?.thresholds;
   const sourced=()=>!!(sub.source_ids||[]).length&&sub.source_ids.every(id=>report.sources?.[id]);
+  // 4.14 (prereg-4.14-2026-10-14 3): every list outside IUCN global and the Korean national list is a reference without a
+  // number, whatever its basis; the state and the scope of each list are re-checked in conservationStatusValid
+  if(report.method?.mcui_scope&&sub?.use==='reference_only')return a.scores.MCUI===null&&!a.mcui_basis&&sub.value===null&&
+    (report.method.mcui_scope.reference_bases||[]).includes(sub.basis)&&sub.reference_note===report.method.mcui_scope.reference_notes?.[sub.basis];
+  if(report.method?.mcui_scope&&SUBSTITUTE_BASES.includes(a.mcui_basis))return false;
   // 3.15 (team-lead decision 2026-10-02): reference only. A met Rapid LC check rides beside a withheld MCUI, re-checked against the
   // published thresholds; a record that carries a value, or a report that scores it, is refused.
   if(sub?.use==='reference_only')return a.scores.MCUI===null&&a.mcui_basis!=='preliminary'&&sub.value===null&&sub.basis==='preliminary'&&
@@ -497,7 +537,13 @@ function verifiedAxisErrors(a,report){
   check('BBVI',()=>{
     if(a.scores.BBVI===null)return true;
     if(!Number.isFinite(a.scores.MFPI)||!Number.isFinite(a.scores.MBPI)||
-       Math.abs(a.scores.BBVI-(w*a.scores.MFPI+(1-w)*a.scores.MBPI))>.06)return false;
+       Math.abs(a.scores.BBVI-(w*a.scores.MFPI+(1-w)*a.scores.MBPI))>.11)return false;
+    // 4.14: computed from the unrounded inputs, rounded once; each unrounded value must round to the published one
+    if(report.method?.bbvi?.unrounded_inputs){
+      const u=a.scores_unrounded;
+      if(!u||![u.MFPI,u.MBPI,u.BBVI].every(Number.isFinite)||round1(u.MFPI)!==a.scores.MFPI||round1(u.MBPI)!==a.scores.MBPI||
+         Math.abs(u.BBVI-(w*u.MFPI+(1-w)*u.MBPI))>1e-9||round1(u.BBVI)!==a.scores.BBVI)return false;
+    }else if(Math.abs(a.scores.BBVI-(w*a.scores.MFPI+(1-w)*a.scores.MBPI))>.06)return false;
     if(a.mbpi_floor)return a.bbvi_label===report.method?.mbpi_floor?.bbvi_label;
     if(singleSourceRule(report.method_version)){
       const best=bestBio(a), rule=report.method?.bbvi;
@@ -702,7 +748,7 @@ function occurrenceCitationLinks(c) {
 function mapJudgmentStatus(s) {
   const n=spatialCells(s).length,type=matrixType(s);
   if(matrixRule()){
-    $('map-judgment').textContent=(type?`이 종의 매트릭스 유형: ${matrixTypeLabel(type)}${separateMcui(s)?'(MCUI '+mcuiBasisLabel(s)+')':''}`:'이 종은 BBVI·MCUI 한 쌍이 없어 매트릭스 유형이 없습니다')+
+    $('map-judgment').textContent=(type?`이 종의 매트릭스 유형: ${matrixTypeLabel(type)}${separateMcui(s)?'(MCUI '+mcuiBasisLabel(s)+')':''}`:`이 종은 매트릭스 유형이 없습니다(${untypedReason(s)})`)+
       (!s.cells?.length?' · 공개 출현 셀이 없어 활용 × 보전 지도에 반영되지 않습니다.':type?` · 활용 × 보전 지도에서 이 종이 기록된 ${n}개 셀 색에 반영됩니다(해역 점수 아님).`:` · 매트릭스 유형이 없어 활용 × 보전 지도 색에는 쓰이지 않습니다.`);
     return;
   }
@@ -786,7 +832,8 @@ function assessedForMatrix(s){
 }
 // Type from the on-screen BBVI (slider weight) and MCUI; the report's thresholds, a value at the threshold is high.
 // matrixTypeAt takes the BBVI to judge, so the official type (the report's BBVI) uses the same rule.
-function matrixType(s){return matrixTypeAt(s,pilotScore(s,'BBVI'));}
+// 4.14: the BBVI judged is the unrounded one at that weight (bbviRawAt); a report without scores_unrounded keeps its rounded value
+function matrixType(s){return matrixTypeAt(s,bbviRawAt(s,bbviWeight));}
 function matrixTypeAt(s,bbvi){
   const rule=matrixRule();
   if(!rule||!assessedForMatrix(s))return null;
@@ -802,15 +849,27 @@ const weightOff=()=>weightStep(bbviWeight)!==weightStep(officialWeight());
 const weightPair=(w=bbviWeight)=>{const k=weightStep(w);return `MBPI ${((W_STEPS-k)/W_STEPS).toFixed(2)} · MFPI ${(k/W_STEPS).toFixed(2)}`;};
 // the report's own BBVI beside an on-screen re-mix ('공식 55.1'), only when the weight is not the official one and the two differ
 const officialBbvi=s=>pilotScore(s,'BBVI')===null?null:VERIFIED.includes(s.assessment?.report_version)?s.assessment.scores.BBVI:pilotScore(s,'BBVI');
-const officialType=s=>matrixTypeAt(s,officialBbvi(s));
+const officialType=s=>matrixTypeAt(s,bbviRawAt(s,officialWeight()));
 const officialNote=s=>{const o=officialBbvi(s);return weightOff()&&o!==null&&o!==pilotScore(s,'BBVI')?`공식 ${o.toFixed(1)}`:'';};
 // a shared link's w: a number in 0–1 snaps to the nearest step; anything else is the official weight
 const hashWeightStep=v=>{const n=Number(v);return String(v??'').trim()!==''&&Number.isFinite(n)&&n>=0&&n<=1?weightStep(n):weightStep(officialWeight());};
 // 2026-10-13 design 2: a plain verdict before the formal type name (display only; data, hash and CSV keep the type id)
-const MATRIX_PLAIN={sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함',alternative_production:'키워서 써야 함',conservation_priority:'지켜야 함'};
-const matrixTypePlain=id=>MATRIX_PLAIN[id]||'유형 없음';
-const matrixPlainNote=()=>{const r=matrixRule();return '연구용 유형 요약 · 채집·이용 권고 아님'+(r?` · BBVI ${r.bbvi_threshold} 이상이면 활용 높음, MCUI ${r.mcui_threshold} 이상이면 보전 높음`:'');};
-// the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '유형 없음' in grey
+// 4.14 (prereg-4.14-2026-10-14 7): the report's own position words ('활용 지표 높음'), not a use or harvest verdict; an older
+// report without them gets the same neutral words
+const MATRIX_PLAIN_DEFAULT={sustainable_use:'활용 지표 높음',baseline_survey:'두 지표 모두 낮음',alternative_production:'두 지표 모두 높음',conservation_priority:'보전 지표 높음'};
+const MATRIX_PLAIN=new Proxy({},{get:(_,id)=>Object.values(matrixRule()?.types||{}).find(t=>t.id===id)?.plain||MATRIX_PLAIN_DEFAULT[id]});
+const matrixTypePlain=id=>MATRIX_PLAIN[id]||'유형 미산출';
+const thresholdWord=()=>matrixRule()?.threshold_label||'탐색적 구분선';
+const matrixPlainNote=()=>{const r=matrixRule();return (r?.type_note||'연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님')+(r?` · ${thresholdWord()}: BBVI ${r.bbvi_threshold} 이상이면 활용 지표 높음, MCUI ${r.mcui_threshold} 이상이면 보전 지표 높음(검증된 기준 아님)`:'');};
+// 4.14 (prereg-4.14-2026-10-14 7): visible words that keep '보전평가 미확인' apart from an official low-risk category
+const consShort=(s,long)=>{const c=s?.assessment?.conservation_status;if(!c||!data?.assessmentInfo?.method?.mcui_scope)return '';
+  if(c.state==='official_scored')return '공식 '+c.category+(long&&c.category==='LC'?'(낮은 위험 범주)':'')+(stockMcui(s)?' · 자원 감소':'');
+  if(c.mcui_role==='stock_decline_lower_bound')return long?c.mcui_role_label:'평가 미확인 · 자원 감소 하한';
+  return c.state==='official_dd'?'공식 DD(정보 부족)':c.state==='official_ne'?'공식 NE(미평가)':c.state==='lookup_failed'?'조회 실패':long?c.label:'보전평가 미확인';};
+// 4.14: why a species has no type, in words: an unassessed MCUI is not a missing BBVI and never a low risk
+const untypedReason=s=>s&&pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인'?(pilotScore(s,'BBVI')===null?'BBVI 미산출 · 보전평가 미확인':'보전평가 미확인 · MCUI 미산출'):'BBVI·MCUI 한 쌍 미산출';
+const untypedWhy=s=>s&&pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인'?'유형 미산출 · 보전평가 미확인':'유형 미산출 · BBVI·MCUI 한 쌍 미산출';
+// the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '유형 미산출' in grey
 const verdictWord=t=>`<b class="verdict vd-${t||'none'}">${esc(matrixTypePlain(t))}</b>`;
 // A Korean national-assessment MCUI is its own stratum: labelled apart and never ranked or plotted with IUCN-based MCUI.
 const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'MCUI')!==null;
@@ -839,7 +898,7 @@ const substituteMcui = s => SUBSTITUTE_BASES.includes(s?.assessment?.mcui_basis)
 const extinctionSeparate = s => nationalMcui(s)||substituteMcui(s);
 const separateMcui = s => extinctionSeparate(s)||stockMcui(s);
 const subRegions = s => (s.assessment.mcui_substitute?.record?.regions||[]).map(r=>r.region_ko||r.region).join(', ');
-const extinctionBasisLabel = s => nationalMcui(s)?'한국 국가 평가 기반':subNationalMcui(s)?`지방 목록 참고값(${subRegions(s)})`:preliminaryMcui(s)?'자체 예비평가(Rapid LC)':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가 기반`:'IUCN 기반';
+const extinctionBasisLabel = s => s?.assessment?.conservation_status&&!s.assessment.mcui_basis?'멸종위험 평가 미확인':nationalMcui(s)?'한국 국가 평가 기반':subNationalMcui(s)?`지방 목록 참고값(${subRegions(s)})`:preliminaryMcui(s)?'자체 예비평가(Rapid LC)':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가 기반`:'IUCN 기반';
 const mcuiBasisLabel = s => stockMcui(s)?stockLabel(s):extinctionBasisLabel(s);
 const mcuiBasisShort = s => stockMcui(s)?'자원 감소 신호':nationalMcui(s)?'국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'자체 예비평가':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 평가`:'';
 // 3.15 (team-lead decision 2026-10-02): reference only. A met Rapid LC check is shown beside the withheld MCUI like the BBVI
@@ -850,8 +909,9 @@ const rapidLcCheck = () => ({passed:'역검증 통과',failed:'역검증 기준 
 const iucnGlobalNote = s => {const c=s.assessment?.conservation_trace;return c?.category?`IUCN 전 지구 ${c.category}(${c.assessment_year||'평가연도 미기재'}) · ${released()?'점수 대응 없음':'시범 숫자 없음'}`:c?.iucn_state==='not_in_red_list'?`IUCN 전 지구 평가 없음(검색 0건 · ${c.recheck?.checked_on||c.search?.checked_on||'날짜 미기재'})`:'IUCN 전 지구 평가 미확인';};
 // Computed values first, then the axes still on hold: "MFPI 65.5 · MBPI·MCUI 보류".
 function scoreSummary(s){
-  const keys=['MFPI','MBPI','MCUI'], held=keys.filter(k=>pilotScore(s,k)===null);
-  return [...keys.filter(k=>!held.includes(k)).map(k=>`${k}${k==='MCUI'&&separateMcui(s)?'('+mcuiBasisShort(s)+')':''} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment?.mbpi_label?' ('+s.assessment.mbpi_label+')':''}`),held.length?held.join('·')+' 보류':''].filter(Boolean).join(' · ');
+  // 4.14: an MCUI without an official category is '보전평가 미확인', not on hold
+  const keys=['MFPI','MBPI','MCUI'], unknown=pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인', held=keys.filter(k=>pilotScore(s,k)===null&&!(k==='MCUI'&&unknown));
+  return [...keys.filter(k=>!held.includes(k)&&!(k==='MCUI'&&unknown)).map(k=>`${k}${k==='MCUI'&&separateMcui(s)?'('+mcuiBasisShort(s)+')':''} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment?.mbpi_label?' ('+s.assessment.mbpi_label+')':''}`),held.length?held.join('·')+' 보류':'',unknown?'MCUI 보전평가 미확인':''].filter(Boolean).join(' · ');
 }
 // Follow-up tasks are an evidence-gap inventory, never a value or urgency rank.
 // Refuse stale, wrong-taxon or score-inconsistent readiness rows.
@@ -1275,7 +1335,34 @@ function verifiedBioDetail(s){
     '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>')+rawHtml+partial+linkChain+rejected+
     (!cl&&s.assessment.candidate_label&&!items.length?'<p class="fine">조사 후보 검색 범위: Wikidata/LOTUS 기원종 기록과 ChEMBL 37 정량값(2026-09-26)에서 미발견. PubChem·CMNPD·문헌 전수는 아직 조사하지 않았습니다.</p>':'');
 }
-function verifiedNationalFact(s){
+// 4.14 (prereg-4.14-2026-10-14 2·3): the conservation state in words, then every list found by scope. Only an IUCN global or
+// a Korean national category gives the extinction-risk number; another country's or a region's list stays a reference.
+const SCOPE_KO={global:'IUCN 전 지구',korea:'한국 국가',other_country:'다른 나라 국가 평가',sub_national:'다른 나라 지방 평가'};
+function conservationStatusBlock(s){
+  const c=s.assessment?.conservation_status, scope=data.assessmentInfo?.method?.mcui_scope;
+  if(!c||!scope)return '';
+  const where=x=>[x.region_ko||x.region,x.country_ko||x.country].filter(Boolean).join(', ');
+  const rows=c.assessments.map(x=>`<li>${esc(SCOPE_KO[x.scope]||x.scope)}${where(x)?' ('+esc(where(x))+')':''} · ${esc(x.list)}${x.year?' '+esc(x.year):''} · ${esc(x.category_as_published)}`+
+    `${x.category&&x.category!==x.category_as_published?` (${esc(x.category)}에 해당하는 이름 · 숫자로 바꾸지 않음)`:''} · ${x.used_for_mcui?'MCUI 멸종위험 성분에 사용':'참고 · MCUI·유형·지도 색에 쓰지 않음'}${x.source_id&&data.assessmentInfo?.sources?.[x.source_id]?' · '+verifiedSource(x.source_id,'원목록 ↗'):''}</li>`).join('');
+  const why=[...new Set(c.assessments.filter(x=>!x.used_for_mcui).map(x=>x.scope==='other_country'?'range_state':'sub_national'))].map(k=>scope.reference_notes?.[k]).filter(Boolean);
+  return `<p><b>보전평가 상태: ${esc(c.label)}</b>${c.mcui_role_label?' · '+esc(c.mcui_role_label):''}</p>`+
+    (rows?`<ul class="fine">${rows}</ul>`:'<p class="fine">IUCN 전 지구·한국 국가·다른 나라 공식 평가 기록을 찾지 못했습니다. 공식 미평가(NE) 판정이 아니며, 보전 위험이 낮다는 뜻도 아닙니다.</p>')+
+    (why.length?`<p class="fine">${why.map(esc).join(' ')}</p>`:'')+
+    (c.self_preliminary?`<p class="fine"><b>${esc(c.self_preliminary.label)}</b>: ${esc(c.self_preliminary.note)}</p>`:'')+
+    (c.mcui_role==='stock_decline_lower_bound'?'<p class="fine">멸종위험 평가가 없어 자원 감소 신호 점수를 MCUI 하한으로만 씁니다(구분선 이상일 때만). 멸종위험은 이보다 높을 수도 있고, 이 값은 IUCN 평가가 아닙니다.</p>':
+     pilotScore(s,'MCUI')===null?'<p class="fine">MCUI가 없는 종은 0이나 낮은 위험으로 바꾸지 않고, 매트릭스 유형과 지도 셀 색을 정하지 않습니다. 다른 지표와 출현기록은 그대로 볼 수 있습니다.</p>':'')+
+    `<p class="fine">${esc(c.mapping_note)}</p>`;
+}
+// the same state in one sentence for the evidence-stage line
+function conservationStatusSentence(s){
+  const c=s.assessment.conservation_status, others=c.assessments.filter(x=>!x.used_for_mcui);
+  return `${c.label}. `+(others.length?`다른 나라·지역 평가 ${others.length}건(${others.map(x=>[x.region_ko||x.country_ko||x.country,x.category_as_published].join(' ')).join(', ')})은 그 지역 개체군의 평가라 참고로만 보입니다. `:'')+
+    (c.self_preliminary?'자체 예비검토(Rapid LC)는 공식 평가가 아니라 MCUI에 쓰지 않습니다. ':'')+
+    (c.mcui_role==='stock_decline_lower_bound'?'자원 감소 신호 점수가 탐색적 구분선 이상이라 MCUI 하한으로만 씁니다. ':c.mcui_role==='stock_decline_reference'?'자원 감소 신호는 구분선 미만이라 참고로만 보입니다. ':'')+
+    '보전 위험이 낮다는 뜻이 아닙니다.';
+}
+function verifiedNationalFact(s){return conservationStatusBlock(s)+verifiedNationalFactBody(s);}
+function verifiedNationalFactBody(s){
   const b=s.assessment.national_assessment;
   if(s.assessment.mcui_basis==='national'&&b)return `<p><b>한국 국가 평가 기반 ${P_()}MCUI</b>: ${esc(b.category)} · 게재명 ${esc(b.name_as_published)} · `+
     `목록 ${esc(b.list_page_printed)}쪽(뷰어 ${esc(b.list_page_viewer)}쪽) · 범위 ${esc(b.scope)} · ${esc(b.assessment_basis)} · ${verifiedSource(b.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
@@ -1309,9 +1396,10 @@ function verifiedNationalFact(s){
   }
   // 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record is shown beside the withheld MCUI, never as a score.
   const ref=mcuiReference(s);
+  if(ref&&ref.basis!=='preliminary')return '';
   if(ref){
     const r=ref.record, t=r.thresholds||{};
-    return `<p><b>예비 평가(Rapid LC) 참고 정보 · MCUI 점수 아님</b>: ${esc(ref.category)} 가능성 · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
+    return `<p><b>자체 예비검토(Rapid LC) 참고 정보 · 공식 평가 아님 · MCUI 점수 아님</b>: 넓은 분포·기록 수 기준만 확인(낮은 멸종위험을 확정하지 않음) · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
       `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}. `+
       `공식 IUCN 평가가 아니며, 어획 등에 따른 감소(기준 A)는 OBIS 추세로만 확인했습니다. MCUI 점수·매트릭스·지도 색·순위에 쓰지 않습니다.</p>`+
@@ -1353,10 +1441,14 @@ function stockCompare(s){
   const a=s.assessment,d=a?.stock_decline,ext=a?.mcui_extinction_risk,v=pilotScore(s,'MCUI');
   if(!d||v===null)return '';
   const c=a.conservation_trace,basis=a.mcui_basis==='iucn'&&c?.category?'IUCN '+c.category:ext===null?'멸종위험 평가 없음':mcuiBasisShortOf(s);
+  // 4.14 (prereg-4.14 4): with no extinction-risk value the decline is a lower bound, kept only at or above the matrix line
+  if(ext===null&&a.conservation_status?.mcui_role==='stock_decline_lower_bound')
+    return `멸종위험 평가 미확인 · 자원 감소 ${d.score.toFixed(0)}(구분선 ${matrixRule()?.mcui_threshold??50} 이상) → 하한 ${v.toFixed(0)}`;
   return `${basis}${ext===null?'':' '+ext.toFixed(0)} · 자원 감소 ${d.score===null?'없음':d.score.toFixed(0)} → ${a.mcui_driver==='tie'?'같은 값':'높은 값'} ${v.toFixed(0)}`;
 }
 const mcuiBasisShortOf = s => nationalMcui(s)?'한국 국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'자체 예비평가':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가`:'IUCN';
-const stockLead = s => {const d=s.assessment.stock_decline;return `KOSIS 연근해 어획량이 ${stockChange(d)} 변해 자원 감소 신호(${d.label}) ${d.score.toFixed(0)}점이 멸종위험 근거보다 높아 MCUI가 되었습니다(${stockCompare(s)}). IUCN 평가가 아닙니다.`;};
+const stockLead = s => {const d=s.assessment.stock_decline,low=s.assessment.conservation_status?.mcui_role==='stock_decline_lower_bound';
+  return `KOSIS 연근해 어획량이 ${stockChange(d)} 변해 자원 감소 신호(${d.label}) ${d.score.toFixed(0)}점이 ${low?'탐색적 구분선 이상이라, 멸종위험 평가가 없는 이 종의 MCUI 하한이':'멸종위험 근거보다 높아 MCUI가'} 되었습니다(${stockCompare(s)}). IUCN 평가가 아닙니다.`;};
 // the 2015–2024 coastal catch as a small line: the two averaged windows lightly shaded, 2025p dashed for reference only
 function stockSpark(d,rule){
   const ys=d.years,c=d.coastal_t.map(v=>v||0),ref=d.reference_2025p?.coastal_t,all=[...c,...(Number.isFinite(ref)?[ref]:[])];
@@ -1461,6 +1553,21 @@ const AXIS_QUAD=['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui',
 function axisBar(v,cut,big){
   return `<span class="ax-bar${big?' big':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${Number.isFinite(cut)?`<b style="left:${cut}%"></b>`:''}</span>`;
 }
+// 4.14 (prereg-4.14-2026-10-14 9): BBVI and type at food weight 0.2 · 0.5 (official) · 0.8, from the unrounded inputs. A display
+// of how much the composite leans on the weight, not a confidence interval.
+const SENS_WEIGHTS=[.2,.5,.8];
+function weightSensitivity(s){
+  if(!VERIFIED.includes(s.assessment?.report_version)||pilotScore(s,'BBVI')===null)return null;
+  return SENS_WEIGHTS.map(w=>{const raw=bbviRawAt(s,w);return {w,value:raw===null?null:round1(raw),type:raw===null?null:matrixTypeAt(s,raw)};});
+}
+function weightSensitivityLine(s){
+  const rows=weightSensitivity(s);if(!rows)return '';
+  const types=new Set(rows.map(r=>r.type));
+  return `<p class="ax-note ax-sens">MFPI 가중치별 BBVI(탐색): ${rows.map(r=>`${r.w.toFixed(1)}${r.w===officialWeight()?'(공식)':''} ${r.value.toFixed(1)} ${esc(r.type?matrixTypePlain(r.type):'유형 미산출')}`).join(' · ')}`+
+    ` · ${types.size>1?'가중치에 따라 유형이 바뀜':'세 가중치에서 유형 같음'} · 통계적 신뢰구간이 아님</p>`;
+}
+// species whose type differs between weights 0.2 · 0.5 · 0.8 (the method section count)
+const weightTypeChanges=()=>(data?.species||[]).filter(s=>{const r=weightSensitivity(s);return r&&new Set(r.map(x=>x.type)).size>1;});
 function axisCards(s){
   const rule=matrixRule(),type=matrixType(s),key=Object.entries(rule?.types||{}).find(([,t])=>t.id===type)?.[0];
   const held=k=>{const st=axisState(s,k),ref=k==='BBVI'?bbviReference(s):null;return `<span class="ax-held">${esc(ref!==null?'참고값 '+ref.toFixed(1)+' · 점수 아님':st.label)}</span>`;};
@@ -1468,23 +1575,23 @@ function axisCards(s){
   const sub=(k,name,note)=>{const v=axisState(s,k).value;
     return `<div class="ax-sub"><span>${name} <b>${k}</b></span>${v===null?held(k):`<strong>${v.toFixed(1)}</strong>${axisBar(v)}`}${note?`<small>${esc(note)}</small>`:''}</div>`;};
   const one=bbviLabel(s),mbpiNote=[mbpiStratumOf(s)?.short,basisNote(s,'MBPI').replace(/^ · /,'')].filter(Boolean).join(' · '),mfpiNote=s.assessment?.food_trace?.literature_moisture?.label||'';
-  const mcuiNote=axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'');
+  const mcuiNote=[consShort(s,true),axisState(s,'MCUI').value===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):'')].filter((x,i,a)=>x&&a.indexOf(x)===i).join(' · ');
   const chip=type?`<p class="ax-type" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[type]}" aria-hidden="true"></i>${verdictWord(type)}<span class="ax-type-name">${esc(matrixTypeLabel(type))}</span></p>`
-    :`<p class="ax-type none"><i aria-hidden="true"></i>유형 없음 · BBVI·MCUI 한 쌍 미산출</p>`;
+    :`<p class="ax-type none"><i aria-hidden="true"></i>${esc(untypedWhy(s))}</p>`;
   // where the species' cells sit on the value map: the cell colour is the first type in the cell, so it can differ from the species' own
   const cells=[...valueCellGroups(true).values()].filter(g=>g.species.has(s.aphiaID)),same=cells.filter(g=>cellMatrixType(g).type===type).length;
   // 2026-10-13: '활용 × 보전' opens on the species view (its own cells in its own colour); the all-species view keeps the cell rule
-  const where=!cells.length?'':!type?`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 회색(유형 없음)으로 칠합니다. 유형이 없어 ‘모든 종 겹쳐 보기’의 셀 색은 정하지 않습니다.`
+  const where=!cells.length?'':!type?`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 회색(유형 미산출)으로 칠합니다. 유형이 없어 ‘모든 종 겹쳐 보기’의 셀 색은 정하지 않습니다.`
     :`‘활용 × 보전’에서는 이 종의 공개 셀 ${cells.length}개를 이 색으로 칠합니다. `+(same===cells.length?'‘모든 종 겹쳐 보기’에서도 모두 이 색입니다.'
       :same?`‘모든 종 겹쳐 보기’에서는 그중 ${same}개가 이 색이고, 나머지는 같은 셀에 있는 우선순위가 높은 유형의 색입니다.`
       :'‘모든 종 겹쳐 보기’에서는 모두 같은 셀에 있는 우선순위가 높은 유형의 색입니다.');
   const quad=`<span class="ax-quad" aria-hidden="true">${AXIS_QUAD.map(q=>{const id=rule?.types?.[q]?.id;return `<i class="${q===key?'on':''}" style="background-color:${matrixTypeColour[id]||'#b7c0ca'}"></i>`;}).join('')}</span>`;
   return `<section class="axis-cards" aria-label="두 축 요약 · 아래 지표 칸과 같은 값">${chip}`+
-    `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b></h3><small>${rule?'기준 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
-      `<div class="ax-main">${main('BBVI',rule?.bbvi_threshold)}</div>${one?`<p class="ax-note">${esc(one)}</p>`:''}${officialNote(s)?`<p class="ax-note">탐색 보기(${esc(weightPair())}) · ${esc(officialNote(s))}</p>`:''}`+
+    `<div class="ax-card"><div class="ax-head"><h3>활용가치 <b>BBVI</b> <small class="ax-nature">탐색적 합성지표</small></h3><small>${rule?'탐색적 구분선 '+rule.bbvi_threshold+' · ':''}w = ${bbviWeight.toFixed(2)}</small></div>`+
+      `<div class="ax-main">${main('BBVI',rule?.bbvi_threshold)}</div>${one?`<p class="ax-note">${esc(one)}</p>`:''}${officialNote(s)?`<p class="ax-note">탐색 보기(${esc(weightPair())}) · ${esc(officialNote(s))}</p>`:''}${weightSensitivityLine(s)}`+
       sub('MFPI','식량',mfpiNote)+sub('MBPI','생리활성',mbpiNote)+'</div>'+
     '<p class="ax-sep"><span>합치지 않고 따로 봅니다</span></p>'+
-    `<div class="ax-card"><div class="ax-head"><h3>보전 시급성 <b>MCUI</b></h3><small>${rule?'기준 '+rule.mcui_threshold:''}</small></div>`+
+    `<div class="ax-card"><div class="ax-head"><h3>보전 시급성 <b>MCUI</b></h3><small>${rule?'탐색적 구분선 '+rule.mcui_threshold:''}</small></div>`+
       `<div class="ax-main">${main('MCUI',rule?.mcui_threshold)}</div>${mcuiNote?`<p class="ax-note">${esc(mcuiNote)}</p>`:''}</div>`+
     (rule?`<div class="ax-where">${quad}<p>${esc(where||'이 종은 지금 보는 기간에 공개 셀이 없습니다.')}</p></div>`:'')+'</section>';
 }
@@ -1516,11 +1623,20 @@ function mbpiRxLine(s){
 function mbpiBreadthLine(s){
   const b=s.assessment?.mbpi_breadth, rule=data.assessmentInfo?.method?.mbpi_breadth;
   if(!b||!rule||!b.item_count||pilotScore(s,'MBPI')===null)return '';
-  const head=`항목 ${b.item_count}개 · 중앙값 ${Number(b.median).toFixed(1)} · 상위 2개 평균 ${Number(b.top2_mean).toFixed(1)}`;
+  // 4.14 (prereg-4.14-2026-10-14 8): independent papers, max and mean, and each item's material class (display only)
+  const more=Number.isInteger(b.independent_paper_count);
+  const head=`항목 ${b.item_count}개${more?` · 독립 논문 ${b.independent_paper_count}편`:''} · 중앙값 ${Number(b.median).toFixed(1)}${more?` · 최댓값 ${Number(b.max).toFixed(1)} · 평균 ${Number(b.mean).toFixed(1)}`:''} · 상위 2개 평균 ${Number(b.top2_mean).toFixed(1)}`;
+  const mats=more?Object.entries(b.material_counts||{}).map(([k,n])=>`${MATERIAL_KO[k]||k} ${n}개`).join(' · '):'';
   return `<details class="score-disclosure breadth-disclosure"><summary><span>${esc(rule.label)} · 탐색적</span><b>${esc(head)}</b></summary><div class="score-disclosure-body">`+
     `<p class="fine">MBPI는 점수 항목 중 가장 높은 값이라, 시험된 항목이 많은 종일수록 높게 나오기 쉽습니다(4.10에서 항목 수와 MBPI의 순위상관 0.64). 그래서 점수 항목 전체의 중앙값과 상위 두 항목 평균을 함께 보입니다. 기본 MBPI·BBVI·매트릭스·순위에는 쓰지 않습니다.</p>`+
+    (more?`<p class="fine">독립 논문 수는 모든 점수 항목의 원논문과 쓰인 재현 논문의 DOI를 합친 수입니다. 같은 논문이 여러 데이터베이스·여러 표적에 있어도 1편으로 셉니다(상위 2개 평균은 같은 논문의 두 항목일 수 있습니다).</p>`+
+      (mats?`<p class="fine">소재 구분: ${esc(mats)}. 원문 시료 기술로 나눈 표시용 구분이며 점수에 쓰지 않습니다. 가수분해물 서열의 합성품이나 합성 유도체는 종에서 바로 얻은 물질이 아닙니다.</p>`:'')+
+      `<p class="fine">${b.floor_zero?'근거가 없어 준 하한 0(측정값 아님)입니다.':'근거가 없어 주는 하한 0(4.3)을 받지 않았습니다.'}${b.measured_zero_items?` 측정했으나 비교집단 맨 아래(백분위 0)인 항목 ${b.measured_zero_items}개는 근거 없음과 다른 실제 측정값입니다.`:''} 시험관·세포 시험 결과이며 치료 효과·식품 안전성·제품 가치를 뜻하지 않습니다.</p>`:'')+
     `<p class="fine">사전 등록: ${esc(rule.prereg)}</p></div></details>`;
 }
+// 4.14: the material classes of mbpi-material-4.14 (display words only)
+const MATERIAL_KO={natural_isolate:'종에서 분리한 물질',hydrolysate_purified:'가수분해·발효물에서 정제한 펩타이드',hydrolysate_sequence_synthetic:'가수분해물 서열의 합성품',
+  hydrolysate_unspecified:'가수분해물 유래(정제·합성 미기재)',native_sequence_synthetic:'유전자 서열(천연 펩타이드)의 합성품',synthetic_derivative:'합성 유도체',symbiont_derived:'공생미생물 유래'};
 function renderVerifiedIndices(s){
   const a=s.assessment;
   const names={MFPI:'식량 가능성',MBPI:'생리활성',MCUI:'보전 평가',BBVI:'통합 활용'};
@@ -1544,7 +1660,7 @@ function renderVerifiedIndices(s){
       const label=key==='MCUI'&&value!==null&&separateMcui(s)?' · '+mcuiBasisLabel(s):'';
       const note=axisStateNote[st.kind];
       return `<details class="score-disclosure" data-axis="${key}"><summary><span>${esc(key)} · ${esc(names[key])}</span>`+
-        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
+        `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · ${mcuiReference(s).basis==='range_state'?`다른 나라 평가 참고 ${esc(mcuiReference(s).record?.country_ko||'')} ${esc(mcuiReference(s).record?.category_as_published||mcuiReference(s).category)}`:`자체 예비검토 참고(공식 평가 아님${rapidLcCheck()?' · '+rapidLcCheck():''})`} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
         `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s)+supplementaryLine(s):'');
@@ -1697,11 +1813,9 @@ const useMatch=s=>hasAll(s,[...activeUses]);
 // Species left if this chip were on together with the current ones; for a chip that is on, the current result.
 const useLeft=id=>(data?.species||[]).filter(s=>hasAll(s,[...activeUses,id])).length;
 // Results lead with the first chip's own axis (신약 → MBPI, 식량 → MFPI); species without that score keep their order last.
-function useSorted(list){
-  if(!activeUses.size)return list;
-  const k=traitById([...activeUses][0]).group==='식량'?'MFPI':'MBPI';
-  return [...list].sort((a,b)=>(pilotScore(b,k)??-1)-(pilotScore(a,k)??-1));
-}
+// 4.14 (prereg-4.14-2026-10-14 8): a trait chip filters only. The list keeps its own order and is never re-ranked by MFPI or
+// MBPI, whose values sit in different cohorts and strata.
+function useSorted(list){return list;}
 // A chip's state comes from its own count, so a grey chip activates as soon as adopted evidence matches it.
 // With chips on, the badge says what adding it would leave; a chip that would leave none is faded but still clickable.
 function traitChip(c,n){
@@ -1783,13 +1897,13 @@ const traitTags=s=>USE_TRAITS.filter(c=>useEvidence(s,c.id)).map(c=>activeUses.h
 function useCardLine(s){
   if(!activeUses.size)return '';
   const mc=pilotScore(s,'MCUI'), t=matrixType(s);
-  return `<span class="use-line">${[...activeUses].map(id=>esc(useEvidence(s,id)?.text||'')).join('<br>')}<br>활용 특성: ${traitTags(s)}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)} · 매트릭스 유형 ${t?esc(matrixTypeLabel(t)):'없음(미배치)'}</span>`;
+  return `<span class="use-line">${[...activeUses].map(id=>esc(useEvidence(s,id)?.text||'')).join('<br>')}<br>활용 특성: ${traitTags(s)}<br>MCUI ${mc===null?'미산출':mc.toFixed(1)}${consShort(s)?' ('+esc(consShort(s,true))+')':''} · 매트릭스 유형 ${t?esc(matrixTypeLabel(t)):esc(untypedWhy(s))}</span>`;
 }
 
 // Four axis values on every card ('–' = withheld, never 0), so the list can be scanned without opening a species.
 const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MCUI','BBVI'].map(k=>{const n=axisState(s,k).value;
   const one=k==='BBVI'&&bbviLabel(s);
-  return `<i class="${n===null?'held':one?'single':''}" title="${GAUGE_NAME[k]}${one?' · '+esc(one):''}"><small>${k}</small>${n===null?'–':n.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;}).join('')+
+  return `<i class="${n===null?'held':one?'single':''}" title="${GAUGE_NAME[k]}${one?' · '+esc(one):''}"><small>${k}</small>${n===null?(k==='MCUI'&&consShort(s)?`<span class="held-word" title="${esc(consShort(s,true))}">미확인</span>`:'–'):n.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;}).join('')+
   // the MBPI's stratum on its own line under the four values, hidden and shown with them
   ((st=>st?`<span class="card-stratum" title="MBPI 1위 항목의 근거 층 · ${esc(st.long)}">MBPI 근거 · ${esc(st.short)}</span>`:'')(mbpiStratumOf(s)))+'</span>':'';
 // 2026-10-13 design 2 (card shape A): the use and conservation values and the verdict on one line, so the list compares at a
@@ -1800,7 +1914,7 @@ function cardLine(s){
   const rule=matrixRule(),t=matrixType(s),b=axisState(s,'BBVI').value,m=axisState(s,'MCUI').value,one=b!==null&&bbviLabel(s);
   const basis=m===null?'':mcuiBasisLabel(s)+(mcuiBacktest(s)?' · '+mcuiBacktest(s):''),num=v=>v===null?'–':v.toFixed(1);
   return `<span class="card-line"><span class="cl-v${one?' single':''}" title="통합 활용 BBVI ${num(b)}${one?' · '+esc(one):''}"><span class="sr-only">BBVI 통합 활용 </span><span aria-hidden="true">활용 </span><b>${num(b)}</b>${one?`<span class="sr-only"> ${esc(one)}</span>`:''}</span>`+
-    `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">보전 </span><b>${num(m)}</b>${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
+    `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">보전 </span><b>${num(m)}</b>${consShort(s)?`<small class="cl-cons${m===null?' unknown':''}">${esc(consShort(s))}</small>`:''}${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
     `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span></span>`;
 }
 function renderList() {
@@ -1880,7 +1994,7 @@ function indexReviewRow(s,key,label){
   const seen=a&&{MFPI:a.food_trace?.observed_rows?.length,MBPI:a.bioactivity_trace?.length||a.bioactivity_partial?.length,MCUI:a.conservation_trace?.reviewed}[key];
   if(!seen)return null;
   const v=pilotScore(s,key);
-  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?'산출 보류':v.toFixed(1)}${key==='MCUI'&&separateMcui(s)?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
+  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?(key==='MCUI'&&s.assessment?.conservation_status?'미산출 · '+consShort(s,true):'산출 보류'):v.toFixed(1)}${key==='MCUI'&&separateMcui(s)?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
     `<p class="fine">운영 요약(발행 ${esc((s.publishedAt||'').slice(0,10)||'날짜 미확인')})은 지표 보고서보다 먼저 작성되어 이 항목을 반영하지 않았습니다. 원값과 근거는 위 ${key} 항목에서 확인합니다.</p>`;
 }
 function liveEvidence(s) {
@@ -2074,7 +2188,7 @@ const sitesLabel=s=>spatialCells(s).length===s.cells.length?'조사 지점':'조
 // Species-level status shown with each cell: the proposal's "zoom in to see indicators and conservation status".
 function speciesAxesLine(s){
   // Status only, never the value: a species score printed on a cell would read as that sea area's score (PR #8).
-  const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return `${k} ${st.value!==null?(released()?'산출값 있음':'시범값 있음'):st.kind==='withheld'?'보류':st.label}`;}).join(' · ');
+  const axes=['MFPI','MBPI','MCUI','BBVI'].map(k=>{const st=axisState(s,k);return `${k} ${st.value!==null?(released()?'산출값 있음':'시범값 있음'):st.kind==='withheld'&&!(k==='MCUI'&&s.assessment?.conservation_status)?'보류':st.label}`;}).join(' · ');
   const h=IUCN_HISTORICAL[s.aphiaID], k=s.info?.conservation||{};
   const iucn=h?(h.current&&pilotScore(s,'MCUI')===null?`IUCN ${h.current.category} ${h.current.published}년 발표(원문 검수 전, 2013 평가 대체)`:(pilotScore(s,'MCUI')!==null&&s.assessment?.conservation_trace?.publication_year?`IUCN ${s.assessment.conservation_trace.category} ${s.assessment.conservation_trace.criteria||''} ${s.assessment.conservation_trace.publication_year}년 발표(원문 검수 · ${P_()}MCUI, 2013 평가 대체)`:`IUCN ${h.category} ${h.published}년 발표(${pilotScore(s,'MCUI')===null?'역사적 평가 · 현행 확인 보류':released()?'현행 재확인':'현행 재확인 · 시범'})`))
     :reportConservation(s)?`보전 ${reportConservation(s)}(지표 보고서)`
@@ -2238,16 +2352,18 @@ function cellSpeciesGroups(list){
   return {bt,mt,all:list,
     use:list.filter(s=>(pilotScore(s,'BBVI')??-1)>=bt),
     cons:list.filter(s=>(pilotScore(s,'MCUI')??-1)>=mt),
-    gap:list.filter(s=>!s.assessment||s.assessment.priority_survey)};
+    gap:list.filter(s=>!s.assessment||s.assessment.priority_survey),
+    // 4.14 (prereg-4.14-2026-10-14 5): species with no conservation number, counted apart and never read as low MCUI
+    unknown:list.filter(s=>!!s.assessment&&pilotScore(s,'MCUI')===null)};
 }
 function cellSummaryHtml(list){
   if(!list.length)return '';
   const g=cellSpeciesGroups(list), names=xs=>xs.length?xs.map(s=>esc(s.label)).join(', '):'없음';
   const tile=(n,label)=>`<div><b>${n}</b><span>${label}</span></div>`;
-  return `<div class="cell-summary" role="group" aria-label="이 격자 종 요약">${tile(g.all.length,'확인 종')}${tile(g.use.length,'활용 가능 종')}${tile(g.cons.length,'보전 우선 종')}${tile(g.gap.length,'근거 부족 종')}</div>`+
-    `<p class="fine cell-summary-names">확인 종: ${names(g.all)}<br>활용 가능(BBVI ${g.bt} 이상): ${names(g.use)}<br>보전 우선(MCUI ${g.mt} 이상): ${names(g.cons)}<br>근거 부족(우선 조사 대상 또는 지표 평가 없음): ${names(g.gap)}<br>종 전체 ${released()?'값':'시범값'} 기준이며 이 격자에서 측정한 값이 아닙니다. 한 종이 여러 묶음에 들어갈 수 있습니다.</p>`;
+  return `<div class="cell-summary" role="group" aria-label="이 격자 종 요약">${tile(g.all.length,'확인 종')}${tile(g.use.length,'활용 지표 높은 종')}${tile(g.cons.length,'보전 지표 높은 종')}${tile(g.unknown.length,'보전평가 미확인 종')}${tile(g.gap.length,'근거 부족 종')}</div>`+
+    `<p class="fine cell-summary-names">확인 종: ${names(g.all)}<br>활용 지표 높음(BBVI ${g.bt} 이상 · 탐색적 구분선): ${names(g.use)}<br>보전 지표 높음(MCUI ${g.mt} 이상 · 탐색적 구분선): ${names(g.cons)}<br>보전평가 미확인(MCUI 없음 · 낮은 위험이라는 뜻 아님): ${names(g.unknown)}<br>근거 부족(우선 조사 대상 또는 지표 평가 없음): ${names(g.gap)}<br>종 전체 ${released()?'값':'시범값'} 기준이며 이 격자에서 측정한 값이 아닙니다. 한 종이 여러 묶음에 들어갈 수 있습니다.</p>`;
 }
-const cellSummaryTip=list=>{const g=cellSpeciesGroups(list);return ` · 활용 가능 ${g.use.length}종 · 보전 우선 ${g.cons.length}종 · 근거 부족 ${g.gap.length}종`;};
+const cellSummaryTip=list=>{const g=cellSpeciesGroups(list);return ` · 활용 지표 높음 ${g.use.length}종 · 보전 지표 높음 ${g.cons.length}종 · 보전평가 미확인 ${g.unknown.length}종 · 근거 부족 ${g.gap.length}종`;};
 // GBIF sensitive-species best practice: say what was generalised, what was withheld and why.
 function generalizationNote(size){
   const sens=size>=4?'채취 압력을 고려해 GBIF 지침의 가장 엄격한 등급(1°)보다 넓은 4° 셀 적용'
@@ -2320,7 +2436,7 @@ function setMapLegend(s){
   $('key-dot-mark').hidden=!!extentOnly;$('key-bubble-mark').hidden=true;
   for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
   $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님`;
-  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 가능 종·보전 우선 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
+  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 지표 높은 종·보전 지표 높은 종·보전평가 미확인 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
@@ -2516,16 +2632,16 @@ function colourSpecies(g){
 // The selected species' own type beside the cell colour, so a cell of another colour explains itself.
 function selectedCellLine(g){
   if(!selected||!g.species.has(selected.aphiaID)||!matrixRule())return '';
-  const own=matrixType(selected),t=cellMatrixType(g).type,head=`선택 종 ${selected.label}: ${own?matrixTypeLabel(own):'유형 없음'}`;
-  return !t?head+' / 이 셀 색: 유형 없음':own===t?head+' = 이 셀 색':`${head} / 이 셀 색: ${matrixTypeLabel(t)}(같은 셀의 ${colourSpecies(g)} 때문${own?' · 우선순위 규칙':''})`;
+  const own=matrixType(selected),t=cellMatrixType(g).type,head=`선택 종 ${selected.label}: ${own?matrixTypeLabel(own):'유형 미산출'}`;
+  return !t?head+' / 이 셀 색: 유형 미산출':own===t?head+' = 이 셀 색':`${head} / 이 셀 색: ${matrixTypeLabel(t)}(같은 셀의 ${colourSpecies(g)} 때문${own?' · 우선순위 규칙':''})`;
 }
 const sufficiencyLayers={priority:false,unexplored:false};
 function valueSpeciesType(s){
   const t=matrixType(s),a=s.assessment,i=a?.information_sufficiency;
   const nationalOff=!t&&nationalMcui(s)&&pilotScore(s,'BBVI')!==null&&matrixRule()&&!matrixRule().include_national_mcui;
   const type=t?`매트릭스 유형 <b>${esc(matrixTypeLabel(t))}</b> · BBVI ${pilotScore(s,'BBVI').toFixed(1)}(현재 가중치${bbviLabel(s)?' · '+esc(bbviLabel(s)):''}${officialNote(s)?' · '+esc(officialNote(s)):''}) × MCUI ${pilotScore(s,'MCUI').toFixed(1)}${separateMcui(s)?'('+mcuiBasisLabel(s)+')':''}`
-    :nationalOff?'매트릭스 유형 없음 · 국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외(두 값은 산출됨)'
-    :'매트릭스 유형 없음 · BBVI·MCUI 한 쌍 미산출(낮은 가치라는 뜻이 아님)';
+    :nationalOff?'매트릭스 유형 미산출 · 국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외(두 값은 산출됨)'
+    :`매트릭스 유형 미산출 · ${untypedReason(s)}(낮은 가치·낮은 위험이라는 뜻이 아님)`;
   // 3.4: the label has two reasons; only the sufficiency reason quotes the 50% cut
   const why=a?.priority_survey_reasons||['low_information_sufficiency'];
   const survey=!a?.priority_survey?Math.round(i?.mean_ratio*100)+'%'
@@ -2613,8 +2729,8 @@ function showValueCell(key,all=false){
 function cellTypeLine(g){
   if(!matrixRule())return '';
   const {type,counts}=cellMatrixType(g),kinds=Object.entries(counts),typedN=kinds.reduce((n,[,k])=>n+k,0);
-  if(!type)return ' 이 셀에는 매트릭스 유형을 산출한 종이 없어 회색 음영·점선 테두리(유형 없음)로 둡니다.';
-  return ` 셀 색 ${matrixTypeLabel(type)}(색을 정한 종: ${colourSpecies(g)}) · 유형 산출 ${typedN}종(${kinds.map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')})${typedNotes(g)}${g.species.size>typedN?' · 유형 없음 '+(g.species.size-typedN)+'종':''}${kinds.length>1?' · 여러 유형이라 우선순위 규칙으로 한 색 선택':''}. ${colourRuleLine()}. 색은 출현 기록 셀 × 종 유형이며 해역의 자원량·분포가 아닙니다.`;
+  if(!type)return ' 이 셀에는 매트릭스 유형을 산출한 종이 없어 회색 음영·점선 테두리(유형 미산출)로 둡니다.';
+  return ` 셀 색 ${matrixTypeLabel(type)}(색을 정한 종: ${colourSpecies(g)}) · 유형 산출 ${typedN}종(${kinds.map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')})${typedNotes(g)}${g.species.size>typedN?' · 유형 미산출 '+(g.species.size-typedN)+'종':''}${kinds.length>1?' · 여러 유형이라 우선순위 규칙으로 한 색 선택':''}. ${colourRuleLine()}. 색은 출현 기록 셀 × 종 유형이며 해역의 자원량·분포가 아닙니다.`;
 }
 const cellCentre=g=>[g.lat+g.size/2,g.lon+g.size/2];
 function drawSufficiency(g){
@@ -2672,11 +2788,11 @@ function renderValueMap(){
   const typed=[...groups.values()].filter(g=>cellMatrixType(g).type).length;
   $('map-source').textContent=own?'활용 × 보전 · 선택 종 · GBIF 공개 격자':'활용 × 보전 · GBIF 공개 격자';
   const cut=data.assessmentInfo?.method?.unexplored_threshold;
-  $('value-rule').textContent=rule?`기준: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(BBVI는 현재 가중치, 소수 한 자리로 반올림한 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
+  $('value-rule').textContent=rule?`${thresholdWord()}: BBVI·MCUI 각 ${rule.bbvi_threshold} 이상이면 높음(검증된 기준 아님 · BBVI는 현재 가중치에서 반올림 전 값에 적용). 여러 종이 있는 셀은 ${rule.cell_colour_precedence.map(matrixTypeLabel).join(' > ')} 순으로 한 색을 쓰고, 유형이 섞인 셀은 촘촘한 점선 테두리로 표시합니다.${Number.isFinite(cut)?` 우선 조사 대상은 필수 입력 충족 비율 평균이 ${Math.round(cut*100)}% 미만인 종${data.assessmentInfo?.method?.conservation?.no_assessment?'과, IUCN 평가가 없거나 DD이고 국가 평가도 없어 MCUI가 없는 종'+(data.assessmentInfo.method.mcui_substitutes&&!data.assessmentInfo.method.mcui_substitutes.preliminary_scored?'(예비 평가 참고 정보만 있는 종 포함)':''):''}입니다.`:''}`:'이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류로 둡니다.';
   $('map-review-note').textContent=rule?'공개 격자를 선택하면 그 셀에 기록된 종별 BBVI·MCUI·영양 원값·출현 기록과 근거를 볼 수 있습니다. 색은 출현 기록이 있는 셀 × 종 유형이며 해역의 자원량·분포·해역 점수가 아닙니다.':'공개 격자를 선택하면 연결 종의 식량·생리활성·보전 지표와 보류 사유를 확인할 수 있습니다. 모든 격자는 판단 보류이며 회색 음영·점선 테두리는 가치·보전 등급이 아닙니다.';
   $('map-judgment').textContent=rule?`종 유형으로 칠한 공개 격자 ${typed}곳 · 유형 산출 종이 없는 격자 ${groups.size-typed}곳(회색 음영·점선 테두리). 셀의 합산 점수나 해역 등급은 만들지 않습니다.`:'해역별 조합 분류 0곳 · 공개 격자 '+groups.size+'개 판단 보류. 종별 BBVI·MCUI 한 쌍과 검증된 해역 집계 규칙이 없어 네 유형으로 분류하지 않습니다.';
   if(own){const t=matrixType(selected);
-    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:'유형 없음(BBVI·MCUI 한 쌍 미산출) · 회색으로 칠했습니다.')+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
+    $('map-judgment').textContent=`${selected.label}의 공개 셀 ${spatialCells(periodView(selected)).length}곳을 `+(t?`이 종의 유형 ‘${matrixTypePlain(t)}’(${matrixTypeLabel(t)}) 색으로 칠했습니다.`:`유형 미산출(${untypedReason(selected)}) · 회색으로 칠했습니다.`)+' 유형은 종 단위 값이며 셀의 값이나 해역 등급이 아닙니다.';}
   else if(activeUses.size)$('map-judgment').textContent+=` 활용 특성 ‘${[...activeUses].map(id=>traitById(id).label).join(' × ')}’ 적용 중: 모두 만족하는 종의 셀만 색으로 칠하고, 나머지 공개 격자는 흐린 회색으로 남깁니다.`;
   if(!own&&typeFilter.size)$('map-judgment').textContent+=` 유형 보기 ‘${[...typeFilter].map(matrixTypeLabel).join(', ')}’ 적용 중: 이 유형 셀만 지도에 그립니다(셀 수는 그대로).`;
   renderValueLegend(groups,own);
@@ -2707,7 +2823,7 @@ function renderValueMap(){
     valueRects.push([g,layer,active]);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
     // range, colour and who set it, the selected species' own type, then the counts and the colour rule
-    const sel=selectedCellLine(g),counted=(type?(mixed?'유형 혼재 ':'')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 없음 '+untyped+'종':''):'')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g);
+    const sel=selectedCellLine(g),counted=(type?(mixed?'유형 혼재 ':'')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 미산출 '+untyped+'종':''):'')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g);
     layer.bindTooltip((g.size>=4?wideCellNote([...g.species.values()].map(x=>x.label).join(', '))+'<br>':'')+cellRange(g)+' · 공개 '+g.size+'° 격자 · '+g.species.size+'종<br>'+(type?'<b>색 '+matrixTypeLabel(type)+'</b>(색을 정한 종: '+esc(colourSpecies(g))+')':'유형 산출 종 없음')+
       (sel?'<br><b>'+esc(sel)+'</b>':'')+'<br>'+counted.replace(/^ · /,'')+(rule?'<br>'+colourRuleLine():''),{className:'value-tip'});
     layer.on('tooltipopen',({tooltip:t})=>placeTip(t));
@@ -2734,7 +2850,7 @@ function renderValueMap(){
 function renderSpeciesValueMap(){
   const s=selected,id=s.aphiaID,pv=periodView(s),t=matrixType(s),panel=$('value-cell-detail');
   const mine=new Map([...valueCellGroups(true)].filter(([,g])=>g.species.has(id))),n=spatialCells(pv).length;
-  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:'유형 없음(BBVI·MCUI 한 쌍 미산출)';
+  const verdict=t?`${matrixTypePlain(t)}(${matrixTypeLabel(t)})`:`유형 미산출(${untypedReason(s)})`;
   $('map-count').textContent=n?cellRecords(pv).toLocaleString():'—';$('map-cells').textContent=String(n);$('map-years').textContent=n?cellYears(pv):'—';
   setMapChip(s,n?`기록 셀 ${n}개 · ${cellRecords(pv).toLocaleString()}건 · ${cellYears(pv)}`:'공개 셀 없음 · '+verdict);
   if(!mine.size)panel.innerHTML='<p class="catalog-alert">선택한 종은 공개 가능한 출현 격자가 없어 지도에 칠할 셀이 없습니다. 셀이 없다는 것은 종 부재나 분포 없음을 뜻하지 않습니다. ‘모든 종 겹쳐 보기’에서 다른 종의 격자를 볼 수 있습니다.</p>';
@@ -2746,7 +2862,7 @@ function renderSpeciesValueMap(){
     valueRects.push([g,layer,active]);
     const flags=sufficiencyTip(g).replace(/^ · /,'');
     layer.bindTooltip((g.size>=4?wideCellNote(s.label)+'<br>':'')+cellRange(g)+' · 공개 '+g.size+'° 격자<br><b>'+esc(s.label)+(Number.isFinite(k)?' 기록 '+k.toLocaleString()+'건':'')+'</b> · '+esc(verdict)+
-      '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 없음')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
+      '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 미산출')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
     layer.on('tooltipopen',({tooltip:x})=>placeTip(x));
     drawSufficiency(g);
     layer.on('click',()=>{showValueCell(key,true);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
@@ -2809,23 +2925,25 @@ function renderValueLegend(groups,own=false){
   key.className='vk-swatch'+(own?(c?'':' none'):' all')+(wideOwn?' wide':'');key.style.background=own?(wideOwn?'transparent':c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
   $('value-key-text').innerHTML=!own?'셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형 · 노란 실선 = 선택 종'
     :ownType?`셀 색 = ${esc(selected.label)}의 유형 ${verdictWord(ownType)} <span class="vk-type">(${esc(matrixTypeLabel(ownType))})</span>`
-    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(BBVI·MCUI 한 쌍 미산출)</span>`;
+    :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(${esc(untypedReason(selected))})</span>`;
   $('value-view').setAttribute('aria-pressed',String(!own));
   if(!rule)return;
-  $('v-axis-x').textContent=`BBVI(활용가치) → · ${rule.bbvi_threshold} 이상 높음`;
-  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${rule.mcui_threshold} 이상 높음`;
+  $('v-axis-x').textContent=`BBVI(활용가치) → · ${thresholdWord()} ${rule.bbvi_threshold}`;
+  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${thresholdWord()} ${rule.mcui_threshold}`;
   $('v-rule-line').textContent=own?'셀 색 = 선택 종의 유형(종 단위, 셀 값 아님)':colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence, then the untyped cell. Thresholds come from the report.
 function renderTypeTable(){
+  // 4.14 (prereg-4.14-2026-10-14 9): how many species change type between food weights 0.2 · 0.5 · 0.8 (the method section)
+  const wc=$('method-weight-changes');if(wc&&data){const xs=weightTypeChanges();wc.textContent=`${xs.length}종`+(xs.length?`(${xs.map(s=>s.label).join(', ')})`:'');}
   const rule=matrixRule(),body=document.querySelector('#type-table tbody');if(!body)return;
   if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
   const key=id=>Object.keys(rule.types).find(k=>rule.types[k].id===id),cmp=(id,i)=>key(id).split('_')[i]==='high'?'≥':'<';
   const alpha=Math.round(CELL_FILL*255).toString(16),sw=(bg,bd)=>`<i class="type-swatch" style="background:${bg};border-color:${bd}"></i>`;
   body.innerHTML=rule.cell_colour_precedence.map((id,i)=>`<tr><td>${sw(matrixTypeColour[id]+alpha,matrixTypeColour[id])}</td><td><b>${esc(matrixTypePlain(id))}</b> · ${esc(matrixTypeLabel(id))}</td>`+
-    `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
+    `<td>BBVI ${cmp(id,0)} ${rule.bbvi_threshold} · MCUI ${cmp(id,2)} ${rule.mcui_threshold}</td><td>${esc(thresholdWord())} BBVI ${rule.bbvi_threshold} · MCUI ${rule.mcui_threshold} (같은 값은 높음)</td>`+
     `<td>우선순위 ${i+1}위${i?'':' · 이 유형 종이 하나라도 있으면 이 색'}</td></tr>`).join('')+
-    `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>유형 없음</td><td>BBVI·MCUI 한 쌍 미산출</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
+    `<tr><td>${sw('rgba(183,192,202,.25)','#657588')}</td><td>${esc(rule.untyped_label||'유형 미산출')}</td><td>BBVI·MCUI 한 쌍 미산출(보전평가 미확인 포함)</td><td>—</td><td>유형을 산출한 종이 없는 셀 · 회색 점선</td></tr>`;
 }
 function renderOutsideList(){
   const box=$('unexplored-outside');if(!box)return;
@@ -2964,7 +3082,9 @@ function renderComparison(){
     const cohortLabel=cohort==='rda-10.4-raw-marine-animals'?'수산동물':cohort==='rda-10.4-raw-seaweeds'?'해조류':cohort;
     const cohortCount=cohort?(data.assessmentInfo?.cohorts||[]).find(c=>c.cohort_id===cohort)?.food_item_ids?.length:null;
     const mbpiLabel=key==='MBPI'&&value!==null?basisNote(s,key).replace(/^ · /,'')||null:key==='BBVI'&&value!==null?bbviLabel(s):key==='MFPI'&&value!==null?s.assessment.food_trace?.literature_moisture?.label||null:null;
-    const mcuiRef=key==='MCUI'&&value===null&&mcuiReference(s)?`예비 평가 참고 · ${mcuiReference(s).category} 가능성${rapidLcCheck()?' · '+rapidLcCheck():''} · 점수 아님`:null;
+    // 4.14: another country's list is named as such, never as a Rapid LC 'likely' category
+    const mcuiRef=key==='MCUI'&&value===null&&mcuiReference(s)?(r=>r.basis==='range_state'?`다른 나라 평가 참고 · ${r.record?.country_ko||r.record?.country||''} ${r.record?.category_as_published||r.category} · 점수 아님`
+      :`자체 예비검토 참고 · 공식 평가 아님${rapidLcCheck()?' · '+rapidLcCheck():''} · 점수 아님`)(mcuiReference(s)):null;
     const reference=key==='BBVI'&&value===null?bbviReference(s):null;
     if(reference!==null)return `<button class="score-cell" data-score-aphia="${s.aphiaID}" data-score-axis="${key}" aria-label="${esc(s.label)} BBVI 참고값 ${reference.toFixed(1)} · ${esc(s.assessment.mbpi_label||'근거 논문 1편')} · 점수·매트릭스 미사용 근거 보기">`+
       `${reference.toFixed(1)}<small>BBVI 참고값 · ${esc(s.assessment.mbpi_label||'근거 논문 1편')} · 점수·매트릭스 미사용 · 보기</small>`+(s.catalog?'<small>조사 후보 · 운영 8종과 별도</small>':'')+'</button>';
@@ -2991,7 +3111,7 @@ function renderComparison(){
     const bar=v!==null?`<span class="cv-bar${key==='MCUI'&&cut.MCUI!=null&&v>=cut.MCUI?' hi':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
     const off=key==='BBVI'?officialNote(s):'';
     const stock=key==='MCUI'&&stockMcui(s)?`<i class="cv-stock" title="${esc(stockLabel(s))} · IUCN 기반과 같은 척도가 아님" aria-hidden="true">◆</i>`:'';
-    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}${stock}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
+    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num${v===null?' cv-word':''}">${m[2]}${stock}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
       more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
   };
   // 4.10: the secondary MBPI-Rx, a number and a bar (no evidence button: its line and reason sit under the detail's MBPI);
@@ -3003,7 +3123,7 @@ function renderComparison(){
     return r.value===null?`없음<small>${esc(r.reason)}${check} · 점수 아님</small>`:`${r.value.toFixed(1)}<small>${esc(r.stratum.short)}${check} · MBPI·BBVI에 쓰지 않음</small>`;};
   // 2026-10-13 dark data table: the plain verdict over the formal type name, in the type colour ([data-type] --qt in compare.css)
   const typeBadge=s=>{const t=matrixType(s);return t?`<span class="dt-type" data-type="${t}" title="${esc(matrixPlainNote())}"><b><i aria-hidden="true"></i>${esc(matrixTypePlain(t))}</b><small>${esc(matrixTypeLabel(t))}</small></span>`
-    :'<span class="dt-type none"><b>유형 없음</b><small>매트릭스 미배치</small></span>';};
+    :'<span class="dt-type none"><b>유형 미산출</b><small>매트릭스 미배치</small></span>';};
   const sortTh=(key,label)=>{const on=cmpSort.key===key;return `<th scope="col" aria-sort="${on?(cmpSort.dir==='asc'?'ascending':'descending'):'none'}"><button type="button" class="cmp-sort" data-sort="${key}">${label}<i aria-hidden="true">${on?(cmpSort.dir==='asc'?'↑':'↓'):'↕'}</i></button></th>`;};
   // The expanded row: BBVI as the sum it is (current weight), the MCUI basis sentence, the public cells; then the evidence-level
   // chips, then every long label the cells used to carry, folded. All words come from the same helpers as the detail pane.
@@ -3012,10 +3132,10 @@ function renderComparison(){
     const v=pilotScore(s,'BBVI'), f=pilotScore(s,'MFPI'), b=pilotScore(s,'MBPI');
     if(v===null||f===null||b===null||!VERIFIED.includes(s.assessment?.report_version))
       return `<p class="dt-x-main">${esc(axisState(s,'BBVI').label)}</p><p class="dt-x-sub">${esc(shortReason[s.assessment?.withheld_reasons?.BBVI]||'근거·보류 사유는 BBVI 값을 눌러 봅니다')}</p>`;
-    // the same mix as pilotScore, on the shown one-decimal inputs; '≈' if rounding ever makes the two differ
-    const f1=Number(f.toFixed(1)), b1=Number(b.toFixed(1)), calc=Math.round((bbviWeight*f1+(1-bbviWeight)*b1)*10)/10;
+    // the same mix as pilotScore, on the shown one-decimal inputs; '≈' where the unrounded inputs (4.14) give another last digit
+    const f1=Number(f.toFixed(1)), b1=Number(b.toFixed(1)), calc=round1(bbviWeight*f1+(1-bbviWeight)*b1);
     return `<p class="dt-x-main dt-x-sum">${wFood} × MFPI ${f1.toFixed(1)} + ${wBio} × MBPI ${b1.toFixed(1)} ${calc===v?'=':'≈'} <b>${v.toFixed(1)}</b></p>`+
-      `<p class="dt-x-sub">${esc([axisLabel(s,'BBVI'),bbviLabel(s),officialNote(s)?'탐색 보기 · '+officialNote(s):''].filter(Boolean).join(' · '))}</p>`;
+      `<p class="dt-x-sub">${esc([axisLabel(s,'BBVI'),'탐색적 합성지표',bbviLabel(s),calc!==v?'반올림 전 MFPI·MBPI로 계산해 마지막 자리가 다름':'',officialNote(s)?'탐색 보기 · '+officialNote(s):''].filter(Boolean).join(' · '))}</p>`;
   };
   const mcuiBox=s=>{
     const c=evidenceCoverage(s).checks.find(x=>x.name==='보전'), v=pilotScore(s,'MCUI');
@@ -3042,8 +3162,8 @@ function renderComparison(){
   };
   $('comparison').innerHTML=`<table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 유형 · 정렬: ${cmpSortLabel()}</caption>`+
     `<thead><tr>${sortTh('name','종')}<th scope="col" class="cmp-type-h">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>보조·탐색적</small>')}`+
-    `${sortTh('BBVI',`BBVI<small>통합${cut.BBVI!=null?' · 기준 '+cut.BBVI:''}</small>`)}${sortTh('MCUI',`MCUI<small>보전${cut.MCUI!=null?' · 기준 '+cut.MCUI:''}</small>`)}<th scope="col" class="cmp-x-h"><span class="sr-only">근거 자세히</span></th></tr></thead>`+
-    `<tbody>${compared.map(row).join('')}</tbody></table>`;
+    `${sortTh('BBVI',`BBVI<small>탐색적 합성${cut.BBVI!=null?' · 구분선 '+cut.BBVI:''}</small>`)}${sortTh('MCUI',`MCUI<small>보전${cut.MCUI!=null?' · 구분선 '+cut.MCUI:''}</small>`)}<th scope="col" class="cmp-x-h"><span class="sr-only">근거 자세히</span></th></tr></thead>`+
+    `<tbody>${(d=>compared.map((s,i)=>d[i]+row(s)).join(''))(cmpDividers(compared,8))}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
   $('comparison').querySelectorAll('[data-more-aphia]').forEach(button=>button.addEventListener('click',()=>
@@ -3077,16 +3197,37 @@ function cmpPageLine(){
 // the full label in aria-label); every long line that used to sit in a cell moves, unchanged, to the row's "자세히" panel.
 let cmpSort={key:null,dir:null};const cmpOpen=new Set(), cmpAllOpen=new Set();
 const CMP_SORT_NAME={name:'이름순',MFPI:'MFPI',MBPI:'MBPI',MBPI_RX:'MBPI-Rx',BBVI:'BBVI',MCUI:'MCUI'};
-const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${CMP_SORT_NAME[cmpSort.key]||cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}`;
+const cmpSortLabel=()=>!cmpSort.key?'기본 순서(운영 발행 → 조사 후보)':cmpSort.key==='name'?(cmpSort.dir==='asc'?'이름 가나다순':'이름 역순'):`${CMP_SORT_NAME[cmpSort.key]||cmpSort.key} ${cmpSort.dir==='desc'?'높은 순':'낮은 순'}${CMP_MIXED_NOTE[cmpSort.key]?' (탐색적 · 검증된 우열 아님)':cmpGroup(data.species[0],cmpSort.key)!==null?(cmpSort.key==='MFPI'?' (비교집단별)':' (층별)'):''}`;
+// 4.14 (prereg-4.14-2026-10-14 8): MFPI is a percentile inside its RDA cohort and MBPI inside its item's stratum, so a sort on
+// either groups the rows by cohort or stratum and orders them only inside a group; '' = no value (last)
+const COHORT_KO=id=>/seaweed/.test(id||'')?'해조류':/animal/.test(id||'')?'수산동물':id||'';
+function cmpGroup(s,k){
+  if(k==='MFPI')return pilotScore(s,'MFPI')===null?'':'비교집단 '+COHORT_KO(s.assessment?.food_trace?.cohort_id);
+  if(k==='MBPI')return mbpiStratumOf(s)?'층 '+mbpiStratumOf(s).short:'';
+  if(k==='MBPI_RX'){const r=mbpiRxOf(s);return r?.value!=null&&r.stratum?'층 '+r.stratum.short:'';}
+  return null;
+}
+const CMP_MIXED_NOTE={BBVI:'탐색적 합성지표 · 비교집단이 다른 점수를 섞은 순서 · 검증된 우열 아님',
+  MCUI:'평가 범위·근거가 다른 값(IUCN 전 지구·한국 국가·자원 감소 신호)을 섞은 순서 · 검증된 우열 아님 · MCUI가 없는 종은 맨 뒤'};
 function cmpSorted(){
   const list=data.species.map((s,i)=>[s,i]);if(!cmpSort.key)return data.species.slice();
-  const k=cmpSort.key, sign=cmpSort.dir==='asc'?1:-1;
+  const k=cmpSort.key, sign=cmpSort.dir==='asc'?1:-1, grouped=cmpGroup(data.species[0],k)!==null;
+  const order=new Map();if(grouped)for(const s of data.species){const g=cmpGroup(s,k);if(g&&!order.has(g))order.set(g,order.size);}
+  const rank=s=>{const g=cmpGroup(s,k);return g?order.get(g):Infinity;};
   list.sort(([a,i],[b,j])=>{
     if(k==='name')return sign*a.label.localeCompare(b.label,'ko')||i-j;
+    if(grouped&&rank(a)!==rank(b))return rank(a)-rank(b);
     const val=s=>k==='MBPI_RX'?mbpiRxOf(s)?.value??null:pilotScore(s,k), x=val(a),y=val(b);
     if(x===null||y===null)return (x===null)-(y===null)||i-j;  // values without a score (MBPI-Rx '–' too) stay last in both directions
     return sign*(x-y)||i-j;});
   return list.map(([s])=>s);
+}
+// the divider rows of a sorted table: a group head before each cohort or stratum, or the mixed-order notice on top
+function cmpDividers(list,cols){
+  const k=cmpSort.key;if(!k||k==='name')return list.map(()=>'');
+  if(CMP_MIXED_NOTE[k])return list.map((s,i)=>i?'':`<tr class="cmp-group mixed"><th colspan="${cols}" scope="rowgroup">${esc(CMP_MIXED_NOTE[k])}</th></tr>`);
+  let last;return list.map(s=>{const g=cmpGroup(s,k)||'값 없음';if(g===last)return '';last=g;
+    return `<tr class="cmp-group"><th colspan="${cols}" scope="rowgroup">${esc(g)} · 이 묶음 안에서만 순서${k==='MFPI'?' · 다른 비교집단의 같은 백분위는 같은 영양 수준이 아님':g!=='값 없음'?' · 다른 층의 같은 백분위는 같은 효능이 아님':''}</th></tr>`;});
 }
 // the labels a species carries, one short chip each (never folded into one "단일 논문 vs 정식" switch)
 function evidenceChipList(s){
@@ -3165,7 +3306,7 @@ function toggleSimulation(value){
   $('matrix-unplaced').innerHTML=unplaced.length?`<b>${matrixRule()?'매트릭스 미배치':'정보 부족 · 후속조사 대상'} ${unplaced.length}종${kinds}${matrixRule()?' (BBVI·MCUI 한 쌍 없음)':''}</b><span>네 유형과 별개입니다. 낮은 가치가 아니라 두 축을 산출할 근거가 아직 없다는 뜻입니다.${matrixRule()?' 정보충분도 기준의 ‘우선 조사 대상’과는 다른 목록입니다.':''} 표시 순서는 기존 카탈로그 순서이며 가치·보전·조사 우선순위가 아닙니다. 항목별 차단 사유는 종 상세의 원문에서 확인할 수 있습니다.</span><div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)} <small>${esc(matrixBlockerText(s))}</small></button>`).join('')}</div>`:'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
   const count=$('cmp-types-count');if(count)count.textContent=value?'가상 예시를 보는 동안 비워 둡니다':`${assessed.length}종 배치${unplaced.length?` · 미배치 ${unplaced.length}종`:''} · 사분면 색 기준`;
-  const points=[['A',24,74,'보전 우선·모니터링'],['B',77,76,'대체생산·배양 연구'],['C',25,25,'기초조사·관찰 대상'],['D',77,25,'지속가능 활용 후보']];
+  const points=[['A',24,74,'보전 연구 우선 검토'],['B',77,76,'활용·보전 병행 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map(s=>{const kind=separateMcui(s)?' · MCUI '+mcuiBasisLabel(s):'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
     const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'';
     return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${stockMcui(s)?' stock':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" data-type="${type||''}" title="${esc(s.label)} · ${P_()}BBVI ${pilotScore(s,'BBVI')}${esc(one)}, MCUI ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${pilotScore(s,'MCUI')}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
@@ -3311,7 +3452,7 @@ let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all',type:null},
 const cmpById=id=>data?.species.find(s=>s.aphiaID===Number(id))||null;
 const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID)].some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
 const cmpFiltered=()=>cmpFilter.group!=='all'||!!cmpFilter.q;
-// the data table also takes a type card ('none' = 유형 없음); the matrix keeps dimming by group and search only
+// the data table also takes a type card ('none' = 유형 미산출); the matrix keeps dimming by group and search only
 const cmpTypeOf=s=>matrixType(s)||'none';
 const cmpRowShown=s=>cmpMatch(s)&&(!cmpFilter.type||cmpTypeOf(s)===cmpFilter.type);
 const cmpCohort=s=>pilotScore(s,'MFPI')===null?null:s.assessment?.food_trace?.cohort_id||null;
@@ -3491,7 +3632,7 @@ function renderTypeCards(){
   if(box.dataset.ids!==ids.join()){
     box.dataset.ids=ids.join();
     box.innerHTML=ids.map(id=>`<button type="button" class="dt-card" data-cmp-type="${id}"${id==='none'?'':` data-type="${id}"`} aria-pressed="false"><span class="dt-card-name"><i aria-hidden="true"></i>${esc(matrixTypePlain(id==='none'?null:id))}</span>`+
-      `<span class="dt-card-n"><b></b> 종</span><span class="dt-card-sub">${esc(id==='none'?'BBVI·MCUI 한 쌍 미산출':matrixTypeLabel(id))}</span></button>`).join('');
+      `<span class="dt-card-n"><b></b> 종</span><span class="dt-card-sub">${esc(id==='none'?'보전평가 미확인 등':matrixTypeLabel(id))}</span></button>`).join('');
   }
   const base=data.species.filter(cmpMatch);
   box.querySelectorAll('[data-cmp-type]').forEach(b=>{b.querySelector('.dt-card-n b').textContent=String(base.filter(s=>cmpTypeOf(s)===b.dataset.cmpType).length);
@@ -3548,7 +3689,7 @@ function renderCompareProfile(){
     `<button type="button" id="cmp-add" class="cmp-ghost cp-add" aria-pressed="${inBasket}"${full?' aria-disabled="true"':''} aria-describedby="cmp-add-note">${inBasket?'담김 ✓':'+ 비교 담기'}</button>`+
     `<span class="cp-tile" role="img" aria-label="종 사진 없음 · ${esc(s.group)} 아이콘">${cmpIcon(s)}</span>`+
     `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
-    // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 없음 and why)
+    // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 미산출 and why)
     `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
     `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}</section>`+
     `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></section>`+
@@ -3729,7 +3870,7 @@ function sheetSummary(s){
   const box=$('sheet-summary');if(!box)return;
   const t=matrixType(s), v=k=>{const x=pilotScore(s,k),one=k==='BBVI'&&x!==null&&bbviLabel(s);
     return `<i class="${x===null?'held':one?'single':''}"${one?` title="${GAUGE_NAME[k]} · ${esc(one)}"`:''}><small>${k}</small>${x===null?'–':x.toFixed(1)}${one?'<span class="sr-only"> '+esc(one)+'</span>':''}</i>`;};
-  const chip=t?`<span class="type-chip" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${verdictWord(t)} ${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none"><i aria-hidden="true"></i>유형 없음</span>';
+  const chip=t?`<span class="type-chip" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${verdictWord(t)} ${esc(matrixTypeLabel(t))}</span>`:'<span class="type-chip none"><i aria-hidden="true"></i>유형 미산출</span>';
   box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> <span class="kind${s.catalog?' cand':''}">${s.catalog?'조사 후보':'운영 발행'}</span> ${chip}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
 }
 function sheetSync(){

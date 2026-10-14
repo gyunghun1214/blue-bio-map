@@ -30,6 +30,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.11,
           "original_paper_dois": [
             "10.1371/journal.pone.0258980",
@@ -74,6 +75,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.5,
           "original_paper_dois": [
             "10.1371/journal.pone.0258980"
@@ -155,6 +157,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 377084,
@@ -241,7 +255,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -461,7 +475,15 @@
       "korean_name": "다시마",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 2,
+        "material_counts": {
+          "natural_isolate": 2
+        },
+        "max": 26.5,
+        "mean": 23.0,
+        "measured_zero_items": 0,
         "median": 23.0,
         "top2_mean": 23.0
       },
@@ -482,20 +504,14 @@
         "value": 26.5
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 181,
           "aoo_km2": 18100,
@@ -569,14 +585,15 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc",
           "ibaraki_rdb2020_algae"
         ],
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -628,7 +645,7 @@
         "label": "조사 부족",
         "latest_record_year": 2023,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -652,27 +669,34 @@
           "recent": 70
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Saccharina japonica",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 41.6,
         "MBPI": 26.5,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 56.7
+      },
+      "scores_unrounded": {
+        "BBVI": 41.59093001841621,
+        "MBPI": 26.51519337016575,
+        "MFPI": 56.66666666666667
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 34.1,
           "0.5": 41.6,
-          "0.75": 49.2
+          "0.75": 49.1
         },
         "mean_compound_sensitivity": 23.0,
         "median_compound_sensitivity": 23.0,
@@ -763,7 +787,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -837,6 +861,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 4.88,
           "original_paper_dois": [
             "10.1016/j.bmc.2013.04.026"
@@ -879,6 +904,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 6.29,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -922,6 +948,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 4.71,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -965,6 +992,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 4.65,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -1008,6 +1036,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.09,
           "original_paper_dois": [
             "10.1002/ptr.2298",
@@ -1055,6 +1084,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.9,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -1101,6 +1131,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.97,
           "original_paper_dois": [
             "10.1016/j.bmc.2008.07.078",
@@ -1147,6 +1178,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.62,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -1193,6 +1225,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 6.0,
           "original_paper_dois": [
             "10.1016/j.bmc.2009.01.031",
@@ -1237,6 +1270,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.27,
           "original_paper_dois": [
             "10.1016/j.bmc.2013.04.026",
@@ -1287,6 +1321,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 371986,
@@ -1391,7 +1437,7 @@
             }
           ]
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -1608,7 +1654,15 @@
       "korean_name": "감태",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 11,
         "item_count": 10,
+        "material_counts": {
+          "natural_isolate": 10
+        },
+        "max": 56.8,
+        "mean": 29.1,
+        "measured_zero_items": 0,
         "median": 24.4,
         "top2_mean": 51.4
       },
@@ -1629,20 +1683,14 @@
         "value": 56.8
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 346,
           "aoo_km2": 34600,
@@ -1703,14 +1751,15 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc",
           "ibaraki_rdb2020_algae"
         ],
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -1762,7 +1811,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -1786,26 +1835,33 @@
           "recent": 153
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Ecklonia cava",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 59.7,
+        "BBVI": 59.6,
         "MBPI": 56.8,
-        "MCUI": 10.0,
+        "MCUI": null,
+        "MFPI": 62.5
+      },
+      "scores_unrounded": {
+        "BBVI": 59.64285714285714,
+        "MBPI": 56.78571428571428,
         "MFPI": 62.5
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 58.2,
-          "0.5": 59.7,
+          "0.5": 59.6,
           "0.75": 61.1
         },
         "mean_compound_sensitivity": 29.1,
@@ -1874,7 +1930,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -1922,6 +1978,7 @@
           "independent_dois": [
             "10.3390/md22090398"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -1955,6 +2012,7 @@
           "cohort_median_pIC50": 4.838,
           "cohort_members": 134,
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "cancer_type": "Lung cancer",
@@ -1992,6 +2050,7 @@
           "cohort_median_pIC50": 4.788,
           "cohort_members": 109,
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "cancer_type": "Liver cancer",
@@ -2051,6 +2110,27 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "Livskraftig (LC)",
+            "country": "Sweden",
+            "country_ko": "스웨덴",
+            "list": "Rödlistade arter i Sverige 2025 (SLU Artdatabanken), Rodlistearbete_2025.csv row for taxon 232807",
+            "name_as_published": "Ulva prolifera O.F.Müll. (spretig tarmalg), Dyntaxa 232807; synonyms there include Enteromorpha prolifera",
+            "scope": "other_country",
+            "source_id": "slu_rodlista_2025",
+            "system": "The Swedish list applies the IUCN categories and criteria at the regional level; LC is an assigned category ('De skattade värdena ... ligger alla inom intervallet för kategorin Livskraftig (LC)'), not an absence from the list.",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": 2025
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 234476,
@@ -2148,7 +2228,7 @@
             }
           ]
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2335,8 +2415,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -2361,12 +2440,21 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "가시파래",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 3,
+        "material_counts": {
+          "hydrolysate_purified": 2,
+          "hydrolysate_sequence_synthetic": 1
+        },
+        "max": 73.3,
+        "mean": 25.9,
+        "measured_zero_items": 0,
         "median": 2.3,
         "top2_mean": 37.8
       },
@@ -2389,14 +2477,14 @@
         "value": 2.3
       },
       "mbpi_stratum": "peptide",
-      "mcui_basis": "range_state",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
         "basis": "range_state",
         "category": "LC",
         "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "LC → 10 (스웨덴 국가 적색목록, 팀 규칙 v4.0)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aphia_id": 234476,
           "assessment_basis": "The Swedish list applies the IUCN categories and criteria at the regional level; LC is an assigned category ('De skattade värdena ... ligger alla inom intervallet för kategorin Livskraftig (LC)'), not an absence from the list.",
@@ -2414,10 +2502,12 @@
           "selection_rule": "Several range states list the species. Following the team-lead decision of 2026-10-03, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, including a DD, are shown as limitations.",
           "source_id": "slu_rodlista_2025"
         },
+        "reference_note": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
         "source_ids": [
           "slu_rodlista_2025"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -2469,7 +2559,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -2493,27 +2583,34 @@
           "recent": 52
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Ulva prolifera",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 53.8,
+        "BBVI": 53.7,
         "MBPI": 73.3,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 34.2
+      },
+      "scores_unrounded": {
+        "BBVI": 53.73106060606061,
+        "MBPI": 73.29545454545455,
+        "MFPI": 34.166666666666664
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 63.5,
-          "0.5": 53.8,
-          "0.75": 44.0
+          "0.5": 53.7,
+          "0.75": 43.9
         },
         "mean_compound_sensitivity": 25.9,
         "median_compound_sensitivity": 2.3,
@@ -2606,7 +2703,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -2638,6 +2735,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.03,
           "original_paper_dois": [
             "10.3390/md19090497",
@@ -2694,6 +2792,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 494853,
@@ -2778,7 +2888,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2995,7 +3105,15 @@
       "korean_name": "괭생이모자반",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 3,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 21.6,
+        "mean": 21.6,
+        "measured_zero_items": 0,
         "median": 21.6,
         "top2_mean": 21.6
       },
@@ -3016,20 +3134,14 @@
         "value": 21.6
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 392,
           "aoo_km2": 39200,
@@ -3089,13 +3201,14 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -3147,7 +3260,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -3171,26 +3284,33 @@
           "recent": 242
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Sargassum horneri",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 37.6,
+        "BBVI": 37.5,
         "MBPI": 21.6,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 53.5
+      },
+      "scores_unrounded": {
+        "BBVI": 37.53976011326861,
+        "MBPI": 21.579186893203882,
+        "MFPI": 53.50033333333334
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 29.6,
-          "0.5": 37.6,
+          "0.5": 37.5,
           "0.75": 45.5
         },
         "mean_compound_sensitivity": 21.6,
@@ -3258,7 +3378,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -3291,6 +3411,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.5,
           "original_paper_dois": [
             "10.1371/journal.pone.0029359"
@@ -3340,6 +3461,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 236157,
@@ -3425,7 +3558,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -3645,7 +3778,15 @@
       "korean_name": "꼬시래기",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 49.3,
+        "mean": 49.3,
+        "measured_zero_items": 0,
         "median": 49.3,
         "top2_mean": 49.3
       },
@@ -3666,20 +3807,14 @@
         "value": 49.3
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 172,
           "aoo_km2": 17200,
@@ -3754,14 +3889,15 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc",
           "okinawa_rdb3_plants"
         ],
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -3813,7 +3949,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -3837,26 +3973,33 @@
           "recent": 170
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Gracilaria vermiculophylla",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 59.7,
+        "BBVI": 59.6,
         "MBPI": 49.3,
-        "MCUI": 10.0,
+        "MCUI": null,
+        "MFPI": 70.0
+      },
+      "scores_unrounded": {
+        "BBVI": 59.64259590377114,
+        "MBPI": 49.28519180754227,
         "MFPI": 70.0
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 54.5,
-          "0.5": 59.7,
+          "0.5": 59.6,
           "0.75": 64.8
         },
         "mean_compound_sensitivity": 49.3,
@@ -3948,7 +4091,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -3981,6 +4124,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 4.06,
           "original_paper_dois": [
             "10.1016/s0031-9422(00)90263-2"
@@ -4052,6 +4196,35 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "NT",
+            "category_as_published": "準絶滅危惧",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+            "name_as_published": "ミル Codium fragile (Suringar) Hariot",
+            "region": "Ibaraki",
+            "region_ko": "이바라키현",
+            "scope": "sub_national",
+            "source_id": "ibaraki_rdb2020_algae",
+            "system": "茨城県版レッドデータブック 蘚苔類・藻類・地衣類・菌類編 2020年版",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": "2020"
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 145086,
@@ -4136,7 +4309,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4355,7 +4528,15 @@
       "korean_name": "청각",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 0.4,
+        "mean": 0.4,
+        "measured_zero_items": 0,
         "median": 0.4,
         "top2_mean": 0.4
       },
@@ -4376,20 +4557,14 @@
         "value": 0.4
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 217,
           "aoo_km2": 21700,
@@ -4451,6 +4626,7 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "bachman_2020_rapid_lc",
@@ -4494,8 +4670,8 @@
           "use": "reference_only",
           "value": null
         },
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -4547,7 +4723,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -4571,26 +4747,33 @@
           "recent": 341
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Codium fragile",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 18.6,
+        "BBVI": 18.5,
         "MBPI": 0.4,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 36.7
+      },
+      "scores_unrounded": {
+        "BBVI": 18.545941324694027,
+        "MBPI": 0.42521598272138234,
+        "MFPI": 36.66666666666667
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 9.5,
-          "0.5": 18.6,
+          "0.5": 18.5,
           "0.75": 27.6
         },
         "mean_compound_sensitivity": 0.4,
@@ -4681,7 +4864,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -4809,6 +4992,7 @@
           "independent_dois": [
             "10.1039/c8fo01146j"
           ],
+          "material_class": "hydrolysate_unspecified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -4842,6 +5026,7 @@
           "independent_dois": [
             "10.1046/j.1444-2906.2002.00415.x"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -4875,6 +5060,7 @@
           "independent_dois": [
             "10.1046/j.1444-2906.2002.00415.x"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -4907,6 +5093,7 @@
           "independent_dois": [
             "10.1039/c8fo01146j"
           ],
+          "material_class": "hydrolysate_unspecified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -4940,6 +5127,7 @@
           "independent_dois": [
             "10.5657/fas.2005.8.2.109"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -4972,6 +5160,7 @@
           "independent_dois": [
             "10.1039/c8fo01146j"
           ],
+          "material_class": "hydrolysate_unspecified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -5004,6 +5193,7 @@
           "independent_dois": [
             "10.1039/c8fo01146j"
           ],
+          "material_class": "hydrolysate_unspecified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -5081,6 +5271,26 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "바지락 Ruditapes philippinarum A. Adams & Reeve, 1848",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "aphia_id": 231750,
@@ -5181,7 +5391,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5862,7 +6072,16 @@
       "korean_name": "바지락",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 3,
         "item_count": 7,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 3,
+          "hydrolysate_unspecified": 4
+        },
+        "max": 58.6,
+        "mean": 37.2,
+        "measured_zero_items": 0,
         "median": 36.6,
         "top2_mean": 51.0
       },
@@ -6007,9 +6226,14 @@
         "MCUI": 10.0,
         "MFPI": 60.4
       },
+      "scores_unrounded": {
+        "BBVI": 59.496875,
+        "MBPI": 58.59375,
+        "MFPI": 60.400000000000006
+      },
       "sensitivity": {
         "food_weights": {
-          "0.25": 59.1,
+          "0.25": 59.0,
           "0.5": 59.5,
           "0.75": 59.9
         },
@@ -6121,6 +6345,7 @@
           "independent_dois": [
             "10.1007/s00217-014-2315-8"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "converted_from": {
@@ -6182,6 +6407,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "EN",
+            "category_as_published": "EN",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_haliotis_discus_2022",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2022
+          }
+        ],
+        "category": "EN",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": null,
@@ -6283,7 +6527,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6985,7 +7229,15 @@
       "korean_name": "전복(종 수준)",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 1
+        },
+        "max": 15.6,
+        "mean": 15.6,
+        "measured_zero_items": 0,
         "median": 15.6,
         "top2_mean": 15.6
       },
@@ -7089,15 +7341,20 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 35.2,
+        "BBVI": 35.1,
         "MBPI": 15.6,
         "MCUI": 80.0,
         "MFPI": 54.7
       },
+      "scores_unrounded": {
+        "BBVI": 35.13083479020979,
+        "MBPI": 15.553977272727273,
+        "MFPI": 54.70769230769231
+      },
       "sensitivity": {
         "food_weights": {
-          "0.25": 25.4,
-          "0.5": 35.2,
+          "0.25": 25.3,
+          "0.5": 35.1,
           "0.75": 44.9
         },
         "mean_compound_sensitivity": 15.6,
@@ -7202,6 +7459,7 @@
           "independent_dois": [
             "10.16535/j.cnki.dlhyxb.2018.06.016"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -7326,6 +7584,26 @@
           ]
         }
       },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "큰가리비 Mizuhopecten yessoensis Jay, 1856",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
+      },
       "conservation_trace": {
         "aphia_id": 393716,
         "category": null,
@@ -7426,7 +7704,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8089,7 +8367,15 @@
       "korean_name": "큰가리비",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 1
+        },
+        "max": 27.3,
+        "mean": 27.3,
+        "measured_zero_items": 0,
         "median": 27.3,
         "top2_mean": 27.3
       },
@@ -8229,15 +8515,20 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 41.6,
+        "BBVI": 41.5,
         "MBPI": 27.3,
         "MCUI": 10.0,
         "MFPI": 55.8
       },
+      "scores_unrounded": {
+        "BBVI": 41.53636363636364,
+        "MBPI": 27.272727272727273,
+        "MFPI": 55.800000000000004
+      },
       "sensitivity": {
         "food_weights": {
           "0.25": 34.4,
-          "0.5": 41.6,
+          "0.5": 41.5,
           "0.75": 48.7
         },
         "mean_compound_sensitivity": 27.3,
@@ -8365,6 +8656,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.62,
           "original_paper_dois": [
             "10.1016/s1875-5364(21)60119-x"
@@ -8431,6 +8723,27 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "NT",
+            "category_as_published": "準絶滅危惧（NT）",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "環境省レッドリスト2020 (貝類)",
+            "name_as_published": "シカメガキ Magallana sikamea",
+            "scope": "other_country",
+            "source_id": "moe_japan_red_list_2020_molluscs",
+            "system": "Ministry of the Environment Japan red-list categories, which name their IUCN equivalent (準絶滅危惧 = NT)",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": 2020
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 836041,
@@ -8525,7 +8838,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -9044,8 +9357,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -9070,12 +9382,20 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "시카메굴",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 13.8,
+        "mean": 13.8,
+        "measured_zero_items": 0,
         "median": 13.8,
         "top2_mean": 13.8
       },
@@ -9096,14 +9416,14 @@
         "value": 13.8
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "range_state",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 35.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
         "basis": "range_state",
         "category": "NT",
         "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "NT → 35 (일본 국가 적색목록, 팀 규칙 v4.0)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aphia_id": 836041,
           "assessment_basis": "Ministry of the Environment Japan red-list categories, which name their IUCN equivalent (準絶滅危惧 = NT)",
@@ -9120,10 +9440,12 @@
           "scope": "national (Japan)",
           "source_id": "moe_japan_red_list_2020_molluscs"
         },
+        "reference_note": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
         "source_ids": [
           "moe_japan_red_list_2020_molluscs"
         ],
-        "value": 35.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -9144,7 +9466,7 @@
         "label": "판단 불가",
         "latest_record_year": null,
         "mcui_adjustment": 0,
-        "mcui_base": 35.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -9167,26 +9489,33 @@
           "recent": 0
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Magallana sikamea",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 35.0,
+        "BBVI": 34.9,
         "MBPI": 13.8,
-        "MCUI": 35.0,
+        "MCUI": null,
         "MFPI": 56.1
+      },
+      "scores_unrounded": {
+        "BBVI": 34.933958626168064,
+        "MBPI": 13.787276226695111,
+        "MFPI": 56.08064102564102
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 24.4,
-          "0.5": 35.0,
+          "0.5": 34.9,
           "0.75": 45.5
         },
         "mean_compound_sensitivity": 13.8,
@@ -9277,7 +9606,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -9291,6 +9620,7 @@
           "adjusted": 1.4610389610389611,
           "cohort_median_pMIC": 5.269,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9327,6 +9657,7 @@
           "adjusted": 12.899416504584607,
           "cohort_median_pMIC": 5.029,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9363,6 +9694,7 @@
           "adjusted": 5.718475073313783,
           "cohort_median_pMIC": 4.903,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9399,6 +9731,7 @@
           "adjusted": 22.048163659793815,
           "cohort_median_pMIC": 5.049,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9435,6 +9768,7 @@
           "adjusted": 12.753542650736314,
           "cohort_median_pMIC": 5.029,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9471,6 +9805,7 @@
           "adjusted": 13.99165350778254,
           "cohort_median_pMIC": 4.903,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -9510,6 +9845,7 @@
           "cohort_median_pIC50": 5.076,
           "cohort_members": 58,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "cancer_type": "Colorectal cancer",
@@ -9547,6 +9883,7 @@
           "cohort_median_pIC50": 4.659,
           "cohort_members": 51,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "cancer_type": "Colorectal cancer",
@@ -9618,6 +9955,26 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "피조개 Scapharca broughtonii Schrenck, 1867",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "aphia_id": 504357,
@@ -9711,7 +10068,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -10416,7 +10773,15 @@
       "korean_name": "피조개",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 8,
+        "material_counts": {
+          "native_sequence_synthetic": 8
+        },
+        "max": 75.0,
+        "mean": 24.2,
+        "measured_zero_items": 0,
         "median": 13.4,
         "top2_mean": 62.5
       },
@@ -10571,6 +10936,11 @@
         "MCUI": 10.0,
         "MFPI": 61.9
       },
+      "scores_unrounded": {
+        "BBVI": 68.46346153846154,
+        "MBPI": 75.0,
+        "MFPI": 61.92692307692308
+      },
       "sensitivity": {
         "food_weights": {
           "0.25": 71.7,
@@ -10684,6 +11054,7 @@
           "independent_dois": [
             "10.3390/md14060110"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -10717,6 +11088,7 @@
           "cohort_median_pIC50": 4.743,
           "cohort_members": 92,
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "cancer_type": "Prostate cancer",
@@ -10782,6 +11154,7 @@
           "cohort_median_pIC50": 4.743,
           "cohort_members": 92,
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "cancer_type": "Prostate cancer",
@@ -10870,6 +11243,26 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "가리맛조개 Sinonovacula constricta Lamarck, 1818",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "aphia_id": 413600,
@@ -10962,7 +11355,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -11650,7 +12043,16 @@
       "korean_name": "가리맛조개",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 3,
+        "material_counts": {
+          "hydrolysate_purified": 2,
+          "hydrolysate_sequence_synthetic": 1
+        },
+        "max": 56.9,
+        "mean": 21.1,
+        "measured_zero_items": 0,
         "median": 3.3,
         "top2_mean": 30.1
       },
@@ -11805,6 +12207,11 @@
         "MCUI": 10.0,
         "MFPI": 57.7
       },
+      "scores_unrounded": {
+        "BBVI": 57.29075611888112,
+        "MBPI": 56.88920454545455,
+        "MFPI": 57.69230769230769
+      },
       "sensitivity": {
         "food_weights": {
           "0.25": 57.1,
@@ -11914,6 +12321,7 @@
           "independent_dois": [
             "10.1111/1750-3841.70767"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -11946,6 +12354,7 @@
           "independent_dois": [
             "10.1111/1750-3841.70767"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -11978,6 +12387,7 @@
           "independent_dois": [
             "10.1111/1750-3841.70767"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -12010,6 +12420,7 @@
           "independent_dois": [
             "10.1016/j.foodchem.2024.138873"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -12077,6 +12488,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_scomber_japonicus_2023",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2022
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": null,
@@ -12178,7 +12608,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -12883,7 +13313,15 @@
       "korean_name": "고등어",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 4,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 4
+        },
+        "max": 34.9,
+        "mean": 26.3,
+        "measured_zero_items": 0,
         "median": 25.8,
         "top2_mean": 32.9
       },
@@ -12990,6 +13428,11 @@
         "BBVI": 47.4,
         "MBPI": 34.9,
         "MCUI": 10.0,
+        "MFPI": 59.9
+      },
+      "scores_unrounded": {
+        "BBVI": 47.42159090909091,
+        "MBPI": 34.94318181818182,
         "MFPI": 59.9
       },
       "sensitivity": {
@@ -13104,6 +13547,7 @@
           "independent_dois": [
             "10.1007/s13765-015-0129-4"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -13137,6 +13581,7 @@
           "independent_dois": [
             "10.1007/s13765-015-0129-4"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -13170,6 +13615,7 @@
           "independent_dois": [
             "10.1007/s13765-015-0129-4"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -13226,6 +13672,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_engraulis_japonicus_2018",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2018
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": null,
@@ -13327,7 +13792,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14031,7 +14496,15 @@
       "korean_name": "멸치",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 3,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 3
+        },
+        "max": 22.6,
+        "mean": 15.2,
+        "measured_zero_items": 0,
         "median": 21.9,
         "top2_mean": 22.3
       },
@@ -14139,6 +14612,11 @@
         "MBPI": 22.6,
         "MCUI": 10.0,
         "MFPI": 74.1
+      },
+      "scores_unrounded": {
+        "BBVI": 48.3214597902098,
+        "MBPI": 22.585227272727273,
+        "MFPI": 74.05769230769232
       },
       "sensitivity": {
         "food_weights": {
@@ -14570,6 +15048,7 @@
             }
           ],
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -14928,6 +15407,7 @@
             }
           ],
           "evidence_factor": 0.75,
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -14987,6 +15467,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_larimichthys_polyactis_2020",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2016
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": null,
@@ -15096,7 +15595,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15758,7 +16257,15 @@
       "korean_name": "참조기",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 2,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 2
+        },
+        "max": 53.8,
+        "mean": 45.7,
+        "measured_zero_items": 0,
         "median": 45.7,
         "top2_mean": 45.7
       },
@@ -15866,6 +16373,11 @@
         "MBPI": 53.8,
         "MCUI": 35.0,
         "MFPI": 39.4
+      },
+      "scores_unrounded": {
+        "BBVI": 46.60217391304348,
+        "MBPI": 53.80434782608695,
+        "MFPI": 39.400000000000006
       },
       "sensitivity": {
         "food_weights": {
@@ -16009,6 +16521,7 @@
           "independent_dois": [
             "10.1016/j.procbio.2016.01.009"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -16041,6 +16554,7 @@
           "independent_dois": [
             "10.1016/j.procbio.2016.01.009"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -16071,6 +16585,7 @@
           "adjusted": 38.57838589981447,
           "cohort_median_pMIC": 5.269,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -16105,6 +16620,7 @@
           "adjusted": 36.28612114476243,
           "cohort_median_pMIC": 5.029,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -16139,6 +16655,7 @@
           "adjusted": 35.56701030927835,
           "cohort_median_pMIC": 5.049,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -16173,6 +16690,7 @@
           "adjusted": 43.150684931506845,
           "cohort_median_pMIC": 5.204,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -16233,6 +16751,27 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "ランク外",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "水産庁 水産資源の希少性評価結果 (2017), p.2, 整理番号 40",
+            "name_as_published": "40 ヒラメ Paralichthys olivaceus",
+            "scope": "other_country",
+            "source_id": "jfa_rarity_2017",
+            "system": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": 2017
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 275816,
@@ -16347,7 +16886,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16978,8 +17517,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -17005,12 +17543,21 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 1.0
+        "mean_ratio": 0.67
       },
       "korean_name": "넙치",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 2,
         "item_count": 6,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 2,
+          "native_sequence_synthetic": 4
+        },
+        "max": 43.2,
+        "mean": 34.8,
+        "measured_zero_items": 0,
         "median": 35.9,
         "top2_mean": 40.9
       },
@@ -17033,14 +17580,14 @@
         "value": 43.2
       },
       "mbpi_stratum": "amp",
-      "mcui_basis": "range_state",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
         "basis": "range_state",
         "category": "LC",
         "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aphia_id": 275816,
           "assessment_basis": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
@@ -17058,10 +17605,12 @@
           "scope": "national (Japan; stocks the Fisheries Agency assesses)",
           "source_id": "jfa_rarity_2017"
         },
+        "reference_note": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
         "source_ids": [
           "jfa_rarity_2017"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -17113,7 +17662,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -17137,25 +17686,32 @@
           "recent": 55
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Paralichthys olivaceus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 51.3,
         "MBPI": 43.2,
-        "MCUI": 10.0,
+        "MCUI": null,
+        "MFPI": 59.4
+      },
+      "scores_unrounded": {
+        "BBVI": 51.275342465753425,
+        "MBPI": 43.150684931506845,
         "MFPI": 59.4
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 47.3,
+          "0.25": 47.2,
           "0.5": 51.3,
           "0.75": 55.3
         },
@@ -17248,7 +17804,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -17287,6 +17843,7 @@
           "adjusted": 31.664787371134018,
           "cohort_median_pMIC": 5.049,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -17321,6 +17878,7 @@
           "adjusted": 0.0,
           "cohort_median_pMIC": 5.072,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -17355,6 +17913,7 @@
           "adjusted": 12.842465753424658,
           "cohort_median_pMIC": 5.204,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -17389,6 +17948,7 @@
           "adjusted": 0.0,
           "cohort_median_pMIC": 5.213,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -17449,6 +18009,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 274849,
@@ -17565,7 +18137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18227,7 +18799,15 @@
       "korean_name": "조피볼락",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 4,
+        "material_counts": {
+          "native_sequence_synthetic": 4
+        },
+        "max": 31.7,
+        "mean": 11.1,
+        "measured_zero_items": 2,
         "median": 6.4,
         "top2_mean": 22.3
       },
@@ -18250,20 +18830,14 @@
         "value": 31.7
       },
       "mbpi_stratum": "amp",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 186,
           "aoo_km2": 18600,
@@ -18338,14 +18912,15 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc",
           "fukuoka_redlist2024"
         ],
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -18397,7 +18972,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -18421,20 +18996,27 @@
           "recent": 74
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "no_conservation_assessment"
+      ],
       "reference_combination": null,
       "scientific_name": "Sebastes schlegelii",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 40.1,
         "MBPI": 31.7,
-        "MCUI": 10.0,
+        "MCUI": null,
+        "MFPI": 48.5
+      },
+      "scores_unrounded": {
+        "BBVI": 40.08239368556701,
+        "MBPI": 31.664787371134018,
         "MFPI": 48.5
       },
       "sensitivity": {
@@ -18532,7 +19114,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -20428,6 +21010,7 @@
             "10.1074/jbc.m610413200"
           ],
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "assay": "COS-7 세포 발현 야생형 사람 GnRH 수용체, 125I-[His5,D-Tyr6]GnRH 치환 결합(4 °C 4시간, 온전한 세포)",
@@ -20509,6 +21092,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_seriola_quinqueradiata_2016",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2015
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": "Needs updating",
@@ -20621,7 +21223,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -21294,7 +21896,15 @@
       "korean_name": "방어",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "native_sequence_synthetic": 1
+        },
+        "max": 7.5,
+        "mean": 7.5,
+        "measured_zero_items": 0,
         "median": 7.5,
         "top2_mean": 7.5
       },
@@ -21410,6 +22020,11 @@
         "MBPI": 7.5,
         "MCUI": 10.0,
         "MFPI": 51.0
+      },
+      "scores_unrounded": {
+        "BBVI": 29.25186550976139,
+        "MBPI": 7.483731019522777,
+        "MFPI": 51.02
       },
       "sensitivity": {
         "food_weights": {
@@ -21548,6 +22163,7 @@
           "independent_dois": [
             "10.1016/j.procbio.2016.07.006"
           ],
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -21580,6 +22196,7 @@
           "independent_dois": [
             "10.1016/j.procbio.2016.07.006"
           ],
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -21635,6 +22252,27 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "ランク外",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "水産庁 水産資源の希少性評価結果 (2017), p.1, 整理番号 14",
+            "name_as_published": "14 マダラ Gadus macrocephalus",
+            "scope": "other_country",
+            "source_id": "jfa_rarity_2017",
+            "system": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": 2017
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 254538,
@@ -21741,7 +22379,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -22417,8 +23055,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -22443,12 +23080,20 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "대구",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 2,
+        "material_counts": {
+          "hydrolysate_purified": 2
+        },
+        "max": 59.9,
+        "mean": 55.6,
+        "measured_zero_items": 0,
         "median": 55.6,
         "top2_mean": 55.6
       },
@@ -22463,14 +23108,14 @@
         "value": null
       },
       "mbpi_stratum": "peptide",
-      "mcui_basis": "range_state",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
         "basis": "range_state",
         "category": "LC",
         "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aphia_id": 254538,
           "assessment_basis": "An official government evaluation of the species in Japanese waters (Fisheries Agency, 94 species: DD 1, ランク外 93). 'ランク外' is read as LC-equivalent under the team-lead decision of 2026-10-04.",
@@ -22488,10 +23133,12 @@
           "scope": "national (Japan; stocks the Fisheries Agency assesses)",
           "source_id": "jfa_rarity_2017"
         },
+        "reference_note": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
         "source_ids": [
           "jfa_rarity_2017"
         ],
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -22543,7 +23190,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -22567,21 +23214,28 @@
           "recent": 40
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Gadus macrocephalus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 49.1,
         "MBPI": 59.9,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 38.3
+      },
+      "scores_unrounded": {
+        "BBVI": 49.06684877622378,
+        "MBPI": 59.87215909090909,
+        "MFPI": 38.261538461538464
       },
       "sensitivity": {
         "food_weights": {
@@ -22678,7 +23332,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -22693,6 +23347,7 @@
           "caveat": "기원종은 공개 서열 기록으로 확인했습니다. 이 펩타이드는 꽃게 자신의 MCCC1 유전자 모형 N말단 19잔기(UniProt A0A5B7CYN9)이고, 같은 19잔기는 대게 기록(A0A8J5CHQ3)에 없으며, 평균 질량 2268.71 Da가 논문의 환산값(32 µg/mL = 14.1 µM)을 그대로 재현합니다. 한계 둘: 이 서열은 초안 유전체 유전자 모형의 N말단이고 같은 유전자의 현재 RefSeq 모형(XP_045119878.1)은 다른 N말단을 예측합니다. 또 같은 연구진의 특허 KR20250095776A는 같은 서열을 대게로 적습니다(등록번호 없음). 실험 시료는 채집 개체가 아니라 합성 펩타이드입니다.",
           "cohort_median_pMIC": 5.029,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -22730,6 +23385,7 @@
           "caveat": "기원종은 공개 서열 기록으로 확인했습니다. 이 펩타이드는 꽃게 자신의 MCCC1 유전자 모형 N말단 19잔기(UniProt A0A5B7CYN9)이고, 같은 19잔기는 대게 기록(A0A8J5CHQ3)에 없으며, 평균 질량 2268.71 Da가 논문의 환산값(32 µg/mL = 14.1 µM)을 그대로 재현합니다. 한계 둘: 이 서열은 초안 유전체 유전자 모형의 N말단이고 같은 유전자의 현재 RefSeq 모형(XP_045119878.1)은 다른 N말단을 예측합니다. 또 같은 연구진의 특허 KR20250095776A는 같은 서열을 대게로 적습니다(등록번호 없음). 실험 시료는 채집 개체가 아니라 합성 펩타이드입니다.",
           "cohort_median_pMIC": 5.049,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -22792,6 +23448,35 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "NT",
+            "category_as_published": "NT",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "福岡県レッドリスト2024（動物）甲殻類等",
+            "name_as_published": "ガザミ Portunus trituberculatus",
+            "region": "Fukuoka",
+            "region_ko": "후쿠오카현",
+            "scope": "sub_national",
+            "source_id": "fukuoka_redlist2024",
+            "system": "福岡県レッドリスト2024（動物）甲殻類等",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": "2024"
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 1061762,
@@ -22906,7 +23591,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23568,7 +24253,15 @@
       "korean_name": "꽃게",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 2,
+        "material_counts": {
+          "native_sequence_synthetic": 2
+        },
+        "max": 30.3,
+        "mean": 29.9,
+        "measured_zero_items": 0,
         "median": 29.9,
         "top2_mean": 29.9
       },
@@ -23591,20 +24284,14 @@
         "value": 30.3
       },
       "mbpi_stratum": "amp",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 240,
           "aoo_km2": 24000,
@@ -23666,6 +24353,7 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "bachman_2020_rapid_lc",
@@ -23710,8 +24398,8 @@
           "use": "reference_only",
           "value": null
         },
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -23763,7 +24451,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -23787,20 +24475,27 @@
           "recent": 78
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Portunus trituberculatus",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 46.2,
         "MBPI": 30.3,
-        "MCUI": 10.0,
+        "MCUI": null,
+        "MFPI": 62.0
+      },
+      "scores_unrounded": {
+        "BBVI": 46.165671019727704,
+        "MBPI": 30.331342039455404,
         "MFPI": 62.0
       },
       "sensitivity": {
@@ -23897,7 +24592,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -24193,6 +24888,7 @@
             "10.3390/md20050328"
           ],
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "assay": "사람 V1b 수용체 발현 RBL 세포, 세포내 Ca2+ 형광(작용 시험), Eurofins Cerep, 3회 반복",
@@ -24286,6 +24982,26 @@
           ]
         }
       },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "NT",
+            "category_as_published": "NT",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "참문어 Octopus vulgaris",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "NT",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
+      },
       "conservation_trace": {
         "aphia_id": 534443,
         "category": null,
@@ -24377,7 +25093,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25083,7 +25799,15 @@
       "korean_name": "참문어(동아시아 종)",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "native_sequence_synthetic": 1
+        },
+        "max": 70.5,
+        "mean": 70.5,
+        "measured_zero_items": 0,
         "median": 70.5,
         "top2_mean": 70.5
       },
@@ -25244,6 +25968,11 @@
         "MBPI": 70.5,
         "MCUI": 35.0,
         "MFPI": 37.8
+      },
+      "scores_unrounded": {
+        "BBVI": 54.15511798958015,
+        "MBPI": 70.5179282868526,
+        "MFPI": 37.792307692307695
       },
       "sensitivity": {
         "food_weights": {
@@ -25728,6 +26457,7 @@
             "10.1021/acs.jmedchem.0c00643"
           ],
           "label": "완화 산출(d) · 펩타이드를 ChEMBL 표적 비교집단에서 순위",
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "assay": "사람 NPFFR2 발현 CHO 세포막, [125I]EYF 치환 결합 (ChEMBL 시험 CHEMBL4772223, 활동 22978140)",
@@ -25867,6 +26597,36 @@
           ]
         }
       },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "DD",
+            "category_as_published": "DD",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_sepia_esculenta_2012",
+            "system": "IUCN Red List",
+            "used_for_mcui": false,
+            "year": 2009
+          },
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "참갑오징어 Sepia esculenta Hoyle, 1885",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
+      },
       "conservation_trace": {
         "annotations": "Needs updating",
         "aphia_id": 1666974,
@@ -25965,7 +26725,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26686,7 +27446,15 @@
       "korean_name": "갑오징어",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "native_sequence_synthetic": 1
+        },
+        "max": 65.8,
+        "mean": 65.8,
+        "measured_zero_items": 0,
         "median": 65.8,
         "top2_mean": 65.8
       },
@@ -26838,15 +27606,20 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 54.2,
+        "BBVI": 54.1,
         "MBPI": 65.8,
         "MCUI": 10.0,
         "MFPI": 42.5
       },
+      "scores_unrounded": {
+        "BBVI": 54.11889632107024,
+        "MBPI": 65.76086956521739,
+        "MFPI": 42.47692307692308
+      },
       "sensitivity": {
         "food_weights": {
-          "0.25": 60.0,
-          "0.5": 54.2,
+          "0.25": 59.9,
+          "0.5": 54.1,
           "0.75": 48.3
         },
         "mean_compound_sensitivity": 65.8,
@@ -27121,6 +27894,7 @@
     "bbvi": {
       "default_food_weight": 0.5,
       "minimum_independent_mbpi_dois": 2,
+      "nature": "탐색적 합성지표: 비교집단이 다른 MFPI(해조류·수산동물 백분위)와 MBPI(층별 백분위)를 가중 평균한 값이며, 공통 척도로 검증되지 않았습니다.",
       "sensitivity_food_weights": [
         0.25,
         0.5,
@@ -27129,7 +27903,8 @@
       "single_source_bbvi_label": "단일 논문",
       "single_source_mbpi_label": "단일 논문",
       "single_source_policy": "score_with_label",
-      "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries its single-paper factor (0.75; 0.75 x 0.75 for a ChEMBL item with one link paper and one activity document). In the matrix it is a hollow point; on the map each cell's tooltip counts such species and the cell's species list carries the label. Up to 3.26 such a BBVI was withheld and shown only as a reference combination."
+      "single_source_rule": "Since 3.27 (team-lead decision 2026-10-03): when the top MBPI item rests on fewer independent papers than minimum_independent_mbpi_dois, BBVI is still computed with the same formula and published as a score, labelled single_source_bbvi_label; the MBPI item already carries its single-paper factor (0.75; 0.75 x 0.75 for a ChEMBL item with one link paper and one activity document). In the matrix it is a hollow point; on the map each cell's tooltip counts such species and the cell's species list carries the label. Up to 3.26 such a BBVI was withheld and shown only as a reference combination.",
+      "unrounded_inputs": true
     },
     "bioactivity": {
       "eligible_endpoints": [
@@ -27169,7 +27944,7 @@
       }
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
-    "changes_from": "verified-4.12 (2026-10-14). The 2026-10-14 evidence brief, registered in research/verified-indices/prereg-4.13-2026-10-14.md in its own commit before the inputs and code. No rule changed. (1) The AMP supplement gains the four cohort targets of 넙치 P35 (Xu, Yuan & Sun 2022, Int J Mol Sci 23:12722, full text read 2026-10-14): MBPI 29.2 -> 43.2, BBVI 44.3 -> 51.3. (2) Seven reviewed records whose value this run could not verify in the original text, or which the fixed rules do not cover (PBS-buffer MIC, a sample with no scientific name), join the partial supplement and score nothing. (3) Three compound caveats gained their original-measurement sources. (4) A new display file, dist/supplementary-literature.json, lists related papers that no score uses; the indicator build does not read it. Items needing a rule change are listed as decisions in the pre-registration and stay out of the scores.",
+    "changes_from": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -27323,6 +28098,7 @@
       "no_assessment": {
         "labels": {
           "conservation_data_deficient": "IUCN 자료 부족(DD)",
+          "korea_status_unconfirmed": "다른 나라·지역 평가만 있음(한국 해역 상태 미확인)",
           "no_conservation_assessment": "보전 평가 없음"
         },
         "rule": "A species without a reviewed national category gets no MCUI and is labelled priority_survey when the IUCN search found no assessment (not_in_red_list -> no_conservation_assessment) or the assessment has no numeric category (DD -> conservation_data_deficient), beside the information-sufficiency reason. A failed lookup or an assessment not confirmed current is a data problem and does not add this reason."
@@ -27384,35 +28160,38 @@
       "include_floor_bbvi": true,
       "include_national_mcui": true,
       "include_single_source_bbvi": true,
-      "include_substitute_mcui": [
-        "range_state",
-        "sub_national",
-        "preliminary"
-      ],
+      "include_substitute_mcui": [],
       "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
       "mcui_threshold": 50,
       "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
       "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
       "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
-      "threshold_rule": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers.",
+      "threshold_label": "탐색적 구분선",
+      "threshold_rule": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds.",
+      "type_note": "연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님",
       "types": {
         "high_bbvi_high_mcui": {
           "id": "alternative_production",
-          "label": "대체생산·배양 연구"
+          "label": "활용·보전 병행 검토",
+          "plain": "두 지표 모두 높음"
         },
         "high_bbvi_low_mcui": {
           "id": "sustainable_use",
-          "label": "지속가능 활용 후보"
+          "label": "활용 연구 검토",
+          "plain": "활용 지표 높음"
         },
         "low_bbvi_high_mcui": {
           "id": "conservation_priority",
-          "label": "보전 우선·모니터링"
+          "label": "보전 연구 우선 검토",
+          "plain": "보전 지표 높음"
         },
         "low_bbvi_low_mcui": {
           "id": "baseline_survey",
-          "label": "기초조사·관찰 대상"
+          "label": "기초조사 검토",
+          "plain": "두 지표 모두 낮음"
         }
-      }
+      },
+      "untyped_label": "유형 미산출(보전평가 미확인 등)"
     },
     "mbpi_breadth": {
       "exploratory": true,
@@ -27420,6 +28199,11 @@
       "prereg": "research/verified-indices/prereg-4.11-2026-10-13.md",
       "reason": "MBPI is the maximum over items, so a species with more measured items tends to score higher (4.10: Spearman 0.64 between item count and MBPI).",
       "rule": "For each species with scored MBPI items: item_count, median of the items' adjusted values and the mean of the top two (the single value when there is one), each round1. Display only; never in MBPI, BBVI, the matrix or any ranking. A correction for the max-of-items bias needs its own pre-registration."
+    },
+    "mbpi_evidence_profile": {
+      "material_file": "research/verified-indices/mbpi-material-4.14-2026-10-14.json",
+      "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
+      "rule": "Display only beside MBPI: independent_paper_count = lower-cased DOIs of every scored item's original papers and used replications (one paper in two databases is one paper); max, median, mean, top-two mean; material_counts by reviewed material class; floor_zero marks the 4.3 no-evidence floor, measured_zero_items counts measured items at the bottom of their cohort."
     },
     "mbpi_floor": {
       "bbvi_label": "MBPI 하한값 포함",
@@ -27499,6 +28283,54 @@
       },
       "rule": "MBPI-Rx = the published MBPI rule (each bioactivity_trace item's own adjusted value = within-stratum percentile x evidence factor, the species maximum, round1) over the items whose stratum is classified 'include'. Nothing is recomputed and no item, cohort or factor is added. The 4.3 floor (mbpi_floor) does not apply: with no remaining item the value is null with a reason, never 0 or another species' value. Secondary and exploratory: never in scores, BBVI, labels, the matrix, use chips, the map, the expedition or unexplored candidates.",
       "status": "exploratory_secondary"
+    },
+    "mcui_scope": {
+      "korea_list": "국가생물적색자료집(국립생물자원관 2024)",
+      "korea_list_year": 2024,
+      "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+      "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
+      "reference_assessment_years": {
+        "jfa_rarity_2017": 2017,
+        "moe_japan_red_list_2020_molluscs": 2020,
+        "russia_red_data_book_plants_2023": 2023,
+        "slu_rodlista_2025": 2025
+      },
+      "reference_bases": [
+        "range_state",
+        "sub_national",
+        "preliminary"
+      ],
+      "reference_notes": {
+        "preliminary": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+        "range_state": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
+        "sub_national": "다른 나라 지방 정부 평가입니다. 그 지역 개체군의 평가라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음)."
+      },
+      "replaces": [
+        "2026-10-04 team-lead decision (ランク外 → LC-equivalent MCUI): kept as a reference reading",
+        "2026-10-05 team-lead decision (scored Rapid LC): kept as reference"
+      ],
+      "rule": "The extinction-risk part of MCUI comes only from the IUCN global assessment (the whole range, Korean waters included) or the Korean national red list (NIBR 2024, IUCN regional guidelines), in that order; neither replaces the other and both are shown. Another range state's national list, a sub-national list and the preliminary Rapid LC check describe another population or are not assessments: they stay whole as reference items, with their category as published and no MCUI number, and give no type or map colour. Wide distribution or many records never establish a low extinction risk.",
+      "scored_bases": [
+        "iucn",
+        "national"
+      ],
+      "self_preliminary_label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+      "state_labels": {
+        "lookup_failed": "조회 실패",
+        "not_found": "보전평가 미확인",
+        "official_dd": "공식 평가 DD(정보 부족)",
+        "official_ne": "공식 NE(미평가)",
+        "official_scored": "공식 평가",
+        "other_region_only": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "self_preliminary_only": "보전평가 미확인 · 자체 예비검토 참고"
+      },
+      "stock_lower_bound_label": "멸종위험 평가 미확인 · 자원 감소 신호(하한)",
+      "stock_lower_bound_rule": "With no extinction-risk MCUI, MCUI = the stock-decline score only when it is at or above matrix.mcui_threshold; otherwise MCUI stays null and the signal is shown as reference.",
+      "stock_reference_label": "자원 감소 신호 참고 · 멸종위험 평가 미확인이라 MCUI 미산출",
+      "why_not": {
+        "range_state": "other_population",
+        "sub_national": "other_population"
+      }
     },
     "mcui_stock_decline": {
       "aquaculture_fishery": "해면양식업",
@@ -27682,7 +28514,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.13",
+    "method_version": "verified-4.14",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -28045,7 +28877,7 @@
             "전복(종 수준)"
           ],
           "n": 14,
-          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다.",
+          "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다. 2026-10-14 방법 재검토(사전 등록 prereg-4.14)로 4.14부터 다시 참고 정보로만 두고 MCUI에 쓰지 않습니다.",
           "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
           "result": "failed"
         },
@@ -28074,7 +28906,7 @@
               "expected": "상위",
               "mcui": 60.0,
               "mcui_rank": 4,
-              "of": 29,
+              "of": 16,
               "stock_score": 60
             }
           },
@@ -28084,7 +28916,7 @@
             "살오징어는 2025년 잠정치(31,006톤)에서 반등했으나 확정치가 아니므로 점수에 넣지 않았습니다."
           ],
           "prereg": "research/verified-indices/prereg-4.12-2026-10-14.md",
-          "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
+          "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14부터 MCUI가 있는 16종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
           "result": "consistent_same_data",
           "result_label": "같은 자료로 한 일관성 확인 · 독립 검증 아님"
         },
@@ -28113,6 +28945,20 @@
           "spearman_rho": 0.873
         }
       }
+    },
+    "provenance": {
+      "builder": "scripts/build_verified_indices.py",
+      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
+      "config": "config/verified-indices-v4.14.json",
+      "inputs": [
+        "research/verified-indices/evidence.json and the files config names",
+        "research/verified-indices/candidates.json",
+        "research/verified-indices/taxonomy.json",
+        "dist/candidate-catalog.json"
+      ],
+      "method_version": "verified-4.14",
+      "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
+      "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
     },
     "reference_combination": {
       "formula": "w×MFPI+(1−w)×MBPI",
@@ -28291,7 +29137,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.13",
+  "method_version": "verified-4.14",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -28394,7 +29240,7 @@
           "전복(종 수준)"
         ],
         "n": 14,
-        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다.",
+        "reason": "Rapid LC는 분포 범위만 봅니다. 어획 등에 따른 감소(IUCN 기준 A)는 OBIS 보고율로만 확인하므로, 넓게 분포하지만 남획된 종도 LC로 판정될 수 있습니다. 이 결과로 2026-10-02에는 예비 평가를 참고 정보로만 두었습니다. 2026-10-05 팀장 결정으로 4.3부터는 다른 근거가 없는 종에 LC 상당 10점으로 쓰되, 이 역검증 미통과를 라벨로 붙입니다. 2026-10-14 방법 재검토(사전 등록 prereg-4.14)로 4.14부터 다시 참고 정보로만 두고 MCUI에 쓰지 않습니다.",
         "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
         "result": "failed"
       },
@@ -28423,7 +29269,7 @@
             "expected": "상위",
             "mcui": 60.0,
             "mcui_rank": 4,
-            "of": 29,
+            "of": 16,
             "stock_score": 60
           }
         },
@@ -28433,7 +29279,7 @@
           "살오징어는 2025년 잠정치(31,006톤)에서 반등했으나 확정치가 아니므로 점수에 넣지 않았습니다."
         ],
         "prereg": "research/verified-indices/prereg-4.12-2026-10-14.md",
-        "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
+        "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14부터 MCUI가 있는 16종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
         "result": "consistent_same_data",
         "result_label": "같은 자료로 한 일관성 확인 · 독립 검증 아님"
       },
@@ -28462,6 +29308,20 @@
         "spearman_rho": 0.873
       }
     }
+  },
+  "provenance": {
+    "builder": "scripts/build_verified_indices.py",
+    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
+    "config": "config/verified-indices-v4.14.json",
+    "inputs": [
+      "research/verified-indices/evidence.json and the files config names",
+      "research/verified-indices/candidates.json",
+      "research/verified-indices/taxonomy.json",
+      "dist/candidate-catalog.json"
+    ],
+    "method_version": "verified-4.14",
+    "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
+    "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
   },
   "snapshot_date": "2026-09-27",
   "sources": {
@@ -30448,6 +31308,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30481,6 +31342,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30528,6 +31390,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30589,6 +31452,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30648,6 +31512,7 @@
           "independent_dois": [
             "10.3390/md19030177"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30681,6 +31546,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30715,6 +31581,7 @@
             "10.1016/j.jnutbio.2003.11.004",
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30804,6 +31671,7 @@
           "independent_dois": [
             "10.1021/jf020482t"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -30870,6 +31738,35 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "EN",
+            "category_as_published": "(EN)",
+            "country": "Russia",
+            "country_ko": "러시아",
+            "list": "Перечень объектов растительного мира, занесенных в Красную книгу Приморского края (주지사령 № 272 부속서)",
+            "name_as_published": "Ундария перистонадрезанная - Undaria pinnatifida (Harv.) Sur.",
+            "region": "Primorsky Krai",
+            "region_ko": "연해주",
+            "scope": "sub_national",
+            "source_id": "primorsky_decree272_2002",
+            "system": "Перечень объектов растительного мира, занесенных в Красную книгу Приморского края (주지사령 № 272 부속서)",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": "2002 (현행; 2022 개정 723-пп에 이 종 변경 없음)"
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 145721,
@@ -30963,7 +31860,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -31191,7 +32088,15 @@
       "korean_name": "미역",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 3,
         "item_count": 8,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 8
+        },
+        "max": 89.2,
+        "mean": 51.2,
+        "measured_zero_items": 0,
         "median": 46.1,
         "top2_mean": 80.3
       },
@@ -31206,20 +32111,14 @@
         "value": null
       },
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 305,
           "aoo_km2": 30500,
@@ -31279,6 +32178,7 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "bachman_2020_rapid_lc",
@@ -31326,8 +32226,8 @@
           "use": "reference_only",
           "value": null
         },
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -31379,7 +32279,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -31403,26 +32303,33 @@
           "recent": 326
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Undaria pinnatifida",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 68.0,
+        "BBVI": 67.9,
         "MBPI": 89.2,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 46.7
+      },
+      "scores_unrounded": {
+        "BBVI": 67.93560606060606,
+        "MBPI": 89.20454545454545,
+        "MFPI": 46.66666666666667
       },
       "sensitivity": {
         "food_weights": {
           "0.25": 78.6,
-          "0.5": 68.0,
+          "0.5": 67.9,
           "0.75": 57.3
         },
         "mean_compound_sensitivity": 51.2,
@@ -31529,7 +32436,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -31614,6 +32521,7 @@
           "independent_dois": [
             "10.3390/md22020090"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -31668,6 +32576,25 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "EN",
+            "category_as_published": "EN",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_japonicus_2026",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2025
+          }
+        ],
+        "category": "EN",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": null,
@@ -31780,7 +32707,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32332,7 +33259,15 @@
       "korean_name": "해삼",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 1
+        },
+        "max": 8.7,
+        "mean": 8.7,
+        "measured_zero_items": 0,
         "median": 8.7,
         "top2_mean": 8.7
       },
@@ -32440,6 +33375,11 @@
         "MBPI": 8.7,
         "MCUI": 80.0,
         "MFPI": 63.5
+      },
+      "scores_unrounded": {
+        "BBVI": 36.13841054778555,
+        "MBPI": 8.735795454545455,
+        "MFPI": 63.54102564102564
       },
       "sensitivity": {
         "food_weights": {
@@ -32648,6 +33588,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1016/0305-0491(85)90174-9",
@@ -32711,6 +33652,18 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [],
+        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "decline_ratio_reached"
+        },
+        "state": "self_preliminary_only"
       },
       "conservation_trace": {
         "aphia_id": 250680,
@@ -32826,7 +33779,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -33488,7 +34441,15 @@
       "korean_name": "멍게",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 3,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 13.5,
+        "mean": 13.5,
+        "measured_zero_items": 0,
         "median": 13.5,
         "top2_mean": 13.5
       },
@@ -33669,15 +34630,20 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 33.2,
+        "BBVI": 33.1,
         "MBPI": 13.5,
         "MCUI": null,
         "MFPI": 52.8
       },
+      "scores_unrounded": {
+        "BBVI": 33.13157724628313,
+        "MBPI": 13.463154492566257,
+        "MFPI": 52.800000000000004
+      },
       "sensitivity": {
         "food_weights": {
           "0.25": 23.3,
-          "0.5": 33.2,
+          "0.5": 33.1,
           "0.75": 43.0
         },
         "mean_compound_sensitivity": 13.5,
@@ -33886,6 +34852,7 @@
           "independent_dois": [
             "10.1271/bbb.60.1353"
           ],
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -33919,6 +34886,7 @@
           "independent_dois": [
             "10.1271/bbb.60.1353"
           ],
+          "material_class": "hydrolysate_purified",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -33974,6 +34942,36 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "IUCN Red List of Threatened Species",
+            "scope": "global",
+            "source_id": "iucn_todarodes_2014",
+            "system": "IUCN Red List",
+            "used_for_mcui": true,
+            "year": 2010
+          },
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "살오징어 Todarodes pacificus Steenstrup, 1880",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": false,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "global",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "annotations": "Needs updating",
@@ -34075,7 +35073,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34779,7 +35777,15 @@
       "korean_name": "살오징어",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 2,
+        "material_counts": {
+          "hydrolysate_purified": 2
+        },
+        "max": 56.9,
+        "mean": 49.9,
+        "measured_zero_items": 0,
         "median": 49.9,
         "top2_mean": 49.9
       },
@@ -34904,6 +35910,11 @@
         "MBPI": 56.9,
         "MCUI": 60.0,
         "MFPI": 46.1
+      },
+      "scores_unrounded": {
+        "BBVI": 51.4926791958042,
+        "MBPI": 56.88920454545455,
+        "MFPI": 46.09615384615385
       },
       "sensitivity": {
         "food_weights": {
@@ -35056,6 +36067,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.6,
           "original_paper_dois": [
             "10.1016/j.nutres.2022.10.001"
@@ -35107,6 +36119,29 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "VU",
+            "category_as_published": "Редкость 3 (Редкие) · Угроза исчезновения: У",
+            "country": "Russia",
+            "country_ko": "러시아",
+            "list": "Красная книга Российской Федерации (растения и грибы), Section 5 ВОДОРОСЛИ, row 594",
+            "name_as_published": "Гелидиум изящный - Gelidium elegans",
+            "scope": "other_country",
+            "source_id": "russia_red_data_book_plants_2023",
+            "system": "The list's threat-status column uses the IUCN codes defined in Order No. 306 para 3.7 (as amended 2020): 'У - Уязвимые (VU - Vulnerable)'. The rarity column ('3 - Редкие') is a Russian scale and is not mapped.",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": 2023
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "mcui_role": "stock_decline_lower_bound",
+        "mcui_role_label": "멸종위험 평가 미확인 · 자원 감소 신호(하한)",
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 372119,
@@ -35178,7 +36213,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -35402,8 +36437,7 @@
           ]
         },
         "MCUI": {
-          "basis": "range_state",
-          "ratio": 1.0,
+          "ratio": 0.0,
           "required": [
             "assessment_record",
             "numeric_category",
@@ -35428,12 +36462,20 @@
             "aquaculture"
           ]
         },
-        "mean_ratio": 0.94
+        "mean_ratio": 0.61
       },
       "korean_name": "우뭇가사리",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 13.5,
+        "mean": 13.5,
+        "measured_zero_items": 0,
         "median": 13.5,
         "top2_mean": 13.5
       },
@@ -35454,14 +36496,14 @@
         "value": 13.5
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": "range_state",
+      "mcui_basis": null,
       "mcui_driver": "stock_decline",
-      "mcui_extinction_risk": 60.0,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
         "basis": "range_state",
         "category": "VU",
         "label": "서식국 국가 평가 기반 MCUI",
-        "pilot_mapping": "VU → 60 (러시아 국가 적색목록, 팀 규칙 v4.0)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aphia_id": 372119,
           "assessment_basis": "The list's threat-status column uses the IUCN codes defined in Order No. 306 para 3.7 (as amended 2020): 'У - Уязвимые (VU - Vulnerable)'. The rarity column ('3 - Редкие') is a Russian scale and is not mapped.",
@@ -35478,10 +36520,12 @@
           "scope": "national (Russia)",
           "source_id": "russia_red_data_book_plants_2023"
         },
+        "reference_note": "다른 나라 정부 평가입니다. 그 나라 해역의 개체군을 평가한 것이라 한국 해역의 보전 상태로 쓰지 않습니다(MCUI·유형·지도 색에 쓰지 않음).",
         "source_ids": [
           "russia_red_data_book_plants_2023"
         ],
-        "value": 60.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -35533,7 +36577,7 @@
         "label": "조사 부족",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": 60.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -35572,6 +36616,11 @@
         "MBPI": 13.5,
         "MCUI": 80.0,
         "MFPI": 76.7
+      },
+      "scores_unrounded": {
+        "BBVI": 45.104359907862595,
+        "MBPI": 13.542053149058528,
+        "MFPI": 76.66666666666666
       },
       "sensitivity": {
         "food_weights": {
@@ -35751,6 +36800,7 @@
           "independent_dois": [
             "10.2331/suisan.64.862"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -35797,6 +36847,7 @@
           "independent_dois": [
             "10.2331/suisan.64.862"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -35844,6 +36895,7 @@
           "independent_dois": [
             "10.2331/suisan.64.862"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -35893,6 +36945,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 1.0,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.11,
           "original_paper_dois": [
             "10.1021/jf500083r",
@@ -35937,6 +36990,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.5,
           "original_paper_dois": [
             "10.1021/jf500083r"
@@ -35979,6 +37033,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 6.75,
           "original_paper_dois": [
             "10.2331/suisan.51.1305"
@@ -36027,6 +37082,51 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "VU",
+            "category_as_published": "絶滅危惧Ⅱ類",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "いしかわレッドデータブック2020〈動物編〉浅海域の生物",
+            "name_as_published": "ヒジキ Sargassum fusiforme (Harvey) Setchell",
+            "region": "Ishikawa",
+            "region_ko": "이시카와현",
+            "scope": "sub_national",
+            "source_id": "ishikawa_rdb2020",
+            "system": "いしかわレッドデータブック2020〈動物編〉浅海域の生物",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": "2020"
+          },
+          {
+            "category": "VU",
+            "category_as_published": "絶滅危惧Ⅱ類（VU）",
+            "country": "Japan",
+            "country_ko": "일본",
+            "list": "レッドデータおきなわ 第3版〈藻類〉",
+            "name_as_published": "ヒジキ Sargassum fusiforme",
+            "region": "Okinawa",
+            "region_ko": "오키나와현",
+            "scope": "sub_national",
+            "source_id": "okinawa_rdb3_plants",
+            "system": "レッドデータおきなわ 第3版〈藻類〉",
+            "used_for_mcui": false,
+            "why_not": "other_population",
+            "year": "2018"
+          }
+        ],
+        "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "self_preliminary": {
+          "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
+          "method_source_id": "bachman_2020_rapid_lc",
+          "note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
+          "result": "likely_least_concern"
+        },
+        "state": "other_region_only"
       },
       "conservation_trace": {
         "aphia_id": 494972,
@@ -36115,7 +37215,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36359,7 +37459,16 @@
       "korean_name": "톳",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 3,
         "item_count": 6,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 3,
+          "natural_isolate": 3
+        },
+        "max": 65.0,
+        "mean": 45.0,
+        "measured_zero_items": 0,
         "median": 50.2,
         "top2_mean": 61.8
       },
@@ -36380,20 +37489,14 @@
         "value": 45.3
       },
       "mbpi_stratum": "peptide",
-      "mcui_basis": "preliminary",
-      "mcui_driver": "extinction_risk",
-      "mcui_extinction_risk": 10.0,
+      "mcui_basis": null,
+      "mcui_driver": null,
+      "mcui_extinction_risk": null,
       "mcui_substitute": {
-        "backtest": {
-          "checked_on": "2026-10-02",
-          "label": "역검증 미통과",
-          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
-          "result": "failed"
-        },
         "basis": "preliminary",
         "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
-        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
+        "prereg": "research/verified-indices/prereg-4.14-2026-10-14.md",
         "record": {
           "aoo_cells": 297,
           "aoo_km2": 29700,
@@ -36467,6 +37570,7 @@
           "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
+        "reference_note": "자체 예비검토(Rapid LC)는 공식 평가가 아니고 역검증 기준을 채우지 못했습니다. 넓은 분포나 많은 기록만으로 낮은 멸종위험을 확정하지 않으므로 MCUI에 쓰지 않습니다.",
         "result": "likely_least_concern",
         "source_ids": [
           "bachman_2020_rapid_lc",
@@ -36531,8 +37635,8 @@
           "use": "reference_only",
           "value": null
         },
-        "use": "scored",
-        "value": 10.0
+        "use": "reference_only",
+        "value": null
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -36584,7 +37688,7 @@
         "label": "조사 부족",
         "latest_record_year": 2026,
         "mcui_adjustment": 0,
-        "mcui_base": 10.0,
+        "mcui_base": null,
         "periods": {
           "past": [
             "2006-01-01",
@@ -36608,21 +37712,28 @@
           "recent": 352
         }
       },
-      "priority_survey": false,
-      "priority_survey_reasons": [],
+      "priority_survey": true,
+      "priority_survey_reasons": [
+        "korea_status_unconfirmed"
+      ],
       "reference_combination": null,
       "scientific_name": "Sargassum fusiforme",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출됨",
+        "MCUI": "산출 보류",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 64.2,
         "MBPI": 65.0,
-        "MCUI": 10.0,
+        "MCUI": null,
         "MFPI": 63.3
+      },
+      "scores_unrounded": {
+        "BBVI": 64.15956439393939,
+        "MBPI": 64.98579545454545,
+        "MFPI": 63.333333333333336
       },
       "sensitivity": {
         "food_weights": {
@@ -36725,7 +37836,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": null,
+        "MCUI": "not_in_red_list",
         "MFPI": null
       }
     },
@@ -36782,6 +37893,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1021/np970039q"
@@ -36852,6 +37964,26 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "홍합 Mytilus unguiculatus Valenciennes, 1858",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "aphia_id": 506159,
@@ -36945,7 +38077,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -37586,7 +38718,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.13 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.14 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -37710,7 +38842,15 @@
       "korean_name": "홍합(참담치)",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 1,
         "item_count": 1,
+        "material_counts": {
+          "natural_isolate": 1
+        },
+        "max": 10.1,
+        "mean": 10.1,
+        "measured_zero_items": 0,
         "median": 10.1,
         "top2_mean": 10.1
       },
@@ -37862,6 +39002,11 @@
         "MBPI": 10.1,
         "MCUI": 10.0,
         "MFPI": 60.9
+      },
+      "scores_unrounded": {
+        "BBVI": 35.479452165481575,
+        "MBPI": 10.097365869424692,
+        "MFPI": 60.86153846153846
       },
       "sensitivity": {
         "food_weights": {
@@ -38107,6 +39252,7 @@
           "independent_dois": [
             "10.3389/fnut.2022.981163"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -38140,6 +39286,7 @@
           "independent_dois": [
             "10.5352/jls.2012.22.2.220"
           ],
+          "material_class": "hydrolysate_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "IC50",
@@ -38184,6 +39331,7 @@
           "adjusted": 62.628865979381445,
           "cohort_median_pMIC": 5.049,
           "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
           "measurements": [
             {
               "endpoint": "MIC",
@@ -38326,6 +39474,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.35,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -38371,6 +39520,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.175,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -38413,6 +39563,7 @@
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
           "link_factor": 0.75,
           "link_review": "accepted",
+          "material_class": "natural_isolate",
           "median_pchembl": 5.14,
           "original_paper_dois": [
             "10.1021/np000476w"
@@ -38461,6 +39612,26 @@
             "comparable_cohort"
           ]
         }
+      },
+      "conservation_status": {
+        "assessments": [
+          {
+            "category": "LC",
+            "category_as_published": "LC",
+            "list": "국가생물적색자료집(국립생물자원관 2024)",
+            "name_as_published": "굴 Magallana gigas Thunberg, 1793",
+            "scope": "korea",
+            "source_id": "nibr_red_data_book_2024",
+            "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+            "used_for_mcui": true,
+            "year": 2024
+          }
+        ],
+        "category": "LC",
+        "label": "공식 평가",
+        "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "scope": "korea",
+        "state": "official_scored"
       },
       "conservation_trace": {
         "aphia_id": 836033,
@@ -38564,7 +39735,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.13",
+        "method_version": "verified-4.14",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -39249,7 +40420,17 @@
       "korean_name": "참굴",
       "mbpi_breadth": {
         "exploratory": true,
+        "floor_zero": false,
+        "independent_paper_count": 4,
         "item_count": 6,
+        "material_counts": {
+          "hydrolysate_sequence_synthetic": 2,
+          "native_sequence_synthetic": 1,
+          "natural_isolate": 3
+        },
+        "max": 72.2,
+        "mean": 32.5,
+        "measured_zero_items": 0,
         "median": 24.6,
         "top2_mean": 67.4
       },
@@ -39406,6 +40587,11 @@
         "BBVI": 71.9,
         "MBPI": 72.2,
         "MCUI": 10.0,
+        "MFPI": 71.6
+      },
+      "scores_unrounded": {
+        "BBVI": 71.91505681818182,
+        "MBPI": 72.23011363636364,
         "MFPI": 71.6
       },
       "sensitivity": {
