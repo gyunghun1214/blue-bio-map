@@ -219,6 +219,8 @@ function checkTag(k){
 }
 function mcuiTag(stop){
   const m=stop.mcui;
+  // 4.12: an MCUI set by the KOSIS catch trend says so first, then the extinction-risk basis it was compared with
+  if(m.driver==='stock_decline'&&m.stock_decline)return `자원 감소 신호 · 어획량 −${esc(m.stock_decline.decline_pct)}% (IUCN 평가 아님) · 멸종위험 근거 ${esc(m.extinction_risk??'없음')}점`;
   if(m.basis==='iucn')return `공식 평가 범주 · IUCN ${esc(m.category)}${m.assessment_year?` (${esc(m.assessment_year)} 평가)`:''}`;
   if(m.basis==='national')return `국가 평가 · 한국 ${esc(m.category||'범주 미확인')}`;
   return esc(m.label||m.basis_label||'근거 미확인');

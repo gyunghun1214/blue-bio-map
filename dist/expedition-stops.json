@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.11",
+ "method_version": "verified-4.12",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -137,6 +137,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": null,
     "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global",
@@ -145,6 +147,18 @@
      "license": "IUCN Red List terms",
      "title": "Engraulis japonicus assessment e.T98969433A143841777",
      "url": "https://www.iucnredlist.org/species/98969433/143841777"
+    },
+    "stock_decline": {
+     "decline_pct": 29.0,
+     "kosis_item": "멸치",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -201,6 +215,12 @@
      "license": "Publisher copyright",
      "title": "Identification of four new angiotensin I-converting enzyme inhibitory peptides from fermented anchovy sauce",
      "url": "https://doi.org/10.1007/s13765-015-0129-4"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mext_sfct_2020_items",
@@ -344,6 +364,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -352,6 +374,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": -69.9,
+     "kosis_item": "꽃게",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -432,6 +466,12 @@
      "license": "CC BY 4.0",
      "title": "A dynamic energy budget model for the non-continuous and biphasic growth of the pond-cultured swimming crab, Portunus trituberculatus",
      "url": "https://doi.org/10.3390/biology14121682"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -569,6 +609,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -577,6 +619,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": -37.7,
+     "kosis_item": "바지락",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -633,6 +687,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "lee_2005_clam",
@@ -820,6 +880,8 @@
     "basis_label": "서식국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "서식국 국가 평가 기반 MCUI",
     "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
     "scope": null,
@@ -828,6 +890,18 @@
      "license": "Government publication (政府標準利用規約); category and name facts only",
      "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
      "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
+    "stock_decline": {
+     "decline_pct": 1.6,
+     "kosis_item": "넙치류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -890,6 +964,12 @@
      "license": "Publisher copyright (Elsevier)",
      "title": "Angiotensin I-converting enzyme inhibitory peptides from an enzymatic hydrolysate of flounder fish (Paralichthys olivaceus) muscle as a potent anti-hypertensive agent",
      "url": "https://doi.org/10.1016/j.procbio.2016.01.009"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -1033,6 +1113,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -1041,6 +1123,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": 31.9,
+     "kosis_item": "조피볼락",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -1109,6 +1203,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "kosis_fish_aquaculture",
@@ -1272,6 +1372,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "stock_decline",
+    "extinction_risk": 10.0,
     "label": null,
     "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global",
@@ -1280,6 +1382,18 @@
      "license": "IUCN Red List terms",
      "title": "Larimichthys polyactis assessment e.T49182929A49229050",
      "url": "https://www.iucnredlist.org/species/49182929/49229050"
+    },
+    "stock_decline": {
+     "decline_pct": 31.4,
+     "kosis_item": "참조기",
+     "label": "어획량 감소",
+     "score": 35.0,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -1296,7 +1410,7 @@
    "scores": {
     "BBVI": 46.6,
     "MBPI": 53.8,
-    "MCUI": 10.0,
+    "MCUI": 35.0,
     "MFPI": 39.4
    },
    "shared_with": [],
@@ -1336,6 +1450,12 @@
      "license": "IUCN Red List terms",
      "title": "Larimichthys polyactis assessment e.T49182929A49229050",
      "url": "https://www.iucnredlist.org/species/49182929/49229050"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -1479,6 +1599,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -1487,6 +1609,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": 31.6,
+     "kosis_item": "청각",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -1555,6 +1689,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -1705,6 +1845,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": null,
     "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global",
@@ -1713,6 +1855,18 @@
      "license": "IUCN Red List terms",
      "title": "Scomber japonicus assessment e.T170306A170083106",
      "url": "https://www.iucnredlist.org/species/170306/170083106"
+    },
+    "stock_decline": {
+     "decline_pct": 3.5,
+     "kosis_item": "고등어",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -1763,6 +1917,12 @@
      "license": "IUCN Red List terms",
      "title": "Scomber japonicus assessment e.T170306A170083106",
      "url": "https://www.iucnredlist.org/species/170306/170083106"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mabik_national_species_list",
@@ -1956,6 +2116,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -1964,6 +2126,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": 74.5,
+     "kosis_item": "톳",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -2038,6 +2212,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "lee_2024_sargassum_nutrition",
@@ -2246,6 +2426,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -2254,6 +2436,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": -41.1,
+     "kosis_item": "피조개",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -2304,6 +2498,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "kwon_cho_1986_anadara",
@@ -2490,6 +2690,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -2498,6 +2700,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": -18.3,
+     "kosis_item": "굴류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -2582,6 +2796,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "li_2025_yield",
@@ -2787,6 +3007,8 @@
     "basis_label": "서식국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "서식국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (스웨덴 국가 적색목록, 팀 규칙 v4.0)",
     "scope": null,
@@ -2795,6 +3017,18 @@
      "license": "CC0 1.0 (SND dataset)",
      "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
      "url": "https://doi.org/10.5878/ffrv-6x57"
+    },
+    "stock_decline": {
+     "decline_pct": 69.6,
+     "kosis_item": "파래류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -2849,6 +3083,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "li_2024_ulva_kaf",
@@ -3035,6 +3275,8 @@
     "basis_label": "서식국 국가 평가",
     "category": "NT",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 35.0,
     "label": "서식국 국가 평가 기반 MCUI",
     "mapping": "NT → 35 (일본 국가 적색목록, 팀 규칙 v4.0)",
     "scope": null,
@@ -3043,6 +3285,18 @@
      "license": "Government open data (政府標準利用規約); category and name facts only",
      "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
      "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv"
+    },
+    "stock_decline": {
+     "decline_pct": -18.3,
+     "kosis_item": "굴류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -3097,6 +3351,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "liu_2021_kumamoto_xiangshan",
@@ -3264,6 +3524,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -3272,6 +3534,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": 14.5,
+     "kosis_item": "맛류",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -3332,6 +3606,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "li_2016_sinonovacula_vqy",
@@ -3478,8 +3758,8 @@
    "korean_name": "살오징어",
    "map_link": "index.html#s=342067&v=explore&m=8/33.50/127.50",
    "matrix_type": {
-    "id": "sustainable_use",
-    "label": "지속가능 활용 후보"
+    "id": "alternative_production",
+    "label": "대체생산·배양 연구"
    },
    "mcui": {
     "assessment_year": 2010,
@@ -3487,6 +3767,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "stock_decline",
+    "extinction_risk": 10.0,
     "label": null,
     "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global (native range incl. Republic of Korea, Japan, China, Taiwan, DPRK, Russian Federation)",
@@ -3495,6 +3777,18 @@
      "license": "IUCN Red List terms",
      "title": "Todarodes pacificus assessment e.T176085A1428473",
      "url": "https://www.iucnredlist.org/species/176085/1428473"
+    },
+    "stock_decline": {
+     "decline_pct": 79.8,
+     "kosis_item": "살오징어(오징어)",
+     "label": "어획량 급감",
+     "score": 60.0,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -3511,7 +3805,7 @@
    "scores": {
     "BBVI": 51.5,
     "MBPI": 56.9,
-    "MCUI": 10.0,
+    "MCUI": 60.0,
     "MFPI": 46.1
    },
    "shared_with": [],
@@ -3545,6 +3839,12 @@
      "license": "IUCN Red List terms",
      "title": "Todarodes pacificus assessment e.T176085A1428473",
      "url": "https://www.iucnredlist.org/species/176085/1428473"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mext_sfct_2020_items",
@@ -3712,6 +4012,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -3720,6 +4022,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": -28.6,
+     "kosis_item": "갑오징어류",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -3806,6 +4120,12 @@
      "license": "Publisher terms; values recorded only",
      "title": "乌贼墨多肽诱导人前列腺癌DU-145细胞凋亡的机制研究 (景奕文·杨最素·黄芳芳·郁迪·丁国芳 2014)",
      "url": "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "kotani_2001_npff_receptor",
@@ -3985,6 +4305,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -3993,6 +4315,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": -39.4,
+     "kosis_item": "미역류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -4079,6 +4413,12 @@
      "license": "Publisher copyright",
      "title": "Characterization of an antihypertensive peptide from an Alfalfa white protein hydrolysate produced by a continuous enzymatic membrane reactor",
      "url": "https://doi.org/10.1016/j.procbio.2006.04.019"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "lin_2018_chlorella",
@@ -4306,6 +4646,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -4314,6 +4656,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": 66.2,
+     "kosis_item": "홍합류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -4358,6 +4712,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mytilus_2020_myticusin",
@@ -4538,6 +4898,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "EN",
     "criteria": "A2bd",
+    "driver": "extinction_risk",
+    "extinction_risk": 80.0,
     "label": null,
     "mapping": "EN → 80 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global (native range: China, Japan, DPRK, Republic of Korea, Russian Federation)",
@@ -4546,6 +4908,18 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "Apostichopus japonicus assessment e.T180424A272708369",
      "url": "https://www.iucnredlist.org/species/180424/272708369"
+    },
+    "stock_decline": {
+     "decline_pct": 23.3,
+     "kosis_item": "해삼",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -4614,6 +4988,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "Apostichopus japonicus assessment e.T180424A272708369",
      "url": "https://www.iucnredlist.org/species/180424/272708369"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mfds_food_raw_material_codes",
@@ -4787,6 +5167,8 @@
     "basis_label": "서식국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "서식국 국가 평가 기반 MCUI",
     "mapping": "ランク外 → LC 상당 → 10 (일본 정부 평가에서 위협 범주 없음, 팀장 결정 2026-10-04)",
     "scope": null,
@@ -4795,6 +5177,18 @@
      "license": "Government publication (政府標準利用規約); category and name facts only",
      "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
      "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
+    "stock_decline": {
+     "decline_pct": 2.6,
+     "kosis_item": "대구",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -4857,6 +5251,12 @@
      "license": "No open licence shown; fact, method summary and a short quotation only",
      "title": "외해 심층가두리를 이용한 대구·참치 등 양식기술개발 (Developments of the aquaculture techniques for Pacific Cod and BlueFin Tuna applying to offshore submerged cage system)",
      "url": "https://sciwatch.kiost.ac.kr/handle/2020.kiost/38255"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "ngo_2016_cod_gelatin",
@@ -5016,10 +5416,24 @@
     "basis_label": null,
     "category": null,
     "criteria": null,
+    "driver": null,
+    "extinction_risk": null,
     "label": "보전 평가 없음 · OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 쓰지 않음",
     "mapping": null,
     "scope": null,
-    "source": null
+    "source": null,
+    "stock_decline": {
+     "decline_pct": 19.0,
+     "kosis_item": "우렁쉥이",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
+    }
    },
    "on_route": true,
    "order": 21,
@@ -5087,6 +5501,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -5248,6 +5668,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": null,
     "mapping": "LC → 10 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global (native range incl. Japan; DPRK; Republic of Korea; Russian Federation)",
@@ -5256,6 +5678,18 @@
      "license": "IUCN Red List terms",
      "title": "Seriola quinqueradiata assessment page 20435860/115383171",
      "url": "https://www.iucnredlist.org/species/20435860/115383171"
+    },
+    "stock_decline": {
+     "decline_pct": -74.0,
+     "kosis_item": "방어류",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -5312,6 +5746,12 @@
      "license": "IUCN Red List terms",
      "title": "Seriola quinqueradiata assessment page 20435860/115383171",
      "url": "https://www.iucnredlist.org/species/20435860/115383171"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "kosis_fish_aquaculture",
@@ -5499,6 +5939,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -5507,6 +5949,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": 83.5,
+     "kosis_item": "꼬시래기류",
+     "label": "자원 감소 신호: 어획 규모 작음 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -5571,6 +6025,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mabik_national_species_list",
@@ -5739,6 +6199,8 @@
     "basis_label": "한국 국가 평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "LC → 10 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -5747,6 +6209,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": -5.1,
+     "kosis_item": "가리비류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -5805,6 +6279,12 @@
      "license": "Publisher copyright",
      "title": "Characterization of an antihypertensive peptide from an Alfalfa white protein hydrolysate produced by a continuous enzymatic membrane reactor",
      "url": "https://doi.org/10.1016/j.procbio.2006.04.019"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "li_2018_scallop_vw",
@@ -6004,6 +6484,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -6012,6 +6494,18 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": -129.3,
+     "kosis_item": "다시마류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -6080,6 +6574,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "mabik_national_species_list",
@@ -6235,6 +6735,8 @@
     "basis_label": "IUCN 전 지구 평가",
     "category": "EN",
     "criteria": "A2d",
+    "driver": "extinction_risk",
+    "extinction_risk": 80.0,
     "label": null,
     "mapping": "EN → 80 (팀 규칙 v4.0, IUCN 점수 아님)",
     "scope": "Global (native range: Japan; Korea, Republic of)",
@@ -6243,6 +6745,18 @@
      "license": "IUCN Red List terms",
      "title": "Haliotis discus assessment e.T78764186A78772433",
      "url": "https://www.iucnredlist.org/species/78764186/78772433"
+    },
+    "stock_decline": {
+     "decline_pct": 23.0,
+     "kosis_item": "전복류",
+     "label": "자원 감소 신호: 양식 위주 · 해당 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -6299,6 +6813,12 @@
      "license": "CC BY 4.0",
      "title": "Physiological responses of the abalone Haliotis discus hannai to daily and seasonal temperature variations (Kang HY, Lee Y-J, Song W-Y, Kim T-I, Lee W-C, Kim TY, Kang C-K), Sci Rep 9:8019, doi:10.1038/s41598-019-44526-3",
      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6541628/"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -6450,6 +6970,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -6458,6 +6980,13 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": null,
+     "kosis_item": null,
+     "label": "자원 감소 신호: 통계 없음",
+     "score": null,
+     "source": null
     }
    },
    "on_route": true,
@@ -6534,6 +7063,12 @@
      "license": "Publisher copyright (J-STAGE free access)",
      "title": "Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368",
      "url": "https://doi.org/10.1246/nikkashi.1983.368"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "obis_trend",
@@ -6699,6 +7234,8 @@
     "basis_label": "자체 예비평가",
     "category": "LC",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
     "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
     "mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
     "scope": null,
@@ -6707,6 +7244,13 @@
      "license": "CC BY 4.0",
      "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
      "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
+    "stock_decline": {
+     "decline_pct": null,
+     "kosis_item": null,
+     "label": "자원 감소 신호: 통계 없음",
+     "score": null,
+     "source": null
     }
    },
    "on_route": true,
@@ -6777,6 +7321,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "murakami_2011_sargassum_horneri",
@@ -6938,6 +7488,8 @@
     "basis_label": "서식국 국가 평가",
     "category": "VU",
     "criteria": null,
+    "driver": "stock_decline",
+    "extinction_risk": 60.0,
     "label": "서식국 국가 평가 기반 MCUI",
     "mapping": "VU → 60 (러시아 국가 적색목록, 팀 규칙 v4.0)",
     "scope": null,
@@ -6946,6 +7498,18 @@
      "license": "Russian federal legal act (official publication); category and name facts only",
      "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
      "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf"
+    },
+    "stock_decline": {
+     "decline_pct": 90.2,
+     "kosis_item": "우뭇가사리",
+     "label": "어획량 붕괴 수준",
+     "score": 80.0,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": true,
@@ -6962,7 +7526,7 @@
    "scores": {
     "BBVI": 45.1,
     "MBPI": 13.5,
-    "MCUI": 60.0,
+    "MCUI": 80.0,
     "MFPI": 76.7
    },
    "shared_with": [],
@@ -7002,6 +7566,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "lin_2024_gelidium_taiwan",
@@ -7149,6 +7719,8 @@
     "basis_label": "한국 국가 평가",
     "category": "NT",
     "criteria": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 35.0,
     "label": "한국 국가 평가 기반 MCUI",
     "mapping": "NT → 35 (한국 국가 평가, 팀 규칙 v4.0)",
     "scope": "national (Republic of Korea)",
@@ -7157,6 +7729,18 @@
      "license": "Government publication; reuse terms not stated in the viewer",
      "title": "국가생물적색자료집 통합본(2019-2024), 찾아보기 표 (분류군·종명·초판·개정판·변동·페이지)와 그 페이지 칸이 가리키는 종 목록 쪽",
      "url": "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s"
+    },
+    "stock_decline": {
+     "decline_pct": 7.4,
+     "kosis_item": "문어류",
+     "label": "자원 감소 신호 없음",
+     "score": null,
+     "source": {
+      "id": "kosis_dt_1ew0004",
+      "license": "KOSIS 이용약관(출처 표시)",
+      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+     }
     }
    },
    "on_route": false,
@@ -7207,6 +7791,12 @@
      "license": "CC BY 4.0",
      "title": "An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim Y-J et al. 2022)",
      "url": "https://doi.org/10.3390/md20050328"
+    },
+    {
+     "id": "kosis_dt_1ew0004",
+     "license": "KOSIS 이용약관(출처 표시)",
+     "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
+     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
     },
     {
      "id": "li_2020_mer_osinensis_genome",

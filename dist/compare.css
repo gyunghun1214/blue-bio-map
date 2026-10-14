@@ -584,3 +584,14 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 @media (max-width:740px){
   #compare #comparison thead th:first-child,#compare #comparison tbody th{min-width:140px;width:140px}
 }
+/* 4.12: an MCUI set by the stock-decline signal is a diamond (the button keeps its box; the shape is drawn behind the label) */
+#compare .matrix-point.pilot.stock{border-color:transparent;background:transparent;box-shadow:none}
+#compare .matrix-point.pilot.stock::before{content:"";position:absolute;inset:-1px;z-index:-1;transform:rotate(45deg) scale(.82);border:2px solid var(--mp,#a9bbc6);background:var(--mp,#a9bbc6);box-shadow:0 0 0 1.5px rgba(8,29,46,.85),0 0 0 3px #f2b84b}
+#compare .matrix-point.pilot.stock.single::before{background:var(--cs-panel)}
+#compare .matrix-point.pilot.stock[aria-current=true]{box-shadow:none}
+#compare .matrix-point.pilot.stock[aria-current=true]::before{box-shadow:0 0 0 3px #f2b84b,0 0 0 8px color-mix(in srgb,var(--mp,#a9bbc6) 34%,transparent)}
+#compare .mt-dot.stock{background:#f2b84b;border-color:#f2b84b}
+#compare .cv-stock{margin-left:4px;color:#f2b84b;font-size:11px;font-style:normal;vertical-align:1px}
+#compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
+#compare #comparison .stock-decline.scored{border-color:#f2b84b}
+#compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
