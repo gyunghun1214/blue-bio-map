@@ -1,0 +1,141 @@
+/* '근거와 방법' deep-sea design (2026-10-14). Same palette and panel language as compare.css (비교와 지표) and the navy
+   탐색 지도, so the three tabs read as one product. Loaded after compare.css. Every rule is scoped to #method, except the
+   page background, header and footer while the method tab is open (body:has(#method.active)).
+   Display only: the text, the flow diagram geometry, the type table rows (renderTypeTable) and the citations are unchanged.
+   Colour meaning: mint = 활용 (MFPI·MBPI·BBVI) and UI state, amber = 보전 (MCUI), coral = '더하지 않음' and 기준 미충족. */
+#method{
+  --mt-panel:#081d2e;--mt-low:#061727;--mt-raise:#0c2539;--mt-raise2:#10304a;
+  --mt-line:rgba(150,180,200,.14);--mt-line2:rgba(150,180,200,.28);
+  --mt-ink:#eaf2f6;--mt-ink2:#b4c4ce;--mt-ink3:#8fa5b2;
+  --mt-accent:#44d7c0;--mt-accent-soft:rgba(68,215,192,.1);--mt-use:#8fd3e8;
+  --mt-con:#f0a04b;--mt-con-soft:rgba(240,160,75,.1);--mt-sand:#f0c35a;
+  --mt-no:#ff8a8a;--mt-no-soft:rgba(255,138,138,.1);--mt-focus:#bfe3ef;
+  color-scheme:dark;max-width:min(1404px,calc(86vw + 40px));padding:18px 20px 56px;color:var(--mt-ink)
+}
+body:has(#method.active){background:radial-gradient(ellipse 70% 420px at 50% -60px,rgba(64,128,160,.2),transparent 72%),linear-gradient(180deg,#0b1c2e 0,#061727 640px,#02121f 1300px) no-repeat,#02121f}
+body:has(#method.active) footer{background:transparent;border-top-color:rgba(150,180,200,.14);color:#8fa5b2}
+body:has(#method.active) footer strong{color:#eaf2f6}
+body:has(#method.active) .header{background:rgba(8,26,42,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 -1px 0 rgba(150,180,200,.12)}
+@media (min-width:741px){body:has(#method.active) .tabs button.active{color:#44d7c0;box-shadow:inset 0 -2px 0 #44d7c0}}
+body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
+#method :is(a,button,summary,[tabindex]):focus-visible{outline:2px solid var(--mt-focus);outline-offset:2px}
+#method a{color:var(--mt-accent);text-underline-offset:3px}
+#method a:hover{color:#7ce6d6}
+#method .fine{color:var(--mt-ink3)}
+#method b,#method strong{color:var(--mt-ink)}
+
+/* ---------- title (matches .cmp-hero) ---------- */
+#method .mt-hero{margin:4px 0 22px}
+#method .mt-hero .mt-eyebrow{margin:0 0 10px;color:var(--mt-ink2);font-size:11px;font-weight:600;letter-spacing:.42em;text-transform:uppercase}
+#method .mt-hero h2{margin:0;color:var(--mt-ink);font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-.025em}
+#method .mt-hero h2+p{margin:10px 0 0;color:#d6e2e9;font-size:17px;line-height:1.45}
+
+/* ---------- shared panel ---------- */
+#method :is(.flow-wrap,.method-card,.method-bottom article,.source-section){border:1px solid var(--mt-line);border-radius:14px;background:var(--mt-panel);box-shadow:0 18px 40px -24px rgba(0,0,0,.6)}
+
+/* ---------- flow diagram ---------- */
+#method .flow-wrap{margin:0 0 18px;padding:18px 18px 14px}
+#method .flow-scroll{scrollbar-color:#2a4659 transparent;scrollbar-width:thin}
+#method .flow .lanes rect{fill:rgba(150,180,200,.035);stroke:rgba(150,180,200,.08);stroke-width:1}
+#method .flow .fr{font-size:12px;font-weight:700;fill:var(--mt-ink3);letter-spacing:.04em}
+#method .flow .bx rect{fill:var(--mt-raise);stroke:rgba(150,180,200,.24);stroke-width:1.2;transition:fill .15s,stroke .15s}
+#method .flow .bx.aux rect{fill:transparent;stroke:rgba(150,180,200,.34);stroke-dasharray:5 4}
+#method .flow .bx.stock rect{fill:var(--mt-con-soft);stroke:rgba(240,160,75,.55)}
+#method .flow .ft{font-size:13px;font-weight:700;fill:var(--mt-ink)}
+#method .flow .fs{font-size:11.5px;fill:var(--mt-ink2)}
+#method .flow .fi{font-size:16px;font-weight:800;letter-spacing:.02em}
+#method .flow .ix rect{stroke-width:1.6;transition:fill .15s,stroke .15s}
+#method .flow .ix.use rect{fill:#0e3140;stroke:var(--mt-accent)}
+#method .flow .ix.use .fi{fill:var(--mt-accent)}
+#method .flow .ix.use.bbvi rect{fill:#0f3a45;stroke-width:2}
+#method .flow .ix.cons rect{fill:#2c2418;stroke:var(--mt-con)}
+#method .flow .ix.cons .fi{fill:var(--mt-con)}
+#method .flow .ix.final rect{fill:#13293c;stroke:var(--mt-ink);stroke-width:1.8}
+#method .flow .ix.final .fi{fill:var(--mt-ink)}
+#method .flow .ix .fs{fill:var(--mt-ink2)}
+#method .flow .bx[data-step]:hover rect,#method .flow .bx[data-step]:focus-visible rect{fill:var(--mt-raise2);stroke:var(--mt-focus);stroke-width:1.8}
+#method .flow .ix[data-step]:hover rect,#method .flow .ix[data-step]:focus-visible rect{stroke:var(--mt-focus);stroke-width:2.4}
+#method .flow [data-step]:focus-visible{outline:none}
+#method .flow .fa{fill:none;stroke:#5f7f95;stroke-width:1.5}
+#method .flow .fh{fill:#5f7f95}
+#method .flow .noadd path{stroke:var(--mt-no);stroke-width:1.5;stroke-dasharray:3 3}
+#method .flow .noadd rect{fill:#2a1a22;stroke:var(--mt-no);stroke-width:1.3}
+#method .flow .noadd text{font-size:11.5px;font-weight:700;fill:var(--mt-no)}
+#method .flow-wrap figcaption{margin-top:10px;padding-top:10px;border-top:1px solid var(--mt-line);color:var(--mt-ink3);font-size:12.5px;line-height:1.55}
+
+/* ---------- 01 · 02 · 03 cards ---------- */
+#method .method-grid{grid-template-columns:minmax(0,.82fr) minmax(0,1.09fr) minmax(0,1.09fr);gap:16px;align-items:start}
+#method .method-card{position:relative;padding:24px 24px 22px;overflow:hidden;transition:box-shadow .3s,border-color .3s}
+#method .method-card::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--mt-card,var(--mt-accent));opacity:.85}
+#method #method-01{--mt-card:var(--mt-use)}
+#method #method-02{--mt-card:var(--mt-sand)}
+#method #method-03{--mt-card:var(--mt-accent)}
+#method .method-card .step{display:inline-flex;align-items:center;gap:6px;color:var(--mt-card);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+#method .method-card h3{margin:10px 0 10px;color:var(--mt-ink);font-size:22px;font-weight:800;letter-spacing:-.02em}
+#method .method-card>p{margin:0 0 14px;color:var(--mt-ink2);font-size:14px;line-height:1.65}
+#method .method-card ul{margin:0;padding:14px 0 0;list-style:none;border-top:1px solid var(--mt-line)}
+#method .method-card li{position:relative;margin:0 0 10px;padding:0 0 0 16px;color:var(--mt-ink2);font-size:13.5px;line-height:1.68;overflow-wrap:anywhere}
+#method .method-card li::before{content:"";position:absolute;left:2px;top:.68em;width:5px;height:5px;border-radius:50%;background:var(--mt-ink3)}
+#method .method-card li:last-child{margin-bottom:0}
+#method .method-card li b{margin-right:4px;color:var(--mt-ink)}
+#method .method-card i{color:var(--mt-ink)}
+/* 02: axis blocks, each with its own colour rail (mint = 활용, amber = 보전) */
+#method .method-card li:is(.ax-use,.ax-con){margin:0 0 12px;padding:12px 14px 12px 16px;border-radius:10px;background:var(--mt-low)}
+#method .method-card li:is(.ax-use,.ax-con)::before{left:0;top:12px;bottom:12px;width:3px;height:auto;border-radius:0 3px 3px 0;background:var(--mt-accent)}
+#method .method-card li.ax-con::before{background:var(--mt-con)}
+#method .method-card li:is(.ax-use,.ax-con)>b:first-child{display:block;margin:0 0 4px;font-size:14px}
+#method .method-card li.ax-use>b:first-child{color:var(--mt-accent)}
+#method .method-card li.ax-con>b:first-child{color:var(--mt-con)}
+/* 03: every line is a verdict row (neutral ring). st-ok / st-no only repeat in colour the words already in the text
+   (통과 · 기준 미충족). The 의약 후보 MBPI line keeps bare <li><b> markup (test_verified_ui reads it), so it stays neutral. */
+#method #method-03 li{margin:0 0 10px;padding:11px 14px 11px 34px;border:1px solid var(--mt-line);border-radius:10px;background:var(--mt-low)}
+#method #method-03 li::before{left:12px;top:15px;width:12px;height:12px;border-radius:50%;background:none;border:2px solid var(--mt-ink3);box-sizing:border-box}
+#method .method-card li.st-ok{border-color:rgba(68,215,192,.32);background:var(--mt-accent-soft)}
+#method .method-card li.st-ok::before{border:0;background:var(--mt-accent);box-shadow:0 0 0 3px rgba(68,215,192,.18)}
+#method .method-card li.st-ok>b:first-child{color:var(--mt-accent)}
+#method .method-card li.st-no{border-color:rgba(255,138,138,.26);background:var(--mt-no-soft)}
+#method .method-card li.st-no::before{border-color:var(--mt-no)}
+#method .method-card li.st-no>b:first-child{color:var(--mt-no)}
+#method .method-card.flash{border-color:var(--mt-card);box-shadow:0 0 0 3px color-mix(in srgb,var(--mt-card) 45%,transparent),0 18px 40px -24px rgba(0,0,0,.6)}
+
+/* ---------- reading notes + type table ---------- */
+#method .method-bottom{gap:16px;margin:18px 0}
+#method .method-bottom article{padding:24px}
+#method .method-bottom h3,#method .source-section h3{margin:0 0 14px;color:var(--mt-ink);font-size:20px;font-weight:800;letter-spacing:-.02em}
+#method .mt-read .large-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none;counter-reset:mt}
+#method .mt-read .large-list li{position:relative;margin:0;padding:13px 16px 13px 50px;border:1px solid var(--mt-line);border-radius:10px;background:var(--mt-low);color:var(--mt-ink2);font-size:14px;line-height:1.6;counter-increment:mt}
+#method .mt-read .large-list li::before{content:counter(mt,decimal-leading-zero);position:absolute;left:16px;top:14px;color:var(--mt-accent);font-size:12px;font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+#method .type-table-wrap{border:1px solid var(--mt-line);border-radius:10px;background:var(--mt-low);overflow:hidden;overflow-x:auto}
+#method .type-table{color:var(--mt-ink2);font-size:13.5px}
+#method .type-table th{padding:11px 14px;background:var(--mt-raise);border-bottom:1px solid var(--mt-line2);color:var(--mt-ink3);font-size:12px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+#method .type-table td{padding:12px 14px;border-bottom:1px solid var(--mt-line);vertical-align:middle;font-variant-numeric:tabular-nums}
+#method .type-table tbody tr:last-child td{border-bottom:0}
+#method .type-table tbody tr:hover td{background:rgba(150,180,200,.04)}
+#method .type-table td b{color:var(--mt-ink)}
+#method .type-swatch{width:24px;height:16px;border-radius:4px}
+#method .mt-types .fine{margin:12px 2px 0;line-height:1.6}
+
+/* ---------- sources ---------- */
+#method .source-section{padding:24px}
+#method .source-section>p{color:var(--mt-ink2);line-height:1.65}
+#method #all-sources{margin-top:6px;padding:0 10px 0 0;scrollbar-color:#2a4659 transparent;scrollbar-width:thin}
+#method #all-sources:focus-visible{outline:2px solid var(--mt-focus)}
+#method .citation{padding:14px 0;border-top:1px solid var(--mt-line);color:var(--mt-ink2);line-height:1.6}
+#method .citation strong{color:var(--mt-ink)}
+#method .citation span{color:var(--mt-ink2)}
+#method .source-section>.fine{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--mt-line);line-height:1.65}
+
+@media (max-width:1100px){
+  #method .method-grid{grid-template-columns:1fr 1fr}
+  #method #method-01{grid-column:1/-1}
+}
+@media (max-width:740px){
+  #method{padding:14px 14px 40px}
+  #method .mt-hero h2{font-size:28px}
+  #method .mt-hero h2+p{font-size:15px}
+  #method .flow-wrap{padding:12px 10px 10px}
+  #method .method-grid{grid-template-columns:1fr;gap:12px}
+  #method .method-card,#method .method-bottom article,#method .source-section{padding:18px}
+  #method .mt-read .large-list{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){#method .method-card,#method .flow rect{transition:none}}
