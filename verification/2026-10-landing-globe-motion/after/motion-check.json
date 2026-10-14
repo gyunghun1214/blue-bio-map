@@ -6,79 +6,79 @@
    "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":4,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
   },
   {
-   "name": "1672x941: the entry turns Korea into place (point 7.7% of the width off at 0.5 s, 0.9% at 8.6 s)",
+   "name": "1672x941: the entry turns Korea into place (point 8.9% of the width off at 0.5 s, 1.1% at 8.6 s)",
    "status": "PASS",
-   "detail": "[0.07691645587634303,0.02258571919852943,0.0032308237337300865,0.000554303247715406,0.0034092273281612477,0.008698819449366428]"
+   "detail": "[0.08903640131005003,0.03155802710015138,0.004020619978195314,0.0008770891508364873,0.005162863949514197,0.010873131388187397]"
   },
   {
-   "name": "1672x941: still moving after the entry: captures 2 s apart differ (mean diff 6.31, 7.80), Korea within 6% of its place (0.34%, 0.87%)",
+   "name": "1672x941: still moving after the entry: captures 2 s apart differ (mean diff 7.30, 7.98), Korea within 6% of its place (0.52%, 1.09%)",
    "status": "PASS",
-   "detail": "{\"frame\":{\"cx\":1254,\"cy\":681.8486,\"R\":732.6626},\"dot0\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"entry\":[0.07691645587634303,0.02258571919852943,0.0032308237337300865,0.000554303247715406,0.0034092273281612477,0.008698819449366428],\"diff2s\":[6.3051058843224235,7.797940905666695]}"
+   "detail": "{\"frame\":{\"cx\":1254,\"cy\":681.8486,\"R\":732.6626},\"dot0\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"entry\":[0.08903640131005003,0.03155802710015138,0.004020619978195314,0.0008770891508364873,0.005162863949514197,0.010873131388187397],\"diff2s\":[7.3033285901621054,7.979205379314194]}"
   },
   {
    "name": "1440x900: WebGL globe drawn (textures in, context made, nothing failed)",
    "status": "PASS",
-   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":10,\"gls\":1,\"lost\":[false],\"canvas\":1440,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":8,\"gls\":1,\"lost\":[false],\"canvas\":1440,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
   },
   {
    "name": "1440x900: the entry turns Korea into place (point 9.9% of the width off at 0.5 s, 1.2% at 8.6 s)",
    "status": "PASS",
-   "detail": "[0.09876410338685332,0.029196906738768142,0.004127842388371775,0.0009154328463644317,0.004575850769430314,0.012128905740293724]"
+   "detail": "[0.09876410338685332,0.028152230420063203,0.002131244745360018,0.0006970649988294198,0.00441152016734997,0.012470227122086331]"
   },
   {
-   "name": "1440x900: still moving after the entry: captures 2 s apart differ (mean diff 6.50, 8.09), Korea within 6% of its place (0.46%, 1.21%)",
+   "name": "1440x900: still moving after the entry: captures 2 s apart differ (mean diff 6.54, 8.25), Korea within 6% of its place (0.44%, 1.25%)",
    "status": "PASS",
-   "detail": "{\"frame\":{\"cx\":1080,\"cy\":652.14,\"R\":700.74},\"dot0\":{\"x\":1012,\"y\":409.9130434782609,\"n\":46},\"entry\":[0.09876410338685332,0.029196906738768142,0.004127842388371775,0.0009154328463644317,0.004575850769430314,0.012128905740293724],\"diff2s\":[6.503837030835776,8.094831741441201]}"
+   "detail": "{\"frame\":{\"cx\":1080,\"cy\":652.14,\"R\":700.74},\"dot0\":{\"x\":1012,\"y\":409.9130434782609,\"n\":46},\"entry\":[0.09876410338685332,0.028152230420063203,0.002131244745360018,0.0006970649988294198,0.00441152016734997,0.012470227122086331],\"diff2s\":[6.5401064855334425,8.25328367390946]}"
   },
   {
    "name": "820x1180: WebGL globe drawn (textures in, context made, nothing failed)",
    "status": "PASS",
-   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":14,\"gls\":1,\"lost\":[false],\"canvas\":820,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":10,\"gls\":1,\"lost\":[false],\"canvas\":820,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
   },
   {
-   "name": "820x1180: the entry turns Korea into place (point 10.3% of the width off at 0.5 s, 1.2% at 8.6 s)",
+   "name": "820x1180: the entry turns Korea into place (point 13.1% of the width off at 0.5 s, 0.7% at 8.6 s)",
    "status": "PASS",
-   "detail": "[0.10283485921177733,0.03098409308050687,0.004652391473378871,0.0011394015959586455,0.004421578750982182,0.01213177712960621]"
+   "detail": "[0.13079553837354155,0.048077110561453765,0.006948100915839346,0.0009892776218167931,0.0036373203596809676,0.006924055852364218]"
   },
   {
-   "name": "820x1180: still moving after the entry: captures 2 s apart differ (mean diff 1.65, 2.29), Korea within 6% of its place (0.44%, 1.21%)",
+   "name": "820x1180: still moving after the entry: captures 2 s apart differ (mean diff 1.51, 1.65), Korea within 6% of its place (0.36%, 0.69%)",
    "status": "PASS",
-   "detail": "{\"frame\":{\"cx\":502.40314674295155,\"cy\":959.5894589621464,\"R\":492},\"dot0\":{\"x\":411.8863636363636,\"y\":789.2045454545455,\"n\":44},\"entry\":[0.10283485921177733,0.03098409308050687,0.004652391473378871,0.0011394015959586455,0.004421578750982182,0.01213177712960621],\"diff2s\":[1.6499090864415942,2.2926652142338417]}"
+   "detail": "{\"frame\":{\"cx\":502.40314674295155,\"cy\":959.5894589621464,\"R\":492},\"dot0\":{\"x\":411.8863636363636,\"y\":789.2045454545455,\"n\":44},\"entry\":[0.13079553837354155,0.048077110561453765,0.006948100915839346,0.0009892776218167931,0.0036373203596809676,0.006924055852364218],\"diff2s\":[1.5080457134120706,1.651705516514598]}"
   },
   {
    "name": "390x844: WebGL globe drawn (textures in, context made, nothing failed)",
    "status": "PASS",
-   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":44,\"gls\":1,\"lost\":[false],\"canvas\":780,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":20,\"gls\":1,\"lost\":[false],\"canvas\":780,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
   },
   {
-   "name": "390x844: the entry turns Korea into place (point 12.2% of the width off at 0.5 s, 0.8% at 8.6 s)",
+   "name": "390x844: the entry turns Korea into place (point 13.4% of the width off at 0.5 s, 0.4% at 8.6 s)",
    "status": "PASS",
-   "detail": "[0.12194769756651096,0.061891097891568894,0.010354736974766084,0.0015174374988734909,0.0028733432876586413,0.008079789600304761]"
+   "detail": "[0.13360456564496548,0.06013338821135806,0.019086939505290244,0.001567689650591156,0.0007697858526043521,0.004433029986054666]"
   },
   {
-   "name": "390x844: still moving after the entry: captures 2 s apart differ (mean diff 0.69, 1.53), Korea within 6% of its place (0.29%, 0.81%)",
+   "name": "390x844: still moving after the entry: captures 2 s apart differ (mean diff 0.58, 1.33), Korea within 6% of its place (0.08%, 0.44%)",
    "status": "PASS",
-   "detail": "{\"frame\":{\"cx\":238.94783808506233,\"cy\":593.1218158478501,\"R\":234},\"dot0\":{\"x\":391.61139896373055,\"y\":1024.176165803109,\"n\":193},\"entry\":[0.12194769756651096,0.061891097891568894,0.010354736974766084,0.0015174374988734909,0.0028733432876586413,0.008079789600304761],\"diff2s\":[0.6872774120596611,1.5346628944020797]}"
+   "detail": "{\"frame\":{\"cx\":238.94783808506233,\"cy\":593.1218158478501,\"R\":234},\"dot0\":{\"x\":391.61139896373055,\"y\":1024.176165803109,\"n\":193},\"entry\":[0.13360456564496548,0.06013338821135806,0.019086939505290244,0.001567689650591156,0.0007697858526043521,0.004433029986054666],\"diff2s\":[0.5793461562523895,1.3307706032147666]}"
   },
   {
-   "name": "Phone 390×844, sway fast-forwarded: the point travels both ways (-5.6% to 2.3% of the width) and never more than 6% from its place (5.63%)",
+   "name": "Phone 390×844, sway fast-forwarded: the point travels both ways (-5.6% to 2.5% of the width) and never more than 6% from its place (5.63%)",
    "status": "PASS",
-   "detail": "{\"samples\":33,\"settled\":29,\"maxShift\":0.056317419837138456,\"west\":[-0.05568883186861976,0.008390815349006084],\"east\":[0.022890227960440095,-0.015060039351848714],\"frameJsMs\":{\"n\":628,\"mean\":1.06,\"p95\":4.8,\"max\":17.4}}"
+   "detail": "{\"samples\":34,\"settled\":30,\"maxShift\":0.056317419837138456,\"west\":[-0.05568883186861976,0.008390815349006084],\"east\":[0.024706467276679432,-0.015060039351848714],\"frameJsMs\":{\"n\":636,\"mean\":1.13,\"p95\":4.7,\"max\":11.3}}"
   },
   {
-   "name": "Mouse drag 400 px east: Korea follows the pointer (point moved 424 px)",
+   "name": "Mouse drag 400 px east: Korea follows the pointer (point moved 421 px)",
    "status": "PASS",
-   "detail": "{\"p0\":{\"x\":1003.3265306122449,\"y\":422.57142857142856,\"n\":49},\"dragged\":{\"x\":1427.0869565217392,\"y\":427,\"n\":46},\"limit\":{\"x\":1530.8666666666666,\"y\":206.7111111111111,\"n\":45},\"glide\":{\"x\":1097.4444444444443,\"y\":436.06666666666666,\"n\":45},\"back\":{\"x\":1085.2391304347825,\"y\":439.9347826086956,\"n\":46},\"frameJsMs\":{\"n\":28,\"mean\":1.62,\"p95\":5.6,\"max\":6.1}}"
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
   },
   {
-   "name": "Dragged far past the limit (±30° · ±15°): the point stops within reach (34.1% of the width off) and Korea stays on the near side",
+   "name": "Dragged far past the limit (±30° · ±15°): the point stops within reach (33.8% of the width off) and Korea stays on the near side",
    "status": "PASS",
-   "detail": "{\"p0\":{\"x\":1003.3265306122449,\"y\":422.57142857142856,\"n\":49},\"dragged\":{\"x\":1427.0869565217392,\"y\":427,\"n\":46},\"limit\":{\"x\":1530.8666666666666,\"y\":206.7111111111111,\"n\":45},\"glide\":{\"x\":1097.4444444444443,\"y\":436.06666666666666,\"n\":45},\"back\":{\"x\":1085.2391304347825,\"y\":439.9347826086956,\"n\":46},\"frameJsMs\":{\"n\":28,\"mean\":1.62,\"p95\":5.6,\"max\":6.1}}"
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
   },
   {
-   "name": "Released: a short glide, then back to the sway by 2.8 s (5.01% of the width from the pose)",
+   "name": "Released: a short glide, then back to the sway by 2.8 s (4.56% of the width from the pose)",
    "status": "PASS",
-   "detail": "{\"p0\":{\"x\":1003.3265306122449,\"y\":422.57142857142856,\"n\":49},\"dragged\":{\"x\":1427.0869565217392,\"y\":427,\"n\":46},\"limit\":{\"x\":1530.8666666666666,\"y\":206.7111111111111,\"n\":45},\"glide\":{\"x\":1097.4444444444443,\"y\":436.06666666666666,\"n\":45},\"back\":{\"x\":1085.2391304347825,\"y\":439.9347826086956,\"n\":46},\"frameJsMs\":{\"n\":28,\"mean\":1.62,\"p95\":5.6,\"max\":6.1}}"
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
   },
   {
    "name": "Dragging the globe selects no text and keeps the entry screen",
@@ -88,7 +88,7 @@
   {
    "name": "Dragging over the title or the card does not turn the globe",
    "status": "PASS",
-   "detail": "{\"p1\":{\"x\":1080,\"y\":441.39130434782606,\"n\":46},\"p2\":{\"x\":1075.3265306122448,\"y\":442.57142857142856,\"n\":49},\"p3\":{\"x\":1069,\"y\":444,\"n\":45}}"
+   "detail": "{\"p1\":{\"x\":1079.6734693877552,\"y\":441.42857142857144,\"n\":49},\"p2\":{\"x\":1073.5,\"y\":443,\"n\":44},\"p3\":{\"x\":1067.8297872340424,\"y\":444.02127659574467,\"n\":47}}"
   },
   {
    "name": "Phone, still on: a sideways finger drag turns the globe (point 135 px), and on release it is straight back (no glide while still)",
@@ -108,27 +108,27 @@
   {
    "name": "Flipping the switch while it sways: at once in the pose (point 0.04% off) and the frames stop (0 in 1.5 s)",
    "status": "PASS",
-   "detail": "{\"dc\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"ref\":{\"x\":1119.756714746601,\"y\":429.0223903562726},\"r0\":24,\"r1\":24}"
+   "detail": "{\"dc\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"ref\":{\"x\":1119.756714746601,\"y\":429.0223903562726},\"r0\":22,\"r1\":22}"
   },
   {
    "name": "Switching motion back on: it sways again (3 frames in 1 s)",
    "status": "PASS",
-   "detail": "39 → 42"
+   "detail": "36 → 39"
   },
   {
    "name": "After leaving: no more intro.js frames (0 in 1.5 s), the WebGL context lost on purpose (not taken for a failure, the still picture not fetched), the canvas emptied, on the map",
    "status": "PASS",
-   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":22,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
+   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":24,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
   },
   {
-   "name": "Logo from the map: the entry screen again with the turning globe (10 frames in 2 s, WebGL ready)",
+   "name": "Logo from the map: the entry screen again with the turning globe (12 frames in 2 s, WebGL ready)",
    "status": "PASS",
-   "detail": "{\"h0\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":22,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"h1\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":32,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}}"
+   "detail": "{\"h0\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":28,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"h1\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":40,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}}"
   },
   {
    "name": "Entering again after the logo: frames stop (0), context let go, no failure, no still picture",
    "status": "PASS",
-   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":36,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
+   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":44,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
   },
   {
    "name": "Globe transfer per screen recorded (textures only, the still picture not fetched)",
@@ -139,6 +139,11 @@
    "name": "Shared link (#s=274849&v=compare): no entry screen, no WebGL context, neither globe-v3 nor globe-v2 fetched",
    "status": "PASS",
    "detail": "{\"s\":{\"on\":false,\"ready\":false,\"still\":false,\"raf\":0,\"gls\":0,\"lost\":[],\"canvas\":300,\"marks\":[],\"view\":\"compare\"},\"req\":[\"http://127.0.0.1:8765/vendor/pretendard/pretendard.css\",\"http://127.0.0.1:8765/vendor/leaflet.css\",\"http://127.0.0.1:8765/vendor/leaflet.js\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.91.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.90.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.89.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.84.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.88.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.87.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.82.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.79.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.75.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.86.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.85.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.80.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.83.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.76.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.7.w"
+  },
+  {
+   "name": "Software renderer (WebGL on the CPU): the still picture (globe-v2), no textures, no frames once shown (0)",
+   "status": "PASS",
+   "detail": "[\"http://127.0.0.1:8765/vendor/globe-v2/globe-1600.webp\"]"
   },
   {
    "name": "No uncaught page errors or console.error (WebGL run)",
@@ -179,16 +184,16 @@
     "n": 48
    },
    "entry": [
-    0.07691645587634303,
-    0.02258571919852943,
-    0.0032308237337300865,
-    0.000554303247715406,
-    0.0034092273281612477,
-    0.008698819449366428
+    0.08903640131005003,
+    0.03155802710015138,
+    0.004020619978195314,
+    0.0008770891508364873,
+    0.005162863949514197,
+    0.010873131388187397
    ],
    "diff2s": [
-    6.3051058843224235,
-    7.797940905666695
+    7.3033285901621054,
+    7.979205379314194
    ]
   },
   "1440x900": {
@@ -204,15 +209,15 @@
    },
    "entry": [
     0.09876410338685332,
-    0.029196906738768142,
-    0.004127842388371775,
-    0.0009154328463644317,
-    0.004575850769430314,
-    0.012128905740293724
+    0.028152230420063203,
+    0.002131244745360018,
+    0.0006970649988294198,
+    0.00441152016734997,
+    0.012470227122086331
    ],
    "diff2s": [
-    6.503837030835776,
-    8.094831741441201
+    6.5401064855334425,
+    8.25328367390946
    ]
   },
   "820x1180": {
@@ -227,16 +232,16 @@
     "n": 44
    },
    "entry": [
-    0.10283485921177733,
-    0.03098409308050687,
-    0.004652391473378871,
-    0.0011394015959586455,
-    0.004421578750982182,
-    0.01213177712960621
+    0.13079553837354155,
+    0.048077110561453765,
+    0.006948100915839346,
+    0.0009892776218167931,
+    0.0036373203596809676,
+    0.006924055852364218
    ],
    "diff2s": [
-    1.6499090864415942,
-    2.2926652142338417
+    1.5080457134120706,
+    1.651705516514598
    ]
   },
   "390x844": {
@@ -251,235 +256,240 @@
     "n": 193
    },
    "entry": [
-    0.12194769756651096,
-    0.061891097891568894,
-    0.010354736974766084,
-    0.0015174374988734909,
-    0.0028733432876586413,
-    0.008079789600304761
+    0.13360456564496548,
+    0.06013338821135806,
+    0.019086939505290244,
+    0.001567689650591156,
+    0.0007697858526043521,
+    0.004433029986054666
    ],
    "diff2s": [
-    0.6872774120596611,
-    1.5346628944020797
+    0.5793461562523895,
+    1.3307706032147666
    ]
   },
   "sway": {
-   "samples": 33,
-   "settled": 29,
+   "samples": 34,
+   "settled": 30,
    "maxShift": 0.056317419837138456,
    "west": [
     -0.05568883186861976,
     0.008390815349006084
    ],
    "east": [
-    0.022890227960440095,
+    0.024706467276679432,
     -0.015060039351848714
    ],
    "frameJsMs": {
-    "n": 628,
-    "mean": 1.06,
-    "p95": 4.8,
-    "max": 17.4
+    "n": 636,
+    "mean": 1.13,
+    "p95": 4.7,
+    "max": 11.3
    },
    "track": [
     [
-     2079,
-     -12.3,
-     -0.81
+     2108,
+     -12.31,
+     -0.83
     ],
     [
-     3717,
+     3782,
      -2.24,
      -0.21
     ],
     [
-     5357,
-     -0.16,
-     -0.11
+     5192,
+     -0.18,
+     -0.12
     ],
     [
-     7354,
-     -0.7,
-     0.07
+     7163,
+     -0.55,
+     0.02
     ],
     [
-     9423,
-     -1.84,
-     0.47
+     8726,
+     -1.81,
+     0.42
     ],
     [
-     10917,
-     -2.7,
-     0.73
+     10352,
+     -2.58,
+     0.67
     ],
     [
-     12424,
-     -3.23,
-     0.88
+     11813,
+     -3.08,
+     0.82
     ],
     [
-     13934,
-     -3.68,
-     0.99
+     13813,
+     -3.62,
+     0.97
     ],
     [
-     15436,
-     -4.05,
-     1.06
+     15478,
+     -4.1,
+     1.07
     ],
     [
-     16963,
-     -4.43,
-     1.16
+     17008,
+     -4.51,
+     1.15
     ],
     [
-     18611,
-     -4.78,
-     1.17
+     18654,
+     -4.89,
+     1.19
     ],
     [
-     20168,
-     -5.08,
-     1.17
+     20023,
+     -5.15,
+     1.19
     ],
     [
-     21752,
-     -5.29,
-     1.17
+     21682,
+     -5.33,
+     1.13
     ],
     [
-     23331,
-     -5.44,
+     23375,
+     -5.49,
      1.08
     ],
     [
-     24913,
+     25106,
      -5.53,
-     0.98
+     0.96
     ],
     [
-     26748,
+     26817,
      -5.57,
      0.84
     ],
     [
-     28378,
+     28462,
      -5.53,
      0.67
     ],
     [
-     30572,
+     29966,
      -5.41,
      0.46
     ],
     [
-     32493,
-     -5.17,
-     0.26
+     31661,
+     -5.23,
+     0.31
     ],
     [
-     34030,
-     -4.91,
-     0.02
+     33180,
+     -5.02,
+     0.09
     ],
     [
-     35915,
-     -4.58,
-     -0.23
+     35160,
+     -4.66,
+     -0.15
     ],
     [
-     37455,
-     -4.2,
-     -0.43
+     36655,
+     -4.36,
+     -0.35
     ],
     [
-     39077,
-     -3.77,
-     -0.64
+     38336,
+     -3.92,
+     -0.56
     ],
     [
-     40479,
-     -3.35,
-     -0.86
+     39952,
+     -3.48,
+     -0.79
     ],
     [
-     42197,
-     -2.75,
-     -1.03
+     41562,
+     -2.99,
+     -0.95
     ],
     [
-     44020,
-     -2.16,
-     -1.21
+     43479,
+     -2.38,
+     -1.15
     ],
     [
-     45509,
-     -1.56,
-     -1.38
+     45082,
+     -1.76,
+     -1.33
     ],
     [
-     47012,
-     -0.97,
-     -1.51
+     46592,
+     -1.17,
+     -1.45
     ],
     [
-     48629,
-     -0.38,
-     -1.57
+     48315,
+     -0.51,
+     -1.54
     ],
     [
-     50193,
+     50282,
      0.24,
      -1.63
     ],
     [
-     52114,
-     1.01,
+     51789,
+     0.83,
      -1.63
     ],
     [
-     53852,
-     1.75,
+     53276,
+     1.39,
+     -1.63
+    ],
+    [
+     54733,
+     1.91,
      -1.58
     ],
     [
-     55459,
-     2.29,
+     56751,
+     2.47,
      -1.51
     ]
    ]
   },
   "drag": {
    "p0": {
-    "x": 1003.3265306122449,
-    "y": 422.57142857142856,
-    "n": 49
+    "x": 1009.3191489361702,
+    "y": 423.0425531914894,
+    "n": 47
    },
    "dragged": {
-    "x": 1427.0869565217392,
+    "x": 1430,
     "y": 427,
-    "n": 46
+    "n": 45
    },
    "limit": {
-    "x": 1530.8666666666666,
-    "y": 206.7111111111111,
-    "n": 45
+    "x": 1530.723404255319,
+    "y": 206.6595744680851,
+    "n": 47
    },
    "glide": {
-    "x": 1097.4444444444443,
-    "y": 436.06666666666666,
-    "n": 45
-   },
-   "back": {
-    "x": 1085.2391304347825,
-    "y": 439.9347826086956,
+    "x": 1097.2173913043478,
+    "y": 436.0869565217391,
     "n": 46
    },
+   "back": {
+    "x": 1083.6458333333333,
+    "y": 440.3541666666667,
+    "n": 48
+   },
    "frameJsMs": {
-    "n": 28,
-    "mean": 1.62,
-    "p95": 5.6,
-    "max": 6.1
+    "n": 26,
+    "mean": 1.66,
+    "p95": 4.9,
+    "max": 7.1
    }
   },
   "transfer": {
