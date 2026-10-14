@@ -903,6 +903,15 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .species-card .card-verdict::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--tc,transparent)}
 .species-card[data-type="none"] .card-verdict::before{box-sizing:border-box;border:1.5px solid #8193a4}
 @media (min-width:1281px){#explore .species-card .card-verdict{margin-left:auto}#explore .species-card .card-verdict::before{display:none}}
+/* 2026-10-14: the card line stays inside the card border. When space runs out the verdict drops to the next line (right-aligned),
+   and the conservation words beside the MCUI value wrap word by word. Numbers and the '활용'/'보전' names never break. */
+.species-card .card-line{flex-wrap:wrap;row-gap:4px;column-gap:10px}
+.species-card .card-line>.cl-v:first-child{flex:none}
+.species-card .card-line>.cl-v+.cl-v{flex:1 1 9em;min-width:0;white-space:normal;word-break:keep-all}
+.species-card .card-line .cl-v>b,.species-card .card-line .cl-v>[aria-hidden]{white-space:nowrap}
+.species-card .card-verdict{flex:none;max-width:100%;white-space:normal}
+/* the desktop list is vertical and never scrolls sideways (phones at 740px and below keep their horizontal card row) */
+@media (min-width:741px){#explore .species-list{overflow-x:hidden}}
 /* header: one chip '● 연구 프로토타입 · verified-4.11 · OCEAN 20 ▾' (the dot turns amber while the connection chip shows) */
 .status-chip#notice-chip{max-width:none}
 #notice-chip::before{content:"";flex:none;width:7px;height:7px;margin-right:3px;border-radius:50%;background:#44d7c0}
