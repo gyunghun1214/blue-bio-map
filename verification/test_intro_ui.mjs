@@ -10,7 +10,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -305,4 +305,92 @@ assert.match(css,/\.gate :focus-visible\{outline:none\}/,'no ring before the key
 assert.match(css,/html\.kb \.gate :focus-visible\{outline:2px solid var\(--g-teal\);outline-offset:4px\}/,'the teal ring once it is');
 assert.match(browser,/e\.key==='Tab'\|\|e\.key\.startsWith\('Arrow'\)\)root\.classList\.add\('kb'\)/,'Tab or an arrow key turns it on');
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring');
+// (13) the turning globe (2026-10-14): textures as baked, the shader's own inverse = inversePerspective, the motion keeps
+// Korea on the near side and (while it sways) within 6% of the screen width of its place, the overlays follow the camera
+const v3=f=>fs.readFileSync(new URL('../dist/vendor/globe-v3/'+f,import.meta.url));
+const texJson=JSON.parse(v3('textures.json'));
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.TEXTURES)),{feather:texJson.feather,sets:texJson.sets},'intro.js TEXTURES = vendor/globe-v3/textures.json');
+const src3=v3('SOURCE.txt').toString(),P2=JSON.parse(src3.match(/^PARAMS: (.*)$/m)[1]);
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.SHADE)),{light:P2.light_dir,lo:P2.shade_lo,hi:P2.shade_hi,min:P2.shade_min,limbR:P2.limb_r,limbMin:P2.limb_min,
+  air:P2.air_color,airMax:P2.air_amax,airExp:P2.air_exp,airBack:P2.air_back,airR0:P2.air_r0},'SHADE = the screen steps of the recipe the textures were baked with');
+assert.equal(P2.exposure,1,'exposure is baked into the textures (the shader does not apply it)');
+for(const [k,set] of Object.entries(texJson.sets))for(const t of Object.values(set)){
+  assert.ok(src3.includes(`  ${t.file}  `),`${t.file} listed in SOURCE.txt`);assert.ok(fs.existsSync(new URL(`../dist/vendor/globe-v3/${t.file}`,import.meta.url)),`${k}: ${t.file} is there`);}
+// the GLSL text of lonlat(), run as JavaScript (scalars only: float → let, vec2(a,b) → [a,b]), against inversePerspective
+const glslToJs=src=>src.replace(/^vec2 lonlat\(float x,float y\)\{/,'').replace(/\}\s*$/,'').replace(/\bfloat\b/g,'let').replace(/return vec2\((\w+),(\w+)\);/,'return [$1,$2];');
+const lonlatJs=(u_lon0,u_lat0,u_P)=>new Function('x','y','u_lon0','u_lat0','u_P','const {sqrt,max,cos,sin}=Math,atan=Math.atan2,asin=Math.asin,clamp=(v,a,b)=>Math.min(b,Math.max(a,v));'+glslToJs(ctx.GLOBE_LONLAT));
+const shaderLL=lonlatJs();
+assert.ok(ctx.globeShader().includes(ctx.GLOBE_LONLAT),'the shader carries lonlat() as tested');
+let worstGL=0;
+for(const off of [{lon:0,lat:0},{lon:18,lat:0},{lon:-30,lat:-15},{lon:30,lat:15},{lon:4.5,lat:-1.1}]){const c=ctx.cameraAt(off);
+  for(let x=-.99;x<1;x+=.0917)for(let y=-.99;y<1;y+=.0853){if(Math.hypot(x,y)>1)continue;
+    const a=ctx.inversePerspective(x,y,c.lon0,c.lat0,c.P),b=shaderLL(x,y,c.lon0,c.lat0,c.P);worstGL=Math.max(worstGL,Math.abs(a.lon-b[0]),Math.abs(a.lat-b[1]));}}
+assert.ok(worstGL<1e-9,`the shader's lonlat() = inversePerspective at 5 poses × ~370 points (worst ${worstGL}°)`);
+// which set: phones and slow connections the small one, everything else the full one
+assert.equal(ctx.textureSet(pR,2),'small',`phone at 2x (${(4*pR).toFixed(0)} px across): small`);
+assert.equal(ctx.textureSet(dR,1),'full','design size at 1x: full');assert.equal(ctx.textureSet(dR,2),'full');
+assert.equal(ctx.textureSet(dR,2,{saveData:true}),'small');assert.equal(ctx.textureSet(dR,2,{effectiveType:'3g'}),'small');
+assert.equal(ctx.textureSet(ctx.globeFrame(820,1180,{top:300,bottom:800}).R,2),'full','upright tablet at 2x: full');
+// the motion: entry from 18° east into the pose by 2.4 s; then a sway of ±4.5° · ±1.1° that never turns round
+const M=ctx.MOTION,A=(t,e=true)=>ctx.ambientAt(t,e);
+assert.equal(A(0).lon,18);assert.equal(A(0).lat,0);
+assert.ok(Math.abs(A(M.entry.ms).lon)<.5,'entry over by 2.4 s');
+let maxStep=0,maxKink=0,maxLon=0,maxLat=0;
+for(let t=0;t<200000;t+=16){const a=A(t),b=A(t+16),c=A(t+32);maxStep=Math.max(maxStep,Math.abs(b.lon-a.lon),Math.abs(b.lat-a.lat));
+  maxKink=Math.max(maxKink,Math.abs(c.lon-2*b.lon+a.lon),Math.abs(c.lat-2*b.lat+a.lat));if(t>M.entry.ms){maxLon=Math.max(maxLon,Math.abs(a.lon));maxLat=Math.max(maxLat,Math.abs(a.lat));}}
+assert.ok(maxStep<=3*M.entry.lon/M.entry.ms*16+1e-9,`never faster than the entry's first frame (${maxStep.toFixed(3)}° per frame)`);
+assert.ok(maxKink<=6*M.entry.lon/M.entry.ms**2*16**2*1.05,`no jolt: the speed never changes faster than the entry's own easing (largest change ${maxKink.toFixed(4)}° per frame²)`);
+assert.ok(maxLon<=M.sway.lon+1e-9&&maxLat<=M.sway.lat+1e-9&&maxLon>M.sway.lon*.95,`after the entry: |lon| ≤ ${M.sway.lon}°, |lat| ≤ ${M.sway.lat}° (seen ${maxLon.toFixed(2)}, ${maxLat.toFixed(2)})`);
+assert.equal(JSON.stringify(A(0,false)),JSON.stringify({lon:0,lat:0}),'coming in late: starts in the pose (no jump from the still picture)');
+// Korea on screen for every pose the sway reaches, on every screen size: near side, within 6% of the width of its place
+const shift=(f,w,off)=>{const k0=ctx.project(...ctx.KOREA),k=ctx.project(...ctx.KOREA,false,ctx.cameraAt(off));return k&&Math.hypot(k.x-k0.x,k.y-k0.y)*f.R/w;};
+const screens=[[1672,941,null],[1440,900,null],[1920,1080,null],[2560,1080,null],[1280,800,null],[1024,768,null],[820,1180,{top:300,bottom:800}],[390,844,{top:420,bottom:640}],[360,640,{top:300,bottom:470}]];
+let worstShift=0;
+for(const [w,h,band] of screens){const f=ctx.globeFrame(w,h,band);
+  for(let t=M.entry.ms;t<120000;t+=250){const s=shift(f,w,A(t));assert.ok(s!==null,'Korea on the near side');worstShift=Math.max(worstShift,s);}
+  for(const [lo,la] of [[1,1],[1,-1],[-1,1],[-1,-1]]){const s=shift(f,w,{lon:lo*M.sway.lon,lat:la*M.sway.lat});worstShift=Math.max(worstShift,s);}}
+assert.ok(worstShift<.06,`swaying, Korea stays within 6% of the screen width of its place (worst ${(worstShift*100).toFixed(2)}%)`);
+for(const off of [{lon:M.entry.lon,lat:0},...[[1,1],[1,-1],[-1,1],[-1,-1]].map(([a,b])=>({lon:a*M.drag.lon,lat:b*M.drag.lat}))]){
+  const c=ctx.cameraAt(off),r=Math.PI/180,k=ctx.KOREA,cosc=Math.sin(c.lat0*r)*Math.sin(k[1]*r)+Math.cos(c.lat0*r)*Math.cos(k[1]*r)*Math.cos((k[0]-c.lon0)*r);
+  assert.ok(cosc>1/c.P+.2,`Korea well inside the near side at ${JSON.stringify(off)}`);}
+assert.equal(JSON.stringify(ctx.clampDrag({lon:99,lat:-99})),JSON.stringify({lon:M.drag.lon,lat:-M.drag.lat}),'drag limits');
+// dragging: the surface under the pointer follows it (right → Korea moves right by about the same px)
+const fD=ctx.globeFrame(1672,941,null),dd=ctx.dragDegrees(40,-25,fD.R,ctx.CAMERA.lat0);
+assert.ok(dd.lon<0&&dd.lat<0,'drag right turns the camera west, drag up turns it south');
+const kA=ctx.project(...ctx.KOREA),kB=ctx.project(...ctx.KOREA,false,ctx.cameraAt(dd));
+const moved={x:(kB.x-kA.x)*fD.R,y:-(kB.y-kA.y)*fD.R};
+assert.ok(Math.abs(moved.x/40-1)<.3&&Math.abs(moved.y/-25-1)<.3,`Korea follows the pointer (${moved.x.toFixed(1)}, ${moved.y.toFixed(1)} px for 40, -25)`);
+// the overlays use the frame's camera; the start pose is the old projection
+assert.equal(JSON.stringify(ctx.project(128,34,false,ctx.cameraAt({lon:0,lat:0}))),JSON.stringify(ctx.project(128,34)));
+assert.notEqual(JSON.stringify(ctx.project(128,34,false,ctx.cameraAt({lon:3,lat:0}))),JSON.stringify(ctx.project(128,34)));
+// the leader line: the card stays put; from wherever the point is, it starts on the point and ends on the card
+const cardBox={x:placed.x,y:placed.y,w:card.w,h:card.h};
+assert.equal(JSON.stringify(ctx.leadLine(dot,cardBox,1)),JSON.stringify(placed.line),'the start pose: the design line');
+for(const d of [{x:dot.x-120,y:dot.y+20},{x:dot.x+60,y:dot.y-30},{x:placed.x+40,y:placed.y-80},{x:placed.x+60,y:placed.y+card.h+50}]){
+  const l=ctx.leadLine(d,cardBox,1),[ex,ey]=l.at(-1);
+  assert.equal(JSON.stringify(l[0]),JSON.stringify([d.x,d.y]));assert.ok((ex===cardBox.x&&ey>=cardBox.y&&ey<=cardBox.y+cardBox.h)||((ey===cardBox.y||ey===cardBox.y+cardBox.h)&&ex>=cardBox.x&&ex<=cardBox.x+cardBox.w),`ends on the card edge from ${JSON.stringify(d)}`);
+  if(d.x>cardBox.x)assert.equal(l.length,2,'over or under the card: a straight line to its nearer edge');}
+// the browser part: WebGL first, the still picture on every failure, frames only while moving, everything let go on leaving
+assert.match(browser,/im\.src=`vendor\/globe-v3\/\$\{set\[k\]\.file\}`/,'textures from vendor/globe-v3 on this site');
+assert.ok(browser.indexOf("c.getContext('webgl2'")>browser.indexOf('if(!show)return;'),'WebGL only once the screen is known to show');
+for(const [what,re] of [['no context or shader',/try\{initGL\(\);\}catch\{G\.failed=true;freeGL\(\);loadStill\(\);\}/],['a texture',/im\.onerror=glFail/],['a lost context',/addEventListener\('webglcontextlost',glFail\)/],
+  ['a draw error',/try\{glDraw\(cam,t\);\}catch\{glFail\(\);return draw\(\);\}/]])assert.match(browser,re,`${what} → the still picture`);
+assert.match(browser,/function glFail\(\)\{[^}]*loadStill\(\)/);
+assert.match(browser,/getExtension\('WEBGL_lose_context'\)\?\.loseContext\(\)/,'leaving gives the WebGL context back');
+assert.match(browser,/canvas\.width=canvas\.height=0;if\(bg\)bg\.width=bg\.height=0;bg=null;photo=img=null;freeGL\(\);/);
+assert.match(browser,/visibilitychange',\(\)=>\{if\(document\.hidden\)\{cancelAnimationFrame\(raf\)/,'a hidden tab stops the frames');
+assert.match(browser,/const still=reduce\|\|document\.hidden;/,'still or hidden: the clock stands');
+assert.match(browser,/return !still&&shown;/,'the sway asks for frames only when allowed to move');
+assert.match(browser,/if\(v\)\{back=null;offset=\{lon:0,lat:0\};\}/,'the switch puts the globe in its pose at once');
+assert.match(browser,/back=reduce\?null:/,'still: a released drag goes straight back, no glide');
+assert.match(css,/\.gate-hero\{touch-action:pan-y pinch-zoom\}/,'a finger turns it sideways only; upward swipes and zoom stay the page\'s');
+assert.ok(!/three/i.test(ctx.globeShader()),'one hand-written shader, no Three.js');
+for(const r of ['ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)','llvmpipe (LLVM 15.0.7, 256 bits)','ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11 vs_5_0 ps_5_0, D3D11)'])
+  assert.ok(ctx.SOFTWARE_GL.test(r),`software renderer kept on the still picture: ${r}`);
+for(const r of ['ANGLE (Intel, Intel(R) UHD Graphics 620 Direct3D11 vs_5_0 ps_5_0, D3D11)','Apple GPU','ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)','Adreno (TM) 740','Mali-G78'])
+  assert.ok(!ctx.SOFTWARE_GL.test(r),`a GPU turns the globe: ${r}`);
+assert.match(browser,/SOFTWARE_GL\.test\(String\(gl\.getParameter\(dbg\.UNMASKED_RENDERER_WEBGL\)\)\)\)throw/,'initGL gives up on a software renderer');
+assert.match(browser,/failIfMajorPerformanceCaveat:true/,'no turning globe where WebGL would run on the CPU (software renderer): the still picture there');
+
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks)');
+

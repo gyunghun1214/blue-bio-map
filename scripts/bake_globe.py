@@ -570,6 +570,369 @@ def compare(design_path, shot):
     print('PASS' if ok else 'FAIL', '(ΔE ≤ 12, local contrast ratio 0.7–1.4)')
     return ok, rows
 
+def compare_shots(a_path, b_path):
+    """Two captures of the start pose at the design size (A: the still picture, B: the WebGL globe): Lab per region and
+    the mean ΔE76 over the whole disc on screen. Same overlays on both, so what differs is the globe."""
+    cam = json.loads((OUT / 'camera.json').read_text(encoding='utf8'))
+    f = cam['frame']
+    circle = (f['cx'] * DW, f['cy'] * DH, f['R'] * DH)
+    imgs = []
+    for path in (a_path, b_path):
+        im = Image.open(path).convert('RGB')
+        imgs.append(im if im.size == (DW, DH) else im.resize((DW, DH), Image.LANCZOS))
+    A, B = (measure(im, circle) for im in imgs)
+    La, Lb = (lab(np.asarray(im, np.float32)) for im in imgs)
+    yy, xx = np.mgrid[0:DH, 0:DW]
+    disc = np.hypot(xx - circle[0], yy - circle[1]) <= circle[2] * .985
+    dE = np.linalg.norm(La - Lb, axis=-1)
+    rows = []
+    print('| 영역 | 고정 그림 L*a*b* | WebGL L*a*b* | ΔE76 |')
+    print('|---|---|---|---|')
+    fmt = lambda v: ', '.join(f'{x:.1f}' for x in v)
+    for k in A:
+        d = float(np.linalg.norm(A[k]['lab'] - B[k]['lab']))
+        rows.append({'region': k, 'still': A[k]['lab'].round(2).tolist(), 'webgl': B[k]['lab'].round(2).tolist(), 'dE': round(d, 2)})
+        print(f'| {k} | {fmt(A[k]["lab"])} | {fmt(B[k]["lab"])} | {d:.2f} |')
+    mean, p95 = float(dE[disc].mean()), float(np.percentile(dE[disc], 95))
+    worst = max(r['dE'] for r in rows)
+    rows.append({'region': '화면 안 구 전체 (픽셀별)', 'mean_dE': round(mean, 2), 'p95_dE': round(p95, 2)})
+    print(f'| 화면 안 구 전체 (픽셀별) | | | 평균 {mean:.2f}, 95% {p95:.2f} |')
+    ok = mean <= 3 and worst <= 3
+    print('PASS' if ok else 'FAIL', '(mean ΔE76 over the disc ≤ 3 and every region ≤ 3: hard to tell apart side by side)')
+    return ok, rows
+
+# ---------- the turning globe (--equirect): position-free textures for the screen's WebGL shader ----------
+# The screen (dist/intro.js) now turns the camera a little, so the picture can no longer be one projected view. Every
+# step that belongs to a place on Earth (tone and sea-floor relief, the shelf glow, the coast line, the city lights)
+# is worked out here on a longitude-latitude grid; the steps that belong to a place on the screen (the light from the
+# upper left, the limb, the air band) move into the shader with the same formulas as geometry() above. Output:
+# dist/vendor/globe-v3/ (textures.json, SOURCE.txt), globe-v2 stays as the picture for screens without WebGL.
+
+OUT3 = ROOT / 'dist' / 'vendor' / 'globe-v3'
+GRID_PPD = 30  # the grid: the 2 km world decoded at 1/2 (10800 x 5400), pixel centres on (i + .5) / 30 degrees
+# textures: (file, lon range, lat range, size), the detail tile where the screen looks closely, the world for the rest
+TEXTURES = {
+    'full': {'detail': ('detail-2048.webp', (95, 180), (-5, 62), (2048, 1608)), 'world': ('world-2048.webp', (-180, 180), (-90, 90), (2048, 1024))},
+    'small': {'detail': ('detail-1024.webp', (95, 180), (-5, 62), (1024, 804)), 'world': ('world-1024.webp', (-180, 180), (-90, 90), (1024, 512))},
+}
+FEATHER = 3.0  # degrees: the detail tile fades into the world inside its edges
+LIMITS3 = {'full': 700_000, 'small': 260_000, 'detail-2048.webp': 480_000, 'world-2048.webp': 260_000,
+           'detail-1024.webp': 160_000, 'world-1024.webp': 110_000}
+QUALITY3 = {'detail-2048.webp': 80, 'world-2048.webp': 80, 'detail-1024.webp': 82, 'world-1024.webp': 82}
+REF_LAT = 36.0  # the grid's longitude pixels are this much narrower on the ground at Korea's latitude
+
+
+def v2_scale(cam):
+    """Pixels per degree of the 2400 picture at Korea, north-south and east-west on the ground: the screen-space blurs
+    and pixel widths of the recipe become degrees with these, so at the start pose the grid tone matches globe-v2."""
+    N = cam['bake']['sizes'][-1]
+    a = perspective(*KOREA, cam['lon0'], cam['lat0'], cam['P'])
+    b = perspective(KOREA[0], KOREA[1] + .1, cam['lon0'], cam['lat0'], cam['P'])
+    c = perspective(KOREA[0] + .1 / math.cos(math.radians(KOREA[1])), KOREA[1], cam['lon0'], cam['lat0'], cam['P'])
+    return math.hypot(b[0] - a[0], b[1] - a[1]) * N / 2 * 10, math.hypot(c[0] - a[0], c[1] - a[1]) * N / 2 * 10
+
+
+def grid_px(cam, v2px):
+    """A length of v2px pixels on the 2400 picture as (rows, columns) of the grid."""
+    ns, ew = v2_scale(cam)
+    return v2px / ns * GRID_PPD, v2px / ew * GRID_PPD / math.cos(math.radians(REF_LAT))
+
+
+def grid_base(src):
+    """The world at 30 px/degree in linear light, the 500 m tile D1 averaged 4 x 4 onto the same pixels within
+    d1_radius of Korea and blended over d1_feather (as sample() does for the picture), and the city lights."""
+    im = Image.open(src / SOURCES['world'][0])
+    im.draft('RGB', (10800, 5400))
+    world = np.asarray(im.convert('RGB'))
+    del im
+    H, W = world.shape[:2]
+    assert (W, H) == (360 * GRID_PPD, 180 * GRID_PPD), (W, H)
+    base = np.empty((H, W, 3), np.float32)
+    for y in range(0, H, 600):
+        base[y:y + 600] = LUT[world[y:y + 600]]
+    del world
+    lat = 90 - (np.arange(H) + .5) / GRID_PPD
+    lon = -180 + (np.arange(W) + .5) / GRID_PPD
+    # D1 (90-180E, 0-90N) decoded at 1/2 = 120 px/degree: whole 4 x 4 blocks fall on grid pixels
+    R = PARAMS['d1_radius'] + PARAMS['d1_feather']
+    dlon = math.degrees(math.asin(min(1, math.sin(math.radians(R)) / math.cos(math.radians(KOREA[1])))))
+    lon_r = (max(90, KOREA[0] - dlon), min(180, KOREA[0] + dlon))
+    lat_r = (max(0, KOREA[1] - R), min(90, KOREA[1] + R))
+    c0, c1 = int((lon_r[0] + 180) * GRID_PPD), int(math.ceil((lon_r[1] + 180) * GRID_PPD))
+    r0, r1 = int((90 - lat_r[1]) * GRID_PPD), int(math.ceil((90 - lat_r[0]) * GRID_PPD))
+    im = Image.open(src / SOURCES['d1'][0])
+    im.draft('RGB', (10800, 10800))
+    k = im.size[0] // (90 * GRID_PPD)
+    assert k * 90 * GRID_PPD == im.size[0] == im.size[1], im.size
+    x0 = (c0 - (90 + 180) * GRID_PPD) * k
+    d1 = np.asarray(im.crop((x0, r0 * k, x0 + (c1 - c0) * k, r1 * k)))
+    del im
+    rad = np.pi / 180
+    for y in range(r0, r1, 200):
+        y1 = min(y + 200, r1)
+        blk = LUT[d1[(y - r0) * k:(y1 - r0) * k]].reshape(y1 - y, k, c1 - c0, k, 3).mean((1, 3))
+        la, lo = lat[y:y1, None], lon[None, c0:c1]
+        dist = np.degrees(np.arccos(np.clip(np.sin(la * rad) * math.sin(KOREA[1] * rad) + np.cos(la * rad) * math.cos(KOREA[1] * rad) * np.cos((lo - KOREA[0]) * rad), -1, 1)))
+        wd = np.clip((PARAMS['d1_radius'] + PARAMS['d1_feather'] / 2 - dist) / PARAMS['d1_feather'], 0, 1).astype(np.float32)[..., None]
+        base[y:y1, c0:c1] = base[y:y1, c0:c1] * (1 - wd) + blk * wd
+    del d1
+    L = np.asarray(Image.open(src / SOURCES['lights'][0]).convert('L'))
+    lights = np.empty((H, W), np.float32)
+    fx = (lon + 180) / 360 * L.shape[1] - .5
+    for y in range(0, H, 300):
+        fy = (90 - lat[y:y + 300]) / 180 * L.shape[0] - .5
+        gx, gy = np.broadcast_arrays(fx[None, :], fy[:, None])
+        lights[y:y + 300] = bilinear(L, gx, gy, True)
+    return base, lights, lon, lat
+
+
+def grid_raster(rings, H, W, k=2):
+    """Even-odd fill of lon/lat rings on the grid (drawn at k x and box-reduced, as raster() does on the disc). The
+    globe-v1 rings run 28-254E split at 180, so a ring east of it is moved back by 360."""
+    acc = np.zeros((H * k, W * k), bool)
+    s = GRID_PPD * k
+    for ring in rings:
+        lon = ring[:, 0] - (360 if ring[:, 0].mean() > 180 else 0)
+        px, py = (lon + 180) * s, (90 - ring[:, 1]) * s
+        x0, x1 = int(max(0, np.floor(px.min()))), int(min(W * k, np.ceil(px.max()) + 1))
+        y0, y1 = int(max(0, np.floor(py.min()))), int(min(H * k, np.ceil(py.max()) + 1))
+        if x1 - x0 < 1 or y1 - y0 < 1:
+            continue
+        im = Image.new('1', (x1 - x0, y1 - y0), 0)
+        ImageDraw.Draw(im).polygon(list(zip(px - x0, py - y0)), fill=1)
+        acc[y0:y1, x0:x1] ^= np.asarray(im, bool)
+    return acc.reshape(H, k, W, k).mean((1, 3), dtype=np.float32)
+
+
+def disc_refs(cam, Y, L, S):
+    """The medians globe-v2's tone started from (log luma of the open sea and of the land seen in its 2400 disc), read
+    off the grid through the start camera, so the grid tone keeps globe-v2's brightness at the start pose."""
+    N = cam['bake']['sizes'][-1]
+    c = (np.arange(N) + .5 - N / 2) / (N / 2)
+    u, v = np.meshgrid(c, -c)
+    m = np.hypot(u, v) <= 1
+    lon, lat = inverse_np(u[m], v[m], cam['lon0'], cam['lat0'], cam['P'])[:2]
+    i = np.clip(((90 - lat) * GRID_PPD).astype(np.int64), 0, Y.shape[0] - 1)
+    j = (((lon + 180) % 360) * GRID_PPD).astype(np.int64) % Y.shape[1]
+    y, l, s = np.log(Y[i, j]), L[i, j], S[i, j]
+    return float(np.median(y[(l < .01) & (s < .01)])), float(np.median(y[l > .99]))
+
+
+def grid_tone(base, lights, lon, lat, cam):
+    """tone() on the grid without the screen steps: the same recipe and PARAMS, the screen-pixel lengths turned into
+    grid pixels at Korea (grid_px), the longitude axis wrapping round, the medians taken as globe-v2 took them."""
+    p = PARAMS
+    H, W = base.shape[:2]
+    modes = ('reflect', 'wrap')
+    land = json.loads((V1 / 'land-50m.json').read_text(encoding='utf8'))
+    bath = json.loads((V1 / 'bathymetry-10m.json').read_text(encoding='utf8'))
+    L = grid_raster(decode(land['land'], land['scale']), H, W)
+    S = np.clip(1 - grid_raster(decode(bath['depth']['200'], bath['scale']), H, W) - L, 0, 1)
+    # the globe-v1 vectors cover 28-254E, 62S-90N (everything the turning camera can show): outside it no mask
+    bw, bs, be, bn = land['box']
+    inbox = ((lat[:, None] >= bs) & (lat[:, None] <= bn) & (((lon[None, :] - bw) % 360) <= be - bw))
+    (a0, b0), (a1, b1) = STUDY
+    g = 4
+    korea = (smoothstep(a0 - g - 2, a0 - g, lon)[None, :] * (1 - smoothstep(a1 + g, a1 + g + 2, lon))[None, :]
+             * (smoothstep(b0 - g - 2, b0 - g, lat) * (1 - smoothstep(b1 + g, b1 + g + 2, lat)))[:, None]).astype(np.float32)
+    Y = np.maximum(luma(base), 1e-5)
+    ref_sea, ref_land = disc_refs(cam, Y, L, S)
+    lc, fine = grid_px(cam, p['lc_sigma'] * 2400), grid_px(cam, p['fine_sigma'] * 2400)
+
+    def blur(a, m, sigma):
+        return gaussian_filter(a * m, sigma, mode=modes) / np.maximum(gaussian_filter(m, sigma, mode=modes), 1e-6)
+
+    def tone_band(lY, m, ref, luma_to, gains, ceiling):
+        bg, mg, fg = gains
+        b, f = blur(lY, m, lc), blur(lY, m, fine)
+        out = np.exp(bg * (b - ref) + mg * (f - b) + fg * (lY - f)) * luma_to
+        return ceiling * luma_to * np.tanh(out / (ceiling * luma_to))
+
+    lY = np.log(Y)
+    sea = 1 - L
+    Ysea = (tone_band(lY, sea, ref_sea, p['sea_luma'], p['sea_gains'], p['sea_max']) * (1 - S)
+            + tone_band(lY, sea, ref_sea, p['sea_luma'], p['shelf_gains'], p['sea_max']) * S)
+    Yland = tone_band(lY, L, ref_land, p['land_luma'], p['land_gains'], p['land_max'])
+    del lY
+    chroma = base / Y[..., None]
+    del base
+    tint = np.asarray(p['sea_tint'], np.float32)
+    ltint = np.asarray(p['land_tint'], np.float32)
+    out = (Ysea[..., None] * (chroma * (1 - p['sea_tint_w']) + tint / luma(tint) * p['sea_tint_w'])) * (1 - L[..., None])
+    out += (Yland[..., None] * ((1 + p['land_sat'] * (chroma - 1)) * (1 - p['land_tint_w']) + ltint / luma(ltint) * p['land_tint_w'])) * L[..., None]
+    del chroma, Ysea, Yland, Y
+    s1, s2 = (grid_px(cam, x * 2400) for x in p['shelf_sigma'])
+    G = (1 - p['shelf_wide_w']) * gaussian_filter(S, s1, mode=modes) + p['shelf_wide_w'] * gaussian_filter(S, s2, mode=modes)
+    boost = 1 + (p['korea_boost'] - 1) * korea
+    on = (1 - L) + L * p['shelf_on_land']
+    m = np.clip(G * boost, 0, 1.5) * on
+    teal = np.asarray(p['shelf_color'], np.float32)
+    teal = teal / luma(teal)
+    Yo = np.maximum(luma(out), 1e-6)[..., None]
+    t = (np.clip(m, 0, 1) * p['shelf_tint'])[..., None]
+    out = Yo * (1 + p['shelf_gain'] * m)[..., None] * (out / Yo * (1 - t) + teal * t)
+    del Yo, t, m
+    out = screen(out, p['shelf_color'], np.clip(G * p['shelf_amax'] * boost, 0, .95) * on)
+    del G, on
+    ky, kx = (max(1, round(v)) for v in grid_px(cam, p['coast_px']))
+    by, bx = (max(.5, v) for v in grid_px(cam, 1))
+    band = np.clip(gaussian_filter(maximum_filter(L, size=(2 * ky + 1, 2 * kx + 1), mode=modes), (by, bx), mode=modes) - L, 0, 1)
+    out = screen(out, p['coast_color'], np.clip(band * p['coast_amax'] * boost, 0, .95) * (1 - L))
+    del band
+    ey, ex = (max(1, round(v)) for v in grid_px(cam, p['lights_erode_px']))
+    keep = (minimum_filter(L, size=(2 * ey + 1, 2 * ex + 1), mode=modes) > .5).astype(np.float32) * L
+    lit = np.tanh((lights * p['lights_gain']) ** p['lights_gamma'] / p['lights_amax']) * p['lights_amax'] * keep
+    out += np.asarray(p['lights_color'], np.float32) * lit[..., None]
+    out *= p['exposure']
+    # outside the vectors' box nothing is masked or ever shown: one flat open-sea colour (it also packs small)
+    flat = tint / luma(tint) * p['sea_luma']
+    out[~inbox] = flat
+    info = {'sea_lights_max': float(lit[(L < .5) & inbox].max()), 'land_lit_px': int((lit > .01).sum()),
+            'ref_sea': ref_sea, 'ref_land': ref_land, 'max_value': float(out[inbox].max()),
+            'over_1_px': int((out[inbox] > 1).any(-1).sum()), 'grid_px': {'lc': lc, 'fine': fine, 'shelf': (s1, s2), 'coast': (ky, kx), 'erode': (ey, ex)}}
+    return out, info
+
+
+def crop_resize(out, lon_r, lat_r, size):
+    """The grid's lon/lat box resized (Lanczos, in linear light) to size, as sRGB uint8: the texture's edges are the
+    box's edges (the shader maps the box onto 0..1)."""
+    if lon_r == (-180, 180):
+        a = out
+    else:
+        c0, c1 = round((lon_r[0] + 180) * GRID_PPD), round((lon_r[1] + 180) * GRID_PPD)
+        r0, r1 = round((90 - lat_r[1]) * GRID_PPD), round((90 - lat_r[0]) * GRID_PPD)
+        a = out[r0:r1, c0:c1]
+    ch = [np.asarray(Image.fromarray(np.ascontiguousarray(a[..., i])).resize(size, Image.LANCZOS)) for i in range(3)]
+    return Image.fromarray(np.round(to_srgb(np.stack(ch, -1)) * 255).astype(np.uint8), 'RGB')
+
+
+def write_source3(src_info, files, info):
+    p3 = {'grid_ppd': GRID_PPD, 'ref_lat': REF_LAT, 'feather': FEATHER, 'quality': QUALITY3}
+    lines = [
+        'Entry-screen turning globe (dist/intro.js WebGL shader), baked by scripts/bake_globe.py --equirect from NASA',
+        'imagery. Background picture, not data. Without WebGL the screen draws the still picture in ../globe-v2 instead.',
+        '',
+        'Sources (the same files as ../globe-v2/SOURCE.txt, checked by sha256; kept outside the repository):',
+    ]
+    for key, (name, url) in SOURCES.items():
+        s = src_info[key]
+        lines.append(f'  {name}  {s["size"][0]}x{s["size"][1]}  {s["bytes"]} bytes  sha256 {s["sha256"]}')
+        lines.append(f'    {url}')
+    lines += [
+        '  Land and 200 m shelf masks: dist/vendor/globe-v1/land-50m.json, bathymetry-10m.json (Natural Earth, public domain).',
+        '',
+        'Terms (https://www.nasa.gov/nasa-brand-center/images-and-media/, read 2026-10-13): NASA imagery is generally not',
+        'subject to copyright in the United States and may be used on web pages for educational or informational purposes;',
+        'factual use that does not imply endorsement needs no permission; NASA should be acknowledged as the source. The',
+        'NASA insignia, logotype and identifiers are protected and are not used. Credited on the entry screen ("지구 영상:',
+        'NASA Blue Marble·Black Marble") and in the app\'s 근거와 방법 source list.',
+        '',
+        'Processing: a longitude-latitude grid at 30 px/degree (the world decoded at 10800x5400, the 500 m tile D1 decoded',
+        f'at 10800x10800 and averaged 4x4 onto it within {PARAMS["d1_radius"]} degrees of Korea, blended over {PARAMS["d1_feather"]} degrees);',
+        'globe-v2\'s recipe and PARAMS in linear RGB, only the steps tied to a place on Earth: sea toned to a night blue with',
+        'local contrast on the sea floor relief, land darkened to a blue-grey, the teal glow of the Natural Earth 200 m shelf',
+        '(stronger around Korea), a thin shallow-water line along the coasts, Black Marble city lights on land only (land',
+        f'mask eroded, so no fishing fleets; checked: largest light over the sea = {info["sea_lights_max"]:g}; {info["land_lit_px"]} grid px lit above 1%).',
+        'Blurs and pixel widths that globe-v2 set in screen pixels are the same lengths on the ground at Korea',
+        f'(grid px rows, columns: {json.dumps({k: (np.round(v, 2).tolist() if isinstance(v, tuple) else v) for k, v in info["grid_px"].items()})});',
+        f'tone medians as globe-v2 read them in its start-pose disc (log luma sea {info["ref_sea"]:.4f}, land {info["ref_land"]:.4f}).',
+        'Left to the shader (the place on the screen): the light from the upper left, limb darkening and the Fresnel air',
+        'band (globe-v2 PARAMS light_dir, shade_*, limb_*, air_*). Outside the vectors\' box (28-254E, 62S-90N), never on',
+        'screen, a flat open-sea colour. Each texture: the box resized with Lanczos in linear light, sRGB WebP without alpha.',
+        'PARAMS: ' + json.dumps({k: v for k, v in PARAMS.items()}, ensure_ascii=False),
+        'PARAMS3: ' + json.dumps(p3, ensure_ascii=False),
+        '',
+        'Outputs (file  sha256  bytes  WxH  lon  lat):',
+    ]
+    for name, (h, b, wh, lo, la) in files.items():
+        lines.append(f'  {name}  {h}  {b}  {wh[0]}x{wh[1]}  {lo[0]}..{lo[1]}  {la[0]}..{la[1]}')
+    lines.append('')
+    (OUT3 / 'SOURCE.txt').write_text('\n'.join(lines), encoding='utf8', newline='\n')
+
+
+def textures_json():
+    return {'about': 'Textures of the entry-screen turning globe (dist/intro.js TEXTURES keeps the same numbers): longitude-'
+                     'latitude boxes, row 0 at the north edge. The detail tile fades into the world over feather degrees '
+                     'inside its edges. full for most screens, small for phones and slow connections.',
+            'feather': FEATHER,
+            'sets': {k: {t: {'file': f, 'lon': list(lo), 'lat': list(la), 'size': list(sz)} for t, (f, lo, la, sz) in v.items()} for k, v in TEXTURES.items()}}
+
+
+def bake_equirect(src, cache):
+    cam = json.loads((OUT / 'camera.json').read_text(encoding='utf8'))
+    src_info = {}
+    for key, (name, _) in SOURCES.items():
+        f = src / name
+        src_info[key] = {'sha256': sha(f), 'bytes': f.stat().st_size, 'size': Image.open(f).size}
+    if cache and cache.exists():
+        z = np.load(cache)
+        out, info = z['out'], json.loads(str(z['info']))
+    else:
+        base, lights, lon, lat = grid_base(src)
+        out, info = grid_tone(base, lights, lon, lat, cam)
+        del base, lights
+        if cache:
+            np.savez(cache, out=out, info=json.dumps(info))
+    assert info['sea_lights_max'] == 0, f'city lights over the sea: {info["sea_lights_max"]}'
+    print('check: largest light over the sea =', info['sea_lights_max'], '; grid px lit above 1% =', info['land_lit_px'],
+          '; tone medians', round(info['ref_sea'], 4), round(info['ref_land'], 4), '; max value', round(info['max_value'], 3), '(px over 1:', info['over_1_px'], ')')
+    OUT3.mkdir(parents=True, exist_ok=True)
+    files = {}
+    for set_name, tex in TEXTURES.items():
+        for _, (name, lo, la, size) in tex.items():
+            im = crop_resize(out, lo, la, size)
+            f = OUT3 / name
+            q = QUALITY3[name]
+            while True:
+                im.save(f, 'WEBP', quality=q, method=6)
+                if f.stat().st_size <= LIMITS3[name] or q <= 60:
+                    break
+                q -= 2
+            QUALITY3[name] = q
+            files[name] = (sha(f), f.stat().st_size, im.size, lo, la)
+            print(name, im.size, f.stat().st_size, 'bytes, quality', q)
+    (OUT3 / 'textures.json').write_text(json.dumps(textures_json(), ensure_ascii=False, indent=1) + '\n', encoding='utf8', newline='\n')
+    write_source3(src_info, files, info)
+
+
+def read_outputs3():
+    out = {}
+    for line in (OUT3 / 'SOURCE.txt').read_text(encoding='utf8').splitlines():
+        parts = line.split()
+        if len(parts) == 6 and parts[0].endswith('.webp'):
+            w, h = parts[3].split('x')
+            out[parts[0]] = (parts[1], int(parts[2]), (int(w), int(h)))
+    return out
+
+
+def check3():
+    listed, bad = read_outputs3(), []
+    tj = json.loads((OUT3 / 'textures.json').read_text(encoding='utf8'))
+    if tj != json.loads(json.dumps(textures_json(), ensure_ascii=False)):
+        bad.append('textures.json differs from TEXTURES in bake_globe.py')
+    for set_name, tex in TEXTURES.items():
+        total = 0
+        for _, (name, lo, la, size) in tex.items():
+            f = OUT3 / name
+            if name not in listed or not f.exists():
+                bad.append(f'{name}: missing (file or SOURCE.txt line)')
+                continue
+            h, b, wh = listed[name]
+            if sha(f) != h or f.stat().st_size != b:
+                bad.append(f'{name}: sha256/bytes differ from SOURCE.txt')
+            if Image.open(f).size != tuple(size) or wh != tuple(size):
+                bad.append(f'{name}: size {Image.open(f).size} != {size}')
+            if f.stat().st_size > LIMITS3[name]:
+                bad.append(f'{name}: {f.stat().st_size} bytes > {LIMITS3[name]}')
+            total += f.stat().st_size
+        if total > LIMITS3[set_name]:
+            bad.append(f'{set_name} set: {total} bytes > {LIMITS3[set_name]}')
+    for b_ in bad:
+        print('FAIL', b_)
+    if not bad:
+        print('PASS: ' + ', '.join(f'{n} {listed[n][1]} B' for n in sorted(listed)) + ' match SOURCE.txt, textures.json and the size limits')
+    return not bad
+
 # ---------- main ----------
 
 
@@ -581,9 +944,20 @@ def main():
     ap.add_argument('--shot', type=Path)
     ap.add_argument('--json', type=Path, help='write the comparison rows here')
     ap.add_argument('--cache', type=Path, help='keep the sampled sources here (outside the repository) between tone rounds')
+    ap.add_argument('--equirect', action='store_true', help='bake the turning globe\'s textures (globe-v3) instead of the still picture')
+    ap.add_argument('--compare-shots', nargs=2, type=Path, metavar=('A', 'B'), help='two screen captures of the start pose (still picture, WebGL)')
     a = ap.parse_args()
     if a.check:
-        sys.exit(0 if check() else 1)
+        ok2 = check()
+        ok3 = check3()
+        sys.exit(0 if ok2 and ok3 else 1)
+    if a.compare_shots:
+        ok, rows = compare_shots(*a.compare_shots)
+        if a.json:
+            a.json.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding='utf8')
+        sys.exit(0 if ok else 1)
+    if a.equirect:
+        return bake_equirect(a.src, a.cache)
     if a.compare:
         ok, rows = compare(a.compare, a.shot)
         if a.json:

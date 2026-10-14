@@ -1,0 +1,38 @@
+Entry-screen turning globe (dist/intro.js WebGL shader), baked by scripts/bake_globe.py --equirect from NASA
+imagery. Background picture, not data. Without WebGL the screen draws the still picture in ../globe-v2 instead.
+
+Sources (the same files as ../globe-v2/SOURCE.txt, checked by sha256; kept outside the repository):
+  world.topo.bathy.200408.3x21600x10800.jpg  21600x10800  27216225 bytes  sha256 05d984f723776f3d44fc473cc3d9eb67a48c425e82a56d7133e3761b2e231e86
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography-bathymetry/august/world.topo.bathy.200408.3x21600x10800.jpg
+  world.topo.bathy.200408.3x21600x21600.D1.jpg  21600x21600  69167032 bytes  sha256 89bb1fb179220e226aacab885a763b81fee72cca6ab89ecdef87ef32961fe2b0
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography-bathymetry/august/world.topo.bathy.200408.3x21600x21600.D1.jpg
+  BlackMarble_2016_3km_gray.jpg  13500x6750  3064569 bytes  sha256 3fbc8aae3529dc1ebfcf3aa9361bd3dfc11d19950a6af6d8ed2df61bd8b0134d
+    https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144897/BlackMarble_2016_3km_gray.jpg
+  Land and 200 m shelf masks: dist/vendor/globe-v1/land-50m.json, bathymetry-10m.json (Natural Earth, public domain).
+
+Terms (https://www.nasa.gov/nasa-brand-center/images-and-media/, read 2026-10-13): NASA imagery is generally not
+subject to copyright in the United States and may be used on web pages for educational or informational purposes;
+factual use that does not imply endorsement needs no permission; NASA should be acknowledged as the source. The
+NASA insignia, logotype and identifiers are protected and are not used. Credited on the entry screen ("지구 영상:
+NASA Blue Marble·Black Marble") and in the app's 근거와 방법 source list.
+
+Processing: a longitude-latitude grid at 30 px/degree (the world decoded at 10800x5400, the 500 m tile D1 decoded
+at 10800x10800 and averaged 4x4 onto it within 25.0 degrees of Korea, blended over 3.0 degrees);
+globe-v2's recipe and PARAMS in linear RGB, only the steps tied to a place on Earth: sea toned to a night blue with
+local contrast on the sea floor relief, land darkened to a blue-grey, the teal glow of the Natural Earth 200 m shelf
+(stronger around Korea), a thin shallow-water line along the coasts, Black Marble city lights on land only (land
+mask eroded, so no fishing fleets; checked: largest light over the sea = 0; 96094 grid px lit above 1%).
+Blurs and pixel widths that globe-v2 set in screen pixels are the same lengths on the ground at Korea
+(grid px rows, columns: {"lc": [51.82, 60.74], "fine": [7.77, 9.11], "shelf": [[15.55, 18.22], [46.64, 54.66]], "coast": [2, 3], "erode": [2, 3]});
+tone medians as globe-v2 read them in its start-pose disc (log luma sea -5.7286, land -3.3328).
+Left to the shader (the place on the screen): the light from the upper left, limb darkening and the Fresnel air
+band (globe-v2 PARAMS light_dir, shade_*, limb_*, air_*). Outside the vectors' box (28-254E, 62S-90N), never on
+screen, a flat open-sea colour. Each texture: the box resized with Lanczos in linear light, sRGB WebP without alpha.
+PARAMS: {"ss": 2, "d1_radius": 25.0, "d1_feather": 3.0, "lc_sigma": 0.02, "fine_sigma": 0.003, "sea_luma": 0.016, "sea_gains": [0.3, 0.8, 2.6], "shelf_gains": [0.3, 1.4, 3.0], "sea_max": 3.0, "sea_tint": [0.005, 0.018, 0.031], "sea_tint_w": 0.8, "land_luma": 0.008, "land_gains": [0.8, 1.4, 4.0], "land_max": 3.0, "land_tint": [0.011, 0.017, 0.026], "land_sat": 0.35, "land_tint_w": 0.7, "shelf_sigma": [0.006, 0.018], "shelf_color": [0.262, 0.686, 0.631], "shelf_gain": 3.2, "shelf_tint": 0.85, "shelf_amax": 0.1, "shelf_wide_w": 0.5, "shelf_on_land": 0.7, "coast_px": 2, "coast_color": [0.42, 0.8, 0.76], "coast_amax": 0.18, "korea_boost": 1.5, "lights_color": [0.89, 0.79, 0.6], "lights_gain": 1.0, "lights_gamma": 2.0, "lights_amax": 0.12, "lights_erode_px": 2, "light_dir": [-0.45, 0.55, 0.7], "shade_lo": -0.35, "shade_hi": 0.8, "shade_min": 0.3, "limb_r": 0.86, "limb_min": 0.5, "air_color": [0.275, 0.578, 0.807], "air_amax": 1.0, "air_exp": 2.5, "air_back": 0.08, "air_r0": 0.82, "exposure": 1.0, "quality": {"900": 82, "1600": 82, "2400": 80}}
+PARAMS3: {"grid_ppd": 30, "ref_lat": 36.0, "feather": 3.0, "quality": {"detail-2048.webp": 80, "world-2048.webp": 80, "detail-1024.webp": 82, "world-1024.webp": 82}}
+
+Outputs (file  sha256  bytes  WxH  lon  lat):
+  detail-2048.webp  fddbdc8fe760c67a9e4cc17524c323459d84900d65cc65338a005858a86f3b6c  306968  2048x1608  95..180  -5..62
+  world-2048.webp  a1962755fffe76c9eee73a6da08b1d69229cdc1a113f2f1c241858be94572152  113418  2048x1024  -180..180  -90..90
+  detail-1024.webp  7b558a99f4ed0523054f963ad641b92914badec32cd72b0182f2927a93650a39  114608  1024x804  95..180  -5..62
+  world-1024.webp  c91beef477f3235f985a65f790f247e13b51b54f11bf4be6bce2d20d135a8aa5  32296  1024x512  -180..180  -90..90

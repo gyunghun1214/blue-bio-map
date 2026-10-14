@@ -1,0 +1,528 @@
+{
+ "results": [
+  {
+   "name": "1672x941: WebGL globe drawn (textures in, context made, nothing failed)",
+   "status": "PASS",
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":4,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "1672x941: the entry turns Korea into place (point 8.9% of the width off at 0.5 s, 1.1% at 8.6 s)",
+   "status": "PASS",
+   "detail": "[0.08903640131005003,0.03155802710015138,0.004020619978195314,0.0008770891508364873,0.005162863949514197,0.010873131388187397]"
+  },
+  {
+   "name": "1672x941: still moving after the entry: captures 2 s apart differ (mean diff 7.30, 7.98), Korea within 6% of its place (0.52%, 1.09%)",
+   "status": "PASS",
+   "detail": "{\"frame\":{\"cx\":1254,\"cy\":681.8486,\"R\":732.6626},\"dot0\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"entry\":[0.08903640131005003,0.03155802710015138,0.004020619978195314,0.0008770891508364873,0.005162863949514197,0.010873131388187397],\"diff2s\":[7.3033285901621054,7.979205379314194]}"
+  },
+  {
+   "name": "1440x900: WebGL globe drawn (textures in, context made, nothing failed)",
+   "status": "PASS",
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":8,\"gls\":1,\"lost\":[false],\"canvas\":1440,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "1440x900: the entry turns Korea into place (point 9.9% of the width off at 0.5 s, 1.2% at 8.6 s)",
+   "status": "PASS",
+   "detail": "[0.09876410338685332,0.028152230420063203,0.002131244745360018,0.0006970649988294198,0.00441152016734997,0.012470227122086331]"
+  },
+  {
+   "name": "1440x900: still moving after the entry: captures 2 s apart differ (mean diff 6.54, 8.25), Korea within 6% of its place (0.44%, 1.25%)",
+   "status": "PASS",
+   "detail": "{\"frame\":{\"cx\":1080,\"cy\":652.14,\"R\":700.74},\"dot0\":{\"x\":1012,\"y\":409.9130434782609,\"n\":46},\"entry\":[0.09876410338685332,0.028152230420063203,0.002131244745360018,0.0006970649988294198,0.00441152016734997,0.012470227122086331],\"diff2s\":[6.5401064855334425,8.25328367390946]}"
+  },
+  {
+   "name": "820x1180: WebGL globe drawn (textures in, context made, nothing failed)",
+   "status": "PASS",
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":10,\"gls\":1,\"lost\":[false],\"canvas\":820,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "820x1180: the entry turns Korea into place (point 13.1% of the width off at 0.5 s, 0.7% at 8.6 s)",
+   "status": "PASS",
+   "detail": "[0.13079553837354155,0.048077110561453765,0.006948100915839346,0.0009892776218167931,0.0036373203596809676,0.006924055852364218]"
+  },
+  {
+   "name": "820x1180: still moving after the entry: captures 2 s apart differ (mean diff 1.51, 1.65), Korea within 6% of its place (0.36%, 0.69%)",
+   "status": "PASS",
+   "detail": "{\"frame\":{\"cx\":502.40314674295155,\"cy\":959.5894589621464,\"R\":492},\"dot0\":{\"x\":411.8863636363636,\"y\":789.2045454545455,\"n\":44},\"entry\":[0.13079553837354155,0.048077110561453765,0.006948100915839346,0.0009892776218167931,0.0036373203596809676,0.006924055852364218],\"diff2s\":[1.5080457134120706,1.651705516514598]}"
+  },
+  {
+   "name": "390x844: WebGL globe drawn (textures in, context made, nothing failed)",
+   "status": "PASS",
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":20,\"gls\":1,\"lost\":[false],\"canvas\":780,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "390x844: the entry turns Korea into place (point 13.4% of the width off at 0.5 s, 0.4% at 8.6 s)",
+   "status": "PASS",
+   "detail": "[0.13360456564496548,0.06013338821135806,0.019086939505290244,0.001567689650591156,0.0007697858526043521,0.004433029986054666]"
+  },
+  {
+   "name": "390x844: still moving after the entry: captures 2 s apart differ (mean diff 0.58, 1.33), Korea within 6% of its place (0.08%, 0.44%)",
+   "status": "PASS",
+   "detail": "{\"frame\":{\"cx\":238.94783808506233,\"cy\":593.1218158478501,\"R\":234},\"dot0\":{\"x\":391.61139896373055,\"y\":1024.176165803109,\"n\":193},\"entry\":[0.13360456564496548,0.06013338821135806,0.019086939505290244,0.001567689650591156,0.0007697858526043521,0.004433029986054666],\"diff2s\":[0.5793461562523895,1.3307706032147666]}"
+  },
+  {
+   "name": "Phone 390×844, sway fast-forwarded: the point travels both ways (-5.6% to 2.5% of the width) and never more than 6% from its place (5.63%)",
+   "status": "PASS",
+   "detail": "{\"samples\":34,\"settled\":30,\"maxShift\":0.056317419837138456,\"west\":[-0.05568883186861976,0.008390815349006084],\"east\":[0.024706467276679432,-0.015060039351848714],\"frameJsMs\":{\"n\":636,\"mean\":1.13,\"p95\":4.7,\"max\":11.3}}"
+  },
+  {
+   "name": "Mouse drag 400 px east: Korea follows the pointer (point moved 421 px)",
+   "status": "PASS",
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
+  },
+  {
+   "name": "Dragged far past the limit (±30° · ±15°): the point stops within reach (33.8% of the width off) and Korea stays on the near side",
+   "status": "PASS",
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
+  },
+  {
+   "name": "Released: a short glide, then back to the sway by 2.8 s (4.56% of the width from the pose)",
+   "status": "PASS",
+   "detail": "{\"p0\":{\"x\":1009.3191489361702,\"y\":423.0425531914894,\"n\":47},\"dragged\":{\"x\":1430,\"y\":427,\"n\":45},\"limit\":{\"x\":1530.723404255319,\"y\":206.6595744680851,\"n\":47},\"glide\":{\"x\":1097.2173913043478,\"y\":436.0869565217391,\"n\":46},\"back\":{\"x\":1083.6458333333333,\"y\":440.3541666666667,\"n\":48},\"frameJsMs\":{\"n\":26,\"mean\":1.66,\"p95\":4.9,\"max\":7.1}}"
+  },
+  {
+   "name": "Dragging the globe selects no text and keeps the entry screen",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "name": "Dragging over the title or the card does not turn the globe",
+   "status": "PASS",
+   "detail": "{\"p1\":{\"x\":1079.6734693877552,\"y\":441.42857142857144,\"n\":49},\"p2\":{\"x\":1073.5,\"y\":443,\"n\":44},\"p3\":{\"x\":1067.8297872340424,\"y\":444.02127659574467,\"n\":47}}"
+  },
+  {
+   "name": "Phone, still on: a sideways finger drag turns the globe (point 135 px), and on release it is straight back (no glide while still)",
+   "status": "PASS",
+   "detail": "{\"t0\":{\"x\":391.61139896373055,\"y\":1024.176165803109,\"n\":193},\"t1\":{\"x\":660.7434554973822,\"y\":1018.7434554973822,\"n\":191},\"t2\":{\"x\":391.61139896373055,\"y\":1024.176165803109,\"n\":193}}"
+  },
+  {
+   "name": "Switch still (remembered): no frames once shown (0 in 2 s), the pose does not change (diff 0.000)",
+   "status": "PASS",
+   "detail": "12 → 12"
+  },
+  {
+   "name": "System \"reduce motion\" with nothing remembered: switch on, no frames (0 in 2 s)",
+   "status": "PASS",
+   "detail": "{\"on\":true,\"ready\":true,\"still\":true,\"raf\":12,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "Flipping the switch while it sways: at once in the pose (point 0.04% off) and the frames stop (0 in 1.5 s)",
+   "status": "PASS",
+   "detail": "{\"dc\":{\"x\":1119.2916666666667,\"y\":428.5,\"n\":48},\"ref\":{\"x\":1119.756714746601,\"y\":429.0223903562726},\"r0\":22,\"r1\":22}"
+  },
+  {
+   "name": "Switching motion back on: it sways again (3 frames in 1 s)",
+   "status": "PASS",
+   "detail": "36 → 39"
+  },
+  {
+   "name": "After leaving: no more intro.js frames (0 in 1.5 s), the WebGL context lost on purpose (not taken for a failure, the still picture not fetched), the canvas emptied, on the map",
+   "status": "PASS",
+   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":24,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
+  },
+  {
+   "name": "Logo from the map: the entry screen again with the turning globe (12 frames in 2 s, WebGL ready)",
+   "status": "PASS",
+   "detail": "{\"h0\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":28,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"h1\":{\"on\":true,\"ready\":true,\"still\":false,\"raf\":40,\"gls\":1,\"lost\":[false],\"canvas\":1672,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}}"
+  },
+  {
+   "name": "Entering again after the logo: frames stop (0), context let go, no failure, no still picture",
+   "status": "PASS",
+   "detail": "{\"s\":{\"on\":false,\"ready\":true,\"still\":false,\"raf\":44,\"gls\":1,\"lost\":[true],\"canvas\":0,\"marks\":[\"bbvm-globe-gl-ready\",\"bbvm-globe-drawn\"],\"view\":\"explore\"},\"still\":[]}"
+  },
+  {
+   "name": "Globe transfer per screen recorded (textures only, the still picture not fetched)",
+   "status": "PASS",
+   "detail": "{\"desktop1x\":[{\"file\":\"globe-v3/detail-2048.webp\",\"bytes\":306968},{\"file\":\"globe-v3/world-2048.webp\",\"bytes\":113418}],\"desktop2x\":[{\"file\":\"globe-v3/detail-2048.webp\",\"bytes\":306968},{\"file\":\"globe-v3/world-2048.webp\",\"bytes\":113418}],\"phone2x\":[{\"file\":\"globe-v3/detail-1024.webp\",\"bytes\":114608},{\"file\":\"globe-v3/world-1024.webp\",\"bytes\":32296}]}"
+  },
+  {
+   "name": "Shared link (#s=274849&v=compare): no entry screen, no WebGL context, neither globe-v3 nor globe-v2 fetched",
+   "status": "PASS",
+   "detail": "{\"s\":{\"on\":false,\"ready\":false,\"still\":false,\"raf\":0,\"gls\":0,\"lost\":[],\"canvas\":300,\"marks\":[],\"view\":\"compare\"},\"req\":[\"http://127.0.0.1:8765/vendor/pretendard/pretendard.css\",\"http://127.0.0.1:8765/vendor/leaflet.css\",\"http://127.0.0.1:8765/vendor/leaflet.js\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.91.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.90.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.89.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.84.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.88.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.87.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.82.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.79.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.75.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.86.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.85.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.80.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.83.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.76.woff2\",\"http://127.0.0.1:8765/vendor/pretendard/woff2/PretendardVariable.subset.7.w"
+  },
+  {
+   "name": "Software renderer (WebGL on the CPU): the still picture (globe-v2), no textures, no frames once shown (0)",
+   "status": "PASS",
+   "detail": "[\"http://127.0.0.1:8765/vendor/globe-v2/globe-1600.webp\"]"
+  },
+  {
+   "name": "No uncaught page errors or console.error (WebGL run)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "name": "1672x941 without WebGL: the still picture (globe-v2), no textures, no frames once shown (0)",
+   "status": "PASS",
+   "detail": "[\"http://127.0.0.1:8765/vendor/globe-v2/globe-1600.webp\"]"
+  },
+  {
+   "name": "390x844 without WebGL: the still picture (globe-v2), no textures, no frames once shown (0)",
+   "status": "PASS",
+   "detail": "[\"http://127.0.0.1:8765/vendor/globe-v2/globe-900.webp\"]"
+  },
+  {
+   "name": "Without WebGL: 바다 탐색하기 opens the map",
+   "status": "PASS",
+   "detail": "{\"on\":false,\"ready\":true,\"still\":false,\"raf\":4,\"gls\":0,\"lost\":[],\"canvas\":0,\"marks\":[\"bbvm-globe-decoded\",\"bbvm-globe-drawn\"],\"view\":\"explore\"}"
+  },
+  {
+   "name": "No uncaught page errors or console.error (no WebGL run)",
+   "status": "PASS",
+   "detail": ""
+  }
+ ],
+ "report": {
+  "1672x941": {
+   "frame": {
+    "cx": 1254,
+    "cy": 681.8486,
+    "R": 732.6626
+   },
+   "dot0": {
+    "x": 1119.2916666666667,
+    "y": 428.5,
+    "n": 48
+   },
+   "entry": [
+    0.08903640131005003,
+    0.03155802710015138,
+    0.004020619978195314,
+    0.0008770891508364873,
+    0.005162863949514197,
+    0.010873131388187397
+   ],
+   "diff2s": [
+    7.3033285901621054,
+    7.979205379314194
+   ]
+  },
+  "1440x900": {
+   "frame": {
+    "cx": 1080,
+    "cy": 652.14,
+    "R": 700.74
+   },
+   "dot0": {
+    "x": 1012,
+    "y": 409.9130434782609,
+    "n": 46
+   },
+   "entry": [
+    0.09876410338685332,
+    0.028152230420063203,
+    0.002131244745360018,
+    0.0006970649988294198,
+    0.00441152016734997,
+    0.012470227122086331
+   ],
+   "diff2s": [
+    6.5401064855334425,
+    8.25328367390946
+   ]
+  },
+  "820x1180": {
+   "frame": {
+    "cx": 502.40314674295155,
+    "cy": 959.5894589621464,
+    "R": 492
+   },
+   "dot0": {
+    "x": 411.8863636363636,
+    "y": 789.2045454545455,
+    "n": 44
+   },
+   "entry": [
+    0.13079553837354155,
+    0.048077110561453765,
+    0.006948100915839346,
+    0.0009892776218167931,
+    0.0036373203596809676,
+    0.006924055852364218
+   ],
+   "diff2s": [
+    1.5080457134120706,
+    1.651705516514598
+   ]
+  },
+  "390x844": {
+   "frame": {
+    "cx": 238.94783808506233,
+    "cy": 593.1218158478501,
+    "R": 234
+   },
+   "dot0": {
+    "x": 391.61139896373055,
+    "y": 1024.176165803109,
+    "n": 193
+   },
+   "entry": [
+    0.13360456564496548,
+    0.06013338821135806,
+    0.019086939505290244,
+    0.001567689650591156,
+    0.0007697858526043521,
+    0.004433029986054666
+   ],
+   "diff2s": [
+    0.5793461562523895,
+    1.3307706032147666
+   ]
+  },
+  "sway": {
+   "samples": 34,
+   "settled": 30,
+   "maxShift": 0.056317419837138456,
+   "west": [
+    -0.05568883186861976,
+    0.008390815349006084
+   ],
+   "east": [
+    0.024706467276679432,
+    -0.015060039351848714
+   ],
+   "frameJsMs": {
+    "n": 636,
+    "mean": 1.13,
+    "p95": 4.7,
+    "max": 11.3
+   },
+   "track": [
+    [
+     2108,
+     -12.31,
+     -0.83
+    ],
+    [
+     3782,
+     -2.24,
+     -0.21
+    ],
+    [
+     5192,
+     -0.18,
+     -0.12
+    ],
+    [
+     7163,
+     -0.55,
+     0.02
+    ],
+    [
+     8726,
+     -1.81,
+     0.42
+    ],
+    [
+     10352,
+     -2.58,
+     0.67
+    ],
+    [
+     11813,
+     -3.08,
+     0.82
+    ],
+    [
+     13813,
+     -3.62,
+     0.97
+    ],
+    [
+     15478,
+     -4.1,
+     1.07
+    ],
+    [
+     17008,
+     -4.51,
+     1.15
+    ],
+    [
+     18654,
+     -4.89,
+     1.19
+    ],
+    [
+     20023,
+     -5.15,
+     1.19
+    ],
+    [
+     21682,
+     -5.33,
+     1.13
+    ],
+    [
+     23375,
+     -5.49,
+     1.08
+    ],
+    [
+     25106,
+     -5.53,
+     0.96
+    ],
+    [
+     26817,
+     -5.57,
+     0.84
+    ],
+    [
+     28462,
+     -5.53,
+     0.67
+    ],
+    [
+     29966,
+     -5.41,
+     0.46
+    ],
+    [
+     31661,
+     -5.23,
+     0.31
+    ],
+    [
+     33180,
+     -5.02,
+     0.09
+    ],
+    [
+     35160,
+     -4.66,
+     -0.15
+    ],
+    [
+     36655,
+     -4.36,
+     -0.35
+    ],
+    [
+     38336,
+     -3.92,
+     -0.56
+    ],
+    [
+     39952,
+     -3.48,
+     -0.79
+    ],
+    [
+     41562,
+     -2.99,
+     -0.95
+    ],
+    [
+     43479,
+     -2.38,
+     -1.15
+    ],
+    [
+     45082,
+     -1.76,
+     -1.33
+    ],
+    [
+     46592,
+     -1.17,
+     -1.45
+    ],
+    [
+     48315,
+     -0.51,
+     -1.54
+    ],
+    [
+     50282,
+     0.24,
+     -1.63
+    ],
+    [
+     51789,
+     0.83,
+     -1.63
+    ],
+    [
+     53276,
+     1.39,
+     -1.63
+    ],
+    [
+     54733,
+     1.91,
+     -1.58
+    ],
+    [
+     56751,
+     2.47,
+     -1.51
+    ]
+   ]
+  },
+  "drag": {
+   "p0": {
+    "x": 1009.3191489361702,
+    "y": 423.0425531914894,
+    "n": 47
+   },
+   "dragged": {
+    "x": 1430,
+    "y": 427,
+    "n": 45
+   },
+   "limit": {
+    "x": 1530.723404255319,
+    "y": 206.6595744680851,
+    "n": 47
+   },
+   "glide": {
+    "x": 1097.2173913043478,
+    "y": 436.0869565217391,
+    "n": 46
+   },
+   "back": {
+    "x": 1083.6458333333333,
+    "y": 440.3541666666667,
+    "n": 48
+   },
+   "frameJsMs": {
+    "n": 26,
+    "mean": 1.66,
+    "p95": 4.9,
+    "max": 7.1
+   }
+  },
+  "transfer": {
+   "desktop1x": [
+    {
+     "file": "globe-v3/detail-2048.webp",
+     "bytes": 306968
+    },
+    {
+     "file": "globe-v3/world-2048.webp",
+     "bytes": 113418
+    }
+   ],
+   "desktop2x": [
+    {
+     "file": "globe-v3/detail-2048.webp",
+     "bytes": 306968
+    },
+    {
+     "file": "globe-v3/world-2048.webp",
+     "bytes": 113418
+    }
+   ],
+   "phone2x": [
+    {
+     "file": "globe-v3/detail-1024.webp",
+     "bytes": 114608
+    },
+    {
+     "file": "globe-v3/world-1024.webp",
+     "bytes": 32296
+    }
+   ]
+  }
+ }
+}
