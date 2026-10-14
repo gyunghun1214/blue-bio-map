@@ -31,7 +31,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.12.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.14.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1143,6 +1143,8 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
         if note:  # 4.11 (prereg-4.11-2026-10-13 2): a short peptide is not evidence about one species; the value stays
             items = [{**i, "caveat": " ".join(filter(None, [i.get("caveat"), note["caveat"]]))}
                      if len(i.get("peptide_sequence") or "") and len(i["peptide_sequence"]) <= note["max_residues"] else i for i in items]
+        if config.get("mbpi_evidence_profile"):  # 4.14: the reviewed material of every scored item, display only
+            items = [{**i, "material_class": material_class(i, evidence["mbpi_material"])} for i in items]
         adjusted = [i["adjusted"] for i in items]
         primary = max(adjusted)
         out[aphia] = (round1(primary), items,
@@ -1150,6 +1152,17 @@ def bio_scores(evidence: dict, config: dict, candidates_by_id: dict[int, dict]) 
                        "mean_compound_sensitivity": round1(sum(adjusted) / len(adjusted)),
                        "range_from_aggregation": [round1(min(adjusted)), round1(primary)]})
     return out, chembl
+
+
+def material_class(item: dict, table: dict) -> str:
+    """4.14 (prereg-4.14-2026-10-14 8): what was tested, from the reviewed table; an item missing from it stops the build."""
+    kind = item.get("stratum_kind", "small_molecule")
+    if kind in table["by_stratum_kind"]:
+        return table["by_stratum_kind"][kind]
+    classes = {table["records"].get(r) for r in item.get("record_ids", [])}
+    require(len(classes) == 1 and None not in classes and classes <= set(table["classes"]),
+            f"{item.get('record_ids')}: material class missing or mixed (review the material table)")
+    return classes.pop()
 
 
 def conservation_axis(candidate: dict, evidence: dict, config: dict) -> tuple:
@@ -1431,6 +1444,75 @@ def stock_decline(aphia: int, data: dict, rule: dict) -> dict:
     return rec
 
 
+def scope_reference(substitute: dict, scope: dict) -> dict:
+    """4.14 (prereg-4.14-2026-10-14 3): another country's or a sub-national list, or a Rapid LC check, describes another
+    population or is not an assessment, so it is kept whole as a reference item without an MCUI number."""
+    if substitute.get("value") is None or substitute.get("basis") not in scope["reference_bases"]:
+        return substitute
+    out = {k: v for k, v in substitute.items() if k not in ("pilot_mapping", "backtest")}
+    return {**out, "value": None, "use": "reference_only", "reference_note": scope["reference_notes"][substitute["basis"]],
+            "prereg": scope["prereg"]}
+
+
+def conservation_status(aphia: int, trace: dict | None, national: dict | None, fact: dict | None, substitute: dict | None,
+                        basis: str | None, scope: dict, lookup_failed: bool) -> dict:
+    """4.14 (prereg-4.14-2026-10-14 2): every official assessment found, kept apart by scope, and one state that never reads a
+    zero-result search as NE or a missing assessment as low risk."""
+    found = []
+    t = trace or {}
+    if t.get("iucn_state") in ("assessed", "data_deficient"):
+        found.append({"scope": "global", "system": "IUCN Red List", "list": "IUCN Red List of Threatened Species",
+                      "year": t.get("assessment_year"), "category_as_published": t.get("category") or "DD",
+                      "category": t.get("category") or "DD", "source_id": t.get("source_id"), "used_for_mcui": basis == "iucn"})
+    korea = national or fact
+    if korea:
+        found.append({"scope": "korea", "system": "IUCN Red List Categories and Criteria (regional guidelines)",
+                      "list": scope["korea_list"], "year": scope["korea_list_year"],
+                      "category_as_published": korea.get("category"), "category": korea.get("category"),
+                      "name_as_published": korea.get("name_as_published"), "source_id": korea.get("source_id"),
+                      "used_for_mcui": basis == "national"})
+    sub = substitute or {}
+    years = scope["reference_assessment_years"]
+    if sub.get("basis") == "range_state":
+        r = sub["record"]
+        found.append({"scope": "other_country", "country": r["country"], "country_ko": r.get("country_ko"), "system": r.get("assessment_basis"),
+                      "list": r["list"], "year": years[r["source_id"]], "category_as_published": r["category_as_published"],
+                      "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
+                      "used_for_mcui": False, "why_not": scope["why_not"]["range_state"]})
+    for r in (sub.get("sub_national_reference") or {}).get("regions", []) + (sub.get("record") or {}).get("regions", []):
+        found.append({"scope": "sub_national", "country": r["country"], "region": r["region"], "region_ko": r.get("region_ko"),
+                      "system": r.get("list"), "list": r["list"], "year": r["edition"], "category_as_published": r["category_as_published"],
+                      "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
+                      "used_for_mcui": False, "why_not": scope["why_not"]["sub_national"]})
+    scored = [a for a in found if a["used_for_mcui"]]
+    require(len(scored) <= 1 and all(a["scope"] in ("global", "korea") for a in scored), f"{aphia}: MCUI from a non-scoped assessment")
+    preliminary = sub.get("basis") == "preliminary" or (sub.get("basis") is None and (sub.get("record") or {}).get("method_source_id") is not None)
+    if scored:
+        state = "official_scored"
+    elif lookup_failed:
+        state = "lookup_failed"
+    elif any(a["category"] == "NE" for a in found if a["scope"] in ("global", "korea")):
+        state = "official_ne"
+    elif any(a["category"] == "DD" for a in found if a["scope"] in ("global", "korea")):
+        state = "official_dd"
+    elif any(a["scope"] in ("other_country", "sub_national") for a in found):
+        state = "other_region_only"
+    elif preliminary:
+        state = "self_preliminary_only"
+    else:
+        state = "not_found"
+    out = {"state": state, "label": scope["state_labels"][state], "assessments": found,
+           "mapping_note": scope["mapping_note"]}
+    if preliminary:
+        out["self_preliminary"] = {"result": sub.get("result"), "label": scope["self_preliminary_label"],
+                                   "method_source_id": (sub.get("record") or {}).get("method_source_id"),
+                                   "note": scope["reference_notes"]["preliminary"]}
+    if scored:
+        out["scope"] = scored[0]["scope"]
+        out["category"] = scored[0]["category"]
+    return out
+
+
 def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
     """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods. Reporting rate = species records /
     records of the species' WoRMS class (target-group effort) in the same 1-degree cells and period; only cells with
@@ -1587,10 +1669,12 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 mcui, conservation_reason, mcui_basis = national_value, None, "national"
         trend_rule = config["conservation"].get("trend")
         trend = occurrence_trend(aphia, evidence["obis_trend"], trend_rule) if trend_rule else None
-        substitute = None
+        substitute, scope = None, config.get("mcui_scope")
         subs = config.get("mcui_substitutes")
         if subs and mcui is None and conservation_reason in subs["applies_when_reason"]:  # after 3.14: range state, then Rapid LC
             substitute = mcui_substitute(aphia, evidence, config, trend)
+            if substitute and scope:  # 4.14 (prereg-4.14-2026-10-14 3): only IUCN global or the Korean national list give the MCUI
+                substitute = scope_reference(substitute, scope)
             if substitute and substitute["value"] is not None:
                 mcui, conservation_reason, mcui_basis = substitute["value"], None, substitute["basis"]
         if trend:  # verified-pilot-3.4: an auxiliary MCUI element; it raises a computed MCUI, never creates or lowers one
@@ -1601,7 +1685,10 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         stock_rule, stock, extinction, driver = config.get("mcui_stock_decline"), None, mcui, None
         if stock_rule:  # 4.12 (prereg-4.12-2026-10-14 3.4): MCUI = max(extinction risk, stock decline); the basis stays
             stock = stock_decline(aphia, evidence["stock_decline"], stock_rule)
-            if stock["score"] is not None and (mcui is None or stock["score"] > mcui):
+            # 4.14 (prereg-4.14-2026-10-14 4): with no extinction-risk MCUI the score is a lower bound, used only when it
+            # already sits at or above the matrix MCUI threshold, so an unknown risk can never be read as low
+            bound_ok = not scope or extinction is not None or (stock["score"] or 0) >= config["matrix"]["mcui_threshold"]
+            if stock["score"] is not None and (mcui is None or stock["score"] > mcui) and bound_ok:
                 mcui, driver = stock["score"], "stock_decline"
                 if extinction is None:
                     conservation_reason = None
@@ -1619,7 +1706,14 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
         both = mfpi_value is not None and mbpi is not None
         # 3.27 (team-lead decision 2026-10-03): a single-paper top item still gives a BBVI score, published with its label
         labelled = config["bbvi"].get("single_source_policy") == "score_with_label"
-        bbvi = round1(w * mfpi_value + (1 - w) * mbpi) if both and (not single_source or labelled) else None
+        # 4.14 (prereg-4.14-2026-10-14 6): BBVI mixes the unrounded MFPI and MBPI and is rounded once, for display
+        raw_inputs = bool(config["bbvi"].get("unrounded_inputs"))
+        if raw_inputs and mfpi_value is not None:
+            require(round1(food_trace["unrounded"]) == mfpi_value, f"{aphia}: MFPI differs from its unrounded value")
+        mfpi_raw = food_trace["unrounded"] if raw_inputs and mfpi_value is not None else mfpi_value
+        mbpi_raw = best["adjusted"] if raw_inputs and best is not None and not mbpi_floor else mbpi
+        bbvi_raw = w * mfpi_raw + (1 - w) * mbpi_raw if both else None
+        bbvi = round1(bbvi_raw) if both and (not single_source or labelled) else None
         partial_bio = [r for key in ("bioactivity", "peptide_bioactivity") for r in evidence.get(key, [])
                        if r.get("origin_aphia_id") == aphia and r.get("status") != "approved_for_score"]
         links = (chembl or {"species": {}})["species"].get(aphia)
@@ -1656,7 +1750,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                                 "ratio": round(sum(c_steps) / 3, 2), **({"basis": "national"} if national_steps else {}),
                                 **({"basis": mcui_basis} if mcui_basis == "range_state" or (mcui_basis == "sub_national" and subnational_steps) else {})}}
         sufficiency["mean_ratio"] = round(sum(sufficiency[k]["ratio"] for k in ("MFPI", "MBPI", "MCUI")) / 3, 2)
-        sensitivity = {"food_weights": {str(x): round1(x * mfpi_value + (1 - x) * mbpi)
+        sensitivity = {"food_weights": {str(x): round1(x * mfpi_raw + (1 - x) * mbpi_raw)
                                         for x in config["bbvi"]["sensitivity_food_weights"]} if bbvi is not None else {},
                        **bio_sensitivity}
         source_ids = {food_trace.get("source_id")} | {x["source_id"] for x in food_trace.get("yield_sensitivity", [])}
@@ -1735,6 +1829,17 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             row["mbpi_breadth"] = {"item_count": len(ranked), "median": round1(median(ranked)) if ranked else None,
                                    "top2_mean": round1(sum(ranked[:2]) / len(ranked[:2])) if ranked else None,
                                    "exploratory": True}
+            profile = config.get("mbpi_evidence_profile")
+            if profile:  # 4.14 (prereg-4.14-2026-10-14 8): display only; one paper in two databases is one paper
+                dois = {d.lower() for i in bio_trace for d in i["original_paper_dois"]}
+                dois |= {r["original_paper_doi"].lower() for i in bio_trace for r in i.get("potency_replications", []) if r.get("used")}
+                counts = {}
+                for i in bio_trace:
+                    counts[i["material_class"]] = counts.get(i["material_class"], 0) + 1
+                row["mbpi_breadth"].update({"independent_paper_count": len(dois), "max": round1(ranked[0]) if ranked else None,
+                                            "mean": round1(sum(ranked) / len(ranked)) if ranked else None,
+                                            "material_counts": dict(sorted(counts.items())),
+                                            "floor_zero": bool(mbpi_floor), "measured_zero_items": sum(1 for x in ranked if x == 0)})
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
             row["mbpi_stratum"] = "floor" if mbpi_floor else None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
@@ -1751,14 +1856,27 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             row.update(mcui_extinction_risk=extinction, mcui_driver=driver, stock_decline=stock)
             if stock["kosis_item"]:
                 row["source_ids"] = sorted({*row["source_ids"], stock["source_id"]})
+        if raw_inputs:  # 4.14: the values every calculation and type uses; the screen rounds only to show them
+            row["scores_unrounded"] = {"MFPI": mfpi_raw, "MBPI": mbpi_raw, "BBVI": bbvi_raw if bbvi is not None else None}
+        if scope:  # 4.14: one conservation state, every official assessment by scope, and no number for a reference item
+            fact = next((r for r in evidence.get("national_red_list", []) if r.get("aphia_id") == aphia and r.get("reviewed") is True), None)
+            status_row = conservation_status(aphia, conservation_trace, national, fact, substitute, mcui_basis, scope,
+                                             conservation_reason == "assessment_lookup_failed")
+            if driver == "stock_decline" and extinction is None:
+                status_row["mcui_role"] = "stock_decline_lower_bound"
+                status_row["mcui_role_label"] = scope["stock_lower_bound_label"]
+            elif mcui is None and stock and stock["score"] is not None:
+                status_row["mcui_role"] = "stock_decline_reference"
+                status_row["mcui_role_label"] = scope["stock_reference_label"]
+            row["conservation_status"] = status_row
         if config.get("reference_combination"):  # verified-pilot-2.1: beside the scores, never in scores.BBVI, the matrix or rankings
             rc = config["reference_combination"]
             row["reference_combination"] = {
                 "label": rc["label"], "formula": rc["formula"], "inputs": {"MFPI": mfpi_value, "MBPI": mbpi},
                 "mfpi_cohort": food_trace["cohort_id"], "mbpi_stratum": best["stratum_id"],
                 "mbpi_original_paper_dois": best["original_paper_dois"], "food_weight": w,
-                "value": round1(w * mfpi_value + (1 - w) * mbpi),
-                "sensitivity": {str(x): round1(x * mfpi_value + (1 - x) * mbpi) for x in config["bbvi"]["sensitivity_food_weights"]},
+                "value": round1(w * mfpi_raw + (1 - w) * mbpi_raw),
+                "sensitivity": {str(x): round1(x * mfpi_raw + (1 - x) * mbpi_raw) for x in config["bbvi"]["sensitivity_food_weights"]},
                 "limits": rc["limits"], "used_for_score": False} if both and single_source and bbvi is None else None
         if config.get("peptide_raw_values"):  # shown as raw value and source; the peptide stratum is absent, so no score
             require(not config.get("peptide_bioactivity"), "raw-value display and the peptide stratum are exclusive")
@@ -1800,7 +1918,10 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                 why = ["low_information_sufficiency"] if s["priority_survey"] else []
                 # not 'no MCUI': a failed lookup or a not-current assessment is a data problem, not a missing assessment
                 gap = {"not_in_red_list": "no_conservation_assessment", "category_not_numeric": "conservation_data_deficient"}
-                why += [gap[s["withheld_reasons"]["MCUI"]]] if s["scores"]["MCUI"] is None and s["withheld_reasons"]["MCUI"] in gap else []
+                reason = gap.get(s["withheld_reasons"]["MCUI"]) if s["scores"]["MCUI"] is None else None
+                if reason and (s.get("conservation_status") or {}).get("state") == "other_region_only":
+                    reason = "korea_status_unconfirmed"  # 4.14: another region's list exists, so 'no assessment' would be wrong
+                why += [reason] if reason else []
                 s["priority_survey"], s["priority_survey_reasons"] = bool(why), why
             if s["unexplored_candidate"]:
                 s["source_ids"] = sorted({*s["source_ids"], rule["source"]["id"]})
@@ -1837,6 +1958,7 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             "comparison_cohorts": cohorts,
             "cohort_warning": "Small fixed cohorts give unstable ranks; minimum sizes are software thresholds, and sensitivity is not a confidence interval.",
             "posthoc": config["posthoc"], "method": config, "sources": sources, "species": output,
+            **({"provenance": config["provenance"]} if config.get("provenance") else {}),
             "candidate_species": research,
             **({"chembl_common_taxon_limit": chembl["common_taxon_limit"]} if chembl else {}),
             **({k: evidence[k] for k in ("national_red_list_not_assigned", "national_red_list_search") if k in evidence}
@@ -2160,6 +2282,11 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         evidence = {**evidence, "stock_decline": read_stock_decline(stock),
                     "sources": {**evidence["sources"], src["id"]: {k: v for k, v in src.items() if k != "id"}},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), stock["retrieved_on"])}
+    profile = cfg.get("mbpi_evidence_profile")
+    if profile:  # 4.14: reviewed material classes of the scored MBPI items
+        table = read(ROOT / profile["material_file"])
+        require(table.get("schema_version") == 1 and table.get("classes") and table.get("by_stratum_kind") is not None, "material table")
+        evidence = {**evidence, "mbpi_material": table}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
