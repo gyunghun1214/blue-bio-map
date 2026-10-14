@@ -8,7 +8,11 @@ import unittest
 from pathlib import Path
 
 V2 = Path(__file__).resolve().parents[1] / 'dist' / 'vendor' / 'globe-v2'
+V3 = V2.parent / 'globe-v3'
 LIMITS = {900: 250_000, 1600: 600_000, 2400: 1_100_000}  # phone, desktop 1x, desktop 2x
+# the turning globe's textures (scripts/bake_globe.py LIMITS3): each file, and each set as the screen fetches it
+LIMITS3 = {'full': 700_000, 'small': 260_000, 'detail-2048.webp': 480_000, 'world-2048.webp': 260_000,
+           'detail-1024.webp': 160_000, 'world-1024.webp': 110_000}
 
 
 def webp_size(path):
@@ -71,6 +75,67 @@ class GlobeBake(unittest.TestCase):
                   'insignia', 'largest light over the sea = 0'):
             self.assertIn(s, t)
         self.assertEqual(t.count(' bytes  sha256 '), 3, 'a sha256 for each NASA source')
+
+
+class TurningGlobeTextures(unittest.TestCase):
+    """dist/vendor/globe-v3 (bake_globe.py --equirect): files as SOURCE.txt lists them, sizes and boxes as textures.json
+    says, size limits per file and per set, the same NASA sources as globe-v2, no lights over the sea."""
+
+    def setUp(self):
+        self.tex = json.loads((V3 / 'textures.json').read_text(encoding='utf8'))
+        self.src = (V3 / 'SOURCE.txt').read_text(encoding='utf8')
+        self.listed = {}
+        for line in self.src.splitlines():
+            p = line.split()
+            if len(p) == 6 and p[0].endswith('.webp'):
+                self.listed[p[0]] = (p[1], int(p[2]), tuple(map(int, p[3].split('x'))), p[4], p[5])
+
+    def test_files_match_source_txt_and_textures_json(self):
+        files = [t for s in self.tex['sets'].values() for t in s.values()]
+        self.assertEqual(sorted(self.listed), sorted(t['file'] for t in files))
+        for t in files:
+            f = V3 / t['file']
+            sha, size, wh, lon, lat = self.listed[t['file']]
+            self.assertEqual(hashlib.sha256(f.read_bytes()).hexdigest(), sha, f.name)
+            self.assertEqual(f.stat().st_size, size, f.name)
+            self.assertEqual(webp_size(f), tuple(t['size']), f.name)
+            self.assertEqual(wh, tuple(t['size']), f.name)
+            self.assertEqual((lon, lat), ('{}..{}'.format(*t['lon']), '{}..{}'.format(*t['lat'])), f.name)
+
+    def test_size_limits(self):
+        for name, s in self.tex['sets'].items():
+            total = 0
+            for t in s.values():
+                n = (V3 / t['file']).stat().st_size
+                self.assertLessEqual(n, LIMITS3[t['file']], t['file'])
+                total += n
+            self.assertLessEqual(total, LIMITS3[name], f'{name} set: {total} bytes')
+
+    def test_boxes(self):
+        for s in self.tex['sets'].values():
+            d, w = s['detail'], s['world']
+            self.assertEqual((w['lon'], w['lat']), ([-180, 180], [-90, 90]), 'the world texture is the whole globe')
+            self.assertTrue(d['lon'][0] <= 120 and d['lon'][1] >= 150 and d['lat'][0] <= 20 and d['lat'][1] >= 50, 'the detail tile holds Korea and its seas with room')
+            # square-ish pixels on the ground at Korea's latitude, the same density in both sets' ratio
+            ppd_lat, ppd_lon = d['size'][1] / (d['lat'][1] - d['lat'][0]), d['size'][0] / (d['lon'][1] - d['lon'][0])
+            self.assertLess(abs(ppd_lon / ppd_lat - 1), .2, (ppd_lon, ppd_lat))
+        full, small = self.tex['sets']['full']['detail'], self.tex['sets']['small']['detail']
+        self.assertEqual((full['lon'], full['lat']), (small['lon'], small['lat']))
+        self.assertGreaterEqual(full['size'][1] / (full['lat'][1] - full['lat'][0]), 22, 'the full detail tile: at least 22 px a degree (the 2400 picture had 28 at Korea)')
+
+    def test_sources_and_recipe(self):
+        v2 = (V2 / 'SOURCE.txt').read_text(encoding='utf8')
+        shas = [l.split('sha256 ')[1].strip() for l in v2.splitlines() if ' bytes  sha256 ' in l]
+        self.assertEqual(len(shas), 3)
+        for h in shas:
+            self.assertIn(h, self.src, 'the same NASA sources as globe-v2')
+        for s in ('https://www.nasa.gov/nasa-brand-center/images-and-media/', 'insignia', 'largest light over the sea = 0;',
+                  'Left to the shader', 'PARAMS: ', 'PARAMS3: '):
+            self.assertIn(s, self.src)
+        p2 = json.loads(next(l for l in v2.splitlines() if l.startswith('PARAMS: '))[8:])
+        p3 = json.loads(next(l for l in self.src.splitlines() if l.startswith('PARAMS: '))[8:])
+        p2.pop('quality'), p3.pop('quality')
+        self.assertEqual(p2, p3, 'the textures use globe-v2\'s recipe unchanged')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,70 @@
+{
+ "about": "Textures of the entry-screen turning globe (dist/intro.js TEXTURES keeps the same numbers): longitude-latitude boxes, row 0 at the north edge. The detail tile fades into the world over feather degrees inside its edges. full for most screens, small for phones and slow connections.",
+ "feather": 3.0,
+ "sets": {
+  "full": {
+   "detail": {
+    "file": "detail-2048.webp",
+    "lon": [
+     95,
+     180
+    ],
+    "lat": [
+     -5,
+     62
+    ],
+    "size": [
+     2048,
+     1608
+    ]
+   },
+   "world": {
+    "file": "world-2048.webp",
+    "lon": [
+     -180,
+     180
+    ],
+    "lat": [
+     -90,
+     90
+    ],
+    "size": [
+     2048,
+     1024
+    ]
+   }
+  },
+  "small": {
+   "detail": {
+    "file": "detail-1024.webp",
+    "lon": [
+     95,
+     180
+    ],
+    "lat": [
+     -5,
+     62
+    ],
+    "size": [
+     1024,
+     804
+    ]
+   },
+   "world": {
+    "file": "world-1024.webp",
+    "lon": [
+     -180,
+     180
+    ],
+    "lat": [
+     -90,
+     90
+    ],
+    "size": [
+     1024,
+     512
+    ]
+   }
+  }
+ }
+}

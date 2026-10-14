@@ -1,0 +1,16 @@
+{
+ "results": [
+  {
+   "name": "Before (main): once shown, the globe is not redrawn for 10 s (0 intro.js frames) and three captures 5 s apart are the same (mean diff 0.02, 0.00)",
+   "status": "PASS",
+   "detail": "{\"rafIn10s\":0,\"diff0to5\":0.021603749895371224,\"diff5to10\":0}"
+  }
+ ],
+ "report": {
+  "before": {
+   "rafIn10s": 0,
+   "diff0to5": 0.021603749895371224,
+   "diff5to10": 0
+  }
+ }
+}

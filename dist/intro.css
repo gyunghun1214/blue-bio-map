@@ -42,6 +42,10 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
   background:linear-gradient(180deg,rgba(4,16,27,.78),rgba(4,16,27,.5) 7%,rgba(4,16,27,0) 14%),linear-gradient(0deg,rgba(4,16,27,.88),rgba(4,16,27,0) 24%),
     linear-gradient(90deg,rgba(4,16,27,.96) 18%,rgba(4,16,27,.55) 30%,rgba(4,16,27,0) 44%)}
 .gate.is-ready .gate-hero{opacity:1}
+/* the turning globe (intro.js): dragged with a mouse, or sideways with a finger (an upward swipe stays the page's) */
+.gate-hero{touch-action:pan-y pinch-zoom}
+.gate.is-grab .gate-hero{cursor:grab}
+.gate.is-dragging,.gate.is-dragging *{cursor:grabbing!important;user-select:none;-webkit-user-select:none}
 .gate-bar{display:flex;align-items:center;gap:clamp(16px,2.3vw,38px);min-height:clamp(56px,8vh,76px);padding:0 var(--g-pad);border-bottom:1px solid var(--g-line)}
 .gate-brand{margin:0 auto 0 0;display:flex;align-items:center;gap:clamp(10px,1vw,16px);font-size:clamp(15px,1.15vw,19px);font-weight:700;letter-spacing:-.01em;white-space:nowrap}
 .gate-brand svg{width:clamp(28px,2.2vw,36px);height:auto}

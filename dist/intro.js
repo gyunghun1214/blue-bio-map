@@ -101,7 +101,8 @@ const cellOf=p=>Math.floor(p[0])*200+Math.floor(p[1])+100;
 // COUNTRIES_CUT (scripts/prepare_basemap.py).
 const CAMERA={lon0:136.823,lat0:20.345,P:2.7122}, FRAME={cx:.75,cy:.7246,R:.7786};
 const KOREA=[127.5,36], ANCHOR=[128,34], STUDY=[[124,33],[132,38.7]], COUNTRIES_CUT={lon:[105,150],lat:[20,53]};
-const project=(lon,lat,toRim)=>perspective(lon,lat,CAMERA.lon0,CAMERA.lat0,CAMERA.P,toRim);
+// cam: the camera of this frame (the turning globe below); the start pose by default
+const project=(lon,lat,toRim,cam=CAMERA)=>perspective(lon,lat,cam.lon0,cam.lat0,cam.P,toRim);
 function globeFrame(w,h,band,copy=[]){
   if(band){const R=Math.min(w*.6,h*.5),k=project(...KOREA);
     return {cx:w/2-k.x*R,cy:(band.top+band.bottom)/2+k.y*R,R};}
@@ -134,10 +135,99 @@ const nearKorea=p=>p[0]>=NEAR[0][0]&&p[0]<=NEAR[1][0]&&p[1]>=NEAR[0][1]&&p[1]<=N
 // when it does not fit. Top-left and line, in px.
 function cardPlace(dot,korea,card,view,s){
   const m=12;let x=Math.min(korea.x+207*s,view.w-m-card.w),y=korea.y+60*s;
-  if(x>=dot.x+60*s&&y+card.h<=view.bottom-m){const ly=y+27*s,bend=Math.min(x-12*s,Math.max(dot.x+12*s,dot.x+(ly-dot.y)*1.26));
-    return {x,y,line:[[dot.x,dot.y],[bend,ly],[x,ly]]};}
+  if(x>=dot.x+60*s&&y+card.h<=view.bottom-m)return {x,y,line:leadLine(dot,{x,y,w:card.w,h:card.h},s)};
   x=Math.min(Math.max(m,dot.x-card.w*.3),view.w-m-card.w);y=dot.y+64*s;
-  return {x,y,line:[[dot.x,dot.y],[Math.min(Math.max(dot.x,x+16),x+card.w-16),y]]};
+  return {x,y,under:true,line:leadLine(dot,{x,y,w:card.w,h:card.h,under:true},s)};
+}
+// The leader line from the card's point (wherever the turning globe has carried it) to the card, which stays put: the
+// bent line while the point is left of the card, else straight to the card's nearer edge (top or bottom).
+function leadLine(dot,card,s){
+  if(!card.under&&dot.x<=card.x-24*s){const ly=card.y+27*s,bend=Math.min(card.x-12*s,Math.max(dot.x+12*s,dot.x+(ly-dot.y)*1.26));
+    return [[dot.x,dot.y],[bend,ly],[card.x,ly]];}
+  return [[dot.x,dot.y],[Math.min(Math.max(dot.x,card.x+16),card.x+card.w-16),dot.y>card.y+card.h/2?card.y+card.h:card.y]];
+}
+
+// The turning globe (2026-10-14). The picture above never turns, so with WebGL the screen draws the globe itself every
+// frame from position-free textures (vendor/globe-v3, scripts/bake_globe.py --equirect; textures.json keeps the same
+// numbers): one shader looks up the place under each pixel with inversePerspective's formula, then adds what belongs to
+// the screen (light from the upper left, the limb, the air band: globe-v2's PARAMS, SHADE below). Without WebGL the
+// still picture stays and nothing turns.
+const TEXTURES={feather:3,sets:{
+  full:{detail:{file:'detail-2048.webp',lon:[95,180],lat:[-5,62],size:[2048,1608]},world:{file:'world-2048.webp',lon:[-180,180],lat:[-90,90],size:[2048,1024]}},
+  small:{detail:{file:'detail-1024.webp',lon:[95,180],lat:[-5,62],size:[1024,804]},world:{file:'world-1024.webp',lon:[-180,180],lat:[-90,90],size:[1024,512]}}}};
+// small for a globe drawn under 1100 device px across (phones) or a connection that saves data or is slow
+function textureSet(R,dpr,conn){
+  const d=2*R*Math.min(2,dpr||1),slow=!!conn&&(!!conn.saveData||/2g|3g/.test(conn.effectiveType||''));
+  return d<=1100||slow?'small':'full';
+}
+const SHADE={light:[-.45,.55,.7],lo:-.35,hi:.8,min:.3,limbR:.86,limbMin:.5,air:[.275,.578,.807],airMax:1,airExp:2.5,airBack:.08,airR0:.82};
+// How it moves, as offsets in degrees from the start pose (CAMERA). Korea (KOREA) never leaves the near side and, while
+// the globe sways, stays within 6% of the screen width of its place (test_intro_ui.mjs checks every screen size):
+// entry: from 18° further east, easing into the start pose over 2.4 s (the globe turns Korea into place);
+// sway: ±4.5° of longitude and ±1.1° of latitude, sine waves of 52 s and 37 s, fading in over 4 s, never a full turn;
+// drag: up to ±30° and ±15° under the pointer, then a short glide and 1.5 s back to the sway; leave: 0.3 s to the pose.
+const MOTION={entry:{lon:18,ms:2400},sway:{lon:4.5,lat:1.1,lonMs:52000,latMs:37000,rampMs:4000},drag:{lon:30,lat:15},glideMs:400,backMs:1500,leaveMs:300,fps:30};
+const easeOut=t=>1-Math.pow(1-Math.min(1,Math.max(0,t)),3);
+const easeInOut=t=>{t=Math.min(1,Math.max(0,t));return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;};
+// t: ms since the turning globe first showed; withEntry: false when it came late (the still pose was already up)
+function ambientAt(t,withEntry){
+  const {entry:e,sway:w}=MOTION,from=withEntry?e.ms*.5:0,ramp=easeInOut((t-from)/w.rampMs),tau=2*Math.PI;
+  return {lon:(withEntry?e.lon*(1-easeOut(t/e.ms)):0)+ramp*w.lon*Math.sin(tau*Math.max(0,t-from)/w.lonMs),lat:ramp*w.lat*Math.sin(tau*Math.max(0,t-from)/w.latMs)};
+}
+const cameraAt=off=>({lon0:CAMERA.lon0+off.lon,lat0:CAMERA.lat0+off.lat,P:CAMERA.P});
+const clampDrag=off=>({lon:Math.min(MOTION.drag.lon,Math.max(-MOTION.drag.lon,off.lon)),lat:Math.min(MOTION.drag.lat,Math.max(-MOTION.drag.lat,off.lat))});
+// px of pointer travel on a globe of radius R as degrees: the surface under the pointer follows it (drag right, the
+// globe turns east-side forward; drag down, the north comes forward)
+function dragDegrees(dx,dy,R,lat0){
+  const k=R/Math.sqrt((CAMERA.P-1)/(CAMERA.P+1))*Math.PI/180;
+  return {lon:-dx/k/Math.max(.2,Math.cos(lat0*Math.PI/180)),lat:dy/k};
+}
+// The shader. lonlat() is inversePerspective written with scalars only, so test_intro_ui.mjs runs the same text in node.
+const GLOBE_VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+const GLOBE_LONLAT=`vec2 lonlat(float x,float y){
+  float r=0.017453292519943295;
+  float f0=u_lat0*r;
+  float s=sqrt((u_P-1.0)/(u_P+1.0));
+  float X=x*s;
+  float Y=y*s;
+  float rho=max(sqrt(X*X+Y*Y),1e-7);
+  float sinc=(u_P-sqrt(max(0.0,1.0-rho*rho*(u_P+1.0)/(u_P-1.0))))/((u_P-1.0)/rho+rho/(u_P-1.0));
+  float cosc=sqrt(max(0.0,1.0-sinc*sinc));
+  float lon=u_lon0+atan(X*sinc,rho*cos(f0)*cosc-Y*sin(f0)*sinc)/r;
+  float lat=asin(clamp(cosc*sin(f0)+Y*sinc*cos(f0)/rho,-1.0,1.0))/r;
+  return vec2(lon,lat);
+}`;
+const glf=v=>{const t=String(+v);return /[.e]/.test(t)?t:t+'.0';},glv=a=>`vec3(${a.map(glf).join(',')})`;
+function globeShader(){
+  const S=SHADE,n=Math.hypot(...S.light),l=S.light.map(v=>v/n),m=Math.hypot(l[0],l[1]);
+  return `precision highp float;
+uniform vec2 u_org;uniform float u_scale,u_h,u_lon0,u_lat0,u_P,u_feather,u_alpha;uniform vec3 u_disc;uniform vec4 u_box;
+uniform sampler2D u_detail,u_world;
+${GLOBE_LONLAT}
+vec3 lin(vec3 c){return mix(c/12.92,pow((c+.055)/1.055,vec3(2.4)),step(.04045,c));}
+vec3 srgb(vec3 c){c=clamp(c,0.,1.);return mix(c*12.92,1.055*pow(c,vec3(1./2.4))-.055,step(.0031308,c));}
+void main(){
+  vec2 p=u_org+vec2(gl_FragCoord.x,u_h-gl_FragCoord.y)/u_scale;
+  float u=(p.x-u_disc.x)/u_disc.z,v=(u_disc.y-p.y)/u_disc.z,r=sqrt(u*u+v*v);
+  float cov=clamp((1.-r)*u_disc.z*u_scale+.5,0.,1.);
+  vec2 q=r>1.?vec2(u,v)/r:vec2(u,v);
+  vec2 ll=lonlat(q.x,q.y);
+  vec3 c=lin(texture2D(u_world,vec2((ll.x+180.)/360.,(90.-ll.y)/180.)).rgb);
+  vec3 d=lin(texture2D(u_detail,vec2((ll.x-u_box.x)/(u_box.y-u_box.x),(u_box.w-ll.y)/(u_box.w-u_box.z))).rgb);
+  float e=min(min(ll.x-u_box.x,u_box.y-ll.x),min(ll.y-u_box.z,u_box.w-ll.y));
+  c=mix(c,d,smoothstep(0.,u_feather,e));
+  float s=sqrt((u_P-1.)/(u_P+1.)),X=q.x*s,Y=q.y*s,rho=max(sqrt(X*X+Y*Y),1e-7);
+  float sinc=(u_P-sqrt(max(0.,1.-rho*rho*(u_P+1.)/(u_P-1.))))/((u_P-1.)/rho+rho/(u_P-1.)),z=sqrt(max(0.,1.-sinc*sinc));
+  vec3 n=vec3(X*sinc/rho,Y*sinc/rho,z);
+  float shade=${glf(S.min)}+${glf(1-S.min)}*smoothstep(${glf(S.lo)},${glf(S.hi)},dot(n,${glv(l)}));
+  shade*=1.-${glf(1-S.limbMin)}*smoothstep(${glf(S.limbR)},1.,r);
+  float ndv=(u_P*n.z-1.)/sqrt(n.x*n.x+n.y*n.y+(u_P-n.z)*(u_P-n.z));
+  float side=(u*${glf(l[0]/m)}+v*${glf(l[1]/m)})/max(r,1e-9);
+  float air=pow(clamp(1.-ndv,0.,1.),${glf(S.airExp)})*smoothstep(${glf(S.airR0)},1.,r)*(${glf(S.airBack)}+${glf(1-S.airBack)}*(side+1.)/2.);
+  vec3 o=srgb(c*shade+${glv(S.air)}*air*${glf(S.airMax)});
+  float a=cov*u_alpha;
+  gl_FragColor=vec4(o*a,a);
+}`;
 }
 
 // ---- browser ----
@@ -148,28 +238,90 @@ function cardPlace(dot,korea,card,view,s){
   let show=false;try{show=shouldShowGate(location.hash,store);}catch{}
   if(!show)return;
   root.classList.add('gate-on');
-  // The picture is asked for now, before the page is parsed, so it mostly arrives during the loader's 0.6 s minimum;
-  // its size comes from the globe this window will draw (the stacked query is intro.css's). A shared link (no screen)
-  // never fetches it. Until it is there, or if it fails, the vector globe below is drawn instead.
+  const stacked0=()=>matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
+  // The turning globe (TEXTURES): a WebGL context and the shader are made now, before the page is parsed, and its two
+  // textures asked for, so they mostly arrive during the loader's 0.6 s minimum (a shared link, no screen, never asks).
+  // If any of it fails (no WebGL, the shader, a texture, a lost context) the still picture below is fetched instead.
+  let el=null,raf=0,canvas=null,ctx=null,shown=false,left=false,dirty=true,fading=false,drawnPhoto=false,bg=null;
+  // the motion (MOTION): offset is this frame's degrees from the start pose; clock the ms of motion so far
+  let offset={lon:0,lat:0},clock=0,last=0,lastDraw=0,prevFrame=0,withEntry=true,started=false,drag=null,back=null,leave=null,slow=0,shownAt=0,glScale=1;
+  const G={c:null,gl:null,prog:null,buf:null,tex:{},u:{},img:{},left:2,ready:false,failed:false,at:0,box:null};
+  // The still picture (vendor/globe-v2, scripts/bake_globe.py) for screens without WebGL: its size comes from the globe
+  // this window will draw (the stacked query is intro.css's). Until it is there, or if it fails, the vector globe below.
   let photo=null,photoAt=0,img=null;
-  try{
-    const stacked=matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
-    const file=globeFile(globeFrame(innerWidth,innerHeight,stacked?{top:0,bottom:0}:null).R,devicePixelRatio,navigator.connection);
-    img=new Image();img.decoding='async';img.fetchPriority='high';
-    img.onload=()=>img.decode().then(()=>{if(left||!img)return;photo={img,pad:GLOBE_PAD[file]/file};photoAt=shown?performance.now():0;
-      performance.mark?.('bbvm-globe-decoded');kick();},()=>{img=null;});
-    img.onerror=()=>{img=null;};
-    img.src=`vendor/globe-v2/globe-${file}.webp`;
-  }catch{img=null;}
+  function loadStill(){
+    if(img||photo||left)return;
+    try{
+      const file=globeFile(globeFrame(innerWidth,innerHeight,stacked0()?{top:0,bottom:0}:null).R,devicePixelRatio,navigator.connection);
+      img=new Image();img.decoding='async';img.fetchPriority='high';
+      img.onload=()=>img.decode().then(()=>{if(left||!img)return;photo={img,pad:GLOBE_PAD[file]/file};photoAt=shown?performance.now():0;
+        performance.mark?.('bbvm-globe-decoded');kick();},()=>{img=null;});
+      img.onerror=()=>{img=null;};
+      img.src=`vendor/globe-v2/globe-${file}.webp`;
+    }catch{img=null;}
+  }
+  function glFail(){
+    if(G.failed)return;G.failed=true;G.ready=false;freeGL();drag=back=leave=null;
+    performance.mark?.('bbvm-globe-gl-failed');loadStill();kick();
+  }
+  function freeGL(){
+    const gl=G.gl;G.gl=null;
+    if(gl){try{for(const t of Object.values(G.tex))gl.deleteTexture(t);gl.deleteBuffer(G.buf);gl.deleteProgram(G.prog);gl.getExtension('WEBGL_lose_context')?.loseContext();}catch{}}
+    if(G.c){G.c.width=G.c.height=0;G.c=null;}
+    for(const i of Object.values(G.img)){i.onload=i.onerror=null;}G.img={};G.tex={};
+  }
+  function initGL(){
+    const c=document.createElement('canvas'),o={alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false};
+    const gl=c.getContext('webgl2',o)||c.getContext('webgl',o);
+    if(!gl)throw Error('no WebGL');
+    if(!gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT)?.precision)throw Error('no highp');
+    const sh=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(x));return x;};
+    const prog=gl.createProgram(),vs=sh(gl.VERTEX_SHADER,GLOBE_VS),fs=sh(gl.FRAGMENT_SHADER,globeShader());
+    gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.bindAttribLocation(prog,0,'a');gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(prog));
+    gl.deleteShader(vs);gl.deleteShader(fs);gl.useProgram(prog);
+    G.buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,G.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    for(const k of ['u_org','u_scale','u_h','u_lon0','u_lat0','u_P','u_feather','u_alpha','u_disc','u_box','u_detail','u_world'])G.u[k]=gl.getUniformLocation(prog,k);
+    gl.uniform1i(G.u.u_detail,0);gl.uniform1i(G.u.u_world,1);
+    c.addEventListener('webglcontextlost',glFail);
+    Object.assign(G,{c,gl,prog});
+    const set=TEXTURES.sets[textureSet(globeFrame(innerWidth,innerHeight,stacked0()?{top:0,bottom:0}:null).R,devicePixelRatio,navigator.connection)];
+    const d=set.detail;G.box=[d.lon[0],d.lon[1],d.lat[0],d.lat[1]];
+    ['detail','world'].forEach((k,unit)=>{
+      const im=new Image();im.decoding='async';im.fetchPriority='high';G.img[k]=im;
+      im.onload=()=>im.decode().then(()=>{
+        if(left||!G.gl)return;
+        const t=gl.createTexture(),pot=n=>(n&(n-1))===0,gl2=typeof WebGL2RenderingContext!=='undefined'&&gl instanceof WebGL2RenderingContext;
+        const mip=gl2||(pot(im.width)&&pot(im.height));
+        gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL,gl.NONE);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,im);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,k==='world'&&pot(im.width)?gl.REPEAT:gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+        if(mip)gl.generateMipmap(gl.TEXTURE_2D);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,mip?gl.LINEAR_MIPMAP_LINEAR:gl.LINEAR);
+        G.tex[k]=t;im.onload=null;
+        if(--G.left===0){G.ready=true;G.at=shown?performance.now():0;performance.mark?.('bbvm-globe-gl-ready');kick();}
+      },glFail);
+      im.onerror=glFail;
+      im.src=`vendor/globe-v3/${set[k].file}`;
+    });
+  }
+  try{initGL();}catch{G.failed=true;freeGL();loadStill();}
   const gate=makeGate(performance.now());
   let reduce=false;try{reduce=motionPref(local?.getItem(MOTION_KEY),matchMedia('(prefers-reduced-motion: reduce)').matches);}catch{}
-  let el=null,raf=0,canvas=null,ctx=null,shown=false,left=false,dirty=true,drawnPhoto=false;
   const inerted=[];let observer=null;
   const touch=()=>matchMedia('(pointer:coarse)').matches; // a phone: no focus ring on the button, no keyboard popping up in search
 
-  // The globe: projected once (the view never turns), scaled per screen size, redrawn only when something changed.
+  // The vector globe (until a picture is in, or if both fail): projected once in the start pose. What is drawn over the
+  // globe (Korea's coast, the cells, the study frame, the card's point) keeps its longitude and latitude and is projected
+  // with each frame's camera, so it turns with the globe.
   const prep=(rings,cut)=>rings.map(r=>r.map((p,i)=>({...project(p[0],p[1],true),cut:i>0&&cutEdge(r[i-1],p,cut),cell:cellOf(p)})));
-  let land=null,borders=[],depth=[],kr=[],krCells=new Set(),krCoast=[],cellBoxes=[],failed=false,frame=null,lead=null,size={w:0,h:0,dpr:1};
+  let land=null,borders=[],depth=[],kr=[],krCells=new Set(),krCoast=[],cells=[],failed=false,frame=null,card=null,size={w:0,h:0,dpr:1};
+  const box=(()=>{const [a,b]=STUDY,o=[];
+    for(let x=a[0];x<=b[0];x+=.5)o.push([x,a[1]]);for(let y=a[1];y<=b[1];y+=.3)o.push([b[0],y]);
+    for(let x=b[0];x>=a[0];x-=.5)o.push([x,b[1]]);for(let y=b[1];y>=a[1];y-=.3)o.push([a[0],y]);return o;})();
   // The files load only now that the screen shows (a shared link never fetches them); each may fail on its own. Without
   // land the globe stays a plain sphere; the copy, the card and every way in work the same.
   const getJSON=u=>fetch(u).then(r=>{if(!r.ok)throw Error(u);return r.json();});
@@ -182,13 +334,13 @@ function cardPlace(dot,korea,card,view,s){
     kick();
   });
 
-  const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();};
+  const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();freeGL();};
   addEventListener('bbvm:progress',e=>{try{
     const d=e.detail||{};
     if(d.step==='map'&&d.geography){const r=geographyRings(d.geography,.08,COUNTRIES_CUT),bv=borderVertices(d.geography);kr=prep(r,COUNTRIES_CUT);krCells=new Set(r.flat().map(cellOf));
-      krCoast=r.map(ring=>ring.map(p=>({...project(p[0],p[1],true),border:bv.has(p[0]+','+p[1]),near:nearKorea(p)})));}
-    if(d.step==='done'&&Array.isArray(d.cells))cellBoxes=d.cells.map(c=>[[c.lon,c.lat],[c.lon+c.size,c.lat],[c.lon+c.size,c.lat+c.size],[c.lon,c.lat+c.size]]
-      .map(p=>project(p[0],p[1]))).filter(b=>b.every(Boolean));
+      // Korea's coast over the picture: segments with both ends near Korea, not both on a land border
+      krCoast=r.flatMap(ring=>ring.slice(1).map((p,i)=>[ring[i],p]).filter(([a,b])=>nearKorea(a)&&nearKorea(b)&&!(bv.has(a.join())&&bv.has(b.join()))));}
+    if(d.step==='done'&&Array.isArray(d.cells))cells=d.cells.map(c=>[[c.lon,c.lat],[c.lon+c.size,c.lat],[c.lon+c.size,c.lat+c.size],[c.lon,c.lat+c.size]]);
     gateProgress(gate,d.step,d.step==='done'?d:null);
     if(el){render();kick();}
   }catch{fail();}});
@@ -220,8 +372,8 @@ function cardPlace(dot,korea,card,view,s){
     if(left||gate.phase!=='ready')return;left=true;
     try{store?.setItem(GATE_KEY,'1');}catch{}
     const finish=()=>{
-      cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
-      canvas.width=canvas.height=0;photo=img=null; // the picture is not needed again: give its memory back
+      cancelAnimationFrame(raf);raf=0;leave=null;root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
+      canvas.width=canvas.height=0;if(bg)bg.width=bg.height=0;bg=null;photo=img=null;freeGL(); // not needed again: give the memory back
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
       const a=arrival(target,touch());
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
@@ -230,12 +382,15 @@ function cardPlace(dot,korea,card,view,s){
       if(t.tagName==='MAIN'){t.tabIndex=-1;t.addEventListener('blur',()=>t.removeAttribute('tabindex'),{once:true});}
       t.focus({preventScroll:true});
     };
+    drag=back=null;
     if(reduce)return finish();
+    // the globe gathers to its start pose in 0.3 s while the screen leans in toward Korea
+    if(turning()){leave={at:performance.now(),from:offset};raf||(raf=requestAnimationFrame(frameLoop));}
     root.classList.add('gate-leaving');setTimeout(finish,820);
   }
 
-  // Where the globe, the card and its leader line go for this screen. Side by side the card is placed here; stacked,
-  // CSS puts it under the globe band and only the line is drawn to it.
+  // Where the globe, the card and its leader line go for this screen (the start pose). Side by side the card is placed
+  // here; stacked, CSS puts it under the globe band. The line is drawn each frame from wherever the point is.
   // the copy lines as drawn (the text, not the full-width block boxes) for the globe to keep clear of
   const textBox=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
   const copyBoxes=()=>[...q('.gate-title').children].map(s=>({...textBox(s),title:true}))
@@ -245,11 +400,11 @@ function cardPlace(dot,korea,card,view,s){
     const stacked=getComputedStyle(band).display!=='none',b=band.getBoundingClientRect();
     frame=globeFrame(w,h,stacked?{top:b.top,bottom:b.bottom}:null,stacked?[]:copyBoxes());
     const {cx,cy,R}=frame,at=(lon,lat)=>{const p=project(lon,lat);return {x:cx+p.x*R,y:cy-p.y*R};};
-    const dot=at(...ANCHOR),k=at(...KOREA),c=call.getBoundingClientRect();
-    if(!call.getClientRects().length)lead=null; // a short screen hides the card
-    else if(stacked){const r=q('.gate-card').getBoundingClientRect();lead=[[dot.x,dot.y],[Math.min(Math.max(dot.x,r.left+16),r.right-16),r.top]];}
-    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom,bottom:q('.gate-foot').getBoundingClientRect().top},Math.min(1.2,Math.max(.75,R/733)));
-      call.style.left=p.x+'px';call.style.top=p.y+'px';lead=p.line;}
+    const dot=at(...ANCHOR),k=at(...KOREA),c=call.getBoundingClientRect(),s=Math.min(1.2,Math.max(.75,R/733));
+    if(!call.getClientRects().length)card=null; // a short screen hides the card
+    else if(stacked){const r=q('.gate-card').getBoundingClientRect();card={x:r.left,y:r.top,w:r.width,h:r.height,under:true,s};}
+    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom,bottom:q('.gate-foot').getBoundingClientRect().top},s);
+      call.style.left=p.x+'px';call.style.top=p.y+'px';card={x:p.x,y:p.y,w:c.width,h:c.height,under:!!p.under,s};}
     el.style.setProperty('--kx',k.x+'px');el.style.setProperty('--ky',k.y+'px'); // the leave zoom heads for Korea
   }
   function resize(){
@@ -279,64 +434,156 @@ function cardPlace(dot,korea,card,view,s){
     rim.addColorStop(0,'rgba(175,228,242,.6)');rim.addColorStop(1,'rgba(175,228,242,.06)');
     ctx.beginPath();ctx.arc(cx,cy,R-.75,0,Math.PI*2);ctx.strokeStyle=rim;ctx.lineWidth=1.5;ctx.stroke();
   }
-  function draw(){
-    const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed;
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
-    // the air outside the rim: a soft blue glow out to 6% of the radius (faint past 2.4%, where the copy may come),
-    // brightest on the lit upper left, faded on the far side (no stars, no space). The picture has the band inside the rim.
-    const glow=ctx.createRadialGradient(cx,cy,R*.97,cx,cy,R*1.06),side=ctx.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
+  // the air outside the rim: a soft blue glow out to 6% of the radius (faint past 2.4%, where the copy may come),
+  // brightest on the lit upper left, faded on the far side (no stars, no space), and the dark disc under the globe. The
+  // same every frame, so it is drawn once per layout onto its own canvas.
+  function background(){
+    const {w,h,dpr}=size,{cx,cy,R}=frame;
+    if(!bg)bg=document.createElement('canvas');
+    if(bg.width!==canvas.width||bg.height!==canvas.height){bg.width=canvas.width;bg.height=canvas.height;}
+    const b=bg.getContext('2d');b.setTransform(dpr,0,0,dpr,0,0);b.clearRect(0,0,w,h);
+    const glow=b.createRadialGradient(cx,cy,R*.97,cx,cy,R*1.06),side=b.createLinearGradient(cx-R*.75,cy-R*.75,cx+R*.6,cy+R*.6);
     glow.addColorStop(0,'rgba(143,200,232,.75)');glow.addColorStop(.35,'rgba(143,200,232,.3)');glow.addColorStop(.6,'rgba(143,200,232,.1)');glow.addColorStop(1,'rgba(143,200,232,0)');
     side.addColorStop(0,'#000');side.addColorStop(1,'rgba(0,0,0,.12)');
-    ctx.fillStyle=glow;ctx.fillRect(cx-R*1.06,cy-R*1.06,R*2.12,R*2.12);
-    ctx.save();ctx.shadowColor='rgba(143,200,232,.5)';ctx.shadowBlur=R*.03*dpr; // shadowBlur is in device pixels
-    ctx.beginPath();ctx.arc(cx,cy,R*.995,0,Math.PI*2);ctx.fillStyle='#0a2032';ctx.fill();ctx.restore();
-    ctx.globalCompositeOperation='destination-in';ctx.fillStyle=side;ctx.fillRect(0,0,w,h);ctx.globalCompositeOperation='source-over';
-    // the globe: the picture (faded in over 0.6 s if it comes after the screen is up), the vector globe until then
-    const t=photo?(reduce?1:Math.min(1,(performance.now()-photoAt)/600)):0;
+    b.fillStyle=glow;b.fillRect(cx-R*1.06,cy-R*1.06,R*2.12,R*2.12);
+    b.save();b.shadowColor='rgba(143,200,232,.5)';b.shadowBlur=R*.03*dpr; // shadowBlur is in device pixels
+    b.beginPath();b.arc(cx,cy,R*.995,0,Math.PI*2);b.fillStyle='#0a2032';b.fill();b.restore();
+    b.globalCompositeOperation='destination-in';b.fillStyle=side;b.fillRect(0,0,w,h);b.globalCompositeOperation='source-over';
+  }
+  // The turning globe for this frame's camera: only the part of the disc on screen, at most 2400 device px across
+  // (lower if frames run slow), drawn into the screen's canvas like the picture is.
+  function glDraw(cam,alpha){
+    const gl=G.gl,{w,h,dpr}=size,{cx,cy,R}=frame,sc=Math.min(dpr,2400/(2*R))*glScale;
+    const x0=Math.max(0,Math.floor(cx-R-1)),y0=Math.max(0,Math.floor(cy-R-1)),x1=Math.min(w,Math.ceil(cx+R+1)),y1=Math.min(h,Math.ceil(cy+R+1));
+    if(x1<=x0||y1<=y0)return;
+    const W=Math.ceil((x1-x0)*sc),H=Math.ceil((y1-y0)*sc);
+    if(G.c.width!==W||G.c.height!==H){G.c.width=W;G.c.height=H;}
+    gl.viewport(0,0,W,H);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+    const u=G.u;gl.uniform2f(u.u_org,x0,y0);gl.uniform1f(u.u_scale,W/(x1-x0));gl.uniform1f(u.u_h,H);
+    gl.uniform3f(u.u_disc,cx,cy,R);gl.uniform1f(u.u_lon0,cam.lon0);gl.uniform1f(u.u_lat0,cam.lat0);gl.uniform1f(u.u_P,cam.P);
+    gl.uniform4f(u.u_box,...G.box);gl.uniform1f(u.u_feather,TEXTURES.feather);gl.uniform1f(u.u_alpha,1);
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,G.tex.detail);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,G.tex.world);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    ctx.globalAlpha=alpha;ctx.drawImage(G.c,x0,y0,x1-x0,y1-y0);ctx.globalAlpha=1;
+  }
+  const turning=()=>G.ready&&!G.failed&&!!G.gl;
+  function draw(){
+    const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed,gl=turning();
+    const cam=gl?cameraAt(offset):CAMERA,at=(lon,lat,rim)=>project(lon,lat,rim,cam);
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+    if(!bg)background();
+    ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(bg,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);
+    // the globe: the turning one or the picture (faded in over 0.6 s if it comes after the screen is up), the vector
+    // globe until then
+    const t=gl?(reduce||!G.at?1:Math.min(1,(performance.now()-G.at)/600)):photo?(reduce?1:Math.min(1,(performance.now()-photoAt)/600)):0;
     if(t<1)vectorGlobe(X,Y,cx,cy,R,geo);
-    if(photo){
+    if(gl){
+      try{glDraw(cam,t);}catch{glFail();return draw();}
+      if(t>=1&&!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
+    }else if(photo){
       try{const s=R*(1+2*photo.pad);ctx.globalAlpha=t;ctx.drawImage(photo.img,cx-s,cy-s,2*s,2*s);}
       catch{photo=img=null;return draw();} // a picture that does not draw: the vector globe
       finally{ctx.globalAlpha=1;}
-      if(t<1)kick();else if(!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
+      if(t>=1&&!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
+    }
+    fading=t<1&&(gl||!!photo);
+    if(gl||photo){
       // over the picture, only Korea's coast, a hairline (the land borders and the wider coasts are left to the picture)
-      ctx.beginPath();for(const r of krCoast)for(let i=1;i<r.length;i++){const a=r[i-1],b=r[i];
-        if(a.back||b.back||!a.near||!b.near||(a.border&&b.border))continue;ctx.moveTo(X(a),Y(a));ctx.lineTo(X(b),Y(b));}
+      ctx.beginPath();for(const [p,o] of krCoast){const a=at(p[0],p[1]),b=at(o[0],o[1]);if(a&&b){ctx.moveTo(X(a),Y(a));ctx.lineTo(X(b),Y(b));}}
       ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=.7;ctx.stroke();
     }
-    if(!geo&&!photo)return;
+    if(!geo&&!photo&&!gl)return;
     // the public cells the app loaded, every one alike (never shaded by record counts): a faint fill, a glow inside the
     // cells, a fine outline; overlapping 1° and 4° sides are one path, so drawn once
-    if(cellBoxes.length){
-      ctx.beginPath();for(const b of cellBoxes){b.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}
+    const boxes=cells.map(b=>b.map(p=>at(p[0],p[1]))).filter(b=>b.every(Boolean));
+    if(boxes.length){
+      ctx.beginPath();for(const b of boxes){b.forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();}
       ctx.fillStyle='rgba(140,215,208,.08)';ctx.fill();
       ctx.save();ctx.clip();ctx.shadowColor='rgba(140,215,208,.7)';ctx.shadowBlur=8*dpr;ctx.strokeStyle='rgba(140,215,208,.22)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
       ctx.strokeStyle='rgba(140,215,208,.55)';ctx.lineWidth=.9;ctx.stroke();
     }
     // the map's study frame
-    const [a,b]=STUDY,box=[];
-    for(let x=a[0];x<=b[0];x+=.5)box.push([x,a[1]]);for(let y=a[1];y<=b[1];y+=.3)box.push([b[0],y]);
-    for(let x=b[0];x>=a[0];x-=.5)box.push([x,b[1]]);for(let y=b[1];y>=a[1];y-=.3)box.push([a[0],y]);
-    ctx.beginPath();box.map(p=>project(p[0],p[1])).forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();
+    ctx.beginPath();box.map(p=>at(p[0],p[1],true)).forEach((p,i)=>i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)));ctx.closePath();
     ctx.setLineDash([3,5]);ctx.strokeStyle='rgba(140,215,208,.4)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
-    // the card's point and leader line
-    if(!lead)return;
+    // the card's point, carried by the globe, and its line to the card, which stays put
+    const d=at(...ANCHOR);
+    if(!card||!d)return;
+    const lead=leadLine({x:X(d),y:Y(d)},card,card.s);
     ctx.beginPath();lead.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(255,255,255,.42)';ctx.lineWidth=1;ctx.stroke();
     const [dx,dy]=lead[0];
     ctx.beginPath();ctx.arc(dx,dy,10,0,Math.PI*2);ctx.fillStyle='rgba(223,160,100,.2)';ctx.fill();
     ctx.beginPath();ctx.arc(dx,dy,4,0,Math.PI*2);ctx.fillStyle='#dfa064';ctx.fill();
   }
   function paint(){
-    resize();layout();
     try{draw();}catch{failed=true;try{draw();}catch{}} // a drawing error leaves the plain sphere, never the screen
   }
+
+  // The motion (MOTION). offset: degrees from the start pose this frame. clock: ms of motion, which stands still while
+  // the tab is hidden or the switch says still. Frames run while something moves: at 30 fps for the sway, at the
+  // screen's rate while dragged, gliding back or leaving; never once the screen is gone.
+  function advance(now){
+    const dt=last?Math.min(100,now-last):0;last=now;
+    if(!turning())return offset={lon:0,lat:0},false;
+    // came in with the screen: the entry turn; came later (the still pose was up): straight into the sway
+    if(!started){started=true;withEntry=!reduce&&now-shownAt<300;clock=0;}
+    const still=reduce||document.hidden;
+    if(!still&&shown)clock+=dt;
+    const amb=reduce?{lon:0,lat:0}:ambientAt(clock,withEntry);
+    if(leave){const k=easeOut((now-leave.at)/MOTION.leaveMs);offset={lon:leave.from.lon*(1-k),lat:leave.from.lat*(1-k)};return k<1;}
+    if(drag)return offset=drag.off,true;
+    if(back){
+      const t=now-back.at,g=MOTION.glideMs,tau=g/3,f=tau*(1-Math.exp(-Math.min(t,g)/tau));
+      const glide=clampDrag({lon:back.from.lon+back.v.lon*f,lat:back.from.lat+back.v.lat*f});
+      const k=easeInOut((t-g)/MOTION.backMs);
+      offset={lon:glide.lon+(amb.lon-glide.lon)*k,lat:glide.lat+(amb.lat-glide.lat)*k};
+      if(k>=1)back=null;
+      return true;
+    }
+    offset=amb;
+    return !still&&shown;
+  }
   const kick=()=>{dirty=true;if(el&&!raf&&!left)raf=requestAnimationFrame(frameLoop);};
-  // Runs every frame only while loading (the ready check); after that only when kicked by a resize or new data.
+  // Runs every frame while loading (the ready check) and while the globe moves; otherwise only when kicked by a resize,
+  // new data or the motion switch.
   function frameLoop(now){
-    raf=0;if(left)return;
-    if(gateTick(gate,now)==='ready'&&!shown){render();showHero();}
-    if(shown&&dirty){dirty=false;paint();}
-    if(!shown)raf=requestAnimationFrame(frameLoop);
+    raf=0;if(left&&!leave)return;
+    if(gateTick(gate,now)==='ready'&&!shown){render();showHero();shownAt=now;}
+    const moving=shown&&advance(now),fast=!!(drag||back||leave);
+    // a slow GPU shows as frames coming late while the globe moves: then it is drawn at a lower resolution
+    if(moving&&prevFrame){slow=now-prevFrame>45?slow+1:Math.max(0,slow-1);if(slow>10&&glScale>.5){glScale=Math.max(.5,glScale-.15);slow=0;}}
+    prevFrame=moving?now:0;
+    if(shown&&(dirty||fast||fading||(moving&&now-lastDraw>=1000/MOTION.fps-4))){
+      if(dirty){dirty=false;resize();layout();bg=null;}
+      paint();lastDraw=now;
+    }
+    if(!shown||moving||dirty||fading)raf=requestAnimationFrame(frameLoop);
+  }
+
+  // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
+  // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
+  const NO_DRAG='button,a,input,.gate-center,.gate-bar,.gate-foot,.gate-callout,.gate-loader';
+  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG))return false;return Math.hypot(e.clientX-frame.cx,e.clientY-frame.cy)<=frame.R;};
+  function setupDrag(){
+    el.addEventListener('pointerdown',e=>{
+      if(drag||(e.pointerType==='mouse'&&e.button!==0)||!onGlobe(e))return;
+      drag={id:e.pointerId,x:e.clientX,y:e.clientY,from:{...offset},off:{...offset},touch:e.pointerType!=='mouse',trail:[[performance.now(),{...offset}]]};
+      back=null;try{el.setPointerCapture(e.pointerId);}catch{}el.classList.add('is-dragging');kick();
+    });
+    el.addEventListener('pointermove',e=>{
+      if(!drag){el.classList.toggle('is-grab',e.pointerType==='mouse'&&onGlobe(e));return;}
+      if(e.pointerId!==drag.id)return;
+      const d=dragDegrees(e.clientX-drag.x,drag.touch?0:e.clientY-drag.y,frame.R,CAMERA.lat0+drag.from.lat);
+      drag.off=clampDrag({lon:drag.from.lon+d.lon,lat:drag.from.lat+d.lat});
+      const now=performance.now();drag.trail.push([now,{...drag.off}]);while(drag.trail.length>2&&now-drag.trail[0][0]>90)drag.trail.shift();
+    });
+    const up=e=>{
+      if(!drag||e.pointerId!==drag.id)return;
+      const [t0,o0]=drag.trail[0],now=performance.now(),dt=Math.max(16,now-t0),o=drag.off;
+      back=reduce?null:{at:now,from:o,v:{lon:(o.lon-o0.lon)/dt,lat:(o.lat-o0.lat)/dt}};
+      if(reduce)offset={lon:0,lat:0};
+      drag=null;el.classList.remove('is-dragging');kick();
+    };
+    el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
   }
 
   function setup(){
@@ -349,9 +596,12 @@ function cardPlace(dot,korea,card,view,s){
     canvas=q('.gate-sea');ctx=canvas.getContext('2d');
     gateProgress(gate,'page');render();
     q('.gate-loader').focus({preventScroll:true});
+    // the switch: still stops the turning at once (the start pose, no frames); moving again picks up the sway, no entry
     const motion=q('.gate-motion'),setMotion=(v,keep)=>{
       reduce=v;motion.setAttribute('aria-checked',String(v));el.classList.toggle('is-still',v);
       if(keep)try{local?.setItem(MOTION_KEY,v?'1':'0');}catch{}
+      if(v){back=null;offset={lon:0,lat:0};}else if(started){withEntry=false;clock=0;}
+      kick();
     };
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce,true));
@@ -371,7 +621,10 @@ function cardPlace(dot,korea,card,view,s){
       catch{status.textContent='주소: '+url;}
       setTimeout(()=>{status.textContent='';},4000);
     });
+    setupDrag();
     addEventListener('resize',kick);document.fonts?.ready.then(kick); // the web font moves the stacked layout once it is in
+    // a hidden tab draws nothing; back in view the motion carries on from where it stood
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else kick();});
     raf=requestAnimationFrame(frameLoop);
   }
   const start=()=>{try{setup();}catch{fail();}};
