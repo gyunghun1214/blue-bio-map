@@ -561,8 +561,15 @@ void main(){
 
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
   // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
-  const NO_DRAG='button,a,input,.gate-center,.gate-bar,.gate-foot,.gate-callout,.gate-loader';
-  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG))return false;return Math.hypot(e.clientX-frame.cx,e.clientY-frame.cy)<=frame.R;};
+  // never from the controls, the bars or the card; over the copy only off its words (on a phone the copy sits on the globe)
+  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader';
+  const onWords=e=>{
+    const t=e.target.closest?.('.gate-kicker,.gate-title,.gate-lead');if(!t)return false;
+    const r=document.createRange();r.selectNodeContents(t);
+    for(const b of r.getClientRects())if(e.clientX>=b.left-8&&e.clientX<=b.right+8&&e.clientY>=b.top-4&&e.clientY<=b.bottom+4)return true;
+    return false;
+  };
+  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG)||onWords(e))return false;return Math.hypot(e.clientX-frame.cx,e.clientY-frame.cy)<=frame.R;};
   function setupDrag(){
     el.addEventListener('pointerdown',e=>{
       if(drag||(e.pointerType==='mouse'&&e.button!==0)||!onGlobe(e))return;

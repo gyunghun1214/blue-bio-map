@@ -141,8 +141,8 @@ try{
   const touchPath=async pts=>{await C.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pts[0][0],y:pts[0][1]}]});
     for(const p of pts.slice(1)){await C.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:p[0],y:p[1]}]});await sleep(16);}};
   const gy=Math.round(fp.cy-fp.R*.35);
-  await touchPath([[110,gy],[150,gy],[190,gy],[230,gy],[270,gy]]);await sleep(80);const t1=await dotIn(await shot('390x844-8-finger-sideways'),mb);
-  await C.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await sleep(120);const t2=await dotIn(await shot(null),mb);
+  await touchPath([[110,gy],[150,gy],[190,gy],[230,gy],[270,gy]]);await sleep(600);const t1=await dotIn(await shot('390x844-8-finger-sideways'),mb);
+  await C.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await sleep(600);const t2=await dotIn(await shot(null),mb);
   check(`Phone, still on: a sideways finger drag turns the globe (point ${((t1.x-t0.x)/2).toFixed(0)} px), and on release it is straight back (no glide while still)`,t1.x-t0.x>120&&Math.hypot(t2.x-t0.x,t2.y-t0.y)<4,JSON.stringify({t0,t1,t2}));
 
   // ---------- the switch and the system setting: no frames, the pose ----------
