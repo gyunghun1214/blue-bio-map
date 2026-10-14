@@ -129,6 +129,12 @@ def _mcui(sp, sources):
         sid = region.get("source_id") or record.get("source_id") or record.get("method_source_id")
         out.update(category=t.get("category"), mapping=t.get("pilot_mapping"), label=t.get("label"),
                    scope=region.get("region_ko"), source=_source(sources, sid) if sid else None)
+    d = sp.get("stock_decline")
+    if d:  # 4.12 (prereg-4.12-2026-10-14): catch-trend element beside the extinction-risk basis, never an IUCN category
+        out["driver"] = sp.get("mcui_driver")
+        out["extinction_risk"] = sp.get("mcui_extinction_risk")
+        out["stock_decline"] = {"label": d["label"], "score": d["score"], "decline_pct": d["decline_pct"],
+                                "kosis_item": d["kosis_item"], "source": _source(sources, d["source_id"]) if d["kosis_item"] else None}
     return out
 
 
