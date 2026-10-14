@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.12",
+ "method_version": "verified-4.13",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -747,6 +747,12 @@
      "license": "CC BY 4.0",
      "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
      "url": "https://www.marinespecies.org/rest/"
+    },
+    {
+     "id": "yang_2018_clam_rpdefb",
+     "license": "미확인(출판사 유료)",
+     "title": "A defensin-like antimicrobial peptide from the manila clam Ruditapes philippinarum (Yang D et al. 2018)",
+     "url": "https://doi.org/10.1016/j.fsi.2018.06.019"
     }
    ],
    "withheld_reasons": {
@@ -761,21 +767,21 @@
    "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
-     "10.1016/j.procbio.2016.01.009"
+     "10.3390/ijms232112722"
     ],
-    "endpoint": "IC50",
+    "endpoint": "MIC",
     "evidence_factor": 0.75,
     "links": [
-     "https://doi.org/10.1016/j.procbio.2016.01.009"
+     "https://doi.org/10.3390/ijms232112722"
     ],
     "median_pchembl": null,
-    "percentile": 38.92,
+    "percentile": 57.53,
     "relation": "=",
-    "stratum_kind": "peptide",
-    "subject": "MEVFVP",
-    "target": "ACE",
+    "stratum_kind": "amp",
+    "subject": "P35",
+    "target": "Vibrio anguillarum (incl. Listonella anguillarum)",
     "unit": "uM",
-    "value": 79
+    "value": 5
    },
    "candidate_label": "조사 후보",
    "cell": {
@@ -871,8 +877,8 @@
    "korean_name": "넙치",
    "map_link": "index.html#s=275816&v=explore&m=8/35.50/125.50",
    "matrix_type": {
-    "id": "baseline_survey",
-    "label": "기초조사·관찰 대상"
+    "id": "sustainable_use",
+    "label": "지속가능 활용 후보"
    },
    "mcui": {
     "assessment_year": null,
@@ -916,8 +922,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 44.3,
-    "MBPI": 29.2,
+    "BBVI": 51.3,
+    "MBPI": 43.2,
     "MCUI": 10.0,
     "MFPI": 59.4
    },
@@ -934,6 +940,12 @@
      "license": "CC BY-NC-SA 4.0",
      "title": "CMNPD public compound search",
      "url": "https://www.cmnpd.org"
+    },
+    {
+     "id": "dbaasp_amp_cohort",
+     "license": "Open with attribution (DBAASP Data Access Policy)",
+     "title": "DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts",
+     "url": "https://dbaasp.org"
     },
     {
      "id": "europepmc_mbpi",
@@ -994,6 +1006,18 @@
      "license": "KOGL Type 1 (공공누리 제1유형: 출처표시)",
      "title": "National Standard Food Composition DB 10.4 — EPA 에이코사펜타에노산(20:5(n-3)) and DHA 도코사헥사에노산(22:6(n-3)) per 100 g edible portion",
      "url": "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
+    },
+    {
+     "id": "wang_2021_flounder_tp25",
+     "license": "CC BY 4.0",
+     "title": "Expression analysis of TFPI-1 and TFPI-2 in Paralichthys olivaceus and antibacterial and anticancer activity of derived peptides (Wang G et al. 2021)",
+     "url": "https://doi.org/10.1186/s13567-021-00908-y"
+    },
+    {
+     "id": "xu_2022_ijms_p35",
+     "license": "CC BY 4.0",
+     "title": "A Non-Canonical Teleost NK-Lysin: Antimicrobial Activity via Multiple Mechanisms (Xu H, Yuan Z, Sun L 2022)",
+     "url": "https://doi.org/10.3390/ijms232112722"
     }
    ],
    "withheld_reasons": {
@@ -1203,6 +1227,12 @@
      "license": "IUCN Red List terms (non-commercial)",
      "title": "IUCN Red List species search (Global scope)",
      "url": "https://www.iucnredlist.org/search"
+    },
+    {
+     "id": "jing_2025_rockfish_hepcidin",
+     "license": "미확인(출판사 유료)",
+     "title": "Immunometabolic interplay and molecular characterization of hepcidins in black rockfish (Jing H et al. 2025)",
+     "url": "https://doi.org/10.1016/j.ijbiomac.2025.145037"
     },
     {
      "id": "kosis_dt_1ew0004",
@@ -2864,6 +2894,12 @@
      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270825"
     },
     {
+     "id": "wang_2008_oyster_vvy",
+     "license": "미확인(출판사 유료)",
+     "title": "Purification and identification of an ACE inhibitory peptide from oyster protein hydrolysate (Wang J et al. 2008)",
+     "url": "https://doi.org/10.1016/j.foodchem.2008.03.059"
+    },
+    {
      "id": "wikidata_p703_lotus",
      "license": "CC0 1.0",
      "title": "P703 found-in-taxon statements and P248 references",
@@ -2874,6 +2910,12 @@
      "license": "CC BY 4.0",
      "title": "WoRMS REST accepted names, synonyms and NCBI IDs",
      "url": "https://www.marinespecies.org/rest/"
+    },
+    {
+     "id": "xie_2014_oyster_crosslinked",
+     "license": "CC BY 3.0",
+     "title": "Angiotensin I-converting enzyme inhibitor derived from cross-linked oyster protein (Xie CL et al. 2014)",
+     "url": "https://doi.org/10.1155/2014/379234"
     }
    ],
    "withheld_reasons": {
@@ -3089,6 +3131,12 @@
      "license": "KOSIS 이용약관(출처 표시)",
      "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004)",
      "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004"
+    },
+    {
+     "id": "li_2022_ulva_diggl",
+     "license": "미확인(출판사 유료)",
+     "title": "Purification, identification and function analysis of an ACE inhibitory peptide from Ulva prolifera protein (Li Z et al. 2022)",
+     "url": "https://doi.org/10.1016/j.foodchem.2022.134127"
     },
     {
      "id": "li_2024_ulva_kaf",
@@ -5227,6 +5275,12 @@
      "license": "CC BY-SA 3.0",
      "title": "ChEMBL molecule, activity, target and cell-line resources",
      "url": "https://www.ebi.ac.uk/chembl/api/data/"
+    },
+    {
+     "id": "himaya_2012_cod_skin",
+     "license": "미확인(출판사 유료)",
+     "title": "An active peptide purified from gastrointestinal enzyme hydrolysate of Pacific cod skin gelatin attenuates ACE activity (Himaya SWA et al. 2012)",
+     "url": "https://doi.org/10.1016/j.foodchem.2011.12.020"
     },
     {
      "id": "iucn_redlist_recheck",

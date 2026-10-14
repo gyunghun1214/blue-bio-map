@@ -1,7 +1,7 @@
 {
  "schemaVersion": "unexplored-candidates-1",
  "reviewedOn": "2026-10-04",
- "reportVersion": "verified-4.12",
+ "reportVersion": "verified-4.13",
  "rule": "Team-lead decision 2026-10-04: a species outside the 30, recorded in the map box (OBIS checklist or GBIF species facet, accepted WoRMS species), that shares its WoRMS genus with one of the 30 whose published BBVI (default weight) is at least 50. No indicator was collected for it and no score is inferred or copied.",
  "cellRules": "scripts/build_expansion_cells.py (22-candidate review rules), unchanged; a congener of a 4° species is published at 4°",
  "scope": "Generalized occurrence cells from reviewed GBIF and OBIS records. Not distribution, abundance, stock size or value. A listed species is a lead for survey, not a finding.",
@@ -79,6 +79,12 @@
    "label": "살오징어",
    "name": "Todarodes pacificus",
    "BBVI": 51.5
+  },
+  {
+   "aphiaID": 275816,
+   "label": "넙치",
+   "name": "Paralichthys olivaceus",
+   "BBVI": 51.3
   }
  ],
  "species": [
@@ -35634,6 +35640,15 @@
      "BBVI": 68.0
     }
    ]
+  }
+ ],
+ "congenerChecks": [
+  {
+   "relativeAphiaID": 275816,
+   "genus": "Paralichthys",
+   "checkedOn": "2026-10-14",
+   "congenersOutsideThe30": 0,
+   "record": "research/verified-indices/unexplored-congener-check-2026-10-14.json"
   }
  ]
 }

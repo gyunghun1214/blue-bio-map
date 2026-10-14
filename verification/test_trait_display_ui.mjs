@@ -57,7 +57,7 @@ assert.deepEqual([...ctx.USE].map(c=>c.id),['ace','virus','dementia','parasite',
   'protein_g','mineral','calcium_mg','iron_mg','zinc_mg','omega3','whole','farmed']);
 assert.deepEqual([...ctx.USE].filter(c=>c.group==='기능성(식품 소재)').map(c=>c.id),['ace','antioxidant']);
 assert.ok(ctx.USE.every(c=>ctx.GROUPS.includes(c.group)),'every chip sits in a drawn row');
-assert.deepEqual(Object.fromEntries(ctx.USE.map(c=>[c.id,ctx.count(c.id)])),{ace:14,virus:7,dementia:2,parasite:2,cancer:3,microbe:4,resistant:1,fungus:3,
+assert.deepEqual(Object.fromEntries(ctx.USE.map(c=>[c.id,ctx.count(c.id)])),{ace:14,virus:7,dementia:2,parasite:2,cancer:3,microbe:5,resistant:1,fungus:3,
   pain:1,antioxidant:2,diabetes:2,protein_g:16,mineral:11,calcium_mg:3,iron_mg:10,zinc_mg:3,omega3:9,whole:9,farmed:27});
 // The MBPI stratum names the top item's comparison group from one dictionary; every published stratum is registered, the
 // numbers come from the item, and the ACE names are exactly the top items the 'ace' chip reads.
@@ -77,7 +77,9 @@ assert.equal(ctx.stratum(byName('갑오징어')).short,'ChEMBL 표적(펩타이�
 assert.equal(ctx.stratum(byName('참굴')).short,'ACE 펩타이드');
 assert.equal(ctx.stratum(byName('피조개')).short,'항암 펩타이드');
 assert.equal(ctx.stratum(byName('멍게')).short,'ChEMBL 화합물');
-assert.equal(species.filter(s=>ctx.stratum(s.assessment).ace).length,14,'14 species lead with an ACE item (all AHTPDB; 감태 left with 4.11)');
+// 4.13: 넙치's top item is now its P35 MIC, so it leads with the antimicrobial stratum and the 항균 chip instead
+assert.equal(species.filter(s=>ctx.stratum(s.assessment).ace).length,13,'13 species lead with an ACE item (all AHTPDB; 감태 left with 4.11, 넙치 with 4.13)');
+assert.equal(ctx.stratum(byName('넙치')).short,'항균 펩타이드');
 assert.deepEqual(JSON.parse(JSON.stringify(ctx.stratum({bioactivity_trace:[{adjusted:1,stratum_id:'new-stratum',stratum_kind:'new'}],mbpi_stratum:'new'}))),
   {key:null,ace:false,short:'층 이름 미등록',long:'층 이름 미등록'});
 assert.equal(ctx.stratum({bioactivity_trace:[]}),null);

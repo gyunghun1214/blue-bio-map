@@ -10,7 +10,9 @@ coordinates, duplicates, 1 km land buffer, NIBR holder points). A congener of a 
 at 4° too. Raw responses are cached in the ignored tmp/unexplored/cells/; only generalized cells reach dist/.
 
 `--report-only` (no network): for a report release that keeps the same set of relatives, rewrite reportVersion and the
-relatives' BBVI and order from the report and keep the reviewed species and cells as they are.
+relatives' BBVI and order from the report and keep the reviewed species and cells as they are. With `--congener-check` a
+relative that newly reached the threshold is accepted too, when the dated check record shows its genus holds no other
+species in the box (4.12).
 """
 import json
 import re
@@ -24,6 +26,7 @@ import build_expansion_cells as B  # noqa: E402
 
 B.CACHE = ROOT / "tmp/unexplored/cells"
 REPORT = ROOT / "dist/assessments.json"
+CONGENER_CHECK = ROOT / "research/verified-indices/unexplored-congener-check-2026-10-14.json"
 OUT = ROOT / "dist/unexplored-candidates.json"
 REVIEWED = "2026-10-04"
 NIBR_SEARCH = "https://species.nibr.go.kr/geo/html/search.do?"
@@ -105,14 +108,25 @@ def relative_rows(relatives):
             for s in relatives]
 
 
-def refresh_from_report(report, relatives):
+def refresh_from_report(report, relatives, check=None):
     """--report-only: a release whose relatives (BBVI at least the threshold) are the same species needs no new congener or
     cell review. reportVersion and every relatives list (values and order) come from the report; the species, their cells
-    and their genus groups stay as last reviewed. A different set of relatives needs the full run."""
+    and their genus groups stay as last reviewed. A different set of relatives needs the full run.
+
+    4.12: --congener-check FILE accepts a newly qualifying relative whose genus was checked with the same two queries and
+    holds no other species in the box; such a genus adds no candidate, so the reviewed species and cells still stand. The
+    check is published beside them. A dropped relative, or a genus with any other species in the box, still needs the full run."""
     out = json.loads(OUT.read_text(encoding="utf-8"))
     rows = {r["aphiaID"]: r for r in relative_rows(relatives)}
-    if set(rows) != {r["aphiaID"] for r in out["relatives"]}:
-        raise SystemExit("the relatives (BBVI at least the threshold) changed: run the full build without --report-only")
+    was = {r["aphiaID"] for r in out["relatives"]}
+    if set(rows) != was:
+        checked = {g["relative_aphia_id"]: g for g in (check or {}).get("genera", []) if not g["congeners_outside_the_30"]}
+        if was - set(rows) or not (set(rows) - was) <= set(checked):
+            raise SystemExit("the relatives (BBVI at least the threshold) changed: run the full build without --report-only")
+        out["congenerChecks"] = sorted(out.get("congenerChecks", []) + [
+            {"relativeAphiaID": a, "genus": checked[a]["genus"], "checkedOn": check["checked_on"],
+             "congenersOutsideThe30": 0, "record": str(CONGENER_CHECK.relative_to(ROOT))} for a in set(rows) - was],
+            key=lambda c: c["relativeAphiaID"])
     out["reportVersion"], out["relatives"] = report["method_version"], list(rows.values())
     for s in out["species"]:
         mine = {r["aphiaID"] for r in s["relatives"]}
@@ -132,7 +146,8 @@ def main():
     ids30 = {s["aphia_id"] for s in species30}
     relatives = sorted((s for s in species30 if (s["scores"]["BBVI"] or 0) >= threshold), key=lambda s: -s["scores"]["BBVI"])
     if "--report-only" in sys.argv[1:]:
-        write(refresh_from_report(report, relatives))
+        check = json.loads(CONGENER_CHECK.read_text(encoding="utf-8")) if "--congener-check" in sys.argv[1:] else None
+        write(refresh_from_report(report, relatives, check))
         return
     for d in ("worms", "nibr_name"):
         (B.CACHE / d).mkdir(parents=True, exist_ok=True)

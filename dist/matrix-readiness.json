@@ -45,7 +45,7 @@
       }
     }
   },
-  "method_version": "verified-4.12",
+  "method_version": "verified-4.13",
   "schema_version": 1,
   "species": [
     {
@@ -577,6 +577,28 @@
             "quantitative_endpoint": true,
             "structure_id": true
           },
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 측정 시료의 종류를 확인하지 못해 기원 규칙(합성 또는 서열 확인된 정제물)을 적용할 수 없습니다.",
+          "record_id": "10.1016/j.foodchem.2008.03.059:VVYPWTQRF",
+          "source_url": "https://doi.org/10.1016/j.foodchem.2008.03.059"
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 팀장 결정 대기).",
+          "record_id": "10.1155/2014/379234:TAY-YA",
+          "source_url": "https://doi.org/10.1155/2014/379234"
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
           "exclusion_reason": null,
           "record_id": "10.1016/j.foodchem.2022.132160:LSL",
           "source_url": "https://doi.org/10.1016/j.foodchem.2022.132160"
@@ -600,8 +622,10 @@
       "source_urls": [
         "https://api.obis.org/v3/",
         "https://dbaasp.org",
+        "https://doi.org/10.1016/j.foodchem.2008.03.059",
         "https://doi.org/10.1016/j.foodchem.2022.132160",
         "https://doi.org/10.1128/mBio.01821-19",
+        "https://doi.org/10.1155/2014/379234",
         "https://doi.org/10.1271/bbb1961.55.1313",
         "https://doi.org/10.3389/fnut.2022.981163",
         "https://doi.org/10.5352/JLS.2012.22.2.220",
@@ -743,6 +767,7 @@
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ulva+prolifera&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.foodchem.2022.134127",
         "https://doi.org/10.3390/foods11213507",
         "https://doi.org/10.3390/md22090398",
         "https://doi.org/10.5878/ffrv-6x57",
@@ -927,6 +952,7 @@
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Ruditapes+philippinarum&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.fsi.2018.06.019",
         "https://doi.org/10.1039/c8fo01146j",
         "https://doi.org/10.5657/fas.2005.8.2.109",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004",
@@ -1322,23 +1348,26 @@
       "bioactivity_missing_steps": [],
       "korean_name": "넙치",
       "matrix_eligible": true,
-      "matrix_type": "baseline_survey",
+      "matrix_type": "sustainable_use",
       "mcui_basis": "range_state",
       "priority_survey": false,
       "priority_survey_reasons": [],
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": 44.3,
-        "MBPI": 29.2,
+        "BBVI": 51.3,
+        "MBPI": 43.2,
         "MCUI": 10.0,
         "MFPI": 59.4
       },
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Paralichthys+olivaceus&limit=100",
         "https://api.obis.org/v3/",
+        "https://dbaasp.org",
         "https://doi.org/10.1016/j.procbio.2016.01.009",
+        "https://doi.org/10.1186/s13567-021-00908-y",
         "https://doi.org/10.3390/ani14111693",
+        "https://doi.org/10.3390/ijms232112722",
         "https://europepmc.org/RestfulWebService",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004",
         "https://webs.iiitd.edu.in/raghava/ahtpdb/download.php",
@@ -1382,6 +1411,7 @@
         "https://api.obis.org/v3/",
         "https://biodiversity.pref.fukuoka.lg.jp/rdb2024/redlist.html",
         "https://dbaasp.org",
+        "https://doi.org/10.1016/j.ijbiomac.2025.145037",
         "https://doi.org/10.3390/md20060353",
         "https://doi.org/10.3897/BDJ.8.e47018",
         "https://europepmc.org/RestfulWebService",
@@ -1470,6 +1500,7 @@
       "source_urls": [
         "https://api.gbif.org/v1/species?datasetKey=19491596-35ae-4a91-9a98-85cf505f1bd3&name=Gadus+macrocephalus&limit=100",
         "https://api.obis.org/v3/",
+        "https://doi.org/10.1016/j.foodchem.2011.12.020",
         "https://doi.org/10.1016/j.procbio.2016.07.006",
         "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004",
         "https://pubchem.ncbi.nlm.nih.gov/rest/",
