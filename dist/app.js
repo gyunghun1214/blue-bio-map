@@ -2231,6 +2231,57 @@ function cellPopupNotice(size){
 // Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap (all navy since 2026-10-11:
 // a quieter light dash, so the frames do not outshine the dots).
 const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:.1});
+// 2026-10-14 land mask: a cell never paints the land. A 1° cell is filled over its sea part only (cell-sea-geometry.json,
+// scripts/build_cell_sea_geometry.py, cut with the same countries.json) and keeps its square for the edge, click, tooltip and
+// popup; a 4° cell (sensitive species, published wide) is an outline only, 2 px inside its square so it does not run on the 1°
+// edges. Without the file or a cell's key the square is filled as before. Display only: cells, counts and types are unchanged.
+// Style key `edge`: the cell's own border ('plain', or 'active' for the clicked cell); selected, hover and dim styles leave it out.
+let cellSea=null;
+const seaOf=(lat,lon,size)=>size===1?cellSea?.[`${lat},${lon},1`]||null:null;
+const seaLatLngs=g=>(g.type==='Polygon'?[g.coordinates]:g.coordinates).map(p=>p.map(r=>r.map(([x,y])=>[y,x])));
+// [square style, sea style] for one setStyle call; only the keys given are passed on, as Leaflet merges styles
+function cellStyles(sea,wide,s){
+  if(wide)return [{...s,...(s.edge?{color:s.fillColor||s.color,weight:s.edge==='active'?3.5:2.5,dashArray:'9 6'}:{}),fill:true,fillOpacity:0},null];
+  if(!sea)return [s,null];
+  const square={...s,...(s.edge==='plain'?{weight:1,opacity:.45*(s.opacity??1)}:{})};
+  if(sea.seaFraction===1)return [square,null];
+  const fill={stroke:false};if('fillColor' in s)fill.fillColor=s.fillColor;if('fillOpacity' in s)fill.fillOpacity=s.fillOpacity;
+  return [{...square,fill:true,fillOpacity:0},fill];
+}
+let CellShape=null;
+function cellShape(lat,lon,size,style){
+  const sea=seaOf(lat,lon,size),wide=size>=4;
+  if(!sea&&!wide)return L.rectangle([[lat,lon],[lat+size,lon+size]],style); // no geometry for this cell: the whole square, as before
+  CellShape??=L.Rectangle.extend({
+    initialize(bounds,info,style){
+      this._info=info;this._full=L.latLngBounds(bounds);
+      this._sea=info.sea?.type?L.polygon(seaLatLngs(info.sea),{interactive:false,stroke:false}):null;
+      L.Rectangle.prototype.initialize.call(this,bounds,{});this.setStyle(style);
+    },
+    setStyle(s){
+      const [square,sea]=cellStyles(this._info.sea,this._info.wide,s);
+      if(this._sea&&sea)this._sea.setStyle(sea);
+      return L.Rectangle.prototype.setStyle.call(this,square);
+    },
+    onAdd(m){
+      this._sea?.addTo(m); // under the square, which keeps the click
+      L.Rectangle.prototype.onAdd.call(this,m);
+      if(this._info.wide){m.on('zoomend',this._inset,this);this._inset();}
+    },
+    onRemove(m){
+      if(this._sea)m.removeLayer(this._sea);
+      if(this._info.wide)m.off('zoomend',this._inset,this);
+      L.Rectangle.prototype.onRemove.call(this,m);
+    },
+    _inset(){
+      const m=this._map,z=m.getZoom(),a=m.project(this._full.getSouthWest(),z).add([2,-2]),b=m.project(this._full.getNorthEast(),z).add([-2,2]);
+      this.setBounds(L.latLngBounds(m.unproject(a,z),m.unproject(b,z)));
+    }
+  });
+  return new CellShape([[lat,lon],[lat+size,lon+size]],{sea,wide},style);
+}
+// First line of a 4° cell's tooltip or popup: the cell is wide on purpose, and land inside it is not where the species lives.
+const wideCellNote=names=>`<b>${esc(names)} · 민감종 보호</b> — 채취 압력이 있어 4° 단위로만 공개합니다. 테두리 안 바다 어딘가에 기록이 있다는 뜻이며, 육지에 사는 것이 아닙니다.`;
 function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;
@@ -2280,8 +2331,8 @@ function renderCellMap(s,color){
     const c=rows[0], reasons=[...new Set(rows.flatMap(r=>cellAssessmentStatus(s,r).reasons))];
     // One hit area per spatial cell; every period row stays readable in its popup.
     const periods=rows.map(r=>`<li><b>공개 집계 기간 ${esc(r.period)}</b> · 기록 연도 ${esc(years(r))}${r.historical?'<br><b>과거 기록(2000년 이전) · 현재 분포 근거 아님</b>':''}${r.outsideKoreanEEZ?'<br><b>한국·북한 EEZ 밖 기록</b>':''}<br>선별 기록 ${esc(r.records)}건 · 조사 지점 ${esc(r.sites)}곳${r.uncertaintyMissing?` · 좌표 불확실성 결측 ${esc(r.uncertaintyMissing)}건`:''}<br>해역 메타데이터 ${esc(r.seaAreas.map(x=>x==='해역명 미확인'?x:'LME '+seaName(x)).join(', '))}${r.countries?' · 국가 메타데이터 '+esc(r.countries.join(', ')||'미기재'):''}<br>출처·이용조건<ul>${occurrenceCitationLinks(r)||'<li>셀별 제공처 확인 필요</li>'}</ul></li>`).join('');
-    cellLayers.push(L.rectangle([[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]],cellFrame()).addTo(overlay));
-    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong>${cellSummaryHtml(cellSpeciesAt(c.lat0,c.lon0,c.sizeDeg))||'<br>'}<b>해역별 활용·보전 판단: 하지 않음(지표는 종 단위)</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>해역 판단을 하지 않는 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>공개 기준(이용조건·좌표 품질)을 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+effortLine(c.lat0,c.lon0,c.sizeDeg)+generalizationNote(c.sizeDeg)+cellPopupNotice(c.sizeDeg));
+    cellLayers.push(cellShape(c.lat0,c.lon0,c.sizeDeg,{...cellFrame(),...(c.sizeDeg>=4?{edge:'plain',opacity:.9}:{})}).addTo(overlay));
+    cellLayers.at(-1).bindPopup(`<strong>${esc(s.label)} · 선별 출현기록 ${c.sizeDeg}° 셀</strong>${c.sizeDeg>=4?'<p class="wide-note">'+wideCellNote(s.label)+'</p>':''}${cellSummaryHtml(cellSpeciesAt(c.lat0,c.lon0,c.sizeDeg))||'<br>'}<b>해역별 활용·보전 판단: 하지 않음(지표는 종 단위)</b><br>${esc(speciesAxesLine(s))}<br>공간 해상도 ${c.sizeDeg}°×${c.sizeDeg}° · 가장 짧은 변 약 ${esc(Number.isFinite(c.resolutionM)?Math.floor(c.resolutionM/1000):'미확인')} km<br>${rows.length>1?`기간 ${rows.length}개 · 선별 기록 합계 ${esc(rows.reduce((a,r)=>a+r.records,0))}건. 같은 지점이 여러 기간에 있을 수 있어 조사 지점은 기간별로만 셉니다.<br>`:''}<b>${rows.length>1?'기간별 근거':'이 셀의 근거'}</b><ol class="cell-periods">${periods}</ol><b>해역 판단을 하지 않는 이유</b><ul>${reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small>공개 기준(이용조건·좌표 품질)을 통과한 일부 기록입니다. 조사 노력·중복·시기·경계 효과가 해역 간 비교용으로 보정되지 않았습니다. 원좌표·개체수·자원량·한국 전체 분포가 아닙니다.</small>`+effortLine(c.lat0,c.lon0,c.sizeDeg)+generalizationNote(c.sizeDeg)+cellPopupNotice(c.sizeDeg));
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
@@ -2347,7 +2398,12 @@ function drawEffort(){
   if(!effortLayer)effortLayer=L.layerGroup().addTo(map);
   effortLayer.clearLayers();
   if(!effortOn)return;
-  for(const c of effortData.cells)L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],{renderer:effortRenderer,interactive:false,stroke:false,fillColor:'#ffffff',fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]}).addTo(effortLayer);
+  // 2026-10-14: over the sea part of the cell only (cell-sea-geometry.json), the whole square without it
+  for(const c of effortData.cells){
+    const sea=seaOf(c.lat0,c.lon0,1),style={renderer:effortRenderer,interactive:false,stroke:false,fillColor:'#ffffff',fillOpacity:[0,.03,.06,.1,.14][effortBand(c.records)]};
+    if(sea?.seaFraction===0)continue;
+    (sea?.type?L.polygon(seaLatLngs(sea),style):L.rectangle([[c.lat0,c.lon0],[c.lat0+1,c.lon0+1]],style)).addTo(effortLayer);
+  }
 }
 // Same aggregates as the table, for download (public cells only; nothing finer than the cell range).
 function cellCsv(s){
@@ -2455,14 +2511,14 @@ function valueCellStyle(g,active){
       fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
     :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
   // cells holding the selected species get a thick solid yellow outline; the fill keeps the cell's own colour
-  return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:base;
+  return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:{...base,edge:active?'active':'plain'};
 }
 // 2026-10-13 species view: the selected species' cells only, in its own type colour with a dashed border of the same colour.
 // Every drawn cell is the selected species', so no yellow outline; an untyped species keeps the held grey of the all-species map.
 function speciesCellStyle(type,active){
   const c=matrixTypeColour[type];
-  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:active?.62:CELL_FILL}
-    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
+  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:active?.62:CELL_FILL,edge:active?'active':'plain'}
+    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:active?.36:.25,edge:active?'active':'plain'};
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&extinctionSeparate(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
@@ -2613,16 +2669,16 @@ function renderValueMap(){
   if(!map)return;
   // Cells the chips leave out stay as faint grey, so the map shows where the result is and where it is not.
   if(activeUses.size)for(const g of valueCellGroups(true).values())if(!groups.has(valueCellKey(g.lat,g.lon,g.size)))
-    L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false}).addTo(overlay);
+    cellShape(g.lat,g.lon,g.size,{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false,edge:'plain'}).addTo(overlay);
   for(const [key,g] of valueCellOrder(groups)){
     const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
     if(typeFilter.size&&!typeFilter.has(type))continue;
-    const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],valueCellStyle(g,active)).addTo(overlay);
+    const layer=cellShape(g.lat,g.lon,g.size,valueCellStyle(g,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
     const untyped=g.species.size-Object.values(counts).reduce((n,k)=>n+k,0);
     // range, colour and who set it, the selected species' own type, then the counts and the colour rule
     const sel=selectedCellLine(g),counted=(type?(mixed?'유형 혼재 ':'')+Object.entries(counts).map(([t,k])=>matrixTypeLabel(t)+' '+k+'종').join(', ')+typedNotes(g)+(untyped?' · 유형 없음 '+untyped+'종':''):'')+cellSummaryTip([...g.species.values()])+sufficiencyTip(g);
-    layer.bindTooltip(cellRange(g)+' · 공개 '+g.size+'° 격자 · '+g.species.size+'종<br>'+(type?'<b>색 '+matrixTypeLabel(type)+'</b>(색을 정한 종: '+esc(colourSpecies(g))+')':'유형 산출 종 없음')+
+    layer.bindTooltip((g.size>=4?wideCellNote([...g.species.values()].map(x=>x.label).join(', '))+'<br>':'')+cellRange(g)+' · 공개 '+g.size+'° 격자 · '+g.species.size+'종<br>'+(type?'<b>색 '+matrixTypeLabel(type)+'</b>(색을 정한 종: '+esc(colourSpecies(g))+')':'유형 산출 종 없음')+
       (sel?'<br><b>'+esc(sel)+'</b>':'')+'<br>'+counted.replace(/^ · /,'')+(rule?'<br>'+colourRuleLine():''),{className:'value-tip'});
     layer.on('tooltipopen',({tooltip:t})=>placeTip(t));
     drawSufficiency(g);
@@ -2656,10 +2712,10 @@ function renderSpeciesValueMap(){
   if(!map)return;
   for(const [key,g] of valueCellOrder(mine)){
     const active=key===selectedValueCell,cellType=cellMatrixType(g).type,k=g.records.get(id);
-    const layer=L.rectangle([[g.lat,g.lon],[g.lat+g.size,g.lon+g.size]],speciesCellStyle(t,active)).addTo(overlay);
+    const layer=cellShape(g.lat,g.lon,g.size,speciesCellStyle(t,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
     const flags=sufficiencyTip(g).replace(/^ · /,'');
-    layer.bindTooltip(cellRange(g)+' · 공개 '+g.size+'° 격자<br><b>'+esc(s.label)+(Number.isFinite(k)?' 기록 '+k.toLocaleString()+'건':'')+'</b> · '+esc(verdict)+
+    layer.bindTooltip((g.size>=4?wideCellNote(s.label)+'<br>':'')+cellRange(g)+' · 공개 '+g.size+'° 격자<br><b>'+esc(s.label)+(Number.isFinite(k)?' 기록 '+k.toLocaleString()+'건':'')+'</b> · '+esc(verdict)+
       '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 없음')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
     layer.on('tooltipopen',({tooltip:x})=>placeTip(x));
     drawSufficiency(g);
@@ -2719,7 +2775,8 @@ function renderValueLegend(groups,own=false){
   const key=$('value-key-swatch'),c=matrixTypeColour[ownType];
   // all-species view: the four type colours as the corner icon lays them out, in the selected species' yellow outline
   const quad=['high_bbvi_high_mcui','high_bbvi_low_mcui','low_bbvi_low_mcui','low_bbvi_high_mcui'].map((k,i)=>`${matrixTypeColour[rule?.types?.[k]?.id]||'#b7c0ca'}${alpha} ${i*25}% ${i*25+25}%`).join(',');
-  key.className='vk-swatch'+(own?(c?'':' none'):' all');key.style.background=own?(c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
+  const wideOwn=own&&selected.cells.some(x=>x.sizeDeg>=4); // 2026-10-14: a 4° species' cells are outlines only
+  key.className='vk-swatch'+(own?(c?'':' none'):' all')+(wideOwn?' wide':'');key.style.background=own?(wideOwn?'transparent':c?c+alpha:''):`conic-gradient(${quad})`;key.style.borderColor=own&&c?c:'';
   $('value-key-text').innerHTML=!own?'셀 색 = 그 셀에 기록된 종 중 우선순위 첫 유형 · 노란 실선 = 선택 종'
     :ownType?`셀 색 = ${esc(selected.label)}의 유형 ${verdictWord(ownType)} <span class="vk-type">(${esc(matrixTypeLabel(ownType))})</span>`
     :`셀 색 = 회색 · ${esc(selected.label)}: ${verdictWord(null)} <span class="vk-type">(BBVI·MCUI 한 쌍 미산출)</span>`;
@@ -3697,7 +3754,9 @@ let startHash={};
 async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
+  const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
+  {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }

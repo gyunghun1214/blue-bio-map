@@ -718,14 +718,14 @@ try{
     const card=[...document.querySelectorAll('#species-list .species-card')].find(el=>{const x=data.species.find(y=>y.aphiaID===Number(el.dataset.species));return x&&x.aphiaID!==selected.aphiaID&&x.cells.length}),other=Number(card.dataset.species);
     card.dispatchEvent(new MouseEvent('mouseenter'));
     const hover={n:hoverRects.length,want:[...valueCellGroups(true).values()].filter(g=>g.species.has(other)).length,style:hoverRects.every(l=>l.options.dashArray==='6 4'&&l.options.color==='#ffd166'&&l.options.interactive===false&&l.options.fill===false)};card.dispatchEvent(new MouseEvent('mouseleave'));hover.left=hoverRects.length;
-    return {view:valueView,pressed:q('#value-view').getAttribute('aria-pressed'),drawn:valueRects.length,cells:spatialCells(s).length,fills,want:matrixTypeColour[t]||'#b7c0ca',dashes:[...new Set(valueRects.map(([,l])=>l.options.dashArray))],
+    return {view:valueView,pressed:q('#value-view').getAttribute('aria-pressed'),drawn:valueRects.length,cells:spatialCells(s).length,fills,want:matrixTypeColour[t]||'#b7c0ca',dashes:[...new Set(valueRects.map(([,l])=>l.options.dashArray))],wide:s.cells.some(c=>c.sizeDeg>=4),
       yellow:valueRects.some(([,l])=>l.options.color==='#ffd166'),chip:q('#map-chip').textContent,wantChip:selected.label+' 기록 셀 '+spatialCells(s).length+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s),
       under:[q('#map-cells').textContent,q('#map-count').textContent,q('#map-years').textContent].join('|'),wantUnder:[spatialCells(s).length,cellRecords(s).toLocaleString(),cellYears(s)].join('|'),
       mini:[...document.querySelectorAll('.vm-grid [data-key]')].map(b=>[b.dataset.type,Number(b.querySelector('.vm-n').textContent)]),type:t,
       key:q('#value-key-text').textContent,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',keyShown:q('#value-key').getBoundingClientRect().height>0,toggleShown:q('#legend-toggle').getBoundingClientRect().height>0,
       source:q('#map-source').textContent,judgment:q('#map-judgment').textContent,panel:q('#value-cell-detail').innerText.includes(selected.label),hover}})()`);
   check('Value map opens on the species view: the selected species’ cells only, in its type colour with a dashed border (no yellow), its own chip and numbers; the icon counts the drawn colour; the key line names verdict and type; a card hover outlines that species’ cells',
-    own.view==='species'&&own.pressed==='false'&&own.drawn>0&&own.drawn===own.cells&&own.fills.length===1&&own.fills[0]===own.want&&JSON.stringify(own.dashes)==='["3 3"]'&&!own.yellow&&own.chip===own.wantChip&&own.under===own.wantUnder&&
+    own.view==='species'&&own.pressed==='false'&&own.drawn>0&&own.drawn===own.cells&&own.fills.length===1&&own.fills[0]===own.want&&JSON.stringify(own.dashes)===(own.wide?'["9 6"]':'["3 3"]')&&!own.yellow&&own.chip===own.wantChip&&own.under===own.wantUnder&&
     own.mini.every(([t,n])=>n===(t===own.type?own.cells:0))&&own.keyShown&&!own.toggleShown&&own.key.includes(own.plain)&&own.key.includes(own.label)&&own.source.startsWith('활용 × 보전 · 선택 종')&&own.judgment.includes(`공개 셀 ${own.cells}곳`)&&own.panel&&
     own.hover.n===own.hover.want&&own.hover.n>0&&own.hover.style&&own.hover.left===0,JSON.stringify(own));
   const kinds=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms)),keep=selected.aphiaID,out=[];
@@ -769,7 +769,8 @@ try{
     const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number((e.querySelector('.vm-n')||e).textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
     return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
   const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
-  const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>l.options.fillOpacity===.06).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
+  // dimmed = the faded edge (opacity .2, or .45 × .2 for a 1° cell drawn over its sea part): the square of a masked cell has no fill since 2026-10-14
+  const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>(l.options.opacity??1)<.25).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
   const iconS0=await iconState();
   await mouse('mouseMoved',typed[0]);await sleep(200);const iconHover=await iconState();
   await mouse('mousePressed',typed[0]);await mouse('mouseReleased',typed[0]);await sleep(400);const iconOne=await iconState();
@@ -802,7 +803,8 @@ try{
   check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
   await pick(504357);await sleep(300);ms=await modeState();
   check('피조개: every reviewed 4° cell drawn once, not a current distribution',ms.shapes===arkPlaces&&ms.source==='조사 후보 · 검수 기록 공개 4° 셀'&&(await evaluate("document.getElementById('map-review-note').textContent")).includes('현재 분포'),JSON.stringify(ms));
-  const arkPop=await evaluate(`(()=>{const l=overlay.getLayers().filter(l=>!l._schematicDot&&!l._zoomMark).find(l=>l.getBounds().getSouth()===${arkOld.lat0}&&l.getBounds().getWest()===${arkOld.lon0});l.openPopup();const t=document.querySelector('.leaflet-popup-content').innerText;map.closePopup();return t})()`);
+  // a 4° cell is drawn 2 px inside its square since 2026-10-14 (land mask): find it by its centre
+  const arkPop=await evaluate(`(()=>{const l=overlay.getLayers().filter(l=>!l._schematicDot&&!l._zoomMark).find(l=>{const c=l.getBounds().getCenter();return Math.abs(c.lat-${arkOld.lat0+2})<.1&&Math.abs(c.lng-${arkOld.lon0+2})<.1;});l.openPopup();const t=document.querySelector('.leaflet-popup-content').innerText;map.closePopup();return t})()`);
   check('피조개 pre-2000 cell popup: historical record marked, outside-EEZ flag as in the release',arkPop.includes('과거 기록(2000년 이전) · 현재 분포 근거 아님')&&arkPop.includes(String(arkOld.yearStart))&&arkPop.includes('한국·북한 EEZ 밖')===arkOld.outsideKoreanEEZ,arkPop.slice(0,400));
   const sweep=[];
   for(const e of release){
