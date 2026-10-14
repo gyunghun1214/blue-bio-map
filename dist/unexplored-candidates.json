@@ -79,6 +79,12 @@
    "label": "살오징어",
    "name": "Todarodes pacificus",
    "BBVI": 51.5
+  },
+  {
+   "aphiaID": 275816,
+   "label": "넙치",
+   "name": "Paralichthys olivaceus",
+   "BBVI": 51.3
   }
  ],
  "species": [
@@ -35634,6 +35640,15 @@
      "BBVI": 67.9
     }
    ]
+  }
+ ],
+ "congenerChecks": [
+  {
+   "relativeAphiaID": 275816,
+   "genus": "Paralichthys",
+   "checkedOn": "2026-10-14",
+   "congenersOutsideThe30": 0,
+   "record": "research/verified-indices/unexplored-congener-check-2026-10-14.json"
   }
  ]
 }

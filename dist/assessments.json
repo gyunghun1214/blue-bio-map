@@ -1938,7 +1938,38 @@
       "aphia_id": 234476,
       "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": true,
-      "bioactivity_partial": [],
+      "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "ACE 저해 IC50",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 기질과 시료 조건을 확인하지 못해 ACE 비교집단과 같은 조건인지도 알 수 없습니다.",
+          "material_kind": "가시파래(Ulva prolifera) 단백질 가수분해물에서 분리·동정한 펩타이드 DIGGL",
+          "missing": [
+            "원문(본문·표) 미확인 — 초록만 열람",
+            "기질(HHL 여부)·효소 출처·합성 여부·시료 산지가 초록에 없음"
+          ],
+          "origin_aphia_id": 234476,
+          "origin_scientific_name": "Ulva prolifera",
+          "record_id": "10.1016/j.foodchem.2022.134127:DIGGL",
+          "reviewed": true,
+          "source_id": "li_2022_ulva_diggl",
+          "status": "partial_only",
+          "test_system": "ACE 저해 시험(기질·효소 출처는 초록에 없음)",
+          "values": [
+            {
+              "material": "DIGGL(초록 기재)",
+              "uncertainty": 0.96,
+              "unit": "µM",
+              "value": 10.32
+            }
+          ]
+        }
+      ],
       "bioactivity_trace": [
         {
           "adjusted": 73.29545454545455,
@@ -2599,6 +2630,7 @@
         "chembl_mbpi",
         "iucn_redlist_search",
         "kosis_dt_1ew0004",
+        "li_2022_ulva_diggl",
         "li_2024_ulva_kaf",
         "obis_trend",
         "pubchem_inchikey_mbpi",
@@ -4075,6 +4107,7 @@
             24977634
           ],
           "adjusted": 0.42521598272138234,
+          "caveat": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 원논문은 ChEMBL 종-물질 연결의 원논문으로 더하지 못했습니다(이미 연결된 화합물에 DOI를 더하는 일은 규칙 변경이라 팀장 결정 대기, prereg-4.13-2026-10-14 결정 8번).",
           "chembl_stratum": "pathogen",
           "cohort_records": 926,
           "compound_id": "CHEMBL5287816",
@@ -4840,6 +4873,30 @@
       "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": true,
       "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
+          "endpoint": "MIC",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 범위로 보고된 MIC의 처리도 팀장 결정이 필요합니다(prereg-4.13-2026-10-14 결정 2번).",
+          "material_kind": "바지락 디펜신 유사 유전자 RpdefB(70잔기)의 합성 펩타이드(서열 미확인)",
+          "missing": [
+            "원문 미확인 — 초록만 열람, 초록에 MIC 수치가 없음",
+            "조사 메모의 범위 MIC(예: 4~8 µM)는 어느 본문에서도 확인하지 못함",
+            "범위값은 고정 비교집단의 단일 수치와 비교할 수 없음"
+          ],
+          "origin_aphia_id": 231750,
+          "origin_scientific_name": "Ruditapes philippinarum",
+          "record_id": "10.1016/j.fsi.2018.06.019:RpdefB",
+          "reviewed": true,
+          "source_id": "yang_2018_clam_rpdefb",
+          "status": "partial_only",
+          "test_system": "원문 미확인(초록은 Vibrio splendidus에 대한 항균 활성만 서술)",
+          "values": []
+        },
         {
           "chain": {
             "comparable_cohort": true,
@@ -6207,7 +6264,8 @@
         "rda_db_10_4_fatty_acids",
         "suetsuna_2002_clam",
         "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "worms_rest_mbpi",
+        "yang_2018_clam_rpdefb"
       ],
       "stock_decline": {
         "aquaculture_share_recent_pct": 37.6,
@@ -8581,7 +8639,7 @@
             25040660
           ],
           "adjusted": 13.787276226695111,
-          "caveat": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
+          "caveat": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다. 원측정의 DOI는 10.1002/cbdv.200890044(Tang 등 2008)이고, ChEMBL은 같은 2008년 측정을 서로 다른 2차 문헌 세 곳에서 세 번(활성 15154487·18514889·25040660) 싣고 있어 측정이 여러 건인 것처럼 보일 수 있습니다.",
           "chembl_stratum": "pathogen",
           "cohort_records": 10781,
           "compound_id": "CHEMBL1822160",
@@ -16419,8 +16477,43 @@
     {
       "aphia_id": 275816,
       "bbvi_label": "단일 논문",
-      "bbvi_mbpi_from_peptide_stratum": true,
-      "bioactivity_partial": [],
+      "bbvi_mbpi_from_peptide_stratum": false,
+      "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "MIC",
+          "exclusion_reason": "값과 합성 조건은 확인했지만, 배지 없는 완충액 MIC는 고정 비교집단과 같은 조건이 아니라 점수에 쓰지 않습니다(prereg-4.13-2026-10-14 결정 3번, 팀장 결정 대기).",
+          "material_kind": "넙치 PoTFPI-1의 C말단 25잔기 합성 펩타이드 TP25(Pepmic, HPLC 95%)",
+          "missing": [
+            "배지 없이 완충액(PBS)에서 MIC를 읽어 3.19 시험법 규칙(액체 배지 2배 희석)을 충족하지 않음",
+            "비교집단(DBAASP)은 배지에서 읽은 MIC만 담고 있어 같은 잣대가 아님"
+          ],
+          "origin_aphia_id": 275816,
+          "origin_scientific_name": "Paralichthys olivaceus",
+          "record_id": "10.1186/s13567-021-00908-y:TP25",
+          "reviewed": true,
+          "source_id": "wang_2021_flounder_tp25",
+          "status": "partial_only",
+          "test_system": "96웰, PBS(pH 6.5)에 재부유한 균 2×10⁶ CFU/mL, 2배 희석, 24 h, 육안 판독 · 2026-10-14 전문 확인",
+          "values": [
+            {
+              "material": "Staphylococcus aureus",
+              "unit": "µM",
+              "value": 3
+            },
+            {
+              "material": "Micrococcus luteus",
+              "unit": "µM",
+              "value": 5
+            }
+          ]
+        }
+      ],
       "bioactivity_trace": [
         {
           "adjusted": 29.19034090909091,
@@ -16487,6 +16580,146 @@
           ],
           "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
           "stratum_kind": "peptide"
+        },
+        {
+          "adjusted": 38.57838589981447,
+          "cohort_median_pMIC": 5.269,
+          "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
+          "measurements": [
+            {
+              "endpoint": "MIC",
+              "medium": "marine 2216E medium, 28 C",
+              "method": "broth_microdilution",
+              "original_paper_doi": "10.3390/ijms232112722",
+              "relation": "=",
+              "source_id": "xu_2022_ijms_p35",
+              "target_species": "Bacillus subtilis",
+              "target_strain": null,
+              "unit": "uM",
+              "value": 5
+            }
+          ],
+          "original_paper_dois": [
+            "10.3390/ijms232112722"
+          ],
+          "pMIC": 5.301,
+          "peer_peptides": 2156,
+          "peptide_name": "P35",
+          "peptide_sequence": "SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK",
+          "percentile": 51.44,
+          "record_ids": [
+            "10.3390/ijms232112722:P35:B.subtilis"
+          ],
+          "stratum_id": "amp-dbaasp-mic-broth-bacillus-subtilis",
+          "stratum_kind": "amp",
+          "target_species": "Bacillus subtilis",
+          "target_strains": []
+        },
+        {
+          "adjusted": 36.28612114476243,
+          "cohort_median_pMIC": 5.029,
+          "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
+          "measurements": [
+            {
+              "endpoint": "MIC",
+              "medium": "LB broth, 37 C",
+              "method": "broth_microdilution",
+              "original_paper_doi": "10.3390/ijms232112722",
+              "relation": "=",
+              "source_id": "xu_2022_ijms_p35",
+              "target_species": "Escherichia coli",
+              "target_strain": null,
+              "unit": "uM",
+              "value": 10
+            }
+          ],
+          "original_paper_dois": [
+            "10.3390/ijms232112722"
+          ],
+          "pMIC": 5.0,
+          "peer_peptides": 7198,
+          "peptide_name": "P35",
+          "peptide_sequence": "SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK",
+          "percentile": 48.38,
+          "record_ids": [
+            "10.3390/ijms232112722:P35:E.coli"
+          ],
+          "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
+          "stratum_kind": "amp",
+          "target_species": "Escherichia coli",
+          "target_strains": []
+        },
+        {
+          "adjusted": 35.56701030927835,
+          "cohort_median_pMIC": 5.049,
+          "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
+          "measurements": [
+            {
+              "endpoint": "MIC",
+              "medium": "LB broth, 37 C",
+              "method": "broth_microdilution",
+              "original_paper_doi": "10.3390/ijms232112722",
+              "relation": "=",
+              "source_id": "xu_2022_ijms_p35",
+              "target_species": "Staphylococcus aureus",
+              "target_strain": null,
+              "unit": "uM",
+              "value": 10
+            }
+          ],
+          "original_paper_dois": [
+            "10.3390/ijms232112722"
+          ],
+          "pMIC": 5.0,
+          "peer_peptides": 6208,
+          "peptide_name": "P35",
+          "peptide_sequence": "SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK",
+          "percentile": 47.42,
+          "record_ids": [
+            "10.3390/ijms232112722:P35:S.aureus"
+          ],
+          "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+          "stratum_kind": "amp",
+          "target_species": "Staphylococcus aureus",
+          "target_strains": []
+        },
+        {
+          "adjusted": 43.150684931506845,
+          "cohort_median_pMIC": 5.204,
+          "evidence_factor": 0.75,
+          "material_class": "native_sequence_synthetic",
+          "measurements": [
+            {
+              "endpoint": "MIC",
+              "medium": "LB broth, 28 C",
+              "method": "broth_microdilution",
+              "original_paper_doi": "10.3390/ijms232112722",
+              "relation": "=",
+              "source_id": "xu_2022_ijms_p35",
+              "target_species": "Vibrio anguillarum",
+              "target_strain": null,
+              "unit": "uM",
+              "value": 5
+            }
+          ],
+          "original_paper_dois": [
+            "10.3390/ijms232112722"
+          ],
+          "pMIC": 5.301,
+          "peer_peptides": 73,
+          "peptide_name": "P35",
+          "peptide_sequence": "SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK",
+          "percentile": 57.53,
+          "record_ids": [
+            "10.3390/ijms232112722:P35:V.anguillarum"
+          ],
+          "stratum_id": "amp-dbaasp-mic-broth-vibrio-anguillarum",
+          "stratum_kind": "amp",
+          "target_species": "Vibrio anguillarum (incl. Listonella anguillarum)",
+          "target_strains": []
         }
       ],
       "candidate_label": "조사 후보",
@@ -16502,11 +16735,11 @@
         },
         "rejected_links": [],
         "rule_sensitivity": {
-          "log_scale_common_fence": 29.2,
-          "minimum_cohort_10": 29.2,
-          "minimum_cohort_100": 29.2,
-          "no_approved_drug_filter": 29.2,
-          "no_common_metabolite_filter": 29.2
+          "log_scale_common_fence": 43.2,
+          "minimum_cohort_10": 43.2,
+          "minimum_cohort_100": 43.2,
+          "no_approved_drug_filter": 43.2,
+          "no_common_metabolite_filter": 43.2
         },
         "sufficiency": {
           "best_record_steps": 0,
@@ -17316,28 +17549,37 @@
       "mbpi_breadth": {
         "exploratory": true,
         "floor_zero": false,
-        "independent_paper_count": 1,
-        "item_count": 2,
+        "independent_paper_count": 2,
+        "item_count": 6,
         "material_counts": {
-          "hydrolysate_sequence_synthetic": 2
+          "hydrolysate_sequence_synthetic": 2,
+          "native_sequence_synthetic": 4
         },
-        "max": 29.2,
-        "mean": 27.5,
+        "max": 43.2,
+        "mean": 34.8,
         "measured_zero_items": 0,
-        "median": 27.5,
-        "top2_mean": 27.5
+        "median": 35.9,
+        "top2_mean": 40.9
       },
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
       "mbpi_rx": {
         "excluded_item_count": 2,
-        "reason": "제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다",
-        "stratum_id": null,
-        "stratum_kind": null,
-        "top_item": null,
-        "value": null
+        "reason": null,
+        "stratum_id": "amp-dbaasp-mic-broth-vibrio-anguillarum",
+        "stratum_kind": "amp",
+        "top_item": {
+          "adjusted": 43.150684931506845,
+          "evidence_factor": 0.75,
+          "percentile": 57.53,
+          "record_ids": [
+            "10.3390/ijms232112722:P35:V.anguillarum"
+          ],
+          "trace_index": 5
+        },
+        "value": 43.2
       },
-      "mbpi_stratum": "peptide",
+      "mbpi_stratum": "amp",
       "mcui_basis": null,
       "mcui_driver": null,
       "mcui_extinction_risk": null,
@@ -17457,36 +17699,37 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 44.3,
-        "MBPI": 29.2,
+        "BBVI": 51.3,
+        "MBPI": 43.2,
         "MCUI": null,
         "MFPI": 59.4
       },
       "scores_unrounded": {
-        "BBVI": 44.295170454545456,
-        "MBPI": 29.19034090909091,
+        "BBVI": 51.275342465753425,
+        "MBPI": 43.150684931506845,
         "MFPI": 59.4
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 36.7,
-          "0.5": 44.3,
-          "0.75": 51.8
+          "0.25": 47.2,
+          "0.5": 51.3,
+          "0.75": 55.3
         },
-        "mean_compound_sensitivity": 27.5,
-        "median_compound_sensitivity": 27.5,
+        "mean_compound_sensitivity": 34.8,
+        "median_compound_sensitivity": 35.9,
         "range_from_aggregation": [
           25.8,
-          29.2
+          43.2
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 29.2,
+        "bioactivity_only_MBPI": 43.2,
         "food_only_MFPI": 59.4
       },
       "source_ids": [
         "ahtpdb_ic50_2026",
         "cmnpd_mbpi",
+        "dbaasp_amp_cohort",
         "europepmc_mbpi",
         "iucn_redlist_recheck",
         "iucn_redlist_search",
@@ -17496,7 +17739,9 @@
         "obis_trend",
         "oh_2024_flounder",
         "rda_db_10_4",
-        "rda_db_10_4_fatty_acids"
+        "rda_db_10_4_fatty_acids",
+        "wang_2021_flounder_tp25",
+        "xu_2022_ijms_p35"
       ],
       "stock_decline": {
         "aquaculture_share_recent_pct": 91.9,
@@ -17567,7 +17812,32 @@
       "aphia_id": 274849,
       "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": false,
-      "bioactivity_partial": [],
+      "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
+          "endpoint": "MIC",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 어느 논문의 표에 어떤 값이 있는지부터 확인이 필요합니다.",
+          "material_kind": "조피볼락 헵시딘 1의 성숙 펩타이드를 합성했다고 보고된 mSshep 1(서열 미확인)",
+          "missing": [
+            "두 논문 모두 비공개로 원문 미확인 — 이 DOI는 헵시딘·페롭토시스 논문이고 초록에 MIC 수치가 없음",
+            "MIC 전용 논문으로 보이는 같은 연구진의 Fish Shellfish Immunol 2026(10.1016/j.fsi.2026.111192)도 비공개이며, 그 초록의 균 목록이 조사 메모와 다름(M. luteus 대신 A. hydrophila)",
+            "서열·수치·배지·합성 조건 미확인"
+          ],
+          "origin_aphia_id": 274849,
+          "origin_scientific_name": "Sebastes schlegelii",
+          "record_id": "10.1016/j.ijbiomac.2025.145037:mSshep1",
+          "reviewed": true,
+          "source_id": "jing_2025_rockfish_hepcidin",
+          "status": "partial_only",
+          "test_system": "원문 미확인",
+          "values": []
+        }
+      ],
       "bioactivity_trace": [
         {
           "adjusted": 31.664787371134018,
@@ -18775,6 +19045,7 @@
         "gbif_rapid_lc",
         "iucn_redlist_recheck",
         "iucn_redlist_search",
+        "jing_2025_rockfish_hepcidin",
         "kosis_dt_1ew0004",
         "kosis_fish_aquaculture",
         "obis_trend",
@@ -21859,7 +22130,32 @@
       "aphia_id": 254538,
       "bbvi_label": "단일 논문",
       "bbvi_mbpi_from_peptide_stratum": true,
-      "bioactivity_partial": [],
+      "bioactivity_partial": [
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": false,
+            "quantitative_endpoint": false,
+            "structure_id": false
+          },
+          "endpoint": "ACE 저해 IC50",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다.",
+          "material_kind": "대구(Pacific cod) 껍질 젤라틴 가수분해물에서 분리했다고 보고된 펩타이드(서열 미확인)",
+          "missing": [
+            "원문도 초록도 열람하지 못함",
+            "서열·수치·기질·합성 여부 모두 미확인",
+            "제목에 학명이 없고(‘Pacific cod’), 같은 연구진의 다른 논문과 혼동 위험"
+          ],
+          "origin_aphia_id": 254538,
+          "origin_scientific_name": "Gadus macrocephalus",
+          "record_id": "10.1016/j.foodchem.2011.12.020:LLMLDNDLPP",
+          "reviewed": true,
+          "source_id": "himaya_2012_cod_skin",
+          "status": "partial_only",
+          "test_system": "원문 미확인",
+          "values": []
+        }
+      ],
       "bioactivity_trace": [
         {
           "adjusted": 59.87215909090909,
@@ -22962,6 +23258,7 @@
         "ahtpdb_ic50_2026",
         "cellosaurus_mbpi",
         "chembl_mbpi",
+        "himaya_2012_cod_skin",
         "iucn_redlist_recheck",
         "iucn_redlist_search",
         "jfa_rarity_2017",
@@ -27560,7 +27857,7 @@
       "minimum_peptides": 30,
       "origin_rule": "The origin claim is read in the original paper, never from DBAASP, which records neither the tested material nor its synthesis: the sequence must come from the species' own gene or tissue, the tested material must be a chemically synthetic or sequence-confirmed purified single peptide, and the value must be a numeric MIC by broth microdilution. MEC (radial diffusion), inhibition-zone diameters, recombinant proteins and censored values never enter. Since 3.19 (team-lead decision): a peptide expressed in another organism (for example an E. coli fusion protein cut free and purified) is recombinant and stays excluded; 'purified isolate' means purified from the species' own tissue.",
       "separation_rule": "A MIC percentile and an ACE IC50 percentile are never ranked against each other; the species MBPI is the highest adjusted item over all strata, as before, and the stratum of the best item is shown.",
-      "supplement": "research/verified-indices/evidence-amp-4.1-2026-10-04.json",
+      "supplement": "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
       "value_scale": "pMIC = 6 - log10(MIC in uM); higher is more potent"
     },
     "anticancer_bioactivity": {
@@ -27646,8 +27943,8 @@
         "rule": "4.11: a scored peptide item of max_residues or fewer gets this sentence appended to its caveat. It never changes a value."
       }
     },
-    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
-    "changes_from": "verified-4.12 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
+    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
+    "changes_from": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -27661,9 +27958,10 @@
       "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score. Since 3.27 also the single-screen caveat for PGA2 (꼬시래기) and the restated-measurement and food-origin caveat for flazin (시카메굴); a reviewed peptide row may carry its own caveat the same way (살오징어, the 3-h ACE pre-incubation). None changes a score.",
       "compound_caveats": {
         "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
-        "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다.",
+        "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다. 이 학명 대응의 분류학 근거는 Boo 등 2022(Diversity 14:826, 10.3390/d14100826)로, 동북아에서 'Gelidium amansii'로 보고된 것은 Gelidium elegans의 오동정이라고 적고 있습니다(인용: Kim 등 2012 Phycologia 51:461, Freshwater 등 1995, Norris 1990).",
         "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-        "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
+        "SUCKEYMKNGZJHK-ZARIWKGHSA-N": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 원논문은 ChEMBL 종-물질 연결의 원논문으로 더하지 못했습니다(이미 연결된 화합물에 DOI를 더하는 일은 규칙 변경이라 팀장 결정 대기, prereg-4.13-2026-10-14 결정 8번).",
+        "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다. 원측정의 DOI는 10.1002/cbdv.200890044(Tang 등 2008)이고, ChEMBL은 같은 2008년 측정을 서로 다른 2차 문헌 세 곳에서 세 번(활성 15154487·18514889·25040660) 싣고 있어 측정이 여러 건인 것처럼 보일 수 있습니다.",
         "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다."
       },
       "data_validity_comments": [
@@ -29456,6 +29754,16 @@
       "url": "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf",
       "version": "2012 article, Tables 2 and 5"
     },
+    "himaya_2012_cod_skin": {
+      "accessed": "2026-10-14",
+      "doi": "10.1016/j.foodchem.2011.12.020",
+      "license": "미확인(출판사 유료)",
+      "provider": "Food Chemistry 132(4):1872-1882 (Elsevier); neither full text nor abstract opened on 2026-10-14",
+      "terms": "서지 정보만 기록",
+      "title": "An active peptide purified from gastrointestinal enzyme hydrolysate of Pacific cod skin gelatin attenuates ACE activity (Himaya SWA et al. 2012)",
+      "url": "https://doi.org/10.1016/j.foodchem.2011.12.020",
+      "version": "2012"
+    },
     "hong_2025_ijms_mts": {
       "accessed": "2026-10-04",
       "doi": "10.3390/ijms26178546",
@@ -29680,6 +29988,16 @@
       "url": "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901",
       "version": "2014"
     },
+    "jing_2025_rockfish_hepcidin": {
+      "accessed": "2026-10-14",
+      "doi": "10.1016/j.ijbiomac.2025.145037",
+      "license": "미확인(출판사 유료)",
+      "provider": "International Journal of Biological Macromolecules 318:145037 (Elsevier), abstract only; full text not open",
+      "terms": "초록 내용만 기록",
+      "title": "Immunometabolic interplay and molecular characterization of hepcidins in black rockfish (Jing H et al. 2025)",
+      "url": "https://doi.org/10.1016/j.ijbiomac.2025.145037",
+      "version": "2025"
+    },
     "kang_2019_haliotis_wando": {
       "accessed": "2026-09-30",
       "license": "CC BY 4.0",
@@ -29885,6 +30203,16 @@
       "title": "Saringosterol Acetate Isolated from Sargassum fusiformis Induces Mitochondrial-Mediated Apoptosis in MCF-7 Breast Cancer Cells",
       "url": "https://onlinelibrary.wiley.com/doi/abs/10.1002/cbdv.202100848",
       "version": "Published 2022-01-07; publisher primary abstract; PMID 34997687"
+    },
+    "li_2022_ulva_diggl": {
+      "accessed": "2026-10-14",
+      "doi": "10.1016/j.foodchem.2022.134127",
+      "license": "미확인(출판사 유료)",
+      "provider": "Food Chemistry 401:134127 (Elsevier), abstract only (PubMed); full text not open",
+      "terms": "초록의 수치만 기록",
+      "title": "Purification, identification and function analysis of an ACE inhibitory peptide from Ulva prolifera protein (Li Z et al. 2022)",
+      "url": "https://doi.org/10.1016/j.foodchem.2022.134127",
+      "version": "2022"
     },
     "li_2024_ulva_kaf": {
       "accessed": "2026-09-28",
@@ -30555,6 +30883,26 @@
       "url": "https://doi.org/10.1271/bbb.60.1353",
       "version": "1996"
     },
+    "wang_2008_oyster_vvy": {
+      "accessed": "2026-10-14",
+      "doi": "10.1016/j.foodchem.2008.03.059",
+      "license": "미확인(출판사 유료)",
+      "provider": "Food Chemistry 111(2):302-308 (Elsevier), abstract only; full text not open",
+      "terms": "초록의 수치만 기록",
+      "title": "Purification and identification of an ACE inhibitory peptide from oyster protein hydrolysate (Wang J et al. 2008)",
+      "url": "https://doi.org/10.1016/j.foodchem.2008.03.059",
+      "version": "2008"
+    },
+    "wang_2021_flounder_tp25": {
+      "accessed": "2026-10-14",
+      "doi": "10.1186/s13567-021-00908-y",
+      "license": "CC BY 4.0",
+      "provider": "Veterinary Research 52(1):32 (BMC), open access, full text read from PMC7905887",
+      "terms": "서열과 수치만 기록",
+      "title": "Expression analysis of TFPI-1 and TFPI-2 in Paralichthys olivaceus and antibacterial and anticancer activity of derived peptides (Wang G et al. 2021)",
+      "url": "https://doi.org/10.1186/s13567-021-00908-y",
+      "version": "2021 (PMC7905887)"
+    },
     "wang_2024_apostichopus": {
       "accessed": "2026-09-28",
       "doi": "10.3390/md22020090",
@@ -30646,6 +30994,16 @@
       "url": "https://doi.org/10.1007/s00217-014-2315-8",
       "version": "2015 (published online 2014-08-27)"
     },
+    "xie_2014_oyster_crosslinked": {
+      "accessed": "2026-10-14",
+      "doi": "10.1155/2014/379234",
+      "license": "CC BY 3.0",
+      "provider": "BioMed Research International 2014:379234 (Hindawi), open access, full text read from PMC4130196",
+      "terms": "서열과 수치만 기록",
+      "title": "Angiotensin I-converting enzyme inhibitor derived from cross-linked oyster protein (Xie CL et al. 2014)",
+      "url": "https://doi.org/10.1155/2014/379234",
+      "version": "2014 (PMC4130196)"
+    },
     "xo_peptide_cohort_literature_2026": {
       "accessed": "2026-10-05",
       "license": "Bibliographic data and published values only",
@@ -30655,6 +31013,16 @@
       "url": "https://pubmed.ncbi.nlm.nih.gov/",
       "version": "2026-10-05: four PubMed queries, 270 records read in full; members confirmed by two independent checks"
     },
+    "xu_2022_ijms_p35": {
+      "accessed": "2026-10-14",
+      "doi": "10.3390/ijms232112722",
+      "license": "CC BY 4.0",
+      "provider": "International Journal of Molecular Sciences 23(21):12722 (MDPI), open access, full text and Table 1 read from PMC9654944",
+      "terms": "CC BY 4.0; sequence and numeric values recorded, no text or tables copied",
+      "title": "A Non-Canonical Teleost NK-Lysin: Antimicrobial Activity via Multiple Mechanisms (Xu H, Yuan Z, Sun L 2022)",
+      "url": "https://doi.org/10.3390/ijms232112722",
+      "version": "2022 (PMC9654944)"
+    },
     "yan_2018_kumamoto_beihai": {
       "accessed": "2026-10-01",
       "license": "Publisher copyright (Wiley); abstract only, fact and a short quotation",
@@ -30663,6 +31031,16 @@
       "title": "Growth performance and biochemical composition of the oysters Crassostrea sikamea, Crassostrea angulata and their hybrids in southern China (Yan L, Su J, Wang Z, Zhang Y, Yan X, Yu R), doi:10.1111/are.13549",
       "url": "https://doi.org/10.1111/are.13549",
       "version": "publisher abstract page checked 2026-10-01"
+    },
+    "yang_2018_clam_rpdefb": {
+      "accessed": "2026-10-14",
+      "doi": "10.1016/j.fsi.2018.06.019",
+      "license": "미확인(출판사 유료)",
+      "provider": "Fish & Shellfish Immunology 80:274-280 (Elsevier), abstract only; full text not open",
+      "terms": "초록 내용만 기록",
+      "title": "A defensin-like antimicrobial peptide from the manila clam Ruditapes philippinarum (Yang D et al. 2018)",
+      "url": "https://doi.org/10.1016/j.fsi.2018.06.019",
+      "version": "2018"
     },
     "yoneda_2025_engraulis_rearing": {
       "accessed": "2026-10-01",
@@ -35672,7 +36050,7 @@
             2432635
           ],
           "adjusted": 13.542053149058528,
-          "caveat": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다.",
+          "caveat": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다. 이 학명 대응의 분류학 근거는 Boo 등 2022(Diversity 14:826, 10.3390/d14100826)로, 동북아에서 'Gelidium amansii'로 보고된 것은 Gelidium elegans의 오동정이라고 적고 있습니다(인용: Kim 등 2012 Phycologia 51:461, Freshwater 등 1995, Norris 1990).",
           "chembl_stratum": "pathogen",
           "cohort_records": 10781,
           "compound_id": "CHEMBL510103",
@@ -38766,6 +39144,86 @@
             "quantitative_endpoint": true,
             "structure_id": true
           },
+          "endpoint": "ACE 저해 IC50",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 측정 시료의 종류를 확인하지 못해 기원 규칙(합성 또는 서열 확인된 정제물)을 적용할 수 없습니다.",
+          "material_kind": "참굴 단백질 가수분해물에서 처음 분리했다고 보고된 펩타이드 VVYPWTQRF",
+          "missing": [
+            "원문(본문·표) 미확인 — 초록만 열람",
+            "초록이 ‘처음 분리·수율 8.5%’라고만 적어 측정 시료가 합성품인지 정제 분리물인지 확인 불가",
+            "기질(HHL 여부)·효소 출처 미확인"
+          ],
+          "origin_aphia_id": 836033,
+          "origin_name_link_status": "WoRMS에서 Magallana gigas의 후순위 동의어로 확인(2026-10-14)",
+          "origin_scientific_name": "Magallana gigas",
+          "record_id": "10.1016/j.foodchem.2008.03.059:VVYPWTQRF",
+          "reported_origin_scientific_name": "Crassostrea talienwhanensis Crosse",
+          "reviewed": true,
+          "source_id": "wang_2008_oyster_vvy",
+          "status": "partial_only",
+          "test_system": "ACE 저해 시험(기질·효소 출처는 초록에 없음)",
+          "values": [
+            {
+              "material": "VVYPWTQRF(초록 기재)",
+              "unit": "µM",
+              "value": 66
+            }
+          ]
+        },
+        {
+          "chain": {
+            "comparable_cohort": true,
+            "origin": false,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
+          "endpoint": "ACE 저해 IC50",
+          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 팀장 결정 대기).",
+          "material_kind": "가교(MTGase) 처리한 굴 단백질 가수분해물에서 분리·동정하고 합성한 펩타이드 TAY·VK·KY·FYN·YA(GL Biochem, >95.8%)",
+          "missing": [
+            "논문이 시료의 학명을 적지 않음 — 본문은 ‘oyster’와 ‘통영 시장에서 구입(2011년 10월)’뿐"
+          ],
+          "origin_aphia_id": 836033,
+          "origin_scientific_name": "Magallana gigas",
+          "record_id": "10.1155/2014/379234:TAY-YA",
+          "reviewed": true,
+          "source_id": "xie_2014_oyster_crosslinked",
+          "status": "partial_only",
+          "test_system": "HHL(Sigma H1635) 기질 · ACE(Sigma A6778) · 2026-10-14 전문 확인",
+          "values": [
+            {
+              "material": "TAY",
+              "unit": "µM",
+              "value": 16.7
+            },
+            {
+              "material": "VK",
+              "unit": "µM",
+              "value": 29.0
+            },
+            {
+              "material": "KY",
+              "unit": "µM",
+              "value": 51.5
+            },
+            {
+              "material": "FYN",
+              "unit": "µM",
+              "value": 68.2
+            },
+            {
+              "material": "YA",
+              "unit": "µM",
+              "value": 93.9
+            }
+          ]
+        },
+        {
+          "chain": {
+            "comparable_cohort": false,
+            "origin": true,
+            "quantitative_endpoint": true,
+            "structure_id": true
+          },
           "endpoint": "IC50",
           "material_kind": "single_peptide",
           "missing": [
@@ -40175,8 +40633,10 @@
         "rda_db_10_4",
         "rda_db_10_4_fatty_acids",
         "valenzuela_2022_yield",
+        "wang_2008_oyster_vvy",
         "wikidata_p703_lotus",
-        "worms_rest_mbpi"
+        "worms_rest_mbpi",
+        "xie_2014_oyster_crosslinked"
       ],
       "stock_decline": {
         "aquaculture_share_recent_pct": 94.0,

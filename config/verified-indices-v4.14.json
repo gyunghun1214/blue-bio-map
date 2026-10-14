@@ -1,7 +1,7 @@
 {
  "method_version": "verified-4.14",
  "status": "released",
- "changes_from": "verified-4.12 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
+ "changes_from": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
  "nutrition": {
   "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
   "components": {
@@ -704,8 +704,9 @@
    "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
    "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
    "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
-   "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다.",
-   "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다."
+   "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다. 원측정의 DOI는 10.1002/cbdv.200890044(Tang 등 2008)이고, ChEMBL은 같은 2008년 측정을 서로 다른 2차 문헌 세 곳에서 세 번(활성 15154487·18514889·25040660) 싣고 있어 측정이 여러 건인 것처럼 보일 수 있습니다.",
+   "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다. 이 학명 대응의 분류학 근거는 Boo 등 2022(Diversity 14:826, 10.3390/d14100826)로, 동북아에서 'Gelidium amansii'로 보고된 것은 Gelidium elegans의 오동정이라고 적고 있습니다(인용: Kim 등 2012 Phycologia 51:461, Freshwater 등 1995, Norris 1990).",
+   "SUCKEYMKNGZJHK-ZARIWKGHSA-N": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 원논문은 ChEMBL 종-물질 연결의 원논문으로 더하지 못했습니다(이미 연결된 화합물에 DOI를 더하는 일은 규칙 변경이라 팀장 결정 대기, prereg-4.13-2026-10-14 결정 8번)."
   },
   "compound_caveat_rule": "Since 3.20: the link review's autoxidation caveat for the two fucosterol-derived oxysterols is shown with every item that uses them (톳 and 다시마); it changes no score. Since 3.27 also the single-screen caveat for PGA2 (꼬시래기) and the restated-measurement and food-origin caveat for flazin (시카메굴); a reviewed peptide row may carry its own caveat the same way (살오징어, the 3-h ACE pre-incubation). None changes a score.",
   "snapshot_supplement": "research/verified-indices/snapshots/mbpi-links-supplement-2026-10-04.json",
@@ -889,7 +890,7 @@
   }
  },
  "amp_bioactivity": {
-  "supplement": "research/verified-indices/evidence-amp-4.1-2026-10-04.json",
+  "supplement": "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
   "cohort_file": "research/verified-indices/amp-cohorts-dbaasp-3.19-2026-10-02.json",
   "cohort_builder": "scripts/build_amp_cohorts.py",
   "endpoint": "MIC",
@@ -946,7 +947,7 @@
   ],
   "cohort_source_id": "cancerppd_anticancer_cohort"
  },
- "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.4-2026-10-05.json",
+ "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
  "xo_bioactivity": {
   "supplement": "research/verified-indices/evidence-xo-4.3-2026-10-05.json",
   "cohort_file": "research/verified-indices/xo-cohort-4.3-2026-10-05.json",

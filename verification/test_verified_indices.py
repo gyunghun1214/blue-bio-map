@@ -2721,8 +2721,9 @@ V47 = ROOT / "config" / "verified-indices-v4.7.json"    # superseded by 4.8 (참
 V48 = ROOT / "config" / "verified-indices-v4.8.json"    # superseded by 4.9 (relaxation (d) independent replication)
 V49 = ROOT / "config" / "verified-indices-v4.9.json"    # superseded by 4.10 (secondary MBPI-Rx, exploratory)
 V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (2026-10-13 audit: rules 1-5)
-V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (KOSIS stock-decline MCUI basis)
-V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
+V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (MCUI stock-decline basis)
+V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)
+V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3875,7 +3876,7 @@ class Verified412Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.12", "released"))
-        # the published 4.12 report is archived as it was (superseded by 4.14)
+        # the published 4.12 report is archived as it was; 4.13 adds the 넙치 AMP rows (Verified413Tests)
         archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.12.json"
         self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertEqual(self.rule["prereg"], "research/verified-indices/prereg-4.12-2026-10-14.md")
@@ -3912,17 +3913,16 @@ class Verified412Tests(unittest.TestCase):
         self.assertEqual((self.by_name["멍게"]["scores"]["MCUI"], self.by_name["멍게"]["mcui_driver"]), (None, None))
 
     def test_matrix_moves_only_the_squid(self):
-        # the 4.12 matrix, rebuilt from the 4.12 report (the published file is 4.14 now)
-        from build_matrix_readiness import build as build_matrix
-        read = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
-        matrix = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
-        counts = {}
-        for s in matrix["species"]:
-            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        # from this version's own report (the committed matrix file is 4.13's; Verified413Tests reads that)
+        import build_matrix_readiness as M
+        rule, counts = self.report["method"]["matrix"], {}
+        kind = lambda s: M.matrix_type(s["scores"], rule) if None not in (s["scores"]["BBVI"], s["scores"]["MCUI"]) else None
+        for s in self.new.values():
+            counts[kind(s)] = counts.get(kind(s), 0) + 1
         self.assertEqual(counts, {"baseline_survey": 14, "sustainable_use": 11, "conservation_priority": 3,
                                   "alternative_production": 1, None: 1})
-        self.assertEqual(next(s["matrix_type"] for s in matrix["species"] if s["korean_name"] == "살오징어"), "alternative_production")
-        self.assertEqual(matrix["matrix_points"], 29)
+        self.assertEqual(kind(self.by_name["살오징어"]), "alternative_production")
+        self.assertEqual(sum(v for k, v in counts.items() if k), 29)
 
     def test_broader_links_are_capped_and_the_reasons_come_in_order(self):
         level = lambda name: next(a for a, s in self.new.items() if s["korean_name"] == name)
@@ -3972,6 +3972,103 @@ class Verified412Tests(unittest.TestCase):
         self.assertEqual(self.report["method"]["conservation"]["effort_adjustment"], 0)
 
 
+class Verified413Tests(unittest.TestCase):
+    """4.13 (research/verified-indices/prereg-4.13-2026-10-14.md, registered in its own commit before the inputs): the
+    2026-10-14 evidence brief, re-verified against the DOI originals. No rule changed. The AMP supplement gains the four
+    cohort targets of 넙치 P35 (Xu, Yuan & Sun 2022, read in full text); seven records this run could not verify in the
+    original text, or that the fixed rules do not cover, join the partial supplement and score nothing; three compound
+    caveats gain their original-measurement sources."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs(config=V413)
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V412))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.13", "released"))
+        # the published 4.13 report is archived as it was (superseded by 4.14)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.13.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
+
+    def test_values_are_the_registered_expectations(self):
+        # prereg 7: only 넙치 moves, and the rest of the report is 4.11's
+        flounder = self.by_name["넙치"]
+        self.assertEqual(flounder["scores"], {"MFPI": 59.4, "MBPI": 43.2, "MCUI": 10.0, "BBVI": 51.3})
+        self.assertEqual((flounder["mbpi_stratum"], flounder["bbvi_label"]), ("amp", "단일 논문"))
+        self.assertEqual(flounder["sensitivity"]["food_weights"], {"0.25": 47.3, "0.5": 51.3, "0.75": 55.3})
+        self.assertEqual(flounder["mbpi_breadth"], {"exploratory": True, "item_count": 6, "median": 35.9, "top2_mean": 40.9})
+        for a, s in self.new.items():
+            if s["korean_name"] != "넙치":
+                for k in ("scores", "bbvi_label", "mbpi_label", "mbpi_stratum", "mcui_basis", "mbpi_breadth"):
+                    self.assertEqual(s.get(k), self.old[a].get(k), (s["korean_name"], k))
+
+    def test_the_four_scored_p35_rows_are_the_cohort_targets_read_in_the_paper(self):
+        items = [i for i in self.by_name["넙치"]["bioactivity_trace"] if i.get("peptide_name") == "P35"]
+        self.assertEqual({i["target_species"].split(" (")[0] for i in items},
+                         {"Staphylococcus aureus", "Escherichia coli", "Vibrio anguillarum", "Bacillus subtilis"})
+        for i in items:
+            self.assertEqual(i["stratum_kind"], "amp")
+            self.assertEqual(i["original_paper_dois"], ["10.3390/ijms232112722"])
+            self.assertEqual(i["evidence_factor"], self.report["method"]["bioactivity"]["single_doi_factor"])
+            self.assertGreaterEqual(i["peer_peptides"], self.report["method"]["amp_bioactivity"]["minimum_peptides"])
+            self.assertEqual([m["unit"] for m in i["measurements"]], ["uM"])
+        top = max(items, key=lambda i: i["adjusted"])
+        self.assertEqual((top["target_species"].split(" (")[0], top["measurements"][0]["value"]), ("Vibrio anguillarum", 5))
+        self.assertEqual(round(top["adjusted"], 1), 43.2)
+
+    def test_the_matrix_file_moves_only_the_flounder(self):
+        # the 4.13 matrix, rebuilt from the 4.13 report (the published file is 4.14 now)
+        from build_matrix_readiness import build as build_matrix
+        read = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
+        matrix = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
+        counts = {}
+        for s in matrix["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"baseline_survey": 13, "sustainable_use": 12, "conservation_priority": 3,
+                                  "alternative_production": 1, None: 1})
+        self.assertEqual(next(s["matrix_type"] for s in matrix["species"] if s["korean_name"] == "넙치"), "sustainable_use")
+        self.assertEqual(matrix["matrix_points"], 29)
+
+    def test_the_rows_outside_the_four_cohorts_are_recorded_as_excluded(self):
+        rows = json.loads((ROOT / "research/verified-indices/evidence-amp-4.13-2026-10-14.json").read_text(encoding="utf-8"))
+        self.assertEqual(rows["snapshot_date"], "2026-10-14")
+        excluded = " ".join(e["reason"] + e["record"] for e in rows["excluded"])
+        for name in ("Micrococcus luteus", "Bacillus cereus", "TP25", "mSshep 1", "RpdefB"):
+            self.assertIn(name, excluded)
+        # 4.1's rows are carried over unchanged
+        old = json.loads((ROOT / "research/verified-indices/evidence-amp-4.1-2026-10-04.json").read_text(encoding="utf-8"))
+        self.assertEqual(rows["amp_bioactivity"][:len(old["amp_bioactivity"])], old["amp_bioactivity"])
+
+    def test_the_new_partial_records_score_nothing_and_keep_their_missing_step(self):
+        added = {"가시파래": 1, "대구": 1, "참굴": 2, "조피볼락": 1, "넙치": 1, "바지락": 1}
+        for name, more in added.items():
+            new, old = self.by_name[name], self.old[self.by_name[name]["aphia_id"]]
+            self.assertEqual(len(new["bioactivity_partial"]), len(old["bioactivity_partial"]) + more, name)
+            if name != "넙치":  # 넙치's MBPI moves on the scored P35 rows, never on its partial TP25 record
+                self.assertEqual(new["scores"]["MBPI"], old["scores"]["MBPI"], name)
+        for s in self.new.values():
+            for r in s["bioactivity_partial"]:
+                self.assertEqual(r["status"], "partial_only")
+                self.assertFalse(all(r["chain"].values()), r["record_id"])
+        # the TP25 row says why a buffer MIC is not a broth MIC; the 참굴 row why a market sample is not an origin
+        tp25 = next(r for r in self.by_name["넙치"]["bioactivity_partial"] if "TP25" in r["record_id"])
+        self.assertFalse(tp25["chain"]["comparable_cohort"])
+        oyster = next(r for r in self.by_name["참굴"]["bioactivity_partial"] if "379234" in r["record_id"])
+        self.assertFalse(oyster["chain"]["origin"])
+
+    def test_the_caveats_name_their_original_measurement(self):
+        caveats = self.report["method"]["chembl_bioactivity"]["compound_caveats"]
+        self.assertIn("10.3390/ijms22126481", caveats["SUCKEYMKNGZJHK-ZARIWKGHSA-N"])
+        self.assertIn("10.1002/cbdv.200890044", caveats["USBWYUYKHHILLZ-UHFFFAOYSA-N"])
+        self.assertIn("10.3390/d14100826", caveats["NSFSLUUZQIAOOX-QEWKCGBTSA-N"])
+        for key, text in caveats.items():  # a caveat is shown with its item and changes no score
+            self.assertNotIn("미통과", text)
+        shown = {k for s in self.new.values() for i in s["bioactivity_trace"] if i.get("caveat") for k in i.get("inchikeys", [])}
+        self.assertIn("SUCKEYMKNGZJHK-ZARIWKGHSA-N", shown)
+
 
 class Verified414Tests(unittest.TestCase):
     """4.14 (research/verified-indices/prereg-4.14-2026-10-14.md, registered in its own commit before the code; LKH's method review
@@ -3982,7 +4079,7 @@ class Verified414Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.inputs = load_inputs()
-        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V412))
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V413))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
         cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
@@ -4046,7 +4143,7 @@ class Verified414Tests(unittest.TestCase):
                 self.assertEqual(round1(raw[k]), s["scores"][k], (name, k))
             self.assertAlmostEqual(raw["BBVI"], w * raw["MFPI"] + (1 - w) * raw["MBPI"], places=9, msg=name)
 
-    def test_what_moved_from_412(self):
+    def test_what_moved_from_413(self):
         lost, bbvi = [], []
         for a, s in self.new.items():
             old, name = self.old[a], s["korean_name"]

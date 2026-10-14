@@ -39,6 +39,7 @@ jobs:
           node verification/test_mcui_trend_ui.mjs
           node verification/test_mcui_stock_ui.mjs
           node verification/test_trait_display_ui.mjs
+          node verification/test_supplementary_literature_ui.mjs
           node verification/test_compare_ui.mjs
           node verification/test_weight_slider.mjs
           node --check dist/chatbot.js

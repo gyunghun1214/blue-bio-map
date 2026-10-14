@@ -59,6 +59,7 @@ class MatrixReadinessTests(unittest.TestCase):
         self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"])
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
+                         # 4.13: 넙치 BBVI 44.3 -> 51.3 and MBPI 29.2 -> 43.2 (the P35 antimicrobial rows), crossing the 50 threshold.
                          # 4.11: 미역 71.0 -> 68.0, 톳 74.9 -> 64.2, 참굴 83.9 -> 71.9, 감태 65.0 -> 59.7, 큰가리비 46.1 -> 41.6,
                          # 갑오징어 65.1 -> 54.2 (other-origin replications no longer count; the 3-compound ACE stratum is gone).
                          # 4.14 (prereg-4.14 5): BBVI is mixed from the unrounded MFPI·MBPI and rounded once, so 11 species move
@@ -67,7 +68,7 @@ class MatrixReadinessTests(unittest.TestCase):
                          [(145721, 67.9), (241776, 36.1), (250680, 33.1), (342067, 51.5), (372119, 45.1), (494972, 64.2), (506159, 35.5),
                           (836033, 71.9), (377084, 41.6), (371986, 59.6), (234476, 53.7), (494853, 37.5), (236157, 59.6), (145086, 18.5),
                           (231750, 59.5), (397082, 35.1), (393716, 41.5),
-                          (836041, 34.9), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (281273, 46.6), (275816, 44.3),
+                          (836041, 34.9), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (281273, 46.6), (275816, 51.3),
                           (274849, 40.1), (276651, 29.3), (254538, 49.1), (1061762, 46.2), (534443, 54.2), (1666974, 54.1)])
         # 4.1: 꽃게 (MCCC1-MTS, origin settled on sequence records). 4.3: 참조기 (XO stratum) and the floor BBVIs of 방어·참문어·갑오징어
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
@@ -77,7 +78,7 @@ class MatrixReadinessTests(unittest.TestCase):
                           (377084, 26.5), (371986, 56.8), (234476, 73.3), (494853, 21.6), (236157, 49.3), (145086, 0.4), (231750, 58.6),
                           (397082, 15.6), (393716, 27.3), (836041, 13.8),
                           (504357, 75.0), (413600, 56.9),
-                          (127022, 34.9), (219984, 22.6), (281273, 53.8), (275816, 29.2), (274849, 31.7), (276651, 7.5),
+                          (127022, 34.9), (219984, 22.6), (281273, 53.8), (275816, 43.2), (274849, 31.7), (276651, 7.5),
                           # 4.1: 꽃게 AMP row; 4.3: 참조기 XO, three floors; 4.9: 갑오징어 65.8 -> 87.7 (second independent paper);
                           # 4.11: back to 65.8 (that paper measured a synthetic peptide, not a cuttlefish isolate)
                           (254538, 59.9), (1061762, 30.3), (534443, 70.5), (1666974, 65.8)])

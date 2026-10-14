@@ -511,7 +511,8 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
 vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
 {const rows=[...original.species,...original.candidate_species],rule=original.method.mbpi_rx,vs=original.method.posthoc.validation_sets.MBPI_RX;
   const rxv=s=>rows.find(r=>r.aphia_id===s.aphiaID).mbpi_rx.value;
-  assert.equal(rows.length,30);assert.equal(rows.filter(r=>r.mbpi_rx.value===null).length,11);
+// 4.13: 넙치's top item is now outside the excluded strata, so it has an MBPI-Rx value (11 -> 10 nulls)
+  assert.equal(rows.length,30);assert.equal(rows.filter(r=>r.mbpi_rx.value===null).length,10);
   for(const r of rows){const got=ctx.rxOf(by(r.aphia_id));
     assert.ok(got,`${r.korean_name}: MBPI-Rx re-checks from the trace`);
     assert.equal(got.value,r.mbpi_rx.value,`${r.korean_name} MBPI-Rx`);
@@ -562,7 +563,7 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>62.6<small>항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) · MBPI·BBVI에 쓰지 않음</small>'),'oyster 자세히');
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
   // sorting by it (4.14, prereg-4.14 8): grouped by the top item's stratum (groups in catalogue order of first appearance), high → low
-  // or low → high only inside a group, the 11 species without a value last in catalogue order both ways
+  // or low → high only inside a group, the species without a value (10 since 4.13) last in catalogue order both ways
   vm.runInContext('globalThis.rxGroup=s=>cmpGroup(s,"MBPI_RX")',ctx);
   const order=[];for(const s of next.species){const g=ctx.rxGroup(s);if(g&&!order.includes(g))order.push(g);}
   const rank=s=>{const g=ctx.rxGroup(s);return g?order.indexOf(g):Infinity;};
@@ -570,7 +571,7 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   assert.ok(order.length>1,'MBPI-Rx values sit in more than one stratum');
   for(const dir of ['desc','asc']){vm.runInContext(`cmpSort={key:'MBPI_RX',dir:'${dir}'}`,ctx);ctx.compare();t=dom.comparison.innerHTML;
     assert.deepEqual(headers(),want(dir),`MBPI-Rx ${dir}`);
-    assert.deepEqual(headers().slice(-11),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
+    assert.deepEqual(headers().slice(-next.species.filter(s=>rxv(s)===null).length),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
     assert.equal((t.match(/<tr class="cmp-group"><th colspan="8" scope="rowgroup">층 /g)||[]).length,order.length,'one head per stratum');
     assert.match(t,new RegExp(`aria-sort="${dir==='desc'?'descending':'ascending'}"><button type="button" class="cmp-sort" data-sort="MBPI_RX">`));
     assert.equal(dom['comparison-page'].textContent,`총 30종 · 정렬: MBPI-Rx ${dir==='desc'?'높은 순':'낮은 순'} (층별)`);}

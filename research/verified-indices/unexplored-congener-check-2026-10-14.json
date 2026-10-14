@@ -1,0 +1,29 @@
+{
+ "schema_version": "unexplored-congener-check-1",
+ "checked_on": "2026-10-14",
+ "prereg": "research/verified-indices/prereg-4.13-2026-10-14.md",
+ "query_box": "POLYGON((124 33,132 33,132 38.7,124 38.7,124 33))",
+ "rule": "For a species that newly reaches the unexplored-candidate threshold, the same two queries as scripts/build_unexplored_candidates.py: the OBIS checklist of its WoRMS genus in the map box, and the GBIF speciesKey facet of the same genus over the box with coordinates. A genus whose only species in the box is the relative itself adds no 미탐색 후보, so the reviewed species and their cells stay as last reviewed and only the relatives lists are rewritten. A genus with any other species needs the full build (network).",
+ "genera": [
+  {
+   "relative_aphia_id": 275816,
+   "relative_name": "Paralichthys olivaceus",
+   "relative_label": "넙치",
+   "genus_aphia_id": 158823,
+   "genus": "Paralichthys",
+   "family": "Paralichthyidae",
+   "gbif_genus_key": 2408863,
+   "obis_checklist": "2 rows: Paralichthys olivaceus (taxonID 275816, Species, 261 records) and the genus row Paralichthys (158823, Genus, 4 records). No other species.",
+   "gbif_species_facet": "1 speciesKey: 2408877 = Paralichthys olivaceus (ACCEPTED, 224 of 227 occurrences in the box). No other species.",
+   "congeners_outside_the_30": [],
+   "sources": [
+    "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/275816",
+    "https://api.obis.org/v3/checklist?taxonid=158823&geometry=POLYGON((124 33,132 33,132 38.7,124 38.7,124 33))&size=1000",
+    "https://api.gbif.org/v1/species/match?name=Paralichthys&rank=GENUS&kingdom=Animalia&strict=true",
+    "https://api.gbif.org/v1/occurrence/search?taxonKey=2408863&geometry=POLYGON((124 33,132 33,132 38.7,124 38.7,124 33))&hasCoordinate=true&limit=0&facet=speciesKey&facetLimit=1000",
+    "https://api.gbif.org/v1/species/2408877"
+   ],
+   "note": "넙치 crossed the threshold in verified-4.13 (BBVI 44.3 -> 51.3). The genus has no other species recorded in the box, so the published 미탐색 후보 list gains no species and 넙치 appears only in the relatives list."
+  }
+ ]
+}

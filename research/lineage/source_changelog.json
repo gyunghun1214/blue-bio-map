@@ -2563,12 +2563,77 @@
   },
   {
    "from_run_id": "verified-4.12",
-   "to_run_id": "verified-4.14",
+   "to_run_id": "verified-4.13",
    "from_commit": "966da04",
-   "to_commit": "38a3e8e",
+   "to_commit": "93db1b5",
    "published_on": "2026-10-14",
-   "method_note": "verified-4.12 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
-   "entries": []
+   "method_note": "verified-4.12 (2026-10-14). The 2026-10-14 evidence brief, registered in research/verified-indices/prereg-4.13-2026-10-14.md in its own commit before the inputs and code. No rule changed. (1) The AMP supplement gains the four cohort targets of 넙치 P35 (Xu, Yuan & Sun 2022, Int J Mol Sci 23:12722, full text read 2026-10-14): MBPI 29.2 -> 43.2, BBVI 44.3 -> 51.3. (2) Seven reviewed records whose value this run could not verify in the original text, or which the fixed rules do not cover (PBS-buffer MIC, a sample with no scientific name), join the partial supplement and score nothing. (3) Three compound caveats gained their original-measurement sources. (4) A new display file, dist/supplementary-literature.json, lists related papers that no score uses; the indicator build does not read it. Items needing a rule change are listed as decisions in the pre-registration and stay out of the scores.",
+   "entries": [
+    {
+     "change_id": "verified-4.13#0001",
+     "entity_type": "assay",
+     "entity_id": "275816|amp|SEQ:SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK|amp-dbaasp-mic-broth-bacillus-subtilis",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "amp-dbaasp-mic-broth-bacillus-subtilis",
+     "new_value": "5.301 @ 51.44",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.13",
+     "from_run_id": "verified-4.12",
+     "score_before": 29.2,
+     "score_after": 43.2,
+     "score_delta": 14.0
+    },
+    {
+     "change_id": "verified-4.13#0002",
+     "entity_type": "assay",
+     "entity_id": "275816|amp|SEQ:SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK|amp-dbaasp-mic-broth-escherichia-coli",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "amp-dbaasp-mic-broth-escherichia-coli",
+     "new_value": "5.0 @ 48.38",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.13",
+     "from_run_id": "verified-4.12",
+     "score_before": 29.2,
+     "score_after": 43.2,
+     "score_delta": 14.0
+    },
+    {
+     "change_id": "verified-4.13#0003",
+     "entity_type": "assay",
+     "entity_id": "275816|amp|SEQ:SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK|amp-dbaasp-mic-broth-staphylococcus-aureus",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+     "new_value": "5.0 @ 47.42",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.13",
+     "from_run_id": "verified-4.12",
+     "score_before": 29.2,
+     "score_after": 43.2,
+     "score_delta": 14.0
+    },
+    {
+     "change_id": "verified-4.13#0004",
+     "entity_type": "assay",
+     "entity_id": "275816|amp|SEQ:SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK|amp-dbaasp-mic-broth-vibrio-anguillarum",
+     "change_type": "evidence",
+     "old_source": "",
+     "old_value": "",
+     "new_source": "amp-dbaasp-mic-broth-vibrio-anguillarum",
+     "new_value": "5.301 @ 57.53",
+     "reason": "항목 추가 (기록 1건)",
+     "run_id": "verified-4.13",
+     "from_run_id": "verified-4.12",
+     "score_before": 29.2,
+     "score_after": 43.2,
+     "score_delta": 14.0
+    }
+   ]
   }
  ]
 }
