@@ -1,6 +1,6 @@
 # 워크플로 그림 기준 방법 문서 — `verified-pilot-3.28`
 
-> **현재 공개본은 `verified-4.12`(2026-10-14)이다.** 0–8절의 표와 숫자는 3.28 시점 기록이며, 4.0–4.12의 변화(4.12 기준 MCUI 29종 중 3종이 KOSIS 자원 감소 신호, 매트릭스 점 29개, 우선 조사 대상 1종 등)는 9절과 `dist/assessments.json`이 기준이다.
+> **현재 공개본은 `verified-4.14`(2026-10-14)이다.** 0–8절의 표와 숫자는 3.28 시점 기록이며, 4.0–4.14의 변화(4.14 기준 MCUI 16종 · 보전평가 미확인 14종, 매트릭스 점 16개, 우선 조사 대상 14종 등)는 9절과 `dist/assessments.json`이 기준이다.
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
@@ -231,6 +231,8 @@ MCUI 18종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 3. 예�
 `verified-4.4`(2026-10-05)는 4.3이 대체 규칙으로 채운 10칸을 재조사해, 4.3에 등록된 완화 (d)(펩타이드를 같은 표적·종말점의 ChEMBL 비교집단에서 순위)를 처음 적용했다([사전 등록](../research/verified-indices/prereg-4.4-2026-10-05.md), [기록](../research/verified-indices/formal-release-4.4-2026-10-05.md)). 참문어 세팔로토신이 MBPI 70.5(BBVI 54.2)가 됐고, 기원은 참문어 표준 유전체의 염기서열 기록이 성숙 서열과 가공 신호를 암호화함(4.1 선례)으로 확인했다. 방어·갑오징어 하한값과 MCUI 7칸은 재조사 뒤에도 그대로다. 참조기 XO 비교집단은 기준 2(잔틴 기질·요산 측정) 확인 회원을 원문 재확인으로 16 → 33으로 늘려, 4.3이 남긴 엄격 해석으로도 층이 성립한다.
 
 `verified-4.5`(2026-10-05)는 팀장 결정 카드에 따라 완화 (d)를 방어(sbGnRH, 사람 GnRH 수용체 결합 IC50 684 nM → MBPI 7.5)와 갑오징어(FMRFamide, ChEMBL 사람 NPFF2 Ki 6.6 nM 자기 행 제외 → MBPI 65.8)에 적용했다([사전 등록](../research/verified-indices/prereg-4.5-2026-10-05.md), [기록](../research/verified-indices/formal-release-4.5-2026-10-05.md)). 두 펩타이드 모두 그 종 자체의 공개 서열 기록이 가공 신호와 함께 암호화하지만 분류군 공통 펩타이드라는 한계(농어목 공통 호르몬 / 무척추동물 문 공통 신경펩타이드)를 항목 주의 문구에 그대로 적는다. 이 판에서 MBPI 하한값 0을 받는 종은 없고, 하한값 규칙은 등록된 채 남는다.
+
+`verified-4.14`(2026-10-14)는 지표 방법론 재검토를 반영했다([사전 등록](../research/verified-indices/prereg-4.14-2026-10-14.md), [기록](../research/verified-indices/formal-release-4.14-2026-10-14.md)). 설정 `mcui_scope`가 MCUI 멸종위험 성분을 IUCN 전 지구 평가와 한국 국가 평가(`scored_bases`: iucn, national)로 좁힌다. 서식국 국가 평가·지방 평가·Rapid LC는 `reference_only`(값 null, 원문 범주와 `reference_note`)로 남고, 1.5(ランク外 → LC 상당)·4.3(Rapid LC 점수화) 팀장 결정을 대신한다. 종마다 `conservation_status`(state 7가지, 찾은 평가 전부와 `used_for_mcui`·`why_not`, 범주 → 숫자 대응 문구)를 싣는다. 멸종위험 성분이 없으면 자원 감소 점수가 `matrix.mcui_threshold` 이상일 때만 MCUI 하한이 된다(`mcui_role`). BBVI는 반올림 전 값(`scores_unrounded`)으로 섞고 표시할 때만 한 자리로 반올림하며, 화면도 그 값으로 유형을 정한다. 유형 이름·구분선 문구(`types[].plain`, `type_note`, `threshold_label`, `untyped_label`), MBPI 근거 폭의 독립 논문 수·최댓값·평균·재료 분류(`material_counts`, `measured_zero_items`, `floor_zero`), 산출 기록(`provenance`)을 더했다. 결과: MCUI 16종, 보전평가 미확인 14종(우선 조사 대상), 매트릭스 점 16개, 11종 BBVI 표시값 0.1 하락(유형 변화 없음). 4.12 보고서는 `research/verified-indices/archive/`에 보관하고 4.12 설정으로 바이트 단위 재현한다.
 
 `verified-4.12`(2026-10-14)는 MCUI에 두 번째 근거인 자원 감소 신호를 더했다([사전 등록](../research/verified-indices/prereg-4.12-2026-10-14.md), [기록](../research/verified-indices/formal-release-4.12-2026-10-14.md)). 자료는 KOSIS DT_1EW0004(품종별 어업생산량, 전국, 2015~2024 확정치)의 연근해어업·해면양식업 톤수를 받은 그대로 `data/raw/`에 두고, 30종과 KOSIS 품종의 연결(종 단위 / 더 넓은 묶음 / 대응 품종 없음)은 `data/mapping/kosis_to_aphia.csv`에 둔다. D = 1 − 최근 평균(2022~24) / 기준 평균(2015~17)이고, D ≥ 0.3·0.5·0.8이면 35·60·80점, 더 넓은 묶음은 60점 상한이다. 최근 3년 양식 비중 ≥ 50%, 기준 평균 < 100톤, 빈 해 3년 이상이면 점수가 없다. MCUI = max(멸종위험 근거 값, 자원 감소 점수)이고 두 값과 어느 쪽이 정했는지(`mcui_extinction_risk`, `mcui_driver`, `stock_decline`)를 함께 싣는다. `mcui_basis`는 멸종위험 근거 그대로다. OBIS 추세 보정(4.11부터 0)과는 섞지 않는다. 2025년 잠정치는 참고로만 보인다. 결과: 살오징어 10 → 60, 우뭇가사리 60 → 80, 참조기 10 → 35. 사후 확인은 같은 자료의 일관성 확인이며 독립 검증이 아니다.
 

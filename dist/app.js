@@ -718,7 +718,7 @@ function occurrenceCitationLinks(c) {
 function mapJudgmentStatus(s) {
   const n=spatialCells(s).length,type=matrixType(s);
   if(matrixRule()){
-    $('map-judgment').textContent=(type?`이 종의 매트릭스 유형: ${matrixTypeLabel(type)}${separateMcui(s)?'(MCUI '+mcuiBasisLabel(s)+')':''}`:'이 종은 BBVI·MCUI 한 쌍이 없어 매트릭스 유형이 없습니다')+
+    $('map-judgment').textContent=(type?`이 종의 매트릭스 유형: ${matrixTypeLabel(type)}${separateMcui(s)?'(MCUI '+mcuiBasisLabel(s)+')':''}`:`이 종은 매트릭스 유형이 없습니다(${untypedReason(s)})`)+
       (!s.cells?.length?' · 공개 출현 셀이 없어 활용 × 보전 지도에 반영되지 않습니다.':type?` · 활용 × 보전 지도에서 이 종이 기록된 ${n}개 셀 색에 반영됩니다(해역 점수 아님).`:` · 매트릭스 유형이 없어 활용 × 보전 지도 색에는 쓰이지 않습니다.`);
     return;
   }
@@ -879,8 +879,9 @@ const rapidLcCheck = () => ({passed:'역검증 통과',failed:'역검증 기준 
 const iucnGlobalNote = s => {const c=s.assessment?.conservation_trace;return c?.category?`IUCN 전 지구 ${c.category}(${c.assessment_year||'평가연도 미기재'}) · ${released()?'점수 대응 없음':'시범 숫자 없음'}`:c?.iucn_state==='not_in_red_list'?`IUCN 전 지구 평가 없음(검색 0건 · ${c.recheck?.checked_on||c.search?.checked_on||'날짜 미기재'})`:'IUCN 전 지구 평가 미확인';};
 // Computed values first, then the axes still on hold: "MFPI 65.5 · MBPI·MCUI 보류".
 function scoreSummary(s){
-  const keys=['MFPI','MBPI','MCUI'], held=keys.filter(k=>pilotScore(s,k)===null);
-  return [...keys.filter(k=>!held.includes(k)).map(k=>`${k}${k==='MCUI'&&separateMcui(s)?'('+mcuiBasisShort(s)+')':''} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment?.mbpi_label?' ('+s.assessment.mbpi_label+')':''}`),held.length?held.join('·')+' 보류':''].filter(Boolean).join(' · ');
+  // 4.14: an MCUI without an official category is '보전평가 미확인', not on hold
+  const keys=['MFPI','MBPI','MCUI'], unknown=pilotScore(s,'MCUI')===null&&consShort(s)==='보전평가 미확인', held=keys.filter(k=>pilotScore(s,k)===null&&!(k==='MCUI'&&unknown));
+  return [...keys.filter(k=>!held.includes(k)&&!(k==='MCUI'&&unknown)).map(k=>`${k}${k==='MCUI'&&separateMcui(s)?'('+mcuiBasisShort(s)+')':''} ${pilotScore(s,k).toFixed(1)}${k==='MBPI'&&s.assessment?.mbpi_label?' ('+s.assessment.mbpi_label+')':''}`),held.length?held.join('·')+' 보류':'',unknown?'MCUI 보전평가 미확인':''].filter(Boolean).join(' · ');
 }
 // Follow-up tasks are an evidence-gap inventory, never a value or urgency rank.
 // Refuse stale, wrong-taxon or score-inconsistent readiness rows.
@@ -3023,7 +3024,7 @@ function renderComparison(){
     const bar=v!==null?`<span class="cv-bar${key==='MCUI'&&cut.MCUI!=null&&v>=cut.MCUI?' hi':''}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i>${cut[key]!=null?`<b style="left:${cut[key]}%"></b>`:''}</span>`:'<small>보기</small>';
     const off=key==='BBVI'?officialNote(s):'';
     const stock=key==='MCUI'&&stockMcui(s)?`<i class="cv-stock" title="${esc(stockLabel(s))} · IUCN 기반과 같은 척도가 아님" aria-hidden="true">◆</i>`:'';
-    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num">${m[2]}${stock}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
+    return {main:`<button${m[1].replace('class="score-cell"','class="score-cell cv"')}><span class="cv-num${v===null?' cv-word':''}">${m[2]}${stock}${off?`<small class="cv-official">(${off})</small>`:''}</span>${bar}</button>`,
       more:full.replace('class="score-cell"','class="score-cell cmp-more-cell"').replace('data-score-aphia=','data-more-aphia=').replace('data-score-axis=','data-more-axis=')};
   };
   // 4.10: the secondary MBPI-Rx, a number and a bar (no evidence button: its line and reason sit under the detail's MBPI);
@@ -3544,7 +3545,7 @@ function renderTypeCards(){
   if(box.dataset.ids!==ids.join()){
     box.dataset.ids=ids.join();
     box.innerHTML=ids.map(id=>`<button type="button" class="dt-card" data-cmp-type="${id}"${id==='none'?'':` data-type="${id}"`} aria-pressed="false"><span class="dt-card-name"><i aria-hidden="true"></i>${esc(matrixTypePlain(id==='none'?null:id))}</span>`+
-      `<span class="dt-card-n"><b></b> 종</span><span class="dt-card-sub">${esc(id==='none'?'BBVI·MCUI 한 쌍 미산출':matrixTypeLabel(id))}</span></button>`).join('');
+      `<span class="dt-card-n"><b></b> 종</span><span class="dt-card-sub">${esc(id==='none'?'보전평가 미확인 등':matrixTypeLabel(id))}</span></button>`).join('');
   }
   const base=data.species.filter(cmpMatch);
   box.querySelectorAll('[data-cmp-type]').forEach(b=>{b.querySelector('.dt-card-n b').textContent=String(base.filter(s=>cmpTypeOf(s)===b.dataset.cmpType).length);
