@@ -47,7 +47,7 @@ const CHATBOT_FAQ=[
   {id:'indices',q:['BBVI·MCUI·정보충분도가 뭔가요?','지표가 뭐예요','점수는 어떻게 매겨요'],
     k:['지표','bbvi','mcui','정보충분도','점수','약어'],
     a:'BBVI(활용가치)는 식량 지표 MFPI와 신약 지표 MBPI를 합친 값이고, MCUI(보전 시급성)는 보전 평가 범주를 점수로 옮긴 값이에요(공식 평가가 없으면 자체 예비평가). 두 값은 합치지 않고 따로 보여 줘요. 정보충분도는 자료가 얼마나 갖춰졌는지 보여 주는 별도 표시로, 점수와 섞지 않아요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
-    show:{click:['[data-view="method"]'],target:'.method-grid'},next:['mfpi','mbpi','mcui']},
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['mfpi','mbpi','mcui']},
   {id:'bbvi',q:['BBVI는 어떻게 계산해요','활용가치는 뭐예요','식량 가중치 슬라이더는 뭐예요'],
     k:['bbvi','활용가치','가중치','슬라이더','통합'],
     a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(신약)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 가중치 슬라이더와 프리셋(신약 중심·균형·식량 중심)으로 두 축의 비중을 바꿔 볼 수 있어요. 공식 산출값의 가중치는 고정이고, 바꾼 값은 ‘탐색 보기’ 표시와 함께 공식값을 나란히 보여 줘요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
@@ -55,19 +55,19 @@ const CHATBOT_FAQ=[
   {id:'mfpi',q:['MFPI는 뭐예요','식량 지표는 어떻게 매겨요','EPA DHA는 점수에 들어가요'],
     k:['mfpi','식량지표','영양','식품성분','epa','dha','ufish'],
     a:'MFPI(식량 지표)는 국가표준식품성분 DB 10.4의 고정 비교집단과 견줘 매긴 값이에요. 빠진 성분은 같은 종 부표본이나 FAO/INFOODS uFiSh 값으로 채우고 표시해요. EPA·DHA는 보여 주기만 하고 점수에는 넣지 않아요.',
-    show:{click:['[data-view="method"]'],target:'.method-grid'},next:['validation','mbpi']},
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','mbpi']},
   {id:'mbpi',q:['MBPI는 뭐예요','신약 지표는 어떻게 매겨요','MBPI가 0점이면 효능이 없는 건가요'],
     k:['mbpi','신약지표','생리활성','펩타이드','chembl','0점','하한값','효능'],
     a:'MBPI(신약 지표)는 ChEMBL 화합물, ACE 저해·항균·항암·잔틴 산화효소 억제 펩타이드, 감태 분리 화합물을 층별로 따로 백분위로 매겨요. 같은 표적·같은 시험 조건끼리만 비교하고, 근거 계수를 곱한 뒤 가장 높은 항목을 종의 값으로 써요. 근거가 없는 종은 0점(하한값)이고 효능이 없다는 뜻이 아니에요. 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
-    show:{click:['[data-view="method"]'],target:'.method-grid'},next:['validation','mcui']},
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','mcui']},
   {id:'mcui',q:['MCUI는 뭐예요','보전 시급성은 어떻게 정해요','적색목록 평가가 없으면 어떻게 해요','보전평가 미확인은 무슨 뜻이에요'],
     k:['mcui','보전','시급','적색목록','iucn','rapidlc','예비평가','멸종','어획량','자원감소','미확인','보전평가미확인'],
     a:'MCUI(보전 시급성)의 멸종위험 성분은 IUCN 적색목록 2026-1 현행 전 지구 평가와 한국 국가 평가만 써요. 다른 나라·지방 목록은 그 지역 개체군의 평가라서, 자체 예비검토(Rapid LC)는 공식 평가가 아니라서 참고로만 보여요. 둘 다 없으면 MCUI는 비워 두고 ‘보전평가 미확인’으로 따로 보여요. 0점이나 낮은 위험이 아니에요. 4.12부터는 KOSIS 연근해 어획량이 크게 줄어든 종에 자원 감소 신호 점수(35·60·80점)를 매겨 둘 중 높은 값을 MCUI로 써요. 멸종위험 성분이 없는 종은 그 점수가 매트릭스 구분선 이상일 때만 하한으로 써요. 이 점수는 IUCN 평가가 아니고, 어획량은 개체수와 같지 않아요. OBIS 출현 추세는 참고 요소이고, 출현기록 수만으로 판정하지 않아요.',
-    show:{click:['[data-view="method"]'],target:'.method-grid'},next:['validation','matrix']},
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','matrix']},
   {id:'validation',q:['지표는 검증됐나요','방법 검증 기준 미충족은 무슨 뜻이에요','빈칸은 왜 없어요'],
     k:['검증','미통과','미충족','통과','신뢰','빈칸','대체규칙'],
     a:'MFPI(식량)는 같은 종을 국가표준식품성분 DB와 일본 식품성분표로 각각 계산해 순위를 비교하는 검증을 통과했어요. MBPI(신약)와 BBVI(활용가치)는 ‘방법 검증 기준 미충족’ 라벨이 붙어 있어 참고값으로 봐야 해요. 4.3부터 빈칸은 없고, 공식 근거가 없는 칸은 미리 정한 대체 규칙으로 채운 뒤 라벨로 밝혀요.',
-    show:{click:['[data-view="method"]'],target:'.method-grid'},next:['labels','indices']},
+    show:{click:['[data-view="method"]'],target:'#method-03'},next:['labels','indices']},
   {id:'labels',q:['값 옆의 라벨은 무슨 뜻이에요','근거 논문 1편 하한값 라벨이 뭐예요','지방 목록 예비평가 라벨'],
     k:['라벨','단일논문','하한값','예비평가','지방목록'],
     a:'값 옆의 라벨(근거 논문 1편·하한값·예비평가·지방 목록)은 근거의 수준을 알려 주는 표시이고, 가치가 높고 낮음을 뜻하지 않아요. 규칙을 다 채우지 못한 값에 붙어요.',
@@ -428,7 +428,8 @@ if(typeof document!=='undefined')(function(){
         for(const s of f.show.click){const b=document.querySelector(s);
           if(!b||b.getAttribute('aria-pressed')==='true'||b.getAttribute('aria-expanded')==='true'||b.getAttribute('aria-current')==='page')continue;b.click();}
         setTimeout(()=>{
-          const t=document.querySelector(f.show.target);if(!visible(t))return;
+          const t=document.querySelector(f.show.target),fold=t?.closest('#method details');if(fold)fold.open=true; // 근거와 방법: 접힌 설명은 펼친 뒤 보여 준다
+          if(!visible(t))return;
           t.scrollIntoView({block:'nearest',behavior:reduced()?'auto':'smooth'});
           t.classList.remove('bbc-flash');void t.offsetWidth;t.classList.add('bbc-flash');
           setTimeout(()=>t.classList.remove('bbc-flash'),2600);
