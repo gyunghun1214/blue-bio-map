@@ -15,6 +15,7 @@ pilot rules, not international standards.
 from __future__ import annotations
 
 import argparse
+import csv
 import statistics
 import json
 import math
@@ -30,7 +31,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.11.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.12.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1349,6 +1350,87 @@ def mcui_substitute(aphia: int, evidence: dict, config: dict, trend: dict | None
             "result": "likely_least_concern"}
 
 
+def read_stock_decline(rule: dict) -> dict:
+    """4.12: the KOSIS DT_1EW0004 national table and the reviewed item links, read as saved (prereg-4.12-2026-10-14 2)."""
+    def rows(path):
+        with (ROOT / path).open(encoding="utf-8", newline="") as f:
+            return list(csv.DictReader(f))
+    table, links = rows(rule["raw_file"]), rows(rule["mapping_file"])
+    first, last = rule["years"]
+    years = [str(y) for y in range(first, last + 1)]
+    require(set(years) | {rule["reference_column"]} <= set(table[0]), "KOSIS table lacks a scoring year or the reference column")
+    fisheries = {rule["coastal_fishery"], rule["aquaculture_fishery"]}
+    out = {}
+    for r in table:
+        require(r["fishery"] in fisheries and (r["fishery"], r["kosis_item"]) not in out, f"KOSIS row: {r['fishery']} {r['kosis_item']}")
+        values = {}
+        for y in years + [rule["reference_column"]]:
+            raw = r[y].strip()
+            require(raw == "" or re.fullmatch(r"\d+", raw) is not None, f"KOSIS {r['kosis_item']} {y}: whole tonnes or blank")
+            values[y] = None if raw == "" else int(raw)
+        out[(r["fishery"], r["kosis_item"])] = values
+    mapping = {}
+    for m in links:
+        require(m["match_level"] in rule["match_levels"] and int(m["aphia_id"]) not in mapping, f"link {m['aphia_id']}")
+        require((m["match_level"] == "none") == (m["kosis_item"] == ""), f"link {m['aphia_id']}: item and match level disagree")
+        require(m["kosis_item"] == "" or (rule["coastal_fishery"], m["kosis_item"]) in out, f"link {m['aphia_id']}: no coastal row")
+        mapping[int(m["aphia_id"])] = m
+    return {"table": out, "mapping": mapping, "years": [int(y) for y in years]}
+
+
+def stock_decline(aphia: int, data: dict, rule: dict) -> dict:
+    """4.12 (prereg-4.12-2026-10-14 3): catch-trend score beside the extinction-risk MCUI; never an IUCN category."""
+    link = data["mapping"][aphia]
+    item, level = link["kosis_item"] or None, link["match_level"]
+    rec = {"source": "KOSIS DT_1EW0004", "source_id": rule["source"]["id"], "retrieved_on": rule["retrieved_on"],
+           "kosis_item": item, "match_level": level, "years": data["years"], "coastal_t": None, "aquaculture_t": None,
+           "reference_2025p": None, "baseline_mean_t": None, "recent_mean_t": None, "decline_pct": None,
+           "aquaculture_share_recent_pct": None, "score": None, "label": rule["labels"]["no_match"], "capped_broader": False,
+           "unscored_reason": "no_match", "stock_assessment": rule["stock_assessment"], "not_iucn": True}
+    if level == "none":
+        return rec
+    ys = [str(y) for y in data["years"]]
+    coastal = data["table"][(rule["coastal_fishery"], item)]
+    farmed = data["table"].get((rule["aquaculture_fishery"], item)) or {}
+    c = [coastal[y] for y in ys]
+    a = [farmed.get(y) or 0 for y in ys]
+    at = lambda vals, wanted: [(vals[ys.index(str(y))] or 0) for y in wanted]
+    base = sum(at(c, rule["baseline_years"])) / len(rule["baseline_years"])
+    recent = sum(at(c, rule["recent_years"])) / len(rule["recent_years"])
+    farmed_recent, caught_recent = sum(at(a, rule["recent_years"])), sum(at(c, rule["recent_years"]))
+    share = farmed_recent / (farmed_recent + caught_recent) if farmed_recent + caught_recent else None
+    decline = 1 - recent / base if base else None
+    ref = rule["reference_column"]
+    rec.update(coastal_t=c, aquaculture_t=a, reference_2025p={"coastal_t": coastal[ref], "aquaculture_t": farmed.get(ref) or 0},
+               baseline_mean_t=round(base, 2), recent_mean_t=round(recent, 2),
+               decline_pct=None if decline is None else round1(100 * decline),
+               aquaculture_share_recent_pct=None if share is None else round1(100 * share), unscored_reason=None)
+    if sum(v is None for v in c) >= rule["insufficient_blank_years"]:
+        reason = "insufficient_data"
+    elif share is not None and share >= rule["aquaculture_share_max"]:
+        reason = "aquaculture_dominant"
+    elif base < rule["min_baseline_t"]:
+        reason = "small_catch"
+    else:
+        reason = None
+    if reason:
+        rec.update(unscored_reason=reason, label=rule["labels"][reason])
+        return rec
+    band = None
+    for b in rule["bands"]:  # unrounded D against each band floor, highest band wins
+        if decline >= b["min_decline"]:
+            band = b
+    if band is None:
+        rec["label"] = rule["labels"]["no_signal"]
+        return rec
+    score, label = band["score"], band["label"]
+    if level == "broader" and score > rule["broader_cap"]:
+        capped = max((b for b in rule["bands"] if b["score"] <= rule["broader_cap"]), key=lambda b: b["score"])
+        score, label, rec["capped_broader"] = capped["score"], capped["label"], True
+    rec.update(score=float(score), label=label)
+    return rec
+
+
 def occurrence_trend(aphia: int, snap: dict, rule: dict) -> dict:
     """verified-pilot-3.4: OBIS reporting-rate change between two 10-year periods. Reporting rate = species records /
     records of the species' WoRMS class (target-group effort) in the same 1-degree cells and period; only cells with
@@ -1516,6 +1598,15 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             trend.update({"label": trend_rule["labels"][trend["class"]], "mcui_base": mcui, "mcui_adjustment": adjust})
             if adjust:
                 mcui = float(min(100, mcui + adjust))
+        stock_rule, stock, extinction, driver = config.get("mcui_stock_decline"), None, mcui, None
+        if stock_rule:  # 4.12 (prereg-4.12-2026-10-14 3.4): MCUI = max(extinction risk, stock decline); the basis stays
+            stock = stock_decline(aphia, evidence["stock_decline"], stock_rule)
+            if stock["score"] is not None and (mcui is None or stock["score"] > mcui):
+                mcui, driver = stock["score"], "stock_decline"
+                if extinction is None:
+                    conservation_reason = None
+            elif mcui is not None:
+                driver = "tie" if stock["score"] == mcui else "extinction_risk"
         floor_rule, mbpi_floor = config.get("mbpi_floor"), None
         if mbpi is None and floor_rule:  # 4.3 (team-lead decision 2026-10-05): no item in any stratum gives the labelled floor
             mbpi_floor = {k: floor_rule[k] for k in ("value", "label", "bbvi_label", "meaning", "prereg")}
@@ -1656,6 +1747,10 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             row["mcui_substitute"] = substitute
         if trend:
             row["occurrence_trend"] = trend
+        if stock_rule:
+            row.update(mcui_extinction_risk=extinction, mcui_driver=driver, stock_decline=stock)
+            if stock["kosis_item"]:
+                row["source_ids"] = sorted({*row["source_ids"], stock["source_id"]})
         if config.get("reference_combination"):  # verified-pilot-2.1: beside the scores, never in scores.BBVI, the matrix or rankings
             rc = config["reference_combination"]
             row["reference_combination"] = {
@@ -1676,6 +1771,9 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
             if fact:
                 row["source_ids"] = sorted({*row["source_ids"], fact["source_id"]})
         return row
+    if config.get("mcui_stock_decline"):  # one reviewed KOSIS link per published species, no more, no fewer
+        require(set(evidence["stock_decline"]["mapping"]) == {c["aphia_id"] for c in identities} | {c["aphiaID"] for c in catalog.get("species", [])},
+                "KOSIS links must name exactly the operating species and research candidates")
     output = [assess(c) for c in identities]
     operating = {c["aphia_id"] for c in identities}
     research = []
@@ -2055,6 +2153,13 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         require(snap["query"]["periods"] == trend["periods"], "OBIS trend periods differ from the rule")
         evidence = {**evidence, "obis_trend": snap, "sources": {**evidence["sources"], **snap["sources"]},
                     "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), snap["snapshot_date"])}
+    stock = cfg.get("mcui_stock_decline")
+    if stock:  # 4.12: KOSIS catch table and item links saved as given (prereg-4.12-2026-10-14 2), with its own source
+        src = stock["source"]
+        require(src["id"] not in evidence["sources"] and src["accessed"] == stock["retrieved_on"], "KOSIS source redefined or undated")
+        evidence = {**evidence, "stock_decline": read_stock_decline(stock),
+                    "sources": {**evidence["sources"], src["id"]: {k: v for k, v in src.items() if k != "id"}},
+                    "inputs_as_of": max(evidence.get("inputs_as_of", evidence["snapshot_date"]), stock["retrieved_on"])}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 
