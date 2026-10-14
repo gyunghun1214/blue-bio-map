@@ -3,13 +3,18 @@
 // without defer in <head> so the screen is up before the first paint. The part above the browser marker below is pure
 // and tested in node (verification/test_intro_ui.mjs).
 const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
+// The site logo (here and on expedition.html) goes home, as on most sites: a plain click on it leaves this one-time
+// signal and follows its link, and the next load shows the entry screen again although the tab already entered.
+const HOME_KEY='bbvm-intro-home';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 const GATE_MIN_MS=600, GATE_MAX_MS=7000;
 const GATE_STEPS=[['page','페이지 준비 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
 
 const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace(/^#/,''));return APP_HASH_KEYS.some(k=>q.get(k));}catch{return false;}};
 // No storage (private mode, blocked) only means the screen can't be remembered: it still shows once per load.
-const shouldShowGate=(hash,storage)=>{if(hasAppHash(hash))return false;try{return storage?.getItem(GATE_KEY)!=='1';}catch{return true;}};
+const shouldShowGate=(hash,storage)=>{if(hasAppHash(hash))return false;try{return storage?.getItem(HOME_KEY)==='1'||storage?.getItem(GATE_KEY)!=='1';}catch{return true;}};
+// A plain click only: a middle or modified click opens a new tab or window and leaves this one as it is.
+const homeClick=e=>e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey&&!e.defaultPrevented;
 
 const makeGate=start=>({start,steps:new Set(),done:null,phase:'loading'});
 // 'done' arrives from app.js after loadCollection on every outcome (live, snapshot, offline, empty, error); it implies every step.
@@ -146,6 +151,9 @@ function cardPlace(dot,korea,card,view,s){
   const root=document.documentElement;
   let store=null,local=null;try{store=window.sessionStorage;}catch{}try{local=window.localStorage;}catch{}
   let show=false;try{show=shouldShowGate(location.hash,store);}catch{}
+  try{store?.removeItem(HOME_KEY);}catch{} // used once: a reload or Back after it opens the map as before
+  // The header logo links to this page without a hash ('./'), so the app also starts over (no species, tab or dialog).
+  document.addEventListener('click',e=>{if(e.target.closest?.('a.brand')&&homeClick(e))try{store?.setItem(HOME_KEY,'1');}catch{}});
   if(!show)return;
   root.classList.add('gate-on');
   // The picture is asked for now, before the page is parsed, so it mostly arrives during the loader's 0.6 s minimum;

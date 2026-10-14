@@ -209,6 +209,14 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
     const backLink=await s.evaluate("document.querySelector('a[href=\"expedition.html\"]')?.textContent||''");
     check(`${tag}: the map header links back to the expedition`,backLink.includes('바다 탐험'),backLink);
     await sleep(1200);await shot(s,`${tag}-8-map`);
+    // the logo goes to the site's first screen (the globe of index.html), even in a tab that already entered the map
+    await s.send('Page.navigate',{url:URL0+'expedition.html'});
+    await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
+    const lp=await s.evaluate("sessionStorage.setItem('bbvm-intro-entered','1');(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('a.x-brand').getBoundingClientRect())");
+    if(mobile)for(const type of ['touchStart','touchEnd'])await s.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x:lp.x,y:lp.y}]});
+    else for(const type of ['mousePressed','mouseReleased'])await s.send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
+    const gate=await waitFor(s,"/\\/(index\\.html)?$/.test(location.pathname)&&!!document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden",30000);
+    check(`${tag}: the logo opens the site's first screen (globe), not the map`,!!gate,await s.evaluate("location.href+' | '+document.documentElement.className"));
     check(`${tag}: no uncaught page errors or console.error`,s.errors.length===0,s.errors.join(' | '));
   }catch(e){check(`${tag}: harness`,false,e.stack);}
   finally{await s.close();}
