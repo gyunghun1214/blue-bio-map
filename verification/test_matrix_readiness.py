@@ -38,8 +38,15 @@ class MatrixReadinessTests(unittest.TestCase):
         # MBPI floor), so all 30 species are placed: 19 -> 30 points.
         # verified-4.11 (prereg-4.11-2026-10-13 5.2): 멍게's OBIS reporting rate fell to the decline ratio, so its Rapid LC is not
         # scored and it has no MCUI: 30 -> 29 points.
-        self.assertEqual(placed, [r["aphia_id"] for r in report["species"] if r["aphia_id"] != 250680])
-        self.assertEqual(len(placed), 29)
+        # verified-4.14 (prereg-4.14-2026-10-14 2·3): only an IUCN global or Korean national category scores MCUI; another
+        # region's list and a Rapid LC are references without a number, and a stock decline alone counts only as a lower bound
+        # at or above the matrix line. 14 species are left with no MCUI and no type: 29 -> 16 points.
+        unknown = [r["aphia_id"] for r in self.assessments["species"] + self.assessments["candidate_species"]
+                   if r["scores"]["MCUI"] is None]
+        self.assertEqual(len(unknown), 14)
+        self.assertIn(250680, unknown)
+        self.assertEqual(placed, [r["aphia_id"] for r in report["species"] if r["aphia_id"] not in unknown])
+        self.assertEqual(len(placed), 16)
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
@@ -48,16 +55,20 @@ class MatrixReadinessTests(unittest.TestCase):
                           and r["aphia_id"] != 145721])
         # 4.2: 꽃게 now carries a sub-national MCUI, so its BBVI does become a (labelled) point. 4.11: that list's back-test did
         # not pass, so it is reference only and 꽃게 stays a point through its Rapid LC
-        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"], "preliminary")
+        # 4.14: that Rapid LC is a reference too, so 꽃게 has no MCUI and is no point
+        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"])
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
                          # 4.11: 미역 71.0 -> 68.0, 톳 74.9 -> 64.2, 참굴 83.9 -> 71.9, 감태 65.0 -> 59.7, 큰가리비 46.1 -> 41.6,
-                         # 갑오징어 65.1 -> 54.2 (other-origin replications no longer count; the 3-compound ACE stratum is gone)
-                         [(145721, 68.0), (241776, 36.1), (250680, 33.2), (342067, 51.5), (372119, 45.1), (494972, 64.2), (506159, 35.5),
-                          (836033, 71.9), (377084, 41.6), (371986, 59.7), (234476, 53.8), (494853, 37.6), (236157, 59.7), (145086, 18.6),
-                          (231750, 59.5), (397082, 35.2), (393716, 41.6),
-                          (836041, 35.0), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (281273, 46.6), (275816, 44.3),
-                          (274849, 40.1), (276651, 29.3), (254538, 49.1), (1061762, 46.2), (534443, 54.2), (1666974, 54.2)])
+                         # 갑오징어 65.1 -> 54.2 (other-origin replications no longer count; the 3-compound ACE stratum is gone).
+                         # 4.14 (prereg-4.14 5): BBVI is mixed from the unrounded MFPI·MBPI and rounded once, so 11 species move
+                         # down by 0.1 (미역 68.0 -> 67.9, 멍게, 감태, 가시파래, 괭생이모자반, 꼬시래기, 청각, 전복, 큰가리비, 시카메굴,
+                         # 갑오징어 54.2 -> 54.1); none crosses the 50 line
+                         [(145721, 67.9), (241776, 36.1), (250680, 33.1), (342067, 51.5), (372119, 45.1), (494972, 64.2), (506159, 35.5),
+                          (836033, 71.9), (377084, 41.6), (371986, 59.6), (234476, 53.7), (494853, 37.5), (236157, 59.6), (145086, 18.5),
+                          (231750, 59.5), (397082, 35.1), (393716, 41.5),
+                          (836041, 34.9), (504357, 68.5), (413600, 57.3), (127022, 47.4), (219984, 48.3), (281273, 46.6), (275816, 44.3),
+                          (274849, 40.1), (276651, 29.3), (254538, 49.1), (1061762, 46.2), (534443, 54.2), (1666974, 54.1)])
         # 4.1: 꽃게 (MCCC1-MTS, origin settled on sequence records). 4.3: 참조기 (XO stratum) and the floor BBVIs of 방어·참문어·갑오징어
         self.assertEqual([(r["aphia_id"], r["scores"]["MBPI"]) for r in report["species"]
                           if r["scores"]["MBPI"] is not None],
@@ -118,16 +129,17 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-pilot-3.16: 우뭇가사리 joins through Russia's Red Data Book (VU, peripheral population)
         # verified-pilot-3.27: 가시파래 joins through Sweden's red list 2025 (LC; distant range state)
         # verified-4.0: 넙치·대구 join through the Fisheries Agency of Japan rarity evaluation ('ランク外' as LC-equivalent)
-        self.assertEqual(sum(r["mcui_basis"] == "range_state" for r in report["species"]), 5)
-        # verified-4.3 (team-lead decision 2026-10-05): the six species with no official category anywhere score their met
-        # Rapid LC (LC-equivalent 10, failed back-test label). 4.11: the four sub-national species fall through to it
-        # (their lists failed the back-test), and 멍게 loses it (reporting rate at the decline ratio): 6 + 4 - 1 = 9
-        self.assertEqual(sum(r["mcui_basis"] == "preliminary" for r in report["species"]), 9)
-        # verified-4.2: 톳·청각·꽃게 join through official sub-national lists (labelled, back-test result shown);
-        # 4.3: 미역 joins through the Primorsky Krai decree No. 272 (EN). 4.11: reference only (back-test not passed)
-        self.assertEqual(sum(r["mcui_basis"] == "sub_national" for r in report["species"]), 0)
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 29)
-        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"], 10.0)
+        # 4.14 (prereg-4.14-2026-10-14 3): another region's list (range state or sub-national) is a reference without a number,
+        # so none of the 5 range-state species keeps it as a basis. 3.15 / 4.3 / 4.11 history: the met Rapid LC (9 species in
+        # 4.12) is reference only again, as in 3.15, so no species has a preliminary or sub-national basis
+        for basis in ("range_state", "preliminary", "sub_national"):
+            self.assertEqual(sum(r["mcui_basis"] == basis for r in report["species"]), 0, basis)
+        # 8 national + 7 IUCN global, plus 우뭇가사리 whose stock decline 80 stands alone as a lower bound (no basis)
+        self.assertEqual(sum(r["mcui_basis"] == "iucn" for r in report["species"]), 7)
+        self.assertEqual([r["aphia_id"] for r in report["species"] if r["scores"]["MCUI"] is not None and not r["mcui_basis"]],
+                         [372119])
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 16)
+        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
@@ -215,7 +227,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # 4.2: 톳 keeps its replicated BBVI, so turning the single-paper policy off leaves three points, not two;
         # 4.3: 미역 (replicated MBPI) gains its MCUI and joins them; 4.9: 갑오징어's item is replicated too, so it stays as well;
         # 4.11: replications from another origin no longer count, so 미역 is the only point left
-        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [145721])
+        # 4.14: 미역 has no MCUI any more (its only lists are Primorsky and a Rapid LC), so no point is left
+        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [])
         self.assertEqual([r["scores"] for r in rows], [r["scores"] for r in build(self.assessments, self.catalog, self.expansion)["species"]])
 
 

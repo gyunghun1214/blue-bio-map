@@ -5,7 +5,7 @@ import vm from 'node:vm';
 // verified-pilot-3.2 (diagram stages 4-5): BBVI x MCUI types, the map's cell colour rule and the information-sufficiency layers.
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'),report=JSON.parse(read('assessments.json')),readiness=JSON.parse(read('matrix-readiness.json'));
-const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v4.4.json',import.meta.url),'utf8'));  // 3.27 adds the single-paper BBVI keys; 4.0 is the released set; 4.2 admits the sub-national basis; 4.3 the scored Rapid LC and floor BBVI; 4.4 the relaxation-(d) item
+const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v4.14.json',import.meta.url),'utf8'));  // 4.14: no substitute basis is scored (include_substitute_mcui []), neutral names, exploratory line;  // 3.27 adds the single-paper BBVI keys; 4.0 is the released set; 4.2 admits the sub-national basis; 4.3 the scored Rapid LC and floor BBVI; 4.4 the relaxation-(d) item
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>structuredClone(report)})};
 vm.createContext(ctx);
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
@@ -17,12 +17,12 @@ vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(glob
 
 // (1) The published rule is the config's rule, and the legend shows the figure's four labels in the figure's order.
 const rule=report.method.matrix;
-assert.equal(report.method_version,'verified-4.12');  // 4.12 (prereg-4.12) adds the KOSIS stock-decline signal as a second MCUI basis (MCUI = the higher value; 살오징어, 우뭇가사리, 참조기 move); 4.11 (prereg-4.11) counts only same-origin replications, raises the small-molecule stratum minimum to 30, shows MBPI breadth, makes failed sub-national lists reference only, blocks Rapid LC at the decline ratio and suspends the +10 trend adjustment; 4.10 adds the secondary MBPI-Rx beside MBPI (exploratory, never in BBVI or the matrix); 4.9 lets a relaxed item count an independent replication of its own value (갑오징어 FMRFamide), value unchanged; 4.8 adds 참문어's national-list page re-check row; 4.7 corrects source metadata and lists every source a trace names; 4.6 only reads a sub-national MCUI's sufficiency steps from its list rows; 4.5 extends the relaxation (d) to 방어 (sbGnRH) and 갑오징어 (FMRFamide, its own ChEMBL rows); 4.4 scores 참문어 under the 4.3 relaxation (d) (cephalotocin in a ChEMBL target cohort, origin on the O. sinensis genome); 4.3 fills every cell (scored Rapid LC, 미역 Primorsky EN, XO stratum, MBPI floor); 4.2 adds the sub-national MCUI basis (labelled, back-test shown), 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
+assert.equal(report.method_version,'verified-4.14');  // 4.14 (prereg-4.14) scores MCUI only from IUCN global or Korean national categories (13 species lose their type), judges types on the unrounded BBVI and renames the types; 4.12 (prereg-4.12) adds the KOSIS stock-decline signal as a second MCUI basis (MCUI = the higher value; 살오징어, 우뭇가사리, 참조기 move); 4.11 (prereg-4.11) counts only same-origin replications, raises the small-molecule stratum minimum to 30, shows MBPI breadth, makes failed sub-national lists reference only, blocks Rapid LC at the decline ratio and suspends the +10 trend adjustment; 4.10 adds the secondary MBPI-Rx beside MBPI (exploratory, never in BBVI or the matrix); 4.9 lets a relaxed item count an independent replication of its own value (갑오징어 FMRFamide), value unchanged; 4.8 adds 참문어's national-list page re-check row; 4.7 corrects source metadata and lists every source a trace names; 4.6 only reads a sub-national MCUI's sufficiency steps from its list rows; 4.5 extends the relaxation (d) to 방어 (sbGnRH) and 갑오징어 (FMRFamide, its own ChEMBL rows); 4.4 scores 참문어 under the 4.3 relaxation (d) (cephalotocin in a ChEMBL target cohort, origin on the O. sinensis genome); 4.3 fills every cell (scored Rapid LC, 미역 Primorsky EN, XO stratum, MBPI floor); 4.2 adds the sub-national MCUI basis (labelled, back-test shown), 4.1 fills 꽃게 MBPI (MCCC1-MTS, origin settled on sequence records), 4.0 releases the set (정식 산출) and fills gaps under labelled extensions, 3.28 replicates 톳's top peptide, 3.27 fills gaps (labelled single-paper BBVI, new rows), 3.3/3.6/3.7/3.9 change MFPI, 3.4 MCUI, 3.5/3.8/3.10-3.14/3.24/3.25 add evidence rows, 3.26 corrects a record sentence, 3.15 adds MCUI substitutes kept off the matrix except a range-state list; the matrix rule is 3.2's
 assert.deepEqual(rule,config.matrix);
 assert.deepEqual(readiness.matrix_rule,rule);
 assert.deepEqual([rule.bbvi_threshold,rule.mcui_threshold,rule.include_national_mcui],[50,50,true]);
 // the legend is laid out like the comparison matrix: MCUI high on the top row, BBVI high in the right column
-const labels=['보전 우선·모니터링','대체생산·배양 연구','기초조사·관찰 대상','지속가능 활용 후보'];
+const labels=['보전 연구 우선 검토','활용·보전 병행 검토','기초조사 검토','활용 연구 검토'];
 assert.deepEqual(Object.values(rule.types).map(t=>t.label).sort(),[...labels].sort());
 const legend=read('index.html').match(/<div id="value-legend"[^]*?<\/div>/)[0];
 const legendItems=[...legend.matchAll(/role="listitem" data-key="([^"]+)"><b>([^<]+)</g)];
@@ -70,8 +70,8 @@ assert.equal(ctx.cellMatrixType(cell(fake(null,80),fake(null,null))).type,null);
 // (5) Card text: type and information sufficiency stay separate labels.
 // 4.3: every species is typed and none is flagged, so the card wording is checked on a copy without an MCUI
 const oneFlagged=next.species.find(s=>s.assessment?.priority_survey&&!ctx.matrixType(s))||(s=>({...s,assessment:{...s.assessment,priority_survey:true,priority_survey_reasons:['low_information_sufficiency'],scores:{...s.assessment.scores,MCUI:null}}}))(next.species[0]);
-assert.match(ctx.valueSpeciesType(oneFlagged),/매트릭스 유형 없음[^]*우선 조사 대상[^]*점수와 별도/);
-assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/지속가능 활용 후보[^]*한국 국가 평가 기반/);
+assert.match(ctx.valueSpeciesType(oneFlagged),/매트릭스 유형 미산출[^]*우선 조사 대상[^]*점수와 별도/);
+assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/활용 연구 검토[^]*한국 국가 평가 기반/);
 // (6) The BBVI slider moves the type: at w = 1 BBVI is MFPI alone, and the client re-types with it.
 const placed=next.species.find(s=>ctx.matrixType(s));
 ctx.setWeight(1);
@@ -114,8 +114,8 @@ const picked=ctx.valueCellStyle(both,false);
 // the outline is a solid yellow on the dark satellite map, even on a mixed cell (its dashed border would read as hover)
 assert.deepEqual([picked.fillColor,picked.fillOpacity,picked.weight,picked.color,picked.dashArray],[ctx.matrixTypeColour.conservation_priority,ctx.CELL_FILL,3.5,'#ffd166',null]);
 assert.deepEqual([ctx.HOVER_OUTLINE.color,ctx.HOVER_OUTLINE.dashArray],['#ffd166','6 4'],'card hover is the same yellow, dashed');
-assert.equal(ctx.selectedCellLine(both),'선택 종 가: 지속가능 활용 후보 / 이 셀 색: 보전 우선·모니터링(같은 셀의 나 때문 · 우선순위 규칙)');
-ctx.setSelected(na);assert.equal(ctx.selectedCellLine(both),'선택 종 나: 보전 우선·모니터링 = 이 셀 색');
+assert.equal(ctx.selectedCellLine(both),'선택 종 가: 활용 연구 검토 / 이 셀 색: 보전 연구 우선 검토(같은 셀의 나 때문 · 우선순위 규칙)');
+ctx.setSelected(na);assert.equal(ctx.selectedCellLine(both),'선택 종 나: 보전 연구 우선 검토 = 이 셀 색');
 ctx.setSelected(null);assert.equal(ctx.selectedCellLine(both),'');assert.equal(ctx.valueCellStyle(both,false).weight,2);
 const many={lat:30,lon:120,size:4,species:new Map(['라','다','마','가'].map((label,i)=>[i,{...fake(10,80),label,aphiaID:i}]))};
 assert.equal(ctx.colourSpecies(many),'가, 다, 라 외 1종','names, not a value rank');
@@ -146,8 +146,8 @@ assert.deepEqual([heldOwn.color,heldOwn.fillColor,heldOwn.dashArray,heldOwn.fill
 assert.ok([null,...rule.cell_colour_precedence].flatMap(t=>[false,true].map(a=>ctx.speciesCellStyle(t,a))).every(x=>x.color!==ctx.HOVER_OUTLINE.color&&x.fillColor!==ctx.HOVER_OUTLINE.color),'no yellow in the species view');
 // (13) Plain verdicts are display aliases of the type ids (data, hash and CSV keep the ids); anything else reads '유형 없음'.
 assert.deepEqual(Object.fromEntries(rule.cell_colour_precedence.map(t=>[t,ctx.matrixTypePlain(t)])),
-  {conservation_priority:'지켜야 함',alternative_production:'키워서 써야 함',sustainable_use:'써도 됨',baseline_survey:'더 알아봐야 함'});
-assert.equal(ctx.matrixTypePlain(null),'유형 없음');assert.equal(ctx.matrixTypePlain('unknown_type'),'유형 없음');
-assert.equal(ctx.matrixPlainNote(),`연구용 유형 요약 · 채집·이용 권고 아님 · BBVI ${rule.bbvi_threshold} 이상이면 활용 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 높음`);
-ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구용 유형 요약 · 채집·이용 권고 아님','no rule: no thresholds');ctx.setData(next);
+  {conservation_priority:'보전 지표 높음',alternative_production:'두 지표 모두 높음',sustainable_use:'활용 지표 높음',baseline_survey:'두 지표 모두 낮음'});
+assert.equal(ctx.matrixTypePlain(null),'유형 미산출');assert.equal(ctx.matrixTypePlain('unknown_type'),'유형 미산출');
+assert.equal(ctx.matrixPlainNote(),`${rule.type_note} · ${rule.threshold_label}: BBVI ${rule.bbvi_threshold} 이상이면 활용 지표 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 지표 높음(검증된 기준 아님)`);
+ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님','no rule: no thresholds');ctx.setData(next);
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');

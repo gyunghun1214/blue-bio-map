@@ -1480,7 +1480,7 @@ def conservation_status(aphia: int, trace: dict | None, national: dict | None, f
                       "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
                       "used_for_mcui": False, "why_not": scope["why_not"]["range_state"]})
     for r in (sub.get("sub_national_reference") or {}).get("regions", []) + (sub.get("record") or {}).get("regions", []):
-        found.append({"scope": "sub_national", "country": r["country"], "region": r["region"], "region_ko": r.get("region_ko"),
+        found.append({"scope": "sub_national", "country": r["country"], "country_ko": r.get("country_ko"), "region": r["region"], "region_ko": r.get("region_ko"),
                       "system": r.get("list"), "list": r["list"], "year": r["edition"], "category_as_published": r["category_as_published"],
                       "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
                       "used_for_mcui": False, "why_not": scope["why_not"]["sub_national"]})

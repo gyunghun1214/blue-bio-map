@@ -131,8 +131,10 @@ assert.equal(ctx.stopFromHash('#stop=2',3),1);assert.equal(ctx.stopFromHash('#st
 for(const h of ['','#stop=0','#stop=4','#stop=x','#nostop=1','#stop=1.5'])assert.equal(ctx.stopFromHash(h,3),-1,h);
 
 // headline axes: the two largest of MFPI/MBPI/MCUI, a missing value never ranks as 0
-assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:71.6,MBPI:96.3,MCUI:10,BBVI:83.9}})],['MBPI','MFPI']);
-assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:null,MBPI:8.7,MCUI:80,BBVI:null}})],['MCUI','MBPI']);
+// 4.14 (prereg-4.14 8): a fixed order, never the larger numbers (the three sit in different cohorts and scales)
+assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:71.6,MBPI:96.3,MCUI:10,BBVI:83.9}})],['MFPI','MBPI']);
+assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:null,MBPI:8.7,MCUI:80,BBVI:null}})],['MBPI','MCUI']);
+assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:10,MBPI:8.7,MCUI:80,BBVI:9}})],['MFPI','MBPI'],'a higher MCUI number does not move it forward');
 assert.equal(ctx.fmtScore(null),null);assert.equal(ctx.fmtScore(80),'80.0');
 
 // map link: the keys index.html's applyHash reads (s, v, m) with the format writeHash writes

@@ -985,3 +985,10 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .mt-dot.stock,.lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
 .matrix-point.pilot.stock{border-radius:2px}
 .flow .bx.stock rect{fill:#fff8ea;stroke:#f2b84b;stroke-width:1.8}
+/* 4.14: the conservation state in words beside the value ('공식 LC' / '보전평가 미확인'), never only in a tooltip */
+.species-card .card-line .cl-cons{margin-left:4px;font-size:11px;font-weight:500;color:var(--muted)}
+.species-card .card-line .cl-cons.unknown,.card-scores .held-word{color:#f2b233}
+.card-scores .held-word{font-size:10.5px;font-weight:600}
+/* 4.14: a sorted MFPI/MBPI table is grouped by cohort or stratum; a BBVI/MCUI sort carries its mixed-order notice */
+#comparison tr.cmp-group>th{padding:8px 12px 6px;text-align:left;font-size:12px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.12)}
+#comparison tr.cmp-group.mixed>th{color:#f2b233}

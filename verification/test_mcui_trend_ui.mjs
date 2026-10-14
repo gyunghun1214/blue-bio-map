@@ -57,7 +57,8 @@ for(const cls of Object.keys(rule.labels)){
   assert.equal(broken(a,(b,t)=>{t.label='x';}),false,`${cls}: label follows the class`);
   if(cls!=='decline_signal')assert.equal(broken(a,(b,t)=>{t.mcui_adjustment=10;}),false,`${cls}: never adjusts MCUI`);
 }
-for(const a of rows.filter(a=>a.occurrence_trend.mcui_base===null))assert.equal(a.scores.MCUI,null,`${a.korean_name}: no MCUI from a trend alone`);
+// 4.14: a stock-decline lower bound (우뭇가사리 80) is not a trend; its extinction-risk value stays null
+for(const a of rows.filter(a=>a.occurrence_trend.mcui_base===null))assert.equal(a.mcui_driver==='stock_decline'?a.mcui_extinction_risk:a.scores.MCUI,null,`${a.korean_name}: no MCUI from a trend alone`);
 // archived reports without the trend rule keep validating; a 3.4 row without its trend does not
 const archived=JSON.parse(read('research/verified-indices/archive/assessments-verified-pilot-3.3.json'));
 for(const a of [...archived.species,...archived.candidate_species])assert.ok(ctx.valid(a,archived),`3.3 archive ${a.korean_name} still validates`);
@@ -95,16 +96,21 @@ assert.equal(broken42(ref,b=>{delete b.mcui_substitute.record.native_box;}),fals
 
 // 4.3 (team-lead decision 2026-10-05): a met check is the last basis and scores LC-equivalent 10, labelled, with the failed
 // back-test beside it. It is re-checked like the reference record and refused beside any official basis.
-const lcRows=rows.filter(a=>a.mcui_basis==='preliminary');
+// 4.14 (prereg-4.14 3): the check is a reference again in the current report; the 4.3–4.12 scored rules stay on the 4.12 archive
+assert.equal(rows.filter(a=>a.mcui_basis==='preliminary'||a.mcui_substitute?.use==='scored').length,0,'4.14: no scored Rapid LC or other-region list');
+const arch412=JSON.parse(read('research/verified-indices/archive/assessments-verified-4.12.json'));
+const broken412=(a,change)=>{const b=structuredClone(a);change(b,b.occurrence_trend);return ctx.valid(b,arch412);};
+for(const a of [...arch412.species,...arch412.candidate_species])assert.ok(ctx.valid(a,arch412),`4.12 archive ${a.korean_name} still validates`);
+const lcRows=[...arch412.species,...arch412.candidate_species].filter(a=>a.mcui_basis==='preliminary');
 assert.equal(lcRows.length,9);  // 4.11 (prereg 5): 미역·톳·청각·꽃게 move from failed sub-national lists to Rapid LC; 멍게 (ratio 0.655) leaves it
 assert.ok(lcRows.every(a=>a.scores.MCUI===10&&a.mcui_substitute.use==='scored'&&a.mcui_substitute.backtest.result==='failed'&&a.withheld_reasons.MCUI===null));
 const lc=lcRows[0];
-assert.equal(broken(lc,b=>{b.scores.MCUI=35;}),false,'the scored check is LC-equivalent only');
-assert.equal(broken(lc,b=>{delete b.mcui_substitute.backtest;}),false,'the failed back-test rides with the value');
-assert.equal(broken(lc,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
-assert.equal(broken(lc,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
-assert.equal(broken(lc,b=>{b.conservation_trace.iucn_state='assessed';}),false,'never beside an IUCN assessment');
-assert.equal(broken(lc,b=>{b.mcui_substitute.use='reference_only';}),false,'a scored value must be marked scored');
+assert.equal(broken412(lc,b=>{b.scores.MCUI=35;}),false,'the scored check is LC-equivalent only');
+assert.equal(broken412(lc,b=>{delete b.mcui_substitute.backtest;}),false,'the failed back-test rides with the value');
+assert.equal(broken412(lc,b=>{b.mcui_substitute.record.records=b.mcui_substitute.record.thresholds.records-1;}),false,'the published thresholds are re-checked');
+assert.equal(broken412(lc,b=>{b.national_assessment={category:'EN'};}),false,'never beside a national assessment');
+assert.equal(broken412(lc,b=>{b.conservation_trace.iucn_state='assessed';}),false,'never beside an IUCN assessment');
+assert.equal(broken412(lc,b=>{b.mcui_substitute.use='reference_only';}),false,'a scored value must be marked scored');
 
 // Screen text
 for(const a of rows){

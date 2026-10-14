@@ -142,8 +142,8 @@ assert.equal(context.tag({assessment:{scores:{}}}),'BBVI 미산출');
 // A cell's species summary: confirmed, usable, conservation priority, evidence gap.
 const gap={label:'근거 부족 종',assessment:{scores:{BBVI:20},priority_survey:true}}, none={label:'평가 없음 종'};
 const sum=context.summary([species,gap,none]);
-assert.match(sum,/<b>3<\/b><span>확인 종/);assert.match(sum,/<b>1<\/b><span>활용 가능 종/);
-assert.match(sum,/<b>1<\/b><span>보전 우선 종/);assert.match(sum,/<b>2<\/b><span>근거 부족 종/);
+assert.match(sum,/<b>3<\/b><span>확인 종/);assert.match(sum,/<b>1<\/b><span>활용 지표 높은 종/);
+assert.match(sum,/<b>1<\/b><span>보전 지표 높은 종/);assert.match(sum,/<b>2<\/b><span>근거 부족 종/);
 assert.match(sum,/근거 부족\(우선 조사 대상 또는 지표 평가 없음\): 근거 부족 종, 평가 없음 종/);
 assert.equal(context.summary([]),'');
 vm.runInContext('data={species:[globalThis.species]}',context);

@@ -32,23 +32,25 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,name:'Other species'}),null,'wrong taxon must not attach');
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
 }
-assert.equal(scored,30,'3.15: 27 MFPI (national-name links, aquaculture records, a literature row) + 18 MBPI + 16 MCUI (7 IUCN + 8 Korean national incl. the 참문어 crosswalk + 1 range-state) cover all 30 species');
+assert.equal(scored,30,'(4.14: 16 MCUI = 7 IUCN + 8 Korean national + 1 stock lower bound) 3.15: 27 MFPI (national-name links, aquaculture records, a literature row) + 18 MBPI + 16 MCUI (7 IUCN + 8 Korean national incl. the 참문어 crosswalk + 1 range-state) cover all 30 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,8,'national MCUI stays labelled by basis (3.15 adds 참문어 through the misapplied-name crosswalk)');
 // 3.15: the range-state list is the only substitute MCUI basis. 3.15 (team-lead decision 2026-10-02): reference only, so the
 // 14 Rapid LC checks give no MCUI, no basis and no matrix point.
-assert.deepEqual(readiness.species.filter(r=>!['iucn','national',null].includes(r.mcui_basis)).map(r=>r.mcui_basis),['preliminary','range_state','preliminary','preliminary','preliminary','range_state','preliminary','preliminary','preliminary','range_state','range_state','preliminary','range_state','preliminary']);  // 4.11 (prereg 5.1): the 4 failed-back-test sub-national rows are reference only, so 미역·톳·청각·꽃게 fall to Rapid LC and 멍게 (ratio 0.655) has none;  // 3.16: 시카메굴(일본) + 우뭇가사리(러시아); 3.27: 가시파래(스웨덴); 4.0: 넙치·대구(일본 수산청 ランク外); 4.2: 톳·청각·꽃게(일본 현 목록, 라벨과 역검증 결과를 달고) 4.3: 미역 연해주(sub_national) + 자체 예비평가 6종(preliminary).
+// 4.14 (prereg-4.14-2026-10-14 3): only IUCN global and Korean national categories give the extinction-risk MCUI. Range-state,
+// sub-national lists and the Rapid LC check are references with no number, so no other basis is left.
+assert.deepEqual(readiness.species.filter(r=>!['iucn','national',null].includes(r.mcui_basis)).map(r=>r.mcui_basis),[]);
 const reference=readiness.species.filter(r=>byId.get(r.aphia_id).mcui_substitute?.use==='reference_only');
-assert.equal(reference.length,0);  // 3.16–4.2 moved 7 of 14 to official bases; 4.3 (team-lead decision 2026-10-05) scores the other 6 and gives 미역 its Primorsky row
-assert.ok(reference.every(r=>r.scores.MCUI===null&&r.mcui_basis===null&&r.matrix_eligible===false));
+assert.equal(reference.length,14);  // 4.14: 9 Rapid LC + 5 range-state lists (우뭇가사리 included) kept as references (멍게 carries its decline block instead); 3.16–4.2 moved 7 of 14 to official bases; 4.3 (team-lead decision 2026-10-05) scores the other 6 and gives 미역 its Primorsky row
+assert.ok(reference.every(r=>r.mcui_basis===null&&(r.scores.MCUI===null?r.matrix_eligible===false:byId.get(r.aphia_id).mcui_driver==='stock_decline')));  // 우뭇가사리 keeps MCUI 80 as a stock-decline lower bound
 assert.ok(national.every(r=>r.matrix_eligible===(r.scores.BBVI!==null)),'verified-pilot-3.2: national MCUI is placed only with a BBVI, labelled by mcui_basis');
 const oyster=readiness.species.find(r=>r.aphia_id===836033);
 assert.equal(ctx.followup({...make(oyster),assessment:{...byId.get(836033),scores:{...byId.get(836033).scores,MFPI:0}}}),null,
   'forged zero or changed published score cannot attach a follow-up row');
 const kelp=readiness.species.find(r=>r.aphia_id===371986);
 assert.match(ctx.followup(make(kelp)).research.join(' '),/독립 문헌/);
-assert.equal(ctx.followup(make(kelp)).known.join(','),'MFPI,MBPI,MCUI');  // 4.0: MFPI from a moisture-converted row; 4.3: the Rapid LC check scores the MCUI
-assert.deepEqual([...ctx.followup(make(kelp)).blocked],[]);
+assert.equal(ctx.followup(make(kelp)).known.join(','),'MFPI,MBPI');  // 4.14: the Rapid LC check is a reference, MCUI unknown; 4.0: MFPI from a moisture-converted row; 4.3: the Rapid LC check scores the MCUI
+assert.deepEqual([...ctx.followup(make(kelp)).blocked],['MCUI']);
 // verified-pilot-3.2: a real point needs both BBVI and MCUI (a national MCUI included, marked by mcui_basis); nothing else is placed.
 // 3.15: 미역 has BBVI 71.0 but only a reference-only Rapid LC check, so it stays off.
 assert.ok(readiness.species.every(r=>r.matrix_eligible===(r.scores.BBVI!==null&&r.scores.MCUI!==null)),'a real matrix point needs BBVI and MCUI');

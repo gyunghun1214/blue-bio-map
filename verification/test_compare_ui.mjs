@@ -55,7 +55,7 @@ assert.ok(strip(tray()).includes('2종 이상 담으면 비교할 수 있습니�
 T.basket=ids.slice(0,3);T.selected=by(ROCKFISH);T.renderCompareProfile();
 let prof=$('cmp-profile').innerHTML;
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
-assert.ok(strip(prof).includes('근거 논문 1편')&&strip(prof).includes('자체 예비평가'),'조피볼락 keeps its BBVI paper-count and MCUI basis labels');
+assert.ok(strip(prof).includes('근거 논문 1편')&&strip(prof).includes('보전평가 미확인'),'조피볼락 keeps its BBVI paper-count label and says its conservation state (4.14: Rapid LC is a reference)');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 
@@ -90,10 +90,13 @@ T.setCompareFilter({group:'all',q:'없는생물이름'});
 assert.equal(S.filter(T.cmpMatch).length,0);assert.ok(strip($('cmp-filter-note').innerHTML).includes('검색 결과 없음'),'an empty result says so, not an error');
 T.setCompareFilter({group:'all',q:''});assert.equal($('cmp-filter-note').innerHTML,'','no note without a filter');
 
-// Design 3: the plain verdict is a display alias of the four type ids ('유형 없음' otherwise) and says it is no permission.
-assert.deepEqual(Object.keys(T.MATRIX_PLAIN).sort(),['alternative_production','baseline_survey','conservation_priority','sustainable_use']);
-assert.equal(T.matrixTypePlain('sustainable_use'),'써도 됨');assert.equal(T.matrixTypePlain(null),'유형 없음');assert.equal(T.matrixTypePlain('other'),'유형 없음');
-assert.ok(T.matrixPlainNote().startsWith('연구용 유형 요약 · 채집·이용 권고 아님')&&T.matrixPlainNote().includes('이상이면 활용 높음'));
+// Design 3, 4.14 (prereg-4.14 7): the plain words are the report's position words for the four type ids ('유형 미산출'
+// otherwise), and the note says the type is a research class with an exploratory dividing line, no permission.
+assert.deepEqual(['alternative_production','baseline_survey','conservation_priority','sustainable_use'].map(id=>T.MATRIX_PLAIN[id]),
+  ['두 지표 모두 높음','두 지표 모두 낮음','보전 지표 높음','활용 지표 높음']);
+assert.equal(T.matrixTypePlain('sustainable_use'),'활용 지표 높음');assert.equal(T.matrixTypePlain(null),'유형 미산출');assert.equal(T.matrixTypePlain('other'),'유형 미산출');
+assert.ok(T.matrixPlainNote().startsWith('연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님')&&T.matrixPlainNote().includes('탐색적 구분선')&&T.matrixPlainNote().includes('이상이면 활용 지표 높음'));
+assert.ok(!/써도 됨|키워서 써야 함|지켜야 함|더 알아봐야 함|지속가능 활용 후보/.test(read('app.js')+read('index.html')+read('chatbot.js')),'4.14: no use or harvest verdict words left on the page');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=$('cmp-profile').innerHTML;
 const oysterType=T.matrixType(by(OYSTER));
 assert.ok(new RegExp(`<b>${T.matrixTypePlain(oysterType)}</b><span>${T.matrixTypeLabel(oysterType)}</span>`).test(prof),'the profile type line: plain verdict, then the formal type name');
@@ -109,7 +112,7 @@ for(const s of S){
 T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(['비교집단','근거 논문 1편','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, paper count and basis note');
 T.selected=by(250680);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
-assert.ok(prof.includes('유형 없음')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 없음 and why');
+assert.ok(prof.includes('유형 미산출')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 미산출 and why');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
 const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});
 assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,13,10,'a'),P(3,16,10,'a'),P(4,19.9,10,'a')])].map(g=>[...g.ids]),[[1,2,3,4]]);
@@ -119,10 +122,9 @@ assert.equal(T.matrixClusters([P(1,10,10,'a'),P(2,11,10,'a'),P(3,12,20,'a'),P(4,
 assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,11.5,10,'a'),P(3,13,10,'a',true),P(4,14.5,10,'a'),P(5,16,10,'a')])].map(g=>[...g.ids]),[[1,2,4,5]],'the selected point stays out');
 const pts=sel=>S.filter(s=>T.matrixType(s)).map(s=>P(s.aphiaID,T.pilotScore(s,'BBVI'),T.pilotScore(s,'MCUI'),T.matrixType(s),s.aphiaID===sel));
 let G=[...T.matrixClusters(pts(OYSTER))];
-assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,10,'35.5','49.1'],[10,6,'53.8','59.7']],'참굴 picked: 10 below the threshold, 6 above it (4.12: 참조기 moved to MCUI 35, 살오징어 BBVI 51.5 to 60)');
-G=[...T.matrixClusters(pts(ROCKFISH))];
-assert.deepEqual(G.map(g=>g.ids.length),[7,6,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours');
-assert.ok(G.every(g=>!g.ids.includes(ROCKFISH)));
+// 4.14: the 13 species without an IUCN or Korean national category left the matrix, so no MCUI row keeps 4 neighbours under 4 apart
+assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[],'참굴 picked: 16 points, no crowded run left');
+assert.equal(T.matrixType(by(ROCKFISH)),null,'조피볼락 (Rapid LC only) has no type and no matrix point');
 // '바다 탐험에서 보기': #stop=N over the route stops (1-based); an off-route stop opens the page; no stop, no link.
 const stops=JSON.parse(read('expedition-stops.json')).stops, route=stops.filter(st=>st.on_route!==false&&st.cell);
 const OCTOPUS=stops.find(st=>!route.includes(st))?.aphia_id;
@@ -141,7 +143,9 @@ for(const k of [0,10,20]){
   assert.equal((h.match(/<th scope="col"/g)||[]).length,8);assert.equal(Math.round(Number(wb)*100)+Math.round(Number(wf)*100),100);
   for(const s of S){
     const part=moreOf(h,s.aphiaID), v=T.pilotScore(s,'BBVI'), cov=T.evidenceCoverage(s).checks.find(c=>c.name==='보전');
-    if(v!==null)assert.ok(part.includes(`${wf} × MFPI ${T.pilotScore(s,'MFPI').toFixed(1)} + ${wb} × MBPI ${T.pilotScore(s,'MBPI').toFixed(1)} = <b>${v.toFixed(1)}</b>`),`${s.label} BBVI at w ${k/20}`);
+    // 4.14: '≈' with its reason where the unrounded inputs give another last digit than the shown one-decimal ones
+    if(v!==null)assert.ok(part.includes(`${wf} × MFPI ${T.pilotScore(s,'MFPI').toFixed(1)} + ${wb} × MBPI ${T.pilotScore(s,'MBPI').toFixed(1)} = <b>${v.toFixed(1)}</b>`)||
+      part.includes(`${wf} × MFPI ${T.pilotScore(s,'MFPI').toFixed(1)} + ${wb} × MBPI ${T.pilotScore(s,'MBPI').toFixed(1)} ≈ <b>${v.toFixed(1)}</b>`)&&part.includes('반올림 전 MFPI·MBPI로 계산해 마지막 자리가 다름'),`${s.label} BBVI at w ${k/20}`);
     assert.ok(part.includes(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`)&&part.includes('<h4>MCUI 기반</h4>')&&part.includes(cov.detail.slice(0,20)),s.label+' occurrence button and MCUI basis');
     for(const c of T.evidenceChipList(s))assert.ok(part.includes(`">${T.plainWords(c)}</span>`),`${s.label} keeps chip ${c}`);
     assert.equal(part.includes('>보전 평가 없음 확인</span>'),cov.stage==='checked_none',s.label+' 보전 평가 없음 확인');

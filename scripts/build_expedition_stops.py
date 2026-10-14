@@ -116,6 +116,11 @@ def _mcui(sp, sources):
         t = sp["national_assessment"]
         out.update(category=t.get("category"), scope=t.get("scope"), mapping=t.get("pilot_mapping"),
                    label=t.get("label"), source=_source(sources, t.get("source_id")))
+    elif not basis and sp.get("conservation_status"):
+        # 4.14 (prereg-4.14-2026-10-14 2·3): no IUCN global or Korean national category; another region's list or a Rapid LC
+        # check is a reference without a number, so the stop says the state instead of a category
+        st = sp["conservation_status"]
+        out.update(label=" · ".join(x for x in (st["label"], st.get("mcui_role_label")) if x))
     elif not basis and (sp.get("mcui_substitute") or {}).get("result") == "decline_ratio_reached":
         # 4.11 (prereg-4.11-2026-10-13 5.2): the Rapid LC record exists but gives no MCUI; say so instead of its label
         out.update(label="보전 평가 없음 · OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 쓰지 않음")
@@ -129,6 +134,8 @@ def _mcui(sp, sources):
         sid = region.get("source_id") or record.get("source_id") or record.get("method_source_id")
         out.update(category=t.get("category"), mapping=t.get("pilot_mapping"), label=t.get("label"),
                    scope=region.get("region_ko"), source=_source(sources, sid) if sid else None)
+    if sp.get("conservation_status"):  # 4.14: one state for every stop ('공식 평가' or '보전평가 미확인 · …')
+        out["status"] = {"state": sp["conservation_status"]["state"], "label": sp["conservation_status"]["label"]}
     d = sp.get("stock_decline")
     if d:  # 4.12 (prereg-4.12-2026-10-14): catch-trend element beside the extinction-risk basis, never an IUCN category
         out["driver"] = sp.get("mcui_driver")

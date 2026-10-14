@@ -41,9 +41,11 @@ for(const f of faq){
 // (4b) 2026-10-13 판단문(‘써도 됨’ 등)도 답변에 직접 쓰지 않고 {plain:사분면 키}로 app.js의 matrixTypePlain에서 읽음(문구는 한 곳에서 관리).
 // 앱 함수가 없으면 종 카드를 보라고 안내. 판단문 FAQ는 네 판단문을 모두 자리표시로 부름
 const app=read('app.js'),matrix=JSON.parse(read('assessments.json')).method.matrix;
-const plainLines=[/^const MATRIX_PLAIN=.*$/m,/^const matrixTypePlain=.*$/m].map(r=>app.match(r)[0]);
-const plainWords=Object.values(vm.runInNewContext('('+plainLines[0].replace(/^const MATRIX_PLAIN=/,'').replace(/;$/,'')+')'));
+// 4.14: the words come from the report (matrix.types[].plain); MATRIX_PLAIN_DEFAULT is the same four for older reports
+const plainLines=[/^const MATRIX_PLAIN_DEFAULT=.*$/m,/^const MATRIX_PLAIN=.*$/m,/^const matrixTypePlain=.*$/m].map(r=>app.match(r)[0]);
+const plainWords=Object.values(vm.runInNewContext('('+plainLines[0].replace(/^const MATRIX_PLAIN_DEFAULT=/,'').replace(/;$/,'')+')'));
 assert.equal(plainWords.length,4);
+assert.deepEqual([...plainWords].sort(),Object.values(matrix.types).map(t=>t.plain).sort(),'the default words are the report words');
 for(const f of faq)for(const w of plainWords)assert.ok(!f.a.includes(w),`${f.id}: 하드코딩된 판단문 '${w}'`);
 assert.equal(vm.runInContext("chatbotPlain('high_bbvi_low_mcui')",ctx),'종 카드에 적힌 판단문','앱 함수가 없을 때');
 vm.runInContext(plainLines.join('\n'),ctx);ctx.matrixRule=()=>matrix;

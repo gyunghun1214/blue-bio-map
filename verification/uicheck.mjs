@@ -160,7 +160,7 @@ try{
     // 4.0: MFPI 62.5 from a moisture-converted row and BBVI 65.0 (single paper); MCUI stays withheld
     eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
     eckAxes.mcui.includes('자체 예비평가(Rapid LC) MCUI')&&eckAxes.mcui.includes('매트릭스에는 회색 점선 점으로 따로 놓습니다')&&eckAxes.scores.BBVI===59.7&&
-    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('이 종의 매트릭스 유형: 지속가능 활용 후보')&&!eckAxes.map.includes('56.8'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
+    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('이 종의 매트릭스 유형: 활용 연구 검토')&&!eckAxes.map.includes('56.8'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
     JSON.stringify({...eckAxes,mcui:eckAxes.mcui.slice(0,80),flags:['MBPI 56.8','효소·수용체 등 단백질 표적','eckstolonol','1.47 ± 0.04 mM','시범','10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)'].map(x=>x+':'+eck.includes(x))})+' | '+eck.slice(0,500));
@@ -377,16 +377,16 @@ try{
   check('Species cards (design 2, shape A): 활용 BBVI · 보전 MCUI · verdict on every assessed card from the app’s values and types; MCUI at or over the line in red; the verdict notes it is no advice; the single-paper mark follows the BBVI label',
     !cardLine.bad.length&&cardLine.n===cardLine.want&&cardLine.n>0&&cardLine.single===cardLine.wantSingle&&cardLine.shown!=='none',JSON.stringify(cardLine));
   const typeChip=await evaluate(`(()=>{const t=matrixType(selected),c=document.querySelector('#detail .ax-type'),x=c?.textContent||'';return {text:x,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',title:c?.title||'',first:c?.querySelector('.verdict')?.textContent||''}})()`);
-  check('Detail type chip (design 2): the verdict first, then the type name; its tooltip says research summary, not advice',typeChip.first===typeChip.plain&&!!typeChip.label&&typeChip.text.indexOf(typeChip.plain)<typeChip.text.indexOf(typeChip.label)&&typeChip.title.startsWith('연구용 유형 요약 · 채집·이용 권고 아님'),JSON.stringify(typeChip));
+  check('Detail type chip (design 2): the verdict first, then the type name; its tooltip says research class, no permission or sustainability verdict',typeChip.first===typeChip.plain&&!!typeChip.label&&typeChip.text.indexOf(typeChip.plain)<typeChip.text.indexOf(typeChip.label)&&typeChip.title.startsWith('연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님'),JSON.stringify(typeChip));
   const leg=await evaluate(`(()=>{const q=s=>document.querySelector(s),r=e=>e.getBoundingClientRect(),key=q('#occurrence-legend'),more=q('.map-legend-more'),pane=r(q('.species-pane')),bl=r(q('.map-ui-bl')),c=r(q('#map-chip')),ov=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
     return {rows:[...key.children].filter(e=>r(e).height>0).length,summary:more.querySelector('summary').textContent,closed:!more.open,inside:['.key-bubble','.key-note','#map-legend-note'].every(s=>more.contains(q('#occurrence-legend '+s))),gap:Math.round(bl.top-pane.bottom),
       chipHits:['.species-pane','#detail','.basemap-switch','#copy-link','#reset-map'].filter(s=>ov(c,r(q(s)))),chipEvents:getComputedStyle(q('#map-chip')).pointerEvents,chipLive:q('#map-chip').getAttribute('aria-live')}})()`);
   check('Legend (design 2): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, hung under the species list with no gap; the map chip sits in the free part, takes no clicks, is not a live region',
     leg.rows===2&&leg.summary==='범례'&&leg.closed&&leg.inside&&Math.abs(leg.gap)<=1&&!leg.chipHits.length&&leg.chipEvents==='none'&&leg.chipLive===null,JSON.stringify(leg));
   const sumPop=await evaluate("(()=>{const l=overlay.getLayers().find(l=>l instanceof L.Rectangle&&l.getPopup());l.openPopup();const c=document.querySelector('.leaflet-popup-content');const r={tiles:[...c.querySelectorAll('.cell-summary span')].map(x=>x.textContent),text:c.innerText};map.closePopup();return r})()");
-  check('Cell popup opens with confirmed / usable / conservation-priority / evidence-gap species counts',JSON.stringify(sumPop.tiles)==='["확인 종","활용 가능 종","보전 우선 종","근거 부족 종"]'&&sumPop.text.includes('이 격자에서 측정한 값이 아닙니다'),JSON.stringify(sumPop).slice(0,500));
+  check('Cell popup opens with confirmed / usable / conservation-priority / evidence-gap species counts',JSON.stringify(sumPop.tiles)==='["확인 종","활용 지표 높은 종","보전 지표 높은 종","보전평가 미확인 종","근거 부족 종"]'&&sumPop.text.includes('이 격자에서 측정한 값이 아닙니다'),JSON.stringify(sumPop).slice(0,500));
   const sumVal=await evaluate("(()=>{setMapMode('value');const r=[...document.querySelectorAll('#value-cell-detail .cell-summary span')].map(x=>x.textContent);setMapMode('occurrence');return r})()");
-  check('Value map cell panel shows the same four species counts',JSON.stringify(sumVal)==='["확인 종","활용 가능 종","보전 우선 종","근거 부족 종"]',JSON.stringify(sumVal));
+  check('Value map cell panel shows the same four species counts',JSON.stringify(sumVal)==='["확인 종","활용 지표 높은 종","보전 지표 높은 종","보전평가 미확인 종","근거 부족 종"]',JSON.stringify(sumVal));
   check('Live map title names the public-criteria collection',(await evaluate("document.getElementById('map-source').textContent")).includes('공개 기준 자료'));
   // 2026-10-13 design 2: the chip follows the species and the period filter, always with the numbers under the map
   const chipFlow=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms)),q=x=>document.getElementById(x),out=[];
@@ -753,7 +753,7 @@ try{
   const outside=JSON.parse(fs.readFileSync(new URL('../dist/unexplored-candidates.json',import.meta.url),'utf8')).species;  // 4.0: 30종 밖 근연종
   const nP=flagged.filter(s=>s.priority_survey).length,nU=flagged.filter(s=>s.unexplored_candidate).length+outside.length;
   check('Value map (3.2): figure-5 legend, type-coloured cells, priority-survey layer toggles without recolouring or taking clicks',
-    JSON.stringify(layers.legend)===JSON.stringify(['보전 우선·모니터링','대체생산·배양 연구','기초조사·관찰 대상','지속가능 활용 후보'])&&
+    JSON.stringify(layers.legend)===JSON.stringify(['보전 연구 우선 검토','활용·보전 병행 검토','기초조사 검토','활용 연구 검토'])&&
     layers.judgment.includes('종 유형으로 칠한 공개 격자')&&layers.rule.includes('50 이상이면 높음')&&layers.rule.includes('소수 한 자리')&&layers.rule.includes('50% 미만')&&
     (nP?layers.on>layers.before&&layers.markers>0:layers.on===layers.before&&layers.markers===0)&&layers.off===layers.before&&  // 4.3: no species is flagged
     !layers.markersInteractive&&layers.hitsOn===layers.hits&&!layers.legendText.includes('빗금'),JSON.stringify(layers));
