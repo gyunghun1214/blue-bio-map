@@ -489,7 +489,8 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
 vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
 {const rows=[...original.species,...original.candidate_species],rule=original.method.mbpi_rx,vs=original.method.posthoc.validation_sets.MBPI_RX;
   const rxv=s=>rows.find(r=>r.aphia_id===s.aphiaID).mbpi_rx.value;
-  assert.equal(rows.length,30);assert.equal(rows.filter(r=>r.mbpi_rx.value===null).length,11);
+// 4.13: 넙치's top item is now outside the excluded strata, so it has an MBPI-Rx value (11 -> 10 nulls)
+  assert.equal(rows.length,30);assert.equal(rows.filter(r=>r.mbpi_rx.value===null).length,10);
   for(const r of rows){const got=ctx.rxOf(by(r.aphia_id));
     assert.ok(got,`${r.korean_name}: MBPI-Rx re-checks from the trace`);
     assert.equal(got.value,r.mbpi_rx.value,`${r.korean_name} MBPI-Rx`);
@@ -539,12 +540,12 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">없음</span></span>',r.korean_name);
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>62.6<small>항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) · MBPI·BBVI에 쓰지 않음</small>'),'oyster 자세히');
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
-  // sorting by it: high → low and low → high, the 11 species without a value last in catalogue order both ways
+  // sorting by it: high → low and low → high, the 10 species without a value last in catalogue order both ways
   const want=dir=>next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=rxv(a),y=rxv(b);return x===null||y===null?(x===null)-(y===null)||i-j:(dir==='desc'?y-x:x-y)||i-j;}).map(([s])=>s.label);
   for(const dir of ['desc','asc']){vm.runInContext(`cmpSort={key:'MBPI_RX',dir:'${dir}'}`,ctx);ctx.compare();t=dom.comparison.innerHTML;
     assert.deepEqual(headers(),want(dir),`MBPI-Rx ${dir}`);
-    assert.deepEqual(headers().slice(-11),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
-    assert.equal(headers()[dir==='desc'?0:18],'피조개','75.0 is the highest MBPI-Rx (4.11: 갑오징어 back to 65.8)');
+    assert.deepEqual(headers().slice(-10),next.species.filter(s=>rxv(s)===null).map(s=>s.label),'no value last');
+    assert.equal(headers()[dir==='desc'?0:19],'피조개','75.0 is the highest MBPI-Rx (4.11: 갑오징어 back to 65.8; 4.13: 넙치 gains a value)');
     assert.match(t,new RegExp(`aria-sort="${dir==='desc'?'descending':'ascending'}"><button type="button" class="cmp-sort" data-sort="MBPI_RX">`));
     assert.equal(dom['comparison-page'].textContent,`총 30종 · 정렬: MBPI-Rx ${dir==='desc'?'높은 순':'낮은 순'}`);}
   vm.runInContext("cmpSort={key:null,dir:null}",ctx);

@@ -7,7 +7,7 @@ const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char =>
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -559,6 +559,36 @@ function traitDisplayRows(file,outdated){
     const key=r.aphia_id+'|'+r.trait;rows.set(key,[...(rows.get(key)||[]),r]);
   }
   return rows;
+}
+// 4.12 (prereg-4.12-2026-10-14 3-D): related papers that no score uses (dist/supplementary-literature.json, built by
+// scripts/build_supplementary_literature.py). Schema 1 is read; a higher number is a newer file this code does not know;
+// anything else is ignored. Nothing here reaches MFPI, MBPI, MCUI, BBVI, the matrix, the map colours or a chip, and the count
+// is kept apart from the '근거 논문 1편' label, which still means the top MBPI item has no independent replication.
+let supplementaryLit=new Map();
+const LIT_RELATION={contrary:'반대 근거',same_item_followup:'같은 물질 후속',new_quantitative:'같은 종 새 정량',link_support:'종-물질 연결',context:'참고',excluded:'제외'};
+function supplementaryRows(file,outdated){
+  const v=/^supplementary-literature-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'supplementary-literature.json',version:file.schema_version});
+  const rows=new Map();
+  if(file?.schema_version!=='supplementary-literature-1'||!Array.isArray(file.records))return rows;
+  for(const r of file.records){
+    if(!Number.isSafeInteger(r?.aphia_id)||!/^10\.\d{4,9}\/\S+$/.test(String(r.doi||''))||!LIT_RELATION[r.relation]||!r.finding||!r.not_scored_reason)continue;
+    rows.set(r.aphia_id,[...(rows.get(r.aphia_id)||[]),r]);
+  }
+  return rows;
+}
+const litRows=s=>VERIFIED.includes(s?.assessment?.report_version)?supplementaryLit.get(s.aphiaID)||[]:[];
+const litCardLine=s=>litRows(s).length?`<span class="card-lit" title="점수에 쓰지 않은 관련 문헌(근거 논문 수와 다른 수)">관련 문헌 ${litRows(s).length}편 · 점수 미사용</span>`:'';
+function supplementaryLine(s){
+  const rows=litRows(s);
+  if(!rows.length)return '';
+  const contrary=rows.filter(r=>r.relation==='contrary').length;
+  const doi=d=>`<a href="https://doi.org/${encodeURI(d)}" target="_blank" rel="noopener">${esc(d)}</a>`;
+  return `<details class="score-disclosure lit-disclosure"><summary><span>관련 문헌 · 점수 미사용</span><b>${esc(rows.length+'편'+(contrary?' · 반대 근거 '+contrary+'편':''))}</b></summary><div class="score-disclosure-body">`+
+    `<p class="fine">문헌 조사(2026-10-14)에서 찾았지만 고정 규칙에 맞지 않아 점수에 쓰지 않은 논문입니다. MBPI·BBVI·MCUI·매트릭스·지도 색에 들어가지 않고, 위 '근거 논문 1편' 표시(MBPI 1위 항목의 독립 재현 여부)와도 다른 수입니다.</p>`+
+    `<ul class="lit-list">${rows.map(r=>`<li data-relation="${esc(r.relation)}"><b class="lit-rel">${esc(LIT_RELATION[r.relation])}</b> ${esc(r.title_ko)} <span class="lit-src">(${esc(r.journal)}, ${esc(r.year)}) ${doi(r.doi)}</span>`+
+      `<p class="fine">${esc(r.finding)}</p><p class="fine lit-why">점수 미사용: ${esc(r.not_scored_reason)} · ${esc(r.checked_on)} ${r.checked_via==='full_text'?'원문':'초록'} 확인</p></li>`).join('')}</ul>`+
+    `</div></details>`;
 }
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it
@@ -1517,7 +1547,7 @@ function renderVerifiedIndices(s){
         `<b>${value===null?(key==='BBVI'&&!note&&bbviReference(s)!==null?`참고값 ${esc(bbviReference(s).toFixed(1))} · ${esc(a.mbpi_label||'근거 논문 1편')} · 점수 아님`:key==='MCUI'&&!note&&mcuiReference(s)?`${esc(st.label)} · 예비 평가 참고 ${esc(mcuiReference(s).category)} 가능성${rapidLcCheck()?'('+rapidLcCheck()+')':''} · 점수 아님`:esc(st.label)):value.toFixed(1)+' · '+axisLabel(s,key)+(key==='MBPI'&&a.mbpi_label?' · '+esc(a.mbpi_label):'')+(key==='MBPI'&&mbpiStratumOf(s)?' · '+esc(mbpiStratumOf(s).short):'')+(key==='BBVI'&&bbviLabel(s)?' · '+esc(bbviLabel(s)):'')+label}</b></summary>`+
         `<div class="score-disclosure-body">${note?`<p class="pending">${esc(note)}</p>`:value===null?`<p class="pending">${esc(scoreReason[reason]||reason||'산출 보류')}</p>`:''}`+
         `${note?'':bodies[key]}${key==='MFPI'&&value!==null?'<p class="fine">산식: 동기준 영양 백분위 × 신뢰도 계수 80% + 가식부 비율 10% + 양식 근거 10%. 이 비중과 계수는 '+(released()?'팀이 정한 고정 규칙':'팀의 시범 규칙')+'입니다.</p>':''}`+
-        `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s):'');
+        `</div></details>`+(key==='MBPI'?mbpiRxLine(s)+mbpiBreadthLine(s)+supplementaryLine(s):'');
     }).join('')}${unexplored}<p class="fine">정보충분도: ${sufficiencyText(a)} `+
     `민감도 범위는 통계적 신뢰구간이 아닙니다.</p></section>`;
 }
@@ -1788,7 +1818,7 @@ function renderList() {
     extra.querySelector('[data-use-clear]')?.addEventListener('click',()=>setUses([]));}
   // Re-rendering on select must not jump the (horizontal on phones) list back to the start or drop keyboard focus.
   const list=$('species-list'),left=list.scrollLeft,top=list.scrollTop,refocus=list.contains(document.activeElement);
-  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" data-type="${matrixType(s)||'none'}"${matrixType(s)?` style="--tc:${matrixTypeColour[matrixType(s)]}"`:''} aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em>${cardLine(s)}<span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
+  $('species-list').innerHTML=matches.length?matches.map(s=>`<button class="species-card ${selected?.aphiaID===s.aphiaID?'selected':''}" data-species="${s.aphiaID}" data-group="${esc(s.group)}" data-type="${matrixType(s)||'none'}"${matrixType(s)?` style="--tc:${matrixTypeColour[matrixType(s)]}"`:''} aria-pressed="${selected?.aphiaID===s.aphiaID}"><span class="group">${esc(s.group)}</span><b>${esc(s.label)}</b><em>${esc(s.name)}</em>${cardLine(s)}<span class="count"><span>지도 표시 기록</span><strong>${s.cells.length?`${cellRecords(s).toLocaleString()}건 · ${spatialCells(s).length}셀`:s.catalog?(s.review?'공개 가능 기록 없음':releaseMissing(s)):'공개 셀 없음'}</strong></span>${cardScores(s)}${litCardLine(s)}${useCardLine(s)}</button>`).join(''):'<p class="empty">일치하는 후보가 없습니다.<br>다른 이름으로 검색해 보세요.</p>';
   $('species-list').querySelectorAll('[data-species]').forEach(button=>{
     button.addEventListener('click',()=>selectSpecies(Number(button.dataset.species)));
     for(const [ev,on] of [['mouseenter',1],['focus',1],['mouseleave',0],['blur',0]])button.addEventListener(ev,()=>hoverSpecies(on&&Number(button.dataset.species)));
@@ -3720,11 +3750,12 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);
+      fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;

@@ -444,13 +444,15 @@ try{
   // 3.27: 살오징어 YALPHA joins ACE (14 -> 15) and 시카메굴 flazin (anti-HIV) joins the virus chip (5 -> 6)
   // 2026-10-03: 내성균 reads the adopted Cg-BigDef1 MRSA rows (1); 항산화 and 항당뇨 take display-only literature rows from
   // trait-evidence.json (team-lead decision 2026-10-03, 2 each); 항진균 and 진통 stay grey (no row passed the rule).
-  check('Use chips: counts come from adopted evidence (ACE 14 since 4.11 drops 감태\'s paper-local ACE cohort, virus 6, antibacterial 4 from the 3.18/3.19/4.1 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip',
-    chipN.ace===14&&chipN.virus===7&&chipN.microbe===4&&chipN.resistant===1&&chipN.fungus===3&&chipN.pain===1&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
+  // 4.13: 넙치's P35 MIC rows are adopted, so 항균 goes 4 -> 5. The ACE chip keeps 14 (넙치 still has its ACE item; only
+  // its top item changed), and no other chip moves.
+  check('Use chips: counts come from adopted evidence (ACE 14 since 4.11 drops 감태\'s paper-local ACE cohort, virus 6, antibacterial 5 from the 3.18/3.19/4.1/4.13 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip',
+    chipN.ace===14&&chipN.virus===7&&chipN.microbe===5&&chipN.resistant===1&&chipN.fungus===3&&chipN.pain===1&&chipN.antioxidant===2&&chipN.diabetes===2&&chipN.cancer===3&&chipN.omega3===9&&
     chips.filter(([,n,gap])=>gap).every(([,n,,off])=>n===0&&off)&&chips.filter(([,n,gap])=>!gap).every(([,n,,off])=>n>0&&!off),JSON.stringify(chips));
   // Picking a chip hides the species without that evidence and says how many were hidden; it never claims they are worth less.
   const chipFilter=await evaluate("(()=>{setUses(['microbe']);const ids=[...document.querySelectorAll('.species-card')].map(b=>Number(b.dataset.species));const oyster=document.querySelector('.species-card[data-species=\"836033\"]')?.innerText||'';const ark=document.querySelector('.species-card[data-species=\"504357\"]')?.innerText||'';const note=document.getElementById('use-extra').innerText;setUses([]);return {ids,note,oyster,ark,back:document.querySelectorAll('.species-card').length}})()");
-  check('Use chip filter: the antibacterial chip leaves 꽃게 (4.1), 피조개, 조피볼락 and 참굴, counts the hidden species and clears back to all 30',
-    JSON.stringify(chipFilter.ids.sort((a,b)=>a-b))==='[274849,504357,836033,1061762]'&&/근거 미확인 26종/.test(chipFilter.note)&&
+  check('Use chip filter: the antibacterial chip leaves 꽃게 (4.1), 피조개, 조피볼락, 참굴 and 넙치 (4.13), counts the hidden species and clears back to all 30',
+    JSON.stringify(chipFilter.ids.sort((a,b)=>a-b))==='[274849,275816,504357,836033,1061762]'&&/근거 미확인 25종/.test(chipFilter.note)&&
     /가치가 낮다는 뜻 아님/.test(chipFilter.note)&&chipFilter.back===30&&
     // several strains of one target show their median (the scored value); a single strain shows its own value
     chipFilter.oyster.includes('MIC 2.5 uM (균주 7개 중앙값)')&&chipFilter.ark.includes('MIC 22.77 uM')&&!chipFilter.ark.includes('중앙값'),JSON.stringify(chipFilter));
@@ -506,7 +508,7 @@ try{
     strat.title==='기능성(식품 소재)'&&strat.counts.ace===14&&strat.counts.antioxidant===2&&strat.counts.virus===7&&strat.counts.protein_g===16&&
     strat.links.ace==='ace'&&strat.links.antioxidant==='antioxidant'&&strat.links['ace,omega3']==='ace,omega3'&&
     strat.cards===30&&strat.strata.length===30&&strat.strata.every(t=>/^MBPI 근거 · /.test(t)&&!/미등록/.test(t))&&
-    strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===14&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===0&&
+    strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===13&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===0&&
     /89\.2 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드/.test(strat.summary)&&
     strat.first.startsWith('사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
@@ -527,14 +529,14 @@ try{
     r.method=document.getElementById('method-03')?.textContent||'';
     cmpSort=keep.sort;cmpBasket=keep.basket;setCompareMode(keep.mode);renderComparison();renderCompare();setView(keep.view,false);r.kept=selected.aphiaID===keep.sel;return r})()`);
   {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='–없음'?null:Number(x),vals=rxAll.filter(v=>v!==null);
-    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (19 values, 11 –, – last both ways); #method-03 names it; no card, profile, basket, dialog, matrix or map text mentions it',
+    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values since 4.13, 10 –, – last both ways); #method-03 names it; no card, profile, basket, dialog, matrix or map text mentions it',
       rx.order==='MFPI,MBPI,RX,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색적)62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)'&&
       ['층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산)','사전 등록: research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md'].every(t=>rx.body.includes(t))&&
       rx.wak==='의약 후보 MBPI(보조, 탐색적)없음 · 제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토)'&&
-      rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx보조·탐색적/.test(rx.rxHead)&&rx.start.length===total&&n===11&&vals.length===19&&
-      rx.start.filter(x=>x==='–없음').length===11&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
-      JSON.stringify(rx.desc.map(num))===JSON.stringify([...vals].sort((a,b)=>b-a).concat(Array(11).fill(null)))&&
-      JSON.stringify(rx.asc.map(num))===JSON.stringify([...vals].sort((a,b)=>a-b).concat(Array(11).fill(null)))&&
+      rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx보조·탐색적/.test(rx.rxHead)&&rx.start.length===total&&n===10&&vals.length===20&&
+      rx.start.filter(x=>x==='–없음').length===10&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
+      JSON.stringify(rx.desc.map(num))===JSON.stringify([...vals].sort((a,b)=>b-a).concat(Array(10).fill(null)))&&
+      JSON.stringify(rx.asc.map(num))===JSON.stringify([...vals].sort((a,b)=>a-b).concat(Array(10).fill(null)))&&
       rx.label===`총 ${total}종 · 정렬: MBPI-Rx 높은 순`&&rx.focus==='MBPI_RX'&&JSON.stringify(rx.reset)===JSON.stringify(rx.start)&&
       rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(보조) · 기준 미충족')&&rx.method.includes('prereg-mbpi-rx-4.10-2026-10-12.md')&&rx.kept,
       JSON.stringify({...rx,start:rx.start.slice(0,8),desc:rx.desc.slice(0,5),asc:rx.asc.slice(0,5),reset:undefined,body:rx.body.slice(0,120),method:rx.method.slice(-200)}));}

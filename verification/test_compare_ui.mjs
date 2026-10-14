@@ -119,9 +119,10 @@ assert.equal(T.matrixClusters([P(1,10,10,'a'),P(2,11,10,'a'),P(3,12,20,'a'),P(4,
 assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,11.5,10,'a'),P(3,13,10,'a',true),P(4,14.5,10,'a'),P(5,16,10,'a')])].map(g=>[...g.ids]),[[1,2,4,5]],'the selected point stays out');
 const pts=sel=>S.filter(s=>T.matrixType(s)).map(s=>P(s.aphiaID,T.pilotScore(s,'BBVI'),T.pilotScore(s,'MCUI'),T.matrixType(s),s.aphiaID===sel));
 let G=[...T.matrixClusters(pts(OYSTER))];
-assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,10,'35.5','49.1'],[10,6,'53.8','59.7']],'참굴 picked: 10 below the threshold, 6 above it (4.12: 참조기 moved to MCUI 35, 살오징어 BBVI 51.5 to 60)');
+// 4.13: 넙치 44.3 -> 51.3 leaves the lower run, whose 41.6 -> 46.2 gap then breaks it in two, and joins the upper one
+assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,5,'35.5','41.6'],[10,4,'46.2','49.1'],[10,7,'51.3','59.7']],'참굴 picked: two runs below the threshold, one above it (4.12: 참조기 moved to MCUI 35, 살오징어 BBVI 51.5 to 60)');
 G=[...T.matrixClusters(pts(ROCKFISH))];
-assert.deepEqual(G.map(g=>g.ids.length),[7,6,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours');
+assert.deepEqual(G.map(g=>g.ids.length),[4,7,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours');
 assert.ok(G.every(g=>!g.ids.includes(ROCKFISH)));
 // '바다 탐험에서 보기': #stop=N over the route stops (1-based); an off-route stop opens the page; no stop, no link.
 const stops=JSON.parse(read('expedition-stops.json')).stops, route=stops.filter(st=>st.on_route!==false&&st.cell);
