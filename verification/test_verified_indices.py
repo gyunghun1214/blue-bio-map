@@ -2727,6 +2727,7 @@ V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (20
 V414 = ROOT / "config" / "verified-indices-v4.14.json"  # superseded by 4.16 (evidence profile, display only) and 4.17 (2026-10-15 team-lead decision: preliminary MCUI)
 V416 = ROOT / "config" / "verified-indices-v4.16.json"  # superseded by 4.17 (2026-10-15 team-lead decision: preliminary MCUI)
 V417 = ROOT / "config" / "verified-indices-v4.17.json"  # superseded by 4.18 (2026-10-15 team-lead decision: the six open items)
+V418 = ROOT / "config" / "verified-indices-v4.18.json"  # superseded by 4.19 (멍게: the OBIS ratio no longer blocks Rapid LC)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3796,9 +3797,9 @@ class Verified411Tests(unittest.TestCase):
         types = {s["korean_name"]: s["matrix_type"] for s in matrix["species"]}
         self.assertEqual([n for n, t in types.items() if t == "alternative_production"], ["살오징어"])
         # 4.14 (prereg-4.14 3) made their Rapid LC a reference; 4.17 (prereg-4.17 2) scores it again as a preliminary
-        # assessment, so 미역·톳 are typed by their Rapid LC, never by the failed sub-national list (29 points)
+        # assessment, so 미역·톳 are typed by their Rapid LC, never by the failed sub-national list (29 points; 30 from 4.19)
         self.assertEqual((types["미역"], types["톳"]), ("sustainable_use", "sustainable_use"))
-        self.assertEqual(matrix["matrix_points"], 29)
+        self.assertEqual(matrix["matrix_points"], 30)
 
     def test_a_fall_to_the_decline_ratio_blocks_rapid_lc(self):
         ascidian = self.by_name["멍게"]
@@ -4215,7 +4216,7 @@ class Verified418Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V418)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V417))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -4225,8 +4226,9 @@ class Verified418Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.18", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.18.json")
+        # the published 4.18 report is archived as it was (superseded by 4.19)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.18.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "research" / "verified-indices" / "prereg-4.18-2026-10-15.md").exists())
         rule = self.report["method"]["chembl_bioactivity"]["link_rule"]
         self.assertIn("Since 4.18", rule)
@@ -4295,7 +4297,11 @@ class Verified418Tests(unittest.TestCase):
         self.assertNotIn("10.3390/md18120603", [r["doi"] for r in published["records"]])  # one paper, one place
 
     def test_the_matrix_and_its_counts_do_not_move(self):
-        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        # the published matrix is 4.19 now, so the 4.18 matrix is rebuilt from the 4.18 report
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from build_matrix_readiness import build as build_matrix
+        read = lambda n: json.loads((ROOT / "dist" / n).read_text(encoding="utf-8"))
+        published = build_matrix(copy.deepcopy(self.report), read("candidate-catalog.json"), read("expansion-evidence.json"))
         counts = {}
         for s in published["species"]:
             counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
@@ -4474,6 +4480,71 @@ class Verified416Tests(unittest.TestCase):
         for a, s in ((s["aphia_id"], s) for s in bare["species"] + bare["candidate_species"]):
             self.assertEqual((s["scores"], s["scores_unrounded"]), (self.new[a]["scores"], self.new[a]["scores_unrounded"]))
             self.assertEqual(s["evidence_profile"]["unscored_related_count"], 0)
+
+
+class Verified419Tests(unittest.TestCase):
+    """4.19 (research/verified-indices/prereg-4.19-2026-10-15.md, registered in its own commit before the code; first registered
+    as a 4.18 candidate before PR #198 took that number): the 4.11 rule 5a is withdrawn, so an OBIS reporting-rate ratio at or
+    below the decline ratio no longer blocks a met Rapid LC check (the 4.11 rule 5b post-hoc test found the OBIS decline signal
+    does not separate threatened from LC species). Only 멍게 moves: it gets the Rapid LC check as a preliminary assessment.
+    Everything else is 4.18."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.report, cls.old_report = build(*load_inputs()), build(*load_inputs(config=V418))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.19", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.19.json")
+        self.assertTrue((ROOT / "research" / "verified-indices" / "prereg-4.19-2026-10-15.md").exists())
+        self.assertNotIn("preliminary_trend_block", self.report["method"]["mcui_substitutes"])
+        self.assertIn("preliminary_trend_block", self.old_report["method"]["mcui_substitutes"])
+
+    def test_only_the_ascidian_moves(self):
+        # food_trace carries the method version; a Rapid LC record no longer carries the withdrawn block's ratio and rule text
+        skip = ("mcui_substitute", "food_trace")
+        moved = [s["korean_name"] for a, s in self.new.items()
+                 if {k: v for k, v in s.items() if k not in skip} != {k: v for k, v in self.old[a].items() if k not in skip}]
+        self.assertEqual(moved, ["멍게"])
+        for a, s in self.new.items():
+            new, old = dict(s.get("mcui_substitute") or {}), dict(self.old[a].get("mcui_substitute") or {})
+            if s["korean_name"] == "멍게" or not old:
+                continue
+            strip = lambda r: {k: v for k, v in (r or {}).items() if k not in ("reporting_rate_ratio", "trend_block_rule")}
+            self.assertEqual({**new, "record": strip(new.get("record"))}, {**old, "record": strip(old.get("record"))}, s["korean_name"])
+        ascidian, old = self.by_name["멍게"], self.old[250680]
+        self.assertEqual((old["scores"]["MCUI"], old["mcui_substitute"]["result"]), (None, "decline_ratio_reached"))
+        self.assertEqual((ascidian["scores"]["MCUI"], ascidian["mcui_basis"], ascidian["mcui_substitute"]["result"]),
+                         (10.0, "preliminary", "likely_least_concern"))
+        self.assertEqual({k: ascidian["scores"][k] for k in ("MFPI", "MBPI", "BBVI")}, {k: old["scores"][k] for k in ("MFPI", "MBPI", "BBVI")})
+        st = ascidian["conservation_status"]
+        self.assertEqual((st["state"], st["label"], st["preliminary"]["basis"]), ("preliminary_scored", "예비 평가(공식 평가 전)", "preliminary"))
+        self.assertTrue(st["self_preliminary"]["used_for_mcui"])
+        # the OBIS numbers are kept as they were: the fall is shown, it no longer blocks the check
+        trend = lambda r: {k: v for k, v in r["occurrence_trend"].items() if k != "mcui_base"}  # the base is the MCUI it now has
+        self.assertEqual(trend(ascidian), trend(old))
+        self.assertEqual((ascidian["occurrence_trend"]["mcui_base"], ascidian["occurrence_trend"]["mcui_adjustment"]), (10.0, 0))
+        self.assertEqual((ascidian["occurrence_trend"]["class"], ascidian["occurrence_trend"]["reporting_rate_ratio"]), ("undetermined", 0.655))
+
+    def test_the_matrix_places_all_30_species(self):
+        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        counts = {}
+        for s in published["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"sustainable_use": 12, "alternative_production": 1, "baseline_survey": 14, "conservation_priority": 3})
+        self.assertEqual(published["matrix_points"], 30)
+        self.assertEqual(published["method_version"], "verified-4.19")
+        self.assertEqual(next(s for s in published["species"] if s["aphia_id"] == 250680)["matrix_type"], "baseline_survey")
+
+    def test_the_posthoc_rank_counts_only_scored_species(self):
+        block = self.report["method"]["posthoc"]["validation_sets"]["MCUI_stock_decline"]
+        ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
+        squid = self.by_name["살오징어"]["scores"]["MCUI"]
+        self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, 30))
 
 
 if __name__ == "__main__":

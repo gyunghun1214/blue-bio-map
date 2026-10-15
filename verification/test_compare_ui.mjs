@@ -112,7 +112,8 @@ for(const s of S){
 }
 T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(['비교집단','최상위 근거 독립 재현 확인 중','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, replication label (4.16) and basis note');
-T.selected=by(250680);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+// 4.19: 멍게 is placed now, so the unplaced wording is checked on a copy without its MCUI
+T.selected=(s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680));T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(prof.includes('유형 미산출')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 미산출 and why');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
 const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});
@@ -125,9 +126,9 @@ const pts=sel=>S.filter(s=>T.matrixType(s)).map(s=>P(s.aphiaID,T.pilotScore(s,'B
 let G=[...T.matrixClusters(pts(OYSTER))];
 // 4.14: the 13 species without an IUCN or Korean national category left the matrix, so no MCUI row keeps 4 neighbours under 4 apart
 // 4.17: they return as preliminary assessments (29 points), so the 4.13 runs return (BBVI from the unrounded inputs)
-assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,5,'35.5','41.6'],[10,4,'46.2','49.1'],[10,7,'51.3','59.6']],'참굴 picked: two runs below the threshold, one above it');
+assert.deepEqual(G.map(g=>[g.m,g.ids.length,g.min.toFixed(1),g.max.toFixed(1)]),[[10,7,'29.3','41.6'],[10,4,'46.2','49.1'],[10,7,'51.3','59.6']],'참굴 picked: two runs below the threshold, one above it (4.19: 멍게 33.1 joins 방어 29.3 to the left run)');
 G=[...T.matrixClusters(pts(ROCKFISH))];
-assert.deepEqual(G.map(g=>g.ids.length),[4,7,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours');
+assert.deepEqual(G.map(g=>g.ids.length),[4,4,7,4],'조피볼락 picked: it splits the left run and 참굴 joins its neighbours (4.19: 멍게 lengthens the left run, so both halves keep 4)');
 assert.ok(G.every(g=>!g.ids.includes(ROCKFISH)));
 assert.equal(T.matrixType(by(ROCKFISH)),'baseline_survey','조피볼락 (Rapid LC as a preliminary assessment) is a point again');
 // '바다 탐험에서 보기': #stop=N over the route stops (1-based); an off-route stop opens the page; no stop, no link.
