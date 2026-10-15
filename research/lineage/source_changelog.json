@@ -2643,6 +2643,15 @@
    "published_on": "2026-10-14",
    "method_note": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.14",
+   "to_run_id": "verified-4.15",
+   "from_commit": "f084322",
+   "to_commit": "c3fea69",
+   "published_on": "2026-10-15",
+   "method_note": "verified-4.14 (2026-10-14). Display rules only, no score changed (team request 2026-10-15, the application's information-sufficiency promise). (1) matrix.information_gap: a species with a BBVI and no MCUI (no IUCN global or Korean national category, mcui_scope) is shown on its own rail under the matrix, at its BBVI only, labelled 'information sufficiency low (conservation axis) · priority survey'; it gets no MCUI, no type and no map colour, as in 4.14. (2) matrix.types_note says information_gap is not a fifth quadrant. (3) matrix.untyped_label names the grey cell after the gap. (4) matrix.substitute_mcui_note marks the range-state, 4.2 sub-national and 4.3 scored Rapid LC sentences as withdrawn in 4.14. MFPI, MBPI, MCUI, BBVI, scores_unrounded and every matrix type are identical to 4.14.",
+   "entries": []
   }
  ]
 }
