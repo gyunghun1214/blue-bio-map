@@ -65,7 +65,8 @@ class CmnpdCandidates(unittest.TestCase):
         for path in (ROOT / "scripts").glob("build_*.py"):
             if path.name != "build_cmnpd_candidates.py":
                 self.assertNotIn("cmnpd-candidates", path.read_text(encoding="utf-8"), path.name)
-        self.assertNotIn("cmnpd-candidates", (ROOT / "config" / "verified-indices-v4.18.json").read_text(encoding="utf-8"))
+        for path in (ROOT / "config").glob("verified-indices-v*.json"):
+            self.assertNotIn("cmnpd-candidates", path.read_text(encoding="utf-8"), path.name)
 
 
 if __name__ == "__main__":
