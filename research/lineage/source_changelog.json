@@ -2687,6 +2687,15 @@
      "score_delta": 0.2
     }
    ]
+  },
+  {
+   "from_run_id": "verified-4.18",
+   "to_run_id": "verified-4.19",
+   "from_commit": "7d7c7fb",
+   "to_commit": "721f449",
+   "published_on": "2026-10-15",
+   "method_note": "verified-4.18 (2026-10-15). Registered in research/verified-indices/prereg-4.19-2026-10-15.md in its own commit before the code (first registered as a 4.18 candidate before PR #198 took that number; rules and expected results unchanged), after 4.17 and 4.18 left 멍게 as the only species without MCUI. The 4.11 rule 5a (mcui_substitutes.preliminary_trend_block) is withdrawn: an OBIS reporting-rate ratio at or below the decline ratio no longer blocks a met Rapid LC check, because the 4.11 rule 5b post-hoc test found the OBIS decline signal does not separate threatened from LC species (the +10 adjustment stays off). As up to 4.10, only the decline_signal class blocks the check. 멍게 (Halocynthia roretzi, no IUCN, Korean or Japanese assessment covers tunicates) gets the Rapid LC check as a preliminary assessment (LC 10, shown by name in the species detail only). Every other species is 4.18's.",
+   "entries": []
   }
  ]
 }

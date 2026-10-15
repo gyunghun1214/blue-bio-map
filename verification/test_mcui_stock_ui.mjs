@@ -39,7 +39,9 @@ for(const a of rows){
 }
 assert.equal(rows.filter(a=>a.stock_decline.score!==null).length,3);
 assert.deepEqual(rows.filter(a=>a.stock_decline.match_level==='none').map(a=>a.korean_name).sort(),['감태','괭생이모자반']);
-assert.equal(by('멍게').scores.MCUI,null,'멍게 keeps no MCUI (aquaculture dominant)');
+// 멍게 gets no stock score (aquaculture dominant); 4.19 (prereg-4.19 1) gives it the Rapid LC check, so its MCUI is that value
+assert.equal(by('멍게').stock_decline.score,null,'멍게 has no stock score (aquaculture dominant)');
+assert.equal(by('멍게').scores.MCUI,by('멍게').mcui_extinction_risk);
 
 // tampering: every stored value is re-derived
 const broken=(a,edit)=>{const b=structuredClone(a);edit(b,b.stock_decline);return ctx.valid(b,report);};
