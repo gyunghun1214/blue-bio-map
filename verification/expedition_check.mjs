@@ -132,10 +132,14 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         }
         const u=Math.min(1,early.s/FIRST_LEG), eased=STOP_T[0]*u*u*(3-2*u);
         check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]&&early.t<=eased+1e-6,JSON.stringify({...early,eased}));
-        const ts=[];
-        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
-        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
-        check(`${tag}: the ship moves forward through the first leg`,ts[0]<STOP_T[0]&&ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&ts[2]>ts[0],JSON.stringify(ts));
+        const ts=[],ss=[];
+        for(const f of [25,50,75]){const v=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&[${routeT},(performance.now()-window.__sail0)/1000]`,TRIP_WAIT);ts.push(v?.[0]);ss.push(v?.[1]);await sailShot(s,`${tag}-2-sailing-${f}`);}
+        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop.
+        // CI 2026-10-15: the runner stalled ~47 s right after the first look, so even the 25 % sample found the ship at the
+        // stop. That is no jump when the page time at that sample already covers the whole leg (same rule as the first look).
+        const stalled=ts[0]>=STOP_T[0]-1e-4&&ss[0]>=FIRST_LEG;
+        if(stalled)console.log(`note: ${tag} page time ran ${ss[0].toFixed(1)} s before the 25 % sample (first leg ${FIRST_LEG.toFixed(1)} s)`);
+        check(`${tag}: the ship moves forward through the first leg`,ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&(stalled||ts[0]<STOP_T[0]&&ts[2]>ts[0]),JSON.stringify({ts,ss}));
       }
       const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
