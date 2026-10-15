@@ -1406,7 +1406,7 @@ function verifiedBioDetail(s){
   if(trace)return trace+rejected+rawHtml+partial;
   // 3.1: what the automated species -> compound -> ChEMBL chain found, and the original-paper search for species without a P703 link.
   const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${esc(n.linked||0)}건 · 참고문헌 DOI 있음 ${esc(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${esc(n.common_metabolite||0)}건 · 승인 약물 제외 ${esc(n.approved_drug||0)}건 · 검수 제외 ${esc(n.rejected_by_review||0)}건 → ChEMBL 비교 코호트(활성 기록 ${esc(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${esc(n.scored_compounds||0)}개.`+
-    (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${esc(ps.searched_on)}, Europe PMC ${esc(ps.europepmc_hits)}건 중 ${esc(ps.papers_screened)}건 선별, 인정 연결 ${esc(ps.accepted_links)}건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
+    (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${esc(ps.searched_on)}, Europe PMC ${esc(ps.europepmc_hits)}건 중 ${esc(ps.papers_screened)}건 선별, 인정 연결 ${esc(ps.accepted_links)}건 · CMNPD 검색 부분은 CC BY-NC-SA 4.0 조건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
   const fl=s.assessment.mbpi_floor;
   return (fl?`<p><b>${esc(s.assessment.mbpi_label)} · MBPI ${esc(Number(fl.value).toFixed(1))}</b>: ${esc(fl.meaning)} 규칙: ${esc(fl.prereg)} 1.5절(팀장 결정 2026-10-05).</p>`:
     '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>')+rawHtml+partial+linkChain+rejected+
@@ -4009,6 +4009,52 @@ function renderSources(){
   $('all-sources').innerHTML=data.species.map(s=>`<div class="citation"><strong>${esc(s.label)} · 학명</strong><span>${esc(s.wormsCitation)}</span><br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation"><strong>${esc(s.title)}</strong><span>${esc(s.citation)}</span><br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
 }
 
+// 출처별 상업 이용 구분 (license-matrix.json, scripts/build_license_matrix.py). Display only: the groups read each source's
+// stated licence and are not a legal opinion; the commercial-layer count never changes a score, type or map colour.
+const LICENSE_GROUPS=['commercial_ok','noncommercial','permission','review'];
+function licenseName(r){return r.origin==='지표 보고서 출처'?(r.provider||r.title||r.id):(r.title||r.provider||r.id);}
+function renderLicense(m){
+  const box=$('mt-license');if(!box)return;
+  if(m?.schema!=='license-matrix-1'||!Array.isArray(m.rows)||!m.groups||!m.commercial_layer){box.hidden=true;return;}
+  const uniq=a=>[...new Set(a)];
+  const body=LICENSE_GROUPS.map(g=>{
+    const rows=m.rows.filter(r=>r.group===g).sort((a,b)=>b.species_count-a.species_count||licenseName(a).localeCompare(licenseName(b)));
+    const names=uniq(rows.map(licenseName)), uses={};
+    rows.forEach(r=>r.uses.forEach(u=>uses[u]=(uses[u]||0)+1));
+    const list=rows.map(r=>`<li>${r.url?sourceLink(r.url,licenseName(r)):esc(licenseName(r))} · ${r.license_url?sourceLink(r.license_url,r.license):esc(r.license||'이용조건 미기재')}${r.share_alike?' · 동일조건':''} · ${esc(r.uses.join(', '))}</li>`).join('');
+    return `<tr data-group="${esc(g)}"><th scope="row"><span class="lic-badge">${esc(m.groups[g].label)}</span><small>${esc(m.groups[g].note)}</small></th>`+
+      `<td class="lic-n" data-k="출처">${esc(rows.length)}</td>`+
+      `<td data-k="주요 출처">${esc(names.slice(0,6).join(' · '))}${names.length>6?` 외 ${esc(names.length-6)}곳`:''}${rows.length?`<details class="lic-list"><summary>전체 ${esc(rows.length)}건 보기</summary><ul>${list}</ul></details>`:''}</td>`+
+      `<td data-k="쓰이는 곳 · 출처 수">${esc(Object.entries(uses).sort((a,b)=>b[1]-a[1]).map(([u,n])=>`${u} ${n}건`).join(' · '))}</td></tr>`;
+  }).join('');
+  $('license-table').querySelector('tbody').innerHTML=body;
+  // commercial-layer calculation (folded)
+  const L=m.commercial_layer, sc=L.scenarios.map(x=>x.id), ind=L.indicators, cells=L.map_cells.total;
+  const AXIS_NAME={MFPI:'식량 잠재력 MFPI',MBPI:'생리활성 잠재력 MBPI',MCUI:'보전 시급성 MCUI',BBVI:'활용가치 BBVI',matrix_type:'활용 × 보전 유형'};
+  const tr=(name,cur,vals,unit)=>`<tr><th scope="row">${esc(name)}</th><td>${esc(cur)}${unit}</td>${vals.map(v=>`<td>${esc(v)}${unit}</td>`).join('')}</tr>`;
+  const rowsHtml=Object.entries(AXIS_NAME).map(([k,n])=>tr(n,ind[k].published,sc.map(x=>ind[k][x]),'종')).join('')+
+    tr('출현 지도 격자',cells.all.grid_cells,sc.map(x=>cells[x].grid_cells),'칸')+
+    tr('출현 지도 셀(종별)',cells.all.species_cells,sc.map(x=>cells[x].species_cells),'개')+
+    tr('출현 셀이 있는 종',cells.all.species,sc.map(x=>cells[x].species),'종')+
+    tr('활용 × 보전 셀 색',L.value_layer_cells.all,sc.map(x=>L.value_layer_cells[x]),'칸');
+  const block=(k,key)=>{const b=(ind[k][key]||[]).slice(0,4);return b.length?`<li><b>${esc(AXIS_NAME[k])}</b> ${esc(b.map(x=>`${x.name} ${x.species}종`).join(' · '))}</li>`:'';};
+  $('license-layer').querySelector('div').innerHTML=
+    `<p>현재 공개 ${esc(L.species_total)}종 기준입니다. 계산만 했고 공개 점수·유형·지도 색은 바꾸지 않았습니다.</p>`+
+    `<div class="mt-lic-wrap"><table class="mt-lic-table lic-layer"><thead><tr><th scope="col">항목</th><th scope="col">현재 공개</th>${L.scenarios.map(x=>`<th scope="col" title="${esc(x.detail||'')}">${esc(x.label)}</th>`).join('')}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`+
+    `<p class="fine">${esc(L.scenarios.map(x=>`${x.label}: ${x.detail||x.label}`).join(' · '))}. 지표는 그 종의 지표 기록에 연결된 출처가 모두 조건에 맞을 때만 셉니다(확인 단계에만 쓴 출처도 포함하는 보수적 계산). BBVI는 MFPI·MBPI가, 유형은 BBVI·MCUI가 함께 남을 때 셉니다. 지도 셀은 그 셀의 검수 통과 기록 중 하나라도 CC0·CC BY이면 남습니다.</p>`+
+    `<p class="lic-sub">CC0·CC BY만 남길 때 주로 빠지는 출처</p><ul>${['MFPI','MBPI','MCUI'].map(k=>block(k,'open_blockers')).join('')}</ul>`+
+    `<p class="lic-sub">확인 필요 출처가 모두 가능해도 기관 승인이 필요한 출처</p><ul>${['MFPI','MBPI','MCUI'].map(k=>block(k,'upper_blockers')).join('')}</ul>`;
+  // items to confirm (folded): IUCN first, then the 'review' sources grouped by reason
+  const items=m.review_items||[], iucn=items.filter(x=>x.id==='iucn-redisplay'), rest=items.filter(x=>x.id!=='iucn-redisplay'), byBasis={};
+  rest.forEach(x=>(byBasis[x.detail]??=[]).push(x));
+  $('license-review').querySelector('summary').textContent=`확인 필요 항목 · IUCN 재게시 범위${rest.length?` 외 출처 ${rest.length}건`:''}`;
+  $('license-review').querySelector('div').innerHTML=
+    iucn.map(x=>`<p><b>${esc(x.title)}</b> · ${esc(x.status)} · ${sourceLink(x.url,'IUCN 이용약관 원문 ↗')}<br>${esc(x.detail)}</p>`).join('')+
+    `<ul>${Object.entries(byBasis).sort((a,b)=>b[1].length-a[1].length).map(([basis,xs])=>`<li><b>${esc(basis)}</b> ${esc(xs.length)}건: ${esc(uniq(xs.map(x=>x.title)).slice(0,8).join(' · '))}${xs.length>8?` 외 ${esc(xs.length-8)}건`:''}</li>`).join('')}</ul>`;
+  $('license-date').textContent=m.generated_from?.assessments?`· 지표 ${m.generated_from.assessments} 기준`:'';
+  box.hidden=false;
+}
+
 function registerTools(){
   const ctx=document.modelContext;if(!ctx?.registerTool)return;
   const lifecycle=new AbortController();window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
@@ -4110,6 +4156,7 @@ async function start(){
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
   const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
   const termsReq=fetch('source-terms-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
+  fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null).then(renderLicense); // optional: the section stays hidden without it
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
   {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
@@ -4152,6 +4199,8 @@ document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const c
 const smoothScroll=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
 function methodGo(el){if(!el)return;const d=el.closest('details');if(d)d.open=true;el.scrollIntoView({behavior:smoothScroll(),block:'start'});}
 const METHOD_GO={journey:()=>$('mt-journey'),sources:()=>document.querySelector('#method .source-section'),flow:()=>document.querySelector('#method .flow-wrap')};
+// footer '출처 목록 참조': opens the method tab at the licence table
+document.querySelectorAll('[data-foot-go]').forEach(b=>b.addEventListener('click',()=>{setView('method',false);const t=$('mt-license');methodGo(t&&!t.hidden?t:document.querySelector('#method .source-section'));t?.focus?.({preventScroll:true});}));
 document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',()=>{const t=METHOD_GO[b.dataset.mtGo]?.();methodGo(t);
   if(b.dataset.mtGo==='sources')$('all-sources')?.focus({preventScroll:true});}));
 // Research scope numbers (운영 발행 · 조사 후보 from the loaded collection; '—' until then or after a failure) and the
