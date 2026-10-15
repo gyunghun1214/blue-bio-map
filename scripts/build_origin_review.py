@@ -141,7 +141,7 @@ def build(record: dict, report: dict) -> dict:
                         "reasons_ko": [f["ko"] for f in ordered(c["facts"])] or [c.get("note", "")]})
     every = [i for r in rows for i in r["items"]]
     return {"schema_version": SCHEMA, "report_version": report["method_version"], "rule": record["rule"],
-            "record": str(DEFAULT_RECORD.relative_to(ROOT)), "reviewed_on": record["reviewed_on"], "display_only": True,
+            "record": DEFAULT_RECORD.relative_to(ROOT).as_posix(), "reviewed_on": record["reviewed_on"], "display_only": True,
             "classes": CLASSES, "order": [cls for _, cls in ORDER] + ["unknown"], "confirmed_classes": sorted(CONFIRMED),
             "summary": {"species": len(rows), "items": len(every),
                         "by_class": {k: sum(i["origin_class"] == k for i in every) for k in CLASSES},
