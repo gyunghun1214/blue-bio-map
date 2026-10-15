@@ -134,8 +134,12 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]&&early.t<=eased+1e-6,JSON.stringify({...early,eased}));
         const ts=[];
         for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
-        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
-        check(`${tag}: the ship moves forward through the first leg`,ts[0]<STOP_T[0]&&ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&ts[2]>ts[0],JSON.stringify(ts));
+        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop.
+        // CI 2026-10-15: a stalled runner let the ship reach stop 1 before even the 25 % sample ([0.0231 ×3]); the one-second
+        // look above already caught it under way, so the leg is judged from that look on: still short of the stop there,
+        // never moving back, and further along at the end.
+        const seq=[early.t,...ts];
+        check(`${tag}: the ship moves forward through the first leg`,early.t<STOP_T[0]&&ts.every(t=>t)&&seq.every((t,i)=>i===0||t>=seq[i-1])&&seq[3]>seq[0],JSON.stringify({early:early.t,ts}));
       }
       const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
