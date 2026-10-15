@@ -231,7 +231,8 @@ function evidenceDependence(s){
 function evidenceProfileBlock(s){
   const e=evProfile(s);if(!e)return '';
   const dep=evidenceDependence(s);
-  return `<p class="fine ev-profile"><b>근거 프로필</b> · ${esc(evidenceProfileText(s,'detail'))}${dep?`<br>점수 의존도: ${esc(dep)}`:''}<br>`+
+  const search=replicationSearchText(s);
+  return `<p class="fine ev-profile"><b>근거 프로필</b> · ${esc(evidenceProfileText(s,'detail'))}${dep?`<br>점수 의존도: ${esc(dep)}`:''}${search?`<br><span class="ev-search">${esc(search)}</span>`:''}<br>`+
     `문헌 수(산출 항목·독립 논문)와 최상위 항목의 독립 재현은 따로 셉니다. 재현이 없으면 최상위 항목에 근거 계수가 곱해져 있고, 다른 기원 시료·같은 연구 그룹·DOI 없는 문헌은 재현으로 세지 않습니다. 표시 전용이며 점수에 쓰지 않습니다.</p>`;
 }
 // 4.16: the species profile carries the same line; how much MBPI leans on its top item sits in the folded MBPI detail
@@ -676,6 +677,28 @@ function supplementaryLine(s){
     `<ul class="lit-list">${rows.map(r=>`<li data-relation="${esc(r.relation)}"><b class="lit-rel">${esc(LIT_RELATION[r.relation])}</b> ${esc(r.title_ko)} <span class="lit-src">(${esc(r.journal)}, ${esc(r.year)}) ${doi(r.doi)}</span>`+
       `<p class="fine">${esc(r.finding)}</p><p class="fine lit-why">점수 미사용: ${esc(r.not_scored_reason)} · ${esc(r.checked_on)} ${r.checked_via==='full_text'?'원문':'초록'} 확인</p></li>`).join('')}</ul>`+
     `</div></details>`;
+}
+// Replication search record (prereg-replication-search-2026-10-15 6; dist/replication-search.json, built by
+// scripts/build_replication_search.py): when and where the current top MBPI item was searched for an independent replication.
+// Shown in the folded MBPI detail only. Schema 1 is read; a higher number is a newer file this code does not know; anything else
+// is ignored. Nothing here reaches a score, the matrix, the map colours or a chip.
+let replicationSearch=new Map();
+const SEARCH_STATUS=new Set(['searched_none','not_current_item','no_record','replicated']);
+function replicationSearchRows(file,outdated){
+  const v=/^replication-search-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'replication-search.json',version:file.schema_version});
+  const rows=new Map();
+  if(file?.schema_version!=='replication-search-1'||file.display_only!==true||!Array.isArray(file.species))return rows;
+  for(const r of file.species)if(Number.isSafeInteger(r?.aphia_id)&&SEARCH_STATUS.has(r.status))rows.set(r.aphia_id,r);
+  return rows;
+}
+function replicationSearchText(s){
+  const r=VERIFIED.includes(s?.assessment?.report_version)?replicationSearch.get(s.aphiaID):null;
+  if(!r||r.status==='replicated')return '';
+  if(r.status==='no_record')return '재현 검색 기록 없음';
+  if(r.status==='not_current_item')return `재현 검색: 현재 최상위 항목 검색 전${r.earlier_item_searched_on?`(${r.earlier_item_searched_on} 검색은 이전 최상위 항목)`:''}`;
+  const searched=(r.sources_searched||[]).join(' · '), closed=(r.sources_unavailable||[]).join(' · ');
+  return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it
@@ -3947,12 +3970,13 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature,searches]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);
+      fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
