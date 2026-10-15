@@ -215,12 +215,14 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
     await sleep(1200);await shot(s,`${tag}-8-map`);
     // the logo goes to the site's first screen (the globe of index.html), even in a tab that already entered the map
     // (the map page left behind also reads complete and has no is-loading: wait for this page's own script to have run)
+    // The globe screen turns ready only after index.html has loaded all its data; on the Windows runner, after the desktop
+    // WebGL voyage (screenshots already timing out), that took longer than 30 s twice on 2026-10-15, so the wait is 90 s.
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
     await waitFor(s,"location.pathname.endsWith('/expedition.html')&&document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const lp=await s.evaluate("sessionStorage.setItem('bbvm-intro-entered','1');(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('a.x-brand').getBoundingClientRect())");
     if(mobile)for(const type of ['touchStart','touchEnd'])await s.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x:lp.x,y:lp.y}]});
     else for(const type of ['mousePressed','mouseReleased'])await s.send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
-    const gate=await waitFor(s,"/\\/(index\\.html)?$/.test(location.pathname)&&!!document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden",30000);
+    const gate=await waitFor(s,"/\\/(index\\.html)?$/.test(location.pathname)&&!!document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden",90000);
     check(`${tag}: the logo opens the site's first screen (globe), not the map`,!!gate,await s.evaluate("location.href+' | '+document.documentElement.className"));
     check(`${tag}: no uncaught page errors or console.error`,s.errors.length===0,s.errors.join(' | '));
   }catch(e){check(`${tag}: harness`,false,e.stack);}
