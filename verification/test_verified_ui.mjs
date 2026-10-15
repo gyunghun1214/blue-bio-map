@@ -90,10 +90,15 @@ assert.match(html,/IUCN 또는 국립해양생물자원관의 공식 결과가 �
 assert.match(html,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
 assert.match(html,/다른 나라 지방 평가 \(연해주, 러시아\) · [^<]*\(EN\) \(EN에 해당하는 이름 · 숫자로 바꾸지 않음\) · 참고 · MCUI·유형·지도 색에 쓰지 않음/);
 assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가|IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색/);
+// 4.19 (prereg-4.19 1): 멍게's OBIS ratio no longer blocks its met check; the summary reads like any other MCUI and the folded
+// body keeps the ratio and the dataset check beside the preliminary assessment
 {const sq=ctx.renderScores(by(250680));
-  assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인<\/b>/);
-  assert.match(sq,/자체 예비평가\(Rapid LC\) 쓰지 않음 · MCUI 없음<\/b>: OBIS 보고율 비\(0\.655\)가 감소 기준\(0\.7\) 이하입니다/);
-  assert.doesNotMatch(sq,/Rapid LC 충족 → LC 상당 → 10/);}
+  const sum=sq.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
+  assert.match(sum,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출 · 보전 평가 범주<\/b>/);
+  assert.doesNotMatch(sum,/예비|역검증|Rapid LC|미확인|IUCN|공식/);
+  assert.match(sq,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
+  assert.match(sq,/전체 보고율 비 0\.655\(95% 구간 0\.485–0\.884\), 주된 데이터셋 안 0\.819\(95% 구간 0\.563–1\.19\) · 감소 확인 안 됨/);
+  assert.doesNotMatch(sq,/쓰지 않음 · MCUI 없음|Rapid LC 충족 → LC 상당 → 10/);}
 {const lc=ctx.renderScores(by(145721));
   assert.doesNotMatch(lc,/Rapid LC 충족 → LC 상당 → 10/,'4.17: the detail gives the category and the number, not the old mapping text');
   assert.match(lc,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미충족 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
@@ -183,7 +188,7 @@ const stages={
   372119:['verified','linked','validated','calculated','calculated'],
   // 3.27: 살오징어 gets a single-paper peptide MBPI (YALPHA, Wako 1996)
   342067:['verified','linked','validated','calculated','calculated'],
-  250680:['verified','linked','validated','calculated','checked_none'],  // 4.3: scored Rapid LC MCUI; 4.11: none (reporting-rate ratio at the decline threshold)
+  250680:['verified','linked','validated','calculated','calculated'],  // 4.3: scored Rapid LC MCUI; 4.11: none (reporting-rate ratio at the decline threshold); 4.19: the Rapid LC as a preliminary assessment
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
   241776:['verified','linked','validated','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI; 2.3 gives the oyster a BBVI; 3.12 replicates wakame IY, 3.14 IW (BBVI 71.0); 4.11 counts only the wakame-purified VW (BBVI 68.0).
@@ -226,7 +231,10 @@ assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 {const cell=dom.comparison.innerHTML.match(/data-more-aphia="145721" data-more-axis="MCUI".*?<\/button>/s)[0];
   assert.match(cell,/>10\.0 \(LC\)<small>/);
   assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반/);}
-assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small>/);
+// 4.19 (prereg-4.19 1): 멍게's Rapid LC check is a preliminary assessment too, shown like any other number
+for(const id of [145721,250680]){const cell=dom.comparison.innerHTML.match(new RegExp(`data-more-aphia="${id}" data-more-axis="MCUI".*?</button>`,'s'))[0];
+  assert.match(cell,/>10\.0 \(LC\)<small>/,String(id));
+  assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반|공식/,String(id));}
 assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0 \(VU \+ 자원 감소\)<small>/,'우뭇가사리 keeps its stock-decline lower bound');
 assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.

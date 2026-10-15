@@ -23,7 +23,7 @@ async function open(w,h,hash){
     category:mcuiCategory(s),criteria:mcuiCriteria(s),year:mcuiAssessYear(s),aux:mcuiAuxLine(s),basis:s.assessment.mcui_basis,driver:s.assessment.mcui_driver,early:earlyMcui(s),matrix:assessedForMatrix(s)})));
   fs.writeFileSync(OUT+'/mcui-table.json',JSON.stringify(rows,null,1));
   log('every MCUI number carries a category in brackets',rows.every(r=>/^\d+\.\d \(.+\)$/.test(r.shown)),rows.filter(r=>!/\(/.test(r.shown)).map(r=>r.name));
-  log('matrix species = MCUI species (29)',rows.filter(r=>r.matrix).length===29,{n:rows.filter(r=>r.matrix).length});
+  log('matrix species = MCUI species (30, verified-4.19)',rows.filter(r=>r.matrix).length===30&&rows.length===30,{n:rows.filter(r=>r.matrix).length});
   log('no tag says IUCN or 공식',rows.every(r=>!/IUCN|공식/.test(r.shown+r.aux)),rows.filter(r=>/IUCN|공식/.test(r.shown+r.aux)).map(r=>r.name));
   // the profile of every preliminary species: no IUCN / 공식 in the conservation block
   const bad=[];
