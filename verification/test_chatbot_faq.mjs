@@ -9,8 +9,9 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const html=read('index.html');
 const ctx={};vm.createContext(ctx);  // document가 없으면 화면 부분은 건너뛴다
-vm.runInContext(read('chatbot.js')+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,chatbotMatch,chatbotMascot,CHATBOT_MASCOT_STATES});',ctx);
-const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:starters,chatbotMatch:match,chatbotMascot:mascot,CHATBOT_MASCOT_STATES:moods}=ctx;
+const js=read('chatbot.js');
+vm.runInContext(js+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,CHATBOT_TAB_LINKS,chatbotMatch,chatbotMascot,chatbotFact,CHATBOT_MASCOT_STATES});',ctx);
+const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:starters,CHATBOT_TAB_LINKS:tabLinks,chatbotMatch:match,chatbotMascot:mascot,chatbotFact:fact,CHATBOT_MASCOT_STATES:moods}=ctx;
 
 // (1) id가 겹치지 않고, 대표 질문·이어서 물어볼 질문이 실제 항목을 가리킴
 const ids=faq.map(f=>f.id);
@@ -28,6 +29,28 @@ for(const [q,id] of [['지도가 뭘 보여줘?','overview'],['색깔이 무슨 
   ['mbpi 0점이면 효능 없는거야?','mbpi'],['2x2 아이콘 사용법','mini-grid'],['붉은 점은 실제 위치야?','red-dots'],['이 바다 개발해도 돼?','sea-score']])
   assert.equal(match(q)?.id,id,`"${q}"`);
 for(const q of ['오늘 날씨 어때','점심 메뉴 추천해줘','안녕','','?!'])assert.equal(match(q),null,`"${q}"는 모르겠어요로 가야 함`);
+// (3b) 2026-10-15 심사 예상 질문: 키워드가 겹쳐 다른 항목으로 가지 않는지(질문 그대로와 말을 바꾼 것)
+for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing'],['매트릭스에 없는 종이 있어요?','matrix-missing'],
+  ['‘근거 논문 1편’이 무슨 뜻이에요?','evidence-level'],["'근거 논문 1편'이 무슨 뜻이에요?",'evidence-level'],
+  ['50점은 누가 정했어요?','threshold'],['구분선 50은 누가 정했나요','threshold'],
+  ['참굴 10점과 고등어 10점은 같은 뜻이에요?','same-score'],['MCUI 같은 점수면 같은 뜻이야?','same-score'],
+  ['살오징어는 IUCN에서 LC인데 왜 60점이에요?','squid'],['오징어는 왜 MCUI가 60점이야','squid'],
+  ['검증은 통과했어요?','validation'],['지표 검증 통과했나요','validation'],
+  ['MCUI는 뭐예요','mcui'],['매트릭스 점은 어떻게 읽어요','matrix']])
+  assert.equal(match(q)?.id,id,`심사 질문 "${q}" → ${match(q)?.id}`);
+// (3c) 정해진 답만: AI·서버 호출 없음, 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
+assert.ok(!/fetch\(|['"]\/?api\/|Workers AI로/.test(js),'chatbot.js가 서버나 AI에 질문을 보내면 안 됨');
+assert.ok(js.includes('<p class="bbc-note">AI 아님 · 정해진 답변</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
+assert.ok(js.includes("'준비된 답이 없어요."),'매칭 실패 문구');
+assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
+// (3d) 값 자리표시: 아는 종류만, 종 이름은 자료에 있는 종, 앱 자료가 없을 때도 빈칸·undefined 없이 안내 문구
+const names=(a=>[...a.species,...a.candidate_species].map(s=>s.korean_name))(JSON.parse(read('assessments.json')));
+for(const f of faq)for(const [tok,kind,arg] of f.a.matchAll(/\{(\w+)(?::([^}]+))?\}/g)){
+  assert.ok(['tab','type','plain','rule','matrix','score','basis','mcuiwhy'].includes(kind),`${f.id}: 모르는 자리표시 ${tok}`);
+  if(['score','basis','mcuiwhy'].includes(kind)){assert.ok(names.includes(arg.split(':')[0]),`${f.id}: 자료에 없는 종 ${tok}`);
+    const out=fact(kind,arg);assert.ok(out&&!/undefined|null|NaN/.test(out),`${f.id}: 자료 없을 때 ${tok} → ${out}`);}
+}
+assert.ok(fact('matrix')&&!/undefined/.test(fact('matrix')));
 
 // (4) 유형·탭 이름과 '높음' 기준값은 답변에 직접 쓰지 않고 자리표시로 읽어 옴
 const tabs=[...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g)].map(m=>m[1]);
@@ -84,4 +107,4 @@ for(const s of Object.keys(moods))for(const crop of [false,true]){
   }
 }
 assert.ok(mascot('unknown',40,true).includes('class="bbc-m-sweat"'),'잘 모르겠어요: 땀방울 클래스');
-console.log(`PASS: chatbot FAQ ${faq.length}개 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);
+console.log(`PASS: chatbot FAQ ${faq.length}개 · 심사 질문 매칭 · AI 호출 없음 · 값 자리표시 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);
