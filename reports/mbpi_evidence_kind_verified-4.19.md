@@ -1,4 +1,4 @@
-# MBPI 근거 종류 표 (verified-4.18, 2026-10-15)
+# MBPI 근거 종류 표 (verified-4.19, 2026-10-15)
 
 `node verification/test_mbpi_kind.mjs --write <file>`로 만든 표입니다. 화면(app.js `mbpiKindOf`)과 같은 규칙입니다. 기능성 펩타이드 = MBPI-Rx 사전 등록에서 제외로 분류한 층(ACE 저해 펩타이드, 잔틴 산화효소 저해 펩타이드), 의약 표적 = 그 밖의 층(항균·항암·ChEMBL 표적 등). ACE 의존도 = 점수 항목 중 ACE·XO 층 항목의 비율. MBPI는 가장 높은 항목 하나의 값이라, 최상위 근거가 기능성 펩타이드이면 MBPI 전체가 그 층에서 나옵니다.
 
