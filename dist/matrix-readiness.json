@@ -12,21 +12,162 @@
       "baseline_survey"
     ],
     "cell_colour_rule": "A public cell takes the first type in cell_colour_precedence among the species recorded there. High-MCUI types come first so a conservation-priority species is never hidden (precautionary approach); among high-MCUI types the more restrictive use comes first; among low-MCUI types the one with high-BBVI evidence comes first. A cell with more than one type is marked mixed and lists the count per type. Cells without a typed species stay 'held' (grey).",
+    "history": {
+      "field_versions": [
+        {
+          "field": "threshold_rule",
+          "from": "verified-pilot-3.2",
+          "to": "verified-4.13",
+          "value": "A value at or above the threshold is high. BBVI is compared as published, rounded to one decimal (the screen's BBVI at the current weight is rounded the same way); MCUI category scores are whole numbers."
+        },
+        {
+          "field": "threshold_rule",
+          "from": "verified-4.14",
+          "to": "verified-4.18",
+          "value": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds."
+        },
+        {
+          "field": "types",
+          "from": "verified-pilot-3.2",
+          "to": "verified-4.13",
+          "value": {
+            "high_bbvi_high_mcui": {
+              "id": "alternative_production",
+              "label": "대체생산·배양 연구"
+            },
+            "high_bbvi_low_mcui": {
+              "id": "sustainable_use",
+              "label": "지속가능 활용 후보"
+            },
+            "low_bbvi_high_mcui": {
+              "id": "conservation_priority",
+              "label": "보전 우선·모니터링"
+            },
+            "low_bbvi_low_mcui": {
+              "id": "baseline_survey",
+              "label": "기초조사·관찰 대상"
+            }
+          }
+        },
+        {
+          "field": "include_substitute_mcui",
+          "from": "verified-pilot-3.15",
+          "to": "verified-4.1",
+          "value": [
+            "range_state"
+          ]
+        },
+        {
+          "field": "include_substitute_mcui",
+          "from": "verified-4.2",
+          "to": "verified-4.2",
+          "value": [
+            "range_state",
+            "sub_national"
+          ]
+        },
+        {
+          "field": "include_substitute_mcui",
+          "from": "verified-4.3",
+          "to": "verified-4.13",
+          "value": [
+            "range_state",
+            "sub_national",
+            "preliminary"
+          ]
+        },
+        {
+          "field": "include_substitute_mcui",
+          "from": "verified-4.14",
+          "to": "verified-4.16",
+          "value": []
+        },
+        {
+          "field": "include_substitute_mcui",
+          "from": "verified-4.17",
+          "to": "verified-4.18",
+          "value": [
+            "range_state",
+            "sub_national",
+            "preliminary"
+          ]
+        },
+        {
+          "field": "substitute_mcui_note",
+          "from": "verified-pilot-3.15",
+          "to": "verified-4.1",
+          "value": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02)."
+        },
+        {
+          "field": "substitute_mcui_note",
+          "from": "verified-4.2",
+          "to": "verified-4.2",
+          "value": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI."
+        },
+        {
+          "field": "substitute_mcui_note",
+          "from": "verified-4.3",
+          "to": "verified-4.18",
+          "value": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI."
+        },
+        {
+          "field": "single_source_bbvi_note",
+          "from": "verified-pilot-3.27",
+          "to": "verified-4.18",
+          "value": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears."
+        }
+      ],
+      "note": "현재 규칙에서 뺀 옛 규칙 문장과, 각 필드가 버전별로 가졌던 이전 값입니다. 원문은 설정 파일과 dist/assessments.json의 method.matrix에 그대로 있고, 버전별 변경 이유는 research/method-changelog.json에 있습니다.",
+      "withdrawn_sentences": [
+        {
+          "field": "substitute_mcui_note",
+          "in_force": [
+            "verified-pilot-3.15 ~ verified-4.14 전"
+          ],
+          "now": "4.14: 다른 나라 국가 목록은 참고 항목(MCUI 없음). 4.17: 예비 평가로 다시 MCUI를 주지만 다른 MCUI와 같은 점으로 그리고, 근거는 종 상세에만 적는다.",
+          "text": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis."
+        },
+        {
+          "field": "substitute_mcui_note",
+          "in_force": [
+            "verified-pilot-3.15 ~ verified-4.3 전",
+            "verified-4.14 ~ verified-4.17 전"
+          ],
+          "now": "4.3에서 철회(점수화), 4.14에서 다시 적용, 4.17에서 다시 철회: 공식 평가가 없으면 예비 평가로 MCUI를 준다.",
+          "text": "A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02)."
+        },
+        {
+          "field": "substitute_mcui_note",
+          "in_force": [
+            "verified-4.2 ~ verified-4.11 전"
+          ],
+          "now": "4.11: 역검증을 통과한 지방 목록만 MCUI. 4.14부터 지방 목록은 참고 항목(MCUI 없음)이며 4.17도 그대로다.",
+          "text": "4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI."
+        },
+        {
+          "field": "substitute_mcui_note",
+          "in_force": [
+            "verified-4.3 ~ verified-4.14 전"
+          ],
+          "now": "4.14: Rapid LC는 참고 항목. 4.17: 예비 평가로 다시 MCUI를 주지만 따로 표시하지 않고, 근거와 '예비 평가' 라벨은 종 상세에 적는다.",
+          "text": "4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label;"
+        }
+      ]
+    },
     "include_floor_bbvi": true,
     "include_national_mcui": true,
     "include_single_source_bbvi": true,
     "include_substitute_mcui": [
       "range_state",
-      "sub_national",
       "preliminary"
     ],
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
-    "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
+    "single_source_bbvi_note": "A BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
+    "substitute_mcui_note": "With no IUCN global or Korean national assessment, a preliminary assessment gives the MCUI in this order: the range state's national list, then the Rapid LC check where the OBIS reporting rate did not reach the decline ratio. It joins the matrix and the map colours drawn like any other MCUI; its basis and the label '예비 평가(공식 평가 전)' are shown in the species detail, and an official IUCN or Korean national result replaces it once published. A sub-national list stays a reference item without an MCUI number. A floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
     "threshold_label": "탐색적 구분선",
-    "threshold_rule": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds.",
+    "threshold_rule": "A value at or above the threshold is high. BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds.",
     "type_note": "연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님",
     "types": {
       "high_bbvi_high_mcui": {

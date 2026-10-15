@@ -1031,3 +1031,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   .sd-spark text{font-size:11px}
   #explore .leaflet-control-attribution{font-size:11px!important} /* style.css sets 10px !important */
 }
+/* '방법 결정' words open the method change timeline (app.js linkDecisions) */
+.md-link{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
+.md-link:hover{color:var(--teal,#3dd6c3)}
