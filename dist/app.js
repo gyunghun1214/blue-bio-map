@@ -698,7 +698,8 @@ function replicationSearchText(s){
   if(r.status==='no_record')return '재현 검색 기록 없음';
   if(r.status==='not_current_item')return `재현 검색: 현재 최상위 항목 검색 전${r.earlier_item_searched_on?`(${r.earlier_item_searched_on} 검색은 이전 최상위 항목)`:''}`;
   const searched=(r.sources_searched||[]).join(' · '), closed=(r.sources_unavailable||[]).join(' · ');
-  return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${closed?` · 열지 못한 검색원 ${closed}`:''}`;
+  const earlier=(r.runs||[]).filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on).map(x=>x.searched_on);
+  return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${earlier.length?` · 이전 검색 ${earlier.join(', ')}`:''}${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it

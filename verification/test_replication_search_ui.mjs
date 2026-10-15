@@ -45,9 +45,13 @@ for(const r of file.species){
   assert.ok(r.sources_searched.length,s.label);
   assert.ok(t.startsWith(`재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on}, ${r.sources_searched.join(' · ')})`),t);
   for(const u of r.sources_unavailable)assert.ok(t.includes(u),u);
+  for(const x of r.runs.filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on))assert.ok(t.includes(`이전 검색 `)&&t.includes(x.searched_on),t);
   assert.match(ctx.block(s),/<span class="ev-search">재현 검색: /);
 }
 assert.equal(ctx.text(by('미역')),'');
+assert.equal(ctx.text(by('참굴')),'재현 검색: 검색했으나 독립 재현 없음(2026-10-15, PubMed · 웹 검색) · 이전 검색 2026-10-13 · 열지 못한 검색원 Europe PMC · KCI');
+// 넙치: the 2026-10-13 run searched MEVFVP, so only the 2026-10-15 search of P35 is the current item's
+assert.equal(ctx.text(by('넙치')),'재현 검색: 검색했으나 독립 재현 없음(2026-10-15, PubMed · 웹 검색) · 열지 못한 검색원 Europe PMC · KCI');
 // a report outside the verified line shows nothing
 const oyster=by('참굴');
 assert.equal(ctx.text({...oyster,assessment:{...oyster.assessment,report_version:'pilot-1'}}),'');
