@@ -411,3 +411,29 @@ footer .foot-link{padding:0;border:0;background:none;color:inherit;font-size:inh
 #method .obis-warn-table :is(th,td){background:none}
 #method .obis-warn-table th[scope=row],#method .obis-warn-table thead th{color:var(--mt-ink);font-weight:700}
 #method .obis-warn-table thead th{font-size:12.5px;color:var(--mt-ink2)}
+
+/* 2026-10-15: 신청서 약속 대비 구현 현황표 (fold 05) */
+#method .pt-legend{margin:6px 0 0;color:var(--mt-ink2)}
+#method .pt-legend b{color:var(--mt-ink)}
+#method .pt-wrap{overflow-x:auto}
+#method .promise-table{min-width:760px;border-collapse:collapse;width:100%}
+#method .promise-table tbody th{color:var(--mt-ink);font-weight:600;text-align:left;vertical-align:top;width:28%}
+#method .promise-table td{vertical-align:top;line-height:1.55}
+#method .promise-table td:nth-child(2){white-space:nowrap}
+#method .pt-s{display:inline-block;padding:2px 9px;border:1px solid var(--mt-line2);border-radius:999px;font-size:12.5px;font-weight:700}
+#method .pt-s.done{border-color:rgba(68,215,192,.55);color:#7fe6d6}
+#method .pt-s.partial{border-color:rgba(242,196,109,.55);color:#f2c46d}
+#method .pt-s.changed{border-color:rgba(130,189,242,.55);color:#9ccaf5}
+#method .pt-s.planned{color:var(--mt-ink2)}
+#method .pt-count{margin:10px 0 0;color:var(--mt-ink2)}
+@media(max-width:740px){
+  /* phones: one card per promise instead of a sideways-scrolling table */
+  #method .promise-table{min-width:0;font-size:13px}
+  #method .promise-table thead{display:none}
+  #method .promise-table tr{display:block;padding:12px 14px;border-bottom:1px solid var(--mt-line)}
+  #method .promise-table :is(tbody th,td){display:block;width:auto;padding:3px 0;border:0;white-space:normal}
+  #method .promise-table td:nth-child(2){margin:2px 0 4px}
+  #method .promise-table td:nth-child(3)::before{content:"화면 위치 · ";color:var(--mt-ink3);font-weight:600}
+  #method .promise-table td:nth-child(4)::before{content:"다음 단계 · ";color:var(--mt-ink3);font-weight:600}
+  #method .pt-s{font-size:12px}
+}
