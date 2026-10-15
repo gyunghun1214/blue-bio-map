@@ -1,0 +1,982 @@
+[en] Observation.org, Nature data from around the World
+      div > ul > li > a · explore, method, method folds open
+[en] Santa Barbara Museum of Natural History - Invertebrate Zoology
+      div > ul > li > a · explore, explore detail, method, method folds open
+[en] Pacific oyster, Wild, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore, explore detail
+[en] Journal of Life Science 22(2):220-225 (Do et al. 2012), full text via KoreaScience JAKO201209640672935 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore, explore detail
+[en] Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore, explore detail
+[en] Staphylococcus aureus MRSA strain 7877 MIC = 2.5 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus MRSA strain 53863 MIC = 2.5 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus MRSA 31/01/14-B-5284 MIC = 1.25 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus MRSA, GISA 24/11/08-B-1347 MIC = 2.5 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus MSSA 07/02/14-B-5264 MIC = 5 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus Newman MIC = 2.5 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] Staphylococcus aureus SG511 MIC = 1.25 uM · Poor Broth, 150 mM NaCl
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail, compare rows open, compare basis
+[en] mBio 10(5):e01821-19 (American Society for Microbiology), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC6805989 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore, explore detail
+[en] Human immunodeficiency virus type 1 reverse transcriptase
+      div.score-disclosure-body > div.score-fact > span > span · explore, explore detail
+[en] Frontiers in Nutrition 9:981163 (Chen et al. 2022), full text via Europe PMC PMC9445672 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore, explore detail
+[en] Kumar R. et al. (2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides. Nucleic Acids Res 43:D956–D962, doi:10.1093/nar/gku1141
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore, explore detail, method, method folds open
+[en] Magallana gigas, Crassostrea gigas
+      details.score-disclosure > div.score-disclosure-body > p > span · explore, explore detail
+[en] Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗
+      div.detail-more-body > div.source-area > p > a · explore, explore detail
+[en] Aquatic Food Composition Database (AFCD) ↗
+      div.detail-more-body > div.source-area > p > a · explore, explore detail
+[en] Observation.org, Nature data from around the World ↗
+      div.detail-more-body > div.source-area > p > a · explore, explore detail
+[en] Santa Barbara Museum of Natural History - Invertebrate Zoology ↗
+      div.detail-more-body > div.source-area > p > a · explore, explore detail
+[en] Hard shelled mussel, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Korean mussel, flesh, raw
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail
+[en] if suitable sea areas are selected
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] World Register of Marine Species ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Wikidata (LOTUS natural products import) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Mytilus coruscus Gould, 1861, Mytilus unguiculatus Valenciennes, 1858
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] A dataset of molluscan fauna sampled in estuaries of medium and small rivers in Kyushu, Japan ↗
+      div.detail-more-body > div.source-area > p > a · explore detail
+[en] Nippon Suisan Gakkaishi 64(5):862 (Suetsuna 1998), full text via J-STAGE ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Journal of Food Processing and Preservation 40(3):492-501 (Chen et al. 2016, first published 2015-11-20), full text (Wiley Online Library, Dongguk University institutional access) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Sargassum fusiforme, Hizikia fusiformis
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Sargassum fusiforme, Hizikia fusiformis, Hizikia fusiforme
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] ヒジキ Sargassum fusiforme (Harvey) Setchell
+      div.score-disclosure-body > ul.fine > li > span · explore detail
+[en] Sargassum fusiforme (Harvey) Setchell, 1931
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Japanese common squid, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Adachi et al., PLOS One 21:e0340579, doi:10.1371/journal.pone.
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Hatano et al. 2023, Sci Rep
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Biosci Biotechnol Biochem 60(8):1353-1355 (Wako Y, Ishikawa S, Muramoto K 1996, Note), full text (J-STAGE scanned PDF, open) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] IUCN Red List of Threatened Species
+      div.score-disclosure-body > ul.fine > li > span · explore detail, explore popovers, method, method folds open
+[en] National Museum of Natural History Invertebrate Zoology Collections ↗
+      div.detail-more-body > div.source-area > p > a · explore detail
+[en] The Company of Biologists
+      div.detail-more-body > div.source-area > p > span · explore detail, method, method folds open
+[en] Common sea squirt, Wild, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] mainly cultured in Tongyeong
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Yellow Sea Fisheries Research Institute
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Marine Drugs 22:90 (Wang et al. 2024), full text via Europe PMC PMC10890666 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] (Journal of Agricultural and Food Chemistry, 2025) 10.1021/acs.jafc.5c04439
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] Comprehensive Marine Natural Products Database v1.0 ↗
+      div.detail-more-body > div.source-area > p > a · explore detail
+[en] Sea mustard, Wild, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] J Agric Food Chem 50(21):6245-6252 (Sato et al. 2002), full text (ACS PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Nutrients 10(10):1397 (Lin YH, Chen GW, Yeh CH, Song H, Tsai JS 2018), full text via Europe PMC PMC6213796 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Process Biochemistry 41(9):1961-1966 (Kapel R, Rahhou E, Lecouturier D, Guillochon D, Dhulster P 2006), full text (Elsevier PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Journal of Nutritional Biochemistry 15(5):267-272 (Suetsuna K, Maekawa K, Chen JR 2004), full text (Elsevier PDF) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Fisheries Science 68(4):954-956 (Nomura et al. 2002), full text via J-STAGE (free PDF) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] The Japanese Society of Fisheries Science) · J-STAGE
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail, method, method folds open
+[en] Engineering in Life Sciences 18(4):218-226 (Michelke et al. 2018), free full text via PubMed Central (PMC6999327) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] J Nutr Biochem 11(9):450-454 (Suetsuna & Nakano 2000), full text (ScienceDirect HTML, Dongguk University institutional access) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Bioscience, Biotechnology, and Biochemistry 58(10):1767-1771 (Saito et al. 1994), full text via J-STAGE (free PDF) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Marine Drugs 19:177 (Feng et al. 2021), full text via Europe PMC PMC8004985 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Ундария перистонадрезанная - Undaria pinnatifida (Harv.) Sur.
+      div.score-disclosure-body > ul.fine > li > span · explore detail
+[en] Undaria pinnatifida (Harv.) Suringar
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Saccharina japonica, Laminaria japonica
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Saccharina japonica (Aresch.) C.E.Lane, C.Mayes, Druehl & G.W.Saunders, 2006
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Ecklonia cava (カジメ, Kawashima et al. 1983 sample P-18)
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Severe acute respiratory syndrome-related coronavirus
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] (International Journal of Molecular Sciences, 2024) 10.3390/ijms252413694
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] Ecklonia cava, Ecklonia cava subsp. kurome, Ecklonia kurome
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] MGC Herbarium of University of Malaga (Spain): MGC-PHYC dataset
+      details > ul > li > a · explore detail, method, method folds open
+[en] University of Michigan Herbarium
+      details > ul > li > a · explore detail, method, method folds open
+[en] Marine Drugs 22:398 (Li et al. 2024), full text via Europe PMC PMC11433523 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Foods 11(21):3507 (MDPI), open access, full text and figures read from the Europe PMC REST fullTextXML of PMC9657784 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Ulva prolifera, Enteromorpha prolifera
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Rödlistade arter i Sverige 2025 (SLU Artdatabanken), Rodlistearbete_2025.csv row for taxon 232807
+      div.score-disclosure-body > ul.fine > li > span · explore detail
+[en] Ulva prolifera O.F.Müll. (spretig tarmalg), Dyntaxa 232807; synonyms there include Enteromorpha prolifera
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Ulva prolifera, Ulva prolifera O.F.Mull.
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] (Angewandte Chemie International Edition, 2019) 10.1002/anie.201910461
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] (Beilstein Journal of Organic Chemistry, 2012) 10.3762/bjoc.8.30
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] Gracilaria vermiculophylla, Agarophyton vermiculophyllum
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Agarophyton vermiculophyllum (Ohmi) Gurgel, J.N.Norris & Fredericq, Gracilaria vermiculophylla, Gracilaria vermiculophylla (Ohmi) Papenfuss
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Severe acute respiratory syndrome coronavirus 2
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] (International Journal of Molecular Sciences, 2021) 10.3390/ijms22126481
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] ミル Codium fragile (Suringar) Hariot
+      div.score-disclosure-body > ul.fine > li > span · explore detail
+[en] Codium fragile, Codium fragile (Suringar) Har.
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Meise Botanic Garden Herbarium (BR)
+      details > ul > li > a · explore detail, method, method folds open
+[en] Duke University Herbarium Algae Collection
+      details > ul > li > a · explore detail, method, method folds open
+[en] Little neck clam, Wild, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Food & Function 9(10):5230-5237 (Chen Y, Gao X, Wei Y, et al. 2018), full text (RSC, Dongguk institutional access) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Fisheries Science 68:233 (Suetsuna 2002), full text via J-STAGE ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Journal of Fisheries Science and Technology 8:109 (Lee et al. 2005), full text via KoreaScience ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Ruditapes philippinarum A. Adams & Reeve
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Ruditapes philippinarum, Ruditapes philippinarum (A.Adams & Reeve, 1850)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] A dataset of molluscan fauna sampled in estuaries of medium and small rivers in Kyushu, Japan
+      details > ul > li > a · explore detail, method, method folds open
+[en] Shellfish specimens of the Nishinomiya Shell Museum, Japan
+      details > ul > li > a · explore detail, method, method folds open
+[en] Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ
+      details > ul > li > a · explore detail, method, method folds open
+[en] Mollusca specimens of Toyama Science Museum
+      details > ul > li > a · explore detail, method, method folds open
+[en] Marine Invertebrata specimen database of Osaka Museum of Natutal History
+      details > ul > li > a · explore detail, method, method folds open
+[en] Malacological Collection of the Kaunas Tadas Ivanauskas Museum of Zoology
+      details > ul > li > a · explore detail, method, method folds open
+[en] European Food Research and Technology 240(1):137-145 (Springer), full text read through the Dongguk University library ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Haliotis discus Reeve, 1846, Haliotis discus discus Reeve, 1846, Haliotis discus hannai Ino, 1953
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Gunma Museum of Natural History, Molluscan Specimen
+      details > ul > li > a · explore detail, method, method folds open
+[en] Peters, H., Takami, H., Kiyomoto, S. & Kawamura, T. 2022. Haliotis discus Reeve, 1846. The IUCN Red List of Threatened Species 2022: https://doi.org/10.2305/IUCN.UK.2022-2.RLTS.T78764186A78772433.en
+      details.detail-more > div.detail-more-body > p > span · explore detail
+[en] 大连海洋大学学报 (Journal of Dalian Ocean University) 33(6):782-787 (Li et al. 2018), publisher full-text HTML ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Mizuhopecten yessoensis, Patinopecten yessoensis
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Mizuhopecten yessoensis (Jay, 1857), Patinopecten yessoensis (Jay, 1857)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Natural History Museum Rotterdam - Specimens
+      details > ul > li > a · explore detail, method, method folds open
+[en] Magallana sikamea (Crassostrea sikamea, Kumamoto oyster)
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Liu et al. 2021(Front Physiol
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Magallana sikamea, Crassostrea sikamea
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Hong et al. 2012, Fish Sci 78:259). IUCN
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail
+[en] Ark shell, Farm-raised, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Marine Drugs 20(2):110 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC8875476 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Staphylococcus aureus ATCC 25923 MIC = 22.77 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Marine Drugs 15(7):205 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC5532647 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Pseudomonas aeruginosa ATCC 27853 MIC = 47.35 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Escherichia coli ATCC 25922 MIC = 45.54 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Escherichia coli ATCC 25922 MIC = 47.35 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Pseudomonas aeruginosa ATCC 27853 MIC = 91.08 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Bacillus subtilis ATCC 6633 MIC = 182.16 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Anadara broughtonii, Scapharca broughtonii
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Anadara broughtonii (Schrenck, 1867), Scapharca broughtoni (Schrenck, 1867)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Marine Drugs 14:110 (Li et al. 2016), full text via Europe PMC PMC4926069 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC5865786 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Sinonovacula constricta, Sinonovacula constricta (Lamarck, 1818)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Food Chemistry 447:138873 (Wang B, Zhang H, Wen Y, et al. 2024), full text (Elsevier PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Journal of Food Science 90(12) e70767 (Zhang H, Wang C, Wang F, et al. 2025), full text (Wiley PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Scomber japonicus, Scomber japonicus Houttuyn, 1782
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Occurrence records of southern African fish biodiversity
+      details > ul > li > a · explore detail, method, method folds open
+[en] Fish collection of the Kagoshima University Museum
+      details > ul > li > a · explore detail, method, method folds open
+[en] Fish collection of National Museum of Nature and Science
+      details > ul > li > a · explore detail, method, method folds open
+[en] Collette, B.B., Nakatsuka, S. & Suzuki, J. 2023. Scomber japonicus Houttuyn, 1782. The IUCN Red List of Threatened Species 2023: https://doi.org/10.2305/IUCN.UK.2023-1.RLTS.T170306A170083106.en
+      details.detail-more > div.detail-more-body > p > span · explore detail
+[en] Hakatajima Field Station, National Research Institute of Fisheries and Environment of Inland Sea
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Applied Biological Chemistry 59(1):25-31 (Kim HJ, Kang SG, Jaiswal L, et al. 2016), full text (Springer PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Engraulis japonicus, Engraulis japonicus Temminck & Schlegel, 1846
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Di Dario, F. 2018. Engraulis japonicus Temminck & Schlegel, 1846. The IUCN Red List of Threatened Species 2018: https://doi.org/10.2305/IUCN.UK.2018-2.RLTS.T98969433A143841777.en
+      details.detail-more > div.detail-more-body > p > span · explore detail
+[en] NIFS West Sea Fisheries Research Institute
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] XO IC50 = 3.16 mM (3160 µM) · bovine milk (Solarbio X1875) · uric acid, absorbance 290 nm
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] Foods 12(5):982 (MDPI), full text in PMC10001067 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] XO IC50 = 5.86 mM (5860 µM) · bovine milk (Solarbio X1875) · uric acid, absorbance 290 nm
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Blue-bio Value Map team, literature cohort built from PubMed (NCBI)
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail, method, method folds open
+[en] Larimichthys polyactis, Larimichthys polyactis (Bleeker, 1877)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Cheng, J.-H., Nguyen Van, Q., Sasaki, K., Hoshino, K., Sakai, T., Santos, M., Liu, M., Yang, C.-H., Chen, M.-H., Yeh, H.-M., Mok, H.-K., Liu, S.-H., Seah, Y.G. & Shah, N.H.A. 2020. Larimichthys polyactis (Bleeker, 1877). The IUCN Red List of Threatened Species 2020: https://doi.org/10.2305/IUCN.UK.2020-1.RLTS.T49182929A49229050.en
+      details.detail-more > div.detail-more-body > p > span · explore detail
+[en] DBAASP Vibrio anguillarum (incl. Listonella anguillarum) MIC
+      details.score-disclosure > div.score-disclosure-body > p.fine.mbpi-first > span · explore detail
+[en] Vibrio anguillarum MIC = 5 uM · LB broth, 28 C
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] International Journal of Molecular Sciences 23(21):12722 (MDPI), open access, full text and Table 1 read from PMC9654944 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Vibrio anguillarum (incl. Listonella anguillarum)
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail
+[en] Bacillus subtilis MIC = 5 uM · marine 2216E medium, 28 C
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Escherichia coli MIC = 10 uM · LB broth, 37 C
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Staphylococcus aureus MIC = 10 uM · LB broth, 37 C
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Process Biochemistry 51(4):535-541 (Ko et al. 2016), full text (Elsevier PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] DBAASP v3 (Database of Antimicrobial Activity and Structure of Peptides), I. Beritashvili Center of Experimental Biomedicine and NIAID OCICB
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail, method, method folds open
+[en] (Protein and Peptide Letters, 2021) 10.2174/0929866528666210211142105
+      div.score-disclosure-body > ul.lit-list > li > span.lit-src · explore detail
+[en] Paralichthys olivaceus, Paralichthys olivaceus (Temminck & Schlegel, 1846)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Staphylococcus aureus MIC = 12.5 uM · LB broth
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] Marine Drugs 20(6):353 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC9228364 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Vibrio anguillarum MIC = 25 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Streptococcus agalactiae MIC = 800 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Vibrio parahaemolyticus MIC = 400 uM · LB broth
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Sebastes schlegelii, Sebastes schlegeli
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Sebastes schlegelii, Sebastes schlegelii Hilgendorf, 1880
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Yellowtail, Farm-raised, Young, Raw
+      details.score-disclosure > div.score-disclosure-body > p > span · explore detail
+[en] Gonadotrophin-releasing hormone receptor IC50 = 684 nM · COS
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] Seriola quinqueradiata, Seriola quinqueradiata Temminck & Schlegel, 1845
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Smith-Vaniz, W.F. & Williams, I. 2016. Seriola quinqueradiata Temminck & Schlegel, 1845. The IUCN Red List of Threatened Species 2016: https://doi.org/10.2305/IUCN.UK.2016-3.RLTS.T20435860A65927987.en
+      details.detail-more > div.detail-more-body > p > span · explore detail
+[en] Process Biochemistry 51(10):1622-1628 (Ngo DH, et al. 2016), full text (Elsevier PDF, institutional subscription) ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Gadus macrocephalus, Gadus macrocephalus Tilesius, 1810
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] University of Michigan Museum of Zoology, Division of Fishes
+      details > ul > li > a · explore detail, method, method folds open
+[en] Escherichia coli KCCM 11234 MIC = 14.1 uM · Mueller-Hinton broth (MHB)
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail
+[en] International Journal of Molecular Sciences 26(17):8546 (MDPI), open access, full text read in PMC12429151 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Staphylococcus aureus KCCM 40881 MIC = 14.1 uM · Mueller-Hinton broth (MHB)
+      div.score-disclosure-body > div.score-fact > span > span · explore detail
+[en] Portunus trituberculatus, Portunus trituberculatus (Miers, 1876)
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail
+[en] Marine Drugs 20(5):328 (MDPI), full text in PMC9144402 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail
+[en] Common cuttlefish, flesh, raw
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail, explore popovers
+[en] Neuropeptide FF receptor 2 Ki = 6.6 nM
+      div.score-disclosure-body > div.score-fact.score-used > span > span · explore detail, explore popovers
+[en] Journal of Biological Chemistry 275(50):39324-39331 (Bonini et al. 2000), publisher open access on jbc.org ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail, explore popovers
+[en] British Journal of Pharmacology 133(1):138-144 (Kotani et al. 2001), full text in PMC1572755 ↗
+      details.score-disclosure > div.score-disclosure-body > p.fine > a · explore detail, explore popovers
+[en] Neuropeptide Y receptor type 2 IC50 40000 nM
+      details.score-disclosure > div.score-disclosure-body > p.fine > span · explore detail, explore popovers
+[en] Acanthosepion esculentum, Acanthosepion esculentum (Hoyle, 1885), Sepia esculenta Hoyle, 1885
+      details.detail-more > div.detail-more-body > div.evidence-item > b · explore detail, explore popovers
+[en] Rural Development Administration (RDA), National Institute of Crop and Food Science · WoRMS
+      tbody > tr > td > span · method, method folds open
+[en] EMBL-EBI ChEMBL · SIB Cellosaurus · Wikidata (LOTUS natural products import) · World Register of Marine Species
+      tbody > tr > td > span · method, method folds open
+[en] Rural Development Administration (RDA), National Institute of Crop and Food Science
+      details.lic-list > ul > li > a · method, method folds open
+[en] Wikidata (LOTUS natural products import)
+      details.lic-list > ul > li > a · method, method folds open
+[en] World Register of Marine Species
+      details.lic-list > ul > li > a · method, method folds open
+[en] Biodiversity Data Journal 8:e47018 (Pensoft), full text in PubMed Central (PMC6992691)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan
+      details.lic-list > ul > li > a · method, method folds open
+[en] National Marine Biodiversity Institute of Korea (MABIK), MBRIS
+      ul > li > a > span · method, method folds open
+[en] Fisheries Agency of Japan (水産庁), published with the Ministry of the Environment marine red list on 2017-03-21
+      details.lic-list > ul > li > a · method, method folds open
+[en] Nutrients 10(10):1397 (Lin YH, Chen GW, Yeh CH, Song H, Tsai JS 2018), full text via Europe PMC PMC6213796
+      details.lic-list > ul > li > a · method, method folds open
+[en] Animals 14(11):1693 (Oh & Lee 2024), full text via PMC PMC11171225
+      details.lic-list > ul > li > a · method, method folds open
+[en] Aquatic Food Composition Database (AFCD)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Biology 14(12):1682 (Jiang et al. 2025), full text via Europe PMC PMC12730681
+      details.lic-list > ul > li > a · method, method folds open
+[en] BioMed Research International 2014:379234 (Hindawi), open access, full text read from PMC4130196
+      details.lic-list > ul > li > a · method, method folds open
+[en] Choi et al., Nutrients
+      details.lic-list > ul > li > a · method, method folds open
+[en] Foods 11(21):3507 (MDPI), open access, full text and figures read from the Europe PMC REST fullTextXML of PMC9657784
+      details.lic-list > ul > li > a · method, method folds open
+[en] Foods 12(5):982 (MDPI), full text in PMC10001067
+      details.lic-list > ul > li > a · method, method folds open
+[en] Frontiers in Marine Science 8:747891, full text (publisher PDF)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Frontiers in Nutrition 9:981163 (Chen et al. 2022), full text via Europe PMC PMC9445672
+      details.lic-list > ul > li > a · method, method folds open
+[en] Frontiers in Physiology 12:713736 (Frontiers), full text in PubMed Central (PMC8353274, PMID 34385935)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Int J Mol Sci 20:4159 (Yu et al. 2019), full text via Europe PMC PMC6747323
+      details.lic-list > ul > li > a · method, method folds open
+[en] International Journal of Molecular Sciences 23(21):12722 (MDPI), open access, full text and Table 1 read from PMC9654944
+      details.lic-list > ul > li > a · method, method folds open
+[en] International Journal of Molecular Sciences 26(17):8546 (MDPI), open access, full text read in PMC12429151
+      details.lic-list > ul > li > a · method, method folds open
+[en] Li et al., Foods (MDPI)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Liu et al., Molecules
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 14:110 (Li et al. 2016), full text via Europe PMC PMC4926069
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 15(7):205 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC5532647
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 18(10):490 (MDPI), full text in PMC7599988
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 19:177 (Feng et al. 2021), full text via Europe PMC PMC8004985
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 20(2):110 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC8875476
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 20(5):328 (MDPI), full text in PMC9144402
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 20(6):353 (MDPI), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC9228364
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 22:398 (Li et al. 2024), full text via Europe PMC PMC11433523
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Drugs 22:90 (Wang et al. 2024), full text via Europe PMC PMC10890666
+      details.lic-list > ul > li > a · method, method folds open
+[en] mBio 10(5):e01821-19 (American Society for Microbiology), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC6805989
+      details.lic-list > ul > li > a · method, method folds open
+[en] Ministry of the Environment, Japan (環境省), いきものログ レッドリスト公開データ
+      details.lic-list > ul > li > a · method, method folds open
+[en] National Museum of Natural History Invertebrate Zoology Collections
+      details.lic-list > ul > li > a · method, method folds open
+[en] NCBI RefSeq / INSDC (genome by Yellow Sea Fisheries Research Institute, Chinese Academy of Fishery Sciences)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Rural Development Administration, National Institute of Crop and Food Science, National Standard Food Composition DB
+      ul > li > a > span · method, method folds open
+[en] Scientific Reports (Nature Portfolio)
+      details.lic-list > ul > li > a · method, method folds open
+[en] SLU Artdatabanken (Swedish University of Agricultural Sciences, a state agency; list funded with Naturvårdsverket)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Veterinary Research 52(1):32 (BMC), open access, full text read from PMC7905887
+      details.lic-list > ul > li > a · method, method folds open
+[en] NASA Earth Observatory Blue Marble NG · Black Marble 2016
+      details.lic-list > ul > li > span · method, method folds open
+[en] Ocean Biodiversity Information System (OBIS), IOC-UNESCO · iNaturalist Research-grade Observations · Comprehensive Marine Natural Products Database (CMNPD) · flora & fauna(NIBR) · NIFS_NF · GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check)
+      tbody > tr > td > span · method, method folds open
+[en] Ocean Biodiversity Information System (OBIS), IOC-UNESCO
+      details.lic-list > ul > li > a · method, method folds open
+[en] Comprehensive Marine Natural Products Database (CMNPD)
+      details.lic-list > ul > li > a · method, method folds open
+[en] GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check)
+      details.lic-list > ul > li > a · method, method folds open
+[en] ALGAE 33(1):101-108 (The Korean Society of Phycology), open access
+      details.lic-list > ul > li > a · method, method folds open
+[en] Comprehensive Marine Natural Products Database v1.0
+      details.lic-list > ul > li > a · method, method folds open
+[en] Development & Reproduction 29(1):13-18 (Hwang & Kang 2025), full text via Europe PMC PMC12004011
+      details.lic-list > ul > li > a · method, method folds open
+[en] Lee HI, Kim CB, Lee MK; Korean Society of Food Preservation
+      details.lic-list > ul > li > a · method, method folds open
+[en] Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC5865786
+      details.lic-list > ul > li > a · method, method folds open
+[en] Scientific Reports 15:15057 (Nature Portfolio), full text via Europe PMC PMC12041393
+      details.lic-list > ul > li > a · method, method folds open
+[en] IUCN Red List · IUCN Red List of Threatened Species · FAO/INFOODS · Food and Agriculture Organization of the United Nations
+      tbody > tr > td > span · method, method folds open
+[en] Food and Agriculture Organization of the United Nations
+      details.lic-list > ul > li > a · method, method folds open
+[en] NCBI PubChem · AHTPDB, IIIT-Delhi (Raghava group) · EMBL-EBI Europe PMC
+      tbody > tr > td > span · method, method folds open
+[en] National Institute of Biological Resources (NIBR), Republic of Korea
+      tbody > tr > td > span · method, method folds open
+[en] CancerPPD 2.0 (repository of experimentally verified anticancer peptides and proteins), Raghava group, IIIT-Delhi
+      details.lic-list > ul > li > a · method, method folds open
+[en] Fisheries Science 68(4):954-956 (Nomura et al. 2002), full text via J-STAGE (free PDF)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Food Processing and Preservation 40(3):492-501 (Chen et al. 2016, first published 2015-11-20), full text (Wiley Online Library, Dongguk University institutional access)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Nutritional Biochemistry 15(5):267-272 (Suetsuna K, Maekawa K, Chen JR 2004), full text (Elsevier PDF)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Process Biochemistry 41(9):1961-1966 (Kapel R, Rahhou E, Lecouturier D, Guillochon D, Dhulster P 2006), full text (Elsevier PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Agricultural and Biological Chemistry 55(5):1313-1318 (Miyoshi et al. 1991), full text via J-STAGE (free PDF)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Applied Biological Chemistry 59(1):25-31 (Kim HJ, Kang SG, Jaiswal L, et al. 2016), full text (Springer PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Bioorganic & Medicinal Chemistry 21:3730 (Park et al. 2013); abstract via Europe PMC, values via ChEMBL
+      details.lic-list > ul > li > a · method, method folds open
+[en] Biosci Biotechnol Biochem 60(8):1353-1355 (Wako Y, Ishikawa S, Muramoto K 1996, Note), full text (J-STAGE scanned PDF, open)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Bioscience, Biotechnology, and Biochemistry 58(10):1767-1771 (Saito et al. 1994), full text via J-STAGE (free PDF)
+      details.lic-list > ul > li > a · method, method folds open
+[en] British Journal of Pharmacology 133(1):138-144 (Kotani et al. 2001), full text in PMC1572755
+      details.lic-list > ul > li > a · method, method folds open
+[en] British Journal of Pharmacology article
+      details.lic-list > ul > li > a · method, method folds open
+[en] Cheong et al., Journal of Agricultural and Food Chemistry
+      details.lic-list > ul > li > a · method, method folds open
+[en] Chinese Journal of Natural Medicines 9(2):151-155 (Elsevier)
+      details.lic-list > ul > li > a · method, method folds open
+[en] CNIPA patent CN103467568B (Google Patents full text), Zhejiang Ocean University
+      details.lic-list > ul > li > a · method, method folds open
+[en] Engineering in Life Sciences 18(4):218-226 (Michelke et al. 2018), free full text via PubMed Central (PMC6999327)
+      details.lic-list > ul > li > a · method, method folds open
+[en] European Food Research and Technology 240(1):137-145 (Springer), full text read through the Dongguk University library
+      details.lic-list > ul > li > a · method, method folds open
+[en] Fish & Shellfish Immunology 163:110408 (Elsevier), abstract on PubMed (PMID 40360041)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Fish & Shellfish Immunology 80:274-280 (Elsevier), abstract only; full text not open
+      details.lic-list > ul > li > a · method, method folds open
+[en] Fisheries Science 68:233 (Suetsuna 2002), full text via J-STAGE
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food & Function 9(10):5230-5237 (Chen Y, Gao X, Wei Y, et al. 2018), full text (RSC, Dongguk institutional access)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food Chemistry 111(2):302-308 (Elsevier), abstract only; full text not open
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food Chemistry 132(4):1872-1882 (Elsevier); neither full text nor abstract opened on 2026-10-14
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food Chemistry 379:132160 (Feng et al. 2022), PubMed abstract
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food Chemistry 401:134127 (Elsevier), abstract only (PubMed); full text not open
+      details.lic-list > ul > li > a · method, method folds open
+[en] Food Chemistry 447:138873 (Wang B, Zhang H, Wen Y, et al. 2024), full text (Elsevier PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] He, Zhao and Liu, South China Fisheries Science
+      details.lic-list > ul > li > a · method, method folds open
+[en] Indonesian Food and Nutrition Progress 21(1):1 (Universitas Gadjah Mada), open PDF
+      details.lic-list > ul > li > a · method, method folds open
+[en] International Journal of Biological Macromolecules 318:145037 (Elsevier), abstract only; full text not open
+      details.lic-list > ul > li > a · method, method folds open
+[en] J Agric Food Chem 50(21):6245-6252 (Sato et al. 2002), full text (ACS PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] J Nutr Biochem 11:450 (Suetsuna & Nakano 2000), PubMed abstract
+      details.lic-list > ul > li > a · method, method folds open
+[en] J Nutr Biochem 11(9):450-454 (Suetsuna & Nakano 2000), full text (ScienceDirect HTML, Dongguk University institutional access)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Applied Phycology 20(5):469-475 (Springer)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Applied Phycology 21(4):413-422 (Springer)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Applied Phycology 36(6):3581-3590 (Springer)
+      details.lic-list > ul > li > a · method, method folds open
+[en] KoreaScience scanned full text
+      ul > li > a > span · method, method folds open
+[en] Journal of Biological Chemistry 275(50):39324-39331 (Bonini et al. 2000), publisher open access on jbc.org
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Experimental Biology 218(23):3825-3835 (The Company of Biologists), indexed in PubMed (PMID 26632456)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Fisheries and Marine Sciences Education
+      ul > li > a > span · method, method folds open
+[en] Journal of Fisheries Science and Technology 8:109 (Lee et al. 2005), full text via KoreaScience
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Food Composition and Analysis 24(2):231-236 (Elsevier)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Food Science 90(12) e70767 (Zhang H, Wang C, Wang F, et al. 2025), full text (Wiley PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of Life Science 22(2):220-225 (Do et al. 2012), full text via KoreaScience JAKO201209640672935
+      details.lic-list > ul > li > a · method, method folds open
+[en] Journal of the Korean Society of Fisheries and Aquatic Sciences (Korean J Fish Aquat Sci) 43(6):589-597, full text via KoreaScience
+      details.lic-list > ul > li > a · method, method folds open
+[en] KISTI ScienceON (Korean national R&D report registry)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Konishi et al., Comparative Biochemistry and Physiology C
+      details.lic-list > ul > li > a · method, method folds open
+[en] Korea Ocean Research and Development Institute (KORDI, now KIOST), with NIFS Future Aquaculture Research Center
+      ul > li > a > span · method, method folds open
+[en] Korean Journal of Fisheries and Aquatic Sciences
+      details.lic-list > ul > li > a · method, method folds open
+[en] Korean Journal of Fisheries and Aquatic Sciences 43(6):687-692 (KoreaScience full text)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Lee, Jeon and Byun, Korean Journal of Fisheries and Aquatic Sciences
+      details.lic-list > ul > li > a · method, method folds open
+[en] Li et al., Chemistry & Biodiversity (Wiley)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Marine Biotechnology 19(3):246-254 (Springer), indexed in PubMed (PMID 28501901)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Microbial Pathogenesis 116:345-350 (Elsevier), abstract on PubMed (PMID 29407235)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Ministry of Food and Drug Safety (MFDS
+      ul > li > a > span · method, method folds open
+[en] food raw-material code list
+      ul > li > a > span · method, method folds open
+[en] Ministry of Natural Resources and Ecology of the Russian Federation (Минприроды России)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Molecular Ecology Resources 20(6):1572-1582 (Wiley), PMID 32603549
+      details.lic-list > ul > li > a · method, method folds open
+[en] Molecular Medicine Reports 16(4):4222-4228 (Spandidos)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Nippon Kagaku Kaishi 1983(3):368-379 (The Chemical Society of Japan), J-STAGE
+      details.lic-list > ul > li > a · method, method folds open
+[en] Nippon Suisan Gakkaishi 64(5):862 (Suetsuna 1998), full text via J-STAGE
+      details.lic-list > ul > li > a · method, method folds open
+[en] Oh et al., Fish & Shellfish Immunology
+      details.lic-list > ul > li > a · method, method folds open
+[en] Process Biochemistry 51(10):1622-1628 (Ngo DH, et al. 2016), full text (Elsevier PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Process Biochemistry 51(4):535-541 (Ko et al. 2016), full text (Elsevier PDF, institutional subscription)
+      details.lic-list > ul > li > a · method, method folds open
+[en] SPC Beche-de-mer Information Bulletin 18:18-23 (Secretariat of the Pacific Community)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Tokai University doctoral thesis, abstract via the university repository record (OpenAlex W7146337831)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Toxicon 52(4):574-581 (Elsevier), abstract on PubMed (PMID 18694775)
+      details.lic-list > ul > li > a · method, method folds open
+[en] Zaharudin et al., Food Chemistry
+      details.lic-list > ul > li > a · method, method folds open
+[en] 大连海洋大学学报 (Journal of Dalian Ocean University) 33(6):782-787 (Li et al. 2018), publisher full-text HTML
+      details.lic-list > ul > li > a · method, method folds open
+[en] 现代食品科技 (Modern Food Science and Technology) 30(9):1-6
+      details.lic-list > ul > li > a · method, method folds open
+[en] Comprehensive Marine Natural Products Database (CMNPD
+      div > ul > li > span · method, method folds open
+[en] Development & Reproduction 29(1):13-18 (Hwang & Kang 2025), full text via Europe PMC PMC
+      div > ul > li > span · method, method folds open
+[en] Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC
+      div > ul > li > span · method, method folds open
+[en] GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check
+      div > ul > li > span · method, method folds open
+[en] A defensin-like antimicrobial peptide from the manila clam Ruditapes philippinarum (Yang D et al. 2018) · ACE inhibitory peptides derived from wakame (Undaria pinnatifida) · An active peptide purified from gastrointestinal enzyme hydrolysate of Pacific cod skin gelatin attenuates ACE activity (Himaya SWA et al. 2012) · Angiotensin I-converting enzyme inhibitors in autolysates of squid liver and mantle muscle · Angiotensin I-converting enzyme inhibitory peptides from an enzymatic hydrolysate of flounder fish (Paralichthys olivaceus) muscle as a potent anti-hypertensive agent · Angiotensin-I-converting enzyme (ACE) inhibitory peptides from Pacific cod skin gelatin using ultrafiltration membranes · Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster) · Anticancer activity of an oligopeptide isolated from hydrolysates of Sepia ink (Ding G-F et al. 2011)
+      div > ul > li > span · method, method folds open
+[en] DT_1EW0004) · Standard Tables of Food Composition in Japan, Eighth Revised Edition, 2023 supplement — dried tengusa · Постановление Губернатора Приморского края от 14.05.2002 № 272 «Об утверждении перечня объектов растительного мира и перечня объектов животного мира, занесенных в Красную книгу Приморского края» · Постановление Правительства Приморского края от 24.10.
+      div > ul > li > span · method, method folds open
+[en] Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594 · いしかわレッドデータブック2020〈動物編〉 6.
+      div > ul > li > span · method, method folds open
+[en] AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt) · CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts · DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts · Europe PMC REST search (IDs, titles and quoted abstract sentences) · PUG REST InChIKey -> CID and taxonomy 'Natural Products' section · PubChem PUG REST compound/substance records
+      div > ul > li > span · method, method folds open
+[en] Dieckol, a SARS-CoV 3CL(pro) inhibitor, isolated from the edible brown algae Ecklonia cava
+      div > ul > li > span · method, method folds open
+[en] MolluscaBase eds. (2026). MolluscaBase. Magallana gigas (Thunberg, 1793). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033 on 2026-09-22
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] MolluscaBase eds. (2026). MolluscaBase. Mytilus coruscus A. A. Gould, 1861. Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=506159 on 2026-09-23
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Guiry, M.D. & Guiry, G.M. (2026). AlgaeBase. World-wide electronic publication, National University of Ireland, Galway (taxonomic information republished from AlgaeBase with permission of M.D. Guiry). Sargassum fusiforme (Harvey) Setchell, 1931. Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=494972 on 2026-09-23
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Guiry, M.D. & Guiry, G.M. (2026). AlgaeBase. World-wide electronic publication, National University of Ireland, Galway (taxonomic information republished from AlgaeBase with permission of M.D. Guiry). Gelidium elegans Kützing, 1868. Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=372119 on 2026-09-23
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] MolluscaBase eds. (2026). MolluscaBase. Todarodes pacificus (Steenstrup, 1880). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=342067 on 2026-09-22
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Shenkar, N.; Gittenberger, A.; Lambert, G.; Rius, M.; Moreira da Rocha, R.; Swalla, B.J.; Turon, X. (2026). Ascidiacea World Database. Halocynthia roretzi (Drasche, 1884). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=250680 on 2026-09-23
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] WoRMS (2026). Apostichopus japonicus (Selenka, 1867). Accessed at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=241776 on 2026-09-22
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Guiry, M.D. & Guiry, G.M. (2026). AlgaeBase. World-wide electronic publication, National University of Ireland, Galway (taxonomic information republished from AlgaeBase with permission of M.D. Guiry). Undaria pinnatifida (Harvey) Suringar, 1873. Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=145721 on 2026-09-23
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Biodiversity Center of Japan, Ministry of the Environment. Data file of tidal flats survey on Monitoring sites 1000 project at http://www.biodic.go.jp/moni1000/findings/data/index_file_tidalflats.html. Accessed on 2026-09-22.
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Aquatic Food Composition Database (AFCD). Harvard Dataverse. doi:10.7910/DVN/KI0NYM
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Observation.org, Nature data from around the World. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Santa Barbara Museum of Natural History - Invertebrate Zoology. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] A dataset of molluscan fauna sampled in estuaries of medium and small rivers in Kyushu, Japan. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Department of Invertebrate Zoology, Research and Collections Information System, NMNH, Smithsonian Institution. See: http://www.mnh.si.edu/rc/db/collection_db_policy1.html, 05-14-2010
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Lyu C, Chen T, Qiang B, Liu N, Wang H, Zhang L, Liu Z. CMNPD: a comprehensive marine natural products database towards facilitating drug discovery from the ocean. Nucleic Acids Research 2021;49(D1):D509-D515. doi:10.1093/nar/gkaa763
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] MGC Herbarium of University of Malaga (Spain): MGC-PHYC dataset. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] University of Michigan Herbarium. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Meise Botanic Garden Herbarium (BR). GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Duke University Herbarium Algae Collection. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Shellfish specimens of the Nishinomiya Shell Museum, Japan. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Mollusca specimens of Toyama Science Museum. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Marine Invertebrata specimen database of Osaka Museum of Natutal History. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Malacological Collection of the Kaunas Tadas Ivanauskas Museum of Zoology. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Gunma Museum of Natural History, Molluscan Specimen. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Natural History Museum Rotterdam - Specimens. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Occurrence records of southern African fish biodiversity. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Fish collection of the Kagoshima University Museum. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Fish collection of National Museum of Nature and Science. OBIS
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] University of Michigan Museum of Zoology, Division of Fishes. GBIF.org
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] AHTPDB antihypertensive peptide database, IC50 download (pepic50.txt)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cell-line category for ChEMBL CELL-LINE targets
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] ChEMBL molecule, activity, target and cell-line resources
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A novel ACE inhibitory peptide from oyster (Crassostrea gigas)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] DBAASP peptide records (full REST dump, 25,542 records) used as the fixed MIC comparison cohorts
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Pirtskhalava M, Amstrong AA, Grigolava M, et al. DBAASP v3. Nucleic Acids Research 49(D1):D288-D297 (2021), doi:10.1093/nar/gkaa991
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Angiotensin-converting enzyme inhibitory activity of enzymatic hydrolysates of Crassostrea gigas (oyster)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Oyster culture in the Republic of Korea
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultured Aquatic Species Information Programme — Crassostrea gigas
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Steam cooking and proteolysis of Pacific oyster (Crassostrea gigas) proteins
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] IUCN Red List species search (Global scope)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A Comprehensive and Comparative Study on the Biochemical Composition and Non-Volatile Taste Compounds of Thirteen Shellfish Species (Li L et al. 2025)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] The Ancestral N-Terminal Domain of Big Defensins Drives Bacterially Triggered Assembly into Antimicrobial Nanonets (Loth K, Vergnes A, Barreto C, et al. 2019)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification of a Novel Peptide Derived from a Shellfish, Crassostrea gigas, and Evaluation of Its Anticancer Property (Cheong SH et al. 2013)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Structures and activity of angiotensin-converting enzyme inhibitors in an alpha-zein hydrolysate
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] OBIS occurrence and statistics API: per-cell record counts for 30 species, their WoRMS classes and all taxa, 2006-2015 and 2016-2025
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] OBIS (2026) Ocean Biodiversity Information System. Intergovernmental Oceanographic Commission of UNESCO. obis.org.
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] PUG REST InChIKey -> CID and taxonomy 'Natural Products' section
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] National Standard Food Composition DB 10.
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] National Standard Food Composition DB 10.4 — EPA
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Proximal and fatty acid analysis in Ostrea chilensis, Crassostrea gigas and Mytilus chilensis (Bivalvia: Mollusca) from southern Chile (Valenzuela A et al. 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification and identification of an ACE inhibitory peptide from oyster protein hydrolysate (Wang J et al. 2008)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] P703 found-in-taxon statements and P248 references
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] WoRMS REST accepted names, synonyms and NCBI IDs
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Angiotensin I-converting enzyme inhibitor derived from cross-linked oyster protein (Xie CL et al. 2014)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Nutritional analysis of Mytilus coruscus soft body
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Myticusin-beta antimicrobial peptide isolated from Mytilus coruscus
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Development of optimal technology for aquacultural industry in the hard mussel, Mytilus coruscus
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Copyright KISTI. All Rights Reserved.
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Global food composition database for fish and shellfish (uFiSh1.0)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Global Food Composition Database for Fish and Shellfish (uFiSh1.0), 02 Overview Species, 04 NV_sum and 05 NV_stat
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] FAO (2016). FAO/INFOODS Global Food Composition Database for Fish and Shellfish Version 1.0 - uFiSh1.0. Rome.
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Simultaneous Determination of 8 Small Antihypertensive Peptides with Tyrosine at the C-Terminal in Laminaria japonica Hydrolysates by RP-HPLC Method
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Site search of Red List assessments (version 2026-1)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Nutrient composition and taste properties of Sargassum fusiforme from the Wando region
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Saringosterol Acetate Isolated from Sargassum fusiformis Induces Mitochondrial-Mediated Apoptosis in MCF-7 Breast Cancer Cells
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Effects of Transplantation on Selected Local Populations for Hizikia Cultivation
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Effect of a Steaming Treatment on the Alpha-Glucosidase Inhibitory Components in the Brown Alga Sargassum fusiforme (Liu X et al. 2024)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Separation and identification of angiotensin I-converting enzyme inhibitory peptides from peptic digest of Hizikia fusiformis protein
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Europe PMC REST search (IDs, titles and quoted abstract sentences)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Gelidium elegans Extract Ameliorates Type 2 Diabetes via Regulation of MAPK and PI3K/Akt Signaling (Choi J et al. 2018)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Sporelings and growth of the marine red alga, Gelidium elegans (Gelidiaceae), from Northern Taiwan (Lin SM, Chen SJ, Huang PY, Liu LC, Chiou YS), doi:10.1007/s10811-024-03342-7
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] national list of marine and fishery species
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Standard Tables of Food Composition in Japan, Eighth Revised Edition, 2023 supplement — dried tengusa
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] The IUCN Red List of Threatened Species (GBIF checklist dataset 19491596-35ae-4a91-9a98-85cf505f1bd3)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Observations on the spawning behavior, egg masses and paralarval development of the ommastrephid squid Todarodes pacificus in a laboratory mesocosm (Puneeta P, Vijai D, Yoo HK, Matsui H, Sakurai Y), doi:10.1242/jeb.127670
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification of angiotensin I-converting enzyme inhibitory peptide from Todarodes pacificus skin
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Angiotensin I-converting enzyme inhibitors in autolysates of squid liver and mantle muscle
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Novel ACE inhibitory peptides from Todarodes pacificus: in silico and in vitro
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Halocynthiaxanthin and fucoxanthinol isolated from Halocynthia roretzi induce apoptosis in human leukemia, breast and colon cancer cells (Konishi I et al. 2006)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Halorotetin B, a novel terpenoid compound derived from marine ascidian, targets UBE2C
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Shin, Jun, Kim & Hur 2011. Physiological changes and energy budget of the sea squirt Halocynthia roretzi from Tongyeong
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Holotoxin A 1 from Apostichopus japonicus inhibited oropharyngeal and intra‐abdominal candidiasis by inducing oxidative damage in Candida albicans (Liao M et al. 2024)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Overview of sea cucumber farming and sea ranching practices in China (Chen J)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Targeted affinity purification and mechanism of action of angiotensin-converting enzyme (ACE) inhibitory peptides from sea cucumber gonads
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Holotoxin A1 induces apoptosis by activating acid and neutral sphingomyelinase in K562 and human primary leukemia cells
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A guide to the seaweed industry (FAO Fisheries Technical Paper 441), 8.5 Wakame
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Affinity purification of ACE inhibitory peptides from wakame (Undaria pinnatifida)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Characterization of an antihypertensive peptide from an Alfalfa white protein hydrolysate produced by a continuous enzymatic membrane reactor
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification and Identification of Angiotensin I-Converting Enzyme Inhibitory Peptides and the Antihypertensive Effect of Chlorella sorokiniana Protein Hydrolysates
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Standard Tables of Food Composition in Japan 2020 (Eighth Revised Edition), Chapter 2 data (日本食品標準成分表2020年版（八訂） 第2章データ)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Biotechnological production of the angiotensin-converting enzyme inhibitory dipeptide isoleucine-tryptophan
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification of angiotensin I-converting enzyme inhibitors in pelagic thresher Alopias pelagicus muscle hydrolysate and viscera extracts
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Structure and Activity of Angiotensin I Converting Enzyme Inhibitory Peptides from Sake and Sake Lees
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] ACE inhibitory peptides derived from wakame (Undaria pinnatifida)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification of an antihypertensive peptide from peptic digest of wakame
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification of an antihypertensive peptide from peptic digest of wakame (Undaria pinnatifida)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Antihypertensive effects of Undaria pinnatifida (wakame) peptide on blood pressure in spontaneously hypertensive rats
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Inhibition of α-glucosidase activity by selected edible seaweeds and fucoxanthin (Zaharudin N et al. 2019)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Comparison of the cultivation performance between Korean (Sugwawon No. 301) and Chinese strains (Huangguan No. 1) of kelp Saccharina japonica in an aquaculture farm in Korea (Hwang EK, Liu F, Lee KH, Ha DS, Park CS), doi:10.4490/algae.2018.33.2.4
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Nursery and main culture conditions for mass cultivation of the brown alga Ecklonia cava Kjellman (Hwang EK, Gong YG, Ha DS, Park CS 2010), doi:10.5657/kfas.2010.43.6.687
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Instrumental neutron activation analysis of Japanese seaweeds (Kawashima T, Yamamoto T, Koda Y; 本邦産海藻の放射化分析), doi:10.1246/nikkashi.1983.368
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Ecklonia cava accepted taxon, AphiaID 371986
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] CancerPPD 2.0 cell-line records (407 cell-line tables) used as the fixed IC50 comparison cohorts
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Chauhan M., Gupta A., Tomer R. and Raghava G.P.S. (2025) CancerPPD2: an updated repository of anticancer peptides and proteins. Database 2025:baaf030, doi:10.1093/database/baaf030
+      div#mt-sources.source-section > div#all-sources > div.citation > span · method, method folds open
+[en] Purification, identification and function analysis of an ACE inhibitory peptide from Ulva prolifera protein (Li Z et al. 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Preparation and vasodilation mechanism of angiotensin-I-converting enzyme inhibitory peptide from Ulva prolifera protein
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Preparation and Characterization of an Anticancer Peptide from Oriental Tonic Food Enteromorpha prolifera (Lin X et al. 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Seasonal variation in the chemical composition of a marine brown alga, Sargassum horneri (Turner) C. Agardh (Murakami K, Yamaguchi Y, Noda K, Fujii T, Shinohara N, Ushirokawa T, Sugawa-Katayama Y, Katayama M), doi:10.1016/j.jfca.2010.08.004
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultivation of the brown alga Sargassum horneri: sexual reproduction and seedling production in tank culture under reduced solar irradiance in ambient temperature (Pang SJ, Liu F, Shan TF, Gao SQ, Zhang ZH), doi:10.1007/s10811-008-9386-5
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Production of Mycosporine-Like Amino Acids from Gracilaria vermiculophylla (Rhodophyta) Cultured Through One Year in an Integrated Multi-trophic Aquaculture (IMTA) System (Barceló-Villalobos M, Figueroa FL, Korbee N, Álvarez-Gómez F, Abreu MH), doi:10.1007/s10126-017-9746-8
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultivation of the green alga, Codium fragile (Suringar) Hariot, by artificial seed production in Korea, Hwang EK, Baek JM, Park CS, doi:10.1007/s10811-007-9265-5
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Isolation, purification and the anti-hypertensive effect of a novel angiotensin I-converting enzyme (ACE) inhibitory peptide from Ruditapes philippinarum fermented with Bacillus natto
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultured Aquatic Species Information Programme — Ruditapes philippinarum
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Peptide inhibitor for angiotensin-converting enzyme from thermolysin hydrolysate of Manila clam proteins
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification of antihypertensive peptides from peptic digest of the short-necked clam Tapes philippinarum and the pearl oyster Pinctada fucata martensii
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A defensin-like antimicrobial peptide from the manila clam Ruditapes philippinarum (Yang D et al. 2018)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Physiological responses of the abalone Haliotis discus hannai to daily and seasonal temperature variations (Kang HY, Lee Y-J, Song W-Y, Kim T-I, Lee W-C, Kim TY, Kang C-K), Sci Rep 9:8019, doi:10.1038/s41598-019-44526-3
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification and characterization of a novel angiotensin I-converting enzyme inhibitory peptide derived from abalone (Haliotis discus hannai Ino) gonads (Wu Q, Cai QF, Tao ZP, Sun LC, Shen JD, Zhang LJ, Liu GM, Cao MJ)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultured Aquatic Species Information Programme — Patinopecten yessoensis
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] 扇贝裙边ACE抑制肽的分离鉴定及其降血压活性研究 (ACE inhibitory peptide from scallop skirt: isolation, identification and antihypertensive activity)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Molecular Basis of Taste and Micronutrient Content in Kumamoto Oysters (Crassostrea sikamea) and Portuguese Oysters (Crassostrea angulata) From Xiangshan Bay (Liu S, Xu H, Jian S, Xue Q, Lin Z), doi:10.3389/fphys.2021.713736
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Creative Commons Attribution 4.0 International
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Growth performance and biochemical composition of the oysters Crassostrea sikamea, Crassostrea angulata and their hybrids in southern China (Yan L, Su J, Wang Z, Zhang Y, Yan X, Yu R), doi:10.1111/are.13549
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Culture of the Ark Shell, Anadara broughtonii in Yoja Bay
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Kwon Woo-Seop and Cho Chang-Hwan, Tongyeong Fisheries Technical College
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Antibacterial Activity of AI-Hemocidin 2, a Novel N-Terminal Peptide of Hemoglobin Purified from Arca inflata (Li C, Zhu C, Zhang M, et al. 2017)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A Novel Peptide Derived from Arca inflata Induces Apoptosis in Colorectal Cancer Cells through Mitochondria and the p38 MAPK Pathway (2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Assessment of the Carrying Capacity of Integrated Pond Aquaculture of Portunus trituberculatus at the Ecosystem Level (Dong S, Wang F, Zhang D, Yu L, Pu W, Xu X, Xie Y), doi:10.3389/fmars.2021.747891
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification of angiotensin I-converting enzyme inhibitory peptides derived from enzymatic hydrolysates of razor clam Sinonovacula constricta
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Two novel peptides derived from Sinonovacula constricta inhibit the proliferation and induce apoptosis of human prostate cancer cells (Huang F et al. 2017)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Changes in the Proximate and Fatty Acid Compositions of Chub Mackerel, Scomber japonicus Muscle during Cultivation (Moon SK, Kim IS, Hong SN, Lim DH, Jeong BY), doi:10.5657/kfas.2010.43.6.589
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] The novel angiotensin-I-converting enzyme inhibitory peptides from Scomber japonicus muscle protein hydrolysates: QSAR-based screening, molecular docking, kinetic and stability studies
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Revealing Novel Angiotensin-Converting Enzyme (ACE)-Inhibitory Peptides From Mackerel Hydrolysates and Potential Antihypertensive Mechanism Using Virtual Screening and Network Pharmacology Analysis
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification of four new angiotensin I-converting enzyme inhibitory peptides from fermented anchovy sauce
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Size-dependent resource allocation to reproduction in Japanese anchovies (Engraulis japonicus), Yoneda M, Katayama S, Yamamoto M, Kono N, Tsuzaki T, Tanaka H, doi:10.1038/s41598-025-99911-y
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Xanthine oxidase inhibitory peptides from Larimichthys polyactis: characterization and in vitro/in silico evidence (Chen X et al. 2023)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Morphometric assessment of egg quality for second generation of cultured small yellow croaker, Larimichthys polyactis broodstock
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Xanthine-oxidase inhibitory peptide IC50 cohort (verified-4.3)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Angiotensin I-converting enzyme inhibitory peptides from an enzymatic hydrolysate of flounder fish (Paralichthys olivaceus) muscle as a potent anti-hypertensive agent
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Fish welfare-related issues and their relevance in land-based olive flounder (Paralichthys olivaceus) farms in Korea
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Expression analysis of TFPI-1 and TFPI-2 in Paralichthys olivaceus and antibacterial and anticancer activity of derived peptides (Wang G et al. 2021)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A Non-Canonical Teleost NK-Lysin: Antimicrobial Activity via Multiple Mechanisms (Xu H, Yuan Z, Sun L 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Immunometabolic interplay and molecular characterization of hepcidins in black rockfish (Jing H et al. 2025)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Antimicrobial and Immunoregulatory Activities of TS40, a Derived Peptide of a TFPI-2 Homologue from Black Rockfish (Sebastes schlegelii) (Liu H et al. 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] ChEMBL target x endpoint cohorts for the relaxation-(d) items: human vasopressin V1b receptor (CHEMBL1921) and V2 receptor (CHEMBL1790), EC50
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Cultured Aquatic Species Information Programme — Seriola quinqueradiata
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Seriola quinqueradiata assessment page 20435860/115383171
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Structural determinants for ligand-receptor conformational selection in a peptide GPCR (Lu, Coetsee, White & Millar 2007)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Characterization of Fish Skin Hydrolysates Exhibiting Dipeptidyl Peptidase IV Inhibitory Activity (Miyamoto H, Safitri E, Nagai T, Saito M 2024)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Seriola quinqueradiata sbGnRH mRNA, partial cds (KT229623.1/ALP83362.1)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Seriola quinqueradiata Squ_2.0 reference genome, contig BDMU01000006.1
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] An active peptide purified from gastrointestinal enzyme hydrolysate of Pacific cod skin gelatin attenuates ACE activity (Himaya SWA et al. 2012)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Developments of the aquaculture techniques for Pacific Cod and BlueFin Tuna applying to offshore submerged cage system
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Items in ScienceWatch@KIOST are protected by copyright, with all rights reserved, unless otherwise indicated." / "Copyright (c) 2020 KIOST ALL RIGHTS RESERVED.
+      div#all-sources > div.citation > span > span · method, method folds open
+[en] Angiotensin-I-converting enzyme (ACE) inhibitory peptides from Pacific cod skin gelatin using ultrafiltration membranes
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Marine-Derived N-Terminal Mitochondrial-Targeting Sequences Exhibit Antimicrobial and Anticancer Activities (Hong SM, Koo TW, Cho HS, et al. 2025)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] A dynamic energy budget model for the non-continuous and biphasic growth of the pond-cultured swimming crab, Portunus trituberculatus
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] An Octopus-Derived Peptide with Antidiuretic Activity in Rats (Kim Y-J et al. 2022)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Chromosome-level genome assembly of the East Asian common octopus (Octopus sinensis) using PacBio sequencing and Hi-C technology (Li F et al. 2020)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Octopus sinensis genome assembly ASM634580v1 (GCF_006345805.1), unplaced scaffold NW_021826408.1 (identical to VCDQ01006288.1); BioSample SAMN11633729
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Identification and characterization of two G protein-coupled receptors for neuropeptide FF
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] FMRFamide (CHEMBL262202) activity rows at NPFF2/NPY2 used as the origin measurements
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] 一种金乌贼蛋白抗氧化肽及其制备方法和用途 (Sepia esculenta protein antioxidant peptide; 王斌·郁迪·徐银峰·胡发远)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Anticancer activity of an oligopeptide isolated from hydrolysates of Sepia ink (Ding G-F et al. 2011)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Isolation and purification of novel peptides derived from Sepia ink: Effects on apoptosis of prostate cancer cell PC-3 (Huang F et al. 2017)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Functional characterization of a human receptor for neuropeptide FF and related peptides
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Proteomics analysis of crude squid ink isolated from Sepia esculenta for their antimicrobial, antibiofilm and cytotoxic properties (Kumar P et al. 2018)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Acanthosepion esculentum transcriptome shotgun assembly GGQU01 (176,390 transcripts), FMRFamide precursor GGQU01104929.1
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] Purification and molecular cloning of SE-cephalotoxin, a novel proteinaceous toxin from the posterior salivary gland of cuttlefish Sepia esculenta (Ueda A et al. 2008)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] First Report in Korea on Trial Aquaculture of Cuttlefish (Sepia esculenta) Using in the Open Tank
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Yoo HK, Lee KW, Kim DH, Kim GS, Kim WJ, Lim HJ, Jung MM; 35(6):1131-1136; doi:10.13000/JFMSE.2023.12.35.6.
+      div#all-sources > div.citation > strong > span · method, method folds open
+[en] Antioxidant peptides from Sepia esculenta hydrolyzate attenuate oxidative stress and fat accumulation in Caenorhabditis elegans (Yu X et al. 2020)
+      div#mt-sources.source-section > div#all-sources > div.citation > strong · method, method folds open
+[en] We acknowledge the use of imagery provided by services from NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS).
+      section#method.view.active > div#mt-sources.source-section > p.fine > span · method, method folds open
+[en] Imagery reproduced from the GEBCO_2026 Grid, GEBCO Compilation Group (2026).
+      section#method.view.active > div#mt-sources.source-section > p.fine > span · method, method folds open
+[en] Blue Marble Next Generation
+      section#method.view.active > div#mt-sources.source-section > p.fine > a · method, method folds open

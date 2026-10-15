@@ -43,7 +43,7 @@ for(const [i,r] of file.rows.entries()){
 }
 assert.ok(!/실패/.test(body+els['mt-vc-sum'].textContent+els['mt-vc-counts'].innerHTML+els['mt-vc-foot'].textContent),'no 실패 on screen');
 assert.match(els['mt-vc-sum'].textContent,new RegExp(`^${report.method_version} 기준 · 사후 검증 ${file.total}건 중 기준 통과 1건 · 7건은 결과를 보기 전에 기준을 정했습니다\\.$`));
-assert.match(els['mt-vc-ind'].innerHTML,/<b>MFPI<\/b><span>검증 통과<\/span>.*<b>MBPI<\/b><span>방법 검증 기준 미충족<\/span>.*<b>MCUI<\/b><span>제한적 확인<\/span>/);
+assert.match(els['mt-vc-ind'].innerHTML,/<b>식량 MFPI<\/b><span>검증 통과<\/span>.*<b>생리활성 MBPI<\/b><span>방법 검증 기준 미충족<\/span>.*<b>보전 MCUI<\/b><span>제한적 확인<\/span>/);
 // journey badges: the site's neutral wording (plainWords) for MBPI
 assert.deepEqual(badges.map(b=>[b.dataset.ind,b.hidden,b.textContent,b.dataset.state]),
   [['MFPI',false,'검증 통과','passed'],['MBPI',false,'방법 검증 기준 미충족','not_passed'],['MCUI',false,'제한적 확인','limited']]);
