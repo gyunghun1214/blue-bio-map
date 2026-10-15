@@ -304,6 +304,12 @@ NOTES = {
         kind="규칙", decided_by="팀장 결정", decision_date="2026-10-15", prereg=RI + "prereg-4.18-2026-10-15.md",
         records=[RI + "formal-release-4.18-2026-10-15.md"],
         timing="결과 확인 후", basis="결정 대상 종과 예상값을 사전 등록 5절에 미리 계산해 적었다."),
+    "verified-4.19": dict(
+        summary="OBIS 보고율 비로 Rapid LC를 막던 4.11 규칙 5a를 거둠: 멍게 MCUI 예비 평가(LC 10)",
+        reason="4.11 사후 검증에서 OBIS 감소 신호가 위협종과 LC를 가르지 못했다. 점수에 쓰지 않는 신호를 차단 조건으로만 쓰지 않는다.",
+        kind="규칙", decided_by="팀장 결정", decision_date="2026-10-15", prereg=RI + "prereg-4.19-2026-10-15.md",
+        records=[RI + "formal-release-4.19-2026-10-15.md"],
+        timing="결과 확인 후", basis="4.17·4.18 결과(멍게만 MCUI 미산출)를 본 뒤 정했다고 사전 등록에 적었다."),
 }
 TIMINGS = ("결과 확인 전", "결과 확인 후", "미확인", "규칙 변경 없음")
 

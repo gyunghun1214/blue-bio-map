@@ -65,7 +65,10 @@ class MethodChangelogTests(unittest.TestCase):
         self.assertEqual(by["verified-4.14"]["score_impact"]["matrix_points"], 16)
         self.assertEqual(by["verified-4.16"]["score_impact"]["species_changed"], 0)
         self.assertIsNone(by["verified-pilot-2.1"]["score_impact"])   # no archived 2.0 or 2.1 report: 미확인
-        self.assertEqual(by["verified-4.18"]["score_impact"]["matrix_points"], self.readiness["matrix_points"])
+        # 4.19 gave 멍게 an MCUI (Rapid LC preliminary, LC 10): one species, one type, 30 points
+        self.assertEqual(by["verified-4.19"]["score_impact"], {"species_changed": 1, "by_axis": {"MFPI": 0, "MBPI": 0, "MCUI": 1, "BBVI": 0},
+                                                               "matrix_type_changed": 1, "matrix_points": 30})
+        self.assertEqual(by[self.assessments["method_version"]]["score_impact"]["matrix_points"], self.readiness["matrix_points"])
 
     def test_weights_and_lines_never_moved(self):
         c = self.ledger["constants"]
@@ -76,9 +79,9 @@ class MethodChangelogTests(unittest.TestCase):
     def test_timing_follows_the_records(self):
         by = {e["method_version"]: e for e in self.ledger["entries"]}
         # each pre-registration says the rule came after the results it changes were seen
-        for v in ("verified-4.2", "verified-4.3", "verified-4.10", "verified-4.11", "verified-4.12", "verified-4.14", "verified-4.17"):
+        for v in ("verified-4.2", "verified-4.3", "verified-4.10", "verified-4.11", "verified-4.12", "verified-4.14", "verified-4.17", "verified-4.19"):
             self.assertEqual(by[v]["timing"], "결과 확인 후", v)
-        self.assertEqual(self.ledger["counts"]["preregistered"], 12)
+        self.assertEqual(self.ledger["counts"]["preregistered"], 13)
         self.assertEqual(self.ledger["current"]["label"],
                          f"{self.assessments['method_version']} · {by[self.assessments['method_version']]['published_on']} 동결")
 

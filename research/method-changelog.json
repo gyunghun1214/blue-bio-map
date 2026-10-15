@@ -4,9 +4,9 @@
   "timing_rule": "결정이 그 결정으로 바뀌는 값이나 채워지는 칸을 본 뒤였는지를 기록대로 적는다. 기록이 '본 뒤'라고 적었거나, 특정 종·항목을 놓고 내린 개별 판단이거나, 이미 공개한 결과가 있는 규칙으로 되돌린 경우는 '결과 확인 후'. 기록이 값을 보기 전에 정했다고 밝힌 경우만 '결과 확인 전'. 순서를 적은 기록이 없으면 '미확인'. 규칙과 판단 없이 고정 규칙 안에서 근거·표시·기록만 바뀐 버전은 '규칙 변경 없음'.",
   "score_impact_rule": "직전 공개 버전의 보관본과 비교해 네 지표 중 하나라도 값이 바뀐 종의 수. 보관본이 없는 버전은 null(미확인).",
   "current": {
-    "method_version": "verified-4.18",
+    "method_version": "verified-4.19",
     "frozen_on": "2026-10-15",
-    "label": "verified-4.18 · 2026-10-15 동결",
+    "label": "verified-4.19 · 2026-10-15 동결",
     "note": "대회 기간에는 이 버전으로 고정합니다. 새 방법 버전이 공개되면 이 표시는 그 버전과 날짜로 바뀝니다."
   },
   "constants": {
@@ -34,12 +34,12 @@
     }
   },
   "counts": {
-    "versions": 51,
-    "rule_changed": 34,
-    "preregistered": 12,
+    "versions": 52,
+    "rule_changed": 35,
+    "preregistered": 13,
     "timing": {
       "결과 확인 전": 0,
-      "결과 확인 후": 22,
+      "결과 확인 후": 23,
       "미확인": 12,
       "규칙 변경 없음": 17
     }
@@ -1529,6 +1529,36 @@
       "compared_with": "verified-4.17",
       "config": "config/verified-indices-v4.18.json",
       "changes_from": "verified-4.17 (2026-10-15). Team-lead decision of 2026-10-15 on the six items left open in research/verified-indices/prereg-4.13-2026-10-14.md section 5, registered in research/verified-indices/prereg-4.18-2026-10-15.md in its own commit before the code (\"proceed as recommended\"). Five of them keep the rules as they were and change no number: a range-only MIC, a buffer (PBS) MIC, a new enzyme stratum outside ChEMBL, a market sample with no scientific name, and a linked original paper by the same group with undisclosed methods all stay out of the scores and remain visible as partial records with their reason. The sixth changes one rule: a 3.20 original-paper link may now also be added to a compound the species already links, where it joins that link's DOI set (chembl_bioactivity.paper_links_p703, 4.18 file). The paper must meet the same five 3.20 conditions and carry an accepting link review; the link factor stays 0.75 for one DOI and 1.0 for two or more. 청각 siphonaxanthin gains Yim et al. 2020 (Mar Drugs 18:603, 10.3390/md18120603: C. fragile cultured at Wando, collected August 2019, supercritical CO2 extract purified by preparative HPLC) beside the 1979 Phytochemistry structure paper: link factor 0.75 -> 1.0, MBPI 0.4 -> 0.6, BBVI 18.5 -> 18.6. Yim et al. 2021 (Int J Mol Sci 22:6481), named in the 4.13 decision, is NOT used: its Methods give no collection site or date. The activity factor (one ChEMBL document) and the single-paper BBVI label are unchanged, and no other species moves. Every other rule and coefficient equals 4.17."
+    },
+    {
+      "method_version": "verified-4.19",
+      "published_on": "2026-10-15",
+      "decision_date": "2026-10-15",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "OBIS 보고율 비로 Rapid LC를 막던 4.11 규칙 5a를 거둠: 멍게 MCUI 예비 평가(LC 10)",
+      "reason": "4.11 사후 검증에서 OBIS 감소 신호가 위협종과 LC를 가르지 못했다. 점수에 쓰지 않는 신호를 차단 조건으로만 쓰지 않는다.",
+      "preregistration": "research/verified-indices/prereg-4.19-2026-10-15.md",
+      "records": [
+        "research/verified-indices/formal-release-4.19-2026-10-15.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "4.17·4.18 결과(멍게만 MCUI 미산출)를 본 뒤 정했다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 1,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.18",
+      "config": "config/verified-indices-v4.19.json",
+      "changes_from": "verified-4.18 (2026-10-15). Registered in research/verified-indices/prereg-4.19-2026-10-15.md in its own commit before the code (first registered as a 4.18 candidate before PR #198 took that number; rules and expected results unchanged), after 4.17 and 4.18 left 멍게 as the only species without MCUI. The 4.11 rule 5a (mcui_substitutes.preliminary_trend_block) is withdrawn: an OBIS reporting-rate ratio at or below the decline ratio no longer blocks a met Rapid LC check, because the 4.11 rule 5b post-hoc test found the OBIS decline signal does not separate threatened from LC species (the +10 adjustment stays off). As up to 4.10, only the decline_signal class blocks the check. 멍게 (Halocynthia roretzi, no IUCN, Korean or Japanese assessment covers tunicates) gets the Rapid LC check as a preliminary assessment (LC 10, shown by name in the species detail only). Every other species is 4.18's."
     }
   ]
 }

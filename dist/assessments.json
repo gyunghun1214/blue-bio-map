@@ -278,7 +278,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -604,14 +604,12 @@
             }
           ],
           "records": 2082,
-          "reporting_rate_ratio": 0.792,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -1486,7 +1484,7 @@
             }
           ]
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -1796,14 +1794,12 @@
             }
           ],
           "records": 1358,
-          "reporting_rate_ratio": 0.9,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -2302,7 +2298,7 @@
             }
           ]
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2982,7 +2978,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3291,14 +3287,12 @@
           },
           "official_unscored": [],
           "records": 1381,
-          "reporting_rate_ratio": 1.194,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -3678,7 +3672,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4005,14 +3999,12 @@
             }
           ],
           "records": 480,
-          "reporting_rate_ratio": 1.181,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -4456,7 +4448,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4769,14 +4761,12 @@
           },
           "official_unscored": [],
           "records": 601,
-          "reporting_rate_ratio": 1.886,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -5554,7 +5544,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6703,7 +6693,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7896,7 +7886,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9052,7 +9042,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10292,7 +10282,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11592,7 +11582,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -12858,7 +12848,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14055,7 +14045,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15871,7 +15861,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -17184,7 +17174,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18455,7 +18445,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -19226,14 +19216,12 @@
             }
           ],
           "records": 368,
-          "reporting_rate_ratio": 0.806,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -21557,7 +21545,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -22735,7 +22723,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23967,7 +23955,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -24725,14 +24713,12 @@
           },
           "official_unscored": [],
           "records": 372,
-          "reporting_rate_ratio": 1.438,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -25485,7 +25471,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27133,7 +27119,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28352,7 +28338,7 @@
       }
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.18-2026-10-15.json",
-    "changes_from": "verified-4.17 (2026-10-15). Team-lead decision of 2026-10-15 on the six items left open in research/verified-indices/prereg-4.13-2026-10-14.md section 5, registered in research/verified-indices/prereg-4.18-2026-10-15.md in its own commit before the code (\"proceed as recommended\"). Five of them keep the rules as they were and change no number: a range-only MIC, a buffer (PBS) MIC, a new enzyme stratum outside ChEMBL, a market sample with no scientific name, and a linked original paper by the same group with undisclosed methods all stay out of the scores and remain visible as partial records with their reason. The sixth changes one rule: a 3.20 original-paper link may now also be added to a compound the species already links, where it joins that link's DOI set (chembl_bioactivity.paper_links_p703, 4.18 file). The paper must meet the same five 3.20 conditions and carry an accepting link review; the link factor stays 0.75 for one DOI and 1.0 for two or more. 청각 siphonaxanthin gains Yim et al. 2020 (Mar Drugs 18:603, 10.3390/md18120603: C. fragile cultured at Wando, collected August 2019, supercritical CO2 extract purified by preparative HPLC) beside the 1979 Phytochemistry structure paper: link factor 0.75 -> 1.0, MBPI 0.4 -> 0.6, BBVI 18.5 -> 18.6. Yim et al. 2021 (Int J Mol Sci 22:6481), named in the 4.13 decision, is NOT used: its Methods give no collection site or date. The activity factor (one ChEMBL document) and the single-paper BBVI label are unchanged, and no other species moves. Every other rule and coefficient equals 4.17.",
+    "changes_from": "verified-4.18 (2026-10-15). Registered in research/verified-indices/prereg-4.19-2026-10-15.md in its own commit before the code (first registered as a 4.18 candidate before PR #198 took that number; rules and expected results unchanged), after 4.17 and 4.18 left 멍게 as the only species without MCUI. The 4.11 rule 5a (mcui_substitutes.preliminary_trend_block) is withdrawn: an OBIS reporting-rate ratio at or below the decline ratio no longer blocks a met Rapid LC check, because the 4.11 rule 5b post-hoc test found the OBIS decline signal does not separate threatened from LC species (the +10 adjustment stays off). As up to 4.10, only the decline_signal class blocks the check. 멍게 (Halocynthia roretzi, no IUCN, Korean or Japanese assessment covers tunicates) gets the Rapid LC check as a preliminary assessment (LC 10, shown by name in the species detail only). Every other species is 4.18's.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -28903,11 +28889,6 @@
           "2026-10-02 역검증에서 공식 위협 범주(해삼·전복 EN)를 가진 종도 LC로 보았다. 점수가 위험을 낮게 볼 수 있다."
         ]
       },
-      "preliminary_trend_block": {
-        "prereg": "research/verified-indices/prereg-4.11-2026-10-13.md",
-        "result": "decline_ratio_reached",
-        "rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall)."
-      },
       "range_state_rule": "When IUCN has no assessment and the Korean list has no row, the current official national red list of another state in the species' native range gives the category, mapped with conservation.category_scores. Labelled with the country; never ranked or pooled with IUCN-based or Korean national MCUI. Since 3.19 (team-lead decision): only a list issued by a government ministry or agency counts; academic or non-governmental compilations such as the China Species Red List (2004) do not. Since 3.27 (team-lead decision 2026-10-03): when several range states list the species, the most recent government list that assigns an explicit category other than DD gives the MCUI; the other lists, a DD included, are shown as limitations, and a list from outside the North-West Pacific is labelled a distant range state. Since 4.0 (team-lead decision 2026-10-04): a species that a Japanese government agency evaluated by name and published as 'ランク外' (no category assigned; the same table gives DD separately) counts as LC-equivalent; the row says so (rank_out) and the species shows the list's own definition of 'ランク外'.",
       "ranking_rule": "Each basis that gives an MCUI is its own stratum (4.2 adds the sub-national one, 4.3 the scored Rapid LC, each drawn with its own marker): shown with its label, drawn with the separate matrix marker, never ranked with IUCN-based MCUI.",
       "rapid_lc_snapshot": "research/verified-indices/snapshots/mcui-rapid-lc-2026-10-02.json",
@@ -28961,7 +28942,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.18",
+    "method_version": "verified-4.19",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -29353,7 +29334,7 @@
               "expected": "상위",
               "mcui": 60.0,
               "mcui_rank": 4,
-              "of": 29,
+              "of": 30,
               "stock_score": 60
             }
           },
@@ -29363,7 +29344,7 @@
             "살오징어는 2025년 잠정치(31,006톤)에서 반등했으나 확정치가 아니므로 점수에 넣지 않았습니다."
           ],
           "prereg": "research/verified-indices/prereg-4.12-2026-10-14.md",
-          "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14에서 MCUI가 있는 16종 중 4위, 4.17에서 29종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
+          "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14에서 MCUI가 있는 16종 중 4위, 4.17에서 29종 중 4위, 4.19에서 30종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
           "result": "consistent_same_data",
           "result_label": "같은 자료로 한 일관성 확인 · 독립 검증 아님"
         },
@@ -29395,8 +29376,8 @@
     },
     "provenance": {
       "builder": "scripts/build_verified_indices.py",
-      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.18-2026-10-15.md and research/lineage/verified-4.18/ (a commit hash inside the report would break byte reproduction).",
-      "config": "config/verified-indices-v4.18.json",
+      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.19-2026-10-15.md and research/lineage/verified-4.19/ (a commit hash inside the report would break byte reproduction).",
+      "config": "config/verified-indices-v4.19.json",
       "inputs": [
         "research/verified-indices/evidence.json and the files config names",
         "research/verified-indices/candidates.json",
@@ -29404,7 +29385,7 @@
         "dist/candidate-catalog.json",
         "dist/supplementary-literature.json (related-paper count, display only)"
       ],
-      "method_version": "verified-4.18",
+      "method_version": "verified-4.19",
       "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
       "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
     },
@@ -29585,7 +29566,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.18",
+  "method_version": "verified-4.19",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -29717,7 +29698,7 @@
             "expected": "상위",
             "mcui": 60.0,
             "mcui_rank": 4,
-            "of": 29,
+            "of": 30,
             "stock_score": 60
           }
         },
@@ -29727,7 +29708,7 @@
           "살오징어는 2025년 잠정치(31,006톤)에서 반등했으나 확정치가 아니므로 점수에 넣지 않았습니다."
         ],
         "prereg": "research/verified-indices/prereg-4.12-2026-10-14.md",
-        "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14에서 MCUI가 있는 16종 중 4위, 4.17에서 29종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
+        "reason": "점수를 만든 같은 KOSIS 어획량으로 확인했으므로 독립 검증이 아닙니다. 살오징어(국내 어획량 급감이 널리 보고된 종)는 자원 감소 60점으로 MCUI 29종 중 4위(4.12), 4.14에서 MCUI가 있는 16종 중 4위, 4.17에서 29종 중 4위, 4.19에서 30종 중 4위(80점 세 종 다음)이고, 고등어·대구(어획량 유지)는 신호가 없습니다.",
         "result": "consistent_same_data",
         "result_label": "같은 자료로 한 일관성 확인 · 독립 검증 아님"
       },
@@ -29759,8 +29740,8 @@
   },
   "provenance": {
     "builder": "scripts/build_verified_indices.py",
-    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.18-2026-10-15.md and research/lineage/verified-4.18/ (a commit hash inside the report would break byte reproduction).",
-    "config": "config/verified-indices-v4.18.json",
+    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.19-2026-10-15.md and research/lineage/verified-4.19/ (a commit hash inside the report would break byte reproduction).",
+    "config": "config/verified-indices-v4.19.json",
     "inputs": [
       "research/verified-indices/evidence.json and the files config names",
       "research/verified-indices/candidates.json",
@@ -29768,7 +29749,7 @@
       "dist/candidate-catalog.json",
       "dist/supplementary-literature.json (related-paper count, display only)"
     ],
-    "method_version": "verified-4.18",
+    "method_version": "verified-4.19",
     "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
     "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
   },
@@ -32341,7 +32322,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32655,14 +32636,12 @@
           },
           "official_unscored": [],
           "records": 877,
-          "reporting_rate_ratio": 1.259,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -33204,7 +33183,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34152,16 +34131,25 @@
       },
       "conservation_status": {
         "assessments": [],
-        "label": "보전평가 미확인 · 자체 예비검토 참고",
+        "category": "LC",
+        "label": "예비 평가(공식 평가 전)",
         "mapping_note": "범주 → 숫자(LC 10 · NT 35 · VU 60 · EN 80 · CR 100)는 IUCN 범주와 IUCN 지역 지침 범주에만 씁니다. 같은 숫자는 같은 범주 이름을 뜻할 뿐이며, 평가 범위가 다르면 같은 위험을 뜻하지 않습니다.",
+        "preliminary": {
+          "basis": "preliminary",
+          "label": "예비 평가(공식 평가 전)",
+          "note": "IUCN 전 지구 평가와 한국 국가 평가가 아직 없어(IUCN 미평가) 자체 예비평가(Rapid LC)를 예비 평가로 씁니다. IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다.",
+          "prereg": "research/verified-indices/prereg-4.17-2026-10-15.md",
+          "replacement_rule": "An IUCN global or Korean national (NIBR / MABIK) result, once published, replaces the preliminary value in the next verified release; it already comes first in the order."
+        },
         "self_preliminary": {
+          "category": "LC",
           "label": "자체 예비검토(Rapid LC) · 공식 평가 아님",
           "method_source_id": "bachman_2020_rapid_lc",
-          "note": "OBIS 보고율이 감소 기준까지 떨어져 자체 예비평가(Rapid LC)를 MCUI에 쓰지 않습니다(4.11 규칙). 감소가 확인되지 않았더라도 낮은 멸종위험으로 읽지 않습니다.",
-          "result": "decline_ratio_reached",
-          "used_for_mcui": false
+          "note": "IUCN 전 지구 평가와 한국 국가 평가가 아직 없어(IUCN 미평가) 자체 예비평가(Rapid LC)를 예비 평가로 씁니다. IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다.",
+          "result": "likely_least_concern",
+          "used_for_mcui": true
         },
-        "state": "self_preliminary_only"
+        "state": "preliminary_scored"
       },
       "conservation_trace": {
         "aphia_id": 250680,
@@ -34290,7 +34278,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -34981,13 +34969,20 @@
         "value": 13.5
       },
       "mbpi_stratum": "chembl",
-      "mcui_basis": null,
-      "mcui_driver": null,
-      "mcui_extinction_risk": null,
+      "mcui_basis": "preliminary",
+      "mcui_driver": "extinction_risk",
+      "mcui_extinction_risk": 10.0,
       "mcui_substitute": {
-        "basis": null,
-        "category": null,
+        "backtest": {
+          "checked_on": "2026-10-02",
+          "label": "역검증 미통과",
+          "reason": "2026-10-02 back-test: the same check called species with an official threatened category (해삼 EN, 전복 EN) likely LC, so a met check can understate risk.",
+          "result": "failed"
+        },
+        "basis": "preliminary",
+        "category": "LC",
         "label": "자체 예비평가(Rapid LC) · 역검증 미통과",
+        "pilot_mapping": "Rapid LC 충족 → LC 상당 → 10 (자체 예비평가, 팀장 결정 2026-10-05 · IUCN 평가 아님)",
         "record": {
           "aoo_cells": 46,
           "aoo_km2": 4600,
@@ -35036,23 +35031,23 @@
               "taxonid": 250680
             }
           },
+          "official_unscored": [],
           "records": 200,
-          "reporting_rate_ratio": 0.655,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "undetermined"
         },
-        "result": "decline_ratio_reached",
+        "result": "likely_least_concern",
         "source_ids": [
           "gbif_rapid_lc",
           "bachman_2020_rapid_lc"
         ],
-        "value": null
+        "use": "scored",
+        "value": 10.0
       },
       "national_assessment": null,
       "national_red_list_fact": null,
@@ -35104,7 +35099,7 @@
         "label": "판단 불가",
         "latest_record_year": 2025,
         "mcui_adjustment": 0,
-        "mcui_base": null,
+        "mcui_base": 10.0,
         "periods": {
           "past": [
             "2006-01-01",
@@ -35128,22 +35123,20 @@
           "recent": 54
         }
       },
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "reference_combination": null,
       "scientific_name": "Halocynthia roretzi",
       "score_status": {
         "BBVI": "산출됨",
         "MBPI": "산출됨",
-        "MCUI": "산출 보류",
+        "MCUI": "산출됨",
         "MFPI": "산출됨"
       },
       "scores": {
         "BBVI": 33.1,
         "MBPI": 13.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 52.8
       },
       "scores_unrounded": {
@@ -35247,7 +35240,7 @@
       "withheld_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       }
     },
@@ -35597,7 +35590,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36757,7 +36750,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -37783,7 +37776,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -38134,14 +38127,12 @@
             }
           ],
           "records": 1044,
-          "reporting_rate_ratio": 1.457,
           "thresholds": {
             "aoo_cell_km": 10,
             "aoo_km2": 3000,
             "eoo_km2": 30000,
             "records": 75
           },
-          "trend_block_rule": "4.11 (prereg 5.2): a Rapid LC check is not scored when the species' OBIS reporting-rate ratio is at or below conservation.trend.decline_ratio, whether or not the fall is confirmed within the dominant dataset (precautionary: an unconfirmed fall is not read as no fall).",
           "trend_class": "survey_gap"
         },
         "result": "likely_least_concern",
@@ -38661,7 +38652,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -39302,7 +39293,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.18 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.19 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -40334,7 +40325,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.18",
+        "method_version": "verified-4.19",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

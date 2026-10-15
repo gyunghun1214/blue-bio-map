@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 29,
+  "matrix_points": 30,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -23,7 +23,7 @@
         {
           "field": "threshold_rule",
           "from": "verified-4.14",
-          "to": "verified-4.18",
+          "to": "verified-4.19",
           "value": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds."
         },
         {
@@ -85,7 +85,7 @@
         {
           "field": "include_substitute_mcui",
           "from": "verified-4.17",
-          "to": "verified-4.18",
+          "to": "verified-4.19",
           "value": [
             "range_state",
             "sub_national",
@@ -107,13 +107,13 @@
         {
           "field": "substitute_mcui_note",
           "from": "verified-4.3",
-          "to": "verified-4.18",
+          "to": "verified-4.19",
           "value": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI."
         },
         {
           "field": "single_source_bbvi_note",
           "from": "verified-pilot-3.27",
-          "to": "verified-4.18",
+          "to": "verified-4.19",
           "value": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears."
         }
       ],
@@ -193,7 +193,7 @@
     },
     "untyped_label": "유형 미산출(보전평가 미확인 등)"
   },
-  "method_version": "verified-4.18",
+  "method_version": "verified-4.19",
   "schema_version": 1,
   "species": [
     {
@@ -373,7 +373,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
@@ -403,19 +403,17 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "멍게",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
         "BBVI": 33.1,
         "MBPI": 13.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 52.8
       },
       "source_urls": [
