@@ -3983,7 +3983,7 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?` · ${esc(frozenOn(info))} 동결`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
