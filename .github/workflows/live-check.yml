@@ -1,0 +1,83 @@
+name: Live links and load
+
+# A report, not a gate: outside sites come and go independently of this repository, so nothing here turns a PR red.
+# Run it by hand (Actions > Live links and load > Run workflow) before the presentation; it also runs on a PR that
+# changes the checker or this file. Results: the job log and the 'live-check' artifact (links.csv, Lighthouse JSON).
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/check_links.py
+      - .github/workflows/live-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Check every outside link in dist/ (HEAD, then GET)
+        run: python scripts/check_links.py --out live-check/links.csv
+      - name: Print the links that are not 정상
+        run: |
+          python - <<'EOF'
+          import base64, collections, csv, gzip, urllib.parse
+          rows = list(csv.DictReader(open('live-check/links.csv', encoding='utf-8-sig')))
+          print(collections.Counter(r['result'] for r in rows))
+          for r in rows:
+              if r['result'] in ('깨짐', '이동됨'):
+                  print(f"{r['result']}\t{r['status']}\t{r['url']}\t-> {r['final_url']}\t{r['locations'][:300]}")
+          hosts = collections.Counter((urllib.parse.urlsplit(r['url']).hostname, r['status']) for r in rows if r['result'] == '확인 불가')
+          for (h, st), n in hosts.most_common():
+              print(f'확인 불가\t{h}\t{st}\t{n}')
+          # A short line for sessions that can read this log but not the artifact: status and result of every URL in the
+          # order of `check_links.py --list` (sorted URLs), gzip + base64. The URL list itself is rebuilt from the same
+          # checkout; LIST-SHA256 says whether it matches.
+          import hashlib, json
+          by = {r['url']: r for r in rows}
+          urls = sorted(by)
+          print('LIST-SHA256', hashlib.sha256('\n'.join(urls).encode()).hexdigest(), len(urls))
+          code = {'정상': 0, '이동됨': 1, '깨짐': 2, '확인 불가': 3}
+          packed = [[by[u]['status'], code[by[u]['result']]] + ([by[u]['final_url']] if by[u]['result'] in ('이동됨', '깨짐') else []) for u in urls]
+          print('STATUS-GZ-B64 ' + base64.b64encode(gzip.compress(json.dumps(packed, ensure_ascii=False, separators=(',', ':')).encode(), 9)).decode())
+          EOF
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: live-check-links
+          path: live-check/
+          retention-days: 14
+
+  load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE: https://blue-bio-map.blue-bio-map.workers.dev/
+    steps:
+      - name: Compressed transfer and caching headers of the live site
+        run: |
+          for f in '' app.js live-data.js intro.js theme.css assessments.json unexplored-candidates.json expansion-public-cells.json countries.json live-snapshot.json vendor/globe-v2/globe-900.webp; do
+            echo "== /$f"
+            curl -sS -o /dev/null -D - -H 'Accept-Encoding: br, gzip' "$SITE$f" | grep -iE '^(HTTP|content-encoding|content-length|cache-control|etag)' || true
+            curl -sS -o /dev/null -w 'bytes over the wire (br/gzip): %{size_download}\n' -H 'Accept-Encoding: br, gzip' "$SITE$f"
+          done
+      - name: Lighthouse mobile on the live site (3 runs, the tool is fetched for this job only)
+        run: |
+          mkdir -p live-check
+          for i in 1 2 3; do
+            npx --yes lighthouse@13.5.0 "$SITE" --only-categories=performance --form-factor=mobile --quiet \
+              --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="live-check/lighthouse-mobile-$i.json" || true
+            node -e "const r=require('./live-check/lighthouse-mobile-$i.json'),a=r.audits;console.log('run $i: score',Math.round(r.categories.performance.score*100),'FCP',a['first-contentful-paint'].displayValue,'LCP',a['largest-contentful-paint'].displayValue,'TBT',a['total-blocking-time'].displayValue,'CLS',a['cumulative-layout-shift'].displayValue,'bytes',a['total-byte-weight'].numericValue)" || true
+          done
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: live-check-load
+          path: live-check/
+          retention-days: 14

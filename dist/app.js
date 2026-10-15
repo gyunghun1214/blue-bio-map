@@ -76,7 +76,15 @@ const mbpiKindOf = s => {
 const mbpiKindShare = k => `ACE·XO 항목 ${k.functionalItems}/${k.items}(${Math.round(k.share*100)}%)`;
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
-const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
+// Sources whose publisher moved the file for good (reports/link-check, 2026-10-15). The data keeps the address as it was
+// read; the link opens the new address and says so. Same list in expedition.js.
+const MOVED_LINKS = {
+  'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
+  'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
+};
+const sourceLink = (url,label) => MOVED_LINKS[url]
+  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
+  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
 const recordLabel = s => s.noOccurrences ? '출현자료 미수집'
   : Number.isSafeInteger(s.recordCount) ? s.recordCount.toLocaleString()+'건' : '기록 수 미확인';
 // Evidence stages are independent of the operational DB's old inventory counters.
@@ -747,6 +755,38 @@ function replicationSearchText(s){
   const earlier=(r.runs||[]).filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on).map(x=>x.searched_on);
   return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${earlier.length?` · 이전 검색 ${earlier.join(', ')}`:''}${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
+// Candidate-compound search layer (dist/cmnpd-candidates.json, built by scripts/build_cmnpd_candidates.py): how many compounds
+// CMNPD 1.0 reports for the species, shown in the species profile with '점수 미사용' and the CMNPD licence. MBPI is computed
+// from ChEMBL and the peptide databases only; nothing here reaches a score, the matrix, the map colours or a chip. Only CMNPD IDs
+// and counts are published. Schema 1 is read; a higher number is a newer file this code does not know; anything else is ignored.
+let cmnpdCandidates={rows:new Map(),source:null,totals:null};
+function cmnpdRows(file,outdated){
+  const v=/^cmnpd-candidates-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'cmnpd-candidates.json',version:file.schema_version});
+  const rows=new Map();
+  if(file?.schema_version!=='cmnpd-candidates-1'||file.display_only!==true||file.used_in_scores!==false||!Array.isArray(file.species))return {rows,source:null,totals:null};
+  for(const r of file.species)if(Number.isSafeInteger(r?.aphia_id)&&Number.isSafeInteger(r.compound_count)&&r.compound_count>=0)rows.set(r.aphia_id,r);
+  return {rows,source:file.source||null,totals:file.totals||null};
+}
+// '근거와 방법' fold 02: the counts behind 'why ChEMBL', read from the same file (no number is written into the page by hand)
+function cmnpdMethodText(){
+  const t=cmnpdCandidates.totals, src=cmnpdCandidates.source;
+  if(!t||!src||!data?.species)return '';
+  const name=a=>data.species.find(s=>s.aphiaID===a)?.label||String(a);
+  const listed=[...cmnpdCandidates.rows.values()].filter(r=>r.chembl_listed_unlinked?.length).map(r=>`${name(r.aphia_id)} ${r.chembl_listed_unlinked.length}`);
+  return `${src.accessed} 조회 기준, ${t.species}종 중 ${t.species_with_compounds}종에서 CMNPD 보고 화합물 ${t.pairs.toLocaleString()}개를 찾았습니다. `+
+    `이 가운데 MBPI의 종–화합물 연결(위키데이터 P703·원논문)을 거쳐 ChEMBL 분자까지 이어진 화합물은 ${t.chembl_linked}개이고, `+
+    `CMNPD가 ChEMBL 분자를 함께 적었지만 아직 종 연결이 없는 화합물은 ${t.chembl_listed_unlinked}개${listed.length?`(${listed.join('·')})`:''}입니다. 이 수치는 점수와 유형을 바꾸지 않습니다.`;
+}
+function cmnpdLine(s){
+  const r=cmnpdCandidates.rows.get(s?.aphiaID), src=cmnpdCandidates.source;
+  if(!r||!src)return '';
+  const lic=sourceLink(src.license_url,src.license);
+  const tip=`CMNPD 1.0에서 이 종의 학명과 WoRMS 이명(${r.names_searched}개)으로 찾은 보고 화합물 수입니다(${src.accessed} 조회). 화합물 ID와 개수만 싣고 이름·구조·원자료는 옮기지 않습니다. MBPI는 ChEMBL 표준화 활성값으로 계산합니다.`;
+  return `<p class="cp-cmnpd" title="${esc(tip)}"><b>후보 화합물 탐색 <span class="cp-cmnpd-tag">점수 미사용</span></b>`+
+    `${sourceLink(src.url,'CMNPD')} 보고 화합물 <strong>${r.compound_count.toLocaleString()}개</strong>`+
+    `${r.compound_count?` · 그중 ChEMBL 연결 ${r.chembl_linked}개`:''} · ${lic}</p>`;
+}
 // 검증 성적표 (dist/posthoc-scorecard.json, built by scripts/build_posthoc_scorecard.py from posthoc.validation_sets): the top of
 // the method tab lists every post-hoc check with its normalised outcome_class, and the journey cards carry one badge per
 // indicator. A same-data or two-species consistency check is never shown as 통과. Display only: nothing here reaches a score,
@@ -811,12 +851,16 @@ function readinessRows(readiness,outdated){
   if(Number.isSafeInteger(readiness?.schema_version)&&readiness.schema_version>1)outdated.push({file:'matrix-readiness.json',version:readiness.schema_version});
   return new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
 }
+// live-data.js starts the first screen's files together and hands over the request under way (readEarly); revalidated,
+// not re-downloaded ('no-cache'). Without that file (node tests) a plain fetch.
+const FRESH_READ={cache:'no-cache'};
+const readData=(url,init)=>typeof readEarly==='function'?readEarly(url,init):fetch(url,init);
 async function attachPilotAssessments(next) {
   // "조회 실패": the report was not reached or not readable. "기술 오류": it was read but did not re-check.
   // Both differ from "산출 보류", which the report itself states for missing evidence.
   const failed=state=>{for(const s of next.species)s.assessmentState=state;};
   let response;
-  try { response=await fetch('assessments.json',{cache:'no-store'}); } catch { failed('lookup_failed'); return; }
+  try { response=await readData('assessments.json',FRESH_READ); } catch { failed('lookup_failed'); return; }
   if(!response.ok){ failed('lookup_failed'); return; }
   let report;
   try { report=await response.json(); } catch { failed('lookup_failed'); return; }
@@ -1722,12 +1766,46 @@ function occurrenceTrendDetail(s){
   const pop=s.assessment.conservation_trace?.population_trend, falling=['decline_signal','decline_below_threshold'].includes(t.class);
   const iucn=(pop==='Decreasing'&&!falling)||(['Stable','Increasing'].includes(pop)&&falling)
     ?`<p class="fine">IUCN 개체군 추세(${esc(pop)})와 OBIS 보고율 결과가 다릅니다. 보고율은 개체수가 아니며, 이 차이는 이 방법이 아직 검증되지 않았음을 보여 줍니다.</p>`:'';
-  return `<h4>OBIS 출현 추세 · 보조 요소 · <b>${esc(t.label)}</b></h4>`+
+  return `<h4>${obisWarn(s)?'<i class="obis-warn-mark" title="감소 신호 · MCUI 구분선 미만" aria-hidden="true">⚠</i>':''}OBIS 출현 추세 · 보조 요소 · <b>${esc(t.label)}</b>${obisOffLabel()?` <span class="obis-off">${esc(obisOffLabel())}</span>`:''}</h4>`+
     `<p>비교 셀 ${esc(t.cells_compared)}개(1°)의 기록 ${esc(yr(p.past[0]))}–${esc(yr(p.past[1]))} ${esc(n.past)}건 → ${esc(yr(p.recent[0]))}–${esc(yr(p.recent[1]))} ${esc(n.recent)}건`+
     ` (지도 범위 전체 ${esc(t.records_in_map_extent?.past)} → ${esc(t.records_in_map_extent?.recent)}건) · 같은 셀의 ${esc(t.effort_group)} 전체 기록 ${esc(e.past)} → ${esc(e.recent)}건${ratio}. `+
     `분포 최신성: 과거에만 기록된 셀 ${esc(t.cells_past_only)}개 · 최근에만 기록된 셀 ${esc(t.cells_recent_only)}개 · 최근 기록 연도 ${esc(t.latest_record_year??'없음')}. ${esc(effect)} ${verifiedSource(t.source_id,'OBIS ↗')}</p>`+
     checked+dataset+iucn+
     `<p class="fine">보고율 = 종 기록 ÷ 같은 셀·기간의 같은 강 기록(지도의 회색 조사량 음영과 다른 척도). 감소 신호는 보고율이 30% 이상 줄고 95% 구간이 1 아래이며, 과거 최대 데이터셋 안에서도 같을 때입니다. 보고율은 개체수·자원량이 아닙니다. 95% 구간은 기록을 서로 독립으로 보므로 같은 조사에서 나온 기록이 몰리면 실제보다 좁습니다. 종 단위 결과를 해역 등급으로 옮기지 않습니다.</p>`;
+}
+// 2026-10-15 (개선 프롬프트 6): the OBIS trend stays visible per species although its MCUI adjustment is off since 4.11.
+// No score, type or threshold changes here; the class and numbers are the report's own (re-checked by verifiedConservationValid).
+const obisOffLabel=()=>{const p=data?.assessmentInfo?.method?.conservation?.effort_adjustment_suspended;return p?`점수 미반영(${obisOffSince(p)}부터, 검증 실패)`:'';};
+const obisOffSince=p=>(String(p?.prereg||'').match(/prereg-(\d+\.\d+)-/)||[])[1]||'4.11';
+// a decline signal beside an MCUI under the matrix line: the species the adjustment would have flagged, listed and marked ⚠
+function obisWarn(s){
+  const t=s?.assessment?.occurrence_trend,v=pilotScore(s,'MCUI'),cut=matrixRule()?.mcui_threshold;
+  return !!(t&&t.class==='decline_signal'&&v!==null&&Number.isFinite(cut)&&v<cut&&data?.assessmentInfo?.method?.conservation?.effort_adjustment_suspended);
+}
+const obisWarnList=()=>(data?.species||[]).filter(obisWarn);
+const obisDatasetText=d=>!d?'주 데이터셋 비교 없음':Number.isFinite(d.reporting_rate_ratio)?`주 데이터셋 ${d.confirms_decline?'감소 확인':'감소 확인 안 됨'}(${Number(d.reporting_rate_ratio).toFixed(2)})`:'주 데이터셋 두 기간 비교 불가';
+// the species profile (비교와 지표): class, effort-corrected ratio and dataset check up front, the long reading folded
+function cpObisTrend(s){
+  const t=s?.assessment?.occurrence_trend,rule=data?.assessmentInfo?.method?.conservation?.trend;
+  if(!t||!rule||s.assessment?.axis_errors?.MCUI)return '';
+  const f2=x=>Number(x).toFixed(2),has=Number.isFinite(t.reporting_rate_ratio),warn=obisWarn(s),cut=matrixRule()?.mcui_threshold;
+  const nums=has?`조사 노력 보정 보고율 비 <b>${f2(t.reporting_rate_ratio)}</b> · ${esc(obisDatasetText(t.dataset_check))}`:'두 기간을 비교할 기록이 부족해 비율을 내지 않았습니다';
+  const more=has?`<p>보고율은 종 기록을 같은 1° 셀·같은 기간의 ${esc(t.effort_group)} 전체 기록으로 나눈 값입니다. ${esc(rule.periods.past[0].slice(0,4))}–${esc(rule.periods.past[1].slice(0,4))} 대비 ${esc(rule.periods.recent[0].slice(0,4))}–${esc(rule.periods.recent[1].slice(0,4))}의 보고율 비는 ${f2(t.reporting_rate_ratio)}(95% 구간 ${f2(t.ci[0])}–${f2(t.ci[1])})이고, 같은 기간 ${esc(t.effort_group)} 조사 기록은 ×${f2(t.effort_ratio)}로 변했습니다. 감소 신호는 비가 ${esc(rule.decline_ratio)} 이하이고 95% 구간이 1 아래이며, 과거 기록이 가장 많은 데이터셋 안에서도 같을 때입니다.</p>`:'';
+  return `<div class="cp-obis${warn?' warn':''}" data-class="${esc(t.class)}"><p class="cp-obis-head">${warn?'<i class="obis-warn-mark" aria-hidden="true">⚠</i>':''}<span>OBIS 출현 추세</span><b>${esc(t.label)}</b>${obisOffLabel()?`<span class="obis-off">${esc(obisOffLabel())}</span>`:''}</p>`+
+    `<p class="cp-obis-nums">${nums}</p>`+
+    `<details class="cp-obis-more"><summary>추세 읽는 법</summary>${more}`+
+    (warn?`<p>감소 신호가 있지만 MCUI가 ${esc(pilotScore(s,'MCUI').toFixed(0))}점으로 구분선 ${esc(cut)}점 아래입니다. 4.10까지의 규칙이라면 +${esc(data.assessmentInfo.method.conservation.effort_adjustment_suspended.previous_value)}이 더해졌을 종이라 ⚠로 표시합니다. 점수와 유형은 그대로입니다.</p>`:'')+
+    `<p>${esc(data.assessmentInfo.method.conservation.effort_adjustment_suspended?.note||'')} 조사 노력이 줄어든 것을 생물이 줄어든 것으로 잘못 읽을 위험이 있어, 보고율은 개체수·자원량으로 쓰지 않습니다.</p></details></div>`;
+}
+// 근거와 방법 탭: the list of decline signals with an MCUI under the line (species, class, current MCUI)
+function renderObisWarnList(){
+  const st=$('obis-stock-species');if(st&&data){const xs=data.species.filter(x=>x.assessment?.mcui_driver==='stock_decline');st.textContent=xs.length?`${xs.map(x=>x.label).join('·')} ${xs.length}종`:'없음';}
+  const box=$('obis-warn-list');if(!box)return;
+  if(!data){box.textContent='자료를 불러오면 목록이 채워집니다.';return;}
+  const all=(data.species||[]).filter(s=>s.assessment?.occurrence_trend?.class==='decline_signal'),cut=matrixRule()?.mcui_threshold;
+  box.innerHTML=all.length?`<table class="obis-warn-table"><caption class="sr-only">OBIS 감소 신호 종</caption><thead><tr><th scope="col">종</th><th scope="col">추세 분류</th><th scope="col">보고율 비</th><th scope="col">현재 MCUI</th><th scope="col">표시</th></tr></thead><tbody>`+
+    all.map(s=>{const t=s.assessment.occurrence_trend,v=pilotScore(s,'MCUI');
+      return `<tr><th scope="row">${esc(s.label)}</th><td>${esc(t.label)}</td><td>${Number(t.reporting_rate_ratio).toFixed(2)}</td><td>${v===null?'—':esc(v.toFixed(0))}${s.assessment.mcui_driver==='stock_decline'?' (KOSIS 자원 감소 신호)':''}</td><td>${obisWarn(s)?`⚠ 구분선 ${esc(cut)} 미만`:`구분선 ${esc(cut)} 이상`}</td></tr>`;}).join('')+'</tbody></table>':'<p>감소 신호 종이 없습니다.</p>';
 }
 function sufficiencyText(a){
   const i=a.information_sufficiency;
@@ -3176,6 +3254,7 @@ function renderTypeTable(){
   // 4.16: the species whose top MBPI item is independently replicated, and those with a replication the rules did not count
   const er=$('method-ev-replicated');if(er&&data){const by=st=>data.species.filter(s=>evProfile(s)?.top_item_replication===st);const rp=by('replicated'),tr=by('attempted_not_counted');
     er.textContent=`${data.species.length}종 중 ${rp.length}종${rp.length?'('+rp.map(s=>s.label).join(', ')+')':''}${tr.length?`, 재현 기록이 있으나 기준 외인 종은 ${tr.length}종(${tr.map(s=>s.label).join(', ')})`:''}`;}
+  renderObisWarnList();
   const wc=$('method-weight-changes');if(wc&&data){const xs=weightTypeChanges();wc.textContent=`${xs.length}종`+(xs.length?`(${xs.map(s=>s.label).join(', ')})`:'');}
   const rule=matrixRule(),body=document.querySelector('#type-table tbody');if(!body)return;
   if(!rule){body.innerHTML='<tr><td colspan="5">이 보고서에는 매트릭스 유형 규칙이 없어 모든 셀을 판단 보류(회색)로 둡니다.</td></tr>';return;}
@@ -3552,8 +3631,8 @@ function toggleSimulation(value){
   const count=$('cmp-types-count');if(count)count.textContent=value?'가상 예시를 보는 동안 비워 둡니다':`${assessed.length}종 배치${unplaced.length?` · 미배치 ${unplaced.length}종`:''} · 사분면 색 기준`;
   const points=[['A',24,74,'보전 연구 우선 검토'],['B',77,76,'활용·보전 병행 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
   $('matrix-points').innerHTML=value?points.map(([label,x,y,meaning])=>`<button class="matrix-point" style="left:${x}%;bottom:${y}%" title="가상 ${label}: 활용 ${x}, 보전 ${y} / ${meaning}" aria-label="가상 ${label}: 활용 ${x}, 보전 ${y}. ${meaning}">${label}</button>`).join(''):assessed.map(s=>{const kind=separateMcui(s)?' · MCUI '+mcuiBasisLabel(s):'',type=matrixType(s),meaning=type?' / '+matrixTypeLabel(type):'';
-    const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'';
-    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${separateMcui(s)?' national':''}${stockMcui(s)?' stock':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" data-type="${type||''}" title="${esc(s.label)} · ${P_()}BBVI ${unreplicated(s)?scoreText(s,'BBVI',pilotScore(s,'BBVI')):pilotScore(s,'BBVI')}${esc(one)}, MCUI ${scoreText(s,'MCUI',pilotScore(s,'MCUI'))}${kind}${esc(meaning)}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${unreplicated(s)?scoreText(s,'BBVI',pilotScore(s,'BBVI')):pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${scoreText(s,'MCUI',pilotScore(s,'MCUI'))}${kind}${esc(meaning)}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}"><span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
+    const one=bbviLabel(s)?` · BBVI ${bbviLabel(s)}`:'', warn=obisWarn(s)?' · ⚠ OBIS 감소 신호(점수 미반영)':'';
+    return `<button data-aphia="${s.aphiaID}"${selected?.aphiaID===s.aphiaID?' aria-current="true"':''} class="matrix-point pilot${warn?' obis-warn':''}${separateMcui(s)?' national':''}${stockMcui(s)?' stock':''}${subNationalMcui(s)?' subnational':''}${preliminaryMcui(s)?' rapidlc':''}${s.assessment?.mbpi_floor?' floor':''}${one?' single':''}" style="left:${pilotScore(s,'BBVI')}%;bottom:${pilotScore(s,'MCUI')}%${type?';--mp:'+matrixTypeColour[type]:''}" data-b="${pilotScore(s,'BBVI')}" data-m="${pilotScore(s,'MCUI')}" data-name="${esc(s.label)}" data-type="${type||''}" title="${esc(s.label)} · ${P_()}BBVI ${unreplicated(s)?scoreText(s,'BBVI',pilotScore(s,'BBVI')):pilotScore(s,'BBVI')}${esc(one)}, MCUI ${scoreText(s,'MCUI',pilotScore(s,'MCUI'))}${kind}${esc(meaning)}${warn}" aria-label="${esc(s.label)} ${P_()}활용 지표 ${unreplicated(s)?scoreText(s,'BBVI',pilotScore(s,'BBVI')):pilotScore(s,'BBVI')}${esc(one)}, 보전 지표 ${scoreText(s,'MCUI',pilotScore(s,'MCUI'))}${kind}${esc(meaning)}${warn}. ${released()?'방법 검증 기준 미충족':'타당성 미검증'}">${warn?'<i class="mp-obis" aria-hidden="true">⚠</i>':''}<span class="point-label${pilotScore(s,'BBVI')>=50?' left':''}" aria-hidden="true">${esc(s.label)}</span></button>`;}).join('');
   $('matrix-points').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
     if(!value){pickCompare(assessed[i].aphiaID);return;}
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 실제 종의 평가 결과가 아니며, 분류 기준 역시 예시입니다.`;
@@ -3585,7 +3664,7 @@ function renderMatrixTypes(assessed){
   const cell=key=>{const t=rule.types[key];if(!t)return '';const list=assessed.filter(s=>matrixType(s)===t.id).sort((a,b)=>a.label.localeCompare(b.label,'ko'));
     // design 3: the plain verdict heads the card, above the box with the formal name (the box itself reads as before)
     return `<section class="mt-cell" data-type="${t.id}">${MATRIX_PLAIN[t.id]?`<p class="mt-plain">${esc(matrixTypePlain(t.id))}</p>`:''}<div class="mt-box"><b><i class="mt-sw" style="background-color:${matrixTypeColour[t.id]}" aria-hidden="true"></i>${esc(t.label)} <span>${list.length}종</span></b><div>${list.map(s=>`<button type="button" data-aphia="${s.aphiaID}"><i class="mt-dot${bbviLabel(s)?' hollow':''}" aria-hidden="true"></i>${esc(s.label)}${bbviLabel(s)?`<small class="sr-only"> · BBVI ${esc(bbviLabel(s))}</small>`:''}${separateMcui(s)?`<small> · MCUI ${esc(mcuiBasisShort(s))}</small>`:''}</button>`).join('')||'<em>없음</em>'}</div></div></section>`;};
-  box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 최상위 근거 독립 재현 확인</span><span><i class="mt-dot hollow" aria-hidden="true"></i> 최상위 근거 독립 재현 확인 중</span>${assessed.some(stockMcui)?'<span><i class="mt-dot stock" aria-hidden="true"></i> 자원 감소 신호로 정한 MCUI</span>':''}<span>점 설명의 MCUI 괄호는 그 값을 정한 범주</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
+  box.innerHTML=`<p class="mt-key"><span><i class="mt-dot" aria-hidden="true"></i> 최상위 근거 독립 재현 확인</span><span><i class="mt-dot hollow" aria-hidden="true"></i> 최상위 근거 독립 재현 확인 중</span>${assessed.some(stockMcui)?'<span><i class="mt-dot stock" aria-hidden="true"></i> 자원 감소 신호로 정한 MCUI</span>':''}${assessed.some(obisWarn)?`<span><i class="mt-obis" aria-hidden="true">⚠</i> OBIS 감소 신호 · MCUI ${esc(matrixRule()?.mcui_threshold)} 미만 · ${esc(obisOffLabel())}</span>`:''}<span>점 설명의 MCUI 괄호는 그 값을 정한 범주</span></p><div class="mt-grid">${['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui'].map(cell).join('')}</div>`;
   box.querySelectorAll('button[data-aphia]').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
 }
 // Design 02: 17 species share MCUI 10. A point that would overlap one already placed moves up or down (alternating) by the
@@ -3782,9 +3861,10 @@ function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
     rect.className='matrix-cluster';rect.dataset.cluster=g.ids.join(',');rect.setAttribute('aria-hidden','true');
     rect.style.cssText=`left:${L-frame.left}px;top:${T-frame.top}px;width:${R-L}px;height:${B-T}px`;box.prepend(rect);
     const btn=document.createElement('button');  // '· 펼치기' folds away on a phone; the aria-label keeps it
-    btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');btn.innerHTML=`${g.ids.length}종 밀집<span class="mcb-act"> · 펼치기</span>`;
+    btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');const warnN=g.ids.filter(id=>byId.get(id)?.classList?.contains('obis-warn')).length;  // ⚠ of a hidden member stays visible on its pill
+    btn.innerHTML=`${warnN?'<i class="mp-obis-pill" aria-hidden="true">⚠</i>':''}${g.ids.length}종 밀집<span class="mcb-act"> · 펼치기</span>`;
     btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','matrix-cluster-pop');
-    btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${fmt1(g.min)}–${fmt1(g.max)} · MCUI ${fmt1(g.m)} · 종 목록 펼치기`);
+    btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${fmt1(g.min)}–${fmt1(g.max)} · MCUI ${fmt1(g.m)}${warnN?` · OBIS 감소 신호 ${warnN}종(점수 미반영)`:''} · 종 목록 펼치기`);
     btn.addEventListener('click',()=>btn.getAttribute('aria-expanded')==='true'?closeClusterPop(true):openClusterPop(btn));
     const lit=on=>()=>rect.toggleAttribute('data-hot',on||btn.getAttribute('aria-expanded')==='true');
     btn.addEventListener('pointerenter',lit(true));btn.addEventListener('pointerleave',lit(false));btn.addEventListener('focus',lit(true));btn.addEventListener('blur',lit(false));
@@ -3935,8 +4015,8 @@ function renderCompareProfile(){
     `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
     // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 미산출 and why)
     `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
-    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${cpMbpiKind(s)}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}${cpEvidence(s)}</section>`+
-    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}<p class="cp-def">${esc(mcuiDefOf(s))}</p>${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p>${mcuiAuxLine(s)?`<p class="cp-aux">${esc(mcuiAuxLine(s))}</p>`:''}</section>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${cpMbpiKind(s)}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}${cpEvidence(s)}${cmnpdLine(s)}</section>`+
+    `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}<p class="cp-def">${esc(mcuiDefOf(s))}</p>${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p>${mcuiAuxLine(s)?`<p class="cp-aux">${esc(mcuiAuxLine(s))}</p>`:''}${cpObisTrend(s)}</section>`+
     `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거</span>`+
     `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;
 }
@@ -4144,7 +4224,8 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip').classList.toggle('load-failed',!data&&$('connection-state').textContent==='불러오기 실패');
+  $('notice-chip-text').innerHTML=!data?($('connection-state').textContent==='불러오기 실패'?'자료를 불러오지 못했어요':'자료 불러오는 중'):(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -4185,15 +4266,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
-      fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('method-changelog.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
+    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
+      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json']
+        .map(f=>readData(f,FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null))]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -4209,7 +4285,7 @@ async function loadCollection(){
     // Offline demo: the snapshot is the plan, not a failure, so its date stays in the status line without the alert.
     $('connection-state').textContent=data.offline?`오프라인 시연 · 저장된 공개 자료 사본 (${data.snapshotAt} 기준) · ${counts}`
       :data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
-    if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
+    if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`실시간 자료(운영 DB)를 불러오지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 보여 드려요. 그 뒤 발행된 변경은 반영되지 않았어요.`;}
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt&&!data.offline?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
     // a dated snapshot or a newer data file is a status, not a failure: it moves from the banner into the yellow header chip
@@ -4217,19 +4293,29 @@ async function loadCollection(){
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v||h.w)applyHash(h);}
     loadDone(data.offline?'offline':data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('cmp-profile').innerHTML='<p class="cmp-error" role="alert">자료를 불러오지 못했습니다. 위의 ↻ 다시 불러오기를 눌러 주세요. 빈 결과가 아니라 연결 오류입니다.</p>';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
+  }catch(error){if(request!==requestNumber)return;
+    // Neither the API nor the saved copy answered (2026-10-15): one plain line and a retry button wherever the data would be,
+    // never an empty screen. The cause stays under it in small type.
+    const retry='<button type="button" class="text-button data-retry">↻ 다시 시도</button>';
+    const cause=/[가-힣]/.test(error?.message||'')?error.message:'운영 DB에 연결하지 못했습니다(네트워크 끊김 또는 시간 초과).'; // the browser's own words are English
+    $('error').hidden=false;$('error').innerHTML=`<strong>자료를 불러오지 못했어요</strong> · ${retry}<small class="error-cause">${esc(cause)} 저장된 공개 자료 사본도 읽지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.</small>`;
+    $('error').classList.remove('in-chip');$('connection-state').textContent='불러오기 실패';updateStatusChips();
+    $('species-list').innerHTML=`<p class="load-failed">자료를 불러오지 못했어요 · ${retry}</p>`;
+    $('cmp-profile').innerHTML=`<p class="cmp-error" role="alert">자료를 불러오지 못했어요 · ${retry} 빈 결과가 아니라 연결 오류입니다.</p>`;
+    $('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
-  const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
-  const termsReq=fetch('source-terms-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
+  const seaReq=readData('cell-sea-geometry.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
+  const termsReq=readData('source-terms-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
   fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null).then(renderLicense); // optional: the section stays hidden without it
-  try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
+  const mapReq=readData('countries.json',FRESH_READ);mapReq.catch(()=>{}); // asked for now, used once effort.json is in (they no longer wait for each other)
+  try{const r=await readData('effort.json',FRESH_READ);if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
   {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
-  try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
+  try{const r=await mapReq;if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
@@ -4256,6 +4342,8 @@ syncFolds(); // fold the filters before the data arrives, so the list does not j
   if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
 $('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+// "↻ 다시 시도" in the failure lines (banner, list, comparison) does what the header's ↻ does
+document.addEventListener('click',e=>{if(e.target.closest?.('.data-retry'))$('reload-data').click();});
 // A link opened in a tab that already shows the map changes only the hash (no reload): apply it, so a shared
 // 비교와 지표 link opens that tab instead of being written over by the map. replaceState (writeHash) never fires this.
 addEventListener('hashchange',()=>{const h=readHash();if(data&&selected)applyHash(h);else startHash=h;});
@@ -4277,6 +4365,7 @@ document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',
 function renderMethodPage(){
   renderMethodChangelog();
   const n=v=>Number.isFinite(v)?String(v):'—';
+  if($('mt-cmnpd'))$('mt-cmnpd').textContent=cmnpdMethodText();
   renderScorecard();
   $('mt-total').textContent=n(data?.species?.length);$('mt-published').textContent=n(data?.publishedCount);$('mt-candidates').textContent=n(data?.candidateCount);
   const rule=matrixRule();if(!rule)return;
