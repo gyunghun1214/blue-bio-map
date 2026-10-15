@@ -1,0 +1,916 @@
+{
+ "schema_version": "replication-search-1",
+ "snapshot_date": "2026-10-15",
+ "report_version": "verified-4.17",
+ "prereg": "research/verified-indices/prereg-replication-search-2026-10-15.md",
+ "scope_note": "MBPI 최상위 항목의 독립 재현을 찾은 기록이다. 표시 전용이며 점수 계산은 이 파일과 dist/replication-search.json을 읽지 않는다. 인정된 재현은 지표 설정에 재현 행으로 넣고 버전을 올려 다시 계산한 뒤에만 '독립 재현 확인'이 된다.",
+ "display_only": true,
+ "runs": [
+  {
+   "run_id": "2026-10-13",
+   "searched_on": "2026-10-13",
+   "rule": "verified-4.11 같은 기원 규칙",
+   "record": "프로젝트 파일 research/evidence-search-2026-10-13.md 부록 B",
+   "report_version": "verified-4.11",
+   "species_count": 29
+  },
+  {
+   "run_id": "2026-10-15",
+   "searched_on": "2026-10-15",
+   "rule": "verified-4.11 같은 기원 규칙, 사전 등록 prereg-replication-search-2026-10-15",
+   "record": "research/verified-indices/replication-search-2026-10-15.md (프로젝트 파일 research/replication-search-2026-10-15.md)",
+   "report_version": "verified-4.16",
+   "species_count": 16
+  }
+ ],
+ "species": [
+  {
+   "aphia_id": 127022,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "PLITT"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 145086,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL4303835|IC50",
+    "molecule": "CHEMBL5287816"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 145721,
+   "status": "replicated",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "VW"
+   },
+   "last_searched_on": null,
+   "sources_searched": [],
+   "sources_unavailable": [],
+   "earlier_item_searched_on": null,
+   "runs": []
+  },
+  {
+   "aphia_id": 219984,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "DGGP"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 231750,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "VISDEDGVTH"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 234476,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "KAF"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "Europe PMC",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 236157,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL2392|Potency",
+    "molecule": "CHEMBL1084643"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "ChEMBL 판 확인",
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 241776,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "HDWWKER"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 250680,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
+    "molecule": "CHEMBL450953"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 254538,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "GASSGMPG"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 274849,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "amp-dbaasp-mic-broth-staphylococcus-aureus",
+    "molecule": "FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 275816,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "amp-dbaasp-mic-broth-vibrio-anguillarum",
+    "molecule": "SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": false,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 276651,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL1855|IC50",
+    "molecule": "QHWSYGLSPG"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 281273,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "xo-peptide-literature-2026-10-05",
+    "molecule": "WDDMEKIW"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 342067,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "YALPHA"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 371986,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL5118|Ki",
+    "molecule": "CHEMBL508791"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 372119,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
+    "molecule": "CHEMBL510103"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 377084,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL612851|IC50",
+    "molecule": "CHEMBL252561"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 393716,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "VW"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 397082,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "AMN"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 413600,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "VQY"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 494853,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL5763|IC50",
+    "molecule": "CHEMBL4085945"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 494972,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "GKY"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 504357,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "anticancer-cancerppd-ic50-ht-29",
+    "molecule": "WYIRKIRRFFKWLKKKLKKK"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 506159,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL247|IC50",
+    "molecule": "CHEMBL450953"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 534443,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL1921|EC50",
+    "molecule": "CYFRNCPIG"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 836033,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ahtpdb-ace-ic50-hhl-cushman-cheung",
+    "molecule": "LQP"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 836041,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL378|IC50",
+    "molecule": "CHEMBL1822160"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 1061762,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "amp-dbaasp-mic-broth-escherichia-coli",
+    "molecule": "MSMRRGWRFLRGGVGGWCR"
+   },
+   "last_searched_on": "2026-10-13",
+   "sources_searched": [
+    "PubMed",
+    "웹 검색"
+   ],
+   "sources_unavailable": [
+    "Europe PMC"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 1666974,
+   "status": "searched_none",
+   "current_item": {
+    "stratum_id": "ChEMBL_37:CHEMBL5952|Ki",
+    "molecule": "FMRF"
+   },
+   "last_searched_on": "2026-10-15",
+   "sources_searched": [
+    "PubMed",
+    "ChEMBL 판 확인"
+   ],
+   "sources_unavailable": [
+    "Europe PMC",
+    "KCI"
+   ],
+   "earlier_item_searched_on": null,
+   "runs": [
+    {
+     "run_id": "2026-10-13",
+     "searched_on": "2026-10-13",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    },
+    {
+     "run_id": "2026-10-15",
+     "searched_on": "2026-10-15",
+     "result": "searched_none",
+     "item_is_current": true,
+     "accepted_doi": null
+    }
+   ]
+  }
+ ]
+}
