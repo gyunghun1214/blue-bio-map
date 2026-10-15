@@ -80,7 +80,9 @@ html=ctx.renderScores(by(145721));
 // 4.17 (prereg-4.17 2·5): with no official category the met Rapid LC check scores again as a preliminary assessment. The summary
 // line reads like any other MCUI; the folded body names it '예비 평가(공식 평가 전)' with its inputs and the Primorsky reference
 const mcuiSummary=html.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
-assert.match(mcuiSummary,/<span>MCUI · 보전 평가<\/span><b>10\.0 · /);
+assert.match(mcuiSummary,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출 · 보전 평가 범주<\/b>/);
+// 7/15: the preliminary value carries its category and is never called IUCN or official outside the folded body
+assert.doesNotMatch(mcuiSummary,/IUCN|공식/);
 assert.doesNotMatch(mcuiSummary,/예비|역검증|Rapid LC|미확인/);
 assert.doesNotMatch(html,/LC 가능성|예비 평가 참고/);
 assert.match(html,/<b>보전평가 상태: 예비 평가\(공식 평가 전\)<\/b>/);
@@ -92,8 +94,8 @@ assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충�
 // body keeps the ratio and the dataset check beside the preliminary assessment
 {const sq=ctx.renderScores(by(250680));
   const sum=sq.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
-  assert.match(sum,/<span>MCUI · 보전 평가<\/span><b>10\.0 · /);
-  assert.doesNotMatch(sum,/예비|역검증|Rapid LC|미확인/);
+  assert.match(sum,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출 · 보전 평가 범주<\/b>/);
+  assert.doesNotMatch(sum,/예비|역검증|Rapid LC|미확인|IUCN|공식/);
   assert.match(sq,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
   assert.match(sq,/전체 보고율 비 0\.655\(95% 구간 0\.485–0\.884\), 주된 데이터셋 안 0\.819\(95% 구간 0\.563–1\.19\) · 감소 확인 안 됨/);
   assert.doesNotMatch(sq,/쓰지 않음 · MCUI 없음|Rapid LC 충족 → LC 상당 → 10/);}
@@ -227,19 +229,19 @@ assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.14 (prereg-4.14 2·7): both are '보전평가 미확인' in words; 미역's Rapid LC check rides along as a reference, never a number
 // 4.17 (prereg-4.17 5): 미역's Rapid LC check is a preliminary assessment again; the table shows its number like any other
 {const cell=dom.comparison.innerHTML.match(/data-more-aphia="145721" data-more-axis="MCUI".*?<\/button>/s)[0];
-  assert.match(cell,/>10\.0<small>/);
+  assert.match(cell,/>10\.0 \(LC\)<small>/);
   assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반/);}
 // 4.19 (prereg-4.19 1): 멍게's Rapid LC check is a preliminary assessment too, shown like any other number
 for(const id of [145721,250680]){const cell=dom.comparison.innerHTML.match(new RegExp(`data-more-aphia="${id}" data-more-axis="MCUI".*?</button>`,'s'))[0];
-  assert.match(cell,/>10\.0<small>/,String(id));
-  assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반/,String(id));}
-assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0<small>/,'우뭇가사리 keeps its stock-decline lower bound');
+  assert.match(cell,/>10\.0 \(LC\)<small>/,String(id));
+  assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반|공식/,String(id));}
+assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0 \(VU \+ 자원 감소\)<small>/,'우뭇가사리 keeps its stock-decline lower bound');
 assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.
 // 4.12: the KOSIS catch fell 79.8% (2015-17 -> 2022-24), so the stock-decline signal 60 is the higher value; a diamond marks it
-assert.match(dom.comparison.innerHTML,/>80\.0<small>/);
-assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0<small>정식 산출 · 같은 자료 확인\(독립 검증 아님\) · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8% · IUCN 기반 MCUI와 비교 불가<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<i class="cv-stock"/);
+assert.match(dom.comparison.innerHTML,/>80\.0 \(EN, A2bd\)<small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 자원 감소\)<small>정식 산출 · 같은 자료 확인\(독립 검증 아님\) · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8% · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat">\(LC \+ 자원 감소\)<\/small><i class="cv-stock"/);
 assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10 · 자원 감소 60 → 높은 값 60<\/p>/);
 assert.match(dom.comparison.innerHTML,/기준 평균 121,486톤\(2015~17\) → 최근 평균 24,507톤\(2022~24\) <b>\(−79\.8%\)<\/b>/);
 assert.equal((dom.comparison.innerHTML.match(/class="stock-decline/g)||[]).length,next.species.length,'every species shows its stock-decline line');
@@ -493,7 +495,7 @@ html=ctx.renderScores(by(836033));
   assert.doesNotMatch(mbpi,/참고값\(최상위 근거 독립 재현 확인 중\)/);}
 assert.ok(!html.includes('참고 통합값'),'a real BBVI replaces the reference combination');
 assert.equal(ctx.score(by(836033),'MBPI'),72.2);
-assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 72 (단일 논문) · MCUI(국가 평가) 10.0');
+assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 72 (단일 논문) · MCUI(국가 평가) 10.0 (LC)');
 // A used replication must be listed among the independent DOIs and cite a published source, or the MBPI is a fault (4.11: 미역 VW).
 for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='VW').independent_dois.push('10.0000/other')},
   o=>{o.source_ids=o.source_ids.filter(id=>id!=='suetsuna_2004_wakame')}]){
