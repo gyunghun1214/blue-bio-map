@@ -761,6 +761,38 @@ function replicationSearchText(s){
   const earlier=(r.runs||[]).filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on).map(x=>x.searched_on);
   return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${earlier.length?` · 이전 검색 ${earlier.join(', ')}`:''}${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
+// Candidate-compound search layer (dist/cmnpd-candidates.json, built by scripts/build_cmnpd_candidates.py): how many compounds
+// CMNPD 1.0 reports for the species, shown in the species profile with '점수 미사용' and the CMNPD licence. MBPI is computed
+// from ChEMBL and the peptide databases only; nothing here reaches a score, the matrix, the map colours or a chip. Only CMNPD IDs
+// and counts are published. Schema 1 is read; a higher number is a newer file this code does not know; anything else is ignored.
+let cmnpdCandidates={rows:new Map(),source:null,totals:null};
+function cmnpdRows(file,outdated){
+  const v=/^cmnpd-candidates-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'cmnpd-candidates.json',version:file.schema_version});
+  const rows=new Map();
+  if(file?.schema_version!=='cmnpd-candidates-1'||file.display_only!==true||file.used_in_scores!==false||!Array.isArray(file.species))return {rows,source:null,totals:null};
+  for(const r of file.species)if(Number.isSafeInteger(r?.aphia_id)&&Number.isSafeInteger(r.compound_count)&&r.compound_count>=0)rows.set(r.aphia_id,r);
+  return {rows,source:file.source||null,totals:file.totals||null};
+}
+// '근거와 방법' fold 02: the counts behind 'why ChEMBL', read from the same file (no number is written into the page by hand)
+function cmnpdMethodText(){
+  const t=cmnpdCandidates.totals, src=cmnpdCandidates.source;
+  if(!t||!src||!data?.species)return '';
+  const name=a=>data.species.find(s=>s.aphiaID===a)?.label||String(a);
+  const listed=[...cmnpdCandidates.rows.values()].filter(r=>r.chembl_listed_unlinked?.length).map(r=>`${name(r.aphia_id)} ${r.chembl_listed_unlinked.length}`);
+  return `${src.accessed} 조회 기준, ${t.species}종 중 ${t.species_with_compounds}종에서 CMNPD 보고 화합물 ${t.pairs.toLocaleString()}개를 찾았습니다. `+
+    `이 가운데 MBPI의 종–화합물 연결(위키데이터 P703·원논문)을 거쳐 ChEMBL 분자까지 이어진 화합물은 ${t.chembl_linked}개이고, `+
+    `CMNPD가 ChEMBL 분자를 함께 적었지만 아직 종 연결이 없는 화합물은 ${t.chembl_listed_unlinked}개${listed.length?`(${listed.join('·')})`:''}입니다. 이 수치는 점수와 유형을 바꾸지 않습니다.`;
+}
+function cmnpdLine(s){
+  const r=cmnpdCandidates.rows.get(s?.aphiaID), src=cmnpdCandidates.source;
+  if(!r||!src)return '';
+  const lic=sourceLink(src.license_url,src.license);
+  const tip=`CMNPD 1.0에서 이 종의 학명과 WoRMS 이명(${r.names_searched}개)으로 찾은 보고 화합물 수입니다(${src.accessed} 조회). 화합물 ID와 개수만 싣고 이름·구조·원자료는 옮기지 않습니다. MBPI는 ChEMBL 표준화 활성값으로 계산합니다.`;
+  return `<p class="cp-cmnpd" title="${esc(tip)}"><b>후보 화합물 탐색 <span class="cp-cmnpd-tag">점수 미사용</span></b>`+
+    `${sourceLink(src.url,'CMNPD')} 보고 화합물 <strong>${r.compound_count.toLocaleString()}개</strong>`+
+    `${r.compound_count?` · 그중 ChEMBL 연결 ${r.chembl_linked}개`:''} · ${lic}</p>`;
+}
 // 검증 성적표 (dist/posthoc-scorecard.json, built by scripts/build_posthoc_scorecard.py from posthoc.validation_sets): the top of
 // the method tab lists every post-hoc check with its normalised outcome_class, and the journey cards carry one badge per
 // indicator. A same-data or two-species consistency check is never shown as 통과. Display only: nothing here reaches a score,
@@ -3901,7 +3933,7 @@ function renderCompareProfile(){
     `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
     // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 미산출 and why)
     `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
-    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${cpMbpiKind(s)}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}${cpEvidence(s)}</section>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${cpMbpiKind(s)}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}${cpEvidence(s)}${cmnpdLine(s)}</section>`+
     `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></section>`+
     `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거</span>`+
     `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;
@@ -4152,15 +4184,16 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('cmnpd-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('method-changelog.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -4247,6 +4280,7 @@ document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',
 function renderMethodPage(){
   renderMethodChangelog();
   const n=v=>Number.isFinite(v)?String(v):'—';
+  if($('mt-cmnpd'))$('mt-cmnpd').textContent=cmnpdMethodText();
   renderScorecard();
   $('mt-total').textContent=n(data?.species?.length);$('mt-published').textContent=n(data?.publishedCount);$('mt-candidates').textContent=n(data?.candidateCount);
   const rule=matrixRule();if(!rule)return;
