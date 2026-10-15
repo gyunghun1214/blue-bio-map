@@ -1031,3 +1031,8 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   .sd-spark text{font-size:11px}
   #explore .leaflet-control-attribution{font-size:11px!important} /* style.css sets 10px !important */
 }
+/* 7/15 (2026-10-15): the MCUI category beside its number, the definition and the '보조 정보' line */
+.ax-num .ax-cat{margin-left:5px;font-size:.45em;font-weight:600;color:var(--muted);vertical-align:middle}
+.ax-note.ax-def{margin:2px 0 0}
+.ax-note.ax-aux{margin-top:4px}
+.card-scores i .mcui-cat{font-size:9.5px;font-weight:600;color:var(--muted)}
