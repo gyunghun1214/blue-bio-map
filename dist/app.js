@@ -2,7 +2,8 @@
 const $ = id => document.getElementById(id);
 // Published data still carries the older label words; the screen shows the neutral wording (team-lead decision 2026-10-08).
 // 4.16 (2026-10-15): the single-paper label means the top MBPI item has no independent replication, so the screen says so.
-const plainWords = text => text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 독립 재현 확인 중')
+// The records keep who decided ('팀장 결정'); the screen says '방법 결정' and links it to the change timeline (method tab 04).
+const plainWords = text => text.replace(/팀장 결정/g,'방법 결정').replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 독립 재현 확인 중')
   .replace(/기준 미통과/g,'기준 미충족').replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
@@ -132,7 +133,7 @@ function evidenceCoverage(s) {
     {name:'영양',stage:pilotScore(s,'MFPI')!==null?(validationResult('MFPI')==='passed'?'validated':'calculated'):foodLinked?'linked':foodRows.length||extras.length||nutrition.status==='available'?'found':'unavailable',
       detail:pilotScore(s,'MFPI')!==null?(validationResult('MFPI')==='passed'?`동기준 영양·가식부·양식 근거로 ${released()?'정식':'시범'} MFPI를 산출했습니다. MFPI 방법은 같은 종의 일본 식품성분표 값으로 다시 계산해도 순위가 유지되는지 본 방법 검증(${validationN('MFPI')||'?'}종 비교)을 통과했습니다. 이 종의 값을 따로 검증한 것은 아닙니다.`:'동기준 영양·가식부·양식 근거로 '+(released()?'정식':'검증 전 시범')+' MFPI를 산출했습니다.'):foodLinked?'종별 원값은 확인했으나 시료 상태·가식부·동일 기준 비교 또는 양식 근거가 부족해 MFPI는 보류합니다.':'영양 자료가 있더라도 이 종의 비교 가능한 원값인지 확인해야 합니다.'},
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null&&!a?.mbpi_floor?(validationResult('MBPI')==='passed'?'validated':'calculated'):bioLinked?'linked':partial.length||compounds.status==='available'?'found':released()&&a?.chembl_links?.paper_search?.searched_on?'searched_none':'unavailable',
-      detail:pilotScore(s,'MBPI')!==null&&a?.mbpi_floor?`${a.mbpi_label}: 어느 비교집단 층에도 규칙을 채우는 항목이 없어 하한값 ${a.mbpi_floor.value}을 썼습니다(팀장 결정 2026-10-05). ${a.mbpi_floor.meaning}`:pilotScore(s,'MBPI')!==null?`${bestBio(a)?.stratum_kind==='chembl'?`종→화합물 공개 연결(LOTUS·원논문)과 ChEMBL 같은 표적·종말점 비교집단으로 ${released()?'정식':'시범'} MBPI를 산출했습니다(${bestBio(a).label}).`:'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 '+(released()?'정식':'시범')+' MBPI를 산출했습니다.'}${a.mbpi_label?(bbviLabel(s)?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에도 '${bbviLabel(s)}' 표시를 붙입니다.`:data?.assessmentInfo?.method?.bbvi?.single_source_policy==='score_with_label'?'':` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`):''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
+      detail:pilotScore(s,'MBPI')!==null&&a?.mbpi_floor?`${a.mbpi_label}: 어느 비교집단 층에도 규칙을 채우는 항목이 없어 하한값 ${a.mbpi_floor.value}을 썼습니다(방법 결정 2026-10-05). ${a.mbpi_floor.meaning}`:pilotScore(s,'MBPI')!==null?`${bestBio(a)?.stratum_kind==='chembl'?`종→화합물 공개 연결(LOTUS·원논문)과 ChEMBL 같은 표적·종말점 비교집단으로 ${released()?'정식':'시범'} MBPI를 산출했습니다(${bestBio(a).label}).`:'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 '+(released()?'정식':'시범')+' MBPI를 산출했습니다.'}${a.mbpi_label?(bbviLabel(s)?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에도 '${bbviLabel(s)}' 표시를 붙입니다.`:data?.assessmentInfo?.method?.bbvi?.single_source_policy==='score_with_label'?'':` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`):''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?(validationResult('MCUI')==='passed'?'validated':'calculated'):conservation?.iucn_state==='assessed'?'linked':conservation?.recheck?'checked_none':'unavailable',
       detail:(stockMcui(s)?stockLead(s)+' ':'')+(s.assessment?.conservation_status&&data?.assessmentInfo?.method?.mcui_scope&&!s.assessment.mcui_basis?conservationStatusSentence(s):earlyMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(s.assessment.conservation_status.preliminary?.label||'예비 평가')}로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다.`:nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:preliminaryMcui(s)?`${iucnGlobalNote(s)}이고 한국·서식국·지방 공식 목록에도 점수가 되는 범주가 없어, 분포 기록으로 확인한 자체 예비평가(Rapid LC, 역검증 기준 미충족)으로 MCUI를 산출했습니다. 공식 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:substituteMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(mcuiBasisLabel(s))} ${released()?'정식':'시범'} MCUI를 산출했습니다. 공식 IUCN 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 '+(released()?'정식':'시범')+' MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?(conservation.recheck?`IUCN 적색목록(${conservation.recheck.red_list_version})과 한국·서식국 공식 목록을 ${conservation.recheck.checked_on}에 다시 확인했으나 이 종의 평가 기록이 없습니다(IUCN 미평가). 낮은 점수가 아니며, IUCN 2026-2는 2026-11-26 공개 예정입니다.`:'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.'):'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.')}
   ];
@@ -709,6 +710,18 @@ function supplementaryLine(s){
       `<p class="fine">${esc(r.finding)}</p><p class="fine lit-why">점수 미사용: ${esc(r.not_scored_reason)} · ${esc(r.checked_on)} ${r.checked_via==='full_text'?'원문':'초록'} 확인</p></li>`).join('')}</ul>`+
     `</div></details>`;
 }
+// Method change ledger (research/method-changelog.json, copied to dist/ by scripts/build_method_changelog.py): one entry per
+// published method version with its date, reason, pre-registration and score impact. It feeds the method tab's timeline
+// (fold 04) and the freeze date beside the version in the header. Schema 'method-changelog-1' is read; a higher number is a
+// newer file this code does not know; anything else is ignored and the timeline says the record could not be read.
+let methodChangelog=null;
+function changelogFile(file,outdated){
+  const v=/^method-changelog-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'method-changelog.json',version:file.schema_version});
+  return file?.schema_version==='method-changelog-1'&&Array.isArray(file.entries)&&file.entries.length?file:null;
+}
+// the freeze date shown beside the version: only when the ledger's current version is the version on screen
+const frozenOn=info=>methodChangelog?.current?.method_version===info?.version?methodChangelog.current.frozen_on||'':'';
 // Replication search record (prereg-replication-search-2026-10-15 6; dist/replication-search.json, built by
 // scripts/build_replication_search.py): when and where the current top MBPI item was searched for an independent replication.
 // Shown in the folded MBPI detail only. Schema 1 is read; a higher number is a newer file this code does not know; anything else
@@ -1362,7 +1375,7 @@ function verifiedFoodDetail(s){
     // 3.7: a scored species can still carry unused records (e.g. 톳 freeze-dried zinc); they stay visible with their reason
     (f.supplemental_nutrition||[]).map(o=>o.substitute_use?`<p class="fine">별도 원값 기록 ${esc(o.record_id)}: ${esc(o.substitute_use)}.</p>`:supplementalRecord(o)).join('');
   const omitted=f.omitted_components||[];
-  const outside=f.outside_cohort?`<p class="fine">${f.row_table==='mext'?`RDA 식품성분 DB에 이 종으로 연결된 행이 없어 일본 식품성분표 2020(8정판) ${esc(String(f.source_food_item_id).slice(5))} ${esc(f.reported_food_name)}(같은 종 생것, 가식부 100 g)을 이 종의 영양 행과 폐기율로 썼습니다(신뢰도 계수 0.85). `:''}${f.row_table==='literature'&&f.literature_moisture?`${esc(f.literature_moisture.label)}: 같은 시료의 생시료 수분을 밝힌 원자료가 없어, 이 종을 분석한 자료(${verifiedSource(f.source_id,'원문 ↗')})의 건물 기준 값을 같은 종 다른 시료의 생시료 수분(중앙값 ${esc(f.literature_moisture.moisture_pct)}%: ${esc(f.literature_moisture.values.map(v=>v.value).join('·'))}%)으로 날것 기준(가식부 100 g)으로 환산했습니다(팀장 결정 2026-10-04, 신뢰도 계수 ${esc(data.assessmentInfo?.method?.nutrition?.grade_factors?.literature_converted)}). 수분 값 출처: ${esc(f.literature_moisture.values.map(v=>v.source).join(' / '))}. `:f.row_table==='literature'?`RDA 식품성분 DB와 일본 식품성분표에 이 종의 행이 없어, 이 종을 직접 분석한 원논문(${verifiedSource(f.source_id,'원문 ↗')})의 건물 기준 값을 같은 시료의 수분으로 날것 기준(가식부 100 g)으로 환산해 이 종의 영양 행으로 썼습니다(신뢰도 계수 ${esc(data.assessmentInfo?.method?.nutrition?.grade_factors?.literature_converted)}). `:''}${omitted.length?`원자료에 ${esc(omitted.map(k=>nutrientNames[k]||k).join('·'))} 값이 비어 있어 평균에서 뺐습니다(0점 아님, 사용 성분 ${Object.keys(f.nutrients||{}).length}/${Object.keys(f.nutrients||{}).length+omitted.length}). `:''}`+
+  const outside=f.outside_cohort?`<p class="fine">${f.row_table==='mext'?`RDA 식품성분 DB에 이 종으로 연결된 행이 없어 일본 식품성분표 2020(8정판) ${esc(String(f.source_food_item_id).slice(5))} ${esc(f.reported_food_name)}(같은 종 생것, 가식부 100 g)을 이 종의 영양 행과 폐기율로 썼습니다(신뢰도 계수 0.85). `:''}${f.row_table==='literature'&&f.literature_moisture?`${esc(f.literature_moisture.label)}: 같은 시료의 생시료 수분을 밝힌 원자료가 없어, 이 종을 분석한 자료(${verifiedSource(f.source_id,'원문 ↗')})의 건물 기준 값을 같은 종 다른 시료의 생시료 수분(중앙값 ${esc(f.literature_moisture.moisture_pct)}%: ${esc(f.literature_moisture.values.map(v=>v.value).join('·'))}%)으로 날것 기준(가식부 100 g)으로 환산했습니다(방법 결정 2026-10-04, 신뢰도 계수 ${esc(data.assessmentInfo?.method?.nutrition?.grade_factors?.literature_converted)}). 수분 값 출처: ${esc(f.literature_moisture.values.map(v=>v.source).join(' / '))}. `:f.row_table==='literature'?`RDA 식품성분 DB와 일본 식품성분표에 이 종의 행이 없어, 이 종을 직접 분석한 원논문(${verifiedSource(f.source_id,'원문 ↗')})의 건물 기준 값을 같은 시료의 수분으로 날것 기준(가식부 100 g)으로 환산해 이 종의 영양 행으로 썼습니다(신뢰도 계수 ${esc(data.assessmentInfo?.method?.nutrition?.grade_factors?.literature_converted)}). `:''}${omitted.length?`원자료에 ${esc(omitted.map(k=>nutrientNames[k]||k).join('·'))} 값이 비어 있어 평균에서 뺐습니다(0점 아님, 사용 성분 ${Object.keys(f.nutrients||{}).length}/${Object.keys(f.nutrients||{}).length+omitted.length}). `:''}`+
     `${(f.substituted_components||[]).length?'대체치가 있어 ':''}이 종은 고정 비교집단에 넣지 않고, 비교집단과 자기 자신 안에서 순위를 매겼습니다(다른 종의 순위는 바뀌지 않습니다).</p>`:'';
   const c=f.components||{}, e=f.edible_fraction, q=f.aquaculture;
   const cohort=(data.assessmentInfo.cohorts||[]).find(x=>x.cohort_id===f.cohort_id);
@@ -1501,7 +1514,7 @@ function verifiedBioDetail(s){
   const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${esc(n.linked||0)}건 · 참고문헌 DOI 있음 ${esc(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${esc(n.common_metabolite||0)}건 · 승인 약물 제외 ${esc(n.approved_drug||0)}건 · 검수 제외 ${esc(n.rejected_by_review||0)}건 → ChEMBL 비교 코호트(활성 기록 ${esc(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${esc(n.scored_compounds||0)}개.`+
     (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${esc(ps.searched_on)}, Europe PMC ${esc(ps.europepmc_hits)}건 중 ${esc(ps.papers_screened)}건 선별, 인정 연결 ${esc(ps.accepted_links)}건 · CMNPD 검색 부분은 CC BY-NC-SA 4.0 조건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
   const fl=s.assessment.mbpi_floor;
-  return (fl?`<p><b>${esc(s.assessment.mbpi_label)} · MBPI ${esc(Number(fl.value).toFixed(1))}</b>: ${esc(fl.meaning)} 규칙: ${esc(fl.prereg)} 1.5절(팀장 결정 2026-10-05).</p>`:
+  return (fl?`<p><b>${esc(s.assessment.mbpi_label)} · MBPI ${esc(Number(fl.value).toFixed(1))}</b>: ${esc(fl.meaning)} 규칙: ${esc(fl.prereg)} 1.5절(방법 결정 2026-10-05).</p>`:
     '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>')+rawHtml+partial+linkChain+rejected+
     (!cl&&s.assessment.candidate_label&&!items.length?'<p class="fine">조사 후보 검색 범위: Wikidata/LOTUS 기원종 기록과 ChEMBL 37 정량값(2026-09-26)에서 미발견. PubChem·CMNPD·문헌 전수는 아직 조사하지 않았습니다.</p>':'');
 }
@@ -1556,14 +1569,14 @@ function verifiedNationalFactBody(s){
     return `<p><b>${esc(extinctionBasisLabel(s))} ${P_()}MCUI</b>: ${esc(sub.pilot_mapping||sub.category)} · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
       `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       (r.official_unscored?.length?`<p class="fine">공식 목록에 이름은 있으나 점수 범주가 아닌 기록(점수에 쓰지 않음):</p><ul class="fine">${r.official_unscored.map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||'')}) · ${esc(x.category_as_published)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${esc(x.excluded_reason)}${x.source_id?' · '+verifiedSource(x.source_id,'원목록 ↗'):x.url?' · '+sourceLink(x.url,'원목록 ↗'):''}</li>`).join('')}</ul>`:'')+
-      `<p class="fine">IUCN·한국 국가·서식국 국가·지방 목록 어디에도 이 종의 점수가 되는 범주가 없어 쓰는 마지막 근거입니다(팀장 결정 2026-10-05).${r.official_unscored?.length?' 이름은 있지만 점수 범주가 아닌 공식 목록 기록은 아래에 따로 적었습니다.':''} GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했고, OBIS 보고율 추세는 ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}입니다. `+
+      `<p class="fine">IUCN·한국 국가·서식국 국가·지방 목록 어디에도 이 종의 점수가 되는 범주가 없어 쓰는 마지막 근거입니다(방법 결정 2026-10-05).${r.official_unscored?.length?' 이름은 있지만 점수 범주가 아닌 공식 목록 기록은 아래에 따로 적었습니다.':''} GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했고, OBIS 보고율 추세는 ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}입니다. `+
       `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
         `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. ${esc(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
   if(substituteMcui(s)&&sub){
     const r=sub.record;
-    return `<p><b>${esc(extinctionBasisLabel(s))} ${P_()}MCUI</b>: ${esc(r.category_as_published)} → ${esc(sub.category)}${r.rank_out?' 상당(평가했으나 위협 범주 없음 · 팀장 결정 2026-10-04)':''} · 게재명 ${esc(r.name_as_published)} · ${esc(r.list)} · 범위 ${esc(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
+    return `<p><b>${esc(extinctionBasisLabel(s))} ${P_()}MCUI</b>: ${esc(r.category_as_published)} → ${esc(sub.category)}${r.rank_out?' 상당(평가했으나 위협 범주 없음 · 방법 결정 2026-10-04)':''} · 게재명 ${esc(r.name_as_published)} · ${esc(r.list)} · 범위 ${esc(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
       `<p class="fine">${esc(r.continuity.replace(/\.$/,''))}. ${esc(r.limitations)}</p>`;
   }
   // 3.15 (team-lead decision 2026-10-02): reference only. The Rapid LC record is shown beside the withheld MCUI, never as a score.
@@ -1600,7 +1613,7 @@ function preliminaryBasisDetail(s,sub){
       subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. 공식 평가가 나오면 그 값으로 바꿉니다.</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
-  return `<p><b>${esc(label)} · ${esc(r.country_ko||r.country||'서식국')} 국가 평가</b>: ${esc(r.category_as_published)} → ${value}${r.rank_out?' (평가했으나 위협 범주 없음 → LC 상당 · 팀장 결정 2026-10-04)':''} · 게재명 ${esc(r.name_as_published)} · ${esc(r.list)} · 범위 ${esc(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
+  return `<p><b>${esc(label)} · ${esc(r.country_ko||r.country||'서식국')} 국가 평가</b>: ${esc(r.category_as_published)} → ${value}${r.rank_out?' (평가했으나 위협 범주 없음 → LC 상당 · 방법 결정 2026-10-04)':''} · 게재명 ${esc(r.name_as_published)} · ${esc(r.list)} · 범위 ${esc(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
     (r.continuity||r.limitations?`<p class="fine">${esc((r.continuity||'').replace(/\.$/,''))}${r.continuity?'. ':''}${esc(r.limitations||'')}</p>`:'')+subNationalReference(sub);
 }
 // 4.19 (prereg-4.19-2026-10-15 1): a reporting-rate ratio at or below the decline ratio no longer blocks the Rapid LC check;
@@ -1844,7 +1857,7 @@ function renderVerifiedIndices(s){
   const bodies={MFPI:mfpiScope+verifiedFoodDetail(s),MBPI:mbpiFirstLine(s)+evidenceProfileBlock(s)+mbpiScope+verifiedBioDetail(s),MCUI:verifiedConservationDetail(s)+verifiedNationalFact(s)+stockDeclineDetail(s)+occurrenceTrendDetail(s),
     BBVI:'<p>기본 BBVI = w × MFPI + (1−w) × MBPI. MCUI는 별도 축입니다. 화면에서 w를 바꾸어도 고정 비교집단은 바뀌지 않습니다. MFPI만 보는 “식량 전용”과 MBPI만 보는 “생리활성 전용”은 기본 BBVI와 다른 보기입니다.</p>'+
       (a.mbpi_floor?'<p class="fine">BBVI '+esc(bbviLabel(s)||'')+': MBPI가 하한값 '+esc(a.mbpi_floor.value)+'점이라 BBVI = w × MFPI + (1−w) × '+esc(a.mbpi_floor.value)+'입니다. '+esc(a.mbpi_floor.meaning)+' 규칙을 채우는 MBPI 근거가 생기면 그 값으로 바뀝니다.'+(assessedForMatrix(s)?' 매트릭스에서는 회색 테두리의 빈 점입니다.':'')+'</p>':
-       bbviLabel(s)?'<p class="fine">BBVI '+esc(bbviLabel(s))+': MBPI 최상위 항목을 다른 연구팀이 같은 종 시료로 재현한 논문이 아직 없습니다'+(bestBio(a)?.stratum_kind==='chembl'?'(ChEMBL 항목은 종 연결 원논문과 활성 문서 중 적은 쪽이 1편)':'')+(evProfile(s)?'. 그 종의 근거 양과는 다른 표시입니다('+esc(evidenceProfileText(s))+')':'')+'. MBPI에는 이 근거 계수('+esc(bestBio(a)?.evidence_factor)+')가 이미 곱해져 있습니다. 팀장 결정(2026-10-03)에 따라 '+(assessedForMatrix(s)?'점수·매트릭스·지도에 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. 매트릭스에서는 속이 빈 점입니다.':'점수로 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. '+(pilotScore(s,'MCUI')===null?'MCUI가 없어 ':'')+'매트릭스·지도 색에는 들어가지 않습니다.')+'</p>':'')+referenceCombination(s)};
+       bbviLabel(s)?'<p class="fine">BBVI '+esc(bbviLabel(s))+': MBPI 최상위 항목을 다른 연구팀이 같은 종 시료로 재현한 논문이 아직 없습니다'+(bestBio(a)?.stratum_kind==='chembl'?'(ChEMBL 항목은 종 연결 원논문과 활성 문서 중 적은 쪽이 1편)':'')+(evProfile(s)?'. 그 종의 근거 양과는 다른 표시입니다('+esc(evidenceProfileText(s))+')':'')+'. MBPI에는 이 근거 계수('+esc(bestBio(a)?.evidence_factor)+')가 이미 곱해져 있습니다. 방법 결정(2026-10-03)에 따라 '+(assessedForMatrix(s)?'점수·매트릭스·지도에 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. 매트릭스에서는 속이 빈 점입니다.':'점수로 쓰되 이 표시를 붙이고, 독립 논문 재현이 확인되면 표시를 뗍니다. '+(pilotScore(s,'MCUI')===null?'MCUI가 없어 ':'')+'매트릭스·지도 색에는 들어가지 않습니다.')+'</p>':'')+referenceCombination(s)};
   const surveyWhy=surveyReasonText(a);
   const unexplored=(a.priority_survey?`<p class="pending">우선 조사 대상 · ${surveyWhy}. 점수와 섞지 않는 별도 표시입니다.</p>`:'')+
     (a.unexplored_candidate?`<p class="pending">미탐색 후보: ${esc(unexploredLine(a.unexplored_candidate))}. 기본 가중치 w = 0.5 기준이며, 이 종의 점수는 추정하지 않습니다.</p>`:'');
@@ -2069,7 +2082,7 @@ const useRule=c=>c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/
     :c.id==='whole'?'보고서에 채택된 가식부 비율이 100%(폐기율 0%)인 종. MFPI의 가식부 항목과 같은 값이며, 칩은 보여주기만 합니다'
     :c.id==='farmed'?'보고서에 채택·검토된 양식 사례 기록이 있는 종(MFPI의 양식 가능성 항목과 같은 근거). 현재 국내 상업 양식 여부나 경제성을 뜻하지 않습니다'
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
-    :displayOnly(c.id)?(hasExtractRow(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값이며, 단일 물질 근거가 없는 종은 추출물·분획 시험값입니다(‘추출물’ 표시, 팀장 결정 2026-10-04). ':'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. ')+'팀장 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
+    :displayOnly(c.id)?(hasExtractRow(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값이며, 단일 물질 근거가 없는 종은 추출물·분획 시험값입니다(‘추출물’ 표시, 방법 결정 2026-10-04). ':'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. ')+'방법 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
 // A food chip hides species with a measured value under the claim line apart from species with no value at all.
 const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);if(id==='whole')return Number.isFinite(a.food_trace?.edible_fraction?.value);if(id==='farmed')return a.food_trace?.aquaculture?.reviewed===true;return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
@@ -4033,7 +4046,7 @@ let sourceTermsKo={};
 const memoKo=t=>t&&(sourceTermsKo[t]||t);
 function renderSources(){
   const info=data.assessmentInfo;
-  $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
+  $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${frozenOn(info)?` · ${frozenOn(info)} 동결`:''}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
   const all=new Map();data.species.forEach(s=>s.sources.forEach(src=>all.set(src.id,src)));
   // Indicator sources (the report's own registry) are cited here too, so a comparison cohort is named on the method tab.
   const report=data.assessmentInfo||{};
@@ -4111,7 +4124,7 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -4152,15 +4165,16 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('cmnpd-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);
+      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('method-changelog.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -4242,6 +4256,7 @@ document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',
 // Research scope numbers (운영 발행 · 조사 후보 from the loaded collection; '—' until then or after a failure) and the
 // four quadrant names from the report's matrix rule. The diagram places no species, points or scores.
 function renderMethodPage(){
+  renderMethodChangelog();
   const n=v=>Number.isFinite(v)?String(v):'—';
   if($('mt-cmnpd'))$('mt-cmnpd').textContent=cmnpdMethodText();
   renderScorecard();
@@ -4249,6 +4264,76 @@ function renderMethodPage(){
   const rule=matrixRule();if(!rule)return;
   document.querySelectorAll('#method .mt-q').forEach(q=>{const t=rule.types?.[q.dataset.q];if(!t)return;q.dataset.type=t.id;q.querySelector('b').textContent=matrixTypePlain(t.id);q.querySelector('span').textContent=t.label;});
   $('mt-quad-rule').textContent=`각각 ${rule.bbvi_threshold===rule.mcui_threshold?rule.bbvi_threshold:'BBVI '+rule.bbvi_threshold+' · MCUI '+rule.mcui_threshold} 이상이면 높음 · 지표 쌍이 없으면 유형 미산출`;
+}
+// ---------- 04 방법은 언제, 왜 바뀌었나요? (method change timeline) ----------
+// From the ledger, newest day first. Each version shows its summary and a '사전 등록' mark when a pre-registration was
+// committed before its code; the reason, when it was decided against its results, the score impact and the records sit in
+// its own fold. The ledger keeps who decided; the screen says '방법 결정'.
+const CL_TIMING={'결과 확인 전':'결과를 보기 전에 정함','결과 확인 후':'결과를 본 뒤 정함','미확인':'결정 순서를 적은 기록 없음','규칙 변경 없음':'규칙 변경 없음 · 고정 규칙 안의 반영'};
+const CL_REPO='https://github.com/gyunghun1214/blue-bio-map/blob/main/';
+const clSlug=v=>'mt-cl-'+String(v).replace(/[^a-z0-9]+/gi,'-');
+function clImpact(x){
+  if(!x)return '직전 버전 보관본이 없어 세지 못함';
+  const axes=Object.entries(x.by_axis||{}).filter(([,n])=>n).map(([k,n])=>`${k} ${n}종`).join(' · ');
+  return (x.species_changed?`${x.species_changed}종 값 변동${axes?' ('+axes+')':''}`:'값 변동 없음')+
+    (x.matrix_type_changed===null||x.matrix_type_changed===undefined?'':` · 유형 변동 ${x.matrix_type_changed}종`)+
+    (Number.isInteger(x.matrix_points)?` · 매트릭스 점 ${x.matrix_points}개`:'');
+}
+function renderMethodChangelog(){
+  const box=$('mt-changelog');if(!box)return;
+  const L=methodChangelog;
+  if(!L){box.innerHTML=`<p class="fine">${data?'변경 기록 파일(method-changelog.json)을 읽지 못했습니다. 기록은 저장소의 research/method-changelog.json에 있습니다.':'자료를 불러오는 중입니다.'}</p>`;return;}
+  const c=L.constants||{},still=['mfpi_weights','bbvi_default_food_weight','matrix_thresholds'].every(k=>c[k]&&!c[k].changed_in?.length);
+  const doc=path=>`<a href="${esc(CL_REPO+path)}" target="_blank" rel="noopener">${esc(path.split('/').pop())}</a>`;
+  const item=e=>`<li class="mt-cl-item" id="${clSlug(e.method_version)}" data-decision="${esc(e.decision_date||'')}" data-published="${esc(e.published_on)}">`+
+    `<p class="mt-cl-head"><b>${esc(e.method_version.replace('verified-',''))}</b><span class="mt-cl-kind">${esc(e.kind)}</span>${e.preregistration?'<span class="mt-cl-pre">사전 등록</span>':''}</p>`+
+    `<p class="mt-cl-sum">${esc(e.summary)}</p>`+
+    `<details class="mt-cl-more"><summary>이유 · 결정 · 점수 영향</summary><dl>`+
+    `<dt>이유</dt><dd>${esc(e.reason)}</dd>`+
+    `<dt>결정</dt><dd>${esc(e.decided_by)}${e.decision_date?' · '+esc(e.decision_date):''}</dd>`+
+    `<dt>결정 시점</dt><dd>${esc(CL_TIMING[e.timing]||e.timing)} · ${esc(e.timing_basis)}</dd>`+
+    `<dt>점수 영향</dt><dd>${esc(clImpact(e.score_impact))}${e.compared_with?` <small>(${esc(e.compared_with.replace('verified-',''))}와 비교)</small>`:''}</dd>`+
+    `<dt>기록</dt><dd>${[e.preregistration?'사전 등록 '+doc(e.preregistration):'',...(e.records||[]).map(doc)].filter(Boolean).join(' · ')||'—'}</dd>`+
+    `</dl></details></li>`;
+  const days=new Map();
+  for(const e of [...L.entries].reverse()){if(!days.has(e.published_on))days.set(e.published_on,[]);days.get(e.published_on).push(e);}
+  const n=L.counts||{};
+  box.innerHTML=`<div class="mt-cl-top"><p class="mt-cl-now">지금 버전 <b>${esc(L.current?.label||'')}</b></p><p class="fine">${esc(L.current?.note||'')}</p>`+
+    `<ul class="mt-cl-facts"><li><b>${esc(n.versions)}</b>공개한 방법 버전</li><li><b>${esc(n.rule_changed)}</b>규칙·판단이 바뀐 버전</li><li><b>${esc(n.preregistered)}</b>사전 등록을 거친 변경</li>`+
+    `<li><b>${still?0:'—'}</b>가중치·구분선 변경</li></ul>`+
+    `<p class="fine">${still?`가중치(MFPI ${esc(c.mfpi_weights.value.join('·'))}, BBVI ${esc(c.bbvi_default_food_weight.value.toFixed(1))})와 구분선 ${esc(c.matrix_thresholds.value[0])}은 처음 정한 값 그대로입니다. `:''}`+
+    `‘사전 등록’은 그 버전의 규칙을 코드와 값보다 먼저 단독 커밋으로 남긴 변경입니다. 결정 시점은 기록에 적힌 대로이며, 원장 전체는 ${doc('research/method-changelog.json')}에 있습니다.</p></div>`+
+    `<ol class="mt-cl-days">${[...days].map(([d,es])=>`<li class="mt-cl-day"><p class="mt-cl-date"><time datetime="${esc(d)}">${esc(d)}</time><small>${es.length}개 버전</small></p><ol class="mt-cl-list">${es.map(item).join('')}</ol></li>`).join('')}</ol>`;
+}
+// '방법 결정' anywhere on the page opens fold 04 at that decision date. Text from the records arrives through many renderers,
+// so the words are turned into buttons where they land (never inside a button, link, summary or the timeline itself).
+const DECISION_WORD=/(?:(\d{4}-\d{2}-\d{2}) )?방법 결정(?: (\d{4}-\d{2}-\d{2})|\((\d{4}-\d{2}-\d{2})\))?/g;
+function linkDecisions(root){
+  if(!root||typeof document==='undefined')return;
+  const skip='button,a,summary,option,textarea,script,style,title,svg,.mt-changelog,.status-pop,.bbc-panel';
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('방법 결정')&&!n.parentElement?.closest(skip)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  for(const node of nodes){
+    const text=node.nodeValue,frag=document.createDocumentFragment();let last=0;
+    for(const m of text.matchAll(DECISION_WORD)){
+      frag.append(text.slice(last,m.index));
+      const b=document.createElement('button');b.type='button';b.className='md-link';b.textContent=m[0];
+      b.dataset.decision=m[1]||m[2]||m[3]||'';b.title='방법 변경 기록에서 이 결정 보기';frag.append(b);last=m.index+m[0].length;
+    }
+    frag.append(text.slice(last));node.replaceWith(frag);
+  }
+}
+function openChangelog(date){
+  setView('method',false);
+  const fold=$('mt-acc-04');if(fold)fold.open=true;
+  const items=[...document.querySelectorAll('#mt-changelog .mt-cl-item')];
+  const hits=date?items.filter(i=>i.dataset.decision===date):[];
+  const target=hits[0]||(date&&items.find(i=>i.dataset.published===date))||fold;
+  requestAnimationFrame(()=>{methodGo(target);for(const t of hits.length?hits:[target]){t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),1800);}});
+}
+if(typeof document!=='undefined'&&globalThis.MutationObserver){
+  new MutationObserver(list=>{for(const r of list)for(const n of r.addedNodes)linkDecisions(n.nodeType===1?n:n.parentNode);}).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('click',e=>{const b=e.target.closest?.('.md-link');if(!b)return;e.preventDefault();openChangelog(b.dataset.decision);});
 }
 // Journey links, drawn from where the boxes actually are: MFPI → BBVI, MBPI → BBVI, 보전 → MCUI, BBVI → 두 축, MCUI → 두 축.
 // No line joins BBVI and MCUI. Redrawn whenever the panel changes size (also when the tab first shows it).
