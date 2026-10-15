@@ -4215,8 +4215,12 @@ class Verified415Tests(unittest.TestCase):
         self.assertEqual(set(self.new), set(self.old))
         for aphia, s in self.new.items():
             o = self.old[aphia]
-            for key in ("scores", "scores_unrounded", "conservation_status", "priority_survey_reasons", "information_sufficiency"):
+            for key in ("scores", "scores_unrounded", "priority_survey_reasons", "information_sufficiency"):
                 self.assertEqual(s.get(key), o.get(key), (s["korean_name"], key))
+            # the conservation state is the same; only the two no-official-category labels read the 4.15 words
+            cs, co = dict(s["conservation_status"]), dict(o["conservation_status"])
+            self.assertEqual(cs.pop("label").replace("공식 보전 평가 대상 외", "보전평가 미확인"), co.pop("label"), s["korean_name"])
+            self.assertEqual(cs, co, s["korean_name"])
         old = self.old_report["method"]["matrix"]
         for key in ("threshold", "types", "cell_colour_precedence"):
             self.assertEqual(self.matrix.get(key), old.get(key), key)
@@ -4225,18 +4229,19 @@ class Verified415Tests(unittest.TestCase):
 
     def test_the_gap_is_a_display_rule_not_a_fifth_type(self):
         gap = self.matrix["information_gap"]
-        self.assertEqual((gap["id"], gap["label"]), ("information_gap", "보전 평가 공백 · 우선 조사"))
-        self.assertEqual(gap["status"], "정보충분도 낮음 · 우선 조사(보전 평가 공백)")
-        self.assertEqual(gap["reasons_ko"], {"korea_status_unconfirmed": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
-                                             "no_conservation_assessment": "IUCN·한국 국가평가 모두 없음"})
+        self.assertEqual((gap["id"], gap["label"]), ("information_gap", "공식 보전 평가 대상 외"))
+        self.assertEqual(gap["reasons_ko"], {"national_out_of_scope": "IUCN 미평가(NE) · 국가 적색목록 평가 대상 분류군 아님",
+                                             "national_not_listed": "IUCN 미평가(NE) · 국가 적색목록 미수록"})
         self.assertNotIn("information_gap", self.matrix["types"])
         self.assertEqual(self.matrix["types_note"], "information_gap은 다섯 번째 사분면이 아니라 MCUI가 없는 종의 별도 표시다.")
-        self.assertEqual(self.matrix["untyped_label"], "보전 평가 공백 · 우선 조사")
+        self.assertEqual(self.matrix["untyped_label"], "공식 보전 평가 대상 외")
         self.assertIn("withdrawn in 4.14", self.matrix["substitute_mcui_note"])
-        gap_rows = [s for s in self.new.values() if s["scores"]["BBVI"] is not None and s["scores"]["MCUI"] is None]
+        self.assertTrue((ROOT / gap["official_check"]["record"]).exists())
+        # every species with a BBVI and no MCUI is named once in the 2026-10-15 official check (IUCN 2026-1, national red list)
+        gap_rows = {a for a, s in self.new.items() if s["scores"]["BBVI"] is not None and s["scores"]["MCUI"] is None}
+        named = [a for k in gap["reasons_ko"] for a in gap["official_check"][k]]
         self.assertEqual(len(gap_rows), 14)
-        for s in gap_rows:
-            self.assertTrue(set(s["priority_survey_reasons"]) & set(gap["reasons_ko"]), s["korean_name"])
+        self.assertEqual(sorted(named), sorted(gap_rows))
 
 
 if __name__ == "__main__":

@@ -29,8 +29,13 @@ const gapRows=readiness.species.filter(r=>r.type==='information_gap');
 assert.equal(gapRows.length+readiness.matrix_points,readiness.species.length,'30 = matrix + gap');
 for(const r of gapRows){
   assert.ok(r.scores.BBVI!==null&&r.scores.MCUI===null&&r.matrix_type===null&&!r.matrix_eligible,r.korean_name);
-  assert.equal(r.gap_reason_ko,r.priority_survey_reasons.map(k=>rule.information_gap.reasons_ko[k]).join(' · '));
-  assert.equal(r.next_survey_ko,rule.information_gap.next_survey_ko[r.priority_survey_reasons[0]]);
+  // 4.15: the reason is the 2026-10-15 official check (IUCN 2026-1 NE; national red list: taxon not assessed, or not listed)
+  const chk=rule.information_gap.official_check, key=Object.keys(rule.information_gap.reasons_ko).filter(k=>chk[k].includes(r.aphia_id));
+  assert.equal(key.length,1,r.korean_name);
+  assert.equal(r.gap_reason_ko,rule.information_gap.reasons_ko[key[0]]);
+  assert.equal(r.official_check_ko,`${chk.sources_ko} · ${chk.date} 확인`);
+  assert.equal(r.next_survey_ko,rule.information_gap.next_survey_ko);
+  assert.ok(!/공백|우선 조사|정보충분도/.test(r.gap_reason_ko+r.next_survey_ko+rule.information_gap.label+rule.information_gap.status),'4.15: plain checked words only');
   assert.deepEqual([r.information_sufficiency.level,r.information_sufficiency.basis,r.information_sufficiency.mcui_ratio],['low','MCUI',0]);
 }
 for(const r of readiness.species.filter(r=>r.type!=='information_gap'))assert.equal(r.type,r.matrix_type);
@@ -82,7 +87,8 @@ assert.equal(ctx.cellMatrixType(cell(fake(null,80),fake(null,null))).type,null);
 
 // (5) Card text: type and information sufficiency stay separate labels.
 // 4.3: every species is typed and none is flagged, so the card wording is checked on a copy without an MCUI
-const oneFlagged=next.species.find(s=>s.assessment?.priority_survey&&!ctx.matrixType(s))||(s=>({...s,assessment:{...s.assessment,priority_survey:true,priority_survey_reasons:['low_information_sufficiency'],scores:{...s.assessment.scores,MCUI:null}}}))(next.species[0]);
+// 4.15: the 14 flagged species without a type read their official-check reason instead, so the copy is always used
+const oneFlagged=(s=>({...s,assessment:{...s.assessment,priority_survey:true,priority_survey_reasons:['low_information_sufficiency'],scores:{...s.assessment.scores,MCUI:null}}}))(next.species[0]);
 assert.match(ctx.valueSpeciesType(oneFlagged),/매트릭스 유형 미산출[^]*우선 조사 대상[^]*점수와 별도/);
 assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/활용 연구 검토[^]*한국 국가 평가 기반/);
 // (6) The BBVI slider moves the type: at w = 1 BBVI is MFPI alone, and the client re-types with it.

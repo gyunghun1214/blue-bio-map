@@ -596,7 +596,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison .stock-decline.scored{border-color:#f2b84b}
 #compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
 
-/* ---------- 4.15: information gap (보전 평가 공백 · 우선 조사) ----------
+/* ---------- 4.15: information gap (공식 보전 평가 대상 외) ----------
    One line splits all species into the matrix and the gap; the rail under the plot holds the gap species at their BBVI only,
    on the plot's own horizontal scale (same side margins as .matrix-frame). The marker is a grey double ring, apart from the
    filled, hollow, dashed (MBPI floor) and diamond matrix markers; it has no type colour. */
@@ -630,6 +630,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-gap p+p{margin-top:3px}
 #compare .cp-gap .gap-ref{color:var(--cs-ink3)}
 #compare .cp-gap .gap-next b{margin-right:6px;color:var(--cs-ink);font-weight:700}
+#compare .cp-gap .gap-src{color:var(--cs-ink3);font-size:11.5px}
 #compare #comparison .dt-type.gap b::before{content:"";flex:none;box-sizing:border-box;width:9px;height:9px;border:2.5px double #9aa8b1;border-radius:50%}
 @media (max-width:740px){
   #compare .cmp-scope-line{font-size:12.5px}

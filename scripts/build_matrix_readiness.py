@@ -58,23 +58,24 @@ def _layers(s, rule):
 
 
 def _information_gap(row, assessed, rule):
-    """4.15 (config matrix.information_gap): a species with a BBVI and no MCUI is shown on a rail under the matrix at its BBVI
-    only, as a priority-survey target apart from the four types. Display fields only: every word comes from the rule, the
-    sufficiency ratios are the report's own, and no MCUI, type or score is made here."""
+    """4.15 (config matrix.information_gap): a species with a BBVI and no MCUI is shown on a line under the matrix at its BBVI only,
+    apart from the four types, as '공식 보전 평가 대상 외' with the reason from the config's official check (IUCN 2026-1, Korean
+    national red list). Display fields only: every word comes from the rule, the sufficiency ratios are the report's own, and no
+    MCUI, type or score is made here."""
     gap = (rule or {}).get("information_gap")
     if not gap:
         return {}
     if row["matrix_eligible"] or row["scores"]["BBVI"] is None or row["scores"]["MCUI"] is not None:
         return {"type": row.get("matrix_type")}
-    reasons = (assessed or {}).get("priority_survey_reasons") or []
-    known = [r for r in reasons if r in gap["reasons_ko"]]  # the released report gives every gap row one (tests check it)
+    check = gap.get("official_check") or {}
+    known = [k for k in gap["reasons_ko"] if row["aphia_id"] in check.get(k, [])]  # the released config names every gap row (tests check it)
     suff = (assessed or {}).get("information_sufficiency") or {}
     state = ((assessed or {}).get("conservation_status") or {}).get("state")
     return {"type": gap["id"],
             "information_sufficiency": {"level": "low", "basis": "MCUI",
                                         "mcui_ratio": (suff.get("MCUI") or {}).get("ratio"), "mean_ratio": suff.get("mean_ratio")},
-            **({"gap_reason_ko": " · ".join(gap["reasons_ko"][r] for r in known),
-                "next_survey_ko": gap["next_survey_ko"][known[0]]} if known else {}),
+            **({"gap_reason_ko": gap["reasons_ko"][known[0]], "official_check_ko": f"{check['sources_ko']} · {check['date']} 확인",
+                "next_survey_ko": gap["next_survey_ko"]} if known else {}),
             **({"reference_note_ko": gap["reference_note_ko"]} if state == "other_region_only" else {})}
 
 

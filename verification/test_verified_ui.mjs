@@ -73,15 +73,15 @@ html=ctx.renderScores(by(145721));
 // 멍게's reporting-rate ratio 0.655 reached the decline threshold, so its check gives no MCUI.
 // 4.14 (prereg-4.14 2·3): neither the Primorsky row nor the Rapid LC check is an IUCN global or Korean national category, so
 // 미역 has no MCUI; the state is said in words and both lists stay visible as references
-assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인 · 자체 예비검토 참고\(공식 평가 아님 · 역검증 기준 미충족\) · 점수 아님/);
+assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>공식 보전 평가 대상 외 · 자체 예비검토 참고\(공식 평가 아님 · 역검증 기준 미충족\) · 점수 아님/);
 // 4.14: a Rapid LC reference never reads as a likely low-risk category
 assert.doesNotMatch(html,/LC 가능성|예비 평가 참고/);
-assert.match(html,/<b>보전평가 상태: 보전평가 미확인 · 다른 나라·지역 평가 참고<\/b>/);
+assert.match(html,/<b>보전평가 상태: 공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고<\/b>/);
 assert.match(html,/다른 나라 지방 평가 \(연해주, 러시아\) · [^<]*\(EN\) \(EN에 해당하는 이름 · 숫자로 바꾸지 않음\) · 참고 · MCUI·유형·지도 색에 쓰지 않음/);
 assert.match(html,/자체 예비검토\(Rapid LC\) · 공식 평가 아님<\/b>/);
 assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가/);
 {const sq=ctx.renderScores(by(250680));
-  assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인<\/b>/);
+  assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>공식 보전 평가 대상 외<\/b>/);
   assert.match(sq,/자체 예비평가\(Rapid LC\) 쓰지 않음 · MCUI 없음<\/b>: OBIS 보고율 비\(0\.655\)가 감소 기준\(0\.7\) 이하입니다/);
   assert.doesNotMatch(sq,/Rapid LC 충족 → LC 상당 → 10/);}
 {const lc=ctx.renderScores(by(145721));
@@ -211,8 +211,8 @@ assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI was the Primorsky value, 멍게's the scored Rapid LC check. 4.11: 미역 takes the Rapid LC check (the failed
 // back-test makes the Primorsky row reference only) and 멍게 has none (reporting-rate ratio at the decline threshold).
 // 4.14 (prereg-4.14 2·7): both are '보전평가 미확인' in words; 미역's Rapid LC check rides along as a reference, never a number
-assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small><small>자체 예비검토 참고 · 공식 평가 아님 · 역검증 기준 미충족 · 점수 아님<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>공식 보전 평가 대상 외<small>IUCN 미평가 · 낮은 점수 아님 · 보기<\/small><small>자체 예비검토 참고 · 공식 평가 아님 · 역검증 기준 미충족 · 점수 아님<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>공식 보전 평가 대상 외<small>IUCN 미평가 · 낮은 점수 아님 · 보기<\/small>/);
 assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0<small>/,'우뭇가사리 keeps its stock-decline lower bound');
 assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.
@@ -324,7 +324,7 @@ assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list')
 assert.equal(next.species[1].assessment.mcui_basis,null);
 assert.equal(next.species[1].assessment.mcui_substitute.use,'reference_only');
 assert.equal(next.species[1].assessment.conservation_status.state,'self_preliminary_only');
-assert.equal(ctx.state(next.species[1],'MCUI').label,'보전평가 미확인');
+assert.equal(ctx.state(next.species[1],'MCUI').label,'공식 보전 평가 대상 외');  // 4.15 words
 assert.equal(next.species[1].assessment.conservation_trace.iucn_state,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
 assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'validated');

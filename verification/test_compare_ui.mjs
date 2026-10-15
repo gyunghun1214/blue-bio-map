@@ -56,7 +56,7 @@ assert.ok(strip(tray()).includes('2종 이상 담으면 비교할 수 있습니�
 T.basket=ids.slice(0,3);T.selected=by(ROCKFISH);T.renderCompareProfile();
 let prof=$('cmp-profile').innerHTML;
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
-assert.ok(strip(prof).includes('근거 논문 1편')&&strip(prof).includes('보전평가 미확인'),'조피볼락 keeps its BBVI paper-count label and says its conservation state (4.14: Rapid LC is a reference)');
+assert.ok(strip(prof).includes('근거 논문 1편')&&strip(prof).includes('공식 보전 평가 대상 외'),'조피볼락 keeps its BBVI paper-count label and says its conservation state (4.14: Rapid LC is a reference; 4.15 words)');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 
@@ -112,24 +112,24 @@ for(const s of S){
 }
 T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(['비교집단','근거 논문 1편','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, paper count and basis note');
-// 4.15: a species with a BBVI and no MCUI is '보전 평가 공백 · 우선 조사' (정보충분도), never '유형 미산출' or '미배치'
+// 4.15: a species with a BBVI and no MCUI is '공식 보전 평가 대상 외' with its checked reason, never '유형 미산출' or '미배치'
 T.selected=by(250680);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
-assert.ok(prof.includes('보전 평가 공백')&&prof.includes('정보충분도 낮음 · 우선 조사')&&prof.includes('IUCN·한국 국가평가 모두 없음')&&prof.includes('다음에 필요한 조사'),'멍게: the gap words, its reason and the next survey');
-assert.ok(!prof.includes('유형 미산출')&&!prof.includes('미배치'),'no 유형 미산출 or 미배치 on a gap profile');
-T.selected=by(WAKAME);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
-assert.ok(prof.includes('IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인')&&prof.includes('다른 나라·지역 평가 참고 · 점수 미사용'),'미역: korea_status_unconfirmed and the other-region note');
+assert.ok(prof.includes('공식 보전 평가 대상 외')&&prof.includes('IUCN 미평가(NE) · 국가 적색목록 평가 대상 분류군 아님')&&prof.includes('2026-10-15 확인')&&prof.includes('매트릭스 배치'),'멍게: the words, its checked reason, where and when it was checked, and when it joins the matrix');
+assert.ok(!/유형 미산출|미배치|공백|우선 조사|정보충분도 낮음/.test(prof),'no 유형 미산출 / 미배치 / 공백 / 우선 조사 on a profile off the matrix');
+T.selected=by(836041);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+assert.ok(prof.includes('IUCN 미평가(NE) · 국가 적색목록 미수록')&&prof.includes('다른 나라·지역 평가 참고 · 점수 미사용'),'시카메굴: a listed taxon, not listed, and the other-region note');
 // the split: every species in the matrix or on the rail, counted from the data (30 = 16 + 14 on verified-4.15)
 const split=T.gapSplit(), R=JSON.parse(read('matrix-readiness.json'));
 assert.equal(split.placed.length+split.gap.length+split.other.length,total);
 assert.equal(split.placed.length,R.matrix_points);assert.equal(split.gap.length,R.species.filter(r=>r.type==='information_gap').length);
 assert.equal(split.other.length,0,'4.15: every species is in the matrix or on the gap rail');
-assert.match(split.line,new RegExp(`^전체 ${total}종\\(운영 \\d+ · 조사 후보 \\d+\\) = 매트릭스 ${R.matrix_points}종 \\+ 보전 평가 공백 ${split.gap.length}종\\(운영 \\d+ · 후보 \\d+\\)$`));
+assert.match(split.line,new RegExp(`^전체 ${total}종\\(운영 \\d+ · 조사 후보 \\d+\\) = 매트릭스 ${R.matrix_points}종 \\+ 공식 보전 평가 대상 외 ${split.gap.length}종\\(운영 \\d+ · 후보 \\d+\\)$`));
 // the rail: one hollow grey point per gap species at its BBVI, stressed at BBVI >= the threshold (6 at the official weight)
 T.renderGapRail(false);const rail=$('gap-points').innerHTML, railPts=[...rail.matchAll(/class="gap-point( hi)?" data-aphia="(\d+)" data-b="([\d.]+)"/g)];
 assert.equal(railPts.length,split.gap.length);
 for(const [,hi,id,b] of railPts){const sp=by(Number(id));assert.ok(T.infoGap(sp),sp.label);assert.equal(Number(b),T.pilotScore(sp,'BBVI'));assert.equal(!!hi,T.gapHigh(sp),sp.label);}
 assert.deepEqual(railPts.filter(p=>p[1]).map(p=>by(Number(p[2])).label).sort(),['가시파래','감태','꼬시래기','넙치','미역','톳'].sort(),'the six BBVI >= 50 at w = 0.50');
-assert.ok(rail.includes('활용 지표는 높지만 보전 평가가 없음'));
+assert.ok(rail.includes('활용 지표 높음 · 공식 보전 평가 대상 외'));
 T.renderGapRail(true);assert.equal($('gap-points').innerHTML,'','the simulated example empties the rail');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
 const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});

@@ -1,7 +1,7 @@
 {
  "method_version": "verified-4.15",
  "status": "released",
- "changes_from": "verified-4.14 (2026-10-14). Display rules only, no score changed (team request 2026-10-15, the application's information-sufficiency promise). (1) matrix.information_gap: a species with a BBVI and no MCUI (no IUCN global or Korean national category, mcui_scope) is shown on its own rail under the matrix, at its BBVI only, labelled 'information sufficiency low (conservation axis) · priority survey'; it gets no MCUI, no type and no map colour, as in 4.14. (2) matrix.types_note says information_gap is not a fifth quadrant. (3) matrix.untyped_label names the grey cell after the gap. (4) matrix.substitute_mcui_note marks the range-state, 4.2 sub-national and 4.3 scored Rapid LC sentences as withdrawn in 4.14. MFPI, MBPI, MCUI, BBVI, scores_unrounded and every matrix type are identical to 4.14.",
+ "changes_from": "verified-4.14 (2026-10-14). Display rules only, no score changed (team request 2026-10-15, the application's information-sufficiency promise). (1) matrix.information_gap: a species with a BBVI and no MCUI (no IUCN global or Korean national category, mcui_scope) is shown on its own rail under the matrix, at its BBVI only, labelled '공식 보전 평가 대상 외' with the reason from the 2026-10-15 official check (IUCN Red List 2026-1: not evaluated; Korean national red list: taxon outside its assessed groups, or not listed); it gets no MCUI, no type and no map colour, as in 4.14. (2) matrix.types_note says information_gap is not a fifth quadrant. (3) matrix.untyped_label and mcui_scope.state_labels (other_region_only, self_preliminary_only) use the same words. (4) matrix.substitute_mcui_note marks the range-state, 4.2 sub-national and 4.3 scored Rapid LC sentences as withdrawn in 4.14. MFPI, MBPI, MCUI, BBVI, scores_unrounded and every matrix type are identical to 4.14.",
  "nutrition": {
   "snapshot": "research/verified-indices/snapshots/rda-db-10.4-marine-raw-2026-10-01.json",
   "components": {
@@ -781,24 +781,43 @@
   "include_floor_bbvi": true,
   "type_note": "연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님",
   "threshold_label": "탐색적 구분선",
-  "untyped_label": "보전 평가 공백 · 우선 조사",
+  "untyped_label": "공식 보전 평가 대상 외",
   "types_note": "information_gap은 다섯 번째 사분면이 아니라 MCUI가 없는 종의 별도 표시다.",
   "information_gap": {
    "id": "information_gap",
-   "label": "보전 평가 공백 · 우선 조사",
-   "status": "정보충분도 낮음 · 우선 조사(보전 평가 공백)",
-   "sufficiency_basis": "보전(MCUI) 입력",
-   "rule": "A species whose BBVI is published and whose MCUI is not (no IUCN global or Korean national category under mcui_scope) is information_gap: it sits on a rail under the matrix at its BBVI only, with no vertical position, no MCUI, no type and no map colour. No MCUI is inferred or substituted (no 0, no LC-equivalent 10, no relative's value, no Rapid LC). It is listed as a priority-survey target apart from the four types.",
+   "label": "공식 보전 평가 대상 외",
+   "status": "공식 보전 평가 대상 외 · 사분면 밖 별도 표시",
+   "rule": "A species whose BBVI is published and whose MCUI is not (no IUCN global or Korean national category under mcui_scope) is information_gap: it sits on a line under the matrix at its BBVI only, with no vertical position, no MCUI, no type and no map colour. No MCUI is inferred or substituted (no 0, no LC-equivalent 10, no relative's value, no Rapid LC). Its reason is the official check below: IUCN Red List 2026-1 (not evaluated) and the Korean national red list (taxon outside its assessed groups, or not listed).",
+   "official_check": {
+    "date": "2026-10-15",
+    "sources_ko": "IUCN 적색목록 2026-1 색인 · 국가생물적색자료집 통합본(2019–2024)",
+    "record": "research/verified-indices/mcui-official-search-2026-10-15.md",
+    "national_out_of_scope": [
+     145721,
+     250680,
+     494972,
+     377084,
+     371986,
+     234476,
+     494853,
+     236157,
+     145086,
+     275816,
+     274849,
+     254538,
+     1061762
+    ],
+    "national_not_listed": [
+     836041
+    ]
+   },
    "reasons_ko": {
-    "korea_status_unconfirmed": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
-    "no_conservation_assessment": "IUCN·한국 국가평가 모두 없음"
+    "national_out_of_scope": "IUCN 미평가(NE) · 국가 적색목록 평가 대상 분류군 아님",
+    "national_not_listed": "IUCN 미평가(NE) · 국가 적색목록 미수록"
    },
-   "next_survey_ko": {
-    "korea_status_unconfirmed": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
-    "no_conservation_assessment": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치"
-   },
+   "next_survey_ko": "IUCN 또는 국가 적색목록에 평가가 공표되면 매트릭스에 배치",
    "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
-   "highlight_note_ko": "활용 지표는 높지만 보전 평가가 없음"
+   "highlight_note_ko": "활용 지표 높음 · 공식 보전 평가 대상 외"
   }
  },
  "mcui_substitutes": {
@@ -1278,8 +1297,8 @@
    "official_scored": "공식 평가",
    "official_dd": "공식 평가 DD(정보 부족)",
    "official_ne": "공식 NE(미평가)",
-   "other_region_only": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-   "self_preliminary_only": "보전평가 미확인 · 자체 예비검토 참고",
+   "other_region_only": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
+   "self_preliminary_only": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
    "not_found": "보전평가 미확인",
    "lookup_failed": "조회 실패"
   },

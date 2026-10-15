@@ -67,7 +67,7 @@ class ExpeditionStops(unittest.TestCase):
         ascidian = next(s for s in self.out["stops"] if s["aphia_id"] == 250680)["mcui"]
         self.assertEqual((ascidian["basis"], ascidian["category"]), (None, None))
         # 4.14 (prereg-4.14 2): every species without an IUCN global or Korean national category says its state instead
-        self.assertTrue(ascidian["label"].startswith("보전평가 미확인"), ascidian["label"])
+        self.assertTrue(ascidian["label"].startswith("공식 보전 평가 대상 외"), ascidian["label"])  # 4.15 words (4.14: 보전평가 미확인)
         self.assertEqual(ascidian["status"]["state"], "self_preliminary_only")
         for stop in self.out["stops"]:
             st = self.species[stop["aphia_id"]]["conservation_status"]

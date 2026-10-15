@@ -370,12 +370,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -895,12 +895,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -1145,12 +1145,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -1640,12 +1640,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -2160,12 +2160,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -3070,12 +3070,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -3343,12 +3343,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -4384,12 +4384,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -5253,12 +5253,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
@@ -5507,12 +5507,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -6038,12 +6038,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -6586,12 +6586,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -7075,12 +7075,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -7338,12 +7338,12 @@
     "criteria": null,
     "driver": null,
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
+    "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
+     "label": "공식 보전 평가 대상 외 · 자체 예비검토 참고",
      "state": "self_preliminary_only"
     },
     "stock_decline": {
@@ -7591,12 +7591,12 @@
     "criteria": null,
     "driver": "stock_decline",
     "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고 · 멸종위험 평가 미확인 · 자원 감소 신호(하한)",
+    "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고 · 멸종위험 평가 미확인 · 자원 감소 신호(하한)",
     "mapping": null,
     "scope": null,
     "source": null,
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
+     "label": "공식 보전 평가 대상 외 · 다른 나라·지역 평가 참고",
      "state": "other_region_only"
     },
     "stock_decline": {
