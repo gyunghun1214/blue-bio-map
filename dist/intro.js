@@ -40,7 +40,7 @@ function gateNote(g){
   if(d.state==='offline')return `오프라인 시연 · ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
   if(d.state==='snapshot')return `운영 DB에 연결하지 못해 ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
   if(d.state==='empty')return '운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.';
-  if(d.state==='error')return '자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.';
+  if(d.state==='error')return '자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.';
   return '';
 }
 // The design's "N종의 해양생물 · 공개 데이터 기반", with the published/candidate split kept in view. Empty until known.
@@ -380,6 +380,7 @@ void main(){
     if(shown)return;shown=true;
     el.classList.add('is-ready');
     q('.gate-loader').setAttribute('aria-hidden','true');
+    for(const b of el.querySelectorAll('#gate-enter,[data-go]'))b.removeAttribute('aria-disabled');
     const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
     layout();
     // keyboard and mouse: focus the button (Enter/Space act on it), its ring shown only once the keyboard is used (html.kb);
@@ -632,6 +633,8 @@ void main(){
     };
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce,true));
+    // the copy shows from the first paint; the ways in say they wait until the screen is ready (intro.css dims them)
+    for(const b of el.querySelectorAll('#gate-enter,[data-go]'))b.setAttribute('aria-disabled','true');
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     document.addEventListener('keydown',e=>{
