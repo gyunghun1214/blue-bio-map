@@ -232,6 +232,8 @@ function evidenceProfileBlock(s){
   return `<p class="fine ev-profile"><b>근거 프로필</b> · ${esc(evidenceProfileText(s))}${dep?`<br>점수 의존도: ${esc(dep)}`:''}<br>`+
     `문헌 수(산출 항목·독립 논문)와 최상위 항목의 독립 재현은 따로 셉니다. 재현이 없으면 최상위 항목에 근거 계수가 곱해져 있고, 다른 기원 시료·같은 연구 그룹·DOI 없는 문헌은 재현으로 세지 않습니다. 표시 전용이며 점수에 쓰지 않습니다.</p>`;
 }
+// 4.16: the species profile carries the same line and, beside MBPI, how much the score leans on its top item
+const cpEvidence=s=>{const t=evidenceProfileText(s),dep=evidenceDependence(s);return t?`<p class="cp-evidence"><b>근거 프로필</b> ${esc(t)}${dep?`<span class="cp-dep">${esc(dep)}</span>`:''}</p>`:'';};
 const evidenceCardLine=s=>{const t=evidenceProfileText(s,true);return t?`<span class="card-evidence" title="${esc(evidenceProfileText(s))}">${esc(t)}<span class="sr-only"> (${esc(evidenceProfileText(s))})</span></span>`:litCardLine(s);};
 const axisStateNote={lookup_failed:'지표 보고서를 불러오지 못했습니다. 산출 보류가 아니며, 다시 불러오기로 재시도할 수 있습니다.',
   technical_error:'공개 보고서의 근거를 화면에서 다시 계산했을 때 맞지 않아 이 값을 숨겼습니다. 자료 부족에 따른 산출 보류와 다릅니다.',
@@ -3734,7 +3736,7 @@ function renderCompareProfile(){
     `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
     // the plain verdict never stands alone: the formal type name follows it (unplaced: 유형 미산출 and why)
     `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixPlainNote())}"`:''}><i class="cp-sw"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span>${t?esc(matrixTypeLabel(t)):'매트릭스 미배치 · BBVI·MCUI 한 쌍 없음'}</span><span class="cp-status">${s.catalog?'조사 후보':'운영 발행'}</span></p></div>`+
-    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}</section>`+
+    `<section class="cp-use" aria-label="활용 가치"><div class="cp-main"><h3><b>활용 가치</b> <span>BBVI</span></h3>${chip('BBVI')}${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}${officialNote(s)?`<p class="cp-official">${esc(officialNote(s))} · 탐색 보기</p>`:''}</div>${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}${rest?`<p class="cp-rest">${esc(rest)}</p>`:''}${cpEvidence(s)}</section>`+
     `<section class="cp-con" aria-label="보전 필요성"><div class="cp-main"><h3><b>보전 필요성</b> <span>MCUI</span></h3>${chip('MCUI')}${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div><p class="cp-tag">${esc(cmpTag(s,'MCUI'))}</p></section>`+
     `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-expanded="${!$('cmp-more').hidden}" aria-controls="cmp-more" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">판단 범위·남은 확인 사항·원문을 펼칩니다 · 숫자를 누르면 그 지표의 근거</span>`+
     `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;

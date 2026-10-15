@@ -225,6 +225,10 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-sub .cp-bar{height:6px}
 #compare .cp-sub-num{justify-self:end;border:0;background:none;padding:0;color:var(--cs-ink);font:inherit;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer}
 #compare .cp-rest,#compare .cp-tag{margin:12px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
+/* 4.16 evidence profile: amount and top-item replication on one line, the MBPI dependence under it */
+#compare .cp-evidence{margin:10px 0 0;padding:8px 10px;border-left:2px solid var(--cs-line2);color:var(--cs-ink2);font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+#compare .cp-evidence b{display:block;font-size:11px;letter-spacing:.04em;color:var(--cs-ink)}
+#compare .cp-evidence .cp-dep{display:block;margin-top:4px}
 #compare .cp-actions{padding-top:20px}
 #compare .cp-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0}
 #compare .cp-links .cmp-link{font-size:14px;font-weight:500;text-decoration:none}

@@ -235,7 +235,7 @@ try{
     q('#matrix-points [data-aphia="836033"]').click();
     r.ring=q('#matrix-points [data-aphia="836033"]').getAttribute('aria-current')==='true'&&document.querySelectorAll('#matrix-points [aria-current]').length===1;
     const p=q('#cmp-profile').textContent;
-    r.profile=q('#cmp-profile-name').textContent==='참굴'&&p.includes('72')&&!p.includes('71.9')&&p.includes('한국 국가 평가')&&p.includes('IUCN 기반 MCUI와 직접 비교 불가');
+    r.profile=q('#cmp-profile-name').textContent==='참굴'&&p.includes('72')&&!p.includes('71.9')&&p.includes('산출 항목 6 · 독립 논문 4편')&&p.includes('최상위 항목 재현 시도 있음(인정 안 됨: 다른 기원 시료)')&&p.includes('최상위 항목 제외 시 MBPI 63')&&p.includes('한국 국가 평가')&&p.includes('IUCN 기반 MCUI와 직접 비교 불가');
     cmpBasket=[];renderCompare();toggleBasket(836033);toggleBasket(836033);r.pressTwiceRemoves=cmpBasket.length===0;
     const ids=data.species.map(s=>s.aphiaID);ids.slice(0,3).forEach(toggleBasket);const fourth=toggleBasket(ids[3]);
     r.max3=fourth===false&&cmpBasket.length===3&&new Set(cmpBasket).size===3&&q('#cmp-tray .ct-count').textContent.trim()==='3 / 3'&&!q('#cmp-tray [data-basket-add]');
