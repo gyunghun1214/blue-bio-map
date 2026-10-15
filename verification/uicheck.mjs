@@ -284,26 +284,37 @@ try{
     q('#cmp-basis-toggle').click();r.panel=vis(q('#bbvi-weight'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&!vis(q('#cmp-weight-badge'))&&!vis(q('#cmp-matrix-badge'))&&q('#cmp-weight-reset').disabled;
     const left0=q('#matrix-points [data-aphia="241776"]')?.style.left;
     r.sum=[...Array(21).keys()].every(k=>{const m=weightPair(k/20).match(/MBPI (\\S+) · MFPI (\\S+)/);return Math.round(Number(m[1])*100)+Math.round(Number(m[2])*100)===100;});
-    q('[data-w-preset="16"]').click();await wait(250);
-    r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80'&&q('[data-w-preset="16"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.20, MFPI 0.80';
-    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.20 · MFPI 0.80 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.20 · MFPI 0.80';
+    q('[data-w-preset="15"]').click();await wait(250);
+    r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.25 · MFPI 0.75'&&q('[data-w-preset="15"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.25, MFPI 0.75';
+    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.25 · MFPI 0.75 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.25 · MFPI 0.75';
     const moved=data.species.filter(s=>matrixType(s)!==officialType(s));
     r.moved=moved.length>0&&q('#bbvi-weight-moved').textContent.startsWith('공식값과 유형이 다른 종 '+moved.length+'종')&&document.querySelectorAll('#matrix-points .matrix-point.w-moved').length===moved.filter(assessedForMatrix).length;
     const pt=q('#matrix-points [data-aphia="241776"]');r.point=!!pt&&pt.style.left!==left0&&pt.title.includes('공식 ');
-    r.hash=/[#&]w=0\\.80(&|$)/.test(location.hash);
+    r.hash=/[#&]w=0\\.75(&|$)/.test(location.hash);
     r.profile=q('#cmp-profile').textContent.includes('공식 72')&&!q('#cmp-profile').textContent.includes('공식 71.9');r.cards=q('#species-list [data-species="241776"]').textContent.includes(scoreText(data.species.find(x=>x.aphiaID===241776),'BBVI',pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')))&&pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')!==36.1;
     setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&vis(q('#cmp-table-badge'));setCompareMode('matrix');
     r.cells=cellTypes()!==cells0;
-    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.20 · MFPI 0.80');
+    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.25 · MFPI 0.75');
     r.candidates=document.getElementById('layer-unexplored-count')?.textContent===cand0;
     q('#value-weight-badge [data-w-reset]').click();await wait(250);r.mapReset=!vis(q('#value-weight-badge'))&&bbviWeight===.5;
     setMapMode('occurrence');setView('compare');setCompareMode('matrix');
-    q('[data-w-preset="4"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.80 · MFPI 0.20'&&/[#&]w=0\\.20(&|$)/.test(location.hash);
+    q('[data-w-preset="5"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.75 · MFPI 0.25'&&/[#&]w=0\\.25(&|$)/.test(location.hash);
     q('#cmp-weight-reset').click();await wait(250);
     setCompareMode('table');const table1=q('#comparison').textContent;setCompareMode('matrix');
     r.resetBadge=!vis(q('#cmp-matrix-badge'))&&q('#cmp-basis-now').textContent==='';r.resetHash=!/[#&]w=/.test(location.hash);r.resetTable=table1===table0;r.resetCells=cellTypes()===cells0;r.resetPoints=!document.querySelector('#matrix-points .w-moved');
     setBasisPop(false);return r})()`);
   check('BBVI weight slider: MBPI + MFPI = 1.00 at 21 steps, presets, 탐색 보기 badges (panel, matrix, table, value map), official value beside a re-mix, explore cards follow, moved-type list and dashed points, cell colours follow, unexplored count fixed, link w, official weight restores the first screen',Object.values(wt).every(Boolean),JSON.stringify(wt));
+  // 2026-10-15 MBPI evidence kind: the profile names the kind of the top evidence under MBPI (의약 표적 / 기능성 펩타이드 with the
+  // ACE·XO share) and shows MBPI-Rx on its own row; no value reads '의약 표적 근거 없음', never 0; the line stays inside the panel
+  const mk=await evaluate(`(async()=>{const r={},q=s=>document.querySelector(s),wait=ms=>new Promise(f=>setTimeout(f,ms));
+    setView('compare');setCompareMode('matrix');selectSpecies(145721);await wait(200);let p=q('#cmp-profile');
+    r.wakame=p.querySelector('.cp-kind-badge')?.textContent==='기능성 펩타이드(ACE·XO)'&&p.querySelector('.cp-kind-share')?.textContent==='최상위 근거 · ACE·XO 항목 8/8(100%)'&&p.querySelector('.cp-rx-none')?.textContent==='의약 표적 근거 없음'&&!p.querySelector('.cp-rx-num');
+    selectSpecies(504357);await wait(200);p=q('#cmp-profile');
+    r.ark=p.querySelector('.cp-kind-badge')?.dataset.kind==='drug'&&p.querySelector('.cp-kind-badge')?.textContent==='의약 표적(항균·항암·기타 표적)'&&p.querySelector('.cp-rx-num')?.textContent===scoreText(data.species.find(x=>x.aphiaID===504357),'MBPI',75);
+    const k=p.querySelector('.cp-kind').getBoundingClientRect(),x=p.querySelector('.cp-rx').getBoundingClientRect(),b=p.getBoundingClientRect();r.inside=k.left>=b.left&&k.right<=b.right+1&&x.right<=b.right+1&&k.height>0&&x.height>0;
+    selectSpecies(836033);await wait(200);r.order=(()=>{const m=q('#cmp-profile .cp-sub-num[data-prof-axis="MBPI"]'),kk=q('#cmp-profile .cp-kind'),rx=q('#cmp-profile .cp-rx');return !!m&&!!kk&&!!rx&&(m.compareDocumentPosition(kk)&4)&&(kk.compareDocumentPosition(rx)&4);})();
+    return r})()`);
+  check('MBPI evidence kind: profile badge (의약 표적 / 기능성 펩타이드 + ACE·XO share) and MBPI-Rx row under MBPI, 의약 표적 근거 없음 for no value, inside the panel',Object.values(mk).every(Boolean),JSON.stringify(mk));
   // 2026-10-13 dark data table: the one #bbvi-weight moves to the table's tool row and back; five type cards count the species the
   // group and search leave, by the type at the current weight, and keep only their type in the table; the expanded row sums BBVI
   // at that weight; BBVI sort follows; the cards and the expand button work from the keyboard with focus kept.

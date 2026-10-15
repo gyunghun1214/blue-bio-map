@@ -468,7 +468,7 @@ assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.
 // then the top item's stratum; the summary names the stratum too, and the reason paragraph below stays.
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
   assert.match(mbpi,/<b>89\.2 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드<\/b><\/summary>/);
-  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)</p>'),'wakame first line');
+  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>'),'wakame first line');
   assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('사후 검증(약물 기원종'),'the first line sits above the reason paragraph');
   assert.ok(mbpi.includes('기준 미충족입니다'),'the published reason reads in the neutral words');}
 assert.doesNotMatch(html,/미통과/);
@@ -541,7 +541,7 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   assert.ok(line(ctx.renderScores(by(371986))).includes('<b>56.8 · ChEMBL 화합물 · 사후 검증 기준 미충족(탐색적 재검토)</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
   assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45.3 · ChEMBL 화합물 · '),'톳: the ChEMBL item once the ACE peptides are out');
   for(const r of rows.filter(r=>r.mbpi_rx.value===null)){const l=line(ctx.renderScores(by(r.aphia_id)));
-    assert.ok(l.includes(`<b>없음 · ${r.mbpi_rx.reason} · 사후 검증 기준 미충족(탐색적 재검토)</b>`)&&!l.includes('근거 층:')&&l.includes(`이 종에서 뺀 항목 ${r.mbpi_rx.excluded_item_count}개`),`${r.korean_name}: ${l}`);}
+    assert.ok(l.includes('<b>의약 표적 근거 없음 · 사후 검증 기준 미충족(탐색적 재검토)</b>')&&l.includes(`<p class="fine">${r.mbpi_rx.reason}.</p>`)&&!l.includes('근거 층:')&&l.includes(`이 종에서 뺀 항목 ${r.mbpi_rx.excluded_item_count}개`),`${r.korean_name}: ${l}`);}
   // the line never repeats an old word and is not a fifth axis (no data-axis, so evidence buttons still find their own section)
   assert.doesNotMatch(oy,/미통과|data-axis/);
   // a value that does not re-check from the trace, a stratum missing from the classification or a wrong reason hides the line
@@ -573,9 +573,9 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   const cell=id=>t.split(`<tr class="cmp-row" data-aphia="${id}">`)[1].split('cmp-rx">')[1].split('</td>')[0];
   assert.match(cell(836033),/^<span class="cv rx-cv"><span class="cv-num">62\.6<\/span><span class="cv-bar" aria-hidden="true"><i style="width:62\.6%"><\/i><\/span><\/span>$/);
   assert.match(cell(504357),/<span class="cv-num">75\.0<\/span>/);
-  for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">없음</span></span>',r.korean_name);
+  for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">의약 표적 근거 없음</span></span>',r.korean_name);
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>62.6<small>항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) · MBPI·BBVI에 쓰지 않음</small>'),'oyster 자세히');
-  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
+  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>의약 표적 근거 없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
   // sorting by it (4.14, prereg-4.14 8): grouped by the top item's stratum (groups in catalogue order of first appearance), high → low
   // or low → high only inside a group, the species without a value (10 since 4.13) last in catalogue order both ways
   vm.runInContext('globalThis.rxGroup=s=>cmpGroup(s,"MBPI_RX")',ctx);
