@@ -17,7 +17,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RECORD = ROOT / "research/verified-indices/supplementary-literature-2026-10-14.json"
+DEFAULT_RECORD = ROOT / "research/verified-indices/supplementary-literature-2026-10-15.json"
 DEFAULT_REPORT = ROOT / "dist/assessments.json"
 DEFAULT_OUTPUT = ROOT / "dist/supplementary-literature.json"
 SCHEMA = "supplementary-literature-1"

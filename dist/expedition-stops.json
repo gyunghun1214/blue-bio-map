@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.17",
+ "method_version": "verified-4.18",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -1548,12 +1548,14 @@
    "bbvi_label": "단일 논문",
    "bio": {
     "dois": [
-     "10.1016/s0031-9422(00)90263-2"
+     "10.1016/s0031-9422(00)90263-2",
+     "10.3390/md18120603"
     ],
     "endpoint": "IC50",
-    "evidence_factor": 0.5625,
+    "evidence_factor": 0.75,
     "links": [
-     "https://doi.org/10.1016/s0031-9422(00)90263-2"
+     "https://doi.org/10.1016/s0031-9422(00)90263-2",
+     "https://doi.org/10.3390/md18120603"
     ],
     "median_pchembl": 4.06,
     "percentile": 0.76,
@@ -1693,8 +1695,8 @@
     "MFPI": "산출됨"
    },
    "scores": {
-    "BBVI": 18.5,
-    "MBPI": 0.4,
+    "BBVI": 18.6,
+    "MBPI": 0.6,
     "MCUI": 10.0,
     "MFPI": 36.7
    },

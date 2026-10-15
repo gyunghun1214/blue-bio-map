@@ -23,8 +23,9 @@ class SupplementaryLiterature(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual(DEFAULT_OUTPUT.read_text(encoding="utf-8"), render(self.out))
-        self.assertEqual(self.out["snapshot_date"], "2026-10-14")
-        self.assertEqual(self.out["prereg"], "research/verified-indices/prereg-4.13-2026-10-14.md")
+        # 4.18 (prereg-4.18-2026-10-15 2-3): the same 23 rows with four reasons settled rather than pending
+        self.assertEqual(self.out["snapshot_date"], "2026-10-15")
+        self.assertEqual(self.out["prereg"], "research/verified-indices/prereg-4.18-2026-10-15.md")
 
     def test_every_row_says_why_it_is_not_scored_and_how_far_it_was_read(self):
         self.assertTrue(self.rows)
@@ -72,7 +73,7 @@ class SupplementaryLiterature(unittest.TestCase):
         self.refuses(lambda r: r.update(aphia_id=1))                               # outside the 30
         self.refuses(lambda r: r.update(year=2027))
         self.refuses(lambda r: r.update(checked_via="library_copy"))
-        self.refuses(lambda r: r.update(checked_on="2026-10-15"))                  # after the snapshot
+        self.refuses(lambda r: r.update(checked_on="2026-10-16"))                  # after the snapshot
         self.refuses(lambda r: r.update(not_scored_reason=" "))
         self.refuses(lambda r: r.update(finding=""))
 
