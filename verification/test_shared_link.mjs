@@ -16,13 +16,21 @@ let written='';
 const ctx={URLSearchParams,location:{search:'',hash:'',pathname:'/'},history:{replaceState(a,b,u){written=u;}},
   data:{},selected:{aphiaID:274849},basemap:'basic',mapMode:'occurrence',periodFilter:'all',activeUses:new Set(),weightOff:()=>false,map:null,currentView:'compare'};
 vm.createContext(ctx);
-vm.runInContext(app.slice(from,to).replace(/^const |^let /gm,'var ')+';globalThis.T={readHash,writeHash};',ctx);
+vm.runInContext(app.slice(from,to).replace(/^const |^let /gm,'var ')+';globalThis.T={readHash,writeHash,linkView};',ctx);
 const at=(search,hash)=>{ctx.location.search=search;ctx.location.hash=hash;return {...ctx.T.readHash()};};
 
 assert.deepEqual(at('','#s=274849&v=compare'),{s:'274849',v:'compare'},'hash link');
 assert.deepEqual(at('?v=compare',''),{v:'compare'},'query link opens the same screen');
 assert.deepEqual(at('?v=compare&offline=1','#v=method'),{v:'method'},'the hash wins; offline is not a link key');
 assert.deepEqual(at('?offline=1',''),{},'no link keys');
+// The tab a link opens (2026-10-15, phone report: a 비교와 지표 link showed the map). Link as written → expected tab.
+const M='&b=basic&t=occurrence&m=7/35.50/128.00';
+for(const [search,hash,view] of [
+  ['','#s=241776&v=explore'+M,'explore'],['','#s=241776&v=compare'+M,'compare'],['','#s=241776&v=method'+M,'method'],
+  ['?s=241776&v=compare&m=7/35.50/128.00','','compare'],['?offline=1','#v=method','method'],['?v=compare','#v=method','method'],
+  ['','#v=compare','compare'],['','#s=241776'+M,null],['','#v=map',null],['','#v=Compare',null],['','',null]])
+  assert.equal(ctx.T.linkView(at(search,hash)),view,`${search}${hash} → ${view}`);
+assert.ok(/const v=linkView\(h\);if\(v\)setView\(v\);/.test(app.slice(to,app.indexOf('\n}\n',to))),'applyHash opens the tab linkView names');
 at('?offline=1&v=compare&s=1','');ctx.T.writeHash();
 assert.equal(written,'/?offline=1#s=274849&v=compare&b=basic&t=occurrence','keys move into the hash, ?offline stays: '+written);
 at('?v=compare','');ctx.T.writeHash();
@@ -41,6 +49,8 @@ assert.equal(ictx.G.shouldShowGate('#v=compare&',fresh),false,'hash link skips t
 assert.equal(ictx.G.shouldShowGate('&v=compare',fresh),false,'query link skips the entry screen');
 assert.equal(ictx.G.shouldShowGate('&offline=1',fresh),true,'?offline alone still shows it');
 assert.ok(intro.includes("shouldShowGate(location.hash+'&'+location.search.slice(1),store)"),'the page passes hash and query');
+// a link opened in a tab that shows the entry screen (no reload) skips it too; app.js then applies the tab underneath
+assert.ok(intro.includes("addEventListener('hashchange',()=>{if(!left&&hasAppHash(location.hash))fail();});"),'in-tab link skips the entry screen');
 
 // (4) Korean source notes
 const ko=JSON.parse(read('source-terms-ko.json'));
@@ -57,4 +67,4 @@ const english=new Set(sources.flatMap(s=>[s.terms,s.license]).filter(t=>t&&!/[�
 const missing=[...english].filter(t=>!ko.by_text[t]);
 // A note added later shows as written until it is translated here; it is listed, not failed, so other releases are not blocked.
 if(missing.length)console.log(`NOTE: ${missing.length} English source note(s) have no Korean text yet:\n- `+missing.join('\n- '));
-console.log(`PASS: query and hash links, in-tab hash change, entry screen, ${entries.length} Korean source notes (${english.size-missing.length}/${english.size} covered)`);
+console.log(`PASS: query and hash links, link → tab, in-tab hash change, entry screen (also in-tab), ${entries.length} Korean source notes (${english.size-missing.length}/${english.size} covered)`);

@@ -732,6 +732,41 @@ function replicationSearchText(s){
   const earlier=(r.runs||[]).filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on).map(x=>x.searched_on);
   return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${earlier.length?` · 이전 검색 ${earlier.join(', ')}`:''}${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
+// 검증 성적표 (dist/posthoc-scorecard.json, built by scripts/build_posthoc_scorecard.py from posthoc.validation_sets): the top of
+// the method tab lists every post-hoc check with its normalised outcome_class, and the journey cards carry one badge per
+// indicator. A same-data or two-species consistency check is never shown as 통과. Display only: nothing here reaches a score,
+// the matrix, the map colours or a chip. Schema 1 is read; a higher number is a newer file; anything else is ignored.
+let posthocScorecard=null;
+const SCORECARD_OC={'통과':'pass','실패':'fail','실패 후 사용 중단':'stopped','일관성 확인(독립 아님)':'consistent','검증 불성립':'void'};
+function scorecardFile(file,outdated){
+  const v=/^posthoc-scorecard-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'posthoc-scorecard.json',version:file.schema_version});
+  if(file?.schema_version!=='posthoc-scorecard-1'||file.display_only!==true||!Array.isArray(file.rows))return null;
+  return file.rows.every(r=>r&&SCORECARD_OC[r.outcome_class])?file:null;
+}
+function renderScorecard(){
+  const sc=posthocScorecard,body=$('mt-vc-body');if(!body)return;
+  const badges=document.querySelectorAll('#method .mt-vbadge[data-ind]');
+  if(!sc){
+    $('mt-vc-sum').textContent=data?'검증 성적표 파일을 읽지 못했습니다. 지표별 검증 기록은 아래 ‘지표를 어떻게 읽나요?’에 있습니다.':'사후 검증 기록을 불러오는 중입니다.';
+    for(const id of ['mt-vc-ind','mt-vc-counts','mt-vc-body','mt-vc-foot'])$(id).innerHTML='';badges.forEach(b=>b.hidden=true);return;
+  }
+  const n=c=>sc.counts?.[c]||0, label=c=>sc.rows.find(r=>r.outcome_class===c)?.outcome_label||c;
+  const indTitle=key=>{const i=sc.indicators[key];return `사후 검증 ${i.checks}건: `+Object.entries(i.classes).map(([c,k])=>`${label(c)} ${k}`).join(' · ');};
+  $('mt-vc-sum').textContent=`${sc.report_version} 기준 · 사후 검증 ${sc.total}건 중 기준 통과 ${n('통과')}건 · ${sc.preregistered}건은 결과를 보기 전에 기준을 정했습니다.`;
+  $('mt-vc-ind').innerHTML=Object.keys(sc.indicators||{}).map(k=>`<li data-state="${esc(sc.indicators[k].state)}" title="${esc(indTitle(k))}"><b>${esc(k)}</b><span>${esc(sc.indicators[k].label)}</span></li>`).join('');
+  $('mt-vc-counts').innerHTML=Object.keys(SCORECARD_OC).filter(c=>n(c)).map(c=>`<li data-oc="${SCORECARD_OC[c]}"><b>${n(c)}</b>${esc(label(c))}</li>`).join('');
+  const file=p=>p.split('/').pop();
+  body.innerHTML=sc.rows.map(r=>`<tr data-oc="${SCORECARD_OC[r.outcome_class]}" data-key="${esc(r.key)}">`+
+    `<th scope="row" data-label="검증 이름">${esc(r.name)}</th>`+
+    `<td data-label="무엇을 확인했나">${esc(r.checked)}</td>`+
+    `<td data-label="사전 등록"><b>${esc(r.preregistered_label)}</b><small>${esc(r.preregistered_note)}</small></td>`+
+    `<td data-label="결과"><span class="mt-vc-pill" data-oc="${SCORECARD_OC[r.outcome_class]}">${esc(r.outcome_label)}</span></td>`+
+    `<td data-label="결과 뒤 조치">${r.action==='none'?'<b class="mt-vc-na">해당 없음</b>':`<b>${esc(r.action_label)}</b>`}<small>${esc(r.action_detail)}</small>${r.action_history?`<small class="mt-vc-hist">${esc(r.action_history)}</small>`:''}</td>`+
+    `<td data-label="기록 파일">${r.records.map(p=>`<a href="${esc(sc.repository+p)}" target="_blank" rel="noopener" title="${esc(p)}">${esc(file(p))}</a>`).join('')}${r.record_note?`<small>${esc(r.record_note)}</small>`:''}</td></tr>`).join('');
+  $('mt-vc-foot').textContent='‘일관성 확인(독립 아님)’은 점수를 만든 자료와 같은 자료로 보거나 2종만 비교한 확인이라 통과로 세지 않습니다. ‘검증 불성립’은 미리 정한 최소 표본 수에 못 미쳐 판정하지 못했다는 뜻입니다. 이 표는 사후 검증 기록(assessments.json)에서 자동으로 만들고, 같은 표를 CSV로도 내보냅니다. 기록 파일은 프로젝트 GitHub 저장소에 있습니다.';
+  badges.forEach(b=>{const i=sc.indicators?.[b.dataset.ind];b.hidden=!i;if(!i)return;b.textContent=plainWords(i.label);b.dataset.state=i.state;b.title=indTitle(b.dataset.ind);});
+}
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it
 // and no score is inferred. Only its reviewed public cells are drawn, in the 미탐색 후보 layer.
@@ -2700,6 +2735,8 @@ function cellCsv(s){
 const LINK_KEYS=['s','v','t','b','m','p','u','w'];
 function readHash(){try{const q=new URLSearchParams(location.search),o={};for(const k of LINK_KEYS)if(q.has(k))o[k]=q.get(k);
   return {...o,...Object.fromEntries(new URLSearchParams(location.hash.slice(1)))};}catch{return {};}}
+// The tab a link opens: one of the three views, else none (the tab stays as it is). Kept with readHash for the node test.
+const linkView=h=>['explore','compare','method'].includes(h?.v)?h.v:null;
 function writeHash(){
   if(!data||!selected)return;
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
@@ -2720,7 +2757,7 @@ function applyHash(h){
   if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
   const m=(h.m||'').split('/').map(Number);
   if(map&&m.length===3&&m.every(Number.isFinite))map.setView([m[1],m[2]],m[0],{animate:false});
-  if(['explore','compare','method'].includes(h.v))setView(h.v);
+  const v=linkView(h);if(v)setView(v);
   writeHash();
 }
 
@@ -4083,13 +4120,14 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature,searches,scorecard]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);
+      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -4172,6 +4210,7 @@ document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',
 // four quadrant names from the report's matrix rule. The diagram places no species, points or scores.
 function renderMethodPage(){
   const n=v=>Number.isFinite(v)?String(v):'—';
+  renderScorecard();
   $('mt-total').textContent=n(data?.species?.length);$('mt-published').textContent=n(data?.publishedCount);$('mt-candidates').textContent=n(data?.candidateCount);
   const rule=matrixRule();if(!rule)return;
   document.querySelectorAll('#method .mt-q').forEach(q=>{const t=rule.types?.[q.dataset.q];if(!t)return;q.dataset.type=t.id;q.querySelector('b').textContent=matrixTypePlain(t.id);q.querySelector('span').textContent=t.label;});

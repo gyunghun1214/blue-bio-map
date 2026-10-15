@@ -1,0 +1,169 @@
+[
+ {
+  "name": "1440px: scorecard is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-scorecard",
+   "top": 112
+  }
+ },
+ {
+  "name": "1440px: one row per check with its label",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    "통과"
+   ],
+   [
+    "MBPI",
+    "기준 미충족"
+   ],
+   [
+    "MBPI_RX",
+    "기준 미충족"
+   ],
+   [
+    "MCUI",
+    "일관성 확인(독립 아님)"
+   ],
+   [
+    "MCUI_stock_decline",
+    "일관성 확인(독립 아님)"
+   ],
+   [
+    "MCUI_preliminary",
+    "기준 미충족"
+   ],
+   [
+    "MCUI_preliminary_criterion_A",
+    "검증 불성립(표본 부족)"
+   ],
+   [
+    "MCUI_trend",
+    "기준 미충족 · 사용 중단"
+   ]
+  ]
+ },
+ {
+  "name": "1440px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "1440px: no page-wide or table horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "wrap": 0
+  }
+ },
+ {
+  "name": "1440px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "375px: scorecard is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-scorecard",
+   "top": 155
+  }
+ },
+ {
+  "name": "375px: one row per check with its label",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    "통과"
+   ],
+   [
+    "MBPI",
+    "기준 미충족"
+   ],
+   [
+    "MBPI_RX",
+    "기준 미충족"
+   ],
+   [
+    "MCUI",
+    "일관성 확인(독립 아님)"
+   ],
+   [
+    "MCUI_stock_decline",
+    "일관성 확인(독립 아님)"
+   ],
+   [
+    "MCUI_preliminary",
+    "기준 미충족"
+   ],
+   [
+    "MCUI_preliminary_criterion_A",
+    "검증 불성립(표본 부족)"
+   ],
+   [
+    "MCUI_trend",
+    "기준 미충족 · 사용 중단"
+   ]
+  ]
+ },
+ {
+  "name": "375px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "375px: no page-wide or table horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "wrap": 0
+  }
+ },
+ {
+  "name": "375px: no scorecard text under 11px",
+  "ok": true,
+  "detail": {
+   "small": 0
+  }
+ },
+ {
+  "name": "375px: no page errors",
+  "ok": true,
+  "detail": []
+ }
+]
