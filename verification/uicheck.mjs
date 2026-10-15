@@ -285,26 +285,37 @@ try{
     q('#cmp-basis-toggle').click();r.panel=vis(q('#bbvi-weight'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&!vis(q('#cmp-weight-badge'))&&!vis(q('#cmp-matrix-badge'))&&q('#cmp-weight-reset').disabled;
     const left0=q('#matrix-points [data-aphia="241776"]')?.style.left;
     r.sum=[...Array(21).keys()].every(k=>{const m=weightPair(k/20).match(/MBPI (\\S+) · MFPI (\\S+)/);return Math.round(Number(m[1])*100)+Math.round(Number(m[2])*100)===100;});
-    q('[data-w-preset="16"]').click();await wait(250);
-    r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80'&&q('[data-w-preset="16"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.20, MFPI 0.80';
-    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.20 · MFPI 0.80 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.20 · MFPI 0.80';
+    q('[data-w-preset="15"]').click();await wait(250);
+    r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.25 · MFPI 0.75'&&q('[data-w-preset="15"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.25, MFPI 0.75';
+    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.25 · MFPI 0.75 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.25 · MFPI 0.75';
     const moved=data.species.filter(s=>matrixType(s)!==officialType(s));
     r.moved=moved.length>0&&q('#bbvi-weight-moved').textContent.startsWith('공식값과 유형이 다른 종 '+moved.length+'종')&&document.querySelectorAll('#matrix-points .matrix-point.w-moved').length===moved.filter(assessedForMatrix).length;
     const pt=q('#matrix-points [data-aphia="241776"]');r.point=!!pt&&pt.style.left!==left0&&pt.title.includes('공식 ');
-    r.hash=/[#&]w=0\\.80(&|$)/.test(location.hash);
+    r.hash=/[#&]w=0\\.75(&|$)/.test(location.hash);
     r.profile=q('#cmp-profile').textContent.includes('공식 72')&&!q('#cmp-profile').textContent.includes('공식 71.9');r.cards=q('#species-list [data-species="241776"]').textContent.includes(scoreText(data.species.find(x=>x.aphiaID===241776),'BBVI',pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')))&&pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')!==36.1;
     setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&vis(q('#cmp-table-badge'));setCompareMode('matrix');
     r.cells=cellTypes()!==cells0;
-    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.20 · MFPI 0.80');
+    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.25 · MFPI 0.75');
     r.candidates=document.getElementById('layer-unexplored-count')?.textContent===cand0;
     q('#value-weight-badge [data-w-reset]').click();await wait(250);r.mapReset=!vis(q('#value-weight-badge'))&&bbviWeight===.5;
     setMapMode('occurrence');setView('compare');setCompareMode('matrix');
-    q('[data-w-preset="4"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.80 · MFPI 0.20'&&/[#&]w=0\\.20(&|$)/.test(location.hash);
+    q('[data-w-preset="5"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.75 · MFPI 0.25'&&/[#&]w=0\\.25(&|$)/.test(location.hash);
     q('#cmp-weight-reset').click();await wait(250);
     setCompareMode('table');const table1=q('#comparison').textContent;setCompareMode('matrix');
     r.resetBadge=!vis(q('#cmp-matrix-badge'))&&q('#cmp-basis-now').textContent==='';r.resetHash=!/[#&]w=/.test(location.hash);r.resetTable=table1===table0;r.resetCells=cellTypes()===cells0;r.resetPoints=!document.querySelector('#matrix-points .w-moved');
     setBasisPop(false);return r})()`);
   check('BBVI weight slider: MBPI + MFPI = 1.00 at 21 steps, presets, 탐색 보기 badges (panel, matrix, table, value map), official value beside a re-mix, explore cards follow, moved-type list and dashed points, cell colours follow, unexplored count fixed, link w, official weight restores the first screen',Object.values(wt).every(Boolean),JSON.stringify(wt));
+  // 2026-10-15 MBPI evidence kind: the profile names the kind of the top evidence under MBPI (의약 표적 / 기능성 펩타이드 with the
+  // ACE·XO share) and shows MBPI-Rx on its own row; no value reads '의약 표적 근거 없음', never 0; the line stays inside the panel
+  const mk=await evaluate(`(async()=>{const r={},q=s=>document.querySelector(s),wait=ms=>new Promise(f=>setTimeout(f,ms));
+    setView('compare');setCompareMode('matrix');selectSpecies(145721);await wait(200);let p=q('#cmp-profile');
+    r.wakame=p.querySelector('.cp-kind-badge')?.textContent==='기능성 펩타이드(ACE·XO)'&&p.querySelector('.cp-kind-share')?.textContent==='최상위 근거 · ACE·XO 항목 8/8(100%)'&&p.querySelector('.cp-rx-none')?.textContent==='의약 표적 근거 없음'&&!p.querySelector('.cp-rx-num');
+    selectSpecies(504357);await wait(200);p=q('#cmp-profile');
+    r.ark=p.querySelector('.cp-kind-badge')?.dataset.kind==='drug'&&p.querySelector('.cp-kind-badge')?.textContent==='의약 표적(항균·항암·기타 표적)'&&p.querySelector('.cp-rx-num')?.textContent===scoreText(data.species.find(x=>x.aphiaID===504357),'MBPI',75);
+    const k=p.querySelector('.cp-kind').getBoundingClientRect(),x=p.querySelector('.cp-rx').getBoundingClientRect(),b=p.getBoundingClientRect();r.inside=k.left>=b.left&&k.right<=b.right+1&&x.right<=b.right+1&&k.height>0&&x.height>0;
+    selectSpecies(836033);await wait(200);r.order=(()=>{const m=q('#cmp-profile .cp-sub-num[data-prof-axis="MBPI"]'),kk=q('#cmp-profile .cp-kind'),rx=q('#cmp-profile .cp-rx');return !!m&&!!kk&&!!rx&&(m.compareDocumentPosition(kk)&4)&&(kk.compareDocumentPosition(rx)&4);})();
+    return r})()`);
+  check('MBPI evidence kind: profile badge (의약 표적 / 기능성 펩타이드 + ACE·XO share) and MBPI-Rx row under MBPI, 의약 표적 근거 없음 for no value, inside the panel',Object.values(mk).every(Boolean),JSON.stringify(mk));
   // 2026-10-13 dark data table: the one #bbvi-weight moves to the table's tool row and back; five type cards count the species the
   // group and search leave, by the type at the current weight, and keep only their type in the table; the expanded row sums BBVI
   // at that weight; BBVI sort follows; the cards and the expand button work from the keyboard with focus kept.
@@ -541,7 +552,8 @@ try{
     strat.first.startsWith('사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
   // 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx is one line under the detail's MBPI (opening to its reason and the
-  // pre-registration), one sortable column in the compare data table and a line in #method-03, and nowhere else on the page.
+  // pre-registration), one sortable column in the compare data table, a line in #method-03 and (2026-10-15) a row under the
+  // species profile's MBPI, and nowhere else on the page.
   const rx=await evaluate(`(()=>{const r={},keep={view:currentView,mode:cmpMode,sort:{...cmpSort},basket:[...cmpBasket],sel:selected.aphiaID};
     const box=document.createElement('div'),one=id=>data.species.find(x=>x.aphiaID===id);
     box.innerHTML=renderVerifiedIndices(one(836033));const d=box.querySelector('details.rx-disclosure');
@@ -552,22 +564,22 @@ try{
     c.querySelector('[data-sort=MBPI_RX]').click();r.desc=cells();r.label=document.getElementById('comparison-page').textContent;r.focus=document.activeElement?.dataset?.sort||'';
     c.querySelector('[data-sort=MBPI_RX]').click();r.asc=cells();c.querySelector('[data-sort=MBPI_RX]').click();r.reset=cells();
     cmpBasket=[836033,145721];renderCompare();renderCompareDialog();setCompareMode('matrix');renderList();
-    r.elsewhere=['.species-list','#cmp-profile','#cmp-tray','#cmp-dialog-body','#matrix-points','#matrix-types','#map'].filter(q=>{const e=document.querySelector(q);if(!e)return false;
+    r.elsewhere=['.species-list','#cmp-tray','#cmp-dialog-body','#matrix-points','#matrix-types','#map'].filter(q=>{const e=document.querySelector(q);if(!e)return false;
       const t=e.textContent+' '+[...e.querySelectorAll('[title],[aria-label]')].map(x=>(x.title||'')+' '+(x.getAttribute('aria-label')||'')).join(' ');return /의약 후보|MBPI-Rx/.test(t);});
     r.method=document.getElementById('method-03')?.textContent||'';
     cmpSort=keep.sort;cmpBasket=keep.basket;setCompareMode(keep.mode);renderComparison();renderCompare();setView(keep.view,false);r.kept=selected.aphiaID===keep.sel;return r})()`);
-  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='–없음'?null:Number(x),vals=rxAll.filter(v=>v!==null);
+  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='–의약 표적 근거 없음'?null:Number(x),vals=rxAll.filter(v=>v!==null);
    // 4.14 (prereg-4.14 4): a sort ranks only inside one stratum (strata in first-seen order), '–' last both ways
    const strata=[...new Set(rx.groups.filter(Boolean))],rank=i=>rx.groups[i]?strata.indexOf(rx.groups[i]):Infinity,
      within=sign=>rxAll.map((v,i)=>i).sort((i,j)=>rank(i)-rank(j)||(rxAll[i]===null||rxAll[j]===null?(rxAll[i]===null)-(rxAll[j]===null)||i-j:sign*(rxAll[i]-rxAll[j])||i-j)).map(i=>rxAll[i]);
-    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values, 10 –, – last both ways); #method-03 names it; no card, profile, basket, dialog, matrix or map text mentions it',
+    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) and opens to the criterion, post-hoc reason and pre-registration; 미역 reads 의약 표적 근거 없음 with its reason (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values, 10 –, – last both ways); #method-03 names it; the species profile shows it beside MBPI (2026-10-15, checked below); no card, basket, dialog, matrix or map text mentions it',
       rx.order==='MFPI,MBPI,RX,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색적)62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)'&&
       ['층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산)','사전 등록: research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md'].every(t=>rx.body.includes(t))&&
-      rx.wak==='의약 후보 MBPI(보조, 탐색적)없음 · 제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토)'&&
+      rx.wak==='의약 후보 MBPI(보조, 탐색적)의약 표적 근거 없음 · 사후 검증 기준 미충족(탐색적 재검토)'&&
       rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx보조·탐색적/.test(rx.rxHead)&&rx.start.length===total&&n===10&&vals.length===20&&
-      rx.start.filter(x=>x==='–없음').length===10&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
+      rx.start.filter(x=>x==='–의약 표적 근거 없음').length===10&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
       strata.length>1&&JSON.stringify(rx.desc.map(num))===JSON.stringify(within(-1))&&JSON.stringify(rx.asc.map(num))===JSON.stringify(within(1))&&
-      rx.desc.slice(-10).every(x=>x==='–없음')&&rx.asc.slice(-10).every(x=>x==='–없음')&&
+      rx.desc.slice(-10).every(x=>x==='–의약 표적 근거 없음')&&rx.asc.slice(-10).every(x=>x==='–의약 표적 근거 없음')&&
       rx.label===`총 ${total}종 · 정렬: MBPI-Rx 높은 순 (층별)`&&rx.focus==='MBPI_RX'&&JSON.stringify(rx.reset)===JSON.stringify(rx.start)&&
       rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(보조) · 기준 미충족')&&rx.method.includes('prereg-mbpi-rx-4.10-2026-10-12.md')&&rx.kept,
       JSON.stringify({...rx,start:rx.start.slice(0,8),desc:rx.desc.slice(0,5),asc:rx.asc.slice(0,5),reset:undefined,body:rx.body.slice(0,120),method:rx.method.slice(-200)}));}
