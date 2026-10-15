@@ -1,0 +1,69 @@
+name: Live links and load
+
+# A report, not a gate: outside sites come and go independently of this repository, so nothing here turns a PR red.
+# Run it by hand (Actions > Live links and load > Run workflow) before the presentation; it also runs on a PR that
+# changes the checker or this file. Results: the job log and the 'live-check' artifact (links.csv, Lighthouse JSON).
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/check_links.py
+      - .github/workflows/live-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Check every outside link in dist/ (HEAD, then GET)
+        run: python scripts/check_links.py --out live-check/links.csv
+      - name: Print the links that are not 정상
+        run: |
+          python - <<'EOF'
+          import csv
+          rows = list(csv.DictReader(open('live-check/links.csv', encoding='utf-8-sig')))
+          for r in rows:
+              if r['result'] != '정상':
+                  print(f"{r['result']}\t{r['status']}\t{r['url']}\t{r['final_url']}\t{r['locations'][:300]}")
+          EOF
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: live-check-links
+          path: live-check/
+          retention-days: 14
+
+  load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE: https://blue-bio-map.blue-bio-map.workers.dev/
+    steps:
+      - name: Compressed transfer and caching headers of the live site
+        run: |
+          for f in '' app.js live-data.js intro.js theme.css assessments.json unexplored-candidates.json expansion-public-cells.json countries.json live-snapshot.json vendor/globe-v2/globe-900.webp; do
+            echo "== /$f"
+            curl -sS -o /dev/null -D - -H 'Accept-Encoding: br, gzip' "$SITE$f" | grep -iE '^(HTTP|content-encoding|content-length|cache-control|etag)' || true
+            curl -sS -o /dev/null -w 'bytes over the wire (br/gzip): %{size_download}\n' -H 'Accept-Encoding: br, gzip' "$SITE$f"
+          done
+      - name: Lighthouse mobile on the live site (3 runs, the tool is fetched for this job only)
+        run: |
+          mkdir -p live-check
+          for i in 1 2 3; do
+            npx --yes lighthouse@13.5.0 "$SITE" --only-categories=performance --form-factor=mobile --quiet \
+              --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="live-check/lighthouse-mobile-$i.json" || true
+            node -e "const r=require('./live-check/lighthouse-mobile-$i.json'),a=r.audits;console.log('run $i: score',Math.round(r.categories.performance.score*100),'FCP',a['first-contentful-paint'].displayValue,'LCP',a['largest-contentful-paint'].displayValue,'TBT',a['total-blocking-time'].displayValue,'CLS',a['cumulative-layout-shift'].displayValue,'bytes',a['total-byte-weight'].numericValue)" || true
+          done
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: live-check-load
+          path: live-check/
+          retention-days: 14
