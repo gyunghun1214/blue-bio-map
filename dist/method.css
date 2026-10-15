@@ -23,7 +23,7 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method :is(h2,h3,h4,p,ul){margin:0}
 #method a{color:var(--mt-use)}
 #method .fine{color:var(--mt-ink3)}
-#method :is(.mt-journey,.mt-acc,.source-section,.method-card,.flow-wrap){scroll-margin-top:calc(var(--chrome,56px) + 16px)}
+#method :is(.mt-journey,.mt-acc,.source-section,.method-card,.flow-wrap,.mt-lic){scroll-margin-top:calc(var(--chrome,56px) + 16px)}
 #method .mt-k{color:var(--mt-ink3);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
 #method .mt-ico{width:12px;height:12px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
@@ -189,6 +189,36 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .citation span{color:var(--mt-ink2)}
 #method .source-section>.fine{margin-top:16px;line-height:1.7}
 
+/* 출처별 상업 이용 구분 (license-matrix.json): table of the four licence groups, folded calculation and items to confirm */
+#method .mt-lic{margin-top:26px;padding:22px 22px 18px;border:1px solid var(--mt-line2);border-radius:14px;background:var(--mt-panel)}
+#method .mt-lic:focus{outline:none}
+#method .mt-lic h4{color:var(--mt-ink);font-size:18px;font-weight:700}
+#method .mt-lic-lead{max-width:90ch;margin-top:8px;color:var(--mt-ink2);font-size:14px;line-height:1.7}
+#method .mt-lic-wrap{margin-top:14px;overflow-x:auto;border:1px solid var(--mt-line);border-radius:10px;background:var(--mt-low)}
+#method .mt-lic-table{color:var(--mt-ink2);font-size:13.5px}
+#method .mt-lic-table :is(th,td){padding:11px 13px;border-bottom-color:var(--mt-line)}
+#method .mt-lic-table thead th{background:none;color:var(--mt-ink3);font-weight:600;white-space:nowrap}
+#method .mt-lic-table tbody th{min-width:190px;max-width:300px;color:var(--mt-ink);font-weight:600}
+#method .mt-lic-table tbody th small{margin-top:6px;color:var(--mt-ink3);font-size:12px;line-height:1.55}
+#method .mt-lic-table .lic-n{color:var(--mt-ink);font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#method .lic-badge{display:inline-block;padding:2px 9px;border-radius:999px;border:1px solid var(--mt-line2);font-size:13px}
+#method [data-group=commercial_ok] .lic-badge{color:#6fd99a;border-color:rgba(111,217,154,.45)}
+#method [data-group=noncommercial] .lic-badge{color:#f0c35a;border-color:rgba(240,195,90,.45)}
+#method [data-group=permission] .lic-badge{color:#8fd3e8;border-color:rgba(143,211,232,.45)}
+#method [data-group=review] .lic-badge{color:var(--mt-ink2)}
+#method .lic-list{margin-top:6px;padding:0;border:0}
+#method .lic-list summary{color:var(--mt-use);font-size:12.5px;font-weight:600}
+#method .lic-list ul{max-height:260px;overflow:auto;margin:6px 0 0;padding-left:18px;font-size:12.5px;line-height:1.6}
+#method .mt-lic-more{margin-top:12px;padding:10px 0 0;border:0;border-top:1px solid var(--mt-line)}
+#method .mt-lic-more>summary{color:var(--mt-ink);font-size:14px}
+#method .mt-lic-more>div>p,#method .mt-lic-more li{margin-top:8px;color:var(--mt-ink2);font-size:13.5px;line-height:1.65}
+#method .mt-lic-more ul{margin:4px 0 0;padding-left:18px}
+#method .mt-lic-more li b,#method .mt-lic-more p b{color:var(--mt-ink)}
+#method .lic-layer td{font-variant-numeric:tabular-nums;white-space:nowrap}
+#method .lic-sub{color:var(--mt-ink)!important;font-weight:600}
+#method .mt-lic-file{margin-top:12px}
+footer .foot-link{padding:0;border:0;background:none;color:inherit;font-size:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
 /* ---------- narrower screens ---------- */
 @media (max-width:1100px){
   #method{padding:44px 28px 60px}
@@ -248,7 +278,17 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #method .mt-acc>summary b{font-size:17px}
   #method .mt-acc-body{padding:2px 16px 22px}
   #method #all-sources{padding:2px 12px}
+  #method .mt-lic{padding:16px 14px 14px}
 }
 @media (prefers-reduced-motion:reduce){#method *{transition:none!important}}
 /* 2026-10-15 team check: phones get no text under 11px */
-@media(max-width:740px){#method .mt-src .mt-k{font-size:11px}}
+@media(max-width:740px){#method .mt-src .mt-k{font-size:11px}#method .mt-lic-table :is(th,td,small){font-size:12px}#method .lic-list :is(summary,ul){font-size:12px}
+  /* the four-group table becomes one card per group; each cell names its column */
+  #method #license-table thead{display:none}
+  #method #license-table,#method #license-table tbody,#method #license-table tr{display:block}
+  #method #license-table tr{padding:14px 14px 12px;border-bottom:1px solid var(--mt-line)}
+  #method #license-table tr:last-child{border-bottom:0}
+  #method #license-table :is(th,td){display:block;min-width:0;max-width:none;padding:4px 0;border:0;font-size:13px}
+  #method #license-table td[data-k]:before{content:attr(data-k);display:block;color:var(--mt-ink3);font-size:12px;font-weight:600}
+  #method #license-table .lic-n{font-size:16px}
+}
