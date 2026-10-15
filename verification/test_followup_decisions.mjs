@@ -32,7 +32,7 @@ for(const row of readiness.species){
   assert.equal(ctx.followup({...species,name:'Other species'}),null,'wrong taxon must not attach');
   assert.equal(ctx.followup({...species,aphiaID:999999}),null,'wrong AphiaID must not attach');
 }
-assert.equal(scored,30,'(4.17: 29 MCUI = 7 IUCN + 8 Korean national + 5 range-state + 9 Rapid LC as preliminary assessments; 4.14: 16 MCUI = 7 IUCN + 8 Korean national + 1 stock lower bound) 3.15: 27 MFPI (national-name links, aquaculture records, a literature row) + 18 MBPI + 16 MCUI (7 IUCN + 8 Korean national incl. the 참문어 crosswalk + 1 range-state) cover all 30 species');
+assert.equal(scored,30,'(4.19: 30 MCUI with 멍게 Rapid LC; 4.17: 29 MCUI = 7 IUCN + 8 Korean national + 5 range-state + 9 Rapid LC as preliminary assessments; 4.14: 16 MCUI = 7 IUCN + 8 Korean national + 1 stock lower bound) 3.15: 27 MFPI (national-name links, aquaculture records, a literature row) + 18 MBPI + 16 MCUI (7 IUCN + 8 Korean national incl. the 참문어 crosswalk + 1 range-state) cover all 30 species');
 const national=readiness.species.filter(r=>r.mcui_basis==='national');
 assert.equal(national.length,8,'national MCUI stays labelled by basis (3.15 adds 참문어 through the misapplied-name crosswalk)');
 // 3.15: the range-state list is the only substitute MCUI basis. 3.15 (team-lead decision 2026-10-02): reference only, so the
@@ -41,8 +41,9 @@ assert.equal(national.length,8,'national MCUI stays labelled by basis (3.15 adds
 // sub-national lists and the Rapid LC check are references with no number, so no other basis is left.
 // 4.17 (prereg-4.17-2026-10-15 2): with no official category, the range-state list and then the Rapid LC check score again as
 // preliminary assessments (5 range-state incl. 우뭇가사리, 9 Rapid LC); sub-national lists stay references
+// 4.19 (prereg-4.19-2026-10-15 1): 멍게's met Rapid LC check is no longer blocked by its OBIS ratio (10 Rapid LC)
 const others=readiness.species.filter(r=>!['iucn','national',null].includes(r.mcui_basis)).map(r=>r.mcui_basis);
-assert.deepEqual([others.filter(b=>b==='range_state').length,others.filter(b=>b==='preliminary').length,others.length],[5,9,14]);
+assert.deepEqual([others.filter(b=>b==='range_state').length,others.filter(b=>b==='preliminary').length,others.length],[5,10,15]);
 assert.ok(readiness.species.filter(r=>['range_state','preliminary'].includes(r.mcui_basis)).every(r=>byId.get(r.aphia_id).conservation_status.state==='preliminary_scored'&&r.matrix_eligible));
 const reference=readiness.species.filter(r=>byId.get(r.aphia_id).mcui_substitute?.use==='reference_only');
 assert.equal(reference.length,0);  // 4.14: 9 Rapid LC + 5 range-state lists (우뭇가사리 included) kept as references (멍게 carries its decline block instead); 3.16–4.2 moved 7 of 14 to official bases; 4.3 (team-lead decision 2026-10-05) scores the other 6 and gives 미역 its Primorsky row

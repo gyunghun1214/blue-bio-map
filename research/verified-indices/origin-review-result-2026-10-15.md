@@ -1,6 +1,6 @@
 # 화합물 기원 분류 결과 · 2026-10-15
 
-`scripts/build_origin_review.py`가 `research/verified-indices/origin-review-2026-10-15.json`와 `dist/assessments.json`(verified-4.18)으로 만든 표입니다. 규칙은 `research/verified-indices/origin-class-rule-2026-10-15.md`(출력보다 먼저 커밋). 점수·유형·50선·가중치는 바뀌지 않습니다.
+`scripts/build_origin_review.py`가 `research/verified-indices/origin-review-2026-10-15.json`와 `dist/assessments.json`(verified-4.19)으로 만든 표입니다. 규칙은 `research/verified-indices/origin-class-rule-2026-10-15.md`(출력보다 먼저 커밋). 점수·유형·50선·가중치는 바뀌지 않습니다.
 
 ## 요약
 
