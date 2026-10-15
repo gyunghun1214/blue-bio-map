@@ -62,13 +62,12 @@ class ExpeditionStops(unittest.TestCase):
             self.assertTrue(src is None or (src["id"] and src["title"] and src["url"]), (stop["korean_name"], src))
         ids = {s["aphia_id"]: (s["mcui"]["source"] or {}).get("id") for s in self.out["stops"]}
         # the two released stops whose source was empty before: 멍게 (preliminary) and 우뭇가사리 (range_state).
-        # 4.11: 멍게's Rapid LC is not scored (reporting rate at the decline ratio), so it names no source and says why
-        self.assertIsNone(ids[250680])
+        # 4.11 left 멍게's Rapid LC unscored (reporting rate at the decline ratio); 4.19 (prereg-4.19 1) scores it again as a
+        # preliminary assessment, which the stop names neutrally like every other preliminary one (prereg-4.17 5)
+        self.assertEqual(ids[250680], "bachman_2020_rapid_lc")
         ascidian = next(s for s in self.out["stops"] if s["aphia_id"] == 250680)["mcui"]
-        self.assertEqual((ascidian["basis"], ascidian["category"]), (None, None))
-        # 4.14 (prereg-4.14 2): every species without an IUCN global or Korean national category says its state instead
-        self.assertTrue(ascidian["label"].startswith("보전평가 미확인"), ascidian["label"])
-        self.assertEqual(ascidian["status"]["state"], "self_preliminary_only")
+        self.assertEqual(ascidian["category"], "LC")
+        self.assertEqual(ascidian["status"]["state"], "preliminary_scored")
         for stop in self.out["stops"]:
             st = self.species[stop["aphia_id"]]["conservation_status"]
             self.assertEqual(stop["mcui"]["status"], {"state": st["state"], "label": st["label"]})
@@ -97,14 +96,14 @@ class ExpeditionStops(unittest.TestCase):
         self.assertEqual(self.out["stops"][:29], self.route, "stops off the route come last")
         # every quadrant has a stop (4.12: 살오징어 is the one alternative-production species, by its stock-decline MCUI), and
         # 4.14: every species with no MCUI (no IUCN global or Korean national category, no stock lower bound) has no type;
-        # 4.17: a preliminary assessment fills 13 of them again, so only 멍게 is left
+        # 4.17: a preliminary assessment fills 13 of them again, so only 멍게 is left; 4.19 fills 멍게 too
         self.assertEqual({s["matrix_type"]["id"] for s in self.out["stops"]},
-                         {t["id"] for t in self.report["method"]["matrix"]["types"].values()} | {None})
+                         {t["id"] for t in self.report["method"]["matrix"]["types"].values()})
         self.assertEqual([s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] == "alternative_production"],
                          [s["aphia_id"] for s in self.report["species"] if s["korean_name"] == "살오징어"])
         untyped = [s["aphia_id"] for s in self.out["stops"] if s["matrix_type"]["id"] is None]
         self.assertEqual(untyped, [s["aphia_id"] for s in self.out["stops"] if s["scores"]["MCUI"] is None])
-        self.assertEqual(len(untyped), 1)
+        self.assertEqual(len(untyped), 0)
 
     def test_centres_are_shared_only_where_shared_with_says_so(self):
         at = {}
