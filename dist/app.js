@@ -3965,7 +3965,7 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip-text').innerHTML=!data?($('connection-state').textContent==='불러오기 실패'?'자료를 불러오지 못했어요':'자료 불러오는 중'):(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -4037,8 +4037,9 @@ async function loadCollection(){
     // Neither the API nor the saved copy answered (2026-10-15): one plain line and a retry button wherever the data would be,
     // never an empty screen. The cause stays under it in small type.
     const retry='<button type="button" class="text-button data-retry">↻ 다시 시도</button>';
-    $('error').hidden=false;$('error').innerHTML=`<strong>자료를 불러오지 못했어요</strong> · ${retry}<small class="error-cause">${esc(error.message)} 저장된 공개 자료 사본도 읽지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.</small>`;
-    $('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';
+    const cause=/[가-힣]/.test(error?.message||'')?error.message:'운영 DB에 연결하지 못했습니다(네트워크 끊김 또는 시간 초과).'; // the browser's own words are English
+    $('error').hidden=false;$('error').innerHTML=`<strong>자료를 불러오지 못했어요</strong> · ${retry}<small class="error-cause">${esc(cause)} 저장된 공개 자료 사본도 읽지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.</small>`;
+    $('error').classList.remove('in-chip');$('connection-state').textContent='불러오기 실패';updateStatusChips();
     $('species-list').innerHTML=`<p class="load-failed">자료를 불러오지 못했어요 · ${retry}</p>`;
     $('cmp-profile').innerHTML=`<p class="cmp-error" role="alert">자료를 불러오지 못했어요 · ${retry} 빈 결과가 아니라 연결 오류입니다.</p>`;
     $('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
