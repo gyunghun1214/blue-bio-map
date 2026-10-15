@@ -1,0 +1,144 @@
+[
+ {
+  "name": "1440px sea-cucumber: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 122개 · 그중 ChEMBL 연결 0개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "1440px sea-cucumber: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px sea-cucumber: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1440px ecklonia: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 2개 · 그중 ChEMBL 연결 1개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "1440px ecklonia: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px ecklonia: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1440px mackerel: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 0개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "1440px mackerel: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px mackerel: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1440px method: why-ChEMBL card and counts from the file",
+  "ok": true,
+  "detail": {
+   "text": "2026-10-15 조회 기준, 30종 중 13종에서 CMNPD 보고 화합물 187개를 찾았습니다. 이 가운데 MBPI의 종–화합물 연결(위키데이터 P703·원논문)을 거쳐 ChEMBL 분자까지 이어진 화합물은 1개이고, CMNPD가 ChEMBL 분자를 함께 적었지만 아직 종 연결이 없는 화합물은 4개(바지락 1·꼬시래기 2·멍게 1)입니다. 이 수치는 점수와 유형을 바꾸지 않습니다.",
+   "h3": "왜 MBPI의 주 소스가 ChEMBL인가요?",
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px method: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px sea-cucumber: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 122개 · 그중 ChEMBL 연결 0개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "390px sea-cucumber: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "390px sea-cucumber: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px ecklonia: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 2개 · 그중 ChEMBL 연결 1개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "390px ecklonia: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "390px ecklonia: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px mackerel: line shows the CMNPD count, '점수 미사용' and the licence",
+  "ok": true,
+  "detail": "후보 화합물 탐색 점수 미사용 CMNPD 보고 화합물 0개 · CC BY-NC-SA 4.0"
+ },
+ {
+  "name": "390px mackerel: no text under 11px, inside the profile, no page overflow",
+  "ok": true,
+  "detail": {
+   "min": 11,
+   "inside": true,
+   "over": 0
+  }
+ },
+ {
+  "name": "390px mackerel: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px method: why-ChEMBL card and counts from the file",
+  "ok": true,
+  "detail": {
+   "text": "2026-10-15 조회 기준, 30종 중 13종에서 CMNPD 보고 화합물 187개를 찾았습니다. 이 가운데 MBPI의 종–화합물 연결(위키데이터 P703·원논문)을 거쳐 ChEMBL 분자까지 이어진 화합물은 1개이고, CMNPD가 ChEMBL 분자를 함께 적었지만 아직 종 연결이 없는 화합물은 4개(바지락 1·꼬시래기 2·멍게 1)입니다. 이 수치는 점수와 유형을 바꾸지 않습니다.",
+   "h3": "왜 MBPI의 주 소스가 ChEMBL인가요?",
+   "over": 0
+  }
+ },
+ {
+  "name": "390px method: no page errors",
+  "ok": true,
+  "detail": []
+ }
+]
