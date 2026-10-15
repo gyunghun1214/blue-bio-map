@@ -607,3 +607,14 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-aux{margin:6px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
 #compare #comparison .cv-num .cv-cat{display:block;margin-top:1px;color:var(--dt-ink2);font-size:11.5px;font-weight:600;letter-spacing:0}
 #compare #comparison .dt-x-aux{color:var(--dt-ink)}
+
+/* 2026-10-15: MBPI evidence kind (의약 표적 / 기능성 펩타이드) and the secondary MBPI-Rx under the profile's MBPI */
+#compare .cp-kind{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:6px 0 0 118px;color:var(--cs-ink2);font-size:12px;line-height:1.45}
+#compare .cp-kind-badge{display:inline-flex;align-items:center;padding:1px 9px;border:1px solid var(--cs-line2);border-radius:99px;color:var(--cs-ink);font-size:12px;font-weight:600}
+#compare .cp-kind-badge[data-kind=drug]{border-color:rgba(143,211,232,.55);color:var(--cs-use)}
+#compare .cp-rx .cp-rx-name{color:var(--cs-ink2);font-size:13px}
+#compare .cp-rx .cp-rx-name small{display:block;color:var(--cs-ink3);font-size:11px;line-height:1.3}
+#compare .cp-rx .cp-bar i{background:color-mix(in srgb,var(--cs-use) 55%,transparent)}
+#compare .cp-rx-num{justify-self:end;color:var(--cs-ink2);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+#compare .cp-rx-none{grid-column:2/4;justify-self:end;color:var(--cs-ink2);font-size:12.5px}
+@media (max-width:740px){#compare .cp-kind{margin-left:0}}
