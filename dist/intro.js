@@ -352,6 +352,9 @@ void main(){
   });
 
   const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();freeGL();};
+  // A shared link opened in this tab while the screen is up changes only the hash (no reload): it skips the screen, as the
+  // same link does on a fresh load, and app.js applies its tab and species underneath (its own hashchange listener).
+  addEventListener('hashchange',()=>{if(!left&&hasAppHash(location.hash))fail();});
   addEventListener('bbvm:progress',e=>{try{
     const d=e.detail||{};
     if(d.step==='map'&&d.geography){const r=geographyRings(d.geography,.08,COUNTRIES_CUT),bv=borderVertices(d.geography);kr=prep(r,COUNTRIES_CUT);krCells=new Set(r.flat().map(cellOf));

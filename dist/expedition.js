@@ -176,7 +176,7 @@ const MOVED_LINKS={
 const link=(url,label)=>MOVED_LINKS[url]?`<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
   :safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
-const AXIS={MFPI:'식량자원 잠재력',MBPI:'신약개발(생리활성) 잠재성',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
+const AXIS={MFPI:'식량자원 잠재력',MBPI:'생리활성 단서',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js
 const KIND={peptide:'펩타이드 비교집단',amp:'항균 펩타이드 비교집단(MIC)',chembl:'ChEMBL 화합물 비교집단',xo:'XO 문헌 비교집단',relaxed:'완화 산출',anticancer:'항암 세포주 비교집단'};
 let DATA=null,STATE=null,ROUTE=null,scene=null,revealTimer=null,lastFocus=null;
