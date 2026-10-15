@@ -617,4 +617,4 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 /* ⚠ beside a matrix point: a decline signal with an MCUI under the line. Distinct from the stock diamond and the hollow point */
 #compare .matrix-point .mp-obis{position:absolute;right:calc(100% + 1px);bottom:calc(100% + 1px);color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
 #compare .matrix-point.pilot[data-clustered] .mp-obis,#compare .matrix-point.pilot[data-dim] .mp-obis{visibility:hidden}
-#compare .mp-obis-pill{margin-right:4px;color:#f2b84b;font-style:normal}
+#compare .matrix-cluster-btn .mp-obis-pill{position:absolute;left:-5px;top:-8px;color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
