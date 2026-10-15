@@ -1,7 +1,8 @@
 # 공개 기록: verified-4.17 MCUI 예비 평가 복귀 (2026-10-15)
 
 - 사전 등록: `research/verified-indices/prereg-4.17-2026-10-15.md`, 코드보다 먼저 단독 커밋(11b69dd).
-- 설정: `config/verified-indices-v4.17.json` (기본 설정). 4.14 공개본은 `research/verified-indices/archive/assessments-verified-4.14.json`에 보관했다.
+- 설정: `config/verified-indices-v4.17.json` (기본 설정). 같은 날 먼저 공개된 4.16(근거 프로필 표시, 점수는 4.14와 같음, PR #194) 설정 위에 MCUI 규칙만 바꿨다. 4.14·4.16 공개본은 `research/verified-indices/archive/`에 보관했고 바이트 단위로 재현된다.
+- 4.16의 근거 프로필(`evidence_profile`)과 그 화면 문구는 4.17에서 그대로다(테스트로 확인).
 - 결정: 팀장(LKH) 2026-10-15 04:21Z, 프로젝트 스레드 '14종 공식 보전 평가 찾기'.
 
 ## 1. 사전 등록 표와 실제 결과
@@ -43,11 +44,11 @@
 
 ## 4. 검사
 
-- Python 단위 테스트 421개 통과(2개 skip, 기존과 같음). `test_lineage` 포함.
+- Python 단위 테스트 425개 통과(2개 skip, 기존과 같음). `test_lineage` 포함.
 - Node 화면 테스트 전부 통과.
 - `uicheck.mjs`(로컬 dist, live-snapshot 고정): 199 PASS, FAIL 4건은 모두 클라우드 환경 문제(공유 링크 A-5, 위성 GIBS 타일, 수심 GEBCO 타일, 저장된 기본값)로 이전 실행과 같다.
 - 빌더 `--check`: `build_verified_indices`, `build_matrix_readiness`, `build_expedition_stops`, `build_unexplored_candidates --report-only` 모두 일치.
-- 계보: `research/lineage/verified-4.17/`, `reports/lineage_validation_verified-4.17.md`(6개 항목 PASS), `reports/source_changes_verified-4.17.md`(원자료 변경 0건).
+- 계보: `research/lineage/verified-4.17/`, `reports/lineage_validation_verified-4.17.md`(6개 항목 PASS), `reports/source_changes_verified-4.17.md`(4.16 대비 원자료 변경 0건).
 
 ## 5. 다음 교체 시점
 
