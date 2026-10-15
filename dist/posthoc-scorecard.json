@@ -1,0 +1,226 @@
+{
+ "schema_version": "posthoc-scorecard-1",
+ "display_only": true,
+ "report_version": "verified-4.19",
+ "source": "dist/assessments.json posthoc.validation_sets + config/posthoc-scorecard.json",
+ "repository": "https://github.com/gyunghun1214/blue-bio-map/blob/main/",
+ "total": 8,
+ "counts": {
+  "통과": 1,
+  "실패": 3,
+  "실패 후 사용 중단": 1,
+  "일관성 확인(독립 아님)": 2,
+  "검증 불성립": 1
+ },
+ "preregistered": 7,
+ "indicators": {
+  "MFPI": {
+   "state": "passed",
+   "label": "검증 통과",
+   "checks": 1,
+   "classes": {
+    "통과": 1
+   }
+  },
+  "MBPI": {
+   "state": "not_passed",
+   "label": "검증 미통과",
+   "checks": 2,
+   "classes": {
+    "실패": 2
+   }
+  },
+  "MCUI": {
+   "state": "limited",
+   "label": "제한적 확인",
+   "checks": 5,
+   "classes": {
+    "실패": 1,
+    "실패 후 사용 중단": 1,
+    "일관성 확인(독립 아님)": 2,
+    "검증 불성립": 1
+   }
+  }
+ },
+ "rows": [
+  {
+   "key": "MFPI",
+   "order": 1,
+   "indicator": "MFPI",
+   "name": "MFPI · 식품성분표 교차 확인",
+   "checked": "한국 식품성분표 대신 일본 식품성분표 값으로 다시 계산해도 11종의 영양 순위가 유지되는지",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "실행 전 기준 고정(ρ ≥ 0.6, p < 0.05, 8종 이상)",
+   "result": "passed",
+   "outcome_class": "통과",
+   "outcome_label": "통과",
+   "action": "none",
+   "action_label": "해당 없음",
+   "action_detail": "점수에 사용",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/posthoc-validation-2026-10-02.json"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MBPI",
+   "order": 2,
+   "indicator": "MBPI",
+   "name": "MBPI · 신약 기원종 순위",
+   "checked": "신약이 나온 해양생물 3종의 MBPI가 운영 종보다 높게 나오는지",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "기준 문장을 먼저 등록(수치 기준 없음)",
+   "result": "failed",
+   "outcome_class": "실패",
+   "outcome_label": "기준 미충족",
+   "action": "kept",
+   "action_label": "유지",
+   "action_detail": "BBVI에 그대로 쓰고, 종 상세의 MBPI 설명에 이 결과를 함께 적음",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/posthoc-validation-mbpi-4.11-2026-10-13.json"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MBPI_RX",
+   "order": 3,
+   "indicator": "MBPI",
+   "name": "MBPI-Rx · 신약 기원종 순위(탐색적)",
+   "checked": "ACE·잔틴 산화효소 펩타이드 층을 뺀 MBPI-Rx로 같은 질문을 다시 확인",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "사전 등록 후 실행 · 기존 결과를 본 뒤 제안한 탐색적 재검토",
+   "result": "failed",
+   "outcome_class": "실패",
+   "outcome_label": "기준 미충족",
+   "action": "reference",
+   "action_label": "참고로 내림",
+   "action_detail": "점수에 쓰지 않고 종 상세와 데이터 표에 참고로만 표시",
+   "action_history": null,
+   "exploratory": true,
+   "records": [
+    "research/verified-indices/posthoc-validation-mbpi-rx-4.10-2026-10-12.json",
+    "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MCUI",
+   "order": 4,
+   "indicator": "MCUI",
+   "name": "MCUI · 위협 범주 순서",
+   "checked": "어획으로 줄어든 위협종(해삼, IUCN EN)의 MCUI가 LC 종(살오징어)보다 높게 나오는지",
+   "preregistered": "no",
+   "preregistered_label": "아니오",
+   "preregistered_note": "사전 등록 기록 없음 · 2종만 비교",
+   "result": "reproduced_n2",
+   "outcome_class": "일관성 확인(독립 아님)",
+   "outcome_label": "일관성 확인(독립 아님)",
+   "action": "none",
+   "action_label": "해당 없음",
+   "action_detail": "점수에 사용",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "config/verified-indices-v4.19.json"
+   ],
+   "record_note": "별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목"
+  },
+  {
+   "key": "MCUI_stock_decline",
+   "order": 5,
+   "indicator": "MCUI",
+   "name": "MCUI · 자원 감소 신호",
+   "checked": "어획량 급감이 보고된 종(살오징어)은 MCUI 상위에, 어획량이 유지된 종(고등어·대구)은 신호 없음으로 나오는지",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "사전 등록(prereg-4.12)",
+   "result": "consistent_same_data",
+   "outcome_class": "일관성 확인(독립 아님)",
+   "outcome_label": "일관성 확인(독립 아님)",
+   "action": "none",
+   "action_label": "해당 없음",
+   "action_detail": "점수에 사용",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/prereg-4.12-2026-10-14.md"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MCUI_preliminary",
+   "order": 6,
+   "indicator": "MCUI",
+   "name": "MCUI 예비 평가 · Rapid LC 역검증",
+   "checked": "이미 평가가 있는 14종에 자체 예비평가(Rapid LC)를 적용했을 때 위협종을 LC로 판정하지 않는지",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "실행 전 기준 고정",
+   "result": "failed",
+   "outcome_class": "실패",
+   "outcome_label": "기준 미충족",
+   "action": "kept",
+   "action_label": "유지",
+   "action_detail": "공식 평가가 없는 10종의 MCUI에 예비 평가로 사용 · 종 상세에 '예비 평가(공식 평가 전)'로 표시 · IUCN 또는 해양생물자원관 결과가 나오면 교체",
+   "action_history": "2026-10-02 참고로 내림 → 4.3 점수에 사용 → 4.14 참고로 내림 → 4.17 예비 평가로 다시 사용(팀장 결정 2026-10-15)",
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/posthoc-validation-2026-10-02.json"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MCUI_preliminary_criterion_A",
+   "order": 7,
+   "indicator": "MCUI",
+   "name": "MCUI 예비 평가 · 기준 A(감소율) 역검증",
+   "checked": "어획 통계로 IUCN 기준 A(감소율)를 판정하는 방법이 이미 평가된 14종의 결과와 맞는지",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "실행 전 기준 고정(01_method_fixed_before_data.md)",
+   "result": "failed",
+   "outcome_class": "검증 불성립",
+   "outcome_label": "검증 불성립(표본 부족)",
+   "action": "not_adopted",
+   "action_label": "도입하지 않음",
+   "action_detail": "통과할 때만 쓰기로 한 방법이라 점수에 넣지 않음(팀장 결정 2026-10-03)",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
+    "research/verified-indices/posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md"
+   ],
+   "record_note": null
+  },
+  {
+   "key": "MCUI_trend",
+   "order": 8,
+   "indicator": "MCUI",
+   "name": "MCUI 추세 보정 · OBIS 보고율",
+   "checked": "OBIS 보고율 감소 신호가 위협종에서 LC 종보다 자주 나오는지(지도 상자 안 229종)",
+   "preregistered": "yes",
+   "preregistered_label": "예",
+   "preregistered_note": "실행 전 기준 고정(01_method_fixed_before_data.md)",
+   "result": "failed",
+   "outcome_class": "실패 후 사용 중단",
+   "outcome_label": "기준 미충족 · 사용 중단",
+   "action": "removed",
+   "action_label": "점수에서 뺌",
+   "action_detail": "4.11부터 +10 보정을 멈춤(prereg-4.11) · 추세 분류는 참고로만 표시",
+   "action_history": null,
+   "exploratory": false,
+   "records": [
+    "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
+    "research/verified-indices/posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md"
+   ],
+   "record_note": null
+  }
+ ]
+}

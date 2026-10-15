@@ -52,8 +52,8 @@ async function open(w,h,hash){
   await page.close();}
 // 2) method tab: the table sits under the title
 {const {page,errors}=await open(1440,900,'v=method');
-  const m=await page.evaluate(()=>{const c=document.getElementById('mt-mcui-map'),h=document.querySelector('#method .mt-hero');return {after:!!c&&h?.nextElementSibling===c,cells:[...c.querySelectorAll('tbody td')].map(td=>td.textContent).join(',')};});
-  log('method: MCUI table right under the title, LC 10 · NT 35 · VU 60 · EN 80 · CR 100',m.after&&m.cells==='10,35,60,80,100',m);
+  const m=await page.evaluate(()=>{const c=document.getElementById('mt-mcui-map'),v=document.getElementById('mt-scorecard'),h=document.querySelector('#method .mt-hero');return {after:!!c&&(v?v.nextElementSibling===c:h?.nextElementSibling===c),cells:[...c.querySelectorAll('tbody td')].map(td=>td.textContent).join(',')};});
+  log('method: MCUI table right under the validation scorecard (top of the tab), LC 10 · NT 35 · VU 60 · EN 80 · CR 100',m.after&&m.cells==='10,35,60,80,100',m);
   await page.locator('#mt-mcui-map').screenshot({path:`${OUT}/06-1440-method-mcui-table.png`});
   log('1440 method: no page errors',!errors.length,errors);await page.close();}
 // 3) explore species detail (axis card) for 해삼
