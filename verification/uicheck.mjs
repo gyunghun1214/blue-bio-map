@@ -767,6 +767,27 @@ try{
     kinds.out.length===3&&kinds.out.every(k=>k.drawn===k.cells&&k.drawn>0&&k.fills.length===1&&k.fills[0]===k.want&&!k.yellow&&!k.dots)&&kinds.out.map(k=>k.type).join()==='conservation_priority,baseline_survey,none'&&
     // 4.14: 멍게 has a BBVI but no official category, so the key says why in words (not a missing pair, never a low risk)
     kinds.out[2].key.includes('유형 미산출')&&kinds.out[2].key.includes('보전평가 미확인')&&kinds.out[2].chipDot.includes('none')&&kinds.back.view==='species'&&kinds.back.pressed==='false'&&kinds.back.drawn===kinds.back.cells,JSON.stringify(kinds));
+  // 2026-10-15 (LKH: one cell, mostly Jeju's, stood out in 우뭇가사리 and 살오징어): the panel's first cell is not drawn as chosen.
+  // With nothing clicked every species' cells share one border and one fill; a clicked cell gets a heavier border of the same
+  // colour and keeps the fill; choosing another species drops the mark.
+  // one species per call: the 10 s reply limit is too short for all of them in one evaluate
+  const toneHelpers="const wait=ms=>new Promise(r=>setTimeout(r,ms)),fillOf=l=>l._sea?l._sea.options.fillOpacity:l.options.fillOpacity,narrow=()=>valueRects.filter(([g])=>g.size<4),"+
+    "look=()=>({active:valueRects.filter(([,,a])=>a).length,fills:[...new Set(narrow().map(([,l])=>fillOf(l)))],weights:[...new Set(narrow().map(([,l])=>l.options.weight))]});";
+  const toneKeep=await evaluate('selected.aphiaID'),toneOdd=[];
+  for(const id of await evaluate('data.species.filter(x=>x.cells.length).map(x=>x.aphiaID)')){
+    const v=await evaluate(`(async()=>{${toneHelpers}selectSpecies(${id});await wait(60);return {sp:selected.label,...look()}})()`);
+    if(v.active||v.fills.length>1||v.weights.some(w=>w>1.5))toneOdd.push(v);
+  }
+  const tone=await evaluate(`(async()=>{${toneHelpers}
+    selectSpecies(372119);await wait(200);const target=narrow().find(([g])=>valueCellKey(g.lat,g.lon,g.size)!==selectedValueCell)||narrow()[0],key=valueCellKey(target[0].lat,target[0].lon,target[0].size);
+    target[1].fire('click');await wait(250);const on=valueRects.filter(([,,a])=>a),rest=narrow().filter(([,,a])=>!a);
+    const clicked={n:on.length,key:on[0]?valueCellKey(on[0][0].lat,on[0][0].lon,on[0][0].size):null,want:key,fill:on[0]&&fillOf(on[0][1]),others:[...new Set(rest.map(([,l])=>fillOf(l)))],weight:on[0]?.[1].options.weight,otherWeight:Math.max(...rest.map(([,l])=>l.options.weight))};
+    document.getElementById('value-view').click();await wait(200);const allView=look();allView.chosen=valueRects.filter(([,,a])=>a).map(([g])=>valueCellKey(g.lat,g.lon,g.size));document.getElementById('value-view').click();await wait(200);
+    selectSpecies(342067);await wait(200);const after=look();selectSpecies(${toneKeep});await wait(250);return {clicked,allView,after}})()`);
+  tone.odd=toneOdd;
+  check('Value map cells share one tone: with nothing clicked no cell of any species is drawn as chosen (one border, one fill); a clicked cell gets only a heavier border and keeps the fill, in both views; another species drops the mark',
+    tone.odd.length===0&&tone.clicked.n===1&&tone.clicked.key===tone.clicked.want&&tone.clicked.others.length===1&&tone.clicked.fill===tone.clicked.others[0]&&tone.clicked.weight>tone.clicked.otherWeight&&
+    JSON.stringify(tone.allView.chosen)===JSON.stringify([tone.clicked.want])&&tone.after.active===0&&tone.after.fills.length===1,JSON.stringify(tone));
   const overlay2=await evaluate(`(async()=>{const q=x=>document.querySelector(x);q('#value-view').click();await new Promise(r=>setTimeout(r,300));
     return {view:valueView,pressed:q('#value-view').getAttribute('aria-pressed'),drawn:valueRects.length,groups:valueCellGroups().size,yellow:valueRects.filter(([,l])=>l.options.color==='#ffd166').length,
       mine:[...valueCellGroups().values()].filter(g=>g.species.has(selected.aphiaID)).length,chip:q('#map-chip').textContent,key:q('#value-key-text').textContent,source:q('#map-source').textContent}})()`);
