@@ -545,7 +545,7 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   assert.ok(h.indexOf('data-axis="MBPI"')<h.indexOf('rx-disclosure')&&h.indexOf('rx-disclosure')<h.indexOf('data-axis="MCUI"'),'the line sits right under MBPI');
   const oy=line(h);
   assert.ok(oy.includes('<summary><span>의약 후보 MBPI(보조, 탐색적)</span><b>62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)</b></summary>'),oy);
-  for(const t of ['이 종에서 뺀 항목 2개','근거 층: 항균 펩타이드(DBAASP','층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산): ACE 저해·잔틴 산화효소 펩타이드 층을 뺀',
+  for(const t of ['이 종에서 뺀 항목 2개','근거 층: 항균 펩타이드(<span lang="en">DBAASP','층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산): ACE 저해·잔틴 산화효소 펩타이드 층을 뺀',
     `사전 등록: ${rule.prereg}`,'기본 MBPI·BBVI·매트릭스에는 쓰지 않습니다'])assert.ok(oy.includes(t),`oyster MBPI-Rx line: ${t}`);
   assert.ok(line(ctx.renderScores(by(371986))).includes('<b>56.8 · ChEMBL 화합물 · 사후 검증 기준 미충족(탐색적 재검토)</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
   assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45.3 · ChEMBL 화합물 · '),'톳: the ChEMBL item once the ACE peptides are out');
