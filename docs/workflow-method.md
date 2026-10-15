@@ -1,6 +1,6 @@
 # 워크플로 그림 기준 방법 문서 — `verified-pilot-3.28`
 
-> **현재 공개본은 `verified-4.17`(2026-10-15)이다.** 0–8절의 표와 숫자는 3.28 시점 기록이며, 4.0–4.17의 변화(4.17 기준 MCUI 29종 중 14종이 예비 평가, 매트릭스 점 29개, 4.13 관련 문헌 23편은 점수 미사용 등)는 9절과 `dist/assessments.json`이 기준이다.
+> **현재 공개본은 `verified-4.17`(2026-10-15, 4.16 근거 프로필 표시 포함)이다.** 0–8절의 표와 숫자는 3.28 시점 기록이며, 4.0–4.17의 변화(4.17 기준 MCUI 29종 중 14종이 예비 평가, 매트릭스 점 29개, 4.13 관련 문헌 23편은 점수 미사용 등)는 9절과 `dist/assessments.json`이 기준이다.
 
 이 문서는 팀 워크플로 그림(`Blue-bio Value Map 기반 해양생물 활용·보전 통합 분석 구조`)의 단계마다 다음을 적는다: 저장소 어디에서 구현했는지(파일·함수), 쓰는 자료원과 이용조건, 공식, 한계.
 
@@ -231,6 +231,8 @@ MCUI 18종 = IUCN 7 · 한국 국가 평가 8 · 서식국 국가 평가 3. 예�
 `verified-4.4`(2026-10-05)는 4.3이 대체 규칙으로 채운 10칸을 재조사해, 4.3에 등록된 완화 (d)(펩타이드를 같은 표적·종말점의 ChEMBL 비교집단에서 순위)를 처음 적용했다([사전 등록](../research/verified-indices/prereg-4.4-2026-10-05.md), [기록](../research/verified-indices/formal-release-4.4-2026-10-05.md)). 참문어 세팔로토신이 MBPI 70.5(BBVI 54.2)가 됐고, 기원은 참문어 표준 유전체의 염기서열 기록이 성숙 서열과 가공 신호를 암호화함(4.1 선례)으로 확인했다. 방어·갑오징어 하한값과 MCUI 7칸은 재조사 뒤에도 그대로다. 참조기 XO 비교집단은 기준 2(잔틴 기질·요산 측정) 확인 회원을 원문 재확인으로 16 → 33으로 늘려, 4.3이 남긴 엄격 해석으로도 층이 성립한다.
 
 `verified-4.5`(2026-10-05)는 팀장 결정 카드에 따라 완화 (d)를 방어(sbGnRH, 사람 GnRH 수용체 결합 IC50 684 nM → MBPI 7.5)와 갑오징어(FMRFamide, ChEMBL 사람 NPFF2 Ki 6.6 nM 자기 행 제외 → MBPI 65.8)에 적용했다([사전 등록](../research/verified-indices/prereg-4.5-2026-10-05.md), [기록](../research/verified-indices/formal-release-4.5-2026-10-05.md)). 두 펩타이드 모두 그 종 자체의 공개 서열 기록이 가공 신호와 함께 암호화하지만 분류군 공통 펩타이드라는 한계(농어목 공통 호르몬 / 무척추동물 문 공통 신경펩타이드)를 항목 주의 문구에 그대로 적는다. 이 판에서 MBPI 하한값 0을 받는 종은 없고, 하한값 규칙은 등록된 채 남는다.
+
+`verified-4.16`(2026-10-15)은 표시 전용이다([기록](../research/verified-indices/formal-release-4.16-2026-10-15.md)). 점수·규칙·근거 계수·층화·백분위·가중치·구분선은 4.14와 같다. 설정 `evidence_profile`에 따라 생성기가 종마다 `evidence_profile`을 쓴다: MBPI 산출 항목 수와 모든 항목의 독립 논문 수(근거의 양), 최상위 항목의 재현 상태(`replicated` · `attempted_not_counted`와 제외 사유 코드 `other_origin`·`potency_gap`·`same_paper`·`reviewed_exclusion` · `none`), 공개된 관련 문헌(점수 미사용) 수, 최상위 항목의 근거 계수 적용 전 백분위와 계수, 최상위 항목을 뺀 MBPI(2위 항목 보정값). 화면의 '근거 논문 1편'은 '최상위 근거 독립 재현 확인 중'으로 바꿨다.
 
 `verified-4.17`(2026-10-15)은 팀장 결정으로 공식 평가가 없는 종의 MCUI를 예비 평가로 다시 채웠다([사전 등록](../research/verified-indices/prereg-4.17-2026-10-15.md), [기록](../research/verified-indices/formal-release-4.17-2026-10-15.md)). `mcui_scope.scored_bases`에 range_state·preliminary를 더하고 `preliminary_bases`로 표시해, IUCN 전 지구·한국 국가 평가가 없을 때만 서식국 정부 평가 → Rapid LC 순서로 멸종위험 성분을 채운다. 그런 종은 `conservation_status.state = preliminary_scored`와 `preliminary`(근거·문구·교체 규칙)를 싣고 `matrix.include_substitute_mcui`로 매트릭스·지도 색에 들어간다. 지방 평가는 `reference_bases`로 참고만 남는다. 화면은 이 표시를 종 상세의 MCUI 근거 칸에만 둔다. 결과: MCUI 29종, 매트릭스 점 29개, 값은 4.13과 같다.
 

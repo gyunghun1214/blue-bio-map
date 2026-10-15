@@ -1,4 +1,4 @@
-# 계보 검증: verified-4.17 (adb51fe)
+# 계보 검증: verified-4.16 (eb9341d)
 
 `python scripts/lineage.py validate`로 생성. 종-화합물 연결 393건, 시험 기록 2216건, 기여 행 2173건 (포함 112건).
 

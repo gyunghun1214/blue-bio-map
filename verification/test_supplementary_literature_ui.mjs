@@ -1,6 +1,6 @@
 // 4.13 (prereg-4.13-2026-10-14 3-D): '관련 문헌(점수 미사용)' from dist/supplementary-literature.json. The list sits under the
 // MBPI section and as a small card line; it is read by no score, matrix, map colour or chip, and its count is never the
-// '근거 논문 1편' label. Schema gate as for trait-evidence.json.
+// '최상위 근거 독립 재현 확인 중' label (formerly '근거 논문 1편'). Schema gate as for trait-evidence.json.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';

@@ -218,6 +218,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 2,
+        "mbpi_without_top_item": 19.6,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 47.14,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 377084,
@@ -1393,6 +1406,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 11,
+        "item_count": 10,
+        "mbpi_without_top_item": 46.1,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 75.71,
+        "top_item_replication": "none",
+        "unscored_related_count": 3
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 371986,
@@ -2190,6 +2216,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 3,
+        "mbpi_without_top_item": 2.3,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 97.73,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 234476,
@@ -2883,6 +2922,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 3,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 28.77,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 494853,
@@ -3565,6 +3617,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 87.62,
+        "top_item_replication": "none",
+        "unscored_related_count": 4
       },
       "food_trace": {
         "aquaculture": {
@@ -4329,6 +4394,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 0.76,
+        "top_item_replication": "none",
+        "unscored_related_count": 2
       },
       "food_trace": {
         "aquaculture": {
@@ -5384,6 +5462,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 3,
+        "item_count": 7,
+        "mbpi_without_top_item": 43.5,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 78.12,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
       },
       "food_trace": {
         "aquaculture": {
@@ -6528,6 +6619,19 @@
         "source_id": "iucn_haliotis_discus_2022",
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Endangered A2d ver 3.1, assessed 31 May 2022, published 2022, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 78764186 with the same category."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 20.74,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
       },
       "food_trace": {
         "aquaculture": {
@@ -7698,6 +7802,22 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 4,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [
+          "other_origin",
+          "potency_gap"
+        ],
+        "replication_exclusion_reason_ko": "다른 기원 시료 · 효능 값 차이 기준 초과",
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 36.36,
+        "top_item_replication": "attempted_not_counted",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 393716,
@@ -8847,6 +8967,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 24.51,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -10075,6 +10208,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 8,
+        "mbpi_without_top_item": 50.0,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 100.0,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -11363,6 +11509,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 3,
+        "mbpi_without_top_item": 3.3,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 75.85,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 413600,
@@ -12616,6 +12775,19 @@
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 01 June 2022, published 2023, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 170306 with the same category."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 4,
+        "mbpi_without_top_item": 30.9,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 46.59,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 127022,
@@ -13799,6 +13971,19 @@
         "source_id": "iucn_engraulis_japonicus_2018",
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 16 May 2018, published 2018, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 98969433 with the same category."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 3,
+        "mbpi_without_top_item": 21.9,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 30.11,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
       },
       "food_trace": {
         "aquaculture": {
@@ -15595,6 +15780,19 @@
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 30 June 2016, published 2020, global. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 49182929 with the same category."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 2,
+        "mbpi_without_top_item": 37.5,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 71.74,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 281273,
@@ -16895,6 +17093,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 2,
+        "item_count": 6,
+        "mbpi_without_top_item": 38.6,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 57.53,
+        "top_item_replication": "none",
+        "unscored_related_count": 2
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 275816,
@@ -18152,6 +18363,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 4,
+        "mbpi_without_top_item": 12.8,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 42.22,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -21239,6 +21463,19 @@
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Least Concern ver 3.1, assessed 09 March 2015, published 2016, global, annotation 'Needs updating'. The page ID (A115383171) differs from the DOI cited by the GBIF checklist (A65927987); both belong to taxon 20435860 and the checklist marks it current. GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 20435860 with the same category."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 9.98,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 276651,
@@ -22414,6 +22651,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 2,
+        "mbpi_without_top_item": 51.3,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 79.83,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -23625,6 +23875,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 2,
+        "mbpi_without_top_item": 29.4,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 40.44,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -25138,6 +25401,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or the searched synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 94.02,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
       },
       "food_trace": {
         "aquaculture": {
@@ -26771,6 +27047,22 @@
         "threats": null,
         "verification": "IUCN species page read in browser on 2026-09-26: Data Deficient ver 3.1, assessed 14 March 2009, published 2012, listed under the synonym Sepia esculenta (WoRMS synonym of Acanthosepion esculentum 1666974). GBIF IUCN checklist 19491596 (2026-07-28) lists taxonID 162666 with the same category."
       },
+      "evidence_profile": {
+        "attempted_count": 2,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [
+          "other_origin",
+          "reviewed_exclusion"
+        ],
+        "replication_exclusion_reason_ko": "다른 기원 시료 · 같은 연구 그룹 가능성",
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 87.68,
+        "top_item_replication": "attempted_not_counted",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 1666974,
@@ -28059,7 +28351,7 @@
       }
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
-    "changes_from": "verified-4.14 (2026-10-14). Team-lead decision of 2026-10-15, registered in research/verified-indices/prereg-4.17-2026-10-15.md in its own commit before the code. The 2026-10-15 search found no IUCN global or Korean national assessment for the 14 species with no MCUI (IUCN NE). (1) With no official assessment, the extinction-risk part of MCUI again comes from a preliminary assessment, in the 4.13 order: the range state's national list, then the Rapid LC check (mcui_scope.preliminary_bases); sub-national lists stay reference only. (2) Such species carry conservation_status.state preliminary_scored ('예비 평가(공식 평가 전)') and join the matrix and map colours (matrix.include_substitute_mcui). (3) An official IUCN or national result replaces the preliminary value as soon as it is published. Everything else is 4.14.",
+    "changes_from": "verified-4.16 (2026-10-15; scores and rules as 4.14, evidence profile display kept). Team-lead decision of 2026-10-15, registered in research/verified-indices/prereg-4.17-2026-10-15.md in its own commit before the code. The 2026-10-15 search found no IUCN global or Korean national assessment for the 14 species with no MCUI (IUCN NE). (1) With no official assessment, the extinction-risk part of MCUI again comes from a preliminary assessment, in the 4.13 order: the range state's national list, then the Rapid LC check (mcui_scope.preliminary_bases); sub-national lists stay reference only. (2) Such species carry conservation_status.state preliminary_scored ('예비 평가(공식 평가 전)') and join the matrix and map colours (matrix.include_substitute_mcui). (3) An official IUCN or national result replaces the preliminary value as soon as it is published. Everything else is 4.14.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -28261,6 +28553,32 @@
         "source_id": "obis_trend",
         "z": 1.96
       }
+    },
+    "evidence_profile": {
+      "decision": "research/verified-indices/formal-release-4.16-2026-10-15.md",
+      "exclusion_reasons": {
+        "other_origin": "다른 기원 시료",
+        "potency_gap": "효능 값 차이 기준 초과",
+        "reviewed_exclusion": "같은 연구 그룹 가능성",
+        "same_paper": "점수 값과 같은 논문"
+      },
+      "integer_display": "On screen an MBPI or BBVI whose top item is not replicated is shown as a whole number; one decimal stays when rounding would cross a matrix line or turn a non-zero value into 0. Sorting and types use scores_unrounded; JSON and CSV keep the published values.",
+      "label": "MBPI 근거",
+      "replication_labels": {
+        "attempted_not_counted": "최상위 항목 재현 기록 있음(기준 외)",
+        "none": "최상위 항목 독립 재현 확인 중",
+        "replicated": "최상위 항목 독립 재현 확인"
+      },
+      "rule": "Display only. item_count = scored MBPI items; independent_paper_count = mbpi_breadth's count (every scored item's original papers and used replications, one DOI once); unscored_related_count = rows of the published related-literature list for the species; top_item_replication = replicated when the top item rests on at least bbvi.minimum_independent_mbpi_dois independent papers (the single-paper label is then absent), attempted_not_counted when it does not but replication rows exist that the rules did not count (their reasons grouped into exclusion_reasons), none otherwise; top_item_percentile and top_item_evidence_factor are the top item's own values; mbpi_without_top_item = the next item's adjusted value (null with one item). Never in MBPI, BBVI, the matrix, a type, the map or any ranking.",
+      "screen_label": "최상위 근거 독립 재현 확인 중",
+      "screen_label_replicated": "최상위 근거 독립 재현 확인",
+      "short_replication_labels": {
+        "attempted_not_counted": "재현 기록 있음(기준 외)",
+        "none": "독립 재현 확인 중",
+        "replicated": "독립 재현 확인"
+      },
+      "unscored_related_file": "dist/supplementary-literature.json",
+      "unscored_related_schema": "supplementary-literature-1"
     },
     "matrix": {
       "bbvi_threshold": 50,
@@ -29076,15 +29394,16 @@
     },
     "provenance": {
       "builder": "scripts/build_verified_indices.py",
-      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
-      "config": "config/verified-indices-v4.14.json",
+      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.17-2026-10-15.md and research/lineage/verified-4.17/ (a commit hash inside the report would break byte reproduction).",
+      "config": "config/verified-indices-v4.17.json",
       "inputs": [
         "research/verified-indices/evidence.json and the files config names",
         "research/verified-indices/candidates.json",
         "research/verified-indices/taxonomy.json",
-        "dist/candidate-catalog.json"
+        "dist/candidate-catalog.json",
+        "dist/supplementary-literature.json (related-paper count, display only)"
       ],
-      "method_version": "verified-4.14",
+      "method_version": "verified-4.17",
       "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
       "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
     },
@@ -29439,15 +29758,16 @@
   },
   "provenance": {
     "builder": "scripts/build_verified_indices.py",
-    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
-    "config": "config/verified-indices-v4.14.json",
+    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.17-2026-10-15.md and research/lineage/verified-4.17/ (a commit hash inside the report would break byte reproduction).",
+    "config": "config/verified-indices-v4.17.json",
     "inputs": [
       "research/verified-indices/evidence.json and the files config names",
       "research/verified-indices/candidates.json",
       "research/verified-indices/taxonomy.json",
-      "dist/candidate-catalog.json"
+      "dist/candidate-catalog.json",
+      "dist/supplementary-literature.json (related-paper count, display only)"
     ],
-    "method_version": "verified-4.14",
+    "method_version": "verified-4.17",
     "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
     "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
   },
@@ -31943,6 +32263,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 3,
+        "item_count": 8,
+        "mbpi_without_top_item": 71.5,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 1.0,
+        "top_item_percentile": 89.2,
+        "top_item_replication": "replicated",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 145721,
@@ -32778,6 +33111,19 @@
         "source_id": "iucn_japonicus_2026",
         "threats": "Biological resource use: fishing & harvesting aquatic resources",
         "verification": "IUCN species page read in browser on 2026-09-25: Endangered A2bd ver 3.1, assessed 30 Sep 2025, published 2026, global. GBIF IUCN checklist (2026-07-28) lists taxonID 180424 as ENDANGERED with the same 2026 citation."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 11.65,
+        "top_item_replication": "none",
+        "unscored_related_count": 2
       },
       "food_trace": {
         "aquaculture": {
@@ -33843,6 +34189,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 3,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 17.95,
+        "top_item_replication": "none",
+        "unscored_related_count": 2
       },
       "food_trace": {
         "aquaculture": {
@@ -35146,6 +35505,19 @@
         "threats": "Biological resource use: fishing & harvesting aquatic resources",
         "verification": "IUCN species page read on 2026-09-25: Least Concern ver 3.1, assessed 10 May 2010, published 2014, annotation 'Needs updating'. GBIF IUCN checklist (2026-07-28) lists taxonID 176085 as LEAST_CONCERN citing the same 2014 record, so it is the current listed assessment."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 2,
+        "mbpi_without_top_item": 42.8,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 75.85,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 342067,
@@ -36315,6 +36687,19 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 24.07,
+        "top_item_replication": "none",
+        "unscored_related_count": 1
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 372119,
@@ -37326,6 +37711,21 @@
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
       },
+      "evidence_profile": {
+        "attempted_count": 1,
+        "display_only": true,
+        "independent_paper_count": 3,
+        "item_count": 6,
+        "mbpi_without_top_item": 58.6,
+        "replication_exclusion_codes": [
+          "other_origin"
+        ],
+        "replication_exclusion_reason_ko": "다른 기원 시료",
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 86.65,
+        "top_item_replication": "attempted_not_counted",
+        "unscored_related_count": 0
+      },
       "food_trace": {
         "aquaculture": {
           "aphia_id": 494972,
@@ -38168,6 +38568,19 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 0,
+        "display_only": true,
+        "independent_paper_count": 1,
+        "item_count": 1,
+        "mbpi_without_top_item": null,
+        "replication_exclusion_codes": [],
+        "replication_exclusion_reason_ko": null,
+        "top_item_evidence_factor": 0.5625,
+        "top_item_percentile": 17.95,
+        "top_item_replication": "none",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {
@@ -39817,6 +40230,21 @@
         },
         "source_id": "iucn_redlist_search",
         "verification": "No IUCN Red List assessment under the accepted name or listed synonyms in Red List 2026-1. Absence is not an official NE category assigned by IUCN and is not a low score."
+      },
+      "evidence_profile": {
+        "attempted_count": 1,
+        "display_only": true,
+        "independent_paper_count": 4,
+        "item_count": 6,
+        "mbpi_without_top_item": 62.6,
+        "replication_exclusion_codes": [
+          "other_origin"
+        ],
+        "replication_exclusion_reason_ko": "다른 기원 시료",
+        "top_item_evidence_factor": 0.75,
+        "top_item_percentile": 96.31,
+        "top_item_replication": "attempted_not_counted",
+        "unscored_related_count": 0
       },
       "food_trace": {
         "aquaculture": {

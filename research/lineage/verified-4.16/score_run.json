@@ -1,9 +1,9 @@
 {
-  "run_id": "verified-4.17",
-  "method_version": "verified-4.17",
+  "run_id": "verified-4.16",
+  "method_version": "verified-4.16",
   "report_generated_at": "2026-10-14T00:00:00Z",
   "inputs_as_of": "2026-10-14",
-  "git_commit": "adb51fe",
+  "git_commit": "eb9341d",
   "sources": {
     "cellosaurus_mbpi": {
       "provider": "SIB Cellosaurus",
