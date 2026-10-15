@@ -2607,7 +2607,11 @@ function cellCsv(s){
   return '﻿'+[head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
 }
 // Shareable view: species, tab, basemap, period, map view and use-trait chip live in the URL hash.
-function readHash(){try{return Object.fromEntries(new URLSearchParams(location.hash.slice(1)));}catch{return {};}}
+// A shared link carries the screen after '#'. The same keys written as a query (?v=compare) open the same screen (the
+// hash wins where both name a key) and move into the hash on the first write; other query keys (?offline=1) stay.
+const LINK_KEYS=['s','v','t','b','m','p','u','w'];
+function readHash(){try{const q=new URLSearchParams(location.search),o={};for(const k of LINK_KEYS)if(q.has(k))o[k]=q.get(k);
+  return {...o,...Object.fromEntries(new URLSearchParams(location.hash.slice(1)))};}catch{return {};}}
 function writeHash(){
   if(!data||!selected)return;
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
@@ -2615,7 +2619,8 @@ function writeHash(){
   if(activeUses.size)p.set('u',[...activeUses].join(','));
   if(weightOff())p.set('w',(weightStep(bbviWeight)/W_STEPS).toFixed(2)); // the official weight stays out of the link
   if(map){const c=map.getCenter();p.set('m',`${map.getZoom()}/${c.lat.toFixed(2)}/${c.lng.toFixed(2)}`);}
-  try{history.replaceState(null,'','#'+p.toString());}catch{}
+  try{const q=new URLSearchParams(location.search);LINK_KEYS.forEach(k=>q.delete(k));const rest=q.toString();
+    history.replaceState(null,'',location.pathname+(rest?'?'+rest:'')+'#'+p.toString());}catch{}
 }
 function applyHash(h){
   const s=data?.species.find(x=>x.aphiaID===Number(h.s));
@@ -3863,6 +3868,10 @@ function slideMatrixPoints(before){
     if(Math.abs(dx)>.5||Math.abs(dy)>.5)b.animate([{translate:`${dx}px ${dy}px`},{translate:'0 0'}],{duration:300,easing:'ease-out'});
   });
 }
+// The report's source notes (terms, licence) are written in English in the record; the method tab shows the Korean note
+// from source-terms-ko.json, keyed by the English text. A note it does not hold yet is shown as written.
+let sourceTermsKo={};
+const memoKo=t=>t&&(sourceTermsKo[t]||t);
 function renderSources(){
   const info=data.assessmentInfo;
   $('snapshot-date').textContent=$('snapshot-date').title=`발행 ${data.collectedAt}`+(info?.version?` · 지표 ${info.version}${info.generatedAt?' · 산출 '+String(info.generatedAt).slice(0,10):''}`:'');$('collection-note').textContent=data.notes;
@@ -3871,7 +3880,7 @@ function renderSources(){
   const report=data.assessmentInfo||{};
   const indicator=[...new Set(data.species.flatMap(s=>s.assessment?.source_ids||[]))]
     .map(id=>[id,report.sources?.[id]]).filter(([,src])=>src)
-    .map(([id,src])=>`<div class="citation"><strong>${esc(src.title||src.provider||id)}</strong><span>${esc(src.citation||src.provider||'')}</span><br>${sourceLink(src.url,'원문 ↗')} · ${esc(src.license||'이용조건 미기재')}<br><span>${esc(src.terms||'')} ${esc(src.accessed||'')} 조회.</span></div>`).join('');
+    .map(([id,src])=>`<div class="citation"><strong>${esc(src.title||src.provider||id)}</strong><span>${esc(src.citation||src.provider||'')}</span><br>${sourceLink(src.url,'원문 ↗')} · ${esc(memoKo(src.license)||'이용조건 미기재')}<br><span>${[memoKo(src.terms),src.accessed&&src.accessed+' 조회'].filter(Boolean).map(esc).join(' · ')}</span></div>`).join('');
   $('all-sources').innerHTML=data.species.map(s=>`<div class="citation"><strong>${esc(s.label)} · 학명</strong><span>${esc(s.wormsCitation)}</span><br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation"><strong>${esc(s.title)}</strong><span>${esc(s.citation)}</span><br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
 }
 
@@ -3974,7 +3983,9 @@ async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
   const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
+  const termsReq=fetch('source-terms-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
+  {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
   {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
@@ -4003,6 +4014,9 @@ syncFolds(); // fold the filters before the data arrives, so the list does not j
   if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
 $('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+// A link opened in a tab that already shows the map changes only the hash (no reload): apply it, so a shared
+// 비교와 지표 link opens that tab instead of being written over by the map. replaceState (writeHash) never fires this.
+addEventListener('hashchange',()=>{const h=readHash();if(data&&selected)applyHash(h);else startHash=h;});
 // method-tab flow chart: a box opens the fold that holds its explanation card, then goes there (click or Enter/Space)
 document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const card=$('method-'+g.dataset.step);methodGo(card);card?.classList.add('flash');setTimeout(()=>card?.classList.remove('flash'),1600);};
   g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});

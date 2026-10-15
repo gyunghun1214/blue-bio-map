@@ -250,3 +250,5 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #method #all-sources{padding:2px 12px}
 }
 @media (prefers-reduced-motion:reduce){#method *{transition:none!important}}
+/* 2026-10-15 team check: phones get no text under 11px */
+@media(max-width:740px){#method .mt-src .mt-k{font-size:11px}}

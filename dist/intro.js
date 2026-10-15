@@ -7,6 +7,7 @@ const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
 // signal and follows its link, and the next load shows the entry screen again although the tab already entered.
 const HOME_KEY='bbvm-intro-home';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
+// (after '#' or, from 2026-10-15, as a query such as ?v=compare: the caller passes both)
 const GATE_MIN_MS=600, GATE_MAX_MS=7000;
 const GATE_STEPS=[['page','페이지 준비 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
 
@@ -243,7 +244,7 @@ void main(){
   if(typeof document==='undefined')return;
   const root=document.documentElement;
   let store=null,local=null;try{store=window.sessionStorage;}catch{}try{local=window.localStorage;}catch{}
-  let show=false;try{show=shouldShowGate(location.hash,store);}catch{}
+  let show=false;try{show=shouldShowGate(location.hash+'&'+location.search.slice(1),store);}catch{}
   try{store?.removeItem(HOME_KEY);}catch{} // used once: a reload or Back after it opens the map as before
   // The header logo links to this page without a hash ('./'), so the app also starts over (no species, tab or dialog).
   document.addEventListener('click',e=>{if(e.target.closest?.('a.brand')&&homeClick(e))try{store?.setItem(HOME_KEY,'1');}catch{}});

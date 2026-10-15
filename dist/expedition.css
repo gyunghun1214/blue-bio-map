@@ -207,3 +207,5 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 @media (prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important}
 }
+/* 2026-10-15 team check: phones get no text under 11px */
+@media(max-width:740px){.x-art span{font-size:11px}}

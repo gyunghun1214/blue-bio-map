@@ -1023,3 +1023,11 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .ax-head{flex-wrap:wrap;row-gap:2px}.ax-head h3{white-space:nowrap}
 /* 4.14: a word in place of a number ('보전평가 미확인') is grey, never the teal of a value or link */
 #comparison .score-cell .cv-num.cv-word{font-size:13px;font-weight:600;color:#a9b8c4}
+/* 2026-10-15 team check: no text under 11px on phones (390/375px: card score labels, group icons, map notes, sparkline
+   labels, attribution, the matrix list). Desktop sizes stay as they are. */
+@media(max-width:740px){
+  .card-scores i small,.group-icon small,.use-group small,.card-scores .card-stratum,.card-scores .held-word,
+  .species-card .card-lit,#explore .key-note,.map-ui-bl .effort-key small,.matrix-unplaced small{font-size:11px}
+  .sd-spark text{font-size:11px}
+  #explore .leaflet-control-attribution{font-size:11px!important} /* style.css sets 10px !important */
+}
