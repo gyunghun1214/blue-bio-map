@@ -62,6 +62,8 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 
 ## 자료 사용
 
+출처별 상업 이용 구분(2026-10-15): `python scripts/build_license_matrix.py`가 근거와 방법 탭의 출처 목록과 같은 파일에서 라이선스를 모아 `dist/license-matrix.json`(출처 / 라이선스 / 상업 이용 가능·불가·허가 필요·확인 필요 / 쓰이는 곳)을 만들고, CC0·CC BY 자료만 남길 때 지표별 종 수와 지도 셀 수를 계산한다(계산만, 점수 불변). 표시된 라이선스를 읽은 분류이며 법률 판단이 아니다. 지표 보고서·스냅샷·후보 셀이 바뀌는 배포에서 다시 실행한다. 기록: [research/license-matrix-2026-10-15.md](research/license-matrix-2026-10-15.md).
+
 지도 경계는 Natural Earth 1:10m 데이터(public domain), 지도 라이브러리는 Leaflet 1.9.4(BSD-2-Clause, dist/vendor/LEAFLET-LICENSE)이다. 시작 화면의 구는 Natural Earth 1:50m 육지·국경과 1:10m 수심 면(public domain, 범위와 sha256은 dist/vendor/globe-v1/SOURCE.txt)으로 그린다.
 
 ## 아직 구현·검증하지 않은 항목
