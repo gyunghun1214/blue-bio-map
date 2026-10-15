@@ -2724,6 +2724,7 @@ V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (20
 V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (MCUI stock-decline basis)
 V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)
 V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
+V414 = ROOT / "config" / "verified-indices-v4.14.json"  # superseded by 4.16 (evidence profile beside MBPI, display only)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -4078,7 +4079,7 @@ class Verified414Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V414)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V413))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -4087,8 +4088,9 @@ class Verified414Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.14", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.14.json")
+        # the published 4.14 report is archived as it was (superseded by 4.16)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.14.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.14-2026-10-14.md")
         self.assertTrue((ROOT / self.scope["prereg"]).exists())
 
@@ -4194,3 +4196,81 @@ class Verified414Tests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Verified416Tests(unittest.TestCase):
+    """4.16 (research/verified-indices/formal-release-4.16-2026-10-15.md, LKH's request 2026-10-15): display only. Each species
+    carries evidence_profile, the amount of its MBPI evidence kept apart from whether the top item was independently replicated.
+    Every score, unrounded value, label and type is 4.14's."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.report, cls.old_report = build(*load_inputs()), build(*load_inputs(config=V414))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+        cls.rule = cls.report["method"]["evidence_profile"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.16", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.16.json")
+        self.assertTrue((ROOT / self.rule["decision"]).exists())
+
+    def test_nothing_but_the_profile_and_the_version_moved(self):
+        self.assertEqual(set(self.new), set(self.old))
+        for a, s in self.new.items():
+            old, name = self.old[a], s["korean_name"]
+            for k in ("scores", "scores_unrounded", "mbpi_label", "bbvi_label", "mbpi_breadth", "bioactivity_trace", "mbpi_rx",
+                      "conservation_status", "priority_survey", "unexplored_candidate", "source_ids"):
+                self.assertEqual(s.get(k), old.get(k), f"{name} {k}")
+            self.assertEqual(set(s) - set(old), {"evidence_profile"}, name)
+        self.assertEqual(self.report["posthoc"], self.old_report["posthoc"])
+        self.assertEqual({k: v for k, v in self.report["method"].items() if k not in ("method_version", "changes_from", "evidence_profile", "provenance")},
+                         {k: v for k, v in self.old_report["method"].items() if k not in ("method_version", "changes_from", "provenance")})
+
+    def test_amount_and_replication_are_counted_apart(self):
+        oyster = self.by_name["참굴"]["evidence_profile"]
+        self.assertEqual((oyster["item_count"], oyster["independent_paper_count"], oyster["top_item_replication"]),
+                         (6, 4, "attempted_not_counted"))
+        self.assertEqual(oyster["replication_exclusion_codes"], ["other_origin"])
+        self.assertEqual(oyster["top_item_percentile"], 96.31)
+        self.assertEqual(oyster["mbpi_without_top_item"], 62.6)
+        kelp = self.by_name["감태"]["evidence_profile"]
+        self.assertEqual((kelp["item_count"], kelp["independent_paper_count"], kelp["unscored_related_count"], kelp["top_item_replication"]),
+                         (10, 11, 3, "none"))
+        states = {}
+        for s in self.new.values():
+            e, name = s["evidence_profile"], s["korean_name"]
+            states.setdefault(e["top_item_replication"], []).append(name)
+            # the profile repeats the published counts and never its own
+            self.assertEqual((e["item_count"], e["independent_paper_count"]), (s["mbpi_breadth"]["item_count"], s["mbpi_breadth"]["independent_paper_count"]), name)
+            # replicated exactly when the single-paper label is absent
+            self.assertEqual(e["top_item_replication"] == "replicated", s["mbpi_label"] is None, name)
+            best = max(s["bioactivity_trace"], key=lambda i: i["adjusted"])
+            self.assertEqual((e["top_item_percentile"], e["top_item_evidence_factor"]), (round(best["percentile"], 2), best["evidence_factor"]), name)
+            ranked = sorted((i["adjusted"] for i in s["bioactivity_trace"]), reverse=True)
+            self.assertEqual(e["mbpi_without_top_item"], round1(ranked[1]) if len(ranked) > 1 else None, name)
+            tried = [r for r in best.get("potency_replications", []) if not r["used"]]
+            if e["top_item_replication"] == "attempted_not_counted":
+                self.assertTrue(tried and e["replication_exclusion_codes"], name)
+                self.assertEqual(e["replication_exclusion_reason_ko"], " · ".join(self.rule["exclusion_reasons"][c] for c in e["replication_exclusion_codes"]), name)
+            else:
+                self.assertEqual((e["replication_exclusion_codes"], e["replication_exclusion_reason_ko"]), ([], None), name)
+            self.assertIs(e["display_only"], True)
+        self.assertEqual(states["replicated"], ["미역"])
+        self.assertEqual(sorted(states["attempted_not_counted"]), sorted(["톳", "참굴", "큰가리비", "갑오징어"]))
+        self.assertEqual(len(states["none"]), 25)
+        self.assertEqual(self.by_name["큰가리비"]["evidence_profile"]["replication_exclusion_codes"], ["other_origin", "potency_gap"])
+        self.assertEqual(self.by_name["갑오징어"]["evidence_profile"]["replication_exclusion_codes"], ["other_origin", "reviewed_exclusion"])
+
+    def test_related_papers_are_counted_from_the_published_list_only(self):
+        lit = json.loads((ROOT / self.rule["unscored_related_file"]).read_text(encoding="utf-8"))
+        for s in self.new.values():
+            self.assertEqual(s["evidence_profile"]["unscored_related_count"], sum(r["aphia_id"] == s["aphia_id"] for r in lit["records"]), s["korean_name"])
+        # the count is display only: an empty list moves no score
+        evidence, *rest = load_inputs()
+        bare = build({**evidence, "unscored_related_counts": {}}, *rest)
+        for a, s in ((s["aphia_id"], s) for s in bare["species"] + bare["candidate_species"]):
+            self.assertEqual((s["scores"], s["scores_unrounded"]), (self.new[a]["scores"], self.new[a]["scores_unrounded"]))
+            self.assertEqual(s["evidence_profile"]["unscored_related_count"], 0)

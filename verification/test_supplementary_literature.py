@@ -1,6 +1,6 @@
 """관련 문헌 · 점수 미사용 (verified-4.13, prereg-4.13-2026-10-14 4): the committed file is reproducible, and the builder
 refuses a row the rule does not admit. These rows never touch a score: no index, matrix, map colour, chip or ranking reads
-the file, and their count is not the '근거 논문 1편' label."""
+the file, and their count is not the '최상위 근거 재현 미확인' label (formerly '근거 논문 1편')."""
 import copy
 import json
 import sys

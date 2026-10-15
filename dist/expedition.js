@@ -153,11 +153,15 @@ function headlineAxes(stop){
   return ['MFPI','MBPI','MCUI'].filter(k=>v(k)!==null&&v(k)!==undefined).slice(0,2);
 }
 const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
+// 4.16 (2026-10-15, as on the main map): an MBPI or BBVI whose top MBPI item is not independently replicated (the stop carries
+// the single-paper label) is shown as a whole number; one decimal stays where rounding would land on 0 or on the BBVI line 50.
+const fmtAxis=(stop,k)=>{const v=stop.scores[k];if(v===null||v===undefined)return null;
+  const r=Math.round(v);return (k==='MBPI'||k==='BBVI')&&stop.bbvi_label&&!((r===0||r===50)&&r!==v)?String(r):Number(v).toFixed(1);};
 // Published data still carries the older label words; the screen shows the neutral wording, as on the main map
 // (dist/app.js plainWords, team-lead decision 2026-10-08).
 // 와/과 after a Korean name (the last Hangul syllable decides; "홍합(참담치)" reads 치).
 const wa=name=>{const h=[...String(name)].reverse().find(ch=>ch>='가'&&ch<='힣');return h&&(h.charCodeAt(0)-0xAC00)%28?'과':'와';};
-const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'근거 논문 1편')
+const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 재현 미확인')
   .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 
 // ---- browser ----
@@ -234,7 +238,7 @@ function axisTag(stop,k){
   return checkTag(k);
 }
 function scoreHtml(stop,k,big){
-  const v=fmtScore(stop.scores[k]);
+  const v=fmtAxis(stop,k);
   const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100</small>`;
   return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span><span class="x-tag">${axisTag(stop,k)}</span></div>`;
 }
@@ -297,9 +301,9 @@ function detailHtml(stop,i){
     <p class="x-type">${esc(stop.matrix_type.label||'유형 미배정')} · 정보충분도 ${stop.information_sufficiency===null?'<span class="x-missing">미확인</span>':esc(Math.round(stop.information_sufficiency*100))+'%'}</p></header>
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'자료 없음'} · ${checkTag('MFPI')}</small></h3>${food}</section>
-  <section><h3>생리활성 근거 <small>MBPI ${fmtScore(stop.scores.MBPI)??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
+  <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
   <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)??'자료 없음'}</small></h3>${cons}</section>
-  <section><h3>종합 <small>BBVI ${fmtScore(stop.scores.BBVI)??'자료 없음'} · ${checkTag('BBVI')}</small></h3>
+  <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'자료 없음'} · ${checkTag('BBVI')}</small></h3>
     <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다${stop.bbvi_label?` · ${esc(stop.bbvi_label)}`:''}. ${esc(DATA.notes.score)}.</p>
     <p class="x-fine">지표 ${esc(DATA.method_version)} (${esc(DATA.status)}) · 축별 사후 검증: MFPI ${checkTag('MFPI')}, MBPI ${checkTag('MBPI')}, BBVI ${checkTag('BBVI')}.</p></section>
   <details class="x-sources"><summary>논문·원자료 링크 ${stop.sources.length}개</summary><ul>${sources}</ul></details>
