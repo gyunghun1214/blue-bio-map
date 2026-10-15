@@ -196,14 +196,14 @@ try{
   check('Sea cucumber: published occurrence records, 4-degree generalization',new RegExp(`지도 표시 기록\\s*${cucMap.recordsText}건 · ${cucMap.cells}개 격자\\(4°\\)`).test(t)&&t.includes('GBIF')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   // 3.15: the RDA 해삼 row is linked through its MFDS scientific name (Stichopus japonicus), so MFPI 63.5
   check('Sea cucumber: conservation MCUI 80.0 and nutrition MFPI 63.5 from the index report, no stale 미수집/보류',/보전평가\s*지표 보고서에서 검토 · MCUI 80\.0/.test(t)&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.5/.test(t)&&!t.includes('근거 부족으로 보류')&&!/영양 기록 수\s*미수집/.test(t),t);
-  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 · 정식 산출 · 공식 평가 범주/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 정식 산출 · 공식 평가 범주')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
+  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 \(EN, A2bd\) · 정식 산출 · 공식 평가 범주/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 (EN, A2bd) · 정식 산출 · 공식 평가 범주')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
   check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
   // 3.15: a reviewed aquaculture-feasibility record (false) completes the squid MFPI inputs: 46.1. 3.27: Wako 1996 YALPHA gives MBPI 56.9
-  check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',/영양 기록 수\s*지표 보고서에서 검토 · MFPI 46\.1/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 57(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 60\.0 \(자원 감소 신호\)/.test(t)&&!/미수집|미검토/.test(t.split('영양 자료 수집 현황')[1]||'')&&t.includes('2건'),t);
+  check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',/영양 기록 수\s*지표 보고서에서 검토 · MFPI 46\.1/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 57(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 60\.0 \(LC \+ 자원 감소\)(?! \()/.test(t)&&!/미수집|미검토/.test(t.split('영양 자료 수집 현황')[1]||'')&&t.includes('2건'),t);
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
@@ -755,7 +755,7 @@ try{
   const hijMap=await liveMap(494972);
   // 4.14 (prereg-4.14 2·3): 톳's lists are another region's and a Rapid LC check, so MCUI is not computed and the row says why
   // 4.17 (prereg-4.17 2·5): the Rapid LC check is a preliminary assessment again; the row shows MCUI 10.0 with no basis words
-  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0(?! \()/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0 \(LC\)(?! \()/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
