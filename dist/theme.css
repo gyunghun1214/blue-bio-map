@@ -1018,3 +1018,12 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .ax-head{flex-wrap:wrap;row-gap:2px}.ax-head h3{white-space:nowrap}
 /* 4.14: a word in place of a number ('보전평가 미확인') is grey, never the teal of a value or link */
 #comparison .score-cell .cv-num.cv-word{font-size:13px;font-weight:600;color:#a9b8c4}
+/* 4.15: an information-gap species (보전 평가 공백 · 우선 조사) in the explore detail, cards and phone sheet: grey double ring */
+.ax-type.gap{display:block}
+.ax-type.gap p{margin:0}
+.ax-type.gap p+p{margin-top:3px;color:var(--muted);font-size:12.5px;font-weight:500;line-height:1.5}
+.ax-type.gap .gap-status{display:flex;align-items:center;gap:7px}
+.ax-type.gap .gap-status i{flex:none;box-sizing:border-box;width:16px;height:16px;border:3px double #8193a4;border-radius:50%;background:none}
+.ax-type.gap .gap-next b{margin-right:6px;font-weight:700}
+#explore .vd-gap{color:#c3d1db;font-weight:700}
+.type-chip.gap i{box-sizing:border-box;border:2.5px double #8193a4!important;border-radius:50%!important;background:none!important}

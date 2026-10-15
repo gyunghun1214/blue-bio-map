@@ -255,7 +255,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1437,7 +1437,7 @@
             }
           ]
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2228,7 +2228,7 @@
             }
           ]
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2888,7 +2888,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3558,7 +3558,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4309,7 +4309,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -5391,7 +5391,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6527,7 +6527,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7704,7 +7704,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -8838,7 +8838,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10068,7 +10068,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11355,7 +11355,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -12608,7 +12608,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -13792,7 +13792,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15595,7 +15595,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16886,7 +16886,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18137,7 +18137,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21223,7 +21223,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -22379,7 +22379,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23591,7 +23591,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25093,7 +25093,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -26725,7 +26725,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27944,7 +27944,7 @@
       }
     },
     "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
-    "changes_from": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
+    "changes_from": "verified-4.14 (2026-10-14). Display rules only, no score changed (team request 2026-10-15, the application's information-sufficiency promise). (1) matrix.information_gap: a species with a BBVI and no MCUI (no IUCN global or Korean national category, mcui_scope) is shown on its own rail under the matrix, at its BBVI only, labelled 'information sufficiency low (conservation axis) · priority survey'; it gets no MCUI, no type and no map colour, as in 4.14. (2) matrix.types_note says information_gap is not a fifth quadrant. (3) matrix.untyped_label names the grey cell after the gap. (4) matrix.substitute_mcui_note marks the range-state, 4.2 sub-national and 4.3 scored Rapid LC sentences as withdrawn in 4.14. MFPI, MBPI, MCUI, BBVI, scores_unrounded and every matrix type are identical to 4.14.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -28161,11 +28161,28 @@
       "include_national_mcui": true,
       "include_single_source_bbvi": true,
       "include_substitute_mcui": [],
+      "information_gap": {
+        "highlight_note_ko": "활용 지표는 높지만 보전 평가가 없음",
+        "id": "information_gap",
+        "label": "보전 평가 공백 · 우선 조사",
+        "next_survey_ko": {
+          "korea_status_unconfirmed": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
+          "no_conservation_assessment": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치"
+        },
+        "reasons_ko": {
+          "korea_status_unconfirmed": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+          "no_conservation_assessment": "IUCN·한국 국가평가 모두 없음"
+        },
+        "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
+        "rule": "A species whose BBVI is published and whose MCUI is not (no IUCN global or Korean national category under mcui_scope) is information_gap: it sits on a rail under the matrix at its BBVI only, with no vertical position, no MCUI, no type and no map colour. No MCUI is inferred or substituted (no 0, no LC-equivalent 10, no relative's value, no Rapid LC). It is listed as a priority-survey target apart from the four types.",
+        "status": "정보충분도 낮음 · 우선 조사(보전 평가 공백)",
+        "sufficiency_basis": "보전(MCUI) 입력"
+      },
       "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
       "mcui_threshold": 50,
       "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
       "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-      "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
+      "substitute_mcui_note": "Withdrawn in 4.14 (mcui_scope, prereg-4.14-2026-10-14): no substitute basis gives an MCUI; another range state's national list, a sub-national list and the Rapid LC check are reference items only (include_substitute_mcui is empty). History: an official national list of another range state was placed with the separate marker used for the Korean national MCUI and labelled by its basis (3.15, withdrawn in 4.14). A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joined on the same terms, with its own marker and the pre-registered back-test result beside it (withdrawn in 4.14). 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joined with its own marker and its failed back-test label (withdrawn in 4.14). Still in force since 4.3: a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
       "threshold_label": "탐색적 구분선",
       "threshold_rule": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds.",
       "type_note": "연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님",
@@ -28191,7 +28208,8 @@
           "plain": "두 지표 모두 낮음"
         }
       },
-      "untyped_label": "유형 미산출(보전평가 미확인 등)"
+      "types_note": "information_gap은 다섯 번째 사분면이 아니라 MCUI가 없는 종의 별도 표시다.",
+      "untyped_label": "보전 평가 공백 · 우선 조사"
     },
     "mbpi_breadth": {
       "exploratory": true,
@@ -28514,7 +28532,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.14",
+    "method_version": "verified-4.15",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -28948,15 +28966,15 @@
     },
     "provenance": {
       "builder": "scripts/build_verified_indices.py",
-      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
-      "config": "config/verified-indices-v4.14.json",
+      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.15-2026-10-15.md and research/lineage/verified-4.15/ (a commit hash inside the report would break byte reproduction).",
+      "config": "config/verified-indices-v4.15.json",
       "inputs": [
         "research/verified-indices/evidence.json and the files config names",
         "research/verified-indices/candidates.json",
         "research/verified-indices/taxonomy.json",
         "dist/candidate-catalog.json"
       ],
-      "method_version": "verified-4.14",
+      "method_version": "verified-4.15",
       "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
       "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
     },
@@ -29137,7 +29155,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.14",
+  "method_version": "verified-4.15",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -29311,15 +29329,15 @@
   },
   "provenance": {
     "builder": "scripts/build_verified_indices.py",
-    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.14-2026-10-14.md and research/lineage/verified-4.14/ (a commit hash inside the report would break byte reproduction).",
-    "config": "config/verified-indices-v4.14.json",
+    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.15-2026-10-15.md and research/lineage/verified-4.15/ (a commit hash inside the report would break byte reproduction).",
+    "config": "config/verified-indices-v4.15.json",
     "inputs": [
       "research/verified-indices/evidence.json and the files config names",
       "research/verified-indices/candidates.json",
       "research/verified-indices/taxonomy.json",
       "dist/candidate-catalog.json"
     ],
-    "method_version": "verified-4.14",
+    "method_version": "verified-4.15",
     "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
     "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
   },
@@ -31860,7 +31878,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -32707,7 +32725,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33779,7 +33797,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -35073,7 +35091,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36213,7 +36231,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -37215,7 +37233,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -38077,7 +38095,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -38718,7 +38736,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.14 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.15 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -39735,7 +39753,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.14",
+        "method_version": "verified-4.15",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

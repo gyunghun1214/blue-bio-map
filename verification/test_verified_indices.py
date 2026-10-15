@@ -2724,6 +2724,7 @@ V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (20
 V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (MCUI stock-decline basis)
 V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)
 V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
+V414 = ROOT / "config" / "verified-indices-v4.14.json"  # superseded by 4.15 (display rule for the conservation-assessment gap)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -4078,7 +4079,7 @@ class Verified414Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V414)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V413))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -4087,8 +4088,9 @@ class Verified414Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.14", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.14.json")
+        # the published 4.14 report is archived as it was (superseded by 4.15, display rules only)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.14.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.14-2026-10-14.md")
         self.assertTrue((ROOT / self.scope["prereg"]).exists())
 
@@ -4190,6 +4192,51 @@ class Verified414Tests(unittest.TestCase):
         ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
         squid = self.by_name["살오징어"]["scores"]["MCUI"]
         self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, 16))
+
+
+class Verified415Tests(unittest.TestCase):
+    """4.15 (research/verified-indices/formal-release-4.15-2026-10-15.md; LKH 2026-10-15): the 14 species with a BBVI and no
+    MCUI are shown as '보전 평가 공백 · 우선 조사' on a rail under the matrix instead of a hidden '미배치'. Display rules only:
+    no score, type, threshold or weight changes, and no MCUI is estimated or substituted."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.report, cls.old_report = build(*load_inputs()), build(*load_inputs(config=V414))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.matrix = cls.report["method"]["matrix"]
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.15", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.15.json")
+
+    def test_no_score_or_rule_changes(self):
+        self.assertEqual(set(self.new), set(self.old))
+        for aphia, s in self.new.items():
+            o = self.old[aphia]
+            for key in ("scores", "scores_unrounded", "conservation_status", "priority_survey_reasons", "information_sufficiency"):
+                self.assertEqual(s.get(key), o.get(key), (s["korean_name"], key))
+        old = self.old_report["method"]["matrix"]
+        for key in ("threshold", "types", "cell_colour_precedence"):
+            self.assertEqual(self.matrix.get(key), old.get(key), key)
+        self.assertEqual(self.report["method"]["bbvi"], self.old_report["method"]["bbvi"])
+        self.assertEqual(self.report["method"]["posthoc"], self.old_report["method"]["posthoc"])
+
+    def test_the_gap_is_a_display_rule_not_a_fifth_type(self):
+        gap = self.matrix["information_gap"]
+        self.assertEqual((gap["id"], gap["label"]), ("information_gap", "보전 평가 공백 · 우선 조사"))
+        self.assertEqual(gap["status"], "정보충분도 낮음 · 우선 조사(보전 평가 공백)")
+        self.assertEqual(gap["reasons_ko"], {"korea_status_unconfirmed": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+                                             "no_conservation_assessment": "IUCN·한국 국가평가 모두 없음"})
+        self.assertNotIn("information_gap", self.matrix["types"])
+        self.assertEqual(self.matrix["types_note"], "information_gap은 다섯 번째 사분면이 아니라 MCUI가 없는 종의 별도 표시다.")
+        self.assertEqual(self.matrix["untyped_label"], "보전 평가 공백 · 우선 조사")
+        self.assertIn("withdrawn in 4.14", self.matrix["substitute_mcui_note"])
+        gap_rows = [s for s in self.new.values() if s["scores"]["BBVI"] is not None and s["scores"]["MCUI"] is None]
+        self.assertEqual(len(gap_rows), 14)
+        for s in gap_rows:
+            self.assertTrue(set(s["priority_survey_reasons"]) & set(gap["reasons_ko"]), s["korean_name"])
 
 
 if __name__ == "__main__":

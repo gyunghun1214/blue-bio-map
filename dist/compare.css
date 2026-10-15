@@ -595,3 +595,44 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
 #compare #comparison .stock-decline.scored{border-color:#f2b84b}
 #compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
+
+/* ---------- 4.15: information gap (보전 평가 공백 · 우선 조사) ----------
+   One line splits all species into the matrix and the gap; the rail under the plot holds the gap species at their BBVI only,
+   on the plot's own horizontal scale (same side margins as .matrix-frame). The marker is a grey double ring, apart from the
+   filled, hollow, dashed (MBPI floor) and diamond matrix markers; it has no type colour. */
+#compare .cmp-scope-line{margin:12px 0 0;padding:8px 12px;border:1px solid var(--cs-line2);border-radius:8px;background:var(--cs-low);color:var(--cs-ink);font-size:13.5px;font-weight:600;line-height:1.5;font-variant-numeric:tabular-nums}
+#compare .gap-rail{margin:2px 0 0;padding:12px 0 4px;border-top:1px dashed var(--cs-line2)}
+#compare .gap-rail-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin:0 0 6px}
+#compare .gap-rail-head h3{margin:0;color:var(--cs-ink);font-size:15px;font-weight:800}
+#compare .gap-rail-head h3 span{margin-left:4px;color:var(--cs-ink2);font-weight:600}
+#compare .gap-rail-head p{margin:0;color:var(--cs-ink2);font-size:12.5px;line-height:1.5}
+#compare .gap-track{position:relative;z-index:0;isolation:isolate;height:44px;margin:0 14px 0 40px}
+#compare .gap-axis{position:absolute;left:0;right:0;top:6px;border-top:1px solid var(--cs-line2)}
+#compare .gap-cut{position:absolute;top:0;bottom:0;border-left:1px dashed var(--cs-mid)}
+#compare .gap-point{position:absolute;display:flex;align-items:center;gap:4px;height:22px;margin:0;padding:0 4px 0 0;border:0;border-radius:6px;background:none;color:var(--cs-ink3);font:inherit;font-size:12.5px;line-height:1;white-space:nowrap;cursor:pointer;margin-top:-11px}
+#compare .gap-point.left{flex-direction:row-reverse;padding:0 0 0 4px}
+#compare .gap-point::before{content:"";position:absolute;z-index:1;left:5.5px;bottom:calc(50% + 6px);height:var(--stem,0);border-left:1px dotted #5d7d94}
+#compare .gap-point.left::before{left:auto;right:5.5px}
+#compare .gap-dot{position:relative;z-index:2;display:inline-block;flex:none;box-sizing:border-box;width:12px;height:12px;border:3px double #9aa8b1;border-radius:50%;background:var(--cs-panel)}
+#compare .gap-label{position:relative;z-index:2;padding:1px 4px;border-radius:4px;background:var(--cs-panel)}
+#compare .gap-point.hi{color:var(--cs-ink);font-weight:800}
+#compare .gap-point.hi .gap-label{box-shadow:inset 0 -1.5px 0 #c9d6de}
+#compare .gap-point:hover .gap-label,#compare .gap-point:focus-visible .gap-label{color:#fff}
+#compare .gap-point[aria-current=true] .gap-dot{box-shadow:0 0 0 5px rgba(68,215,192,.34)}
+#compare .gap-point[aria-current=true] .gap-label{color:#fff;font-weight:800}
+#compare .gap-point[data-dim]{opacity:.18}
+#compare .gap-key{display:flex;flex-wrap:wrap;gap:4px 18px;margin:8px 0 0;color:var(--cs-ink2);font-size:12.5px}
+#compare .gap-key span{display:inline-flex;align-items:center;gap:7px}
+#compare .gap-hi-key{color:var(--cs-ink);font-weight:800;box-shadow:inset 0 -1.5px 0 #c9d6de}
+#compare .cp-typeline.gap .cp-sw{box-sizing:border-box;border:3px double #9aa8b1;border-radius:50%;background:none}
+#compare .cp-gap{margin:12px 0 0;padding:8px 0 2px 10px;border-left:2px dotted #9aa8b1;color:var(--cs-ink2);font-size:12.5px;line-height:1.55}
+#compare .cp-gap p{margin:0}
+#compare .cp-gap p+p{margin-top:3px}
+#compare .cp-gap .gap-ref{color:var(--cs-ink3)}
+#compare .cp-gap .gap-next b{margin-right:6px;color:var(--cs-ink);font-weight:700}
+#compare #comparison .dt-type.gap b::before{content:"";flex:none;box-sizing:border-box;width:9px;height:9px;border:2.5px double #9aa8b1;border-radius:50%}
+@media (max-width:740px){
+  #compare .cmp-scope-line{font-size:12.5px}
+  #compare .gap-track{margin:0 8px 0 32px}
+  #compare .gap-point{font-size:12px}
+}

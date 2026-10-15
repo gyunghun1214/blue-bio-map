@@ -16,11 +16,28 @@
     "include_national_mcui": true,
     "include_single_source_bbvi": true,
     "include_substitute_mcui": [],
+    "information_gap": {
+      "highlight_note_ko": "활용 지표는 높지만 보전 평가가 없음",
+      "id": "information_gap",
+      "label": "보전 평가 공백 · 우선 조사",
+      "next_survey_ko": {
+        "korea_status_unconfirmed": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
+        "no_conservation_assessment": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치"
+      },
+      "reasons_ko": {
+        "korea_status_unconfirmed": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+        "no_conservation_assessment": "IUCN·한국 국가평가 모두 없음"
+      },
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
+      "rule": "A species whose BBVI is published and whose MCUI is not (no IUCN global or Korean national category under mcui_scope) is information_gap: it sits on a rail under the matrix at its BBVI only, with no vertical position, no MCUI, no type and no map colour. No MCUI is inferred or substituted (no 0, no LC-equivalent 10, no relative's value, no Rapid LC). It is listed as a priority-survey target apart from the four types.",
+      "status": "정보충분도 낮음 · 우선 조사(보전 평가 공백)",
+      "sufficiency_basis": "보전(MCUI) 입력"
+    },
     "map_meaning": "출현 기록이 있는 셀 × 종 유형. 해역의 자원량·분포·해역 점수가 아님.",
     "mcui_threshold": 50,
     "national_mcui_note": "A national red-list MCUI is placed with a distinct marker; it is not on the IUCN scale and is never ranked with it.",
     "single_source_bbvi_note": "Since 3.27 a BBVI whose top MBPI item rests on one paper is placed with a hollow marker and its label; it is not ranked apart, but the page keeps the label wherever the value appears.",
-    "substitute_mcui_note": "An official national list of another range state is placed with the separate marker used for the Korean national MCUI and labelled by its basis. A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joins on the same terms, with its own marker and the pre-registered back-test result beside it; it is never ranked with IUCN-based MCUI. 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joins with its own marker and its failed back-test label; a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
+    "substitute_mcui_note": "Withdrawn in 4.14 (mcui_scope, prereg-4.14-2026-10-14): no substitute basis gives an MCUI; another range state's national list, a sub-national list and the Rapid LC check are reference items only (include_substitute_mcui is empty). History: an official national list of another range state was placed with the separate marker used for the Korean national MCUI and labelled by its basis (3.15, withdrawn in 4.14). A preliminary Rapid LC gives no MCUI: its post-hoc back-test failed (it called the EN species 해삼 and 전복 likely LC), so it is shown on the species as reference information only (team-lead decision 2026-10-02). 4.2: a sub-national category joined on the same terms, with its own marker and the pre-registered back-test result beside it (withdrawn in 4.14). 4.3: a scored Rapid LC (team-lead decision 2026-10-05) joined with its own marker and its failed back-test label (withdrawn in 4.14). Still in force since 4.3: a floor MBPI (0) gives a labelled BBVI that joins like a single-paper BBVI.",
     "threshold_label": "탐색적 구분선",
     "threshold_rule": "A value at or above the threshold is high. 4.14: BBVI is compared unrounded (scores_unrounded.BBVI; the screen re-mixes the unrounded MFPI and MBPI at its weight), and is rounded only for display; MCUI values are whole numbers. The 50 lines are exploratory dividing lines, not validated thresholds.",
     "type_note": "연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님",
@@ -46,9 +63,10 @@
         "plain": "두 지표 모두 낮음"
       }
     },
-    "untyped_label": "유형 미산출(보전평가 미확인 등)"
+    "types_note": "information_gap은 다섯 번째 사분면이 아니라 MCUI가 없는 종의 별도 표시다.",
+    "untyped_label": "보전 평가 공백 · 우선 조사"
   },
-  "method_version": "verified-4.14",
+  "method_version": "verified-4.15",
   "schema_version": 1,
   "species": [
     {
@@ -118,14 +136,23 @@
         }
       ],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.67
+      },
       "korean_name": "미역",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Undaria pinnatifida",
       "scope": "operating_8",
       "scores": {
@@ -164,6 +191,7 @@
         "https://www.mext.go.jp/content/20201225-mxt_kagsei-mext_01110_012.xlsx",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -223,6 +251,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "conservation_priority",
       "unexplored_candidate": null
     },
     {
@@ -259,10 +288,18 @@
         }
       ],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.67
+      },
       "korean_name": "멍게",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -291,6 +328,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -368,6 +406,7 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "alternative_production",
       "unexplored_candidate": null
     },
     {
@@ -425,6 +464,7 @@
         "https://www.mbris.kr/pub/marine/natilist/nationalist.do",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "conservation_priority",
       "unexplored_candidate": null
     },
     {
@@ -461,14 +501,23 @@
         }
       ],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "톳",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Sargassum fusiforme",
       "scope": "operating_8",
       "scores": {
@@ -499,6 +548,7 @@
         "https://www.pref.ishikawa.lg.jp/sizen/reddata/rdb2020/documents/07_rdb2020_doubutu_6-senkaiiki_254-279.pdf",
         "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -554,6 +604,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.schinafish.cn/cn/article/pdf/preview/10.3969/j.issn.2095-0780.2012.04.006.pdf"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -652,6 +703,7 @@
         "https://www.nibr.go.kr/aiibook/access/ecatalogt.jsp?callmode=admin&eclang=ko&Dir=1339&um=s",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     },
     {
@@ -665,10 +717,18 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "다시마",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -700,6 +760,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -713,10 +774,18 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "감태",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -748,6 +817,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -761,14 +831,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "가시파래",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Ulva prolifera",
       "scope": "expansion_22",
       "scores": {
@@ -798,6 +877,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=L0270010001a&fdNms=%EA%B0%80%EC%8B%9C%ED%8C%8C%EB%9E%98",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -811,10 +891,18 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "괭생이모자반",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -846,6 +934,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -859,10 +948,18 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "꼬시래기",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -894,6 +991,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/004/629/sourui.pdf"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -907,14 +1005,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "청각",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
@@ -941,6 +1048,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://www.pref.ibaraki.jp/seikatsukankyo/shizen/tayousei/redbook/documents/ibaraki_rdb2020_4web.pdf"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -989,6 +1097,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4130000000a&fdNms=%EB%B0%94%EC%A7%80%EB%9D%BD%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     },
     {
@@ -1032,6 +1141,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4220010000a&fdNms=%EC%A0%84%EB%B3%B5%2C%20%EB%91%A5%EA%B7%BC%EC%A0%84%EB%B3%B5%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "conservation_priority",
       "unexplored_candidate": null
     },
     {
@@ -1081,6 +1191,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list",
         "https://xuebao.dlou.edu.cn/article/2018/2095-1388/201806016.html"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -1094,14 +1205,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "시카메굴",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Magallana sikamea",
       "scope": "expansion_22",
       "scores": {
@@ -1128,6 +1248,7 @@
         "https://www.marinespecies.org/rest/",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -1176,6 +1297,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250160000a&fdNms=%EC%A1%B0%EA%B0%9C%2C%20%ED%94%BC%EC%A1%B0%EA%B0%9C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     },
     {
@@ -1221,6 +1343,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K4250050000a&fdNms=%EC%A1%B0%EA%B0%9C%2C%20%EB%A7%9B%EC%A1%B0%EA%B0%9C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     },
     {
@@ -1269,6 +1392,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0150002550a&fdNms=%EA%B3%A0%EB%93%B1%EC%96%B4%2C%20%EB%82%A8%ED%95%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -1312,6 +1436,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0660000000a&fdNms=%EB%A9%B8%EC%B9%98%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -1354,6 +1479,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K1620000000a&fdNms=%EC%A1%B0%EA%B8%B0%28%EC%B0%B8%EC%A1%B0%EA%B8%B0%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -1367,14 +1493,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.67
+      },
       "korean_name": "넙치",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Paralichthys olivaceus",
       "scope": "expansion_22",
       "scores": {
@@ -1401,6 +1536,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0270000000a&fdNms=%EB%84%99%EC%B9%98%28%EA%B4%91%EC%96%B4%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -1414,10 +1550,18 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN·한국 국가평가 모두 없음",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.67
+      },
       "korean_name": "조피볼락",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "IUCN 또는 한국 국가 보전 평가 확보 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "no_conservation_assessment"
@@ -1448,6 +1592,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0960070000a&fdNms=%EB%B3%BC%EB%9D%BD%2C%20%EC%A1%B0%ED%94%BC%EB%B3%BC%EB%9D%BD%28%EC%9A%B0%EB%9F%AD%29%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -1495,6 +1640,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0830000000a&fdNms=%EB%B0%A9%EC%96%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "baseline_survey",
       "unexplored_candidate": null
     },
     {
@@ -1508,14 +1654,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.61
+      },
       "korean_name": "대구",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Gadus macrocephalus",
       "scope": "expansion_22",
       "scores": {
@@ -1543,6 +1698,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K0440002570a&fdNms=%EB%8C%80%EA%B5%AC%2C%20%EC%88%98%EC%BB%B7%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -1556,14 +1712,23 @@
       "bbvi_label": "단일 논문",
       "bioactivity_leads": [],
       "bioactivity_missing_steps": [],
+      "gap_reason_ko": "IUCN 평가 없음 · 한국 국가 적색목록 등재 여부 미확인",
+      "information_sufficiency": {
+        "basis": "MCUI",
+        "level": "low",
+        "mcui_ratio": 0.0,
+        "mean_ratio": 0.67
+      },
       "korean_name": "꽃게",
       "matrix_eligible": false,
       "matrix_type": null,
       "mcui_basis": null,
+      "next_survey_ko": "한국 국가 적색목록(국가생물적색자료집) 범주 확인 시 매트릭스에 배치",
       "priority_survey": true,
       "priority_survey_reasons": [
         "korea_status_unconfirmed"
       ],
+      "reference_note_ko": "다른 나라·지역 평가 참고 · 점수 미사용",
       "scientific_name": "Portunus trituberculatus",
       "scope": "expansion_22",
       "scores": {
@@ -1589,6 +1754,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6020010000a&fdNms=%EA%B2%8C%2C%20%EA%BD%83%EA%B2%8C%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "information_gap",
       "unexplored_candidate": null
     },
     {
@@ -1636,6 +1802,7 @@
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/detailOne?foodCodes=K6110030000a&fdNms=%EB%AC%B8%EC%96%B4%2C%20%EC%B0%B8%EB%AC%B8%EC%96%B4%2C%20%EC%83%9D%EA%B2%83",
         "https://www.nics.go.kr/food/kfi/fct/fctFoodSrch/list"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     },
     {
@@ -1690,6 +1857,7 @@
         "https://www.sciencedirect.com/science/article/pii/S1875536411600563",
         "https://xdspkj.ijournals.cn/xdspkj/article/pdf/20140901"
       ],
+      "type": "sustainable_use",
       "unexplored_candidate": null
     }
   ]

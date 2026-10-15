@@ -57,6 +57,27 @@ def _layers(s, rule):
             **({"priority_survey_reasons": s["priority_survey_reasons"]} if "priority_survey_reasons" in s else {})}
 
 
+def _information_gap(row, assessed, rule):
+    """4.15 (config matrix.information_gap): a species with a BBVI and no MCUI is shown on a rail under the matrix at its BBVI
+    only, as a priority-survey target apart from the four types. Display fields only: every word comes from the rule, the
+    sufficiency ratios are the report's own, and no MCUI, type or score is made here."""
+    gap = (rule or {}).get("information_gap")
+    if not gap:
+        return {}
+    if row["matrix_eligible"] or row["scores"]["BBVI"] is None or row["scores"]["MCUI"] is not None:
+        return {"type": row.get("matrix_type")}
+    reasons = (assessed or {}).get("priority_survey_reasons") or []
+    known = [r for r in reasons if r in gap["reasons_ko"]]  # the released report gives every gap row one (tests check it)
+    suff = (assessed or {}).get("information_sufficiency") or {}
+    state = ((assessed or {}).get("conservation_status") or {}).get("state")
+    return {"type": gap["id"],
+            "information_sufficiency": {"level": "low", "basis": "MCUI",
+                                        "mcui_ratio": (suff.get("MCUI") or {}).get("ratio"), "mean_ratio": suff.get("mean_ratio")},
+            **({"gap_reason_ko": " · ".join(gap["reasons_ko"][r] for r in known),
+                "next_survey_ko": gap["next_survey_ko"][known[0]]} if known else {}),
+            **({"reference_note_ko": gap["reference_note_ko"]} if state == "other_region_only" else {})}
+
+
 def build(assessments, catalog, expansion):
     # Reviewed research candidates (e.g. Ecklonia cava MBPI) are published separately as candidate_species.
     assessed = assessments["species"] + assessments.get("candidate_species", [])
@@ -91,6 +112,7 @@ def build(assessments, catalog, expansion):
                      "source_urls": sorted(set(links)), "mcui_basis": s.get("mcui_basis"),
                      **({"bbvi_label": s.get("bbvi_label")} if labelled else {}),
                      "matrix_eligible": _eligible(scores, s.get("mcui_basis"), rule, s.get("bbvi_label")), **_layers(s, rule)})
+        rows[-1].update(_information_gap(rows[-1], s, rule))
     for s in candidates:
         e = evidence[s["aphiaID"]]
         if e["name"] != s["name"] or e["scores"] != s["scores"]:
@@ -133,6 +155,7 @@ def build(assessments, catalog, expansion):
                      **({"bbvi_label": reviewed and reviewed.get("bbvi_label")} if labelled else {}),
                      "matrix_eligible": _eligible(scores, reviewed and reviewed.get("mcui_basis"), rule, reviewed and reviewed.get("bbvi_label")),
                      **_layers(reviewed or {"scores": scores}, rule)})
+        rows[-1].update(_information_gap(rows[-1], reviewed, rule))
     if len({r["aphia_id"] for r in rows}) != 30:
         raise ValueError("duplicate AphiaID")
     for row in rows:
@@ -144,6 +167,8 @@ def build(assessments, catalog, expansion):
             raise ValueError("matrix gate mismatch")
         if rule and (row["matrix_type"] is not None) != row["matrix_eligible"]:
             raise ValueError("matrix type without an eligible point")
+        if "type" in row and row["type"] not in (row["matrix_type"], (rule.get("information_gap") or {}).get("id")):
+            raise ValueError("display type differs from the matrix type")
     return {"schema_version": 1, "method_version": assessments["method_version"],
             "assessments_snapshot": assessments["snapshot_date"], "candidate_snapshot": catalog["reviewedOn"],
             "matrix_points": sum(r["matrix_eligible"] for r in rows), "species": rows,
