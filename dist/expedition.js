@@ -229,6 +229,8 @@ function checkTag(k){
   if(k==='MFPI'&&r==='passed')return `방법 검증 통과(${DATA.mfpi_check_n}종 비교)`;
   return r==='passed'?'검증 통과':r==='failed'?'방법 검증 기준 미충족':'검증 전';
 }
+// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
+const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
 function mcuiTag(stop){
   const m=stop.mcui;
   // 4.12: an MCUI set by the KOSIS catch trend says so first, then the extinction-risk basis it was compared with
@@ -245,7 +247,7 @@ function axisTag(stop,k){
 }
 function scoreHtml(stop,k,big){
   const v=fmtAxis(stop,k);
-  const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100</small>`;
+  const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100${k==='MCUI'&&mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:''}</small>`;
   return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span><span class="x-tag">${axisTag(stop,k)}</span></div>`;
 }
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
@@ -308,7 +310,7 @@ function detailHtml(stop,i){
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'자료 없음'} · ${checkTag('MFPI')}</small></h3>${food}</section>
   <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
-  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)??'자료 없음'}</small></h3>${cons}</section>
+  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)===null?'자료 없음':fmtScore(stop.scores.MCUI)+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${cons}</section>
   <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'자료 없음'} · ${checkTag('BBVI')}</small></h3>
     <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다${stop.bbvi_label?` · ${esc(stop.bbvi_label)}`:''}. ${esc(DATA.notes.score)}.</p>
     <p class="x-fine">지표 ${esc(DATA.method_version)} (${esc(DATA.status)}) · 축별 사후 검증: MFPI ${checkTag('MFPI')}, MBPI ${checkTag('MBPI')}, BBVI ${checkTag('BBVI')}.</p></section>
