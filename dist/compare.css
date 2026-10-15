@@ -745,7 +745,7 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .matrix-ticks b{bottom:-28px}
 #compare .matrix .axis-x{bottom:-52px;color:var(--cs-ink);font-size:16px;font-weight:600}
 #compare .matrix .axis-x b{font-weight:700}
-#compare .matrix .axis-y{position:absolute;left:-92px;top:50%;width:60px;height:auto;overflow:visible;clip:auto;transform:translateY(-50%);writing-mode:horizontal-tb;color:var(--cs-ink);font-size:15px;font-weight:600;line-height:1.5;text-align:left;white-space:normal}
+#compare .matrix .axis-y{position:absolute;left:-97px;top:50%;width:60px;height:auto;overflow:visible;clip:auto;transform:translateY(-50%);writing-mode:horizontal-tb;color:var(--cs-ink);font-size:15px;font-weight:600;line-height:1.5;text-align:left;white-space:normal}
 #compare .matrix .axis-y b{display:block;font-weight:600}
 #compare .matrix .quadrant{padding:16px 22px}
 #compare .matrix .quadrant.typed{background:var(--qb)}
@@ -986,7 +986,7 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .cp-apart{margin:8px 0 0;line-height:1.3}
 #compare .cp-actions{padding-top:12px}
 #compare .cp-links{margin-top:10px}
-#compare{padding-top:22px}
+#compare{padding-top:14px}
 #compare .cmp-weight{padding:8px 16px 8px}
 #compare .cmp-status{margin-top:13px}
 #compare .cmp-main{margin-top:9px}
