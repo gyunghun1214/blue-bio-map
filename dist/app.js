@@ -6,7 +6,7 @@ const plainWords = text => text.replace(/역검증 미통과/g,'역검증 기준
 const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
-let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
+let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, pickedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
 const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
@@ -1944,7 +1944,7 @@ function renderList() {
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';renderList();renderDetail();renderMap();renderComparison();syncCompareSelection();writeHash();
+  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';pickedValueCell=null;renderList();renderDetail();renderMap();renderComparison();syncCompareSelection();writeHash();
 }
 
 function renderDetail() {
@@ -2653,18 +2653,20 @@ function valueSpeciesType(s){
 const valueCellOrder=groups=>[...groups].sort(([,a],[,b])=>b.size-a.size||!!cellMatrixType(a).type-!!cellMatrixType(b).type);
 function valueCellStyle(g,active){
   const {type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
+  // 2026-10-15: a clicked cell is marked by its border only; its fill keeps the tone of the cells around it
   const base=type?{color:active?'#173f62':mixed?'#102e45':matrixTypeColour[type],weight:active?2.5:mixed?2:1.5,dashArray:mixed?'2 3':null,
-      fillColor:matrixTypeColour[type],fillOpacity:active?.62:CELL_FILL}
-    :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:active?.36:.25};
+      fillColor:matrixTypeColour[type],fillOpacity:CELL_FILL}
+    :{color:active?'#173f62':'#657588',weight:active?2.5:1.5,dashArray:'5 4',fillColor:'#b7c0ca',fillOpacity:.25};
   // cells holding the selected species get a thick solid yellow outline; the fill keeps the cell's own colour
   return selected&&g.species.has(selected.aphiaID)?{...base,...SELECTED_OUTLINE(),weight:active?4.5:3.5}:{...base,edge:active?'active':'plain'};
 }
 // 2026-10-13 species view: the selected species' cells only, in its own type colour with a dashed border of the same colour.
 // Every drawn cell is the selected species', so no yellow outline; an untyped species keeps the held grey of the all-species map.
+// A clicked cell gets a heavier border of the same colour; its fill stays the tone of the other cells (2026-10-15).
 function speciesCellStyle(type,active){
   const c=matrixTypeColour[type];
-  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:active?.62:CELL_FILL,edge:active?'active':'plain'}
-    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:active?.36:.25,edge:active?'active':'plain'};
+  return c?{color:c,weight:active?3:1.5,dashArray:'3 3',opacity:.95,fillColor:c,fillOpacity:CELL_FILL,edge:active?'active':'plain'}
+    :{color:'#657588',weight:active?2.5:1.5,dashArray:'5 4',opacity:.95,fillColor:'#b7c0ca',fillOpacity:.25,edge:active?'active':'plain'};
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&extinctionSeparate(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
@@ -2817,7 +2819,7 @@ function renderValueMap(){
   if(activeUses.size)for(const g of valueCellGroups(true).values())if(!groups.has(valueCellKey(g.lat,g.lon,g.size)))
     cellShape(g.lat,g.lon,g.size,{color:'#8a96a3',opacity:.35,weight:1,fillColor:'#b7c0ca',fillOpacity:.2,interactive:false,edge:'plain'}).addTo(overlay);
   for(const [key,g] of valueCellOrder(groups)){
-    const active=key===selectedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
+    const active=key===pickedValueCell,{type,counts}=cellMatrixType(g),mixed=Object.keys(counts).length>1;
     if(typeFilter.size&&!typeFilter.has(type))continue;
     const layer=cellShape(g.lat,g.lon,g.size,valueCellStyle(g,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
@@ -2829,7 +2831,7 @@ function renderValueMap(){
     layer.on('tooltipopen',({tooltip:t})=>placeTip(t));
     drawSufficiency(g);
     // renderMap redraws the cells, so the tapped cell's tooltip opens again on its new layer (touch has no hover)
-    layer.on('click',()=>{showValueCell(key);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+    layer.on('click',()=>{pickedValueCell=key;showValueCell(key);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
   }
   // Outside candidates have no score and no type: a marker per public cell, hidden while use chips filter the species.
   if(sufficiencyLayers.unexplored&&!activeUses.size)for(const g of outsideCells().values()){
@@ -2846,7 +2848,8 @@ function renderValueMap(){
 }
 // The species view: the selected species' cells (period filter only; the use chips select species, not cells) in its type
 // colour. The panel opens on its first cell and lists every species there; the flags and the outside candidates stay as in
-// the all-species view.
+// the all-species view. Only a cell the user clicked (pickedValueCell, cleared on a new species) is drawn as chosen: the panel's
+// first cell is not, or one cell (mostly Jeju's) stood out from the rest for no reason the map could explain (2026-10-15).
 function renderSpeciesValueMap(){
   const s=selected,id=s.aphiaID,pv=periodView(s),t=matrixType(s),panel=$('value-cell-detail');
   const mine=new Map([...valueCellGroups(true)].filter(([,g])=>g.species.has(id))),n=spatialCells(pv).length;
@@ -2857,7 +2860,7 @@ function renderSpeciesValueMap(){
   else{if(!mine.has(selectedValueCell))selectedValueCell=mine.keys().next().value;showValueCell(selectedValueCell,true);}
   if(!map)return;
   for(const [key,g] of valueCellOrder(mine)){
-    const active=key===selectedValueCell,cellType=cellMatrixType(g).type,k=g.records.get(id);
+    const active=key===pickedValueCell,cellType=cellMatrixType(g).type,k=g.records.get(id);
     const layer=cellShape(g.lat,g.lon,g.size,speciesCellStyle(t,active)).addTo(overlay);
     valueRects.push([g,layer,active]);
     const flags=sufficiencyTip(g).replace(/^ · /,'');
@@ -2865,7 +2868,7 @@ function renderSpeciesValueMap(){
       '<br>이 셀의 다른 종 '+(g.species.size-1)+'종 · ‘모든 종 겹쳐 보기’ 색: '+esc(cellType?matrixTypeLabel(cellType):'유형 미산출')+(flags?'<br>'+esc(flags):''),{className:'value-tip'});
     layer.on('tooltipopen',({tooltip:x})=>placeTip(x));
     drawSufficiency(g);
-    layer.on('click',()=>{showValueCell(key,true);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+    layer.on('click',()=>{pickedValueCell=key;showValueCell(key,true);renderMap();valueRects.find(([x])=>valueCellKey(x.lat,x.lon,x.size)===key)?.[1].openTooltip();panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
   }
   if(sufficiencyLayers.unexplored&&!activeUses.size)for(const g of outsideCells().values()){
     const names=[...g.species.values()].map(outsideLabel);
@@ -2956,7 +2959,7 @@ function renderOutsideList(){
 function setMapMode(mode){
   if(!['occurrence','value'].includes(mode))return;
   mapMode=mode;lastFitted=null;
-  if(mode==='value'){valueView='species';typeFilter.clear();} // 2026-10-13: the value mode opens on the selected species' cells
+  if(mode==='value'){valueView='species';typeFilter.clear();pickedValueCell=null;} // 2026-10-13: the value mode opens on the selected species' cells
   document.querySelectorAll('[data-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapMode===mode)));
   $('occurrence-legend').hidden=mode==='value';$('value-mini').hidden=mode!=='value';setValueInfo(false);
   // the legend box stays in both modes: the occurrence key with its fold button, or the one-line value key with the view switch
@@ -3881,7 +3884,7 @@ function sheetSync(){
 let requestNumber=0;
 async function loadCollection(){
   const request=++requestNumber;
-  data=null;selected=null;selectedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();setMapChip(null,'');lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
+  data=null;selected=null;selectedValueCell=null;pickedValueCell=null;comparisonFocus=null;activeUses=new Set();useReturn=null;overlay?.clearLayers();setMapChip(null,'');lastFitted=null;fitMap();$('search').value='';$('error').hidden=true;$('error').classList.remove('in-chip');
   $('connection-state').textContent='자료를 불러오는 중';updateStatusChips();
   $('species-list').textContent='자료를 불러오는 중입니다.';$('detail').textContent='';$('comparison').textContent='';$('decision-list').after($('decision-detail'));$('cmp-more').hidden=true;$('cmp-profile').innerHTML='<p class="loading">자료를 불러오는 중입니다.</p>';$('cmp-tray').textContent='';$('decision-list').textContent='';$('matrix-unplaced').textContent='';$('cell-table').textContent='';$('decision-detail').textContent='';$('decision-detail').hidden=true;$('all-sources').textContent='';$('collection-note').textContent='';$('snapshot-date').textContent='';$('species-count').textContent='—';
   for(const id of ['map-count','map-cells','map-years'])$(id).textContent='—';
