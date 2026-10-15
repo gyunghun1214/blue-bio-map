@@ -31,7 +31,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.14.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.17.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1473,22 +1473,30 @@ def conservation_status(aphia: int, trace: dict | None, national: dict | None, f
                       "used_for_mcui": basis == "national"})
     sub = substitute or {}
     years = scope["reference_assessment_years"]
+    # 4.17 (prereg-4.17-2026-10-15 2): with no official assessment, a range-state list or the Rapid LC check gives the MCUI
+    # as a preliminary assessment until an official result is published
+    preliminary_bases = scope.get("preliminary_bases") or []
     if sub.get("basis") == "range_state":
         r = sub["record"]
+        used = basis == "range_state" and "range_state" in preliminary_bases
         found.append({"scope": "other_country", "country": r["country"], "country_ko": r.get("country_ko"), "system": r.get("assessment_basis"),
                       "list": r["list"], "year": years[r["source_id"]], "category_as_published": r["category_as_published"],
                       "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
-                      "used_for_mcui": False, "why_not": scope["why_not"]["range_state"]})
+                      "used_for_mcui": used, **({"use": "preliminary"} if used else {"why_not": scope["why_not"]["range_state"]})})
     for r in (sub.get("sub_national_reference") or {}).get("regions", []) + (sub.get("record") or {}).get("regions", []):
         found.append({"scope": "sub_national", "country": r["country"], "country_ko": r.get("country_ko"), "region": r["region"], "region_ko": r.get("region_ko"),
                       "system": r.get("list"), "list": r["list"], "year": r["edition"], "category_as_published": r["category_as_published"],
                       "category": r["category"], "name_as_published": r["name_as_published"], "source_id": r["source_id"],
                       "used_for_mcui": False, "why_not": scope["why_not"]["sub_national"]})
     scored = [a for a in found if a["used_for_mcui"]]
-    require(len(scored) <= 1 and all(a["scope"] in ("global", "korea") for a in scored), f"{aphia}: MCUI from a non-scoped assessment")
+    allowed = ("global", "korea") + (("other_country",) if "range_state" in preliminary_bases else ())
+    require(len(scored) <= 1 and all(a["scope"] in allowed for a in scored), f"{aphia}: MCUI from a non-scoped assessment")
     preliminary = sub.get("basis") == "preliminary" or (sub.get("basis") is None and (sub.get("record") or {}).get("method_source_id") is not None)
-    if scored:
+    rapid_scored = basis == "preliminary" and "preliminary" in preliminary_bases
+    if scored and scored[0]["scope"] in ("global", "korea"):
         state = "official_scored"
+    elif scored or rapid_scored:
+        state = "preliminary_scored"
     elif lookup_failed:
         state = "lookup_failed"
     elif any(a["category"] == "NE" for a in found if a["scope"] in ("global", "korea")):
@@ -1506,10 +1514,16 @@ def conservation_status(aphia: int, trace: dict | None, national: dict | None, f
     if preliminary:
         out["self_preliminary"] = {"result": sub.get("result"), "label": scope["self_preliminary_label"],
                                    "method_source_id": (sub.get("record") or {}).get("method_source_id"),
-                                   "note": scope["reference_notes"]["preliminary"]}
+                                   "note": scope["preliminary_notes"]["preliminary"] if rapid_scored else scope["reference_notes"]["preliminary"]}
+        if preliminary_bases:
+            out["self_preliminary"].update(used_for_mcui=rapid_scored, **({"category": sub.get("category")} if rapid_scored else {}))
     if scored:
         out["scope"] = scored[0]["scope"]
         out["category"] = scored[0]["category"]
+    if state == "preliminary_scored":
+        out["preliminary"] = {"basis": basis, "label": scope["preliminary_label"], "note": scope["preliminary_notes"][basis],
+                              "replacement_rule": scope["replacement_rule"], "prereg": scope["prereg"]}
+        out.setdefault("category", sub.get("category"))
     return out
 
 

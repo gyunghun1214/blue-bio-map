@@ -2724,6 +2724,7 @@ V410 = ROOT / "config" / "verified-indices-v4.10.json"  # superseded by 4.11 (20
 V411 = ROOT / "config" / "verified-indices-v4.11.json"  # superseded by 4.12 (MCUI stock-decline basis)
 V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (2026-10-14 evidence brief)
 V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
+V414 = ROOT / "config" / "verified-indices-v4.14.json"  # superseded by 4.17 (2026-10-15 team-lead decision: preliminary MCUI)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -3792,9 +3793,10 @@ class Verified411Tests(unittest.TestCase):
         matrix = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
         types = {s["korean_name"]: s["matrix_type"] for s in matrix["species"]}
         self.assertEqual([n for n, t in types.items() if t == "alternative_production"], ["살오징어"])
-        # 4.14 (prereg-4.14 3): their Rapid LC is a reference again, so 미역·톳 have no MCUI and no type (16 points)
-        self.assertEqual((types["미역"], types["톳"]), (None, None))
-        self.assertEqual(matrix["matrix_points"], 16)
+        # 4.14 (prereg-4.14 3) made their Rapid LC a reference; 4.17 (prereg-4.17 2) scores it again as a preliminary
+        # assessment, so 미역·톳 are typed by their Rapid LC, never by the failed sub-national list (29 points)
+        self.assertEqual((types["미역"], types["톳"]), ("sustainable_use", "sustainable_use"))
+        self.assertEqual(matrix["matrix_points"], 29)
 
     def test_a_fall_to_the_decline_ratio_blocks_rapid_lc(self):
         ascidian = self.by_name["멍게"]
@@ -4078,7 +4080,7 @@ class Verified414Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V414)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V413))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -4087,8 +4089,9 @@ class Verified414Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.14", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.14.json")
+        # the published 4.14 report is archived as it was (superseded by 4.17)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.14.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.14-2026-10-14.md")
         self.assertTrue((ROOT / self.scope["prereg"]).exists())
 
@@ -4169,7 +4172,10 @@ class Verified414Tests(unittest.TestCase):
                           "baseline_survey": ("기초조사 검토", "두 지표 모두 낮음")})
         self.assertEqual(matrix["threshold_label"], "탐색적 구분선")
         self.assertIn("지속가능성 판정이 아님", matrix["type_note"])
-        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        # the 4.14 matrix, rebuilt from the 4.14 report (the published file is 4.17 now)
+        from build_matrix_readiness import build as build_matrix
+        read = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
+        published = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
         counts = {}
         for s in published["species"]:
             counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
@@ -4190,6 +4196,91 @@ class Verified414Tests(unittest.TestCase):
         ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
         squid = self.by_name["살오징어"]["scores"]["MCUI"]
         self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, 16))
+
+
+
+class Verified417Tests(unittest.TestCase):
+    """4.17 (research/verified-indices/prereg-4.17-2026-10-15.md, registered in its own commit before the code; LKH's decision
+    2026-10-15 after the search for official assessments of the 14 species found none): with no IUCN global or Korean national
+    category, a range-state list and then the Rapid LC check give the extinction-risk part of MCUI again, as a preliminary
+    assessment ('예비 평가(공식 평가 전)') that joins the matrix and map colours and is replaced by an official result once
+    published. Everything else is 4.14."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs()
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V414))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+        cls.scope = cls.report["method"]["mcui_scope"]
+        cls.v413 = rows(build(*load_inputs(config=V413)))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.17", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.17.json")
+        self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.17-2026-10-15.md")
+        self.assertTrue((ROOT / self.scope["prereg"]).exists())
+
+    def test_the_preliminary_values_are_the_registered_ones(self):
+        # prereg 4: the 13 species get back the MCUI they had in 4.13; 멍게 stays without one
+        expected = {"미역": "preliminary", "톳": "preliminary", "감태": "preliminary", "꼬시래기": "preliminary",
+                    "다시마": "preliminary", "괭생이모자반": "preliminary", "청각": "preliminary", "조피볼락": "preliminary",
+                    "꽃게": "preliminary", "가시파래": "range_state", "넙치": "range_state", "대구": "range_state",
+                    "시카메굴": "range_state"}
+        for name, basis in expected.items():
+            s = self.by_name[name]
+            self.assertEqual(s["mcui_basis"], basis, name)
+            self.assertEqual(s["scores"]["MCUI"], self.v413[s["aphia_id"]]["scores"]["MCUI"], name)
+            self.assertEqual(s["conservation_status"]["state"], "preliminary_scored", name)
+            self.assertEqual(s["conservation_status"]["label"], "예비 평가(공식 평가 전)", name)
+            self.assertEqual(s["conservation_status"]["preliminary"]["basis"], basis, name)
+        self.assertEqual(self.by_name["시카메굴"]["scores"]["MCUI"], 35.0)
+        self.assertIsNone(self.by_name["멍게"]["scores"]["MCUI"])
+        self.assertEqual(self.by_name["멍게"]["conservation_status"]["state"], "self_preliminary_only")
+
+    def test_official_categories_come_first_and_stay_as_they_were(self):
+        for a, s in self.new.items():
+            old, name = self.old[a], s["korean_name"]
+            for k in ("MFPI", "MBPI", "BBVI"):
+                self.assertEqual(s["scores"][k], old["scores"][k], (name, k))
+            if old["mcui_basis"] in ("iucn", "national"):
+                self.assertEqual((s["scores"]["MCUI"], s["mcui_basis"], s["conservation_status"]["state"]),
+                                 (old["scores"]["MCUI"], old["mcui_basis"], "official_scored"), name)
+            used = [x for x in s["conservation_status"]["assessments"] if x["used_for_mcui"]]
+            self.assertLessEqual(len(used), 1, name)
+            if s["mcui_basis"] == "range_state":
+                self.assertEqual((used[0]["scope"], used[0]["use"]), ("other_country", "preliminary"), name)
+            if s["mcui_basis"] == "preliminary":
+                self.assertEqual(used, [], name)
+                self.assertTrue(s["conservation_status"]["self_preliminary"]["used_for_mcui"], name)
+            for x in s["conservation_status"]["assessments"]:  # sub-national lists stay reference only
+                if x["scope"] == "sub_national":
+                    self.assertFalse(x["used_for_mcui"], name)
+
+    def test_the_agar_keeps_its_stock_decline_mcui(self):
+        agar = self.by_name["우뭇가사리"]
+        self.assertEqual((agar["mcui_basis"], agar["mcui_extinction_risk"], agar["scores"]["MCUI"], agar["mcui_driver"]),
+                         ("range_state", 60.0, 80.0, "stock_decline"))
+        self.assertEqual(agar["conservation_status"]["state"], "preliminary_scored")
+
+    def test_the_matrix_places_29_species(self):
+        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        counts = {}
+        for s in published["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"sustainable_use": 12, "alternative_production": 1, "baseline_survey": 13,
+                                  "conservation_priority": 3, None: 1})
+        self.assertEqual(published["matrix_points"], 29)
+        self.assertEqual(published["method_version"], "verified-4.17")
+
+    def test_the_posthoc_rank_counts_only_scored_species(self):
+        block = self.report["method"]["posthoc"]["validation_sets"]["MCUI_stock_decline"]
+        ranked = sorted((s["scores"]["MCUI"] for s in self.new.values() if s["scores"]["MCUI"] is not None), reverse=True)
+        squid = self.by_name["살오징어"]["scores"]["MCUI"]
+        self.assertEqual((block["cases"]["살오징어"]["mcui_rank"], block["cases"]["살오징어"]["of"]), (ranked.index(squid) + 1, len(ranked)))
+        self.assertEqual(len(ranked), 29)
 
 
 if __name__ == "__main__":

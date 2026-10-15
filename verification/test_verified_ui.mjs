@@ -73,19 +73,23 @@ html=ctx.renderScores(by(145721));
 // 멍게's reporting-rate ratio 0.655 reached the decline threshold, so its check gives no MCUI.
 // 4.14 (prereg-4.14 2·3): neither the Primorsky row nor the Rapid LC check is an IUCN global or Korean national category, so
 // 미역 has no MCUI; the state is said in words and both lists stay visible as references
-assert.match(html,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인 · 자체 예비검토 참고\(공식 평가 아님 · 역검증 기준 미충족\) · 점수 아님/);
-// 4.14: a Rapid LC reference never reads as a likely low-risk category
+// 4.17 (prereg-4.17 2·5): with no official category the met Rapid LC check scores again as a preliminary assessment. The summary
+// line reads like any other MCUI; the folded body names it '예비 평가(공식 평가 전)' with its inputs and the Primorsky reference
+const mcuiSummary=html.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
+assert.match(mcuiSummary,/<span>MCUI · 보전 평가<\/span><b>10\.0 · /);
+assert.doesNotMatch(mcuiSummary,/예비|역검증|Rapid LC|미확인/);
 assert.doesNotMatch(html,/LC 가능성|예비 평가 참고/);
-assert.match(html,/<b>보전평가 상태: 보전평가 미확인 · 다른 나라·지역 평가 참고<\/b>/);
+assert.match(html,/<b>보전평가 상태: 예비 평가\(공식 평가 전\)<\/b>/);
+assert.match(html,/IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다/);
+assert.match(html,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
 assert.match(html,/다른 나라 지방 평가 \(연해주, 러시아\) · [^<]*\(EN\) \(EN에 해당하는 이름 · 숫자로 바꾸지 않음\) · 참고 · MCUI·유형·지도 색에 쓰지 않음/);
-assert.match(html,/자체 예비검토\(Rapid LC\) · 공식 평가 아님<\/b>/);
-assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가/);
+assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가|IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색/);
 {const sq=ctx.renderScores(by(250680));
   assert.match(sq,/data-axis="MCUI"><summary><span>MCUI · 보전 평가<\/span><b>보전평가 미확인<\/b>/);
   assert.match(sq,/자체 예비평가\(Rapid LC\) 쓰지 않음 · MCUI 없음<\/b>: OBIS 보고율 비\(0\.655\)가 감소 기준\(0\.7\) 이하입니다/);
   assert.doesNotMatch(sq,/Rapid LC 충족 → LC 상당 → 10/);}
 {const lc=ctx.renderScores(by(145721));
-  assert.doesNotMatch(lc,/Rapid LC 충족 → LC 상당 → 10/,'4.14: the met check gives no number');
+  assert.doesNotMatch(lc,/Rapid LC 충족 → LC 상당 → 10/,'4.17: the detail gives the category and the number, not the old mapping text');
   assert.match(lc,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미충족 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
   assert.doesNotMatch(lc,/공식 평가 범주 · 자체/);}
 assert.match(html,/결과 0건/);
@@ -166,7 +170,8 @@ const stages={
   // 4.0: the zero-result IUCN search was repeated on 2026-10-04, so the stage reads '평가 없음 확인' (checked_none), not 미확인
   // 4.2: 톳 gets a sub-national MCUI (Ishikawa/Okinawa VU), so the conservation stage is calculated, not '평가 없음 확인'.
   // 4.14: the sub-national list is a reference again, so 톳's conservation stage is '평가 없음 확인' (IUCN and Korean lists searched)
-  494972:['verified','linked','validated','calculated','checked_none'],
+  // 4.17: its Rapid LC check scores again as a preliminary assessment, so the stage is calculated
+  494972:['verified','linked','validated','calculated','calculated'],
   // 3.16: Russia's Red Data Book gives 우뭇가사리 a range-state MCUI, so its conservation check reaches '시범 산출'
   // 4.0: pheophorbide A (Korean 'G. amansii' mapped to G. elegans) gives 우뭇가사리 a single-paper ChEMBL MBPI
   372119:['verified','linked','validated','calculated','calculated'],
@@ -176,7 +181,7 @@ const stages={
   // 3.5: the sea cucumber gets a single-paper peptide MBPI (HDWWKER, Wang 2024).
   241776:['verified','linked','validated','calculated','calculated'],
   // 2.2: wakame's reviewed peptide trace gives a single-paper MBPI; 2.3 gives the oyster a BBVI; 3.12 replicates wakame IY, 3.14 IW (BBVI 71.0); 4.11 counts only the wakame-purified VW (BBVI 68.0).
-  145721:['verified','linked','validated','calculated','checked_none']  // 4.3: Primorsky Krai EN; 4.11: the met Rapid LC check; 4.14: both references
+  145721:['verified','linked','validated','calculated','calculated']  // 4.3: Primorsky Krai EN; 4.11: the met Rapid LC check; 4.14: both references; 4.17: the Rapid LC as a preliminary assessment
 };
 for(const [id,expected] of Object.entries(stages)){
   const s=published.species.find(x=>x.aphiaID===Number(id));
@@ -211,7 +216,10 @@ assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI was the Primorsky value, 멍게's the scored Rapid LC check. 4.11: 미역 takes the Rapid LC check (the failed
 // back-test makes the Primorsky row reference only) and 멍게 has none (reporting-rate ratio at the decline threshold).
 // 4.14 (prereg-4.14 2·7): both are '보전평가 미확인' in words; 미역's Rapid LC check rides along as a reference, never a number
-assert.match(dom.comparison.innerHTML,/data-more-aphia="145721" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small><small>자체 예비검토 참고 · 공식 평가 아님 · 역검증 기준 미충족 · 점수 아님<\/small>/);
+// 4.17 (prereg-4.17 5): 미역's Rapid LC check is a preliminary assessment again; the table shows its number like any other
+{const cell=dom.comparison.innerHTML.match(/data-more-aphia="145721" data-more-axis="MCUI".*?<\/button>/s)[0];
+  assert.match(cell,/>10\.0<small>/);
+  assert.doesNotMatch(cell,/예비|역검증|Rapid LC|미확인|IUCN 기반/);}
 assert.match(dom.comparison.innerHTML,/data-more-aphia="250680" data-more-axis="MCUI"[^>]*>보전평가 미확인<small>IUCN 검색 0건 · 낮은 점수 아님 · 보기<\/small>/);
 assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0<small>/,'우뭇가사리 keeps its stock-decline lower bound');
 assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
@@ -287,11 +295,13 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>badMcui});
 next={live:true,species:[sp(241776,'Apostichopus japonicus','해삼')]};await ctx.attach(next);
 assert.equal(ctx.score(next.species[0],'MCUI'),null,'MCUI must equal the pilot mapping of its IUCN category');
 assert.deepEqual(Object.keys(next.species[0].assessment.axis_errors),['MCUI'],'an MCUI fault leaves MFPI, MBPI and BBVI untouched');
-// 4.14 (prereg-4.14 2·3): 미역's Rapid LC check is a reference with no number. A reference that carries a value, a check scored
-// again, or a state that claims an official category is refused as an MCUI fault (and never read as a low MCUI).
-for(const [forge,why] of [[a=>{a.mcui_substitute.value=10;},'a reference carrying a value'],
-    [a=>{a.mcui_substitute.use='scored';a.mcui_substitute.value=10;a.mcui_basis='preliminary';a.scores.MCUI=10;a.score_status.MCUI='산출됨';},'a Rapid LC check scored again'],
+// 4.14 (prereg-4.14 2·3) kept 미역's Rapid LC check as a reference; 4.17 (prereg-4.17 2) scores it as a preliminary assessment.
+// A state that claims an official category, a missing preliminary label, a regional list used for MCUI, another number or a
+// passed back-test is refused as an MCUI fault (and never read as a low MCUI).
+for(const [forge,why] of [[a=>{a.scores.MCUI=35;},'a Rapid LC check at another number'],
+    [a=>{a.mcui_substitute.backtest.result='passed';},'a Rapid LC back-test claimed passed'],
     [a=>{a.conservation_status.state='official_scored';a.conservation_status.label='공식 평가';},'a state claiming an official category'],
+    [a=>{a.conservation_status.preliminary.label='공식 평가';},'a preliminary assessment without its label'],
     [a=>{a.conservation_status.assessments[0].used_for_mcui=true;},'a regional list used for MCUI']]){
   const forged=report();forge(forged.species.find(s=>s.aphia_id===145721));
   ctx.fetch=async()=>({status:200,ok:true,json:async()=>forged});
@@ -318,13 +328,13 @@ const cand=(aphiaID,name,label)=>({...sp(aphiaID,name,label),catalog:true,audit:
 next={live:true,species:[cand(231750,'Ruditapes philippinarum','바지락'),cand(274849,'Sebastes schlegelii','조피볼락'),sp(397082,'Haliotis discus','전복(종 수준)')]};
 await ctx.attach(next);
 assert.equal(ctx.score(next.species[0],'MFPI'),60.4);
-// 4.3 scored the met Rapid LC check 10; 4.14 (prereg-4.14 2) keeps it as a reference: no MCUI, '보전평가 미확인'
-assert.equal(ctx.score(next.species[1],'MCUI'),null);
-assert.equal(next.species[1].assessment.withheld_reasons.MCUI,'not_in_red_list');
-assert.equal(next.species[1].assessment.mcui_basis,null);
-assert.equal(next.species[1].assessment.mcui_substitute.use,'reference_only');
-assert.equal(next.species[1].assessment.conservation_status.state,'self_preliminary_only');
-assert.equal(ctx.state(next.species[1],'MCUI').label,'보전평가 미확인');
+// 4.3 scored the met Rapid LC check 10; 4.14 (prereg-4.14 2) kept it as a reference; 4.17 (prereg-4.17 2) scores it again as a
+// preliminary assessment
+assert.equal(ctx.score(next.species[1],'MCUI'),10);
+assert.equal(next.species[1].assessment.withheld_reasons.MCUI,null);
+assert.equal(next.species[1].assessment.mcui_basis,'preliminary');
+assert.equal(next.species[1].assessment.mcui_substitute.use,'scored');
+assert.equal(next.species[1].assessment.conservation_status.state,'preliminary_scored');
 assert.equal(next.species[1].assessment.conservation_trace.iucn_state,'not_in_red_list');
 assert.equal(next.species[2].assessment,undefined,'a candidate row never attaches as an operating species');
 assert.equal(ctx.coverage(next.species[0]).checks.find(c=>c.name==='영양').stage,'validated');

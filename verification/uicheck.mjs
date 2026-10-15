@@ -160,9 +160,11 @@ try{
     // 4.0: MFPI 62.5 from a moisture-converted row and BBVI 65.0 (single paper); MCUI stays withheld
     // 4.14 (prereg-4.14 2·3): the Rapid LC check is a reference again, so MCUI is not computed (never 10) and 감태 has no type;
     // BBVI 59.6 is mixed from the unrounded MFPI·MBPI
-    eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===null&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
-    eckAxes.mcui.includes('보전평가 미확인')&&eckAxes.mcui.includes('자체 예비검토 참고(공식 평가 아님')&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
-    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형이 없')&&!eckAxes.map.includes('56.8'):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
+    // 4.17 (prereg-4.17 2·5): the Rapid LC check scores 10 again as a preliminary assessment; the map line reads like any other
+    // type, and only the species detail names '예비 평가(공식 평가 전)'
+    eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
+    eckAxes.mcui.includes('예비 평가(공식 평가 전)')&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
+    eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형: 활용 연구 검토')&&!/예비|Rapid LC|역검증|56\.8/.test(eckAxes.map):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
     JSON.stringify({...eckAxes,mcui:eckAxes.mcui.slice(0,80),flags:['MBPI 56.8','효소·수용체 등 단백질 표적','eckstolonol','1.47 ± 0.04 mM','시범','10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)'].map(x=>x+':'+eck.includes(x))})+' | '+eck.slice(0,500));
@@ -209,8 +211,9 @@ try{
   check('Wakame/Sea cucumber/Squid: cell line and withheld reasons follow the index report, not the older profile 미검토/미수집',
     // 4.14 (prereg-4.14 2): 미역 has no IUCN global or Korean national category, so its line says '보전평가 미확인' (not 보류) and
     // its one open reason is the IUCN search, which says it is not a low score
-    !stale.line.includes('보류')&&!stale.line.includes('미검토')&&stale.line.includes('MCUI 보전평가 미확인')&&
-    JSON.stringify(Object.keys(stale.wak))==='["MCUI"]'&&stale.wak.MCUI.includes('낮은 점수가 아닙니다')&&
+    // 4.17 (prereg-4.17 2·5): its Rapid LC check is a preliminary assessment again, so the line shows MCUI 10.0 like any other
+    !stale.line.includes('보류')&&!stale.line.includes('미검토')&&stale.line.includes('MCUI 10.0')&&!/예비|Rapid LC|역검증|미확인/.test(stale.line)&&
+    Object.keys(stale.wak).length===0&&
     // 3.27: the sea cucumber's single-paper BBVI and the squid's MBPI are scores now, so neither species has a withheld reason left
     Object.keys(stale.cuc).length===0&&Object.keys(stale.sq).length===0&&!JSON.stringify(stale).includes('검수된 영양 값 미확인'),JSON.stringify(stale));
 
@@ -218,7 +221,9 @@ try{
   await evaluate("document.querySelector('[data-view=compare]').click();setCompareMode('table');1");await sleep(300);
   const cmp=(await walkComparison()).map(p=>p.text).join('\n');
   // 4.5: the floor label left the table (no species takes the floor); the relaxation-(d) tag is required instead
-  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','보전평가 미확인','자체 예비검토 참고 · 공식 평가 아님','다른 나라 평가 참고','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 근거 논문 1편 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!['효능 근거 미확인','보전평가 미확인','멸종위험 평가 미확인'].reduce((t,w)=>t.replaceAll(w,''),cmp).includes('미확인')&&!cmp.includes('자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가')&&!cmp.includes('LC 가능성')&&!cmp.includes('지방 목록 참고값')&&!cmp.includes('예비 평가 참고'),JSON.stringify({missing:[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','보전평가 미확인','자체 예비검토 참고 · 공식 평가 아님','다른 나라 평가 참고','완화 산출(d)'].filter(x=>!cmp.includes(x)).slice(0,10),withheld:(cmp.match(/산출 보류/g)||[]).length,around:[...cmp.matchAll(/.{0,60}(산출 보류|미확인|시범).{0,40}/g)].map(m=>m[0]).slice(0,6)})+' '+cmp.slice(0,200));  // 4.14: a Rapid LC is a reference again (never a 10), and every species without an official category says '보전평가 미확인'
+  // 4.17 (prereg-4.17 5): the table never names the preliminary assessment of the 13 species
+  check('Compare table: no preliminary-assessment words (4.17: named only in the species detail)',!/예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · |IUCN 기반 MCUI와 비교 불가.{0,3}자체/.test(cmp),(cmp.match(/.{0,60}(예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · ).{0,60}/)||[''])[0]);
+  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','보전평가 미확인','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 근거 논문 1편 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!['효능 근거 미확인','보전평가 미확인','멸종위험 평가 미확인'].reduce((t,w)=>t.replaceAll(w,''),cmp).includes('미확인')&&!cmp.includes('자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가')&&!cmp.includes('LC 가능성')&&!cmp.includes('지방 목록 참고값')&&!cmp.includes('예비 평가 참고'),JSON.stringify({missing:[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','보전평가 미확인','자체 예비검토 참고 · 공식 평가 아님','다른 나라 평가 참고','완화 산출(d)'].filter(x=>!cmp.includes(x)).slice(0,10),withheld:(cmp.match(/산출 보류/g)||[]).length,around:[...cmp.matchAll(/.{0,60}(산출 보류|미확인|시범).{0,40}/g)].map(m=>m[0]).slice(0,6)})+' '+cmp.slice(0,200));  // 4.14: a Rapid LC is a reference again (never a 10), and every species without an official category says '보전평가 미확인'
   // 2026-10-13: the table is dark like the page, the coverage column and its guide left it, and the line above it says how to read it
   const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),hint=document.querySelector('#cmp-table-view .dt-hint')?.textContent||'';const dark=getComputedStyle(c).backgroundColor==='rgb(8, 29, 46)'&&getComputedStyle(c.querySelector('.cv-num')).color==='rgb(244, 248, 250)'&&getComputedStyle(c.querySelector('thead th')).backgroundColor==='rgb(10, 34, 54)';const currentGuide=hint.includes('라벨은 근거의 수준이며 가치의 높낮이가 아닙니다')&&!c.querySelector('.coverage-bar,.coverage-guide');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {dark,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
   check('Comparison (dark data table): dark panel and header, how-to-read line, no coverage column, keyboard return',Object.values(compareUx).every(Boolean),JSON.stringify(compareUx));
@@ -592,7 +597,8 @@ try{
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
   check('Empty matrix note links straight to the simulated example (still labelled not real); a placed matrix states its count instead',
     readiness.matrix_points?inlineSim==='no button'&&matrixNote.startsWith(`정식 산출 ${readiness.matrix_points}종`)&&
-      matrixNote.includes('IUCN 기반과 같은 척도가 아닙니다')===readiness.species.some(r=>r.matrix_eligible&&['national','range_state'].includes(r.mcui_basis))&&matrixNote.includes('한국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&matrixNote.includes('서식국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='range_state'):inlineSim===true,String(inlineSim)+' | '+matrixNote);
+      // 4.17 (prereg-4.17 5): range-state and Rapid LC values are preliminary assessments, drawn and worded like any other MCUI
+      matrixNote.includes('IUCN 기반과 같은 척도가 아닙니다')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&matrixNote.includes('한국 국가 평가')===readiness.species.some(r=>r.matrix_eligible&&r.mcui_basis==='national')&&!/서식국|예비|Rapid LC|역검증/.test(matrixNote):inlineSim===true,String(inlineSim)+' | '+matrixNote);
   // Navy redesign (2026-10-11, intended change 1): the effort shading starts off and is not kept in the link; the 조사량
   // box turns it on. It stays on for the shading and B-1 checks below.
   const effortStart=await evaluate("(()=>{const t=document.getElementById('effort-toggle');const r={checked:t.checked,n:effortLayer?effortLayer.getLayers().length:0,hash:location.hash};t.click();r.on=t.checked&&effortLayer.getLayers().length>100;return r})()");
@@ -711,7 +717,8 @@ try{
   t=await pick(494972);
   const hijMap=await liveMap(494972);
   // 4.14 (prereg-4.14 2·3): 톳's lists are another region's and a Rapid LC check, so MCUI is not computed and the row says why
-  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65\.0/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 미산출 · 보전평가 미확인 · 다른 나라·지역 평가 참고/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
+  // 4.17 (prereg-4.17 2·5): the Rapid LC check is a preliminary assessment again; the row shows MCUI 10.0 with no basis words
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65\.0/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0(?! \()/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
@@ -945,7 +952,7 @@ try{
         const tray=document.getElementById('cmp-tray'),fab=document.querySelector('.bbc-fab');tray.scrollIntoView({block:'center'});
         r.tray={empty:tray.classList.contains('empty'),position:getComputedStyle(tray).position,lineHeight:Math.round(b(tray.querySelector('.ct-empty')).height),clearOfFab:!!fab&&!over(b(tray),b(fab))};
         window.scrollTo(0,0);setView('explore');return r})()`);
-      // 4.14: 16 points (14 species have no official category, so no point); at these widths none of them crowd into an
+      // 4.17: 29 points again (preliminary assessments); 4.14 had 16, none of them crowding into an
       // 'N종 밀집' box, so the box list and pick are checked only when a box is drawn (test_compare_ui.mjs keeps the grouping rule)
       const okLayout=x=>x.pills===x.boxes&&x.overlaps===0&&x.labels>0;
       check(`Compare ${w}px (design 3): plain and formal names in all 4 quadrants, no overlapping label/button/'N종 밀집' box (참굴, 살오징어 picked), a box button (when drawn) opens its list and a row picks that species, empty basket is one line in the page clear of 멍이`,
