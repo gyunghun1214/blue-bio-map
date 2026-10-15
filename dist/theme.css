@@ -924,7 +924,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* header: one chip '● 연구 프로토타입 · verified-4.11 · OCEAN 20 ▾' (the dot turns amber while the connection chip shows) */
 .status-chip#notice-chip{max-width:none}
 #notice-chip::before{content:"";flex:none;width:7px;height:7px;margin-right:3px;border-radius:50%;background:#44d7c0}
-.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before{background:#f2b233}
+.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before,#notice-chip.load-failed::before{background:#f2b233}
 .status-pop .pop-project{margin:0 0 8px;color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.04em}
 /* the team tag gives way where the tabs shrink (960px and below); phones keep the chip inside the screen */
 @media (max-width:960px){.chip-tail{display:none}}
