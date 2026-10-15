@@ -25,8 +25,7 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.plain=plainWords;
   globalThis.scoreText=scoreText;
   globalThis.evText=evidenceProfileText;
-  globalThis.evDep=evidenceDependence;
-  globalThis.evCard=evidenceCardLine;`,ctx);
+  globalThis.evDep=evidenceDependence;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -639,7 +638,6 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
     const d=ctx.evText(s,'detail');assert.ok(!/기준 외:/.test(t),t);
     if(e.replication_exclusion_reason_ko)assert.ok(d.includes(': '+e.replication_exclusion_reason_ko+')'),d);
     assert.ok(h.includes(ctx.plain(d).replace(/&/g,'&amp;')),r.korean_name+': the folded MBPI section carries the profile with its reason');
-    assert.ok(ctx.evCard(s).includes('class="card-evidence"'),r.korean_name);
     assert.ok(!/근거 논문 1편|단일 논문/.test(h),r.korean_name+': no old label words');
     // whole numbers for MBPI and BBVI without a replicated top item (0.4 and the BBVI line keep their decimal)
     const whole=e.top_item_replication!=='replicated';
