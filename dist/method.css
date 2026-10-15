@@ -24,7 +24,7 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method a{color:var(--mt-use)}
 #method .fine{color:var(--mt-ink3)}
 #method :is(.mt-journey,.mt-acc,.source-section,.method-card,.flow-wrap){scroll-margin-top:calc(var(--chrome,56px) + 16px)}
-#method .mt-k{color:var(--mt-ink3);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+#method .mt-k{color:var(--mt-ink3);font-size:var(--fs-min);font-weight:600;letter-spacing:.22em;text-transform:uppercase}
 #method .mt-ico{width:12px;height:12px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- first screen: title + research scope ---------- */
@@ -51,7 +51,7 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-scope-split b{margin-right:6px;color:var(--mt-ink);font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 #method .mt-scope-dims{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;color:var(--mt-ink2);font-size:13px}
 #method .mt-scope-dims b{margin-right:8px;color:var(--mt-use);font-size:26px;font-weight:600;vertical-align:-2px}
-#method .mt-scope-dims small{display:block;margin-top:4px;color:var(--mt-ink3);font-size:11.5px}
+#method .mt-scope-dims small{display:block;margin-top:4px;color:var(--mt-ink3);font-size:var(--fs-min)}
 
 /* ---------- where the evidence starts (a band of source kinds, not partners) ---------- */
 #method .mt-origins{display:grid;grid-template-columns:150px repeat(4,minmax(0,1fr));align-items:center;margin-top:42px;padding:20px 0;border-top:1px solid var(--mt-line);border-bottom:1px solid var(--mt-line)}
@@ -74,12 +74,12 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-panel{margin-top:28px;padding:24px 24px 0;border:1px solid var(--mt-line2);border-radius:18px;background:var(--mt-panel)}
 #method .mt-flow{position:relative;display:grid;grid-template-columns:minmax(0,1.65fr) 76px minmax(0,1fr) 76px minmax(0,1.6fr);grid-template-rows:auto repeat(3,auto);row-gap:18px}
 #method .mt-step{display:flex;gap:12px;align-items:baseline;font-size:14px;font-weight:650}
-#method .mt-step span{color:var(--mt-ink3);font-size:11px;letter-spacing:.16em}
+#method .mt-step span{color:var(--mt-ink3);font-size:var(--fs-min);letter-spacing:.16em}
 #method .mt-step.s1{grid-area:1/1}#method .mt-step.s2{grid-area:1/3}#method .mt-step.s3{grid-area:1/5}
 #method .mt-src{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:4px 12px;align-items:start;min-height:104px;padding:18px 20px;border:1px solid var(--mt-line2);border-radius:12px;background:var(--mt-raise)}
 #method .mt-src.food{grid-area:2/1}#method .mt-src.bio{grid-area:3/1}#method .mt-src.cons{grid-area:4/1}
 #method .mt-n{color:var(--mt-ink2);font-size:14px;line-height:28px}
-#method .mt-src .mt-k{font-size:10px;letter-spacing:.2em}
+#method .mt-src .mt-k{font-size:var(--fs-min);letter-spacing:.2em}
 #method .mt-src h4{margin-top:4px;font-size:22px;font-weight:700;letter-spacing:-.02em}
 #method .mt-src p:not(.mt-k){margin-top:4px;color:var(--mt-ink2);font-size:13px}
 #method .mt-tag{color:var(--mt-use);font-size:14px;font-weight:750;line-height:28px}
@@ -96,13 +96,13 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-ix .mt-ix-w{margin-top:6px!important;color:var(--mt-ink2)!important;font-size:12px!important}
 #method .mt-quad-card{grid-area:2/5/5/6;display:flex;flex-direction:column;z-index:1;padding:18px;border:1px solid var(--mt-line2);border-radius:14px;background:var(--mt-low)}
 #method .mt-quad-card h4{margin-top:6px;font-size:20px;font-weight:700}
-#method .mt-axis-y{margin-top:16px;color:var(--mt-ink2);font-size:11.5px}
+#method .mt-axis-y{margin-top:16px;color:var(--mt-ink2);font-size:var(--fs-min)}
 #method .mt-quad{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(84px,1fr);gap:8px;margin-top:8px}
 #method .mt-q{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--mt-line);border-radius:8px;background:var(--qb)}
 #method .mt-q i{width:9px;height:9px;border-radius:50%;background:var(--qd)}
 #method .mt-q b{color:var(--qt);font-size:14px;font-weight:700}
 #method .mt-q span{color:var(--mt-ink2);font-size:12px}
-#method .mt-axis-x{margin-top:8px;color:var(--mt-ink2);font-size:11.5px;text-align:right}
+#method .mt-axis-x{margin-top:8px;color:var(--mt-ink2);font-size:var(--fs-min);text-align:right}
 #method .mt-quad-rule{margin-top:12px;padding-top:12px;border-top:1px solid var(--mt-line);color:var(--mt-ink3);font-size:12px}
 #method .mt-links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 #method .mt-links path{fill:none;stroke:#8aa3b4;stroke-width:1.4}
@@ -250,5 +250,9 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #method #all-sources{padding:2px 12px}
 }
 @media (prefers-reduced-motion:reduce){#method *{transition:none!important}}
-/* 2026-10-15 team check: phones get no text under 11px */
-@media(max-width:740px){#method .mt-src .mt-k{font-size:11px}}
+/* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) */
+@media(max-width:740px){#method .mt-src .mt-k{font-size:var(--fs-min)}}
+/* 2026-10-15 readability: the flow chart is drawn at its own size (1140 wide, scale 1) so its 12px labels stay 12px;
+   narrower screens scroll it inside its box as phones already did. */
+#method .flow{min-width:1140px}
+#method .flow-wrap{padding-left:13px;padding-right:13px}

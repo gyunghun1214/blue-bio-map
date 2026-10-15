@@ -28,7 +28,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 
 /* ---------- title ---------- */
 #compare .cmp-hero{margin:4px 0 22px}
-#compare .cmp-eyebrow{margin:0 0 10px;color:var(--cs-ink2);font-size:11px;font-weight:600;letter-spacing:.42em;text-transform:uppercase}
+#compare .cmp-eyebrow{margin:0 0 10px;color:var(--cs-ink2);font-size:var(--fs-min);font-weight:600;letter-spacing:.42em;text-transform:uppercase}
 #compare .cmp-title{margin:0;color:var(--cs-ink);font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-.025em}
 #compare .cmp-lead{margin:8px 0 0;color:#d6e2e9;font-size:17px;line-height:1.45}
 
@@ -69,7 +69,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 /* '읽는 법' and '비교 기준' share one anchor, so both popovers open under the right end of the head */
 #compare .cmp-tools{position:relative;display:flex;flex:none;gap:8px}
 #compare .cmp-tools>div>.cmp-ghost{min-height:34px;padding:0 12px;font-size:13.5px;font-weight:500}
-#compare .cmp-i{display:inline-grid;place-items:center;width:15px;height:15px;border:1.3px solid currentColor;border-radius:50%;font-family:Georgia,serif;font-size:10px;font-style:italic;font-weight:700;line-height:1}
+#compare .cmp-i{display:inline-grid;place-items:center;width:15px;height:15px;border:1.3px solid currentColor;border-radius:50%;font-family:Georgia,serif;font-size:var(--fs-min);font-style:italic;font-weight:700;line-height:1}
 #compare #cmp-read-toggle[aria-expanded=true],#compare #cmp-basis-toggle[aria-expanded=true]{border-color:var(--cs-accent-hi);color:var(--cs-accent-hi)}
 #compare #cmp-basis-toggle[aria-expanded=true] svg{transform:rotate(180deg)}
 #compare #cmp-basis-now{color:var(--cs-accent-hi);font-weight:700}
@@ -167,7 +167,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .mc-list button:hover{border-color:var(--cs-line2);background:rgba(255,255,255,.04)}
 #compare .mc-list b{grid-area:name;font-size:14px;font-weight:700}
 #compare .mc-list span{grid-area:val;color:var(--cs-ink2);font-size:12px;font-variant-numeric:tabular-nums}
-#compare .mc-list small{grid-area:tag;color:var(--cs-ink3);font-size:11.5px}
+#compare .mc-list small{grid-area:tag;color:var(--cs-ink3);font-size:var(--fs-min)}
 #compare .mc-list button[data-dim]{opacity:.4}
 #compare .mc-dot{grid-area:dot;box-sizing:border-box;width:11px;height:11px;border:2px solid var(--mp);border-radius:50%;background:var(--mp)}
 #compare .mc-dot.hollow{background:none}
@@ -185,14 +185,14 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cmp-profile{display:flex;flex-direction:column;min-width:0;padding:22px 24px 20px;background:var(--cs-panel2)}
 #compare .cp-head{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"id add" "id tile" "note note" "type type";gap:0 14px;align-items:start}
 #compare .cp-id{grid-area:id;min-width:0}
-#compare .cp-id .cmp-eyebrow{margin:0 0 18px;font-size:10.5px;letter-spacing:.38em}
+#compare .cp-id .cmp-eyebrow{margin:0 0 18px;font-size:var(--fs-min);letter-spacing:.38em}
 #compare .cp-id h2{margin:0;color:var(--cs-ink);font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-.02em;word-break:keep-all}
 #compare .cp-latin{margin:4px 0 0;color:#d6e2e9;font-size:17px;font-style:italic}
 #compare .cp-add{grid-area:add;justify-self:end;min-height:34px;padding:0 14px;border-color:var(--cs-sel-line);color:var(--cs-accent-hi)}
 #compare .cp-add:hover{border-color:var(--cs-accent-hi)}
 #compare .cp-add[aria-pressed=true]{border-color:var(--cs-accent-hi);background:var(--cs-sel);color:var(--cs-accent-hi)}
 #compare .cp-add[aria-disabled=true]{opacity:.55;cursor:not-allowed}
-#compare .cp-add-note{grid-area:note;margin-top:4px;color:var(--cs-ink3);font-size:11.5px;text-align:right}
+#compare .cp-add-note{grid-area:note;margin-top:4px;color:var(--cs-ink3);font-size:var(--fs-min);text-align:right}
 #compare .cp-add-note:empty{display:none}
 /* the group icon on a dark tile edged in the group colour; no species photo exists, so no picture stands in for one */
 #compare .cp-tile{grid-area:tile;justify-self:end;margin-top:16px}
@@ -227,7 +227,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-rest,#compare .cp-tag{margin:12px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
 /* 4.16 evidence profile: amount and top-item replication on one line */
 #compare .cp-evidence{margin:10px 0 0;padding:8px 10px;border-left:2px solid var(--cs-line2);color:var(--cs-ink2);font-size:12px;line-height:1.55;overflow-wrap:anywhere}
-#compare .cp-evidence b{display:block;font-size:11px;letter-spacing:.04em;color:var(--cs-ink)}
+#compare .cp-evidence b{display:block;font-size:var(--fs-min);letter-spacing:.04em;color:var(--cs-ink)}
 #compare .cp-actions{padding-top:20px}
 #compare .cp-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0}
 #compare .cp-links .cmp-link{font-size:14px;font-weight:500;text-decoration:none}
@@ -272,7 +272,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .ct-add:hover{border-color:var(--cs-accent-hi);color:var(--cs-ink)}
 #compare .ct-go{display:flex;flex-direction:column;gap:4px}
 #compare .ct-go .cmp-solid{min-height:52px;font-size:16px}
-#compare .ct-go small{color:var(--cs-ink3);font-size:11.5px;text-align:center}
+#compare .ct-go small{color:var(--cs-ink3);font-size:var(--fs-min);text-align:center}
 
 /* ---------- two folds below: type lists (with the unplaced box) and all species cards ---------- */
 #compare .cmp-folds{display:grid;gap:14px;margin-top:22px}
@@ -327,10 +327,10 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cd-table tr.con td b{color:var(--cs-sand)}
 #compare .cd-val b{display:block;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
 #compare .cd-val .cp-bar{margin:5px 0 4px}
-#compare .cd-val small{display:block;color:var(--cs-ink3);font-size:11.5px;line-height:1.45}
+#compare .cd-val small{display:block;color:var(--cs-ink3);font-size:var(--fs-min);line-height:1.45}
 #compare .cd-val small.cd-no{margin-top:3px;color:#e9c99c;font-weight:600}
 #compare .cd-table .cp-type{display:inline-flex;align-items:center;padding:3px 11px;border:1px solid color-mix(in srgb,var(--tc,#8fb3bf) 70%,transparent);border-radius:99px;background:color-mix(in srgb,var(--tc,#8fb3bf) 18%,transparent);color:color-mix(in srgb,var(--tc,#8fb3bf) 55%,#fff);font-size:12.5px;font-weight:700}
-#compare .cd-table .ev-chip{display:inline-block;margin:3px 4px 0 0;padding:1px 8px;border:1px solid var(--cs-line);border-radius:99px;background:none;color:var(--cs-ink2);font-size:11.5px}
+#compare .cd-table .ev-chip{display:inline-block;margin:3px 4px 0 0;padding:1px 8px;border:1px solid var(--cs-line);border-radius:99px;background:none;color:var(--cs-ink2);font-size:var(--fs-min)}
 #compare .cmp-chip{margin:0 6px 6px 0;padding:4px 10px;border:1px solid var(--cs-line2);border-radius:99px;background:none;color:var(--cs-ink);font:inherit;font-size:12px;cursor:pointer}
 #compare .cmp-chip:hover{border-color:var(--cs-accent-hi)}
 
@@ -438,7 +438,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .lg-dot.wmove{background:transparent;border:2px dashed #f1cf9f}
 @media (max-width:740px){#compare #cmp-basis-now .bn-long{display:none}}
 #compare.simulating #cmp-matrix-badge{display:none}
-#compare .cv-official,#compare .cd-official{display:block;color:#f1cf9f;font-size:11px;font-weight:600}
+#compare .cv-official,#compare .cd-official{display:block;color:#f1cf9f;font-size:var(--fs-min);font-weight:600}
 #compare .cp-official{margin:4px 0 0;color:#f1cf9f;font-size:12.5px;font-weight:600}
 #compare .matrix-point.pilot.w-moved{outline:2px dashed #f1cf9f;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
@@ -496,8 +496,8 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison thead th:nth-child(7){width:140px}
 #compare #comparison thead th:nth-child(8){width:56px}
 #compare #comparison .cmp-sort{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 5px;color:var(--cs-ink);font-size:13px;font-weight:700;text-align:left}
-#compare #comparison .cmp-sort small{order:3;flex-basis:100%;color:var(--dt-ink3);font-size:11.5px;font-weight:500}
-#compare #comparison .cmp-sort i{order:2;color:var(--dt-ink3);font-size:11px}
+#compare #comparison .cmp-sort small{order:3;flex-basis:100%;color:var(--dt-ink3);font-size:var(--fs-min);font-weight:500}
+#compare #comparison .cmp-sort i{order:2;color:var(--dt-ink3);font-size:var(--fs-min)}
 #compare #comparison th[aria-sort=ascending] .cmp-sort i,#compare #comparison th[aria-sort=descending] .cmp-sort i{color:var(--cs-accent-hi)}
 #compare #comparison th.cmp-type-h{color:var(--cs-ink);font-size:13px;font-weight:700}
 #compare #comparison tbody tr.cmp-row>*{padding:14px;border-top:1px solid var(--dt-row);background:var(--cs-panel);vertical-align:middle}
@@ -506,14 +506,14 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison tbody tr.cmp-row:has(+tr.cmp-more:not([hidden]))>*{background:var(--dt-open)}
 #compare #comparison tbody th b{color:var(--dt-ink);font-size:16px}
 #compare #comparison tbody th small{margin-top:2px;color:var(--dt-ink2);font-size:12px}
-#compare #comparison .dt-meta{display:block;margin-top:3px;color:var(--dt-ink3);font-size:11.5px;font-weight:400}
+#compare #comparison .dt-meta{display:block;margin-top:3px;color:var(--dt-ink3);font-size:var(--fs-min);font-weight:400}
 #compare #comparison tr.cmp-row.flash>*{animation:dtFlash 1.6s ease-out}
 @keyframes dtFlash{0%,40%{background:#1d4448}100%{background:inherit}}
 /* type badge: the plain verdict in its colour over the formal name; none = grey, no box */
 #compare #comparison .dt-type{display:inline-grid;gap:2px;padding:5px 9px;border:1px solid color-mix(in srgb,var(--qt) 60%,transparent);border-radius:7px;background:color-mix(in srgb,var(--qt) 8%,transparent)}
 #compare #comparison .dt-type b{display:flex;align-items:center;gap:6px;color:var(--qt);font-size:12.5px;white-space:nowrap}
 #compare #comparison .dt-type b i{flex:none;width:7px;height:7px;border-radius:2px;background:var(--qt)}
-#compare #comparison .dt-type small{color:var(--dt-ink2);font-size:11px;white-space:nowrap}
+#compare #comparison .dt-type small{color:var(--dt-ink2);font-size:var(--fs-min);white-space:nowrap}
 #compare #comparison .dt-type.none{padding-left:0;border-color:transparent;background:none}
 #compare #comparison .dt-type.none b{color:var(--dt-ink2)}
 /* value cells: number + thin bar; BBVI and MCUI larger, with the type threshold as a yellow tick */
@@ -594,9 +594,9 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .matrix-point.pilot.stock[aria-current=true]{box-shadow:none}
 #compare .matrix-point.pilot.stock[aria-current=true]::before{box-shadow:0 0 0 3px #f2b84b,0 0 0 8px color-mix(in srgb,var(--mp,#a9bbc6) 34%,transparent)}
 #compare .mt-dot.stock{background:#f2b84b;border-color:#f2b84b}
-#compare .cv-stock{margin-left:4px;color:#f2b84b;font-size:11px;font-style:normal;vertical-align:1px}
+#compare .cv-stock{margin-left:4px;color:#f2b84b;font-size:var(--fs-min);font-style:normal;vertical-align:1px}
 #compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
 #compare #comparison .stock-decline.scored{border-color:#f2b84b}
 #compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
-/* 2026-10-15 team check: phones get no text under 11px (theme.css holds the explore part) */
-@media(max-width:740px){#compare .cmp-i{font-size:11px}#compare .cp-id .cmp-eyebrow{font-size:11px}}
+/* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) (theme.css holds the explore part) */
+@media(max-width:740px){#compare .cmp-i{font-size:var(--fs-min)}#compare .cp-id .cmp-eyebrow{font-size:var(--fs-min)}}

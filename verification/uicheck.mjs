@@ -1,6 +1,7 @@
 // Headless Chrome via DevTools protocol (no deps). Renders the local site, clicks species, screenshots, checks text.
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
+import {collect} from './readability_probe.mjs';
 const OUT=process.argv[2];
 // Expected counts are computed from the published files, never typed in: 22 candidates, snapshot rows, pilot scores.
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
@@ -1282,6 +1283,17 @@ try{
     await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);
     await viewport(1560,900,false);
   }
+  // ---------- R readability (2026-10-15): 12px floor, English originals in lang blocks, abbreviations named ----------
+  // verification/readability_check.mjs sweeps every species and the expedition page too; this keeps the floor in CI.
+  for(const [w,h,mobile] of [[390,844,true],[1440,900,false]]){
+    await viewport(w,h,mobile);
+    for(const v of ['explore','compare','method']){
+      const r=await evaluate(`(async()=>{setView('${v}');for(const d of document.querySelectorAll('#${v} details'))d.open=true;await new Promise(r=>setTimeout(r,400));return (${collect})(['#${v}',12]);})()`);
+      const bad={small:r.small.slice(0,5),english:r.eng.filter(e=>!e.marked).slice(0,5).map(e=>e.text.slice(0,80)),abbr:Object.entries(r.abbr).filter(([,a])=>!a.named).map(([k,a])=>k+' '+a.text)};
+      check(`R-1 ${w}px ${v}: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean`,!r.small.length&&!bad.english.length&&!bad.abbr.length,JSON.stringify(bad));
+    }
+  }
+  await viewport(1560,900,false);await evaluate("setView('explore');1");
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
 finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();

@@ -94,7 +94,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-legend span{display:block;white-space:nowrap}
 .gate-legend i{display:inline-block;width:10px;height:10px;margin:0 7px 0 0;vertical-align:-1px;border:1px solid rgba(140,215,208,.7)}
 .gate-legend i.frame{border-style:dashed}
-.gate-legend .gate-credit{font-size:11px;color:var(--g-ink3)} /* the picture's source (NASA asks to be credited; no logo) */
+.gate-legend .gate-credit{font-size:var(--fs-min);color:var(--g-ink3)} /* the picture's source (NASA asks to be credited; no logo) */
 
 .gate-foot{grid-row:3;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 32px;min-height:clamp(60px,10vh,94px);
   padding:10px var(--g-pad);border-top:1px solid var(--g-line);font-size:clamp(13px,.92vw,15px)}
@@ -154,7 +154,7 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-card-title{grid-column:1/-1;font-size:15px}
   .gate-card-sub{margin-top:0!important;font-size:13px}
   .gate-card button{margin-top:0;font-size:13px}
-  .gate-legend{margin-top:6px;padding:3px 8px;font-size:11px;line-height:1.5}
+  .gate-legend{margin-top:6px;padding:3px 8px;font-size:var(--fs-min);line-height:1.5}
   .gate-legend span{display:inline;margin-right:12px}
 }
 @media (max-width:520px){.gate-nav{display:none}}
