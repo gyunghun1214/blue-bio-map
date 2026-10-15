@@ -55,9 +55,9 @@ assert.ok(strip(tray()).includes('2종 이상 담으면 비교할 수 있습니�
 T.basket=ids.slice(0,3);T.selected=by(ROCKFISH);T.renderCompareProfile();
 let prof=$('cmp-profile').innerHTML;
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
-assert.ok(strip(prof).includes('근거 논문 1편')&&strip(prof).includes('보전평가 미확인'),'조피볼락 keeps its BBVI paper-count label and says its conservation state (4.14: Rapid LC is a reference)');
+assert.ok(strip(prof).includes('최상위 근거 독립 재현 확인 중')&&!strip(prof).includes('근거 논문 1편')&&strip(prof).includes('보전평가 미확인'),'조피볼락 keeps its BBVI replication label (4.16 words) and says its conservation state (4.14: Rapid LC is a reference)');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
-assert.ok(prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
+assert.ok(prof.includes('72')&&!prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 
 // Side-by-side: mixed comparison groups and bases → no bars on those rows, "직접 비교 불가" instead; never a total or a pick.
 const cohort=s=>s.assessment?.food_trace?.cohort_id, basis=s=>s.assessment?.mcui_basis||'iucn';
@@ -110,7 +110,7 @@ for(const s of S){
   }
 }
 T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
-assert.ok(['비교집단','근거 논문 1편','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, paper count and basis note');
+assert.ok(['비교집단','최상위 근거 독립 재현 확인 중','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, replication label (4.16) and basis note');
 T.selected=by(250680);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
 assert.ok(prof.includes('유형 미산출')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 미산출 and why');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.

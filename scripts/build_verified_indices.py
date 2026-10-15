@@ -31,7 +31,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.14.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.16.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -1599,6 +1599,37 @@ def mbpi_rx(trace: list[dict], rule: dict) -> dict:
                          "evidence_factor": best["evidence_factor"]}}
 
 
+def evidence_profile(trace: list[dict], best: dict | None, papers: int, minimum: int, unscored: int, rule: dict,
+                     origin_reason: str | None) -> dict:
+    """4.16 (formal-release-4.16-2026-10-15): the MBPI evidence of a species in two separate counts, display only. How much
+    there is (scored items, independent papers over all of them, related papers no score uses) is kept apart from whether the
+    top item was independently replicated, which is what the single-paper label and the evidence factor mean. A replication
+    row the rules did not count is named with its reason, so 'tried and not counted' never reads as 'never measured'. The
+    MBPI without its top item is the next item's adjusted value (MBPI is the maximum over items). Nothing here enters a score."""
+    ranked = sorted((i["adjusted"] for i in trace), reverse=True)
+    out = {"item_count": len(trace), "independent_paper_count": papers, "unscored_related_count": unscored,
+           "top_item_replication": None, "attempted_count": 0, "replication_exclusion_codes": [],
+           "replication_exclusion_reason_ko": None, "top_item_percentile": None, "top_item_evidence_factor": None,
+           "mbpi_without_top_item": round1(ranked[1]) if len(ranked) > 1 else None, "display_only": True}
+    if best is None:
+        return out
+    rows = best.get("potency_replications") or []
+    tried = [r for r in rows if not r.get("used")]
+    codes = []
+    for r in tried:
+        why = r.get("reason") or ""
+        code = ("other_origin" if origin_reason and why == origin_reason else "same_paper" if why.startswith("same paper")
+                else "potency_gap" if " gap above " in why else "reviewed_exclusion")
+        if code not in codes:
+            codes.append(code)
+    codes = [c for c in rule["exclusion_reasons"] if c in codes]  # the rule's order, one word each
+    state = "replicated" if independent_sources(best) >= minimum else "attempted_not_counted" if tried else "none"
+    return {**out, "top_item_replication": state, "attempted_count": len(tried) if state != "replicated" else 0,
+            "replication_exclusion_codes": codes if state == "attempted_not_counted" else [],
+            "replication_exclusion_reason_ko": " · ".join(rule["exclusion_reasons"][c] for c in codes) if state == "attempted_not_counted" else None,
+            "top_item_percentile": round(best["percentile"], 2), "top_item_evidence_factor": best["evidence_factor"]}
+
+
 def bio_sufficiency(partials: list[dict]) -> dict:
     steps = ("origin", "structure_id", "quantitative_endpoint", "comparable_cohort")
     best = max((sum(bool((p.get("chain") or {}).get(s)) for s in steps) for p in partials), default=0)
@@ -1840,6 +1871,11 @@ def build(evidence: dict, candidates: dict, config: dict, snapshot: dict, taxono
                                             "mean": round1(sum(ranked) / len(ranked)) if ranked else None,
                                             "material_counts": dict(sorted(counts.items())),
                                             "floor_zero": bool(mbpi_floor), "measured_zero_items": sum(1 for x in ranked if x == 0)})
+        ep_rule = config.get("evidence_profile")
+        if ep_rule:  # 4.16: amount and replication of the MBPI evidence, kept apart (display only)
+            papers = row["mbpi_breadth"]["independent_paper_count"] if bio_trace else 0
+            row["evidence_profile"] = evidence_profile(bio_trace, best, papers, min_dois, evidence["unscored_related_counts"].get(aphia, 0),
+                                                       ep_rule, (config["bioactivity"].get("replication_origin_rule") or {}).get("reason"))
         if config.get("peptide_bioactivity"):  # verified-pilot-3 only; v2 output keeps its shape
             row["mbpi_stratum"] = "floor" if mbpi_floor else None if best is None else best.get("stratum_kind", "small_molecule")
             row["bbvi_mbpi_from_peptide_stratum"] = bbvi is not None and row["mbpi_stratum"] == "peptide"
@@ -2287,6 +2323,14 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
         table = read(ROOT / profile["material_file"])
         require(table.get("schema_version") == 1 and table.get("classes") and table.get("by_stratum_kind") is not None, "material table")
         evidence = {**evidence, "mbpi_material": table}
+    ep = cfg.get("evidence_profile")
+    if ep:  # 4.16: the published related-literature list, counted per species for display; no score reads it
+        lit = read(ROOT / ep["unscored_related_file"])
+        require(lit.get("schema_version") == ep["unscored_related_schema"], "related-literature schema differs from the rule")
+        counts = {}
+        for r in lit["records"]:
+            counts[r["aphia_id"]] = counts.get(r["aphia_id"], 0) + 1
+        evidence = {**evidence, "unscored_related_counts": counts}
     return evidence, read(candidates), cfg, read(ROOT / cfg["nutrition"]["snapshot"]), read(taxonomy)
 
 

@@ -22,7 +22,7 @@ const ctx={AbortSignal,structuredClone,console,URLSearchParams,document:{getElem
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
-vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={pilotScore,matrixType,officialType,officialBbvi,officialNote,weightPair,weightOff,weightStep,hashWeightStep,'+
+vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={pilotScore,scoreText,matrixType,officialType,officialBbvi,officialNote,weightPair,weightOff,weightStep,hashWeightStep,'+
   'assessedForMatrix,syncWeightControl,writeHash,renderComparison,set w(v){bbviWeight=v},get w(){return bbviWeight},set selected(v){selected=v}};',ctx);
 const T=ctx.T;
 const data=await vm.runInContext(`(async()=>{const next=await loadPublishedProfiles();next.outdated??=[];await attachPilotAssessments(next);return data=next;})()`,ctx);
@@ -59,7 +59,7 @@ assert.ok(S.every(s=>T.officialNote(s)===''),'no official note at the official w
 at(.8,()=>{
   assert.equal(T.weightOff(),true);
   for(const s of scored){const o=rows.get(s.aphiaID).scores.BBVI, now=T.pilotScore(s,'BBVI');
-    assert.equal(T.officialBbvi(s),o);assert.equal(T.officialNote(s),now===o?'':`공식 ${o.toFixed(1)}`,s.label);}
+    assert.equal(T.officialBbvi(s),o);assert.equal(T.officialNote(s),now===o?'':`공식 ${T.scoreText(s,'BBVI',o)}`,s.label);}  // 4.16: whole number without a replicated top item
   T.renderComparison();
   assert.ok($('comparison').innerHTML.includes('class="cv-official">(공식 '),'table BBVI shows the official value');
 });

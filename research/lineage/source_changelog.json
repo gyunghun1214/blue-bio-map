@@ -2643,6 +2643,15 @@
    "published_on": "2026-10-14",
    "method_note": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only.",
    "entries": []
+  },
+  {
+   "from_run_id": "verified-4.14",
+   "to_run_id": "verified-4.16",
+   "from_commit": "f084322",
+   "to_commit": "eb9341d",
+   "published_on": "2026-10-15",
+   "method_note": "verified-4.14 (2026-10-15). Display only; no score, rule, cohort, factor, weight or threshold changed (research/verified-indices/formal-release-4.16-2026-10-15.md, LKH's request 2026-10-15). Each species carries evidence_profile: the amount of MBPI evidence (scored items, independent papers over all items, related papers no score uses) kept apart from whether the top item was independently replicated (replicated, attempted_not_counted with the reasons, none), the top item's percentile and evidence factor, and the MBPI without its top item. verified-4.15 was left to a parallel change.",
+   "entries": []
   }
  ]
 }
