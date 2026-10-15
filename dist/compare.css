@@ -228,6 +228,8 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 /* 4.16 evidence profile: amount and top-item replication on one line */
 #compare .cp-evidence{margin:10px 0 0;padding:8px 10px;border-left:2px solid var(--cs-line2);color:var(--cs-ink2);font-size:12px;line-height:1.55;overflow-wrap:anywhere}
 #compare .cp-evidence b{display:block;font-size:11px;letter-spacing:.04em;color:var(--cs-ink)}
+#compare .cp-origin{margin:8px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+#compare .cp-origin.suspect{color:var(--cs-sand)}
 #compare .cp-actions{padding-top:20px}
 #compare .cp-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0}
 #compare .cp-links .cmp-link{font-size:14px;font-weight:500;text-decoration:none}
@@ -240,6 +242,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare :is(.cmp-more,.cmp-fold) :is(h3,h4){color:var(--cs-ink)}
 #compare :is(.cmp-more,.cmp-fold) :is(p,li,dd,dt){color:#c7d4dc}
 #compare :is(.cmp-more,.cmp-fold) a{color:var(--cs-accent-hi)}
+#compare .origin-flag{color:var(--cs-sand)!important}
 #compare .decision-close{border-color:var(--cs-line2);background:transparent;color:var(--cs-ink)}
 
 /* ---------- table view ---------- */

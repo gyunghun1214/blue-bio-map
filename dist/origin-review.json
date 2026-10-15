@@ -1,0 +1,1760 @@
+{
+ "schema_version": "origin-review-1",
+ "report_version": "verified-4.19",
+ "rule": "research/verified-indices/origin-class-rule-2026-10-15.md",
+ "record": "research/verified-indices/origin-review-2026-10-15.json",
+ "reviewed_on": "2026-10-15",
+ "display_only": true,
+ "classes": {
+  "producer_confirmed": "이 종이 만든 것으로 확인",
+  "associated_possible": "먹이·공생균·미생물 유래 가능",
+  "artifact_possible": "추출·가공 중 생성 가능",
+  "sample_mismatch": "다른 종 시료에서 잰 값",
+  "unknown": "기원 판단 근거 없음"
+ },
+ "order": [
+  "sample_mismatch",
+  "artifact_possible",
+  "associated_possible",
+  "producer_confirmed",
+  "unknown"
+ ],
+ "confirmed_classes": [
+  "producer_confirmed"
+ ],
+ "summary": {
+  "species": 30,
+  "items": 91,
+  "by_class": {
+   "producer_confirmed": 72,
+   "associated_possible": 12,
+   "artifact_possible": 5,
+   "sample_mismatch": 2,
+   "unknown": 0
+  },
+  "suspect_items": 19,
+  "top_suspect_species": [
+   "멍게",
+   "우뭇가사리",
+   "홍합(참담치)",
+   "다시마",
+   "바지락",
+   "시카메굴",
+   "멸치"
+  ]
+ },
+ "species": [
+  {
+   "aphia_id": 145721,
+   "korean_name": "미역",
+   "scientific_name": "Undaria pinnatifida",
+   "mbpi": 89.2,
+   "mbpi_origin_strict": 89.2,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:VW",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 8,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:AW",
+     "stratum_kind": "peptide",
+     "name": "AW",
+     "adjusted": 47.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:FY",
+     "stratum_kind": "peptide",
+     "name": "FY",
+     "adjusted": 37.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:IW",
+     "stratum_kind": "peptide",
+     "name": "IW",
+     "adjusted": 71.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:IY",
+     "stratum_kind": "peptide",
+     "name": "IY",
+     "adjusted": 60.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md19030177:KNFL",
+     "stratum_kind": "peptide",
+     "name": "KNFL",
+     "adjusted": 19.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:LW",
+     "stratum_kind": "peptide",
+     "name": "LW",
+     "adjusted": 44.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:VW",
+     "stratum_kind": "peptide",
+     "name": "VW",
+     "adjusted": 89.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1021/jf020482t:VY",
+     "stratum_kind": "peptide",
+     "name": "VY",
+     "adjusted": 39.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 241776,
+   "korean_name": "해삼",
+   "scientific_name": "Apostichopus japonicus",
+   "mbpi": 8.7,
+   "mbpi_origin_strict": 8.7,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md22020090:HDWWKER",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md22020090:HDWWKER",
+     "stratum_kind": "peptide",
+     "name": "HDWWKER",
+     "adjusted": 8.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 250680,
+   "korean_name": "멍게",
+   "scientific_name": "Halocynthia roretzi",
+   "mbpi": 13.5,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ChEMBL_37:CHEMBL247|IC50|CHEMBL450953",
+   "top_origin": "suspect",
+   "top_origin_class": "associated_possible",
+   "item_count": 1,
+   "suspect_count": 1,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL247|IC50|CHEMBL450953",
+     "stratum_kind": "chembl",
+     "name": "HALOCYNTHIAXANTHIN",
+     "adjusted": 13.5,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "동물은 카로티노이드를 새로 만들지 못하고 먹이에서 얻어 바꿉니다. 할로시티아잔틴은 먹이 조류의 푸코잔틴이 바뀐 물질로 알려져 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md9020278",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 342067,
+   "korean_name": "살오징어",
+   "scientific_name": "Todarodes pacificus",
+   "mbpi": 56.9,
+   "mbpi_origin_strict": 56.9,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1271/bbb.60.1353:YALPHA",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 2,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1271/bbb.60.1353:GYALPHA",
+     "stratum_kind": "peptide",
+     "name": "GYALPHA",
+     "adjusted": 42.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1271/bbb.60.1353:YALPHA",
+     "stratum_kind": "peptide",
+     "name": "YALPHA",
+     "adjusted": 56.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 372119,
+   "korean_name": "우뭇가사리",
+   "scientific_name": "Gelidium elegans",
+   "mbpi": 13.5,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ChEMBL_37:CHEMBL378|IC50|CHEMBL510103",
+   "top_origin": "suspect",
+   "top_origin_class": "sample_mismatch",
+   "item_count": 1,
+   "suspect_count": 1,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL378|IC50|CHEMBL510103",
+     "stratum_kind": "chembl",
+     "name": "PHEOPHORBIDE A",
+     "adjusted": 13.5,
+     "origin_class": "sample_mismatch",
+     "confirmed": false,
+     "reason_ko": "점수에 쓴 HIV-1 IC50은 다른 생물(Vatica cinerea)에서 얻은 페오포바이드 a로 잰 값입니다.",
+     "other_reasons_ko": [
+      "엽록소 분해 산물이라, 말린 엽체를 추출하는 중에 생겼을 수 있습니다."
+     ],
+     "sources": [
+      "10.1016/j.nutres.2022.10.001",
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "other_species"
+    }
+   ]
+  },
+  {
+   "aphia_id": 494972,
+   "korean_name": "톳",
+   "scientific_name": "Sargassum fusiforme",
+   "mbpi": 65.0,
+   "mbpi_origin_strict": 65.0,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.2331/suisan.64.862:GKY",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 6,
+   "suspect_count": 3,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.2331/suisan.64.862:GKY",
+     "stratum_kind": "peptide",
+     "name": "GKY",
+     "adjusted": 65.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.2331/suisan.64.862:SKTY",
+     "stratum_kind": "peptide",
+     "name": "SKTY",
+     "adjusted": 55.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.2331/suisan.64.862:SVY",
+     "stratum_kind": "peptide",
+     "name": "SVY",
+     "adjusted": 58.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL612851|IC50|CHEMBL252366",
+     "stratum_kind": "chembl",
+     "name": "SARINGOSTEROL",
+     "adjusted": 19.6,
+     "origin_class": "artifact_possible",
+     "confirmed": false,
+     "reason_ko": "푸코스테롤이 빛·공기에 산화하면 생기는 물질이라 건조·추출 중에 생겼을 수 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL612851|IC50|CHEMBL252561",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL252561",
+     "adjusted": 26.5,
+     "origin_class": "artifact_possible",
+     "confirmed": false,
+     "reason_ko": "푸코스테롤이 빛·공기에 산화하면 생기는 물질이라 건조·추출 중에 생겼을 수 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL2808|EC50|CHEMBL275911",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL275911",
+     "adjusted": 45.3,
+     "origin_class": "artifact_possible",
+     "confirmed": false,
+     "reason_ko": "푸코스테롤에서 나온 산화 스테롤이라 건조 중 자동 산화로 생겼을 수 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 506159,
+   "korean_name": "홍합(참담치)",
+   "scientific_name": "Mytilus coruscus",
+   "mbpi": 10.1,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ChEMBL_37:CHEMBL247|IC50|CHEMBL450953",
+   "top_origin": "suspect",
+   "top_origin_class": "associated_possible",
+   "item_count": 1,
+   "suspect_count": 1,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL247|IC50|CHEMBL450953",
+     "stratum_kind": "chembl",
+     "name": "HALOCYNTHIAXANTHIN",
+     "adjusted": 10.1,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "동물은 카로티노이드를 새로 만들지 못하고 먹이에서 얻어 바꿉니다. 할로시티아잔틴은 먹이 조류의 푸코잔틴이 바뀐 물질로 알려져 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md9020278",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 836033,
+   "korean_name": "참굴",
+   "scientific_name": "Magallana gigas",
+   "mbpi": 72.2,
+   "mbpi_origin_strict": 72.2,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.5352/JLS.2012.22.2.220:LQP",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 6,
+   "suspect_count": 3,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3389/fnut.2022.981163:AEYLCEAC",
+     "stratum_kind": "peptide",
+     "name": "AEYLCEAC",
+     "adjusted": 1.1,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.5352/JLS.2012.22.2.220:LQP",
+     "stratum_kind": "peptide",
+     "name": "LQP",
+     "adjusted": 72.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.1128/mBio.01821-19:Cg-BigDef1:S.aureus:MRSA 31/01/14-B-5284",
+     "stratum_kind": "amp",
+     "name": "Cg-BigDef1",
+     "adjusted": 62.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL613966|EC50|CHEMBL1980535",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL1980535",
+     "adjusted": 29.4,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "페리디닌은 와편모조류의 색소로, 참굴은 먹이에서 얻어 조직에 쌓습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md9020278",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL5980|EC50|CHEMBL1980535",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL1980535",
+     "adjusted": 19.9,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "페리디닌은 와편모조류의 색소로, 참굴은 먹이에서 얻어 조직에 쌓습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md9020278",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL247|IC50|CHEMBL450953",
+     "stratum_kind": "chembl",
+     "name": "HALOCYNTHIAXANTHIN",
+     "adjusted": 10.1,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "동물은 카로티노이드를 새로 만들지 못하고 먹이에서 얻어 바꿉니다. 할로시티아잔틴은 먹이 조류의 푸코잔틴이 바뀐 물질로 알려져 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md9020278",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 377084,
+   "korean_name": "다시마",
+   "scientific_name": "Saccharina japonica",
+   "mbpi": 26.5,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ChEMBL_37:CHEMBL612851|IC50|CHEMBL252561",
+   "top_origin": "suspect",
+   "top_origin_class": "artifact_possible",
+   "item_count": 2,
+   "suspect_count": 2,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL612851|IC50|CHEMBL252366",
+     "stratum_kind": "chembl",
+     "name": "SARINGOSTEROL",
+     "adjusted": 19.6,
+     "origin_class": "artifact_possible",
+     "confirmed": false,
+     "reason_ko": "푸코스테롤이 빛·공기에 산화하면 생기는 물질이라 건조·추출 중에 생겼을 수 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL612851|IC50|CHEMBL252561",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL252561",
+     "adjusted": 26.5,
+     "origin_class": "artifact_possible",
+     "confirmed": false,
+     "reason_ko": "푸코스테롤이 빛·공기에 산화하면 생기는 물질이라 건조·추출 중에 생겼을 수 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 371986,
+   "korean_name": "감태",
+   "scientific_name": "Ecklonia cava",
+   "mbpi": 56.8,
+   "mbpi_origin_strict": 56.8,
+   "top_item_key": "ChEMBL_37:CHEMBL5118|Ki|CHEMBL508791",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 10,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL5118|IC50|CHEMBL2391423",
+     "stratum_kind": "chembl",
+     "name": "2-PHLOROECKOL",
+     "adjusted": 23.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL247|EC50|CHEMBL443626",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL443626",
+     "adjusted": 24.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL5118|Ki|CHEMBL456228",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL456228",
+     "adjusted": 28.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL5118|IC50|CHEMBL459393",
+     "stratum_kind": "chembl",
+     "name": "FUCODIPHLOROETHOL G",
+     "adjusted": 22.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL5118|Ki|CHEMBL471187",
+     "stratum_kind": "chembl",
+     "name": "ECKOL",
+     "adjusted": 46.1,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL378|EC50|CHEMBL502202",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL502202",
+     "adjusted": 19.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL247|EC50|CHEMBL502202",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL502202",
+     "adjusted": 19.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL5118|Ki|CHEMBL508791",
+     "stratum_kind": "chembl",
+     "name": "DIECKOL",
+     "adjusted": 56.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL1914|IC50|CHEMBL510508",
+     "stratum_kind": "chembl",
+     "name": "PHLOROFUCOFUROECKOL A",
+     "adjusted": 39.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    },
+    {
+     "key": "ChEMBL_37:CHEMBL4822|IC50|CHEMBL559870",
+     "stratum_kind": "chembl",
+     "name": "DIOXINODEHYDROECKOL",
+     "adjusted": 9.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "플로로탄닌은 갈조류가 스스로 만드는 폴리페놀이며, 연결 논문이 감태에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 234476,
+   "korean_name": "가시파래",
+   "scientific_name": "Ulva prolifera",
+   "mbpi": 73.3,
+   "mbpi_origin_strict": 73.3,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md22090398:KAF",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 3,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md22090398:KAF",
+     "stratum_kind": "peptide",
+     "name": "KAF",
+     "adjusted": 73.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-a-549|10.3390/foods11213507:HTDT-6-2-3-2:A-549",
+     "stratum_kind": "anticancer",
+     "name": "HTDT-6-2-3-2",
+     "adjusted": 2.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-hepg-2|10.3390/foods11213507:HTDT-6-2-3-2:HepG-2",
+     "stratum_kind": "anticancer",
+     "name": "HTDT-6-2-3-2",
+     "adjusted": 2.1,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 494853,
+   "korean_name": "괭생이모자반",
+   "scientific_name": "Sargassum horneri",
+   "mbpi": 21.6,
+   "mbpi_origin_strict": 21.6,
+   "top_item_key": "ChEMBL_37:CHEMBL5763|IC50|CHEMBL4085945",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL5763|IC50|CHEMBL4085945",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL4085945",
+     "adjusted": 21.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "모자반류가 만드는 크로메놀(메로테르페노이드)이며, 연결 논문 3편이 괭생이모자반에서 분리했습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.3390/md19090497",
+      "10.3390/md20010028",
+      "10.3390/md20110710",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "not_read"
+    }
+   ]
+  },
+  {
+   "aphia_id": 236157,
+   "korean_name": "꼬시래기",
+   "scientific_name": "Gracilaria vermiculophylla",
+   "mbpi": 49.3,
+   "mbpi_origin_strict": 49.3,
+   "top_item_key": "ChEMBL_37:CHEMBL2392|Potency|CHEMBL1084643",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL2392|Potency|CHEMBL1084643",
+     "stratum_kind": "chembl",
+     "name": "PROSTAGLANDIN A2",
+     "adjusted": 49.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "상처 난 꼬시래기 조직에서 효소 반응으로 크게 늘어나는 방어 물질(에이코사노이드)로 보고됐습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1371/journal.pone.0029359",
+      "PubMed 22216258"
+     ],
+     "tested_material": "commercial_or_synthetic"
+    }
+   ]
+  },
+  {
+   "aphia_id": 145086,
+   "korean_name": "청각",
+   "scientific_name": "Codium fragile",
+   "mbpi": 0.6,
+   "mbpi_origin_strict": 0.6,
+   "top_item_key": "ChEMBL_37:CHEMBL4303835|IC50|CHEMBL5287816",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL4303835|IC50|CHEMBL5287816",
+     "stratum_kind": "chembl",
+     "name": "CHEMBL5287816",
+     "adjusted": 0.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "청각류 녹조가 광합성 색소로 만드는 카로티노이드이며, 점수 값도 청각에서 정제한 시료로 쟀습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1016/s0031-9422(00)90263-2",
+      "10.3390/md18120603",
+      "dist/assessments.json (verified-4.18 caveat)"
+     ],
+     "tested_material": "this_species"
+    }
+   ]
+  },
+  {
+   "aphia_id": 231750,
+   "korean_name": "바지락",
+   "scientific_name": "Ruditapes philippinarum",
+   "mbpi": 58.6,
+   "mbpi_origin_strict": 39.5,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1039/c8fo01146j:VISDEDGVTH",
+   "top_origin": "suspect",
+   "top_origin_class": "associated_possible",
+   "item_count": 7,
+   "suspect_count": 4,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1039/c8fo01146j:FAGDDAPRA",
+     "stratum_kind": "peptide",
+     "name": "FAGDDAPRA",
+     "adjusted": 32.8,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "Bacillus natto로 발효한 바지락에서 찾은 서열이라, 원문(초록)이 바지락 단백질과 맞춰 보이지 않아 발효균 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1039/c8fo01146j",
+      "PubMed 30206615",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1046/j.1444-2906.2002.00415.x:IAE",
+     "stratum_kind": "peptide",
+     "name": "IAE",
+     "adjusted": 39.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1046/j.1444-2906.2002.00415.x:IVE",
+     "stratum_kind": "peptide",
+     "name": "IVE",
+     "adjusted": 26.4,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1039/c8fo01146j:LDSGDGVTH",
+     "stratum_kind": "peptide",
+     "name": "LDSGDGVTH",
+     "adjusted": 43.5,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "Bacillus natto로 발효한 바지락에서 찾은 서열이라, 원문(초록)이 바지락 단백질과 맞춰 보이지 않아 발효균 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1039/c8fo01146j",
+      "PubMed 30206615",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.5657/fas.2005.8.2.109:LLP",
+     "stratum_kind": "peptide",
+     "name": "LLP",
+     "adjusted": 23.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1039/c8fo01146j:VISDEDGVTH",
+     "stratum_kind": "peptide",
+     "name": "VISDEDGVTH",
+     "adjusted": 58.6,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "Bacillus natto로 발효한 바지락에서 찾은 서열이라, 원문(초록)이 바지락 단백질과 맞춰 보이지 않아 발효균 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1039/c8fo01146j",
+      "PubMed 30206615",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1039/c8fo01146j:VVVGDGAVGK",
+     "stratum_kind": "peptide",
+     "name": "VVVGDGAVGK",
+     "adjusted": 36.6,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "Bacillus natto로 발효한 바지락에서 찾은 서열이라, 원문(초록)이 바지락 단백질과 맞춰 보이지 않아 발효균 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1039/c8fo01146j",
+      "PubMed 30206615",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 397082,
+   "korean_name": "전복(종 수준)",
+   "scientific_name": "Haliotis discus",
+   "mbpi": 15.6,
+   "mbpi_origin_strict": 15.6,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s00217-014-2315-8:AMN",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s00217-014-2315-8:AMN",
+     "stratum_kind": "peptide",
+     "name": "AMN",
+     "adjusted": 15.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 393716,
+   "korean_name": "큰가리비",
+   "scientific_name": "Mizuhopecten yessoensis",
+   "mbpi": 27.3,
+   "mbpi_origin_strict": 27.3,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.16535/j.cnki.dlhyxb.2018.06.016:VW",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.16535/j.cnki.dlhyxb.2018.06.016:VW",
+     "stratum_kind": "peptide",
+     "name": "VW",
+     "adjusted": 27.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 836041,
+   "korean_name": "시카메굴",
+   "scientific_name": "Magallana sikamea",
+   "mbpi": 13.8,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ChEMBL_37:CHEMBL378|IC50|CHEMBL1822160",
+   "top_origin": "suspect",
+   "top_origin_class": "sample_mismatch",
+   "item_count": 1,
+   "suspect_count": 1,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL378|IC50|CHEMBL1822160",
+     "stratum_kind": "chembl",
+     "name": "FLAZINE",
+     "adjusted": 13.8,
+     "origin_class": "sample_mismatch",
+     "confirmed": false,
+     "reason_ko": "점수에 쓴 항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin으로 잰 값입니다.",
+     "other_reasons_ko": [
+      "flazin은 가열·발효 식품에서 생기는 물질로 알려져 있습니다."
+     ],
+     "sources": [
+      "10.1002/cbdv.200890044",
+      "dist/assessments.json (verified-4.18 caveat)",
+      "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json"
+     ],
+     "tested_material": "other_species"
+    }
+   ]
+  },
+  {
+   "aphia_id": 504357,
+   "korean_name": "피조개",
+   "scientific_name": "Anadara broughtonii",
+   "mbpi": 75.0,
+   "mbpi_origin_strict": 75.0,
+   "top_item_key": "anticancer-cancerppd-ic50-ht-29|10.3390/md20020110:P6:HT-29",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 8,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "amp-dbaasp-mic-broth-bacillus-subtilis|10.3390/md15070205:AI-hemocidin-2:B.subtilis",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 2",
+     "adjusted": 1.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-escherichia-coli|10.3390/md15070205:AI-hemocidin-2:E.coli",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 2",
+     "adjusted": 12.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-pseudomonas-aeruginosa|10.3390/md15070205:AI-hemocidin-2:P.aeruginosa",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 2",
+     "adjusted": 5.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.3390/md15070205:AI-hemocidin-2:S.aureus",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 2",
+     "adjusted": 22.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-escherichia-coli|10.3390/md15070205:AI-hemocidin-1:E.coli",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 1",
+     "adjusted": 12.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-pseudomonas-aeruginosa|10.3390/md15070205:AI-hemocidin-1:P.aeruginosa",
+     "stratum_kind": "amp",
+     "name": "AI-hemocidin 1",
+     "adjusted": 14.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 자신의 헤모글로빈 유전자(GenBank AB713934)가 암호화한 서열의 단편입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-hct-116|10.3390/md20020110:P6:HCT-116",
+     "stratum_kind": "anticancer",
+     "name": "P6",
+     "adjusted": 50.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 혈림프에서 정제한 펩타이드의 단편 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-ht-29|10.3390/md20020110:P6:HT-29",
+     "stratum_kind": "anticancer",
+     "name": "P6",
+     "adjusted": 75.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 혈림프에서 정제한 펩타이드의 단편 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 413600,
+   "korean_name": "가리맛조개",
+   "scientific_name": "Sinonovacula constricta",
+   "mbpi": 56.9,
+   "mbpi_origin_strict": 56.9,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md14060110:VQY",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 3,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.3390/md14060110:VQY",
+     "stratum_kind": "peptide",
+     "name": "VQY",
+     "adjusted": 56.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-pc-3|10.3892/mmr.2017.7418:SCH-P10:PC-3:12h",
+     "stratum_kind": "anticancer",
+     "name": "SCH-P10",
+     "adjusted": 3.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "anticancer-cancerppd-ic50-pc-3|10.3892/mmr.2017.7418:SCH-P9:PC-3:12h",
+     "stratum_kind": "anticancer",
+     "name": "SCH-P9",
+     "adjusted": 3.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 127022,
+   "korean_name": "고등어",
+   "scientific_name": "Scomber japonicus",
+   "mbpi": 34.9,
+   "mbpi_origin_strict": 34.9,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.foodchem.2024.138873:PLITT",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 4,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1111/1750-3841.70767:APFLAG",
+     "stratum_kind": "peptide",
+     "name": "APFLAG",
+     "adjusted": 30.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1111/1750-3841.70767:FDHKKFF",
+     "stratum_kind": "peptide",
+     "name": "FDHKKFF",
+     "adjusted": 20.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1111/1750-3841.70767:LFPKFA",
+     "stratum_kind": "peptide",
+     "name": "LFPKFA",
+     "adjusted": 18.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.foodchem.2024.138873:PLITT",
+     "stratum_kind": "peptide",
+     "name": "PLITT",
+     "adjusted": 34.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 219984,
+   "korean_name": "멸치",
+   "scientific_name": "Engraulis japonicus",
+   "mbpi": 22.6,
+   "mbpi_origin_strict": null,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s13765-015-0129-4:DGGP",
+   "top_origin": "suspect",
+   "top_origin_class": "associated_possible",
+   "item_count": 3,
+   "suspect_count": 3,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s13765-015-0129-4:DGGP",
+     "stratum_kind": "peptide",
+     "name": "DGGP",
+     "adjusted": 22.6,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "멸치 발효 액젓에서 찾은 서열이라, 원문이 멸치 단백질과 맞춰 보이지 않아 발효 미생물 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1007/s13765-015-0129-4",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s13765-015-0129-4:GCK",
+     "stratum_kind": "peptide",
+     "name": "GCK",
+     "adjusted": 21.9,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "멸치 발효 액젓에서 찾은 서열이라, 원문이 멸치 단백질과 맞춰 보이지 않아 발효 미생물 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1007/s13765-015-0129-4",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1007/s13765-015-0129-4:PK",
+     "stratum_kind": "peptide",
+     "name": "PK",
+     "adjusted": 1.1,
+     "origin_class": "associated_possible",
+     "confirmed": false,
+     "reason_ko": "멸치 발효 액젓에서 찾은 서열이라, 원문이 멸치 단백질과 맞춰 보이지 않아 발효 미생물 단백질에서 나왔을 수도 있습니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "10.1007/s13765-015-0129-4",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 281273,
+   "korean_name": "참조기",
+   "scientific_name": "Larimichthys polyactis",
+   "mbpi": 53.8,
+   "mbpi_origin_strict": 53.8,
+   "top_item_key": "xo-peptide-literature-2026-10-05|10.3390/foods12050982:WDDMEKIW",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 2,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "xo-peptide-literature-2026-10-05|10.3390/foods12050982:APPERKYSVW",
+     "stratum_kind": "xo",
+     "name": "AW10",
+     "adjusted": 37.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "xo-peptide-literature-2026-10-05|10.3390/foods12050982:WDDMEKIW",
+     "stratum_kind": "xo",
+     "name": "WW8",
+     "adjusted": 53.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 275816,
+   "korean_name": "넙치",
+   "scientific_name": "Paralichthys olivaceus",
+   "mbpi": 43.2,
+   "mbpi_origin_strict": 43.2,
+   "top_item_key": "amp-dbaasp-mic-broth-vibrio-anguillarum|10.3390/ijms232112722:P35:V.anguillarum",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 6,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.procbio.2016.01.009:MEVFVP",
+     "stratum_kind": "peptide",
+     "name": "MEVFVP",
+     "adjusted": 29.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.procbio.2016.01.009:VSQLTR",
+     "stratum_kind": "peptide",
+     "name": "VSQLTR",
+     "adjusted": 25.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-bacillus-subtilis|10.3390/ijms232112722:P35:B.subtilis",
+     "stratum_kind": "amp",
+     "name": "P35",
+     "adjusted": 38.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-escherichia-coli|10.3390/ijms232112722:P35:E.coli",
+     "stratum_kind": "amp",
+     "name": "P35",
+     "adjusted": 36.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.3390/ijms232112722:P35:S.aureus",
+     "stratum_kind": "amp",
+     "name": "P35",
+     "adjusted": 35.6,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-vibrio-anguillarum|10.3390/ijms232112722:P35:V.anguillarum",
+     "stratum_kind": "amp",
+     "name": "P35",
+     "adjusted": 43.2,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 274849,
+   "korean_name": "조피볼락",
+   "scientific_name": "Sebastes schlegelii",
+   "mbpi": 31.7,
+   "mbpi_origin_strict": 31.7,
+   "top_item_key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.3390/md20060353:TS40:S.aureus",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 4,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.3390/md20060353:TS40:S.aureus",
+     "stratum_kind": "amp",
+     "name": "TS40",
+     "adjusted": 31.7,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-streptococcus-agalactiae|10.3390/md20060353:TS40:S.agalactiae",
+     "stratum_kind": "amp",
+     "name": "TS40",
+     "adjusted": 0.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-vibrio-anguillarum|10.3390/md20060353:TS40:V.anguillarum",
+     "stratum_kind": "amp",
+     "name": "TS40",
+     "adjusted": 12.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-vibrio-parahaemolyticus|10.3390/md20060353:TS40:V.parahaemolyticus",
+     "stratum_kind": "amp",
+     "name": "TS40",
+     "adjusted": 0.0,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 276651,
+   "korean_name": "방어",
+   "scientific_name": "Seriola quinqueradiata",
+   "mbpi": 7.5,
+   "mbpi_origin_strict": 7.5,
+   "top_item_key": "ChEMBL_37:CHEMBL1855|IC50|10.1074/jbc.M610413200:sbGnRH:CHEMBL1855:IC50",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL1855|IC50|10.1074/jbc.M610413200:sbGnRH:CHEMBL1855:IC50",
+     "stratum_kind": "relaxed",
+     "name": "sbGnRH([Ser8]GnRH)",
+     "adjusted": 7.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 254538,
+   "korean_name": "대구",
+   "scientific_name": "Gadus macrocephalus",
+   "mbpi": 59.9,
+   "mbpi_origin_strict": 59.9,
+   "top_item_key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.procbio.2016.07.006:GASSGMPG",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 2,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.procbio.2016.07.006:GASSGMPG",
+     "stratum_kind": "peptide",
+     "name": "GASSGMPG",
+     "adjusted": 59.9,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "ahtpdb-ace-ic50-hhl-cushman-cheung|10.1016/j.procbio.2016.07.006:LAYA",
+     "stratum_kind": "peptide",
+     "name": "LAYA",
+     "adjusted": 51.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종 조직의 단백질을 효소로 분해해 얻은 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 1061762,
+   "korean_name": "꽃게",
+   "scientific_name": "Portunus trituberculatus",
+   "mbpi": 30.3,
+   "mbpi_origin_strict": 30.3,
+   "top_item_key": "amp-dbaasp-mic-broth-escherichia-coli|10.3390/ijms26178546:MCCC1-MTS:E.coli",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 2,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "amp-dbaasp-mic-broth-escherichia-coli|10.3390/ijms26178546:MCCC1-MTS:E.coli",
+     "stratum_kind": "amp",
+     "name": "MCCC1-MTS",
+     "adjusted": 30.3,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    },
+    {
+     "key": "amp-dbaasp-mic-broth-staphylococcus-aureus|10.3390/ijms26178546:MCCC1-MTS:S.aureus",
+     "stratum_kind": "amp",
+     "name": "MCCC1-MTS",
+     "adjusted": 29.4,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 534443,
+   "korean_name": "참문어(동아시아 종)",
+   "scientific_name": "Octopus sinensis",
+   "mbpi": 70.5,
+   "mbpi_origin_strict": 70.5,
+   "top_item_key": "ChEMBL_37:CHEMBL1921|EC50|10.3390/md20050328:cephalotocin:CHEMBL1790",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL1921|EC50|10.3390/md20050328:cephalotocin:CHEMBL1790",
+     "stratum_kind": "relaxed",
+     "name": "cephalotocin",
+     "adjusted": 70.5,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  },
+  {
+   "aphia_id": 1666974,
+   "korean_name": "갑오징어",
+   "scientific_name": "Acanthosepion esculentum",
+   "mbpi": 65.8,
+   "mbpi_origin_strict": 65.8,
+   "top_item_key": "ChEMBL_37:CHEMBL5952|Ki|10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL3309:IC50",
+   "top_origin": "confirmed",
+   "top_origin_class": "producer_confirmed",
+   "item_count": 1,
+   "suspect_count": 0,
+   "items": [
+    {
+     "key": "ChEMBL_37:CHEMBL5952|Ki|10.1021/acs.jmedchem.0c00643:FMRFamide:CHEMBL3309:IC50",
+     "stratum_kind": "relaxed",
+     "name": "FMRFamide",
+     "adjusted": 65.8,
+     "origin_class": "producer_confirmed",
+     "confirmed": true,
+     "reason_ko": "이 종의 유전체·전사체·자기 단백질 기록이 암호화한 서열입니다.",
+     "other_reasons_ko": [],
+     "sources": [
+      "research/verified-indices/evidence-amp-4.13-2026-10-14.json",
+      "research/verified-indices/mbpi-material-4.14-2026-10-14.json"
+     ]
+    }
+   ]
+  }
+ ],
+ "posthoc_cases": [
+  {
+   "scientific_name": "Halichondria okadai",
+   "compound": "okadaic acid",
+   "origin_class": "associated_possible",
+   "reasons_ko": [
+    "오카다산을 실제로 만드는 것은 와편모조류이며, 해면은 먹이·공생으로 쌓은 것일 수 있습니다."
+   ]
+  },
+  {
+   "scientific_name": "Ecteinascidia turbinata",
+   "compound": "ecteinascidin 770",
+   "origin_class": "sample_mismatch",
+   "reasons_ko": [
+    "점수에 쓴 값은 다른 종(Ecteinascidia thurstoni) 시료로 잰 값입니다.",
+    "그 시료는 시안화칼륨(KCN)으로 처리해 얻은 것입니다(Suwanborirux 2002)."
+   ]
+  },
+  {
+   "scientific_name": "Conus magus",
+   "compound": "ziconotide",
+   "origin_class": null,
+   "reasons_ko": [
+    "MBPI가 계산되지 않아(P703 연결 없음) 분류할 점수 항목이 없습니다."
+   ]
+  }
+ ]
+}
