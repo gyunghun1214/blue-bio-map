@@ -81,11 +81,11 @@ assert.match(popup[0],/종 단위 상태\(이 셀의 값 아님\): MFPI 보류 �
 assert.doesNotMatch(popup[0],/90\.0/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
-assert.ok(dots.every(d=>d.options.fillColor==='#ff6464'),'one red for the schematic pattern'); // 2026-10-11 navy map: lighter red (intended change 2)
+assert.ok(dots.every(d=>d.options.fillColor==='#A9C6D4'),'one neutral blue-grey for the schematic pattern'); // 2026-10-15 explore design match: blue-grey, not red
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=2.6),'zoom 7 dots stay small');
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
-assert.match(popup[0],/붉은 점은 실제 발견 좌표가 아닌 이 1° 공개 셀의 도식적 표시/);
+assert.match(popup[0],/청회색 점은 실제 발견 좌표가 아닌 이 1° 공개 셀의 도식적 표시/);
 // Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
 popup.length=0;dots.length=0;
 species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
@@ -96,7 +96,7 @@ assert.match(popup[0],/4°×4°/);
 const wide=rectangles.at(-1);
 assert.deepEqual(JSON.parse(JSON.stringify(wide.bounds)),[[32,124],[36,128]]);
 assert.equal(wide.options.fillOpacity,0);assert.equal(wide.options.fill,true,'no fill, but the whole square still takes the click');
-assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#ff6464');
+assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#A9C6D4');
 assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로만 공개합니다\. 테두리 안 바다 어딘가에 기록이 있다는 뜻이며, 육지에 사는 것이 아닙니다\./);
 // any later style (hover, dim) keeps a 4° cell unfilled; a 1° cell's sea part takes the fill, the square keeps a faint edge
 assert.equal(context.cellStyles(null,true,{color:'#ffd166',fillOpacity:.6})[0].fillOpacity,0);
@@ -153,7 +153,9 @@ assert.equal(context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],6).length
 markers.length=0;dots.length=0;context.mapStub.zoom=7;context.draw(species,'#123456');
 assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon?.className)).length,0,'no per-cell BBVI tag');
 assert.equal(nodes.get('map-chip').hidden,false);
-assert.equal(nodes.get('map-chip').innerHTML,'<i class="mc-dot none" aria-hidden="true"></i><b>시험 종</b> <span>기록 셀 1개 · 500건 · 2015–2020</span>','no type without a report rule: grey dot');
+// 2026-10-15 탐색 지도 시안: the chip reads '공개 셀 N개 · 기록 N건'; the years move to its title (still under the map)
+assert.equal(nodes.get('map-chip').innerHTML,'<i class="mc-dot none" aria-hidden="true"></i><b>시험 종</b> <span class="mc-sep" aria-hidden="true">·</span> <span>공개 셀 1개 · 기록 500건</span>','no type without a report rule: grey dot');
+assert.equal(nodes.get('map-chip').title,'기록 연도 2015–2020');
 assert.deepEqual([nodes.get('map-cells').textContent,nodes.get('map-count').textContent,nodes.get('map-years').textContent],[1,'500','2015–2020']);
 assert.equal(nodes.get('key-bubble-mark').hidden,true);assert.equal(nodes.get('key-dot-mark').hidden,false);
 assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님','the cell size comes from the cells');

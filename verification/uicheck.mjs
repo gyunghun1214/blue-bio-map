@@ -199,7 +199,7 @@ try{
   check('Sea cucumber: conservation MCUI 80.0 and nutrition MFPI 63.5 from the index report, no stale 미수집/보류',/보전평가\s*지표 보고서에서 검토 · MCUI 80\.0/.test(t)&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.5/.test(t)&&!t.includes('근거 부족으로 보류')&&!/영양 기록 수\s*미수집/.test(t),t);
   check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 \(EN, A2bd\) · 정식 산출 · 공식 평가 범주/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 (EN, A2bd) · 정식 산출 · 공식 평가 범주')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
+  check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('청회색 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
@@ -385,7 +385,7 @@ try{
   await sleep(900);
   const split=await evaluate(`(()=>{const s=periodView(selected),chip=document.getElementById('map-chip'),t=matrixType(selected),norm=h=>{const e=document.createElement('i');e.style.color=h;return e.style.color};
     return {zoom:map.getZoom(),dots:overlay.getLayers().filter(l=>l._schematicDot).length,tags:document.querySelectorAll('#map .bbvi-tag').length,key:document.getElementById('map-symbol-label').textContent,dotMark:!document.getElementById('key-dot-mark').hidden,
-      chip:chip.hidden?'':chip.textContent,want:s.label+' 기록 셀 '+spatialCells(s).length+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s),
+      chip:chip.hidden?'':chip.textContent,want:s.label+' · 공개 셀 '+spatialCells(s).length+'개 · 기록 '+cellRecords(s).toLocaleString()+'건',
       under:[document.getElementById('map-cells').textContent,document.getElementById('map-count').textContent,document.getElementById('map-years').textContent].join('|'),wantUnder:[spatialCells(s).length,cellRecords(s).toLocaleString(),cellYears(s)].join('|'),
       dot:chip.querySelector('.mc-dot')?.style.backgroundColor||'none',wantDot:t?norm(matrixTypeColour[t]):'none'}})()`);
   check('Overview zoom shows regional bubbles only; clicking one zooms in to red dots; no per-cell BBVI tag; the map chip names the species, cells, records and years once (type-colour dot); the legend line follows the zoom',
@@ -394,7 +394,9 @@ try{
   // 2026-10-13 design 2, card shape A: a type dot, the name and latin name, then '활용 · 보전 · verdict', every value from the app
   const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
     const t=matrixType(s),v=k=>{const x=axisState(s,k).value;return x===null?'–':scoreText(s,k,x)},m=axisState(s,'MCUI').value,line=el.querySelector('.card-line');if(!line){bad.push(s.label+': no line');continue;}n++;
-    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+v('MCUI')+'|'+matrixTypePlain(t);
+    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+(m===null?'–':mcuiFace(m))+'|'+matrixTypePlain(t);
+    // 2026-10-15 탐색 지도 시안: the card face shows the MCUI number only ('10', not '10.0'); its category (#208) stays in the card's spoken text
+    const cat=(v('MCUI').match(/\\((.+)\\)$/)||[])[1];if(cat&&!vs[1].textContent.includes('('+cat+')'))bad.push(s.label+': no category '+cat);
     if(got!==exp||el.dataset.type!==(t||'none')||vs[1].classList.contains('high')!==(m!==null&&m>=rule.mcui_threshold)||!verdict.title.includes('채집·이용 허용이나 지속가능성 판정이 아님'))bad.push(s.label+': '+got+' / '+exp);
     if(vs[0].classList.contains('single'))single++;if(axisState(s,'BBVI').value!==null&&bbviLabel(s))wantSingle++;}
     const first=document.querySelector('#species-list .species-card .card-line .cl-v');return {bad,n,want,single,wantSingle,shown:first?getComputedStyle(first).display:''}})()`);
@@ -411,17 +413,20 @@ try{
   const cardFit=await evaluate(`(()=>{const list=document.getElementById('species-list'),over=[];
     const hid=(el,card)=>{for(let n=el;n&&n!==card;n=n.parentElement){const cs=getComputedStyle(n);if(n.classList.contains('sr-only')||cs.clip!=='auto'||cs.display==='none')return true;}return false;};
     for(const card of list.querySelectorAll('.species-card')){const edge=card.getBoundingClientRect().right;let right=-Infinity;
-      const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT);for(let t;(t=w.nextNode());){if(!t.textContent.trim()||hid(t.parentElement,card))continue;const rg=document.createRange();rg.selectNodeContents(t);for(const r of rg.getClientRects())if(r.width>0)right=Math.max(right,r.right);}
+      // a one-line box that cuts its own text with '…' (the latin name beside a long Korean name) is measured by its box, which is what shows
+      const cut=el=>{const cs=getComputedStyle(el);return cs.overflowX==='hidden'&&cs.textOverflow==='ellipsis'?el:null;};
+      const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT);for(let t;(t=w.nextNode());){if(!t.textContent.trim()||hid(t.parentElement,card))continue;const box=cut(t.parentElement);if(box){right=Math.max(right,box.getBoundingClientRect().right);continue;}const rg=document.createRange();rg.selectNodeContents(t);for(const r of rg.getClientRects())if(r.width>0)right=Math.max(right,r.right);}
       if(right>edge+0.5)over.push(card.querySelector(':scope>b').textContent+' +'+(right-edge).toFixed(1));}
     return {over,scroll:list.scrollWidth,client:list.clientWidth}})()`);
   check('Species cards fit: every card’s text stays inside its border and the species list has no horizontal scroll',!cardFit.over.length&&cardFit.scroll<=cardFit.client,JSON.stringify(cardFit));
   const typeChip=await evaluate(`(()=>{const t=matrixType(selected),c=document.querySelector('#detail .ax-type'),x=c?.textContent||'';return {text:x,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',title:c?.title||'',first:c?.querySelector('.verdict')?.textContent||''}})()`);
   check('Detail type chip (design 2): the verdict first, then the type name; its tooltip says research class, no permission or sustainability verdict',typeChip.first===typeChip.plain&&!!typeChip.label&&typeChip.text.indexOf(typeChip.plain)<typeChip.text.indexOf(typeChip.label)&&typeChip.title.startsWith('연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님'),JSON.stringify(typeChip));
   const leg=await evaluate(`(()=>{const q=s=>document.querySelector(s),r=e=>e.getBoundingClientRect(),key=q('#occurrence-legend'),more=q('.map-legend-more'),pane=r(q('.species-pane')),bl=r(q('.map-ui-bl')),c=r(q('#map-chip')),ov=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
-    return {rows:[...key.children].filter(e=>r(e).height>0).length,summary:more.querySelector('summary').textContent,closed:!more.open,inside:['.key-bubble','.key-note','#map-legend-note'].every(s=>more.contains(q('#occurrence-legend '+s))),gap:Math.round(bl.top-pane.bottom),
+    return {rows:[...key.children].filter(e=>r(e).height>0).length,summary:more.querySelector('summary').textContent,closed:!more.open,inside:['.key-bubble','.key-note','#map-legend-note'].every(s=>more.contains(q('#occurrence-legend '+s))),gap:Math.round(bl.left-pane.right),base:Math.round(bl.bottom-pane.bottom),
       chipHits:['.species-pane','#detail','.basemap-switch','#copy-link','#reset-map'].filter(s=>ov(c,r(q(s)))),chipEvents:getComputedStyle(q('#map-chip')).pointerEvents,chipLive:q('#map-chip').getAttribute('aria-live')}})()`);
-  check('Legend (design 2): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, hung under the species list with no gap; the map chip sits in the free part, takes no clicks, is not a live region',
-    leg.rows===2&&leg.summary==='범례'&&leg.closed&&leg.inside&&Math.abs(leg.gap)<=1&&!leg.chipHits.length&&leg.chipEvents==='none'&&leg.chipLive===null,JSON.stringify(leg));
+  // 2026-10-15 탐색 지도 시안: the key sits bottom-left of the free map area, beside the species list (not under it), on the same baseline
+  check('Legend (design 2 · 2026-10-15 시안): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, bottom-left of the free map area beside the species list on its baseline; the map chip sits in the free part, takes no clicks, is not a live region',
+    leg.rows===2&&leg.summary==='범례'&&leg.closed&&leg.inside&&leg.gap>=8&&Math.abs(leg.base)<=1&&!leg.chipHits.length&&leg.chipEvents==='none'&&leg.chipLive===null,JSON.stringify(leg));
   const sumPop=await evaluate("(()=>{const l=overlay.getLayers().find(l=>l instanceof L.Rectangle&&l.getPopup());l.openPopup();const c=document.querySelector('.leaflet-popup-content');const r={tiles:[...c.querySelectorAll('.cell-summary span')].map(x=>x.textContent),text:c.innerText};map.closePopup();return r})()");
   check('Cell popup opens with confirmed / usable / conservation-priority / evidence-gap species counts',JSON.stringify(sumPop.tiles)==='["확인 종","활용 지표 높은 종","보전 지표 높은 종","보전평가 미확인 종","근거 부족 종"]'&&sumPop.text.includes('이 격자에서 측정한 값이 아닙니다'),JSON.stringify(sumPop).slice(0,500));
   const sumVal=await evaluate("(()=>{setMapMode('value');const r=[...document.querySelectorAll('#value-cell-detail .cell-summary span')].map(x=>x.textContent);setMapMode('occurrence');return r})()");
@@ -430,7 +435,7 @@ try{
   // 2026-10-13 design 2: the chip follows the species and the period filter, always with the numbers under the map
   const chipFlow=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms)),q=x=>document.getElementById(x),out=[];
     const read=tag=>{const s=periodView(selected),n=spatialCells(s).length,c=q('map-chip');out.push({tag,chip:c.hidden?'(hidden)':c.textContent,
-      want:n?selected.label+' 기록 셀 '+n+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s):selected.label+' 공개 셀 없음',cells:q('map-cells').textContent,wantCells:String(n),size:s.cells[0]?.sizeDeg||null})};
+      want:n?selected.label+' · 공개 셀 '+n+'개 · 기록 '+cellRecords(s).toLocaleString()+'건':selected.label+' · 공개 셀 없음',cells:q('map-cells').textContent,wantCells:String(n),size:s.cells[0]?.sizeDeg||null})};
     selectSpecies(241776);await wait(300);read('해삼');
     // verified-4.11 has no candidate without public cells, so one candidate's cells are emptied for this read and put back
     const none=data.species.find(x=>x.catalog),kept=none.cells;none.cells=[];selectSpecies(none.aphiaID);await wait(300);read('후보 '+none.label+'(셀 비운 시험)');none.cells=kept;
@@ -617,8 +622,8 @@ try{
   check('No old label words (검증 미통과, 단일 논문, 2026-10-12 any 미통과 such as the MBPI reason\'s 기준 미통과, 4.16 근거 논문 1편) on any tab',oldWords.length===0,oldWords.join(' | '));
   // 2026-10-15 method change ledger: fold 04 lists every published version newest first with the pre-registered ones marked;
   // the screen says '방법 결정' (the records keep '팀장 결정') and each one opens fold 04; the header shows the freeze date
-  const ledger=await evaluate("(async()=>{const v0=currentView,y0=scrollY,L=await (await fetch('method-changelog.json')).json();setView('explore',false);const t=document.body.textContent;setView('method',false);const items=[...document.querySelectorAll('#mt-changelog .mt-cl-item')];const md=document.querySelector('.md-link');let opened=null;if(md){setView('explore',false);md.click();opened={view:currentView,fold:document.getElementById('mt-acc-04').open};}setView('method',false);const pre=document.querySelectorAll('#mt-changelog .mt-cl-pre').length;setView(v0,false);scrollTo(0,y0);return {n:items.length,want:L.entries.length,first:items[0]?.id,newest:'mt-cl-'+L.current.method_version.replace(/[^a-z0-9]+/gi,'-'),pre,wantPre:L.counts.preregistered,leader:document.body.textContent.includes('팀장 결정')||t.includes('팀장 결정'),links:document.querySelectorAll('.md-link').length,opened,chip:document.getElementById('notice-chip-text').textContent,label:L.current.frozen_on+' 동결'}})()");
-  check('Method fold 04: one timeline entry per published version (newest first), 사전 등록 marks match the ledger, no 팀장 결정 on screen, 방법 결정 opens fold 04, the header chip shows the freeze date',
+  const ledger=await evaluate("(async()=>{const v0=currentView,y0=scrollY,L=await (await fetch('method-changelog.json')).json();setView('explore',false);const t=document.body.textContent;setView('method',false);const items=[...document.querySelectorAll('#mt-changelog .mt-cl-item')];const md=document.querySelector('.md-link');let opened=null;if(md){setView('explore',false);md.click();opened={view:currentView,fold:document.getElementById('mt-acc-04').open};}setView('method',false);const pre=document.querySelectorAll('#mt-changelog .mt-cl-pre').length;setView(v0,false);scrollTo(0,y0);return {n:items.length,want:L.entries.length,first:items[0]?.id,newest:'mt-cl-'+L.current.method_version.replace(/[^a-z0-9]+/gi,'-'),pre,wantPre:L.counts.preregistered,leader:document.body.textContent.includes('팀장 결정')||t.includes('팀장 결정'),links:document.querySelectorAll('.md-link').length,opened,chip:document.getElementById('pop-version').textContent,label:L.current.frozen_on+' 동결'}})()");
+  check('Method fold 04: one timeline entry per published version (newest first), 사전 등록 marks match the ledger, no 팀장 결정 on screen, 방법 결정 opens fold 04, the header chip’s popover shows the freeze date (2026-10-15 시안: the version moved off the chip)',
     ledger.n===ledger.want&&ledger.first===ledger.newest&&ledger.pre===ledger.wantPre&&!ledger.leader&&ledger.links>0&&ledger.opened?.view==='method'&&ledger.opened?.fold&&ledger.chip.includes(ledger.label),JSON.stringify(ledger));
   // design 05: the value cell shows the number; its full label sits in the row's 자세히 panel (data-more-*)
   const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-more-aphia=\"836033\"][data-more-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
@@ -629,7 +634,7 @@ try{
   check('Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033))&&oyPoint.list.includes('MCUI 국가 평가')&&oyPoint.box.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&!n.includes('보류')&&!n.includes('시범')})()"));
   // 2026-10-13 design 2: one status chip ('연구 프로토타입 · version · OCEAN 20') instead of three badges; the popover keeps the full text
-  check('Header/initial copy: one status chip on one line (연구 프로토타입 · version, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&c.includes(data.assessmentInfo.version)&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
+  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&document.getElementById('pop-version').textContent.includes(data.assessmentInfo.version)&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
   // verified-pilot-3.2 places real species, so the empty-matrix shortcut appears only when nothing is placed
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
@@ -649,7 +654,7 @@ try{
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
   // The popup of one published cell lists each of its period rows with counts and licences (taken from the loaded rows).
   const popCells=await evaluate("spatialCells(selected).map(rows=>[...rows.map(r=>'공개 집계 기간 '+r.period),...rows.map(r=>'선별 기록 '+r.records+'건 · 조사 지점 '+r.sites+'곳'),...rows.flatMap(r=>r.licenses)])");
-  check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 하지 않음(지표는 종 단위)','해역 판단을 하지 않는 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
+  check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 하지 않음(지표는 종 단위)','해역 판단을 하지 않는 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','청회색 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   // Cell fill is 0.1 on the satellite/depth basemaps (satellite is the default since 2026-10-03), 0.06 on the outline fallback.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<=.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
@@ -689,7 +694,8 @@ try{
   await pick(145721);await sleep(300);
   const tbl=await evaluate("(()=>{const b=document.getElementById('cell-table');b.querySelector('details').open=true;return {rows:b.querySelectorAll('tbody tr').length,text:b.innerText}})()");
   check('Cell table: one row per spatial cell, both periods of the shared cell listed',tbl.rows===(await liveMap(145721)).cells&&tbl.text.includes('33–34°N · 126–127°E')&&/2000–\d{4}/.test(tbl.text)&&/2016–\d{4}/.test(tbl.text)&&tbl.text.includes('CC0 1.0'),JSON.stringify(tbl).slice(0,400));
-  await evaluate("map.closePopup();document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
+  // 2026-10-15 탐색 지도 시안: from 1180px the cell table lives in the right panel's '선택 격자' tab
+  await evaluate("map.closePopup();if(wideLayout())setSideTab('cell');document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
   for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});
   await sleep(500);
   const kb=await evaluate("({popup:document.querySelector('.leaflet-popup-content')?.innerText||'',focusIn:!!document.activeElement?.closest('.leaflet-popup')})");
@@ -782,7 +788,7 @@ try{
     card.dispatchEvent(new MouseEvent('mouseenter'));
     const hover={n:hoverRects.length,want:[...valueCellGroups(true).values()].filter(g=>g.species.has(other)).length,style:hoverRects.every(l=>l.options.dashArray==='6 4'&&l.options.color==='#ffd166'&&l.options.interactive===false&&l.options.fill===false)};card.dispatchEvent(new MouseEvent('mouseleave'));hover.left=hoverRects.length;
     return {view:valueView,pressed:q('#value-view').getAttribute('aria-pressed'),drawn:valueRects.length,cells:spatialCells(s).length,fills,want:matrixTypeColour[t]||'#b7c0ca',dashes:[...new Set(valueRects.map(([,l])=>l.options.dashArray))],wide:s.cells.some(c=>c.sizeDeg>=4),
-      yellow:valueRects.some(([,l])=>l.options.color==='#ffd166'),chip:q('#map-chip').textContent,wantChip:selected.label+' 기록 셀 '+spatialCells(s).length+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s),
+      yellow:valueRects.some(([,l])=>l.options.color==='#ffd166'),chip:q('#map-chip').textContent,wantChip:selected.label+' · 공개 셀 '+spatialCells(s).length+'개 · 기록 '+cellRecords(s).toLocaleString()+'건',
       under:[q('#map-cells').textContent,q('#map-count').textContent,q('#map-years').textContent].join('|'),wantUnder:[spatialCells(s).length,cellRecords(s).toLocaleString(),cellYears(s)].join('|'),
       mini:[...document.querySelectorAll('.vm-grid [data-key]')].map(b=>[b.dataset.type,Number(b.querySelector('.vm-n').textContent)]),type:t,
       key:q('#value-key-text').textContent,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',keyShown:q('#value-key').getBoundingClientRect().height>0,toggleShown:q('#legend-toggle').getBoundingClientRect().height>0,
@@ -852,7 +858,7 @@ try{
   const icon=await evaluate(`(()=>{const q=s=>document.querySelector(s),grid=q('.vm-grid').getBoundingClientRect(),sw=q('.basemap-switch').getBoundingClientRect(),plot=q('.vm-plot').getBoundingClientRect();
     const legend=[...q('#value-legend').querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.querySelector('em').textContent,e.style.background]);
     const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number((e.querySelector('.vm-n')||e).textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
-    return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
+    return {legend,cells,size:[grid.width,grid.height],cellH:Math.min(...[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>e.getBoundingClientRect().height)),inBl:q('.map-ui-bl').contains(q('.vm-grid')),beside:plot.left>=q('.species-pane').getBoundingClientRect().right,below:grid.top>=sw.bottom,all:valueRects.length}})()`);
   const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
   // dimmed = the faded edge (opacity .2, or .45 × .2 for a 1° cell drawn over its sea part): the square of a masked cell has no fill since 2026-10-14
   const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>(l.options.opacity??1)<.25).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
@@ -863,8 +869,9 @@ try{
   for(const c of typed.slice(0,2)){await mouse('mouseMoved',c);await mouse('mousePressed',c);await mouse('mouseReleased',c);await sleep(300);}
   await mouse('mouseWheel',typed[0],{deltaX:0,deltaY:-600,button:'none'});await sleep(500);const iconAfter=await iconState();
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:5,y:5});
-  check('Value map icon: 72px 2×2 under the basemap switch, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone',
-    JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size.every(v=>Math.abs(v-72)<1)&&icon.below&&icon.right&&typed.length>=2&&
+  // 2026-10-15 탐색 지도 시안: the 2×2 is the bottom-left key of the free map area (shape + name per type, 44px rows), not the 72px corner icon
+  check('Value map icon: the 2×2 key bottom-left beside the species list, rows of 44px or more, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone',
+    JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size[0]>=260&&icon.cellH>=44&&icon.inBl&&icon.beside&&icon.below&&typed.length>=2&&
     iconS0.drawn===icon.all&&iconS0.dim===0&&iconHover.dim===icon.all-typed[0].n&&iconHover.tip.includes(typed[0].tip)&&
     iconOne.drawn===typed[0].n&&JSON.stringify(iconOne.pressed)===JSON.stringify([typed[0].key])&&iconTwo.drawn===typed[0].n+typed[1].n&&iconTwo.pressed.length===2&&
     iconAfter.drawn===icon.all&&!iconAfter.pressed.length&&iconAfter.zoom===iconS0.zoom&&iconAfter.centre===iconS0.centre,JSON.stringify({icon,iconS0,iconHover,iconOne,iconTwo,iconAfter}));

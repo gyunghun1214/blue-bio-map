@@ -774,18 +774,18 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore thead th{background:var(--nv-surface)}
 #explore .value-cell-detail .cell-summary>div{background:var(--nv-surface)}
 
-/* folds (2026-10-11 design concept, app.js syncFolds): from 1281px the species filters sit under '필터 더 보기' and the evidence
+/* folds (2026-10-11 design concept, app.js syncFolds): from 1180px the species filters sit under '필터 더 보기' and the evidence
    below the two axis cards under '근거 자세히 보기'. A folded box is clipped and inert, not display:none, so its text stays laid
-   out; below 1281px nothing folds and the two buttons are not shown. */
+   out; below 1180px nothing folds and the two buttons are not shown. */
 .filter-toggle,.detail-cta,.mm-ico{display:none}
 .filter-fold.folded,.detail-fold.folded{max-height:0;overflow:hidden;opacity:0}
 
-/* 1281px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
+/* 1180px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
    the cell table below is read). 2026-10-11 design concept: glass panels; the list ends above the occurrence key, which sits
    under it at the same width; the detail card is as tall as its content; the mode bar sits at the bottom centre of the free
    part with the period buttons above it. The zoom buttons keep their place, so 멍이's default spot beside them is unchanged.
    app.js (mapInsets, fitPad, --key-h) keeps fits, bubble zooms and popups in the free part. */
-@media (min-width:1281px){
+@media (min-width:1180px){
   #explore{--pane-l:312px;--pane-r:368px;--glass:rgba(9,29,44,.9)}
   #explore .explorer{grid-template-columns:16px var(--pane-l) minmax(0,1fr) var(--pane-r) 16px}
   #explore .map-pane{grid-column:1/-1;grid-row:1}
@@ -861,7 +861,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 }
 /* below about 1800px 멍이's first-visit hint (left of 멍이, beside the zoom buttons) would cover the mode bar's right end: the bar
    stands above the hint while it shows and comes down once it is closed */
-@media (min-width:1281px) and (max-width:1799px){
+@media (min-width:1180px) and (max-width:1799px){
   body:has(.bbc:not(.bbc-moved) .bbc-hint:not([hidden])) #explore .map-ui-tl{bottom:76px}
 }
 /* phones: the PR #165 sheet, recoloured */
@@ -895,7 +895,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .ax-type-name{color:var(--muted);font-size:12.5px;font-weight:500}
 #explore .sheet-summary .type-chip .verdict{font-size:12.5px}
 #explore .sheet-summary .type-chip.none i{box-sizing:border-box;border:1.5px dashed #8193a4}
-/* card line: '활용 71.9 · 보전 10.0 … 써도 됨'. Below 1281px the four score pills stay and only the verdict is added. */
+/* card line: '활용 71.9 · 보전 10.0 … 써도 됨'. Below 1180px the four score pills stay and only the verdict is added. */
 .species-card .card-line{grid-column:2/-1;display:flex;align-items:baseline;gap:12px;min-width:0;font-size:12px;line-height:1.3;color:var(--muted)}
 .species-card .card-line .cl-v{display:none;white-space:nowrap}
 .species-card .card-line .cl-v>b{display:inline;margin:0;color:var(--ink);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -903,9 +903,9 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .species-card .card-line .cl-v.high>b{color:#ff8079}
 .species-card .card-verdict{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
 .species-card .card-verdict .verdict{display:inline;font-size:inherit;line-height:inherit}
-.species-card .card-verdict::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--tc,transparent)}
-.species-card[data-type="none"] .card-verdict::before{box-sizing:border-box;border:1.5px solid #8193a4}
-@media (min-width:1281px){#explore .species-card .card-verdict{margin-left:auto}#explore .species-card .card-verdict::before{display:none}}
+/* the verdict carries its own type shape (.cv-shape), so the old square marker is gone at every width */
+.species-card .card-verdict::before{display:none}
+@media (min-width:1180px){#explore .species-card .card-verdict{margin-left:auto}#explore .species-card .card-verdict::before{display:none}}
 /* 2026-10-14: the card line stays inside the card border. When space runs out the verdict drops to the next line (right-aligned),
    and the conservation words beside the MCUI value wrap word by word. Numbers and the '활용'/'보전' names never break. */
 .species-card .card-line{flex-wrap:wrap;row-gap:4px;column-gap:10px}
@@ -940,11 +940,11 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .mc-dot.none{box-sizing:border-box;border:1.5px solid #8193a4}
 #explore .map-chip{border:1px solid var(--nv-edge);background:rgba(11,31,45,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 @media (max-width:740px){.map-chip{display:none!important}}
-@media (min-width:1281px){
+@media (min-width:1180px){
   #explore .map-chip{top:16px;left:calc(var(--pane-l) + 32px);max-width:calc(100% - var(--pane-l) - var(--pane-r) - 64px)}
 }
 /* where the top-right buttons would meet the chip (the free part is narrow), the chip steps below them */
-@media (min-width:1281px) and (max-width:1439px){#explore .map-chip{top:62px}}
+@media (min-width:1180px) and (max-width:1439px){#explore .map-chip{top:62px}}
 /* legend in two lines (design 2): the mark and what the map shows now, then 조사량 with its date and 'ⓘ 범례' at the right end.
    The scale shows while the shading is on; the bubble row, the note and the full text open from 'ⓘ 범례'. */
 .map-ui-bl .key-line{align-items:flex-start}
@@ -981,9 +981,9 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .vm-grid button.vm-zero{opacity:.38}
 #explore .vm-grid button.vm-own{border-style:dashed;border-color:#fff!important}
 @media (max-width:740px){.vkey{padding:9px 11px;gap:7px;font-size:12px}.vk-view{padding:5px 10px;font-size:12px}}
-/* From 1281px the key hangs under the species list as one panel: square corners where they meet, one thin divider, no gap.
+/* From 1180px the key hangs under the species list as one panel: square corners where they meet, one thin divider, no gap.
    Folded to its button (occurrence mode) it stands apart again, 12px under the list (app.js --key-h). */
-@media (min-width:1281px){
+@media (min-width:1180px){
   #explore .species-pane{border-bottom-color:transparent;border-bottom-left-radius:0;border-bottom-right-radius:0}
   #explore .list-foot{border-radius:0}
   #explore .map-ui-bl .map-key,#explore .vkey{box-sizing:border-box;width:100%;border-color:rgba(156,178,194,.24);border-top-color:rgba(156,178,194,.14);border-radius:0 0 14px 14px;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 18px 40px rgba(0,0,0,.45)}
@@ -1088,3 +1088,391 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* '방법 결정' words open the method change timeline (app.js linkDecisions) */
 .md-link{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
 .md-link:hover{color:var(--teal,#3dd6c3)}
+/* ==========================================================================================================================
+   2026-10-15 explore design match (prompt explore-design-match v2, mockup explore-map-target.png 1586×992). The mockup decides
+   the look; data, scores, wording rules and the type colours (▲ #d7392f · ◆ #f2b233 · ● #3f7fcf · ■ #2f9a57) stay as they were.
+   From 1180px: an opaque left list, a full-bleed map, an opaque right panel (선택 종 / 선택 격자) and the evidence drawer over
+   it. Below 1180px the earlier grid and the phone sheet stay; only the shared header, shapes and colours change there.
+   No glass, glow, neon or white cards. Every font size is var(--fs-min) (12px) or more.
+   ========================================================================================================================== */
+:root{--x-bg:#0B2233;--x-bg2:#04121E;--x-panel:#05202F;--x-raise:#102C3D;--x-accent-s:#153547;--x-text:#E5EDF1;--x-text2:#A9BBC6;
+  --x-accent:#8FB3BF;--x-fill:#8EC5D7;--x-cons:#D9A86C;--x-border:rgba(169,187,198,.18);--x-border2:rgba(169,187,198,.32)}
+@media (min-width:741px){:root{--head:64px}}
+/* app bar: wave logo, plain tabs with a light underline, a bordered 바다 탐험, a bordered ↻ and the '연구 프로토타입' chip */
+.header{background:linear-gradient(180deg,#05192A,#031524);border-bottom:1px solid rgba(169,187,198,.12)}
+.brand{gap:12px;font-weight:700;letter-spacing:-.02em;color:#fff}
+@media (min-width:1180px){.brand{white-space:nowrap}}
+.brand strong{font-weight:500;color:#8FD0E2}
+.brand-mark{width:40px;height:32px;border-radius:0}
+@media (min-width:1180px){
+  .brand{font-size:21px}
+  .header{gap:46px;padding:0 28px}
+  .tabs button{padding:0 22px;font-size:16px}
+  .expedition-link{padding:8px 20px;font-size:16px}
+  #reload-data{width:42px;height:42px;font-size:19px}
+  .status-chip#notice-chip{height:42px;padding:0 16px;font-size:15px}
+}
+@media (min-width:741px){
+  .tabs button{font-weight:500;color:#C3D1D9}
+  .tabs button.active,.tabs button.active:hover{background:none;color:#D7EEF5;font-weight:700;box-shadow:inset 0 -3px 0 var(--x-fill)}
+  .expedition-link{border:1.5px solid rgba(229,237,241,.7);border-radius:10px;background:none;color:#fff;font-weight:700}
+  .expedition-link:hover{background:rgba(255,255,255,.06)}
+  #reload-data{border:1.5px solid rgba(229,237,241,.35);border-radius:10px}
+  .status-chip#notice-chip{border:1.5px solid rgba(229,237,241,.35);border-radius:999px;background:none;color:#E5EDF1;font-weight:600}
+}
+.tabs button:focus-visible{outline-color:var(--x-fill)}
+#notice-chip::before{width:9px;height:9px;margin-right:6px;background:#F2C94C}
+.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before,#notice-chip.load-failed::before{background:#ff8f6b}
+#go-compare .act-ico{width:17px;height:17px;margin-right:6px;vertical-align:-3px}
+.status-pop .pop-version{margin:-4px 0 10px;color:var(--ink2);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.status-pop .pop-version:empty{display:none}
+/* the type shapes, always beside their words */
+.shape{display:inline-block;flex:none;box-sizing:border-box;width:14px;height:14px;background:var(--tc,transparent);vertical-align:-1px}
+.shape-baseline_survey{border-radius:50%}
+.shape-conservation_priority{clip-path:polygon(50% 3%,100% 97%,0 97%)}
+.shape-alternative_production{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.shape-none{border:1.5px dashed #8193a4;border-radius:2px}
+@media (forced-colors:active){.shape{forced-color-adjust:none}}
+/* the compare checkbox beside each card (all widths) */
+.sc-wrap{position:relative;flex:none}
+.sc-check{position:absolute;z-index:2;top:50%;left:10px;display:grid;place-items:center;width:28px;height:28px;transform:translateY(-50%);cursor:pointer}
+.sc-check input{appearance:none;-webkit-appearance:none;width:20px;height:20px;margin:0;border:1.6px solid #A9BBC6;border-radius:4px;background:transparent;cursor:pointer}
+.sc-check input:checked{border-color:var(--x-fill);background:var(--x-fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%2304121E' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.sc-check input:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#explore .species-card{position:relative}
+#explore .sc-wrap .species-card{padding-left:46px}
+#explore .species-card .sc-shape{grid-area:dot;align-self:center;width:13px;height:13px}
+#explore .species-card::before{display:none}
+.species-card .card-verdict .cv-shape{width:12px;height:12px}
+/* right panel and drawer: off below 1180px (the drawer box lets #detail stay in its column or the phone sheet) */
+.side-panel{display:none}
+.ev-drawer{display:contents}
+.evd-head,.evd-foot{display:none}
+.vm-note{display:none}
+#value-view[hidden]{display:none!important}
+/* period dropdown (all widths) */
+.period-filter{position:relative;padding:0}
+.pf-toggle{display:inline-flex;align-items:center;gap:6px;height:100%;padding:8px 34px 8px 14px;border:0;border-radius:inherit;background:none;color:inherit;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer;position:relative}
+.pf-toggle::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;margin-top:-6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:rotate(45deg)}
+.pf-toggle[aria-disabled=true]{cursor:default}
+.pf-toggle[aria-disabled=true]::after{opacity:.35}
+.pf-toggle .pf-k{color:var(--ink2)}
+.pf-toggle b{font-weight:700}
+.pf-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:5;display:flex;flex-direction:column;gap:2px;min-width:100%;padding:6px;border:1px solid var(--x-border2);border-radius:10px;background:#071f2e;box-shadow:0 12px 28px rgba(0,0,0,.45)}
+.pf-menu[hidden]{display:none}
+.pf-menu button{padding:8px 12px;border:0;border-radius:7px;background:none;color:#E5EDF1;font:inherit;font-size:14px;text-align:left;white-space:nowrap;cursor:pointer}
+.pf-menu button:hover{background:rgba(255,255,255,.06)}
+.pf-menu button[aria-pressed=true]{background:var(--x-accent-s);font-weight:700}
+#explore .period-filter button[aria-pressed=true]{color:#E5EDF1}
+/* occurrence marks: neutral blue-grey, no glow */
+#explore .occ-bubble{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+#explore .bubble-count{color:#04121E;text-shadow:0 0 3px rgba(229,237,241,.9),0 0 1px #fff}
+#explore .bubble-symbol{border-color:#C9DCE5;background:rgba(169,198,212,.55);box-shadow:none}
+#explore .map-ui-bl .map-symbol{border-color:rgba(216,230,238,.6);background:radial-gradient(circle,#A9C6D4 1.4px,transparent 1.8px) 0 0/8px 8px,rgba(169,198,212,.1)}
+.map-ui-bl .map-symbol{background:radial-gradient(circle,#6f93a5 1.3px,transparent 1.7px) 0 0/8px 8px,rgba(111,147,165,.08);border-color:rgba(111,147,165,.65)}
+/* cell panel: the five counts filter the rows; rows carry the type shape and BBVI · MCUI */
+.cell-summary .cs-tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.cell-summary .cs-tile[aria-pressed=true]{border-color:var(--x-fill);box-shadow:inset 0 0 0 1px var(--x-fill)}
+.cell-summary .cs-tile:focus-visible{outline:2px solid var(--x-fill);outline-offset:2px}
+.cell-types{display:grid;gap:4px;margin:6px 0 10px}
+.cell-types p{display:flex;align-items:center;gap:8px;margin:0;font-size:13px}
+.value-species h4 .vs-shape{margin-right:8px;width:12px;height:12px}
+.value-species[hidden]{display:none}
+.cell-rules{margin:8px 0}
+.cell-rules>summary{cursor:pointer;color:var(--teal-ink);font-size:13px;font-weight:600}
+.flash{animation:bbm-flash 1.6s ease-out}
+@keyframes bbm-flash{0%{box-shadow:0 0 0 2px var(--x-fill)}100%{box-shadow:0 0 0 2px transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
+
+@media (min-width:1180px){
+  html:has(#explore.active),body:has(#explore.active){height:100%;overflow:hidden}
+  body:has(#explore.active) footer{display:none}
+  #explore{--pane-l:clamp(320px,23.5vw,380px);--pane-r:clamp(340px,25.5vw,410px);--pt:18px;--pb:clamp(14px,3.4vh,34px);--free-l:calc(var(--pane-l) + 36px);--free-r:calc(var(--pane-r) + 36px);
+    --ink:var(--x-text);--ink2:var(--x-text2);--muted:#93A8B5;--line:var(--x-border);color:var(--x-text);background:linear-gradient(180deg,var(--x-bg),var(--x-bg2))}
+  #explore .explorer{position:relative;display:block;height:calc(100vh - var(--chrome));min-height:560px;overflow:hidden;background:var(--x-bg2)}
+  /* align-self:start from the grid layout would shrink an absolute box to its content (CSS box alignment for abspos) */
+  #explore .map-pane,#explore .species-pane,#explore .side-panel,#explore .ev-drawer{align-self:auto;justify-self:auto}
+  #explore .map-pane{position:absolute;inset:0;margin:0}
+  #explore .map-stage{height:100%;min-height:0}
+  #explore #map{background:#03182A}
+  /* left list */
+  #explore .species-pane{position:absolute;z-index:20;top:var(--pt);bottom:var(--pb);left:18px;width:var(--pane-l);height:auto;min-height:0;margin:0;padding:20px 14px 0;
+    border:1px solid var(--x-border);border-radius:14px;background:var(--x-panel);box-shadow:0 14px 34px rgba(0,0,0,.35);-webkit-backdrop-filter:none;backdrop-filter:none}
+  #explore .pane-title{display:flex;align-items:center;justify-content:space-between;margin:0 4px 16px}
+  #explore .pane-title h2{font-size:26px;font-weight:800;letter-spacing:-.02em;color:#fff}
+  #explore .pane-title>span{padding:4px 13px;border-radius:999px;background:var(--x-accent-s);color:#E5EDF1;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+  #explore .search{height:50px;padding:0 16px;gap:12px;border:1px solid var(--x-border2);border-radius:10px;background:#03192A}
+  #explore .search>span{font-size:19px;color:#C3D1D9}
+  #explore .search input{font-size:16px}
+  #explore .search input::placeholder{color:#A9BBC6}
+  #explore .filter-toggle{display:flex;align-items:center;gap:12px;height:50px;margin:12px 0 0;padding:0 16px;border:1px solid var(--x-border2);border-radius:10px;background:#03192A;color:#E5EDF1;font-size:16px;font-weight:600}
+  #explore .filter-toggle svg{width:19px;height:19px;color:#E5EDF1}
+  #explore .filter-toggle::after{margin:0 2px 0 auto;border-color:#C3D1D9;transform:rotate(-45deg)}
+  #explore .filter-toggle[aria-expanded=true]::after{transform:rotate(45deg)}
+  #explore .filter-fold:not(.folded){border-bottom:0;padding:10px 2px}
+  #explore #use-extra:empty{display:none}
+  #explore .species-list{display:flex;flex-direction:column;gap:10px;margin:12px -6px 0;padding:2px 6px 12px;border:0;container:sclist/inline-size;scrollbar-width:thin;scrollbar-color:#2a4a5d transparent}
+  #explore .species-card,#explore .species-card+.species-card{box-sizing:border-box;display:grid;width:100%;min-height:90px;grid-template-columns:auto auto minmax(0,1fr);grid-template-areas:"dot name latin" "line line line";
+    align-items:center;align-content:center;column-gap:10px;row-gap:12px;margin:0;padding:14px 14px 14px 50px;border:1px solid var(--x-border);border-radius:12px;background:#031A29;color:#E5EDF1;text-align:left}
+  #explore .species-card>b{grid-area:name;font-size:18px;font-weight:800;line-height:1.2;white-space:nowrap}
+  #explore .species-card>em{grid-area:latin;min-width:0;font-size:14px;color:#C3D1D9}
+  #explore .species-card .card-line{grid-area:line;display:flex;flex-wrap:nowrap;align-items:baseline;column-gap:22px;row-gap:0;min-width:0;font-size:15px;color:#C3D1D9}
+  #explore .species-card .card-line .cl-v{display:inline;flex:none;white-space:nowrap}
+  #explore .species-card .card-line>.cl-v+.cl-v{flex:none;min-width:0}
+  #explore .species-card .card-line .cl-v>b{margin-left:6px;color:#fff;font-size:23px;font-weight:800;line-height:1}
+  #explore .species-card .card-line .cl-v.high>b{color:#fff}
+  #explore .species-card .card-line .cl-v.single>b{text-decoration:none}
+  #explore .species-card .card-verdict{display:inline-flex;align-items:center;gap:7px;flex:none;margin-left:auto;font-size:14px;line-height:1.2}
+  #explore .species-card .card-verdict .verdict{color:#E5EDF1;font-weight:600}
+  #explore .species-card .card-verdict .vd-baseline_survey{color:#8DB8F2}
+  #explore .sc-wrap .species-card:hover{border-color:var(--x-border2);background:#072233}
+  #explore .sc-wrap .species-card.selected{border-color:var(--x-fill);background:var(--x-accent-s);box-shadow:none}
+  #explore .species-card.selected>b{color:#fff}
+  #explore .species-card:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  #explore .sc-check{left:12px}
+  /* a narrow list keeps every card the same height: the type words move to their own line on every card */
+  @container sclist (max-width:340px){
+    #explore .species-card .card-line{flex-wrap:wrap;row-gap:10px}
+    #explore .species-card .card-verdict{flex:0 0 100%;margin-left:0}
+  }
+  #explore .list-foot{flex:none;margin:0 -14px;padding:12px 14px 16px;border-top:0;background:none}
+  #explore .list-foot .text-button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:50px;border:1.5px solid var(--x-fill);border-radius:10px;background:none;color:#E5EDF1;font-size:17px;font-weight:700;text-decoration:none}
+  #explore .list-foot .text-button:hover{background:rgba(142,197,215,.08)}
+  #explore .act-ico{flex:none;width:20px;height:20px}
+  /* map controls over the free part of the map */
+  #explore .map-chip{top:var(--pt);left:var(--free-l);height:44px;box-sizing:border-box;display:flex;align-items:center;gap:8px;max-width:calc(100% - var(--free-l) - var(--free-r));padding:0 16px;border:1px solid var(--x-border2);border-radius:10px;background:#052033;color:#E5EDF1;font-size:16px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+  #explore .map-chip b{margin-right:2px;color:#fff}
+  #explore .mc-dot{width:10px;height:10px;margin-right:4px}
+  #explore .mc-sep{color:#A9BBC6}
+  #explore .map-ui-tl{top:var(--pt);bottom:auto;left:auto;right:var(--free-r);flex-direction:row;align-items:flex-start;gap:16px;height:44px;transform:none}
+  #explore .map-ui-tl>*{flex:none;height:44px;box-sizing:border-box}
+  #explore .map-mode{gap:0;padding:0;border:1px solid var(--x-border2);border-radius:10px;background:#052033;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:hidden}
+  #explore .map-mode button,#explore .map-mode button[aria-pressed]{height:44px;padding:0 20px;border-radius:0;font-size:15px;font-weight:600;color:#E5EDF1;box-shadow:none}
+  #explore .map-mode button+button::before{display:none}
+  #explore .map-mode button[aria-pressed="true"]{background:#15475A;color:#fff}
+  #explore .mm-ico{display:none}
+  #explore .period-filter{height:44px;border:1px solid var(--x-border2);border-radius:10px;background:#052033;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  #explore .period-filter:empty{display:none}
+  #explore .pf-toggle{font-size:15px;color:#E5EDF1;padding-left:16px}
+  #explore .pf-toggle .pf-k{color:#E5EDF1}
+  #explore .map-ui-tr{top:calc(var(--pt) + 58px);right:var(--free-r);max-width:calc(100% - var(--free-l) - var(--free-r));align-items:center;gap:8px}
+  #explore .basemap-switch,#explore .map-title #copy-link,#explore .map-title #reset-map,#explore .map-ui-tr .vk-view{height:38px;box-sizing:border-box;border:1px solid var(--x-border2);border-radius:8px;background:#052033;box-shadow:none;color:#E5EDF1;font-size:14px;font-weight:600}
+  #explore .basemap-switch{padding:0;overflow:hidden}
+  #explore .basemap-switch button{height:100%;padding:0 14px;border-radius:0;color:#C3D1D9;font-size:14px}
+  #explore .basemap-switch button[aria-pressed=true]{background:#15475A;color:#fff}
+  #explore .map-title #copy-link,#explore .map-title #reset-map,#explore .map-ui-tr .vk-view{display:inline-flex;align-items:center;gap:7px;padding:0 12px}
+  #explore .map-title #copy-link::before,#explore .map-title #reset-map::before{content:"";flex:none;width:15px;height:15px;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+  #explore .map-title #copy-link{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'/%3E%3C/svg%3E")}
+  #explore .map-title #reset-map{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/%3E%3C/svg%3E")}
+  #explore .map-ui-tr .vk-view[aria-pressed=true]{border-color:var(--x-fill);background:#15475A}
+  #explore .basemap-status{flex-basis:100%}
+  /* below about 1600px the chip needs the room of the two right rows: it sits under them, at the left of the free part */
+  @media (max-width:1549px){#explore .map-chip{top:calc(var(--pt) + 110px)}}
+  /* bottom-left: the occurrence key or the 2×2 legend card, at the left of the free part; the zoom buttons at its right */
+  #explore .map-ui-bl{left:var(--free-l);bottom:var(--pb);width:min(430px,calc(100% - var(--free-l) - var(--free-r) - 70px));max-width:none}
+  #explore .map-ui-bl .map-key,#explore .value-mini{box-sizing:border-box;width:100%;border:1px solid var(--x-border2);border-radius:12px;background:#031A29;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+  /* the key line (셀 색 = 이 종의 유형 …) stays for screen readers; the 2×2 key shows the same on screen */
+  #explore .map-ui-bl .vkey{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  #explore .value-mini{display:grid;grid-template-columns:auto minmax(0,1fr);position:relative;padding:12px 14px 12px;color:#E5EDF1}
+  #explore .value-mini[hidden]{display:none}
+  #explore .value-mini>.w-badge{grid-column:1/-1;max-width:none;margin:0 0 8px}
+  #explore .vm-head{grid-column:1/-1;display:flex;justify-content:flex-end;margin:0 0 4px}
+  #explore .vm-info,#explore .map-title .vm-info{display:inline-flex;align-items:center;gap:6px;width:auto;height:auto;padding:2px 4px;border:0;border-radius:6px;background:none;color:#E5EDF1;font-size:14px;font-weight:600;cursor:pointer}
+  #explore .vm-info span[aria-hidden]{display:grid;place-items:center;width:18px;height:18px;border:1.5px solid currentColor;border-radius:50%;font-size:11px;line-height:1}
+  #explore .vm-info .vm-info-t{display:inline;white-space:nowrap}
+  #explore .vm-plot{grid-column:1/-1;position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;padding:0 0 22px;border:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  #explore .vm-y{writing-mode:horizontal-tb;transform:none;white-space:normal;position:absolute;left:0;top:2px;color:#C3D1D9;font-size:12px;line-height:1.25;text-align:right;width:36px}
+  #explore .vm-y50{position:absolute;left:14px;top:calc(50% - 18px);color:#C3D1D9;font-size:12px}
+  #explore .vm-grid{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:0;width:auto;height:auto;border-left:1.5px solid #C3D1D9;border-bottom:1.5px solid #C3D1D9;position:relative}
+  #explore .vm-grid::before{content:"";position:absolute;left:-1.5px;top:-6px;border:5px solid transparent;border-bottom:7px solid #C3D1D9;border-top:0;transform:translateX(-4.25px)}
+  #explore .vm-grid::after{content:"";position:absolute;right:-8px;bottom:-6px;border:5px solid transparent;border-left:7px solid #C3D1D9;border-right:0}
+  #explore .vm-grid button{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;min-height:44px;padding:8px 14px;border:0!important;border-right:1px solid rgba(169,187,198,.2)!important;border-bottom:1px solid rgba(169,187,198,.2)!important;border-radius:0;background:transparent!important;color:#E5EDF1;font-size:14px;font-weight:500;text-align:left;box-shadow:none}
+  #explore .vm-grid button:nth-child(2n){border-right:0!important}
+  #explore .vm-grid button:nth-child(n+3){border-bottom:0!important}
+  #explore .vm-grid button .vm-shape{width:20px;height:20px}
+  #explore .vm-grid button .vm-name{display:inline;color:#E5EDF1;font-size:14px;text-shadow:none;white-space:nowrap}
+  #explore .vm-grid button .vm-n{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  #explore .vm-grid button:hover{background:rgba(255,255,255,.05)!important}
+  #explore .vm-grid button[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--x-fill)}
+  #explore .vm-grid button.vm-zero{opacity:1}
+  #explore .vm-grid button.vm-own{box-shadow:inset 0 0 0 1.5px rgba(229,237,241,.55)}
+  #explore .vm-grid button::after{display:none}
+  #explore .vm-x0,#explore .vm-x50,#explore .vm-x{position:absolute;bottom:0;color:#C3D1D9;font-size:12px;line-height:1}
+  #explore .vm-x0{left:40px}
+  #explore .vm-x50{left:calc(44px + (100% - 44px)/2 - 6px)}
+  #explore .vm-x{right:0}
+  #explore .vm-note{display:block;grid-column:1/-1;margin:10px 0 0;color:#C3D1D9;font-size:13px;line-height:1.4}
+  #explore .value-mini .value-legend{position:absolute;left:0;bottom:calc(100% + 8px);z-index:3;width:min(440px,calc(100vw - var(--free-l) - var(--free-r)));max-height:calc(100vh - var(--chrome) - 200px);overflow:auto;border:1px solid var(--x-border2);border-radius:12px;background:#031A29}
+  #explore .map-ui-bl .map-key{padding:12px 44px 12px 14px}
+  #explore .legend-toggle{top:8px;right:8px}
+  #explore .leaflet-right{right:calc(var(--free-r) - 14px)}
+  #explore .leaflet-bottom.leaflet-right .leaflet-control-zoom{margin:0 0 calc(var(--pb) + 14px) 0}
+  #explore .leaflet-bar a{width:42px!important;height:42px!important;line-height:42px!important;font-size:22px!important;background:#052033}
+  #explore .map-below{margin:0;max-width:none}
+  /* right panel */
+  #explore .side-panel{position:absolute;z-index:20;top:var(--pt);bottom:var(--pb);right:18px;display:flex;flex-direction:column;width:var(--pane-r);box-sizing:border-box;
+    border:1px solid var(--x-border);border-radius:14px;background:var(--x-panel);box-shadow:0 14px 34px rgba(0,0,0,.35);overflow:hidden}
+  #explore .sp-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:14px 14px 0;padding:0;border-radius:10px;background:#062435}
+  #explore .sp-tabs button{height:46px;border:0;border-radius:9px;background:none;color:#E5EDF1;font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+  #explore .sp-tabs button[aria-selected=true]{background:var(--x-fill);color:#04121E;font-weight:700}
+  #explore .sp-tabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  #explore .sp-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:20px 24px 12px;scrollbar-width:thin;scrollbar-color:#2a4a5d transparent}
+  #explore .sp-body[hidden]{display:none}
+  #explore .sp-head{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:6px;min-height:150px}
+  #explore #sp-name{margin:22px 0 0;color:#fff;font-size:44px;font-weight:800;line-height:1.08;letter-spacing:-.03em;word-break:keep-all}
+  #explore .sp-latin{margin:10px 0 0;color:#D5E0E6;font-family:Georgia,"Times New Roman",serif;font-size:19px;font-style:italic;line-height:1.3}
+  #explore .sp-art{display:block;width:206px;max-width:none;height:auto;margin:-6px -14px 0 0;justify-self:end}
+  #explore .sp-art-icon{width:auto;max-width:none;margin:12px 0 0}
+  #explore .sp-art-icon .group-icon{width:72px;height:72px;border-radius:16px}
+  #explore .sp-art-icon .group-icon i{width:32px;height:32px}
+  #explore .sp-type{display:flex;align-items:center;gap:14px;margin:0 0 12px;color:#fff;font-size:20px;font-weight:700}
+  #explore .sp-type .sp-shape{width:22px;height:22px}
+  #explore .sp-badge-row{display:flex;align-items:center;gap:14px;padding:0 0 20px;border-bottom:1px solid var(--x-border)}
+  #explore .sp-badge{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 20px;border:1.5px solid var(--x-fill);border-radius:999px;background:none;color:#CDEBF4;font:inherit;font-size:16px;font-weight:700;text-align:left;cursor:pointer}
+  #explore .sp-badge:hover{background:rgba(142,197,215,.08)}
+  #explore .sp-badge span{font-size:20px;line-height:1}
+  #explore .sp-info-wrap{position:relative;display:inline-flex}
+  #explore .sp-info{display:grid;place-items:center;width:24px;height:24px;padding:0;border:1.5px solid #C3D1D9;border-radius:50%;background:none;color:#C3D1D9;font-size:13px;line-height:1;cursor:pointer}
+  #explore .sp-info[aria-expanded=true],#explore .sp-info:hover{border-color:#fff;color:#fff}
+  #explore .sp-pop{position:absolute;z-index:4;top:calc(100% + 8px);right:-8px;width:min(280px,calc(var(--pane-r) - 48px));padding:12px 14px;border:1px solid var(--x-border2);border-radius:10px;background:#0A2A3C;color:#E5EDF1;font-size:13px;font-weight:400;line-height:1.5;box-shadow:0 10px 26px rgba(0,0,0,.45);white-space:normal}
+  #explore .sp-score-head .sp-pop{left:-8px;right:auto}
+  #explore .sp-pop[hidden]{display:none}
+  #explore .sp-score{padding:18px 0 14px;border-bottom:1px solid var(--x-border)}
+  #explore .sp-score-head{display:flex;align-items:center;gap:10px}
+  #explore .sp-score h3{margin:0;color:#fff;font-size:20px;font-weight:700}
+  #explore .sp-range{margin:6px 0 0;color:#D5E0E6;font-size:15px}
+  #explore .sp-score-row{display:flex;align-items:center;gap:28px;margin-top:4px}
+  #explore .sp-num{min-width:2.2ch;color:#fff;font-size:56px;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  #explore .sp-mcui .sp-num{color:var(--x-cons)}
+  #explore .sp-held{padding:10px 0;color:#C3D1D9;font-size:17px;font-weight:600}
+  #explore .sp-bar{flex:1;height:14px;border-radius:999px;background:#153144;overflow:hidden}
+  #explore .sp-bar i{display:block;height:100%;border-radius:inherit;background:var(--x-fill)}
+  #explore .sp-bar.cons i{background:var(--x-cons)}
+  #explore .sp-sub{margin:6px 0 0;color:#C3D1D9;font-size:13px}
+  #explore .sp-cat{margin:4px 0 0;color:#E5EDF1;font-size:18px;font-weight:500}
+  #explore .sp-mcui{border-bottom:0;padding-bottom:6px}
+  #explore .sp-sep{display:flex;align-items:center;gap:16px;margin:12px 0 18px;color:#C3D1D9;font-size:15px}
+  #explore .sp-sep::after{content:"";flex:1;border-top:1px dashed rgba(169,187,198,.4)}
+  #explore .sp-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+  #explore .sp-actions .detail-act{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;box-sizing:border-box;margin:0;padding:6px 8px;border:1.5px solid var(--x-border2);border-radius:10px;background:none;color:#fff;font:inherit;font-size:15px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none;white-space:nowrap;cursor:pointer}
+  #explore .sp-actions .detail-act:hover{border-color:#fff}
+  #explore .sp-foot{flex:none;padding:12px 18px 18px}
+  #explore .side-panel[data-tab=cell] .sp-foot{display:none}
+  #explore .sp-cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:58px;border:0;border-radius:10px;background:var(--x-fill);color:#04121E;font:inherit;font-size:19px;font-weight:800;cursor:pointer}
+  #explore .sp-cta:hover{background:#A6D5E4}
+  #explore .sp-cta:focus-visible,#explore .sp-actions .detail-act:focus-visible,#explore .sp-badge:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  /* '선택 격자' tab: the summaries and panels that sat under the map */
+  #explore .sp-cell{padding-top:16px}
+  #explore .sp-cell:has(.map-below) .sp-cell-empty{display:none}
+  #explore .sp-cell .map-below{display:flex;flex-direction:column;gap:10px;padding:0}
+  #explore .sp-cell .map-caption{order:-2;margin:0;color:#C3D1D9;font-size:13px}
+  #explore .sp-cell .value-cell-detail{order:-1;margin:0;padding:0;border:0;background:none}
+  #explore .sp-cell .value-cell-detail h3{margin:0 0 4px;color:#fff;font-size:18px}
+  #explore .sp-cell .cell-where{margin:0;color:#E5EDF1;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  #explore .sp-cell .cell-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+  #explore .sp-cell .cell-summary .cs-tile b{color:#fff;font-size:20px;font-variant-numeric:tabular-nums}
+  #explore .sp-cell .cell-summary .cs-tile span{color:#C3D1D9;font-size:12px;line-height:1.3}
+  #explore .sp-cell .value-species{margin:6px 0 0;border:1px solid var(--x-border);border-radius:10px;background:#031A29}
+  #explore .sp-cell .value-species summary{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding:10px 12px}
+  #explore .sp-cell .value-species h4{margin:0;font-size:15px}
+  #explore .sp-cell .vs-pills{display:flex;gap:6px}
+  #explore .sp-cell .vs-pill{padding:2px 8px;border-radius:6px;background:var(--x-accent-s);color:#fff;font-size:13px;font-variant-numeric:tabular-nums}
+  #explore .sp-cell .map-selected,#explore .sp-cell .map-judgment{margin:0;padding:10px 12px;border:1px solid var(--x-border);border-radius:10px;background:none;color:#C3D1D9;font-size:13px}
+  #explore .sp-cell .map-review-note{margin:0;color:#C3D1D9;font-size:13px}
+  #explore .sp-cell .cell-table{margin:0}
+  #explore .sp-cell .map-bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0}
+  #explore .sp-cell .map-bottom>div{padding:8px 10px;border:1px solid var(--x-border);border-radius:8px}
+  /* evidence drawer: over the right panel and part of the map; one scrolling body between a fixed title and foot */
+  #explore .ev-drawer{position:absolute;z-index:30;top:var(--pt);bottom:var(--pb);right:18px;display:flex;flex-direction:column;box-sizing:border-box;
+    width:min(calc(var(--pane-r) + 170px),calc(100% - var(--pane-l) - 72px));border:1px solid var(--x-border2);border-radius:14px;background:#06202F;box-shadow:-20px 0 44px rgba(0,0,0,.5);
+    opacity:0;pointer-events:none;clip-path:inset(0 0 0 100% round 14px);transition:clip-path .22s ease,opacity .18s ease}
+  #explore .ev-drawer.open{opacity:1;pointer-events:auto;clip-path:inset(0 round 14px)}
+  #explore .evd-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 14px 22px;border-bottom:1px solid var(--x-border)}
+  #explore .evd-head h2{margin:0;color:#fff;font-size:19px;font-weight:800}
+  #explore .evd-close{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--x-border2);border-radius:10px;background:none;color:#fff;font-size:18px;cursor:pointer}
+  #explore .evd-close:focus-visible,#explore .evd-foot button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  #explore .ev-drawer #detail,#explore .ev-drawer .detail-pane{position:static;flex:1;min-height:0;height:auto;max-height:none;margin:0;padding:16px 22px 18px;overflow-y:auto;overscroll-behavior:contain;
+    border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;outline:0}
+  #explore .ev-drawer .detail-cta{display:none}
+  #explore .evd-foot{display:flex;justify-content:space-between;gap:10px;padding:12px 18px 16px;border-top:1px solid var(--x-border)}
+  #explore .evd-foot button{min-height:44px;padding:0 18px;border:1.5px solid var(--x-border2);border-radius:10px;background:none;color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+  #explore .evd-foot .evd-compare{border-color:var(--x-fill);color:#CDEBF4}
+}
+@media (min-width:1180px) and (prefers-reduced-motion:reduce){#explore .ev-drawer{transition:none}}
+/* short screens (1280×720): the same font sizes; spacing and the picture give way so both scores and the button stay in view */
+/* 3열 탐색 지도: 멍이 첫 안내 말풍선은 버튼 바로 위에 두어 왼쪽 아래 2×2 범례·면책 문구를 덜 가린다. */
+@media (min-width:1180px){
+  body:has(#explore.active) .bbc:not(.bbc-moved) .bbc-hint{right:var(--bbc-right);bottom:72px;max-width:230px}
+  /* 근거 서랍은 포커스를 가두는 대화 상자라 열려 있는 동안 멍이를 잠시 숨긴다(서랍 바닥 버튼을 가리지 않게). */
+  body:has(#ev-drawer.open) .bbc{display:none}
+}
+@media (min-width:1180px) and (max-height:920px){
+  #explore .pane-title{margin-bottom:12px}
+  #explore .search,#explore .filter-toggle{height:44px}
+  #explore .sp-tabs{margin-top:12px}
+  #explore .sp-tabs button{height:42px}
+  #explore .sp-body{padding:14px 22px 8px}
+  #explore .sp-head{min-height:0}
+  #explore #sp-name{margin-top:8px;font-size:38px}
+  #explore .sp-latin{margin-top:6px}
+  #explore .sp-art{width:150px;max-width:none;margin-top:-4px}
+  #explore .sp-type{margin:4px 0 10px}
+  #explore .sp-badge-row{padding-bottom:12px}
+  #explore .sp-badge{min-height:40px;padding:6px 16px}
+  #explore .sp-score{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:10px;padding:12px 0 10px}
+  #explore .sp-score-head{grid-column:1}
+  #explore .sp-range{grid-column:2;grid-row:1;margin:0;justify-self:end}
+  #explore .sp-score-row,#explore .sp-cat,#explore .sp-sub{grid-column:1/-1}
+  #explore .sp-sep{margin:8px 0 12px}
+  #explore .sp-foot{padding:10px 18px 14px}
+  #explore .list-foot{padding:10px 14px 12px}
+}
+@media (min-width:1180px) and (max-height:780px){
+  #explore .sp-tabs{margin:10px 12px 0}
+  #explore .sp-tabs button{height:38px}
+  #explore .sp-body{padding:10px 20px 6px}
+  #explore #sp-name{margin-top:4px;font-size:34px}
+  #explore .sp-art{width:116px;margin:-2px -8px 0 0}
+  #explore .sp-type{margin:2px 0 8px;font-size:18px}
+  #explore .sp-badge-row{padding-bottom:10px}
+  #explore .sp-badge{min-height:36px;padding:4px 14px;font-size:15px}
+  #explore .sp-score{padding:8px 0 6px}
+  #explore .sp-num{font-size:44px}
+  #explore .sp-cat{margin-top:0;font-size:16px}
+  #explore .sp-sep{margin:4px 0 8px}
+  #explore .sp-actions{gap:8px}
+  #explore .sp-actions .detail-act{min-height:44px;gap:6px;padding:4px 6px;font-size:14px}
+  #explore .sp-foot{padding:8px 16px 12px}
+  #explore .sp-cta{height:50px;font-size:18px}
+}
+/* 오른쪽 패널이 390px보다 좁으면 두 버튼을 한 줄씩 쌓아 글자가 꺾이지 않게 한다. */
+@media (min-width:1180px) and (max-width:1528px){
+  #explore .sp-actions{grid-template-columns:minmax(0,1fr);gap:8px}
+  #explore .sp-actions .detail-act{min-height:42px;justify-content:flex-start;padding:4px 16px;font-size:15px;white-space:nowrap}
+}
+@media (min-width:1180px) and (max-width:1528px) and (max-height:780px){
+  #explore .sp-tabs button{height:36px}
+  #explore .sp-body{padding-top:8px}
+  #explore .sp-head{margin-bottom:-6px}
+  #explore .sp-art{width:104px}
+  #explore .sp-score{padding:6px 0 4px}
+  #explore .sp-sep{margin:2px 0 6px}
+  #explore .sp-actions{gap:6px}
+  #explore .sp-actions .detail-act{min-height:38px}
+}
+/* Below 1180px the small 2×2 key keeps its earlier look under the top-right buttons: short names, counts, ⓘ only. */
+@media (max-width:1179px){
+  .value-mini .vm-head{position:absolute;z-index:1;top:6px;right:6px;pointer-events:auto}
+  .value-mini .vm-plot{padding-right:32px}
+  .vm-info-t,.vm-y-w,.vm-y50,.vm-x0,.vm-x50,.vm-grid .vm-shape,.vm-grid .vm-name{display:none}
+  .vm-short{font-size:var(--fs-min);font-weight:600;line-height:1}
+}
+@media (max-width:740px){.vm-short{display:none}}
+@media (min-width:1180px){.vm-y-n,.vm-short{display:none}}
+/* tall screens (the mockup's 992px): the 2×2 key gets the mockup's roomier rows */
+@media (min-width:1180px) and (min-height:921px){
+  #explore .value-mini{padding:16px 16px 14px}
+  #explore .vm-grid button{min-height:50px}
+  #explore .vm-head{margin-bottom:6px}
+  #explore .vm-note{margin-top:12px}
+}
