@@ -41,13 +41,13 @@ jobs:
           node verification/test_trait_display_ui.mjs
           node verification/test_supplementary_literature_ui.mjs
           node verification/test_replication_search_ui.mjs
+          node verification/test_posthoc_scorecard_ui.mjs
+          python scripts/build_posthoc_scorecard.py --csv --check
           node verification/test_compare_ui.mjs
           node verification/test_weight_slider.mjs
           node --check dist/chatbot.js
           node verification/test_chatbot_faq.mjs
           node verification/test_chatbot_drag.mjs
-          node --check worker/index.mjs
-          node verification/test_ask_worker.mjs
           node --check dist/expedition.js
           node --check verification/expedition_check.mjs
           node verification/test_expedition_ui.mjs

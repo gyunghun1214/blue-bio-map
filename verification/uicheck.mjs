@@ -227,7 +227,7 @@ try{
   // 4.5: the floor label left the table (no species takes the floor); the relaxation-(d) tag is required instead
   // 4.17 (prereg-4.17 5): the table never names the preliminary assessment of the 13 species
   check('Compare table: no preliminary-assessment words (4.17: named only in the species detail)',!/예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · |IUCN 기반 MCUI와 비교 불가.{0,3}자체/.test(cmp),(cmp.match(/.{0,60}(예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · ).{0,60}/)||[''])[0]);
-  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','보전평가 미확인','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!['효능 근거 미확인','보전평가 미확인','멸종위험 평가 미확인','최상위 근거 독립 재현 확인 중'].reduce((t,w)=>t.replaceAll(w,''),cmp).includes('미확인')&&!cmp.includes('자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가')&&!cmp.includes('LC 가능성')&&!cmp.includes('지방 목록 참고값')&&!cmp.includes('예비 평가 참고'),JSON.stringify({missing:[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','보전평가 미확인','자체 예비검토 참고 · 공식 평가 아님','다른 나라 평가 참고','완화 산출(d)'].filter(x=>!cmp.includes(x)).slice(0,10),withheld:(cmp.match(/산출 보류/g)||[]).length,around:[...cmp.matchAll(/.{0,60}(산출 보류|미확인|시범).{0,40}/g)].map(m=>m[0]).slice(0,6)})+' '+cmp.slice(0,200));  // 4.14: a Rapid LC is a reference again (never a 10), and every species without an official category says '보전평가 미확인'
+  check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!['효능 근거 미확인','보전평가 미확인','멸종위험 평가 미확인','최상위 근거 독립 재현 확인 중'].reduce((t,w)=>t.replaceAll(w,''),cmp).includes('미확인')&&!cmp.includes('자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가')&&!cmp.includes('LC 가능성')&&!cmp.includes('지방 목록 참고값')&&!cmp.includes('예비 평가 참고'),JSON.stringify({missing:[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','완화 산출(d)'].filter(x=>!cmp.includes(x)).slice(0,10),withheld:(cmp.match(/산출 보류/g)||[]).length,around:[...cmp.matchAll(/.{0,60}(산출 보류|미확인|시범).{0,40}/g)].map(m=>m[0]).slice(0,6)})+' '+cmp.slice(0,200));  // 4.14: a Rapid LC is a reference again (never a 10), and every species without an official category says '보전평가 미확인'; 4.19: every species has an MCUI, so no row says it
   // 2026-10-13: the table is dark like the page, the coverage column and its guide left it, and the line above it says how to read it
   const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),hint=document.querySelector('#cmp-table-view .dt-hint')?.textContent||'';const dark=getComputedStyle(c).backgroundColor==='rgb(8, 29, 46)'&&getComputedStyle(c.querySelector('.cv-num')).color==='rgb(244, 248, 250)'&&getComputedStyle(c.querySelector('thead th')).backgroundColor==='rgb(10, 34, 54)';const currentGuide=hint.includes('라벨은 근거의 수준이며 가치의 높낮이가 아닙니다')&&!c.querySelector('.coverage-bar,.coverage-guide');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {dark,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
   check('Comparison (dark data table): dark panel and header, how-to-read line, no coverage column, keyboard return',Object.values(compareUx).every(Boolean),JSON.stringify(compareUx));
@@ -771,10 +771,10 @@ try{
     const v=document.getElementById('value-view');v.click();await wait(200);v.click();await wait(200);
     const back={view:valueView,pressed:v.getAttribute('aria-pressed'),drawn:valueRects.length,cells:spatialCells(periodView(selected)).length};
     selectSpecies(keep);await wait(250);return {out,back}})()`);
-  check('Species view per type: 우뭇가사리 red, 홍합 blue, 멍게 grey with ‘유형 미산출 · 보전평가 미확인’, each only its own cells, never yellow or red dots; ‘모든 종 겹쳐 보기’ pressed twice comes back to the species view',
-    kinds.out.length===3&&kinds.out.every(k=>k.drawn===k.cells&&k.drawn>0&&k.fills.length===1&&k.fills[0]===k.want&&!k.yellow&&!k.dots)&&kinds.out.map(k=>k.type).join()==='conservation_priority,baseline_survey,none'&&
-    // 4.14: 멍게 has a BBVI but no official category, so the key says why in words (not a missing pair, never a low risk)
-    kinds.out[2].key.includes('유형 미산출')&&kinds.out[2].key.includes('보전평가 미확인')&&kinds.out[2].chipDot.includes('none')&&kinds.back.view==='species'&&kinds.back.pressed==='false'&&kinds.back.drawn===kinds.back.cells,JSON.stringify(kinds));
+  check('Species view per type: 우뭇가사리 red, 홍합 blue, 멍게 in its type colour (4.19: Rapid LC as a preliminary assessment), each only its own cells, never yellow or red dots; ‘모든 종 겹쳐 보기’ pressed twice comes back to the species view',
+    kinds.out.length===3&&kinds.out.every(k=>k.drawn===k.cells&&k.drawn>0&&k.fills.length===1&&k.fills[0]===k.want&&!k.yellow&&!k.dots)&&kinds.out.map(k=>k.type).join()==='conservation_priority,baseline_survey,baseline_survey'&&
+    // 4.14 left 멍게 untyped ('유형 미산출 · 보전평가 미확인'); 4.19 places it, and the key reads like any other type, never naming the preliminary assessment
+    !/미산출|미확인|예비|Rapid LC/.test(kinds.out[2].key)&&!kinds.out[2].chipDot.includes('none')&&kinds.back.view==='species'&&kinds.back.pressed==='false'&&kinds.back.drawn===kinds.back.cells,JSON.stringify(kinds));
   // 2026-10-15 (LKH: one cell, mostly Jeju's, stood out in 우뭇가사리 and 살오징어): the panel's first cell is not drawn as chosen.
   // With nothing clicked every species' cells share one border and one fill; a clicked cell gets a heavier border of the same
   // colour and keeps the fill; choosing another species drops the mark.
@@ -1185,6 +1185,23 @@ try{
     const puzzled=await until(s=>/bbc-m-unknown/.test(s.row),3000);
     check('M-9 reduced motion: a press opens the chat at once with no hop or talking and no running animation; an unknown answer still shows the drooped siphons',
       calm.open&&calm.talking===0&&/bbc-m-welcome/.test(calm.head)&&calm.headAll==='none'&&/bbc-m-unknown/.test(puzzled.head)&&puzzled.rowSL&&puzzled.rowSL!=='none'&&puzzled.talking===0,JSON.stringify({calm,puzzled}));
+    // ---------- 사용법 안내 도우미 (2026-10-15): 정해진 답만, 심사 예상 질문의 값은 화면 자료에서, 답이 없으면 세 탭 바로가기 ----------
+    const askBot=q=>evaluate(`(async()=>{const i=document.querySelector('.bbc-input');i.value=${JSON.stringify(q)};document.querySelector('.bbc-form').requestSubmit();
+      await new Promise(r=>setTimeout(r,200));const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {text:m?.childNodes[0]?.textContent||'',
+        tabs:[...(m?.closest('.bbc-row')?.nextElementSibling?.querySelectorAll('button[data-tab]')||[])].map(b=>b.dataset.tab+'|'+b.textContent)};})()`);
+    const facts=await evaluate(`(()=>{const f=n=>data.species.find(s=>s.label===n),v=(n,k)=>scoreText(f(n),k,pilotScore(f(n),k));
+      return {oyster:v('참굴','MCUI'),mackerel:v('고등어','MCUI'),squid:v('살오징어','MCUI'),n:data.species.length,placed:data.species.filter(assessedForMatrix).length,
+        rule:matrixRule().bbvi_threshold,head:document.querySelector('#bbc-title').textContent,note:document.querySelector('.bbc-note').textContent}})()`);
+    const judge={same:await askBot('참굴 10점과 고등어 10점은 같은 뜻이에요?'),squid:await askBot('살오징어는 IUCN에서 LC인데 왜 60점이에요?'),
+      line:await askBot('50점은 누가 정했어요?'),missing:await askBot('미역은 왜 매트릭스에 없어요?'),none:await askBot('zqxj 오늘 점심 메뉴 추천')};
+    const apiCalls=await evaluate("performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/')).length");
+    check('M-10 guide helper: fixed answers only (no /api/ request), judge questions read values from the page data, an unmatched question shows 준비된 답이 없어요 with three tab links',
+      facts.head==='사용법 안내 도우미'&&facts.note==='AI 아님 · 정해진 답변'&&apiCalls===0&&Object.values(judge).every(r=>!/[{}]/.test(r.text))&&
+      judge.same.text.includes(`참굴 MCUI(${facts.oyster}점)`)&&judge.same.text.includes(`고등어 MCUI(${facts.mackerel}점)`)&&judge.squid.text.includes(`${facts.squid}점이 됐어요`)&&
+      judge.line.text.includes(`각각 ${facts.rule} 이상`)&&judge.missing.text.includes(`${facts.n}종`)&&(facts.placed===facts.n?judge.missing.text.includes('모두'):judge.missing.text.includes(`${facts.placed}종이 놓여`))&&
+      judge.none.text.startsWith('준비된 답이 없어요')&&judge.none.tabs.map(t=>t.split('|')[0]).join()==='explore,compare,method',JSON.stringify({facts,judge,apiCalls}));
+    await evaluate("[...document.querySelectorAll('.bbc-log button[data-tab=\"compare\"]')].at(-1).click();1");await sleep(400);
+    check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }

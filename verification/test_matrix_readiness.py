@@ -43,11 +43,13 @@ class MatrixReadinessTests(unittest.TestCase):
         # at or above the matrix line. 14 species are left with no MCUI and no type: 29 -> 16 points.
         # verified-4.17 (team-lead decision 2026-10-15, prereg-4.17-2026-10-15 2): with no official category, a range-state list
         # and then the Rapid LC check score again as a preliminary assessment; only 멍게 is left with no MCUI: 16 -> 29 points.
+        # verified-4.19 (prereg-4.19-2026-10-15 1): the OBIS reporting-rate ratio no longer blocks a met Rapid LC check (4.11
+        # rule 5a withdrawn), so 멍게 is placed too: 29 -> 30 points.
         unknown = [r["aphia_id"] for r in self.assessments["species"] + self.assessments["candidate_species"]
                    if r["scores"]["MCUI"] is None]
-        self.assertEqual(unknown, [250680])
+        self.assertEqual(unknown, [])
         self.assertEqual(placed, [r["aphia_id"] for r in report["species"] if r["aphia_id"] not in unknown])
-        self.assertEqual(len(placed), 29)
+        self.assertEqual(len(placed), 30)
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
@@ -141,10 +143,10 @@ class MatrixReadinessTests(unittest.TestCase):
         # still set by the stock decline 80) and the 9 met Rapid LC checks score again as preliminary assessments; sub-national
         # lists stay reference only
         self.assertEqual({b: sum(r["mcui_basis"] == b for r in report["species"]) for b in ("range_state", "preliminary", "sub_national")},
-                         {"range_state": 5, "preliminary": 9, "sub_national": 0})
+                         {"range_state": 5, "preliminary": 10, "sub_national": 0})  # 4.19: 멍게's Rapid LC
         self.assertEqual(sum(r["mcui_basis"] == "iucn" for r in report["species"]), 7)
         self.assertEqual([r["aphia_id"] for r in report["species"] if r["scores"]["MCUI"] is not None and not r["mcui_basis"]], [])
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 29)
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 30)
         self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"], 10.0)
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}

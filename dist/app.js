@@ -19,7 +19,7 @@ const escL = value => {const t=plainWords(screenKo(String(value ?? '')));if(!/[\
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, pickedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14','verified-4.16','verified-4.17','verified-4.18'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14','verified-4.16','verified-4.17','verified-4.18','verified-4.19'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -722,6 +722,41 @@ function replicationSearchText(s){
   const earlier=(r.runs||[]).filter(x=>x.item_is_current&&x.searched_on!==r.last_searched_on).map(x=>x.searched_on);
   return `재현 검색: 검색했으나 독립 재현 없음(${r.last_searched_on||'날짜 미기재'}${searched?', '+searched:''})${earlier.length?` · 이전 검색 ${earlier.join(', ')}`:''}${closed?` · 열지 못한 검색원 ${closed}`:''}`;
 }
+// 검증 성적표 (dist/posthoc-scorecard.json, built by scripts/build_posthoc_scorecard.py from posthoc.validation_sets): the top of
+// the method tab lists every post-hoc check with its normalised outcome_class, and the journey cards carry one badge per
+// indicator. A same-data or two-species consistency check is never shown as 통과. Display only: nothing here reaches a score,
+// the matrix, the map colours or a chip. Schema 1 is read; a higher number is a newer file; anything else is ignored.
+let posthocScorecard=null;
+const SCORECARD_OC={'통과':'pass','실패':'fail','실패 후 사용 중단':'stopped','일관성 확인(독립 아님)':'consistent','검증 불성립':'void'};
+function scorecardFile(file,outdated){
+  const v=/^posthoc-scorecard-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'posthoc-scorecard.json',version:file.schema_version});
+  if(file?.schema_version!=='posthoc-scorecard-1'||file.display_only!==true||!Array.isArray(file.rows))return null;
+  return file.rows.every(r=>r&&SCORECARD_OC[r.outcome_class])?file:null;
+}
+function renderScorecard(){
+  const sc=posthocScorecard,body=$('mt-vc-body');if(!body)return;
+  const badges=document.querySelectorAll('#method .mt-vbadge[data-ind]');
+  if(!sc){
+    $('mt-vc-sum').textContent=data?'검증 성적표 파일을 읽지 못했습니다. 지표별 검증 기록은 아래 ‘지표를 어떻게 읽나요?’에 있습니다.':'사후 검증 기록을 불러오는 중입니다.';
+    for(const id of ['mt-vc-ind','mt-vc-counts','mt-vc-body','mt-vc-foot'])$(id).innerHTML='';badges.forEach(b=>b.hidden=true);return;
+  }
+  const n=c=>sc.counts?.[c]||0, label=c=>sc.rows.find(r=>r.outcome_class===c)?.outcome_label||c;
+  const indTitle=key=>{const i=sc.indicators[key];return `사후 검증 ${i.checks}건: `+Object.entries(i.classes).map(([c,k])=>`${label(c)} ${k}`).join(' · ');};
+  $('mt-vc-sum').textContent=`${sc.report_version} 기준 · 사후 검증 ${sc.total}건 중 기준 통과 ${n('통과')}건 · ${sc.preregistered}건은 결과를 보기 전에 기준을 정했습니다.`;
+  $('mt-vc-ind').innerHTML=Object.keys(sc.indicators||{}).map(k=>`<li data-state="${esc(sc.indicators[k].state)}" title="${esc(indTitle(k))}"><b>${esc((TILE_KO[k]?TILE_KO[k]+' ':'')+k)}</b><span>${esc(sc.indicators[k].label)}</span></li>`).join('');
+  $('mt-vc-counts').innerHTML=Object.keys(SCORECARD_OC).filter(c=>n(c)).map(c=>`<li data-oc="${SCORECARD_OC[c]}"><b>${n(c)}</b>${esc(label(c))}</li>`).join('');
+  const file=p=>p.split('/').pop();
+  body.innerHTML=sc.rows.map(r=>`<tr data-oc="${SCORECARD_OC[r.outcome_class]}" data-key="${esc(r.key)}">`+
+    `<th scope="row" data-label="검증 이름">${esc(r.name)}</th>`+
+    `<td data-label="무엇을 확인했나">${esc(r.checked)}</td>`+
+    `<td data-label="사전 등록"><b>${esc(r.preregistered_label)}</b><small>${esc(r.preregistered_note)}</small></td>`+
+    `<td data-label="결과"><span class="mt-vc-pill" data-oc="${SCORECARD_OC[r.outcome_class]}">${esc(r.outcome_label)}</span></td>`+
+    `<td data-label="결과 뒤 조치">${r.action==='none'?'<b class="mt-vc-na">해당 없음</b>':`<b>${esc(r.action_label)}</b>`}<small>${esc(String(r.action_detail??'').replace(/^BBVI(?=에)/,'활용가치 BBVI'))}</small>${r.action_history?`<small class="mt-vc-hist">${esc(r.action_history)}</small>`:''}</td>`+
+    `<td data-label="기록 파일">${r.records.map(p=>`<a href="${esc(sc.repository+p)}" target="_blank" rel="noopener" title="${esc(p)}">${esc(file(p))}</a>`).join('')}${r.record_note?`<small>${esc(r.record_note)}</small>`:''}</td></tr>`).join('');
+  $('mt-vc-foot').textContent='‘일관성 확인(독립 아님)’은 점수를 만든 자료와 같은 자료로 보거나 2종만 비교한 확인이라 통과로 세지 않습니다. ‘검증 불성립’은 미리 정한 최소 표본 수에 못 미쳐 판정하지 못했다는 뜻입니다. 이 표는 사후 검증 기록(assessments.json)에서 자동으로 만들고, 같은 표를 CSV로도 내보냅니다. 기록 파일은 프로젝트 GitHub 저장소에 있습니다.';
+  badges.forEach(b=>{const i=sc.indicators?.[b.dataset.ind];b.hidden=!i;if(!i)return;b.textContent=plainWords(i.label);b.dataset.state=i.state;b.title=indTitle(b.dataset.ind);});
+}
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it
 // and no score is inferred. Only its reviewed public cells are drawn, in the 미탐색 후보 layer.
@@ -1422,7 +1457,7 @@ function verifiedBioDetail(s){
   if(trace)return trace+rejected+rawHtml+partial;
   // 3.1: what the automated species -> compound -> ChEMBL chain found, and the original-paper search for species without a P703 link.
   const linkChain=cl?`<p class="fine">종→화합물 공개 연결(위키데이터 P703·LOTUS${ps?', 검수 원논문':''}) ${escL(n.linked||0)}건 · 참고문헌 DOI 있음 ${escL(n.with_reference_doi||0)}건 · 흔한 대사물 제외 ${escL(n.common_metabolite||0)}건 · 승인 약물 제외 ${escL(n.approved_drug||0)}건 · 검수 제외 ${escL(n.rejected_by_review||0)}건 → ChEMBL 비교 코호트(활성 기록 ${escL(rule3?.minimum_cohort_records)}건 이상)에 든 화합물 ${escL(n.scored_compounds||0)}개.`+
-    (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${escL(ps.searched_on)}, Europe PMC ${escL(ps.europepmc_hits)}건 중 ${escL(ps.papers_screened)}건 선별, 인정 연결 ${escL(ps.accepted_links)}건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
+    (ps?` 위키데이터 연결이 없어 CMNPD·PubChem 분류군·Europe PMC 원논문을 찾았습니다(${escL(ps.searched_on)}, Europe PMC ${escL(ps.europepmc_hits)}건 중 ${escL(ps.papers_screened)}건 선별, 인정 연결 ${escL(ps.accepted_links)}건 · CMNPD 검색 부분은 CC BY-NC-SA 4.0 조건).`:'')+' 정보충분도가 낮다는 뜻이며 자료 부재의 증거는 아닙니다.</p>':'';
   const fl=s.assessment.mbpi_floor;
   return (fl?`<p><b>${escL(s.assessment.mbpi_label)} · MBPI ${escL(Number(fl.value).toFixed(1))}</b>: ${escL(fl.meaning)} 규칙: ${escL(fl.prereg)} 1.5절(팀장 결정 2026-10-05).</p>`:
     '<p>검증된 기원종·화합물·시험 사슬을 찾지 못했습니다. 자료 부재의 증거는 아닙니다.</p>')+rawHtml+partial+linkChain+rejected+
@@ -1519,12 +1554,21 @@ function preliminaryBasisDetail(s,sub){
     const t=r.thresholds||{};
     return `<p><b>${escL(label)} · 자체 예비평가(Rapid LC)</b>: ${value} · EOO ${escL(r.eoo_km2.toLocaleString())} km²(기준 ${escL(t.eoo_km2?.toLocaleString())} 초과) · `+
       `AOO ${escL(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${escL(r.aoo_cells)}칸, 기준 ${escL(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${escL(r.records)}건(기준 ${escL(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
-      `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${escL(r.native_box.lat.join('–'))}°, 경도 ${escL(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${escL(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}.</p>`+
+      `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${escL(r.native_box.lat.join('–'))}°, 경도 ${escL(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${escL(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}.${obisRatioNote(s)}</p>`+
       subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${escL(b.n)}종): ${escL(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. 공식 평가가 나오면 그 값으로 바꿉니다.</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
   return `<p><b>${escL(label)} · ${escL(r.country_ko||r.country||'서식국')} 국가 평가</b>: ${escL(r.category_as_published)} → ${value}${r.rank_out?' (평가했으나 위협 범주 없음 → LC 상당 · 팀장 결정 2026-10-04)':''} · 게재명 ${orig(r.name_as_published)} · ${orig(r.list)} · 범위 ${escL(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
     (r.continuity||r.limitations?`<p class="fine">${escL(screenKo(r.continuity||'').replace(/\.$/,''))}${r.continuity?'. ':''}${escL(r.limitations||'')}</p>`:'')+subNationalReference(sub);
+}
+// 4.19 (prereg-4.19-2026-10-15 1): a reporting-rate ratio at or below the decline ratio no longer blocks the Rapid LC check;
+// its numbers stay in the species detail beside the check
+function obisRatioNote(s){
+  const t=s.assessment.occurrence_trend, cut=data.assessmentInfo?.method?.conservation?.trend?.decline_ratio;
+  if(!t||t.reporting_rate_ratio==null||cut==null||t.reporting_rate_ratio>cut)return '';
+  const d=t.dataset_check, ci=x=>x?.length===2?`(95% 구간 ${esc(x[0])}–${esc(x[1])})`:'';
+  return ` 전체 보고율 비 ${esc(t.reporting_rate_ratio)}${ci(t.ci)}`+(d?`, 주된 데이터셋 안 ${esc(d.reporting_rate_ratio)}${ci(d.ci)} · 감소 ${d.confirms_decline?'확인':'확인 안 됨'}`:'')+
+    '. OBIS 보고율 추세는 사후 검증에서 위협종과 LC를 가르지 못해(4.11) 점수 보정과 예비평가 판정에 쓰지 않습니다(4.19).';
 }
 // 4.11 (prereg 5.1): a sub-national list whose back-test failed is shown as reference beside the next basis, never as the score.
 function subNationalReference(sub){
@@ -3958,6 +4002,52 @@ function renderSources(){
   $('all-sources').innerHTML=data.species.map(s=>`<div class="citation">${cite(s.label+' · 학명',s.wormsCitation)}<br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation">${cite(s.title,s.citation)}<br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
 }
 
+// 출처별 상업 이용 구분 (license-matrix.json, scripts/build_license_matrix.py). Display only: the groups read each source's
+// stated licence and are not a legal opinion; the commercial-layer count never changes a score, type or map colour.
+const LICENSE_GROUPS=['commercial_ok','noncommercial','permission','review'];
+function licenseName(r){return r.origin==='지표 보고서 출처'?(r.provider||r.title||r.id):(r.title||r.provider||r.id);}
+function renderLicense(m){
+  const box=$('mt-license');if(!box)return;
+  if(m?.schema!=='license-matrix-1'||!Array.isArray(m.rows)||!m.groups||!m.commercial_layer){box.hidden=true;return;}
+  const uniq=a=>[...new Set(a)];
+  const body=LICENSE_GROUPS.map(g=>{
+    const rows=m.rows.filter(r=>r.group===g).sort((a,b)=>b.species_count-a.species_count||licenseName(a).localeCompare(licenseName(b)));
+    const names=uniq(rows.map(licenseName)), uses={};
+    rows.forEach(r=>r.uses.forEach(u=>uses[u]=(uses[u]||0)+1));
+    const list=rows.map(r=>`<li>${r.url?sourceLink(r.url,licenseName(r)):orig(licenseName(r))} · ${r.license_url?sourceLink(r.license_url,r.license):orig(r.license||'이용조건 미기재')}${r.share_alike?' · 동일조건':''} · ${esc(r.uses.join(', '))}</li>`).join('');
+    return `<tr data-group="${esc(g)}"><th scope="row"><span class="lic-badge">${esc(m.groups[g].label)}</span><small>${esc(m.groups[g].note)}</small></th>`+
+      `<td class="lic-n" data-k="출처">${esc(rows.length)}</td>`+
+      `<td data-k="주요 출처">${orig(names.slice(0,6).join(' · '))}${names.length>6?` 외 ${esc(names.length-6)}곳`:''}${rows.length?`<details class="lic-list"><summary>전체 ${esc(rows.length)}건 보기</summary><ul>${list}</ul></details>`:''}</td>`+
+      `<td data-k="쓰이는 곳 · 출처 수">${esc(Object.entries(uses).sort((a,b)=>b[1]-a[1]).map(([u,n])=>`${u} ${n}건`).join(' · '))}</td></tr>`;
+  }).join('');
+  $('license-table').querySelector('tbody').innerHTML=body;
+  // commercial-layer calculation (folded)
+  const L=m.commercial_layer, sc=L.scenarios.map(x=>x.id), ind=L.indicators, cells=L.map_cells.total;
+  const AXIS_NAME={MFPI:'식량 잠재력 MFPI',MBPI:'생리활성 잠재력 MBPI',MCUI:'보전 시급성 MCUI',BBVI:'활용가치 BBVI',matrix_type:'활용 × 보전 유형'};
+  const tr=(name,cur,vals,unit)=>`<tr><th scope="row">${esc(name)}</th><td>${esc(cur)}${unit}</td>${vals.map(v=>`<td>${esc(v)}${unit}</td>`).join('')}</tr>`;
+  const rowsHtml=Object.entries(AXIS_NAME).map(([k,n])=>tr(n,ind[k].published,sc.map(x=>ind[k][x]),'종')).join('')+
+    tr('출현 지도 격자',cells.all.grid_cells,sc.map(x=>cells[x].grid_cells),'칸')+
+    tr('출현 지도 셀(종별)',cells.all.species_cells,sc.map(x=>cells[x].species_cells),'개')+
+    tr('출현 셀이 있는 종',cells.all.species,sc.map(x=>cells[x].species),'종')+
+    tr('활용 × 보전 셀 색',L.value_layer_cells.all,sc.map(x=>L.value_layer_cells[x]),'칸');
+  const block=(k,key)=>{const b=(ind[k][key]||[]).slice(0,4);return b.length?`<li><b>${esc(AXIS_NAME[k])}</b> ${escL(b.map(x=>`${x.name} ${x.species}종`).join(' · '))}</li>`:'';};
+  $('license-layer').querySelector('div').innerHTML=
+    `<p>현재 공개 ${esc(L.species_total)}종 기준입니다. 계산만 했고 공개 점수·유형·지도 색은 바꾸지 않았습니다.</p>`+
+    `<div class="mt-lic-wrap"><table class="mt-lic-table lic-layer"><thead><tr><th scope="col">항목</th><th scope="col">현재 공개</th>${L.scenarios.map(x=>`<th scope="col" title="${esc(x.detail||'')}">${esc(x.label)}</th>`).join('')}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`+
+    `<p class="fine">${esc(L.scenarios.map(x=>`${x.label}: ${x.detail||x.label}`).join(' · '))}. 지표는 그 종의 지표 기록에 연결된 출처가 모두 조건에 맞을 때만 셉니다(확인 단계에만 쓴 출처도 포함하는 보수적 계산). BBVI는 MFPI·MBPI가, 유형은 BBVI·MCUI가 함께 남을 때 셉니다. 지도 셀은 그 셀의 검수 통과 기록 중 하나라도 CC0·CC BY이면 남습니다.</p>`+
+    `<p class="lic-sub">CC0·CC BY만 남길 때 주로 빠지는 출처</p><ul>${['MFPI','MBPI','MCUI'].map(k=>block(k,'open_blockers')).join('')}</ul>`+
+    `<p class="lic-sub">확인 필요 출처가 모두 가능해도 기관 승인이 필요한 출처</p><ul>${['MFPI','MBPI','MCUI'].map(k=>block(k,'upper_blockers')).join('')}</ul>`;
+  // items to confirm (folded): IUCN first, then the 'review' sources grouped by reason
+  const items=m.review_items||[], iucn=items.filter(x=>x.id==='iucn-redisplay'), rest=items.filter(x=>x.id!=='iucn-redisplay'), byBasis={};
+  rest.forEach(x=>(byBasis[x.detail]??=[]).push(x));
+  $('license-review').querySelector('summary').textContent=`확인 필요 항목 · IUCN 재게시 범위${rest.length?` 외 출처 ${rest.length}건`:''}`;
+  $('license-review').querySelector('div').innerHTML=
+    iucn.map(x=>`<p><b>${esc(x.title)}</b> · ${esc(x.status)} · ${sourceLink(x.url,'IUCN 이용약관 원문 ↗')}<br>${esc(x.detail)}</p>`).join('')+
+    `<ul>${Object.entries(byBasis).sort((a,b)=>b[1].length-a[1].length).map(([basis,xs])=>`<li><b>${esc(basis)}</b> ${esc(xs.length)}건: ${orig(uniq(xs.map(x=>x.title)).slice(0,8).join(' · '))}${xs.length>8?` 외 ${esc(xs.length-8)}건`:''}</li>`).join('')}</ul>`;
+  $('license-date').textContent=m.generated_from?.assessments?`· 지표 ${m.generated_from.assessments} 기준`:'';
+  box.hidden=false;
+}
+
 function registerTools(){
   const ctx=document.modelContext;if(!ctx?.registerTool)return;
   const lifecycle=new AbortController();window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
@@ -4021,13 +4111,14 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches]=await Promise.all([loadPublishedProfiles(),
+    const [next,readiness,traits,outside,literature,searches,scorecard]=await Promise.all([loadPublishedProfiles(),
       fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);
+      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -4060,9 +4151,11 @@ async function start(){
   const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
   const termsReq=fetch('source-terms-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
   const screenReq=fetch('screen-text-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional too
+  const licReq=fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: the section stays hidden without it
   try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
   {const t=await screenReq;if(t?.schema==='screen-text-ko-1'&&t.by_text&&typeof t.by_text==='object')screenTextKo=t.by_text;}
+  licReq.then(renderLicense); // drawn once the Korean notes are in, so its licence notes read in Korean too
   {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
   try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
@@ -4103,12 +4196,15 @@ document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const c
 const smoothScroll=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
 function methodGo(el){if(!el)return;const d=el.closest('details');if(d)d.open=true;el.scrollIntoView({behavior:smoothScroll(),block:'start'});}
 const METHOD_GO={journey:()=>$('mt-journey'),sources:()=>document.querySelector('#method .source-section'),flow:()=>document.querySelector('#method .flow-wrap')};
+// footer '출처 목록 참조': opens the method tab at the licence table
+document.querySelectorAll('[data-foot-go]').forEach(b=>b.addEventListener('click',()=>{setView('method',false);const t=$('mt-license');methodGo(t&&!t.hidden?t:document.querySelector('#method .source-section'));t?.focus?.({preventScroll:true});}));
 document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',()=>{const t=METHOD_GO[b.dataset.mtGo]?.();methodGo(t);
   if(b.dataset.mtGo==='sources')$('all-sources')?.focus({preventScroll:true});}));
 // Research scope numbers (운영 발행 · 조사 후보 from the loaded collection; '—' until then or after a failure) and the
 // four quadrant names from the report's matrix rule. The diagram places no species, points or scores.
 function renderMethodPage(){
   const n=v=>Number.isFinite(v)?String(v):'—';
+  renderScorecard();
   $('mt-total').textContent=n(data?.species?.length);$('mt-published').textContent=n(data?.publishedCount);$('mt-candidates').textContent=n(data?.candidateCount);
   const rule=matrixRule();if(!rule)return;
   document.querySelectorAll('#method .mt-q').forEach(q=>{const t=rule.types?.[q.dataset.q];if(!t)return;q.dataset.type=t.id;q.querySelector('b').textContent=matrixTypePlain(t.id);q.querySelector('span').textContent=t.label;});

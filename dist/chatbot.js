@@ -1,6 +1,6 @@
 'use strict';
-// 사용법 안내 챗봇. 질문은 먼저 아래 FAQ에서 찾고, FAQ가 못 찾은 질문만 Cloudflare Workers AI(/api/ask, worker/index.mjs)가
-// 화면 글과 FAQ만 근거로 답한다('AI 답변 · 참고용' 표시). 정적 서버·오프라인 시연·오류·한도 초과면 FAQ 안내로 돌아간다.
+// 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답만 한다. AI나 서버는 쓰지 않는다.
+// 2026-10-15까지 FAQ가 못 찾은 질문을 보내던 /api/ask(Workers AI)는 지웠고, 이제는 '준비된 답이 없어요'와 세 탭 바로가기를 보인다.
 // 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
 // 화면 이동은 상태를 직접 바꾸지 않고 기존 버튼을 .click()해서 앱의 처리 로직을 그대로 탄다.
 // app.js와 같은 전역 렉시컬 범위를 쓰므로 최상위 이름은 모두 CHATBOT_/chatbot 접두어를 붙인다.
@@ -43,8 +43,25 @@ const CHATBOT_FAQ=[
     show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['matrix','labels']},
   {id:'matrix',q:['활용 × 보전 매트릭스는 뭐예요','매트릭스 점은 어떻게 읽어요','왜 두 지표를 합치지 않나요'],
     k:['매트릭스','합치지','따로','두축'],
-    a:'{tab:compare} 탭 첫 화면의 ‘활용 × 보전’ 매트릭스는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 합치지 않아요. 활용가치가 높다고 보전 필요성이 가려지면 안 되기 때문이에요. 사분면마다 쉬운 이름과 공식 유형 이름이 함께 적혀 있어요. 점 색은 그 종의 유형 색이고, 속이 빈 점은 최상위 근거 독립 재현 확인 중 라벨이 붙은 값(MBPI 최상위 항목의 독립 재현이 아직 없음)이에요. 한 줄에 몰린 점들은 ‘N종 밀집 · 펼치기’ 상자로 묶여 있고, 누르면 그 종 목록이 열려요. 나머지 같은 높이 점은 위아래로 조금 비켜 놓고 짧은 선으로 실제 높이를 가리켜요. 읽는 법은 그래프 오른쪽 위 ‘ⓘ 읽는 법’ 버튼에 있어요. MCUI 기반(국가 평가·지방 목록·자체 예비평가)은 점 툴팁과 그래프 아래 ‘유형별 종 목록’에서 볼 수 있고, 이 목록으로 색 없이도 같은 내용을 읽을 수 있어요. 점을 누르면 오른쪽 종 프로필에 그 종의 값과 라벨이 나와요.',
-    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['indices','colors']},
+    a:'{tab:compare} 탭 첫 화면의 ‘활용 × 보전’ 매트릭스는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 합치지 않아요. 활용가치가 높다고 보전 필요성이 가려지면 안 되기 때문이에요. 사분면마다 쉬운 이름과 공식 유형 이름이 함께 적혀 있어요. 점 색은 그 종의 유형 색이고, 속이 빈 점은 최상위 근거 독립 재현 확인 중 라벨이 붙은 값(MBPI 최상위 항목의 독립 재현이 아직 없음)이에요. 한 줄에 몰린 점들은 ‘N종 밀집 · 펼치기’ 상자로 묶여 있고, 누르면 그 종 목록이 열려요. 나머지 같은 높이 점은 위아래로 조금 비켜 놓고 짧은 선으로 실제 높이를 가리켜요. 읽는 법은 그래프 오른쪽 위 ‘ⓘ 읽는 법’ 버튼에 있어요. MCUI 기반은 점 툴팁과 그래프 아래 ‘유형별 종 목록’에서 볼 수 있고, 이 목록으로 색 없이도 같은 내용을 읽을 수 있어요. 점을 누르면 오른쪽 종 프로필에 그 종의 값과 라벨이 나와요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix-missing','threshold','indices']},
+  // 2026-10-15 심사 예상 질문. 종 이름·값·근거는 {matrix}·{score:종:지표}·{basis:종}·{mcuiwhy:종}으로 화면 자료에서 읽는다.
+  {id:'matrix-missing',q:['매트릭스에 없는 종이 있어요?','왜 어떤 종은 매트릭스에 점이 없어요','매트릭스에는 몇 종이 있어요'],
+    k:['매트릭스없','점이없','빠진종','빠졌','몇종'],
+    a:'{tab:compare} 탭의 ‘활용 × 보전’ 매트릭스에는 BBVI(활용가치)와 MCUI(보전 시급성)가 둘 다 있는 종만 점으로 놓아요. {matrix}',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix','mcui']},
+  {id:'threshold',q:['50점은 누가 정했어요?','높음 기준은 왜 그 값이에요','구분선은 어떻게 정했어요','기준 50은 근거가 있어요?'],
+    k:['50','누가정','구분선','기준값','높음기준','정했'],
+    a:'‘높음’을 가르는 선은 연구팀이 정한 규칙이에요. {rule} 이 선은 검증된 기준이 아니라 탐색적 구분선이고, 4.0부터 산식·가중치와 함께 고정해 결과를 보고 바꾸지 않아요. 선 가까이 있는 종은 유형이 쉽게 바뀔 수 있으니 유형 이름보다 값을 함께 봐 주세요. {tab:compare} 탭 ‘비교 기준’의 가중치 슬라이더로 BBVI가 어떻게 움직이는지 확인할 수 있어요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix','validation']},
+  {id:'same-score',q:['참굴 10점과 고등어 10점은 같은 뜻이에요?','MCUI 점수가 같으면 같은 위험이에요','같은 점수는 같은 뜻인가요'],
+    k:['같은뜻','같은점수','점수같','같은위험','참굴','고등어'],
+    a:'MCUI(보전 시급성)의 같은 숫자는 같은 범주 이름을 점수로 옮겼다는 뜻일 뿐, 같은 위험을 잰 값은 아니에요. 참굴 MCUI({score:참굴:MCUI})는 {basis:참굴}, 고등어 MCUI({score:고등어:MCUI})는 {basis:고등어}에서 왔어요. 평가 범위가 다르면 같은 숫자라도 같은 위험이 아니라서, 화면은 값 옆에 그 근거를 함께 적고 기반이 다른 값끼리 순위를 매기지 않아요. 종별 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['mcui','squid']},
+  {id:'squid',q:['살오징어는 IUCN에서 LC인데 왜 60점이에요?','LC인데 MCUI가 왜 높아요','오징어 보전 점수가 왜 높아요'],
+    k:['살오징어','오징어','lc인데','60점','왜높'],
+    a:'{mcuiwhy:살오징어} 4.12부터 KOSIS 연근해 어획량이 크게 줄어든 종에는 자원 감소 신호 점수를 매기고, 멸종위험 점수와 둘 중 높은 값을 MCUI로 써요. 이 점수는 IUCN 평가가 아니고 어획량은 개체수와 같지 않아서, 화면에는 ‘자원 감소 신호’로 따로 밝혀요.',
+    show:{click:['[data-view="method"]'],target:'#method-03'},next:['mcui','validation']},
   {id:'indices',q:['BBVI·MCUI·정보충분도가 뭔가요?','지표가 뭐예요','점수는 어떻게 매겨요'],
     k:['지표','bbvi','mcui','정보충분도','점수','약어'],
     a:'BBVI(활용가치)는 식량 지표 MFPI와 신약 지표 MBPI를 합친 값이고, MCUI(보전 시급성)는 보전 평가 범주를 점수로 옮긴 값이에요(공식 평가가 없으면 자체 예비평가). 두 값은 합치지 않고 따로 보여 줘요. 정보충분도는 자료가 얼마나 갖춰졌는지 보여 주는 별도 표시로, 점수와 섞지 않아요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
@@ -61,20 +78,20 @@ const CHATBOT_FAQ=[
     k:['mbpi','신약지표','생리활성','펩타이드','chembl','0점','하한값','효능'],
     a:'MBPI(신약 지표)는 ChEMBL 화합물, ACE 저해·항균·항암·잔틴 산화효소 억제 펩타이드, 감태 분리 화합물을 층별로 따로 백분위로 매겨요. 같은 표적·같은 시험 조건끼리만 비교하고, 근거 계수를 곱한 뒤 가장 높은 항목을 종의 값으로 써요. 근거가 없는 종은 0점(하한값)이고 효능이 없다는 뜻이 아니에요. 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
     show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','mcui']},
-  {id:'mcui',q:['MCUI는 뭐예요','보전 시급성은 어떻게 정해요','적색목록 평가가 없으면 어떻게 해요','보전평가 미확인은 무슨 뜻이에요'],
+  {id:'mcui',q:['MCUI는 뭐예요','보전 시급성은 어떻게 정해요','적색목록 평가가 없으면 어떻게 해요','보전평가 미확인은 무슨 뜻이에요','자원 감소 신호는 뭐예요'],
     k:['mcui','보전','시급','적색목록','iucn','rapidlc','예비평가','멸종','어획량','자원감소','미확인','보전평가미확인'],
     a:'MCUI(보전 시급성)의 멸종위험 성분은 IUCN 적색목록 2026-1 현행 전 지구 평가를 먼저 쓰고, 없으면 한국 국가 평가를 써요. 두 기관이 아직 평가하지 않은 종은 서식국 정부 평가나 자체 예비평가(Rapid LC)를 예비 평가로 쓰고, IUCN이나 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿔요. 어느 근거도 없으면 MCUI는 비워 두고, 0점이나 낮은 위험으로 바꾸지 않아요. 4.12부터는 KOSIS 연근해 어획량이 크게 줄어든 종에 자원 감소 신호 점수(35·60·80점)를 매겨 둘 중 높은 값을 MCUI로 써요. 멸종위험 성분이 없는 종은 그 점수가 매트릭스 구분선 이상일 때만 하한으로 써요. 이 점수는 IUCN 평가가 아니고, 어획량은 개체수와 같지 않아요. OBIS 출현 추세는 참고 요소이고, 출현기록 수만으로 판정하지 않아요.',
     show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','matrix']},
-  {id:'validation',q:['지표는 검증됐나요','방법 검증 기준 미충족은 무슨 뜻이에요','빈칸은 왜 없어요'],
+  {id:'validation',q:['검증은 통과했어요?','지표는 검증됐나요','방법 검증 기준 미충족은 무슨 뜻이에요','빈칸은 왜 없어요'],
     k:['검증','미통과','미충족','통과','신뢰','빈칸','대체규칙'],
-    a:'MFPI(식량)는 같은 종을 국가표준식품성분 DB와 일본 식품성분표로 각각 계산해 순위를 비교하는 검증을 통과했어요. MBPI(신약)와 BBVI(활용가치)는 ‘방법 검증 기준 미충족’ 라벨이 붙어 있어 참고값으로 봐야 해요. 4.3부터 빈칸은 없고, 공식 근거가 없는 칸은 미리 정한 대체 규칙으로 채운 뒤 라벨로 밝혀요.',
+    a:'MFPI(식량)는 같은 종을 국가표준식품성분 DB와 일본 식품성분표로 각각 계산해 순위를 비교하는 검증을 통과했어요. MBPI(신약)와 BBVI(활용가치)는 ‘방법 검증 기준 미충족’ 라벨이 붙어 있어 참고값으로 봐야 해요. 해양 유래 의약품의 기원종이 MBPI 상위에 오는지 본 사후 검증도 기준 미충족이에요. 결과는 {tab:method} 탭 ‘검증 결과’에 그대로 적혀 있어요. 4.3부터 빈칸은 없고, 공식 근거가 없는 칸은 미리 정한 대체 규칙으로 채운 뒤 라벨로 밝혀요.',
     show:{click:['[data-view="method"]'],target:'#method-03'},next:['labels','indices']},
   {id:'labels',q:['값 옆의 라벨은 무슨 뜻이에요','하한값 라벨이 뭐예요','지방 목록 예비평가 라벨'],
     k:['라벨','하한값','예비평가','지방목록'],
     a:'값 옆의 라벨(최상위 근거 독립 재현 확인 중·하한값·예비평가·지방 목록)은 근거의 수준을 알려 주는 표시이고, 가치가 높고 낮음을 뜻하지 않아요. 규칙을 다 채우지 못한 값에 붙어요.',
     show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['evidence-level','validation']},
   // 4.16 (2026-10-15): the old '근거 논문 1편' words read as "one paper"; they meant the top MBPI item has no independent replication
-  {id:'evidence-level',q:['근거 논문 1편이 무슨 뜻이에요','최상위 근거 독립 재현 확인 중은 무슨 뜻이에요','근거 프로필은 어떻게 읽어요'],
+  {id:'evidence-level',q:['‘근거 논문 1편’이 무슨 뜻이에요?','최상위 근거 독립 재현 확인 중은 무슨 뜻이에요','근거 프로필은 어떻게 읽어요'],
     k:['근거논문','논문1편','단일논문','근거프로필','독립재현','재현','최상위근거','논문수','소수점','정수'],
     a:'예전의 ‘근거 논문 1편’ 표시는 그 종의 논문이 1편뿐이라는 뜻이 아니었어요. MBPI를 정하는 최상위 항목을 다른 연구팀이 같은 종의 시료로 다시 재서 확인하는 일(독립 재현)이 아직 진행 중이라는 뜻이라, 지금은 ‘최상위 근거 독립 재현 확인 중’으로 적어요. 종 카드와 종 프로필의 근거 프로필 한 줄은 근거의 양(산출 항목 수·독립 논문 수)과 최상위 항목의 독립 재현 확인 여부를 따로 보여 줘요. 확인 전인 항목에는 근거 계수(0.75 등)가 곱해지고, 그런 MBPI·BBVI는 정수로 보여요. 같은 연구실의 후속 논문, 합성품이나 다른 생물 시료의 측정, DOI 없는 문헌은 재현으로 세지 않아요.',
     show:{click:['[data-view="method"]'],target:'#method-evidence'},next:['labels','mbpi']},
@@ -113,6 +130,8 @@ const CHATBOT_FAQ=[
 ];
 const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colors','색깔(4가지 유형)은 무슨 뜻이에요?'],['chips','신약·기능성·식량 특성으로 종 찾기'],
   ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI·정보충분도가 뭔가요?']];
+// 답이 없을 때 보여 줄 세 탭과 그 탭에서 볼 수 있는 것.
+const CHATBOT_TAB_LINKS=[['explore','종별 지도와 근거'],['compare','매트릭스와 데이터 표'],['method','산출 방법과 검증 결과']];
 const CHATBOT_PARTICLES=['으로','에서','이랑','하고','까지','부터','한테','은','는','이','가','을','를','의','에','로','도','요','와','과','만'];
 // 소문자 → 낱말마다 끝 조사 하나 제거(조사보다 2글자 이상 긴 낱말만) → 공백·문장부호 없이 이어 붙임.
 function chatbotNormalize(text){
@@ -131,6 +150,30 @@ const CHATBOT_MIN_SCORE=.45;
 function chatbotPlain(key){
   try{const id=typeof matrixRule==='function'?matrixRule()?.types?.[key]?.id:null;if(id&&typeof matrixTypePlain==='function')return matrixTypePlain(id);}catch{}
   return '종 카드에 적힌 판단문';
+}
+// {matrix}·{score:종:지표}·{basis:종}·{mcuiwhy:종}: 종의 값과 근거를 app.js가 화면에 쓰는 함수로 읽는다(숫자 하드코딩 없음).
+// 자료가 아직 없거나 종을 못 찾으면 화면을 보라는 말로 바꾼다. 예비 평가는 바깥 화면처럼 중립 낱말('멸종위험 평가')로만 부른다.
+function chatbotFact(kind,arg){
+  try{
+    const list=typeof data!=='undefined'&&Array.isArray(data?.species)?data.species:null;
+    if(kind==='matrix'){
+      if(!list||typeof assessedForMatrix!=='function')return '몇 종이 놓였는지는 매트릭스 아래 ‘유형별 종 목록’에서 볼 수 있어요.';
+      const out=list.filter(s=>!assessedForMatrix(s));
+      if(!out.length)return `지금은 ${list.length}종 모두 매트릭스에 놓여 있어요.`;
+      const why=typeof untypedWhy==='function'?untypedWhy(out[0]):'유형 미산출';
+      return `지금은 ${list.length}종 중 ${list.length-out.length}종이 놓여 있어요. 빠진 종(${out.map(s=>`‘${s.label}’`).join('·')})은 ‘${why}’라서 점이 없어요.`;
+    }
+    const [name,key]=String(arg).split(':'),s=list?.find(x=>x.label===name);
+    const score=k=>{const v=s&&pilotScore(s,k);return Number.isFinite(v)?scoreText(s,k,v):null;};
+    if(kind==='score'&&score(key)!==null)return score(key)+'점';
+    if(kind==='basis'&&s&&typeof mcuiBasisShortOf==='function'){const b=mcuiBasisShortOf(s);return b==='IUCN'?'IUCN 전 지구 평가':b;}
+    if(kind==='mcuiwhy'&&score('MCUI')!==null){
+      const c=s.assessment?.conservation_status?.category,risk=extinctionMcui(s);
+      return stockMcui(s)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${Number.isFinite(risk)?risk.toFixed(1)+'점':'낮은 값'}이지만, 자원 감소 신호(어획량 ${stockChange(s.assessment.stock_decline)})로 ${score('MCUI')}점이 됐어요.`
+        :`${name}의 MCUI는 지금 ${score('MCUI')}점이고 ${chatbotFact('basis',name)}에서 왔어요.`;
+    }
+  }catch{}
+  return kind==='score'?'(값은 종 상세 참고)':kind==='basis'?'종 상세에 적힌 근거':kind==='mcuiwhy'?'값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.':'';
 }
 function chatbotMatch(text){
   const q=chatbotNormalize(text);if(q.length<2)return null;
@@ -256,6 +299,7 @@ if(typeof document!=='undefined')(function(){
     return text.replace(/\{tab:(\w+)\}/g,(_,v)=>q(document.querySelector(`.tabs button[data-view="${v}"]`)?.textContent.trim()||v))
       .replace(/\{type:(\w+)\}/g,(_,k)=>q(typeLabel(k)))
       .replace(/\{plain:(\w+)\}/g,(_,k)=>q(chatbotPlain(k)))
+      .replace(/\{(matrix|score|basis|mcuiwhy)(?::([^}]+))?\}/g,(_,k,a)=>chatbotFact(k,a))
       .replace(/\{rule\}/g,()=>{const r=rule(),b=r?.bbvi_threshold,m=r?.mcui_threshold;
         return Number.isFinite(b)&&Number.isFinite(m)?(b===m?`BBVI(활용가치)와 MCUI(보전 시급성)가 각각 ${b} 이상이면 ‘높음’으로 봐요.`:`BBVI(활용가치) ${b}, MCUI(보전 시급성) ${m} 이상이면 ‘높음’으로 봐요.`)
           :'‘높음’의 기준은 범례 ⓘ에서 확인하세요.';});
@@ -264,10 +308,10 @@ if(typeof document!=='undefined')(function(){
   const root=document.createElement('div');root.className='bbc';
   root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
-    '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">멍이<span class="bbc-sr"> 사용법 안내</span></strong><small aria-hidden="true">바다 연구원 · 사용법 안내</small></div>'+
+    '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
-    '<p class="bbc-note">FAQ에 없는 질문은 답을 만들기 위해 Cloudflare Workers AI로 보내요.</p>'+
+    '<p class="bbc-note">AI 아님 · 정해진 답변</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
     '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
     '<span class="bbc-safe" aria-hidden="true"></span>';
@@ -393,34 +437,29 @@ if(typeof document!=='undefined')(function(){
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
     log.scrollTop=log.scrollHeight;
   }
-  function unknown(text,state){add('bbc-bot',text||'이 부분은 아직 잘 모르겠어요. 아래 질문 중에서 골라 보거나 다른 말로 물어봐 주세요.',state||'unknown');buttons(CHATBOT_STARTERS);log.scrollTop=log.scrollHeight;}
-  // FAQ가 못 찾은 질문만 AI(Worker /api/ask, worker/index.mjs)에 묻는다. 시간 초과·오류·한도 초과·정적 서버(404)면 FAQ 안내로 돌아간다.
-  async function askAi(text){
-    // 오프라인 시연(live-data.js)에서는 AI에 묻지 않고 FAQ 안내로 돌아간다.
-    if(globalThis.BBVM_OFFLINE===true)return unknown('오프라인 시연 중이라 AI 답변은 쉬고 있어요. 아래 질문 중에서 골라 주세요.','rest');
-    const wait=add('bbc-bot bbc-wait','멍이가 답을 찾는 중이에요…','think');log.scrollTop=log.scrollHeight;
-    let reply=null,status=0;
-    try{
-      const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),15000);
-      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text}),signal:ctl.signal});
-      clearTimeout(timer);status=r.status;
-      if(r.ok)reply=(await r.json())?.answer;
-    }catch{}
-    wait.parentElement.remove();
-    if(typeof reply!=='string'||!reply.trim())return status===429?unknown('질문이 많아 지금은 AI 답변을 쓸 수 없어요. 1분쯤 뒤에 다시 물어보거나 아래 질문 중에서 골라 주세요.','rest'):unknown();
-    const m=add('bbc-bot bbc-ai',reply.trim(),'ai');
-    const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent='AI 답변 · 참고용 · 화면 글만 근거로 만들었어요';m.append(tag);
-    log.scrollTop=log.scrollHeight;
+  // FAQ가 못 찾은 질문: '준비된 답이 없어요'와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
+  function unknown(){
+    add('bbc-bot','준비된 답이 없어요. 아래 탭에서 직접 보거나, 다른 말로 다시 물어봐 주세요.','unknown');
+    const box=document.createElement('div');box.className='bbc-chips bbc-tabs';
+    for(const [id,what] of CHATBOT_TAB_LINKS){
+      const b=document.createElement('button');b.type='button';b.dataset.tab=id;
+      b.textContent=`${document.querySelector(`.tabs button[data-view="${id}"]`)?.textContent.trim()||id} 탭 · ${what}`;box.append(b);
+    }
+    log.append(box);log.scrollTop=log.scrollHeight;
+  }
+  function goTab(id){
+    mood('point',true);if(mobile())close();
+    setTimeout(()=>{const b=document.querySelector(`.tabs button[data-view="${id}"]`);if(b&&b.getAttribute('aria-current')!=='page')b.click();scrollTo({top:0,behavior:reduced()?'auto':'smooth'});},0);
   }
   function ask(text,id){
     add('bbc-user',text);
     const f=id?byId(id):chatbotMatch(text);
-    if(f)answer(f);else if(id)unknown();else askAi(text);
+    if(f)answer(f);else unknown();
   }
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
-    if(!log.childElementCount){add('bbc-bot','안녕하세요! 저는 바다 연구원 멍이예요. 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
+    if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();input.focus();
   }
   function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
@@ -501,7 +540,7 @@ if(typeof document!=='undefined')(function(){
   root.querySelector('.bbc-form').addEventListener('submit',e=>{e.preventDefault();const t=input.value.trim();if(!t)return;input.value='';ask(t);});
   log.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
-    if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
+    if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}else if(b.dataset.tab)goTab(b.dataset.tab);else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
   });
   addEventListener('resize',place);
   // 탭은 탭 버튼 말고도(‘선택 종 비교하기’, ‘근거 보기’ 등) 바뀌므로 #explore의 class 변화를 지켜본다.
