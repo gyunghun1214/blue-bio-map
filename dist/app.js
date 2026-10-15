@@ -60,7 +60,15 @@ const mbpiRxOf = s => {
 };
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
-const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
+// Sources whose publisher moved the file for good (reports/link-check, 2026-10-15). The data keeps the address as it was
+// read; the link opens the new address and says so. Same list in expedition.js.
+const MOVED_LINKS = {
+  'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
+  'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
+};
+const sourceLink = (url,label) => MOVED_LINKS[url]
+  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
+  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
 const recordLabel = s => s.noOccurrences ? '출현자료 미수집'
   : Number.isSafeInteger(s.recordCount) ? s.recordCount.toLocaleString()+'건' : '기록 수 미확인';
 // Evidence stages are independent of the operational DB's old inventory counters.

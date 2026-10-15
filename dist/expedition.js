@@ -168,7 +168,13 @@ const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미
 const $=id=>document.getElementById(id);
 const esc=v=>plainWords(String(v??'')).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
-const link=(url,label)=>safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
+// Sources whose publisher moved the file for good (reports/link-check, 2026-10-15); same list as app.js.
+const MOVED_LINKS={
+  'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
+  'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
+};
+const link=(url,label)=>MOVED_LINKS[url]?`<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
+  :safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const AXIS={MFPI:'식량자원 잠재력',MBPI:'신약개발(생리활성) 잠재성',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js

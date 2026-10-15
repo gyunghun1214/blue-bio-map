@@ -36,8 +36,16 @@ jobs:
           hosts = collections.Counter((urllib.parse.urlsplit(r['url']).hostname, r['status']) for r in rows if r['result'] == '확인 불가')
           for (h, st), n in hosts.most_common():
               print(f'확인 불가\t{h}\t{st}\t{n}')
-          # the whole CSV in one line (gzip + base64), for sessions that can read the log but not the artifact
-          print('CSV-GZ-B64 ' + base64.b64encode(gzip.compress(open('live-check/links.csv', 'rb').read(), 9)).decode())
+          # A short line for sessions that can read this log but not the artifact: status and result of every URL in the
+          # order of `check_links.py --list` (sorted URLs), gzip + base64. The URL list itself is rebuilt from the same
+          # checkout; LIST-SHA256 says whether it matches.
+          import hashlib, json
+          by = {r['url']: r for r in rows}
+          urls = sorted(by)
+          print('LIST-SHA256', hashlib.sha256('\n'.join(urls).encode()).hexdigest(), len(urls))
+          code = {'정상': 0, '이동됨': 1, '깨짐': 2, '확인 불가': 3}
+          packed = [[by[u]['status'], code[by[u]['result']]] + ([by[u]['final_url']] if by[u]['result'] in ('이동됨', '깨짐') else []) for u in urls]
+          print('STATUS-GZ-B64 ' + base64.b64encode(gzip.compress(json.dumps(packed, ensure_ascii=False, separators=(',', ':')).encode(), 9)).decode())
           EOF
       - uses: actions/upload-artifact@v6
         if: always()

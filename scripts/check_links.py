@@ -43,17 +43,22 @@ DIST = ROOT / 'dist'
 # A browser's User-Agent: several publishers and portals answer 403 to anything that names itself a bot, which would hide
 # whether the page itself is there. Requests stay few and slow (two at a time per host).
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36'
-URL_RE = re.compile(r"""https?://[^\s"'<>()`\\]+""")
+# Parentheses stay in: DOIs such as 10.1016/S0955-2863(00)00110-8 carry them. clean() drops an unbalanced closing one
+# ("(see https://x.org/a)") and trailing punctuation.
+URL_RE = re.compile(r"""https?://[^\s"'<>`\\]+""")
 HREF_RE = re.compile(r"""<a\b[^>]*?\bhref\s*=\s*["']([^"']+)["']""", re.I)
 # Not links a reader opens: the data API needs a key, and the license/credit lines of the map tiles are templates.
 SKIP_HOSTS = {'mmsyrshjuaxdvegjhpdz.supabase.co', '127.0.0.1', 'localhost'}
 
 
 def clean(url: str) -> str:
-    url = url.rstrip('.,;:')
-    while url.endswith(')') and url.count('(') < url.count(')'):
-        url = url[:-1]
-    return url
+    while True:
+        before = url
+        url = url.rstrip('.,;:')
+        if url.endswith(')') and url.count('(') < url.count(')'):
+            url = url[:-1]
+        if url == before:
+            return url
 
 
 def is_template(url: str) -> bool:

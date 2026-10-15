@@ -431,6 +431,7 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .error .data-retry,.load-failed .data-retry{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .error .error-cause{display:block;margin-top:4px;font-size:13px;opacity:.85}
 .load-failed{margin:0;font-size:14px}
+.moved-link{font-size:12px;opacity:.75;white-space:nowrap}
 .basemap-status.fallback{display:none}
 .basemap-warn{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:6px;border-radius:6px;background:#fbf0d2;color:#995c08;font-size:13px;cursor:help}
 .basemap-warn[hidden]{display:none}
