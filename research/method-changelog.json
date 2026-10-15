@@ -1,0 +1,1564 @@
+{
+  "schema_version": "method-changelog-1",
+  "about": "방법 버전마다 무엇을, 왜, 언제 바꿨는지와 사전 등록 여부, 결과를 본 뒤의 결정인지, 점수 영향(종 수)을 적은 원장. python scripts/build_method_changelog.py 가 저장소의 설정·기록·보관본으로 만든다. 손으로 고치지 않는다.",
+  "timing_rule": "결정이 그 결정으로 바뀌는 값이나 채워지는 칸을 본 뒤였는지를 기록대로 적는다. 기록이 '본 뒤'라고 적었거나, 특정 종·항목을 놓고 내린 개별 판단이거나, 이미 공개한 결과가 있는 규칙으로 되돌린 경우는 '결과 확인 후'. 기록이 값을 보기 전에 정했다고 밝힌 경우만 '결과 확인 전'. 순서를 적은 기록이 없으면 '미확인'. 규칙과 판단 없이 고정 규칙 안에서 근거·표시·기록만 바뀐 버전은 '규칙 변경 없음'.",
+  "score_impact_rule": "직전 공개 버전의 보관본과 비교해 네 지표 중 하나라도 값이 바뀐 종의 수. 보관본이 없는 버전은 null(미확인).",
+  "current": {
+    "method_version": "verified-4.19",
+    "frozen_on": "2026-10-15",
+    "label": "verified-4.19 · 2026-10-15 동결",
+    "note": "대회 기간에는 이 버전으로 고정합니다. 새 방법 버전이 공개되면 이 표시는 그 버전과 날짜로 바뀝니다."
+  },
+  "constants": {
+    "mfpi_weights": {
+      "value": [
+        0.8,
+        0.1,
+        0.1
+      ],
+      "since": "verified-pilot-1",
+      "changed_in": []
+    },
+    "bbvi_default_food_weight": {
+      "value": 0.5,
+      "since": "verified-pilot-1",
+      "changed_in": []
+    },
+    "matrix_thresholds": {
+      "value": [
+        50,
+        50
+      ],
+      "since": "verified-pilot-3.2",
+      "changed_in": []
+    }
+  },
+  "counts": {
+    "versions": 52,
+    "rule_changed": 35,
+    "preregistered": 13,
+    "timing": {
+      "결과 확인 전": 0,
+      "결과 확인 후": 23,
+      "미확인": 12,
+      "규칙 변경 없음": 17
+    }
+  },
+  "not_listed": {
+    "verified-pilot-3": "연구용 설정. 펩타이드 층과 국가 적색목록 층을 먼저 계산해 본 것으로, 2.1·2.2가 같은 규칙을 공개 정의로 옮겼다.",
+    "verified-pilot-3-oyster-lqp-research": "참굴 LQP 행을 넣었을 때의 MBPI를 보여 준 연구 시나리오. 공개하지 않았다.",
+    "verified-4.15": "번호만 비어 있다. 병렬 작업(정보 공백 표시, PR #193)에 남겨 두었고 그 작업은 병합하지 않았다. 공개된 적 없다."
+  },
+  "entries": [
+    {
+      "method_version": "verified-pilot-1",
+      "published_on": "2026-09-25",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "첫 시범 산출: 네 지표(MFPI·MBPI·MCUI·BBVI)와 재현 가능한 계산 스크립트",
+      "reason": "기획서의 네 지표를 공개 자료로 처음 계산했다.",
+      "preregistration": null,
+      "records": [
+        "docs/verified-indices-design.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "첫 규칙 묶음이다. 값을 보기 전에 정했는지 적은 기록이 없다.",
+      "score_impact": null,
+      "compared_with": null,
+      "config": "research/verified-indices/archive/verified-indices-v1.json",
+      "changes_from": null
+    },
+    {
+      "method_version": "verified-pilot-2",
+      "published_on": "2026-09-27",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "식품 비교집단을 국가표준식품성분 DB로 고정, IUCN 현행 확인과 정보충분도 추가",
+      "reason": "비교 기준을 고정된 공개 자료로 바꾸고, 평가가 지금도 유효한지 확인하려고.",
+      "preregistration": null,
+      "records": [],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": null,
+      "compared_with": "verified-pilot-1",
+      "config": "config/verified-indices-v2.json",
+      "changes_from": "verified-pilot-1 (archived in research/verified-indices/archive/)"
+    },
+    {
+      "method_version": "verified-pilot-2.1",
+      "published_on": "2026-09-27",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "한국 국가 적색목록 MCUI(구분 표시), 근거 논문 2편 미만이면 BBVI 보류",
+      "reason": "IUCN 평가가 없는 종의 보전 근거를 국가 평가로 보이되 IUCN 기반과 섞지 않으려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/verified-pilot-3-method.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "같은 규칙을 연구용 설정(verified-pilot-3, 2026-09-26)으로 먼저 계산한 뒤 공개 정의로 옮겼다.",
+      "score_impact": null,
+      "compared_with": "verified-pilot-2",
+      "config": "config/verified-indices-v2.1.json",
+      "changes_from": "verified-pilot-2 (2026-09-26). Adds (1) a Korean national red-list MCUI branch, used only when the IUCN global axis has no number, labelled separately and never ranked with IUCN-based MCUI; (2) the BBVI rule that an MBPI resting on fewer than two independent DOIs is not combined into BBVI; (3) public-paper raw peptide IC50 values shown as '원값·출처' without any AHTPDB cohort or percentile. Nutrition, IUCN mapping, BBVI formula, weights and the small-molecule stratum are unchanged. (4) a reference_combination field beside the scores for species whose BBVI is withheld only for a single-source MBPI; never in scores.BBVI, the matrix or rankings. (5) peptide_raw_values.extra_supplements: 2.1-only raw values kept outside the v3 research supplement (2026-09-27: oyster LQP 1.18 uM, Do et al. 2012, 10.5352/JLS.2012.22.2.220); display only, no score change."
+    },
+    {
+      "method_version": "verified-pilot-2.2",
+      "published_on": "2026-09-27",
+      "decision_date": null,
+      "decided_by": "팀",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MBPI 펩타이드 층(AHTPDB ACE 고정 비교집단) 공개",
+      "reason": "AHTPDB 이용조건을 비상업·출처 표시(CC BY-NC 4.0)로 확인해 공개할 수 있게 되어서.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/verified-pilot-3-method.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "연구용 설정(verified-pilot-3)으로 먼저 계산한 펩타이드 층을 같은 값으로 채택했다.",
+      "score_impact": null,
+      "compared_with": "verified-pilot-2.1",
+      "config": "config/verified-indices-v2.2.json",
+      "changes_from": "verified-pilot-2.1 (2026-09-27). Replaces the display-only peptide raw values with the verified-pilot-3 MBPI peptide stratum (fixed AHTPDB ACE/HHL cohort, 352 peptides, minimum 30, pIC50 percentile, DOI factor 0.75/1.0, max aggregation) after the team read the AHTPDB terms as CC BY-NC 4.0 with attribution (non-commercial public release, World Ocean Forum). Peptide rows: the v3 research supplement plus the 2.1 LQP row (Do et al. 2012, 10.5352/JLS.2012.22.2.220). No threshold, factor or substrate rule changed. Single-DOI MBPI keeps the '참고값(단일 논문)' label and BBVI stays withheld (mbpi_single_source). National red-list MCUI, IUCN mapping, nutrition, weights, BBVI formula and reference_combination are unchanged from 2.1."
+    },
+    {
+      "method_version": "verified-pilot-2.3",
+      "published_on": "2026-09-28",
+      "decision_date": "2026-09-27",
+      "decided_by": "팀 결정 B",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "다른 기원에서 같은 합성 서열을 잰 논문을 효능 재현으로 인정(참굴 LQP)",
+      "reason": "같은 서열의 효능을 다른 연구가 다시 잰 값을 독립 근거로 세려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/verified-pilot-2.3-2026-09-27.md",
+        "research/verified-indices/xo-potency-research-2026-09-27.md",
+        "research/verified-indices/oyster-mbpi-2026-09-27.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "연구용 산출로 참굴 MBPI 72.2→96.3을 먼저 계산한 뒤 공개 정의로 채택했다(xo-potency-research 기록).",
+      "score_impact": null,
+      "compared_with": "verified-pilot-2.2",
+      "config": "config/verified-indices-v2.3.json",
+      "changes_from": "verified-pilot-2.2 (2026-09-27). Adopts the research cross-origin potency rule (config/verified-indices-research-xo-potency.json, research/verified-indices/xo-potency-research-2026-09-27.md) as the public definition, with the same values: in the peptide stratum, a synthetic peptide with the same sequence measured by another paper from another origin (same target, endpoint, HHL substrate, uM, value in text) counts as an independent DOI for the single/multiple DOI factor and the BBVI independence check, when its pIC50 is within max_pIC50_gap of the species value. It never changes the species value (pIC50 stays the median of origin-species rows), never creates an item or a species row, and is not an origin claim. Only effect today: oyster (836033) LQP, Do et al. 2012 (origin) + Miyoshi et al. 1991 (synthetic LQP 2.0 uM, alpha-zein) -> MBPI 72.2 -> 96.3, BBVI withheld -> 80.9. Every other rule, factor, cohort, threshold and the other 29 species equal 2.2."
+    },
+    {
+      "method_version": "verified-pilot-3.1",
+      "published_on": "2026-09-30",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MBPI에 ChEMBL 자동 층 추가",
+      "reason": "워크플로 2–3단계: 펩타이드 밖 화합물의 활성 근거를 같은 표적·지표 비교집단으로 보려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mbpi-chembl-stratum-2026-09-29.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 5,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 5,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": null,
+        "matrix_points": null
+      },
+      "compared_with": "verified-pilot-2.3",
+      "config": "config/verified-indices-v3.1.json",
+      "changes_from": "verified-pilot-2.3 (2026-09-27). Diagram stage 2-3 MBPI: adds the automated ChEMBL stratum (see chembl_bioactivity and research/verified-indices/mbpi-chembl-stratum-2026-09-29.md). Every other rule, factor, cohort and threshold equals 2.3."
+    },
+    {
+      "method_version": "verified-pilot-3.2",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "매트릭스 4유형(구분선 50)·정보충분도·지도 셀 색 공개, 점수 변화 없음",
+      "reason": "워크플로 4–5단계(매트릭스와 GIS 지도) 구현.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/matrix-gis-2026-09-30.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다. 이 버전은 축 점수를 바꾸지 않았다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": null,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.1",
+      "config": "config/verified-indices-v3.2.json",
+      "changes_from": "verified-pilot-3.1 (2026-09-30). Diagram stages 4-5: all 30 species get information sufficiency as its own label (priority_survey) and an unexplored-candidate flag from a same-genus/family relative with BBVI >= 50; the BBVI x MCUI matrix types (IUCN and marked national MCUI) are published and the GIS map colours each public cell by the types of species recorded there. No axis score changes. Information sufficiency changes in one place: a species whose MCUI comes from a reviewed national assessment counts that assessment for the three MCUI steps (3.1 counted only an IUCN record). See research/verified-indices/matrix-gis-2026-09-30.md."
+    },
+    {
+      "method_version": "verified-pilot-3.3",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MFPI의 빠진 성분을 같은 섭취 부위 uFiSh 값으로 채움(대체치 라벨)",
+      "reason": "워크플로 3단계 '섭취위치·유사종 대체치 구분' 구현.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mfpi-substitutes-2026-09-30.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 4,
+        "by_axis": {
+          "MFPI": 4,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.2",
+      "config": "config/verified-indices-v3.3.json",
+      "changes_from": "verified-pilot-3.2 (2026-09-30). Diagram stage 3 MFPI, '섭취위치 / 유사종 대체치 구분': a component missing from a species' own RDA row is filled from FAO/INFOODS uFiSh1.0, species (measured > calculated) > same genus > same family (proxy), same consumed part, and is labelled; five species-level aquaculture records read in the original source are added. The fixed RDA cohorts are re-confirmed unchanged. See research/verified-indices/mfpi-substitutes-2026-09-30.md."
+    },
+    {
+      "method_version": "verified-pilot-3.4",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MCUI에 OBIS 출현 추세 보조 요소, 평가 없는 종에 우선 조사 표시",
+      "reason": "워크플로 3단계 MCUI '분포 최신성 검증' 구현.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mcui-trend-2026-10-01.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 4,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 4,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.3",
+      "config": "config/verified-indices-v3.4.json",
+      "changes_from": "verified-pilot-3.3 (2026-09-30). Diagram stage 3 MCUI, 'OBIS 출현기록 등 분포 최신성 검증, 개체수 감소 vs 조사 부족 구분': an OBIS reporting-rate check (species records / records of the same WoRMS class in the same 1-degree cells, 2006-2015 vs 2016-2025, edge records in every cell that holds them) classifies each species as decline signal, decline below threshold, survey gap, no clear decline or undetermined. A decline signal must also hold inside the dataset with most past records; it raises a computed IUCN or national MCUI by conservation.effort_adjustment and never creates or lowers one. A species without a national category whose IUCN search found no assessment, or whose assessment is DD, is labelled priority_survey with that reason (figure: 우선 조사 대상). See research/verified-indices/mcui-trend-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.5",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "검수한 근거 행 추가(펩타이드 7종, 양식 기록 3종)",
+      "reason": "독립 검수자가 확인한 행을 고정 규칙 그대로 반영.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-additions-2026-10-01.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·계수·비교집단은 그대로다.",
+      "score_impact": {
+        "species_changed": 8,
+        "by_axis": {
+          "MFPI": 3,
+          "MBPI": 6,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.4",
+      "config": "config/verified-indices-v3.5.json",
+      "changes_from": "verified-pilot-3.4 (2026-10-01). Rules, thresholds, cohorts and weights unchanged; only reviewed evidence rows are added, in files read by 3.5 alone so 3.4 and earlier stay reproducible. Peptide rows (research/verified-indices/evidence-v3.5.json): synthetic ACE/HHL single peptides for 가시파래 KAF, 가리맛조개 VQY, 큰가리비 VW and 해삼 HDWWKER (branch sunny/bbvm-0928-pr2-evidence, 2 of 3 or more independent verifiers), 넙치 MEVFVP and VSQLTR (Ko 2016) and the seven Sato 2002 미역 dipeptides moved from partial to approved after the full text confirmed synthetic peptides and HHL (PR #65). Aquaculture records (research/verified-indices/mfpi-aquaculture-2026-10-01.json): 참조기, 넙치, 꽃게. See research/verified-indices/evidence-additions-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.6",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MFPI의 빠진 아연을 일본 식품성분표 같은 종 값으로 채움",
+      "reason": "국내표에 아연이 없는 종의 성분을 표시가 붙은 대체치로 채우려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mext-zinc-2026-10-01.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "빈 성분을 채우는 규칙이다. 결정과 값 확인의 순서를 적은 기록은 없다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 1,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.5",
+      "config": "config/verified-indices-v3.6.json",
+      "changes_from": "verified-pilot-3.5 (2026-10-01). Diagram stage 3 MFPI substitutes: after same-species RDA sub-samples and uFiSh species-level values, a component still missing from a species' own RDA row may be taken from the same species' raw item of the Standard Tables of Food Composition in Japan 2020 (8th revised edition), linked by the standard Japanese name that WoRMS lists for the AphiaID; graded foreign_table_cited (0.85), as RDA rows that cite the Japanese table are. Only zinc is filled (research/verified-indices/snapshots/mext-zinc-2026-10-01.json: あかがい, かたくちいわし, するめいか). Team-lead decision of 2026-10-01. See research/verified-indices/mext-zinc-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.7",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MFPI 성분에 칼슘 추가, 네 성분 중 셋 이상이면 산출",
+      "reason": "처음 고른 세 성분은 임의 기준이었고, 아연 보고율이 낮다(수산동물 36/410행).",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mfpi-calcium-2026-10-01.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 18,
+        "by_axis": {
+          "MFPI": 18,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.6",
+      "config": "config/verified-indices-v3.7.json",
+      "changes_from": "verified-pilot-3.6 (2026-10-01). Diagram stage 3 MFPI, nutrient components: calcium is added to protein, iron and zinc (RDA DB 10.4 reports calcium for 407 of 410 raw marine-animal rows and all 15 raw seaweed rows; zinc for 36 and 3). A species whose own RDA row still misses a component after the 3.3/3.6 substitutes (RDA sub-sample, uFiSh, MEXT) is scored when it reports at least nutrition.minimum_components (3) of the 4; the missing component is left out of the mean, never scored 0, and the species is ranked against the fixed cohort plus itself. The fixed cohorts are the same 28 foods (all report calcium). The AFCD oyster cross-check is paused because its rows carry no reviewed calcium value. Three aquaculture records are added (톳 Wando 1993-94, 청각 Wando 2004-05, 멸치 research rearing from egg to maturity). See research/verified-indices/mfpi-calcium-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.8",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "바지락 펩타이드 근거 행 추가",
+      "reason": "검수한 원논문 행을 고정 규칙 그대로 반영.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-clam-2026-10-01.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·계수·비교집단은 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.7",
+      "config": "config/verified-indices-v3.8.json",
+      "changes_from": "verified-pilot-3.7 (2026-10-01). Evidence rows only: the reviewed 바지락 (Ruditapes philippinarum) peptide rows IAE 34.7 and IVE 95.6 uM (Suetsuna 2002, Fish Sci 68:233) and LLP 158 uM (Lee et al. 2005, J Fish Sci Technol 8:109) join peptide_supplements; AEL, LVE and IELPLG stay partial_only because the paper swaps the clam and pearl-oyster peak lists. Rules, coefficients and cohorts are unchanged. 바지락 MBPI 39.5 is a single-paper reference value and BBVI stays withheld; a same-author repeat of the same value (Suetsuna & Chen 2001, Spirulina) is not counted as replication. See research/verified-indices/evidence-clam-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.9",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "일본 식품성분표 같은 종 항목을 종 영양 행으로 인정(맛조개·고등어·참문어)",
+      "reason": "국내표에 연결 행이 없는 종의 영양 근거를 같은 종 자료로 채우려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mext-rows-2026-10-01.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 3,
+        "by_axis": {
+          "MFPI": 3,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.8",
+      "config": "config/verified-indices-v3.9.json",
+      "changes_from": "verified-pilot-3.8 (2026-10-01). MFPI: the MEXT 2020 (8th) same-species raw item now covers protein, iron, zinc and calcium (research/verified-indices/snapshots/mext-2026-10-01.json). When RDA DB 10.4 has no row linked to a species, a reviewed MEXT item marked species_row is that species' own nutrition row and edible fraction (graded foreign_table_cited 0.85, ranked against the fixed cohort plus itself, never a cohort member): あげまき 10280 (맛조개), まさば 10154 (고등어), まだこ 10361 (참문어). Name link: the MEXT standard Japanese name equals the WoRMS Japanese vernacular, or equals it without a final ガイ (貝) when the MEXT description matches the taxon. Three aquaculture records (research/verified-indices/mfpi-aquaculture-3.9-2026-10-01.json): 고등어 Tongyeong sea cages 2007-08, 맛조개 Zhoushan polyculture pond 2020-21, 참문어 rearing stopped at settlement (feasible false). Team-lead decisions of 2026-10-01. See research/verified-indices/mext-rows-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.10",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "톳 펩타이드 근거 행 추가",
+      "reason": "검수한 원논문 행을 고정 규칙 그대로 반영.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-hijiki-2026-10-01.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·계수·비교집단은 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.9",
+      "config": "config/verified-indices-v3.10.json",
+      "changes_from": "verified-pilot-3.9 (2026-10-01). Evidence rows only: the reviewed 톳 (Sargassum fusiforme, syn. Hizikia fusiformis) peptide rows GKY 3.92, SVY 8.12 and SKTY 11.07 uM (Suetsuna 1998, Nippon Suisan Gakkaishi 64:862; synthetic peptides, HHL) join peptide_supplements. Rules, coefficients and cohorts are unchanged. 톳 MBPI moves from its ChEMBL value 45.3 to the GKY peptide value 65.0 (single-paper reference) and BBVI stays withheld (no second paper for GKY). See research/verified-indices/evidence-hijiki-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.11",
+      "published_on": "2026-10-01",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "고등어 펩타이드 근거 행 추가",
+      "reason": "검수한 원논문 행을 고정 규칙 그대로 반영.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-mackerel-2026-10-01.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·계수·비교집단은 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.10",
+      "config": "config/verified-indices-v3.11.json",
+      "changes_from": "verified-pilot-3.10 (2026-10-01). Evidence rows only: the reviewed 고등어 (Scomber japonicus) peptide rows PLITT 48.73 uM (Wang 2024, Food Chem 447:138873) and APFLAG 69.45, FDHKKFF 212.85 and LFPKFA 259.05 uM (Zhang 2025, J Food Sci e70767), all synthetic peptides identified by LC-MS/MS in mackerel muscle hydrolysates and assayed with HHL, join peptide_supplements. Rules, coefficients and cohorts are unchanged. 고등어 gains an MBPI from the PLITT item (single-paper reference); BBVI stays withheld (no second paper for PLITT). See research/verified-indices/evidence-mackerel-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.12",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "근거",
+      "rule_changed": true,
+      "summary": "미역 IY 효능 재현 논문 추가(공저자 한 명이 겹치는 두 논문을 독립으로 셈)",
+      "reason": "합성 IY 효능 재현을 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-wakame-iy-2026-10-01.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "그 항목을 점수에 넣을지 정한 개별 판단이며, 이 판단으로 미역 BBVI가 산출된다. 3.25에서 다른 연구팀 재현 3편이 더해져 이 판단에 기대지 않게 됐다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.11",
+      "config": "config/verified-indices-v3.12.json",
+      "changes_from": "verified-pilot-3.11 (2026-10-01). Evidence rows only: the cross-origin potency supplement becomes research/verified-indices/evidence-xo-potency-3.12.json, which keeps the 2.3 row (Miyoshi 1991 zein LQP 2.0 uM) and adds the synthetic IY 2.65 uM of Suetsuna 2000 (J Nutr Biochem 11:450; HHL). It replicates the potency of the 미역 IY item (Sato 2002, 6.1 uM; pIC50 gap 0.36). Takahisa Nakano co-authored both papers; the team lead counted them as independent (2026-10-01). Rules, coefficients and cohorts are unchanged. 미역 IY becomes a two-DOI item, so 미역 MBPI moves from the single-paper IW value to IY and BBVI is computed. See research/verified-indices/evidence-wakame-iy-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.13",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "근거",
+      "rule_changed": true,
+      "summary": "멸치 펩타이드 근거 행 추가",
+      "reason": "검수한 원논문 행을 반영. 학명 없는 멸치액젓 시료를 E. japonicus로 읽었다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-anchovy-2026-10-01.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "시료의 종을 정한 개별 판단이며, 이 판단으로 멸치 MBPI가 생긴다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.12",
+      "config": "config/verified-indices-v3.13.json",
+      "changes_from": "verified-pilot-3.12 (2026-10-01). Evidence rows only: the reviewed 멸치 (Engraulis japonicus) peptide rows DGGP 163.51, GCK 177.75 and PK 4092.26 uM (Kim 2016, Appl Biol Chem 59:25; synthetic peptides, HHL) join peptide_supplements. The paper names no species for its Korean fermented anchovy sauce; the team lead read it as E. japonicus (2026-10-01). NHP is left out because the text and Table 1 spell it differently (NHP/NPH). Rules, coefficients and cohorts are unchanged. 멸치 gains an MBPI from the DGGP item (single-paper reference); BBVI stays withheld. See research/verified-indices/evidence-anchovy-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.14",
+      "published_on": "2026-10-01",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "서열을 확인한 정제 단일 펩타이드를 합성품과 같이 인정",
+      "reason": "가수분해물에서 분리해 서열을 정한 천연 펩타이드도 단일 물질의 효능 값으로 보려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/evidence-isolates-2026-10-01.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 3,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 3,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.13",
+      "config": "config/verified-indices-v3.14.json",
+      "changes_from": "verified-pilot-3.13 (2026-10-01). Peptide material rule (team-lead decision 2026-10-01): a sequence-confirmed purified single peptide counts like a synthetic one, for origin rows and for potency replications (peptide_bioactivity.cross_origin_potency.accepted_materials). New origin rows: 대구 GASSGMPG 6.9 and LAYA 14.5 uM (Ngo 2016, Process Biochem 51:1622) and 바지락 VISDEDGVTH 8.16 uM and three more (Chen 2018, Food Funct 9:5230). New replications: Lin 2018 (Nutrients 10:1397) purified IW 0.50 and VW 0.58 uM and Kapel 2006 (Process Biochem 41:1961) purified VW 1.1 uM. Coefficients, cohorts and the pIC50 gap are unchanged. See research/verified-indices/evidence-isolates-2026-10-01.md."
+    },
+    {
+      "method_version": "verified-pilot-3.15",
+      "published_on": "2026-10-02",
+      "decision_date": "2026-10-01",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "빈칸 채우기: 국명 연결·문헌 환산(MFPI), µg/mL 환산(MBPI), 서식국 국가 목록(MCUI), Rapid LC는 참고",
+      "reason": "'시범 산출·미확인' 칸을 해결할 방법을 찾으라는 요청.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/gap-closing-2026-10-02.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "채울 칸을 알고 정했다(gap-closing 기록). 사후 검증 기준은 계산 전에 정했고, 기준 미충족인 Rapid LC는 참고로 두었다.",
+      "score_impact": {
+        "species_changed": 9,
+        "by_axis": {
+          "MFPI": 8,
+          "MBPI": 1,
+          "MCUI": 2,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.14",
+      "config": "config/verified-indices-v3.15.json",
+      "changes_from": "verified-pilot-3.14 (2026-10-01). Gap closing (team-lead decisions 2026-10-01; research/verified-indices/gap-closing-2026-10-02.md). MFPI: an RDA DB 10.4 row is linked to a species by its MABIK national species list Korean name, else by its MFDS food-material scientific name, with a misapplied-name crosswalk (다시마, 우뭇가사리, 꼬시래기 and 해삼 join; 고등어 and 참문어 move from their MEXT item to their RDA row); a reviewed paper's own analysis, converted to fresh weight with the moisture of the same sample, is a species row graded literature_converted 0.85 (시카메굴, Liu 2021); six aquaculture records are added (살오징어 false). MBPI: a synthetic, sequence-confirmed peptide reported only in ug/mL is converted to uM with its average-residue molecular weight (전복 AMN, Wu 2015: 317.71 uM, MBPI 15.6). MCUI: when IUCN and the Korean list have no assessment, another range state's official national list (시카메굴, Japan NT) gives a separately labelled MCUI, and the Korean 참문어 row is assigned to Octopus sinensis by the crosswalk. Post-hoc validation with criteria fixed before the run: MFPI passed (MEXT cross-table, 11 species, rho 0.873); the preliminary Rapid LC check (Bachman et al. 2020; 14 species likely LC) failed its back-test (EN 해삼 and 전복 called LC), so it is shown as reference information only and gives no MCUI (team-lead decision 2026-10-02). BBVI rules, coefficients, cohorts and weights are unchanged; the site shows a single-paper BBVI reference value beside a withheld BBVI."
+    },
+    {
+      "method_version": "verified-pilot-3.16",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "조사",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "우뭇가사리에 러시아 적색자료집 VU(서식국 국가 목록) 반영",
+      "reason": "3.15 규칙으로 남은 빈칸을 조사해 규칙을 통과한 자료만 반영.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/gap-closing-3.16-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "3.15 규칙 그대로이며, 규칙을 완화해 채운 칸이 없다(기록).",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 1,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.15",
+      "config": "config/verified-indices-v3.16.json",
+      "changes_from": "verified-pilot-3.15 (2026-10-02). MCUI: the range-state step gains the Russian Red Data Book (Order No. 320 of 23.05.2023) row for Gelidium elegans (우뭇가사리), threat status 'У' = VU -> 60, labelled as a peripheral (northern-limit) population; the ladder order (range state before the preliminary check) is 3.15's. Every other rule, coefficient, cohort and threshold equals 3.15. See research/verified-indices/gap-closing-3.16-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.17",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "표시",
+      "rule_changed": false,
+      "summary": "EPA·DHA 함량 표시(점수에 쓰지 않음)",
+      "reason": "같은 영양 행의 지방산 정보를 표시만 하려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/omega3-display-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·규칙은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.16",
+      "config": "config/verified-indices-v3.17.json",
+      "changes_from": "verified-pilot-3.16 (2026-10-02). Display only, no score changes: the species' own RDA DB 10.4 row also carries EPA and DHA per 100 g (research/verified-indices/snapshots/rda-epa-dha-2026-10-02.json, collected by scripts/collect_rda_fatty_acids.py from the same 425 rows), shown beside the species with its share of the 330 mg daily reference value for EPA + DHA (식품 등의 표시·광고에 관한 법률 시행규칙 [별표 5]). Korea has no omega-3 content claim, so no claim word is used. MFPI keeps its four components, its weights and its cohorts; nothing enters any score. See research/verified-indices/omega3-display-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.18",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MBPI 항균 펩타이드 층(DBAASP 고정 비교집단)",
+      "reason": "기획서가 ACE 옆에 적은 항균 활성 입력 구현.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/amp-stratum-2026-10-02.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 2,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 2,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.17",
+      "config": "config/verified-indices-v3.18.json",
+      "changes_from": "verified-pilot-3.17 (2026-10-02). New MBPI stratum for antibacterial activity, the input the proposal names beside the ACE one: a fixed DBAASP cohort per target bacterium (MIC, broth media, single clean numeric value; research/verified-indices/amp-cohorts-dbaasp-2026-10-02.json, built by scripts/build_amp_cohorts.py), pMIC = 6 - log10(MIC uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the peptide stratum. A MIC is never ranked against an ACE IC50: each stratum keeps its own cohort. Origin rows come from the original paper, never from the database (DBAASP records neither the tested material nor its synthesis): a chemically synthetic or sequence-confirmed purified single peptide whose sequence comes from the species' own gene or tissue, with a numeric MIC by broth microdilution. MEC, inhibition zones, recombinant proteins and censored values are excluded. 피조개 (AI-hemocidin 1 and 2, Li 2017) and 조피볼락 (TS40, Zhang 2022) gain an MBPI; both rest on one paper each, so both are reference values and BBVI stays withheld. Every other rule, coefficient and cohort equals 3.17. See research/verified-indices/amp-stratum-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.19",
+      "published_on": "2026-10-02",
+      "decision_date": "2026-10-02",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "액체 생장 억제 시험·Poor Broth 인정, 재조합 펩타이드 제외 유지, 비정부 적색목록 제외",
+      "reason": "참굴 Cg-BigDef1 등 규칙 해석이 필요한 사례를 정리.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/decisions-3.19-2026-10-02.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "개별 사례를 놓고 추천안을 정했다(결정 기록).",
+      "score_impact": {
+        "species_changed": 2,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 2,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.18",
+      "config": "config/verified-indices-v3.19.json",
+      "changes_from": "verified-pilot-3.18 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.19-2026-10-02.md). (1) The liquid growth inhibition assay (liquid medium, two-fold dilutions, MIC = 100% inhibition) counts as broth microdilution, and Poor Broth (DBAASP code PBM) joins the cohort's broth list (research/verified-indices/amp-cohorts-dbaasp-3.19-2026-10-02.json, same builder and dump; S. aureus 6158 -> 6208 members). 참굴 Cg-BigDef1 (total chemical synthesis, Loth 2019) enters with all seven S. aureus strains of its table, median 2.5 uM; 참굴 MBPI stays 96.3 (LQP is higher) and only the antibacterial evidence grows. (2) Recombinant peptides expressed in another organism stay excluded (참굴 Cg-Def family). (3) Non-ministry red lists such as the China Species Red List (2004) are not official national lists for the MCUI range-state step. Every other rule and coefficient equals 3.18."
+    },
+    {
+      "method_version": "verified-pilot-3.20",
+      "published_on": "2026-10-02",
+      "decision_date": "2026-10-02",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "P703 연결이 있는 종에도 원논문 연결 허용(다시마), 'Inconclusive' 활성 제외",
+      "reason": "다시마·꼬시래기 원논문 연결을 계산해 보고한 뒤 결정.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/decisions-3.20-2026-10-02.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "값을 먼저 계산해 보고한 뒤 결정했다(결정 기록).",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.19",
+      "config": "config/verified-indices-v3.20.json",
+      "changes_from": "verified-pilot-3.19 (2026-10-02). Team-lead decisions of 2026-10-02 (research/verified-indices/decisions-3.20-2026-10-02.md). (1) An original-paper link is also admitted for a species that already has Wikidata P703 statements, when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (research/verified-indices/mbpi-paper-links-p703-2026-10-02.json). 다시마 gains a single-paper ChEMBL MBPI 26.5 (24-hydroperoxy-24-vinylcholesterol, Lu 2022) with the autoxidation caveat already used for 톳. 꼬시래기 is held: its highest values are screening rows marked Inconclusive. (2) A ChEMBL activity the depositor marked Inconclusive or Not Active never enters a species item (snapshots/chembl-activity-comments-2026-10-02.json, 100 of 2,058 snapshot rows); no current score rests on one. Every other rule and coefficient equals 3.19."
+    },
+    {
+      "method_version": "verified-pilot-3.21",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MBPI 항암 펩타이드 층(CancerPPD 2.0)",
+      "reason": "기획서가 항균 옆에 적은 두 번째 입력 구현.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/anticancer-stratum-2026-10-02.md"
+      ],
+      "timing": "미확인",
+      "timing_basis": "결정 순서를 적은 기록이 없다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.20",
+      "config": "config/verified-indices-v3.21.json",
+      "changes_from": "verified-pilot-3.20 (2026-10-02). New MBPI stratum for anticancer activity, the second input the proposal names beside the antibacterial one. Built like the 3.18 AMP stratum with a cancer cell line in place of a target bacterium: one fixed CancerPPD 2.0 cohort per cell line (IC50, single clean numeric value; research/verified-indices/anticancer-cohorts-cancerppd-2026-10-02.json, built by scripts/build_anticancer_cohorts.py from 407 cell-line tables), pIC50 = 6 - log10(IC50 uM), percentile inside that cohort, minimum cohort 30 and the same single/multiple-DOI factors and max aggregation as the other strata. A cell IC50 is never ranked against a MIC or an ACE IC50. Origin rows come from the original paper, never from the database. A peptide the database already holds is removed from its own cohort before ranking. 피조개 (P6, Li 2022) gains an anticancer item that becomes its best MBPI item; 가시파래 (HTDT-6-2-3-2, Zhang 2022) and 맛조개 (SCH-P9 and SCH-P10, Zhu 2017) gain items that rank below their existing best, so their scores do not move. The use of CancerPPD 2.0 was confirmed in writing by its maintainer on 2026-10-02. Every other rule and coefficient equals 3.20. See research/verified-indices/anticancer-stratum-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.22",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "조사",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "괭생이모자반 MFPI(같은 시료 수분이 있는 원논문 자료)",
+      "reason": "3.12부터 있던 문헌 경로를 채우는 원논문을 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/mfpi-sargassum-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·비교집단·계수는 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 1,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.21",
+      "config": "config/verified-indices-v3.22.json",
+      "changes_from": "verified-pilot-3.21 (2026-10-02). 괭생이모자반 gains an MFPI through the literature route the method has had since 3.12: Murakami et al. 2011 (J Food Compos Anal 24:231) analyses the raw edible portion of this species and reports the moisture of the same pooled sample, which is exactly what the earlier searches could not find. Protein, calcium and zinc convert to a fresh-weight basis; iron is not measured and stays out of the mean under the 3.7 minimum-components rule. Read on 2026-10-02 through the Dongguk University library. The species also gains the aquaculture record the MFPI formula needs (Pang et al. 2008, tank culture through a full generation to the long-line stage), counted feasible = true under the 3.7 research-rearing clause. No rule, cohort or coefficient changes. See research/verified-indices/mfpi-sargassum-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.23",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "표시",
+      "rule_changed": false,
+      "summary": "문헌 행의 한계 문구를 MFPI 근거에 표시",
+      "reason": "빌더가 읽고도 버리던 한계 문구를 화면까지 전달.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/literature-limitations-3.23-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·규칙은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 1
+      },
+      "compared_with": "verified-pilot-3.22",
+      "config": "config/verified-indices-v3.23.json",
+      "changes_from": "verified-pilot-3.22 (2026-10-02). Display data only, no score change: the reviewed limitations of a literature species row (sample site, season, laboratory and method, e.g. that Kjeldahl nitrogen x 6.25 overstates seaweed protein) now reach the MFPI trace as food_trace.literature_limitations (nutrition.substitutes.literature.show_limitations), shown under the literature-row paragraph of the MFPI detail as '원논문 자료의 한계: ...'. From 3.15 to 3.22 the builder read the row's values but dropped this text, so it was in neither the report nor the screen for 시카메굴 and 괭생이모자반. Every rule, input file, cohort, coefficient, weight and score equals 3.22. See research/verified-indices/literature-limitations-3.23-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.24",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "큰가리비 VW 효능 재현 논문 추가",
+      "reason": "3.14 규칙으로 인정되는 정제 펩타이드 재현을 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/bbvi-replication-3.24-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·간격·계수는 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 2
+      },
+      "compared_with": "verified-pilot-3.23",
+      "config": "config/verified-indices-v3.24.json",
+      "changes_from": "verified-pilot-3.23 (2026-10-02). Evidence row only: Suetsuna et al. 2004 (J Nutr Biochem 15:267) joins the potency replications. Its Table 1 gives 10.8 uM for Val-Trp isolated from a wakame hot-water extract as a single HPLC peak and sequenced by Edman degradation, measured with HHL; a sequence-confirmed purified peptide has counted since the 3.14 team-lead decision, and the 2026-09-30 review had excluded the paper only under the older synthetic-only rule. Its pIC50 lies 0.906 from the scallop VW (86.9 uM, Li 2018), inside the 1.0 gap, so 큰가리비's top item rests on two independent papers and its BBVI is computed. 3/3 independent verifiers passed the row. No rule, cohort, gap or coefficient changes. See research/verified-indices/bbvi-replication-3.24-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.25",
+      "published_on": "2026-10-02",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "미역 효능 재현 3편 추가, 양식 기록 2건 정정(점수 불변)",
+      "reason": "다른 연구팀의 합성 펩타이드 재현을 찾았고, 독립 검토로 기록 오류를 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/doyoun-replication-3.25-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·규칙은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 2
+      },
+      "compared_with": "verified-pilot-3.24",
+      "config": "config/verified-indices-v3.25.json",
+      "changes_from": "verified-pilot-3.24 (2026-10-02). Evidence rows and record text only; no score moves. (1) Three synthetic potency replications for the wakame IW, VW and IY items (Sato 2002), found by doyoun0824 with two independent readers each and read a third time: Michelke et al. 2018 (Eng Life Sci 18:218, chemically produced Ile-Trp from Bachem, Table 1, 1.91 uM), Nomura et al. 2002 (Fish Sci 68:954, synthetic Val-Trp from Sigma, Table 2, 1.68 uM) and Saito et al. 1994 (Biosci Biotechnol Biochem 58:1767, solid-phase synthetic Ile-Tyr fragment, Table III, 2.4 uM), all with HHL and from groups that share no author with Sato 2002. 미역 already scored 1.0 on those items, so its values stay, but its BBVI no longer rests only on the 3.14 purified-isolate rule (Lin 2018, whose uM values the authors converted from mg/mL) or on the Suetsuna 2000 shared-co-author exception. Nomura's VW also attaches to the scallop VW item and stays unused (pIC50 gap 1.714). (2) Two aquaculture records corrected without changing any feasible flag: 멸치's rearing site is the Hakatajima Field Station named in Yoneda 2025's Methods, not the authors' Hatsukaichi affiliation (found by doyoun0824's independent check); 청각's Hwang 2008 was read in full (seeding July 2004 to harvest August 2005 on horizontal ropes at Wando), so its abstract-level limitation is replaced. See research/verified-indices/doyoun-replication-3.25-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.26",
+      "published_on": "2026-10-03",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "기록",
+      "rule_changed": false,
+      "summary": "청각 양식 한계 문구의 원논문 오식 정정(점수 불변)",
+      "reason": "원논문 표 2의 수치가 오식임을 확인.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/codium-table2-3.26-2026-10-02.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·규칙은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 2
+      },
+      "compared_with": "verified-pilot-3.25",
+      "config": "config/verified-indices-v3.26.json",
+      "changes_from": "verified-pilot-3.25 (2026-10-02). Record text only; no score moves. The 청각 aquaculture limitation quoted the maximum potential production in Hwang et al. 2008 (J Appl Phycol 20:469), 36,110 kg dry weight per hectare at 1 m depth, as the authors' estimate. That figure is a misprint in the paper: Table 2's own footnotes (5% dry yield; 100 ropes of 100 m per hectare) turn the 1 m row's 36.1 kg dry per 100 m into 3,610, the rule its 0.5, 2 and 3 m rows follow (790, 1,720, 515), and the text and the income column (433,320 = 36,110 x 12 US$) repeat the misprint. The limitation now says so. No feasible flag, rule, cohort or coefficient changes. See research/verified-indices/codium-table2-3.26-2026-10-02.md."
+    },
+    {
+      "method_version": "verified-pilot-3.27",
+      "published_on": "2026-10-03",
+      "decision_date": "2026-10-03",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "단일 논문 BBVI를 라벨과 함께 점수로, 근거 추가, 사후 검증 실행",
+      "reason": "빈칸을 채우는 버전으로 정했다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/gap-filling-3.27-2026-10-03.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "단일 논문 BBVI 16종이 점수가 되는 것을 알고 정했다(gap-filling 기록). 사후 검증은 미리 정한 기준 그대로 돌렸다.",
+      "score_impact": {
+        "species_changed": 20,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 3,
+          "MCUI": 1,
+          "BBVI": 19
+        },
+        "matrix_type_changed": 10,
+        "matrix_points": 12
+      },
+      "compared_with": "verified-pilot-3.26",
+      "config": "config/verified-indices-v3.27.json",
+      "changes_from": "verified-pilot-3.26 (2026-10-03). Gap-filling version (team-lead decisions 2026-10-03). (1) A BBVI whose top MBPI item rests on one paper is now a score, labelled 'BBVI · 단일 논문' and placed in the matrix as a hollow point and counted in each map cell's tooltip; 16 of the 19 were reference values since 3.15 (살오징어, 시카메굴 and 꼬시래기 have an MBPI only since 3.27) (bbvi.single_source_policy). (2) New evidence under the existing rules: 살오징어 MBPI from Wako et al. 1996 (YALPHA 9.8 uM, purified peptide, HHL); 시카메굴 MBPI from flazin (Kong et al. 2021, original-paper link, ChEMBL pathogen stratum); 가시파래 MCUI from the Swedish red list 2025 (LC, range-state list; the most recent government list with a category other than DD is used when several range states list a species). (3) 꼬시래기 MBPI: the 3.20 hold is released (PGA2 linked by Nylund et al. 2011; the score rests on one PubChem qHTS 'Active' row and says so). (4) Post-hoc validation: the MBPI drug-origin check is now computed (failed under its pre-registered wording); two MCUI checks were run and failed (the OBIS trend element, whose +10 rule is kept unchanged; a catch-based criterion-A screen), so no MCUI is filled from them. (5) The approved new MBPI strata were not added: none holds a row for a blank species; the team lead's confirmation is pending. The new ChEMBL compounds come from a supplement of the same ChEMBL_37 release; the 2026-09-30 snapshot is unchanged. See research/verified-indices/gap-filling-3.27-2026-10-03.md."
+    },
+    {
+      "method_version": "verified-pilot-3.28",
+      "published_on": "2026-10-03",
+      "decision_date": null,
+      "decided_by": "검수",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "톳 효능 재현 논문 추가",
+      "reason": "기존 규칙으로 인정되는 합성 표준품 재측정을 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/tot-replication-3.28-2026-10-03.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙·비교집단·계수는 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 12
+      },
+      "compared_with": "verified-pilot-3.27",
+      "config": "config/verified-indices-v3.28.json",
+      "changes_from": "verified-pilot-3.27 (2026-10-03). Potency replication under the existing rule, no rule, cohort or coefficient change: Chen et al. 2016 (J Food Process Preserv 40:492, synthetic standards, HHL) re-measured GKY 7.94 uM and SKTY 20.63 uM, two of the three 톳 peptides of Suetsuna 1998 (pIC50 gaps 0.307 and 0.270; GKY is 톳's top item, SVY 8.12 uM was not re-measured), and FY 4.83 uM (the 미역 FY item, gap 0.942, not its top item). 톳's top item now rests on two independent papers, so its MBPI loses the single-paper factor and its BBVI the '단일 논문' label. The paper was read through the user's university library login on 2026-10-03; in the same session Li et al. 2018 (Chemosphere) gave only dried-sample moisture, so 가시파래 MFPI stays withheld. See research/verified-indices/tot-replication-3.28-2026-10-03.md."
+    },
+    {
+      "method_version": "verified-4.0",
+      "published_on": "2026-10-04",
+      "decision_date": "2026-10-04",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "정식 산출로 전환(규칙 고정), 세 가지 확장으로 남은 칸 채움",
+      "reason": "다른 시료 수분으로 환산(가시파래·감태), 일본 'ランク外'를 LC 상당으로(넙치·대구), 학명 대응(우뭇가사리).",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.0-2026-10-04.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "채울 종을 알고 정한 확장이다. 2026-10-03의 'ランク外는 LC로 읽지 않음'을 뒤집었다.",
+      "score_impact": {
+        "species_changed": 5,
+        "by_axis": {
+          "MFPI": 2,
+          "MBPI": 1,
+          "MCUI": 2,
+          "BBVI": 3
+        },
+        "matrix_type_changed": 4,
+        "matrix_points": 16
+      },
+      "compared_with": "verified-pilot-3.28",
+      "config": "config/verified-indices-v4.0.json",
+      "changes_from": "verified-pilot-3.28 (2026-10-03). Team-lead decisions of 2026-10-04: (1) the indicator set is published as 정식 산출 under frozen rules (status 'released'); every validation result stays on screen (MFPI method check passed; MBPI drug-origin post-hoc failed, shown as '검증 미통과'; MCUI is the official assessment category mapped by conservation.category_scores, its OBIS trend element failed its check). (2) Gap filling under three approved extensions, each labelled: MFPI rows converted with other samples' fresh moisture (가시파래: RDA DB 10.4 dried row L0270010001a at the median 93.1% of three papers; 감태: Kawashima et al. 1983 activation analysis at the median 85.5% of Yamada & Kinoshita 2004), with the 3.27 aquaculture records of both species; MCUI from the Fisheries Agency of Japan rarity evaluation 2017 'ランク外' read as LC-equivalent (넙치, 대구); MBPI through the Korean 'Gelidium amansii' -> Gelidium elegans name mapping (우뭇가사리: pheophorbide A, Park, Kim & Han 2022, ChEMBL CHEMBL510103 HIV-1 IC50, with the 2026-10-04 supplement of the same ChEMBL_37 release). No cohort, weight, coefficient or threshold changes. Filled cells 92 -> 100. See research/verified-indices/formal-release-4.0-2026-10-04.md."
+    },
+    {
+      "method_version": "verified-4.1",
+      "published_on": "2026-10-04",
+      "decision_date": "2026-10-04",
+      "decided_by": "팀장 요청",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "꽃게 항균 펩타이드의 기원 확정(공개 서열 기록)",
+      "reason": "4.0에서 보류한 기록의 기원을 공개 서열로 확인.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.1-2026-10-04.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "비교집단·가중치·계수·기준은 그대로다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 16
+      },
+      "compared_with": "verified-4.0",
+      "config": "config/verified-indices-v4.1.json",
+      "changes_from": "verified-4.0 (2026-10-04). Team-lead request of 2026-10-04 to find ways to fill the last blanks. One cell pair moves: 꽃게 (Portunus trituberculatus) enters the AMP stratum with MCCC1-MTS (Hong et al. 2025, MIC 14.1 uM against Escherichia coli and Staphylococcus aureus, Mueller-Hinton broth microdilution, synthetic peptide above 90% purity). verified-4.0 held the record back because the group's patent KR20250095776A names a different crab for the same sequence; the origin is now settled on public sequence records (the 19-mer is the N-terminus of the species' own MCCC1 gene model UniProt A0A5B7CYN9 and is absent from the Chionoecetes opilio record A0A8J5CHQ3; its average mass reproduces the paper's own ug/mL to uM conversion), and the draft-gene-model and patent caveats are shown with the value. No cohort, weight, coefficient or threshold changes; no other species moves. Filled cells 100 -> 102. See research/verified-indices/formal-release-4.1-2026-10-04.md."
+    },
+    {
+      "method_version": "verified-4.2",
+      "published_on": "2026-10-05",
+      "decision_date": "2026-10-04",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "지방(현·주) 적색목록을 MCUI 근거로 추가, 역검증 결과와 함께",
+      "reason": "대회 마감(2026-10-30) 전에 빈 MCUI를 채울 공식 경로가 없다.",
+      "preregistration": "research/verified-indices/prereg-subnational-mcui-2026-10-04.md",
+      "records": [
+        "research/verified-indices/formal-release-4.2-2026-10-04.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "어떤 칸이 채워지는지 안 뒤 정했다고 사전 등록과 공개 기록에 적었다.",
+      "score_impact": {
+        "species_changed": 3,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 3,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 3,
+        "matrix_points": 19
+      },
+      "compared_with": "verified-4.1",
+      "config": "config/verified-indices-v4.2.json",
+      "changes_from": "verified-4.1 (2026-10-04). Team-lead decision of 2026-10-04: the competition deadline (2026-10-30) falls before every official route that could fill the ten empty MCUI cells (IUCN 2026-2 on 2026-11-19; the Japanese 5th marine red list from FY2026), so the conservation axis accepts one more basis: an official SUB-NATIONAL red list (prefecture, federal subject, province) of a state in the species' native range. It ranks below every national basis and never overrides one; DD and regional extinction give no score; several regions are reduced by the median (the lower-risk of the two middle categories when the count is even). Every value carries a '지방 목록 참고값' label, its own matrix marker and the result of a pre-registered over-statement back-test (research/verified-indices/prereg-subnational-mcui-2026-10-04.md, committed before the rows were collected). The extension was decided after seeing which cells it would fill; that is stated in the record and on the method tab. No cohort, weight, coefficient or threshold of any other axis changes."
+    },
+    {
+      "method_version": "verified-4.3",
+      "published_on": "2026-10-05",
+      "decision_date": "2026-10-05",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "모든 칸 채우기: Rapid LC 점수화, XO 층, 조건 하나 완화(d), MBPI 하한값 0",
+      "reason": "'모든 값을 채우고 시범·보류 상태를 없앤다'는 결정.",
+      "preregistration": "research/verified-indices/prereg-fill-all-4.3-2026-10-05.md",
+      "records": [
+        "research/verified-indices/formal-release-4.3-2026-10-05.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "채워질 칸을 안 뒤 정했다고 사전 등록 0절에 적었다. 2026-10-02의 'Rapid LC는 참고만'을 뒤집었다.",
+      "score_impact": {
+        "species_changed": 11,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 4,
+          "MCUI": 7,
+          "BBVI": 4
+        },
+        "matrix_type_changed": 11,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.2",
+      "config": "config/verified-indices-v4.3.json",
+      "changes_from": "verified-4.2 (2026-10-04). Team-lead decisions of 2026-10-05 (\"fill every value; drop every pilot or withheld state\"), pre-registered before any value was computed in research/verified-indices/prereg-fill-all-4.3-2026-10-05.md: (1) MCUI: when IUCN, the Korean national list, every range-state national list and every sub-national list are silent, a met Rapid LC check (thresholds and snapshot unchanged since 3.15) is scored as LC-equivalent 10 with the label '자체 예비평가(Rapid LC) · 역검증 미통과' and its own matrix marker; this reverses the 2026-10-04 decision that kept it reference-only. (2) MCUI: the 미역 row of the Primorsky Krai governor decree No. 272 (2002), read in the docs.cntd.ru legal-database text and checked current against the official 2022 amendment scan No. 723-пп, counts as read in the original under the 4.2 pre-registration. (3) MBPI: a fourth peptide stratum, xanthine-oxidase (XO) IC50, with a literature-built fixed cohort (members confirmed by two independent checks). (4) MBPI: a species' own single-substance value that fails exactly one condition may be scored with a label naming the relaxed condition. (5) MBPI: a species with no item in any stratum gets the floor value 0 labelled '효능 근거 미확인(하한값)' (meaning: no qualifying evidence yet, not 'no activity'); its BBVI is 0.5 x MFPI, labelled 'MBPI 하한값 포함'. The extensions were decided after seeing which cells they would fill; the pre-registration says so. No cohort, weight, coefficient or threshold of MFPI, of the existing MBPI strata or of IUCN/national/sub-national MCUI changes."
+    },
+    {
+      "method_version": "verified-4.4",
+      "published_on": "2026-10-05",
+      "decision_date": "2026-10-05",
+      "decided_by": "팀장 요청",
+      "kind": "적용",
+      "rule_changed": true,
+      "summary": "참문어에 완화(d) 첫 적용, 공식 목록 재확인(새 규칙 없음)",
+      "reason": "대체 경로로 채운 칸을 근거로 해결하라는 요청.",
+      "preregistration": "research/verified-indices/prereg-4.4-2026-10-05.md",
+      "records": [
+        "research/verified-indices/formal-release-4.4-2026-10-05.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "적용 방식을 고정하기 전에 세팔로토신 백분위를 미리 봤다(사전 등록 0절).",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.3",
+      "config": "config/verified-indices-v4.4.json",
+      "changes_from": "verified-4.3 (2026-10-05). Team-lead order of 2026-10-05 (\"find a way to resolve the cells filled by a fallback, then fill them\"), applied as fixed in research/verified-indices/prereg-4.4-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) is used for the first time. 참문어's cephalotocin (synthetic CYFRNCPIG-NH2, human V1b and V2 receptor EC50, Kim et al. 2022) is ranked in the ChEMBL cohort of the same target and endpoint; its origin is settled on the Octopus sinensis reference genome (NW_021826408.1, a Zhoushan specimen), which encodes the mature peptide with its amidation and cleavage signal (4.1 precedent: a public sequence record of the species' own sample). (2) MBPI: four partial records added (방어 1, 갑오징어 3); each fails two or more conditions, so 방어 and 갑오징어 keep the floor. (3) MCUI: an official-list re-check (2026-10-05) found no category for the six Rapid LC species and no global or national one for 미역; values and labels stay, and the re-check with the next official dates is shown. No cohort, weight, coefficient, threshold or other value changes."
+    },
+    {
+      "method_version": "verified-4.5",
+      "published_on": "2026-10-06",
+      "decision_date": "2026-10-05",
+      "decided_by": "팀장 결정",
+      "kind": "적용",
+      "rule_changed": true,
+      "summary": "방어·갑오징어에 완화(d) 적용(계통 공통 펩타이드는 금지 대상 밖으로 판단)",
+      "reason": "결정 카드로 두 종의 점수화를 정했다.",
+      "preregistration": "research/verified-indices/prereg-4.5-2026-10-05.md",
+      "records": [
+        "research/verified-indices/formal-release-4.5-2026-10-05.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "반영 전에 값을 미리 봤다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 2,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 2,
+          "MCUI": 0,
+          "BBVI": 2
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.4",
+      "config": "config/verified-indices-v4.5.json",
+      "changes_from": "verified-4.4 (2026-10-05). Team-lead decision cards of 2026-10-05 (\"score 방어 by sbGnRH; score 갑오징어 by FMRFamide; reflect as 4.5 at once\"), applied as fixed in research/verified-indices/prereg-4.5-2026-10-05.md before the values were written: no new rule. (1) MBPI: the 4.3 one-condition relaxation (d) now also covers 방어 and 갑오징어. 방어's sbGnRH (pGlu-HWSYGLSPG-NH2) is encoded with its processing signals by the species' reference genome (BDMU01000006.1, a Goto Island specimen); the identical synthetic peptide's wild-type human GnRH-receptor binding IC50 684 nM (Lu et al. 2007, open access, read in full) ranks in the ChEMBL GnRHR x IC50 cohort. 갑오징어's FMRFamide (FMRF-NH2) is encoded 11 times with processing signals by the species' own transcriptome (GGQU01104929.1, a Qingdao specimen); its own ChEMBL rows (human NPFF2 Ki 6.6 nM best) rank in the NPFF2 x Ki cohort with the peptide's rows excluded (prereg-4.5 2.3). Both are clade-common peptides (pan-perciform hormone variant; phylum-wide invertebrate neuropeptide): the team lead ruled they fall outside the letter of the 1.6 ban (vertebrate-common substances), and the commonness is stated in each item's caveat. The 1.6 ban itself, the cohort filters and every other value are unchanged; the floor rule stays registered but no species of this run uses it. (2) Presentation: a relaxed item's caveat now lives on its evidence row (species-specific wording); 참문어's caveat text is unchanged. An item's measurements list only the best target x endpoint's rows; the other targets stay visible beside it with their percentiles."
+    },
+    {
+      "method_version": "verified-4.6",
+      "published_on": "2026-10-08",
+      "decision_date": "2026-10-08",
+      "decided_by": "자료 점검",
+      "kind": "오류 수정",
+      "rule_changed": true,
+      "summary": "지방 목록 MCUI의 정보충분도 계산 누락 수정(점수 불변)",
+      "reason": "자료 점검에서 공식 목록 행이 0/3으로 읽히는 누락을 찾았다.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.6-2026-10-08.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "공개값 점검에서 찾은 계산 누락을 고쳤다. 점수·유형은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.5",
+      "config": "config/verified-indices-v4.6.json",
+      "changes_from": "verified-4.5 (2026-10-05). Data audit 2026-10-08: no score, category, type or flag changes. Information sufficiency only: a scored sub-national MCUI (4.2) fell through to the IUCN steps and read 0/3 although its record is an official, reviewed, current-edition list row. It now reads its steps from that row, like a range-state list (unexplored_candidates.subnational_mcui_sufficiency). 미역, 톳, 청각 and 꽃게 move MCUI sufficiency 0.0 -> 1.0; a preliminary Rapid LC stays open."
+    },
+    {
+      "method_version": "verified-4.7",
+      "published_on": "2026-10-08",
+      "decision_date": "2026-10-08",
+      "decided_by": "자료 점검",
+      "kind": "기록",
+      "rule_changed": false,
+      "summary": "출처 점검: 근거에 쓰인 출처를 종 출처 목록에 모두 싣고 서지 정보 정정",
+      "reason": "쓰였지만 목록에 없던 출처와 잘못 적힌 서지를 바로잡으려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.7-2026-10-08.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·범주·유형은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.6",
+      "config": "config/verified-indices-v4.7.json",
+      "changes_from": "verified-4.6 (2026-10-08). Source audit 2026-10-08: no score, category, type or flag changes. (1) source_ids_from_traces: every registered source that a published trace names (food, bioactivity, conservation, substitute and trend records) is also listed in the species' source_ids, so the species page and matrix-readiness cite it (before: IUCN re-check, RDA fatty-acid table, PubChem and several replication papers were used but not listed). (2) source_corrections: audited metadata applied to the published registry only - titles replaced by the Crossref titles and first authors where the cited text was a paraphrase or named the wrong authors, dead API endpoint links replaced by their documentation pages, a missing licence and title added for CMNPD and Europe PMC, one unregistered DOI marked, the same work given one licence text, and the RDA row link given the parameter the site now needs."
+    },
+    {
+      "method_version": "verified-4.8",
+      "published_on": "2026-10-08",
+      "decision_date": "2026-10-08",
+      "decided_by": "자료 점검",
+      "kind": "기록",
+      "rule_changed": false,
+      "summary": "참문어 국가 적색목록 쪽 재확인 기록",
+      "reason": "2026-10-01에 연결된 행을 원문 쪽으로 다시 확인.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.8-2026-10-08.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·범주·유형은 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.7",
+      "config": "config/verified-indices-v4.8.json",
+      "changes_from": "verified-4.7 (2026-10-08). No score, category, type or flag changes. National red list page re-check: the 2026-09-27 re-read covered the seven rows scored then; 참문어 (534443) joined on 2026-10-01 through the WoRMS crosswalk and was never re-read, so its MCUI current_check step stayed open (MCUI sufficiency 0.67). Its list page (printed 1027, viewer 1029) and index page (printed 1484, viewer 1486) were re-read in the NIBR e-catalogue on 2026-10-08: 참문어 Octopus vulgaris Cuvier, 1797, NT -> NT, 유지, page 1027, as recorded. The row is added to national_red_list.page_recheck; 참문어 MCUI sufficiency 0.67 -> 1.0."
+    },
+    {
+      "method_version": "verified-4.9",
+      "published_on": "2026-10-10",
+      "decision_date": "2026-10-10",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "완화(d) 층에도 다른 연구팀 재현 장치 적용(갑오징어)",
+      "reason": "ACE 층에 있던 재현 장치를 같은 조건으로 넓혔다.",
+      "preregistration": "research/verified-indices/prereg-4.9-2026-10-10.md",
+      "records": [
+        "research/verified-indices/formal-release-4.9-2026-10-10.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "반영 전에 값을 미리 봤다고 사전 등록 3절에 적었다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.8",
+      "config": "config/verified-indices-v4.9.json",
+      "changes_from": "verified-4.8 (2026-10-10). One rule addition and one species' two cells. The ACE stratum's replication device (2.3 cross_origin_potency: another paper's measurement of the same synthetic sequence adds its DOI to independent_dois without changing the value) is extended to the relaxation-(d) stratum as cross_origin_replication, on the pChEMBL scale and with the same gap of 1.0. Team-lead decision 2026-10-10, registered in research/verified-indices/prereg-4.9-2026-10-10.md before the values were published. 갑오징어 (1666974) FMRFamide, human NPFF2 Ki 6.6 nM: Bonini et al. 2000 J Biol Chem 275:39324 (10.1074/jbc.M004385200) measured FMRF-NH2 at the same receptor as Ki 4.0 +/- 0.2 nM (Table I), another author group, pKi gap 0.218, and the paper is in neither the cohort nor ChEMBL_37. Its DOI joins independent_dois, so the evidence factor goes 0.75 -> 1.0: MBPI 65.8 -> 87.7, BBVI 54.2 -> 65.1, and the single-paper label drops (26 -> 25 species). The scored value, its percentile and its cohort are unchanged. Kotani et al. 2001 (10.1038/sj.bjp.0704038, Ki 10.5 nM) is recorded as a candidate that is NOT used: the review the ChEMBL row comes from cites the value with reference numbers that do not resolve in its own reference list, and the ChEMBL assay text matches that paper's own group, so it may be the origin of the scored value."
+    },
+    {
+      "method_version": "verified-4.10",
+      "published_on": "2026-10-12",
+      "decision_date": null,
+      "decided_by": "기록 없음",
+      "kind": "표시",
+      "rule_changed": true,
+      "summary": "탐색용 보조 지표 MBPI-Rx 추가(기본 지표 불변)",
+      "reason": "기능성 식품 펩타이드 층을 뺀 MBPI로 사후 검증을 다시 보려고.",
+      "preregistration": "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md",
+      "records": [
+        "research/verified-indices/formal-release-4.10-2026-10-12.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "기존 사후 검증 결과를 본 뒤 제안했고 결과를 등록 전에 계산했다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.9",
+      "config": "config/verified-indices-v4.10.json",
+      "changes_from": "verified-4.9 (2026-10-12). No score, label, type or flag changes. Adds a secondary, exploratory MBPI-Rx beside MBPI (mbpi_rx), registered in research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md in its own commit before the code: the published MBPI rule over the items outside the two strata whose comparison groups collect food-protein functional peptides (the AHTPDB ACE peptide stratum and the xanthine-oxidase peptide literature cohort). The 4.3 floor does not apply, so a species left without an item gets null with a reason (11 of 30). Every stratum is classified before the run (52 rows); an unclassified stratum stops the build. The MBPI post-hoc check is re-run with MBPI-Rx for the same operating species and cases (posthoc.validation_sets.MBPI_RX, exploratory: the rule was proposed after the MBPI check failed, and its result could be and was computed before registration). It never changes an axis label, MBPI, BBVI or the matrix."
+    },
+    {
+      "method_version": "verified-4.11",
+      "published_on": "2026-10-13",
+      "decision_date": "2026-10-13",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "자료 점검 규칙 정정: 재현 기원, 층 최소 30, 지방 목록·Rapid LC 사용 조건, 추세 보정 중단",
+      "reason": "2026-10-13 자료 점검에서 찾은 규칙의 빈틈.",
+      "preregistration": "research/verified-indices/prereg-4.11-2026-10-13.md",
+      "records": [
+        "research/verified-indices/formal-release-4.11-2026-10-13.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "공개본 4.10의 값을 본 뒤 제안했다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 13,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 6,
+          "MCUI": 9,
+          "BBVI": 6
+        },
+        "matrix_type_changed": 3,
+        "matrix_points": 29
+      },
+      "compared_with": "verified-4.10",
+      "config": "config/verified-indices-v4.11.json",
+      "changes_from": "verified-4.10 (2026-10-13). Rule corrections from the 2026-10-13 data audit, registered in research/verified-indices/prereg-4.11-2026-10-13.md in its own commit before the code (team-lead decision 2026-10-13). (1) A potency replication joins independent_dois only when it measured a purified isolate of the scored species itself (bioactivity.replication_origin_rule); synthetic peptides, other organisms and fragments replicate potency only. Peptides of three residues or fewer carry a 'not species-specific' caveat. (2) bioactivity.minimum_compounds_per_stratum 3 -> 30, as every other stratum. (3) Each species carries mbpi_breadth (item count, median, top-two mean; exploratory, display only). (4) A sub-national red-list category gives an MCUI only when the pre-registered back-test passed; otherwise it is shown as reference and the next basis applies. (5) A Rapid LC check is not scored when the OBIS reporting-rate ratio is at or below the decline ratio, confirmed or not; the OBIS decline-signal adjustment is suspended (effort_adjustment 0) because its post-hoc check failed."
+    },
+    {
+      "method_version": "verified-4.12",
+      "published_on": "2026-10-14",
+      "decision_date": "2026-10-14",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "MCUI 두 번째 근거: KOSIS 어획량 자원 감소 신호, MCUI는 두 값 중 큰 값",
+      "reason": "기획서의 MCUI 검증 방법(어획량 급감 종이 상위에 오는가)을 구현.",
+      "preregistration": "research/verified-indices/prereg-4.12-2026-10-14.md",
+      "records": [
+        "research/verified-indices/formal-release-4.12-2026-10-14.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "규칙과 구간이 30종 결과를 계산한 뒤 정해졌다고 사전 등록 0절에 적었다.",
+      "score_impact": {
+        "species_changed": 3,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 3,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 29
+      },
+      "compared_with": "verified-4.11",
+      "config": "config/verified-indices-v4.12.json",
+      "changes_from": "verified-4.11 (2026-10-14). MCUI gains a second element, a stock-decline signal from KOSIS coastal and offshore fishery production (DT_1EW0004, national, 2015-2024 confirmed years), registered in research/verified-indices/prereg-4.12-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). Decline D = 1 - mean(2022-2024) / mean(2015-2017); 30% / 50% / 80% give 35 / 60 / 80 (bands borrowed from IUCN criterion A, not an IUCN assessment), capped at 60 for a broader KOSIS item; no score for no matching item, three or more blank years, a recent aquaculture share of 50% or more, or a baseline under 100 t. MCUI = max(extinction-risk MCUI, stock-decline score); the extinction-risk basis and every other index are unchanged."
+    },
+    {
+      "method_version": "verified-4.13",
+      "published_on": "2026-10-14",
+      "decision_date": "2026-10-14",
+      "decided_by": "팀 조사",
+      "kind": "근거",
+      "rule_changed": false,
+      "summary": "추가 근거 논문 반영(넙치 P35), '관련 문헌 · 점수 미사용' 표시",
+      "reason": "2026-10-14 문헌 조사 지시서를 고정 규칙 안에서 반영.",
+      "preregistration": "research/verified-indices/prereg-4.13-2026-10-14.md",
+      "records": [
+        "research/verified-indices/formal-release-4.13-2026-10-14.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "규칙은 그대로이고, 규칙을 바꿔야 들어가는 항목은 결정 필요로 따로 모았다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 29
+      },
+      "compared_with": "verified-4.12",
+      "config": "config/verified-indices-v4.13.json",
+      "changes_from": "verified-4.12 (2026-10-14). The 2026-10-14 evidence brief, registered in research/verified-indices/prereg-4.13-2026-10-14.md in its own commit before the inputs and code. No rule changed. (1) The AMP supplement gains the four cohort targets of 넙치 P35 (Xu, Yuan & Sun 2022, Int J Mol Sci 23:12722, full text read 2026-10-14): MBPI 29.2 -> 43.2, BBVI 44.3 -> 51.3. (2) Seven reviewed records whose value this run could not verify in the original text, or which the fixed rules do not cover (PBS-buffer MIC, a sample with no scientific name), join the partial supplement and score nothing. (3) Three compound caveats gained their original-measurement sources. (4) A new display file, dist/supplementary-literature.json, lists related papers that no score uses; the indicator build does not read it. Items needing a rule change are listed as decisions in the pre-registration and stay out of the scores."
+    },
+    {
+      "method_version": "verified-4.14",
+      "published_on": "2026-10-14",
+      "decision_date": "2026-10-14",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "방법 재검토: MCUI 멸종위험은 IUCN·한국 국가 평가만, 반올림 전 BBVI로 유형, 중립 유형 이름",
+      "reason": "2026-10-14 지표 방법론 재검토.",
+      "preregistration": "research/verified-indices/prereg-4.14-2026-10-14.md",
+      "records": [
+        "research/verified-indices/formal-release-4.14-2026-10-14.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "4.11·4.12의 30종 결과를 본 뒤 쓴 규칙이라고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 17,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 13,
+          "BBVI": 11
+        },
+        "matrix_type_changed": 13,
+        "matrix_points": 16
+      },
+      "compared_with": "verified-4.13",
+      "config": "config/verified-indices-v4.14.json",
+      "changes_from": "verified-4.13 (2026-10-14). Method review of 2026-10-14, registered in research/verified-indices/prereg-4.14-2026-10-14.md in its own commit before the code (team-lead decision 2026-10-14). (1) Each species carries conservation_status: one state (official_scored, official_dd, official_ne, other_region_only, self_preliminary_only, not_found, lookup_failed) and every official assessment kept apart by scope; a zero-result search is never NE. (2) The extinction-risk part of MCUI uses only the IUCN global assessment and the Korean national list; another country's or a sub-national list and the Rapid LC check are reference items without an MCUI number (mcui_scope). (3) With no extinction-risk MCUI, a stock-decline score is used only as a lower bound at or above the matrix MCUI threshold. (4) BBVI mixes the unrounded MFPI and MBPI and is rounded once; types use the unrounded BBVI (scores_unrounded). (5) Neutral research type names; the 50 lines are exploratory. (6) MBPI breadth adds independent papers, max, mean and the tested material; display only."
+    },
+    {
+      "method_version": "verified-4.16",
+      "published_on": "2026-10-15",
+      "decision_date": "2026-10-15",
+      "decided_by": "팀장 요청",
+      "kind": "표시",
+      "rule_changed": false,
+      "summary": "MBPI 근거 프로필 표시(점수 불변)",
+      "reason": "근거의 양과 최상위 항목의 독립 재현 여부를 나눠 보이려고.",
+      "preregistration": null,
+      "records": [
+        "research/verified-indices/formal-release-4.16-2026-10-15.md"
+      ],
+      "timing": "규칙 변경 없음",
+      "timing_basis": "점수·규칙·비교집단·가중치는 그대로다.",
+      "score_impact": {
+        "species_changed": 0,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 0,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 16
+      },
+      "compared_with": "verified-4.14",
+      "config": "config/verified-indices-v4.16.json",
+      "changes_from": "verified-4.14 (2026-10-15). Display only; no score, rule, cohort, factor, weight or threshold changed (research/verified-indices/formal-release-4.16-2026-10-15.md, LKH's request 2026-10-15). Each species carries evidence_profile: the amount of MBPI evidence (scored items, independent papers over all items, related papers no score uses) kept apart from whether the top item was independently replicated (replicated, attempted_not_counted with the reasons, none), the top item's percentile and evidence factor, and the MBPI without its top item. verified-4.15 was left to a parallel change."
+    },
+    {
+      "method_version": "verified-4.17",
+      "published_on": "2026-10-15",
+      "decision_date": "2026-10-15",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "공식 평가가 없는 종은 예비 평가(서식국 목록, Rapid LC)로 MCUI 산출",
+      "reason": "2026-10-15 조사에서 14종의 IUCN·국가 평가를 찾지 못했다(IUCN 미평가).",
+      "preregistration": "research/verified-indices/prereg-4.17-2026-10-15.md",
+      "records": [
+        "research/verified-indices/formal-release-4.17-2026-10-15.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "4.14 결과(14종 MCUI 미산출)를 본 뒤 4.13 방식으로 되돌렸다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 13,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 13,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 13,
+        "matrix_points": 29
+      },
+      "compared_with": "verified-4.16",
+      "config": "config/verified-indices-v4.17.json",
+      "changes_from": "verified-4.16 (2026-10-15; scores and rules as 4.14, evidence profile display kept). Team-lead decision of 2026-10-15, registered in research/verified-indices/prereg-4.17-2026-10-15.md in its own commit before the code. The 2026-10-15 search found no IUCN global or Korean national assessment for the 14 species with no MCUI (IUCN NE). (1) With no official assessment, the extinction-risk part of MCUI again comes from a preliminary assessment, in the 4.13 order: the range state's national list, then the Rapid LC check (mcui_scope.preliminary_bases); sub-national lists stay reference only. (2) Such species carry conservation_status.state preliminary_scored ('예비 평가(공식 평가 전)') and join the matrix and map colours (matrix.include_substitute_mcui). (3) An official IUCN or national result replaces the preliminary value as soon as it is published. Everything else is 4.14."
+    },
+    {
+      "method_version": "verified-4.18",
+      "published_on": "2026-10-15",
+      "decision_date": "2026-10-15",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "4.13에서 미룬 결정 6건 처리: 5건 규칙 유지, 원논문 연결 규칙 1건 확대(청각)",
+      "reason": "'권장안대로 진행' 결정.",
+      "preregistration": "research/verified-indices/prereg-4.18-2026-10-15.md",
+      "records": [
+        "research/verified-indices/formal-release-4.18-2026-10-15.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "결정 대상 종과 예상값을 사전 등록 5절에 미리 계산해 적었다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 1,
+          "MCUI": 0,
+          "BBVI": 1
+        },
+        "matrix_type_changed": 0,
+        "matrix_points": 29
+      },
+      "compared_with": "verified-4.17",
+      "config": "config/verified-indices-v4.18.json",
+      "changes_from": "verified-4.17 (2026-10-15). Team-lead decision of 2026-10-15 on the six items left open in research/verified-indices/prereg-4.13-2026-10-14.md section 5, registered in research/verified-indices/prereg-4.18-2026-10-15.md in its own commit before the code (\"proceed as recommended\"). Five of them keep the rules as they were and change no number: a range-only MIC, a buffer (PBS) MIC, a new enzyme stratum outside ChEMBL, a market sample with no scientific name, and a linked original paper by the same group with undisclosed methods all stay out of the scores and remain visible as partial records with their reason. The sixth changes one rule: a 3.20 original-paper link may now also be added to a compound the species already links, where it joins that link's DOI set (chembl_bioactivity.paper_links_p703, 4.18 file). The paper must meet the same five 3.20 conditions and carry an accepting link review; the link factor stays 0.75 for one DOI and 1.0 for two or more. 청각 siphonaxanthin gains Yim et al. 2020 (Mar Drugs 18:603, 10.3390/md18120603: C. fragile cultured at Wando, collected August 2019, supercritical CO2 extract purified by preparative HPLC) beside the 1979 Phytochemistry structure paper: link factor 0.75 -> 1.0, MBPI 0.4 -> 0.6, BBVI 18.5 -> 18.6. Yim et al. 2021 (Int J Mol Sci 22:6481), named in the 4.13 decision, is NOT used: its Methods give no collection site or date. The activity factor (one ChEMBL document) and the single-paper BBVI label are unchanged, and no other species moves. Every other rule and coefficient equals 4.17."
+    },
+    {
+      "method_version": "verified-4.19",
+      "published_on": "2026-10-15",
+      "decision_date": "2026-10-15",
+      "decided_by": "팀장 결정",
+      "kind": "규칙",
+      "rule_changed": true,
+      "summary": "OBIS 보고율 비로 Rapid LC를 막던 4.11 규칙 5a를 거둠: 멍게 MCUI 예비 평가(LC 10)",
+      "reason": "4.11 사후 검증에서 OBIS 감소 신호가 위협종과 LC를 가르지 못했다. 점수에 쓰지 않는 신호를 차단 조건으로만 쓰지 않는다.",
+      "preregistration": "research/verified-indices/prereg-4.19-2026-10-15.md",
+      "records": [
+        "research/verified-indices/formal-release-4.19-2026-10-15.md"
+      ],
+      "timing": "결과 확인 후",
+      "timing_basis": "4.17·4.18 결과(멍게만 MCUI 미산출)를 본 뒤 정했다고 사전 등록에 적었다.",
+      "score_impact": {
+        "species_changed": 1,
+        "by_axis": {
+          "MFPI": 0,
+          "MBPI": 0,
+          "MCUI": 1,
+          "BBVI": 0
+        },
+        "matrix_type_changed": 1,
+        "matrix_points": 30
+      },
+      "compared_with": "verified-4.18",
+      "config": "config/verified-indices-v4.19.json",
+      "changes_from": "verified-4.18 (2026-10-15). Registered in research/verified-indices/prereg-4.19-2026-10-15.md in its own commit before the code (first registered as a 4.18 candidate before PR #198 took that number; rules and expected results unchanged), after 4.17 and 4.18 left 멍게 as the only species without MCUI. The 4.11 rule 5a (mcui_substitutes.preliminary_trend_block) is withdrawn: an OBIS reporting-rate ratio at or below the decline ratio no longer blocks a met Rapid LC check, because the 4.11 rule 5b post-hoc test found the OBIS decline signal does not separate threatened from LC species (the +10 adjustment stays off). As up to 4.10, only the decline_signal class blocks the check. 멍게 (Halocynthia roretzi, no IUCN, Korean or Japanese assessment covers tunicates) gets the Rapid LC check as a preliminary assessment (LC 10, shown by name in the species detail only). Every other species is 4.18's."
+    }
+  ]
+}

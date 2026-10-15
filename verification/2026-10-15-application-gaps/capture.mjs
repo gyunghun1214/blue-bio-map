@@ -21,13 +21,13 @@ const SPECIES=[[342067,'squid'],[836033,'oyster'],[241776,'sea-cucumber']];
 for(const [w,h] of [[1440,900],[375,812]]){
   const {page,errors}=await open(w,h);
   // 1) status table
-  await page.evaluate(()=>{const d=document.getElementById('mt-acc-04');d.open=true;d.scrollIntoView();});await page.waitForTimeout(300);
+  await page.evaluate(()=>{const d=document.getElementById('mt-acc-05');d.open=true;d.scrollIntoView();});await page.waitForTimeout(300);
   const t=await page.evaluate(()=>({rows:[...document.querySelectorAll('#promise-table tbody tr')].map(r=>[r.querySelector('th').innerText,r.querySelector('.pt-s').innerText]),count:document.getElementById('promise-count').textContent,
     over:document.documentElement.scrollWidth-document.documentElement.clientWidth}));
   log(`${w}px: 현황표 14행 · 상태 네 낱말만`,t.rows.length===14&&t.rows.every(r=>['구현','부분','미구현','변경'].includes(r[1])),t.count);
   log(`${w}px: 페이지 가로 넘침 없음(표는 자기 칸 안에서 가로 스크롤)`,t.over<=0,{over:t.over});
-  await page.locator('#mt-acc-04').screenshot({path:`${OUT}/${w}-01-promise-table.png`});
-  if(w<=375)log(`${w}px: 현황표 11px 미만 글자 없음`,(await page.evaluate(small,'#mt-acc-04')).length===0);
+  await page.locator('#mt-acc-05').screenshot({path:`${OUT}/${w}-01-promise-table.png`});
+  if(w<=375)log(`${w}px: 현황표 11px 미만 글자 없음`,(await page.evaluate(small,'#mt-acc-05')).length===0);
   // 2) species: institution block, links, alternative production order
   await page.evaluate(()=>setView('explore',false));await page.waitForTimeout(400);
   for(const [id,name] of SPECIES){
