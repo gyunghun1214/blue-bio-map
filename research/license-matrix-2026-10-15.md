@@ -3,7 +3,7 @@
 개선 프롬프트 4/15. 출처마다 **표시된 라이선스**를 읽은 분류이며 법률 판단이 아니다. 불확실한 항목은 '확인 필요'로 둔다. 점수·사분면 유형·지도 색은 바꾸지 않았다.
 
 - 표: `dist/license-matrix.json` (스키마 `license-matrix-1`), 생성 `python scripts/build_license_matrix.py` (`--check`로 재현 확인, `verification/test_license_matrix.py`).
-- 기준: 지표 verified-4.18 · 운영 종 스냅샷 2026-10-01 · 후보 셀 2026-10-01.
+- 기준: 지표 verified-4.19 · 운영 종 스냅샷 2026-10-01 · 후보 셀 2026-10-01.
 - 열: 출처(title·provider·url) / 라이선스(license·license_url) / 상업 이용 구분(group·tier·share_alike·basis) / 쓰이는 곳(uses: MFPI·MBPI·MCUI·출현 지도 셀·종 상세 요약·학명·조사량 음영·배경 지도 등)과 종 수.
 - 지표 보고서가 바뀌는 배포(assessments.json·live-snapshot.json·expansion-public-cells.json 변경)에서는 이 스크립트를 다시 실행해 표를 함께 갱신한다. 새 라이선스 문구는 규칙이 없으면 '확인 필요'로 들어간다.
 
@@ -26,9 +26,9 @@
 |---|---:|---:|---:|---:|
 | MFPI(종) | 30 | 3 | 3 | 18 |
 | MBPI(종) | 30 | 0 | 0 | 16 |
-| MCUI(종) | 29 | 0 | 0 | 0 |
+| MCUI(종) | 30 | 0 | 0 | 0 |
 | BBVI(종) | 30 | 0 | 0 | 9 |
-| 활용 × 보전 유형(종) | 29 | 0 | 0 | 0 |
+| 활용 × 보전 유형(종) | 30 | 0 | 0 | 0 |
 | 출현 지도 격자(칸) | 40 | 30 | 30 | 30 |
 | 출현 지도 셀(종×격자) | 480 | 91 | 91 | 91 |
 | 출현 셀이 있는 종 | 30 | 25 | 25 | 25 |
@@ -42,13 +42,13 @@ CC0·CC BY만 남길 때 주로 빠지는 출처(종 수):
 
 - MFPI: Food and Agriculture Organization of the United Nations 5 · FAO/INFOODS 3 · Statistics Korea (국가데이터처), 어류양식동향조사 2 · ALGAE 33(1):101-108 (The Korean Society of Phycology), open access 1 · Aquaculture Research 49(2):1020-1028 (Wiley) 1
 - MBPI: EMBL-EBI ChEMBL 19 · NCBI PubChem 19 · AHTPDB, IIIT-Delhi (Raghava group) 14 · Comprehensive Marine Natural Products Database (CMNPD) 14 · EMBL-EBI Europe PMC 14
-- MCUI: IUCN Red List 29 · Ocean Biodiversity Information System (OBIS), IOC-UNESCO 29 · 국가데이터처 · KOSIS 국가통계포털 29 · IUCN Red List of Threatened Species 11 · GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check) 9
+- MCUI: IUCN Red List 30 · Ocean Biodiversity Information System (OBIS), IOC-UNESCO 30 · 국가데이터처 · KOSIS 국가통계포털 30 · IUCN Red List of Threatened Species 12 · GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check) 10
 
 확인 필요가 모두 '가능'으로 확인돼도 기관 승인이 필요한 출처:
 
 - MFPI: Food and Agriculture Organization of the United Nations 5 · FAO/INFOODS 3 · ALGAE 33(1):101-108 (The Korean Society of Phycology), open access 1 · Development & Reproduction 29(1):13-18 (Hwang & Kang 2025), full text via Europe PMC PMC12004011 1 · Lee HI, Kim CB, Lee MK; Korean Society of Food Preservation 1
 - MBPI: Comprehensive Marine Natural Products Database (CMNPD) 14 · Molecular Medicine Reports (Spandidos), open access, full text read from the Europe PMC REST fullTextXML of PMC5865786 1
-- MCUI: IUCN Red List 29 · Ocean Biodiversity Information System (OBIS), IOC-UNESCO 29 · IUCN Red List of Threatened Species 11 · GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check) 9
+- MCUI: IUCN Red List 30 · Ocean Biodiversity Information System (OBIS), IOC-UNESCO 30 · IUCN Red List of Threatened Species 12 · GBIF.org occurrence search API and OBIS API v3 (counts and areas derived for the Rapid LC check) 10
 
 읽는 법: 지금 상태로 CC0·CC BY만 쓰는 상업 레이어는 출현 지도(격자 30/40칸)와 학명 정도이며, 지표 점수는 ChEMBL(CC BY-SA)·PubChem·CMNPD·IUCN·KOSIS·OBIS 추세 등 연결 출처 때문에 거의 다시 만들 수 없다. 점수를 상업 레이어에 넣으려면 CMNPD·IUCN·FAO 승인과 '확인 필요' 출처의 조건 확인이 먼저다.
 
