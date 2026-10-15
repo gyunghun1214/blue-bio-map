@@ -1040,6 +1040,11 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 }
 /* 2026-10-15 readability: each score tile names its index in Korean above the abbreviation (식량 MFPI, 보전 MCUI …) */
 .card-scores i small .tile-ko{display:block;font-weight:600;letter-spacing:0}
+/* 7/15 (2026-10-15): the MCUI category beside its number, the definition and the '보조 정보' line */
+.ax-num .ax-cat{margin-left:5px;font-size:max(var(--fs-min),.45em);font-weight:600;color:var(--muted);vertical-align:middle}
+.ax-note.ax-def{margin:2px 0 0}
+.ax-note.ax-aux{margin-top:4px}
+.card-scores i .mcui-cat{font-size:var(--fs-min);font-weight:600;color:var(--muted)}
 /* 2026-10-15 OBIS 출현 추세: the 4.11 suspension label and the ⚠ for a decline signal under the MCUI line (score unchanged) */
 .obis-off{display:inline-block;margin-left:6px;padding:1px 8px;border:1px solid currentColor;border-radius:99px;font-size:var(--fs-min);font-weight:600;opacity:.8;white-space:nowrap}
 .obis-warn-mark{margin-right:5px;color:#e0a33a;font-style:normal}

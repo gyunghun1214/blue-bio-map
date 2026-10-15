@@ -605,6 +605,13 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
 /* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) (theme.css holds the explore part) */
 @media(max-width:740px){#compare .cmp-i{font-size:var(--fs-min)}#compare .cp-id .cmp-eyebrow{font-size:var(--fs-min)}}
+/* 7/15 (2026-10-15): the MCUI category beside its number, the MCUI definition and the '보조 정보' line */
+#compare .cp-con .cp-main{grid-template-areas:"h chip" "def def" "big bar"}
+#compare .cp-def{grid-area:def;margin:0;color:var(--cs-ink2);font-size:12px;line-height:1.4}
+#compare .cp-big .cp-cat{margin-left:6px;color:var(--cs-ink2);font-size:17px;font-weight:600;letter-spacing:0;vertical-align:middle}
+#compare .cp-aux{margin:6px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
+#compare #comparison .cv-num .cv-cat{display:block;margin-top:1px;color:var(--dt-ink2);font-size:var(--fs-min);font-weight:600;letter-spacing:0}
+#compare #comparison .dt-x-aux{color:var(--dt-ink)}
 /* 2026-10-15 OBIS 출현 추세 in the species profile: class and two numbers up front, the reading folded */
 #compare .cp-obis{margin:12px 0 0;padding:9px 11px;border:1px solid var(--cs-line);border-radius:8px;color:var(--cs-ink2);font-size:12.5px;line-height:1.55}
 #compare .cp-obis.warn{border-color:color-mix(in srgb,#f2b84b 45%,transparent)}
