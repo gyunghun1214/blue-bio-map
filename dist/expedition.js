@@ -161,7 +161,7 @@ const fmtAxis=(stop,k)=>{const v=stop.scores[k];if(v===null||v===undefined)retur
 // (dist/app.js plainWords, team-lead decision 2026-10-08).
 // 와/과 after a Korean name (the last Hangul syllable decides; "홍합(참담치)" reads 치).
 const wa=name=>{const h=[...String(name)].reverse().find(ch=>ch>='가'&&ch<='힣');return h&&(h.charCodeAt(0)-0xAC00)%28?'과':'와';};
-const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 재현 미확인')
+const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 독립 재현 확인 중')
   .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
 
 // ---- browser ----

@@ -159,7 +159,7 @@ const strings=o=>typeof o==='string'?[o]:o&&typeof o==='object'?Object.values(o)
 assert.ok(strings(data).some(t=>OLD_WORDS.test(t)),'the published file still carries the older words (the screen maps them)');
 for(const t of strings(data))assert.doesNotMatch(ctx.plainWords(t),OLD_WORDS,t);
 assert.equal(ctx.plainWords('자체 예비평가(Rapid LC) · 역검증 미통과'),'자체 예비평가(Rapid LC) · 역검증 기준 미충족');
-assert.equal(ctx.plainWords('단일 논문'),'최상위 근거 재현 미확인');  // 4.16
+assert.equal(ctx.plainWords('단일 논문'),'최상위 근거 독립 재현 확인 중');  // 4.16
 assert.doesNotMatch(js.split('// ---- browser ----')[1],OLD_WORDS,'no older label words typed into the page code');
 for(const f of ['expedition.js','expedition.css']){
   const expected=crypto.createHash('sha256').update(read(f).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);

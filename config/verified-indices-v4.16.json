@@ -1308,14 +1308,14 @@
   "rule": "Display only. item_count = scored MBPI items; independent_paper_count = mbpi_breadth's count (every scored item's original papers and used replications, one DOI once); unscored_related_count = rows of the published related-literature list for the species; top_item_replication = replicated when the top item rests on at least bbvi.minimum_independent_mbpi_dois independent papers (the single-paper label is then absent), attempted_not_counted when it does not but replication rows exist that the rules did not count (their reasons grouped into exclusion_reasons), none otherwise; top_item_percentile and top_item_evidence_factor are the top item's own values; mbpi_without_top_item = the next item's adjusted value (null with one item). Never in MBPI, BBVI, the matrix, a type, the map or any ranking.",
   "label": "MBPI 근거",
   "replication_labels": {
-   "replicated": "최상위 항목 재현됨",
-   "attempted_not_counted": "최상위 항목 재현 시도 있음(인정 안 됨)",
-   "none": "최상위 항목 재현 없음"
+   "replicated": "최상위 항목 독립 재현 확인",
+   "attempted_not_counted": "최상위 항목 재현 기록 있음(기준 외)",
+   "none": "최상위 항목 독립 재현 확인 중"
   },
   "short_replication_labels": {
-   "replicated": "최상위 재현됨",
-   "attempted_not_counted": "최상위 재현 시도(불인정)",
-   "none": "최상위 재현 없음"
+   "replicated": "독립 재현 확인",
+   "attempted_not_counted": "재현 기록 있음(기준 외)",
+   "none": "독립 재현 확인 중"
   },
   "exclusion_reasons": {
    "other_origin": "다른 기원 시료",
@@ -1323,8 +1323,8 @@
    "same_paper": "점수 값과 같은 논문",
    "reviewed_exclusion": "같은 연구 그룹 가능성"
   },
-  "screen_label": "최상위 근거 재현 미확인",
-  "screen_label_replicated": "최상위 근거 재현 확인",
+  "screen_label": "최상위 근거 독립 재현 확인 중",
+  "screen_label_replicated": "최상위 근거 독립 재현 확인",
   "unscored_related_file": "dist/supplementary-literature.json",
   "unscored_related_schema": "supplementary-literature-1",
   "integer_display": "On screen an MBPI or BBVI whose top item is not replicated is shown as a whole number; one decimal stays when rounding would cross a matrix line or turn a non-zero value into 0. Sorting and types use scores_unrounded; JSON and CSV keep the published values."
