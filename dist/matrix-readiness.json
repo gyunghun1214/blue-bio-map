@@ -1,7 +1,7 @@
 {
   "assessments_snapshot": "2026-09-27",
   "candidate_snapshot": "2026-09-25",
-  "matrix_points": 29,
+  "matrix_points": 30,
   "matrix_rule": {
     "bbvi_threshold": 50,
     "bbvi_weight": "default_food_weight; the screen recomputes with its slider",
@@ -52,7 +52,7 @@
     },
     "untyped_label": "유형 미산출(보전평가 미확인 등)"
   },
-  "method_version": "verified-4.18",
+  "method_version": "verified-4.19",
   "schema_version": 1,
   "species": [
     {
@@ -232,7 +232,7 @@
       "axis_reasons": {
         "BBVI": null,
         "MBPI": null,
-        "MCUI": "not_in_red_list",
+        "MCUI": null,
         "MFPI": null
       },
       "bbvi_label": "단일 논문",
@@ -262,19 +262,17 @@
       ],
       "bioactivity_missing_steps": [],
       "korean_name": "멍게",
-      "matrix_eligible": false,
-      "matrix_type": null,
-      "mcui_basis": null,
-      "priority_survey": true,
-      "priority_survey_reasons": [
-        "no_conservation_assessment"
-      ],
+      "matrix_eligible": true,
+      "matrix_type": "baseline_survey",
+      "mcui_basis": "preliminary",
+      "priority_survey": false,
+      "priority_survey_reasons": [],
       "scientific_name": "Halocynthia roretzi",
       "scope": "operating_8",
       "scores": {
         "BBVI": 33.1,
         "MBPI": 13.5,
-        "MCUI": null,
+        "MCUI": 10.0,
         "MFPI": 52.8
       },
       "source_urls": [

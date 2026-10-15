@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.18",
+ "method_version": "verified-4.19",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -5543,24 +5543,29 @@
    "korean_name": "멍게",
    "map_link": "index.html#s=250680&v=explore&m=8/35.50/129.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 19.0,
@@ -5583,13 +5588,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 33.1,
     "MBPI": 13.5,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 52.8
    },
    "shared_with": [],
@@ -5694,7 +5699,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
