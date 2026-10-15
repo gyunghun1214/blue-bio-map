@@ -1184,6 +1184,23 @@ try{
     const puzzled=await until(s=>/bbc-m-unknown/.test(s.row),3000);
     check('M-9 reduced motion: a press opens the chat at once with no hop or talking and no running animation; an unknown answer still shows the drooped siphons',
       calm.open&&calm.talking===0&&/bbc-m-welcome/.test(calm.head)&&calm.headAll==='none'&&/bbc-m-unknown/.test(puzzled.head)&&puzzled.rowSL&&puzzled.rowSL!=='none'&&puzzled.talking===0,JSON.stringify({calm,puzzled}));
+    // ---------- 사용법 안내 도우미 (2026-10-15): 정해진 답만, 심사 예상 질문의 값은 화면 자료에서, 답이 없으면 세 탭 바로가기 ----------
+    const askBot=q=>evaluate(`(async()=>{const i=document.querySelector('.bbc-input');i.value=${JSON.stringify(q)};document.querySelector('.bbc-form').requestSubmit();
+      await new Promise(r=>setTimeout(r,200));const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {text:m?.childNodes[0]?.textContent||'',
+        tabs:[...(m?.closest('.bbc-row')?.nextElementSibling?.querySelectorAll('button[data-tab]')||[])].map(b=>b.dataset.tab+'|'+b.textContent)};})()`);
+    const facts=await evaluate(`(()=>{const f=n=>data.species.find(s=>s.label===n),v=(n,k)=>scoreText(f(n),k,pilotScore(f(n),k));
+      return {oyster:v('참굴','MCUI'),mackerel:v('고등어','MCUI'),squid:v('살오징어','MCUI'),n:data.species.length,placed:data.species.filter(assessedForMatrix).length,
+        rule:matrixRule().bbvi_threshold,head:document.querySelector('#bbc-title').textContent,note:document.querySelector('.bbc-note').textContent}})()`);
+    const judge={same:await askBot('참굴 10점과 고등어 10점은 같은 뜻이에요?'),squid:await askBot('살오징어는 IUCN에서 LC인데 왜 60점이에요?'),
+      line:await askBot('50점은 누가 정했어요?'),missing:await askBot('미역은 왜 매트릭스에 없어요?'),none:await askBot('zqxj 오늘 점심 메뉴 추천')};
+    const apiCalls=await evaluate("performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/')).length");
+    check('M-10 guide helper: fixed answers only (no /api/ request), judge questions read values from the page data, an unmatched question shows 준비된 답이 없어요 with three tab links',
+      facts.head==='사용법 안내 도우미'&&facts.note==='AI 아님 · 정해진 답변'&&apiCalls===0&&Object.values(judge).every(r=>!/[{}]/.test(r.text))&&
+      judge.same.text.includes(`참굴 MCUI(${facts.oyster}점)`)&&judge.same.text.includes(`고등어 MCUI(${facts.mackerel}점)`)&&judge.squid.text.includes(`${facts.squid}점이 됐어요`)&&
+      judge.line.text.includes(`각각 ${facts.rule} 이상`)&&judge.missing.text.includes(`${facts.n}종`)&&(facts.placed===facts.n?judge.missing.text.includes('모두'):judge.missing.text.includes(`${facts.placed}종이 놓여`))&&
+      judge.none.text.startsWith('준비된 답이 없어요')&&judge.none.tabs.map(t=>t.split('|')[0]).join()==='explore,compare,method',JSON.stringify({facts,judge,apiCalls}));
+    await evaluate("[...document.querySelectorAll('.bbc-log button[data-tab=\"compare\"]')].at(-1).click();1");await sleep(400);
+    check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }
