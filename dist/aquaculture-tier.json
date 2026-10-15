@@ -1,0 +1,672 @@
+{
+ "schema_version": "aquaculture-tier-1",
+ "display_only": true,
+ "report_version": "verified-4.19",
+ "labels": {
+  "commercial": "상업 양식 중",
+  "trial": "시험·연구 양식",
+  "none": "기록 없음"
+ },
+ "rule": [
+  "1. 보고서의 양식 기록이 feasible = false(생활사·수확 전에 멈춘 시도)이면 '기록 없음'.",
+  "2. KOSIS 해면양식업에서 그 종에 대응하는 품종(연결표 match_level = species)의 2022~2024년 생산량 합이 0톤보다 크면 '상업 양식 중'.",
+  "3. 2에 해당하지 않아도, 그 종의 양식 기록 원문이나 FAO 양식종 자료집(CASIP)이 그 종의 상업 양식을 적고 있으면 '상업 양식 중'(국외 포함). 묶음 품종(match_level = broader)의 생산량만으로는 정하지 않는다.",
+  "4. 나머지는 '시험·연구 양식'(연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록)."
+ ],
+ "counts": {
+  "commercial": 18,
+  "trial": 9,
+  "none": 3
+ },
+ "total": 30,
+ "sources": {
+  "kosis": {
+   "source_id": "kosis_dt_1ew0004",
+   "title": "KOSIS 어업생산동향조사 · 어업별 품종별 통계(DT_1EW0004) · 해면양식업",
+   "url": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1EW0004",
+   "provider": "국가데이터처 · KOSIS 국가통계포털",
+   "conditions": "어업 = 해면양식업 · 품종 = 해면양식업 아래 전 품종 143개 선택 · 행정구역 계(전국) · 판매형태 계 · 항목 생산량:계(톤) · 연간 2015~2025",
+   "version": "자료갱신일 2026-09-30 · 2025년 잠정치(p)",
+   "retrieved_on": "2026-10-15"
+  },
+  "fao_casip": {
+   "source_id": "fao_casip_2009",
+   "title": "FAO Cultured Aquatic Species Information Programme (CASIP) fact sheets, 2009 CD-ROM edition (50종)",
+   "url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_fishlist.htm",
+   "accessed": "2026-10-15",
+   "note": "클라우드에서 열린 판은 2009년 CD-ROM판뿐이다. 목록에 없다고 양식이 없다는 뜻은 아니다."
+  }
+ },
+ "rows": [
+  {
+   "aphia_id": 145721,
+   "korean_name": "미역",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "FAO 해조류 산업 지침서(FTP 441)가 한국을 최대 미역 생산국으로 적고 양식 방법을 설명",
+   "source_id": "fao_seaweed_guide",
+   "farming_record_source_id": "fao_seaweed_guide",
+   "kosis": {
+    "item": "미역류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 1722483,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 241776,
+   "korean_name": "해삼",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "중국 산둥·랴오닝의 해삼 못 양식·바다 목장 산업을 정리한 개관(이 종이 중국에서 양식되는 유일한 해삼)",
+   "source_id": "chen_2003_sea_cucumber_china",
+   "farming_record_source_id": "chen_2003_sea_cucumber_china",
+   "kosis": {
+    "item": "해삼",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 17,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 250680,
+   "korean_name": "멍게",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '우렁쉥이' 2022~2024년 생산 56,213톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "shin_2011_seasquirt",
+   "kosis": {
+    "item": "우렁쉥이",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 56213,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 342067,
+   "korean_name": "살오징어",
+   "tier": "none",
+   "tier_label": "기록 없음",
+   "basis": "생활사·수확까지 이어진 양식 기록 없음(시도는 보고서 양식 기록에 있음)",
+   "source_id": "puneeta_2015_todarodes",
+   "farming_record_source_id": "puneeta_2015_todarodes",
+   "kosis": {
+    "item": "살오징어(오징어)",
+    "match_level": "species",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 372119,
+   "korean_name": "우뭇가사리",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "lin_2024_gelidium_taiwan",
+   "farming_record_source_id": "lin_2024_gelidium_taiwan",
+   "kosis": {
+    "item": "우뭇가사리",
+    "match_level": "species",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 494972,
+   "korean_name": "톳",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '톳' 2022~2024년 생산 49,763톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "roh_2000_hizikia_wando",
+   "kosis": {
+    "item": "톳",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 49763,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 506159,
+   "korean_name": "홍합(참담치)",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "scienceon_mytilus_coruscus_2016",
+   "farming_record_source_id": "scienceon_mytilus_coruscus_2016",
+   "kosis": {
+    "item": "홍합류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 170327,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 836033,
+   "korean_name": "참굴",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "FAO 양식종 자료집 수록(Crassostrea gigas)",
+   "source_id": "fao_casip_2009",
+   "farming_record_source_id": "fao_oyster_culture",
+   "kosis": {
+    "item": "굴류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 931312,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": true
+  },
+  {
+   "aphia_id": 377084,
+   "korean_name": "다시마",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "FAO 양식종 자료집 수록(Laminaria japonica). 보고서 기록도 해남 상업 다시마 양식장에서 키움",
+   "source_id": "fao_casip_2009",
+   "farming_record_source_id": "hwang_2018_saccharina_haenam",
+   "kosis": {
+    "item": "다시마류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 1701716,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": true
+  },
+  {
+   "aphia_id": 371986,
+   "korean_name": "감태",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "hwang_2010_ecklonia_cava_culture",
+   "farming_record_source_id": "hwang_2010_ecklonia_cava_culture",
+   "kosis": {
+    "item": null,
+    "match_level": "none",
+    "status": "unmatched",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 234476,
+   "korean_name": "가시파래",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "yoon_2003_ulva_prolifera_culture",
+   "farming_record_source_id": "yoon_2003_ulva_prolifera_culture",
+   "kosis": {
+    "item": "파래류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 20545,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 494853,
+   "korean_name": "괭생이모자반",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "pang_2008_sargassum_horneri_culture",
+   "farming_record_source_id": "pang_2008_sargassum_horneri_culture",
+   "kosis": {
+    "item": null,
+    "match_level": "none",
+    "status": "unmatched",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 236157,
+   "korean_name": "꼬시래기",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "barcelo_2017_gracilaria_imta",
+   "farming_record_source_id": "barcelo_2017_gracilaria_imta",
+   "kosis": {
+    "item": "꼬시래기류",
+    "match_level": "broader",
+    "status": "broader_zero",
+    "recent_t": 0,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 145086,
+   "korean_name": "청각",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '청각' 2022~2024년 생산 15,230톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "hwang_2008_codium_wando",
+   "kosis": {
+    "item": "청각",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 15230,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 231750,
+   "korean_name": "바지락",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '바지락' 2022~2024년 생산 38,214톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "fao_casp_ruditapes",
+   "kosis": {
+    "item": "바지락",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 38214,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": true
+  },
+  {
+   "aphia_id": 397082,
+   "korean_name": "전복(종 수준)",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "완도 전복 양식이 1970년부터 늘어 2016년 1만 2천 톤(해양수산부 통계 인용)",
+   "source_id": "kang_2019_haliotis_wando",
+   "farming_record_source_id": "kang_2019_haliotis_wando",
+   "kosis": {
+    "item": "전복류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 69695,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 393716,
+   "korean_name": "큰가리비",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "FAO 양식종 자료집 수록(Patinopecten yessoensis)",
+   "source_id": "fao_casip_2009",
+   "farming_record_source_id": "fao_casp_yesso_scallop",
+   "kosis": {
+    "item": "가리비류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 30570,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": true
+  },
+  {
+   "aphia_id": 836041,
+   "korean_name": "시카메굴",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "보고서 기록이 Liu et al. 2021(Front Physiol 12:713736)을 들어 중국 저장성 샹산만에서 이 종이 주 양식 굴로 상업 양식된다고 적음",
+   "source_id": "yan_2018_kumamoto_beihai",
+   "farming_record_source_id": "yan_2018_kumamoto_beihai",
+   "kosis": {
+    "item": "굴류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 931312,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 504357,
+   "korean_name": "피조개",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '피조개' 2022~2024년 생산 10,757톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "kwon_cho_1986_anadara",
+   "kosis": {
+    "item": "피조개",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 10757,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 413600,
+   "korean_name": "가리맛조개",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "dong_2021_pond_razor_clam",
+   "farming_record_source_id": "dong_2021_pond_razor_clam",
+   "kosis": {
+    "item": "맛류",
+    "match_level": "broader",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 127022,
+   "korean_name": "고등어",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '고등어' 2022~2024년 생산 841톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "moon_2010_mackerel_cage",
+   "kosis": {
+    "item": "고등어",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 841,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 219984,
+   "korean_name": "멸치",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "yoneda_2025_engraulis_rearing",
+   "farming_record_source_id": "yoneda_2025_engraulis_rearing",
+   "kosis": {
+    "item": "멸치",
+    "match_level": "species",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 281273,
+   "korean_name": "참조기",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '참조기' 2022~2024년 생산 141톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "hwang_2025_croaker",
+   "kosis": {
+    "item": "참조기",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 141,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 275816,
+   "korean_name": "넙치",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "국내 상업 넙치 양식장 71곳(완도 36, 제주 35) 조사",
+   "source_id": "oh_2024_flounder",
+   "farming_record_source_id": "oh_2024_flounder",
+   "kosis": {
+    "item": "넙치류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 126041,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 274849,
+   "korean_name": "조피볼락",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "KOSIS 해면양식 '조피볼락' 2022~2024년 생산 45,088톤",
+   "source_id": "kosis_dt_1ew0004",
+   "farming_record_source_id": "kosis_fish_aquaculture",
+   "kosis": {
+    "item": "조피볼락",
+    "match_level": "species",
+    "status": "species_production",
+    "recent_t": 45088,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 276651,
+   "korean_name": "방어",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "FAO 양식종 자료집 수록(Seriola quinqueradiata). 일본과 한국이 FAO에 생산을 보고",
+   "source_id": "fao_casip_2009",
+   "farming_record_source_id": "fao_casp_amberjack",
+   "kosis": {
+    "item": "방어류",
+    "match_level": "broader",
+    "status": "broader_production",
+    "recent_t": 2226,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": true
+  },
+  {
+   "aphia_id": 254538,
+   "korean_name": "대구",
+   "tier": "none",
+   "tier_label": "기록 없음",
+   "basis": "생활사·수확까지 이어진 양식 기록 없음(시도는 보고서 양식 기록에 있음)",
+   "source_id": "kordi_2010_pacific_cod",
+   "farming_record_source_id": "kordi_2010_pacific_cod",
+   "kosis": {
+    "item": "대구",
+    "match_level": "species",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 1061762,
+   "korean_name": "꽃게",
+   "tier": "commercial",
+   "tier_label": "상업 양식 중",
+   "basis": "중국 산둥·저장의 상업 양식 못에서 키운 꽃게를 다룬 연구",
+   "source_id": "jiang_2025_crab",
+   "farming_record_source_id": "jiang_2025_crab",
+   "kosis": {
+    "item": "꽃게",
+    "match_level": "species",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 534443,
+   "korean_name": "참문어(동아시아 종)",
+   "tier": "none",
+   "tier_label": "기록 없음",
+   "basis": "생활사·수확까지 이어진 양식 기록 없음(시도는 보고서 양식 기록에 있음)",
+   "source_id": "suzumura_2024_octopus_thesis",
+   "farming_record_source_id": "suzumura_2024_octopus_thesis",
+   "kosis": {
+    "item": "문어류",
+    "match_level": "broader",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  },
+  {
+   "aphia_id": 1666974,
+   "korean_name": "갑오징어",
+   "tier": "trial",
+   "tier_label": "시험·연구 양식",
+   "basis": "연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록",
+   "source_id": "yoo_2023_sepia_esculenta",
+   "farming_record_source_id": "yoo_2023_sepia_esculenta",
+   "kosis": {
+    "item": "갑오징어류",
+    "match_level": "broader",
+    "status": "no_row",
+    "recent_t": null,
+    "recent_years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   "fao_casip": false
+  }
+ ]
+}

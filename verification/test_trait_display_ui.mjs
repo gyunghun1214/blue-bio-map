@@ -5,11 +5,12 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
-const app=read('app.js'), report=JSON.parse(read('assessments.json')), traits=JSON.parse(read('trait-evidence.json'));
+const app=read('app.js'), report=JSON.parse(read('assessments.json')), traits=JSON.parse(read('trait-evidence.json')), tier=JSON.parse(read('aquaculture-tier.json'));
 const ctx={};vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+';'+app.slice(app.indexOf('// ---------- 활용 특성으로 찾기'),app.indexOf('function traitChip'))+
   ';globalThis.ue=useEvidence;globalThis.count=useCount;globalThis.only=displayOnly;globalThis.rows=traitDisplayRows;'+
-  'globalThis.setData=d=>{data=d};globalThis.setTraits=f=>{traitDisplay=traitDisplayRows(f,[])};'+
+  'globalThis.setData=d=>{data=d};globalThis.setTraits=f=>{traitDisplay=traitDisplayRows(f,[])};globalThis.setTier=f=>{aquacultureTier=aquacultureTierRows(f,[])};'+
+  'globalThis.tierRows=aquacultureTierRows;globalThis.tierLine=aquacultureTierLine;'+
   'globalThis.traitIds=traitIdsOf;globalThis.stratum=mbpiStratum;globalThis.USE=USE_TRAITS;globalThis.GROUPS=USE_GROUPS;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,name:a.korean_name,assessment:{...a,report_version:report.method_version}}));
 ctx.setData({species,assessmentInfo:{method:report.method,sources:report.sources}});
@@ -54,11 +55,28 @@ assert.equal(ctx.rows({...traits,records:[{...traits.records[0],relation:'<'}]},
 ctx.setTraits(traits);
 assert.deepEqual([...ctx.GROUPS],['신약','기능성(식품 소재)','식량']);
 assert.deepEqual([...ctx.USE].map(c=>c.id),['ace','virus','dementia','parasite','cancer','microbe','resistant','fungus','pain','antioxidant','diabetes',
-  'protein_g','mineral','calcium_mg','iron_mg','zinc_mg','omega3','whole','farmed']);
+  'protein_g','mineral','calcium_mg','iron_mg','zinc_mg','omega3','whole','farmed','farmed_trial']);
 assert.deepEqual([...ctx.USE].filter(c=>c.group==='기능성(식품 소재)').map(c=>c.id),['ace','antioxidant']);
 assert.ok(ctx.USE.every(c=>ctx.GROUPS.includes(c.group)),'every chip sits in a drawn row');
+// 2026-10-15: the farming chips read dist/aquaculture-tier.json (display only). Without it both stay at 0; the MFPI farming
+// term never moves (27 species keep 10 points either way).
+ctx.setTier(null);
+assert.equal(ctx.count('farmed'),0);assert.equal(ctx.count('farmed_trial'),0);
+ctx.setTier(tier);
+assert.deepEqual(ids('farmed_trial'),[219984,234476,236157,372119,371986,413600,494853,506159,1666974].sort((a,b)=>a-b));
+assert.match(ctx.ue(species.find(s=>s.aphiaID===250680),'farmed').text,/^상업 양식 중 · KOSIS 해면양식 '우렁쉥이' 2022~2024년 생산 56,213톤/);
+for(const id of [342067,254538,534443]){assert.equal(ctx.ue(species.find(s=>s.aphiaID===id),'farmed'),null);assert.equal(ctx.ue(species.find(s=>s.aphiaID===id),'farmed_trial'),null);
+  assert.match(ctx.tierLine(id),/양식 단계<\/b> 기록 없음/);}
+assert.equal(species.filter(s=>s.assessment.food_trace.components.aquaculture_contribution===10).length,27,'MFPI farming term unchanged');
+assert.match(ctx.tierLine(250680),/href="https:\/\/kosis\.kr\/statHtml\/statHtml\.do\?orgId=101&amp;tblId=DT_1EW0004"[^>]*>KOSIS ↗/);
+assert.match(ctx.tierLine(275816),/상업 양식 중 · 국내 상업 넙치 양식장 71곳/);
+assert.match(ctx.tierLine(836033),/>FAO 양식종 자료집 ↗/);
+let tierOut=[];assert.equal(ctx.tierRows({...tier,schema_version:'aquaculture-tier-2'},tierOut).size,0);
+assert.deepEqual(JSON.parse(JSON.stringify(tierOut)),[{file:'aquaculture-tier.json',version:'aquaculture-tier-2'}]);
+assert.equal(ctx.tierRows({...tier,display_only:false},[]).size,0);
+ctx.setTier(tier);
 assert.deepEqual(Object.fromEntries(ctx.USE.map(c=>[c.id,ctx.count(c.id)])),{ace:14,virus:7,dementia:2,parasite:2,cancer:3,microbe:5,resistant:1,fungus:3,
-  pain:1,antioxidant:2,diabetes:2,protein_g:16,mineral:11,calcium_mg:3,iron_mg:10,zinc_mg:3,omega3:9,whole:9,farmed:27});
+  pain:1,antioxidant:2,diabetes:2,protein_g:16,mineral:11,calcium_mg:3,iron_mg:10,zinc_mg:3,omega3:9,whole:9,farmed:18,farmed_trial:9});
 // The MBPI stratum names the top item's comparison group from one dictionary; every published stratum is registered, the
 // numbers come from the item, and the ACE names are exactly the top items the 'ace' chip reads.
 for(const s of species){
