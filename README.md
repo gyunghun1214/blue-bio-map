@@ -50,6 +50,8 @@ Python 표준 라이브러리만 필요하다. 프로젝트에서 `python -m htt
 
 MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기록은 `python scripts/lineage.py explain --aphia <AphiaID>` / `diff` / `validate`로 본다. 테이블 구조와 새 버전 발행 시 갱신 절차는 [docs/lineage.md](docs/lineage.md)에 있다.
 
+방법 변경 원장(`research/method-changelog.json`, 같은 바이트로 `dist/method-changelog.json`)은 `python scripts/build_method_changelog.py`로 만든다(`--check`로 대조). 공개한 방법 버전마다 날짜, 바뀐 것, 이유, 사전 등록 문서, 결과를 보기 전/후 결정 여부(근거 문서에 적힌 대로, 없으면 '미확인'), 직전 보관본과 비교한 점수 영향(종 수)을 적고, '근거와 방법' 탭 04 접힘에 날짜별로 보인다. 결정한 사람은 원장에 그대로 남고 화면에는 '방법 결정'으로 쓰며 누르면 그 날짜의 기록으로 간다. **새 버전을 올릴 때는 `scripts/build_method_changelog.py`의 `NOTES`에 그 버전 한 줄을 더하고 다시 실행한다**(없으면 빌드가 멈춘다). `matrix-readiness.json`의 `matrix_rule`은 지금 적용되는 문장만 담고, 거둔 문장과 예전 값은 `matrix_rule.history`에 둔다(`scripts/build_matrix_readiness.py`의 `RULE_TEXT`가 문장마다 적용 버전을 적고, 분류하지 않은 문장이 생기면 빌드가 멈춘다).
+
 지도 라이브러리(Leaflet) 파일은 `python scripts/prepare_snapshot.py`로 받는다. 원자료는 제외된 `tmp/`에만 저장하고, 배포 파일에는 원좌표·연락처를 포함하지 않는다.
 
 ## 공개 배포 (2026-09-25)
