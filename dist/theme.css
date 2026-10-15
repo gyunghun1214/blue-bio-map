@@ -427,6 +427,11 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .status-pop .notice p{overflow:visible;color:var(--ink2);font-size:12.5px}
 .status-pop .notice-label,.status-pop #connection-state,.status-pop #snapshot-date{display:inline-block!important;font-size:11.5px;color:var(--muted)}
 .error.in-chip{display:none}
+/* both the API and the saved copy failed (2026-10-15): the line, a retry button, the cause in small type */
+.error .data-retry,.load-failed .data-retry{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.error .error-cause{display:block;margin-top:4px;font-size:13px;opacity:.85}
+.load-failed{margin:0;font-size:14px}
+.moved-link{font-size:12px;opacity:.75;white-space:nowrap}
 .basemap-status.fallback{display:none}
 .basemap-warn{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:6px;border-radius:6px;background:#fbf0d2;color:#995c08;font-size:13px;cursor:help}
 .basemap-warn[hidden]{display:none}
@@ -920,7 +925,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* header: one chip '● 연구 프로토타입 · verified-4.11 · OCEAN 20 ▾' (the dot turns amber while the connection chip shows) */
 .status-chip#notice-chip{max-width:none}
 #notice-chip::before{content:"";flex:none;width:7px;height:7px;margin-right:3px;border-radius:50%;background:#44d7c0}
-.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before{background:#f2b233}
+.status-chips:has(#alert-chip:not([hidden])) #notice-chip::before,#notice-chip.load-failed::before{background:#f2b233}
 .status-pop .pop-project{margin:0 0 8px;color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.04em}
 /* the team tag gives way where the tabs shrink (960px and below); phones keep the chip inside the screen */
 @media (max-width:960px){.chip-tail{display:none}}

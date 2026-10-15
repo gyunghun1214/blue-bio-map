@@ -76,7 +76,15 @@ const mbpiKindOf = s => {
 const mbpiKindShare = k => `ACE·XO 항목 ${k.functionalItems}/${k.items}(${Math.round(k.share*100)}%)`;
 const years = item => item.yearStart ? (item.yearStart===item.yearEnd ? String(item.yearStart) : `${item.yearStart}–${item.yearEnd}`) : '연도 미기재';
 const safeUrl = url => /^https?:\/\//i.test(String(url || '')) ? url : '#';
-const sourceLink = (url,label) => `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
+// Sources whose publisher moved the file for good (reports/link-check, 2026-10-15). The data keeps the address as it was
+// read; the link opens the new address and says so. Same list in expedition.js.
+const MOVED_LINKS = {
+  'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
+  'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
+};
+const sourceLink = (url,label) => MOVED_LINKS[url]
+  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
+  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
 const recordLabel = s => s.noOccurrences ? '출현자료 미수집'
   : Number.isSafeInteger(s.recordCount) ? s.recordCount.toLocaleString()+'건' : '기록 수 미확인';
 // Evidence stages are independent of the operational DB's old inventory counters.
@@ -841,12 +849,16 @@ function readinessRows(readiness,outdated){
   if(Number.isSafeInteger(readiness?.schema_version)&&readiness.schema_version>1)outdated.push({file:'matrix-readiness.json',version:readiness.schema_version});
   return new Map(readiness?.schema_version===1&&Array.isArray(readiness.species)?readiness.species.map(row=>[row.aphia_id,row]):[]);
 }
+// live-data.js starts the first screen's files together and hands over the request under way (readEarly); revalidated,
+// not re-downloaded ('no-cache'). Without that file (node tests) a plain fetch.
+const FRESH_READ={cache:'no-cache'};
+const readData=(url,init)=>typeof readEarly==='function'?readEarly(url,init):fetch(url,init);
 async function attachPilotAssessments(next) {
   // "조회 실패": the report was not reached or not readable. "기술 오류": it was read but did not re-check.
   // Both differ from "산출 보류", which the report itself states for missing evidence.
   const failed=state=>{for(const s of next.species)s.assessmentState=state;};
   let response;
-  try { response=await fetch('assessments.json',{cache:'no-store'}); } catch { failed('lookup_failed'); return; }
+  try { response=await readData('assessments.json',FRESH_READ); } catch { failed('lookup_failed'); return; }
   if(!response.ok){ failed('lookup_failed'); return; }
   let report;
   try { report=await response.json(); } catch { failed('lookup_failed'); return; }
@@ -4221,7 +4233,8 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 function updateStatusChips(){
   const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
-  $('notice-chip-text').innerHTML=!data?'자료 불러오는 중':(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
+  $('notice-chip').classList.toggle('load-failed',!data&&$('connection-state').textContent==='불러오기 실패');
+  $('notice-chip-text').innerHTML=!data?($('connection-state').textContent==='불러오기 실패'?'자료를 불러오지 못했어요':'자료 불러오는 중'):(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입'+(info?.version?` · ${released(info)?'':'시범 '}${esc(info.version)}${frozenOn(info)?`<span class="chip-freeze"> · ${esc(frozenOn(info))} 동결</span>`:''}`:'')+'<span class="chip-tail"> · OCEAN 20</span>';
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -4263,14 +4276,8 @@ async function loadCollection(){
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
     const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
-      fetch('matrix-readiness.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('trait-evidence.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('unexplored-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('supplementary-literature.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('replication-search.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('cmnpd-candidates.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('posthoc-scorecard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('method-changelog.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json']
+        .map(f=>readData(f,FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null))]);
     next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
@@ -4287,7 +4294,7 @@ async function loadCollection(){
     // Offline demo: the snapshot is the plan, not a failure, so its date stays in the status line without the alert.
     $('connection-state').textContent=data.offline?`오프라인 시연 · 저장된 공개 자료 사본 (${data.snapshotAt} 기준) · ${counts}`
       :data.snapshotAt?`연결 실패 · 저장된 사본 사용 (${data.snapshotAt} 기준) · ${counts}`:'공개 기준 자료 연결됨 · '+counts;
-    if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`운영 DB에 연결하지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 표시합니다. 그 뒤 발행된 변경은 반영되지 않았습니다.`;}
+    if(data.snapshotAt&&!data.offline){$('error').hidden=false;$('error').textContent=`실시간 자료(운영 DB)를 불러오지 못해 ${data.snapshotAt}에 저장한 공개 자료 사본을 보여 드려요. 그 뒤 발행된 변경은 반영되지 않았어요.`;}
     else if(!data.publishedCount)$('score-disclaimer').innerHTML=`운영 DB에는 연결됐지만 <strong>운영 발행 자료가 0종</strong>입니다. 지금 보이는 ${data.candidateCount}종은 모두 조사 후보이며, 지표는 산출하지 않았습니다.`;
     if(data.outdated.length){$('error').hidden=false;$('error').textContent=(data.snapshotAt&&!data.offline?$('error').textContent+' ':'')+`새 버전 있음: ${data.outdated.map(o=>o.file).join(', ')}이(가) 이 화면 코드보다 새 버전입니다. 자료 결함이 아니며 페이지를 새로고침(F5)하면 최신 화면이 보입니다.`;}
     // a dated snapshot or a newer data file is a status, not a failure: it moves from the banner into the yellow header chip
@@ -4295,19 +4302,29 @@ async function loadCollection(){
     toggleSimulation(false);updateWeightControl();
     if(startHash){const h=startHash;startHash=null;if(h.s||h.v||h.w)applyHash(h);}
     loadDone(data.offline?'offline':data.snapshotAt?'snapshot':data.publishedCount?'live':'empty');
-  }catch(error){if(request!==requestNumber)return;$('error').hidden=false;$('error').textContent=error.message;$('error').classList.remove('in-chip');updateStatusChips();$('connection-state').textContent='불러오기 실패';$('species-list').textContent='다시 불러오기를 눌러 주세요.';$('cmp-profile').innerHTML='<p class="cmp-error" role="alert">자료를 불러오지 못했습니다. 위의 ↻ 다시 불러오기를 눌러 주세요. 빈 결과가 아니라 연결 오류입니다.</p>';$('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
+  }catch(error){if(request!==requestNumber)return;
+    // Neither the API nor the saved copy answered (2026-10-15): one plain line and a retry button wherever the data would be,
+    // never an empty screen. The cause stays under it in small type.
+    const retry='<button type="button" class="text-button data-retry">↻ 다시 시도</button>';
+    const cause=/[가-힣]/.test(error?.message||'')?error.message:'운영 DB에 연결하지 못했습니다(네트워크 끊김 또는 시간 초과).'; // the browser's own words are English
+    $('error').hidden=false;$('error').innerHTML=`<strong>자료를 불러오지 못했어요</strong> · ${retry}<small class="error-cause">${esc(cause)} 저장된 공개 자료 사본도 읽지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.</small>`;
+    $('error').classList.remove('in-chip');$('connection-state').textContent='불러오기 실패';updateStatusChips();
+    $('species-list').innerHTML=`<p class="load-failed">자료를 불러오지 못했어요 · ${retry}</p>`;
+    $('cmp-profile').innerHTML=`<p class="cmp-error" role="alert">자료를 불러오지 못했어요 · ${retry} 빈 결과가 아니라 연결 오류입니다.</p>`;
+    $('map-review-note').textContent='자료 연결을 확인할 수 없습니다.';loadDone('error');}
 }
 let startHash={};
 async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
-  const seaReq=fetch('cell-sea-geometry.json').then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
-  const termsReq=fetch('source-terms-ko.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
+  const seaReq=readData('cell-sea-geometry.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
+  const termsReq=readData('source-terms-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
   fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null).then(renderLicense); // optional: the section stays hidden without it
-  try{const r=await fetch('effort.json');if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
+  const mapReq=readData('countries.json',FRESH_READ);mapReq.catch(()=>{}); // asked for now, used once effort.json is in (they no longer wait for each other)
+  try{const r=await readData('effort.json',FRESH_READ);if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
   {const f=await seaReq;if(f?.schemaVersion==='cell-sea-geometry-1'&&f.cells&&typeof f.cells==='object')cellSea=f.cells;} // without it: whole squares as before
-  try{const r=await fetch('countries.json');if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
+  try{const r=await mapReq;if(!r.ok)throw Error('map');const geography=await r.json();if(typeof L!=='undefined')initMap(geography);loadProgress('map',{geography});}catch{loadProgress('map');$('map').textContent='배경 지도를 불러오지 못했습니다. 종 요약은 계속 볼 수 있습니다.';}
   await loadCollection();registerTools();
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
@@ -4334,6 +4351,8 @@ syncFolds(); // fold the filters before the data arrives, so the list does not j
   if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
 $('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
+// "↻ 다시 시도" in the failure lines (banner, list, comparison) does what the header's ↻ does
+document.addEventListener('click',e=>{if(e.target.closest?.('.data-retry'))$('reload-data').click();});
 // A link opened in a tab that already shows the map changes only the hash (no reload): apply it, so a shared
 // 비교와 지표 link opens that tab instead of being written over by the map. replaceState (writeHash) never fires this.
 addEventListener('hashchange',()=>{const h=readHash();if(data&&selected)applyHash(h);else startHash=h;});
