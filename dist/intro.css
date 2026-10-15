@@ -14,6 +14,9 @@ html.gate-on,html.gate-on body{overflow:hidden}
    deferred app scripts), and style.css hides every [hidden] with !important, so this rule has to outrank it (2026-10-15:
    before this, the map page painted first and the screen came up seconds later on a slow network) */
 html.gate-on .gate,html.gate-on .gate[hidden]{display:block!important}
+/* the page under the screen stays unpainted until the visitor goes in: a map tile loading behind the opaque screen was
+   still the page's largest paint (Chrome does not count what covers it), so phone LCP read 10-12 s on the live site */
+html.gate-on:not(.gate-leaving) body>:not(.gate){visibility:hidden}
 .gate [hidden]{display:none!important}
 .gate :focus-visible{outline:none}
 /* the button gets focus on arrival (Enter acts on it); its ring shows once the keyboard is in use (intro.js adds html.kb on
