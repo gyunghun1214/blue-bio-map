@@ -2148,7 +2148,7 @@ function indexReviewRow(s,key,label){
   const seen=a&&{MFPI:a.food_trace?.observed_rows?.length,MBPI:a.bioactivity_trace?.length||a.bioactivity_partial?.length,MCUI:a.conservation_trace?.reviewed}[key];
   if(!seen)return null;
   const v=pilotScore(s,key);
-  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?(key==='MCUI'&&s.assessment?.conservation_status?'미산출 · '+consShort(s,true):'산출 보류'):scoreText(s,key,v)}${key==='MCUI'&&separateMcui(s)?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
+  return row(label,`지표 보고서에서 검토 · ${key} ${v===null?(key==='MCUI'&&s.assessment?.conservation_status?'미산출 · '+consShort(s,true):'산출 보류'):scoreText(s,key,v)}${key==='MCUI'&&separateMcui(s)&&!(v!==null&&stockMcui(s))?' ('+mcuiBasisShort(s)+')':''}`,v===null?'pending':'done')+
     `<p class="fine">운영 요약(발행 ${esc((s.publishedAt||'').slice(0,10)||'날짜 미확인')})은 지표 보고서보다 먼저 작성되어 이 항목을 반영하지 않았습니다. 원값과 근거는 위 ${key} 항목에서 확인합니다.</p>`;
 }
 function liveEvidence(s) {
