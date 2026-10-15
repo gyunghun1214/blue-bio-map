@@ -1038,6 +1038,44 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   .sd-spark text{font-size:11px}
   #explore .leaflet-control-attribution{font-size:11px!important} /* style.css sets 10px !important */
 }
+
+/* 2026-10-15 application-doc gaps: species links, precise-coordinate dialog, alternative production first (explore detail) */
+.detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.detail-act{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
+.detail-act:hover{border-color:var(--teal);color:var(--teal-ink)}
+#explore .detail-act{border-color:var(--nv-line2)}
+.alt-production{margin:14px 0 4px;padding:12px 14px;border:1px solid var(--line);border-left:4px solid #f2b233;border-radius:10px;background:var(--surface)}
+#explore .alt-production{background:var(--nv-surface);border-color:var(--nv-line2);border-left-color:#f2b233}
+#detail .alt-row{grid-template-columns:1fr;gap:2px}
+.alt-production h3{margin:0 0 8px;font-size:15px}
+.alt-production h3 .fine{display:block;margin-top:2px;font-weight:500}
+.alt-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+.alt-row span{color:var(--muted);font-size:12.5px;font-weight:600}
+.alt-row p{margin:0;font-size:13px;line-height:1.55}
+.alt-production>.fine{margin:8px 0 0}
+.coord-dialog{width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid rgba(150,180,200,.28);border-radius:14px;background:#0a2335;color:#eaf2f6;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.coord-dialog::backdrop{background:rgba(0,10,18,.72)}
+.coord-box{padding:18px 22px 20px}
+.coord-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.coord-head h2{margin:0;font-size:20px;font-weight:800}
+.coord-head .coord-close{width:36px;height:36px;border:1px solid rgba(150,180,200,.28);border-radius:8px;background:none;color:#eaf2f6;font-size:16px;cursor:pointer}
+.coord-species{margin:4px 0 0;color:#a9bbc6;font-size:13px}
+.coord-lead{margin:14px 0;padding:12px 14px;border-radius:10px;background:rgba(68,215,192,.09);font-size:14px;line-height:1.6}
+.coord-lead b{color:#7fe6d6}
+.coord-dialog h3{margin:16px 0 8px;font-size:15px}
+.coord-dialog h3 span{margin-left:6px;color:#a9bbc6;font-size:12.5px;font-weight:500}
+.coord-steps{margin:0;padding:0;list-style:none;counter-reset:cs}
+.coord-steps li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;padding:9px 0;border-top:1px solid rgba(150,180,200,.14);font-size:13.5px;line-height:1.55}
+.coord-steps b{color:#f2c46d}
+.coord-note{margin:12px 0 0;color:#a9bbc6;font-size:12.5px;line-height:1.55}
+.coord-foot{display:flex;justify-content:flex-end;margin-top:16px}
+.coord-ok{min-height:40px;padding:0 20px;border:1px solid #44d7c0;border-radius:8px;background:#44d7c0;color:#06202a;font:inherit;font-weight:700;cursor:pointer}
+@media(max-width:740px){
+  .alt-row{grid-template-columns:1fr;gap:2px}
+  .alt-row span,.coord-dialog h3 span,.coord-note,.coord-species{font-size:12px}
+  .coord-steps li{grid-template-columns:1fr;gap:2px}
+  .coord-box{padding:16px}
+}
 /* 7/15 (2026-10-15): the MCUI category beside its number, the definition and the '보조 정보' line */
 .ax-num .ax-cat{margin-left:5px;font-size:.45em;font-weight:600;color:var(--muted);vertical-align:middle}
 .ax-note.ax-def{margin:2px 0 0}

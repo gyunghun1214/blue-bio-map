@@ -641,3 +641,11 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-rx-num{justify-self:end;color:var(--cs-ink2);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
 #compare .cp-rx-none{grid-column:2/4;justify-self:end;color:var(--cs-ink2);font-size:12.5px}
 @media (max-width:740px){#compare .cp-kind{margin-left:0}}
+
+/* 2026-10-15: a both-high species shows alternative production before the map link (application doc) */
+#compare .alt-production{margin:14px 0 0;padding:12px 14px;border:1px solid var(--cs-line2);border-left:4px solid #f2b233;border-radius:10px;background:rgba(242,178,51,.06);color:var(--cs-ink)}
+#compare .alt-production h3{margin:0 0 6px;font-size:14px}
+#compare .alt-production h3 .fine{display:block;margin-top:2px;color:var(--cs-ink2);font-size:12px;font-weight:500}
+#compare .alt-row{border-top-color:var(--cs-line)}
+#compare .alt-row span{color:var(--cs-ink3)}
+#compare .alt-row a{color:#7fe6d6}
