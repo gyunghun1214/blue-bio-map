@@ -31,7 +31,7 @@ FOLDER = ROOT / "research" / "verified-indices"
 DEFAULT_EVIDENCE = FOLDER / "evidence.json"
 DEFAULT_CANDIDATES = FOLDER / "candidates.json"
 DEFAULT_TAXONOMY = FOLDER / "taxonomy.json"
-DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.17.json"
+DEFAULT_CONFIG = ROOT / "config" / "verified-indices-v4.18.json"
 DEFAULT_OUTPUT = ROOT / "dist" / "assessments.json"
 DEFAULT_CATALOG = ROOT / "dist" / "candidate-catalog.json"
 COMPOUND_ID = re.compile(r"^(?:CID:\d+|[A-Z]{14}-[A-Z]{10}-[A-Z])$")
@@ -2146,12 +2146,30 @@ def load_inputs(evidence=DEFAULT_EVIDENCE, candidates=DEFAULT_CANDIDATES, config
                 require(r["review"] is not None, f"{aphia} {key}: P703 paper link has no review decision")
                 s = species[aphia] = {**species[aphia], "links": [dict(l) for l in species[aphia]["links"]]}
                 link = next((l for l in s["links"] if l["inchikey"] == key), None)
-                require(link is None, f"{aphia} {key}: the species already links this compound")
-                s["links"].append({"compound_qid": r["link"]["compound_qid"], "inchikey": key,
-                                   "statements": [{"references": sorted("doi:" + d for d in r["dois"]), "taxon_qid": "original_paper"}]})
-                snap["link_review"] = snap["link_review"] + [{"aphia_id": aphia, "scientific_name": r["link"]["scientific_name"],
-                    "inchikey": key, "compound_chembl_id": r["link"]["compound_chembl_id"], "compound_name": r["link"]["compound_name_in_paper"],
-                    "pubchem_cid": r["link"]["pubchem_cid"], "dois": sorted(r["dois"]), **r["review"]}]
+                statement = {"references": sorted("doi:" + d for d in r["dois"]), "taxon_qid": "original_paper"}
+                extend = r["link"].get("added_to_existing_link", False)
+                require(extend is (link is not None),
+                        f"{aphia} {key}: added_to_existing_link does not match what the snapshot holds")
+                if link is None:
+                    s["links"].append({"compound_qid": r["link"]["compound_qid"], "inchikey": key, "statements": [statement]})
+                    snap["link_review"] = snap["link_review"] + [{"aphia_id": aphia, "scientific_name": r["link"]["scientific_name"],
+                        "inchikey": key, "compound_chembl_id": r["link"]["compound_chembl_id"], "compound_name": r["link"]["compound_name_in_paper"],
+                        "pubchem_cid": r["link"]["pubchem_cid"], "dois": sorted(r["dois"]), **r["review"]}]
+                    continue
+                # 4.18 (team-lead decision 2026-10-15, prereg-4.18-2026-10-15.md): a paper that meets the same 3.20 conditions
+                # may also join a link the species already holds, so a second independent report of the compound in the species
+                # raises the link factor. Only an accepted paper is added; the existing link review keeps its decision and
+                # grows its DOI set, so chembl_items still sees a review whose DOIs equal the link's.
+                require(r["review"]["decision"] == "accept",
+                        f"{aphia} {key}: a paper added to an existing link must carry an accepting review")
+                i = s["links"].index(link)
+                s["links"][i] = {**link, "statements": [*link["statements"], statement]}
+                old = next((x for x in snap["link_review"] if x["aphia_id"] == aphia and x["inchikey"] == key), None)
+                require(old is not None and old["decision"] == "accept",
+                        f"{aphia} {key}: the existing link has no accepting review to extend")
+                snap["link_review"] = [{**x, "dois": sorted(set(x["dois"]) | r["dois"]),
+                                        "added_papers": sorted(r["dois"]), "added_paper_reason": r["review"]["reason"]}
+                                       if x is old else x for x in snap["link_review"]]
             snap = {**snap, "species": [species[s["aphia_id"]] for s in snap["species"]], "reference_dois": refs}
             extra_sources, as_of = sup["sources"], max(as_of, sup["snapshot_date"])
         comments = cfg["chembl_bioactivity"].get("activity_comments")

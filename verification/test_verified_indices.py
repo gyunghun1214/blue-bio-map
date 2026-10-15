@@ -2726,6 +2726,7 @@ V412 = ROOT / "config" / "verified-indices-v4.12.json"  # superseded by 4.13 (20
 V413 = ROOT / "config" / "verified-indices-v4.13.json"  # superseded by 4.14 (2026-10-14 method review: official MCUI only)
 V414 = ROOT / "config" / "verified-indices-v4.14.json"  # superseded by 4.16 (evidence profile, display only) and 4.17 (2026-10-15 team-lead decision: preliminary MCUI)
 V416 = ROOT / "config" / "verified-indices-v4.16.json"  # superseded by 4.17 (2026-10-15 team-lead decision: preliminary MCUI)
+V417 = ROOT / "config" / "verified-indices-v4.17.json"  # superseded by 4.18 (2026-10-15 team-lead decision: the six open items)
 
 
 class VerifiedPilot328Tests(unittest.TestCase):
@@ -4026,7 +4027,7 @@ class Verified413Tests(unittest.TestCase):
         # the 4.13 matrix, rebuilt from the 4.13 report (the published file is 4.14 now)
         from build_matrix_readiness import build as build_matrix
         read = lambda name: json.loads((ROOT / "dist" / name).read_text(encoding="utf-8"))
-        matrix = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
+        matrix = build_matrix(copy.deepcopy(self.report), read("candidate-catalog.json"), read("expansion-evidence.json"))
         counts = {}
         for s in matrix["species"]:
             counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
@@ -4200,6 +4201,110 @@ class Verified414Tests(unittest.TestCase):
 
 
 
+class Verified418Tests(unittest.TestCase):
+    """4.18 (research/verified-indices/prereg-4.18-2026-10-15.md, registered in its own commit before the code; LKH's decision
+    2026-10-15 to proceed as recommended on the six items left open in prereg-4.13 section 5). Five of them keep the rules as
+    they were and change no number. The sixth widens the 3.20 original-paper link: a paper that meets the same five conditions
+    and carries an accepting review may also join a link the species already holds, so a second independent report of the
+    compound in the species raises the link factor. 청각's siphonaxanthin link gains Yim et al. 2020 (Mar Drugs 18:603) beside
+    the 1979 Phytochemistry structure paper; Yim et al. 2021 (Int J Mol Sci 22:6481), named in the 4.13 decision, is not used
+    because its Methods give no collection site or date. Everything else is 4.17."""
+
+    SIPHONAXANTHIN = "SUCKEYMKNGZJHK-ZARIWKGHSA-N"
+    ADDED_DOI = "10.3390/md18120603"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = load_inputs()
+        cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V417))
+        rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
+        cls.new, cls.old = rows(cls.report), rows(cls.old_report)
+        cls.by_name = {s["korean_name"]: s for s in cls.new.values()}
+        cls.links = json.loads((ROOT / "research" / "verified-indices"
+                                / "mbpi-paper-links-p703-4.18-2026-10-15.json").read_text(encoding="utf-8"))
+
+    def test_committed_output_is_reproducible(self):
+        self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.18", "released"))
+        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
+        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.18.json")
+        self.assertTrue((ROOT / "research" / "verified-indices" / "prereg-4.18-2026-10-15.md").exists())
+        rule = self.report["method"]["chembl_bioactivity"]["link_rule"]
+        self.assertIn("Since 4.18", rule)
+        self.assertNotIn("Since 4.18", self.old_report["method"]["chembl_bioactivity"]["link_rule"])
+
+    def test_the_added_paper_meets_the_same_five_conditions_and_carries_a_review(self):
+        rows = [r for r in self.links["links"] if r.get("added_to_existing_link")]
+        self.assertEqual([(r["aphia_id"], r["inchikey"], r["doi"]) for r in rows],
+                         [(145086, self.SIPHONAXANTHIN, self.ADDED_DOI)])
+        v = rows[0]["verification"]
+        for condition in ("species_named", "single_defined_compound", "isolated_or_identified_from_species",
+                          "inchikey_matches_pubchem"):
+            self.assertIs(v[condition], True, condition)
+        self.assertTrue(v["sample_origin"].strip())  # 3.20 asks where the sample came from, in the paper's own words
+        self.assertEqual(rows[0]["review"]["decision"], "accept")
+        # the 2021 paper named in the 4.13 decision is not a link anywhere: it gives no collection site or date
+        self.assertNotIn("10.3390/ijms22126481", [r["doi"] for r in self.links["links"]])
+
+    def test_the_siphonaxanthin_link_now_rests_on_two_papers(self):
+        item = self.by_name["청각"]["bioactivity_trace"][0]
+        self.assertEqual(item["inchikeys"], [self.SIPHONAXANTHIN])
+        self.assertEqual(item["original_paper_dois"], ["10.1016/s0031-9422(00)90263-2", self.ADDED_DOI])
+        self.assertEqual((item["link_factor"], item["activity_factor"], item["evidence_factor"]), (1.0, 0.75, 0.75))
+        self.assertEqual(item["document_chembl_ids"], ["CHEMBL5223129"])  # the activity side is untouched: one document
+        self.assertEqual(item["percentile"], self.old[145086]["bioactivity_trace"][0]["percentile"])
+        self.assertIn(self.ADDED_DOI, item["caveat"])
+
+    def test_only_the_seaweeds_two_scores_move(self):
+        moved = {(s["korean_name"], k) for a, s in self.new.items() for k in ("MFPI", "MBPI", "MCUI", "BBVI")
+                 if s["scores"][k] != self.old[a]["scores"][k]}
+        self.assertEqual(moved, {("청각", "MBPI"), ("청각", "BBVI")})
+        seaweed = self.by_name["청각"]
+        self.assertEqual((seaweed["scores"]["MBPI"], seaweed["scores"]["BBVI"]), (0.6, 18.6))
+        self.assertEqual((self.old[145086]["scores"]["MBPI"], self.old[145086]["scores"]["BBVI"]), (0.4, 18.5))
+        # the label and the stratum are the activity side's, so neither moves
+        self.assertEqual(seaweed["bbvi_label"], self.old[145086]["bbvi_label"])
+        self.assertEqual(seaweed["mbpi_stratum"], self.old[145086]["mbpi_stratum"])
+        self.assertEqual(seaweed["evidence_profile"]["independent_paper_count"], 2)
+        self.assertEqual(seaweed["evidence_profile"]["top_item_evidence_factor"], 0.75)
+
+    def test_no_other_species_link_doi_set_changed(self):
+        dois = lambda rows: {(s["korean_name"], i["compound_id"]): tuple(i.get("original_paper_dois") or ())
+                             for s in rows.values() for i in (s["bioactivity_trace"] or []) if "compound_id" in i}
+        new, old = dois(self.new), dois(self.old)
+        self.assertEqual(set(new), set(old))
+        self.assertEqual({k: (old[k], new[k]) for k in new if new[k] != old[k]},
+                         {("청각", "CHEMBL5287816"): (("10.1016/s0031-9422(00)90263-2",),
+                                                     ("10.1016/s0031-9422(00)90263-2", self.ADDED_DOI))})
+
+    def test_the_five_unchanged_decisions_stay_out_of_the_scores(self):
+        # prereg-4.18 2: a buffer MIC (넙치 TP25), a range-only MIC (바지락 RpdefB) and a market sample with no scientific
+        # name (참굴) stay out of the scores and remain visible as partial records, with their reason settled rather than
+        # pending; no enzyme stratum outside ChEMBL was added, so the strata and their minimums are 4.17's
+        self.assertEqual(self.report["method"]["bioactivity"], self.old_report["method"]["bioactivity"])
+        for name in ("넙치", "바지락", "참굴"):
+            rows = self.by_name[name]["bioactivity_partial"]
+            self.assertTrue(rows, name)
+            old = next(o for o in self.old.values() if o["korean_name"] == name)
+            self.assertEqual([r["chain"] for r in rows], [r["chain"] for r in old["bioactivity_partial"]], name)
+            reasons = [r["exclusion_reason"] for r in rows if "exclusion_reason" in r]
+            self.assertFalse([x for x in reasons if "대기" in x], name)
+            self.assertTrue([x for x in reasons if "prereg-4.18-2026-10-15" in x], name)
+        # the related-literature list is display only and still names no pending decision
+        published = json.loads((ROOT / "dist" / "supplementary-literature.json").read_text(encoding="utf-8"))
+        self.assertFalse([r for r in published["records"] if "대기" in r["not_scored_reason"]])
+        self.assertNotIn("10.3390/md18120603", [r["doi"] for r in published["records"]])  # one paper, one place
+
+    def test_the_matrix_and_its_counts_do_not_move(self):
+        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        counts = {}
+        for s in published["species"]:
+            counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
+        self.assertEqual(counts, {"sustainable_use": 12, "alternative_production": 1, "baseline_survey": 13,
+                                  "conservation_priority": 3, None: 1})
+        self.assertEqual(published["matrix_points"], 29)
+        self.assertEqual(published["method_version"], "verified-4.18")
+
+
 class Verified417Tests(unittest.TestCase):
     """4.17 (research/verified-indices/prereg-4.17-2026-10-15.md, registered in its own commit before the code; LKH's decision
     2026-10-15 after the search for official assessments of the 14 species found none): with no IUCN global or Korean national
@@ -4209,7 +4314,7 @@ class Verified417Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.inputs = load_inputs()
+        cls.inputs = load_inputs(config=V417)
         cls.report, cls.old_report = build(*cls.inputs), build(*load_inputs(config=V416))
         rows = lambda r: {s["aphia_id"]: s for s in r["species"] + r["candidate_species"]}
         cls.new, cls.old = rows(cls.report), rows(cls.old_report)
@@ -4219,8 +4324,9 @@ class Verified417Tests(unittest.TestCase):
 
     def test_committed_output_is_reproducible(self):
         self.assertEqual((self.report["method_version"], self.report["status"]), ("verified-4.17", "released"))
-        self.assertEqual(render(self.report), (ROOT / "dist" / "assessments.json").read_text(encoding="utf-8"))
-        self.assertEqual(DEFAULT_CONFIG.name, "verified-indices-v4.17.json")
+        # the published 4.17 report is archived as it was (superseded by 4.18)
+        archived = ROOT / "research" / "verified-indices" / "archive" / "assessments-verified-4.17.json"
+        self.assertEqual(render(self.report), archived.read_text(encoding="utf-8"))
         self.assertEqual(self.scope["prereg"], "research/verified-indices/prereg-4.17-2026-10-15.md")
         self.assertTrue((ROOT / self.scope["prereg"]).exists())
 
@@ -4268,14 +4374,18 @@ class Verified417Tests(unittest.TestCase):
         self.assertEqual(agar["conservation_status"]["state"], "preliminary_scored")
 
     def test_the_matrix_places_29_species(self):
-        published = json.loads((ROOT / "dist" / "matrix-readiness.json").read_text(encoding="utf-8"))
+        # the published matrix is 4.18 now, so the 4.17 matrix is rebuilt from the 4.17 report
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from build_matrix_readiness import build as build_matrix
+        read = lambda n: json.loads((ROOT / "dist" / n).read_text(encoding="utf-8"))
+        matrix = build_matrix(self.report, read("candidate-catalog.json"), read("expansion-evidence.json"))
         counts = {}
-        for s in published["species"]:
+        for s in matrix["species"]:
             counts[s["matrix_type"]] = counts.get(s["matrix_type"], 0) + 1
         self.assertEqual(counts, {"sustainable_use": 12, "alternative_production": 1, "baseline_survey": 13,
                                   "conservation_priority": 3, None: 1})
-        self.assertEqual(published["matrix_points"], 29)
-        self.assertEqual(published["method_version"], "verified-4.17")
+        self.assertEqual(matrix["matrix_points"], 29)
+        self.assertEqual(matrix["method_version"], "verified-4.17")
 
     def test_the_posthoc_rank_counts_only_scored_species(self):
         block = self.report["method"]["posthoc"]["validation_sets"]["MCUI_stock_decline"]

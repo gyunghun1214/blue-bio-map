@@ -1,9 +1,9 @@
 {
  "schema_version": "supplementary-literature-1",
- "snapshot_date": "2026-10-14",
- "prereg": "research/verified-indices/prereg-4.13-2026-10-14.md",
+ "snapshot_date": "2026-10-15",
+ "prereg": "research/verified-indices/prereg-4.18-2026-10-15.md",
  "scope_note": "Related papers found in the 2026-10-14 evidence search that the fixed rules cannot score: another substrate or unit, a figure-only value, an enzyme with no fixed comparison cohort, the same group's follow-up on a different endpoint, a species-name question, or a value this run could not read in the original text. Each row says why it is not scored and at what level it was read. These rows enter no index, matrix, map colour, chip or ranking, and their count is not the '근거 논문 1편' label, which still means an independent replication of the species' top MBPI item.",
- "decision": "Team decision 2026-10-14: a source without a DOI (for example the 고등어 YVA value, 한국수산학회지 2000) is listed neither here nor in a score. A paper a score or a partial record already shows is not repeated here.",
+ "decision": "Team-lead decision 2026-10-15 (prereg-4.18-2026-10-15.md 2-3): four of these rows are now settled rather than pending. No new enzyme stratum is built outside ChEMBL, a linked original paper by the same group whose Methods cannot be read is still not counted, and the 3.20 original-paper link may now also be added to a compound the species already links. The 청각 2021 paper is still not such a link, because its Methods give no collection site or date; the earlier paper it defers to (Yim et al. 2020, Mar Drugs 18:603) meets the conditions and joined the link, so it is scored and is not listed here. Team decision 2026-10-14: a source without a DOI (for example the 고등어 YVA value, 한국수산학회지 2000) is listed neither here nor in a score. A paper a score or a partial record already shows is not repeated here.",
  "records": [
   {
    "aphia_id": 145086,
@@ -11,9 +11,9 @@
    "year": 2021,
    "journal": "International Journal of Molecular Sciences",
    "title_ko": "해양 카로티노이드 두 종류의 SARS-CoV-2 진입 억제 활성",
-   "finding": "청각(완도 양식 시료)에서 정제해 HPLC로 동정한 시포노잔틴의 SARS-CoV-2 유사바이러스 진입 억제 IC50이 87.4 µM입니다. 점수에 쓴 ChEMBL 값의 원측정입니다.",
+   "finding": "청각에서 정제해 HPLC로 동정한 시포노잔틴의 SARS-CoV-2 유사바이러스 진입 억제 IC50이 87.4 µM입니다. 점수에 쓴 ChEMBL 값의 원측정입니다.",
    "relation": "link_support",
-   "not_scored_reason": "종 명시와 시료 산지 조건은 충족하지만, 이미 P703으로 연결된 화합물에는 원논문 DOI를 더하지 못하도록 코드가 막고 있습니다. 규칙 변경이라 팀장 결정 대기입니다(prereg-4.13-2026-10-14 결정 8번).",
+   "not_scored_reason": "2026-10-15 팀장 결정으로 이미 연결된 화합물에도 원논문을 더할 수 있게 됐지만(prereg-4.18-2026-10-15 3절), 이 논문은 시료의 채집지·시기를 적지 않고 앞선 논문에 넘기므로 3.20의 시료 출처 조건을 채우지 못해 연결 원논문으로 쓰지 않습니다. 조건을 채운 그 앞선 논문(Yim 등 2020 Mar Drugs 18:603)이 연결에 더해졌습니다.",
    "checked_on": "2026-10-14",
    "checked_via": "full_text"
   },
@@ -61,7 +61,7 @@
    "title_ko": "꼬시래기 비원산 개체군에서 상처 자극 시 프로스타글란딘 E2와 관련 독성물질 생성 가능성이 커짐",
    "finding": "동아시아 자생 5개·유럽·멕시코 비자생 7개 개체군을 같은 조건에서 길러 상처를 냈을 때, 비자생 개체군의 에이코사노이드가 대부분 더 많았습니다(PGA2 포함).",
    "relation": "link_support",
-   "not_scored_reason": "3.27 기록대로 Methods를 열 수 없어 연결 원논문으로 세지 않습니다. 이번 실행에서도 초록만 열렸고, 기존 연결 논문(Nylund 등 2011)과 저자 3명이 겹칩니다(prereg-4.13-2026-10-14 결정 7번).",
+   "not_scored_reason": "3.27 기록대로 Methods를 열 수 없어 연결 원논문으로 세지 않습니다. 이번 실행에서도 초록만 열렸고, 기존 연결 논문(Nylund 등 2011)과 저자 3명이 겹칩니다. 2026-10-15 팀장 결정으로 세지 않기로 확정했습니다(prereg-4.18-2026-10-15 2절).",
    "checked_on": "2026-10-14",
    "checked_via": "abstract"
   },
@@ -205,7 +205,7 @@
    "title_ko": "감태와 디에콜의 DPP-IV 억제·당 수송 조절을 통한 항당뇨 효과",
    "finding": "구입한 디에콜의 DPP-IV 억제 IC50 12.12 µM, 효모 α-글루코시다제 2.213 µM, 돼지 췌장 α-아밀레이스 156.87 µM입니다.",
    "relation": "new_quantitative",
-   "not_scored_reason": "ChEMBL에 없는 효소 종말점이라 고정 비교집단(최소 30개)이 없습니다. 새 층을 만드는 일은 비교집단 수집과 새 사전 등록이 필요합니다(prereg-4.13-2026-10-14 결정 4번).",
+   "not_scored_reason": "ChEMBL에 없는 효소 종말점이라 고정 비교집단(최소 30개)이 없습니다. 새 층을 만드는 일은 비교집단 수집과 새 사전 등록이 필요합니다. 2026-10-15 팀장 결정으로 이번에는 만들지 않습니다(prereg-4.18-2026-10-15 2절).",
    "checked_on": "2026-10-14",
    "checked_via": "full_text"
   },

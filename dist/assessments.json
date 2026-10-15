@@ -278,7 +278,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 56.7
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -1486,7 +1486,7 @@
             }
           ]
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2302,7 +2302,7 @@
             }
           ]
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -2982,7 +2982,7 @@
           "all_grade_factors_1": 60.0
         },
         "literature_limitations": "One bay in Japan (Chikuzen Sea, Fukuoka), one season (January to May 2005), and one pooled sample per date, so the value carries no Korean sampling. Protein is Kjeldahl nitrogen x 6.25, which overstates protein in seaweed because of non-protein nitrogen; the paper itself reports a lower pure-protein figure for other species. Iron is not measured, so the mean rests on three of the four components. Cross-checks against the paper's own text: the January protein converts to 9.42 mg/g against the 9.4 mg/g the paper prints, and the six-date means (1.04 g protein, 88.0% moisture per 100 g) match the abstract's seasonal means of 1.0% protein and 87.7% moisture.",
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -3678,7 +3678,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 70.0
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4229,8 +4229,8 @@
           "activity_ids": [
             24977634
           ],
-          "adjusted": 0.42521598272138234,
-          "caveat": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 원논문은 ChEMBL 종-물질 연결의 원논문으로 더하지 못했습니다(이미 연결된 화합물에 DOI를 더하는 일은 규칙 변경이라 팀장 결정 대기, prereg-4.13-2026-10-14 결정 8번).",
+          "adjusted": 0.5669546436285098,
+          "caveat": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 2021년 논문은 시료의 채집지·시기를 적지 않고 앞선 논문에 넘기므로 종-물질 연결의 원논문으로는 쓰지 않았습니다. 연결은 1979년 Phytochemistry 구조 논문과, 완도에서 기른 청각을 2019년 8월에 채집해 시포노잔틴을 정제한 Yim 등 2020 Mar Drugs(10.3390/md18120603) 두 편입니다(4.18).",
           "chembl_stratum": "pathogen",
           "cohort_records": 926,
           "compound_id": "CHEMBL5287816",
@@ -4238,19 +4238,20 @@
           "document_chembl_ids": [
             "CHEMBL5223129"
           ],
-          "evidence_factor": 0.5625,
+          "evidence_factor": 0.75,
           "evidence_level": 2,
           "inchikeys": [
             "SUCKEYMKNGZJHK-ZARIWKGHSA-N"
           ],
           "independent_sources": 1,
           "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
-          "link_factor": 0.75,
+          "link_factor": 1.0,
           "link_review": "accepted",
           "material_class": "natural_isolate",
           "median_pchembl": 4.06,
           "original_paper_dois": [
-            "10.1016/s0031-9422(00)90263-2"
+            "10.1016/s0031-9422(00)90263-2",
+            "10.3390/md18120603"
           ],
           "percentile": 0.76,
           "pubchem_cids": [
@@ -4303,11 +4304,11 @@
           }
         ],
         "rule_sensitivity": {
-          "log_scale_common_fence": 0.4,
-          "minimum_cohort_10": 0.4,
-          "minimum_cohort_100": 0.4,
-          "no_approved_drug_filter": 0.4,
-          "no_common_metabolite_filter": 0.4
+          "log_scale_common_fence": 0.6,
+          "minimum_cohort_10": 0.6,
+          "minimum_cohort_100": 0.6,
+          "no_approved_drug_filter": 0.6,
+          "no_common_metabolite_filter": 0.6
         },
         "sufficiency": {
           "best_record_steps": 4,
@@ -4398,12 +4399,12 @@
       "evidence_profile": {
         "attempted_count": 0,
         "display_only": true,
-        "independent_paper_count": 1,
+        "independent_paper_count": 2,
         "item_count": 1,
         "mbpi_without_top_item": null,
         "replication_exclusion_codes": [],
         "replication_exclusion_reason_ko": null,
-        "top_item_evidence_factor": 0.5625,
+        "top_item_evidence_factor": 0.75,
         "top_item_percentile": 0.76,
         "top_item_replication": "none",
         "unscored_related_count": 2
@@ -4455,7 +4456,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 36.7
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -4675,16 +4676,16 @@
       "mbpi_breadth": {
         "exploratory": true,
         "floor_zero": false,
-        "independent_paper_count": 1,
+        "independent_paper_count": 2,
         "item_count": 1,
         "material_counts": {
           "natural_isolate": 1
         },
-        "max": 0.4,
-        "mean": 0.4,
+        "max": 0.6,
+        "mean": 0.6,
         "measured_zero_items": 0,
-        "median": 0.4,
-        "top2_mean": 0.4
+        "median": 0.6,
+        "top2_mean": 0.6
       },
       "mbpi_floor": null,
       "mbpi_label": "단일 논문",
@@ -4694,13 +4695,13 @@
         "stratum_id": "ChEMBL_37:CHEMBL4303835|IC50",
         "stratum_kind": "chembl",
         "top_item": {
-          "adjusted": 0.42521598272138234,
+          "adjusted": 0.5669546436285098,
           "compound_id": "CHEMBL5287816",
-          "evidence_factor": 0.5625,
+          "evidence_factor": 0.75,
           "percentile": 0.76,
           "trace_index": 0
         },
-        "value": 0.4
+        "value": 0.6
       },
       "mbpi_stratum": "chembl",
       "mcui_basis": "preliminary",
@@ -4909,31 +4910,31 @@
         "MFPI": "산출됨"
       },
       "scores": {
-        "BBVI": 18.5,
-        "MBPI": 0.4,
+        "BBVI": 18.6,
+        "MBPI": 0.6,
         "MCUI": 10.0,
         "MFPI": 36.7
       },
       "scores_unrounded": {
-        "BBVI": 18.545941324694027,
-        "MBPI": 0.42521598272138234,
+        "BBVI": 18.616810655147592,
+        "MBPI": 0.5669546436285098,
         "MFPI": 36.66666666666667
       },
       "sensitivity": {
         "food_weights": {
-          "0.25": 9.5,
-          "0.5": 18.5,
+          "0.25": 9.6,
+          "0.5": 18.6,
           "0.75": 27.6
         },
-        "mean_compound_sensitivity": 0.4,
-        "median_compound_sensitivity": 0.4,
+        "mean_compound_sensitivity": 0.6,
+        "median_compound_sensitivity": 0.6,
         "range_from_aggregation": [
-          0.4,
-          0.4
+          0.6,
+          0.6
         ]
       },
       "single_axis_views": {
-        "bioactivity_only_MBPI": 0.4,
+        "bioactivity_only_MBPI": 0.6,
         "food_only_MFPI": 36.7
       },
       "source_ids": [
@@ -5030,7 +5031,7 @@
             "structure_id": false
           },
           "endpoint": "MIC",
-          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 범위로 보고된 MIC의 처리도 팀장 결정이 필요합니다(prereg-4.13-2026-10-14 결정 2번).",
+          "exclusion_reason": "원문을 열지 못해(공개 접근 불가) 값을 확인하지 못했습니다. 조사자 메모만으로는 점수에 넣지 않습니다. 범위로만 보고된 MIC는 단일 수치가 아니어서 비교집단과 같은 잣대가 아니므로 점수에 쓰지 않습니다(prereg-4.13-2026-10-14 결정 2번, 2026-10-15 팀장 결정으로 확정, prereg-4.18-2026-10-15 2절).",
           "material_kind": "바지락 디펜신 유사 유전자 RpdefB(70잔기)의 합성 펩타이드(서열 미확인)",
           "missing": [
             "원문 미확인 — 초록만 열람, 초록에 MIC 수치가 없음",
@@ -5553,7 +5554,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.4
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -6702,7 +6703,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.1
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -7895,7 +7896,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 55.8
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -9051,7 +9052,7 @@
           "all_grade_factors_1": 63.8
         },
         "literature_limitations": "One bay, one season (February) and one age class; dry-basis values converted with the mean moisture of the same oysters, so the fresh-weight values carry the moisture spread (± 3.3%). Different laboratory, method and region from the RDA cohort foods. Ranked against the RDA marine-animal cohort plus itself; never a cohort member.",
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -10291,7 +10292,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.8
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -11591,7 +11592,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 65.0
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -12857,7 +12858,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 61.3
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -14054,7 +14055,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 75.4
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -15870,7 +15871,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.4
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -16762,7 +16763,7 @@
             "structure_id": true
           },
           "endpoint": "MIC",
-          "exclusion_reason": "값과 합성 조건은 확인했지만, 배지 없는 완충액 MIC는 고정 비교집단과 같은 조건이 아니라 점수에 쓰지 않습니다(prereg-4.13-2026-10-14 결정 3번, 팀장 결정 대기).",
+          "exclusion_reason": "값과 합성 조건은 확인했지만, 배지 없는 완충액 MIC는 고정 비교집단과 같은 조건이 아니라 점수에 쓰지 않습니다(prereg-4.13-2026-10-14 결정 3번, 2026-10-15 팀장 결정으로 그대로 두기로 확정, prereg-4.18-2026-10-15 2절).",
           "material_kind": "넙치 PoTFPI-1의 C말단 25잔기 합성 펩타이드 TP25(Pepmic, HPLC 95%)",
           "missing": [
             "배지 없이 완충액(PBS)에서 MIC를 읽어 3.19 시험법 규칙(액체 배지 2배 희석)을 충족하지 않음",
@@ -17183,7 +17184,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 59.4
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -18454,7 +18455,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.5
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -21556,7 +21557,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 57.2
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -22734,7 +22735,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 38.3
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -23966,7 +23967,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 62.0
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -25484,7 +25485,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 39.8
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -27132,7 +27133,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 51.1
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -28238,7 +28239,7 @@
     }
   ],
   "food_weight": 0.5,
-  "generated_at": "2026-10-14T00:00:00Z",
+  "generated_at": "2026-10-15T00:00:00Z",
   "method": {
     "amp_bioactivity": {
       "accepted_materials": [
@@ -28350,8 +28351,8 @@
         "rule": "4.11: a scored peptide item of max_residues or fewer gets this sentence appended to its caveat. It never changes a value."
       }
     },
-    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.13-2026-10-14.json",
-    "changes_from": "verified-4.16 (2026-10-15; scores and rules as 4.14, evidence profile display kept). Team-lead decision of 2026-10-15, registered in research/verified-indices/prereg-4.17-2026-10-15.md in its own commit before the code. The 2026-10-15 search found no IUCN global or Korean national assessment for the 14 species with no MCUI (IUCN NE). (1) With no official assessment, the extinction-risk part of MCUI again comes from a preliminary assessment, in the 4.13 order: the range state's national list, then the Rapid LC check (mcui_scope.preliminary_bases); sub-national lists stay reference only. (2) Such species carry conservation_status.state preliminary_scored ('예비 평가(공식 평가 전)') and join the matrix and map colours (matrix.include_substitute_mcui). (3) An official IUCN or national result replaces the preliminary value as soon as it is published. Everything else is 4.14.",
+    "bioactivity_partial_supplement": "research/verified-indices/bioactivity-partial-4.18-2026-10-15.json",
+    "changes_from": "verified-4.17 (2026-10-15). Team-lead decision of 2026-10-15 on the six items left open in research/verified-indices/prereg-4.13-2026-10-14.md section 5, registered in research/verified-indices/prereg-4.18-2026-10-15.md in its own commit before the code (\"proceed as recommended\"). Five of them keep the rules as they were and change no number: a range-only MIC, a buffer (PBS) MIC, a new enzyme stratum outside ChEMBL, a market sample with no scientific name, and a linked original paper by the same group with undisclosed methods all stay out of the scores and remain visible as partial records with their reason. The sixth changes one rule: a 3.20 original-paper link may now also be added to a compound the species already links, where it joins that link's DOI set (chembl_bioactivity.paper_links_p703, 4.18 file). The paper must meet the same five 3.20 conditions and carry an accepting link review; the link factor stays 0.75 for one DOI and 1.0 for two or more. 청각 siphonaxanthin gains Yim et al. 2020 (Mar Drugs 18:603, 10.3390/md18120603: C. fragile cultured at Wando, collected August 2019, supercritical CO2 extract purified by preparative HPLC) beside the 1979 Phytochemistry structure paper: link factor 0.75 -> 1.0, MBPI 0.4 -> 0.6, BBVI 18.5 -> 18.6. Yim et al. 2021 (Int J Mol Sci 22:6481), named in the 4.13 decision, is NOT used: its Methods give no collection site or date. The activity factor (one ChEMBL document) and the single-paper BBVI label are unchanged, and no other species moves. Every other rule and coefficient equals 4.17.",
     "chembl_bioactivity": {
       "activity_comment_rule": "Since 3.20 (team-lead decision): an activity whose ChEMBL activity_comment says Inconclusive, Not Active or Inactive (any case) never enters a species item; mostly PubChem qHTS rows whose curve fit gives a pChEMBL although the depositor did not call them active. The cohort counts were taken from the API at the 2026-09-30 snapshot and still include such rows as peers.",
       "activity_comments": "research/verified-indices/snapshots/chembl-activity-comments-2026-10-02.json",
@@ -28367,7 +28368,7 @@
         "MYHXHCUNDDAEOZ-FOSBLDSVSA-N": "대량 스크리닝(PubChem qHTS 농도-반응 시험) 'Active' 1건 기반입니다. 별도 후속 시험이 없고, PGA2는 티올과 반응하는 구조로 서로 무관한 여러 스크리닝에서 'Active'로 나와 비특이 반응일 수 있습니다.",
         "NSFSLUUZQIAOOX-QEWKCGBTSA-N": "우뭇가사리 연결은 한국 제주산 'Gelidium amansii' 시료 논문 1편(Park·Kim·Han 2022, 전문 확인)을 팀장 결정(2026-10-04)에 따라 Gelidium elegans로 대응한 것입니다. pheophorbide a는 엽록소 분해 산물이라 채취·건조 과정에서도 생기며, 논문은 말린 엽체를 추출했으므로 살아 있는 조류의 성분이 아니라 가공 중 생긴 물질일 수 있습니다. 점수에 쓴 HIV-1 IC50은 다른 기원(Vatica cinerea)의 pheophorbide a로 잰 값입니다. PubChem은 같은 물질을 엔올 호변이성체(CID 253193)로, ChEMBL은 케토형(CHEMBL510103)으로 적어 ChEMBL 키로 연결했습니다. 이 학명 대응의 분류학 근거는 Boo 등 2022(Diversity 14:826, 10.3390/d14100826)로, 동북아에서 'Gelidium amansii'로 보고된 것은 Gelidium elegans의 오동정이라고 적고 있습니다(인용: Kim 등 2012 Phycologia 51:461, Freshwater 등 1995, Norris 1990).",
         "OPGVEUGCNGNPSX-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다.",
-        "SUCKEYMKNGZJHK-ZARIWKGHSA-N": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 원논문은 ChEMBL 종-물질 연결의 원논문으로 더하지 못했습니다(이미 연결된 화합물에 DOI를 더하는 일은 규칙 변경이라 팀장 결정 대기, prereg-4.13-2026-10-14 결정 8번).",
+        "SUCKEYMKNGZJHK-ZARIWKGHSA-N": "ChEMBL이 이 값을 실은 문서는 2022년 J Med Chem 총설(10.1021/acs.jmedchem.2c01134)이고, 원측정은 청각에서 정제한 시포노잔틴으로 잰 Yim 등 2021 IJMS(10.3390/ijms22126481)의 SARS-CoV-2 유사바이러스 진입 억제 IC50 87.4 µM입니다. 세포에서 잰 바이러스 진입 억제값이며 특정 단백질에 대한 억제값이 아닙니다. 그 2021년 논문은 시료의 채집지·시기를 적지 않고 앞선 논문에 넘기므로 종-물질 연결의 원논문으로는 쓰지 않았습니다. 연결은 1979년 Phytochemistry 구조 논문과, 완도에서 기른 청각을 2019년 8월에 채집해 시포노잔틴을 정제한 Yim 등 2020 Mar Drugs(10.3390/md18120603) 두 편입니다(4.18).",
         "USBWYUYKHHILLZ-UHFFFAOYSA-N": "항바이러스 값은 버섯(Suillus granulatus)에서 분리한 flazin의 한 측정(EC50 2.36 µM, Tang et al. 2008)을 다시 실은 기록입니다(리뷰 2편, 합성 연구 논문 1편). 점수 행은 리뷰가 IC50 2.37 µM으로 옮겨 적은 값이며, 같은 측정의 EC50 행으로 계산하면 MBPI는 12.3입니다. 연결 논문은 자체 분리물의 스펙트럼(NMR·MS)을 싣지 않았습니다. flazin은 발효·가열 식품에서도 생기는 물질이라, 이 종이 스스로 만든 것인지 확실하지 않습니다. 원측정의 DOI는 10.1002/cbdv.200890044(Tang 등 2008)이고, ChEMBL은 같은 2008년 측정을 서로 다른 2차 문헌 세 곳에서 세 번(활성 15154487·18514889·25040660) 싣고 있어 측정이 여러 건인 것처럼 보일 수 있습니다.",
         "WLNWTSOEOWZEGI-SVSQYMGHSA-N": "푸코스테롤이 빛·공기에 산화하면 생길 수 있는 물질이라, 이 종이 스스로 만든 것인지 건조·추출 중에 생긴 것인지 확실하지 않습니다."
       },
@@ -28387,12 +28388,12 @@
       "excluded_max_phase": 4.0,
       "label": "이 종에서 보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님",
       "link_review": "research/verified-indices/mbpi-link-review-4.0-2026-10-04.json",
-      "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply.",
+      "link_rule": "Species -> compound: a Wikidata P703 (found in taxon) statement on the WoRMS accepted name or a WoRMS synonym with at least one P248 reference that has a DOI, or a verified original-paper link (paper_links) for species without P703 statements. References without a DOI are kept in the snapshot but do not count. Since 3.20 (team-lead decision): a species with P703 statements may also take an original-paper link when the paper names the species (WoRMS accepted name or synonym) and states where its sample came from (paper_links_p703); the other paper-link conditions and the link review still apply. Since 4.18 (team-lead decision): such a paper may also be added to a compound the species already links, where it joins that link's DOI set; it must meet the same conditions and carry an accepting link review, and the existing review entry grows its DOI set so review and link stay in step.",
       "minimum_cohort_records": 30,
       "minimum_justification": "Same as the peptide stratum: 30 peers keep one rank step at about 3 percentile points; below that a single record moves the score more than the 0.75 single-DOI discount.",
       "no_link_status": "정보충분도 낮음: no Wikidata P703 link and no accepted original-paper link after the CMNPD, PubChem taxonomy and Europe PMC search.",
       "paper_links": "research/verified-indices/mbpi-paper-links-4.0-2026-10-04.json",
-      "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-3.27-2026-10-03.json",
+      "paper_links_p703": "research/verified-indices/mbpi-paper-links-p703-4.18-2026-10-15.json",
       "paper_source_ids": [
         "europepmc_mbpi",
         "cmnpd_mbpi"
@@ -28960,7 +28961,7 @@
         "records": 75
       }
     },
-    "method_version": "verified-4.17",
+    "method_version": "verified-4.18",
     "national_fact_rule": "A reviewed national red-list category (NIBR 2024, Republic of Korea scope) is shown next to the IUCN global assessment as a fact. It never becomes MCUI; national and global scopes stay separate.",
     "national_fact_supplement": "research/verified-indices/national-red-list-crosswalk-2026-10-01.json",
     "national_red_list": {
@@ -29394,8 +29395,8 @@
     },
     "provenance": {
       "builder": "scripts/build_verified_indices.py",
-      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.17-2026-10-15.md and research/lineage/verified-4.17/ (a commit hash inside the report would break byte reproduction).",
-      "config": "config/verified-indices-v4.17.json",
+      "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.18-2026-10-15.md and research/lineage/verified-4.18/ (a commit hash inside the report would break byte reproduction).",
+      "config": "config/verified-indices-v4.18.json",
       "inputs": [
         "research/verified-indices/evidence.json and the files config names",
         "research/verified-indices/candidates.json",
@@ -29403,7 +29404,7 @@
         "dist/candidate-catalog.json",
         "dist/supplementary-literature.json (related-paper count, display only)"
       ],
-      "method_version": "verified-4.17",
+      "method_version": "verified-4.18",
       "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
       "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
     },
@@ -29584,7 +29585,7 @@
       "value_scale": "pIC50 = 6 - log10(IC50 in uM); higher is more potent"
     }
   },
-  "method_version": "verified-4.17",
+  "method_version": "verified-4.18",
   "national_red_list_not_assigned": [
     {
       "aphia_id": 397082,
@@ -29758,8 +29759,8 @@
   },
   "provenance": {
     "builder": "scripts/build_verified_indices.py",
-    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.17-2026-10-15.md and research/lineage/verified-4.17/ (a commit hash inside the report would break byte reproduction).",
-    "config": "config/verified-indices-v4.17.json",
+    "code_version": "The merge commit of this release, recorded in research/verified-indices/formal-release-4.18-2026-10-15.md and research/lineage/verified-4.18/ (a commit hash inside the report would break byte reproduction).",
+    "config": "config/verified-indices-v4.18.json",
     "inputs": [
       "research/verified-indices/evidence.json and the files config names",
       "research/verified-indices/candidates.json",
@@ -29767,7 +29768,7 @@
       "dist/candidate-catalog.json",
       "dist/supplementary-literature.json (related-paper count, display only)"
     ],
-    "method_version": "verified-4.17",
+    "method_version": "verified-4.18",
     "rounding": "Scores keep full precision in calculation; MFPI, MBPI and BBVI are rounded to one decimal (ROUND_HALF_UP) only when published in scores; scores_unrounded holds the values used for BBVI and types.",
     "screen": "dist/app.js re-checks every trace and re-mixes BBVI from scores_unrounded at the slider weight; it rounds only to display."
   },
@@ -30749,6 +30750,15 @@
       "title": "Purification of a Novel Peptide Derived from a Shellfish, Crassostrea gigas, and Evaluation of Its Anticancer Property (Cheong SH et al. 2013)",
       "url": "https://pubmed.ncbi.nlm.nih.gov/24199654/",
       "version": "2013 article / PubMed primary abstract"
+    },
+    "mdpi_fulltext_p703_4_18": {
+      "accessed": "2026-10-15",
+      "license": "CC BY 4.0",
+      "provider": "MDPI open-access article pages",
+      "terms": "CC BY 4.0 articles; species name, sample origin, purification and DOIs recorded, no text copied",
+      "title": "Open-access full texts read for the 4.18 paper link (Mar Drugs 18:603; Int J Mol Sci 22:6481 for the correction)",
+      "url": "https://www.mdpi.com/",
+      "version": "https://www.mdpi.com/1660-3397/18/12/603 and https://www.mdpi.com/1422-0067/22/12/6481, read 2026-10-15"
     },
     "mext_fooddb_2023": {
       "accessed": "2026-09-25",
@@ -32331,7 +32341,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 46.7
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -33194,7 +33204,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.5
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -34280,7 +34290,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.0
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 0.85,
@@ -35587,7 +35597,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 48.0
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -36747,7 +36757,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 76.7
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -37773,7 +37783,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 63.3
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -38651,7 +38661,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 60.9
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,
@@ -39292,7 +39302,7 @@
             "sample_state": "raw",
             "sample_year": null,
             "source_id": "ufish_1",
-            "substitute_use": "zinc_mg is used as a verified-4.17 substitute; the other values of this record stay unused",
+            "substitute_use": "zinc_mg is used as a verified-4.18 substitute; the other values of this record stay unused",
             "used_for_score": false,
             "values": {
               "iron_mg": {
@@ -39751,7 +39761,7 @@
             "structure_id": true
           },
           "endpoint": "ACE 저해 IC50",
-          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 팀장 결정 대기).",
+          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 2026-10-15 팀장 결정으로 그대로 두기로 확정, prereg-4.18-2026-10-15 2절).",
           "material_kind": "가교(MTGase) 처리한 굴 단백질 가수분해물에서 분리·동정하고 합성한 펩타이드 TAY·VK·KY·FYN·YA(GL Biochem, >95.8%)",
           "missing": [
             "논문이 시료의 학명을 적지 않음 — 본문은 ‘oyster’와 ‘통영 시장에서 구입(2011년 10월)’뿐"
@@ -40324,7 +40334,7 @@
         "grade_sensitivity": {
           "all_grade_factors_1": 71.6
         },
-        "method_version": "verified-4.17",
+        "method_version": "verified-4.18",
         "nutrients": {
           "calcium_mg": {
             "evidence_factor": 1.0,

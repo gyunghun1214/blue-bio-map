@@ -52,7 +52,7 @@
     },
     "untyped_label": "유형 미산출(보전평가 미확인 등)"
   },
-  "method_version": "verified-4.17",
+  "method_version": "verified-4.18",
   "schema_version": 1,
   "species": [
     {
@@ -595,7 +595,7 @@
             "quantitative_endpoint": true,
             "structure_id": true
           },
-          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 팀장 결정 대기).",
+          "exclusion_reason": "기질·단위·합성 여부는 규칙을 충족하지만, 논문이 시료의 학명을 적지 않아 기원종을 참굴로 확정할 수 없습니다. 산지와 시장만으로 종을 정하지 않습니다(prereg-4.13-2026-10-14 결정 6번, 2026-10-15 팀장 결정으로 그대로 두기로 확정, prereg-4.18-2026-10-15 2절).",
           "record_id": "10.1155/2014/379234:TAY-YA",
           "source_url": "https://doi.org/10.1155/2014/379234"
         },
@@ -906,8 +906,8 @@
       "scientific_name": "Codium fragile",
       "scope": "expansion_22",
       "scores": {
-        "BBVI": 18.5,
-        "MBPI": 0.4,
+        "BBVI": 18.6,
+        "MBPI": 0.6,
         "MCUI": 10.0,
         "MFPI": 36.7
       },
