@@ -1031,3 +1031,5 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   .sd-spark text{font-size:11px}
   #explore .leaflet-control-attribution{font-size:11px!important} /* style.css sets 10px !important */
 }
+/* compound origin (origin-class-rule-2026-10-15): one line under a suspect MBPI item */
+.origin-flag{margin:2px 0 6px;color:var(--amber)!important}.origin-flag b{font-weight:700}
