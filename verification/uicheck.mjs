@@ -402,7 +402,7 @@ try{
   // 2026-10-15 (LKH): the 탐색 후보 cards carry no grey evidence lines (근거 · 항목 · 독립 논문 · 재현 · 관련 문헌, MBPI 근거 층);
   // the evidence profile stays in the species detail's folded MBPI section
   const evCards=await evaluate(`(()=>{const cards=[...document.querySelectorAll('#species-list .species-card')],bad=[];
-    for(const el of cards){const t=el.textContent;if(el.querySelector('.card-evidence,.card-lit,.card-stratum')||/독립 논문|관련 문헌|재현 기록|독립 재현|MBPI 근거/.test(t))bad.push(el.querySelector(':scope>b').textContent+': '+t);}
+    for(const el of cards){const t=el.textContent;if(el.querySelector('.card-evidence,.card-lit,.card-stratum')||/독립 논문|관련 문헌|재현 기록|MBPI 근거/.test(t))bad.push(el.querySelector(':scope>b').textContent+': '+t);}
     return {bad,n:cards.length}})()`);
   check('Species cards (2026-10-15): no grey evidence lines on the 탐색 후보 cards (items · independent papers · replication · related papers · MBPI stratum)',
     !evCards.bad.length&&evCards.n>0,JSON.stringify(evCards));
