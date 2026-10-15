@@ -36,6 +36,7 @@ NUTRIENTS = (("protein_g", "단백질"), ("iron_mg", "철"), ("zinc_mg", "아연
 BOX = {"lat_min": 33, "lat_max": 38.7, "lon_min": 124, "lon_max": 132}
 MCUI_BASIS = {"iucn": "IUCN 전 지구 평가", "national": "한국 국가 평가", "sub_national": "지방 목록 참고값",
               "range_state": "서식국 국가 평가", "preliminary": "자체 예비평가"}
+PRELIMINARY_BASIS_LABEL = "보전 평가 범주"
 MBPI_NOTE = "보고된 화합물의 공개 생리활성(잠재력) · 종 추출물의 효능 아님"
 CELL_NOTE = "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님"
 SCORE_NOTE = "종 전체 값 · 이 해역 값 아님"
@@ -136,6 +137,12 @@ def _mcui(sp, sources):
                    scope=region.get("region_ko"), source=_source(sources, sid) if sid else None)
     if sp.get("conservation_status"):  # 4.14: one state for every stop ('공식 평가' or '보전평가 미확인 · …')
         out["status"] = {"state": sp["conservation_status"]["state"], "label": sp["conservation_status"]["label"]}
+        if sp["conservation_status"]["state"] == "preliminary_scored":
+            # 4.17 (prereg-4.17-2026-10-15 5): a preliminary assessment reads like any other category on the stop; the
+            # species detail on the main map names it
+            risk = sp.get("mcui_extinction_risk", sp["scores"]["MCUI"])
+            out.update(basis_label=PRELIMINARY_BASIS_LABEL, label=None, scope=None,
+                       mapping=f"{out['category']} → {risk:.0f}" if out["category"] and risk is not None else None)
     d = sp.get("stock_decline")
     if d:  # 4.12 (prereg-4.12-2026-10-14): catch-trend element beside the extinction-risk basis, never an IUCN category
         out["driver"] = sp.get("mcui_driver")

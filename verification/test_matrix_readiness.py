@@ -41,12 +41,13 @@ class MatrixReadinessTests(unittest.TestCase):
         # verified-4.14 (prereg-4.14-2026-10-14 2·3): only an IUCN global or Korean national category scores MCUI; another
         # region's list and a Rapid LC are references without a number, and a stock decline alone counts only as a lower bound
         # at or above the matrix line. 14 species are left with no MCUI and no type: 29 -> 16 points.
+        # verified-4.17 (team-lead decision 2026-10-15, prereg-4.17-2026-10-15 2): with no official category, a range-state list
+        # and then the Rapid LC check score again as a preliminary assessment; only 멍게 is left with no MCUI: 16 -> 29 points.
         unknown = [r["aphia_id"] for r in self.assessments["species"] + self.assessments["candidate_species"]
                    if r["scores"]["MCUI"] is None]
-        self.assertEqual(len(unknown), 14)
-        self.assertIn(250680, unknown)
+        self.assertEqual(unknown, [250680])
         self.assertEqual(placed, [r["aphia_id"] for r in report["species"] if r["aphia_id"] not in unknown])
-        self.assertEqual(len(placed), 16)
+        self.assertEqual(len(placed), 29)
         self.assertEqual(report["matrix_points"], len(placed))
         self.assertEqual([r["aphia_id"] for r in report["species"] if r.get("bbvi_label")],
                          [r["aphia_id"] for r in report["species"] if r["scores"]["BBVI"] is not None
@@ -56,7 +57,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # 4.2: 꽃게 now carries a sub-national MCUI, so its BBVI does become a (labelled) point. 4.11: that list's back-test did
         # not pass, so it is reference only and 꽃게 stays a point through its Rapid LC
         # 4.14: that Rapid LC is a reference too, so 꽃게 has no MCUI and is no point
-        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"])
+        # 4.17: the Rapid LC scores again as a preliminary assessment, so 꽃게 is a point through it
+        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 1061762)["mcui_basis"], "preliminary")
         self.assertEqual([(r["aphia_id"], r["scores"]["BBVI"]) for r in report["species"]
                           if r["scores"]["BBVI"] is not None],
                          # 4.13: 넙치 BBVI 44.3 -> 51.3 and MBPI 29.2 -> 43.2 (the P35 antimicrobial rows), crossing the 50 threshold.
@@ -133,14 +135,15 @@ class MatrixReadinessTests(unittest.TestCase):
         # 4.14 (prereg-4.14-2026-10-14 3): another region's list (range state or sub-national) is a reference without a number,
         # so none of the 5 range-state species keeps it as a basis. 3.15 / 4.3 / 4.11 history: the met Rapid LC (9 species in
         # 4.12) is reference only again, as in 3.15, so no species has a preliminary or sub-national basis
-        for basis in ("range_state", "preliminary", "sub_national"):
-            self.assertEqual(sum(r["mcui_basis"] == basis for r in report["species"]), 0, basis)
-        # 8 national + 7 IUCN global, plus 우뭇가사리 whose stock decline 80 stands alone as a lower bound (no basis)
+        # 4.17 (prereg-4.17-2026-10-15 2): with no official category, the 5 range-state lists (우뭇가사리 included, its MCUI
+        # still set by the stock decline 80) and the 9 met Rapid LC checks score again as preliminary assessments; sub-national
+        # lists stay reference only
+        self.assertEqual({b: sum(r["mcui_basis"] == b for r in report["species"]) for b in ("range_state", "preliminary", "sub_national")},
+                         {"range_state": 5, "preliminary": 9, "sub_national": 0})
         self.assertEqual(sum(r["mcui_basis"] == "iucn" for r in report["species"]), 7)
-        self.assertEqual([r["aphia_id"] for r in report["species"] if r["scores"]["MCUI"] is not None and not r["mcui_basis"]],
-                         [372119])
-        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 16)
-        self.assertIsNone(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"])
+        self.assertEqual([r["aphia_id"] for r in report["species"] if r["scores"]["MCUI"] is not None and not r["mcui_basis"]], [])
+        self.assertEqual(sum(r["scores"]["MCUI"] is not None for r in report["species"]), 29)
+        self.assertEqual(next(r for r in report["species"] if r["aphia_id"] == 145721)["scores"]["MCUI"], 10.0)
         reviewed = {s["aphia_id"]: s["scores"] for s in
                     self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
@@ -229,7 +232,8 @@ class MatrixReadinessTests(unittest.TestCase):
         # 4.3: 미역 (replicated MBPI) gains its MCUI and joins them; 4.9: 갑오징어's item is replicated too, so it stays as well;
         # 4.11: replications from another origin no longer count, so 미역 is the only point left
         # 4.14: 미역 has no MCUI any more (its only lists are Primorsky and a Rapid LC), so no point is left
-        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [])
+        # 4.17: its Rapid LC scores again as a preliminary assessment, so 미역 is the one point left
+        self.assertEqual([r["aphia_id"] for r in rows if r["matrix_eligible"]], [145721])
         self.assertEqual([r["scores"] for r in rows], [r["scores"] for r in build(self.assessments, self.catalog, self.expansion)["species"]])
 
 

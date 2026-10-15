@@ -17,7 +17,7 @@
   "dist/cell-sea-areas.json",
   "dist/countries.json"
  ],
- "method_version": "verified-4.16",
+ "method_version": "verified-4.17",
  "mfpi_check_n": 11,
  "notes": {
   "cell": "공개 집계 셀 · 관측 기록이며 현재 서식을 뜻하지 않음 · 정확한 좌표 아님",
@@ -359,24 +359,29 @@
    "korean_name": "꽃게",
    "map_link": "index.html#s=1061762&v=explore&m=8/37.50/125.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": -69.9,
@@ -399,13 +404,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 46.2,
     "MBPI": 30.3,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 62.0
    },
    "shared_with": [],
@@ -498,7 +503,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -880,28 +885,33 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.67,
+   "information_sufficiency": 1.0,
    "korean_name": "넙치",
    "map_link": "index.html#s=275816&v=explore&m=8/35.50/125.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "range_state",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 1.6,
@@ -924,13 +934,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 51.3,
     "MBPI": 43.2,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 59.4
    },
    "shared_with": [],
@@ -1029,7 +1039,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -1134,24 +1144,29 @@
    "korean_name": "조피볼락",
    "map_link": "index.html#s=274849&v=explore&m=8/35.50/124.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 31.9,
@@ -1174,13 +1189,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 40.1,
     "MBPI": 31.7,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 48.5
    },
    "shared_with": [],
@@ -1279,7 +1294,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -1629,24 +1644,29 @@
    "korean_name": "청각",
    "map_link": "index.html#s=145086&v=explore&m=8/33.50/124.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 31.6,
@@ -1669,13 +1689,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 18.5,
     "MBPI": 0.4,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 36.7
    },
    "shared_with": [],
@@ -1768,7 +1788,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -2149,24 +2169,29 @@
    "korean_name": "톳",
    "map_link": "index.html#s=494972&v=explore&m=8/34.50/125.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 74.5,
@@ -2189,13 +2214,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 64.2,
     "MBPI": 65.0,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 63.3
    },
    "shared_with": [],
@@ -2330,7 +2355,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -3055,28 +3080,33 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.61,
+   "information_sufficiency": 0.94,
    "korean_name": "가시파래",
    "map_link": "index.html#s=234476&v=explore&m=8/34.50/127.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "range_state",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "slu_rodlista_2025",
+     "license": "CC0 1.0 (SND dataset)",
+     "title": "Rödlistearbete 2025: alla rödlistade taxa samt alla taxa i kategorierna Livskraftig (LC), Ej bedömd (NE) och Ej tillämplig (NA), Rodlistearbete_2025.csv, Dyntaxa taxon 232807",
+     "url": "https://doi.org/10.5878/ffrv-6x57"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 69.6,
@@ -3099,13 +3129,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 53.7,
     "MBPI": 73.3,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 34.2
    },
    "shared_with": [
@@ -3220,7 +3250,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -3328,28 +3358,33 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.61,
+   "information_sufficiency": 0.94,
    "korean_name": "시카메굴",
    "map_link": "index.html#s=836041&v=explore&m=8/34.50/127.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "range_state",
+    "basis_label": "보전 평가 범주",
+    "category": "NT",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 35.0,
+    "label": null,
+    "mapping": "NT → 35",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "moe_japan_red_list_2020_molluscs",
+     "license": "Government open data (政府標準利用規約); category and name facts only",
+     "title": "環境省レッドリスト2020 貝類 (redlist2020_kairui.csv: カテゴリー, 分類群, 和名, 学名)",
+     "url": "https://ikilog.biodic.go.jp/rdbdata/files/redlist2020/redlist2020_kairui.csv"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": -18.3,
@@ -3372,13 +3407,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 34.9,
     "MBPI": 13.8,
-    "MCUI": null,
+    "MCUI": 35.0,
     "MFPI": 56.1
    },
    "shared_with": [
@@ -3475,7 +3510,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -4373,24 +4408,29 @@
    "korean_name": "미역",
    "map_link": "index.html#s=145721&v=explore&m=8/34.50/128.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": -39.4,
@@ -4413,13 +4453,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 67.9,
     "MBPI": 89.2,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 46.7
    },
    "shared_with": [],
@@ -4608,7 +4648,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -5238,28 +5278,33 @@
     }
    },
    "group": "candidate",
-   "information_sufficiency": 0.61,
+   "information_sufficiency": 0.94,
    "korean_name": "대구",
    "map_link": "index.html#s=254538&v=explore&m=8/35.50/130.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "range_state",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "jfa_rarity_2017",
+     "license": "Government publication (政府標準利用規約); category and name facts only",
+     "title": "水産資源の希少性評価結果（我が国周辺水域に生息しており、水産庁が資源評価を行っている種及び水産庁が多くの知見を有する小型鯨類）",
+     "url": "https://www.jfa.maff.go.jp/j/sigen/attach/pdf/20170321redlist-15.pdf"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 2.6,
@@ -5282,13 +5327,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 49.1,
     "MBPI": 59.9,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 38.3
    },
    "shared_with": [],
@@ -5387,7 +5432,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -6027,24 +6072,29 @@
    "korean_name": "꼬시래기",
    "map_link": "index.html#s=236157&v=explore&m=8/37.50/129.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 83.5,
@@ -6067,13 +6117,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 59.6,
     "MBPI": 49.3,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 70.0
    },
    "shared_with": [
@@ -6174,7 +6224,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -6575,24 +6625,29 @@
    "korean_name": "다시마",
    "map_link": "index.html#s=377084&v=explore&m=8/38.50/128.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": -129.3,
@@ -6615,13 +6670,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 41.6,
     "MBPI": 26.5,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 56.7
    },
    "shared_with": [],
@@ -6720,7 +6775,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -7064,24 +7119,29 @@
    "korean_name": "감태",
    "map_link": "index.html#s=371986&v=explore&m=8/37.50/130.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "sustainable_use",
+    "label": "활용 연구 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": null,
@@ -7099,13 +7159,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 59.6,
     "MBPI": 56.8,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 62.5
    },
    "shared_with": [
@@ -7218,7 +7278,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -7327,24 +7387,29 @@
    "korean_name": "괭생이모자반",
    "map_link": "index.html#s=494853&v=explore&m=8/37.50/130.50",
    "matrix_type": {
-    "id": null,
-    "label": null
+    "id": "baseline_survey",
+    "label": "기초조사 검토"
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "preliminary",
+    "basis_label": "보전 평가 범주",
+    "category": "LC",
     "criteria": null,
-    "driver": null,
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 자체 예비검토 참고",
-    "mapping": null,
+    "driver": "extinction_risk",
+    "extinction_risk": 10.0,
+    "label": null,
+    "mapping": "LC → 10",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "bachman_2020_rapid_lc",
+     "license": "CC BY 4.0",
+     "title": "Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018",
+     "url": "https://doi.org/10.3897/BDJ.8.e47018"
+    },
     "status": {
-     "label": "보전평가 미확인 · 자체 예비검토 참고",
-     "state": "self_preliminary_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": null,
@@ -7362,13 +7427,13 @@
    "score_status": {
     "BBVI": "산출됨",
     "MBPI": "산출됨",
-    "MCUI": "산출 보류",
+    "MCUI": "산출됨",
     "MFPI": "산출됨"
    },
    "scores": {
     "BBVI": 37.5,
     "MBPI": 21.6,
-    "MCUI": null,
+    "MCUI": 10.0,
     "MFPI": 53.5
    },
    "shared_with": [
@@ -7475,7 +7540,7 @@
    "withheld_reasons": {
     "BBVI": null,
     "MBPI": null,
-    "MCUI": "not_in_red_list",
+    "MCUI": null,
     "MFPI": null
    }
   },
@@ -7576,7 +7641,7 @@
     }
    },
    "group": "operational",
-   "information_sufficiency": 0.61,
+   "information_sufficiency": 0.94,
    "korean_name": "우뭇가사리",
    "map_link": "index.html#s=372119&v=explore&m=8/37.50/131.50",
    "matrix_type": {
@@ -7585,19 +7650,24 @@
    },
    "mcui": {
     "assessment_year": null,
-    "basis": null,
-    "basis_label": null,
-    "category": null,
+    "basis": "range_state",
+    "basis_label": "보전 평가 범주",
+    "category": "VU",
     "criteria": null,
     "driver": "stock_decline",
-    "extinction_risk": null,
-    "label": "보전평가 미확인 · 다른 나라·지역 평가 참고 · 멸종위험 평가 미확인 · 자원 감소 신호(하한)",
-    "mapping": null,
+    "extinction_risk": 60.0,
+    "label": null,
+    "mapping": "VU → 60",
     "scope": null,
-    "source": null,
+    "source": {
+     "id": "russia_red_data_book_plants_2023",
+     "license": "Russian federal legal act (official publication); category and name facts only",
+     "title": "Список растений и грибов, занесённых в Красную книгу Российской Федерации (Order No. 320 of 23.05.2023; Minjust registration 21.07.2023 No. 74362), Section 5 ВОДОРОСЛИ, row 594",
+     "url": "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf"
+    },
     "status": {
-     "label": "보전평가 미확인 · 다른 나라·지역 평가 참고",
-     "state": "other_region_only"
+     "label": "예비 평가(공식 평가 전)",
+     "state": "preliminary_scored"
     },
     "stock_decline": {
      "decline_pct": 90.2,

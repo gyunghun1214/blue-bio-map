@@ -97,7 +97,8 @@ assert.equal(broken42(ref,b=>{delete b.mcui_substitute.record.native_box;}),fals
 // 4.3 (team-lead decision 2026-10-05): a met check is the last basis and scores LC-equivalent 10, labelled, with the failed
 // back-test beside it. It is re-checked like the reference record and refused beside any official basis.
 // 4.14 (prereg-4.14 3): the check is a reference again in the current report; the 4.3–4.12 scored rules stay on the 4.12 archive
-assert.equal(rows.filter(a=>a.mcui_basis==='preliminary'||a.mcui_substitute?.use==='scored').length,0,'4.14: no scored Rapid LC or other-region list');
+// 4.17 (prereg-4.17 2): scored again as a preliminary assessment, with the same 4.3 checks (verified-4.13 rows, re-checked here)
+assert.equal(rows.filter(a=>a.mcui_basis==='preliminary'&&a.mcui_substitute?.use==='scored'&&a.conservation_status.state==='preliminary_scored').length,9,'4.17: 9 scored Rapid LC checks');
 const arch412=JSON.parse(read('research/verified-indices/archive/assessments-verified-4.12.json'));
 const broken412=(a,change)=>{const b=structuredClone(a);change(b,b.occurrence_trend);return ctx.valid(b,arch412);};
 for(const a of [...arch412.species,...arch412.candidate_species])assert.ok(ctx.valid(a,arch412),`4.12 archive ${a.korean_name} still validates`);

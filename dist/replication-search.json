@@ -1,7 +1,7 @@
 {
  "schema_version": "replication-search-1",
  "snapshot_date": "2026-10-15",
- "report_version": "verified-4.16",
+ "report_version": "verified-4.17",
  "prereg": "research/verified-indices/prereg-replication-search-2026-10-15.md",
  "scope_note": "MBPI 최상위 항목의 독립 재현을 찾은 기록이다. 표시 전용이며 점수 계산은 이 파일과 dist/replication-search.json을 읽지 않는다. 인정된 재현은 지표 설정에 재현 행으로 넣고 버전을 올려 다시 계산한 뒤에만 '독립 재현 확인'이 된다.",
  "display_only": true,

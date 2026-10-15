@@ -8,7 +8,7 @@ const esc = value => plainWords(String(value ?? '')).replace(/[&<>"']/g, char =>
 const colors = ['#07867d','#267bab','#a16928'];
 const studyBounds = [[33,124],[38.7,132]];
 let data, selected, map, overlay, simulated = false, currentView = 'explore', basemap = 'satellite', bbviWeight = .5, mapMode = 'occurrence', selectedValueCell = null, pickedValueCell = null, comparisonFocus = null, matrixReadiness = new Map();
-const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14','verified-4.16'];
+const VERIFIED = ['verified-pilot-2','verified-pilot-2.1','verified-pilot-2.2','verified-pilot-2.3','verified-pilot-3.1','verified-pilot-3.2','verified-pilot-3.3','verified-pilot-3.4','verified-pilot-3.5','verified-pilot-3.6','verified-pilot-3.7','verified-pilot-3.8','verified-pilot-3.9','verified-pilot-3.10','verified-pilot-3.11','verified-pilot-3.12','verified-pilot-3.13','verified-pilot-3.14','verified-pilot-3.15','verified-pilot-3.16','verified-pilot-3.17','verified-pilot-3.18','verified-pilot-3.19','verified-pilot-3.20','verified-pilot-3.21','verified-pilot-3.22','verified-pilot-3.23','verified-pilot-3.24','verified-pilot-3.25','verified-pilot-3.26','verified-pilot-3.27','verified-pilot-3.28','verified-4.0','verified-4.1','verified-4.2','verified-4.3','verified-4.4','verified-4.5','verified-4.6','verified-4.7','verified-4.8','verified-4.9','verified-4.10','verified-4.11','verified-4.12','verified-4.13','verified-4.14','verified-4.16','verified-4.17'];
 // 2.1 and later: an MBPI resting on fewer than the minimum independent DOIs is labelled and never enters BBVI.
 const singleSourceRule = version => VERIFIED.indexOf(version)>=1;
 // 2.3: a used cross-origin potency replication adds its DOI to independent_dois; without it the origin DOIs count.
@@ -85,7 +85,7 @@ const pilotLabel = (key,info) => released(info)
   ? ({passed:'정식 산출 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'정식 산출 · 방법 검증 기준 미충족'})[validationResult(key,info)]||(key==='MCUI'?'정식 산출 · 공식 평가 범주':'정식 산출')
   : ({passed:'시범 지표 · 방법 검증 통과'+(validationN(key,info)?`(${validationN(key,info)}종 비교)`:''),failed:'시범 지표 · 사후 검증 기준 미충족'})[validationResult(key,info)]||'검증 전 시범 지표';
 const validationNote = info => released(info)
-  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI 공식 평가 범주'+((info||data?.assessmentInfo)?.method?.mcui_scope?'(IUCN 전 지구·한국 국가 평가만, 없으면 보전평가 미확인)':(info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
+  ? ' (검증: '+['MFPI','MBPI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+' · MCUI '+((info||data?.assessmentInfo)?.method?.mcui_scope?.preliminary_bases?.length?'보전 평가 범주(IUCN 전 지구·한국 국가 평가 우선)':'공식 평가 범주')+((info||data?.assessmentInfo)?.method?.mcui_scope?((info||data?.assessmentInfo).method.mcui_scope.preliminary_bases?.length?'':'(IUCN 전 지구·한국 국가 평가만, 없으면 보전평가 미확인)'):(info||data?.assessmentInfo)?.method?.mcui_substitutes?.preliminary_scored?', 공식 평가가 없는 종은 '+((info||data?.assessmentInfo)?.method?.mcui_substitutes?.sub_national?.scored_backtest_results?'자체 예비평가':'지방 목록·자체 예비평가'):'')+((info||data?.assessmentInfo)?.method?.mcui_stock_decline?' · 자원 감소 신호(KOSIS 어획량)는 같은 자료 일관성 확인':'')+')'
   : ' (사후 검증: '+['MFPI','MBPI','MCUI'].map(k=>k+' '+({passed:'통과',failed:'기준 미충족'}[validationResult(k,info)]||'전')).join(' · ')+')';
 function evidenceCoverage(s) {
   if(s.catalog&&s.audit){
@@ -119,7 +119,7 @@ function evidenceCoverage(s) {
     {name:'생리활성',stage:pilotScore(s,'MBPI')!==null&&!a?.mbpi_floor?(validationResult('MBPI')==='passed'?'validated':'calculated'):bioLinked?'linked':partial.length||compounds.status==='available'?'found':released()&&a?.chembl_links?.paper_search?.searched_on?'searched_none':'unavailable',
       detail:pilotScore(s,'MBPI')!==null&&a?.mbpi_floor?`${a.mbpi_label}: 어느 비교집단 층에도 규칙을 채우는 항목이 없어 하한값 ${a.mbpi_floor.value}을 썼습니다(팀장 결정 2026-10-05). ${a.mbpi_floor.meaning}`:pilotScore(s,'MBPI')!==null?`${bestBio(a)?.stratum_kind==='chembl'?`종→화합물 공개 연결(LOTUS·원논문)과 ChEMBL 같은 표적·종말점 비교집단으로 ${released()?'정식':'시범'} MBPI를 산출했습니다(${bestBio(a).label}).`:'기원종·확정 구조·정량 실험·동일 층 비교집단을 검수해 '+(released()?'정식':'시범')+' MBPI를 산출했습니다.'}${a.mbpi_label?(bbviLabel(s)?` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에도 '${bbviLabel(s)}' 표시를 붙입니다.`:data?.assessmentInfo?.method?.bbvi?.single_source_policy==='score_with_label'?'':` ${a.mbpi_label}: 독립 원논문 재현 전이라 BBVI에 쓰지 않습니다.`):''}`:partial.length?'논문 단서만으로는 기원종→확정 물질→정량 시험→동일 조건 비교집단을 모두 연결하지 못했습니다. MBPI는 보류합니다.':'화합물 건수나 시험 생물만으로 종의 정량 활성은 확인되지 않습니다.'},
     {name:'보전',stage:pilotScore(s,'MCUI')!==null?(validationResult('MCUI')==='passed'?'validated':'calculated'):conservation?.iucn_state==='assessed'?'linked':conservation?.recheck?'checked_none':'unavailable',
-      detail:(stockMcui(s)?stockLead(s)+' ':'')+(s.assessment?.conservation_status&&data?.assessmentInfo?.method?.mcui_scope&&!s.assessment.mcui_basis?conservationStatusSentence(s):nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:preliminaryMcui(s)?`${iucnGlobalNote(s)}이고 한국·서식국·지방 공식 목록에도 점수가 되는 범주가 없어, 분포 기록으로 확인한 자체 예비평가(Rapid LC, 역검증 기준 미충족)으로 MCUI를 산출했습니다. 공식 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:substituteMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(mcuiBasisLabel(s))} ${released()?'정식':'시범'} MCUI를 산출했습니다. 공식 IUCN 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 '+(released()?'정식':'시범')+' MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?(conservation.recheck?`IUCN 적색목록(${conservation.recheck.red_list_version})과 한국·서식국 공식 목록을 ${conservation.recheck.checked_on}에 다시 확인했으나 이 종의 평가 기록이 없습니다(IUCN 미평가). 낮은 점수가 아니며, IUCN 2026-2는 2026-11-19 공개 예정입니다.`:'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.'):'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.')}
+      detail:(stockMcui(s)?stockLead(s)+' ':'')+(s.assessment?.conservation_status&&data?.assessmentInfo?.method?.mcui_scope&&!s.assessment.mcui_basis?conservationStatusSentence(s):earlyMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(s.assessment.conservation_status.preliminary?.label||'예비 평가')}로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다.`:nationalMcui(s)?`${iucnGlobalNote(s)}. 그래서 한국 국가생물적색자료집 등급으로 ${released()?'정식':'시범'} MCUI를 산출했습니다. IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:preliminaryMcui(s)?`${iucnGlobalNote(s)}이고 한국·서식국·지방 공식 목록에도 점수가 되는 범주가 없어, 분포 기록으로 확인한 자체 예비평가(Rapid LC, 역검증 기준 미충족)으로 MCUI를 산출했습니다. 공식 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:substituteMcui(s)?`${iucnGlobalNote(s)}이고 한국 국가 평가도 없어, ${esc(mcuiBasisLabel(s))} ${released()?'정식':'시범'} MCUI를 산출했습니다. 공식 IUCN 평가가 아니며 IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다.`:pilotScore(s,'MCUI')!==null?'검수된 IUCN 평가와 현행 여부를 확인해 독립적인 '+(released()?'정식':'시범')+' MCUI를 산출했습니다.':conservation?.iucn_state==='not_in_red_list'?(conservation.recheck?`IUCN 적색목록(${conservation.recheck.red_list_version})과 한국·서식국 공식 목록을 ${conservation.recheck.checked_on}에 다시 확인했으나 이 종의 평가 기록이 없습니다(IUCN 미평가). 낮은 점수가 아니며, IUCN 2026-2는 2026-11-26 공개 예정입니다.`:'IUCN을 검색했으나 이 종의 평가 레코드를 확인하지 못했습니다. 공식 NE 판정이 아닙니다.'):'현행 평가의 등급·범위·평가일을 확인하기 전까지 MCUI를 보류합니다.')}
   ];
   return {checks};
 }
@@ -405,9 +405,14 @@ function verifiedConservationValid(a,report){
 function conservationStatusValid(a,report,ext,up){
   const scope=report.method.mcui_scope, c=a.conservation_status, found=c?.assessments;
   if(!c||!scope.state_labels?.[c.state]||c.label!==scope.state_labels[c.state]||!Array.isArray(found)||c.mapping_note!==scope.mapping_note)return false;
-  const scored=found.filter(x=>x.used_for_mcui===true), basis=a.mcui_basis??null;
-  if(scored.length>1||scored.some(x=>!['global','korea'].includes(x.scope))||found.some(x=>typeof x.used_for_mcui!=='boolean'))return false;
+  const scored=found.filter(x=>x.used_for_mcui===true), basis=a.mcui_basis??null, early=scope.preliminary_bases||[];
+  // 4.17 (prereg-4.17-2026-10-15 2): with no official category, a range-state list or the Rapid LC check is a preliminary assessment
+  const scopes=['global','korea',...(early.includes('range_state')?['other_country']:[])];
+  if(scored.length>1||scored.some(x=>!scopes.includes(x.scope))||found.some(x=>typeof x.used_for_mcui!=='boolean'))return false;
   if(!(basis===null||(scope.scored_bases||[]).includes(basis))||(basis===null)!==(ext===null))return false;
+  if(ext!==null&&early.includes(basis))return c.state==='preliminary_scored'&&c.preliminary?.basis===basis&&c.preliminary.label===scope.preliminary_label&&
+    (basis==='range_state'?scored.length===1&&scored[0].scope==='other_country':!scored.length&&c.self_preliminary?.used_for_mcui===true)&&
+    c.category===a.mcui_substitute?.category;
   if(ext!==null)return c.state==='official_scored'&&scored.length===1&&scored[0].scope===(basis==='iucn'?'global':'korea')&&c.category===scored[0].category;
   if(c.state==='official_scored'||scored.length)return false;
   const sub=a.mcui_substitute;
@@ -426,7 +431,7 @@ function extinctionConservationValid(a,report){
   // number, whatever its basis; the state and the scope of each list are re-checked in conservationStatusValid
   if(report.method?.mcui_scope&&sub?.use==='reference_only')return a.scores.MCUI===null&&!a.mcui_basis&&sub.value===null&&
     (report.method.mcui_scope.reference_bases||[]).includes(sub.basis)&&sub.reference_note===report.method.mcui_scope.reference_notes?.[sub.basis];
-  if(report.method?.mcui_scope&&SUBSTITUTE_BASES.includes(a.mcui_basis))return false;
+  if(report.method?.mcui_scope&&SUBSTITUTE_BASES.includes(a.mcui_basis)&&!(report.method.mcui_scope.preliminary_bases||[]).includes(a.mcui_basis))return false;
   // 3.15 (team-lead decision 2026-10-02): reference only. A met Rapid LC check rides beside a withheld MCUI, re-checked against the
   // published thresholds; a record that carries a value, or a report that scores it, is refused.
   if(sub?.use==='reference_only')return a.scores.MCUI===null&&a.mcui_basis!=='preliminary'&&sub.value===null&&sub.basis==='preliminary'&&
@@ -929,6 +934,7 @@ const matrixPlainNote=()=>{const r=matrixRule();return (r?.type_note||'연구 �
 // 4.14 (prereg-4.14-2026-10-14 7): visible words that keep '보전평가 미확인' apart from an official low-risk category
 const consShort=(s,long)=>{const c=s?.assessment?.conservation_status;if(!c||!data?.assessmentInfo?.method?.mcui_scope)return '';
   if(c.state==='official_scored')return '공식 '+c.category+(long&&c.category==='LC'?'(낮은 위험 범주)':'')+(stockMcui(s)?' · 자원 감소':'');
+  if(c.state==='preliminary_scored')return stockMcui(s)?'자원 감소':'';  // 4.17: named only in the species detail
   if(c.mcui_role==='stock_decline_lower_bound')return long?c.mcui_role_label:'평가 미확인 · 자원 감소 하한';
   return c.state==='official_dd'?'공식 DD(정보 부족)':c.state==='official_ne'?'공식 NE(미평가)':c.state==='lookup_failed'?'조회 실패':long?c.label:'보전평가 미확인';};
 // 4.14: why a species has no type, in words: an unassessed MCUI is not a missing BBVI and never a low risk
@@ -943,8 +949,13 @@ const nationalMcui = s => s?.assessment?.mcui_basis==='national'&&pilotScore(s,'
 // 4.2 (team-lead decision 2026-10-04): a sub-national red list is a second substitute basis, below every national one.
 const SUBSTITUTE_BASES=['range_state','sub_national','preliminary'];
 const subNationalMcui = s => s?.assessment?.mcui_basis==='sub_national'&&pilotScore(s,'MCUI')!==null;
+// 4.17 (prereg-4.17-2026-10-15): with no IUCN global or Korean national category, a range-state list or the Rapid LC check
+// stands in as a preliminary assessment until an official result is published. Outside the species detail it is drawn and
+// worded like any other MCUI (never called IUCN or official); the detail's MCUI section names it and its basis.
+const earlyMcui = s => s?.assessment?.conservation_status?.state==='preliminary_scored'&&pilotScore(s,'MCUI')!==null;
 // 4.3 (team-lead decision 2026-10-05): a scored Rapid LC check, the last basis, with its own marker and label.
-const preliminaryMcui = s => s?.assessment?.mcui_basis==='preliminary'&&pilotScore(s,'MCUI')!==null;
+const rawPreliminaryMcui = s => s?.assessment?.mcui_basis==='preliminary'&&pilotScore(s,'MCUI')!==null;
+const preliminaryMcui = s => rawPreliminaryMcui(s)&&!earlyMcui(s);
 // the axis label of one species' value: a scored Rapid LC is never called an official category
 // 4.12 (prereg-4.12-2026-10-14): an MCUI set by the KOSIS catch-trend signal, beside its extinction-risk basis; not an IUCN category.
 const stockMcui = s => s?.assessment?.mcui_driver==='stock_decline'&&pilotScore(s,'MCUI')!==null;
@@ -959,11 +970,12 @@ const mcuiBacktest = s => stockMcui(s)?'':preliminaryMcui(s)?'역검증 기준 �
 const basisNote = (s,key) => key==='MCUI'&&separateMcui(s)?' · '+mcuiBasisShort(s)+(subNationalMcui(s)&&mcuiBacktest(s)?' · '+mcuiBacktest(s):''):
   key==='MBPI'&&pilotScore(s,'MBPI')!==null?(s.assessment?.mbpi_label?' · '+s.assessment.mbpi_label:'')+(bestBio(s.assessment)?.stratum_kind==='xo'?' · XO 문헌 비교집단':bestBio(s.assessment)?.stratum_kind==='relaxed'?' · 완화 산출(d)':''):'';
 const axisTag = (s,key,info) => axisLabel(s,key,info)+basisNote(s,key);
-const substituteMcui = s => SUBSTITUTE_BASES.includes(s?.assessment?.mcui_basis)&&pilotScore(s,'MCUI')!==null;
+const rawSubstituteMcui = s => SUBSTITUTE_BASES.includes(s?.assessment?.mcui_basis)&&pilotScore(s,'MCUI')!==null;
+const substituteMcui = s => rawSubstituteMcui(s)&&!earlyMcui(s);
 const extinctionSeparate = s => nationalMcui(s)||substituteMcui(s);
 const separateMcui = s => extinctionSeparate(s)||stockMcui(s);
 const subRegions = s => (s.assessment.mcui_substitute?.record?.regions||[]).map(r=>r.region_ko||r.region).join(', ');
-const extinctionBasisLabel = s => s?.assessment?.conservation_status&&!s.assessment.mcui_basis?'멸종위험 평가 미확인':nationalMcui(s)?'한국 국가 평가 기반':subNationalMcui(s)?`지방 목록 참고값(${subRegions(s)})`:preliminaryMcui(s)?'자체 예비평가(Rapid LC)':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가 기반`:'IUCN 기반';
+const extinctionBasisLabel = s => s?.assessment?.conservation_status&&!s.assessment.mcui_basis?'멸종위험 평가 미확인':nationalMcui(s)?'한국 국가 평가 기반':subNationalMcui(s)?`지방 목록 참고값(${subRegions(s)})`:preliminaryMcui(s)?'자체 예비평가(Rapid LC)':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가 기반`:earlyMcui(s)?'보전 평가 범주 기반':'IUCN 기반';
 const mcuiBasisLabel = s => stockMcui(s)?stockLabel(s):extinctionBasisLabel(s);
 const mcuiBasisShort = s => stockMcui(s)?'자원 감소 신호':nationalMcui(s)?'국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'자체 예비평가':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 평가`:'';
 // 3.15 (team-lead decision 2026-10-02): reference only. A met Rapid LC check is shown beside the withheld MCUI like the BBVI
@@ -1082,7 +1094,7 @@ function showDecision(s){
       html+='</ul>';
     }
     const c=a.conservation_trace;
-    if(c)html+=`<h4>MCUI 구성</h4><p>${a.mcui_basis==='national'?`한국 국가 평가 기반 ${P_()}MCUI · ${esc(a.national_assessment?.category)} · 국가생물적색자료집 2024 ${esc(a.national_assessment?.list_page_printed)}쪽 · 전 지구 IUCN과 비교하지 않음 · `:extinctionSeparate(s)?`${esc(extinctionBasisLabel(s))} ${P_()}MCUI · ${esc(a.mcui_substitute?.category)} → ${esc(extinctionMcui(s).toFixed(1))}${mcuiBacktest(s)?' · '+esc(mcuiBacktest(s)):''} · 전 지구 IUCN과 비교하지 않음 · `:''}${c.category?`IUCN ${esc(c.category)} · 평가 ${esc(c.assessment_year||'미확인')}`:esc(iucnGlobalNote(s))} · 출처 ${esc(c.source_id||'미확인')}${a.iucn_review_older_than_10y?' · 10년 초과 평가':''} · 현행 평가 ${pilotScore(s,'MCUI')===null?'미산출':a.mcui_basis&&a.mcui_basis!=='iucn'?'해당 없음(IUCN 기반 아님)':`확인 ${esc(c.current_status_check?.checked_on??c.current_status_checked_on)} (${esc(c.current_status_check?.source_id??c.current_status_source_id)})`}. ${c.obis_trend?`노력 보정 추세 ${esc(c.obis_trend.direction)} (${esc(c.obis_trend.source_id)})`:'출현기록만으로 추세 보정하지 않음.'}</p>`+(stockMcui(s)?`<p>${esc(stockLead(s))}</p>`:'');
+    if(c)html+=`<h4>MCUI 구성</h4><p>${a.mcui_basis==='national'?`한국 국가 평가 기반 ${P_()}MCUI · ${esc(a.national_assessment?.category)} · 국가생물적색자료집 2024 ${esc(a.national_assessment?.list_page_printed)}쪽 · 전 지구 IUCN과 비교하지 않음 · `:extinctionSeparate(s)?`${esc(extinctionBasisLabel(s))} ${P_()}MCUI · ${esc(a.mcui_substitute?.category)} → ${esc(extinctionMcui(s).toFixed(1))}${mcuiBacktest(s)?' · '+esc(mcuiBacktest(s)):''} · 전 지구 IUCN과 비교하지 않음 · `:earlyMcui(s)?`${esc(a.conservation_status.preliminary?.label||'예비 평가')} ${P_()}MCUI · ${esc(a.mcui_substitute?.category)} → ${esc(extinctionMcui(s).toFixed(1))} · 공식 결과가 나오면 바로 교체 · `:''}${c.category?`IUCN ${esc(c.category)} · 평가 ${esc(c.assessment_year||'미확인')}`:esc(iucnGlobalNote(s))} · 출처 ${esc(c.source_id||'미확인')}${a.iucn_review_older_than_10y?' · 10년 초과 평가':''} · 현행 평가 ${pilotScore(s,'MCUI')===null?'미산출':a.mcui_basis&&a.mcui_basis!=='iucn'?'해당 없음(IUCN 기반 아님)':`확인 ${esc(c.current_status_check?.checked_on??c.current_status_checked_on)} (${esc(c.current_status_check?.source_id??c.current_status_source_id)})`}. ${c.obis_trend?`노력 보정 추세 ${esc(c.obis_trend.direction)} (${esc(c.obis_trend.source_id)})`:'출현기록만으로 추세 보정하지 않음.'}</p>`+(stockMcui(s)?`<p>${esc(stockLead(s))}</p>`:'');
     html+=`<h4>계산과 기준일</h4><p>MFPI: 영양 백분위·등급 80%, 가식부 10%, 양식 근거 10%. MBPI: 층마다 따로 매긴 백분위 × 근거 계수. ChEMBL 화합물은 같은 표적·같은 종말점(IC50·Ki 등) 활성 기록 안에서, ACE 저해 펩타이드는 AHTPDB ACE IC50(HHL 기질) 고정 비교집단 안에서 pIC50으로, 항균 펩타이드는 액체배지 미량희석 MIC를 pMIC = 6 − log10(MIC µM)로 바꿔 표적 세균별 DBAASP 고정 비교집단(액체배지 MIC) 안에서, 항암 펩타이드는 세포 생존 시험 IC50을 pIC50 = 6 − log10(IC50 µM)로 바꿔 암세포주별 CancerPPD 2.0 고정 비교집단 안에서, ${info.method?.xo_bioactivity?'잔틴 산화효소(XO) 억제 펩타이드는 XO IC50을 pIC50으로 바꿔 문헌으로 만든 비교집단 안에서(회원마다 측정 조건이 다름), ':''}감태 분리 화합물은 같은 논문·같은 시험 조건 안에서 순위를 매깁니다. 층끼리는 섞어 비교하지 않고, 종의 MBPI는 모든 층 항목 가운데 가장 높은 값입니다. BBVI: MFPI ${esc(info.foodWeight*100)}% + MBPI ${esc((1-info.foodWeight)*100)}%. MCUI는 별도 축. 산출 ${esc(info.generatedAt||'미기재')}. ${released(info)?`가중치는 팀이 정한 고정 규칙(${esc(info.version)})이며 점수는 정식 산출값입니다`:'가중치는 검증 전이며 점수는 시범값입니다'}${esc(validationNote(info))}.</p>`;
     html+='<h4>원문·이용조건</h4><ul>'+a.source_ids.map(id=>`<li>${sourceLink(info.sources?.[id]?.url,id+' ↗')} · ${esc(info.sources?.[id]?.license||'이용조건 미확인')} · 조회 ${esc(info.sources?.[id]?.accessed||'미기재')}</li>`).join('')+'</ul>';
   }
@@ -1408,12 +1420,13 @@ function conservationStatusBlock(s){
   if(!c||!scope)return '';
   const where=x=>[x.region_ko||x.region,x.country_ko||x.country].filter(Boolean).join(', ');
   const rows=c.assessments.map(x=>`<li>${esc(SCOPE_KO[x.scope]||x.scope)}${where(x)?' ('+esc(where(x))+')':''} · ${esc(x.list)}${x.year?' '+esc(x.year):''} · ${esc(x.category_as_published)}`+
-    `${x.category&&x.category!==x.category_as_published?` (${esc(x.category)}에 해당하는 이름 · 숫자로 바꾸지 않음)`:''} · ${x.used_for_mcui?'MCUI 멸종위험 성분에 사용':'참고 · MCUI·유형·지도 색에 쓰지 않음'}${x.source_id&&data.assessmentInfo?.sources?.[x.source_id]?' · '+verifiedSource(x.source_id,'원목록 ↗'):''}</li>`).join('');
+    `${x.category&&x.category!==x.category_as_published?` (${esc(x.category)}에 해당하는 이름 · 숫자로 바꾸지 않음)`:''} · ${x.used_for_mcui?(x.use==='preliminary'?'예비 평가로 MCUI 멸종위험 성분에 사용':'MCUI 멸종위험 성분에 사용'):'참고 · MCUI·유형·지도 색에 쓰지 않음'}${x.source_id&&data.assessmentInfo?.sources?.[x.source_id]?' · '+verifiedSource(x.source_id,'원목록 ↗'):''}</li>`).join('');
   const why=[...new Set(c.assessments.filter(x=>!x.used_for_mcui).map(x=>x.scope==='other_country'?'range_state':'sub_national'))].map(k=>scope.reference_notes?.[k]).filter(Boolean);
   return `<p><b>보전평가 상태: ${esc(c.label)}</b>${c.mcui_role_label?' · '+esc(c.mcui_role_label):''}</p>`+
     (rows?`<ul class="fine">${rows}</ul>`:'<p class="fine">IUCN 전 지구·한국 국가·다른 나라 공식 평가 기록을 찾지 못했습니다. 공식 미평가(NE) 판정이 아니며, 보전 위험이 낮다는 뜻도 아닙니다.</p>')+
     (why.length?`<p class="fine">${why.map(esc).join(' ')}</p>`:'')+
-    (c.self_preliminary?`<p class="fine"><b>${esc(c.self_preliminary.label)}</b>: ${esc(c.self_preliminary.note)}</p>`:'')+
+    (c.preliminary?`<p class="fine">${esc(c.preliminary.note)}</p>`:'')+
+    (c.self_preliminary&&!c.preliminary?`<p class="fine"><b>${esc(c.self_preliminary.label)}</b>: ${esc(c.self_preliminary.note)}</p>`:'')+
     (c.mcui_role==='stock_decline_lower_bound'?'<p class="fine">멸종위험 평가가 없어 자원 감소 신호 점수를 MCUI 하한으로만 씁니다(구분선 이상일 때만). 멸종위험은 이보다 높을 수도 있고, 이 값은 IUCN 평가가 아닙니다.</p>':
      pilotScore(s,'MCUI')===null?'<p class="fine">MCUI가 없는 종은 0이나 낮은 위험으로 바꾸지 않고, 매트릭스 유형과 지도 셀 색을 정하지 않습니다. 다른 지표와 출현기록은 그대로 볼 수 있습니다.</p>':'')+
     `<p class="fine">${esc(c.mapping_note)}</p>`;
@@ -1422,7 +1435,7 @@ function conservationStatusBlock(s){
 function conservationStatusSentence(s){
   const c=s.assessment.conservation_status, others=c.assessments.filter(x=>!x.used_for_mcui);
   return `${c.label}. `+(others.length?`다른 나라·지역 평가 ${others.length}건(${others.map(x=>[x.region_ko||x.country_ko||x.country,x.category_as_published].join(' ')).join(', ')})은 그 지역 개체군의 평가라 참고로만 보입니다. `:'')+
-    (c.self_preliminary?'자체 예비검토(Rapid LC)는 공식 평가가 아니라 MCUI에 쓰지 않습니다. ':'')+
+    (c.self_preliminary?(data.assessmentInfo?.method?.mcui_scope?.preliminary_bases?.length?c.self_preliminary.note+' ':'자체 예비검토(Rapid LC)는 공식 평가가 아니라 MCUI에 쓰지 않습니다. '):'')+
     (c.mcui_role==='stock_decline_lower_bound'?'자원 감소 신호 점수가 탐색적 구분선 이상이라 MCUI 하한으로만 씁니다. ':c.mcui_role==='stock_decline_reference'?'자원 감소 신호는 구분선 미만이라 참고로만 보입니다. ':'')+
     '보전 위험이 낮다는 뜻이 아닙니다.';
 }
@@ -1436,6 +1449,7 @@ function verifiedNationalFactBody(s){
     '<p class="fine">국가 평가 점수는 전 지구 IUCN 기반 MCUI와 범위가 달라 서로 순위를 매기거나 비교하지 않고, '+(matrixRule()?.include_national_mcui?'매트릭스에는 놓되 툴팁과 유형별 목록에 기반을 따로 적습니다.':'매트릭스에도 놓지 않습니다.')+'</p>';
   // After 3.14: another range state's national list gives a separately labelled MCUI (shown with its inputs).
   const sub=s.assessment.mcui_substitute;
+  if(earlyMcui(s)&&sub)return preliminaryBasisDetail(s,sub);
   if(subNationalMcui(s)&&sub){
     const rec=sub.record, bt=rec.backtest||{}, rule=data.assessmentInfo?.method?.mcui_substitutes?.sub_national||{};
     const rows=(rec.regions||[]).map(x=>`<li>${esc(x.region_ko||x.region)}(${esc(x.country_ko||x.country)}) · ${esc(x.category_as_published)} → ${esc(x.category)} · 게재명 ${esc(x.name_as_published)} · ${esc(x.list)} ${esc(x.edition)} · ${verifiedSource(x.source_id,'원목록 ↗')}${x.currency_source_id?' · 현행 확인 '+verifiedSource(x.currency_source_id,'개정 원본 ↗'):''}${x.note?'<br>'+esc(x.note):''}</li>`).join('');
@@ -1481,6 +1495,21 @@ function verifiedNationalFactBody(s){
   return n?`<p>국가 평가(한국 범위): ${esc(n.category)} · 게재명 ${esc(n.name_as_published)} · 목록 ${esc(n.list_page_printed)}쪽 · ${verifiedSource(n.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
     '<p class="fine">국가 평가는 전 지구 IUCN 평가와 범위가 달라 MCUI 점수에 넣지 않는 사실 정보입니다.</p>':'';
 }
+// 4.17 (prereg-4.17-2026-10-15 2): the preliminary assessment behind the MCUI, with its inputs, in the species detail only
+function preliminaryBasisDetail(s,sub){
+  const r=sub.record||{}, label=s.assessment.conservation_status.preliminary?.label||'예비 평가';
+  const value=`${esc(sub.category)} → ${esc(extinctionMcui(s).toFixed(1))}`;
+  if(rawPreliminaryMcui(s)){
+    const t=r.thresholds||{};
+    return `<p><b>${esc(label)} · 자체 예비평가(Rapid LC)</b>: ${value} · EOO ${esc(r.eoo_km2.toLocaleString())} km²(기준 ${esc(t.eoo_km2?.toLocaleString())} 초과) · `+
+      `AOO ${esc(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${esc(r.aoo_cells)}칸, 기준 ${esc(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${esc(r.records)}건(기준 ${esc(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
+      `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${esc(r.native_box.lat.join('–'))}°, 경도 ${esc(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${esc(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}.</p>`+
+      subNationalReference(sub)+
+      (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${esc(b.n)}종): ${esc(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${esc(b.false_lc_for_threatened.join('·'))}`:''}. 공식 평가가 나오면 그 값으로 바꿉니다.</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
+  }
+  return `<p><b>${esc(label)} · ${esc(r.country_ko||r.country||'서식국')} 국가 평가</b>: ${esc(r.category_as_published)} → ${value}${r.rank_out?' (평가했으나 위협 범주 없음 → LC 상당 · 팀장 결정 2026-10-04)':''} · 게재명 ${esc(r.name_as_published)} · ${esc(r.list)} · 범위 ${esc(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
+    (r.continuity||r.limitations?`<p class="fine">${esc((r.continuity||'').replace(/\.$/,''))}${r.continuity?'. ':''}${esc(r.limitations||'')}</p>`:'')+subNationalReference(sub);
+}
 // 4.11 (prereg 5.1): a sub-national list whose back-test failed is shown as reference beside the next basis, never as the score.
 function subNationalReference(sub){
   const ref=sub?.sub_national_reference;
@@ -1511,7 +1540,7 @@ function stockCompare(s){
     return `멸종위험 평가 미확인 · 자원 감소 ${d.score.toFixed(0)}(구분선 ${matrixRule()?.mcui_threshold??50} 이상) → 하한 ${v.toFixed(0)}`;
   return `${basis}${ext===null?'':' '+ext.toFixed(0)} · 자원 감소 ${d.score===null?'없음':d.score.toFixed(0)} → ${a.mcui_driver==='tie'?'같은 값':'높은 값'} ${v.toFixed(0)}`;
 }
-const mcuiBasisShortOf = s => nationalMcui(s)?'한국 국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'자체 예비평가':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가`:'IUCN';
+const mcuiBasisShortOf = s => nationalMcui(s)?'한국 국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'자체 예비평가':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||'서식국'} 국가 평가`:earlyMcui(s)?'멸종위험 평가':'IUCN';
 const stockLead = s => {const d=s.assessment.stock_decline,low=s.assessment.conservation_status?.mcui_role==='stock_decline_lower_bound';
   return `KOSIS 연근해 어획량이 ${stockChange(d)} 변해 자원 감소 신호(${d.label}) ${d.score.toFixed(0)}점이 ${low?'탐색적 구분선 이상이라, 멸종위험 평가가 없는 이 종의 MCUI 하한이':'멸종위험 근거보다 높아 MCUI가'} 되었습니다(${stockCompare(s)}). IUCN 평가가 아닙니다.`;};
 // the 2015–2024 coastal catch as a small line: the two averaged windows lightly shaded, 2025p dashed for reference only
@@ -3216,8 +3245,10 @@ function renderComparison(){
   const mcuiBox=s=>{
     const c=evidenceCoverage(s).checks.find(x=>x.name==='보전'), v=pilotScore(s,'MCUI');
     const sub=v===null?shortReason[s.assessment?.withheld_reasons?.MCUI]||'근거·보류 사유는 MCUI 값을 눌러 봅니다'
-      :[axisLabel(s,'MCUI'),separateMcui(s)?mcuiBasisLabel(s)+(subNationalMcui(s)&&mcuiBacktest(s)?' · '+mcuiBacktest(s):'')+' · IUCN 기반 MCUI와 비교 불가':'IUCN 기반'].join(' · ');
-    return `<p class="dt-x-main">${esc(c?.detail||'')}</p><p class="dt-x-sub">${esc(sub)}</p>`;
+      :[axisLabel(s,'MCUI'),separateMcui(s)?mcuiBasisLabel(s)+(subNationalMcui(s)&&mcuiBacktest(s)?' · '+mcuiBacktest(s):'')+' · IUCN 기반 MCUI와 비교 불가':mcuiBasisLabel(s)].join(' · ');
+    // 4.17 (prereg-4.17 5): a preliminary assessment is named in the species detail, not in the table
+    const main=earlyMcui(s)?(stockMcui(s)?stockLead(s):`보전 평가 범주를 확인해 ${released()?'정식':'시범'} MCUI를 산출했습니다. 평가 근거는 종 상세에서 볼 수 있습니다.`):c?.detail||'';
+    return `<p class="dt-x-main">${esc(main)}</p><p class="dt-x-sub">${esc(sub)}</p>`;
   };
   const occBox=(s,occ)=>(s.cells.length?`<p class="dt-x-main">공개 ${s.cells[0].sizeDeg}° 셀 ${spatialCells(s).length.toLocaleString()}곳 · 기록 ${cellRecords(s).toLocaleString()}건</p><p class="dt-x-sub">기록 수는 개체수·자원량이 아닙니다.</p>`:`<p class="dt-x-main">${occ}</p>`)+
     `<button type="button" class="score-cell dt-x-link" data-score-aphia="${s.aphiaID}" data-score-axis="OCC" aria-label="${esc(s.label)} 출현기록 지도·셀 목록 보기">탐색 지도에서 보기 <span aria-hidden="true">→</span></button>`;
@@ -3540,7 +3571,7 @@ function cmpTag(s,k){
   if(k==='MFPI'&&cmpCohort(s))parts.unshift(cmpCohortLabel(cmpCohort(s))+' 비교집단');
   if(k==='BBVI'&&bbviLabel(s))parts.push(bbviLabel(s));
   if(k==='MBPI'&&mbpiStratumOf(s))parts.push(mbpiStratumOf(s).short); // 2026-10-12: the top item's stratum, as on cards and in the detail
-  if(k==='MCUI'&&pilotScore(s,'MCUI')!==null)parts.push(separateMcui(s)?mcuiBasisLabel(s)+' · IUCN 기반 MCUI와 직접 비교 불가':'IUCN 기반');
+  if(k==='MCUI'&&pilotScore(s,'MCUI')!==null)parts.push(separateMcui(s)?mcuiBasisLabel(s)+' · IUCN 기반 MCUI와 직접 비교 불가':mcuiBasisLabel(s));
   return [...new Set(parts.filter(Boolean).join(' · ').split(' · '))].join(' · ');  // 4.12: a stock basis names itself in two places
 }
 // 2026-10-13 design 3: one short chip beside a value's heading. MCUI shows its basis in short ('한국 국가 평가', 'IUCN 평가');

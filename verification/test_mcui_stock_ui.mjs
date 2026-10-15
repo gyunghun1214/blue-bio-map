@@ -26,7 +26,8 @@ for(const a of rows){
 // the three species whose MCUI moves (prereg 4), every other MCUI is the extinction-risk value
 // 4.14 (prereg-4.14 3·4): 우뭇가사리's Russian list is a reference now, so its extinction-risk value is unknown (null) and the
 // decline 80 is kept as a lower bound (at or above the matrix line 50)
-const moved={살오징어:[10,60,'어획량 급감',79.8],우뭇가사리:[null,80,'어획량 붕괴 수준',90.2],참조기:[10,35,'어획량 감소',31.4]};
+// 4.17 (prereg-4.17 2): the Russian list is a preliminary assessment again (VU 60), and the decline 80 is the higher value
+const moved={살오징어:[10,60,'어획량 급감',79.8],우뭇가사리:[60,80,'어획량 붕괴 수준',90.2],참조기:[10,35,'어획량 감소',31.4]};
 for(const a of rows){
   const m=moved[a.korean_name];
   if(m){
@@ -55,9 +56,10 @@ assert.equal(broken(squid,(b,d)=>{b.source_ids=b.source_ids.filter(x=>x!==rule.s
 // a broader item is capped at 60: 우뭇가사리 read as a broader link must not keep 80
 assert.equal(broken(by('우뭇가사리'),(b,d)=>{d.match_level='broader';}),false,'a broader link is capped at 60');
 assert.deepEqual({...ctx.recheck({...by('우뭇가사리').stock_decline,match_level:'broader',score:60,label:'어획량 급감',capped_broader:true},rule)},{score:60});
-// 4.14: the lower bound needs its role, and the old range-state score cannot come back as the extinction-risk value
-assert.equal(broken(by('우뭇가사리'),b=>{delete b.conservation_status.mcui_role;}),false,'the lower bound says so');
-assert.equal(broken(by('우뭇가사리'),b=>{b.mcui_extinction_risk=60;b.mcui_basis='range_state';b.mcui_substitute.value=60;b.mcui_substitute.use='scored';}),false,'a range-state list gives no MCUI');
+// 4.14: the lower bound needed its role; 4.17: the range-state list is the preliminary extinction-risk value, so a 4.14
+// lower bound (no basis, no extinction-risk value) is refused, and so is a state claiming an official category
+assert.equal(broken(by('우뭇가사리'),b=>{b.mcui_extinction_risk=null;b.mcui_basis=null;b.conservation_status.mcui_role='stock_decline_lower_bound';}),false,'a preliminary list is not dropped to a lower bound');
+assert.equal(broken(by('우뭇가사리'),b=>{b.conservation_status.state='official_scored';b.conservation_status.label='공식 평가';}),false,'a range-state list is never an official category');
 // the unscored reasons come back from the numbers: aquaculture first, then the small baseline
 assert.equal(broken(by('톳'),(b,d)=>{d.unscored_reason=null;d.score=60;d.label='어획량 급감';}),false,'aquaculture-dominant items get no score');
 assert.equal(broken(by('꼬시래기'),(b,d)=>{d.unscored_reason='aquaculture_dominant';d.label=rule.labels.aquaculture_dominant;}),false,'the small-catch reason is recomputed');
