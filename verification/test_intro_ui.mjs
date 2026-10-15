@@ -68,7 +68,7 @@ assert.deepEqual(note({state:'snapshot',snapshotAt:'2026-09-24'}),['ready','운�
 // Offline demo (?offline=1): the saved copy is the plan, so the note says so instead of 연결하지 못해.
 assert.deepEqual(note({state:'offline',snapshotAt:'2026-10-01'}),['ready','오프라인 시연 · 2026-10-01 기준 공개 자료 사본으로 엽니다.']);
 assert.deepEqual(note({state:'empty',published:0,candidates:22}),['ready','운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.']);
-assert.deepEqual(note({state:'error'}),['ready','자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.']);
+assert.deepEqual(note({state:'error'}),['ready','자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.']);
 
 // (5) Enter: only once ready, and not when another control (share, motion, link) has focus
 assert.equal(ctx.keyAction('Enter',{ready:true,onOtherControl:false}),'enter');
@@ -151,7 +151,9 @@ for(const f of ['intro.js','intro.css']){
   assert.deepEqual([...html.matchAll(new RegExp(`["/]${f.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]),[expected],`${f}?v= must be ${expected}`);
 }
 const css=read('intro.css');
-assert.match(css,/html\.gate-on \.gate\{display:block\}/,'shown only with the class intro.js sets');
+assert.match(css,/html\.gate-on \.gate,html\.gate-on \.gate\[hidden\]\{display:block!important\}/,'shown only with the class intro.js sets, from the first paint (outranks style.css [hidden]{display:none!important})');
+// 2026-10-15 load speed: the copy is not hidden until the data is in (it was the page's largest text, seconds late)
+assert.ok(!/<div class="gate-hero"[^>]*hidden/.test(html),'entry copy is in the first paint');
 assert.match(css,/prefers-reduced-motion:reduce/);
 // the ways in are real buttons; the motion control is a switch; the globe picture is hidden from assistive tech
 const gateMarkup=html.slice(html.indexOf('<div id="site-gate"'),html.indexOf('<header'));

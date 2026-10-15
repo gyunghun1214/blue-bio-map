@@ -1242,7 +1242,7 @@ try{
     const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,disclaimer:document.getElementById('score-disclaimer').textContent,cards:document.querySelectorAll('.species-card').length,published:(data?.species||[]).filter(s=>!s.catalog).length,list:document.getElementById('species-list').innerText.slice(0,200),detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
     const brief=JSON.stringify({...state,detail:state.detail.slice(0,80),full:undefined});
     if(name==='api-offline')check(`Flow 8 ${tag}: API unreachable → "연결 실패" with the dated saved snapshot and separate counts`,state.state===`연결 실패 · 저장된 사본 사용 (${snapshot.fetched_at} 기준) · ${offlineCounts}`&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),brief);
-    if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',brief);
+    if(name==='api-error')check('API failure and no snapshot: "자료를 불러오지 못했어요 · ↻ 다시 시도" with the cause, no stale data, and the retry button reloads',state.state==='불러오기 실패'&&state.error.startsWith('자료를 불러오지 못했어요 · ↻ 다시 시도')&&state.error.includes('불러오지 못했습니다')&&state.detail===''&&await evaluate("document.querySelectorAll('.data-retry').length>=2"),brief);
     if(name==='api-empty')check(`Flow 7 ${tag}: empty API (200 []) → connected, 운영 발행 0종, the ${catalogIds.length} shown are candidates; no snapshot, no failure`,state.state===`공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 ${catalogIds.length}종`&&state.error===''&&!state.state.includes('사본')&&state.disclaimer.includes('운영 발행 자료가 0종')&&state.disclaimer.includes(`${catalogIds.length}종은 모두 조사 후보`)&&state.cards===catalogIds.length&&state.published===0,brief);
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
     await evaluate("window.scrollTo(0,0);1");await shot(tag==='mobile'?`mobile-${name}`:name,false);
@@ -1264,7 +1264,7 @@ try{
   await viewport(1560,900,false);
   scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
   await load();gs=await gateReady();
-  check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
+  check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
   await pressEnter();await sleep(1100);gs=await gateState();
   check('G-6 failed load: after Enter the map page shows its own error',!gs.on&&await evaluate("!document.getElementById('error').hidden"),JSON.stringify(gs));
   await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
