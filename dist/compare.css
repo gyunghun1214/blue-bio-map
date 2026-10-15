@@ -600,3 +600,21 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
 /* 2026-10-15 team check: phones get no text under 11px (theme.css holds the explore part) */
 @media(max-width:740px){#compare .cmp-i{font-size:11px}#compare .cp-id .cmp-eyebrow{font-size:11px}}
+/* 2026-10-15 OBIS 출현 추세 in the species profile: class and two numbers up front, the reading folded */
+#compare .cp-obis{margin:12px 0 0;padding:9px 11px;border:1px solid var(--cs-line);border-radius:8px;color:var(--cs-ink2);font-size:12.5px;line-height:1.55}
+#compare .cp-obis.warn{border-color:color-mix(in srgb,#f2b84b 45%,transparent)}
+#compare .cp-obis p{margin:0}
+#compare .cp-obis-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+#compare .cp-obis-head>span:first-of-type{color:var(--cs-ink2);font-size:12px;letter-spacing:.02em}
+#compare .cp-obis-head b{color:var(--cs-ink);font-size:13.5px}
+#compare .cp-obis .obis-off{margin-left:0;border-color:var(--cs-line2);color:var(--cs-ink3);opacity:1}
+#compare .cp-obis .obis-warn-mark{margin:0;color:#f2b84b}
+#compare .cp-obis-nums{margin-top:4px!important;overflow-wrap:anywhere}
+#compare .cp-obis-nums b{color:var(--cs-ink)}
+#compare .cp-obis-more{margin-top:6px}
+#compare .cp-obis-more summary{color:var(--cs-ink3);font-size:12px;cursor:pointer}
+#compare .cp-obis-more p{margin-top:6px}
+/* ⚠ beside a matrix point: a decline signal with an MCUI under the line. Distinct from the stock diamond and the hollow point */
+#compare .matrix-point .mp-obis{position:absolute;right:calc(100% + 1px);bottom:calc(100% + 1px);color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
+#compare .matrix-point.pilot[data-clustered] .mp-obis,#compare .matrix-point.pilot[data-dim] .mp-obis{visibility:hidden}
+#compare .mp-obis-pill{margin-right:4px;color:#f2b84b;font-style:normal}
