@@ -2743,6 +2743,8 @@ function cellCsv(s){
 const LINK_KEYS=['s','v','t','b','m','p','u','w'];
 function readHash(){try{const q=new URLSearchParams(location.search),o={};for(const k of LINK_KEYS)if(q.has(k))o[k]=q.get(k);
   return {...o,...Object.fromEntries(new URLSearchParams(location.hash.slice(1)))};}catch{return {};}}
+// The tab a link opens: one of the three views, else none (the tab stays as it is). Kept with readHash for the node test.
+const linkView=h=>['explore','compare','method'].includes(h?.v)?h.v:null;
 function writeHash(){
   if(!data||!selected)return;
   const p=new URLSearchParams({s:selected.aphiaID,v:currentView,b:basemap,t:mapMode});
@@ -2763,7 +2765,7 @@ function applyHash(h){
   if(h.b&&h.b!==basemap&&basemapLayers?.[h.b])setBasemap(h.b);
   const m=(h.m||'').split('/').map(Number);
   if(map&&m.length===3&&m.every(Number.isFinite))map.setView([m[1],m[2]],m[0],{animate:false});
-  if(['explore','compare','method'].includes(h.v))setView(h.v);
+  const v=linkView(h);if(v)setView(v);
   writeHash();
 }
 
