@@ -159,7 +159,11 @@ class MatrixReadinessTests(unittest.TestCase):
     def test_matrix_type_and_sufficiency_layers(self):
         report = build(self.assessments, self.catalog, self.expansion)
         rule = self.assessments["method"]["matrix"]
-        self.assertEqual(report["matrix_rule"], rule)
+        # the published rule is the config's rule in force now; withdrawn sentences and earlier values sit in its history
+        current = {k: v for k, v in report["matrix_rule"].items() if k != "history"}
+        notes = ("substitute_mcui_note", "threshold_rule", "single_source_bbvi_note", "include_substitute_mcui")
+        self.assertEqual({k: v for k, v in current.items() if k not in notes}, {k: v for k, v in rule.items() if k not in notes})
+        self.assertEqual(current["include_substitute_mcui"], ["range_state", "preliminary"])
         reviewed = {s["aphia_id"]: s for s in self.assessments["species"] + self.assessments["candidate_species"]}
         for row in report["species"]:
             s = reviewed[row["aphia_id"]]
