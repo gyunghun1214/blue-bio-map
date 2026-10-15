@@ -1001,7 +1001,7 @@ function mcuiAuxParts(s){
   if(tr)parts.push('개체군 추세 '+(TREND_KO[tr]||tr));
   const d=a.stock_decline;
   if(d)parts.push(d.decline_pct===null||d.decline_pct===undefined?String(d.label||'').replace(/^자원 감소 신호: ?/,'자원 감소율 · '):
-    `어획량 변화 ${stockChange(d)}`+(Number.isFinite(d.score)?` · 자원 감소 ${d.score.toFixed(0)}점`:` · ${String(d.label||'자원 감소 신호 없음').replace(/^자원 감소 신호: ?/,'')}`));
+    `어획량 변화 ${stockChange(d)}`+(Number.isFinite(d.score)?` · 자원 감소 ${d.score.toFixed(0)}점`:` · ${String(d.label||'자원 감소 신호 없음').replace(/^자원 감소 신호: ?/,'').replace(/^(.+) · 해당 없음$/,'자원 감소 신호 해당 없음($1)')}`));
   return parts;
 }
 const mcuiAuxLine = s => {const p=mcuiAuxParts(s);return p.length?'보조 정보 · '+p.join(' · '):'';};
