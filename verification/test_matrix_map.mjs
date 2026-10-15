@@ -152,7 +152,14 @@ for(const t of rule.cell_colour_precedence){
   const st=ctx.speciesCellStyle(t,false),on=ctx.speciesCellStyle(t,true);
   assert.deepEqual([st.color,st.fillColor,st.dashArray,st.fillOpacity],[ctx.matrixTypeColour[t],ctx.matrixTypeColour[t],'3 3',ctx.CELL_FILL],t);
   assert.deepEqual([on.color,on.fillColor,on.dashArray],[st.color,st.fillColor,st.dashArray],t+': same colour when chosen');
-  assert.ok(on.weight>st.weight&&on.fillOpacity>st.fillOpacity,t+': the chosen cell is heavier');
+  // 2026-10-15: a clicked cell is marked by a heavier border only; its fill keeps the tone of the cells around it
+  assert.ok(on.weight>st.weight&&on.fillOpacity===st.fillOpacity,t+': the chosen cell has a heavier border, the same fill');
+}
+assert.equal(ctx.speciesCellStyle(null,true).fillOpacity,ctx.speciesCellStyle(null,false).fillOpacity,'untyped: the same fill when chosen');
+ctx.setSelected(null);
+for(const cell of [both,many,{lat:35,lon:129,size:1,species:new Map([[9,{...fake(null,80),label:'바',aphiaID:9}]])}]){
+  const [off,on]=[false,true].map(a=>ctx.valueCellStyle(cell,a));
+  assert.ok(on.weight>=off.weight&&on.fillOpacity===off.fillOpacity&&on.fillColor===off.fillColor,'all-species view: the chosen cell keeps the fill of the others');
 }
 const heldOwn=ctx.speciesCellStyle(null,false);
 assert.deepEqual([heldOwn.color,heldOwn.fillColor,heldOwn.dashArray,heldOwn.fillOpacity],['#657588','#b7c0ca','5 4',.25],'untyped: the held grey of the all-species map');
