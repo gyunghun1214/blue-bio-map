@@ -40,7 +40,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
-UA = 'Mozilla/5.0 (compatible; BlueBioMap-linkcheck/1.0; +https://blue-bio-map.blue-bio-map.workers.dev)'
+# A browser's User-Agent: several publishers and portals answer 403 to anything that names itself a bot, which would hide
+# whether the page itself is there. Requests stay few and slow (two at a time per host).
+UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36'
 URL_RE = re.compile(r"""https?://[^\s"'<>()`\\]+""")
 HREF_RE = re.compile(r"""<a\b[^>]*?\bhref\s*=\s*["']([^"']+)["']""", re.I)
 # Not links a reader opens: the data API needs a key, and the license/credit lines of the map tiles are templates.

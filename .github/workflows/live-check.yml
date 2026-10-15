@@ -27,11 +27,17 @@ jobs:
       - name: Print the links that are not 정상
         run: |
           python - <<'EOF'
-          import csv
+          import base64, collections, csv, gzip, urllib.parse
           rows = list(csv.DictReader(open('live-check/links.csv', encoding='utf-8-sig')))
+          print(collections.Counter(r['result'] for r in rows))
           for r in rows:
-              if r['result'] != '정상':
-                  print(f"{r['result']}\t{r['status']}\t{r['url']}\t{r['final_url']}\t{r['locations'][:300]}")
+              if r['result'] in ('깨짐', '이동됨'):
+                  print(f"{r['result']}\t{r['status']}\t{r['url']}\t-> {r['final_url']}\t{r['locations'][:300]}")
+          hosts = collections.Counter((urllib.parse.urlsplit(r['url']).hostname, r['status']) for r in rows if r['result'] == '확인 불가')
+          for (h, st), n in hosts.most_common():
+              print(f'확인 불가\t{h}\t{st}\t{n}')
+          # the whole CSV in one line (gzip + base64), for sessions that can read the log but not the artifact
+          print('CSV-GZ-B64 ' + base64.b64encode(gzip.compress(open('live-check/links.csv', 'rb').read(), 9)).decode())
           EOF
       - uses: actions/upload-artifact@v6
         if: always()
