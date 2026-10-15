@@ -637,3 +637,5 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare .gap-track{margin:0 8px 0 32px}
   #compare .gap-point{font-size:12px}
 }
+/* 2026-10-15 team check: phones get no text under 11px (theme.css holds the explore part) */
+@media(max-width:740px){#compare .cmp-i{font-size:11px}#compare .cp-id .cmp-eyebrow{font-size:11px}}

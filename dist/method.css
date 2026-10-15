@@ -259,3 +259,5 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-gap-more{margin-top:10px;padding:8px 0 0;border-top:1px solid var(--mt-line2);border-bottom:0}
 #method .mt-gap-more summary{color:var(--mt-ink2);font-size:13px;font-weight:600}
 #method .mt-gap-more p{margin:8px 0 0;color:var(--mt-ink2);font-size:13px;line-height:1.6}
+/* 2026-10-15 team check: phones get no text under 11px */
+@media(max-width:740px){#method .mt-src .mt-k{font-size:11px}}
