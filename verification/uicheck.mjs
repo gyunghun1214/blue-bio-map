@@ -453,11 +453,13 @@ try{
     const before=!!alt&&!!map&&!!(alt.compareDocumentPosition(map)&Node.DOCUMENT_POSITION_FOLLOWING),inat=d.querySelector('.detail-actions a')?.href||'';
     d.querySelector('[data-coord-request]').click();const dlg=document.getElementById('coord-dialog'),open=dlg.open,txt=dlg.innerText;dlg.close();
     selectSpecies(836033);const oyAlt=!!document.querySelector('#detail .alt-production'),cp=!!document.querySelector('#cmp-profile .alt-production');
-    const rows=[...document.querySelectorAll('#promise-table tbody tr')].map(r=>[r.querySelector('th').innerText,r.querySelector('.pt-s').innerText]);
-    return {before,altText:alt?.innerText||'',inat,open,txt,oyAlt,rows,altName:document.querySelector('[data-alt-species]')?.textContent,count:document.getElementById('promise-count')?.textContent}})()`);
-  check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('조사 필요')&&!gap.oyAlt&&gap.altName==='현재 살오징어',JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,altName:gap.altName,alt:gap.altText.slice(0,200)}));
+    const m=document.getElementById('method'),gone=['mt-scorecard','mt-acc-05','promise-table','promise-count'].filter(id=>document.getElementById(id)),
+      words=['VALIDATION SCORECARD','검증 성적표','신청서 약속','구현 현황'].filter(w=>m.textContent.includes(w)),folds=[...m.querySelectorAll('details.mt-acc')].map(d=>d.id);
+    return {before,altText:alt?.innerText||'',inat,open,txt,oyAlt,gone,words,folds,first:m.firstElementChild?.id}})()`);
+  check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('조사 필요')&&!gap.oyAlt,JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,alt:gap.altText.slice(0,200)}));
   check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&['원좌표를 누구에게도 제공하지 않습니다','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x)),JSON.stringify({inat:gap.inat,open:gap.open}));
-  check('Method tab: application promise table, 14 rows, statuses from the four words only, user grades and citizen re-evaluation not marked 구현',gap.rows.length===14&&gap.rows.every(r=>['구현','부분','미구현','변경'].includes(r[1]))&&gap.rows.find(r=>r[0].includes('이용자 3등급'))?.[1]==='미구현'&&gap.rows.find(r=>r[0].includes('시민 참여'))?.[1]!=='구현'&&/14개 항목 · 구현 \d+ · 부분 \d+ · 미구현 \d+ · 변경 \d+/.test(gap.count),JSON.stringify(gap.rows));
+  // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
+  check('Method tab: no validation scorecard and no fold 05 (application promise table); folds 01–04; MCUI table is the first block',gap.gone.length===0&&gap.words.length===0&&JSON.stringify(gap.folds)===JSON.stringify(['mt-acc-01','mt-acc-02','mt-acc-03','mt-acc-04'])&&gap.first==='mt-mcui-map',JSON.stringify({gone:gap.gone,words:gap.words,folds:gap.folds,first:gap.first}));
   const cucT=await pick(241776);
   check('Sea cucumber detail: checked bioactivity case shown, marked not an index input',cucT.includes('별도 원문 조사 · 지표 입력 아님')&&cucT.includes('Holotoxin'),cucT.slice(cucT.indexOf('화합물'),cucT.indexOf('화합물')+400));
   t=await pick(836033);
