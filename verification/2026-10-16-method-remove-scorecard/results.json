@@ -1,0 +1,258 @@
+[
+ {
+  "name": "1440px: no page-wide horizontal overflow (all folds open)",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "1440px: scorecard and fold 05 gone from the DOM",
+  "ok": true,
+  "detail": {
+   "gone": [],
+   "text": []
+  }
+ },
+ {
+  "name": "1440px: MCUI table is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-mcui-map",
+   "top": 120
+  }
+ },
+ {
+  "name": "1440px: folds 01–04 only",
+  "ok": true,
+  "detail": [
+   "mt-acc-01",
+   "mt-acc-02",
+   "mt-acc-03",
+   "mt-acc-04"
+  ]
+ },
+ {
+  "name": "1440px: MCUI line says (대응표는 이 탭 맨 위)",
+  "ok": true,
+  "detail": "MCUI 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다(대응표는 이 탭 맨 위). IUCN 전 지구 →"
+ },
+ {
+  "name": "1440px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "1440px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1100px: no page-wide horizontal overflow (all folds open)",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "1100px: scorecard and fold 05 gone from the DOM",
+  "ok": true,
+  "detail": {
+   "gone": [],
+   "text": []
+  }
+ },
+ {
+  "name": "1100px: MCUI table is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-mcui-map",
+   "top": 108
+  }
+ },
+ {
+  "name": "1100px: folds 01–04 only",
+  "ok": true,
+  "detail": [
+   "mt-acc-01",
+   "mt-acc-02",
+   "mt-acc-03",
+   "mt-acc-04"
+  ]
+ },
+ {
+  "name": "1100px: MCUI line says (대응표는 이 탭 맨 위)",
+  "ok": true,
+  "detail": "MCUI 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다(대응표는 이 탭 맨 위). IUCN 전 지구 →"
+ },
+ {
+  "name": "1100px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "1100px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "768px: no page-wide horizontal overflow (all folds open)",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "768px: scorecard and fold 05 gone from the DOM",
+  "ok": true,
+  "detail": {
+   "gone": [],
+   "text": []
+  }
+ },
+ {
+  "name": "768px: MCUI table is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-mcui-map",
+   "top": 108
+  }
+ },
+ {
+  "name": "768px: folds 01–04 only",
+  "ok": true,
+  "detail": [
+   "mt-acc-01",
+   "mt-acc-02",
+   "mt-acc-03",
+   "mt-acc-04"
+  ]
+ },
+ {
+  "name": "768px: MCUI line says (대응표는 이 탭 맨 위)",
+  "ok": true,
+  "detail": "MCUI 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다(대응표는 이 탭 맨 위). IUCN 전 지구 →"
+ },
+ {
+  "name": "768px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "768px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: no page-wide horizontal overflow (all folds open)",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "390px: scorecard and fold 05 gone from the DOM",
+  "ok": true,
+  "detail": {
+   "gone": [],
+   "text": []
+  }
+ },
+ {
+  "name": "390px: MCUI table is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-mcui-map",
+   "top": 160
+  }
+ },
+ {
+  "name": "390px: folds 01–04 only",
+  "ok": true,
+  "detail": [
+   "mt-acc-01",
+   "mt-acc-02",
+   "mt-acc-03",
+   "mt-acc-04"
+  ]
+ },
+ {
+  "name": "390px: MCUI line says (대응표는 이 탭 맨 위)",
+  "ok": true,
+  "detail": "MCUI 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다(대응표는 이 탭 맨 위). IUCN 전 지구 →"
+ },
+ {
+  "name": "390px: three journey badges shown",
+  "ok": true,
+  "detail": [
+   [
+    "MFPI",
+    false,
+    "검증 통과"
+   ],
+   [
+    "MBPI",
+    false,
+    "방법 검증 기준 미충족"
+   ],
+   [
+    "MCUI",
+    false,
+    "제한적 확인"
+   ]
+  ]
+ },
+ {
+  "name": "390px: no page errors",
+  "ok": true,
+  "detail": []
+ }
+]

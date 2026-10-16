@@ -1,7 +1,8 @@
-// 검증 성적표: the top of the method tab lists every post-hoc check from dist/posthoc-scorecard.json (built from
-// posthoc.validation_sets by scripts/build_posthoc_scorecard.py), and the MFPI·MBPI·MCUI journey cards carry one badge each.
-// A same-data or two-species consistency check is never shown as 통과, no failed check is shown with the word '실패', and the
-// file reaches no score, label or matrix type. Schema gate as for the other display files.
+// 검증 배지: the MFPI·MBPI·MCUI journey cards of the method tab carry one badge each from dist/posthoc-scorecard.json (built
+// from posthoc.validation_sets by scripts/build_posthoc_scorecard.py). A same-data or two-species consistency check is never
+// shown as 통과, and the file reaches no score, label or matrix type. Schema gate as for the other display files.
+// 2026-10-16: the scorecard table (top of the method tab) and fold 05 (신청서 약속 대비 구현 현황표) were taken off the page;
+// this test now checks they are gone from the markup, the code and the styles. The file and its build check stay.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -12,7 +13,7 @@ const els={};const el=id=>els[id]??={id,innerHTML:'',textContent:'',hidden:false
 const badges=['MFPI','MBPI','MCUI'].map(k=>({dataset:{ind:k},hidden:true,textContent:'',title:''}));
 const ctx={document:{getElementById:el,querySelectorAll:sel=>sel.includes('mt-vbadge')?badges:[]}};vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+
-  ';globalThis.file=scorecardFile;globalThis.render=renderScorecard;globalThis.setSc=f=>{posthocScorecard=f};globalThis.setData=d=>{data=d};'+
+  ';globalThis.file=scorecardFile;globalThis.render=renderVerifyBadges;globalThis.setSc=f=>{posthocScorecard=f};globalThis.setData=d=>{data=d};'+
   'globalThis.axis=axisState;globalThis.type=matrixType;globalThis.label=bbviLabel;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,label:a.korean_name,name:a.scientific_name,cells:[],
   assessment:{...a,report_version:report.method_version}}));
@@ -30,28 +31,19 @@ for(const r of file.rows)assert.equal(r.result,sets[r.key].result,r.key);
 const snap=()=>species.map(s=>[s.aphiaID,...['MFPI','MBPI','MCUI','BBVI'].map(k=>ctx.axis(s,k).value),ctx.label(s),ctx.type(s)].join('|')).join('\n');
 ctx.setSc(null);const none=snap();ctx.setSc(ctx.file(file,[]));assert.equal(snap(),none);
 
-// The table: one row per check in order, six cells, the calm result labels.
+// The badges: the indicator labels of the file; no '실패' on screen.
 ctx.render();
-const body=els['mt-vc-body'].innerHTML, rows=body.split('<tr ').slice(1);
-assert.equal(rows.length,file.rows.length);
-for(const [i,r] of file.rows.entries()){
-  assert.ok(rows[i].includes(`data-key="${r.key}"`),r.key);
-  assert.equal((rows[i].match(/data-label="/g)||[]).length,6,r.key);
-  assert.ok(rows[i].includes(`>${r.outcome_label}</span>`),r.key);
-  if(['consistent_same_data','reproduced_n2'].includes(r.result))assert.ok(!/통과/.test(rows[i].split('data-label="결과"')[1].split('</td>')[0]),r.key);
-  for(const p of r.records)assert.ok(rows[i].includes(`href="${file.repository}${p}"`),p);
-}
-assert.ok(!/실패/.test(body+els['mt-vc-sum'].textContent+els['mt-vc-counts'].innerHTML+els['mt-vc-foot'].textContent),'no 실패 on screen');
-assert.match(els['mt-vc-sum'].textContent,new RegExp(`^${report.method_version} 기준 · 사후 검증 ${file.total}건 중 기준 통과 1건 · 7건은 결과를 보기 전에 기준을 정했습니다\\.$`));
-assert.match(els['mt-vc-ind'].innerHTML,/<b>식량 MFPI<\/b><span>검증 통과<\/span>.*<b>생리활성 MBPI<\/b><span>방법 검증 기준 미충족<\/span>.*<b>보전 MCUI<\/b><span>제한적 확인<\/span>/);
 // journey badges: the site's neutral wording (plainWords) for MBPI
 assert.deepEqual(badges.map(b=>[b.dataset.ind,b.hidden,b.textContent,b.dataset.state]),
   [['MFPI',false,'검증 통과','passed'],['MBPI',false,'방법 검증 기준 미충족','not_passed'],['MCUI',false,'제한적 확인','limited']]);
 assert.match(badges[2].title,/일관성 확인\(독립 아님\) 2/);
 
-// No file: the badges hide and the summary says so.
+assert.ok(!badges.some(b=>/실패/.test(b.textContent+b.title)),'no 실패 on the badges');
+assert.deepEqual(Object.keys(els),[],'nothing else on the page is written');
+
+// No file: the badges hide.
 ctx.setSc(null);ctx.render();
-assert.ok(badges.every(b=>b.hidden));assert.equal(els['mt-vc-body'].innerHTML,'');assert.match(els['mt-vc-sum'].textContent,/읽지 못했습니다/);
+assert.ok(badges.every(b=>b.hidden));
 
 // Schema gate.
 let out=[];assert.equal(ctx.file({...file,schema_version:'posthoc-scorecard-2'},out),null);
@@ -60,8 +52,15 @@ out=[];assert.equal(ctx.file({...file,schema_version:'other'},out),null);assert.
 assert.equal(ctx.file({...file,display_only:false},[]),null);
 assert.equal(ctx.file({...file,rows:[{...file.rows[0],outcome_class:'통과됨'}]},[]),null);
 
-// The page: the scorecard is the first block of the method tab; one badge per journey card.
-const method=html.split('<section id="method"')[1];
-assert.ok(method.indexOf('id="mt-scorecard"')<method.indexOf('class="mt-hero"'));
+// The page: no scorecard and no fold 05 in the markup, the code or the styles; the MCUI table is the first block of the
+// method tab and the 03 MCUI line points to it; one badge per journey card.
+const css=read('method.css'), method=html.split('<section id="method"')[1].split('</section>\n</main>')[0];
+for(const gone of ['id="mt-scorecard"','mt-vc','VALIDATION SCORECARD','검증 성적표','id="mt-acc-05"','promise-table','promise-count','신청서 약속','구현 현황','data-alt-species'])
+  assert.ok(!html.includes(gone),'index.html: '+gone);
+for(const gone of ['renderScorecard','mt-vc-','#promise-table','promise-count','data-alt-species'])assert.ok(!app.includes(gone),'app.js: '+gone);
+for(const gone of ['.mt-vc','[data-oc','.promise-table','.pt-s','.pt-'])assert.ok(!css.includes(gone),'method.css: '+gone);
+assert.match(method,/^[^>]*>\n<div class="mt-mcui-map" id="mt-mcui-map"/);
+assert.deepEqual([...method.matchAll(/<details class="mt-acc" id="(mt-acc-\d+)"/g)].map(m=>m[1]),['mt-acc-01','mt-acc-02','mt-acc-03','mt-acc-04']);
+assert.ok(method.includes('(대응표는 이 탭 맨 위)')&&!method.includes('이 탭 위쪽'));
 for(const k of ['MFPI','MBPI','MCUI'])assert.equal((html.match(new RegExp(`<span class="mt-vbadge" data-ind="${k}" hidden></span>`,'g'))||[]).length,1,k);
-console.log(`posthoc scorecard UI: ${file.total} checks ${JSON.stringify(file.counts)}, scores unchanged`);
+console.log(`posthoc verification badges: ${file.total} checks ${JSON.stringify(file.counts)}, scores unchanged; scorecard table and fold 05 removed`);
