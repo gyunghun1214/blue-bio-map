@@ -2493,6 +2493,7 @@ function renderLiveDetail(s) {
   const pilot=s.assessment;
   const pilotRows=!pilot?axisStateSection(s):VERIFIED.includes(pilot?.report_version)?renderVerifiedIndices(s)
     :pilot?`<h3>시범 지표 · 타당성 미검증</h3>${['MFPI','MBPI','MCUI','BBVI'].map(k=>row(k,pilotScore(s,k)===null?'산출 보류':pilotScore(s,k).toFixed(1))).join('')}<p class="fine">BBVI는 활용 축, MCUI는 별도의 보전 축입니다. IUCN ${esc(pilot.iucn_category||'미평가')} · 평가 연도 ${esc(pilot.iucn_assessment_year||'미확인')}${pilot.iucn_review_older_than_10y?' · 오래된 평가':''}${pilot.scores.MCUI===null&&pilot.iucn_category?' · 현행 평가 확인 보류':''}. 임상·어획 사례를 통한 사후 검증 전까지 의사결정에 바로 사용하지 마세요.</p>`:'';
+  // 2026-10-17 (LKH): an older profile row (no v2 keys) still shows its own production summary under the indicators
   const withheld=pilot?'규칙을 다 채우지 못한 값은 라벨(최상위 근거 독립 재현 확인 중·하한값·예비평가·지방 목록)로 구분합니다. '+(released()?'산출값은 연구용 결과입니다':'시범 수치는 연구용 결과입니다')+validationNote()+'.'+(s.v2?'':' '+score):score;
   // A status says whether an indicator was computed; "일부 근거 확인" is evidence without an indicator.
   const axes=[['MFPI','식량 근거'],['MBPI','생리활성 근거'],['MCUI','보전 평가']].map(([k,label])=>{
@@ -2504,7 +2505,7 @@ function renderLiveDetail(s) {
   $('detail').innerHTML=`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
     `<div class="detail-summary"><div id="detail-map-summary">${mapSummaryHtml(periodView({...s,cells}))}</div><h3>근거 상태</h3>${axes}<p class="detail-limit">공개된 관측 기록 기준입니다.</p></div>`+
     `<div class="detail-more-list">`+
-    more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${pilot?'':`<div class="withheld"><b>통합점수 산출 보류</b>${withheld}</div>`}`)+
+    more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${pilot?(s.v2?'':`<p class="fine">${score}</p>`):`<div class="withheld"><b>통합점수 산출 보류</b>${withheld}</div>`}`)+
     more('활용 전 확인할 제도',institutionChecks(s))+
     more('수집·선별 기준',`${row('AphiaID',s.aphiaID)}${row('원자료 학명',(i.original_names||[]).join(', ')||'—','','la')}<p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 AphiaID를 기준으로 합니다.</p>${mapSection({...s,cells})}${separate}`)+
     more('출처와 이용조건',`<div class="source-area">${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,((mcuiReference(s)?.source_ids||[]).includes(id)?'참고 정보 출처 ':'지표 근거 ')+id+' ↗')} · ${orig(src.license)}${src.notice?`<br><span class="fine">${escL(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`)+
