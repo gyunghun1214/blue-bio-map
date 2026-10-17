@@ -56,8 +56,10 @@ if(pep){
 const best=top(a0);
 if(best.stratum_kind==='chembl'){
   const html=ctx.trace({assessment:a0});
-  for(const text of [rule.label,best.stratum_id,`https://www.ebi.ac.uk/chembl/explore/compound/${best.compound_id}`,'ChEMBL'])
+  // 2026-10-17 (LKH): the screen says what the value is; the record keeps its label (rule.label)
+  for(const text of ['이 생물에서 나온 물질의 실험 결과입니다(공개 생리활성 기록)',best.stratum_id,`https://www.ebi.ac.uk/chembl/explore/compound/${best.compound_id}`,'ChEMBL'])
     assert.ok(html.includes(text),`trace shows ${text}`);
+  assert.ok(rule.label.includes('종 추출물의 효능 아님')&&!html.includes('효능 아님'),'record label kept, screen worded by what it is');
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
 // A species with no ChEMBL item shows what the automated chain and the paper search found.
@@ -67,10 +69,11 @@ if(empty){
   assert.ok(html.includes('Europe PMC')&&html.includes(`인정 연결 ${empty.chembl_links.paper_search.accepted_links}건`),'paper search shown');
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
-// Links rejected by the review are listed with their class, for species with and without a score.
+// Links rejected by the review stay in the record with their class, for species with and without a score
+// (2026-10-17 (LKH): the list is not drawn on the screen).
 for(const a of rows.filter(a=>a.chembl_links?.rejected_links?.length)){
   const html=ctx.detail({assessment:a});
-  assert.ok(html.includes(`연결 검수 제외 ${a.chembl_links.rejected_links.length}건`),`${a.korean_name} lists rejected links`);
+  assert.ok(!html.includes('연결 검수 제외')&&a.chembl_links.rejected_links.every(r=>r.class),`${a.korean_name}: rejected links stay in the record`);
   assert.ok(!a.chembl_links.rejected_links.some(r=>html.includes(`(${r.class})`)),`${a.korean_name} class shown in Korean`);
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }

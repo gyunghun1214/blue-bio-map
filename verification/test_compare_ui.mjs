@@ -4,6 +4,9 @@
 // switching matrix ↔ table keeps the search, group, selected species and basket; the filter note counts what is shown.
 // Design 3 (2026-10-13): plain verdicts only ever sit beside the formal type name; the profile chips drop no label; crowded
 // points group by MCUI row and quadrant (the selected species never joins); '바다 탐험에서 보기' opens the species' route stop.
+// 2026-10-17 (LKH): no evidence-level label on screen ('단일 논문', the replication label, '직접 비교 불가', the '근거 수준'
+// chips of the data table); values on different scales say what they are ('비교집단별 값', '평가 기반별 값'); a species
+// without a type shows '—'. The record keeps every label; the asserts below check the screen and the record.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -58,16 +61,17 @@ assert.ok(strip(tray()).includes('2종 이상 담으면 비교할 수 있습니�
 T.basket=ids.slice(0,3);T.selected=by(ROCKFISH);T.renderCompareProfile();
 let prof=$('cmp-profile').innerHTML;const face=strip(prof),all=both();
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
-assert.ok(all.includes('최상위 근거 독립 재현 확인 중')&&!all.includes('근거 논문 1편')&&all.includes('보전 평가 범주 기반'),'조피볼락 keeps its BBVI replication label (4.16 words) and a neutral MCUI basis (4.17: preliminary assessment)');
+assert.ok(!all.includes('최상위 근거 독립 재현 확인 중')&&!all.includes('근거 논문 1편')&&!all.includes('단일 논문')&&all.includes('보전 평가 범주 기반'),'조피볼락: no BBVI replication label on screen and a neutral MCUI basis (4.17: preliminary assessment)');
+assert.equal(by(ROCKFISH).assessment.bbvi_label,'단일 논문','the record keeps the 조피볼락 label');
 assert.ok(!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반/.test(face)&&!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반(?! MCUI와)/.test(all),'4.17 (prereg-4.17 5): the profile and its drawer never names the preliminary assessment, nor calls it IUCN');
 T.basket=[];T.selected=by(OYSTER);prof=both();
-assert.ok(prof.includes('72')&&!prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
+assert.ok(prof.includes('72')&&!prof.includes('71.9')&&prof.includes('한국 국가 평가')&&!prof.includes('비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 
 // Side-by-side: mixed comparison groups and bases → no bars on those rows, "직접 비교 불가" instead; never a total or a pick.
 const cohort=s=>s.assessment?.food_trace?.cohort_id, basis=s=>s.assessment?.mcui_basis||'iucn';
 T.basket=[OYSTER,WAKAME,ROCKFISH];T.renderCompareDialog();let h=dialog(), t=strip(h);
 assert.notEqual(cohort(by(OYSTER)),cohort(by(WAKAME)),'참굴 and 미역 sit in different MFPI comparison groups');
-assert.ok(t.includes('비교집단이 달라 직접 비교 불가')&&t.includes('평가 기반이 달라 직접 비교 불가'));
+assert.ok(t.includes('비교집단별 값')&&t.includes('평가 기반별 값')&&!t.includes('직접 비교 불가'));
 assert.equal((h.match(/cp-bar sand/g)||[]).length,0,'no MCUI bars across different bases');
 assert.equal((h.match(/class="cd-val"/g)||[]).length,4*3,'BBVI, MFPI, MBPI, MCUI for each of the 3 species');
 assert.ok(!/합산|종합 점수|추천 종|순위:|1위/.test(t),'no composite, rank or pick');
@@ -78,7 +82,7 @@ let pair=null;
 for(const a of S)for(const b of S)if(!pair&&a!==b&&['MFPI','MCUI'].every(k=>T.pilotScore(a,k)!==null&&T.pilotScore(b,k)!==null)&&cohort(a)===cohort(b)&&basis(a)===basis(b))pair=[a.aphiaID,b.aphiaID];
 assert.ok(pair,'two species share a comparison group and an MCUI basis');
 T.basket=pair;T.renderCompareDialog();h=dialog();
-assert.ok(!/비교집단이 달라|평가 기반이 달라/.test(strip(h)),'one scale: no 직접 비교 불가 between them');
+assert.ok(!/비교집단이 달라|평가 기반이 달라|비교집단별 값|평가 기반별 값/.test(strip(h)),'one scale: no per-scale note between them');
 assert.equal((h.match(/cp-bar sand/g)||[]).length,2,'MCUI bars drawn on one basis');
 assert.ok((h.match(/class="cp-bar /g)||[]).length>=2*3,'MFPI and the BBVI/MBPI bars drawn');
 
@@ -94,12 +98,13 @@ T.setCompareFilter({group:'all',q:'없는생물이름'});
 assert.equal(S.filter(T.cmpMatch).length,0);assert.ok(strip($('cmp-filter-note').innerHTML).includes('검색 결과 없음'),'an empty result says so, not an error');
 T.setCompareFilter({group:'all',q:''});assert.equal($('cmp-filter-note').innerHTML,'','no note without a filter');
 
-// Design 3, 4.14 (prereg-4.14 7): the plain words are the report's position words for the four type ids ('유형 미산출'
-// otherwise), and the note says the type is a research class with an exploratory dividing line, no permission.
+// Design 3, 4.14 (prereg-4.14 7): the plain words are the report's position words for the four type ids ('—' otherwise,
+// 2026-10-17), and the note says what the type is (a class for choosing the research order) and names the line '탐색용 기준선'.
 assert.deepEqual(['alternative_production','baseline_survey','conservation_priority','sustainable_use'].map(id=>T.MATRIX_PLAIN[id]),
   ['두 지표 모두 높음','두 지표 모두 낮음','보전 지표 높음','활용 지표 높음']);
-assert.equal(T.matrixTypePlain('sustainable_use'),'활용 지표 높음');assert.equal(T.matrixTypePlain(null),'유형 미산출');assert.equal(T.matrixTypePlain('other'),'유형 미산출');
-assert.ok(T.matrixPlainNote().startsWith('연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님')&&T.matrixPlainNote().includes('탐색적 구분선')&&T.matrixPlainNote().includes('이상이면 활용 지표 높음'));
+assert.equal(T.matrixTypePlain('sustainable_use'),'활용 지표 높음');assert.equal(T.matrixTypePlain(null),'—');assert.equal(T.matrixTypePlain('other'),'—');
+assert.ok(T.matrixPlainNote().startsWith('연구 순서를 고르기 위한 분류 · 탐색용 기준선: ')&&T.matrixPlainNote().includes('이상이면 활용 지표 높음')&&!/판정이 아님|탐색적 구분선|검증된 기준 아님/.test(T.matrixPlainNote()));
+assert.ok(data.assessmentInfo.method.matrix.type_note.includes('판정이 아님')&&data.assessmentInfo.method.matrix.threshold_label==='탐색적 구분선','the report keeps its own wording');
 assert.ok(!/써도 됨|키워서 써야 함|지켜야 함|더 알아봐야 함|지속가능 활용 후보/.test(read('app.js')+read('index.html')+read('chatbot.js')),'4.14: no use or harvest verdict words left on the page');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=$('cmp-profile').innerHTML;
 const oysterType=T.matrixType(by(OYSTER));
@@ -115,10 +120,11 @@ for(const s of S){
   }
 }
 T.selected=by(OYSTER);prof=both();
-assert.ok(['비교집단','최상위 근거 독립 재현 확인 중','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, replication label (4.16) and basis note');
+assert.ok(['비교집단','한국 국가 평가'].every(x=>prof.includes(x))&&!['최상위 근거 독립 재현 확인 중','직접 비교 불가','단일 논문'].some(x=>prof.includes(x)),'참굴 keeps its comparison group and basis, no replication label or 비교 불가 note');
+assert.equal(by(OYSTER).assessment.bbvi_label,'단일 논문','the record keeps the 참굴 label');
 // 4.19: 멍게 is placed now, so the unplaced wording is checked on a copy without its MCUI
 T.selected=(s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680));prof=both();
-assert.ok(prof.includes('유형 미산출')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 미산출 and why');
+assert.ok(/<b>—<\/b>/.test($('cmp-profile').innerHTML)&&!prof.includes('유형 미산출')&&!prof.includes('매트릭스 미배치')&&!prof.includes('한 쌍'),'an unplaced species shows — as its type, with no reason line');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
 const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});
 assert.deepEqual([...T.matrixClusters([P(1,10,10,'a'),P(2,13,10,'a'),P(3,16,10,'a'),P(4,19.9,10,'a')])].map(g=>[...g.ids]),[[1,2,3,4]]);
@@ -159,8 +165,9 @@ for(const k of [0,10,20]){
     assert.ok(part.includes(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`)&&part.includes('<h4>MCUI 기반</h4>')&&
       // 4.17 (prereg-4.17 5): a preliminary assessment is named in the species detail, so the table row says it neutrally
       (T.earlyMcui(s)?!/예비 평가\(공식 평가 전\)|IUCN 기반(?! MCUI와)/.test(part)&&(T.stockMcui(s)||part.includes('보전 평가 범주를 확인해')):part.includes(cov.detail.slice(0,20))),s.label+' occurrence button and MCUI basis');
-    for(const c of T.evidenceChipList(s))assert.ok(part.includes(`">${T.plainWords(c)}</span>`),`${s.label} keeps chip ${c}`);
-    assert.equal(part.includes('>보전 평가 없음 확인</span>'),cov.stage==='checked_none',s.label+' 보전 평가 없음 확인');
+    // 2026-10-17 (LKH): the '근거 수준' chip row left the expanded row; evidenceChipList still reads the labels from the record
+    assert.ok(!part.includes('class="dt-x-ev"')&&!part.includes('class="ev-chip')&&!part.includes('보전 평가 없음'),s.label+' no evidence-level chips');
+    for(const c of T.evidenceChipList(s))if(/단일 논문|재현|역검증|예비/.test(c))assert.ok(!part.includes(T.plainWords(c)),`${s.label} chip ${c} off the row`);
     assert.ok(part.includes('<details class="dt-x-all"')&&part.includes('<h4>학명·식별자</h4>'),s.label+' full labels folded');
   }
 }
@@ -175,4 +182,4 @@ assert.deepEqual(S.filter(T.cmpRowShown).map(s=>s.aphiaID),S.filter(s=>s.group==
 T.setCompareMode('matrix');assert.ok(strip($('cmp-filter-note').innerHTML).includes(`${total}종 중 ${S.filter(T.cmpMatch).length}종 표시`),'the matrix ignores the type card');
 T.setCompareFilter({group:'all',q:'',type:null});assert.equal($('cmp-filter-note').innerHTML,'');
 
-console.log(`PASS: 데이터 표 8열·펼친 행(BBVI 계산·MCUI 기반·출현 기록·근거 수준)·유형 카드 필터 · 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 직접 비교 불가 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시 · 쉬운 이름 옆 공식 이름 · 칩이 지운 라벨 없음 · 밀집 ${G.map(g=>g.ids.length).join('·')}종(조피볼락 선택) · 바다 탐험 링크`);
+console.log(`PASS: 데이터 표 8열·펼친 행(BBVI 계산·MCUI 기반·출현 기록, 근거 수준 칩 없음)·유형 카드 필터 · 비교 담기 최대 3종·중복 없음·빼기 · 같은 척도만 막대(${pair.map(id=>by(id).label).join('·')}) · 다른 비교집단·평가 기반은 비교집단별·평가 기반별 값 · 보기 전환 상태 유지 · ${total}종 중 ${n}종 표시 · 쉬운 이름 옆 공식 이름 · 칩이 지운 라벨 없음 · 밀집 ${G.map(g=>g.ids.length).join('·')}종(조피볼락 선택) · 바다 탐험 링크`);

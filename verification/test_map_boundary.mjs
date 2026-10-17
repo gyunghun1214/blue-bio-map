@@ -70,14 +70,14 @@ assert.equal(popup.length,1);
 assert.equal(rectangles.length,1,'cell remains the full interactive map target');
 assert.deepEqual(JSON.parse(JSON.stringify(rectangles[0].bounds)),[[34,128],[35,129]]);
 assert.notEqual(rectangles[0].options.interactive,false,'smaller dots must not shrink the cell hit area');
-assert.match(popup[0],/해역별 활용·보전 판단: 하지 않음\(지표는 종 단위\)/);
+assert.match(popup[0],/지표는 종 단위 값입니다/);  // 2026-10-17: said as what it is (was 해역별 … 하지 않음)
 assert.match(popup[0],/2015–2020/);
 assert.match(popup[0],/LME 43/);
 assert.match(popup[0],/https:\/\/example.org\/dataset/);
 assert.match(popup[0],/CC BY 4.0/);
-assert.match(popup[0],/관측 노력·중복/);
+assert.match(popup[0],/공개 기준\(이용조건·좌표 품질\)을 통과한 기록입니다/);
 assert.doesNotMatch(popup[0],/BBVI 90/);
-assert.match(popup[0],/종 단위 상태\(이 셀의 값 아님\): MFPI 보류 · MBPI 보류 · MCUI 시범값 있음 · BBVI 시범값 있음/);
+assert.match(popup[0],/종 단위 값: MFPI 보류 · MBPI 보류 · MCUI 시범값 있음 · BBVI 시범값 있음/);
 assert.doesNotMatch(popup[0],/90\.0/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
@@ -85,7 +85,7 @@ assert.ok(dots.every(d=>d.options.fillColor==='#A9C6D4'),'one neutral blue-grey 
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=2.6),'zoom 7 dots stay small');
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
-assert.match(popup[0],/청회색 점은 실제 발견 좌표가 아닌 이 1° 공개 셀의 도식적 표시/);
+assert.match(popup[0],/청회색 점은 이 1° 공개 셀의 도식적 표시입니다\(기록이 있는 칸의 위치, 넓게 묶음\)/);
 // Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
 popup.length=0;dots.length=0;
 species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
@@ -97,7 +97,7 @@ const wide=rectangles.at(-1);
 assert.deepEqual(JSON.parse(JSON.stringify(wide.bounds)),[[32,124],[36,128]]);
 assert.equal(wide.options.fillOpacity,0);assert.equal(wide.options.fill,true,'no fill, but the whole square still takes the click');
 assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#A9C6D4');
-assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로만 공개합니다\. 테두리 안 바다 어딘가에 기록이 있다는 뜻이며, 육지에 사는 것이 아닙니다\./);
+assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로 공개합니다\(넓게 묶은 관측 지역\)\. 테두리 안 바다에 기록이 있는 칸입니다\./);
 // any later style (hover, dim) keeps a 4° cell unfilled; a 1° cell's sea part takes the fill, the square keeps a faint edge
 assert.equal(context.cellStyles(null,true,{color:'#ffd166',fillOpacity:.6})[0].fillOpacity,0);
 const sea={type:'Polygon',coordinates:[],seaFraction:.5};
@@ -141,7 +141,7 @@ assert.deepEqual(JSON.parse(JSON.stringify(dots[0].latlng)),[34,126],'bubble sit
 assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon.className)).length,0,'no per-cell BBVI tag on bubbles');
 // 2026-10-13 design 2: the legend's first line names what the map shows at this zoom (bubbles here), with the standing note
 assert.equal(nodes.get('key-bubble-mark').hidden,false);assert.equal(nodes.get('key-dot-mark').hidden,true);
-assert.equal(nodes.get('map-symbol-label').textContent,'버블 = 공개 셀 묶음 · 숫자 = 셀 수\n실제 생물 발견 좌표 아님');
+assert.equal(nodes.get('map-symbol-label').textContent,'버블 = 공개 셀 묶음 · 숫자 = 셀 수\n기록이 있는 칸의 위치(넓게 묶음)');
 // Bubbles group published cells by region: size = cells, never a species score.
 vm.runInContext('globalThis.bubbles=cellBubbles;globalThis.tag=bbviTagText;globalThis.summary=cellSummaryHtml',context);
 const grouped=context.bubbles([[33,128,1,9],[35,129,1,30],[37,131,1,2]],5);
@@ -158,15 +158,15 @@ assert.equal(nodes.get('map-chip').innerHTML,'<i class="mc-dot none" aria-hidden
 assert.equal(nodes.get('map-chip').title,'기록 연도 2015–2020');
 assert.deepEqual([nodes.get('map-cells').textContent,nodes.get('map-count').textContent,nodes.get('map-years').textContent],[1,'500','2015–2020']);
 assert.equal(nodes.get('key-bubble-mark').hidden,true);assert.equal(nodes.get('key-dot-mark').hidden,false);
-assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님','the cell size comes from the cells');
-assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 51.5 · 단일 논문','single-paper label travels with the value');
-assert.equal(context.tag({assessment:{scores:{}}}),'BBVI 미산출');
-// A cell's species summary: confirmed, usable, conservation priority, evidence gap.
+assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n기록이 있는 칸의 위치(넓게 묶음)','the cell size comes from the cells');
+assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 51.5','the value alone (2026-10-17: evidence labels stay off the screen)');
+assert.equal(context.tag({assessment:{scores:{}}}),'BBVI —');
+// A cell's species summary: confirmed, usable, conservation priority (2026-10-17: no evidence-gap count).
 const gap={label:'근거 부족 종',assessment:{scores:{BBVI:20},priority_survey:true}}, none={label:'평가 없음 종'};
 const sum=context.summary([species,gap,none]);
 assert.match(sum,/<b>3<\/b><span>확인 종/);assert.match(sum,/<b>1<\/b><span>활용 지표 높은 종/);
-assert.match(sum,/<b>1<\/b><span>보전 지표 높은 종/);assert.match(sum,/<b>2<\/b><span>근거 부족 종/);
-assert.match(sum,/근거 부족\(우선 조사 대상 또는 지표 평가 없음\): 근거 부족 종, 평가 없음 종/);
+assert.match(sum,/<b>1<\/b><span>보전 지표 높은 종/);
+assert.doesNotMatch(sum,/<span>근거 부족 종<\/span>|근거 부족\(|우선 조사/,'no evidence-gap tile or list');
 assert.equal(context.summary([]),'');
 vm.runInContext('data={species:[globalThis.species]}',context);
 popup.length=0;context.draw(species,'#123456');
@@ -193,7 +193,7 @@ assert.equal(context.eff(34,126,1),null);
 vm.runInContext("effortData={startdate:'2000-01-01',cells:[{lat0:34,lon0:126,records:10},{lat0:35,lon0:127,records:5},{lat0:40,lon0:126,records:99}]}",context);
 assert.equal(context.eff(34,126,1),10);
 assert.equal(context.eff(32,124,4),15,'a 4° cell sums its 16 one-degree cells');
-assert.match(context.effLine(34,126,1),/OBIS 전체 종 기록 10건\(2000년 이후\) · 이 종의 존재·개체수와 무관/);
+assert.match(context.effLine(34,126,1),/조사량 참고: 이 셀 범위의 OBIS 전체 종 기록 10건\(2000년 이후\)$/);
 // A-5: period filter keeps only that period's rows; an unknown period falls back to all rows.
 const two={live:true,cells:[cell,{...cell,period:'2021–2026'}]};
 vm.runInContext("periodFilter='2021–2026'",context);
@@ -206,5 +206,5 @@ const csvText=context.csv({live:true,label:'시험, "종"',name:'Accepted specie
 assert.ok(csvText.startsWith('﻿"species_label"'));
 const csvRows=csvText.slice(1).split('\r\n');
 assert.equal(csvRows.length,2);
-assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","43","공개 집계 셀 · 실제 생물 발견 좌표 아님 · 해역별 판단 안 함"');
+assert.equal(csvRows[1],'"시험, ""종""","Accepted species","123","34","35","128","129","1","2015–2020","2015","2020","9","2","Provider","CC BY 4.0","43","공개 집계 셀 · 기록이 있는 칸의 위치(넓게 묶음) · 지표는 종 단위 값"');
 console.log('PASS: selected occurrences and unapproved spatial decisions remain separate');

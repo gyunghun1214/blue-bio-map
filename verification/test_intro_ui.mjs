@@ -54,9 +54,10 @@ assert.equal(ctx.gateTick(g,1000+ctx.GATE_MIN_MS),'ready');
 assert.equal(ctx.gateTick(g,0),'ready','ready stays ready');
 assert.equal(ctx.gateNote(g),'');
 assert.equal(ctx.gateStep(g),'해양생물 30종 자료를 불러왔어요','species total = published + candidates from the loaded data');
-// the design's line, with the published/candidate split kept in view (2026-10-13; was 지금 해양생물 N종을 볼 수 있습니다(…))
-assert.equal(ctx.countsLine(g.done),'30종의 해양생물(운영 발행 8 · 조사 후보 22) · 공개 데이터 기반');
-assert.equal(ctx.countsLine({state:'empty',published:0,candidates:22}),'22종의 해양생물(운영 발행 0 · 조사 후보 22) · 공개 데이터 기반','0 published is said as it is');
+// the design's line: one species count (2026-10-17, LKH: no published/candidate split on screen; was 30종의 해양생물(운영 발행 8 · 조사 후보 22) …)
+assert.equal(ctx.countsLine(g.done),'30종의 해양생물 · 공개 데이터 기반');
+assert.equal(ctx.countsLine({state:'empty',published:0,candidates:22}),'22종의 해양생물 · 공개 데이터 기반','0 published: the total only');
+assert.ok(!/운영 발행|조사 후보/.test(ctx.countsLine(g.done)),'no published/candidate split');
 const failed=ctx.makeGate(0);ctx.gateProgress(failed,'done',{state:'error'});
 assert.equal(ctx.gateStep(failed),'준비됐어요','no total typed in when the app has none');
 assert.equal(ctx.countsLine({state:'error'}),'','no counts typed in when the app has none');
@@ -67,7 +68,7 @@ const note=d=>{const x=ctx.makeGate(0);ctx.gateProgress(x,'done',d);ctx.gateTick
 assert.deepEqual(note({state:'snapshot',snapshotAt:'2026-09-24'}),['ready','운영 DB에 연결하지 못해 2026-09-24 기준 공개 자료 사본으로 엽니다.']);
 // Offline demo (?offline=1): the saved copy is the plan, so the note says so instead of 연결하지 못해.
 assert.deepEqual(note({state:'offline',snapshotAt:'2026-10-01'}),['ready','오프라인 시연 · 2026-10-01 기준 공개 자료 사본으로 엽니다.']);
-assert.deepEqual(note({state:'empty',published:0,candidates:22}),['ready','운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.']);
+assert.deepEqual(note({state:'empty',published:0,candidates:22}),['ready','공개 데이터 기준으로 엽니다.']);
 assert.deepEqual(note({state:'error'}),['ready','자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.']);
 
 // (5) Enter: only once ready, and not when another control (share, motion, link) has focus

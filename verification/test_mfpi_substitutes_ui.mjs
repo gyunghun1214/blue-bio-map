@@ -32,13 +32,14 @@ const akamoku=rows.find(a=>a.aphia_id===494853).food_trace;
 assert.deepEqual([akamoku.row_table,akamoku.source_food_item_id,akamoku.omitted_components],['literature','LIT:murakami2011-shorneri-tables3-4',['iron_mg']]);
 const kumamoto=rows.find(a=>a.aphia_id===836041).food_trace;
 assert.deepEqual([kumamoto.row_table,kumamoto.source_food_item_id,kumamoto.omitted_components],['literature','LIT:liu2021-csikamea-table1',['zinc_mg']]);
-// 3.23: each literature row's reviewed limitations sit under the paragraph that explains the row, before the score build-up
+// 3.23 → 2026-10-17 (LKH): each literature row's reviewed limitations stay in the record (food_trace.literature_limitations);
+// the detail keeps the paragraph that explains the row and the score build-up, without a limitations line
 for(const aphia of [494853,836041]){
-  const html=ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)});
-  assert.ok(html.indexOf('원논문 자료의 한계: ')>html.indexOf('비교집단과 자기 자신 안에서 순위를 매겼습니다')&&html.indexOf('원논문 자료의 한계: ')<html.indexOf('점수 구성'),String(aphia));
+  const f=rows.find(a=>a.aphia_id===aphia).food_trace, html=ctx.detail({assessment:rows.find(a=>a.aphia_id===aphia)});
+  assert.ok(f.literature_limitations&&!html.includes('원논문 자료의 한계')&&html.indexOf('비교집단과 자기 자신 안에서 순위를 매겼습니다')>=0&&html.indexOf('비교집단과 자기 자신 안에서 순위를 매겼습니다')<html.indexOf('점수 구성'),String(aphia));
   assert.doesNotMatch(html,/불확실성: 원논문/,'not a second label inside the uncertainty lines');
 }
-assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===494853)}).includes('Kjeldahl'),'the seaweed protein caveat is on screen');
+assert.ok(rows.find(a=>a.aphia_id===494853).food_trace.literature_limitations.includes('Kjeldahl')&&!ctx.detail({assessment:rows.find(a=>a.aphia_id===494853)}).includes('Kjeldahl'),'the seaweed protein caveat stays in the record');
 
 const a0=withSub.find(a=>a.aphia_id===397082);            // 전복: genus-level zinc
 const key=Object.keys(a0.food_trace.nutrients).find(k=>a0.food_trace.nutrients[k].substitute);
@@ -92,23 +93,27 @@ const noRows=structuredClone(report);delete noRows.method.nutrition.substitutes.
 assert.equal(ctx.valid(razor,noRows),false,'a MEXT row without the published 3.9 rule');
 assert.ok(ctx.detail({assessment:razor}).includes('일본 식품성분표 2020(8정판) 10280 ＜貝類＞ あげまき 生(같은 종 생것, 가식부 100 g)을 이 종의 영양 행과 폐기율로 썼습니다'),'the screen says why the MEXT row is used');
 // Screen: every substituted component says so, with its source item and level label (and the consumed part for uFiSh).
+// 2026-10-17 (LKH): the level label on screen names the source table (SUB_NAME); the record keeps its own label
+const SHOWN={family:'같은 과 종 성분표',genus:'같은 속 종 성분표',mext:'일본 식품성분표 8정판(같은 종)',species:'다른 성분표(같은 종)',subsample:'같은 종 국내 부표본(RDA)'};
 for(const a of withSub){
   const html=ctx.detail({assessment:a});
   for(const n of Object.values(a.food_trace.nutrients).filter(n=>n.substitute))
-    for(const text of n.substitute.taxon_level==='subsample'?[n.substitute.label,'같은 종의 부표본 행','K0440002570a 0.55','K0440002580a 0.47','평균']
-        :n.substitute.taxon_level==='mext'?[n.substitute.label,`일본 식품성분표 2020(8정판) ${n.substitute.food_item_id}`,'가식부 100 g','종 연결:',n.substitute.taxon_label.match(/\((.+)\)/)[1]]  // standard Japanese name (アカガイ, カタクチイワシ)
-        :[n.substitute.label,`uFiSh1.0 ${n.substitute.food_item_id}`,`섭취 부위 ${n.substitute.part}`])
+    for(const text of n.substitute.taxon_level==='subsample'?[SHOWN[n.substitute.taxon_level],'같은 종의 부표본 행','K0440002570a 0.55','K0440002580a 0.47','평균']
+        :n.substitute.taxon_level==='mext'?[SHOWN[n.substitute.taxon_level],`일본 식품성분표 2020(8정판) ${n.substitute.food_item_id}`,'가식부 100 g','종 연결:',n.substitute.taxon_label.match(/\((.+)\)/)[1]]  // standard Japanese name (アカガイ, カタクチイワシ)
+        :[SHOWN[n.substitute.taxon_level],`uFiSh1.0 ${n.substitute.food_item_id}`,`섭취 부위 ${n.substitute.part}`])
       assert.ok(html.includes(text),`${a.korean_name} shows ${text}`);
   assert.ok(!/\d\.\d{5,}/.test(html.replace(/10\.\d{4,9}\/[^\s<]+/g,'')),`${a.korean_name}: values shown with at most four significant digits (DOIs aside)`);
   assert.ok(html.includes('고정 비교집단에 넣지 않고'),`${a.korean_name} says it is ranked outside the cohort`);
   assert.ok(!/undefined|NaN/.test(html),'no empty field on screen');
 }
-assert.ok(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}).includes('양식 가능 근거 없음(양식 점수 0)'),'cod aquaculture shown as not feasible');
+// 2026-10-17 (LKH): the aquaculture line names the record (a rearing attempt); the score build-up shows its 0
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===254538)}),/\+ 양식 0 = [^]*양식 시도 기록: /,'cod aquaculture shown as a rearing attempt scoring 0');
 // 3.6: the same-species MEXT item (するめいか 10345) outranks the 3.3 family-level uFiSh proxy 093033.
 // 3.15: 살오징어's only missing input was the aquaculture record; with Puneeta 2015 (feasible false) it scores, using the MEXT zinc
-assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/일본 식품성분표 2020\(8정판\) 10345[^]*양식 가능 근거 없음\(양식 점수 0\)/);
-// 3.7: 톳 has no zinc candidate, so zinc is left out of the mean (shown, never 0) and 3 of 4 components score
-assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/아연 값이 비어 있어 평균에서 뺐습니다\(0점 아님, 사용 성분 3\/4\)/);
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===342067)}),/일본 식품성분표 2020\(8정판\) 10345[^]*\+ 양식 0 = [^]*양식 시도 기록: /);
+// 3.7: 톳 has no zinc candidate, so zinc is left out of the mean (never scored 0) and 3 of 4 components score;
+// 2026-10-17 (LKH): the screen lists the 3 components the mean uses
+assert.match(ctx.detail({assessment:rows.find(a=>a.aphia_id===494972)}),/평균에 쓴 성분: 칼슘·철·단백질\./);
 const hijiki=rows.find(a=>a.aphia_id===494972);
 const omit=change=>{const a=structuredClone(hijiki);change(a.food_trace);return ctx.valid(a,report);};
 assert.equal(omit(f=>{f.omitted_components=['zinc_mg','iron_mg'];delete f.nutrients.iron_mg;}),false,'below minimum_components never scores');

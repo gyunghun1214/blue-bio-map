@@ -1,7 +1,8 @@
 // MBPI evidence kind (2026-10-15), offline on dist/live-snapshot.json the way test_weight_slider runs it: the kind beside
 // MBPI (의약 표적 / 기능성 펩타이드) and the ACE·XO share match an independent count from the report (method.mbpi_rx's
-// excluded strata, the item MBPI takes); the profile shows MBPI-Rx beside MBPI, '의약 표적 근거 없음' where it has no value,
-// never 0; nothing here moves a score or a type; the two presets sit at w = 0.25 / 0.75, the report's sensitivity weights.
+// excluded strata, the item MBPI takes); the profile shows MBPI-Rx beside MBPI, '—' where it has no value (2026-10-17, LKH:
+// no '근거 없음' on screen), never 0; nothing here moves a score or a type; the two presets sit at w = 0.25 / 0.75, the
+// report's sensitivity weights.
 // Run: node verification/test_mbpi_kind.mjs            (checks)
 //      node verification/test_mbpi_kind.mjs --write F  (also writes the 30-species table and the preset type changes to F)
 import assert from 'node:assert/strict';
@@ -50,11 +51,11 @@ const functionalTop=table.filter(t=>t.k?.kind==='functional');
 console.log(`ACE 펩타이드 항목 ${ace}개 · 최상위 근거가 기능성 펩타이드인 종 ${functionalTop.length}종 · 의약 표적 ${table.filter(t=>t.k?.kind==='drug').length}종`);
 
 const t0=r=>(r.bioactivity_trace||[]).reduce((p,x)=>!p||x.adjusted>p.adjusted?x:p,null);
-// (2) the profile: the kind badge and MBPI-Rx beside MBPI; no value reads '의약 표적 근거 없음', never 0 or '없음' alone
+// (2) the profile: the kind badge and MBPI-Rx beside MBPI; no value reads '—', never 0, '없음' or '근거 없음'
 for(const {s,r,k} of table){
   const h=T.cpMbpiKind(s), rx=T.mbpiRxOf(s);
   if(k)assert.ok(h.includes(`<span class="cp-kind-badge" data-kind="${k.kind}">${k.long}</span>`)&&h.includes(T.mbpiKindShare(k)),`${s.label}: badge`);
-  if(rx&&rx.value===null){assert.equal(r.mbpi_rx.value,null);assert.ok(h.includes('<span class="cp-rx-none">의약 표적 근거 없음</span>')&&!h.includes('cp-rx-num'),`${s.label}: no MBPI-Rx`);}
+  if(rx&&rx.value===null){assert.equal(r.mbpi_rx.value,null);assert.ok(h.includes('<span class="cp-rx-none">—</span>')&&!h.includes('근거 없음')&&!h.includes('cp-rx-num'),`${s.label}: no MBPI-Rx`);}
   if(rx&&rx.value!==null){const same=(r.bioactivity_trace||[])[r.mbpi_rx.top_item.trace_index]===t0(r);
     assert.ok(h.includes(`<b class="cp-rx-num">${same?T.scoreText(s,'MBPI',r.mbpi_rx.value):r.mbpi_rx.value.toFixed(1)}</b>`),`${s.label}: MBPI-Rx ${r.mbpi_rx.value}`);
     if(same)assert.equal(T.scoreText(s,'MBPI',r.mbpi_rx.value),T.scoreText(s,'MBPI',T.pilotScore(s,'MBPI')),`${s.label}: same item reads as MBPI`);}
@@ -98,4 +99,4 @@ if(out>0){
     '## 점수 변화','','dist/assessments.json, dist/matrix-readiness.json은 이 변경에서 바뀌지 않았습니다. 이 검사는 표시를 그린 뒤에도 30종의 네 지표 값과 유형이 그대로인지 확인합니다.',''];
   fs.writeFileSync(process.argv[out+1],lines.join('\n'));
 }
-console.log('PASS: MBPI evidence kind = independent count (top item, ACE·XO share) · profile badge + MBPI-Rx beside MBPI, 의약 표적 근거 없음 never 0 · detail line · unclassified stratum hides it · no score or type moved · presets w 0.25 / 0.75 match report sensitivity');
+console.log('PASS: MBPI evidence kind = independent count (top item, ACE·XO share) · profile badge + MBPI-Rx beside MBPI, — never 0 · detail line · unclassified stratum hides it · no score or type moved · presets w 0.25 / 0.75 match report sensitivity');

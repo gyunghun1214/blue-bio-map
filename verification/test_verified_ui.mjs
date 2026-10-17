@@ -40,36 +40,45 @@ ctx.next=next;
 vm.runInContext('data=globalThis.next',ctx);
 
 let html=ctx.renderScores(by(836033));
-for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','정식 산출 · 공식 평가 범주','비교하지 않습니다'])
+for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','정식 산출 · 한국 국가 평가 기반','MFPI는 같은 비교집단 안에서 비교합니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
-// 3.27: the MBPI drug-origin check is computed and failed, so MBPI and the BBVI built on it carry that label
-assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>72 · 정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중<\/b>/);
+// 3.27: the MBPI drug-origin check is computed and failed, so MBPI and the BBVI built on it carry that label in the record;
+// 2026-10-17 (LKH): validation results and the single-paper label stay in the records and are not drawn on the screen
+assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>72 · 정식 산출<\/b>/);
+assert.ok(original.method.posthoc&&by(836033).assessment.bbvi_label,'the record keeps the validation block and the BBVI label');
+assert.doesNotMatch(html,/방법 검증|독립 재현|단일 논문|기준 미충족/);
 // 3.27 review: a labelled BBVI is described as a score everywhere, with the factor actually applied and matrix wording only when placed
 {const cov=ctx.plain(ctx.coverage(by(241776)).checks.find(c=>c.name==='생리활성').detail);  // raw text keeps the data's words; the screen rewords it
-  assert.ok(cov.includes("BBVI에도 '최상위 근거 독립 재현 확인 중' 표시를 붙입니다")&&!cov.includes('BBVI에 쓰지 않습니다'),cov);
+  assert.ok(cov.includes('정식 MBPI를 산출했습니다')&&!cov.includes('BBVI에 쓰지 않습니다')&&!/단일 논문|재현/.test(cov),cov);
   const placed=ctx.renderScores(by(241776)),unplaced=ctx.renderScores((s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680))),  // 4.3: 멍게 is placed now, so the unplaced wording is checked on a copy without its MCUI
    squid=ctx.renderScores(by(342067));
-  assert.ok(placed.includes('근거 계수(0.75)')&&placed.includes('매트릭스에서는 속이 빈 점입니다'),'placed labelled BBVI note');
-  assert.ok(unplaced.includes('ChEMBL 항목은 종 연결 원논문과 활성 문서 중 적은 쪽')&&unplaced.includes('MCUI가 없어 매트릭스·지도 색에는 들어가지 않습니다')&&!unplaced.includes('속이 빈 점'),'unplaced labelled BBVI note');
-  assert.ok(squid.includes('3시간')&&squid.includes('액틴'),'squid peptide caveat shown');}
+  // 2026-10-17 (LKH): the labelled BBVI reads like any other BBVI (formula only); the label paragraph and the item caveats stay in the record
+  for(const [h,what] of [[placed,'placed'],[unplaced,'unplaced']]){
+    const bbvi=h.match(/data-axis="BBVI">.*?<\/details>/s)[0];
+    assert.ok(bbvi.includes('기본 BBVI = w × MFPI + (1−w) × MBPI')&&!/단일 논문|재현|속이 빈 점|근거 계수\(0\.75\)|매트릭스·지도 색에는/.test(bbvi),`${what} labelled BBVI reads as a plain score`);}
+  const squidCaveat=by(342067).assessment.bioactivity_trace.map(x=>x.caveat).filter(Boolean).join(' ');
+  assert.ok(squidCaveat.includes('3시간')&&squidCaveat.includes('액틴')&&!squid.includes('3시간')&&!squid.includes('액틴'),'squid peptide caveat stays in the record');}
 // 3.3 fills 홍합 zinc from uFiSh; 톳 (a seaweed; uFiSh covers fish and shellfish only) keeps a blank zinc.
 // 3.6: that blank is left out of the mean (3 of 4 components) and said so, never scored 0
 html=ctx.renderScores(by(494972));
-assert.match(html,/아연 값이 비어 있어 평균에서 뺐습니다\(0점 아님/,'blank zinc shown as omitted, not zero');
+assert.match(html,/평균에 쓴 성분: 칼슘·철·단백질\./,'blank zinc left out of the mean (the screen lists the components used)');
 assert.ok(!html.includes('아연 0 mg'));
 // 3.15: 살오징어's missing aquaculture record is now a reviewed 'not feasible' record (Puneeta 2015), so MFPI scores with the
 // MEXT zinc substitute and an aquaculture part of 0; MFPI carries its post-hoc validation result (cross-table check passed)
 html=ctx.renderScores(by(342067));
-assert.match(html,/<b>46\.1 · 정식 산출 · 방법 검증 통과\(11종 비교\)<\/b>/);
-assert.match(html,/양식 가능 근거 없음\(양식 점수 0\)/);
+assert.match(html,/<b>46\.1 · 정식 산출<\/b>/);  // 2026-10-17 (LKH): the cross-table result stays in the record
+assert.match(html,/\+ 양식 0 = [^]*양식 시도 기록: /);
 assert.doesNotMatch(html,/필수 성분이 모자랍니다/);
 html=ctx.renderScores(by(241776));
-// 3.4: the MCUI label says the OBIS trend is now an auxiliary element, and the trend is shown beside the IUCN facts
-for(const text of ['EN A2bd','2025-09-30','EN → 80','IUCN 기반 MCUI, OBIS 출현 추세(조사 노력 보정) 보조 반영','이전 평가','OBIS 출현 추세 · 보조 요소'])
+// 3.4: the MCUI label says the OBIS trend is now an auxiliary element, and the trend is shown beside the IUCN facts;
+// 2026-10-17 (LKH): the OBIS trend stays in the record (occurrence_trend) and is not drawn
+for(const text of ['EN A2bd','2025-09-30','EN → 80','이전 평가'])
   assert.ok(html.includes(text),`missing conservation fact: ${text}`);
+assert.ok(by(241776).assessment.occurrence_trend&&!/OBIS 출현 추세|보조 반영/.test(html),'the OBIS trend is not drawn');
 html=ctx.renderScores(by(342067));
-assert.match(html,/Needs updating/);assert.match(html,/10년 넘은 평가/);
-assert.match(html,/구조 ID ✗/,'bioactivity chain step shown');
+// 2026-10-17 (LKH): the age flag and the chain checklist (✓/✗ steps) are not drawn; the browser shows the Korean note without the
+// 'Needs updating' clause (screen-text-ko.json), and node sees the record's English
+assert.match(html,/Needs updating/);assert.doesNotMatch(html,/10년 넘은 평가|구조 ID ✗/,'no age flag or chain checklist');
 html=ctx.renderScores(by(145721));
 // 4.3 (team-lead decisions 2026-10-05): 미역 took the Primorsky Krai decree No. 272 (EN); 멍게 the scored Rapid LC check.
 // 4.11 (prereg 5.1·5.2): the failed back-test makes the Primorsky row reference only, so 미역 falls to the met Rapid LC check;
@@ -78,34 +87,47 @@ html=ctx.renderScores(by(145721));
 // 미역 has no MCUI; the state is said in words and both lists stay visible as references
 // 4.17 (prereg-4.17 2·5): with no official category the met Rapid LC check scores again as a preliminary assessment. The summary
 // line reads like any other MCUI; the folded body names it '예비 평가(공식 평가 전)' with its inputs and the Primorsky reference
+// 2026-10-17 (LKH): the folded body gives the category and one line naming where it comes from (범주 출처); the preliminary label,
+// the Rapid LC inputs, the back-test and the Primorsky reference stay in the record
 const mcuiSummary=html.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
-assert.match(mcuiSummary,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출 · 보전 평가 범주<\/b>/);
+assert.match(mcuiSummary,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출<\/b>/);
 // 7/15: the preliminary value carries its category and is never called IUCN or official outside the folded body
 assert.doesNotMatch(mcuiSummary,/IUCN|공식/);
 assert.doesNotMatch(mcuiSummary,/예비|역검증|Rapid LC|미확인/);
 assert.doesNotMatch(html,/LC 가능성|예비 평가 참고/);
-assert.match(html,/<b>보전평가 상태: 예비 평가\(공식 평가 전\)<\/b>/);
-assert.match(html,/IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다/);
-assert.match(html,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
-assert.match(html,/다른 나라 지방 평가 \(연해주, 러시아\) · [^<]*\(EN\) \(EN에 해당하는 이름 · 숫자로 바꾸지 않음\) · 참고 · MCUI·유형·지도 색에 쓰지 않음/);
+{const body=html.match(/data-axis="MCUI">.*?<\/details>/s)[0], cs=by(145721).assessment.conservation_status, sub=by(145721).assessment.mcui_substitute;
+  assert.match(body,/<b>보전 상태 범주: LC<\/b>/);
+  assert.match(body,/범주 출처: 분포 범위 계산\(IUCN 기준 B 적용, 이 지도에서 계산\)/);
+  assert.doesNotMatch(body,/예비|공식|Rapid LC|역검증|자체|다른 나라|EOO|연해주/,'no preliminary wording, inputs or foreign reference on screen');
+  assert.ok(cs.preliminary.label==='예비 평가(공식 평가 전)'&&cs.preliminary.note.includes('IUCN 또는 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿉니다')
+    &&cs.assessments.some(x=>x.source_id==='primorsky_decree272_2002'&&x.used_for_mcui===false)&&sub.backtest.result==='failed'&&sub.record.aoo_cells>0,
+    'the record keeps the label, the replacement rule, the Primorsky reference, the back-test and the inputs');}
 assert.doesNotMatch(html,/시범 MCUI|정식 산출 · 역검증 기준 미충족 · 자체 예비평가|IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색/);
 // 4.19 (prereg-4.19 1): 멍게's OBIS ratio no longer blocks its met check; the summary reads like any other MCUI and the folded
 // body keeps the ratio and the dataset check beside the preliminary assessment
 {const sq=ctx.renderScores(by(250680));
   const sum=sq.match(/data-axis="MCUI"><summary>.*?<\/summary>/)[0];
-  assert.match(sum,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출 · 보전 평가 범주<\/b>/);
+  assert.match(sum,/<span>MCUI · 보전 평가<\/span><b>10\.0 \(LC\) · 정식 산출<\/b>/);
   assert.doesNotMatch(sum,/예비|역검증|Rapid LC|미확인|IUCN|공식/);
-  assert.match(sq,/<b>예비 평가\(공식 평가 전\) · 자체 예비평가\(Rapid LC\)<\/b>: LC → 10\.0 · EOO /);
-  assert.match(sq,/전체 보고율 비 0\.655\(95% 구간 0\.485–0\.884\), 주된 데이터셋 안 0\.819\(95% 구간 0\.563–1\.19\) · 감소 확인 안 됨/);
+  assert.match(sq,/범주 출처: 분포 범위 계산\(IUCN 기준 B 적용, 이 지도에서 계산\)/);
+  // 2026-10-17 (LKH): the OBIS ratio and its dataset check stay in the record (occurrence_trend) and are not drawn
+  const t=by(250680).assessment.occurrence_trend;
+  assert.ok(t.reporting_rate_ratio===0.655&&t.dataset_check.reporting_rate_ratio===0.819&&t.dataset_check.confirms_decline===false,'멍게 trend in the record');
+  assert.doesNotMatch(sq,/보고율 비|감소 확인 안 됨|예비 평가|Rapid LC/);
   assert.doesNotMatch(sq,/쓰지 않음 · MCUI 없음|Rapid LC 충족 → LC 상당 → 10/);}
 {const lc=ctx.renderScores(by(145721));
   assert.doesNotMatch(lc,/Rapid LC 충족 → LC 상당 → 10/,'4.17: the detail gives the category and the number, not the old mapping text');
-  assert.match(lc,/방법 역검증\(이미 평가가 있는 14종\): 11종 일치 · 기준 미충족 — LC로 판정한 위협 범주 종: 해삼·전복\(종 수준\)/);
+  // 2026-10-17 (LKH): the back-test result stays in the record (mcui_substitute.backtest) and is not drawn
+  assert.doesNotMatch(lc,/방법 역검증|11종 일치|기준 미충족|위협 범주 종/);
   assert.doesNotMatch(lc,/공식 평가 범주 · 자체/);}
-assert.match(html,/결과 0건/);
+assert.doesNotMatch(html,/결과 0건/,'2026-10-17 (LKH): the search-count line is not drawn');
 html=ctx.renderScores(by(494972));
-for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문 기재 없음','Publisher terms'])
-  assert.ok(html.includes(fact),`unscored paper-local result must retain ${fact}`);
+// 2026-10-17 (LKH): the paper-local result (a follow-up lead) stays in the record (bioactivity_partial) and is not drawn
+{const lead=by(494972).assessment.bioactivity_partial.find(x=>x.record_id==='PMID:34997687:saringosterol-acetate-MCF7');
+  assert.ok(lead&&lead.reported_origin_scientific_name==='Sargassum fusiformis'&&lead.values[0].value===63.16&&lead.values[0].uncertainty===3.6
+    &&lead.chain.structure_id===false&&lead.sample_year===null&&lead.reviewed===false,'unscored paper-local result stays in the record');
+  for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002/cbdv.202100848','구조 ID ✗','시료 연도 원문 기재 없음'])
+    assert.ok(!html.includes(fact),`the unscored paper-local result is not drawn: ${fact}`);}
 // verified-pilot-3.1: the ChEMBL stratum scored 톳 (45.3, one linking paper); 3.10: the synthetic GKY peptide (Suetsuna 1998)
 // outranks it at 65.0; 3.28: Chen 2016 re-measured synthetic GKY (HHL), so the factor 0.75 went and it was 86.6.
 // 4.11 (prereg 2): that GKY was synthesised from a kelp sequence (another origin), so the factor 0.75 is back: 65.0.
@@ -113,7 +135,8 @@ for(const fact of ['Sargassum fusiformis','63.16 ± 3.6 µg/mL','MCF-7','10.1002
 assert.equal(ctx.score(by(494972),'MBPI'),65);
 // 3.27 gave the single-paper item a labelled BBVI (64.2 · 최상위 근거 독립 재현 확인 중); 3.28's replication lifted the label; 4.11 restores it
 assert.equal(ctx.score(by(494972),'BBVI'),64.2);
-assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>64 · 정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중<\/b>/);
+assert.match(ctx.renderScores(by(494972)),/data-axis="BBVI"><summary><span>BBVI · 통합 활용<\/span><b>64 · 정식 산출<\/b>/);
+assert.ok(by(494972).assessment.bbvi_label,'2026-10-17 (LKH): the label stays in the record only');
 
 // The old operational summary has no IUCN assessment count, despite a separately
 // reviewed MCUI: coverage must follow the accepted report, not the stale counter.
@@ -138,7 +161,7 @@ assert.equal(ctx.coverage(by(836033)).checks[3].stage,'calculated');
 assert.doesNotMatch(ctx.coverage(by(836033)).checks[3].detail,/참고값/);
 // IUCN search miss is not an assessment: the oyster's MCUI comes only from the Korean national assessment, labelled as such.
 assert.equal(ctx.coverage(by(836033)).checks[4].stage,'calculated');
-assert.match(ctx.coverage(by(836033)).checks[4].detail,/한국 국가생물적색자료집.*IUCN 기반 MCUI와 비교·순위에 쓰지 않습니다/);
+assert.match(ctx.coverage(by(836033)).checks[4].detail,/한국 국가생물적색자료집 등급으로 정식 MCUI를 산출했습니다/);
 assert.doesNotMatch(ctx.coverage(by(836033)).checks[4].detail,/IUCN 평가와/);
 assert.match(ctx.coverageBar(by(836033)),/종 연결/);
 assert.doesNotMatch(ctx.coverageBar(by(836033)),/3\/5|점수 3/);
@@ -215,13 +238,15 @@ assert.equal(labels.length,8);
 ctx.compare();
 assert.deepEqual(headers(),labels,'one table shows all species in order');
 // The label names the whole count and the current order (default: the catalogue order).
-assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: 기본 순서(운영 발행 → 조사 후보)');
+assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: 기본 순서');  // 2026-10-17 (LKH): no release/candidate split on screen
 // Both cohorts appear (미역 seaweed, 멍게 animal); assert each against its own column.
-assert.match(dom.comparison.innerHTML,/고정 비교집단 수산동물 25개 식품 · 집단 간 점수 비교 불가/);
-assert.match(dom.comparison.innerHTML,/고정 비교집단 해조류 3개 식품 · 집단 간 점수 비교 불가/);
+// 2026-10-17 (LKH): the cell names its cohort; an MFPI sort keeps the cohorts apart (below)
+assert.match(dom.comparison.innerHTML,/<small>고정 비교집단 수산동물 25개 식품<\/small>/);
+assert.match(dom.comparison.innerHTML,/<small>고정 비교집단 해조류 3개 식품<\/small>/);
+assert.doesNotMatch(dom.comparison.innerHTML,/비교 불가/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="145721" data-score-axis="MFPI"[^>]*해조류 고정 비교집단/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="250680" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);  // 3.15: MFPI labels read the cross-table result
+assert.match(dom.comparison.innerHTML,/>46\.7<small>정식 산출 · 근거 보기<\/small>/);  // 3.15 cross-table result: in the record only (2026-10-17)
 assert.match(dom.comparison.innerHTML,/>52\.8<small>/);  // 3.6 calcium
 // 4.3: 미역's MCUI was the Primorsky value, 멍게's the scored Rapid LC check. 4.11: 미역 takes the Rapid LC check (the failed
 // back-test makes the Primorsky row reference only) and 멍게 has none (reporting-rate ratio at the decline threshold).
@@ -239,26 +264,28 @@ assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역�
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.
 // 4.12: the KOSIS catch fell 79.8% (2015-17 -> 2022-24), so the stock-decline signal 60 is the higher value; a diamond marks it
 assert.match(dom.comparison.innerHTML,/>80\.0 \(EN, A2bd\)<small>/);
-assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 자원 감소\)<small>정식 산출 · 같은 자료 확인\(독립 검증 아님\) · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8% · IUCN 기반 MCUI와 비교 불가<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 자원 감소\)<small>정식 산출 · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8%<\/small>/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat">\(LC \+ 자원 감소\)<\/small><i class="cv-stock"/);
 assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10 · 자원 감소 60 → 높은 값 60<\/p>/);
 assert.match(dom.comparison.innerHTML,/기준 평균 121,486톤\(2015~17\) → 최근 평균 24,507톤\(2022~24\) <b>\(−79\.8%\)<\/b>/);
 assert.equal((dom.comparison.innerHTML.match(/class="stock-decline/g)||[]).length,next.species.length,'every species shows its stock-decline line');
 for(const s of next.species)assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="836033" data-score-axis="MFPI"[^>]*수산동물 고정 비교집단/);
-assert.match(dom.comparison.innerHTML,/>71\.6<small>정식 산출 · 방법 검증 통과\(11종 비교\)/);
+assert.match(dom.comparison.innerHTML,/>71\.6<small>정식 산출 · 근거 보기<\/small>/);
 // 3.3: 홍합 zinc comes from uFiSh. 3.6: 톳 (a seaweed; uFiSh covers fish and shellfish only) leaves its blank zinc out of the mean.
-assert.match(dom.comparison.innerHTML,/data-more-aphia="494972" data-more-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'3 of 4 components score');
-assert.match(dom.comparison.innerHTML,/data-more-aphia="506159" data-more-axis="MFPI"[^>]*>60\.9<small>정식 산출 · 방법 검증 통과\(11종 비교\)/,'substituted zinc gives a scored MFPI');
+assert.match(dom.comparison.innerHTML,/data-more-aphia="494972" data-more-axis="MFPI"[^>]*해조류 고정 비교집단[^>]*>63\.3<small>정식 산출 · 근거 보기<\/small>/,'3 of 4 components score');
+assert.match(dom.comparison.innerHTML,/data-more-aphia="506159" data-more-axis="MFPI"[^>]*>60\.9<small>정식 산출 · 근거 보기<\/small>/,'substituted zinc gives a scored MFPI');
+assert.doesNotMatch(dom.comparison.innerHTML,/방법 검증|독립 검증|같은 자료 확인/,'2026-10-17 (LKH): no validation words in the table');
 
 // design 05: a header sorts the rows (BBVI high → low, values without a score last) and the label says so; back to the default
 vm.runInContext("cmpSort={key:'BBVI',dir:'desc'}",ctx);ctx.compare();
 {const want=next.species.map((s,i)=>[s,i]).sort(([a,i],[b,j])=>{const x=ctx.score(a,'BBVI'),y=ctx.score(b,'BBVI');return x===null||y===null?(x===null)-(y===null)||i-j:y-x||i-j;}).map(([s])=>s.label);
 assert.deepEqual(headers(),want,'BBVI high → low');}
 assert.match(dom.comparison.innerHTML,/<th scope="col" aria-sort="descending"><button type="button" class="cmp-sort" data-sort="BBVI">/);
-// 4.14 (prereg-4.14 8): a BBVI sort says it mixes cohorts and is no validated order, on the label and atop the rows
-assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: BBVI 높은 순 (탐색적 · 검증된 우열 아님)');
-assert.match(dom.comparison.innerHTML,/<tbody><tr class="cmp-group mixed"><th colspan="8" scope="rowgroup">탐색적 합성지표 · 비교집단이 다른 점수를 섞은 순서 · 검증된 우열 아님<\/th><\/tr>/);
+// 4.14 (prereg-4.14 8): a BBVI sort says it mixes cohorts and is an exploratory order, on the label and atop the rows
+// (2026-10-17 (LKH): worded by what it is: '탐색용 순서')
+assert.equal(dom['comparison-page'].textContent,'총 8종 · 정렬: BBVI 높은 순 (탐색용 순서)');
+assert.match(dom.comparison.innerHTML,/<tbody><tr class="cmp-group mixed"><th colspan="8" scope="rowgroup">MFPI·MBPI 합성지표 · 비교집단이 다른 두 점수를 합친 값의 탐색용 순서<\/th><\/tr>/);
 // an MFPI sort groups by RDA cohort first (seaweed and animal rows never interleave) and orders only inside a group
 vm.runInContext("cmpSort={key:'MFPI',dir:'desc'}",ctx);ctx.compare();
 {const cohortOf=l=>next.species.find(s=>s.label===l).assessment.food_trace.cohort_id, seq=headers().map(cohortOf);
@@ -374,18 +401,22 @@ next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attac
 ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 html=ctx.renderScores(next.species.find(s=>s.aphiaID===371986));
 const mbpiBody=html.slice(html.indexOf('data-axis="MBPI"'),html.indexOf('data-axis="MCUI"'));
-for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL25mM','wijesinghe-2011-cell-free-ACE-IC50','90 × 근거 계수 0.75 = 67.5','10.4162/nrp.2011.5.2.93','독립 원논문 1편','최댓값'])
+for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL25mM','wijesinghe-2011-cell-free-ACE-IC50','90 × 근거 계수 0.75 = 67.5','10.4162/nrp.2011.5.2.93','최댓값'])
   assert.ok(mbpiBody.includes(text),`Ecklonia MBPI evidence missing ${text}`);
-assert.match(mbpiBody,/67\.5 · 정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중/);
-assert.match(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/MBPI 67\.5 \(최상위 근거 독립 재현 확인 중\)/);
-assert.ok(mbpiBody.indexOf('dieckol')<mbpiBody.indexOf('후속 조사 단서'),'scored ACE evidence precedes the leads');
-assert.ok(mbpiBody.indexOf('후속 조사 단서')<mbpiBody.indexOf('3CLpro'),'3CLpro appears only under follow-up leads');
+// 2026-10-17 (LKH): the paper count, the single-paper label and the follow-up leads (the 3CLpro paper) stay in the record
+assert.ok(!mbpiBody.includes('독립 원논문 1편'),'no paper-count line');
+assert.match(mbpiBody,/<b>67\.5 · 정식 산출 · ACE 화합물<\/b>/);
+assert.doesNotMatch(mbpiBody,/방법 검증|독립 재현|단일 논문/);
+assert.match(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/MBPI 67\.5 · /);
+assert.doesNotMatch(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/재현|단일 논문/);
+assert.ok(mbpiBody.includes('dieckol')&&!mbpiBody.includes('후속 조사 단서'),'scored ACE evidence shown; the leads block is not drawn');
+assert.ok(!mbpiBody.includes('3CLpro')&&JSON.stringify(arch410.candidate_species.find(s=>s.aphia_id===371986).bioactivity_partial).includes('3CLpro'),'the 3CLpro lead stays in the record');
 assert.doesNotMatch(mbpiBody,/점수 제외/);
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report410()});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
 ctx.next=next;vm.runInContext('data=globalThis.next;comparisonFocus=null',ctx);ctx.compare();
-assert.match(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*최상위 근거 독립 재현 확인 중/);
-assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중 · 근거 보기/);
+assert.doesNotMatch(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*(최상위 근거|재현|단일 논문)/);
+assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 근거 보기<\/small>/);
 const badLabel=report410();badLabel.candidate_species.find(s=>s.aphia_id===371986).mbpi_label=null;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>badLabel});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
@@ -455,7 +486,8 @@ assert.equal(ctx.iucnGlobalNote(by(836033)),'IUCN 전 지구 평가 없음(검�
 next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.aphia_id,s.scientific_name,s.korean_name))]};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 assert.equal(ctx.nationalMcui(by(1666974)),true);
 assert.equal(ctx.iucnGlobalNote(by(1666974)),'IUCN 전 지구 DD(2009) · 점수 대응 없음');
-assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail?.startsWith('IUCN 전 지구 DD(2009) · 점수 대응 없음. 그래서 한국 국가생물적색자료집')),'갑오징어 MCUI detail names the IUCN DD assessment');
+// 2026-10-17 (LKH): the detail names the national basis only; the IUCN DD record stays in conservation_trace
+assert.ok(ctx.coverage(by(1666974)).checks.some(c=>c.detail==='한국 국가생물적색자료집 등급으로 정식 MCUI를 산출했습니다.')&&by(1666974).assessment.conservation_trace.category==='DD','갑오징어 MCUI detail names the national basis');
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 // verified-pilot-2.2: the reviewed peptide values are scored in the AHTPDB cohort; paper values and both licences stay visible.
 // 3.5: Sato 2002 dipeptides are scored after the full-text review; KNFL stays listed.
@@ -466,35 +498,43 @@ next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInCont
 html=ctx.renderScores(by(145721));
 assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721: scored values are not repeated as unscored raw values');
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  for(const text of ['89.2 · 정식 산출 · 방법 검증 기준 미충족','정제 IW','재현 시료 클로렐라','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
-    '기질 HHL','효능 재현','합성 IY 2.65 µM','재현 시료 미역','차이 0.362','독립 DOI로 셈','DOI 2편(기원 1 + 효능 재현 1)','다른 기원의 측정이라 효능만 재현합니다','이 종에서 정제한 시료를 다른 논문이 잰 값','짧은 서열이라 여러 생물의 단백질에서 나올 수 있으며','합성 IW 1.91 µM','재현 시료 화학 합성 IW','합성 IY 2.4 µM','합성 VW 1.68 µM',
-    '펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
+  for(const text of ['89.2 · 정식 산출','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
+    '기질 HHL','89.2 × 근거 계수 1 = 89.2','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
     assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
+  // 2026-10-17 (LKH): the potency replications (with their reasons) and the item caveats stay in the record and are not drawn
+  const vw=by(145721).assessment.bioactivity_trace.find(i=>i.peptide_sequence==='VW');
+  assert.ok(vw.potency_replications.some(r=>r.used&&r.source_id==='suetsuna_2004_wakame')&&vw.independent_dois.length===2&&vw.caveat,'replications and the caveat stay in the record');
+  for(const text of ['효능 재현','재현 시료','독립 DOI로 셈','다른 기원의 측정이라','짧은 서열이라 여러 생물의 단백질에서 나올 수 있으며','합성 IW 1.91 µM','합성 VW 1.68 µM','방법 검증'])
+    assert.ok(!mbpi.includes(text),`wakame MBPI does not draw ${text}`);
   assert.doesNotMatch(mbpi,/참고값\(최상위 근거 독립 재현 확인 중\)/);}
 assert.equal(ctx.score(by(145721),'MBPI'),89.2);
 assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.0 from the rounded 46.7 and 89.2)
-// 2026-10-12: the MBPI section opens with one line from published values only (the post-hoc result, the aggregation range),
-// then the top item's stratum; the summary names the stratum too, and the reason paragraph below stays.
+// 2026-10-12: the MBPI section opens with one line from published values only, then the top item's stratum; the summary
+// names the stratum too. 2026-10-17 (LKH): the post-hoc result, the aggregation range and its reason paragraph stay in the record
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  assert.match(mbpi,/<b>89\.2 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드<\/b><\/summary>/);
-  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>'),'wakame first line');
-  assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('사후 검증(약물 기원종'),'the first line sits above the reason paragraph');
-  assert.ok(mbpi.includes('기준 미충족입니다'),'the published reason reads in the neutral words');}
+  assert.match(mbpi,/<b>89\.2 · 정식 산출 · ACE 펩타이드<\/b><\/summary>/);
+  assert.ok(mbpi.includes('<p class="fine mbpi-first">근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>'),'wakame first line');
+  assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('점수 근거'),'the first line sits above the scored items');
+  assert.ok(!/사후 검증|기준 미충족|집계 방식에 따라/.test(mbpi)&&original.method.posthoc.validation_sets.MBPI,'the post-hoc result stays in the record');}
 assert.doesNotMatch(html,/미통과/);
 {const mbpi=ctx.renderScores(by(241776)).split('data-axis="MBPI"')[1].split('data-axis="MCUI"')[0];
-  assert.ok(mbpi.includes('<b>사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 바뀌지 않음(항목 1개)</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');}
+  assert.ok(mbpi.includes('<p class="fine mbpi-first">근거 층: ACE 저해 펩타이드'),'sea cucumber first line');}
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 // 4.11 (prereg 2): that zein-derived row no longer counts, so LQP keeps the factor 0.75 (72.2) and the single-paper label.
 html=ctx.renderScores(by(836033));
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  for(const text of ['72 · 정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
-    '효능 재현','합성 LQP 2 µM','재현 시료 옥수수 α-제인','차이 0.229','다른 기원의 측정이라 효능만 재현합니다','10.1271/bbb1961.55.1313','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다',
-    '원논문 1편 → 독립 재현 없음 계수 0.75','이 종의 시료로 잰 독립 재현 논문이 아직 없습니다','펩타이드 352개','doi:10.1093/nar/gku1141'])
+  for(const text of ['<b>72 · 정식 산출','LQP','1.18 µM','10.5352/jls.2012.22.2.220','Publisher copyright','AEYLCEAC','4.287 mM (4287 µM)','10.3389/fnut.2022.981163','CC BY 4.0',
+    '펩타이드 352개','doi:10.1093/nar/gku1141'])
     assert.ok(mbpi.includes(text),`oyster MBPI missing ${text}`);
+  // 2026-10-17 (LKH): the zein replication and the single-paper factor note stay in the record and are not drawn
+  const lqp=by(836033).assessment.bioactivity_trace.find(i=>i.peptide_sequence==='LQP');
+  assert.ok(lqp.evidence_factor===0.75&&lqp.potency_replications.some(r=>r.source_id==='miyoshi_1991_zein'&&!r.used),'the zein replication stays in the record');
+  for(const text of ['효능 재현','합성 LQP 2 µM','재현 시료 옥수수 α-제인','10.1271/bbb1961.55.1313','독립 재현','방법 검증 기준 미충족'])
+    assert.ok(!mbpi.includes(text),`oyster MBPI does not draw ${text}`);
   assert.doesNotMatch(mbpi,/참고값\(최상위 근거 독립 재현 확인 중\)/);}
 assert.ok(!html.includes('참고 통합값'),'a real BBVI replaces the reference combination');
 assert.equal(ctx.score(by(836033),'MBPI'),72.2);
-assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 72 (단일 논문) · MCUI(국가 평가) 10.0 (LC)');
+assert.equal(ctx.summary(by(836033)),'MFPI 71.6 · MBPI 72 · MCUI(국가 평가) 10.0 (LC)');  // 2026-10-17 (LKH): no label in the summary
 // A used replication must be listed among the independent DOIs and cite a published source, or the MBPI is a fault (4.11: 미역 VW).
 for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='VW').independent_dois.push('10.0000/other')},
   o=>{o.source_ids=o.source_ids.filter(id=>id!=='suetsuna_2004_wakame')}]){
@@ -504,8 +544,10 @@ for(const mutate of [o=>{o.bioactivity_trace.find(i=>i.peptide_sequence==='VW').
 }
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
-// Peptide partial leads render their sequence and value, not an empty compound row.
-assert.match(ctx.renderScores(by(145721)),/펩타이드 YNKL · ACE IC50 = 21 µM/);
+// Peptide partial leads render their sequence and value, not an empty compound row;
+// 2026-10-17 (LKH): the follow-up leads stay in the record (bioactivity_partial) and are not drawn
+assert.ok(by(145721).assessment.bioactivity_partial.some(x=>x.record_id.endsWith(':YNKL')));
+assert.doesNotMatch(ctx.renderScores(by(145721)),/YNKL|후속 조사 단서/);
 // 2026-10-08: the axis-pairs box was removed; the matrix shows every placed species (team-lead decision).
 assert.equal(typeof ctx.axisPairs,'undefined');
 // Reference combination: shown beside BBVI only when both inputs equal the published axes; never a score.
@@ -519,7 +561,7 @@ refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확
 let refOy=await oysterOnly(refReport);vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
 assert.equal(ctx.score(refOy,'MBPI'),67.5,'fixture MBPI must attach');{
   html=ctx.renderScores(refOy);
-  for(const text of ['참고 통합값 · 독립 재현 미확인','참고값 69.6 · 점수 아님','w 0.75 → 70.6','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
+  for(const text of ['참고 통합값 · 독립 재현 미확인','<b>참고값 69.6</b>','w 0.75 → 70.6','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
   assert.equal(ctx.score(refOy,'BBVI'),null,'a reference combination never becomes BBVI');
 }
 refOyster.reference_combination.inputs.MFPI=70;
@@ -544,13 +586,16 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   let h=ctx.renderScores(by(836033));
   assert.ok(h.indexOf('data-axis="MBPI"')<h.indexOf('rx-disclosure')&&h.indexOf('rx-disclosure')<h.indexOf('data-axis="MCUI"'),'the line sits right under MBPI');
   const oy=line(h);
-  assert.ok(oy.includes('<summary><span>의약 후보 MBPI(보조, 탐색적)</span><b>62.6 · 항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토)</b></summary>'),oy);
-  for(const t of ['이 종에서 뺀 항목 2개','근거 층: 항균 펩타이드(<span lang="en">DBAASP','층 분류 기준: 그 층의 비교집단이 식품 단백질','사후 검증(약물 기원종 3종 중 2종 계산): ACE 저해·잔틴 산화효소 펩타이드 층을 뺀',
-    `사전 등록: ${rule.prereg}`,'기본 MBPI·BBVI·매트릭스에는 쓰지 않습니다'])assert.ok(oy.includes(t),`oyster MBPI-Rx line: ${t}`);
-  assert.ok(line(ctx.renderScores(by(371986))).includes('<b>56.8 · ChEMBL 화합물 · 사후 검증 기준 미충족(탐색적 재검토)</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
-  assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45.3 · ChEMBL 화합물 · '),'톳: the ChEMBL item once the ACE peptides are out');
+  // 2026-10-17 (LKH): the post-hoc result, the pre-registration path and the excluded-item count stay in the record (mbpi_rx, method)
+  assert.ok(oy.includes('<summary><span>의약 후보 MBPI(보조, 탐색용)</span><b>62.6 · 항균 펩타이드</b></summary>'),oy);
+  for(const t of ['근거 층: 항균 펩타이드(<span lang="en">DBAASP','층 분류 기준: 그 층의 비교집단이 식품 단백질','기본 MBPI·BBVI·매트릭스와 따로 봅니다'])assert.ok(oy.includes(t),`oyster MBPI-Rx line: ${t}`);
+  for(const t of ['이 종에서 뺀 항목','사후 검증','사전 등록','기준 미충족'])assert.ok(!oy.includes(t),`oyster MBPI-Rx line does not draw ${t}`);
+  assert.ok(rule.prereg&&vs.result&&rows.find(r=>r.aphia_id===836033).mbpi_rx.excluded_item_count===2,'the record keeps them');
+  assert.ok(line(ctx.renderScores(by(371986))).includes('<b>56.8 · ChEMBL 화합물</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
+  assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45.3 · ChEMBL 화합물</b>'),'톳: the ChEMBL item once the ACE peptides are out');
   for(const r of rows.filter(r=>r.mbpi_rx.value===null)){const l=line(ctx.renderScores(by(r.aphia_id)));
-    assert.ok(l.includes('<b>의약 표적 근거 없음 · 사후 검증 기준 미충족(탐색적 재검토)</b>')&&l.includes(`<p class="fine">${r.mbpi_rx.reason}.</p>`)&&!l.includes('근거 층:')&&l.includes(`이 종에서 뺀 항목 ${r.mbpi_rx.excluded_item_count}개`),`${r.korean_name}: ${l}`);}
+    // 2026-10-17 (LKH): no value reads '—' (the reason stays in the record)
+    assert.ok(l.includes('<summary><span>의약 후보 MBPI(보조, 탐색용)</span><b>—</b></summary>')&&r.mbpi_rx.reason&&!l.includes(r.mbpi_rx.reason)&&!l.includes('근거 층:')&&!l.includes('근거 없음'),`${r.korean_name}: ${l}`);}
   // the line never repeats an old word and is not a fifth axis (no data-axis, so evidence buttons still find their own section)
   assert.doesNotMatch(oy,/미통과|data-axis/);
   // a value that does not re-check from the trace, a stratum missing from the classification or a wrong reason hides the line
@@ -578,13 +623,14 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   let t=dom.comparison.innerHTML;
   assert.deepEqual([...t.matchAll(/data-sort="([A-Za-z_]+)"/g)].map(m=>m[1]),['name','MFPI','MBPI','MBPI_RX','BBVI','MCUI']);
   // 2026-10-13 dark data table: 종·유형·5 values·expand (근거 수준·출현기록·자료 연결 현황 moved into the expanded row)
-  assert.ok(t.includes('MBPI-Rx<small>보조·탐색적</small>')&&(t.match(/<th scope="col"/g)||[]).length===8&&!t.includes('colspan="11"')&&t.includes('colspan="8"'));
+  assert.ok(t.includes('MBPI-Rx<small>의약 표적 보조</small>')&&(t.match(/<th scope="col"/g)||[]).length===8&&!t.includes('colspan="11"')&&t.includes('colspan="8"'));
   const cell=id=>t.split(`<tr class="cmp-row" data-aphia="${id}">`)[1].split('cmp-rx">')[1].split('</td>')[0];
   assert.match(cell(836033),/^<span class="cv rx-cv"><span class="cv-num">62\.6<\/span><span class="cv-bar" aria-hidden="true"><i style="width:62\.6%"><\/i><\/span><\/span>$/);
   assert.match(cell(504357),/<span class="cv-num">75\.0<\/span>/);
-  for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none" aria-hidden="true">–</span><span class="sr-only">의약 표적 근거 없음</span></span>',r.korean_name);
-  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>62.6<small>항균 펩타이드 · 사후 검증 기준 미충족(탐색적 재검토) · MBPI·BBVI에 쓰지 않음</small>'),'oyster 자세히');
-  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조, 탐색적</h4>의약 표적 근거 없음<small>제외 층(ACE·잔틴 산화효소 펩타이드) 밖의 항목이 없습니다 · 사후 검증 기준 미충족(탐색적 재검토) · 점수 아님</small>'),'wakame 자세히');
+  // 2026-10-17 (LKH): no value reads '—' in the cell and in the expanded row (never 0, a button or a gap phrase)
+  for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none">—</span></span>',r.korean_name);
+  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조</h4>62.6<small>항균 펩타이드 · MBPI·BBVI와 별도인 보조 지표</small>'),'oyster 자세히');
+  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조</h4>—</div>')&&!/근거 없음|사후 검증|점수 아님/.test(t),'wakame 자세히');
   // sorting by it (4.14, prereg-4.14 8): grouped by the top item's stratum (groups in catalogue order of first appearance), high → low
   // or low → high only inside a group, the species without a value (10 since 4.13) last in catalogue order both ways
   vm.runInContext('globalThis.rxGroup=s=>cmpGroup(s,"MBPI_RX")',ctx);
@@ -599,23 +645,24 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
     assert.match(t,new RegExp(`aria-sort="${dir==='desc'?'descending':'ascending'}"><button type="button" class="cmp-sort" data-sort="MBPI_RX">`));
     assert.equal(dom['comparison-page'].textContent,`총 30종 · 정렬: MBPI-Rx ${dir==='desc'?'높은 순':'낮은 순'} (층별)`);}
   vm.runInContext("cmpSort={key:null,dir:null}",ctx);
-  // #method-03 states the published result and the pre-registration path
+  // #method-03 says what MBPI-Rx is and where it is shown (2026-10-17 (LKH): the post-hoc result and the pre-registration path stay in the record)
   const page=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),m3=page.slice(page.indexOf('id="method-03"'),page.indexOf('</article>',page.indexOf('id="method-03"')));
-  const li=m3.slice(m3.indexOf('<li><b>의약 후보 MBPI(보조)'));
-  assert.ok(li.startsWith(`<li><b>의약 후보 MBPI(보조) · ${{passed:'통과',failed:'기준 미충족'}[vs.result]}</b> ACE·잔틴 산화효소 펩타이드 층을 뺀 탐색적 재검토입니다.`),li);
-  assert.ok(li.includes(`사전 등록 ${rule.prereg}</li>`)&&!/미통과/.test(m3),li);}
+  const li=m3.slice(m3.indexOf('<li><b>의약 후보 MBPI(MBPI-Rx, 보조)'));
+  assert.ok(li.startsWith('<li><b>의약 후보 MBPI(MBPI-Rx, 보조)</b> ACE·잔틴 산화효소 펩타이드 층을 뺀 MBPI입니다.'),li);
+  assert.ok(!li.split('</li>')[0].includes(rule.prereg)&&!/미통과|기준 미충족|사전 등록/.test(m3),li);}
 // 4.11 (prereg 4): MBPI breadth is one display-only line under MBPI (after MBPI-Rx), from the published item values.
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>report()});
 next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.aphia_id,s.scientific_name,s.korean_name))]};await ctx.attach(next);ctx.next=next;vm.runInContext('data=globalThis.next',ctx);
 {const h=ctx.renderScores(by(836033)),i=h.indexOf('breadth-disclosure');
   assert.ok(h.indexOf('rx-disclosure')<i&&i<h.indexOf('data-axis="MCUI"'),'the breadth line sits under MBPI, after MBPI-Rx');
   // 4.14 (prereg-4.14 8): independent papers, max and mean join the line; the material classes and the floor note sit below it
-  assert.ok(h.includes('<summary><span>MBPI 근거 폭 · 탐색적</span><b>항목 6개 · 독립 논문 4편 · 중앙값 24.6 · 최댓값 72.2 · 평균 32.5 · 상위 2개 평균 67.4</b></summary>'));
-  assert.ok(h.includes('소재 구분: 가수분해물 서열의 합성품 2개 · 유전자 서열(천연 펩타이드)의 합성품 1개 · 종에서 분리한 물질 3개')&&h.includes('치료 효과·식품 안전성·제품 가치를 뜻하지 않습니다'));
-  assert.ok(h.includes('기본 MBPI·BBVI·매트릭스·순위에는 쓰지 않습니다'));
+  // 2026-10-17 (LKH): the paper count stays in the record (mbpi_breadth.independent_paper_count); the notes say what the line is
+  assert.ok(h.includes('<summary><span>MBPI 근거 폭</span><b>항목 6개 · 중앙값 24.6 · 최댓값 72.2 · 평균 32.5 · 상위 2개 평균 67.4</b></summary>'));
+  assert.ok(h.includes('소재 구분: 가수분해물 서열의 합성품 2개 · 유전자 서열(천연 펩타이드)의 합성품 1개 · 종에서 분리한 물질 3개')&&h.includes('이 생물에서 나온 물질의 시험관·세포 시험 결과입니다'));
+  assert.ok(h.includes('기본 MBPI·BBVI·매트릭스·순위와 따로 보는 표시입니다'));
   for(const r of [...original.species,...original.candidate_species].filter(r=>r.scores.MBPI!==null&&r.mbpi_breadth?.item_count)){
     const b=r.mbpi_breadth,x=ctx.renderScores(by(r.aphia_id));
-    assert.ok(x.includes(`항목 ${b.item_count}개 · 독립 논문 ${b.independent_paper_count}편 · 중앙값 ${b.median.toFixed(1)} · 최댓값 ${b.max.toFixed(1)} · 평균 ${b.mean.toFixed(1)} · 상위 2개 평균 ${b.top2_mean.toFixed(1)}`),r.korean_name);
+    assert.ok(x.includes(`항목 ${b.item_count}개 · 중앙값 ${b.median.toFixed(1)} · 최댓값 ${b.max.toFixed(1)} · 평균 ${b.mean.toFixed(1)} · 상위 2개 평균 ${b.top2_mean.toFixed(1)}`)&&Number.isInteger(b.independent_paper_count),r.korean_name);
     assert.equal(b.max,r.scores.MBPI,r.korean_name+': the max is the MBPI');}
   const r=report();r.species.find(s=>s.aphia_id===836033).scores.MBPI=99;ctx.fetch=async()=>({status:200,ok:true,json:async()=>r});
   const n={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(n);vm.runInContext('data=globalThis.n',Object.assign(ctx,{n}));
@@ -639,7 +686,8 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
     assert.ok(t.endsWith(`관련 문헌(점수 미사용) ${e.unscored_related_count}편`),t);
     const d=ctx.evText(s,'detail');assert.ok(!/기준 외:/.test(t),t);
     if(e.replication_exclusion_reason_ko)assert.ok(d.includes(': '+e.replication_exclusion_reason_ko+')'),d);
-    assert.ok(h.includes(ctx.plain(d).replace(/&/g,'&amp;')),r.korean_name+': the folded MBPI section carries the profile with its reason');
+    // 2026-10-17 (LKH): the profile (paper count, replication state) stays in the record and is not drawn
+    assert.ok(!h.includes(ctx.plain(d).replace(/&/g,'&amp;'))&&!h.includes('근거 프로필'),r.korean_name+': the profile line is not drawn');
     assert.ok(!/근거 논문 1편|단일 논문/.test(h),r.korean_name+': no old label words');
     // whole numbers for MBPI and BBVI without a replicated top item (0.4 and the BBVI line keep their decimal)
     const whole=e.top_item_replication!=='replicated';

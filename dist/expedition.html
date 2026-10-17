@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b253c'/%3E%3Cpath d='M5 13q5-6 11 0t11 0M5 21q5-6 11 0t11 0' fill='none' stroke='%233de0c4' stroke-width='3'/%3E%3C/svg%3E">
   <meta name="theme-color" content="#030d1a">
   <link rel="stylesheet" href="vendor/pretendard/pretendard.css"><link rel="stylesheet" href="expedition.css?v=d2aee840c5">
-  <script type="module" src="expedition.js?v=7f25981108"></script>
+  <script type="module" src="expedition.js?v=02f9cddbff"></script>
 </head>
 <body class="is-loading">
 <a class="skip" href="#cards">카드 목록으로 건너뛰기</a>
@@ -22,19 +22,19 @@
 </header>
 <ol class="x-progress" id="progress" aria-label="항로 진행"></ol>
 <nav id="stop-list" popover class="x-list" aria-label="탐사 지점 목록"><h2>탐사 지점</h2><ol id="stop-list-items"></ol><p class="x-fine">지점을 고르면 배가 그곳으로 항해합니다.</p></nav>
-<p class="x-route-note" id="route-note"><span aria-hidden="true">◇</span> 연출용 항로 · 실제 조사 항로나 선박 위치가 아님</p>
+<p class="x-route-note" id="route-note"><span aria-hidden="true">◇</span> 탐험 연출 항로</p>
 
 <section class="x-intro" id="intro" aria-labelledby="intro-title">
   <p class="x-kicker">Blue-bio Value Map · 한반도 연안 탐사</p>
   <h1 id="intro-title"><span>바다를 건너며</span><span>해양생물의 가치를 찾다</span></h1>
-  <p class="x-lead">탐사 지점 <b id="intro-count">29</b>곳에 도착할 때마다 그 해역의 공개 관측 기록과 한 종의 식량·생리활성·보전 가치, 그리고 근거 논문을 하나씩 확인합니다. <span id="intro-off"></span></p>
+  <p class="x-lead">탐사 지점 <b id="intro-count">29</b>곳에 도착할 때마다 그 해역의 공개 관측 기록과 한 종의 식량·생리활성·보전 가치, 그리고 근거 논문을 차례로 확인합니다. <span id="intro-off"></span></p>
   <ul class="x-howto">
     <li><kbd>스크롤</kbd> 또는 <kbd>←</kbd><kbd>→</kbd> 다음·이전 지점</li>
     <li><kbd>스와이프</kbd> 휴대폰에서 이동</li>
     <li><kbd>Space</kbd> 항해 중 바로 도착</li>
     <li><kbd>Esc</kbd> 상세 닫기</li>
   </ul>
-  <p class="x-intro-note">항로와 배는 연출입니다. 실제 조사 항로나 선박 위치가 아닙니다. 지점은 그 종의 공개 1°·4° 집계 셀 중심이며 정확한 관측 좌표가 아닙니다.</p>
+  <p class="x-intro-note">항로와 배는 탐험 연출입니다. 지점은 그 종의 공개 1°·4° 집계 셀 중심으로, 넓게 묶은 관측 지역(민감종 보호)입니다.</p>
   <div class="x-intro-actions"><button id="start" type="button" class="x-primary">항해 시작</button><button id="resume" type="button" class="x-ghost" hidden>이어서 항해</button></div>
 </section>
 

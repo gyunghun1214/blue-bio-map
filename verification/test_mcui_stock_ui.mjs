@@ -1,6 +1,7 @@
 // verified-4.12 stock-decline signal on screen (prereg-4.12-2026-10-14): the browser re-derives every KOSIS number, label,
 // score and the max from the yearly tonnes and the report's own rule, and refuses an MCUI that does not follow; the detail
-// shows the catch line, the two means, the item link, the aquaculture share, '자원평가 결과: 확인 전' and the caution.
+// shows the catch line, the two means, the item link, the aquaculture share and where the number comes from
+// (2026-10-17 (LKH): the stock-assessment state and the caution stay in the record).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -78,10 +79,12 @@ for(const a of rows)assert.doesNotMatch(a.stock_decline.label,/\b(?:LC|NT|VU|EN|
 const html=ctx.detail({label:'살오징어',assessment:squid});
 for(const text of ['자원 감소 신호 · KOSIS 어획량 추세','어획량 급감 · 60점','IUCN LC 10 · 자원 감소 60 → 높은 값 60',
   '기준 평균 121,486톤(2015~17) → 최근 평균 24,507톤(2022~24)','(−79.8%)','KOSIS 품종 살오징어(오징어) · 연결 종 단위','최근 3년 양식 비중 0.0%',
-  '2025년 잠정치 31,006톤(점수 미사용)','자원평가 결과: 확인 전',rule.caution,'class="sd-spark scored"','class="sd-ref"'])
+  '2025년 잠정치 31,006톤(점수 미사용)','KOSIS 어획량 통계로 계산한 값입니다(IUCN 기준 A의 30·50·80% 구간 적용)','class="sd-spark scored"','class="sd-ref"'])
   assert.ok(html.includes(text),`살오징어 detail: ${text}`);
+assert.ok(rule.caution&&!html.includes(rule.caution)&&!html.includes('확인 전'),'the caution and the assessment state stay in the record');
+// a species with no KOSIS item gets no block at all (2026-10-17 (LKH): no gap line); the record keeps the reason
 const kelp=ctx.detail({label:'감태',assessment:by('감태')});
-assert.ok(kelp.includes('자원 감소 신호: 통계 없음')&&kelp.includes('대응하는 품종이 없습니다')&&!kelp.includes('sd-spark'),'감태: no item, no line');
+assert.ok(kelp===''&&by('감태').stock_decline.unscored_reason==='no_match','감태: no item, no line');
 const wakame=ctx.detail({label:'미역',assessment:by('미역')});
-assert.ok(wakame.includes('양식 위주 · 해당 없음')&&wakame.includes('감소율은 참고로만')&&!wakame.includes('sd-compare'),'미역: aquaculture, no compare line');
+assert.ok(wakame.includes('양식 위주 · 해당 없음')&&wakame.includes('감소율은 참고로 적습니다')&&!wakame.includes('sd-compare'),'미역: aquaculture, no compare line');
 console.log('PASS: stock-decline re-check (30 species, 3 MCUI moves) · tampered years, decline, band, max, driver, cap, reasons and source refused · wording and detail');

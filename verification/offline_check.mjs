@@ -66,7 +66,7 @@ async function onPaused({requestId,request}){
 const state=()=>evaluate(`({conn:document.getElementById('connection-state')?.textContent||'',chip:document.getElementById('notice-chip-text')?.textContent||'',alertChip:document.getElementById('alert-chip')?.hidden===false,error:document.getElementById('error')?.hidden===false?document.getElementById('error').textContent:'',
   basemapStatus:document.getElementById('basemap-status')?.textContent||'',url:location.href,offline:globalThis.BBVM_OFFLINE,
   species:typeof data!=='undefined'&&data?data.species.length:0,tiles:document.querySelectorAll('#map img.leaflet-tile-loaded').length})`);
-const counts=`운영 발행 ${snapshot.profiles.length}종 · 조사 후보`;
+const counts=`${allSpecies}종`;  // 2026-10-17 (LKH): the status line gives one species count (no 운영 발행/조사 후보 split)
 const tilesOf=kind=>localPaths.map(p=>TILE_RE[kind].exec(p)).filter(Boolean).map(m=>kind==='satellite'?[+m[1],+m[3],+m[2]]:[+m[1],+m[2],+m[3]]);
 
 try{
@@ -107,7 +107,7 @@ try{
   const reply=await evaluate(`(async()=>{document.querySelector('.bbc-fab').click();await new Promise(r=>setTimeout(r,300));
     const i=document.querySelector('.bbc-input');i.value='오늘 부산 날씨와 환율 알려줘';document.querySelector('.bbc-form').requestSubmit();
     await new Promise(r=>setTimeout(r,500));return [...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1)?.textContent||'';})()`);
-  check('O-7 chatbot: a question the FAQ cannot match gets the fixed no-answer note, no server request',reply.startsWith('준비된 답이 없어요')&&!localPaths.some(p=>p.startsWith('/api/')),reply);
+  check('O-7 chatbot: a question the FAQ cannot match gets the fixed no-answer note, no server request',reply.startsWith('아래 탭에서 직접 찾아보거나')&&!localPaths.some(p=>p.startsWith('/api/')),reply);
 
   // ---------- 3. Reload without the flag: still offline in this tab; tiles present ----------
   fakeTiles=true;localPaths.length=0;

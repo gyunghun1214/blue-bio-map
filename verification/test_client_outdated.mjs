@@ -128,8 +128,8 @@ for(const [file,key,version] of [['expansion-public-cells.json','schemaVersion',
   assert.deepEqual(plain(loaded.outdated),[],version);
 }
 loaded=await load('expansion-public-cells.json','schemaVersion','candidate-public-cells-1');
-assert.ok(loaded.species.every(s=>!s.releaseOutdated&&s.status==='검수 자료 확인 실패'),'a malformed release stays a failure');
-assert.equal(ctx.releaseMissing(loaded.species[0]),'검수 자료 확인 실패');
+assert.ok(loaded.species.every(s=>!s.releaseOutdated&&s.status==='새로고침(F5)으로 검수 자료 다시 불러오기'),'a malformed release stays unloaded (2026-10-17: worded as the reload step)');
+assert.equal(ctx.releaseMissing(loaded.species[0]),'새로고침(F5)으로 검수 자료 다시 불러오기');
 
 // (8) ?v= is the first 10 hex characters of sha256 over the LF-normalized file, so every change busts the
 // one-year immutable cache (dist/_headers) and the value is the same on Windows (CRLF checkout) and Linux.

@@ -135,8 +135,11 @@ ctx.showDecision(data.species[0]);
 for(const html of [ctx.rows,nodes.get('decision-detail').innerHTML]){
   assert.doesNotMatch(html,/MCUI로 바꾸지 않습니다|MCUI 입력으로 쓰지 않음|현행 평가 여부는 확인하지 않았습니다/);
   assert.match(html,/2026-09-20에 출처 s로 이 평가가 현행 IUCN 평가임을 재확인/);
-  assert.match(html,/2026년 한국 한정 평가나 확정된 정책 판단이 아닙니다/);
+  // 2026-10-17 (LKH): the scope is stated as what it is (global); the record keeps it
+  assert.doesNotMatch(html,/한국 한정 평가|정책 판단이 아닙니다/);
+  assert.match(html,/전 세계 범위의 평가입니다/);
 }
+assert.match(vm.runInContext('IUCN_HISTORICAL[241776].current.scope',ctx),/Global/);
 assert.match(ctx.rows,/재확인 2026-09-20 · 시범 보고서/);
 // Without the recheck, the historical wording stays.
 data.species[0].assessment=undefined;

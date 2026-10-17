@@ -79,7 +79,10 @@ class LicenceMatrixTest(unittest.TestCase):
         app = (ROOT / "dist/app.js").read_text(encoding="utf-8")
         self.assertIn("콘텐츠 라이선스: 출처별 혼합 · ", html)
         self.assertIn('data-foot-go="license">출처 목록 참조', html)
-        self.assertIn('id="license-table"', html)
+        # 2026-10-17 (LKH): the licence table left the method tab (no weakness on screen); the file, its build script and
+        # this test of the file stay, and the footer button opens the source list
+        self.assertNotIn('id="license-table"', html)
+        self.assertNotIn('id="mt-license"', html)
         self.assertIn("fetch('license-matrix.json')", app)
         # summaries derived from CMNPD (CC BY-NC-SA 4.0) carry the same conditions
         self.assertIn("비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다", app)

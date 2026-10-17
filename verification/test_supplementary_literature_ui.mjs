@@ -39,21 +39,16 @@ ctx.setLit({...lit,records:lit.records.map(r=>({...r,relation:'new_quantitative'
 assert.deepEqual([...new Set(app.match(/supplementaryLit\b/g))],['supplementaryLit']);
 assert.equal((app.match(/supplementaryLit\b/g)||[]).length,3);
 
-// Display: the list opens under the MBPI section, contrary evidence first, each row with why it is not scored.
+// Display: the list opened under the MBPI section, contrary evidence first, each row with why it is not scored.
+// 2026-10-17 (LKH): the list stays in supplementary-literature.json (read and gated as before) and is not drawn.
 ctx.setLit(lit);
 const withRows=species.filter(s=>ctx.litRows(s).length);
 assert.ok(withRows.length>0);
-for(const s of withRows){
-  const html=ctx.line(s);
-  assert.match(html,/관련 문헌 · 점수 미사용/);
-  assert.match(html,/점수 미사용: /);
-  assert.match(html,/다른 수입니다/);
-  assert.equal((html.match(/<li /g)||[]).length,ctx.litRows(s).length);
-}
+for(const s of withRows)assert.equal(ctx.line(s),'',`${s.label}: the related-paper list is not drawn`);
 for(const s of species.filter(s=>!ctx.litRows(s).length)){assert.equal(ctx.line(s),'');}
 const ecklonia=by('감태');
-assert.match(ctx.line(ecklonia),/<summary><span>관련 문헌 · 점수 미사용<\/span><b>\d+편 · 반대 근거 1편<\/b>/);
-assert.match(ctx.line(ecklonia),/<ul class="lit-list"><li data-relation="contrary">/);
+assert.equal(ctx.litRows(ecklonia).filter(r=>r.relation==='contrary').length,1,'the contrary row stays read from the file');
+assert.equal(ctx.line(ecklonia),'');
 // a report outside the verified line shows nothing
 assert.equal(ctx.line({...ecklonia,assessment:{...ecklonia.assessment,report_version:'pilot-1'}}),'');
 
