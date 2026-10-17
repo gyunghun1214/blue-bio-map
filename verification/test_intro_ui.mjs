@@ -464,5 +464,29 @@ const usesText=usesHtml.replace(/<[^>]+>/g,' ');
 for(const w of ['예시','사례','기관','부처','해양수산부','해수부','환경부','국립','자원관','공단','지자체','활용 중','사용 중','쓰고 있','도입','우뭇가사리','공백','예비','미평가','검증','조사 필요','재현','부족','최초'])
   assert.ok(!usesText.includes(w),`no "${w}" in 이렇게 쓸 수 있습니다`);
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution and example cards, uses under the first screen');
+// (16) 2026-10-17 (#4) '다음 단계' after the uses, under the first screen: where the map stands now, then three planned steps,
+// each marked '계획'. No number but the species total (filled from the data like the solution line); no licence or
+// commercial-layer wording, nothing that names a body or an agreement.
+assert.ok(at('class="gate-foot"')<at('<div class="gate-below">')&&at('<div class="gate-below">')<at('<section class="gate-uses"')&&at('<section class="gate-uses"')<at('<section class="gate-next"'),'under the first screen: the uses, then the next steps');
+const nextHtml=gateHtml.slice(at('<section class="gate-next"'),gateHtml.indexOf('</section>',at('<section class="gate-next"')));
+assert.match(nextHtml,/^<section class="gate-next" aria-labelledby="gate-next-h">/);
+assert.match(nextHtml,/<h2 class="gate-next-h" id="gate-next-h">다음 단계<\/h2>/);
+const steps=[...nextHtml.matchAll(/<li( class="is-now")?>([\s\S]*?)<\/li>/g)].map(([,now,li])=>({now:!!now,
+  ...Object.fromEntries([...li.matchAll(/<p class="gate-next-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<b class="gate-total">\d+<\/b>/,'N').replace(/<[^>]+>/g,'')]))}));
+assert.deepEqual(steps,[
+  {now:true,k:'지금',t:'한반도 주변 N종 공개'},
+  {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'계획'},
+  {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'계획'},
+  {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'계획'}],'지금 as it is, the planned steps marked 계획');
+assert.match(browser,/if\(total\)for\(const b of el\.querySelectorAll\('\.gate-total'\)\)b\.textContent=String\(total\);/,'the species total fills the solution line and 지금 alike');
+const nextText=nextHtml.replace(/<b class="gate-total">\d+<\/b>/,'').replace(/<[^>]+>/g,' ');
+assert.ok(!/\d/.test(nextText),'no number typed into the steps');
+for(const w of ['비상업','상업 레이어','레이어','CC0','CC BY','라이선스','이용 조건','예비값','교체','지표 산출','셀','협약','MOU','해양수산부','해수부','환경부','국립','자원관','공단',
+  '공백','예비','미평가','검증','조사 필요','확인 필요','재현','부족','최초','실패','미충족','미확인','미산출','점수 없음'])
+  assert.ok(!nextText.includes(w),`no "${w}" in 다음 단계`);
+// the pill still lands on the uses (inside .gate-below now: measured, not offsetTop); the globe is not dragged from under the first screen
+assert.match(browser,/h\.scrollTo\(\{top:h\.scrollTop\+q\('\.gate-uses'\)\.getBoundingClientRect\(\)\.top-h\.getBoundingClientRect\(\)\.top,/);
+assert.match(browser,/const NO_DRAG='[^']*\.gate-below';/);
+
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution and example cards, uses and next steps under the first screen');
 
