@@ -4310,6 +4310,8 @@ function renderSources(){
     .map(id=>[id,report.sources?.[id]]).filter(([,src])=>src)
     .map(([id,src])=>`<div class="citation">${cite(src.title||src.provider||id,src.citation||src.provider||'')}<br>${sourceLink(src.url,'원문 ↗')}${src.license?' · '+orig(memoKo(src.license)):''}<br><span>${[memoKo(src.terms),src.accessed&&src.accessed+' 조회'].filter(Boolean).map(x=>orig(x)).join(' · ')}</span></div>`).join('');
   $('all-sources').innerHTML=data.species.map(s=>`<div class="citation">${cite(s.label+' · 학명',s.wormsCitation)}<br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation">${cite(s.title,s.citation)}<br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
+  // 2026-10-17 (#9): the list sits in one fold; its title counts the entries
+  const nSrc=$('all-sources').querySelectorAll('.citation').length;if($('all-sources-n'))$('all-sources-n').textContent=nSrc?`(${nSrc}건)`:'';
 }
 
 // 출처별 상업 이용 구분 (license-matrix.json, scripts/build_license_matrix.py). Display only: the groups read each source's
@@ -4533,10 +4535,12 @@ document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const c
 // fold opens it first.
 const smoothScroll=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
 function methodGo(el){if(!el)return;const d=el.closest('details');if(d)d.open=true;el.scrollIntoView({behavior:smoothScroll(),block:'start'});}
+// the citation list fold (#9): a way in that asks for the sources opens it
+function openSources(){const f=$('mt-sources-fold');if(f)f.open=true;}
 const METHOD_GO={journey:()=>$('mt-journey'),sources:()=>document.querySelector('#method .source-section'),flow:()=>document.querySelector('#method .flow-wrap')};
 // footer '출처 목록 참조': opens the method tab at the source list (the licence table left the screen on 2026-10-17)
-document.querySelectorAll('[data-foot-go]').forEach(b=>b.addEventListener('click',()=>{setView('method',false);const t=$('mt-license');methodGo(t&&!t.hidden?t:document.querySelector('#method .source-section'));t?.focus?.({preventScroll:true});}));
-document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',()=>{const t=METHOD_GO[b.dataset.mtGo]?.();methodGo(t);
+document.querySelectorAll('[data-foot-go]').forEach(b=>b.addEventListener('click',()=>{setView('method',false);openSources();methodGo(document.querySelector('#method .source-section'));}));
+document.querySelectorAll('[data-mt-go]').forEach(b=>b.addEventListener('click',()=>{const t=METHOD_GO[b.dataset.mtGo]?.();if(b.dataset.mtGo==='sources')openSources();methodGo(t);
   if(b.dataset.mtGo==='sources')$('all-sources')?.focus({preventScroll:true});}));
 // Research scope number (the species of the loaded collection; '—' until then or after a failure) and the
 // four quadrant names from the report's matrix rule. The diagram places no species, points or scores.

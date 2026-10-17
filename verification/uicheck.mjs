@@ -409,6 +409,9 @@ try{
   await evaluate("toggleBasket(274849);openCompareDialog();1");await sleep(200);await shot('desktop-compare-dialog');
   await evaluate("document.getElementById('cmp-dialog').close();cmpBasket=[];renderCompare();setCompareMode('table');1");}
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
+  // 2026-10-17 (#9): the citation list sits in one fold, closed at first; its title counts the entries and 자료 출처 보기 opens it
+  const srcFold=await evaluate("(()=>{const f=document.getElementById('mt-sources-fold'),r={closed:!f.open,summary:f.querySelector(':scope>summary').textContent,n:document.querySelectorAll('#all-sources .citation').length};document.querySelector('[data-mt-go=\"sources\"]').click();r.open=f.open;r.focus=document.activeElement?.id;return r;})()");
+  check('Method tab: the source list is one fold, closed at first and titled with its entry count; 자료 출처 보기 opens it and focuses the list',srcFold.closed&&srcFold.n>0&&srcFold.summary===`자료 출처 전체 보기 (${srcFold.n}건)`&&srcFold.open&&srcFold.focus==='all-sources',JSON.stringify(srcFold));
   const src=await evaluate("document.getElementById('all-sources').innerText");
   check('Sources: AFCD/CMNPD show their own change notes, not OBIS labels',src.includes('해삼 기원 보고 화합물 개수만 집계')&&src.includes('데이터셋 원문')&&!src.includes('OBIS 데이터셋'),src.slice(0,400));
 
@@ -670,7 +673,7 @@ try{
       rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(MBPI-Rx, 보조)')&&!/기준 미충족|prereg/.test(rx.method)&&rx.kept,
       JSON.stringify({...rx,start:rx.start.slice(0,8),desc:rx.desc.slice(0,5),asc:rx.asc.slice(0,5),reset:undefined,body:rx.body.slice(0,120),method:rx.method.slice(-200)}));}
   // DBAASP supplies the AMP comparison cohort; its terms require naming it wherever the derived data is published.
-  const dbaasp=await evaluate("(()=>{const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");
+  const dbaasp=await evaluate("(()=>{document.getElementById('mt-sources-fold').open=true;const t=document.getElementById('all-sources').innerText;return {named:t.includes('DBAASP'),link:!!document.querySelector('#all-sources a[href*=\"dbaasp.org\"]')}})()");  // 2026-10-17 (#9): in the opened source fold
   check('Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published)',dbaasp.named&&dbaasp.link,JSON.stringify(dbaasp));
 
   // 3.27 (team-lead decision 2026-10-03): a single-paper top MBPI item now gives a labelled BBVI score, so no species shows
@@ -1374,6 +1377,12 @@ try{
   await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);gs=await gateState();
   check('G-5 phone: the button opens the map',!gs.on&&gs.hidden&&gs.inert===0,JSON.stringify(gs));
   await viewport(1560,900,false);
+  // 2026-10-17 (#9): '전체 출처·방법 보기' lands on the source list, which now sits in a fold: the way in opens it
+  await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
+  await load();gs=await gateReady();
+  await evaluate("document.querySelector('#site-gate .gate-method').click();1");await sleep(1100);
+  const gateSources=await evaluate("({view:currentView,open:document.getElementById('mt-sources-fold').open,focus:document.activeElement?.id||''})");
+  check('G-5b 전체 출처·방법 보기 opens 근거와 방법 with the source fold open and the list focused',gateSources.view==='method'&&gateSources.open&&gateSources.focus==='all-sources',JSON.stringify(gateSources));
   scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
   await load();gs=await gateReady();
   check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
