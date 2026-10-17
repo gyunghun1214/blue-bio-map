@@ -1,9 +1,9 @@
-# 검사 결과 (2026-10-17, 클라우드 세션, 기준 main `350d643`, main `945e891` 병합 뒤 다시 돌림)
+# 검사 결과 (2026-10-17, 클라우드 세션, 기준 main `350d643`, main `07f5bbd` 병합 뒤 다시 돌림)
 
 | 검사 | 결과 |
 |---|---|
 | CI 단위 검사 (`verify.yml` unit 단계 전체: `node verification/test_*.mjs`, `build_posthoc_scorecard.py --csv --check`, `build_aquaculture_tier.py --check`, `build_expedition_stops.py --check`, Python 3.12 unittest 484개) | 모두 통과 |
-| `verification/uicheck.mjs` (Chromium 1194, `FIXTURE=dist/live-snapshot.json`) | 244 PASS / 4 FAIL |
+| `verification/uicheck.mjs` (Chromium 1194, `FIXTURE=dist/live-snapshot.json`) | 243 PASS / 4 FAIL |
 | 새 검사 15개 (Map wheel 12, Map pinch 2, Map zoom is described 1) | 15 PASS |
 | 콘솔 오류 (`No uncaught page errors or console.error`) | PASS |
 
