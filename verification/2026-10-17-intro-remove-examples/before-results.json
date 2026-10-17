@@ -1,0 +1,274 @@
+[
+ {
+  "name": "before 1440px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 3
+  }
+ },
+ {
+  "name": "before 1440px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 28.302310537222866,
+   "bandTop": null,
+   "copyBottom": 635,
+   "globe": {
+    "cx": 1138,
+    "cy": 652,
+    "R": 701
+   }
+  }
+ },
+ {
+  "name": "before 1440px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 1440px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 1440px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 3
+  }
+ },
+ {
+  "name": "before 1440px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 28.302310537222866,
+   "bandTop": null,
+   "copyBottom": 635,
+   "globe": {
+    "cx": 1138,
+    "cy": 652,
+    "R": 701
+   }
+  }
+ },
+ {
+  "name": "before 1440px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 1440px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 1440px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "before 1100px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 1100px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 21.16274370197243,
+   "bandTop": null,
+   "copyBottom": 545,
+   "globe": {
+    "cx": 980,
+    "cy": 580,
+    "R": 605
+   }
+  }
+ },
+ {
+  "name": "before 1100px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 1100px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 1100px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 1100px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 21.16274370197243,
+   "bandTop": null,
+   "copyBottom": 545,
+   "globe": {
+    "cx": 980,
+    "cy": 580,
+    "R": 605
+   }
+  }
+ },
+ {
+  "name": "before 1100px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 1100px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 1100px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "before 768px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 768px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 742,
+   "copyBottom": 589,
+   "globe": {
+    "cx": 471,
+    "cy": 1083,
+    "R": 461
+   }
+  }
+ },
+ {
+  "name": "before 768px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 768px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 768px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 768px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 742,
+   "copyBottom": 589,
+   "globe": {
+    "cx": 471,
+    "cy": 1083,
+    "R": 461
+   }
+  }
+ },
+ {
+  "name": "before 768px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 768px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 768px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "before 390px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 390px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 640,
+   "copyBottom": 504,
+   "globe": {
+    "cx": 239,
+    "cy": 867,
+    "R": 234
+   }
+  }
+ },
+ {
+  "name": "before 390px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 390px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 390px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "before 390px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 640,
+   "copyBottom": 504,
+   "globe": {
+    "cx": 239,
+    "cy": 867,
+    "R": 234
+   }
+  }
+ },
+ {
+  "name": "before 390px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "before 390px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "before 390px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ }
+]

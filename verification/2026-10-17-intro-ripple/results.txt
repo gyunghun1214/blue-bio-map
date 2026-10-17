@@ -11,8 +11,8 @@ PASS 390x844 loading: logo, line and step above the ripples (bottom 48% of the h
 PASS phone: the line in two lines, 24 px or more from the edges
 PASS 390x844 after: entry screen open, loader gone, nothing inert, button focused (desktop)
 PASS 390x844 reveal: nothing usable until it ends (the screen under it still inert)
-PASS fast data: open 1051 ms after navigation (0.6 s minimum + 0.36 s reveal + page start), step = the species total
-PASS no data: reveal from 6762 ms, entry screen open at 7066 ms (≤ 7 s + page start), step not '불러왔어요', note says it keeps loading
+PASS fast data: open 1043 ms after navigation (0.6 s minimum + 0.36 s reveal + page start), step = the species total
+PASS no data: reveal from 6746 ms, entry screen open at 7090 ms (≤ 7 s + page start), step not '불러왔어요', note says it keeps loading
 PASS failed data: step '첫 화면을 여는 중' (not 불러왔어요), note on the entry screen
 PASS still: one standing picture of the ripples (no frame-to-frame change), fully shown at once
 PASS still: straight from the loader to the entry screen, no reveal phase, the step changed with the data

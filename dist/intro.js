@@ -79,8 +79,8 @@ const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양�
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
 const evidenceSourceCount=m=>{if(!Array.isArray(m?.rows))return null;
   const n=m.rows.filter(r=>Array.isArray(r?.uses)&&r.uses.some(u=>EVIDENCE_USES.includes(u))).length;return n>0?n:null;};
-// The example cards under the buttons (use, conservation, stock) hold what app.js gateExamples read from the loaded data; each name opens that
-// species in 비교와 지표 (the app's own link form)
+// The species of an example app.js gateExamples read from the loaded data, in the app's own link form (the #3 policy card
+// under the first screen names the conservation example's species)
 const exampleLinks=ex=>(Array.isArray(ex?.species)?ex.species:[]).filter(s=>Number.isInteger(s?.id)&&s.id>0&&typeof s.name==='string'&&s.name)
   .map(s=>({href:`#s=${s.id}&v=compare`,name:s.name}));
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
@@ -416,22 +416,13 @@ void main(){
     const total=speciesTotal(gate.done);if(total)for(const b of el.querySelectorAll('.gate-total'))b.textContent=String(total); // the solution line and '다음 단계' (#4)
     if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
       if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
-    renderExamples();
+    renderUseSpecies();
   }
-  // the cards keep their place from the first paint (no jump when the data comes); a card the data has nothing for stays out
-  function renderExamples(){
-    const box=q('.gate-ex');if(!gate.done||box.dataset.filled)return;box.dataset.filled='1';
+  // 2026-10-17 (#3): the policy card under the first screen names the species of the conservation example (app.js gateExamples)
+  function renderUseSpecies(){
+    const sp=q('.gate-use-sp');if(!gate.done||!sp||sp.dataset.filled)return;sp.dataset.filled='1';
     const all=Array.isArray(gate.done.examples)?gate.done.examples:[];
-    for(const li of box.children){
-      const ex=all.find(x=>x?.kind===li.dataset.ex),links=exampleLinks(ex),name=li.querySelector('.gate-ex-name');
-      if(!links.length||typeof ex.value!=='string'||!ex.value){li.hidden=true;continue;}
-      links.forEach((l,i)=>{if(i)name.append(' · ');const a=document.createElement('a');a.href=l.href;a.textContent=l.name;name.append(a);});
-      li.classList.toggle('one',links.length===1); // one species: the whole card is its link
-      li.querySelector('.gate-ex-val').textContent=ex.value;
-    }
-    box.hidden=![...box.children].some(li=>!li.hidden);box.classList.add('is-on');
-    // 2026-10-17 (#3): the policy card under the first screen names the same species as the conservation card
-    const red=exampleLinks(all.find(x=>x?.kind==='conservation'));if(red.length)q('.gate-use-sp').textContent=`(${red.map(l=>l.name).join('·')})`;
+    const red=exampleLinks(all.find(x=>x?.kind==='conservation'));if(red.length)sp.textContent=`(${red.map(l=>l.name).join('·')})`;
   }
   // The data is in (or the wait is up): the globe is drawn under the loader, which gives way in fade.ms (the words, then
   // its sea, then the ripples closing onto the globe's rim); the entry screen is usable once it is gone. One reveal: the
@@ -463,7 +454,7 @@ void main(){
       canvas.width=canvas.height=0;if(bg)bg.width=bg.height=0;bg=null;photo=img=null;freeGL(); // not needed again: give the memory back
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
       const a=arrival(target,touch());
-      // an example card: the app's own link handling (applyHash) picks its species and tab, at once; a hash set here would be
+      // a species link (#s=…): the app's own link handling (applyHash) picks its species and tab, at once; a hash set here would be
       // written over by setView before its hashchange arrived
       if(how.hash&&typeof applyHash==='function')applyHash(Object.fromEntries(new URLSearchParams(how.hash.slice(1))));
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
@@ -488,7 +479,6 @@ void main(){
   const textBox=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
   const copyBoxes=(sy=0)=>[...q('.gate-title').children].map(s=>({...textBox(s),title:true}))
     .concat([...el.querySelectorAll('.gate-why-k,.gate-problems li,.gate-lead,.gate-more,.gate-note,.gate-counts')].filter(n=>n.getClientRects().length).map(textBox))
-    .concat([...el.querySelectorAll('.gate-ex li')].filter(n=>n.getClientRects().length).map(n=>{const b=n.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};}))
     .map(b=>({...b,t:b.t+sy,b:b.b+sy}));
   // 2026-10-17 (#3): side by side the screen scrolls on to the uses below; the globe (the canvas, outside the scrolling hero)
   // rides up with the first screen. Frame and card stay in first-screen coordinates; the canvas is lifted by the scroll.
@@ -687,7 +677,7 @@ void main(){
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
   // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
   // never from the controls, the bars or the card; over the copy only off its words (on a phone the copy sits on the globe)
-  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-ex,.gate-below';
+  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-below';
   const onWords=e=>{
     const t=e.target.closest?.('.gate-kicker,.gate-title,.gate-why-k,.gate-problems li,.gate-lead');if(!t)return false;
     const r=document.createRange();r.selectNodeContents(t);
@@ -743,7 +733,6 @@ void main(){
     motion.addEventListener('click',()=>setMotion(!reduce,true));
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
-    q('.gate-ex').addEventListener('click',e=>{const a=e.target.closest?.('a[href^="#s="]');if(!a)return;e.preventDefault();enter('compare',{hash:a.getAttribute('href')});});
     for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
     // the pill on the source strip's line: down to the uses, focus on their heading
     q('.gate-down').addEventListener('click',()=>{const h=q('.gate-hero');h.scrollTo({top:h.scrollTop+q('.gate-uses').getBoundingClientRect().top-h.getBoundingClientRect().top,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
