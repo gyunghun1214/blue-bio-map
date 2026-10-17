@@ -1,0 +1,279 @@
+{
+ "bubbles1440": {
+  "zoom": 5,
+  "species": "참굴",
+  "dots": 0,
+  "dotFill": [],
+  "dotStroke": [],
+  "dotOpacity": [],
+  "dotRadius": [],
+  "bubbles": 4,
+  "bubbleFill": [
+   "#ff6464"
+  ],
+  "bubbleEdge": [
+   "#ff8d84"
+  ],
+  "bubbleSteps": [
+   0.3,
+   0.45,
+   0.6
+  ],
+  "bubbleRadius": [
+   20.18033988749895,
+   20.18033988749895,
+   19,
+   20.18033988749895
+  ],
+  "bubbleCount": "rgb(255, 255, 255)",
+  "bubbleNumbers": [
+   "5",
+   "5",
+   "4",
+   "5"
+  ],
+  "keyBubble": [
+   "rgb(255, 141, 132)",
+   "rgba(255, 100, 100, 0.45)"
+  ],
+  "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+  "chipDot": "rgb(47, 154, 87)",
+  "wantChip": "rgb(47, 154, 87)",
+  "blueGreyWord": false,
+  "over": 0
+ },
+ "dots1440": {
+  "zoom": 8,
+  "species": "참굴",
+  "dots": 452,
+  "dotFill": [
+   "#ff6464"
+  ],
+  "dotStroke": [
+   "#ffffff"
+  ],
+  "dotOpacity": [
+   "0.9/0.88"
+  ],
+  "dotRadius": [
+   3
+  ],
+  "bubbles": 0,
+  "bubbleFill": [],
+  "bubbleEdge": [],
+  "bubbleSteps": [],
+  "bubbleRadius": [],
+  "bubbleCount": null,
+  "bubbleNumbers": [],
+  "keyBubble": [
+   "rgb(255, 141, 132)",
+   "rgba(255, 100, 100, 0.45)"
+  ],
+  "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+  "chipDot": "rgb(47, 154, 87)",
+  "wantChip": "rgb(47, 154, 87)",
+  "blueGreyWord": false,
+  "over": 0
+ },
+ "legend1440": {
+  "bubbleKey": {
+   "border": "rgb(255, 141, 132)",
+   "bg": "rgba(255, 100, 100, 0.45)",
+   "img": "none",
+   "visible": true
+  },
+  "dotKey": {
+   "border": "rgba(216, 230, 238, 0.6)",
+   "bg": "rgba(255, 100, 100, 0.1)",
+   "img": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+   "visible": true
+  },
+  "caption": {
+   "border": "rgb(195, 209, 217)",
+   "bg": "rgb(255, 100, 100)",
+   "img": "none",
+   "visible": false
+  }
+ },
+ "redType": {
+  "species": "우뭇가사리",
+  "type": "#d7392f",
+  "chip": "rgb(215, 57, 47)",
+  "dots": 597
+ },
+ "errors1440": [],
+ "period": {
+  "species": "참굴",
+  "period": "2000–2015",
+  "hash": "#s=836033&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=7%2F35.66%2F128.83"
+ },
+ "periodMarks": {
+  "zoom": 7,
+  "species": "참굴",
+  "dots": 318,
+  "dotFill": [
+   "#ff6464"
+  ],
+  "dotStroke": [
+   "#ffffff"
+  ],
+  "dotOpacity": [
+   "0.9/0.88"
+  ],
+  "dotRadius": [
+   2.6
+  ],
+  "bubbles": 0,
+  "bubbleFill": [],
+  "bubbleEdge": [],
+  "bubbleSteps": [],
+  "bubbleRadius": [],
+  "bubbleCount": null,
+  "bubbleNumbers": [],
+  "keyBubble": [
+   "rgb(255, 141, 132)",
+   "rgba(255, 100, 100, 0.45)"
+  ],
+  "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+  "chipDot": "rgb(47, 154, 87)",
+  "wantChip": "rgb(47, 154, 87)",
+  "blueGreyWord": false,
+  "over": 0
+ },
+ "link": {
+  "hash": "s=836033&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=7%2F35.66%2F128.83",
+  "marks": {
+   "zoom": 7,
+   "species": "참굴",
+   "dots": 318,
+   "dotFill": [
+    "#ff6464"
+   ],
+   "dotStroke": [
+    "#ffffff"
+   ],
+   "dotOpacity": [
+    "0.9/0.88"
+   ],
+   "dotRadius": [
+    2.6
+   ],
+   "bubbles": 0,
+   "bubbleFill": [],
+   "bubbleEdge": [],
+   "bubbleSteps": [],
+   "bubbleRadius": [],
+   "bubbleCount": null,
+   "bubbleNumbers": [],
+   "keyBubble": [
+    "rgb(255, 141, 132)",
+    "rgba(255, 100, 100, 0.45)"
+   ],
+   "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+   "chipDot": "rgb(47, 154, 87)",
+   "wantChip": "rgb(47, 154, 87)",
+   "blueGreyWord": false,
+   "over": 0
+  }
+ },
+ "reduced": {
+  "bubbles": {
+   "zoom": 5,
+   "species": "참굴",
+   "dots": 0,
+   "dotFill": [],
+   "dotStroke": [],
+   "dotOpacity": [],
+   "dotRadius": [],
+   "bubbles": 4,
+   "bubbleFill": [
+    "#ff6464"
+   ],
+   "bubbleEdge": [
+    "#ff8d84"
+   ],
+   "bubbleSteps": [
+    0.3,
+    0.45,
+    0.6
+   ],
+   "bubbleRadius": [
+    20.18033988749895,
+    20.18033988749895,
+    19,
+    20.18033988749895
+   ],
+   "bubbleCount": "rgb(255, 255, 255)",
+   "bubbleNumbers": [
+    "5",
+    "5",
+    "4",
+    "5"
+   ],
+   "keyBubble": [
+    "rgb(255, 141, 132)",
+    "rgba(255, 100, 100, 0.45)"
+   ],
+   "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+   "chipDot": "rgb(47, 154, 87)",
+   "wantChip": "rgb(47, 154, 87)",
+   "blueGreyWord": false,
+   "over": 0
+  },
+  "dots": {
+   "zoom": 7,
+   "species": "참굴",
+   "dots": 452,
+   "dotFill": [
+    "#ff6464"
+   ],
+   "dotStroke": [
+    "#ffffff"
+   ],
+   "dotOpacity": [
+    "0.9/0.88"
+   ],
+   "dotRadius": [
+    2.6,
+    2.4576000000000002
+   ],
+   "bubbles": 0,
+   "bubbleFill": [],
+   "bubbleEdge": [],
+   "bubbleSteps": [],
+   "bubbleRadius": [],
+   "bubbleCount": null,
+   "bubbleNumbers": [],
+   "keyBubble": [
+    "rgb(255, 141, 132)",
+    "rgba(255, 100, 100, 0.45)"
+   ],
+   "keyDot": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none",
+   "chipDot": "rgb(47, 154, 87)",
+   "wantChip": "rgb(47, 154, 87)",
+   "blueGreyWord": false,
+   "over": 0
+  }
+ },
+ "wide": {
+  "species": "해삼",
+  "edges": [
+   "#ff6464"
+  ]
+ },
+ "v1100": {
+  "over": 0,
+  "dots": 0,
+  "bubbles": 10
+ },
+ "v768": {
+  "over": 0,
+  "dots": 0,
+  "bubbles": 10
+ },
+ "v390": {
+  "over": 0,
+  "dots": 0,
+  "bubbles": 4
+ }
+}
