@@ -1,7 +1,7 @@
 // First paint and largest paint (LCP) of the main page, before and after the ripple loader, measured the same way on both:
 // a fresh headless Chrome per run, 4× CPU slowdown and a slow mobile network (150 ms, 1.6 Mbps down), a 390×844 phone and a
 // 1440×900 desktop, the production API answered from live-snapshot.json (it is out of reach in the test machine). Prints the
-// median of the runs. Not Lighthouse: the same browser, only these numbers.
+// median of the runs and the element Chrome took as the largest paint. Not Lighthouse: the same browser, only these numbers.
 // Run: serve the two dist folders (e.g. main on 8766, this branch on 8765), then
 //      node verification/2026-10-17-intro-ripple/lcp.mjs http://127.0.0.1:8766/ http://127.0.0.1:8765/
 import {spawn} from 'node:child_process';
@@ -22,15 +22,14 @@ async function run(url,phone){
   await send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:1.6e6/8,uploadThroughput:7.5e5/8});
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`{const FX=${fx};const reply=k=>Promise.resolve(new Response(JSON.stringify(FX[k]),{status:200,headers:{'content-type':'application/json'}}));
     window.fetch=(o=>(u,...a)=>{const s=String(u);if(s.includes('/rest/v1/species_profiles'))return reply('profiles');if(s.includes('/rest/v1/species_map_cells'))return reply('cells');return o(u,...a);})(window.fetch);
-    window.__lcp=[];new PerformanceObserver(l=>{for(const e of l.getEntries())window.__lcp.push({t:e.startTime,el:e.element?(e.element.tagName.toLowerCase()+' in .'+(e.element.closest('[class]')?.className||'')):''});}).observe({type:'largest-contentful-paint',buffered:true});
-    window.__ready=0;const iv=setInterval(()=>{if(document.getElementById('site-gate')?.classList.contains('is-ready')){window.__ready=performance.now();clearInterval(iv);}},25);}`});
+    window.__lcp=[];new PerformanceObserver(l=>{for(const e of l.getEntries())window.__lcp.push({t:e.startTime,el:e.element?(e.element.tagName.toLowerCase()+' in .'+(e.element.closest('[class]')?.className||'')):''});}).observe({type:'largest-contentful-paint',buffered:true});}`});
   await send('Page.navigate',{url});await sleep(15000);
-  const r=await send('Runtime.evaluate',{expression:"({lcp:window.__lcp.at(-1),fcp:performance.getEntriesByName('first-contentful-paint')[0]?.startTime,ready:window.__ready})",returnByValue:true});
+  const r=await send('Runtime.evaluate',{expression:"({lcp:window.__lcp.at(-1),fcp:performance.getEntriesByName('first-contentful-paint')[0]?.startTime})",returnByValue:true});
   ws.close();chrome.kill();return r.result.value;
 }
 const med=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)];};
 for(const phone of [true,false])for(const url of process.argv.slice(2)){
   const runs=[];for(let i=0;i<3;i++)runs.push(await run(url,phone));
-  console.log(`${phone?'phone 390':'desktop 1440'} ${url}: FCP ${Math.round(med(runs.map(r=>r.fcp)))} ms · LCP ${Math.round(med(runs.map(r=>r.lcp?.t)))} ms (${[...new Set(runs.map(r=>r.lcp?.el))].join(', ')}) · entry screen usable ${Math.round(med(runs.map(r=>r.ready)))} ms`);
+  console.log(`${phone?'phone 390':'desktop 1440'} ${url}: FCP ${Math.round(med(runs.map(r=>r.fcp)))} ms · LCP ${Math.round(med(runs.map(r=>r.lcp?.t)))} ms (${[...new Set(runs.map(r=>r.lcp?.el))].join(', ')})`);
 }
 process.exit(0);
