@@ -1,6 +1,6 @@
 # 첫 화면 예시 카드 3개(`.gate-ex`) 제거 — 실행한 프롬프트(보완판)
 
-LKH가 올린 `intro-remove-examples-claude-code.md`를 main `ddd8530`과 대조해 빠진 곳을 채운 판이다. 원래 지침은 그대로 두고, 대조에서 찾은 항목만 **[보완]**으로 더했다.
+LKH가 올린 `intro-remove-examples-claude-code.md`를 main `ddd8530`과 대조해 빠진 곳을 채운 판이다. 원래 지침은 그대로 두고, 대조에서 찾은 항목만 **[보완]**으로 더했다. 작업 중 main에 PR #225('이렇게 쓸 수 있습니다' 카드, `c95e00a`)가 들어와 그 판에 맞춘 항목은 **[병합]**으로 적었다.
 
 ## 배경
 
@@ -10,7 +10,8 @@ LKH가 올린 `intro-remove-examples-claude-code.md`를 main `ddd8530`과 대조
 
 1. `dist/index.html`: `<ul class="gate-ex" …>…</ul>` 전체를 지운다(CSS로 숨기기만 하지 않는다).
 2. `dist/intro.js`
-   - `renderExamples()`와 그 호출, `renderExamples()`만 쓰던 `exampleLinks()`를 지운다(`grep`으로 다른 사용처 확인).
+   - `renderExamples()`와 그 호출을 지운다. `exampleLinks()`는 `renderExamples()`만 쓰면 함께 지운다(`grep`으로 다른 사용처 확인).
+   - **[병합]** #225의 정책 카드가 `exampleLinks()`로 보전 예시 종 이름(`.gate-use-sp`)을 채우므로 `exampleLinks()`는 남긴다. 그 채우기는 `renderExamples()` 안에 있었으므로 작은 함수 `renderUseSpecies()`로 옮긴다(같은 자료, 같은 결과).
    - `copyBoxes()`의 `.gate-ex li` 위치 모으기(`.concat(…)`)를 지운다. 나머지 글 상자 계산은 그대로.
    - **[보완]** 카드 클릭 처리 `q('.gate-ex').addEventListener('click', …)`를 지운다. 남기면 `q('.gate-ex')`가 `null`이라 첫 화면 연결 단계에서 오류가 나고, 그 뒤의 키보드 처리·움직임 스위치가 붙지 않는다.
    - **[보완]** 드래그 제외 목록 `NO_DRAG`에서 `.gate-ex`를 뺀다.
@@ -27,8 +28,9 @@ LKH가 올린 `intro-remove-examples-claude-code.md`를 main `ddd8530`과 대조
 ## 검사
 
 1. 카드에 묶인 검사의 기대값을 '카드가 없다'로 고친다. 지우거나 건너뛰지 않는다. **[보완]** 대조로 찾은 곳:
-   - `verification/test_intro_ui.mjs`: `exampleLinks` 단위 검사(함수가 없어지므로 vm 내보내기 목록에서도 빼야 `ReferenceError`가 안 난다), 마크업 순서 검사(`… → cards`), 카드 마크업 검사, 약점 낱말 검사의 `exHtml`
+   - `verification/test_intro_ui.mjs`: `exampleLinks` 단위 검사(함수를 지우면 vm 내보내기 목록에서도 빼야 `ReferenceError`가 안 난다. **[병합]** 남기므로 그대로), 마크업 순서 검사(`… → cards`), 카드 마크업 검사, 약점 낱말 검사의 `exHtml`
    - `verification/uicheck.mjs`: G-1b(버튼 아래 카드 위치), G-1c(카드 내용), G-1d(지구본 계산의 카드 상자), **G-8(카드를 눌러 비교 탭으로 가는 흐름)**
+   - **[병합]** #225의 uicheck G-1e는 정책 카드 종 이름을 `.gate-ex` 카드에서 읽었다 → `app.js` `gateExamples()`의 보전 예시에서 읽게 고친다. 정책 카드에 '‘보전 지표 높음’ 종' 문구가 있으므로 문구 부재 검사는 첫 화면(`.gate-center`, 정적 검사는 `<section class="gate-uses">` 앞)으로 한정한다.
 2. 새 검사: 첫 화면에 `.gate-ex`·`[data-ex]`가 없고, 첫 화면 글자에 세 설명 문구가 없다(정적: `test_intro_ui.mjs`, 브라우저: uicheck G-1c·G-8).
 3. CI 전체(`verify.yml`)와 로컬 uicheck를 돌린다.
 4. 390·768·1100·1440px에서 가로 넘침·지구본 겹침·콘솔 오류·움직임 줄이기 확인(`capture.mjs`).

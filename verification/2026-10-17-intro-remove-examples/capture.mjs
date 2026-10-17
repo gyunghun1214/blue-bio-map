@@ -32,7 +32,7 @@ const measure=page=>page.evaluate(()=>{
   return {stacked,over:document.documentElement.scrollWidth-document.documentElement.clientWidth,hero:hero.scrollWidth-hero.clientWidth,
     copyGap:stacked?null:Math.min(...copy.concat(btn).map(gap)),bandTop:stacked?Math.round(bb.top):null,
     copyBottom:Math.round(Math.max(...copy.concat(btn).map(b=>b.b))),globe:{cx:Math.round(f.cx),cy:Math.round(f.cy),R:Math.round(f.R)},
-    cards:el.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>el.textContent.includes(t)),
+    cards:el.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>el.querySelector('.gate-center').textContent.includes(t)),
     still:el.classList.contains('is-still'),enter:el.querySelector('#gate-enter').getBoundingClientRect().bottom<=h};});
 for(const [w,h] of [[1440,900],[1100,800],[768,1024],[390,844]])for(const still of [false,true]){
   const {page,errors}=await open(w,h,still),m=await measure(page),k=`${TAG} ${w}px${still?' 움직임 줄이기':''}`;
