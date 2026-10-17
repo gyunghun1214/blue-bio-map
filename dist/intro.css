@@ -154,6 +154,39 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-share-status{margin:0;font-size:12px;color:var(--g-ink2)}
 .gate-share-status:empty{display:none}
 
+/* 2026-10-17 (#3) '이렇게 쓸 수 있습니다': who can use the map for what. Side by side it is a second screen under the first,
+   which stays as designed and scrolls up as a whole (intro.js lifts the globe with it); the pill on the source strip's line
+   points down to it. Stacked it follows the card, before the source strip. No scroll bar over the design. */
+.gate-hero{overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.gate-hero::-webkit-scrollbar{display:none}
+.gate-foot{position:relative}
+.gate-down{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:8px;padding:6px 16px;
+  border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(6,23,39,.94);color:var(--g-ink2);font-size:13px;font-weight:600;white-space:nowrap;
+  transition:color .2s,border-color .2s}
+.gate-down:hover{color:var(--g-ink);border-color:rgba(140,215,208,.65)}
+.gate-uses{position:absolute;top:100%;left:0;right:0;padding:clamp(44px,8vh,84px) var(--g-pad) clamp(52px,9vh,92px);border-top:1px solid var(--g-line);
+  background:radial-gradient(ellipse 60% 140% at 85% 0,#0b2439 0,rgba(4,16,27,0) 70%),var(--g-bg)}
+.gate-uses-in{max-width:1320px}
+.gate-uses-k{display:flex;align-items:center;gap:14px;margin:0 0 clamp(10px,1.6vh,16px);font-size:clamp(13px,min(1.02vw,1.85vh),17px);font-weight:500;color:var(--g-teal)}
+.gate-uses-k:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
+.gate-uses-h{margin:0;font-size:clamp(26px,min(2.6vw,4.6vh),44px);font-weight:800;line-height:1.2;letter-spacing:-.02em}
+.gate-uses-h:focus{outline:none}
+.gate-uses-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,24px);margin:clamp(18px,3.4vh,36px) 0 0;padding:0;list-style:none}
+.gate-uses-list li{display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2.4vh,28px) clamp(18px,1.7vw,28px);border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;background:rgba(10,32,50,.78)}
+.gate-uses-list p{margin:0}
+.gate-use-who{display:flex;align-items:center;gap:12px;margin-bottom:6px!important;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--g-teal)}
+.gate-use-ic{flex:none;box-sizing:content-box;padding:8px;border:1px solid rgba(140,215,208,.35);border-radius:50%;fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.gate-use-see{font-size:clamp(17px,1.25vw,20px);font-weight:700;line-height:1.45;color:var(--g-ink)}
+.gate-use-pick{font-size:clamp(14px,1vw,16px);line-height:1.55;color:var(--g-ink2)}
+.gate-use-pick:before{content:"→";margin-right:8px;color:var(--g-teal)}
+.gate-use-go{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding:16px 0 8px;border:0;border-bottom:1px solid rgba(244,243,238,.5);
+  background:none;color:var(--g-ink);font-size:clamp(14px,.96vw,16px);font-weight:600;text-decoration:none;white-space:nowrap}
+.gate-use-go:hover{color:var(--g-teal);border-bottom-color:var(--g-teal)}
+.gate:not(.is-ready) button.gate-use-go{opacity:.38;pointer-events:none}
+.gate-uses-note{margin:clamp(14px,2.4vh,24px) 0 0;font-size:clamp(14px,.96vw,16px);color:var(--g-ink2)}
+
 /* leaving: the copy lifts away, the globe leans in toward Korea, the screen fades and the map is there underneath */
 html.gate-leaving .gate-center{transform:translateY(-28px);opacity:0}
 html.gate-leaving .gate.is-ready .gate-sea{transform:scale(1.22);transition:transform .8s cubic-bezier(.5,0,.25,1)}
@@ -189,6 +222,11 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-sources ul{gap:4px 14px}
   .gate-meta{margin-top:8px;gap:6px 16px}
   .gate-trip{padding-left:16px}
+  /* 2026-10-17 (#3): the uses after the card, before the source strip, one card a row */
+  .gate-uses{position:relative;top:auto;flex:none;order:1;padding:28px var(--g-pad)}
+  .gate-foot{order:2}
+  .gate-uses-list{grid-template-columns:minmax(0,1fr)}
+  .gate-down{display:none}
 }
 @media (max-width:760px){
   .gate-bar{gap:14px;min-height:56px}
@@ -210,6 +248,10 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-card button{margin-top:0;font-size:13px}
   .gate-legend{margin-top:6px;padding:3px 8px;font-size:var(--fs-min);line-height:1.5}
   .gate-legend span{display:inline;margin-right:12px}
+  .gate-uses-h{font-size:24px}
+  .gate-uses-list li{gap:6px;padding:16px 18px}
+  .gate-use-see{font-size:16px}
+  .gate-use-go{padding-top:10px}
 }
 @media (max-width:520px){.gate-nav{display:none}}
 @media (max-width:760px) and (max-height:720px){.gate-sources,.gate-legend span:nth-child(2){display:none}.gate-meta{margin-top:0}}
