@@ -236,6 +236,11 @@ try{
     JSON.stringify({...eckAxes,mcui:eckAxes.mcui.slice(0,80),flags:['MBPI 57','효소·수용체 등 단백질 표적','eckstolonol','1.47 ± 0.04 mM','시범','10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)'].map(x=>x+':'+eck.includes(x))})+' | '+eck.slice(0,500));
 
   let t=await pick(836033);
+  // 2026-10-17 (LKH): 참굴's temporary picture is gone; its right-panel head has the same 패류 icon tile as 홍합's, same size and
+  // place (the head's own height follows the name: '홍합(참담치)' takes two lines)
+  {const head=()=>evaluate("(()=>{const h=document.querySelector('#explore .sp-head'),i=h?.querySelector('.sp-art-icon .group-icon');if(!h)return null;const a=h.getBoundingClientRect(),b=i?.getBoundingClientRect();return {img:!!h.querySelector('img'),icon:i?.dataset.group||null,box:b?[b.left-a.left,b.top-a.top,b.width,b.height].map(Math.round).join():''}})()");
+    const oy=await head();await evaluate("selectSpecies(506159);1");await sleep(200);const mu=await head();await pick(836033);
+    check('Oyster right panel: 패류 group icon like 홍합, no picture, same icon size and place',!!oy&&!!mu&&!oy.img&&!mu.img&&oy.icon==='패류'&&mu.icon==='패류'&&!!oy.box&&oy.box===mu.box,JSON.stringify({oy,mu}));}
   // 2026-10-17 (LKH): the older collection summary (영양 기록 수 · 실측/계산 · 단위 미확정) left the detail; its counts stay in the
   // published profile, and the detail shows the MFPI line with no check label
   const oyProfile=snapshot.profiles.find(p=>p.aphia_id===836033).evidence_summary;
