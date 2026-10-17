@@ -1,0 +1,40 @@
+{
+ "schema_version": "alternative-production-notes-1",
+ "display_only": true,
+ "checked": "2026-10-17",
+ "note": "'두 지표 모두 높음' 종 프로필의 '대체생산·양식 연구 현황' 블록과 바다 탐험 카드 한 줄에 쓰는 설명. 점수·유형·지도 색은 이 파일을 읽지 않는다. 종마다 aquaculture_text(보고서 양식 기록 줄의 한국어 설명), rows(더할 줄: label·text·sources), card_summary(바다 탐험 카드 한 줄)를 둔다. text가 빈 줄과 빈 card_summary는 화면에 그리지 않는다. 공식 출처(정부 보도자료·동료심사 논문)로 확인한 사실만 적는다. 조사 기록: research/alternative-production-notes-2026-10-17.md.",
+ "alternative_production_notes": {
+  "342067": {
+   "korean_name": "살오징어",
+   "scientific_name": "Todarodes pacificus",
+   "aquaculture_text": "성숙한 살오징어가 실험실 대형 수조(300 m³, 깊이 6 m)에서 알덩이를 낳았고, 부화한 유생은 최대 10일 살았습니다. 2026년 연구는 야생 유생의 먹이를 조사하고 있습니다.",
+   "rows": [
+    {
+     "label": "국내 연구",
+     "text": "국립수산과학원이 2018년 살오징어의 초기 생활사와 종자생산 체계를 세우고 양식화하기 위한 연구를 시작했습니다. 국립수산과학원·전남대 연구진은 2024·2026년 살오징어 정자와 정포가 만들어지는 과정(번식 생리)을 밝혔습니다.",
+     "sources": [
+      {
+       "label": "해양수산부 보도자료(2018) ↗",
+       "url": "https://www.mof.go.kr/doc/ko/selectDoc.do?docSeq=21000&menuSeq=971&bbsSeq=10",
+       "published": "2018-06-26",
+       "checked": "2026-10-17"
+      },
+      {
+       "label": "정자 형성 논문(2024) ↗",
+       "url": "https://doi.org/10.1016/j.micron.2024.103749",
+       "published": "2024-11-20",
+       "checked": "2026-10-17"
+      },
+      {
+       "label": "정포 형성 논문(2026) ↗",
+       "url": "https://doi.org/10.1016/j.tice.2026.103985",
+       "published": "2026-09-23",
+       "checked": "2026-10-17"
+      }
+     ]
+    }
+   ],
+   "card_summary": "대형 수조 산란·부화 기록 · 국립수산과학원 종자생산 연구(2018년 시작)"
+  }
+ }
+}

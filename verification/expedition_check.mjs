@@ -21,6 +21,8 @@ const FIRST_LEG=pure.tripSeconds(STOP_T[0],ROUTE_N);
 // than set; this is only the ceiling, a passing run does not wait it out
 const TRIP_WAIT=Math.max(60000,LONGEST*10000);
 const SEA_CUCUMBER=stops.findIndex(st=>st.aphia_id===241776); // its zinc is missing in the report
+// 2026-10-17 (#8): the both-high species' card line comes from alternative-production-notes.json
+const SQUID=stops.findIndex(st=>st.aphia_id===342067), ALT_LINE=JSON.parse(fs.readFileSync(path.join(DIST,'alternative-production-notes.json'),'utf8')).alternative_production_notes['342067'].card_summary;
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -87,6 +89,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       await shot(s,`${tag}-cards`);
       const oldWords=await s.evaluate(weakIn("document.getElementById('cards-list').innerText+' '+document.getElementById('stop-list').textContent"));
       check(`${tag}: no card or stop-list text shows weakness wording or negative guidance (rules 2026-10-17)`,oldWords==='',oldWords);
+      const altLine=await s.evaluate("[...document.querySelectorAll('#cards-list .x-alt')].map(p=>({stop:Number(p.closest('.x-card').dataset.stop),text:p.textContent}))");
+      check(`${tag}: 살오징어 card has the line 대체생산·양식 연구 from alternative-production-notes.json; no other card has one`,altLine.length===1&&altLine[0].stop===SQUID&&altLine[0].text===`대체생산·양식 연구 ${ALT_LINE}`,JSON.stringify(altLine));
       await s.evaluate(`document.querySelector('#cards-list [data-detail="${SEA_CUCUMBER}"]').click()`);
       const d=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail opens from a card (해삼 zinc shown as —, not 0)`,d&&d.includes('해삼')&&/아연—/.test(d.replace(/\s/g,''))&&!/아연0/.test(d.replace(/\s/g,'')),String(d).slice(0,200));

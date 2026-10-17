@@ -210,6 +210,10 @@ const LICENSE_CUT=[[/^미확인\(.*\)$/,''],[/^공식 공보\. /,'법령 공보 
 const licenseNote=t=>LICENSE_CUT.reduce((s,[re,to])=>s.replace(re,to),String(t??'')).trim();
 // An aquaculture method note: what the source describes; a clause that only says what it leaves undescribed is left out
 const methodNote=t=>String(t??'').replace(/; [^;()]*\bnot described\b[^;()]*\)/g,')').replace(/ \([^()]*\bnot described\b[^()]*\)/g,'').trim();
+// The card's one line from the map's both-high block '대체생산·양식 연구 현황' (alternative-production-notes.json, display
+// only, 2026-10-17 #8): the species' card_summary, or nothing when the file or the line is missing
+const altCardLine=(file,aphia)=>file?.schema_version==='alternative-production-notes-1'&&file.display_only===true
+  &&typeof file.alternative_production_notes?.[aphia]?.card_summary==='string'?file.alternative_production_notes[aphia].card_summary.trim():'';
 
 // ---- browser ----
 const $=id=>document.getElementById(id);
@@ -226,7 +230,7 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const AXIS={MFPI:'식량자원 잠재력',MBPI:'생리활성 단서',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js
 const KIND={peptide:'펩타이드 비교집단',amp:'항균 펩타이드 비교집단(MIC)',chembl:'ChEMBL 화합물 비교집단',xo:'XO 문헌 비교집단',relaxed:'완화 산출',anticancer:'항암 세포주 비교집단'};
-let DATA=null,STATE=null,ROUTE=null,scene=null,revealTimer=null,lastFocus=null;
+let DATA=null,STATE=null,ROUTE=null,scene=null,revealTimer=null,lastFocus=null,ALT_NOTES=null;
 
 // Hand-drawn species illustrations (code-generated SVG, no photo in the repository).
 const ART={
@@ -286,6 +290,7 @@ const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in
 const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
 function cardHtml(stop,i,level,mode){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
+  const alt=altCardLine(ALT_NOTES,stop.aphia_id);
   const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
     <p class="x-obs">이 ${c.size_deg}° 셀에서 ${esc(yearsText(c))} 관측 기록 <b>${esc(c.records)}</b>건 <small>(지점 ${esc(c.sites)}곳)</small></p>
     <p class="x-fine">${esc(cellExtent(c))} · ${esc(NOTES.cell)}</p>${stop.shared_with?.length?`<p class="x-fine x-shared">${esc(sharedNote(stop))}</p>`:''}`
@@ -297,7 +302,7 @@ function cardHtml(stop,i,level,mode){
   <div class="x-r" data-r="1">${where}</div>
   <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트</span></div>
     <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(stop.korean_name)}</h2><p class="x-sci"><i>${esc(stop.scientific_name)}</i> · AphiaID ${esc(stop.aphia_id)}</p>
-    ${type?`<p class="x-type">${esc(type)}</p>`:''}</div></div>
+    ${type?`<p class="x-type">${esc(type)}</p>`:''}</div>${alt?`<p class="x-alt"><b>대체생산·양식 연구</b> ${esc(alt)}</p>`:''}</div>
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
     <div class="x-actions"><button type="button" class="x-primary" data-detail="${i}">자세히 보기</button><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a></div>
@@ -758,8 +763,10 @@ function buildSea(THREE,geo){
 
 /* ---------- boot ---------- */
 async function boot(){
+  const notes=fetch('alternative-production-notes.json').then(r=>r.ok?r.json():null).catch(()=>null);
   const res=await fetch('expedition-stops.json').catch(()=>null);
   DATA=res?.ok?await res.json().catch(()=>null):null;
+  ALT_NOTES=await notes;
   const route=Array.isArray(DATA?.stops)?routeStops(DATA.stops):[];
   // stops off the route must follow the route stops, so one index works for both (build_expedition_stops.py checks it)
   if(DATA?.schema_version!=='expedition-stops-2'||!route.length||DATA.stops.slice(0,route.length).some((s,i)=>s!==route[i])){

@@ -745,6 +745,24 @@ function aquacultureTierLine(aphia){
   const ref=link?` · <a href="${esc(link.url)}" target="_blank" rel="noopener">${r.source_id===src.kosis?.source_id?'KOSIS':'FAO 양식종 자료집'} ↗</a>`:r.tier==='commercial'?' · '+verifiedSource(r.source_id,'근거 ↗'):'';
   return `<p class="aqua-tier" data-tier="${esc(r.tier)}"><b>양식 단계</b> ${esc(r.tier_label)} · ${esc(r.basis)}${ref}</p>`;
 }
+// Text of the both-high block '대체생산·양식 연구 현황' (dist/alternative-production-notes.json, 2026-10-17 #8), kept apart
+// from the score files so the same block fits any species of that type: the Korean line for the report's farming record,
+// further rows (label, text, sources) and the expedition card line. Display only: no score, type or map colour reads it.
+// A row without text is left out. Schema 1 is read; a higher number is a newer file; anything else is ignored.
+let altNotes=new Map();
+function altNotesRows(file,outdated){
+  const v=/^alternative-production-notes-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'alternative-production-notes.json',version:file.schema_version});
+  const rows=new Map(), notes=file?.alternative_production_notes, text=t=>typeof t==='string'?t.trim():'';
+  if(file?.schema_version!=='alternative-production-notes-1'||file.display_only!==true||!notes||typeof notes!=='object')return rows;
+  for(const [id,n] of Object.entries(notes)){
+    if(!/^\d+$/.test(id)||!n||typeof n!=='object')continue;
+    const extra=(Array.isArray(n.rows)?n.rows:[]).filter(r=>text(r?.label)&&text(r?.text))
+      .map(r=>({label:text(r.label),text:text(r.text),sources:(Array.isArray(r.sources)?r.sources:[]).filter(x=>/^https?:\/\//i.test(text(x?.url))&&text(x?.label))}));
+    rows.set(Number(id),{aquaculture:text(n.aquaculture_text),rows:extra,card:text(n.card_summary)});
+  }
+  return rows;
+}
 // 4.12 (prereg-4.12-2026-10-14 3-D): related papers that no score uses (dist/supplementary-literature.json, built by
 // scripts/build_supplementary_literature.py). Schema 1 is read; a higher number is a newer file this code does not know;
 // anything else is ignored. Nothing here reaches MFPI, MBPI, MCUI, BBVI, the matrix, the map colours or a chip, and the count
@@ -2587,17 +2605,17 @@ function institutionChecks(s){
 <li><b>확인 순서</b>채집·연구 전에는 원문과 소관 기관에 관할을 확인합니다.</li></ul>`;
 }
 // Application doc: "두 지표 모두 높은 종은 좌표보다 대체생산 정보를 먼저 노출". The official type (report weight, not the slider)
-// decides, so the order does not jump while someone drags the weight. Only reviewed records are quoted; anything else reads 조사 필요.
-const AQUACULTURE_KO={
-  342067:'성숙한 살오징어가 실험실 대형 수조(300 m³, 깊이 6 m)에서 알덩이를 낳았고, 부화한 유생은 최대 10일 살았습니다. 2026년 연구는 야생 유생의 먹이를 조사하고 있습니다.'
-};
+// decides, so the order does not jump while someone drags the weight. Only reviewed records are quoted, and a row is drawn
+// only when it has text (2026-10-17 #8): the report's farming record with its Korean line from alternative-production-notes.json
+// (no line there, no row), the notes' further rows with their sources (살오징어 '국내 연구'), then the MCUI.
 const altFirst=s=>!!s&&officialType(s)==='alternative_production';
 function altProductionBlock(s,compact=false){
   if(!altFirst(s))return '';
-  const q=s.assessment?.food_trace?.aquaculture;
-  const farmed=q?.reviewed?`${q.feasible?'양식 사례 있음':'사육 시도 기록'} · ${AQUACULTURE_KO[s.aphiaID]||esc(String(q.method||'').replace(/\.\s*$/,''))} ${verifiedSource(q.source_id,'양식 연구 원문 ↗')}`:'';
+  const q=s.assessment?.food_trace?.aquaculture, note=altNotes.get(s.aphiaID);
+  const farmed=q?.reviewed&&note?.aquaculture?`${q.feasible?'양식 사례 있음':'사육 시도 기록'} · ${esc(note.aquaculture)} ${verifiedSource(q.source_id,'양식 연구 원문 ↗')}`:'';
   const mcui=pilotScore(s,'MCUI');
   const rows=(farmed?`<div class="alt-row"><span>양식 연구</span><p>${farmed}</p></div>`:'')+
+    (note?.rows||[]).map(r=>`<div class="alt-row"><span>${esc(r.label)}</span><p>${esc(r.text)}${r.sources.map(x=>' '+sourceLink(x.url,x.label)).join('')}</p></div>`).join('')+
     (mcui===null?'':`<div class="alt-row"><span>보전 지표</span><p>MCUI ${scoreText(s,'MCUI',mcui)} · ${esc(mcuiBasisLabel(s))}</p></div>`);
   return `<section class="alt-production${compact?' compact':''}" aria-label="대체생산·양식 연구 현황"><h3>대체생산·양식 연구 현황 <span class="fine">두 지표 모두 높은 종 · 출현 지도보다 먼저</span></h3>${rows}`+
     (compact?'':'<p class="fine">두 지표가 모두 높은 종은 신청서 원칙에 따라 출현 위치보다 대체생산 정보를 먼저 보여 줍니다. 공식 유형(w = 0.50) 기준입니다.</p>')+'</section>';
@@ -4440,10 +4458,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog,aquaTier]=await Promise.all([loadPublishedProfiles(),
-      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json']
+    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog,aquaTier,altNotesFile]=await Promise.all([loadPublishedProfiles(),
+      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json','alternative-production-notes.json']
         .map(f=>readData(f,FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null))]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);aquacultureTier=aquacultureTierRows(aquaTier,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);aquacultureTier=aquacultureTierRows(aquaTier,next.outdated);altNotes=altNotesRows(altNotesFile,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;

@@ -193,5 +193,5 @@ if(globalThis.document?.currentScript&&document.getElementById('map')){
   else{startEarly(API_URLS.profiles,apiInit());startEarly(API_URLS.cells,apiInit());}
   for(const f of ['countries.json','effort.json','cell-sea-geometry.json','source-terms-ko.json','cell-sea-areas.json','candidate-catalog.json',
     'expansion-evidence.json','expansion-public-cells.json','assessments.json','matrix-readiness.json','trait-evidence.json',
-    'unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json'])startEarly(f,FRESH);
+    'unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json','alternative-production-notes.json'])startEarly(f,FRESH);
 }
