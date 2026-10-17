@@ -1,0 +1,166 @@
+[
+ {
+  "name": "1440px: the hero (EVIDENCE & METHODS) is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-hero"
+  }
+ },
+ {
+  "name": "1440px: no MCUI SCALE card, class or pointer text left",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1440px: 02 keeps LC 10 · NT 35 · VU 60 · EN 80 · CR 100; scope card and flow kept",
+  "ok": true
+ },
+ {
+  "name": "1440px: hero sits below the tab bar with the tab's own top padding (not touching, not doubled)",
+  "ok": true,
+  "detail": {
+   "method": {
+    "gap": 56,
+    "pad": "56px"
+   },
+   "compare": {
+    "first": "sr-only",
+    "gap": 13,
+    "pad": "14px"
+   }
+  }
+ },
+ {
+  "name": "1440px: no horizontal overflow",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "1440px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1100px: the hero (EVIDENCE & METHODS) is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-hero"
+  }
+ },
+ {
+  "name": "1100px: no MCUI SCALE card, class or pointer text left",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1100px: 02 keeps LC 10 · NT 35 · VU 60 · EN 80 · CR 100; scope card and flow kept",
+  "ok": true
+ },
+ {
+  "name": "1100px: hero sits below the tab bar with the tab's own top padding (not touching, not doubled)",
+  "ok": true,
+  "detail": {
+   "method": {
+    "gap": 44,
+    "pad": "44px"
+   },
+   "compare": {
+    "first": "sr-only",
+    "gap": 13,
+    "pad": "14px"
+   }
+  }
+ },
+ {
+  "name": "1100px: no horizontal overflow",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "1100px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "768px: the hero (EVIDENCE & METHODS) is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-hero"
+  }
+ },
+ {
+  "name": "768px: no MCUI SCALE card, class or pointer text left",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "768px: 02 keeps LC 10 · NT 35 · VU 60 · EN 80 · CR 100; scope card and flow kept",
+  "ok": true
+ },
+ {
+  "name": "768px: hero sits below the tab bar with the tab's own top padding (not touching, not doubled)",
+  "ok": true,
+  "detail": {
+   "method": {
+    "gap": 44,
+    "pad": "44px"
+   },
+   "compare": {
+    "first": "sr-only",
+    "gap": 13,
+    "pad": "14px"
+   }
+  }
+ },
+ {
+  "name": "768px: no horizontal overflow",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "768px: no console errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: the hero (EVIDENCE & METHODS) is the first block of the method tab",
+  "ok": true,
+  "detail": {
+   "first": "mt-hero"
+  }
+ },
+ {
+  "name": "390px: no MCUI SCALE card, class or pointer text left",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: 02 keeps LC 10 · NT 35 · VU 60 · EN 80 · CR 100; scope card and flow kept",
+  "ok": true
+ },
+ {
+  "name": "390px: hero sits below the tab bar with the tab's own top padding (not touching, not doubled)",
+  "ok": true,
+  "detail": {
+   "method": {
+    "gap": 28,
+    "pad": "28px"
+   },
+   "compare": {
+    "first": "sr-only",
+    "gap": 13,
+    "pad": "14px"
+   }
+  }
+ },
+ {
+  "name": "390px: no horizontal overflow",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "390px: no console errors",
+  "ok": true,
+  "detail": []
+ }
+]

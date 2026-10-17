@@ -53,17 +53,21 @@ out=[];assert.equal(ctx.file({...file,schema_version:'other'},out),null);assert.
 assert.equal(ctx.file({...file,display_only:false},[]),null);
 assert.equal(ctx.file({...file,rows:[{...file.rows[0],outcome_class:'통과됨'}]},[]),null);
 
-// The page: no scorecard and no fold 05 in the markup, the code or the styles; the MCUI table is the first block of the
-// method tab and the 03 MCUI line points to it; one badge per journey card.
+// The page: no scorecard and no fold 05 in the markup, the code or the styles; the hero is the first block of the
+// method tab; one badge per journey card.
 const css=read('method.css'), method=html.split('<section id="method"')[1].split('</section>\n</main>')[0];
 for(const gone of ['id="mt-scorecard"','mt-vc','VALIDATION SCORECARD','검증 성적표','id="mt-acc-05"','promise-table','promise-count','신청서 약속','구현 현황','data-alt-species'])
   assert.ok(!html.includes(gone),'index.html: '+gone);
 for(const gone of ['renderScorecard','mt-vc-','#promise-table','promise-count','data-alt-species'])assert.ok(!app.includes(gone),'app.js: '+gone);
 for(const gone of ['.mt-vc','[data-oc','.promise-table','.pt-s','.pt-'])assert.ok(!css.includes(gone),'method.css: '+gone);
-assert.match(method,/^[^>]*>\n<div class="mt-mcui-map" id="mt-mcui-map"/);
+// 2026-10-17 (LKH): the MCUI SCALE card left the top of the tab (markup and styles); the hero opens the tab and the 03 MCUI
+// line no longer points to it (02 still gives LC 10 · NT 35 · VU 60 · EN 80 · CR 100)
+assert.match(method,/^[^>]*>\n<div class="mt-hero">/);
+for(const gone of ['mt-mcui-map','mt-mm-','MCUI SCALE','대응표는 이 탭'])assert.ok(!html.includes(gone)&&!css.includes(gone),'MCUI SCALE card: '+gone);
+assert.ok(method.includes('범주 → 숫자는 LC 10 · NT 35 · VU 60 · EN 80 · CR 100'));
 assert.deepEqual([...method.matchAll(/<details class="mt-acc" id="(mt-acc-\d+)"/g)].map(m=>m[1]),['mt-acc-01','mt-acc-02','mt-acc-03']);
 assert.ok(!html.includes('id="mt-changelog"')&&!html.includes('방법은 언제, 왜 바뀌었나요?'));
-assert.ok(method.includes('(대응표는 이 탭 맨 위)')&&!method.includes('이 탭 위쪽'));
+assert.ok(method.includes('등급은 보전 평가 범주를 점수로 옮긴 값입니다.')&&!method.includes('이 탭 위쪽'));
 for(const k of ['MFPI','MBPI','MCUI'])assert.equal((html.match(new RegExp(`<span class="mt-vbadge" data-ind="${k}"`,'g'))||[]).length,0,k);
 assert.ok(!html.includes('mt-vbadge'));
 console.log(`posthoc verification badges: ${file.total} checks ${JSON.stringify(file.counts)} kept in the file, scores unchanged; no badge, scorecard table, fold 04 or fold 05 on the page`);
