@@ -3489,6 +3489,7 @@ function initMap(geography){
   prepareLandMask(geography);
   const still=!!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches; // no zoom or fade animation then
   map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7,zoomAnimation:!still,fadeAnimation:!still,markerZoomAnimation:!still});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
+  initWheelZoom();
   syncPopupPad();map.on('resize',syncPopupPad);
   initBasemaps(geography);
   const labels=[['대한민국',36.4,127.4],['북한',40.1,126.6],['일본',35.5,136.8],['중국',39,119.5]];
@@ -3502,6 +3503,56 @@ function initMap(geography){
   overlay=L.layerGroup().addTo(map);
   map.on('zoomend',drawOccurrence);
   map.attributionControl.setPrefix('Leaflet');map.attributionControl.addAttribution('OBIS · GBIF');fitMap();setBasemap(savedBasemap());
+}
+
+// 2026-10-17 (LKH): on a computer, Ctrl(⌘) + wheel and touchpad pinch zoom the map, only over the map (as embedded Google Maps do).
+// A plain wheel still scrolls the page (scrollWheelZoom stays off) and shows a short hint; outside .map-stage the browser's own
+// page zoom is left alone. Chrome, Edge and Firefox send a pinch as a ctrlKey wheel; Safari sends gesture* events, which iPhone
+// and iPad Safari also send for finger pinches that Leaflet's touchZoom already handles, so those are skipped while a finger is down.
+// Whole zoom steps only: the bubbles and the m= link expect them. moveend/zoomend redraw and rewrite the hash as before.
+const WHEEL_STEP_PX=60,WHEEL_STEP_LINES=1,WHEEL_GAP_MS=150,WHEEL_IDLE_MS=250,PINCH_STEP=1.25,WHEEL_HINT_MS=1500,WHEEL_HINT_MAX=3;
+let wheelHints=0; // hints shown this page load (not stored)
+function initWheelZoom(){
+  const box=map.getContainer(),stage=box.closest('.map-stage')||box;
+  let sum=0,lastWheel=-Infinity,lastStep=-Infinity,gesture=null,touches=0,hintTimer=0;
+  const at=e=>Number.isFinite(e.clientX)?map.mouseEventToContainerPoint(e):map.getSize().divideBy(2);
+  const step=(dir,e,now)=>{
+    lastStep=now;sum=0;
+    const z=map.getZoom(),next=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),Math.round(z)+dir));
+    if(next!==z)map.setZoomAround(at(e),next);
+  };
+  const mac=/mac/i.test(navigator.userAgentData?.platform||navigator.platform||'');
+  const hint=document.createElement('div');hint.className='map-wheel-hint';hint.setAttribute('aria-hidden','true');
+  hint.textContent=mac?'⌘ + 스크롤 또는 두 손가락을 벌려 지도를 확대합니다':'Ctrl + 스크롤로 지도를 확대합니다';
+  stage.appendChild(hint);
+  // one hint per burst of scrolling (it stays while the wheel keeps turning), at most WHEEL_HINT_MAX per page load; mouse and touchpad only
+  const showHint=e=>{
+    if(!globalThis.matchMedia?.('(hover:hover) and (pointer:fine)').matches||!box.contains(e.target))return;
+    if(hintTimer)clearTimeout(hintTimer);
+    else{if(wheelHints>=WHEEL_HINT_MAX)return;wheelHints++;hint.classList.add('on');}
+    hintTimer=setTimeout(()=>{hint.classList.remove('on');hintTimer=0;},WHEEL_HINT_MS);
+  };
+  stage.addEventListener('wheel',e=>{
+    if(!(e.ctrlKey||e.metaKey)){showHint(e);return;}
+    e.preventDefault(); // also between steps, or the page would zoom in the gap
+    if(gesture)return;  // Safari sending both: the gesture moves the map
+    const now=performance.now(),u=e.deltaMode===0?e.deltaY/WHEEL_STEP_PX:e.deltaMode===1?e.deltaY/WHEEL_STEP_LINES:Math.sign(e.deltaY);
+    if(now-lastWheel>WHEEL_IDLE_MS||Math.sign(u)!==Math.sign(sum))sum=0;
+    lastWheel=now;
+    if(!u||now-lastStep<WHEEL_GAP_MS)return; // one step per WHEEL_GAP_MS, so momentum scrolling does not run through several
+    sum+=u;
+    if(Math.abs(sum)>=1)step(sum<0?1:-1,e,now);
+  },{passive:false});
+  const fingers=e=>{touches=e.touches.length;};
+  for(const t of ['touchstart','touchend','touchcancel'])stage.addEventListener(t,fingers,{passive:true});
+  stage.addEventListener('gesturestart',e=>{if(touches)return;e.preventDefault();gesture={base:e.scale||1};},{passive:false});
+  stage.addEventListener('gesturechange',e=>{
+    if(touches||!gesture)return;e.preventDefault();
+    const now=performance.now(),r=e.scale/gesture.base;
+    if(now-lastStep<WHEEL_GAP_MS||!(r>=PINCH_STEP||r<=1/PINCH_STEP))return;
+    gesture.base=e.scale;step(r>1?1:-1,e,now);
+  },{passive:false});
+  stage.addEventListener('gestureend',e=>{if(!gesture)return;e.preventDefault();gesture=null;},{passive:false});
 }
 
 function renderComparison(){

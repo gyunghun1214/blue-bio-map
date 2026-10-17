@@ -1177,6 +1177,13 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .flash{animation:bbm-flash 1.6s ease-out}
 @keyframes bbm-flash{0%{box-shadow:0 0 0 2px var(--x-fill)}100%{box-shadow:0 0 0 2px transparent}}
 @media (prefers-reduced-motion:reduce){.flash{animation:none}}
+/* 2026-10-17: a plain wheel over the map shows how to zoom it (app.js initWheelZoom); it never takes clicks */
+.map-wheel-hint{position:absolute;left:50%;top:50%;z-index:650;transform:translate(-50%,-50%);max-width:calc(100% - 32px);padding:12px 18px;
+  border:1px solid var(--x-border2);border-radius:12px;background:color-mix(in srgb,var(--x-panel) 92%,transparent);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);color:var(--x-text);
+  font-size:15px;font-weight:600;line-height:1.45;text-align:center;box-shadow:0 10px 28px rgba(0,0,0,.35);pointer-events:none;
+  opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.map-wheel-hint.on{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){.map-wheel-hint{transition:none}}
 
 @media (min-width:1180px){
   html:has(#explore.active),body:has(#explore.active){height:100%;overflow:hidden}

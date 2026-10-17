@@ -873,6 +873,74 @@ try{
   check('Period filter relabels the panel summary (selected period vs 전체 기간)',pfSum.one.includes('선택 기간 2000')&&pfSum.all.includes('전체 기간'),JSON.stringify(pfSum));
   check('A-5 CSV: BOM, header + one line per published period row',csv.bom&&csv.lines===csv.cells+1&&csv.head.startsWith('"species_label"'),JSON.stringify(csv));
   check('A-6 info panel and copy-link control present',await evaluate("!!document.querySelector('.map-info summary')&&document.querySelector('.map-legend-more').textContent.includes('회색 음영')&&!!document.getElementById('copy-link')"));
+  // 2026-10-17 (LKH): Ctrl(⌘) + wheel and touchpad pinch zoom the map over the map only; a plain wheel scrolls the page and shows a hint
+  {
+    // a mouse or touchpad computer: DevTools media emulation does not cover hover/pointer, and touch emulation does not switch back,
+    // so the hint's media query is answered by a stand-in for these checks
+    const pointerIs=fine=>evaluate(`(()=>{const real=window.__realMM||(window.__realMM=window.matchMedia);window.matchMedia=q=>q==='(hover:hover) and (pointer:fine)'?{matches:${fine},media:q}:real.call(window,q);return 1})()`);
+    await pointerIs(true);
+    await evaluate("map.closePopup();map.setView([36,128],5,{animate:false});wheelHints=0;1");await sleep(300);
+    // synthetic events report defaultPrevented through dispatchEvent's return value
+    const wheel=(sel,o={},n=1)=>evaluate(`(()=>{const el=${sel},r=el.getBoundingClientRect(),x=${o.fx??.5},y=${o.fy??.5};let prevented=false;
+      for(let i=0;i<${n};i++)prevented=!el.dispatchEvent(new WheelEvent('wheel',{bubbles:true,cancelable:true,clientX:r.left+r.width*x,clientY:r.top+r.height*y,deltaY:${o.dy??-100},deltaMode:${o.mode??0},ctrlKey:${!!o.ctrl},metaKey:${!!o.meta}}))||prevented;
+      return {prevented,z:map.getZoom()}})()`);
+    const zoomNow=async()=>{await sleep(450);return evaluate("({z:map.getZoom(),m:new URLSearchParams(location.hash.slice(1)).get('m')})");};
+    const MAP="document.getElementById('map')";
+    const m0=await zoomNow();
+    const plain=await wheel(MAP,{dy:120});const plainHint=await evaluate("({on:document.querySelector('.map-wheel-hint').classList.contains('on'),n:wheelHints,text:document.querySelector('.map-wheel-hint').textContent,aria:document.querySelector('.map-wheel-hint').getAttribute('aria-hidden'),pe:getComputedStyle(document.querySelector('.map-wheel-hint')).pointerEvents})");
+    await sleep(300);await shot('desktop-map-wheel-hint',false); // after the 0.2 s fade-in
+    await wheel(MAP,{dy:120},5);const burst=await evaluate("wheelHints");
+    const plainZ=await zoomNow();
+    check('Map wheel: a plain wheel over the map is not taken (page scroll stays) and leaves the zoom',!plain.prevented&&plainZ.z===m0.z,JSON.stringify({plain,m0,plainZ}));
+    check('Map wheel: a plain wheel shows one hint per burst (Ctrl + 스크롤로 지도를 확대합니다), hidden from screen readers and clicks',plainHint.on&&plainHint.n===1&&burst===1&&plainHint.text==='Ctrl + 스크롤로 지도를 확대합니다'&&plainHint.aria==='true'&&plainHint.pe==='none',JSON.stringify({plainHint,burst}));
+    await sleep(1700);
+    const gone=await evaluate("document.querySelector('.map-wheel-hint').classList.contains('on')");
+    await evaluate("wheelHints=WHEEL_HINT_MAX;1");await wheel(MAP,{dy:120});
+    const capped=await evaluate("document.querySelector('.map-wheel-hint').classList.contains('on')");
+    check('Map wheel: the hint goes after 1.5 s and is not shown after 3 times',!gone&&!capped,JSON.stringify({gone,capped}));
+    const before=await evaluate("(()=>{const p=map.getSize().multiplyBy(.35);return map.containerPointToLatLng(p)})()");
+    const ctrl=await wheel(MAP,{ctrl:true,fx:.35,fy:.35});
+    const m1=await zoomNow();
+    const after=await evaluate("(()=>{const p=map.getSize().multiplyBy(.35);const c=map.containerPointToLatLng(p),m=map.getCenter();return {lat:c.lat,lng:c.lng,clat:m.lat,clng:m.lng}})()");
+    const drift=Math.hypot(after.lat-before.lat,after.lng-before.lng),fromCentre=Math.hypot(after.clat-before.lat,after.clng-before.lng);
+    check('Map wheel: Ctrl + wheel over the map is taken (no page zoom) and zooms in one step, the hash m= follows',ctrl.prevented&&m1.z===m0.z+1&&m1.m?.startsWith(m1.z+'/')&&m1.m!==m0.m,JSON.stringify({ctrl,m0,m1}));
+    check('Map wheel: the zoom centres on the cursor (the place under it stays put)',drift<fromCentre/10,JSON.stringify({before,after,drift,fromCentre}));
+    const small=await wheel(MAP,{ctrl:true,dy:8},10);const s1=await zoomNow();
+    check('Map wheel: ten small touchpad deltas (8 px) add up to one step out',small.prevented&&s1.z===m1.z-1,JSON.stringify({small,s1,m1}));
+    const lines=await wheel(MAP,{ctrl:true,dy:-1,mode:1});const l1=await zoomNow();
+    check('Map wheel: a one-line Firefox wheel (deltaMode 1) is one step, ⌘ (metaKey) works too',lines.prevented&&l1.z===s1.z+1&&(await wheel(MAP,{meta:true,dy:100})).prevented&&(await zoomNow()).z===s1.z,JSON.stringify({lines,l1,s1}));
+    await evaluate("map.setZoom(8,{animate:false});1");await sleep(300);const top=await wheel(MAP,{ctrl:true});const topZ=await zoomNow();
+    await evaluate("map.setZoom(3,{animate:false});1");await sleep(300);const bottom=await wheel(MAP,{ctrl:true,dy:100});const bottomZ=await zoomNow();
+    check('Map wheel: zoom stays within 3–8 (taken at the ends, no page zoom)',top.prevented&&topZ.z===8&&bottom.prevented&&bottomZ.z===3,JSON.stringify({topZ,bottomZ}));
+    await evaluate("map.setView([36,128],5,{animate:false});1");await sleep(300);
+    const overLegend=await wheel("document.getElementById('legend-toggle')",{ctrl:true});const legZ=await zoomNow();
+    check('Map wheel: Ctrl + wheel over the legend floating on the map zooms the map too',overLegend.prevented&&legZ.z===6,JSON.stringify({overLegend,legZ}));
+    const outside=await wheel("document.getElementById('side-panel')||document.querySelector('.map-below')",{ctrl:true});const outZ=await zoomNow();
+    const outsideMeta=await wheel("document.querySelector('.species-pane')||document.body",{meta:true});
+    check('Map wheel: Ctrl(⌘) + wheel outside the map is left to the browser (page zoom) and keeps the map zoom',!outside.prevented&&!outsideMeta.prevented&&outZ.z===6,JSON.stringify({outside,outsideMeta,outZ}));
+    // Safari: gesture* with no finger down (Mac touchpad) steps the zoom; with a finger down (iPhone/iPad) Leaflet's touchZoom has it
+    const gest=(type,scale)=>`(()=>{const st=document.querySelector('.map-stage'),r=st.getBoundingClientRect(),e=new Event('${type}',{bubbles:true,cancelable:true});Object.defineProperties(e,{scale:{value:${scale}},clientX:{value:r.left+r.width/2},clientY:{value:r.top+r.height/2}});return !st.dispatchEvent(e)})()`;
+    const g=[await evaluate(gest('gesturestart',1)),await evaluate(gest('gesturechange',1.3))];const gZ=await zoomNow();
+    const gCtrl=await wheel(MAP,{ctrl:true});const gCtrlZ=await zoomNow();g.push(await evaluate(gest('gestureend',1.3)));
+    check('Map pinch (Safari gesture events, touchpad): scale 1.3 is one step in, a ctrlKey wheel during the gesture adds none',g.every(Boolean)&&gZ.z===7&&gCtrl.prevented&&gCtrlZ.z===7,JSON.stringify({g,gZ,gCtrlZ}));
+    const touch=n=>`(()=>{const st=document.querySelector('.map-stage'),t=[...Array(${n})].map((_,i)=>new Touch({identifier:i+1,target:st,clientX:100+i*40,clientY:100}));st.dispatchEvent(new TouchEvent(${n}?'touchstart':'touchend',{bubbles:true,touches:t}));return 1})()`;
+    await evaluate(touch(2));const tg=[await evaluate(gest('gesturestart',1)),await evaluate(gest('gesturechange',1.5))];const tZ=await zoomNow();await evaluate(gest('gestureend',1.5));await evaluate(touch(0));
+    check('Map pinch: gesture events while fingers are down (iPhone/iPad) are left to Leaflet touchZoom (no second zoom)',tg.every(x=>!x)&&tZ.z===7,JSON.stringify({tg,tZ}));
+    // the real input path: a Ctrl wheel sent through DevTools input reaches the map and does not zoom the page
+    const c=await evaluate("(()=>{const r=document.getElementById('map').getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,el=document.elementFromPoint(x,y);window.__wheels=[];document.addEventListener('wheel',e=>__wheels.push(e.ctrlKey),{capture:true,passive:true});return {x,y,on:el?.id||el?.className?.baseVal||el?.className,dpr:devicePixelRatio,vv:visualViewport.scale}})()");
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:c.x,y:c.y});
+    await send('Input.dispatchMouseEvent',{type:'mouseWheel',x:c.x,y:c.y,deltaX:0,deltaY:-100,modifiers:2});const realZ=await zoomNow();realZ.seen=await evaluate("__wheels");
+    await send('Input.dispatchMouseEvent',{type:'mouseWheel',x:c.x,y:c.y,deltaX:0,deltaY:100});const realPlain=await zoomNow();
+    const page=await evaluate("({dpr:devicePixelRatio,vv:visualViewport.scale})");
+    check('Map wheel (DevTools input): Ctrl + wheel zooms the map, a plain wheel does not, the page scale is unchanged',realZ.z===8&&realPlain.z===8&&page.dpr===c.dpr&&page.vv===c.vv,JSON.stringify({c,realZ,realPlain,page}));
+    // touch devices never see the hint
+    await pointerIs(false);
+    await evaluate("wheelHints=0;1");await wheel(MAP,{dy:120});const touchHint=await evaluate("({on:document.querySelector('.map-wheel-hint').classList.contains('on'),fine:matchMedia('(hover:hover) and (pointer:fine)').matches})");
+    await evaluate("window.matchMedia=window.__realMM;1");
+    check('Map wheel: no hint on a touch device',!touchHint.fine&&!touchHint.on,JSON.stringify(touchHint));
+    check('Map zoom is described: map aria-label and 그 밖의 기능 list name Ctrl(⌘) + 스크롤 · 터치패드 핀치 · +/− · keyboard; Leaflet keyboard and touch zoom on, scrollWheelZoom off',await evaluate("(()=>{const a=document.getElementById('map').getAttribute('aria-label'),li=[...document.querySelectorAll('.map-info li')].map(l=>l.textContent);return a.startsWith('한반도 주변 공개 격자 지도')&&/Ctrl\\(⌘\\) \\+ 스크롤/.test(a)&&a.includes('터치패드 핀치')&&a.includes('키보드')&&li.some(t=>t.startsWith('확대')&&t.includes('Ctrl(⌘) + 스크롤')&&t.includes('터치패드 핀치')&&t.includes('+/− 버튼'))&&map.keyboard.enabled()&&map.touchZoom.enabled()&&!map.scrollWheelZoom.enabled()})()"));
+    await evaluate("wheelHints=0;map.setView([36,128],5,{animate:false});1");
+  }
   // 2026-10-13: a shared t=value link opens on the species view of that species (no new hash key)
   await evaluate("location.hash='s=372119&v=explore&t=value';location.reload();1");
   for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
