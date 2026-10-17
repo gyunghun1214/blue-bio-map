@@ -81,11 +81,11 @@ assert.match(popup[0],/종 단위 값: MFPI 보류 · MBPI 보류 · MCUI 시범
 assert.doesNotMatch(popup[0],/90\.0/);
 // Schematic dots must stay inside the cell and never take the click from the evidence popup.
 assert.equal(dots.length,36,'9 records -> 5–19 band -> 6x6 per 1°');
-assert.ok(dots.every(d=>d.options.fillColor==='#A9C6D4'),'one neutral blue-grey for the schematic pattern'); // 2026-10-15 explore design match: blue-grey, not red
+assert.ok(dots.every(d=>d.options.fillColor==='#ff6464'),'one red for the schematic pattern'); // 2026-10-11 navy map: lighter red (intended change 2); 2026-10-17: back to red after the 2026-10-15 blue-grey
 assert.ok(dots.every(d=>d.options.interactive===false));
 assert.ok(dots.every(d=>d.options.radius>=1.1&&d.options.radius<=2.6),'zoom 7 dots stay small');
 assert.ok(dots.every(({latlng:[lat,lon]})=>lat>34&&lat<35&&lon>128&&lon<129));
-assert.match(popup[0],/청회색 점은 이 1° 공개 셀의 도식적 표시입니다\(기록이 있는 칸의 위치, 넓게 묶음\)/);
+assert.match(popup[0],/붉은 점은 이 1° 공개 셀의 도식적 표시입니다\(기록이 있는 칸의 위치, 넓게 묶음\)/);
 // Wider published cells (sea cucumber: 4°) keep their real size in the popup and dot layout.
 popup.length=0;dots.length=0;
 species.cells=[{...cell,sizeDeg:4,lat0:32,lon0:124,records:2}];
@@ -96,7 +96,7 @@ assert.match(popup[0],/4°×4°/);
 const wide=rectangles.at(-1);
 assert.deepEqual(JSON.parse(JSON.stringify(wide.bounds)),[[32,124],[36,128]]);
 assert.equal(wide.options.fillOpacity,0);assert.equal(wide.options.fill,true,'no fill, but the whole square still takes the click');
-assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#A9C6D4');
+assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#ff6464');
 assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로 공개합니다\(넓게 묶은 관측 지역\)\. 테두리 안 바다에 기록이 있는 칸입니다\./);
 // any later style (hover, dim) keeps a 4° cell unfilled; a 1° cell's sea part takes the fill, the square keeps a faint edge
 assert.equal(context.cellStyles(null,true,{color:'#ffd166',fillOpacity:.6})[0].fillOpacity,0);

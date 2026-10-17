@@ -1,0 +1,190 @@
+[
+ {
+  "name": "1440 zoomed out: bubbles are the previous red (fill #ff6464, edge #ff8d84)",
+  "ok": true,
+  "detail": {
+   "fill": [
+    "#ff6464"
+   ],
+   "edge": [
+    "#ff8d84"
+   ],
+   "steps": [
+    0.3,
+    0.45,
+    0.6
+   ]
+  }
+ },
+ {
+  "name": "1440 zoomed in: schematic dots are the previous red #ff6464 with white edge, opacity .9/.88",
+  "ok": true,
+  "detail": {
+   "fill": [
+    "#ff6464"
+   ],
+   "stroke": [
+    "#ffffff"
+   ],
+   "op": [
+    "0.9/0.88"
+   ]
+  }
+ },
+ {
+  "name": "bubble number is white again (pre-#218 rule)",
+  "ok": true,
+  "detail": "rgb(255, 255, 255)"
+ },
+ {
+  "name": "legend bubble swatch is red (#ff8d84 edge, rgba(255,100,100,.45) fill)",
+  "ok": true,
+  "detail": {
+   "border": "rgb(255, 141, 132)",
+   "bg": "rgba(255, 100, 100, 0.45)",
+   "img": "none",
+   "visible": true
+  }
+ },
+ {
+  "name": "legend dot swatch is red dots",
+  "ok": true,
+  "detail": "radial-gradient(circle, rgb(255, 100, 100) 1.3px, rgba(0, 0, 0, 0) 1.7px), none"
+ },
+ {
+  "name": "chip dot keeps the species type colour",
+  "ok": true,
+  "detail": {
+   "chip": "rgb(47, 154, 87)",
+   "want": "rgb(47, 154, 87)"
+  }
+ },
+ {
+  "name": "no '청회색' left on the explore screen",
+  "ok": true
+ },
+ {
+  "name": "1440 no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "period filter: dots stay red",
+  "ok": true,
+  "detail": {
+   "per": {
+    "species": "참굴",
+    "period": "2000–2015",
+    "hash": "#s=836033&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=7%2F35.66%2F128.83"
+   },
+   "fill": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "reopened from a copied link: dots stay red",
+  "ok": true,
+  "detail": {
+   "hash": "s=836033&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=7%2F35.66%2F128.83",
+   "fill": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "reduced motion: bubbles and dots stay red",
+  "ok": true,
+  "detail": {
+   "b": [
+    "#ff6464"
+   ],
+   "d": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "4° occurrence outline is red like before #218",
+  "ok": true,
+  "detail": {
+   "species": "해삼",
+   "edges": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "1100px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "1100px: marks are red",
+  "ok": true,
+  "detail": {
+   "dots": [],
+   "bubbles": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "1100px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "768px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "768px: marks are red",
+  "ok": true,
+  "detail": {
+   "dots": [],
+   "bubbles": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "768px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ },
+ {
+  "name": "390px: marks are red",
+  "ok": true,
+  "detail": {
+   "dots": [],
+   "bubbles": [
+    "#ff6464"
+   ]
+  }
+ },
+ {
+  "name": "390px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "1440px: no page-wide horizontal overflow",
+  "ok": true,
+  "detail": {
+   "over": 0
+  }
+ }
+]
