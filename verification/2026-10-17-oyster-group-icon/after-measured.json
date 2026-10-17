@@ -1,0 +1,269 @@
+{
+ "stage": "after",
+ "measured": {
+  "explore-1440-836033": {
+   "h": 80,
+   "w": 321,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    72,
+    72
+   ]
+  },
+  "explore-1440-506159": {
+   "h": 121,
+   "w": 321,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    72,
+    72
+   ]
+  },
+  "explore-1280-836033": {
+   "h": 71,
+   "w": 298,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    72,
+    72
+   ]
+  },
+  "explore-1280-506159": {
+   "h": 71,
+   "w": 298,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    72,
+    72
+   ]
+  },
+  "compare-1440-836033": {
+   "h": 96,
+   "w": 84,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    84,
+    84
+   ]
+  },
+  "compare-1440-506159": {
+   "h": 96,
+   "w": 84,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    84,
+    84
+   ]
+  },
+  "compare-390-836033": {
+   "h": 96,
+   "w": 84,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    84,
+    84
+   ]
+  },
+  "compare-390-506159": {
+   "h": 96,
+   "w": 84,
+   "img": false,
+   "icon": "패류",
+   "iconBox": [
+    84,
+    84
+   ]
+  },
+  "all30": [
+   {
+    "id": 836033,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 506159,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 494972,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 372119,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 342067,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   },
+   {
+    "id": 250680,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   },
+   {
+    "id": 241776,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   },
+   {
+    "id": 145721,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 377084,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 371986,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 234476,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 494853,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 236157,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 145086,
+    "group": "해조류",
+    "spImg": false,
+    "spIcon": "해조류"
+   },
+   {
+    "id": 231750,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 397082,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 393716,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 836041,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 504357,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 413600,
+    "group": "패류",
+    "spImg": false,
+    "spIcon": "패류"
+   },
+   {
+    "id": 127022,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 219984,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 281273,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 275816,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 274849,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 276651,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 254538,
+    "group": "어류",
+    "spImg": false,
+    "spIcon": "어류"
+   },
+   {
+    "id": 1061762,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   },
+   {
+    "id": 534443,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   },
+   {
+    "id": 1666974,
+    "group": "기타 무척추동물",
+    "spImg": false,
+    "spIcon": "기타 무척추동물"
+   }
+  ]
+ },
+ "errors": [],
+ "missing": []
+}
