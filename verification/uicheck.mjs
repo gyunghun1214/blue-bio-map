@@ -145,12 +145,12 @@ try{
     const why=await evaluate(`(()=>{const g=document.getElementById('site-gate'),box=s=>(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(g.querySelector(s).getBoundingClientRect());
       return {problems:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden).map(li=>li.textContent),solve:g.querySelector('.gate-why .gate-lead').textContent,
         p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,
-        cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.textContent.includes(t))};})()`);
+        cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.querySelector('.gate-center').textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
     check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
       JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거만 해도 출처 ${evidenceSources}건에 나뉘어 있습니다.`])
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
-    check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in its text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
+    check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
@@ -159,6 +159,26 @@ try{
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
     check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
+    // 2026-10-17 (#3): '이렇게 쓸 수 있습니다' under the first screen (the first screen as above): three cards, each who → what
+    // they look at → what they choose with its way in, then one line; the policy card's species are the conservation example's
+    // (app.js gateExamples, the data the example cards above the buttons read before they were taken off on 2026-10-17)
+    const uses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),u=g.querySelector('.gate-uses');
+      return {top:u.getBoundingClientRect().top,vh:innerHeight,h:u.querySelector('.gate-uses-h').textContent,note:u.querySelector('.gate-uses-note').textContent,text:u.textContent,
+        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable)(li.querySelector('.gate-use-go'))})),
+        red:((typeof gateExamples==='function'?gateExamples():[]).find(x=>x?.kind==='conservation')?.species||[]).map(s=>s.name)};})()`);
+    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, three cards (who → what they look at → what they choose) with their ways in, the line under them',
+      uses.top>=uses.vh-1&&uses.h==='이렇게 쓸 수 있습니다'&&uses.note==='무엇을 먼저 조사할지 순서를 제안합니다.'&&uses.red.length>0&&!/우뭇가사리|예시/.test(uses.text)&&JSON.stringify(uses.cards)===JSON.stringify([
+        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기'],go:'conservation_priority'},
+        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기'],go:'sustainable_use'},
+        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기'],go:'expedition.html'}]),JSON.stringify({...uses,text:undefined}));
+    // the pill on the source strip's line scrolls down to them (their heading focused); the globe rides up with the first screen
+    await evaluate("document.querySelector('#site-gate .gate-down').click();1");await sleep(1500);
+    const down=await evaluate(`(()=>{const g=document.getElementById('site-gate'),h=g.querySelector('.gate-hero'),u=g.querySelector('.gate-uses').getBoundingClientRect();
+      return {scroll:h.scrollTop,top:u.top,bottom:u.bottom,vh:innerHeight,lift:getComputedStyle(g.querySelector('.gate-sea')).translate,focus:document.activeElement?.id||''};})()`);
+    check('G-1f the pill under the first screen scrolls down to 이렇게 쓸 수 있습니다 (all of it on screen, its heading focused), the globe riding up with the first screen',
+      down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
+    await shot('gate-uses-desktop',false);
+    await evaluate("document.querySelector('#site-gate .gate-hero').scrollTop=0;document.getElementById('gate-enter').focus();1");await sleep(500);
     await pressEnter();await sleep(1100);
     g=await gateState();
     check('G-3 Enter opens the map: entry screen gone, nothing inert, focus in the species search, remembered for this tab',
@@ -1392,6 +1412,12 @@ try{
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
   await sleep(1200);await shot('gate-mobile',false);
+  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 sits in the column after the globe and its card, before the source strip
+  const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
+    return {after:Math.max(r('.gate-globe').bottom,g.querySelector('.gate-callout').getClientRects().length?r('.gate-callout').bottom:0),uses:[r('.gate-uses').top,r('.gate-uses').bottom],foot:r('.gate-foot').top,
+      cards:[...g.querySelectorAll('.gate-uses-list li')].map(li=>(b=>[b.left,b.right])(li.getBoundingClientRect())),pill:getComputedStyle(g.querySelector('.gate-down')).display,vw:innerWidth,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
+  check('G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways',
+    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===3&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
   await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);gs=await gateState();
   check('G-5 phone: the button opens the map',!gs.on&&gs.hidden&&gs.inert===0,JSON.stringify(gs));
   // 2026-10-17 (#1): the smallest phone in common use (375×667): the problem lines, the solution and the button in the first
@@ -1416,6 +1442,19 @@ try{
   // buttons only, so no #s= species link is left on it
   const exLinks=await evaluate(`document.querySelectorAll('#site-gate a[href^="#s="],#site-gate .gate-ex,#site-gate [data-ex]').length`);
   check('G-8 no example cards: the entry screen holds no species link (#s=…) and no card list',exLinks===0,String(exLinks));
+  // 2026-10-17 (#3): a use card's button opens 비교와 지표 as the data table of that type, the way the type card's own
+  // '더 보기' does there (pressed with the mouse, after scrolling the entry screen down to it)
+  for(const [type,label] of [['conservation_priority','보전 연구 우선 검토'],['sustainable_use','활용 연구 검토']]){
+    await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
+    await load();gs=await gateReady();
+    const btn=await evaluate(`(()=>{const b=document.querySelector('#site-gate [data-go-table="${type}"]');if(!b)return null;b.scrollIntoView({block:'center'});const r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,text:b.textContent};})()`);
+    await sleep(400);
+    if(btn)for(const t of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type:t,x:btn.x,y:btn.y,button:'left',clickCount:1});
+    await sleep(1800);
+    const st=await evaluate(`({view:currentView,mode:cmpMode,type:cmpFilter.type,rows:document.querySelectorAll('#comparison tr.cmp-row:not(.cmp-out)').length,want:data.species.filter(s=>matrixType(s)==='${type}').length,top:document.getElementById('cmp-table-view').getBoundingClientRect().top,vh:innerHeight,on:document.documentElement.classList.contains('gate-on')})`);
+    check(`G-10 use card: ‘${label}’ 표 보기 opens 비교와 지표 as the data table of that type, scrolled to it, and leaves the entry screen`,
+      !!btn&&btn.text.startsWith(`‘${label}’ 표 보기`)&&st.view==='compare'&&st.mode==='table'&&st.type===type&&st.want>0&&st.rows===st.want&&st.top>=0&&st.top<st.vh/2&&!st.on,JSON.stringify({btn,st}));
+  }
   scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
   await load();gs=await gateReady();
   check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));

@@ -51,6 +51,10 @@ const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양�
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
 const evidenceSourceCount=m=>{if(!Array.isArray(m?.rows))return null;
   const n=m.rows.filter(r=>Array.isArray(r?.uses)&&r.uses.some(u=>EVIDENCE_USES.includes(u))).length;return n>0?n:null;};
+// The species of an example app.js gateExamples read from the loaded data, in the app's own link form (the #3 policy card
+// under the first screen names the conservation example's species)
+const exampleLinks=ex=>(Array.isArray(ex?.species)?ex.species:[]).filter(s=>Number.isInteger(s?.id)&&s.id>0&&typeof s.name==='string'&&s.name)
+  .map(s=>({href:`#s=${s.id}&v=compare`,name:s.name}));
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
 const keyAction=(key,{ready,onOtherControl})=>key==='Enter'&&ready&&!onOtherControl?'enter':null;
 // The ways in: the app tab each one opens and what gets focus there. A phone gets <main> rather than a search box (no
@@ -385,12 +389,19 @@ void main(){
     const total=speciesTotal(gate.done);if(total)q('.gate-total').textContent=String(total);
     if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
       if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
+    renderUseSpecies();
+  }
+  // 2026-10-17 (#3): the policy card under the first screen names the species of the conservation example (app.js gateExamples)
+  function renderUseSpecies(){
+    const sp=q('.gate-use-sp');if(!gate.done||!sp||sp.dataset.filled)return;sp.dataset.filled='1';
+    const all=Array.isArray(gate.done.examples)?gate.done.examples:[];
+    const red=exampleLinks(all.find(x=>x?.kind==='conservation'));if(red.length)sp.textContent=`(${red.map(l=>l.name).join('·')})`;
   }
   function showHero(){
     if(shown)return;shown=true;
     el.classList.add('is-ready');
     q('.gate-loader').setAttribute('aria-hidden','true');
-    for(const b of el.querySelectorAll('#gate-enter,[data-go]'))b.removeAttribute('aria-disabled');
+    for(const b of el.querySelectorAll('#gate-enter,[data-go],[data-go-table]'))b.removeAttribute('aria-disabled');
     const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
     layout();
     // keyboard and mouse: focus the button (Enter/Space act on it), its ring shown only once the keyboard is used (html.kb);
@@ -399,7 +410,8 @@ void main(){
   }
   // One way in, whichever button: 'explore' (default), 'compare' or 'method'. The app keeps its own state (species,
   // chips, map view); only the tab changes, through app.js setView (deferred, so it is there once the screen is ready).
-  function enter(target,hash){
+  // how.hash: an example card's species link (#1); how.table: a use card's type in the data table (#3)
+  function enter(target,how={}){
     if(left||gate.phase!=='ready')return;left=true;
     try{store?.setItem(GATE_KEY,'1');}catch{}
     const finish=()=>{
@@ -409,8 +421,10 @@ void main(){
       const a=arrival(target,touch());
       // a species link (#s=…): the app's own link handling (applyHash) picks its species and tab, at once; a hash set here would be
       // written over by setView before its hashchange arrived
-      if(hash&&typeof applyHash==='function')applyHash(Object.fromEntries(new URLSearchParams(hash.slice(1))));
+      if(how.hash&&typeof applyHash==='function')applyHash(Object.fromEntries(new URLSearchParams(how.hash.slice(1))));
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
+      // a use card: the type card's own '더 보기' in 비교와 지표 (data table, that type, scrolled to it)
+      if(how.table)document.querySelector(`#matrix-types [data-mt-table="${how.table}"]`)?.click();
       if(a.scroll)document.querySelector(a.scroll)?.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'});
       const t=document.querySelector(a.focus)||document.querySelector('main');if(!t)return;
       t.closest('details')?.setAttribute('open',''); // the source list sits in a fold (2026-10-17 #9): the way in opens it
@@ -428,17 +442,23 @@ void main(){
   // here; stacked, CSS puts it under the globe band. The line is drawn each frame from wherever the point is.
   // the copy lines as drawn (the text, not the full-width block boxes) for the globe to keep clear of
   const textBox=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
-  const copyBoxes=()=>[...q('.gate-title').children].map(s=>({...textBox(s),title:true}))
-    .concat([...el.querySelectorAll('.gate-why-k,.gate-problems li,.gate-lead,.gate-more,.gate-note,.gate-counts')].filter(n=>n.getClientRects().length).map(textBox));
+  const copyBoxes=(sy=0)=>[...q('.gate-title').children].map(s=>({...textBox(s),title:true}))
+    .concat([...el.querySelectorAll('.gate-why-k,.gate-problems li,.gate-lead,.gate-more,.gate-note,.gate-counts')].filter(n=>n.getClientRects().length).map(textBox))
+    .map(b=>({...b,t:b.t+sy,b:b.b+sy}));
+  // 2026-10-17 (#3): side by side the screen scrolls on to the uses below; the globe (the canvas, outside the scrolling hero)
+  // rides up with the first screen. Frame and card stay in first-screen coordinates; the canvas is lifted by the scroll.
+  let stackedNow=false,lift=0;
+  function ride(){lift=stackedNow?0:q('.gate-hero').scrollTop;canvas.style.translate=lift?`0 ${-lift}px`:'';}
   function layout(){
     const w=innerWidth,h=innerHeight,band=q('.gate-globe'),call=q('.gate-callout'),bar=q('.gate-bar').getBoundingClientRect();
-    const stacked=getComputedStyle(band).display!=='none',b=band.getBoundingClientRect();
-    frame=globeFrame(w,h,stacked?{top:b.top,bottom:b.bottom}:null,stacked?[]:copyBoxes());
+    const stacked=getComputedStyle(band).display!=='none',b=band.getBoundingClientRect(),sy=stacked?0:q('.gate-hero').scrollTop;
+    stackedNow=stacked;ride();
+    frame=globeFrame(w,h,stacked?{top:b.top,bottom:b.bottom}:null,stacked?[]:copyBoxes(sy));
     const {cx,cy,R}=frame,at=(lon,lat)=>{const p=project(lon,lat);return {x:cx+p.x*R,y:cy-p.y*R};};
     const dot=at(...ANCHOR),k=at(...KOREA),c=call.getBoundingClientRect(),s=Math.min(1.2,Math.max(.75,R/733));
     if(!call.getClientRects().length)card=null; // a short screen hides the card
     else if(stacked){const r=q('.gate-card').getBoundingClientRect();card={x:r.left,y:r.top,w:r.width,h:r.height,under:true,s};}
-    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom,bottom:q('.gate-foot').getBoundingClientRect().top},s);
+    else{const p=cardPlace(dot,k,{w:c.width,h:c.height},{w,top:bar.bottom+sy,bottom:q('.gate-foot').getBoundingClientRect().top+sy},s);
       call.style.left=p.x+'px';call.style.top=p.y+'px';card={x:p.x,y:p.y,w:c.width,h:c.height,under:!!p.under,s};}
     el.style.setProperty('--kx',k.x+'px');el.style.setProperty('--ky',k.y+'px'); // the leave zoom heads for Korea
   }
@@ -597,14 +617,14 @@ void main(){
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
   // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
   // never from the controls, the bars or the card; over the copy only off its words (on a phone the copy sits on the globe)
-  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader';
+  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-uses';
   const onWords=e=>{
     const t=e.target.closest?.('.gate-kicker,.gate-title,.gate-why-k,.gate-problems li,.gate-lead');if(!t)return false;
     const r=document.createRange();r.selectNodeContents(t);
     for(const b of r.getClientRects())if(e.clientX>=b.left-8&&e.clientX<=b.right+8&&e.clientY>=b.top-4&&e.clientY<=b.bottom+4)return true;
     return false;
   };
-  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG)||onWords(e))return false;return Math.hypot(e.clientX-frame.cx,e.clientY-frame.cy)<=frame.R;};
+  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG)||onWords(e))return false;return Math.hypot(e.clientX-frame.cx,e.clientY+lift-frame.cy)<=frame.R;};
   function setupDrag(){
     el.addEventListener('pointerdown',e=>{
       if(drag||(e.pointerType==='mouse'&&e.button!==0)||!onGlobe(e))return;
@@ -648,9 +668,12 @@ void main(){
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce,true));
     // the copy shows from the first paint; the ways in say they wait until the screen is ready (intro.css dims them)
-    for(const b of el.querySelectorAll('#gate-enter,[data-go]'))b.setAttribute('aria-disabled','true');
+    for(const b of el.querySelectorAll('#gate-enter,[data-go],[data-go-table]'))b.setAttribute('aria-disabled','true');
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
+    for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
+    // the pill on the source strip's line: down to the uses, focus on their heading
+    q('.gate-down').addEventListener('click',()=>{q('.gate-hero').scrollTo({top:q('.gate-uses').offsetTop,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
     document.addEventListener('keydown',e=>{
       if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('kb'); // from now on the focus ring shows (intro.css)
       if(left||e.defaultPrevented)return;
@@ -666,7 +689,8 @@ void main(){
       setTimeout(()=>{status.textContent='';},4000);
     });
     setupDrag();
-    q('.gate-hero').addEventListener('scroll',kick,{passive:true}); // stacked and taller than the window: the globe rides its band
+    // stacked and taller than the window, the globe rides its band (a new frame); side by side it rides up with the first screen
+    q('.gate-hero').addEventListener('scroll',()=>{ride();if(stackedNow)kick();},{passive:true});
     addEventListener('resize',kick);document.fonts?.ready.then(kick); // the web font moves the stacked layout once it is in
     // a hidden tab draws nothing; back in view the motion carries on from where it stood
     document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else kick();});

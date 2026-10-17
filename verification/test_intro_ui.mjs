@@ -11,7 +11,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -199,7 +199,8 @@ for(const [href,tag] of links.filter(([h])=>/^https?:/.test(h))){
   assert.ok(app.includes(href)||assessments.includes(href),`${href} is an address the site already cites`);
   assert.match(tag,/target="_blank" rel="noopener"/,`${href} opens in a new tab without opener`);
 }
-assert.deepEqual(links.map(([h])=>h).filter(h=>!/^https?:/.test(h)),['expedition.html']);
+// 2026-10-17 (#3): the citizen card under the first screen links to the expedition too; still the only page of our own
+assert.deepEqual([...new Set(links.map(([h])=>h).filter(h=>!/^https?:/.test(h)))],['expedition.html']);
 assert.ok(!/<li><a[^>]*>(OBIS|GBIF)</.test(gateHtml),'OBIS and GBIF are names only');
 
 // (9) app.js reports its steps: the coastline once (with or without the file), and 'done' on every loadCollection outcome
@@ -409,8 +410,13 @@ assert.ok(evidenceRows>0&&evidenceRows<lic.rows.length,'only the rows behind an 
 assert.equal(ctx.evidenceSourceCount({rows:[{uses:['MBPI','MCUI']},{uses:['출현 지도 셀']},{uses:['식품 비교']},{uses:null},null]}),2,'a row counts once');
 for(const m of [null,undefined,{},{rows:'x'},{rows:[]},{rows:[{uses:['식품 비교']}]}])assert.equal(ctx.evidenceSourceCount(m),null,`no number from ${JSON.stringify(m)}: the line stays out`);
 // 2026-10-17: the three example cards under the buttons (.gate-ex) are gone from the entry screen; nothing in intro.js draws
-// or looks them up any more (the examples data app.js hands over is left as it is, unused here)
-for(const s of ['exampleLinks','renderExamples','gate-ex','data-ex'])assert.ok(!intro.includes(s),`intro.js: no ${s}`);
+// or looks them up any more (app.js still hands the examples over: the #3 policy card below names the conservation species)
+for(const s of ['renderExamples','gate-ex','data-ex'])assert.ok(!intro.includes(s),`intro.js: no ${s}`);
+// exampleLinks stays: the policy card under the first screen (#3) names the conservation example's species with it
+assert.equal(JSON.stringify(ctx.exampleLinks({kind:'conservation',species:[{id:241776,name:'해삼'},{id:397082,name:'전복'}],value:'IUCN EN'})),
+  JSON.stringify([{href:'#s=241776&v=compare',name:'해삼'},{href:'#s=397082&v=compare',name:'전복'}]),'the app\'s own link form, one per species');
+assert.equal(JSON.stringify(ctx.exampleLinks({species:[{id:0,name:'a'},{id:'5',name:'b'},{id:7,name:''},{id:8},null]})),'[]','no link without a real id and a name');
+for(const ex of [null,{},{species:'x'}])assert.equal(JSON.stringify(ctx.exampleLinks(ex)),'[]');
 assert.ok(!read('intro.css').includes('gate-ex'),'intro.css: no .gate-ex rule');
 // the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons
 const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
@@ -421,16 +427,45 @@ assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total
 const at=s=>gateHtml.indexOf(s);
 assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"'),'slogan → problems → solution → buttons');
 assert.ok(!gateHtml.includes('gate-ex')&&!/data-ex[=\s>]/.test(gateHtml),'no example card list, not even an empty one (nothing left for a screen reader)');
-for(const t of ['활용 지표 1위','보전 지표 높음','어획량 감소 신호'])assert.ok(!gateHtml.includes(t),`entry screen: no '${t}'`);
+const firstHtml=gateHtml.slice(0,at('<section class="gate-uses"')>0?at('<section class="gate-uses"'):undefined);
+for(const t of ['활용 지표 1위','보전 지표 높음','어획량 감소 신호'])assert.ok(!firstHtml.includes(t),`first screen: no '${t}'`);
 // app.js hands both over: the matrix it reads anyway, and the examples with 'done' (kept in the data; the entry screen no longer draws them)
 assert.match(app,/licReq\.then\(m=>loadProgress\('sources',\{license:m\}\)\)/);
 assert.match(app,/examples:\(\(\)=>\{try\{return data\?gateExamples\(\):\[\];\}catch\{return \[\];\}\}\)\(\)/);
 assert.match(browser,/if\(d\.step==='sources'\)gate\.sources=evidenceSourceCount\(d\.license\);/);
-assert.match(browser,/if\(hash&&typeof applyHash==='function'\)applyHash\(Object\.fromEntries\(new URLSearchParams\(hash\.slice\(1\)\)\)\);/,'a species link opens its species the way a shared link does (app.js applyHash), before the tab is set');
+// 2026-10-17 (#3): enter() takes {hash} (a species link) or {table} (a use card under the first screen)
+assert.match(browser,/if\(how\.hash&&typeof applyHash==='function'\)applyHash\(Object\.fromEntries\(new URLSearchParams\(how\.hash\.slice\(1\)\)\)\);/,'a species link opens its species the way a shared link does (app.js applyHash), before the tab is set');
 assert.ok(browser.indexOf('applyHash(Object.fromEntries')<browser.indexOf('setView(a.view,!a.scroll)'),'the species first, then the tab');
 // no weak-point or overclaiming words in what the block says (2026-10-17, LKH)
 const whyText=why.replace(/<[^>]+>/g,' ');
 for(const w of ['공백','예비','미평가','평가 없음','검증','신약','조사 필요','재현','부족','최초'])assert.ok(!whyText.includes(w),`no "${w}" in the problem → solution block`);
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards');
+// (15) 2026-10-17 (#3) '이렇게 쓸 수 있습니다' under the first screen: three cards, each who → what they look at → what they
+// choose, with a way in (the type's own data table in 비교와 지표, or the expedition), then one line. The species on the
+// policy card come from the conservation example app.js gateExamples reads from the data (none typed in).
+const usesHtml=gateHtml.slice(at('<section class="gate-uses"'),gateHtml.indexOf('</section>',at('<section class="gate-uses"')));
+assert.ok(at('class="gate-foot"')>0&&at('class="gate-foot"')<at('<section class="gate-uses"'),'the uses come after the first screen (its source strip)');
+assert.match(usesHtml,/^<section class="gate-uses" aria-labelledby="gate-uses-h">/);
+assert.match(usesHtml,/<h2 class="gate-uses-h" id="gate-uses-h" tabindex="-1">이렇게 쓸 수 있습니다<\/h2>/);
+const useCards=[...usesHtml.matchAll(/<li data-use="(\w+)">([\s\S]*?)<\/li>/g)].map(([,use,li])=>({use,lines:[...li.matchAll(/<p class="gate-use-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<[^>]+>/g,'')]),
+  go:(li.match(/<(?:button|a) class="gate-use-go"[^>]*?(?:data-go-table="(\w+)"|href="([^"]+)")/)||[]).slice(1).find(Boolean)}));
+assert.deepEqual(useCards,[
+  {use:'policy',lines:[['who','정책 담당자'],['see','‘보전 지표 높음’ 종'],['pick','보전 연구를 먼저 살필 종 고르기']],go:'conservation_priority'},
+  {use:'research',lines:[['who','연구자·기업'],['see','활용 지표가 높은 종'],['pick','다음 실험 대상 고르기']],go:'sustainable_use'},
+  {use:'public',lines:[['who','시민·교육'],['see','바다 탐험'],['pick','우리 바다 생물의 쓸모와 보전 필요성 배우기']],go:'expedition.html'}]);
+assert.match(usesHtml,/<span class="gate-use-sp"><\/span>/,'the policy card\'s species: filled from the data, none typed in');
+assert.match(usesHtml,/<p class="gate-uses-note">무엇을 먼저 조사할지 순서를 제안합니다\.<\/p>/);
+for(const t of ['conservation_priority','sustainable_use'])assert.ok(app.includes(`'${t}'`)&&/data-mt-table="\$\{/.test(app),`${t} is a type the app's data table shows`);
+assert.match(app,/\$\('matrix-types'\)\.addEventListener\('click'[\s\S]{0,600}if\(b\.dataset\.mtTable\)\{setCompareMode\('table'\);setCompareFilter\(\{type:b\.dataset\.mtTable\}\);/,'the type card\'s own button in 비교와 지표 (data table, that type), reused');
+assert.match(browser,/for\(const b of el\.querySelectorAll\('\[data-go-table\]'\)\)b\.addEventListener\('click',\(\)=>enter\('compare',\{table:b\.dataset\.goTable\}\)\);/);
+assert.match(browser,/if\(how\.table\)document\.querySelector\(`#matrix-types \[data-mt-table="\$\{how\.table\}"\]`\)\?\.click\(\);/,'the table opens the way its type card\'s button opens it');
+assert.ok(browser.indexOf('setView(a.view,!a.scroll)')<browser.indexOf('if(how.table)'),'the tab first, then the table');
+assert.match(browser,/const red=exampleLinks\(all\.find\(x=>x\?\.kind==='conservation'\)\);if\(red\.length\)sp\.textContent=`\(\$\{red\.map\(l=>l\.name\)\.join\('·'\)\}\)`;/);
+assert.match(browser,/'#gate-enter,\[data-go\],\[data-go-table\]'/,'the use buttons wait for the data like the other ways in');
+// nothing that reads as a sample, a claim that some body uses the map, or a weak point; 우뭇가사리 is not the example
+const usesText=usesHtml.replace(/<[^>]+>/g,' ');
+for(const w of ['예시','사례','기관','부처','해양수산부','해수부','환경부','국립','자원관','공단','지자체','활용 중','사용 중','쓰고 있','도입','우뭇가사리','공백','예비','미평가','검증','조사 필요','재현','부족','최초'])
+  assert.ok(!usesText.includes(w),`no "${w}" in 이렇게 쓸 수 있습니다`);
+
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards, uses under the first screen');
 
