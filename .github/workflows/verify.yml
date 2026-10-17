@@ -45,6 +45,7 @@ jobs:
           node verification/test_cmnpd_candidates_ui.mjs
           node verification/test_posthoc_scorecard_ui.mjs
           python scripts/build_posthoc_scorecard.py --csv --check
+          python scripts/build_aquaculture_tier.py --check
           node verification/test_compare_ui.mjs
           node verification/test_weight_slider.mjs
           node verification/test_mbpi_kind.mjs
