@@ -10,7 +10,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b253c'/%3E%3Cpath d='M5 13q5-6 11 0t11 0M5 21q5-6 11 0t11 0' fill='none' stroke='%233de0c4' stroke-width='3'/%3E%3C/svg%3E">
   <meta name="theme-color" content="#0b1b2b">
-  <link rel="stylesheet" href="vendor/pretendard/pretendard.css"><link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="style.css?v=b1335ca8ff"><link rel="stylesheet" href="pilot.css?v=b3d0a16717"><link rel="stylesheet" href="theme.css?v=c7949146bb"><link rel="stylesheet" href="compare.css?v=45acc61c09" media="print" onload="this.media='all'"><link rel="stylesheet" href="method.css?v=d3f6a5ada8" media="print" onload="this.media='all'"><link rel="stylesheet" href="intro.css?v=a769d5a830">
+  <link rel="stylesheet" href="vendor/pretendard/pretendard.css"><link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="style.css?v=b1335ca8ff"><link rel="stylesheet" href="pilot.css?v=b3d0a16717"><link rel="stylesheet" href="theme.css?v=c7949146bb"><link rel="stylesheet" href="compare.css?v=45acc61c09" media="print" onload="this.media='all'"><link rel="stylesheet" href="method.css?v=da99fab450" media="print" onload="this.media='all'"><link rel="stylesheet" href="intro.css?v=a769d5a830">
   <!-- 2026-10-15 load speed: the comparison, method and chatbot styles are not needed for the first screen, so they load without holding the first paint (media swaps to all once loaded). -->
   <noscript><link rel="stylesheet" href="compare.css"><link rel="stylesheet" href="method.css"></noscript>
   <script src="intro.js?v=1ef7c4afc9"></script><script defer src="live-data.js?v=ceaf436bc8"></script><script defer src="vendor/leaflet.js"></script><script defer src="app.js?v=e67b176e36"></script>
@@ -54,21 +54,6 @@
 <dialog id="cmp-dialog" class="cmp-dialog" aria-labelledby="cmp-dialog-title"><div class="cmp-dialog-head"><h2 id="cmp-dialog-title">선택한 생물 비교</h2><button type="button" class="cmp-dialog-close" aria-label="비교 닫기">✕</button></div><div id="cmp-dialog-body"></div></dialog>
 </section>
 <section id="method" class="view" aria-label="근거와 방법">
-<div class="mt-mcui-map" id="mt-mcui-map" role="region" aria-labelledby="mt-mcui-map-title">
-<div class="mt-mm-head"><p class="mt-k">MCUI SCALE</p><h3 id="mt-mcui-map-title">MCUI = 보전 상태 등급(IUCN·국가) + 자원 감소 신호</h3><p>보전 평가 등급 이름을 숫자로 옮기고 자원 감소 신호를 더한 ‘보전 검토 신호’입니다. 같은 범주의 종은 같은 점수를 받습니다.</p></div>
-<div class="mt-mm-body">
-<table class="mt-mm-table"><caption class="sr-only">보전 상태 범주와 MCUI 숫자 대응표</caption>
-<thead><tr><th scope="col">범주</th><th scope="col">LC<small>최소관심</small></th><th scope="col">NT<small>준위협</small></th><th scope="col">VU<small>취약</small></th><th scope="col">EN<small>위기</small></th><th scope="col">CR<small>위급</small></th></tr></thead>
-<tbody><tr><th scope="row">MCUI</th><td>10</td><td>35</td><td>60</td><td>80</td><td>100</td></tr></tbody></table>
-<p class="mt-mm-stock"><b>+ 자원 감소 신호</b> KOSIS 연근해 어획량이 2015–17년 평균보다 2022–24년 평균에서 30·50·80% 이상 줄면 35·60·80점(넓은 품종 묶음은 상한 60). MCUI는 등급 점수와 이 점수 중 높은 값입니다.</p>
-</div>
-<ul class="mt-mm-notes">
-<li><b>숫자 옆 괄호</b>그 값을 정한 범주입니다. 예: 10 (LC) · 80 (EN, A2bd) · 60 (LC + 자원 감소)</li>
-<li><b>보조 정보</b>평가 연도 · 적용 기준 · 개체군 추세 · 어획량 변화를 종 프로필에 한 줄로 보여 줍니다.</li>
-<li><b>동점 규칙</b>같은 MCUI 점수의 종은 이름 가나다순으로 보여 주고, 매트릭스에서는 같은 높이에서 BBVI 순서로 가로로 놓습니다.</li>
-<li><b>다음 단계</b>감소율 · 분포 변화 · 어획 압력 같은 연속형 입력을 쓰는 MCUI 2.0을 설계하고 있습니다.</li>
-</ul>
-</div>
 <div class="mt-hero">
 <div class="mt-hero-copy">
 <p class="mt-eyebrow">EVIDENCE &amp; METHODS</p>
@@ -150,7 +135,7 @@
 <details class="mt-acc" id="mt-acc-03">
 <summary><span class="mt-acc-n">03</span><b>지표를 어떻게 읽나요?</b><span class="mt-acc-s">설계 원칙 · 해석 범위 · 유형과 셀 색</span><i aria-hidden="true"></i></summary>
 <div class="mt-acc-body">
-<article class="method-card" id="method-03"><span class="step amber">03 / 해석</span><h3>규칙 고정</h3><p>verified-4.0부터 정식 산출입니다(2026-10-04). 가중치(MFPI 0.8·0.1·0.1, BBVI 0.5)와 기준선 50은 처음 정한 값 그대로입니다.</p><ul><li><b>BBVI 가중치</b> 공식 산출은 w = 0.50 고정입니다. ‘비교와 지표’의 가중치 슬라이더는 이용 목적별 탐색용이며, 0.50이 아닐 때는 ‘탐색 보기’ 표시와 함께 공식값을 나란히 적습니다. BBVI는 MFPI(해조류·수산동물 백분위)와 MBPI(층별 백분위)를 합친 <b>탐색용 합성지표</b>입니다. 4.14부터 반올림 전 MFPI·MBPI로 계산하고 표시할 때만 반올림합니다. 종 상세에 MFPI 가중치 0.2·0.5·0.8의 값과 유형을 함께 보이며, 세 가중치에서 유형이 바뀌는 종은 <span id="method-weight-changes">불러오는 중</span>입니다.</li><li><b>MCUI</b> 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다(대응표는 이 탭 맨 위).</li><li><b>MCUI 자원 감소 신호</b> 어획량 급감이 보고된 살오징어가 자원 감소 60점으로 MCUI 30종 중 4위(80점 세 종 다음)에 오고, 고등어·대구는 어획량이 유지되어 등급 점수를 그대로 씁니다.</li><li><b>의약 후보 MBPI(MBPI-Rx, 보조)</b> ACE·잔틴 산화효소 펩타이드 층을 뺀 MBPI입니다. 기본 MBPI·BBVI와 매트릭스는 그대로이며, 값은 종 상세 MBPI 아래 줄에 있습니다.</li><li id="method-mbpi-kind"><b>MBPI 근거 종류</b> 종 프로필과 종 상세의 MBPI 아래에 최상위 근거의 종류(의약 표적: 항균·항암·기타 표적 / 기능성 펩타이드: ACE·XO)와 점수 항목 중 ACE·XO 항목의 비중을 적고, 의약 표적 항목이 있는 종은 의약 표적만 모은 MBPI-Rx를 나란히 둡니다. 표시만 더한 것이라 MBPI·BBVI 값과 유형은 그대로입니다.</li></ul></article>
+<article class="method-card" id="method-03"><span class="step amber">03 / 해석</span><h3>규칙 고정</h3><p>verified-4.0부터 정식 산출입니다(2026-10-04). 가중치(MFPI 0.8·0.1·0.1, BBVI 0.5)와 기준선 50은 처음 정한 값 그대로입니다.</p><ul><li><b>BBVI 가중치</b> 공식 산출은 w = 0.50 고정입니다. ‘비교와 지표’의 가중치 슬라이더는 이용 목적별 탐색용이며, 0.50이 아닐 때는 ‘탐색 보기’ 표시와 함께 공식값을 나란히 적습니다. BBVI는 MFPI(해조류·수산동물 백분위)와 MBPI(층별 백분위)를 합친 <b>탐색용 합성지표</b>입니다. 4.14부터 반올림 전 MFPI·MBPI로 계산하고 표시할 때만 반올림합니다. 종 상세에 MFPI 가중치 0.2·0.5·0.8의 값과 유형을 함께 보이며, 세 가중치에서 유형이 바뀌는 종은 <span id="method-weight-changes">불러오는 중</span>입니다.</li><li><b>MCUI</b> 보전 상태 등급(IUCN·국가) + 자원 감소 신호입니다. 등급은 보전 평가 범주를 점수로 옮긴 값입니다.</li><li><b>MCUI 자원 감소 신호</b> 어획량 급감이 보고된 살오징어가 자원 감소 60점으로 MCUI 30종 중 4위(80점 세 종 다음)에 오고, 고등어·대구는 어획량이 유지되어 등급 점수를 그대로 씁니다.</li><li><b>의약 후보 MBPI(MBPI-Rx, 보조)</b> ACE·잔틴 산화효소 펩타이드 층을 뺀 MBPI입니다. 기본 MBPI·BBVI와 매트릭스는 그대로이며, 값은 종 상세 MBPI 아래 줄에 있습니다.</li><li id="method-mbpi-kind"><b>MBPI 근거 종류</b> 종 프로필과 종 상세의 MBPI 아래에 최상위 근거의 종류(의약 표적: 항균·항암·기타 표적 / 기능성 펩타이드: ACE·XO)와 점수 항목 중 ACE·XO 항목의 비중을 적고, 의약 표적 항목이 있는 종은 의약 표적만 모은 MBPI-Rx를 나란히 둡니다. 표시만 더한 것이라 MBPI·BBVI 값과 유형은 그대로입니다.</li></ul></article>
 
 <div class="method-bottom"><article><h3>자료를 읽을 때</h3><ul class="large-list"><li>기록 수 = 공개 관측 기록 건수입니다.</li><li>지도는 조회·선별한 공개 관측 기록의 위치 요약입니다.</li><li>지도의 붉은 점은 공개 셀 안에 고정한 도식적 무늬로, 기록이 있는 칸의 위치(넓게 묶음)를 보여 줍니다. 점은 바다 부분에만 찍습니다.</li><li>공개 셀은 Natural Earth 1:10m 육지 경계로 바다 부분만 칠합니다.</li><li>축소한 지도의 붉은 버블은 공개 셀을 해역별로 묶은 표시입니다. 크기는 모인 셀 수, 진하기는 셀당 기록 수 구간입니다. 확대하면 셀별 붉은 점이 나옵니다. 선택 종의 기록 셀 수·기록 수·연도는 지도 위 칩에 한 번만 적습니다.</li><li>매트릭스와 지도 셀 색의 네 유형, 기준값과 셀 색을 정하는 순서는 아래 ‘유형과 셀 색’ 표에 있습니다.</li><li>매트릭스 점 색은 그 종의 유형 색입니다. MCUI 기반(IUCN 전 지구 평가, 한국 국가 평가, 자원 감소 신호)은 점 툴팁과 그래프 아래 유형별 목록에 적습니다. 자원 감소 신호(KOSIS 어획량 추세)로 MCUI가 정해진 종은 마름모 점입니다.</li><li>‘같은 속 친척 종 · 다음 탐색 후보’ 층은 BBVI 50 이상인 종과 같은 속인 30종 밖 종의 공개 셀을 보여 줍니다.</li><li>종 상세의 ‘활용 전 확인할 제도’에는 기록의 한국·북한 EEZ 안·밖 비율과 유전자원 접근·이익공유(유전자원법, 나고야의정서)·BBNJ 협정을 확인할 항목이 있습니다.</li><li>가상 작동 예시는 화면 사용법을 보여 주는 가상 자료입니다.</li><li>수집 시점의 자료를 보관해 사용합니다. 수집일은 출처 목록에 적었습니다.</li></ul></article><article><h3>유형과 셀 색</h3><div class="type-table-wrap"><table id="type-table" class="type-table"><thead><tr><th scope="col">색</th><th scope="col">유형</th><th scope="col">조건</th><th scope="col">기준값</th><th scope="col">셀 색 결정 방식</th></tr></thead><tbody></tbody></table></div><p class="fine">종 단위 유형입니다. ‘활용 × 보전’은 먼저 선택 종의 셀만 그 종의 유형 색으로 보여 주고, ‘모든 종 겹쳐 보기’에서는 한 셀에 여러 유형의 종이 있으면 표의 우선순위가 가장 높은 유형 하나로 칠합니다. ‘활용 지표 높음’ 같은 앞의 짧은 말은 두 지표가 탐색용 기준선 위인지 아래인지를 읽은 것이고, 유형은 연구 순서를 고르기 위한 분류입니다.</p></article></div>
 </div>
