@@ -10,7 +10,13 @@
   -webkit-font-smoothing:antialiased;letter-spacing:-.005em;word-break:keep-all;
 }
 html.gate-on,html.gate-on body{overflow:hidden}
-html.gate-on .gate{display:block}
+/* shown from the first paint: the element keeps its hidden attribute until intro.js runs at DOMContentLoaded (after the
+   deferred app scripts), and style.css hides every [hidden] with !important, so this rule has to outrank it (2026-10-15:
+   before this, the map page painted first and the screen came up seconds later on a slow network) */
+html.gate-on .gate,html.gate-on .gate[hidden]{display:block!important}
+/* the page under the screen stays unpainted until the visitor goes in: a map tile loading behind the opaque screen was
+   still the page's largest paint (Chrome does not count what covers it), so phone LCP read 10-12 s on the live site */
+html.gate-on:not(.gate-leaving) body>:not(.gate){visibility:hidden}
 .gate [hidden]{display:none!important}
 .gate :focus-visible{outline:none}
 /* the button gets focus on arrival (Enter acts on it); its ring shows once the keyboard is in use (intro.js adds html.kb on
@@ -38,10 +44,16 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-step{margin:0;font-size:13px;color:var(--g-ink2);letter-spacing:.02em;font-variant-numeric:tabular-nums}
 
 /* entry screen: bar / copy / source strip in a grid over the globe; shades keep the words off the globe */
-.gate-hero{position:absolute;inset:0;outline:none;display:grid;grid-template-rows:auto minmax(0,1fr) auto;opacity:0;transition:opacity .9s ease .25s;
+.gate-hero{position:absolute;inset:0;outline:none;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
   background:linear-gradient(180deg,rgba(4,16,27,.78),rgba(4,16,27,.5) 7%,rgba(4,16,27,0) 14%),linear-gradient(0deg,rgba(4,16,27,.88),rgba(4,16,27,0) 24%),
     linear-gradient(90deg,rgba(4,16,27,.96) 18%,rgba(4,16,27,.55) 30%,rgba(4,16,27,0) 44%)}
-.gate.is-ready .gate-hero{opacity:1}
+/* 2026-10-15 load speed: the copy is on screen from the first paint (it used to wait for every data file, so the page's
+   largest text came seconds late on a slow network). The ways in stay dimmed until the data is in (intro.js still opens
+   only then, or after GATE_MAX_MS), and the loader's ring turns where the globe will come, not over the words. */
+.gate-actions,.gate-nav,.gate-card button{transition:opacity .5s ease}
+.gate:not(.is-ready) .gate-actions,.gate:not(.is-ready) .gate-nav,.gate:not(.is-ready) .gate-card button{opacity:.38;pointer-events:none}
+.gate-loader{z-index:1;left:44%;pointer-events:none}
+.gate-lockup{display:none}
 /* the turning globe (intro.js): dragged with a mouse, or sideways with a finger (an upward swipe stays the page's) */
 .gate-hero{touch-action:pan-y pinch-zoom}
 .gate.is-grab .gate-hero{cursor:grab}
@@ -94,7 +106,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-legend span{display:block;white-space:nowrap}
 .gate-legend i{display:inline-block;width:10px;height:10px;margin:0 7px 0 0;vertical-align:-1px;border:1px solid rgba(140,215,208,.7)}
 .gate-legend i.frame{border-style:dashed}
-.gate-legend .gate-credit{font-size:11px;color:var(--g-ink3)} /* the picture's source (NASA asks to be credited; no logo) */
+.gate-legend .gate-credit{font-size:var(--fs-min);color:var(--g-ink3)} /* the picture's source (NASA asks to be credited; no logo) */
 
 .gate-foot{grid-row:3;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 32px;min-height:clamp(60px,10vh,94px);
   padding:10px var(--g-pad);border-top:1px solid var(--g-line);font-size:clamp(13px,.92vw,15px)}
@@ -133,6 +145,8 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-title{font-size:clamp(34px,min(10.4vw,7vh),76px)}
   .gate-lead{font-size:clamp(14px,min(3.9vw,2.6vh),20px)}
   .gate-globe{display:block;flex:1;min-height:60px}
+  .gate-loader{left:0;top:50%;bottom:10%}
+  .gate-orbit{width:min(200px,52vw)}
   .gate-callout{position:relative;left:auto!important;top:auto!important;width:auto;max-width:440px;margin:0 var(--g-pad) 10px}
   .gate-foot{display:block;padding:10px var(--g-pad) 14px}
   .gate-sources{gap:4px 14px}
@@ -154,7 +168,7 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-card-title{grid-column:1/-1;font-size:15px}
   .gate-card-sub{margin-top:0!important;font-size:13px}
   .gate-card button{margin-top:0;font-size:13px}
-  .gate-legend{margin-top:6px;padding:3px 8px;font-size:11px;line-height:1.5}
+  .gate-legend{margin-top:6px;padding:3px 8px;font-size:var(--fs-min);line-height:1.5}
   .gate-legend span{display:inline;margin-right:12px}
 }
 @media (max-width:520px){.gate-nav{display:none}}

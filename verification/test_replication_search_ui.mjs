@@ -10,7 +10,7 @@ const app=read('app.js'), report=JSON.parse(read('assessments.json')), file=JSON
 const ctx={};vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.rows=replicationSearchRows;globalThis.text=replicationSearchText;globalThis.block=evidenceProfileBlock;'+
-  'globalThis.cardLine=evidenceCardLine;globalThis.profile=cpEvidence;'+
+  'globalThis.profile=cpEvidence;'+
   'globalThis.setData=d=>{data=d};globalThis.setFile=f=>{replicationSearch=replicationSearchRows(f,[])};'+
   'globalThis.axis=axisState;globalThis.type=matrixType;globalThis.label=bbviLabel;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,label:a.korean_name,name:a.scientific_name,cells:[],
@@ -27,11 +27,11 @@ assert.equal(file.species.length,species.length);
 // Scores, labels and matrix types are the same with no file, with the file and with every row changed.
 const snap=()=>species.map(s=>[s.aphiaID,...['MFPI','MBPI','MCUI','BBVI'].map(k=>ctx.axis(s,k).value),ctx.label(s),ctx.type(s)].join('|')).join('\n');
 ctx.setFile(null);const none=snap();
-const cards=species.map(s=>ctx.cardLine(s)+ctx.profile(s)).join('\n');
+const cards=species.map(s=>ctx.profile(s)).join('\n');
 ctx.setFile(file);assert.equal(snap(),none);
 ctx.setFile({...file,species:file.species.map(r=>({...r,status:'no_record'}))});assert.equal(snap(),none);
-// the card line and the species profile never carry it; only the folded MBPI detail does
-ctx.setFile(file);assert.equal(species.map(s=>ctx.cardLine(s)+ctx.profile(s)).join('\n'),cards);
+// the species profile never carries it (the 탐색 후보 card has no evidence line since 2026-10-15); only the folded MBPI detail does
+ctx.setFile(file);assert.equal(species.map(s=>ctx.profile(s)).join('\n'),cards);
 assert.equal((app.match(/replicationSearchText\(/g)||[]).length,2);  // defined once, called once (evidenceProfileBlock)
 assert.equal((app.match(/replicationSearch\b/g)||[]).length,3);       // declared, loaded, read
 

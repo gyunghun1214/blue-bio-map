@@ -21,7 +21,7 @@ const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,queryS
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
-vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={toggleBasket,setCompareMode,setCompareFilter,renderCompareTray,renderCompareDialog,renderCompareProfile,'+
+vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={toggleBasket,setCompareMode,setCompareFilter,renderCompareTray,renderCompareDialog,renderCompareProfile,renderCompareDrawer,'+
   'get basket(){return cmpBasket},set basket(v){cmpBasket=v},get mode(){return cmpMode},get filter(){return {...cmpFilter}},get selected(){return selected},set selected(v){selected=v},cmpMatch,pilotScore,'+
   'plainWords,MATRIX_PLAIN,matrixTypePlain,matrixPlainNote,matrixType,matrixTypeLabel,cmpTag,cmpPieces,cmpChip,cmpUseRest,matrixClusters,cmpExpeditionLink,set stops(v){cmpStops=v},'+
   'renderComparison,cmpRowShown,cmpTypeOf,evidenceChipList,evidenceCoverage,weightPair,earlyMcui,stockMcui,set w(v){bbviWeight=v}};',ctx);
@@ -32,6 +32,9 @@ const OYSTER=836033, WAKAME=145721, ROCKFISH=274849;
 assert.ok(total>=4&&by(OYSTER)&&by(WAKAME)&&by(ROCKFISH),'snapshot has 참굴, 미역, 조피볼락 and at least 4 species');
 const tray=()=>$('cmp-tray').innerHTML, dialog=()=>$('cmp-dialog-body').innerHTML;
 const strip=h=>h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
+// 2026-10-15 final design: the profile face keeps the values; every other label moved, unchanged, into the '근거 자세히 보기'
+// drawer. So 'stays on the profile' means the face plus the drawer for the same species.
+const both=()=>{T.renderCompareProfile();T.renderCompareDrawer(T.selected);return strip($('cmp-profile').innerHTML)+' | '+strip($('cmp-drawer-axes').innerHTML);};
 
 // Basket: a second press removes, at most 3, no repeats, removing frees a slot.
 T.selected=by(OYSTER);T.basket=[];
@@ -53,11 +56,11 @@ assert.ok(strip(tray()).includes('2종 이상 담으면 비교할 수 있습니�
 
 // Profile: the add button says when the basket is full; labels sit next to the values; no old wording.
 T.basket=ids.slice(0,3);T.selected=by(ROCKFISH);T.renderCompareProfile();
-let prof=$('cmp-profile').innerHTML;
+let prof=$('cmp-profile').innerHTML;const face=strip(prof),all=both();
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
-assert.ok(strip(prof).includes('최상위 근거 독립 재현 확인 중')&&!strip(prof).includes('근거 논문 1편')&&strip(prof).includes('보전 평가 범주 기반'),'조피볼락 keeps its BBVI replication label (4.16 words) and a neutral MCUI basis (4.17: preliminary assessment)');
-assert.ok(!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반/.test(strip(prof)),'4.17 (prereg-4.17 5): the profile never names the preliminary assessment, nor calls it IUCN');
-T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+assert.ok(all.includes('최상위 근거 독립 재현 확인 중')&&!all.includes('근거 논문 1편')&&all.includes('보전 평가 범주 기반'),'조피볼락 keeps its BBVI replication label (4.16 words) and a neutral MCUI basis (4.17: preliminary assessment)');
+assert.ok(!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반/.test(face)&&!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반(?! MCUI와)/.test(all),'4.17 (prereg-4.17 5): the profile and its drawer never names the preliminary assessment, nor calls it IUCN');
+T.basket=[];T.selected=by(OYSTER);prof=both();
 assert.ok(prof.includes('72')&&!prof.includes('71.9')&&prof.includes('한국 국가 평가')&&prof.includes('IUCN 기반 MCUI와 직접 비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 
 // Side-by-side: mixed comparison groups and bases → no bars on those rows, "직접 비교 불가" instead; never a total or a pick.
@@ -100,20 +103,21 @@ assert.ok(T.matrixPlainNote().startsWith('연구 분류 · 채집·이용 허용
 assert.ok(!/써도 됨|키워서 써야 함|지켜야 함|더 알아봐야 함|지속가능 활용 후보/.test(read('app.js')+read('index.html')+read('chatbot.js')),'4.14: no use or harvest verdict words left on the page');
 T.basket=[];T.selected=by(OYSTER);T.renderCompareProfile();prof=$('cmp-profile').innerHTML;
 const oysterType=T.matrixType(by(OYSTER));
-assert.ok(new RegExp(`<b>${T.matrixTypePlain(oysterType)}</b><span>${T.matrixTypeLabel(oysterType)}</span>`).test(prof),'the profile type line: plain verdict, then the formal type name');
+assert.ok(new RegExp(`<b>${T.matrixTypePlain(oysterType)}</b><span class="sr-only"> \\(${T.matrixTypeLabel(oysterType)}\\)</span>`).test(prof),'the profile type line: plain verdict, then the formal type name (read aloud, on hover and in the drawer)');
+T.renderCompareDrawer(by(OYSTER));assert.ok(strip($('cmp-drawer-axes').innerHTML).includes(`${T.matrixTypePlain(oysterType)} ${T.matrixTypeLabel(oysterType)}`),'the drawer names both');
 // Chips: one short label beside a value, never the shared '정식 산출' or '단일 논문'; every other label piece stays on the profile.
 for(const s of S)for(const k of ['BBVI','MFPI','MBPI','MCUI']){const c=T.cmpChip(s,k);assert.ok(c!=='정식 산출'&&!T.plainWords(c).includes('단일 논문'),`${s.label} ${k} chip "${c}"`);}
 for(const s of S){
-  T.selected=s;T.renderCompareProfile();const text=strip($('cmp-profile').innerHTML);
+  T.selected=s;const text=both();
   for(const k of ['BBVI','MFPI','MBPI','MCUI'])for(const piece of T.cmpPieces(s,k)){
     const shown=T.plainWords(piece).replace(/^(.+) 비교집단$/,'식량 비교집단: $1');  // the screen's own wording (esc)
     assert.ok(text.includes(shown)||(k==='MCUI'&&text.includes(T.plainWords(T.cmpChip(s,k)))),`${s.label}: '${shown}' (${k}) stays on the profile`);
   }
 }
-T.selected=by(OYSTER);T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+T.selected=by(OYSTER);prof=both();
 assert.ok(['비교집단','최상위 근거 독립 재현 확인 중','IUCN 기반 MCUI와 직접 비교 불가','한국 국가 평가'].every(x=>prof.includes(x)),'참굴 keeps its comparison group, replication label (4.16) and basis note');
 // 4.19: 멍게 is placed now, so the unplaced wording is checked on a copy without its MCUI
-T.selected=(s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680));T.renderCompareProfile();prof=strip($('cmp-profile').innerHTML);
+T.selected=(s=>({...s,assessment:{...s.assessment,scores:{...s.assessment.scores,MCUI:null}}}))(by(250680));prof=both();
 assert.ok(prof.includes('유형 미산출')&&prof.includes('매트릭스 미배치'),'an unplaced species says 유형 미산출 and why');
 // Crowded points: same MCUI, same side of the BBVI threshold, neighbours under 4 apart, 4 or more; the selected one never joins.
 const P=(aphia,b,m,type,selected=false)=>({aphia,b,m,type,selected});

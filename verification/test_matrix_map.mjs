@@ -140,8 +140,9 @@ assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum
 for(const t of rule.cell_colour_precedence){
   const st=ctx.speciesCellStyle(t,false),on=ctx.speciesCellStyle(t,true);
   assert.deepEqual([st.color,st.fillColor,st.dashArray,st.fillOpacity],[ctx.matrixTypeColour[t],ctx.matrixTypeColour[t],'3 3',ctx.CELL_FILL],t);
-  assert.deepEqual([on.color,on.fillColor,on.dashArray],[st.color,st.fillColor,st.dashArray],t+': same colour when chosen');
-  // 2026-10-15: a clicked cell is marked by a heavier border only; its fill keeps the tone of the cells around it
+  // 2026-10-15 탐색 지도 시안: the chosen cell gets a bright dashed outline (not yellow, not a type colour); its fill keeps the
+  // type colour and the tone of the cells around it
+  assert.deepEqual([on.color,on.fillColor,on.dashArray],['#E5EDF1',st.fillColor,'6 4'],t+': bright dashed outline when chosen, same fill colour');
   assert.ok(on.weight>st.weight&&on.fillOpacity===st.fillOpacity,t+': the chosen cell has a heavier border, the same fill');
 }
 assert.equal(ctx.speciesCellStyle(null,true).fillOpacity,ctx.speciesCellStyle(null,false).fillOpacity,'untyped: the same fill when chosen');

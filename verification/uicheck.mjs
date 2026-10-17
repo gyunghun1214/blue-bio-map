@@ -1,6 +1,7 @@
 // Headless Chrome via DevTools protocol (no deps). Renders the local site, clicks species, screenshots, checks text.
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
+import {collect} from './readability_probe.mjs';
 const OUT=process.argv[2];
 // Expected counts are computed from the published files, never typed in: 22 candidates, snapshot rows, pilot scores.
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
@@ -196,14 +197,14 @@ try{
   check('Sea cucumber: published occurrence records, 4-degree generalization',new RegExp(`지도 표시 기록\\s*${cucMap.recordsText}건 · ${cucMap.cells}개 격자\\(4°\\)`).test(t)&&t.includes('GBIF')&&t.includes('4°×4°')&&t.includes('정밀 위치나 전체 분포가 아닙니다'),t);
   // 3.15: the RDA 해삼 row is linked through its MFDS scientific name (Stichopus japonicus), so MFPI 63.5
   check('Sea cucumber: conservation MCUI 80.0 and nutrition MFPI 63.5 from the index report, no stale 미수집/보류',/보전평가\s*지표 보고서에서 검토 · MCUI 80\.0/.test(t)&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.5/.test(t)&&!t.includes('근거 부족으로 보류')&&!/영양 기록 수\s*미수집/.test(t),t);
-  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 · 정식 산출 · 공식 평가 범주/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 · 정식 산출 · 공식 평가 범주')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
+  check('Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2013 superseded; pilot MCUI 80 with original grade beside it',t.includes('IUCN 현행 평가 EN A2bd: 2026년 발표')&&/보전 평가\s*80\.0 \(EN, A2bd\) · 정식 산출 · 공식 평가 범주/.test(t)&&!t.includes('undefined')&&t.includes('2025-09-30 평가')&&t.includes('대체된 역사적 평가')&&t.includes('MCUI · 보전 평가')&&t.includes('80.0 (EN, A2bd) · 정식 산출 · 공식 평가 범주')&&!t.includes('Needs updating'),t.slice(t.indexOf('보전'),t.indexOf('보전')+500));
   const mapNote=await evaluate("document.getElementById('map-review-note').textContent+' | '+document.getElementById('map-cells').textContent+' | shapes='+document.querySelectorAll('#map path.leaflet-interactive').length");
-  check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('붉은 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
+  check('Sea cucumber map: broad 4° cells shown without claiming full distribution',mapNote.includes('4° 셀')&&mapNote.includes('청회색 점은 실제 발견 좌표가 아닌')&&mapNote.includes('전체 분포를 뜻하지 않습니다')&&mapNote.includes(` | ${cucMap.cells} | shapes=${cucMap.cells}`),mapNote);
   await detailEl();await shot('desktop-sea-cucumber');
 
   t=await pick(342067);
   // 3.15: a reviewed aquaculture-feasibility record (false) completes the squid MFPI inputs: 46.1. 3.27: Wako 1996 YALPHA gives MBPI 56.9
-  check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',/영양 기록 수\s*지표 보고서에서 검토 · MFPI 46\.1/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 57(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 60\.0 \(자원 감소 신호\)/.test(t)&&!/미수집|미검토/.test(t.split('영양 자료 수집 현황')[1]||'')&&t.includes('2건'),t);
+  check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',/영양 기록 수\s*지표 보고서에서 검토 · MFPI 46\.1/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 57(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 60\.0 \(LC \+ 자원 감소\)(?! \()/.test(t)&&!/미수집|미검토/.test(t.split('영양 자료 수집 현황')[1]||'')&&t.includes('2건'),t);
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
@@ -228,7 +229,7 @@ try{
   check('Compare table: no preliminary-assessment words (4.17: named only in the species detail)',!/예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · |IUCN 기반 MCUI와 비교 불가.{0,3}자체/.test(cmp),(cmp.match(/.{0,60}(예비 평가\(공식 평가 전\)|역검증|서식국 국가 평가|Rapid LC\) · ).{0,60}/)||[''])[0]);
   check('Compare table (all pages): every assessments.json score (operating and candidate) plus named withheld reasons and evidence links',reportScores.length>0&&[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','정식 산출 · 방법 검증 통과(11종 비교) · 근거 보기','완화 산출(d)','정식 산출 · 방법 검증 기준 미충족 · 최상위 근거 독립 재현 확인 중 · 근거 보기','수분 환산값(다른 시료)'].every(x=>cmp.includes(x))&&!cmp.includes('시범')&&!['효능 근거 미확인','보전평가 미확인','멸종위험 평가 미확인','최상위 근거 독립 재현 확인 중'].reduce((t,w)=>t.replaceAll(w,''),cmp).includes('미확인')&&!cmp.includes('자체 예비평가(Rapid LC) · IUCN 기반 MCUI와 비교 불가')&&!cmp.includes('LC 가능성')&&!cmp.includes('지방 목록 참고값')&&!cmp.includes('예비 평가 참고'),JSON.stringify({missing:[...reportScores,'정식 산출 · 공식 평가 범주 · 근거 보기','완화 산출(d)'].filter(x=>!cmp.includes(x)).slice(0,10),withheld:(cmp.match(/산출 보류/g)||[]).length,around:[...cmp.matchAll(/.{0,60}(산출 보류|미확인|시범).{0,40}/g)].map(m=>m[0]).slice(0,6)})+' '+cmp.slice(0,200));  // 4.14: a Rapid LC is a reference again (never a 10), and every species without an official category says '보전평가 미확인'; 4.19: every species has an MCUI, so no row says it
   // 2026-10-13: the table is dark like the page, the coverage column and its guide left it, and the line above it says how to read it
-  const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),hint=document.querySelector('#cmp-table-view .dt-hint')?.textContent||'';const dark=getComputedStyle(c).backgroundColor==='rgb(8, 29, 46)'&&getComputedStyle(c.querySelector('.cv-num')).color==='rgb(244, 248, 250)'&&getComputedStyle(c.querySelector('thead th')).backgroundColor==='rgb(10, 34, 54)';const currentGuide=hint.includes('라벨은 근거의 수준이며 가치의 높낮이가 아닙니다')&&!c.querySelector('.coverage-bar,.coverage-guide');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {dark,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
+  const compareUx=await evaluate("(()=>{const c=document.getElementById('comparison'),hint=document.querySelector('#cmp-table-view .dt-hint')?.textContent||'';const rgb=x=>(x.match(/\\d+/g)||[]).slice(0,3).map(Number),dk=x=>{const v=rgb(x);return v.length===3&&Math.max(...v)<80;},lt=x=>Math.min(...rgb(x))>200;const dark=dk(getComputedStyle(c).backgroundColor)&&lt(getComputedStyle(c.querySelector('.cv-num')).color)&&dk(getComputedStyle(c.querySelector('thead th')).backgroundColor);const currentGuide=hint.includes('라벨은 근거의 수준이며 가치의 높낮이가 아닙니다')&&!c.querySelector('.coverage-bar,.coverage-guide');c.querySelector('[data-score-axis=MFPI]').click();const focused=document.activeElement.closest('[data-axis=MFPI]')!==null;const back=document.querySelector('.comparison-return');back.click();return {dark,currentGuide,focused,returned:document.querySelector('.view.active').id==='compare'&&document.activeElement.dataset.scoreAphia==='836033'}})()");
   check('Comparison (dark data table): dark panel and header, how-to-read line, no coverage column, keyboard return',Object.values(compareUx).every(Boolean),JSON.stringify(compareUx));
   await evaluate("window.scrollTo(0,0);1");await shot('desktop-compare');
   // ---------- 비교와 지표 (2026-10 deep-sea redesign): matrix first, species profile, basket of up to 3, side-by-side view ----------
@@ -239,7 +240,7 @@ try{
     r.fromExplore=q('#cmp-profile-name').textContent===last.label&&q('#matrix-points [aria-current]')?.dataset.aphia===String(last.aphiaID);
     q('#matrix-points [data-aphia="836033"]').click();
     r.ring=q('#matrix-points [data-aphia="836033"]').getAttribute('aria-current')==='true'&&document.querySelectorAll('#matrix-points [aria-current]').length===1;
-    const p=q('#cmp-profile').textContent;
+    q('#cmp-open-more').click();const p=q('#cmp-profile').textContent+' '+q('#cmp-drawer-axes').textContent;r.drawer=q('#cmp-drawer').open;q('#cmp-drawer').close();
     r.profile=q('#cmp-profile-name').textContent==='참굴'&&p.includes('72')&&!p.includes('71.9')&&p.includes('산출 항목 6 · 독립 논문 4편')&&p.includes('최상위 항목 재현 기록 있음(기준 외)')&&!p.includes('기준 외:')&&!p.includes('근거 계수')&&p.includes('한국 국가 평가')&&p.includes('IUCN 기반 MCUI와 직접 비교 불가');
     cmpBasket=[];renderCompare();toggleBasket(836033);toggleBasket(836033);r.pressTwiceRemoves=cmpBasket.length===0;
     const ids=data.species.map(s=>s.aphiaID);ids.slice(0,3).forEach(toggleBasket);const fourth=toggleBasket(ids[3]);
@@ -281,18 +282,19 @@ try{
     const table0=(setCompareMode('table'),q('#comparison').textContent);setCompareMode('matrix');
     const cellTypes=()=>{const n={};for(const g of valueCellGroups(true).values()){const t=cellMatrixType(g).type||'none';n[t]=(n[t]||0)+1;}return JSON.stringify(n);};
     setView('explore');setMapMode('value');await wait(300);const cells0=cellTypes(),cand0=document.getElementById('layer-unexplored-count')?.textContent;setMapMode('occurrence');setView('compare');setCompareMode('matrix');await wait(200);
-    q('#cmp-basis-toggle').click();r.panel=vis(q('#bbvi-weight'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&!vis(q('#cmp-weight-badge'))&&!vis(q('#cmp-matrix-badge'))&&q('#cmp-weight-reset').disabled;
+    const wl=()=>(q('#cmp-wline-name').textContent+q('#cmp-wline-text').textContent).replace(/\\s+/g,' ').trim(),off=()=>q('#cmp-wline').classList.contains('off')&&vis(q('#cmp-wline [data-w-reset]'));
+    q('#cmp-basis-toggle').click();r.panel=vis(q('#bbvi-weight'))&&vis(q('#cmp-basis-pop'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&!off()&&wl().startsWith('공식 가중치')&&q('#cmp-weight-reset').disabled;
     const left0=q('#matrix-points [data-aphia="241776"]')?.style.left;
     r.sum=[...Array(21).keys()].every(k=>{const m=weightPair(k/20).match(/MBPI (\\S+) · MFPI (\\S+)/);return Math.round(Number(m[1])*100)+Math.round(Number(m[2])*100)===100;});
     q('[data-w-preset="15"]').click();await wait(250);
     r.preset=q('#bbvi-weight-value').textContent==='MBPI 0.25 · MFPI 0.75'&&q('[data-w-preset="15"]').getAttribute('aria-pressed')==='true'&&q('#bbvi-weight').getAttribute('aria-valuetext')==='MBPI 0.25, MFPI 0.75';
-    r.badges=vis(q('#cmp-weight-badge'))&&vis(q('#cmp-matrix-badge'))&&q('#cmp-matrix-badge').textContent.includes('탐색 보기 · 사용자 가중치 MBPI 0.25 · MFPI 0.75 · 공식 산출값(0.50) 아님')&&q('#cmp-basis-now').textContent===' · MBPI 0.25 · MFPI 0.75';
+    r.badges=off()&&wl().startsWith('탐색 가중치 · 공식값(0.50) 아님');
     const moved=data.species.filter(s=>matrixType(s)!==officialType(s));
     r.moved=moved.length>0&&q('#bbvi-weight-moved').textContent.startsWith('공식값과 유형이 다른 종 '+moved.length+'종')&&document.querySelectorAll('#matrix-points .matrix-point.w-moved').length===moved.filter(assessedForMatrix).length;
     const pt=q('#matrix-points [data-aphia="241776"]');r.point=!!pt&&pt.style.left!==left0&&pt.title.includes('공식 ');
     r.hash=/[#&]w=0\\.75(&|$)/.test(location.hash);
     r.profile=q('#cmp-profile').textContent.includes('공식 72')&&!q('#cmp-profile').textContent.includes('공식 71.9');r.cards=q('#species-list [data-species="241776"]').textContent.includes(scoreText(data.species.find(x=>x.aphiaID===241776),'BBVI',pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')))&&pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')!==36.1;
-    setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&vis(q('#cmp-table-badge'));setCompareMode('matrix');
+    setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&off();setCompareMode('matrix');
     r.cells=cellTypes()!==cells0;
     setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.25 · MFPI 0.75');
     r.candidates=document.getElementById('layer-unexplored-count')?.textContent===cand0;
@@ -301,26 +303,26 @@ try{
     q('[data-w-preset="5"]').click();await wait(250);r.bio=q('#bbvi-weight-value').textContent==='MBPI 0.75 · MFPI 0.25'&&/[#&]w=0\\.25(&|$)/.test(location.hash);
     q('#cmp-weight-reset').click();await wait(250);
     setCompareMode('table');const table1=q('#comparison').textContent;setCompareMode('matrix');
-    r.resetBadge=!vis(q('#cmp-matrix-badge'))&&q('#cmp-basis-now').textContent==='';r.resetHash=!/[#&]w=/.test(location.hash);r.resetTable=table1===table0;r.resetCells=cellTypes()===cells0;r.resetPoints=!document.querySelector('#matrix-points .w-moved');
+    r.resetBadge=!off()&&wl().startsWith('공식 가중치');r.resetHash=!/[#&]w=/.test(location.hash);r.resetTable=table1===table0;r.resetCells=cellTypes()===cells0;r.resetPoints=!document.querySelector('#matrix-points .w-moved');
     setBasisPop(false);return r})()`);
   check('BBVI weight slider: MBPI + MFPI = 1.00 at 21 steps, presets, 탐색 보기 badges (panel, matrix, table, value map), official value beside a re-mix, explore cards follow, moved-type list and dashed points, cell colours follow, unexplored count fixed, link w, official weight restores the first screen',Object.values(wt).every(Boolean),JSON.stringify(wt));
   // 2026-10-15 MBPI evidence kind: the profile names the kind of the top evidence under MBPI (의약 표적 / 기능성 펩타이드 with the
   // ACE·XO share) and shows MBPI-Rx on its own row; no value reads '의약 표적 근거 없음', never 0; the line stays inside the panel
   const mk=await evaluate(`(async()=>{const r={},q=s=>document.querySelector(s),wait=ms=>new Promise(f=>setTimeout(f,ms));
-    setView('compare');setCompareMode('matrix');selectSpecies(145721);await wait(200);let p=q('#cmp-profile');
+    setView('compare');setCompareMode('matrix');selectSpecies(145721);await wait(200);q('#cmp-open-more').click();await wait(100);let p=q('#cmp-drawer-axes');
     r.wakame=p.querySelector('.cp-kind-badge')?.textContent==='기능성 펩타이드(ACE·XO)'&&p.querySelector('.cp-kind-share')?.textContent==='최상위 근거 · ACE·XO 항목 8/8(100%)'&&p.querySelector('.cp-rx-none')?.textContent==='의약 표적 근거 없음'&&!p.querySelector('.cp-rx-num');
-    selectSpecies(504357);await wait(200);p=q('#cmp-profile');
+    selectSpecies(504357);await wait(200);p=q('#cmp-drawer-axes');
     r.ark=p.querySelector('.cp-kind-badge')?.dataset.kind==='drug'&&p.querySelector('.cp-kind-badge')?.textContent==='의약 표적(항균·항암·기타 표적)'&&p.querySelector('.cp-rx-num')?.textContent===scoreText(data.species.find(x=>x.aphiaID===504357),'MBPI',75);
-    const k=p.querySelector('.cp-kind').getBoundingClientRect(),x=p.querySelector('.cp-rx').getBoundingClientRect(),b=p.getBoundingClientRect();r.inside=k.left>=b.left&&k.right<=b.right+1&&x.right<=b.right+1&&k.height>0&&x.height>0;
-    selectSpecies(836033);await wait(200);r.order=(()=>{const m=q('#cmp-profile .cp-sub-num[data-prof-axis="MBPI"]'),kk=q('#cmp-profile .cp-kind'),rx=q('#cmp-profile .cp-rx');return !!m&&!!kk&&!!rx&&(m.compareDocumentPosition(kk)&4)&&(kk.compareDocumentPosition(rx)&4);})();
-    return r})()`);
-  check('MBPI evidence kind: profile badge (의약 표적 / 기능성 펩타이드 + ACE·XO share) and MBPI-Rx row under MBPI, 의약 표적 근거 없음 for no value, inside the panel',Object.values(mk).every(Boolean),JSON.stringify(mk));
+    const k=p.querySelector('.cp-kind').getBoundingClientRect(),x=p.querySelector('.cp-rx').getBoundingClientRect(),b=q('#cmp-drawer-body').getBoundingClientRect();r.inside=k.left>=b.left&&k.right<=b.right+1&&x.right<=b.right+1&&k.height>0&&x.height>0;
+    selectSpecies(836033);await wait(200);r.order=(()=>{const m=q('#cdr-use .cdr-tag:nth-of-type(3)'),kk=q('#cdr-use .cp-kind'),rx=q('#cdr-use .cp-rx');return !!m&&m.textContent.startsWith('MBPI')&&!!kk&&!!rx&&(m.compareDocumentPosition(kk)&4)&&(kk.compareDocumentPosition(rx)&4);})();
+    q('#cmp-drawer').close();return r})()`);
+  check('MBPI evidence kind: badge (의약 표적 / 기능성 펩타이드 + ACE·XO share) and MBPI-Rx row under MBPI in the profile\'s 근거 자세히 보기 drawer (final design 2026-10-15), 의약 표적 근거 없음 for no value, inside the drawer',Object.values(mk).every(Boolean),JSON.stringify(mk));
   // 2026-10-13 dark data table: the one #bbvi-weight moves to the table's tool row and back; five type cards count the species the
   // group and search leave, by the type at the current weight, and keep only their type in the table; the expanded row sums BBVI
   // at that weight; BBVI sort follows; the cards and the expand button work from the keyboard with focus kept.
   const dt=await evaluate(`(async()=>{const r={},q=s=>document.querySelector(s),wait=ms=>new Promise(f=>setTimeout(f,ms)),vis=e=>!!e&&!e.hidden&&e.getClientRects().length>0;
     setView('compare');setCompareFilter({q:'',group:'all',type:null});cmpSort={key:null,dir:null};setCompareMode('table');await wait(200);
-    r.slot=q('#cmp-w-slot').contains(q('#bbvi-weight'))&&vis(q('#cmp-wrow'))&&vis(q('#bbvi-weight'))&&q('#cmp-w-bio').textContent==='MBPI 0.50'&&q('#cmp-w-food').textContent==='MFPI 0.50'&&q('#cmp-w-status').textContent==='비교집단은 고정됩니다 · '+q('#bbvi-weight-status').textContent;
+    r.slot=q('.cmp-weight').contains(q('#bbvi-weight'))&&vis(q('#bbvi-weight'))&&q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&q('#cmp-basis-pop').textContent.includes('비교집단은 고정됩니다');
     const cards=()=>[...document.querySelectorAll('#cmp-type-cards [data-cmp-type]')];
     const counts=()=>JSON.stringify(cards().map(b=>[b.dataset.cmpType,Number(b.querySelector('.dt-card-n b').textContent)]));
     const want=()=>JSON.stringify(cards().map(b=>[b.dataset.cmpType,data.species.filter(s=>cmpMatch(s)&&(matrixType(s)||'none')===b.dataset.cmpType).length]));
@@ -328,18 +330,18 @@ try{
     r.groups=q('[data-cmp-group=all] .cmp-gn')?.textContent===String(data.species.length)&&vis(q('[data-cmp-group=all] .cmp-gn'));
     const c0=counts(),order0=[...document.querySelectorAll('#comparison tr.cmp-row')].map(t=>t.dataset.aphia).join();
     const el=q('#bbvi-weight');el.value='16';el.dispatchEvent(new Event('input'));await wait(300);
-    r.weight=q('#cmp-w-food').textContent==='MFPI 0.80'&&q('#cmp-w-bio').textContent==='MBPI 0.20'&&el.getAttribute('aria-valuetext')==='MBPI 0.20, MFPI 0.80'&&counts()===want()&&counts()!==c0&&vis(q('#cmp-table-badge'));
+    r.weight=q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80'&&el.getAttribute('aria-valuetext')==='MBPI 0.20, MFPI 0.80'&&counts()===want()&&counts()!==c0&&q('#cmp-wline').classList.contains('off');
     q('#comparison tr.cmp-row .cmp-more-btn').click();const x=q('#comparison tr.cmp-more:not([hidden]) .dt-x-sum')?.textContent||'';r.sum=x.startsWith('0.80 × MFPI ')&&x.includes(' + 0.20 × MBPI ');q('#comparison tr.cmp-row .cmp-more-btn').click();
     q('#comparison [data-sort=BBVI]').click();await wait(100);const top=data.species.filter(s=>pilotScore(s,'BBVI')!==null).map((s,i)=>[s,i]).sort(([a,i],[b,j])=>pilotScore(b,'BBVI')-pilotScore(a,'BBVI')||i-j)[0][0];
     r.sorted=q('#comparison tr.cmp-row').dataset.aphia===String(top.aphiaID);cmpSort={key:null,dir:null};renderComparison();
-    setCompareMode('matrix');r.home=q('#cmp-basis-pop').contains(q('#bbvi-weight'))&&!vis(q('#cmp-wrow'))&&!vis(q('[data-cmp-group=all] .cmp-gn'))&&q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80';
+    setCompareMode('matrix');r.home=q('.cmp-weight').contains(q('#bbvi-weight'))&&vis(q('#bbvi-weight'))&&!vis(q('[data-cmp-group=all] .cmp-gn'))&&q('#bbvi-weight-value').textContent==='MBPI 0.20 · MFPI 0.80';
     setCompareMode('table');await wait(50);
     const card=q('#cmp-type-cards [data-cmp-type=sustainable_use]'),shown=()=>[...document.querySelectorAll('#comparison tr.cmp-row:not(.cmp-out)')].map(t=>cmpById(t.dataset.aphia));
     card.click();await wait(50);const n=()=>Number(card.querySelector('.dt-card-n b').textContent);
     r.typeFilter=card.getAttribute('aria-pressed')==='true'&&shown().length===n()&&shown().every(s=>matrixType(s)==='sustainable_use')&&q('#comparison-page').textContent.startsWith('총 '+n()+'종');
     q('[data-cmp-group="패류"]').click();await wait(50);r.combo=n()>0&&shown().length===n()&&shown().every(s=>s.group==='패류'&&matrixType(s)==='sustainable_use')&&q('#cmp-filter-note').textContent.includes(data.species.length+'종 중 '+n()+'종 표시');
     card.click();q('[data-cmp-group=all]').click();await wait(50);r.cleared=card.getAttribute('aria-pressed')==='false'&&shown().length===data.species.length&&q('#cmp-filter-note').textContent==='';
-    setBbviStep(10);await wait(300);r.reset=q('#cmp-w-food').textContent==='MFPI 0.50'&&counts()===c0&&[...document.querySelectorAll('#comparison tr.cmp-row')].map(t=>t.dataset.aphia).join()===order0;
+    setBbviStep(10);await wait(300);r.reset=q('#bbvi-weight-value').textContent==='MBPI 0.50 · MFPI 0.50'&&counts()===c0&&[...document.querySelectorAll('#comparison tr.cmp-row')].map(t=>t.dataset.aphia).join()===order0;
     q('#cmp-type-cards [data-cmp-type=baseline_survey]').focus();return r})()`);
   await pressEnter();await sleep(150);
   dt.keyCard=await evaluate("(()=>{const b=document.querySelector('#cmp-type-cards [data-cmp-type=baseline_survey]');return b.getAttribute('aria-pressed')==='true'&&document.activeElement===b})()");
@@ -350,11 +352,11 @@ try{
   await evaluate("location.hash='s=836033&v=compare&w=0.70';location.reload();1");
   for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
   await sleep(800);
-  const wl=await evaluate("({w:bbviWeight,text:document.getElementById('bbvi-weight-value').textContent,badge:!document.getElementById('cmp-matrix-badge').hidden,hash:location.hash})");
+  const wl=await evaluate("({w:bbviWeight,text:document.getElementById('bbvi-weight-value').textContent,badge:document.getElementById('cmp-wline').classList.contains('off'),hash:location.hash})");
   await evaluate("location.hash='s=836033&v=compare&w=abc';location.reload();1");
   for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
   await sleep(800);
-  const wb=await evaluate("({w:bbviWeight,badge:!document.getElementById('cmp-matrix-badge').hidden,hash:location.hash})");
+  const wb=await evaluate("({w:bbviWeight,badge:document.getElementById('cmp-wline').classList.contains('off'),hash:location.hash})");
   check('BBVI weight link: #…&w=0.70 opens at MBPI 0.30 · MFPI 0.70 with the badge; w=abc opens at the official weight and drops w',wl.w===.7&&wl.text==='MBPI 0.30 · MFPI 0.70'&&wl.badge&&wl.hash.includes('w=0.70')&&wb.w===.5&&!wb.badge&&!wb.hash.includes('w='),JSON.stringify({wl,wb}));
   await evaluate("setBbviStep(10);1");await sleep(300);
   await evaluate("selectSpecies(836033);toggleBasket(836033);toggleBasket(145721);setCompareMode('matrix');window.scrollTo(0,0);1");await sleep(300);await shot('desktop-compare-matrix');
@@ -384,7 +386,7 @@ try{
   await sleep(900);
   const split=await evaluate(`(()=>{const s=periodView(selected),chip=document.getElementById('map-chip'),t=matrixType(selected),norm=h=>{const e=document.createElement('i');e.style.color=h;return e.style.color};
     return {zoom:map.getZoom(),dots:overlay.getLayers().filter(l=>l._schematicDot).length,tags:document.querySelectorAll('#map .bbvi-tag').length,key:document.getElementById('map-symbol-label').textContent,dotMark:!document.getElementById('key-dot-mark').hidden,
-      chip:chip.hidden?'':chip.textContent,want:s.label+' 기록 셀 '+spatialCells(s).length+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s),
+      chip:chip.hidden?'':chip.textContent,want:s.label+' · 공개 셀 '+spatialCells(s).length+'개 · 기록 '+cellRecords(s).toLocaleString()+'건',
       under:[document.getElementById('map-cells').textContent,document.getElementById('map-count').textContent,document.getElementById('map-years').textContent].join('|'),wantUnder:[spatialCells(s).length,cellRecords(s).toLocaleString(),cellYears(s)].join('|'),
       dot:chip.querySelector('.mc-dot')?.style.backgroundColor||'none',wantDot:t?norm(matrixTypeColour[t]):'none'}})()`);
   check('Overview zoom shows regional bubbles only; clicking one zooms in to red dots; no per-cell BBVI tag; the map chip names the species, cells, records and years once (type-colour dot); the legend line follows the zoom',
@@ -393,34 +395,39 @@ try{
   // 2026-10-13 design 2, card shape A: a type dot, the name and latin name, then '활용 · 보전 · verdict', every value from the app
   const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
     const t=matrixType(s),v=k=>{const x=axisState(s,k).value;return x===null?'–':scoreText(s,k,x)},m=axisState(s,'MCUI').value,line=el.querySelector('.card-line');if(!line){bad.push(s.label+': no line');continue;}n++;
-    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+v('MCUI')+'|'+matrixTypePlain(t);
+    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+(m===null?'–':mcuiFace(m))+'|'+matrixTypePlain(t);
+    // 2026-10-15 탐색 지도 시안: the card face shows the MCUI number only ('10', not '10.0'); its category (#208) stays in the card's spoken text
+    const cat=(v('MCUI').match(/\\((.+)\\)$/)||[])[1];if(cat&&!vs[1].textContent.includes('('+cat+')'))bad.push(s.label+': no category '+cat);
     if(got!==exp||el.dataset.type!==(t||'none')||vs[1].classList.contains('high')!==(m!==null&&m>=rule.mcui_threshold)||!verdict.title.includes('채집·이용 허용이나 지속가능성 판정이 아님'))bad.push(s.label+': '+got+' / '+exp);
     if(vs[0].classList.contains('single'))single++;if(axisState(s,'BBVI').value!==null&&bbviLabel(s))wantSingle++;}
     const first=document.querySelector('#species-list .species-card .card-line .cl-v');return {bad,n,want,single,wantSingle,shown:first?getComputedStyle(first).display:''}})()`);
   check('Species cards (design 2, shape A): 활용 BBVI · 보전 MCUI · verdict on every assessed card from the app’s values and types; MCUI at or over the line in red; the verdict notes it is no advice; the single-paper mark follows the BBVI label',
     !cardLine.bad.length&&cardLine.n===cardLine.want&&cardLine.n>0&&cardLine.single===cardLine.wantSingle&&cardLine.shown!=='none',JSON.stringify(cardLine));
-  // 4.16 (2026-10-15): every assessed card carries the evidence profile line from the published evidence_profile, never '근거 논문 1편'
-  const evCards=await evaluate(`(()=>{const bad=[];let n=0,want=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
-    const ev=el.querySelector('.card-evidence'),e=s.assessment.evidence_profile;if(!ev||!e){bad.push(s.label+': none');continue;}n++;const t=ev.textContent;
-    if(!t.includes(evidenceProfileText(s,'card'))||!t.includes('항목 '+e.item_count)||(e.item_count&&!t.includes('독립 논문 '+e.independent_paper_count+'편'))||t.includes('근거 논문 1편'))bad.push(s.label+': '+t);}
-    return {bad,n,want}})()`);
-  check('Species cards (4.16): all assessed cards show the evidence profile line (items · independent papers · top-item replication · related papers) from the report',
-    !evCards.bad.length&&evCards.n===evCards.want&&evCards.want===report.species.length+(report.candidate_species||[]).length,JSON.stringify(evCards));
+  // 2026-10-15 (LKH): the 탐색 후보 cards carry no grey evidence lines (근거 · 항목 · 독립 논문 · 재현 · 관련 문헌, MBPI 근거 층);
+  // the evidence profile stays in the species detail's folded MBPI section
+  const evCards=await evaluate(`(()=>{const cards=[...document.querySelectorAll('#species-list .species-card')],bad=[];
+    for(const el of cards){const t=el.textContent;if(el.querySelector('.card-evidence,.card-lit,.card-stratum')||/독립 논문|관련 문헌|재현 기록|MBPI 근거/.test(t))bad.push(el.querySelector(':scope>b').textContent+': '+t);}
+    return {bad,n:cards.length}})()`);
+  check('Species cards (2026-10-15): no grey evidence lines on the 탐색 후보 cards (items · independent papers · replication · related papers · MBPI stratum)',
+    !evCards.bad.length&&evCards.n>0,JSON.stringify(evCards));
   // 2026-10-14: no card text crosses its card border and the vertical list never scrolls sideways (the list is 279px wide at every width from 1281px)
   const cardFit=await evaluate(`(()=>{const list=document.getElementById('species-list'),over=[];
     const hid=(el,card)=>{for(let n=el;n&&n!==card;n=n.parentElement){const cs=getComputedStyle(n);if(n.classList.contains('sr-only')||cs.clip!=='auto'||cs.display==='none')return true;}return false;};
     for(const card of list.querySelectorAll('.species-card')){const edge=card.getBoundingClientRect().right;let right=-Infinity;
-      const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT);for(let t;(t=w.nextNode());){if(!t.textContent.trim()||hid(t.parentElement,card))continue;const rg=document.createRange();rg.selectNodeContents(t);for(const r of rg.getClientRects())if(r.width>0)right=Math.max(right,r.right);}
+      // a one-line box that cuts its own text with '…' (the latin name beside a long Korean name) is measured by its box, which is what shows
+      const cut=el=>{const cs=getComputedStyle(el);return cs.overflowX==='hidden'&&cs.textOverflow==='ellipsis'?el:null;};
+      const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT);for(let t;(t=w.nextNode());){if(!t.textContent.trim()||hid(t.parentElement,card))continue;const box=cut(t.parentElement);if(box){right=Math.max(right,box.getBoundingClientRect().right);continue;}const rg=document.createRange();rg.selectNodeContents(t);for(const r of rg.getClientRects())if(r.width>0)right=Math.max(right,r.right);}
       if(right>edge+0.5)over.push(card.querySelector(':scope>b').textContent+' +'+(right-edge).toFixed(1));}
     return {over,scroll:list.scrollWidth,client:list.clientWidth}})()`);
   check('Species cards fit: every card’s text stays inside its border and the species list has no horizontal scroll',!cardFit.over.length&&cardFit.scroll<=cardFit.client,JSON.stringify(cardFit));
   const typeChip=await evaluate(`(()=>{const t=matrixType(selected),c=document.querySelector('#detail .ax-type'),x=c?.textContent||'';return {text:x,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',title:c?.title||'',first:c?.querySelector('.verdict')?.textContent||''}})()`);
   check('Detail type chip (design 2): the verdict first, then the type name; its tooltip says research class, no permission or sustainability verdict',typeChip.first===typeChip.plain&&!!typeChip.label&&typeChip.text.indexOf(typeChip.plain)<typeChip.text.indexOf(typeChip.label)&&typeChip.title.startsWith('연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님'),JSON.stringify(typeChip));
   const leg=await evaluate(`(()=>{const q=s=>document.querySelector(s),r=e=>e.getBoundingClientRect(),key=q('#occurrence-legend'),more=q('.map-legend-more'),pane=r(q('.species-pane')),bl=r(q('.map-ui-bl')),c=r(q('#map-chip')),ov=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
-    return {rows:[...key.children].filter(e=>r(e).height>0).length,summary:more.querySelector('summary').textContent,closed:!more.open,inside:['.key-bubble','.key-note','#map-legend-note'].every(s=>more.contains(q('#occurrence-legend '+s))),gap:Math.round(bl.top-pane.bottom),
+    return {rows:[...key.children].filter(e=>r(e).height>0).length,summary:more.querySelector('summary').textContent,closed:!more.open,inside:['.key-bubble','.key-note','#map-legend-note'].every(s=>more.contains(q('#occurrence-legend '+s))),gap:Math.round(bl.left-pane.right),base:Math.round(bl.bottom-pane.bottom),
       chipHits:['.species-pane','#detail','.basemap-switch','#copy-link','#reset-map'].filter(s=>ov(c,r(q(s)))),chipEvents:getComputedStyle(q('#map-chip')).pointerEvents,chipLive:q('#map-chip').getAttribute('aria-live')}})()`);
-  check('Legend (design 2): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, hung under the species list with no gap; the map chip sits in the free part, takes no clicks, is not a live region',
-    leg.rows===2&&leg.summary==='범례'&&leg.closed&&leg.inside&&Math.abs(leg.gap)<=1&&!leg.chipHits.length&&leg.chipEvents==='none'&&leg.chipLive===null,JSON.stringify(leg));
+  // 2026-10-15 탐색 지도 시안: the key sits bottom-left of the free map area, beside the species list (not under it), on the same baseline
+  check('Legend (design 2 · 2026-10-15 시안): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, bottom-left of the free map area beside the species list on its baseline; the map chip sits in the free part, takes no clicks, is not a live region',
+    leg.rows===2&&leg.summary==='범례'&&leg.closed&&leg.inside&&leg.gap>=8&&Math.abs(leg.base)<=1&&!leg.chipHits.length&&leg.chipEvents==='none'&&leg.chipLive===null,JSON.stringify(leg));
   const sumPop=await evaluate("(()=>{const l=overlay.getLayers().find(l=>l instanceof L.Rectangle&&l.getPopup());l.openPopup();const c=document.querySelector('.leaflet-popup-content');const r={tiles:[...c.querySelectorAll('.cell-summary span')].map(x=>x.textContent),text:c.innerText};map.closePopup();return r})()");
   check('Cell popup opens with confirmed / usable / conservation-priority / evidence-gap species counts',JSON.stringify(sumPop.tiles)==='["확인 종","활용 지표 높은 종","보전 지표 높은 종","보전평가 미확인 종","근거 부족 종"]'&&sumPop.text.includes('이 격자에서 측정한 값이 아닙니다'),JSON.stringify(sumPop).slice(0,500));
   const sumVal=await evaluate("(()=>{setMapMode('value');const r=[...document.querySelectorAll('#value-cell-detail .cell-summary span')].map(x=>x.textContent);setMapMode('occurrence');return r})()");
@@ -429,7 +436,7 @@ try{
   // 2026-10-13 design 2: the chip follows the species and the period filter, always with the numbers under the map
   const chipFlow=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms)),q=x=>document.getElementById(x),out=[];
     const read=tag=>{const s=periodView(selected),n=spatialCells(s).length,c=q('map-chip');out.push({tag,chip:c.hidden?'(hidden)':c.textContent,
-      want:n?selected.label+' 기록 셀 '+n+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s):selected.label+' 공개 셀 없음',cells:q('map-cells').textContent,wantCells:String(n),size:s.cells[0]?.sizeDeg||null})};
+      want:n?selected.label+' · 공개 셀 '+n+'개 · 기록 '+cellRecords(s).toLocaleString()+'건':selected.label+' · 공개 셀 없음',cells:q('map-cells').textContent,wantCells:String(n),size:s.cells[0]?.sizeDeg||null})};
     selectSpecies(241776);await wait(300);read('해삼');
     // verified-4.11 has no candidate without public cells, so one candidate's cells are emptied for this read and put back
     const none=data.species.find(x=>x.catalog),kept=none.cells;none.cells=[];selectSpecies(none.aphiaID);await wait(300);read('후보 '+none.label+'(셀 비운 시험)');none.cells=kept;
@@ -440,15 +447,27 @@ try{
   t=await pick(836033);
   check('Oyster live: map section explains why publishable, exclusions, OBIS 26 kept under review',['지도 셀','공개 셀','왜 공개할 수 있는가',`CC BY-NC ${snapshot.profiles.find(p=>p.aphia_id===836033).evidence_summary.map.used_licences['CC BY-NC 4.0']}건`,'육지 위 좌표','운영 DB에서 검토 중인 기존 기록','1°를 적용','기존 OBIS 시험 수집 26건'].every(x=>t.includes(x)),t);
   check('Oyster: text matches its published cell (no "instead of cells" contradiction)',!t.includes('공개 출현 셀 대신')&&t.includes('이 수집 기록은 지도 셀에 쓰지 않음'),t.slice(0,600));
-  check('Institution checklist: country metadata, ABS/BBNJ links, not a legal determination',['활용 전 제도 확인','법적 판단 아님','기록의 국가 메타데이터','유전자원법','ABS 정보공유체계','BBNJ 협정','관할 경계를 판정할 수 없습니다'].every(x=>t.includes(x)),t.slice(t.indexOf('활용 전'),t.indexOf('활용 전')+400));
+  check('Institution checklist: record share by country metadata, Korean ABS act, ABS/BBNJ links, a check not a legal determination',['활용 전 확인할 제도','법적 판단 아님','기록의 국가 메타데이터','유전자원의 접근·이용 및 이익 공유에 관한 법률','나고야의정서 국내 이행법','법령 원문 확인이 필요합니다','ABS 정보공유체계','BBNJ 협정','관할 경계를 판정할 수 없습니다'].every(x=>t.includes(x))&&/한국\(KR\) [\d,]+건\([\d.]+%\)/.test(t),t.slice(t.indexOf('활용 전 확인'),t.indexOf('활용 전 확인')+500));
+  // 2026-10-15 application-doc gaps: both-high species shows alternative production before the map summary; links; dialog; status table
+  const gap=await evaluate(`(()=>{selectSpecies(342067);const d=document.getElementById('detail');const alt=d.querySelector('.alt-production'),map=d.querySelector('#detail-map-summary');
+    const before=!!alt&&!!map&&!!(alt.compareDocumentPosition(map)&Node.DOCUMENT_POSITION_FOLLOWING),inat=d.querySelector('.detail-actions a')?.href||'';
+    d.querySelector('[data-coord-request]').click();const dlg=document.getElementById('coord-dialog'),open=dlg.open,txt=dlg.innerText;dlg.close();
+    selectSpecies(836033);const oyAlt=!!document.querySelector('#detail .alt-production'),cp=!!document.querySelector('#cmp-profile .alt-production');
+    const m=document.getElementById('method'),gone=['mt-scorecard','mt-acc-05','promise-table','promise-count'].filter(id=>document.getElementById(id)),
+      words=['VALIDATION SCORECARD','검증 성적표','신청서 약속','구현 현황'].filter(w=>m.textContent.includes(w)),folds=[...m.querySelectorAll('details.mt-acc')].map(d=>d.id);
+    return {before,altText:alt?.innerText||'',inat,open,txt,oyAlt,gone,words,folds,first:m.firstElementChild?.id}})()`);
+  check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('조사 필요')&&!gap.oyAlt,JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,alt:gap.altText.slice(0,200)}));
+  check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&['원좌표를 누구에게도 제공하지 않습니다','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x)),JSON.stringify({inat:gap.inat,open:gap.open}));
+  // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
+  check('Method tab: no validation scorecard and no fold 05 (application promise table); folds 01–04; MCUI table is the first block',gap.gone.length===0&&gap.words.length===0&&JSON.stringify(gap.folds)===JSON.stringify(['mt-acc-01','mt-acc-02','mt-acc-03','mt-acc-04'])&&gap.first==='mt-mcui-map',JSON.stringify({gone:gap.gone,words:gap.words,folds:gap.folds,first:gap.first}));
   const cucT=await pick(241776);
   check('Sea cucumber detail: checked bioactivity case shown, marked not an index input',cucT.includes('별도 원문 조사 · 지표 입력 아님')&&cucT.includes('Holotoxin'),cucT.slice(cucT.indexOf('화합물'),cucT.indexOf('화합물')+400));
   t=await pick(836033);
   const oyMap=await liveMap(836033);
-  const oyTop=await evaluate("(()=>{selectSpecies(836033);const d=document.getElementById('detail');const more=[...d.querySelectorAll('details.detail-more')];return {top:d.querySelector('.detail-summary').innerText,closed:more.length===3&&more.every(x=>!x.open),summaries:more.map(x=>x.querySelector('summary').innerText),kb:more.every(x=>x.querySelector('summary').tabIndex===0)}})()");
+  const oyTop=await evaluate("(()=>{selectSpecies(836033);const d=document.getElementById('detail');const more=[...d.querySelectorAll('details.detail-more')];return {top:d.querySelector('.detail-summary').innerText,closed:more.length===4&&more.every(x=>!x.open),summaries:more.map(x=>x.querySelector('summary').innerText),kb:more.every(x=>x.querySelector('summary').tabIndex===0)}})()");
   check('Core regression: oyster top = map GBIF records · cells · years of the published cells; OBIS 26건/2008–2014 not mixed in',new RegExp(`지도 표시 기록\\s*${oyMap.recordsText}건 · ${oyMap.cells}개 격자\\(1°\\)`).test(oyTop.top)&&oyTop.top.includes(`기록 연도\n${oyMap.years}`)&&oyTop.top.includes('GBIF')&&!/26건/.test(oyTop.top.split('제외 사유')[0])&&!oyTop.top.includes('2008')&&/제외 사유\s*.*운영 DB에서 검토 중인 기존 기록 26건/.test(oyTop.top)&&!oyTop.top.includes('AphiaID'),oyTop.top);
   await shot('desktop-oyster-collapsed');
-  check('Detail: three disclosures closed by default, keyboard-focusable summaries',oyTop.closed&&oyTop.kb&&JSON.stringify(oyTop.summaries)===JSON.stringify(['근거 자세히 보기','수집·선별 기준','출처와 이용조건']),JSON.stringify(oyTop));
+  check('Detail: four disclosures closed by default, keyboard-focusable summaries',oyTop.closed&&oyTop.kb&&JSON.stringify(oyTop.summaries)===JSON.stringify(['근거 자세히 보기','활용 전 확인할 제도','수집·선별 기준','출처와 이용조건']),JSON.stringify(oyTop));
   check('Oyster details: separate OBIS 26건 2008–2014 labelled as not in cells; no removed OBIS demo comparison',t.includes('이 수집 기록은 지도 셀에 쓰지 않음')&&/관측 기간\s*2008–2014/.test(t)&&!t.includes('추가 수집'),t.slice(t.indexOf('수집·선별'),t.indexOf('수집·선별')+900));
   check('Counts agree: footer, list card and panel show the same map record total',await evaluate("(()=>{const n=cellRecords(selected);const card=document.querySelector('[data-species=\"836033\"]').innerText.replace(/\\s+/g,' ');return document.getElementById('map-count').textContent===n.toLocaleString()&&card.includes(n+'건 · '+spatialCells(selected).length+'셀')&&document.querySelector('#detail-map-summary').innerText.includes(n+'건')})()"));
   const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
@@ -535,17 +554,17 @@ try{
     r.title=document.querySelector('#use-chips .use-row:nth-of-type(2) .use-group')?.textContent||'';
     r.counts=Object.fromEntries([...document.querySelectorAll('.use-chip')].map(b=>[b.dataset.use,parseInt(b.querySelector('b').textContent,10)]));
     r.links={};for(const u of ['ace','antioxidant','ace,omega3']){applyHash({u});r.links[u]=[...activeUses].join();}setUses([]);
-    renderList();r.cards=document.querySelectorAll('.species-card').length;r.strata=[...document.querySelectorAll('.species-card .card-stratum')].map(x=>x.textContent);
+    renderList();r.cards=document.querySelectorAll('.species-card').length;r.cardStrata=document.querySelectorAll('.species-card .card-stratum').length;r.strata=data.species.map(x=>mbpiStratumOf(x)).filter(Boolean).map(st=>'MBPI 근거 · '+st.short);
     // the detail is rendered off-screen for 미역, so the selected species and the map stay as the later checks expect
     const wak=data.species.find(x=>x.aphiaID===145721),box=document.createElement('div');box.innerHTML=renderVerifiedIndices(wak);
     const m=box.querySelector('[data-axis="MBPI"]');r.summary=m?.querySelector('summary')?.textContent||'';r.first=m?.querySelector('.mbpi-first')?.textContent||'';
     box.innerHTML=axisCards(wak);r.axis=box.textContent;r.kept=selected.aphiaID===before;
-    renderCompareProfile();r.profile=document.querySelector('#cmp-profile .cp-use')?.textContent||'';r.profileStratum=mbpiStratumOf(selected)?.short||'';return r})()`);
-  check('MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts (혈압 14 from 4.11, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 cards name their MBPI stratum (14 ACE 펩타이드; 4.11: 감태 leads with a ChEMBL compound); 미역 detail opens with the published post-hoc result, the 19.6–89.2 aggregation range and the AHTPDB stratum; the compare profile names the selected species\' stratum too',
+    renderCompareProfile();renderCompareDrawer(selected);r.profile=document.querySelector('#cmp-drawer #cdr-use')?.textContent||'';r.profileStratum=mbpiStratumOf(selected)?.short||'';return r})()`);
+  check('MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts (혈압 14 from 4.11, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 assessed species have an MBPI stratum (13 ACE 펩타이드; 4.11: 감태 leads with a ChEMBL compound), shown in the detail, not on the 탐색 후보 card (2026-10-15); 미역 detail opens with the published post-hoc result, the 19.6–89.2 aggregation range and the AHTPDB stratum; the compare profile\'s 근거 자세히 보기 drawer names the selected species\' stratum too',
     JSON.stringify(strat.rows)===JSON.stringify(['신약 활용 특성:virus,dementia,parasite,cancer,microbe,resistant,fungus,pain,diabetes','기능성(식품 소재) 활용 특성:ace,antioxidant','식량 활용 특성:protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed,farmed_trial'])&&
     strat.title==='기능성(식품 소재)'&&strat.counts.ace===14&&strat.counts.antioxidant===2&&strat.counts.virus===7&&strat.counts.protein_g===16&&
     strat.links.ace==='ace'&&strat.links.antioxidant==='antioxidant'&&strat.links['ace,omega3']==='ace,omega3'&&
-    strat.cards===30&&strat.strata.length===30&&strat.strata.every(t=>/^MBPI 근거 · /.test(t)&&!/미등록/.test(t))&&
+    strat.cards===30&&strat.cardStrata===0&&strat.strata.length===30&&strat.strata.every(t=>/^MBPI 근거 · /.test(t)&&!/미등록/.test(t))&&
     strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===13&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===0&&
     /89\.2 · 정식 산출 · 방법 검증 기준 미충족 · ACE 펩타이드/.test(strat.summary)&&
     strat.first.startsWith('사후 검증 기준 미충족(약물 기원종 3종 중 2종 계산) · 집계 방식에 따라 19.6–89.2근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
@@ -606,19 +625,19 @@ try{
   check('No old label words (검증 미통과, 단일 논문, 2026-10-12 any 미통과 such as the MBPI reason\'s 기준 미통과, 4.16 근거 논문 1편) on any tab',oldWords.length===0,oldWords.join(' | '));
   // 2026-10-15 method change ledger: fold 04 lists every published version newest first with the pre-registered ones marked;
   // the screen says '방법 결정' (the records keep '팀장 결정') and each one opens fold 04; the header shows the freeze date
-  const ledger=await evaluate("(async()=>{const v0=currentView,y0=scrollY,L=await (await fetch('method-changelog.json')).json();setView('explore',false);const t=document.body.textContent;setView('method',false);const items=[...document.querySelectorAll('#mt-changelog .mt-cl-item')];const md=document.querySelector('.md-link');let opened=null;if(md){setView('explore',false);md.click();opened={view:currentView,fold:document.getElementById('mt-acc-04').open};}setView('method',false);const pre=document.querySelectorAll('#mt-changelog .mt-cl-pre').length;setView(v0,false);scrollTo(0,y0);return {n:items.length,want:L.entries.length,first:items[0]?.id,newest:'mt-cl-'+L.current.method_version.replace(/[^a-z0-9]+/gi,'-'),pre,wantPre:L.counts.preregistered,leader:document.body.textContent.includes('팀장 결정')||t.includes('팀장 결정'),links:document.querySelectorAll('.md-link').length,opened,chip:document.getElementById('notice-chip-text').textContent,label:L.current.frozen_on+' 동결'}})()");
-  check('Method fold 04: one timeline entry per published version (newest first), 사전 등록 marks match the ledger, no 팀장 결정 on screen, 방법 결정 opens fold 04, the header chip shows the freeze date',
+  const ledger=await evaluate("(async()=>{const v0=currentView,y0=scrollY,L=await (await fetch('method-changelog.json')).json();setView('explore',false);const t=document.body.textContent;setView('method',false);const items=[...document.querySelectorAll('#mt-changelog .mt-cl-item')];const md=document.querySelector('.md-link');let opened=null;if(md){setView('explore',false);md.click();opened={view:currentView,fold:document.getElementById('mt-acc-04').open};}setView('method',false);const pre=document.querySelectorAll('#mt-changelog .mt-cl-pre').length;setView(v0,false);scrollTo(0,y0);return {n:items.length,want:L.entries.length,first:items[0]?.id,newest:'mt-cl-'+L.current.method_version.replace(/[^a-z0-9]+/gi,'-'),pre,wantPre:L.counts.preregistered,leader:document.body.textContent.includes('팀장 결정')||t.includes('팀장 결정'),links:document.querySelectorAll('.md-link').length,opened,chip:document.getElementById('pop-version').textContent,label:L.current.frozen_on+' 동결'}})()");
+  check('Method fold 04: one timeline entry per published version (newest first), 사전 등록 marks match the ledger, no 팀장 결정 on screen, 방법 결정 opens fold 04, the header chip’s popover shows the freeze date (2026-10-15 시안: the version moved off the chip)',
     ledger.n===ledger.want&&ledger.first===ledger.newest&&ledger.pre===ledger.wantPre&&!ledger.leader&&ledger.links>0&&ledger.opened?.view==='method'&&ledger.opened?.fold&&ledger.chip.includes(ledger.label),JSON.stringify(ledger));
   // design 05: the value cell shows the number; its full label sits in the row's 자세히 panel (data-more-*)
   const oyCmp=await evaluate("(()=>{renderComparison();const q=a=>document.querySelector('#comparison [data-more-aphia=\"836033\"][data-more-axis=\"'+a+'\"]')?.textContent.replace(/\\s+/g,' ')||'';const r={MBPI:q('MBPI'),BBVI:q('BBVI')};return r})()");
   check('Comparison table: 참굴 MBPI 72 and BBVI 72 (4.16 whole numbers of 72.2/71.9) with the pilot and replication labels',/^72(?![.\d])/.test(oyCmp.MBPI)&&/^72(?![.\d])/.test(oyCmp.BBVI)&&oyCmp.MBPI.includes('정식 산출 · 방법 검증 기준 미충족')&&oyCmp.BBVI.includes('정식 산출 · 방법 검증 기준 미충족')&&oyCmp.MBPI.includes('최상위 근거 독립 재현 확인 중')&&oyCmp.BBVI.includes('최상위 근거 독립 재현 확인 중'),JSON.stringify(oyCmp));
   // verified-pilot-3.2: the oyster leaves the follow-up chips and becomes a matrix point with its type; design 02 (2026-10-10)
   // moves the national-MCUI mark from the point's shape to its tooltip and the per-type list under the graph
-  const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));const li=document.querySelector('#matrix-types [data-aphia=\"836033\"]');return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),title:p?.title||'',list:li?.textContent||'',box:li?.closest('.mt-box')?.querySelector('b')?.textContent||''}})()");
+  const oyPoint=await evaluate("(()=>{toggleSimulation(false);const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>b.title.startsWith('참굴'));const li=document.querySelector('#matrix-types [data-aphia=\"836033\"]');return {chip:!!document.querySelector('#matrix-unplaced [data-aphia=\"836033\"]'),title:p?.title||'',list:li?.textContent||'',box:li?.closest('.mt-card')?.querySelector('h3')?.textContent||''}})()");
   check('Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033))&&oyPoint.list.includes('MCUI 국가 평가')&&oyPoint.box.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&!n.includes('보류')&&!n.includes('시범')})()"));
   // 2026-10-13 design 2: one status chip ('연구 프로토타입 · version · OCEAN 20') instead of three badges; the popover keeps the full text
-  check('Header/initial copy: one status chip on one line (연구 프로토타입 · version, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&c.includes(data.assessmentInfo.version)&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
+  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&document.getElementById('pop-version').textContent.includes(data.assessmentInfo.version)&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
   // verified-pilot-3.2 places real species, so the empty-matrix shortcut appears only when nothing is placed
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
@@ -638,7 +657,7 @@ try{
   const popup=await evaluate("const l=overlay.getLayers()[0];l.openPopup();document.querySelector('.leaflet-popup-content').innerText");
   // The popup of one published cell lists each of its period rows with counts and licences (taken from the loaded rows).
   const popCells=await evaluate("spatialCells(selected).map(rows=>[...rows.map(r=>'공개 집계 기간 '+r.period),...rows.map(r=>'선별 기록 '+r.records+'건 · 조사 지점 '+r.sites+'곳'),...rows.flatMap(r=>r.licenses)])");
-  check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 하지 않음(지표는 종 단위)','해역 판단을 하지 않는 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','붉은 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
+  check('Cell popup: period, sea area, source, licence, spatial resolution',popCells.some(need=>need.every(x=>popup.includes(x)))&&['1°×1°','가장 짧은 변 약','해역별 활용·보전 판단: 하지 않음(지표는 종 단위)','해역 판단을 하지 않는 이유','원좌표·개체수·자원량·한국 전체 분포가 아닙니다','청회색 점은 실제 발견 좌표가 아닌'].every(x=>popup.includes(x)),popup);
   // PR #9 dots: schematic marks on a pane that takes no clicks; the transparent cell keeps PR #8's evidence popup.
   // Cell fill is 0.1 on the satellite/depth basemaps (satellite is the default since 2026-10-03), 0.06 on the outline fallback.
   check('Cells are faint dashed hit areas, dots drawn on a non-clickable pane',await evaluate("[...document.querySelectorAll('#map path.leaflet-interactive')].every(p=>p.getAttribute('stroke-dasharray')&&Number(p.getAttribute('fill-opacity'))<=.1)&&getComputedStyle(map.getPane('dotPane')).pointerEvents==='none'&&overlay.getLayers().some(l=>l._schematicDot)&&overlay.getLayers().filter(l=>l._schematicDot).every(l=>!l.options.interactive)"));
@@ -678,7 +697,8 @@ try{
   await pick(145721);await sleep(300);
   const tbl=await evaluate("(()=>{const b=document.getElementById('cell-table');b.querySelector('details').open=true;return {rows:b.querySelectorAll('tbody tr').length,text:b.innerText}})()");
   check('Cell table: one row per spatial cell, both periods of the shared cell listed',tbl.rows===(await liveMap(145721)).cells&&tbl.text.includes('33–34°N · 126–127°E')&&/2000–\d{4}/.test(tbl.text)&&/2016–\d{4}/.test(tbl.text)&&tbl.text.includes('CC0 1.0'),JSON.stringify(tbl).slice(0,400));
-  await evaluate("map.closePopup();document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
+  // 2026-10-15 탐색 지도 시안: from 1180px the cell table lives in the right panel's '선택 격자' tab
+  await evaluate("map.closePopup();if(wideLayout())setSideTab('cell');document.querySelector('#cell-table [data-cell]').focus();1");await sleep(200);
   for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});
   await sleep(500);
   const kb=await evaluate("({popup:document.querySelector('.leaflet-popup-content')?.innerText||'',focusIn:!!document.activeElement?.closest('.leaflet-popup')})");
@@ -745,7 +765,7 @@ try{
   const hijMap=await liveMap(494972);
   // 4.14 (prereg-4.14 2·3): 톳's lists are another region's and a Rapid LC check, so MCUI is not computed and the row says why
   // 4.17 (prereg-4.17 2·5): the Rapid LC check is a preliminary assessment again; the row shows MCUI 10.0 with no basis words
-  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0(?! \()/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/영양 기록 수\s*지표 보고서에서 검토 · MFPI 63\.3/.test(t)&&/보고 화합물\s*지표 보고서에서 검토 · MBPI 65(?![.\d])/.test(t)&&/보전평가\s*지표 보고서에서 검토 · MCUI 10\.0 \(LC\)(?! \()/.test(t)&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
@@ -771,7 +791,7 @@ try{
     card.dispatchEvent(new MouseEvent('mouseenter'));
     const hover={n:hoverRects.length,want:[...valueCellGroups(true).values()].filter(g=>g.species.has(other)).length,style:hoverRects.every(l=>l.options.dashArray==='6 4'&&l.options.color==='#ffd166'&&l.options.interactive===false&&l.options.fill===false)};card.dispatchEvent(new MouseEvent('mouseleave'));hover.left=hoverRects.length;
     return {view:valueView,pressed:q('#value-view').getAttribute('aria-pressed'),drawn:valueRects.length,cells:spatialCells(s).length,fills,want:matrixTypeColour[t]||'#b7c0ca',dashes:[...new Set(valueRects.map(([,l])=>l.options.dashArray))],wide:s.cells.some(c=>c.sizeDeg>=4),
-      yellow:valueRects.some(([,l])=>l.options.color==='#ffd166'),chip:q('#map-chip').textContent,wantChip:selected.label+' 기록 셀 '+spatialCells(s).length+'개 · '+cellRecords(s).toLocaleString()+'건 · '+cellYears(s),
+      yellow:valueRects.some(([,l])=>l.options.color==='#ffd166'),chip:q('#map-chip').textContent,wantChip:selected.label+' · 공개 셀 '+spatialCells(s).length+'개 · 기록 '+cellRecords(s).toLocaleString()+'건',
       under:[q('#map-cells').textContent,q('#map-count').textContent,q('#map-years').textContent].join('|'),wantUnder:[spatialCells(s).length,cellRecords(s).toLocaleString(),cellYears(s)].join('|'),
       mini:[...document.querySelectorAll('.vm-grid [data-key]')].map(b=>[b.dataset.type,Number(b.querySelector('.vm-n').textContent)]),type:t,
       key:q('#value-key-text').textContent,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',keyShown:q('#value-key').getBoundingClientRect().height>0,toggleShown:q('#legend-toggle').getBoundingClientRect().height>0,
@@ -841,7 +861,7 @@ try{
   const icon=await evaluate(`(()=>{const q=s=>document.querySelector(s),grid=q('.vm-grid').getBoundingClientRect(),sw=q('.basemap-switch').getBoundingClientRect(),plot=q('.vm-plot').getBoundingClientRect();
     const legend=[...q('#value-legend').querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.querySelector('em').textContent,e.style.background]);
     const cells=[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>{const r=e.getBoundingClientRect();return {key:e.dataset.key,n:Number((e.querySelector('.vm-n')||e).textContent),bg:e.style.background,tip:e.dataset.tip,x:r.x+r.width/2,y:r.y+r.height/2};});
-    return {legend,cells,size:[grid.width,grid.height],below:grid.top>=sw.bottom,right:Math.abs(plot.right-q('.map-ui-tr').getBoundingClientRect().right)<2,all:valueRects.length}})()`);
+    return {legend,cells,size:[grid.width,grid.height],cellH:Math.min(...[...q('.vm-grid').querySelectorAll('[data-key]')].map(e=>e.getBoundingClientRect().height)),inBl:q('.map-ui-bl').contains(q('.vm-grid')),beside:plot.left>=q('.species-pane').getBoundingClientRect().right,below:grid.top>=sw.bottom,all:valueRects.length}})()`);
   const typed=icon.cells.filter(c=>c.n>0),mouse=async(type,c,extra={})=>send('Input.dispatchMouseEvent',{type,x:c.x,y:c.y,button:'left',clickCount:1,...extra});
   // dimmed = the faded edge (opacity .2, or .45 × .2 for a 1° cell drawn over its sea part): the square of a masked cell has no fill since 2026-10-14
   const iconState=()=>evaluate("({drawn:valueRects.length,dim:valueRects.filter(([,l])=>(l.options.opacity??1)<.25).length,pressed:[...document.querySelectorAll('.vm-grid [aria-pressed=true]')].map(e=>e.dataset.key),zoom:map.getZoom(),centre:map.getCenter().toString(),tip:getComputedStyle(document.querySelector('#value-mini .vm-grid [data-key]:hover')||document.body,'::after').content})");
@@ -852,8 +872,9 @@ try{
   for(const c of typed.slice(0,2)){await mouse('mouseMoved',c);await mouse('mousePressed',c);await mouse('mouseReleased',c);await sleep(300);}
   await mouse('mouseWheel',typed[0],{deltaX:0,deltaY:-600,button:'none'});await sleep(500);const iconAfter=await iconState();
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:5,y:5});
-  check('Value map icon: 72px 2×2 under the basemap switch, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone',
-    JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size.every(v=>Math.abs(v-72)<1)&&icon.below&&icon.right&&typed.length>=2&&
+  // 2026-10-15 탐색 지도 시안: the 2×2 is the bottom-left key of the free map area (shape + name per type, 44px rows), not the 72px corner icon
+  check('Value map icon: the 2×2 key bottom-left beside the species list, rows of 44px or more, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone',
+    JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size[0]>=260&&icon.cellH>=44&&icon.inBl&&icon.beside&&icon.below&&typed.length>=2&&
     iconS0.drawn===icon.all&&iconS0.dim===0&&iconHover.dim===icon.all-typed[0].n&&iconHover.tip.includes(typed[0].tip)&&
     iconOne.drawn===typed[0].n&&JSON.stringify(iconOne.pressed)===JSON.stringify([typed[0].key])&&iconTwo.drawn===typed[0].n+typed[1].n&&iconTwo.pressed.length===2&&
     iconAfter.drawn===icon.all&&!iconAfter.pressed.length&&iconAfter.zoom===iconS0.zoom&&iconAfter.centre===iconS0.centre,JSON.stringify({icon,iconS0,iconHover,iconOne,iconTwo,iconAfter}));
@@ -949,12 +970,14 @@ try{
       const boxes=['.map-ui-tl','.basemap-switch','#copy-link','#reset-map','.map-ui-bl','#detail','.species-pane'].filter(s=>{const e=q(s);return e&&r(e).height>0&&getComputedStyle(e).display!=='none'});
       return {header:h.scrollWidth<=h.clientWidth,chip:shown,hits:shown?boxes.filter(s=>ov(c,r(q(s)))):[],cut:chip.scrollWidth>chip.clientWidth}})()`);
     check(`Design 2 ${w}px: the header fits; the map chip ${mobile?'is hidden (the sheet head shows the species)':'shows in one line, clear of the map controls and panels'}`,d2.header&&(mobile?!d2.chip:d2.chip&&!d2.hits.length&&!d2.cut),JSON.stringify(d2));
-    // 2026-10-13: the y-axis name '보전 필요성 MCUI' read as '필요성50' on a phone (PR #175). Design 3 moved it into the one caption
-    // line under the plot ('활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑'); the guard is the same: one line, clear of every tick number
-    const yl=await evaluate(`(()=>{setView('compare');setCompareMode('matrix');toggleSimulation(true);const b=e=>e.getBoundingClientRect(),cap=document.querySelector('#compare .matrix .axis-x'),l=b(cap),p=b(document.getElementById('matrix')),f=b(document.querySelector('#compare .cmp-sim-flag'));
-      const gap=t=>Math.max(t.left-l.right,l.left-t.right,t.top-l.bottom,l.top-t.bottom);const ticks=[...document.querySelectorAll('#compare .matrix-ticks i,#compare .matrix-ticks b')].map(b);
-      const r={text:cap.textContent,oneLine:l.height<26,minGap:Math.round(Math.min(...ticks.map(gap))),belowPlot:Math.round(l.top-p.bottom),flagGap:Math.round(gap(f)),inside:l.left>=0&&l.right<=document.documentElement.clientWidth};toggleSimulation(false);setView('explore');return r})()`);
-    check(`Matrix ${w}px: axis caption '활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑' on one line under the plot, ≥8px from every tick number, the plot and the 가상 예시 flag`,yl.text==='활용 가치 BBVI → · 세로축 보전 필요성 MCUI ↑'&&yl.oneLine&&yl.minGap>=8&&yl.belowPlot>=8&&yl.flagGap>=8&&yl.inside,JSON.stringify(yl));
+    // 2026-10-13: the y-axis name '보전 필요성 MCUI' read as '필요성50' on a phone (PR #175). The final design (2026-10-15) puts
+    // '활용가치 BBVI →' on one line under the x ticks and '보전 시급성 MCUI ↑' left of the y ticks; the guard is the same: each
+    // name clear of every tick number (≥8px), the plot and the 가상 예시 flag, inside the page
+    const yl=await evaluate(`(()=>{setView('compare');setCompareMode('matrix');toggleSimulation(true);const b=e=>e.getBoundingClientRect(),cap=document.querySelector('#compare .matrix .axis-x'),yc=document.querySelector('#compare .matrix .axis-y'),l=b(cap),y=b(yc),yr=(()=>{const w=document.createTreeWalker(yc,NodeFilter.SHOW_TEXT),out=[];for(let n;(n=w.nextNode());){const g=document.createRange();g.selectNodeContents(n);out.push(...[...g.getClientRects()].filter(x=>x.width>0));}return out;})(),p=b(document.getElementById('matrix')),f=b(document.querySelector('#compare .cmp-sim-flag'));
+      const gap=(t,l)=>Math.max(t.left-l.right,l.left-t.right,t.top-l.bottom,l.top-t.bottom);const ticks=[...document.querySelectorAll('#compare .matrix-ticks i,#compare .matrix-ticks b')].map(b);
+      const vis=t=>[...t.childNodes].filter(n=>!(n.classList&&n.classList.contains('sr-only'))).map(n=>n.textContent).join('').replace(/\\s+/g,' ').trim();
+      const r={text:vis(cap),y:yc.textContent.replace(/\\s+/g,' ').trim(),oneLine:l.height<26,minGap:Math.round(Math.min(...ticks.map(t=>gap(t,l)))),yGap:Math.round(Math.min(...ticks.flatMap(t=>yr.map(x=>gap(t,x))))),belowPlot:Math.round(l.top-p.bottom),yLeft:Math.round(Math.max(p.left-y.right,p.top-y.bottom)),flagGap:Math.round(Math.min(gap(f,l),gap(f,y))),inside:l.left>=0&&l.right<=document.documentElement.clientWidth&&y.left>=0};toggleSimulation(false);setView('explore');return r})()`);
+    check(`Matrix ${w}px: '활용가치 BBVI →' on one line under the plot and '보전 시급성 MCUI ↑' left of it (above it on phones), each ≥8px from every tick number, the plot and the 가상 예시 flag`,yl.text==='활용가치 BBVI →'&&/^보전\s?시급성\s?MCUI ↑$/.test(yl.y)&&yl.oneLine&&yl.minGap>=8&&yl.yGap>=8&&yl.belowPlot>=8&&yl.yLeft>=8&&yl.flagGap>=8&&yl.inside,JSON.stringify(yl));
     // 2026-10-13 design 3: every quadrant shows its plain verdict and its formal type name; crowded points sit in 'N종 밀집 · 펼치기'
     // boxes and no visible label, button or box covers another; a button opens its list and a row picks that species, which then
     // leaves the box with its label; with nothing chosen the basket is one line in the page, not a bar under 멍이
@@ -977,13 +1000,13 @@ try{
         r.pick=!!id&&pop.hidden&&String(selected.aphiaID)===id&&document.getElementById('cmp-profile-name').textContent===cmpById(id).label&&pt?.getAttribute('aria-current')==='true'&&!pt.hasAttribute('data-clustered')&&vis(pt.querySelector('.point-label'));
         selectSpecies(836033);
         const tray=document.getElementById('cmp-tray'),fab=document.querySelector('.bbc-fab');tray.scrollIntoView({block:'center'});
-        r.tray={empty:tray.classList.contains('empty'),position:getComputedStyle(tray).position,lineHeight:Math.round(b(tray.querySelector('.ct-empty')).height),clearOfFab:!!fab&&!over(b(tray),b(fab))};
+        r.tray={empty:tray.classList.contains('empty'),position:getComputedStyle(tray).position,lineHeight:Math.round(b(tray).height),slots:tray.querySelectorAll('.ct-slot [data-basket-add]').length,clearOfFab:!!fab&&!over(b(tray),b(fab))};
         window.scrollTo(0,0);setView('explore');return r})()`);
       // 4.17: 29 points again (preliminary assessments); 4.14 had 16, none of them crowding into an
       // 'N종 밀집' box, so the box list and pick are checked only when a box is drawn (test_compare_ui.mjs keeps the grouping rule)
       const okLayout=x=>x.pills===x.boxes&&x.overlaps===0&&x.labels>0;
-      check(`Compare ${w}px (design 3): plain and formal names in all 4 quadrants, no overlapping label/button/'N종 밀집' box (참굴, 살오징어 picked), a box button (when drawn) opens its list and a row picks that species, empty basket is one line in the page clear of 멍이`,
-        d3.names==='1111'&&okLayout(d3.oyster)&&okLayout(d3.rockfish)&&(d3.oyster.boxes===0||d3.list&&d3.pick)&&d3.tray.empty&&d3.tray.position==='static'&&d3.tray.clearOfFab&&(w<741||d3.tray.lineHeight<26),JSON.stringify(d3));
+      check(`Compare ${w}px (design 3): plain and formal names in all 4 quadrants, no overlapping label/button/'N종 밀집' box (참굴, 살오징어 picked), a box button (when drawn) opens its list and a row picks that species, empty basket is one row of 3 free slots in the page clear of 멍이`,
+        d3.names==='1111'&&okLayout(d3.oyster)&&okLayout(d3.rockfish)&&(d3.oyster.boxes===0||d3.list&&d3.pick)&&d3.tray.empty&&d3.tray.position==='static'&&d3.tray.clearOfFab&&d3.tray.slots===3&&(w<741||d3.tray.lineHeight<90),JSON.stringify(d3));
     }
   }
 
@@ -1056,10 +1079,10 @@ try{
   check('Mobile sheet: the handle button opens the sheet over the pinned map and closes it again (aria-expanded follows), no horizontal overflow',sheet.open.exp==='true'&&Math.abs(sheet.open.top)<=2&&sheet.open.stage==='sticky'&&sheet.closed.exp==='false'&&sheet.closed.y===0&&sheet.doc<=sheet.vw,JSON.stringify(sheet));
   // BBVI 통합 가중치 on a phone: the panel and the matrix badge fit 390px, no sideways scroll
   const wm=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s);setView('compare');setCompareMode('matrix');q('#cmp-basis-toggle').click();
-    setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-matrix-badge').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());
+    setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-wline').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());
     const r={pop:[Math.round(pop.left),Math.round(pop.right)],badge:[Math.round(badge.left),Math.round(badge.right),Math.round(badge.height)],presets:pre.every(b=>b.left>=pop.left-1&&b.right<=pop.right+1),doc:document.documentElement.scrollWidth,vw:innerWidth};
     setBbviStep(10);setBasisPop(false);await wait(200);setView('explore');return r})()`);
-  check('BBVI weight panel at 390px: popover, presets and the matrix badge stay inside the screen, no horizontal overflow',wm.pop[0]>=0&&wm.pop[1]<=wm.vw&&wm.badge[0]>=0&&wm.badge[1]<=wm.vw&&wm.badge[2]>0&&wm.presets&&wm.doc<=wm.vw,JSON.stringify(wm));
+  check('BBVI weight panel at 390px: popover, presets and the weight status line stay inside the screen, no horizontal overflow',wm.pop[0]>=0&&wm.pop[1]<=wm.vw&&wm.badge[0]>=0&&wm.badge[1]<=wm.vw&&wm.badge[2]>0&&wm.presets&&wm.doc<=wm.vw,JSON.stringify(wm));
   await shot('mobile-first-screen',false);
   // Switching species on the horizontal card list and toggling map mode must not jump or close what the user opened.
   const stab=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const list=document.getElementById('species-list');const cards=[...list.querySelectorAll('.species-card')];
@@ -1241,7 +1264,7 @@ try{
     const state=await evaluate("({state:document.getElementById('connection-state').textContent,error:document.getElementById('error').hidden?'':document.getElementById('error').textContent,disclaimer:document.getElementById('score-disclaimer').textContent,cards:document.querySelectorAll('.species-card').length,published:(data?.species||[]).filter(s=>!s.catalog).length,list:document.getElementById('species-list').innerText.slice(0,200),detail:document.getElementById('detail').innerText,full:document.getElementById('detail').textContent})");
     const brief=JSON.stringify({...state,detail:state.detail.slice(0,80),full:undefined});
     if(name==='api-offline')check(`Flow 8 ${tag}: API unreachable → "연결 실패" with the dated saved snapshot and separate counts`,state.state===`연결 실패 · 저장된 사본 사용 (${snapshot.fetched_at} 기준) · ${offlineCounts}`&&state.error.includes('저장한 공개 자료 사본')&&state.detail.length>0&&!state.error.includes('불러오지 못했습니다'),brief);
-    if(name==='api-error')check('API failure and no snapshot: error shown, no stale data',state.state==='불러오기 실패'&&state.error.includes('불러오지 못했습니다')&&state.detail==='',brief);
+    if(name==='api-error')check('API failure and no snapshot: "자료를 불러오지 못했어요 · ↻ 다시 시도" with the cause, no stale data, and the retry button reloads',state.state==='불러오기 실패'&&state.error.startsWith('자료를 불러오지 못했어요 · ↻ 다시 시도')&&state.error.includes('불러오지 못했습니다')&&state.detail===''&&await evaluate("document.querySelectorAll('.data-retry').length>=2"),brief);
     if(name==='api-empty')check(`Flow 7 ${tag}: empty API (200 []) → connected, 운영 발행 0종, the ${catalogIds.length} shown are candidates; no snapshot, no failure`,state.state===`공개 기준 자료 연결됨 · 운영 발행 0종 · 조사 후보 ${catalogIds.length}종`&&state.error===''&&!state.state.includes('사본')&&state.disclaimer.includes('운영 발행 자료가 0종')&&state.disclaimer.includes(`${catalogIds.length}종은 모두 조사 후보`)&&state.cards===catalogIds.length&&state.published===0,brief);
     if(name==='v1-only')check('v2 keys absent: falls back to production_summary, no fake 0/미수집',state.full.includes('생산·영양·생리활성·보전 근거 미검토')&&!state.full.includes('영양 근거')&&!state.full.includes('미수집'),state.full);
     await evaluate("window.scrollTo(0,0);1");await shot(tag==='mobile'?`mobile-${name}`:name,false);
@@ -1263,7 +1286,7 @@ try{
   await viewport(1560,900,false);
   scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
   await load();gs=await gateReady();
-  check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했습니다. 들어가서 다시 불러오기를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
+  check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));
   await pressEnter();await sleep(1100);gs=await gateState();
   check('G-6 failed load: after Enter the map page shows its own error',!gs.on&&await evaluate("!document.getElementById('error').hidden"),JSON.stringify(gs));
   await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
@@ -1316,6 +1339,17 @@ try{
     await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);
     await viewport(1560,900,false);
   }
+  // ---------- R readability (2026-10-15): 12px floor, English originals in lang blocks, abbreviations named ----------
+  // verification/readability_check.mjs sweeps every species and the expedition page too; this keeps the floor in CI.
+  for(const [w,h,mobile] of [[390,844,true],[1440,900,false]]){
+    await viewport(w,h,mobile);
+    for(const v of ['explore','compare','method']){
+      const r=await evaluate(`(async()=>{setView('${v}');for(const d of document.querySelectorAll('#${v} details'))d.open=true;await new Promise(r=>setTimeout(r,400));return (${collect})(['#${v}',12]);})()`);
+      const bad={small:r.small.slice(0,5),english:r.eng.filter(e=>!e.marked).slice(0,5).map(e=>e.text.slice(0,80)),abbr:Object.entries(r.abbr).filter(([,a])=>!a.named).map(([k,a])=>k+' '+a.text)};
+      check(`R-1 ${w}px ${v}: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean`,!r.small.length&&!bad.english.length&&!bad.abbr.length,JSON.stringify(bad));
+    }
+  }
+  await viewport(1560,900,false);await evaluate("setView('explore');1");
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}
 finally{fs.writeFileSync(path.join(OUT,'ui-check-results.json'),JSON.stringify(results,null,2));ws?.close();

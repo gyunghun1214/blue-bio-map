@@ -168,7 +168,13 @@ const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미
 const $=id=>document.getElementById(id);
 const esc=v=>plainWords(String(v??'')).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
-const link=(url,label)=>safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
+// Sources whose publisher moved the file for good (reports/link-check, 2026-10-15); same list as app.js.
+const MOVED_LINKS={
+  'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
+  'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
+};
+const link=(url,label)=>MOVED_LINKS[url]?`<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
+  :safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const AXIS={MFPI:'식량자원 잠재력',MBPI:'생리활성 단서',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js
@@ -223,6 +229,8 @@ function checkTag(k){
   if(k==='MFPI'&&r==='passed')return `방법 검증 통과(${DATA.mfpi_check_n}종 비교)`;
   return r==='passed'?'검증 통과':r==='failed'?'방법 검증 기준 미충족':'검증 전';
 }
+// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
+const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
 function mcuiTag(stop){
   const m=stop.mcui;
   // 4.12: an MCUI set by the KOSIS catch trend says so first, then the extinction-risk basis it was compared with
@@ -239,7 +247,7 @@ function axisTag(stop,k){
 }
 function scoreHtml(stop,k,big){
   const v=fmtAxis(stop,k);
-  const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100</small>`;
+  const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100${k==='MCUI'&&mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:''}</small>`;
   return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span><span class="x-tag">${axisTag(stop,k)}</span></div>`;
 }
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
@@ -302,7 +310,7 @@ function detailHtml(stop,i){
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'자료 없음'} · ${checkTag('MFPI')}</small></h3>${food}</section>
   <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
-  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)??'자료 없음'}</small></h3>${cons}</section>
+  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)===null?'자료 없음':fmtScore(stop.scores.MCUI)+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${cons}</section>
   <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'자료 없음'} · ${checkTag('BBVI')}</small></h3>
     <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다${stop.bbvi_label?` · ${esc(stop.bbvi_label)}`:''}. ${esc(DATA.notes.score)}.</p>
     <p class="x-fine">지표 ${esc(DATA.method_version)} (${esc(DATA.status)}) · 축별 사후 검증: MFPI ${checkTag('MFPI')}, MBPI ${checkTag('MBPI')}, BBVI ${checkTag('BBVI')}.</p></section>

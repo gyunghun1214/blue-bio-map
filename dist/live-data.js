@@ -15,6 +15,15 @@ const offlineDemo=(()=>{
   return on;
 })();
 globalThis.BBVM_OFFLINE=offlineDemo;
+// Load speed (2026-10-15): the files the first screen reads and the two API reads all start as soon as this script runs,
+// instead of one after another (each used to wait for the one before: about ten round trips on a slow network). The code
+// that reads a file takes the request already under way (readEarly); any later read (↻, 다시 시도) starts a new one.
+// Same-origin data files are revalidated, not downloaded again: 'no-cache' asks the server every time, so a newer file is
+// never missed, and an unchanged one comes back as a short 304 from the browser cache ('no-store' re-sent every byte).
+const FRESH={cache:'no-cache'};
+const earlyReads=new Map();
+function readEarly(url,init){const p=earlyReads.get(url);if(p){earlyReads.delete(url);return p;}return fetch(url,init);}
+function startEarly(url,init){if(earlyReads.has(url))return;try{const p=fetch(url,init);p.catch(()=>{});earlyReads.set(url,p);}catch{}}
 // Public browser key. RLS and table grants enforce access; no privileged key is used.
 const publicApi = {
   url: 'https://mmsyrshjuaxdvegjhpdz.supabase.co',
@@ -22,24 +31,25 @@ const publicApi = {
 };
 // Saved copy of the same public rows (scripts/snapshot_live.py), used only when the API cannot be reached.
 async function loadSnapshot(error) {
-  const r=await fetch('live-snapshot.json').catch(()=>null);
+  const r=await readEarly('live-snapshot.json').catch(()=>null);
   const snap=r?.ok?await r.json().catch(()=>null):null;
   if(!Array.isArray(snap?.profiles)||!Array.isArray(snap?.cells))throw error;
   return {rows:snap.profiles,cellRows:snap.cells,snapshotAt:snap.fetched_at};
 }
+const API_COLUMNS={
+  profiles:'species_id,scientific_name,korean_name,aphia_id,summary,production_summary,public_citations,evidence_summary,published_at',
+  // Published generalized cells only (no original coordinates exist in the public API).
+  cells:'species_id,cell_code,resolution_m,period_start,period_end,year_start,year_end,record_count,site_count,uncertainty_missing_count,sea_areas,countries,citations'};
+const API_URLS={profiles:`${publicApi.url}/rest/v1/species_profiles?select=${API_COLUMNS.profiles}&order=aphia_id.desc`,
+  cells:`${publicApi.url}/rest/v1/species_map_cells?select=${API_COLUMNS.cells}&order=cell_code`};
+// 8 s each (was 15 s one after the other): on a dead venue network the saved copy shows within 8 s, not 30.
+const apiInit=()=>({headers:{apikey:publicApi.key},cache:'no-store',signal:AbortSignal.timeout(8000)});
+// The two reads go out together; either failing sends the whole load to the saved copy, as before.
 async function fetchPublishedRows() {
-  const columns='species_id,scientific_name,korean_name,aphia_id,summary,production_summary,public_citations,evidence_summary,published_at';
-  const response=await fetch(`${publicApi.url}/rest/v1/species_profiles?select=${columns}&order=aphia_id.desc`,{
-    headers:{apikey:publicApi.key},cache:'no-store',signal:AbortSignal.timeout(15000)
-  });
+  const [response,cellResponse]=await Promise.all([readEarly(API_URLS.profiles,apiInit()),readEarly(API_URLS.cells,apiInit())]);
   if(!response.ok)throw new Error('발행 자료를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
   const rows=await response.json();
   if(!Array.isArray(rows))throw new Error('자료 응답 형식을 확인해야 합니다.');
-  // Published generalized cells only (no original coordinates exist in the public API).
-  const cellColumns='species_id,cell_code,resolution_m,period_start,period_end,year_start,year_end,record_count,site_count,uncertainty_missing_count,sea_areas,countries,citations';
-  const cellResponse=await fetch(`${publicApi.url}/rest/v1/species_map_cells?select=${cellColumns}&order=cell_code`,{
-    headers:{apikey:publicApi.key},cache:'no-store',signal:AbortSignal.timeout(15000)
-  });
   if(!cellResponse.ok)throw new Error('지도 셀을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
   const cellRows=await cellResponse.json();
   if(!Array.isArray(cellRows))throw new Error('지도 셀 응답 형식을 확인해야 합니다.');
@@ -49,7 +59,7 @@ async function loadPublishedProfiles() {
   const {rows,cellRows,snapshotAt}=await (offlineDemo?loadSnapshot(new Error('오프라인 시연용 자료 사본(live-snapshot.json)을 찾지 못했습니다.')):fetchPublishedRows().catch(loadSnapshot));
   // 4.0: a cell the operational DB publishes without a sea-area name takes the LME names of the sea points on a 10 x 10
   // grid inside the cell (cell-sea-areas.json, the candidate cells' rule); without that file it stays '해역명 미확인'.
-  const cellSea=await fetch('cell-sea-areas.json').then(r=>r.ok?r.json():null).catch(()=>null);
+  const cellSea=await readEarly('cell-sea-areas.json',FRESH).then(r=>r.ok?r.json():null).catch(()=>null);
   const seaOf=m=>cellSea?.schemaVersion==='cell-sea-areas-1'?cellSea.cells?.[`${m[2]},${m[3]},${m[1]}`]:null;
   const licenseUrl={'CC0 1.0':'https://creativecommons.org/publicdomain/zero/1.0/','CC BY 4.0':'https://creativecommons.org/licenses/by/4.0/','CC BY-NC 4.0':'https://creativecommons.org/licenses/by-nc/4.0/'};
   const cellsOf=id=>cellRows.filter(c=>c.species_id===id).flatMap(c=>{
@@ -71,7 +81,7 @@ async function loadPublishedProfiles() {
   // Curated taxonomy-only candidates. They do not imply that a distribution query ran.
   let candidateRows=[];
   try{
-    const res=await fetch('candidate-catalog.json',{cache:'no-store'});
+    const res=await readEarly('candidate-catalog.json',FRESH);
     if(res.ok){
       const catalog=await res.json();
       newerSchema('candidate-catalog.json',catalog.schemaVersion,'candidate-catalog',1);
@@ -85,7 +95,7 @@ async function loadPublishedProfiles() {
   }catch{/* A failed optional catalog does not hide the original published records. */}
   let auditById=new Map();
   try{
-    const res=await fetch('expansion-evidence.json',{cache:'no-store'});
+    const res=await readEarly('expansion-evidence.json',FRESH);
     if(res.ok){
       const evidence=await res.json();
       newerSchema('expansion-evidence.json',evidence.schemaVersion,'expansion-evidence',1);
@@ -113,7 +123,7 @@ async function loadPublishedProfiles() {
     &&c.citations.every(x=>/^https:\/\/(www\.gbif\.org|obis\.org)\/dataset\/[\w-]+$/.test(x.url)&&openLicences(x.licenses)||nibrPoints(x));
   let releaseById=new Map(), releaseOutdated=false;
   try{
-    const res=await fetch('expansion-public-cells.json',{cache:'no-store'});
+    const res=await readEarly('expansion-public-cells.json',FRESH);
     if(res.ok){
       const release=await res.json(), names=new Map(candidateRows.map(c=>[c.aphiaID,c.name]));
       releaseOutdated=newerSchema('expansion-public-cells.json',release.schemaVersion,'candidate-public-cells',2);
@@ -177,4 +187,12 @@ async function loadPublishedProfiles() {
   // The only place the two groups are counted; status texts read these values and never add them into one "N종 연결".
   const publishedCount=rows.length, candidateCount=species.length-rows.length;
   return {snapshotAt,offline:offlineDemo,outdated,species,publishedCount,candidateCount,collectedAt:latest,notes:`운영 발행 ${publishedCount}종과 조사 후보 ${candidateCount}종을 별도로 표시합니다. ${releaseById.size?`조사 후보 ${releaseById.size}종의 GBIF·OBIS 개별 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 검수해 ${withCells}종의 통과 기록만 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.`:releaseOutdated?'조사 후보의 출현 검수 파일이 이 화면 코드보다 새 버전이라 새로고침(F5) 전에는 후보 종의 셀을 표시하지 않습니다.':'조사 후보의 출현 검수 파일을 확인하지 못해 후보 종의 셀을 발행하지 않았습니다.'} 조사 후보의 지표도 운영 종과 같은 지표 보고서에서 불러오며, 영양·생리활성·보전 근거는 운영 종과 같은 규칙으로 검수했습니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 기존 공개 해삼은 4°, 다른 기존 공개 셀은 1°이며 원좌표는 공개하지 않습니다. 지표와 축별 사후 검증 결과는 별도 보고서(assessments.json)에서 불러오며, 규칙을 다 채우지 못한 값은 라벨과 함께 표시합니다.`};
+}
+// Only on the map page itself (not in the node tests, which run this file without a page).
+if(globalThis.document?.currentScript&&document.getElementById('map')){
+  if(offlineDemo)startEarly('live-snapshot.json');
+  else{startEarly(API_URLS.profiles,apiInit());startEarly(API_URLS.cells,apiInit());}
+  for(const f of ['countries.json','effort.json','cell-sea-geometry.json','source-terms-ko.json','cell-sea-areas.json','candidate-catalog.json',
+    'expansion-evidence.json','expansion-public-cells.json','assessments.json','matrix-readiness.json','trait-evidence.json',
+    'unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json'])startEarly(f,FRESH);
 }

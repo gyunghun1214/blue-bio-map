@@ -9,7 +9,7 @@ const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'), report=JSON.parse(read('assessments.json')), lit=JSON.parse(read('supplementary-literature.json'));
 const ctx={};vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+
-  ';globalThis.rows=supplementaryRows;globalThis.line=supplementaryLine;globalThis.card=litCardLine;globalThis.litRows=litRows;'+
+  ';globalThis.rows=supplementaryRows;globalThis.line=supplementaryLine;globalThis.litRows=litRows;'+
   'globalThis.setData=d=>{data=d};globalThis.setLit=f=>{supplementaryLit=supplementaryRows(f,[])};'+
   'globalThis.axis=axisState;globalThis.type=matrixType;globalThis.label=bbviLabel;globalThis.RELATION=LIT_RELATION;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,label:a.korean_name,name:a.scientific_name,cells:[],
@@ -49,11 +49,8 @@ for(const s of withRows){
   assert.match(html,/점수 미사용: /);
   assert.match(html,/다른 수입니다/);
   assert.equal((html.match(/<li /g)||[]).length,ctx.litRows(s).length);
-  const card=ctx.card(s);
-  assert.match(card,new RegExp(`관련 문헌 ${ctx.litRows(s).length}편 · 점수 미사용`));
-  assert.doesNotMatch(card.replace(/ title="[^"]*"/,''),/근거 논문/);  // the visible text never says 근거 논문; the tooltip says it is another number
 }
-for(const s of species.filter(s=>!ctx.litRows(s).length)){assert.equal(ctx.line(s),'');assert.equal(ctx.card(s),'');}
+for(const s of species.filter(s=>!ctx.litRows(s).length)){assert.equal(ctx.line(s),'');}
 const ecklonia=by('감태');
 assert.match(ctx.line(ecklonia),/<summary><span>관련 문헌 · 점수 미사용<\/span><b>\d+편 · 반대 근거 1편<\/b>/);
 assert.match(ctx.line(ecklonia),/<ul class="lit-list"><li data-relation="contrary">/);

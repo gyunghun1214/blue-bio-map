@@ -132,10 +132,14 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
         }
         const u=Math.min(1,early.s/FIRST_LEG), eased=STOP_T[0]*u*u*(3-2*u);
         check(`${tag}: still sailing one second after leaving (no jump to the stop)`,early.label.includes('항해 중')&&!early.card&&early.skip&&early.t<STOP_T[0]&&early.t<=eased+1e-6,JSON.stringify({...early,eased}));
-        const ts=[];
-        for(const f of [25,50,75]){const t=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&${routeT}`,TRIP_WAIT);ts.push(t);await sailShot(s,`${tag}-2-sailing-${f}`);}
-        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop
-        check(`${tag}: the ship moves forward through the first leg`,ts[0]<STOP_T[0]&&ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&ts[2]>ts[0],JSON.stringify(ts));
+        const ts=[],ss=[];
+        for(const f of [25,50,75]){const v=await waitFor(s,`${routeT}>=${STOP_T[0]*f/100}&&[${routeT},(performance.now()-window.__sail0)/1000]`,TRIP_WAIT);ts.push(v?.[0]);ss.push(v?.[1]);await sailShot(s,`${tag}-2-sailing-${f}`);}
+        // a slow screenshot may let the ship reach the stop before the next sample, so later samples may equal the stop.
+        // CI 2026-10-15: the runner stalled ~47 s right after the first look, so even the 25 % sample found the ship at the
+        // stop. That is no jump when the page time at that sample already covers the whole leg (same rule as the first look).
+        const stalled=ts[0]>=STOP_T[0]-1e-4&&ss[0]>=FIRST_LEG;
+        if(stalled)console.log(`note: ${tag} page time ran ${ss[0].toFixed(1)} s before the 25 % sample (first leg ${FIRST_LEG.toFixed(1)} s)`);
+        check(`${tag}: the ship moves forward through the first leg`,ts.every((t,i)=>t&&(i===0||t>=ts[i-1]))&&(stalled||ts[0]<STOP_T[0]&&ts[2]>ts[0]),JSON.stringify({ts,ss}));
       }
       const n1=await waitFor(s,`${cardName}===${JSON.stringify(stops[0].korean_name)}&&${level}>=1`,TRIP_WAIT);
       check(`${tag}: arrives at stop 1 (${stops[0].korean_name})`,!!n1);
@@ -210,13 +214,14 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
     check(`${tag}: the map header links back to the expedition`,backLink.includes('바다 탐험'),backLink);
     await sleep(1200);await shot(s,`${tag}-8-map`);
     // the logo goes to the site's first screen (the globe of index.html), even in a tab that already entered the map
-    // (the map page left behind also reads complete and has no is-loading: wait for this page's own script to have run)
+    // (the map page left behind also reads complete and has no is-loading: wait for this page's own script to have run).
+    // 60 s like the map above: CI 2026-10-15 saw the Windows runner stall the page ~45 s here (html still gate-on).
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
     await waitFor(s,"location.pathname.endsWith('/expedition.html')&&document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const lp=await s.evaluate("sessionStorage.setItem('bbvm-intro-entered','1');(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('a.x-brand').getBoundingClientRect())");
     if(mobile)for(const type of ['touchStart','touchEnd'])await s.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x:lp.x,y:lp.y}]});
     else for(const type of ['mousePressed','mouseReleased'])await s.send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
-    const gate=await waitFor(s,"/\\/(index\\.html)?$/.test(location.pathname)&&!!document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden",30000);
+    const gate=await waitFor(s,"/\\/(index\\.html)?$/.test(location.pathname)&&!!document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden",60000);
     check(`${tag}: the logo opens the site's first screen (globe), not the map`,!!gate,await s.evaluate("location.href+' | '+document.documentElement.className"));
     check(`${tag}: no uncaught page errors or console.error`,s.errors.length===0,s.errors.join(' | '));
   }catch(e){check(`${tag}: harness`,false,e.stack);}

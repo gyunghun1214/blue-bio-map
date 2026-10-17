@@ -1,0 +1,1337 @@
+{
+ "schema_version": "cmnpd-candidates-record-1",
+ "snapshot_date": "2026-10-15",
+ "purpose": "CMNPD 1.0 compounds reported for each of the 30 species, as a candidate-compound search layer shown in the species profile. Display only: no score, matrix type, map colour or chip reads it (the indicator build does not read this file).",
+ "source": {
+  "provider": "Comprehensive Marine Natural Products Database (CMNPD)",
+  "version": "CMNPD 1.0 (last update 2020-09-01)",
+  "url": "https://www.cmnpd.org",
+  "license": "CC BY-NC-SA 4.0",
+  "license_url": "https://docs.cmnpd.org/terms-and-conditions",
+  "citation_doi": "10.1093/nar/gkaa763",
+  "accessed": "2026-10-15"
+ },
+ "method": "2026-10-15, through the public CMNPD site in a browser (the cloud network cannot reach cmnpd.org): each species was searched by its WoRMS accepted name and every WoRMS synonym (the names of research/verified-indices/snapshots/mbpi-links-2026-09-30.json); an exact organism match gave the organism ID, and its 'Associated Compounds' list gave the compound IDs. For each compound the standard InChIKey and CMNPD's own ChEMBL cross-reference were read to compare with the MBPI species -> compound links (Wikidata P703 + original-paper links of verified-4.18). Only CMNPD IDs and match results are stored here; compound names, structures, InChIKeys and activity values are not redistributed.",
+ "match_rule": "mbpi_link: same_inchikey = the MBPI link set of the species holds the same standard InChIKey; same_skeleton = only the first InChIKey block (connectivity) matches, so a stereo or charge variant, not the same compound; none = no MBPI link. mbpi_chembl_id = the ChEMBL parent of a same_inchikey MBPI link (null when the MBPI link has no ChEMBL molecule). cmnpd_chembl_xref = the ChEMBL ID CMNPD lists for the compound; each one was looked up in ChEMBL on 2026-10-15 and its InChIKey equals the CMNPD one.",
+ "reference_check": {
+  "organism": "Conus magus",
+  "result": "not in CMNPD 1.0 (no organism match for Conus magus; ziconotide and conotoxin have no CMNPD entry). The Conus magus-type gap (compound in ChEMBL, species link missing) is therefore counted inside the 30 species with CMNPD's ChEMBL cross-references."
+ },
+ "species": [
+  {
+   "aphia_id": 127022,
+   "names_searched": 17,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 145086,
+   "names_searched": 3,
+   "organism_id": "CMNPD373079",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD14844",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 145721,
+   "names_searched": 17,
+   "organism_id": "CMNPD372631",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD12521",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12522",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12523",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 219984,
+   "names_searched": 7,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 231750,
+   "names_searched": 22,
+   "organism_id": "CMNPD371018",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD4548",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD5792",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": "CHEMBL525964"
+    }
+   ]
+  },
+  {
+   "aphia_id": 234476,
+   "names_searched": 23,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 236157,
+   "names_searched": 4,
+   "organism_id": "CMNPD373261",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD15872",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": "CHEMBL445447"
+    },
+    {
+     "cmnpd_id": "CMNPD15873",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15874",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": "CHEMBL451514"
+    }
+   ]
+  },
+  {
+   "aphia_id": 241776,
+   "names_searched": 4,
+   "organism_id": "CMNPD370960",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD1719",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1720",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2178",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2179",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2180",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2181",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD9354",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD9355",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD9356",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD10862",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13823",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13824",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13825",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13826",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13827",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13828",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13829",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13830",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13831",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13832",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13833",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13834",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13835",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13836",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13837",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13838",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13839",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13840",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13841",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13842",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13843",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13844",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13845",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD13846",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15519",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15520",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15521",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15522",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15523",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15524",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15525",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15526",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15527",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15528",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15529",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15530",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15531",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15532",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15533",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15534",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15535",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15536",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15537",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15538",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15539",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15540",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15541",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15542",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15543",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15544",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15545",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15546",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15547",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15548",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15549",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15550",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15551",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15552",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15553",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15554",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15555",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15556",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15557",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15558",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15559",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15560",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15561",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15562",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15563",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15564",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15565",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15566",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15567",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15568",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15569",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15570",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15571",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15572",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15573",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15574",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15575",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15576",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15577",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15578",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15579",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15580",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15581",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15582",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15583",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15584",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15585",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15586",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15587",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15588",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15589",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15590",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15591",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15592",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15593",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15594",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15595",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15596",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23111",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23112",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23113",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23114",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23115",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23116",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD23117",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD31482",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD31483",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD31484",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 250680,
+   "names_searched": 4,
+   "organism_id": "CMNPD370241",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD1684",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1685",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1686",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD4577",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD4578",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD5207",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD5208",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD7131",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD7132",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD7133",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD7134",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD10845",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": "CHEMBL1234101"
+    }
+   ]
+  },
+  {
+   "aphia_id": 254538,
+   "names_searched": 16,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 274849,
+   "names_searched": 5,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 275816,
+   "names_searched": 2,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 276651,
+   "names_searched": 2,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 281273,
+   "names_searched": 10,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 342067,
+   "names_searched": 4,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 371986,
+   "names_searched": 2,
+   "organism_id": "CMNPD372637",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD16752",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": "CHEMBL459393",
+     "cmnpd_chembl_xref": "CHEMBL459393"
+    },
+    {
+     "cmnpd_id": "CMNPD22359",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 372119,
+   "names_searched": 2,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 377084,
+   "names_searched": 9,
+   "organism_id": "CMNPD372636",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD2619",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30988",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30989",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30990",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30991",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30992",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30993",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30994",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD30995",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 393716,
+   "names_searched": 9,
+   "organism_id": "CMNPD371010",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD1755",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1756",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1757",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD1758",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD3025",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD3511",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD3512",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD3513",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD8596",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD8597",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD8598",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD9982",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD9983",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD10806",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 397082,
+   "names_searched": 1,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 413600,
+   "names_searched": 4,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 494853,
+   "names_searched": 10,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 494972,
+   "names_searched": 4,
+   "organism_id": "CMNPD372604",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD1624",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2616",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2617",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD2618",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 504357,
+   "names_searched": 9,
+   "organism_id": "CMNPD370991",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD13750",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 506159,
+   "names_searched": 5,
+   "organism_id": "CMNPD371000",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD9292",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 534443,
+   "names_searched": 1,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 836033,
+   "names_searched": 20,
+   "organism_id": "CMNPD371004",
+   "compounds": [
+    {
+     "cmnpd_id": "CMNPD12283",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12284",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12285",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12286",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD12287",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD14568",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15466",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15467",
+     "mbpi_link": "same_skeleton",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD15468",
+     "mbpi_link": "same_inchikey",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD20520",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD20521",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD20522",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    },
+    {
+     "cmnpd_id": "CMNPD25593",
+     "mbpi_link": "none",
+     "mbpi_chembl_id": null,
+     "cmnpd_chembl_xref": null
+    }
+   ]
+  },
+  {
+   "aphia_id": 836041,
+   "names_searched": 4,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 1061762,
+   "names_searched": 3,
+   "organism_id": null,
+   "compounds": []
+  },
+  {
+   "aphia_id": 1666974,
+   "names_searched": 3,
+   "organism_id": null,
+   "compounds": []
+  }
+ ]
+}
