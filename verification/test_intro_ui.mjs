@@ -1,6 +1,7 @@
 // Loading and entry screen of the main map (dist/intro.js), run on its pure part (no browser), plus static checks of
 // the markup in index.html, the progress events in app.js and the globe files in dist/vendor/globe-v1. The browser flow
-// is in uicheck.mjs (G-1…G-7, G-7 the logo going home) and verification/2026-10-landing-globe/landing_check.mjs.
+// is in uicheck.mjs (G-1…G-9: G-7 the logo going home, G-8 the example cards, G-9 a 375px phone) and
+// verification/2026-10-landing-globe/landing_check.mjs.
 // Run: node verification/test_intro_ui.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -10,7 +11,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -186,7 +187,9 @@ const readme=fs.readFileSync(new URL('../README.md',import.meta.url),'utf8');
 // 2026-10-13: names may be links, and a name may come from the method tab (국가표준식품성분 DB is named there and in
 // assessments.json, not in README/app.js); still only sources the site really cites, still at least four
 const method=html.slice(html.indexOf('<section id="method"'),html.indexOf('</section>',html.indexOf('<section id="method"')));
-const sources=[...gateHtml.matchAll(/<li>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'').trim());
+// 2026-10-17 (#1): the list under '함께 읽는 공개 자료' only (the problem lines under the slogan are list items too)
+const sourceList=gateHtml.slice(gateHtml.indexOf('<div class="gate-sources">'));
+const sources=[...sourceList.slice(0,sourceList.indexOf('</ul>')).matchAll(/<li>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'').trim());
 assert.ok(sources.length>=4);
 for(const s of sources){const key=s.replace(' 적색목록','');assert.ok([readme,app,method].some(t=>t.includes(key)),`source "${s}" is cited in README, app.js or the method tab`);}
 // links go only to addresses the site already uses (none made up); OBIS and GBIF have no site-level address here
@@ -395,5 +398,42 @@ for(const r of ['ANGLE (Intel, Intel(R) UHD Graphics 620 Direct3D11 vs_5_0 ps_5_
 assert.match(browser,/SOFTWARE_GL\.test\(String\(gl\.getParameter\(dbg\.UNMASKED_RENDERER_WEBGL\)\)\)\)throw/,'initGL gives up on a software renderer');
 assert.match(browser,/failIfMajorPerformanceCaveat:true/,'no turning globe where WebGL would run on the CPU (software renderer): the still picture there');
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks)');
+// (14) 2026-10-17 (#1) why the map: three problem lines → the solution → the buttons, then three example cards. '출처 N건' is
+// counted from license-matrix.json on every load (rows whose uses feed an indicator or the map's cells), never typed in;
+// the cards hold what app.js gateExamples reads from the loaded data and open their species in 비교와 지표
+const lic=JSON.parse(read('license-matrix.json'));
+const evidenceRows=lic.rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
+assert.equal(JSON.stringify([...ctx.EVIDENCE_USES]),JSON.stringify(['MFPI','MBPI','MCUI','출현 지도 셀']));
+assert.equal(ctx.evidenceSourceCount(lic),evidenceRows,`출처 ${evidenceRows}건 from the file`);
+assert.ok(evidenceRows>0&&evidenceRows<lic.rows.length,'only the rows behind an indicator or the cells count');
+assert.equal(ctx.evidenceSourceCount({rows:[{uses:['MBPI','MCUI']},{uses:['출현 지도 셀']},{uses:['식품 비교']},{uses:null},null]}),2,'a row counts once');
+for(const m of [null,undefined,{},{rows:'x'},{rows:[]},{rows:[{uses:['식품 비교']}]}])assert.equal(ctx.evidenceSourceCount(m),null,`no number from ${JSON.stringify(m)}: the line stays out`);
+assert.equal(JSON.stringify(ctx.exampleLinks({kind:'conservation',species:[{id:241776,name:'해삼'},{id:397082,name:'전복'}],value:'IUCN EN'})),
+  JSON.stringify([{href:'#s=241776&v=compare',name:'해삼'},{href:'#s=397082&v=compare',name:'전복'}]),'the app\'s own link form, one per species');
+assert.equal(JSON.stringify(ctx.exampleLinks({species:[{id:0,name:'a'},{id:'5',name:'b'},{id:7,name:''},{id:8},null]})),'[]','no link without a real id and a name');
+for(const ex of [null,{},{species:'x'}])assert.equal(JSON.stringify(ctx.exampleLinks(ex)),'[]');
+// the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons → cards
+const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
+assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.',
+  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거만 해도 출처 건에 나뉘어 있습니다.']);
+assert.match(why,/<li class="gate-src is-wait">[^<]*<b class="gate-src-n"><\/b>/,'출처 N: no number in the HTML, the line waits for it');
+assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total">\d+<\/b>종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다\.<\/p>/);
+const at=s=>gateHtml.indexOf(s);
+assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"')&&at('id="gate-enter"')<at('class="gate-ex"'),'slogan → problems → solution → buttons → cards');
+const exHtml=gateHtml.slice(at('<ul class="gate-ex"'),gateHtml.indexOf('</ul>',at('<ul class="gate-ex"')));
+assert.deepEqual([...exHtml.matchAll(/<li data-ex="(\w+)">/g)].map(m=>m[1]),['use','conservation','stock']);
+assert.deepEqual([...exHtml.matchAll(/<p class="gate-ex-fact">(.*?)<\/p>/g)].map(m=>m[1]),['활용 지표 1위','보전 지표 높음','어획량 감소 신호']);
+for(const k of ['name','val'])assert.equal((exHtml.match(new RegExp(`<p class="gate-ex-${k}"></p>`,'g'))||[]).length,3,`every card's ${k} is filled from the data, none typed in`);
+assert.ok(!/<a /.test(exHtml),'no link typed into the cards');
+// app.js hands both over: the matrix it reads anyway, and the examples with 'done' (an error there leaves the cards out, not the screen)
+assert.match(app,/licReq\.then\(m=>loadProgress\('sources',\{license:m\}\)\)/);
+assert.match(app,/examples:\(\(\)=>\{try\{return data\?gateExamples\(\):\[\];\}catch\{return \[\];\}\}\)\(\)/);
+assert.match(browser,/if\(d\.step==='sources'\)gate\.sources=evidenceSourceCount\(d\.license\);/);
+assert.match(browser,/if\(hash&&typeof applyHash==='function'\)applyHash\(Object\.fromEntries\(new URLSearchParams\(hash\.slice\(1\)\)\)\);/,'a card opens its species the way a shared link does (app.js applyHash), before the tab is set');
+assert.ok(browser.indexOf('applyHash(Object.fromEntries')<browser.indexOf('setView(a.view,!a.scroll)'),'the species first, then the tab');
+// no weak-point or overclaiming words in what the block says (2026-10-17, LKH)
+const whyText=why.replace(/<[^>]+>/g,' ')+exHtml.replace(/<[^>]+>/g,' ');
+for(const w of ['공백','예비','미평가','평가 없음','검증','신약','조사 필요','재현','부족','최초'])assert.ok(!whyText.includes(w),`no "${w}" in the problem → solution block`);
+
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution and example cards');
 

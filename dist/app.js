@@ -4375,8 +4375,22 @@ function registerTools(){
 
 // Loading steps for the entry screen (intro.js): 'map' once the coastline is in, 'done' after every loadCollection outcome.
 const loadProgress=(step,detail={})=>{try{dispatchEvent(new CustomEvent('bbvm:progress',{detail:{step,...detail}}));}catch{/* no listener needed */}};
+// 2026-10-17 (#1): the entry screen's three example cards, read from the loaded data: the highest BBVI; the species whose IUCN
+// category is EN or CR (newest assessment first, two at most); of the species whose MCUI the KOSIS catch-decline signal
+// sets, the one whose catch fell most in tonnes. Names drop a bracketed note ('전복(종 수준)' → '전복').
+function gateExamples(){
+  const list=data?.species||[],one=s=>({id:s.aphiaID,name:String(s.label||'').replace(/\s*\(.*\)$/,'')});
+  const top=list.filter(s=>pilotScore(s,'BBVI')!==null).sort((a,b)=>pilotScore(b,'BBVI')-pilotScore(a,'BBVI'))[0];
+  const iucn=s=>s.assessment?.mcui_basis==='iucn'&&pilotScore(s,'MCUI')!==null?s.assessment.conservation_trace:null;
+  const red=list.filter(s=>['CR','EN'].includes(iucn(s)?.category)).sort((a,b)=>(iucn(b).assessment_year||0)-(iucn(a).assessment_year||0)).slice(0,2);
+  const fell=s=>(s.assessment.stock_decline.baseline_mean_t||0)-(s.assessment.stock_decline.recent_mean_t||0);
+  const stock=list.filter(s=>stockMcui(s)&&Number.isFinite(s.assessment.stock_decline?.decline_pct)).sort((a,b)=>fell(b)-fell(a))[0];
+  return [top&&{kind:'use',species:[one(top)],value:'BBVI '+scoreText(top,'BBVI',pilotScore(top,'BBVI'))},
+    red.length&&{kind:'conservation',species:red.map(one),value:'IUCN '+[...new Set(red.map(s=>iucn(s).category))].join('·')},
+    stock&&{kind:'stock',species:[one(stock)],value:'KOSIS '+stockChange(stock.assessment.stock_decline)}].filter(Boolean);
+}
 const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||null,published:data?.publishedCount,candidates:data?.candidateCount,
-  cells:data?[...new Map(data.species.flatMap(s=>s.cells||[]).map(c=>[`${c.lat0},${c.lon0},${c.sizeDeg}`,{lat:c.lat0,lon:c.lon0,size:c.sizeDeg}])).values()]:[]});
+  examples:(()=>{try{return data?gateExamples():[];}catch{return [];}})(),cells:data?[...new Map(data.species.flatMap(s=>s.cells||[]).map(c=>[`${c.lat0},${c.lon0},${c.sizeDeg}`,{lat:c.lat0,lon:c.lon0,size:c.sizeDeg}])).values()]:[]});
 // Header status chips: the notice (version · research use) opens its full text; a snapshot or newer-file status gets a
 // yellow chip whose popover holds the banner sentence and the reload button. A load with no data keeps the red banner.
 function updateStatusChips(){
@@ -4472,6 +4486,7 @@ async function start(){
   const termsReq=readData('source-terms-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
   const screenReq=readData('screen-text-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional too
   const licReq=fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: the section stays hidden without it; drawn below once the Korean notes are in
+  licReq.then(m=>loadProgress('sources',{license:m})); // the entry screen counts its evidence sources (intro.js, 2026-10-17 #1)
   const mapReq=readData('countries.json',FRESH_READ);mapReq.catch(()=>{}); // asked for now, used once effort.json is in (they no longer wait for each other)
   try{const r=await readData('effort.json',FRESH_READ);if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
