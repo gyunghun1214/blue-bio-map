@@ -572,9 +572,16 @@ try{
     selectSpecies(836033);const oyAlt=!!document.querySelector('#detail .alt-production'),cp=!!document.querySelector('#cmp-profile .alt-production');
     const m=document.getElementById('method'),gone=['mt-scorecard','mt-acc-05','promise-table','promise-count'].filter(id=>document.getElementById(id)),
       words=['VALIDATION SCORECARD','검증 성적표','신청서 약속','구현 현황','방법은 언제, 왜 바뀌었나요'].filter(w=>m.textContent.includes(w)),folds=[...m.querySelectorAll('details.mt-acc')].map(d=>d.id),changelog=!!document.getElementById('mt-changelog');
-    return {before,altText:alt?.innerText||'',inat,open,txt,form,oyAlt,gone,words,folds,changelog,first:m.firstElementChild?.id}})()`);
+    const rows=[...(alt?.querySelectorAll('.alt-row')||[])].map(r=>({label:r.querySelector('span')?.textContent||'',text:r.querySelector('p')?.innerText||'',links:[...r.querySelectorAll('a')].map(a=>[a.textContent,a.href])}));
+    return {before,altText:alt?.innerText||'',rows,inat,open,txt,form,oyAlt,gone,words,folds,changelog,first:m.firstElementChild?.id}})()`);
   // 2026-10-17 (LKH): the squid's aquaculture line says what the record holds ('사육 시도 기록'); its tier stays 'none' in aquaculture-tier.json
   check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('사육 시도 기록')&&!gap.altText.includes('조사 필요')&&readDist('aquaculture-tier.json').rows.find(r=>r.aphia_id===342067)?.tier==='none'&&!gap.oyAlt,JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,alt:gap.altText.slice(0,200)}));
+  // 2026-10-17 (#8): the block's rows come from alternative-production-notes.json (display only): the farming record's Korean line,
+  // '국내 연구' with its three sources (government press release, two papers), then the MCUI; a row without text is not drawn
+  const altNote=readDist('alternative-production-notes.json').alternative_production_notes['342067'], altExtra=altNote.rows[0];
+  check('Both-high species (살오징어): rows 양식 연구 → 국내 연구 (three sources) → 보전 지표, texts from alternative-production-notes.json',
+    JSON.stringify(gap.rows.map(r=>r.label))===JSON.stringify(['양식 연구','국내 연구','보전 지표'])&&gap.rows[0].text.includes(altNote.aquaculture_text)&&gap.rows[1].text.startsWith(altExtra.text)&&
+    JSON.stringify(gap.rows[1].links)===JSON.stringify(altExtra.sources.map(x=>[x.label,x.url]))&&gap.rows.every(r=>r.text.trim()),JSON.stringify(gap.rows).slice(0,500));
   // 2026-10-17 (LKH): the dialog says where raw coordinates are kept ('비공개 저장소에만 보관') and that it is a procedure guide; it has no form
   check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&!gap.form&&['원좌표는 비공개 저장소에만 보관합니다','이용 절차 안내','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x))&&!/제공하지 않습니다|운영하지 않습니다|제공 대상이 아닙니다/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,txt:gap.txt.slice(0,200)}));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab

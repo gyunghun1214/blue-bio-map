@@ -164,9 +164,11 @@ assert.ok(strings(data).some(t=>OLD_WORDS.test(t)),'the published file still car
 // the rules file's words, the review's English ones, blank markers, and the verification words (no check result is drawn)
 const WEAK=/미충족|미통과|실패|불성립|사용 중단|제한적 확인|예비|공식 평가 전|공식 평가 아님|자체 평가|자체 예비|Rapid|역검증|서식국|다른 나라|재현 확인 중|독립 재현|근거 논문 1편|단일 논문|조사 필요|확인 필요|미확인|미산출|점수 없음|정보충분도|공백|사후 검증|사전 등록|결과를 본 뒤|결과 확인 후|검증|상업 이용 불가|조사 후보|운영 발행|판정 아님|우선 조사|탐색적 재검토|하한|신약을 찾았다|자료 없음|링크 없음|인용 없음|미배정|not validated|failed|not stated|not described|unverified|no CC licen[cs]e|No open licen[cs]e|no reuse licen[cs]e|non-commercial|verified/;
 const NEGATIVE=/아님|아닙니다|아니에요|아니라|않음|않습니다|않아요|뜻하지|넣지 못한|넣지 않/;
-const page=vm.createContext({matchMedia:()=>({matches:false}),__data:data});
+// 2026-10-17 (#8): the cards are drawn with alternative-production-notes.json loaded, as boot() does, so the both-high line is read too
+const altNotes=JSON.parse(read('alternative-production-notes.json'));
+const page=vm.createContext({matchMedia:()=>({matches:false}),__data:data,__notes:altNotes});
 vm.runInContext(js,page);
-vm.runInContext('DATA=__data;STATE=makeState(routeStops(DATA.stops).length,sampleRoute(routeStops(DATA.stops)).stopT);',page);
+vm.runInContext('DATA=__data;ALT_NOTES=__notes;STATE=makeState(routeStops(DATA.stops).length,sampleRoute(routeStops(DATA.stops)).stopT);',page);
 const said=h=>[h.replace(/<(script|style)\b[\s\S]*?<\/\1>/g,' ').replace(/<[^>]*>/g,' '),...[...h.matchAll(/\s(?:aria-label|title|alt)="([^"]*)"/g)].map(m=>m[1])].join(' ')
   .replace(/&(amp|lt|gt|quot|#39);/g,(_,e)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'"})[e]).replace(/\s+/g,' ');
 const card=i=>page.cardHtml(data.stops[i],i,4,'cards'), detail=i=>page.detailHtml(data.stops[i],i);
@@ -183,6 +185,9 @@ for(const [where,h] of drawn){
   assert.deepEqual(around(/연출용/,t),[],`${where}: the route and the shared-cell positions are 탐험 연출`);
   assert.doesNotMatch(ownTitles.reduce((s,x)=>s.split(x).join(''),t),/preliminary/i,`${where}: 'preliminary' only inside a cited title`);
 }
+// only the both-high stop (살오징어) has the card line, under its name, with the summary from the notes file
+assert.deepEqual(data.stops.map((st,i)=>/class="x-alt"/.test(card(i))?st.aphia_id:null).filter(Boolean),[342067]);
+assert.ok(card(data.stops.findIndex(st=>st.aphia_id===342067)).includes(`<p class="x-alt"><b>대체생산·양식 연구</b> ${altNotes.alternative_production_notes['342067'].card_summary}</p>`));
 // the labels and notes the data carries are never drawn (candidate badge, single-paper label, status labels, the off-route
 // reason, the information-sufficiency share); the notes are drawn as the page's own sentences
 const everything=drawn.map(([,h])=>said(h)).join(' ');

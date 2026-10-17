@@ -104,6 +104,8 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-name{margin:0;font-size:clamp(30px,3vw,40px);line-height:1.1;letter-spacing:-.02em}
 .x-sci{margin:6px 0 0;font-size:13px;color:var(--ink2)}
 .x-type{display:inline-block;margin:8px 0 0;padding:3px 10px;border-radius:99px;background:rgba(240,138,75,.16);color:#ffd2b5;font-size:12px;font-weight:600}
+.x-alt{grid-column:1/-1;margin:0;padding:8px 12px;border-left:3px solid #f2b233;border-radius:0 10px 10px 0;background:rgba(242,178,51,.08);font-size:13px;line-height:1.5;color:var(--ink2)}
+.x-alt b{display:block;margin-bottom:2px;color:#ffe0a3;font-size:12px;font-weight:700}
 .x-scores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .x-scores.is-small{margin-top:10px;padding-top:0;border:0}
 .x-score{display:grid;gap:2px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03)}
