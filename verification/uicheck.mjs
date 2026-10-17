@@ -141,33 +141,23 @@ try{
       g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step===`해양생물 ${total}종 자료를 불러왔어요`&&g.counts===`${total}종의 해양생물 · 공개 데이터 기반`&&!/운영 발행|조사 후보/.test(g.counts)&&g.note===''&&g.stored===null,JSON.stringify(g));
     check('G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen',g.focus==='gate-enter'&&g.enterBox.bottom<=g.vh&&g.enterBox.top>0,JSON.stringify(g));
     // 2026-10-17 (#1): under the slogan three problem lines ('출처 N건' counted from license-matrix.json, never typed in) → the
-    // solution naming the species total → the buttons, then three example cards, each read from the loaded data
+    // solution naming the species total → the buttons. The three example cards that followed were taken off the screen (2026-10-17).
     const why=await evaluate(`(()=>{const g=document.getElementById('site-gate'),box=s=>(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(g.querySelector(s).getBoundingClientRect());
       return {problems:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden).map(li=>li.textContent),solve:g.querySelector('.gate-why .gate-lead').textContent,
-        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),ex:box('.gate-ex'),vh:innerHeight,
-        cards:[...g.querySelectorAll('.gate-ex li')].map(li=>({kind:li.dataset.ex,shown:!li.hidden,links:[...li.querySelectorAll('a')].map(a=>[a.getAttribute('href'),a.textContent]),fact:li.querySelector('.gate-ex-fact').textContent,value:li.querySelector('.gate-ex-val').textContent}))};})()`);
+        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,
+        cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
-    check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons → the example cards, all in the first screen',
+    check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
       JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거만 해도 출처 ${evidenceSources}건에 나뉘어 있습니다.`])
-      &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.ex.top&&why.ex.bottom<=why.vh,JSON.stringify({...why,cards:undefined}));
-    // the cards: the highest BBVI; IUCN EN/CR species; a species whose MCUI the KOSIS catch decline sets, with its change
-    const exp=await evaluate(`(()=>{const b=s=>pilotScore(s,'BBVI'),sp=data.species,top=sp.filter(s=>b(s)!==null).sort((x,y)=>b(y)-b(x))[0];
-      return {top:[top.aphiaID,'BBVI '+scoreText(top,'BBVI',b(top))],red:sp.filter(s=>s.assessment?.mcui_basis==='iucn'&&pilotScore(s,'MCUI')!==null&&['EN','CR'].includes(s.assessment.conservation_trace?.category)).map(s=>[s.aphiaID,s.assessment.conservation_trace.category]),
-        stock:sp.filter(s=>stockMcui(s)).map(s=>[s.aphiaID,'KOSIS '+stockChange(s.assessment.stock_decline)])};})()`);
-    const exCard=k=>why.cards.find(c=>c.kind===k)||{links:[]},exIds=c=>c.links.map(([h])=>+(/^#s=(\d+)&v=compare$/.exec(h)||[])[1]);
-    const [exUse,exRed,exStock]=['use','conservation','stock'].map(exCard);
-    check('G-1c example cards read from the data: the highest BBVI (활용 지표 1위), IUCN EN/CR (보전 지표 높음), a KOSIS catch decline (어획량 감소 신호), each name a #s=…&v=compare link',
-      why.cards.length===3&&why.cards.every(c=>c.shown)&&exUse.fact==='활용 지표 1위'&&exRed.fact==='보전 지표 높음'&&exStock.fact==='어획량 감소 신호'
-      &&JSON.stringify(exIds(exUse))===JSON.stringify([exp.top[0]])&&exUse.value===exp.top[1]
-      &&exIds(exRed).length>0&&exIds(exRed).every(id=>exp.red.some(([a])=>a===id))&&exRed.value==='IUCN '+[...new Set(exIds(exRed).map(id=>exp.red.find(([a])=>a===id)[1]))].join('·')
-      &&exIds(exStock).length===1&&exp.stock.some(([a,v])=>a===exIds(exStock)[0]&&v===exStock.value),JSON.stringify({cards:why.cards,exp}));
-    // the globe keeps the design's place: the new block and the cards stay inside the room the title and the buttons leave it
+      &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
+    check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in its text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
+    // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
-      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead').map(tb).concat(vis('.gate-ex li').map(n=>{const b=n.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};}));
+      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
-    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block and the cards do not push it)',globe.added>=7&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
+    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
     await pressEnter();await sleep(1100);
     g=await gateState();
@@ -1405,7 +1395,7 @@ try{
   await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);gs=await gateState();
   check('G-5 phone: the button opens the map',!gs.on&&gs.hidden&&gs.inert===0,JSON.stringify(gs));
   // 2026-10-17 (#1): the smallest phone in common use (375×667): the problem lines, the solution and the button in the first
-  // screen, nothing sideways (the column scrolls down to the cards, the globe and the source strip)
+  // screen, nothing sideways (the column scrolls down to the globe and the source strip)
   await viewport(375,667,true);
   await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
   await load();gs=await gateReady();
@@ -1422,18 +1412,10 @@ try{
   await evaluate("document.querySelector('#site-gate .gate-method').click();1");await sleep(1100);
   const gateSources=await evaluate("({view:currentView,open:document.getElementById('mt-sources-fold').open,focus:document.activeElement?.id||''})");
   check('G-5b 전체 출처·방법 보기 opens 근거와 방법 with the source fold open and the list focused',gateSources.view==='method'&&gateSources.open&&gateSources.focus==='all-sources',JSON.stringify(gateSources));
-  // 2026-10-17 (#1): an example card opens its species in 비교와 지표 the way a shared link does; a card with one species is
-  // a link all over (pressed here on its value, off the name). Neither is the species the map starts on.
-  for(const [how,pick] of [['the name 해삼 on the two-species card',"[...g.querySelectorAll('.gate-ex a')].find(a=>a.textContent==='해삼')"],['the 어획량 감소 신호 card, pressed on its value',"g.querySelector('.gate-ex li[data-ex=stock]')"]]){
-    await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
-    await load();gs=await gateReady();
-    const target=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=${pick};if(!n)return null;const li=n.closest('li'),a=n.tagName==='A'?n:li.querySelector('a'),r=(n.tagName==='A'?n:li.querySelector('.gate-ex-val')).getBoundingClientRect();
-      return {id:+/#s=(\\d+)/.exec(a.getAttribute('href'))[1],first:selected?.aphiaID||null,x:r.left+r.width/2,y:r.top+r.height/2};})()`);
-    if(target)for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:target.x,y:target.y,button:'left',clickCount:1});
-    await sleep(1300);
-    const st=await evaluate("({view:currentView,sel:selected?.aphiaID||null,hash:location.hash,on:document.documentElement.classList.contains('gate-on')})");
-    check(`G-8 example card: ${how} opens that species in 비교와 지표 and leaves the entry screen`,!!target&&target.id!==target.first&&st.view==='compare'&&st.sel===target.id&&st.hash.includes(`s=${target.id}&v=compare`)&&!st.on,JSON.stringify({target,st}));
-  }
+  // 2026-10-17: the example cards (and the species links on them) were taken off the entry screen; its ways in are the
+  // buttons only, so no #s= species link is left on it
+  const exLinks=await evaluate(`document.querySelectorAll('#site-gate a[href^="#s="],#site-gate .gate-ex,#site-gate [data-ex]').length`);
+  check('G-8 no example cards: the entry screen holds no species link (#s=…) and no card list',exLinks===0,String(exLinks));
   scriptId=(await send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.removeItem('bbvm-intro-entered')}catch{}"+mocks['api-error']})).identifier;
   await load();gs=await gateReady();
   check('G-6 failed load: entry screen still opens, says so, and Enter still enters',gs.ready&&gs.note==='자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.'&&gs.counts==='',JSON.stringify(gs));

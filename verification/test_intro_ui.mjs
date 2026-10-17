@@ -1,6 +1,6 @@
 // Loading and entry screen of the main map (dist/intro.js), run on its pure part (no browser), plus static checks of
 // the markup in index.html, the progress events in app.js and the globe files in dist/vendor/globe-v1. The browser flow
-// is in uicheck.mjs (G-1…G-9: G-7 the logo going home, G-8 the example cards, G-9 a 375px phone) and
+// is in uicheck.mjs (G-1…G-9: G-7 the logo going home, G-8 no example cards, G-9 a 375px phone) and
 // verification/2026-10-landing-globe/landing_check.mjs.
 // Run: node verification/test_intro_ui.mjs
 import assert from 'node:assert/strict';
@@ -11,7 +11,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateFraction,gateStep,gateTick,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -408,32 +408,29 @@ assert.equal(ctx.evidenceSourceCount(lic),evidenceRows,`출처 ${evidenceRows}�
 assert.ok(evidenceRows>0&&evidenceRows<lic.rows.length,'only the rows behind an indicator or the cells count');
 assert.equal(ctx.evidenceSourceCount({rows:[{uses:['MBPI','MCUI']},{uses:['출현 지도 셀']},{uses:['식품 비교']},{uses:null},null]}),2,'a row counts once');
 for(const m of [null,undefined,{},{rows:'x'},{rows:[]},{rows:[{uses:['식품 비교']}]}])assert.equal(ctx.evidenceSourceCount(m),null,`no number from ${JSON.stringify(m)}: the line stays out`);
-assert.equal(JSON.stringify(ctx.exampleLinks({kind:'conservation',species:[{id:241776,name:'해삼'},{id:397082,name:'전복'}],value:'IUCN EN'})),
-  JSON.stringify([{href:'#s=241776&v=compare',name:'해삼'},{href:'#s=397082&v=compare',name:'전복'}]),'the app\'s own link form, one per species');
-assert.equal(JSON.stringify(ctx.exampleLinks({species:[{id:0,name:'a'},{id:'5',name:'b'},{id:7,name:''},{id:8},null]})),'[]','no link without a real id and a name');
-for(const ex of [null,{},{species:'x'}])assert.equal(JSON.stringify(ctx.exampleLinks(ex)),'[]');
-// the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons → cards
+// 2026-10-17: the three example cards under the buttons (.gate-ex) are gone from the entry screen; nothing in intro.js draws
+// or looks them up any more (the examples data app.js hands over is left as it is, unused here)
+for(const s of ['exampleLinks','renderExamples','gate-ex','data-ex'])assert.ok(!intro.includes(s),`intro.js: no ${s}`);
+assert.ok(!read('intro.css').includes('gate-ex'),'intro.css: no .gate-ex rule');
+// the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons
 const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
 assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.',
   '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거만 해도 출처 건에 나뉘어 있습니다.']);
 assert.match(why,/<li class="gate-src is-wait">[^<]*<b class="gate-src-n"><\/b>/,'출처 N: no number in the HTML, the line waits for it');
 assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total">\d+<\/b>종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다\.<\/p>/);
 const at=s=>gateHtml.indexOf(s);
-assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"')&&at('id="gate-enter"')<at('class="gate-ex"'),'slogan → problems → solution → buttons → cards');
-const exHtml=gateHtml.slice(at('<ul class="gate-ex"'),gateHtml.indexOf('</ul>',at('<ul class="gate-ex"')));
-assert.deepEqual([...exHtml.matchAll(/<li data-ex="(\w+)">/g)].map(m=>m[1]),['use','conservation','stock']);
-assert.deepEqual([...exHtml.matchAll(/<p class="gate-ex-fact">(.*?)<\/p>/g)].map(m=>m[1]),['활용 지표 1위','보전 지표 높음','어획량 감소 신호']);
-for(const k of ['name','val'])assert.equal((exHtml.match(new RegExp(`<p class="gate-ex-${k}"></p>`,'g'))||[]).length,3,`every card's ${k} is filled from the data, none typed in`);
-assert.ok(!/<a /.test(exHtml),'no link typed into the cards');
-// app.js hands both over: the matrix it reads anyway, and the examples with 'done' (an error there leaves the cards out, not the screen)
+assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"'),'slogan → problems → solution → buttons');
+assert.ok(!gateHtml.includes('gate-ex')&&!/data-ex[=\s>]/.test(gateHtml),'no example card list, not even an empty one (nothing left for a screen reader)');
+for(const t of ['활용 지표 1위','보전 지표 높음','어획량 감소 신호'])assert.ok(!gateHtml.includes(t),`entry screen: no '${t}'`);
+// app.js hands both over: the matrix it reads anyway, and the examples with 'done' (kept in the data; the entry screen no longer draws them)
 assert.match(app,/licReq\.then\(m=>loadProgress\('sources',\{license:m\}\)\)/);
 assert.match(app,/examples:\(\(\)=>\{try\{return data\?gateExamples\(\):\[\];\}catch\{return \[\];\}\}\)\(\)/);
 assert.match(browser,/if\(d\.step==='sources'\)gate\.sources=evidenceSourceCount\(d\.license\);/);
-assert.match(browser,/if\(hash&&typeof applyHash==='function'\)applyHash\(Object\.fromEntries\(new URLSearchParams\(hash\.slice\(1\)\)\)\);/,'a card opens its species the way a shared link does (app.js applyHash), before the tab is set');
+assert.match(browser,/if\(hash&&typeof applyHash==='function'\)applyHash\(Object\.fromEntries\(new URLSearchParams\(hash\.slice\(1\)\)\)\);/,'a species link opens its species the way a shared link does (app.js applyHash), before the tab is set');
 assert.ok(browser.indexOf('applyHash(Object.fromEntries')<browser.indexOf('setView(a.view,!a.scroll)'),'the species first, then the tab');
 // no weak-point or overclaiming words in what the block says (2026-10-17, LKH)
-const whyText=why.replace(/<[^>]+>/g,' ')+exHtml.replace(/<[^>]+>/g,' ');
+const whyText=why.replace(/<[^>]+>/g,' ');
 for(const w of ['공백','예비','미평가','평가 없음','검증','신약','조사 필요','재현','부족','최초'])assert.ok(!whyText.includes(w),`no "${w}" in the problem → solution block`);
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution and example cards');
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards');
 

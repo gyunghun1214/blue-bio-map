@@ -1,0 +1,338 @@
+[
+ {
+  "name": "after 1440px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 4
+  }
+ },
+ {
+  "name": "after 1440px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 28.698033192340972,
+   "bandTop": null,
+   "copyBottom": 708,
+   "globe": {
+    "cx": 1139,
+    "cy": 652,
+    "R": 701
+   }
+  }
+ },
+ {
+  "name": "after 1440px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 1440px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 1440px: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 4
+  }
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 28.698033192340972,
+   "bandTop": null,
+   "copyBottom": 708,
+   "globe": {
+    "cx": 1139,
+    "cy": 652,
+    "R": 701
+   }
+  }
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "after 1440px 움직임 줄이기: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 1100px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 1100px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 22,
+   "bandTop": null,
+   "copyBottom": 614,
+   "globe": {
+    "cx": 982,
+    "cy": 580,
+    "R": 605
+   }
+  }
+ },
+ {
+  "name": "after 1100px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 1100px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 1100px: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": false,
+   "copyGap": 22,
+   "bandTop": null,
+   "copyBottom": 614,
+   "globe": {
+    "cx": 982,
+    "cy": 580,
+    "R": 605
+   }
+  }
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "after 1100px 움직임 줄이기: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 768px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 768px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 591,
+   "copyBottom": 589,
+   "globe": {
+    "cx": 471,
+    "cy": 932,
+    "R": 461
+   }
+  }
+ },
+ {
+  "name": "after 768px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 768px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 768px: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 591,
+   "copyBottom": 589,
+   "globe": {
+    "cx": 471,
+    "cy": 932,
+    "R": 461
+   }
+  }
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "after 768px 움직임 줄이기: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 390px: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 390px: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 506,
+   "copyBottom": 504,
+   "globe": {
+    "cx": 239,
+    "cy": 733,
+    "R": 234
+   }
+  }
+ },
+ {
+  "name": "after 390px: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 390px: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 390px: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 가로 넘침 없음",
+  "ok": true,
+  "detail": {
+   "over": 0,
+   "hero": 0
+  }
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 지구본이 글·버튼과 겹치지 않음",
+  "ok": true,
+  "detail": {
+   "stacked": true,
+   "copyGap": null,
+   "bandTop": 506,
+   "copyBottom": 504,
+   "globe": {
+    "cx": 239,
+    "cy": 733,
+    "R": 234
+   }
+  }
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 바다 탐색하기 버튼이 첫 화면 안",
+  "ok": true
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 콘솔 오류 없음",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 움직임 줄이기 켜짐",
+  "ok": true
+ },
+ {
+  "name": "after 390px 움직임 줄이기: 예시 카드 없음(DOM·글자)",
+  "ok": true,
+  "detail": {
+   "cards": 0,
+   "said": []
+  }
+ }
+]

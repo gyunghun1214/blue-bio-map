@@ -51,10 +51,6 @@ const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양�
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
 const evidenceSourceCount=m=>{if(!Array.isArray(m?.rows))return null;
   const n=m.rows.filter(r=>Array.isArray(r?.uses)&&r.uses.some(u=>EVIDENCE_USES.includes(u))).length;return n>0?n:null;};
-// The example cards under the buttons (use, conservation, stock) hold what app.js gateExamples read from the loaded data; each name opens that
-// species in 비교와 지표 (the app's own link form)
-const exampleLinks=ex=>(Array.isArray(ex?.species)?ex.species:[]).filter(s=>Number.isInteger(s?.id)&&s.id>0&&typeof s.name==='string'&&s.name)
-  .map(s=>({href:`#s=${s.id}&v=compare`,name:s.name}));
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
 const keyAction=(key,{ready,onOtherControl})=>key==='Enter'&&ready&&!onOtherControl?'enter':null;
 // The ways in: the app tab each one opens and what gets focus there. A phone gets <main> rather than a search box (no
@@ -389,20 +385,6 @@ void main(){
     const total=speciesTotal(gate.done);if(total)q('.gate-total').textContent=String(total);
     if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
       if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
-    renderExamples();
-  }
-  // the cards keep their place from the first paint (no jump when the data comes); a card the data has nothing for stays out
-  function renderExamples(){
-    const box=q('.gate-ex');if(!gate.done||box.dataset.filled)return;box.dataset.filled='1';
-    const all=Array.isArray(gate.done.examples)?gate.done.examples:[];
-    for(const li of box.children){
-      const ex=all.find(x=>x?.kind===li.dataset.ex),links=exampleLinks(ex),name=li.querySelector('.gate-ex-name');
-      if(!links.length||typeof ex.value!=='string'||!ex.value){li.hidden=true;continue;}
-      links.forEach((l,i)=>{if(i)name.append(' · ');const a=document.createElement('a');a.href=l.href;a.textContent=l.name;name.append(a);});
-      li.classList.toggle('one',links.length===1); // one species: the whole card is its link
-      li.querySelector('.gate-ex-val').textContent=ex.value;
-    }
-    box.hidden=![...box.children].some(li=>!li.hidden);box.classList.add('is-on');
   }
   function showHero(){
     if(shown)return;shown=true;
@@ -425,7 +407,7 @@ void main(){
       canvas.width=canvas.height=0;if(bg)bg.width=bg.height=0;bg=null;photo=img=null;freeGL(); // not needed again: give the memory back
       dispatchEvent(new Event('resize')); // Leaflet re-measures its box in case the layout moved underneath
       const a=arrival(target,touch());
-      // an example card: the app's own link handling (applyHash) picks its species and tab, at once; a hash set here would be
+      // a species link (#s=…): the app's own link handling (applyHash) picks its species and tab, at once; a hash set here would be
       // written over by setView before its hashchange arrived
       if(hash&&typeof applyHash==='function')applyHash(Object.fromEntries(new URLSearchParams(hash.slice(1))));
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
@@ -447,8 +429,7 @@ void main(){
   // the copy lines as drawn (the text, not the full-width block boxes) for the globe to keep clear of
   const textBox=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
   const copyBoxes=()=>[...q('.gate-title').children].map(s=>({...textBox(s),title:true}))
-    .concat([...el.querySelectorAll('.gate-why-k,.gate-problems li,.gate-lead,.gate-more,.gate-note,.gate-counts')].filter(n=>n.getClientRects().length).map(textBox))
-    .concat([...el.querySelectorAll('.gate-ex li')].filter(n=>n.getClientRects().length).map(n=>{const b=n.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};}));
+    .concat([...el.querySelectorAll('.gate-why-k,.gate-problems li,.gate-lead,.gate-more,.gate-note,.gate-counts')].filter(n=>n.getClientRects().length).map(textBox));
   function layout(){
     const w=innerWidth,h=innerHeight,band=q('.gate-globe'),call=q('.gate-callout'),bar=q('.gate-bar').getBoundingClientRect();
     const stacked=getComputedStyle(band).display!=='none',b=band.getBoundingClientRect();
@@ -616,7 +597,7 @@ void main(){
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
   // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
   // never from the controls, the bars or the card; over the copy only off its words (on a phone the copy sits on the globe)
-  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-ex';
+  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader';
   const onWords=e=>{
     const t=e.target.closest?.('.gate-kicker,.gate-title,.gate-why-k,.gate-problems li,.gate-lead');if(!t)return false;
     const r=document.createRange();r.selectNodeContents(t);
@@ -670,7 +651,6 @@ void main(){
     for(const b of el.querySelectorAll('#gate-enter,[data-go]'))b.setAttribute('aria-disabled','true');
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
-    q('.gate-ex').addEventListener('click',e=>{const a=e.target.closest?.('a[href^="#s="]');if(!a)return;e.preventDefault();enter('compare',a.getAttribute('href'));});
     document.addEventListener('keydown',e=>{
       if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('kb'); // from now on the focus ring shows (intro.css)
       if(left||e.defaultPrevented)return;
