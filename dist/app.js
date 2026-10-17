@@ -2237,9 +2237,9 @@ function renderDetail() {
 // panel. Below 1180px the panel is not shown and #detail stays in its column or the phone sheet, as before. Not in the link.
 let detailOpen=false;
 const wideLayout=()=>!!globalThis.matchMedia?.('(min-width:1180px)').matches;
-// a species picture only where a reviewed picture exists: 참굴's is a temporary cut-out of the design (vendor/species/SOURCE.txt);
-// every other species keeps its taxon group's icon (no emoji, no stock photo)
-const SPECIES_ART={836033:{src:'vendor/species/magallana-gigas-temp.webp',w:206,h:152,alt:'참굴 그림 · 임시 자산'}};
+// a species picture only where a reviewed original exists: none yet, so every species shows its taxon group's icon (no emoji,
+// no stock photo). A reviewed picture goes here, e.g. {836033:{src:'vendor/species/<file>',w,h,alt}} (vendor/species/SOURCE.txt)
+const SPECIES_ART={};
 const mcuiBasisWord=s=>{const a=s?.assessment;if(!a||pilotScore(s,'MCUI')===null)return '';
   if(earlyMcui(s))return ''; // 4.17: a preliminary basis reads like any other outside the species detail
   return a.mcui_basis==='iucn'?'IUCN 평가':a.mcui_basis==='national'?'국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'분포 범위 계산':substituteMcui(s)?`${a.mcui_substitute?.record?.country_ko||''} 정부 평가`.trim():'';};
@@ -4167,8 +4167,8 @@ function pickCompare(id){
 // bars, MFPI·MBPI under BBVI, the MCUI category and basis) and every other line moves, unchanged, into the '근거 자세히 보기'
 // drawer (renderCompareDrawer). A number shown without a needless '.0' never rounds across a type threshold.
 const noCross=(v,cut)=>{const t=+Number(v).toFixed(1);return cut!=null&&(v<cut)!==(t<cut)?Number(v).toFixed(2):String(t);};
-// species artwork: the explore map's SPECIES_ART (참굴, vendor/species/SOURCE.txt); a species without artwork keeps its group
-// icon tile. No other picture stands in for a species.
+// species artwork: the explore map's SPECIES_ART, empty for now, so every species shows its group icon tile; a reviewed
+// picture added there shows here too. No other picture stands in for a species.
 const cmpArtOf=id=>SPECIES_ART[id]||null;
 const cmpArt=s=>{const a=cmpArtOf(s.aphiaID);return a?`<img class="cp-art-img" src="${esc(a.src)}" alt="" width="${a.w}" height="${a.h}" decoding="async">`:`<span class="cp-tile">${cmpIcon(s)}</span>`;};
 function renderCompareProfile(){
