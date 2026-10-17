@@ -2692,7 +2692,7 @@ function mapSection(s){
 <li><b>민감도</b>${degree===4?'채취 압력을 고려해 4° 광역 셀을 적용했습니다.':'아직 평가하지 않아 GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.'}</li>
 <li><b>중복·기존 자료</b>같은 표본 번호는 한 번만 셌고, 운영 DB에서 검토 중인 기존 기록은 쓰지 않았습니다.</li>
 <li><b>비공개</b>원좌표와 기록 ID는 공개하지 않습니다.</li></ul>`;
-  return `<h3>지도 셀</h3><p class="fine">선별된 출현기록을 공개 ${degree}° 셀의 청회색 점 무늬로 보여줍니다(점 간격 = 기록 수 구간). 청회색 점은 실제 발견 좌표·조사 지점·기록 1건이 아니며 원좌표는 공개하지 않습니다.</p>${row('공개 셀',s.cells.length?`${spatialCells(s).length}개 · ${degree}°×${degree}°${spatialCells(s).length===s.cells.length?'':` · 기간별 ${s.cells.length}행`}`:'없음',s.cells.length?'done':'pending')}${s.cells.length?row(sitesLabel(s),count(cellSites(s),'곳')):''}${single?`<p class="fine">조사 지점이 1곳뿐인 셀 ${single}개: ${degree}° 범위 안의 대략적인 조사 위치가 드러납니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'&&isMapRun(s)?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 제외 <span class="fine">GBIF 조회 ${esc(m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${map3?row('CC BY-NC 기록(비상업 연구용)',count(m.nc_records)):''}${excluded}<p class="fine">사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.</p>`;
+  return `<h3>지도 셀</h3><p class="fine">선별된 출현기록을 공개 ${degree}° 셀의 붉은 점 무늬로 보여줍니다(점 간격 = 기록 수 구간). 붉은 점은 실제 발견 좌표·조사 지점·기록 1건이 아니며 원좌표는 공개하지 않습니다.</p>${row('공개 셀',s.cells.length?`${spatialCells(s).length}개 · ${degree}°×${degree}°${spatialCells(s).length===s.cells.length?'':` · 기간별 ${s.cells.length}행`}`:'없음',s.cells.length?'done':'pending')}${s.cells.length?row(sitesLabel(s),count(cellSites(s),'곳')):''}${single?`<p class="fine">조사 지점이 1곳뿐인 셀 ${single}개: ${degree}° 범위 안의 대략적인 조사 위치가 드러납니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'&&isMapRun(s)?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 제외 <span class="fine">GBIF 조회 ${esc(m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${map3?row('CC BY-NC 기록(비상업 연구용)',count(m.nc_records)):''}${excluded}<p class="fine">사유가 겹치는 기록은 사유마다 셉니다. 셀은 그 기간에 기록이 있었다는 뜻입니다. 분포 전체, 개체수, 자원량을 뜻하지 않습니다.</p>`;
 }
 
 
@@ -2732,8 +2732,8 @@ function dotsPerDegree(records){
 // One colour for every species so the pattern reads at a glance. 2026-10-11 navy redesign: a lighter red that holds on the navy
 // map, and the light rim on every basemap (the outline fallback is navy too now).
 // 2026-10-15 explore design match: neutral blue-grey instead of red, so the pattern never reads as an alert or a value colour
-const DOT_FILL='#A9C6D4';
-const dotStyle=()=>({color:'#ffffff',weight:.65,opacity:.85,fillColor:DOT_FILL,fillOpacity:.9});
+const DOT_RED='#ff6464';
+const dotStyle=()=>({color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88});
 // Smaller schematic marks reveal the grid pattern; zoom caps and cell click areas stay independent.
 function dotRadius(spacingDeg){
   const z=map.getZoom(), pxPerDeg=256*2**z/360;
@@ -2792,9 +2792,9 @@ function drawBubble(b){
   const n=b.cells.length, band=dotsPerDegree(b.records/n), size=b.cells[0][2];
   const r=Math.min(30,9+5*Math.sqrt(n));
   const bounds=b.cells.flatMap(([lat0,lon0,s])=>[[lat0,lon0],[lat0+s,lon0+s]]);
-  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#C9DCE5',weight:2,opacity:1,fillColor:DOT_FILL,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
+  const bubble=L.circleMarker([b.lat,b.lon],{radius:r,color:'#ff8d84',weight:2,opacity:1,fillColor:DOT_RED,fillOpacity:BUBBLE_FILL[band],className:'occ-bubble'});
   bubble._zoomMark=true;
-  bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 ${released()?'값':'시범값'} · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 청회색 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
+  bubble.bindTooltip?.(`공개 ${size}° 셀 ${n}개 · 선별 기록 ${b.records.toLocaleString()}건(셀당 평균 ${BUBBLE_BAND[band]} 구간) · ${esc(bbviTagText(occurrenceSpecies))}(종 전체 ${released()?'값':'시범값'} · 이 해역 값 아님)<br><small>누르면 확대되어 셀별 붉은 점으로 펼쳐집니다. 버블 위치는 셀 중심의 평균이며 실제 발견 좌표가 아닙니다.</small>`);
   bubble.on?.('click',()=>zoomIntoCells(bounds));
   bubble.addTo(overlay);
   const count=L.marker([b.lat,b.lon],{interactive:false,keyboard:false,icon:L.divIcon({className:'bubble-count',html:String(n),iconSize:[40,20]})});
@@ -2848,12 +2848,12 @@ function generalizationNote(size){
   return `<br><b>공개 일반화 (GBIF 민감종 지침 용어)</b><ul><li>dataGeneralizations: 좌표를 ${size}° 셀로 일반화, 좌표 이동·무작위화 없음</li><li>informationWithheld: 원좌표·기록 ID 비공개</li><li>민감도: ${esc(sens)}</li><li>민감도 재검토 예정일: 미정(민감도 평가 후 결정)</li></ul>`;
 }
 function cellPopupNotice(size){
-  return `<br><small>청회색 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
+  return `<br><small>붉은 점은 실제 발견 좌표가 아닌 이 ${size}° 공개 셀의 도식적 표시입니다. 점의 촘촘함은 기록 수 구간만 나타내며, 각 점은 출현 위치·기록 1건·조사 지점 1곳이 아닙니다. 선별된 출현기록은 개체수·자원량·생물학적 가치·현재 한국 전체 분포가 아닙니다.</small>`;
 }
 // Faint frame so a coastal cell whose dots are mostly masked still reads as an aggregate area, not a point.
 // Cell boundary in a non-red ink so it stays distinct from the red dots on every basemap (all navy since 2026-10-11:
 // a quieter light dash, so the frames do not outshine the dots).
-const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fillColor:DOT_FILL,fillOpacity:.08});
+const cellFrame=()=>({color:'#d8e6ee',weight:1.1,opacity:.6,dashArray:'4 4',fillColor:DOT_RED,fillOpacity:.1});
 // 2026-10-14 land mask: a cell never paints the land. A 1° cell is filled over its sea part only (cell-sea-geometry.json,
 // scripts/build_cell_sea_geometry.py, cut with the same countries.json) and keeps its square for the edge, click, tooltip and
 // popup; a 4° cell (sensitive species, published wide) is an outline only, 2 px inside its square so it does not run on the 1°
@@ -2913,7 +2913,7 @@ function setMapLegend(s){
   $('key-dot-mark').hidden=!!extentOnly;$('key-bubble-mark').hidden=true;
   for(const row of document.querySelectorAll('#occurrence-legend .key-bubble,#occurrence-legend .key-note'))row.hidden=!!extentOnly;
   $('map-symbol-label').textContent=extentOnly?'점선 테두리 = 자료를 찾아본 범위':`점선 = ${size}° 셀 · 점 = 기록 수 구간(도식)\n실제 생물 발견 좌표 아님`;
-  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 청회색 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 지표 높은 종·보전 지표 높은 종·보전평가 미확인 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
+  $('map-legend-note').textContent=extentOnly?'공개된 기록 칸이 없습니다. 테두리는 이 종이 사는 곳이나 분포가 아닙니다.':'축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. 버블이 클수록 기록 칸이 많이 모여 있고, 진할수록 칸당 기록이 많습니다(점 간격과 같은 구간). 버블을 누르거나 확대하면 칸별 붉은 점으로 펼쳐집니다. 칸을 누르면 그 칸의 확인 종·활용 지표 높은 종·보전 지표 높은 종·보전평가 미확인 종·근거 부족 종 수가 먼저 나옵니다. 점 간격: 칸 안의 기록이 많을수록 점이 촘촘합니다(1–4 · 5–19 · 20–99 · 100건 이상, 1°·4° 칸 모두 같은 면적 기준. 4° 칸은 5건 이상이면 같은 밀도). 점 하나가 기록 하나는 아니고, 점 위치도 실제 발견 지점이 아닙니다. 점선 테두리가 칸의 경계이고, 육지 위에는 점을 그리지 않습니다. 칸을 누르면 실제 기록 수·기간·출처가 나옵니다.';
 }
 
 // Fitted cells stay clear of the floating controls (top-left buttons, bottom-left legend) so every cell can be clicked.
@@ -2951,7 +2951,7 @@ const chipCells=pv=>`공개 셀 ${spatialCells(pv).length}개 · 기록 ${cellRe
 function renderCellMap(s,color){
   occurrenceSpecies=s;dotCells=[];cellLayers=[]; // renderMap has cleared the overlay
   const degree=s.cells[0]?.sizeDeg||1;
-  $('map-review-note').textContent=`선별된 ${s.catalog?'GBIF·OBIS':'GBIF'} 출현기록을 공개 ${degree}° 셀의 청회색 점 무늬로 표시합니다. 청회색 점은 실제 발견 좌표가 아닌 공개 셀의 도식적 표시이며 가치·보전 등급도 아닙니다. 기록 수는 개체수·자원량·현재 분포나 한국 전체 분포를 뜻하지 않습니다.${s.catalog?' 2000년 이전 과거 기록과 한국·북한 EEZ 밖 기록은 셀 팝업에 따로 표시합니다. 양식·방류 개체는 원자료 표시가 없으면 구분하지 못합니다.':''}`;
+  $('map-review-note').textContent=`선별된 ${s.catalog?'GBIF·OBIS':'GBIF'} 출현기록을 공개 ${degree}° 셀의 붉은 점 무늬로 표시합니다. 붉은 점은 실제 발견 좌표가 아닌 공개 셀의 도식적 표시이며 가치·보전 등급도 아닙니다. 기록 수는 개체수·자원량·현재 분포나 한국 전체 분포를 뜻하지 않습니다.${s.catalog?' 2000년 이전 과거 기록과 한국·북한 EEZ 밖 기록은 셀 팝업에 따로 표시합니다. 양식·방류 개체는 원자료 표시가 없으면 구분하지 못합니다.':''}`;
   mapJudgmentStatus(s);
   for(const rows of spatialCells(s)){
     const c=rows[0], reasons=[...new Set(rows.flatMap(r=>cellAssessmentStatus(s,r).reasons))];
