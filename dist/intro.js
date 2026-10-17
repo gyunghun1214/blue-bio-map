@@ -1,5 +1,5 @@
-// Loading and entry screen of the main map (index.html): a loader that fills with the app's real loading steps, then an
-// entry screen (copy on the left, a large globe on the right) that opens the map, the comparison or the sources. Loaded
+// Loading and entry screen of the main map (index.html): a full-screen sea whose wide ripples spread while the line under
+// the logo names the app's real loading step, then an entry screen (copy on the left, a large globe on the right) that opens the map, the comparison or the sources. Loaded
 // without defer in <head> so the screen is up before the first paint. The part above the browser marker below is pure
 // and tested in node (verification/test_intro_ui.mjs).
 const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
@@ -8,8 +8,10 @@ const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
 const HOME_KEY='bbvm-intro-home';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 // (after '#' or, from 2026-10-15, as a query such as ?v=compare: the caller passes both)
-const GATE_MIN_MS=600, GATE_MAX_MS=7000;
-const GATE_STEPS=[['page','페이지 준비 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
+// GATE_FADE_MS: the reveal from the loader to the entry screen (the ripples turning onto the globe's rim), which ends by
+// GATE_MAX_MS at the latest
+const GATE_MIN_MS=600, GATE_MAX_MS=7000, GATE_FADE_MS=360;
+const GATE_STEPS=[['page','페이지를 준비하는 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
 
 const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace(/^#/,''));return APP_HASH_KEYS.some(k=>q.get(k));}catch{return false;}};
 // No storage (private mode, blocked) only means the screen can't be remembered: it still shows once per load.
@@ -24,14 +26,40 @@ function gateProgress(g,step,detail){
   else if(GATE_STEPS.some(([k])=>k===step))g.steps.add(step);
   return g;
 }
-const gateFraction=g=>GATE_STEPS.filter(([k])=>g.steps.has(k)).length/GATE_STEPS.length;
 // No "n / 3" counter: next to 종 자료 it read as a species count. The total comes from the loaded data, once it is there.
 const speciesTotal=d=>Number.isInteger(d?.published)&&Number.isInteger(d?.candidates)?d.published+d.candidates:null;
-const gateStep=g=>{const i=GATE_STEPS.findIndex(([k])=>!g.steps.has(k));if(i>=0)return GATE_STEPS[i][1];const t=speciesTotal(g.done);return t?`해양생물 ${t}종 자료를 불러왔어요`:'준비됐어요';};
-// Ready once the data is in (after a short minimum so the loader never flashes), or after the maximum wait regardless.
+// The first step not yet in; once all are in, the species total from the loaded data. A load that failed (or came without
+// a total) is not said to be done: the line only says the screen opens, and the entry screen's note says the rest.
+const gateStep=g=>{const i=GATE_STEPS.findIndex(([k])=>!g.steps.has(k));if(i>=0)return GATE_STEPS[i][1];
+  const t=g.done?.state==='error'?null:speciesTotal(g.done);return t?`해양생물 ${t}종 자료를 불러왔어요`:'첫 화면을 여는 중';};
+// Ready once the data is in (after a short minimum so the loader never flashes), or regardless just early enough that the
+// reveal still ends by the maximum wait.
 function gateTick(g,now){
-  if(g.phase==='loading'){const t=now-g.start;if((g.done&&t>=GATE_MIN_MS)||t>=GATE_MAX_MS)g.phase='ready';}
+  if(g.phase==='loading'){const t=now-g.start;if((g.done&&t>=GATE_MIN_MS)||t>=GATE_MAX_MS-GATE_FADE_MS)g.phase='ready';}
   return g.phase;
+}
+// How long the reveal runs from now: GATE_FADE_MS, cut short (to nothing) where it would pass GATE_MAX_MS (a late frame,
+// a tab that was hidden), nothing at all when still.
+const gateFade=(g,now,still)=>still?0:Math.round(Math.max(0,Math.min(GATE_FADE_MS,GATE_MAX_MS-(now-g.start))));
+// The loader's ripples (2026-10-17): RIPPLE.n wide rings, each living lifeMs and born lifeMs/n after the one before, so
+// they never stop. Their centre is under the screen, so only the tops of the ellipses show, spreading up through the
+// lower 40% of it and fading in and out with their life. They are only the sea's motion, not a progress bar: the
+// loading step is in the words alone.
+// span: at least .75× the height, so an upright phone shows the middle of a wide curve, not a narrow arch.
+const RIPPLE={n:7,lifeMs:9000,peak:.55,wobble:[1.8,.7]};
+function rippleArc(p,w,h){
+  const span=Math.max(w,h*.75),q=Math.min(1,Math.max(0,p));
+  return {cx:w/2,cy:h*1.22,rx:(.56+1.04*q)*span,ry:(.25+.37*q)*h,alpha:RIPPLE.peak*Math.sin(Math.PI*q)};
+}
+// the lives (0 born, 1 gone) of the rings at t ms of motion; still (t null): one fixed set spread over a life
+const rippleLives=t=>Array.from({length:RIPPLE.n},(_,i)=>t===null?(i+.5)/RIPPLE.n:(t/RIPPLE.lifeMs+i/RIPPLE.n)%1);
+// The reveal (GATE_FADE_MS, k 0→1): the words go in the first third; in the second the rings close onto circles just
+// outside the globe's rim (frame: cx, cy, R on screen; an older ring a wider and fainter circle); in the last they fade.
+// m: how far a ring has closed; calm: what is left of its ripple.
+function rippleReveal(a,p,k,frame){
+  const f=frame||{cx:a.cx,cy:a.cy,R:0},m=frame?easeOut((k-1/3)*3):0,r=f.R*(1.01+.09*p),mix=(x,y)=>x+(y-x)*m;
+  return {cx:mix(a.cx,f.cx),cy:mix(a.cy,f.cy),rx:mix(a.rx,r),ry:mix(a.ry,r),
+    alpha:mix(a.alpha,RIPPLE.peak*(1-.6*p))*Math.min(1,Math.max(0,3-3*k)),calm:1-m};
 }
 // One line under the buttons; the same meaning as the app's own connection state, never a softer one.
 function gateNote(g){
@@ -264,7 +292,8 @@ void main(){
   // The turning globe (TEXTURES): a WebGL context and the shader are made now, before the page is parsed, and its two
   // textures asked for, so they mostly arrive during the loader's 0.6 s minimum (a shared link, no screen, never asks).
   // If any of it fails (no WebGL, the shader, a texture, a lost context) the still picture below is fetched instead.
-  let el=null,raf=0,canvas=null,ctx=null,shown=false,left=false,dirty=true,fading=false,drawnPhoto=false,bg=null;
+  // shown: the globe is drawn (from the reveal on); opened: the entry screen is usable (the loader gone)
+  let el=null,raf=0,canvas=null,ctx=null,shown=false,opened=false,fade=null,behind=[],left=false,dirty=true,fading=false,drawnPhoto=false,bg=null;
   // the motion (MOTION): offset is this frame's degrees from the start pose; clock the ms of motion so far
   let offset={lon:0,lat:0},clock=0,last=0,lastDraw=0,prevFrame=0,withEntry=true,started=false,drag=null,back=null,leave=null,slow=0,shownAt=0,glScale=1;
   const G={c:null,gl:null,prog:null,buf:null,tex:{},u:{},img:{},left:2,ready:false,failed:false,at:0,box:null};
@@ -381,8 +410,6 @@ void main(){
   const q=s=>el.querySelector(s);
 
   function render(){
-    const f=gateFraction(gate);
-    q('.gate-arc').style.strokeDashoffset=String(100-f*100);
     q('.gate-step').textContent=gateStep(gate);
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
@@ -397,13 +424,21 @@ void main(){
     const all=Array.isArray(gate.done.examples)?gate.done.examples:[];
     const red=exampleLinks(all.find(x=>x?.kind==='conservation'));if(red.length)sp.textContent=`(${red.map(l=>l.name).join('·')})`;
   }
+  // The data is in (or the wait is up): the globe is drawn under the loader, which gives way in fade.ms (the words, then
+  // its sea, then the ripples closing onto the globe's rim); the entry screen is usable once it is gone. One reveal: the
+  // globe does not fade in again after it.
+  function reveal(now){
+    shown=true;shownAt=now;dirty=true;render();
+    fade={at:now,ms:gateFade(gate,now,reduce)};el.style.setProperty('--gf',fade.ms+'ms');
+    el.classList.add('is-revealing');q('.gate-loader').setAttribute('aria-hidden','true');
+    if(fade.ms)setTimeout(showHero,fade.ms);else showHero(); // a timer, not transitionend: it ends even if no transition runs
+  }
   function showHero(){
-    if(shown)return;shown=true;
-    el.classList.add('is-ready');
-    q('.gate-loader').setAttribute('aria-hidden','true');
-    for(const b of el.querySelectorAll('#gate-enter,[data-go],[data-go-table]'))b.removeAttribute('aria-disabled');
+    if(opened||left)return;opened=true;
+    el.classList.remove('is-revealing');el.classList.add('is-ready');
+    q('.gate-loader').hidden=true;rip.width=rip.height=0;
+    for(const n of behind)n.inert=false;
     const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
-    layout();
     // keyboard and mouse: focus the button (Enter/Space act on it), its ring shown only once the keyboard is used (html.kb);
     // touch: the screen itself, so no focus ring on a tap device
     if(!touch())q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
@@ -412,7 +447,7 @@ void main(){
   // chips, map view); only the tab changes, through app.js setView (deferred, so it is there once the screen is ready).
   // how.hash: an example card's species link (#1); how.table: a use card's type in the data table (#3)
   function enter(target,how={}){
-    if(left||gate.phase!=='ready')return;left=true;
+    if(left||!opened)return;left=true;
     try{store?.setItem(GATE_KEY,'1');}catch{}
     const finish=()=>{
       cancelAnimationFrame(raf);raf=0;leave=null;root.classList.remove('gate-on','gate-leaving');el.hidden=true;release();scrollTo(0,0);
@@ -598,11 +633,11 @@ void main(){
     return !still&&shown;
   }
   const kick=()=>{dirty=true;if(el&&!raf&&!left)raf=requestAnimationFrame(frameLoop);};
-  // Runs every frame while loading (the ready check) and while the globe moves; otherwise only when kicked by a resize,
-  // new data or the motion switch.
+  // Runs every frame while the loader shows (the ready check, the ripples) and while the globe moves; otherwise only when
+  // kicked by a resize, new data or the motion switch.
   function frameLoop(now){
     raf=0;if(left&&!leave)return;
-    if(gateTick(gate,now)==='ready'&&!shown){render();showHero();shownAt=now;}
+    if(gateTick(gate,now)==='ready'&&!shown)reveal(now);
     const moving=shown&&advance(now),fast=!!(drag||back||leave);
     // a slow GPU shows as frames coming late while the globe moves: then it is drawn at a lower resolution
     if(moving&&prevFrame){slow=now-prevFrame>45?slow+1:Math.max(0,slow-1);if(slow>10&&glScale>.5){glScale=Math.max(.5,glScale-.15);slow=0;}}
@@ -611,7 +646,32 @@ void main(){
       if(dirty){dirty=false;resize();layout();bg=null;}
       paint();lastDraw=now;
     }
-    if(!shown||moving||dirty||fading)raf=requestAnimationFrame(frameLoop);
+    if(!opened)try{ripple(now);}catch{} // a drawing error leaves the loader's sea without its ripples, never the loader
+    if(!opened||moving||dirty||fading)raf=requestAnimationFrame(frameLoop);
+  }
+
+  // The loader's ripples (RIPPLE) on their own canvas over its sea: every frame while it shows (one still picture when
+  // still), then during the reveal closing onto the globe's rim while the sea fades out under them.
+  let rip=null,rctx=null,ripKey='',ripAt=0;
+  function ripple(now){
+    const dpr=Math.min(2,devicePixelRatio||1),w=innerWidth,h=innerHeight,W=Math.round(w*dpr),H=Math.round(h*dpr);
+    if(rip.width!==W||rip.height!==H){rip.width=W;rip.height=H;ripKey='';}
+    if(reduce&&!fade){if(ripKey==='still')return;ripKey='still';}else ripKey='';
+    const t=reduce?null:now-ripAt,k=fade?(fade.ms?Math.min(1,(now-fade.at)/fade.ms):1):0;
+    const ring=frame&&{cx:frame.cx,cy:frame.cy-lift,R:frame.R},amp=Math.max(.6,Math.min(1,w/1440)),tw=t??0,tau=2*Math.PI;
+    rctx.setTransform(dpr,0,0,dpr,0,0);rctx.clearRect(0,0,w,h);
+    for(const p of rippleLives(t)){
+      const a=fade?rippleReveal(rippleArc(p,w,h),p,k,ring):{...rippleArc(p,w,h),calm:1};
+      if(a.alpha<.004)continue;
+      // the top half of the ellipse, with a small ripple of its own (at most 2.5 px on a desktop) that calms on the rim
+      const wob=a.calm*amp;rctx.beginPath();
+      for(let i=0;i<=180;i++){const th=Math.PI*(1+i/180),x=a.cx+a.rx*Math.cos(th),
+        y=a.cy+a.ry*Math.sin(th)+wob*(RIPPLE.wobble[0]*Math.sin(tau*1.6*x/w+p*9+tw/2600)+RIPPLE.wobble[1]*Math.sin(tau*3.1*x/w-tw/3900+p*5));
+        i?rctx.lineTo(x,y):rctx.moveTo(x,y);}
+      rctx.strokeStyle=`rgba(140,215,208,${(a.alpha*.1).toFixed(3)})`;rctx.lineWidth=7;rctx.stroke(); // a faint wide glow
+      rctx.strokeStyle=`rgba(140,215,208,${a.alpha.toFixed(3)})`;rctx.lineWidth=1.25;rctx.stroke();
+    }
+    rip.classList.add('is-on'); // fades in once drawn (intro.css), so the first frame's rings never pop up
   }
 
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
@@ -624,7 +684,7 @@ void main(){
     for(const b of r.getClientRects())if(e.clientX>=b.left-8&&e.clientX<=b.right+8&&e.clientY>=b.top-4&&e.clientY<=b.bottom+4)return true;
     return false;
   };
-  const onGlobe=e=>{if(!frame||!turning()||!shown||left||e.target.closest?.(NO_DRAG)||onWords(e))return false;return Math.hypot(e.clientX-frame.cx,e.clientY+lift-frame.cy)<=frame.R;};
+  const onGlobe=e=>{if(!frame||!turning()||!opened||left||e.target.closest?.(NO_DRAG)||onWords(e))return false;return Math.hypot(e.clientX-frame.cx,e.clientY+lift-frame.cy)<=frame.R;};
   function setupDrag(){
     el.addEventListener('pointerdown',e=>{
       if(drag||(e.pointerType==='mouse'&&e.button!==0)||!onGlobe(e))return;
@@ -655,7 +715,11 @@ void main(){
     for(const n of document.body.children)hold(n);
     observer=new MutationObserver(list=>{for(const m of list)for(const n of m.addedNodes)if(n.nodeType===1&&n.parentNode===document.body)hold(n);});
     observer.observe(document.body,{childList:true});
-    canvas=q('.gate-sea');ctx=canvas.getContext('2d');
+    canvas=q('.gate-sea');ctx=canvas.getContext('2d');rip=q('.gate-ripple');rctx=rip.getContext('2d');ripAt=performance.now();
+    // while the loader shows, the entry screen under it is out of reach (keyboard, pointer, assistive tech), all but the
+    // motion switch, which the loader keeps in its corner
+    const bar=q('.gate-bar'),sw=q('.gate-motion');behind=[...q('.gate-hero').children,...bar.children].filter(n=>n!==bar&&n!==sw);
+    for(const n of behind)n.inert=true;
     gateProgress(gate,'page');render();
     q('.gate-loader').focus({preventScroll:true});
     // the switch: still stops the turning at once (the start pose, no frames); moving again picks up the sway, no entry
@@ -663,12 +727,10 @@ void main(){
       reduce=v;motion.setAttribute('aria-checked',String(v));el.classList.toggle('is-still',v);
       if(keep)try{local?.setItem(MOTION_KEY,v?'1':'0');}catch{}
       if(v){back=null;offset={lon:0,lat:0};}else if(started){withEntry=false;clock=0;}
-      kick();
+      ripKey='';kick();
     };
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce,true));
-    // the copy shows from the first paint; the ways in say they wait until the screen is ready (intro.css dims them)
-    for(const b of el.querySelectorAll('#gate-enter,[data-go],[data-go-table]'))b.setAttribute('aria-disabled','true');
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
@@ -678,7 +740,7 @@ void main(){
       if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('kb'); // from now on the focus ring shows (intro.css)
       if(left||e.defaultPrevented)return;
       const t=e.target,other=t!==q('#gate-enter')&&!!t.closest?.('button,a,input,select,textarea,summary');
-      if(keyAction(e.key,{ready:gate.phase==='ready',onOtherControl:other})==='enter'){e.preventDefault();enter('explore');}
+      if(keyAction(e.key,{ready:opened,onOtherControl:other})==='enter'){e.preventDefault();enter('explore');}
     });
     const status=q('.gate-share-status');
     q('.gate-share').addEventListener('click',async()=>{
@@ -695,6 +757,8 @@ void main(){
     // a hidden tab draws nothing; back in view the motion carries on from where it stood
     document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else kick();});
     raf=requestAnimationFrame(frameLoop);
+    // the wait's end without frames (a hidden tab draws none): the loader still goes by GATE_MAX_MS
+    setTimeout(()=>{const now=performance.now();if(!shown&&!left&&gateTick(gate,now)==='ready'){reveal(now);kick();}},GATE_MAX_MS-GATE_FADE_MS+40);
   }
   const start=()=>{try{setup();}catch{fail();}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
