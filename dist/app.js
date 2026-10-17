@@ -704,6 +704,27 @@ function traitDisplayRows(file,outdated){
   }
   return rows;
 }
+// Farming stage per species (dist/aquaculture-tier.json, scripts/build_aquaculture_tier.py, 2026-10-15): 상업 양식 중 (KOSIS
+// 해면양식 production of the species' own item, or a record or the FAO CASIP sheet naming commercial culture), 시험·연구 양식,
+// 기록 없음 (the farming record stops before a full cycle). Display only: the MFPI farming term stays the reviewed record's
+// feasible flag. Schema 1 is read; a higher number is a newer file; anything else is ignored and the two chips stay at 0.
+let aquacultureTier=new Map(), aquacultureTierFile=null;
+const AQUA_TIERS=['commercial','trial','none'];
+function aquacultureTierRows(file,outdated){
+  const v=/^aquaculture-tier-(\d+)$/.exec(file?.schema_version||'');
+  if(v&&Number(v[1])>1)outdated.push({file:'aquaculture-tier.json',version:file.schema_version});
+  const rows=new Map();aquacultureTierFile=null;
+  if(file?.schema_version!=='aquaculture-tier-1'||file.display_only!==true||!Array.isArray(file.rows))return rows;
+  for(const r of file.rows)if(Number.isInteger(r?.aphia_id)&&AQUA_TIERS.includes(r.tier)&&r.tier_label&&r.basis)rows.set(r.aphia_id,r);
+  aquacultureTierFile=file;return rows;
+}
+// one line for the food detail: the stage, its basis and where the basis comes from
+function aquacultureTierLine(aphia){
+  const r=aquacultureTier.get(aphia);if(!r)return '';
+  const src=aquacultureTierFile?.sources||{}, link=r.source_id===src.kosis?.source_id?src.kosis:r.source_id===src.fao_casip?.source_id?src.fao_casip:null;
+  const ref=link?` · <a href="${esc(link.url)}" target="_blank" rel="noopener">${r.source_id===src.kosis?.source_id?'KOSIS':'FAO 양식종 자료집'} ↗</a>`:r.tier==='commercial'?' · '+verifiedSource(r.source_id,'근거 ↗'):'';
+  return `<p class="aqua-tier" data-tier="${esc(r.tier)}"><b>양식 단계</b> ${esc(r.tier_label)} · ${esc(r.basis)}${ref}</p>`;
+}
 // 4.12 (prereg-4.12-2026-10-14 3-D): related papers that no score uses (dist/supplementary-literature.json, built by
 // scripts/build_supplementary_literature.py). Schema 1 is read; a higher number is a newer file this code does not know;
 // anything else is ignored. Nothing here reaches MFPI, MBPI, MCUI, BBVI, the matrix, the map colours or a chip, and the count
@@ -1446,6 +1467,7 @@ function verifiedFoodDetail(s){
     `<p class="fine">고정 비교집단 ${escL(f.cohort_id)} · ${escL(f.cohort_species)}개 식품${cohort?' ('+escL(cohort.foods.join(', '))+')':''}. ${escL(f.cohort_criteria)} 비교집단이 다른 종의 MFPI끼리는 비교하지 않습니다.</p>`+
     // the edible fraction carries its own sample and caveats, the way the aquaculture line below already does
     `<p>가식부 ${escL((e.value*100).toFixed(1))}% · ${escL(e.method)}${e.region?` 시료: ${escL(e.region)}${e.sample_period?` (${escL(e.sample_period)})`:''}.`:''}${e.limitations?` 제약: ${escL(e.limitations)}`:''} · ${verifiedSource(e.source_id,'원자료 ↗')}</p>`+
+    aquacultureTierLine(s.aphiaID??s.assessment.aphia_id)+
     `<p>${q.feasible?'양식 방법':'양식 가능 근거 없음(양식 점수 0) · 확인한 시도'}: ${escL(screenKo(String(q.method??'')).replace(/\.\s*$/,''))}. 적용 범위: ${escL(q.region)} (${escL(q.year)}). 제약: ${escL(q.limitations)} ${verifiedSource(q.source_id,'양식 근거 ↗')}</p>`+
     (f.yield_sensitivity||[]).map(y=>`<p class="fine">가식부 ${escL((y.fraction*100).toFixed(2))}% (${escL(y.region||'')}) 대입 시 MFPI ${escL(Number(y.mfpi_at_same_nutrients).toFixed(1))} · ${verifiedSource(y.source_id,'독립 자료 ↗')}</p>`).join('')+
     (f.weight_sensitivity||[]).map(w=>`<p class="fine">가중치 ${w.nutrient_weight}/${w.edible_fraction_weight}/${w.aquaculture_weight} 적용 시 MFPI ${escL(Number(w.mfpi).toFixed(1))}</p>`).join('')+
@@ -2034,7 +2056,8 @@ const USE_TRAITS=[
   {id:'zinc_mg',group:'식량',label:'아연'},
   {id:'omega3',group:'식량',label:'오메가-3'},
   {id:'whole',group:'식량',label:'가식부 100%'},
-  {id:'farmed',group:'식량',label:'양식 가능'},
+  {id:'farmed',group:'식량',label:'상업 양식',tier:'commercial'},
+  {id:'farmed_trial',group:'식량',label:'시험·연구 양식',tier:'trial'},
 ];
 // Search words that point at a trait chip, kept apart from the rules so wording can grow without touching evidence.
 const TRAIT_SYNONYMS={
@@ -2056,7 +2079,8 @@ const TRAIT_SYNONYMS={
   zinc_mg:['아연','zinc'],
   omega3:['오메가-3','오메가3','오메가','omega','omega-3','dha','epa','불포화지방'],
   whole:['가식부','통째로','폐기율','버릴것없는'],
-  farmed:['양식','양식가능','aquaculture'],
+  farmed:['양식','양식가능','상업양식','aquaculture'],
+  farmed_trial:['시험양식','연구양식','시험·연구양식'],
 };
 // Chips combine with AND: a species stays only when it has evidence for every chip that is on (insertion order kept,
 // so the last chip turned on is the one the empty-result button turns off).
@@ -2081,9 +2105,10 @@ function useEvidence(s,id){
   }
   if(traitById(id)?.group==='식량'){
     if(a.axis_errors?.MFPI||pilotScore(s,'MFPI')===null)return null;
-    // 가식부·양식 칩은 MFPI에 이미 들어간 가식부 비율과 양식 사례 기록을 그대로 보여줄 뿐, 점수를 바꾸지 않는다.
+    // 가식부 칩은 MFPI에 이미 들어간 가식부 비율을 보여줄 뿐이고, 양식 칩 둘은 양식 단계 파일(표시 전용)을 읽는다. 점수는 바뀌지 않는다.
     if(id==='whole'){const ef=a.food_trace?.edible_fraction;return ef&&ef.value===1?{text:`가식부 100%(폐기율 0%) · 출처 ${ef.record_id}`,score:pilotScore(s,'MFPI')}:null;}
-    if(id==='farmed'){const q=a.food_trace?.aquaculture;return q&&q.feasible===true&&q.reviewed===true?{text:`양식 사례 있음 · 출처 ${q.source_id}`,score:pilotScore(s,'MFPI')}:null;}
+    const tier=traitById(id)?.tier;
+    if(tier){const r=aquacultureTier.get(s.aphiaID);return r&&r.tier===tier&&a.food_trace?.aquaculture?.feasible===true?{text:`${r.tier_label} · ${r.basis}`,score:pilotScore(s,'MFPI')}:null;}
     const hits=(id==='mineral'?Object.keys(MINERALS):[id]).map(k=>[k,overClaim(a,k)]).filter(([,v])=>v);
     return hits.length?{text:hits.map(([k,v])=>(MINERALS[k]||'단백질')+' '+nutrientLine(v,k)).join(' · '),score:pilotScore(s,'MFPI')}:null;
   }
@@ -2176,12 +2201,13 @@ const useRule=c=>c.id==='protein_g'?`식약처 영양성분 강조표시 ‘고/
     :c.id==='mineral'?`칼슘·철·아연 중 하나 이상이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE.calcium_mg*100)}%) 이상`
     :MINERALS[c.id]?`${MINERALS[c.id]}이 식약처 ‘고/풍부’ 기준(100 g당 1일 기준치의 ${Math.round(CLAIM_SHARE[c.id]*100)}%, ${num(Math.round(CLAIM_REF[c.id]*CLAIM_SHARE[c.id]*100)/100)} mg) 이상`
     :c.id==='whole'?'보고서에 채택된 가식부 비율이 100%(폐기율 0%)인 종. MFPI의 가식부 항목과 같은 값이며, 칩은 보여주기만 합니다'
-    :c.id==='farmed'?'보고서에 채택·검토된 양식 사례 기록이 있는 종(MFPI의 양식 가능성 항목과 같은 근거). 현재 국내 상업 양식 여부나 경제성을 뜻하지 않습니다'
+    :c.id==='farmed'?'KOSIS 해면양식 통계에 그 종의 품종으로 2022~2024년 생산이 있거나, 양식 기록 원문·FAO 양식종 자료집이 그 종의 상업 양식을 적은 종(국외 포함). 묶음 품종의 생산량만으로는 정하지 않으며, 경제성을 뜻하지 않습니다. 표시 전용이고 MFPI의 양식 항목은 그대로입니다'
+    :c.id==='farmed_trial'?'상업 양식 근거는 아직 없고, 연구 시설이나 시험 양식장에서 한 주기 이상 키운 기록이 있는 종. 표시 전용이고 MFPI의 양식 항목은 그대로입니다'
     :c.id==='omega3'?`EPA+DHA가 1일 기준치(330 mg)의 ${Math.round(OMEGA_SHARE*100)}% 이상(100 g당). 오메가-3에는 식약처 함량강조표시 기준이 없어 팀 표시 기준이며, 점수에는 쓰지 않습니다`
     :displayOnly(c.id)?(hasExtractRow(c.id)?'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값이며, 단일 물질 근거가 없는 종은 추출물·분획 시험값입니다(‘추출물’ 표시, 방법 결정 2026-10-04). ':'이 종에서 나온 단일 화합물·펩타이드의 문헌 시험값입니다. ')+'방법 결정(2026-10-03)에 따른 표시 전용 근거로 점수·매트릭스·지도 색에는 쓰지 않으며 효능 판정이 아닙니다'
     :'보고서에 채택된 MBPI 근거의 시험 표적 기준이며 효능 판정이 아닙니다';
 // A food chip hides species with a measured value under the claim line apart from species with no value at all.
-const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);if(id==='whole')return Number.isFinite(a.food_trace?.edible_fraction?.value);if(id==='farmed')return a.food_trace?.aquaculture?.reviewed===true;return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
+const measured=(s,id)=>{const a=s.assessment;if(!a||pilotScore(s,'MFPI')===null)return false;if(id==='omega3')return Number.isFinite(a.food_trace?.display_fatty_acids?.sum_mg);if(id==='whole')return Number.isFinite(a.food_trace?.edible_fraction?.value);if(traitById(id)?.tier)return aquacultureTier.has(s.aphiaID);return (id==='mineral'?Object.keys(MINERALS):[id]).some(k=>Number.isFinite(a.food_trace?.nutrients?.[k]?.value));};
 function hiddenLine(on,shown,base){
   const hidden=base.filter(s=>!shown.includes(s)),below=hidden.filter(s=>on.every(c=>useEvidence(s,c.id)||(c.group==='식량'&&measured(s,c.id)))).length;
   return `<p>숨김 ${hidden.length}종: ${below?`기준 미달 ${below}종 · `:''}근거 미확인 ${hidden.length-below}종(가치가 낮다는 뜻 아님).</p>`;
@@ -4501,10 +4527,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog]=await Promise.all([loadPublishedProfiles(),
-      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json']
+    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog,aquaTier]=await Promise.all([loadPublishedProfiles(),
+      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json']
         .map(f=>readData(f,FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null))]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);aquacultureTier=aquacultureTierRows(aquaTier,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;

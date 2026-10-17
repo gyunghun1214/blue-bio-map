@@ -539,14 +539,14 @@ try{
     r.order=[...document.querySelectorAll('[aria-label="식량 활용 특성"] .use-chip')].map(b=>b.dataset.use).join();
     setUses(['calcium_mg']);r.calcium=ids();r.calciumNote=document.getElementById('use-extra').innerText;
     setUses(['whole']);r.whole=n();r.wholeText=[...document.querySelectorAll('.species-card')].every(b=>b.innerText.includes('가식부 100%'));
-    for(const x of [['iron_mg','omega3'],['whole','mineral'],['farmed','protein_g']]){setUses(x);r[x.join('+')]=n();}
+    for(const x of [['iron_mg','omega3'],['whole','mineral'],['farmed','protein_g'],['farmed_trial','protein_g']]){setUses(x);r[x.join('+')]=n();}
     setUses([]);const q=document.getElementById('search');q.value='칼슘';renderList();r.suggest=document.querySelector('[data-use-suggest]')?.dataset.useSuggest||'';r.suggestText=document.querySelector('[data-use-suggest]')?.innerText||'';q.value='';renderList();
     const before=selected.aphiaID,view=map.getZoom()+'/'+map.getCenter().lat.toFixed(3);applyHash({u:'calcium_mg,whole'});r.restored=[...activeUses].join();r.hash=decodeURIComponent(location.hash.match(/u=([^&]*)/)?.[1]||'');
     setUses([]);r.back=selected.aphiaID===before&&map.getZoom()+'/'+map.getCenter().lat.toFixed(3)===view;return r})()`);
-  check('Food chips 8: 고단백 16, 미네랄 11, 칼슘 3, 철분 10, 아연 3, 오메가-3 9, 가식부 100% 9, 양식 가능 27 in that order; 칼슘 shows 참굴·꼬시래기·멸치 with the rest counted as 기준 미달/근거 미확인; AND 철분×오메가-3 2, 가식부×미네랄 4, 양식×고단백 13; searching 칼슘 points at the 칼슘 chip; u=calcium_mg,whole restores both chips',
-    food.order==='protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed'&&food.chips.protein_g===16&&food.chips.mineral===11&&food.chips.calcium_mg===3&&food.chips.iron_mg===10&&food.chips.zinc_mg===3&&food.chips.omega3===9&&food.chips.whole===9&&food.chips.farmed===27&&
+  check('Food chips 8: 고단백 16, 미네랄 11, 칼슘 3, 철분 10, 아연 3, 오메가-3 9, 가식부 100% 9, 상업 양식 18, 시험·연구 양식 9 in that order (2026-10-15: the old 양식 가능 27 split by dist/aquaculture-tier.json); 칼슘 shows 참굴·꼬시래기·멸치 with the rest counted as 기준 미달/근거 미확인; AND 철분×오메가-3 2, 가식부×미네랄 4, 상업 양식×고단백 10, 시험·연구 양식×고단백 3; searching 칼슘 points at the 칼슘 chip; u=calcium_mg,whole restores both chips',
+    food.order==='protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed,farmed_trial'&&food.chips.protein_g===16&&food.chips.mineral===11&&food.chips.calcium_mg===3&&food.chips.iron_mg===10&&food.chips.zinc_mg===3&&food.chips.omega3===9&&food.chips.whole===9&&food.chips.farmed===18&&food.chips.farmed_trial===9&&
     JSON.stringify(food.calcium)==='[219984,236157,836033]'&&/기준 미달/.test(food.calciumNote)&&/210 mg/.test(food.calciumNote)&&food.whole===9&&food.wholeText&&
-    food['iron_mg+omega3']===2&&food['whole+mineral']===4&&food['farmed+protein_g']===13&&food.suggest==='calcium_mg'&&/식량 · 칼슘/.test(food.suggestText)&&food.restored==='calcium_mg,whole'&&food.hash==='calcium_mg,whole'&&food.back,JSON.stringify(food));
+    food['iron_mg+omega3']===2&&food['whole+mineral']===4&&food['farmed+protein_g']===10&&food['farmed_trial+protein_g']===3&&food.suggest==='calcium_mg'&&/식량 · 칼슘/.test(food.suggestText)&&food.restored==='calcium_mg,whole'&&food.hash==='calcium_mg,whole'&&food.back,JSON.stringify(food));
   // 2026-10-12: 혈압(ACE 저해) and 항산화 sit in a third row '기능성(식품 소재)' with the same ids, rules and counts, old links still
   // turn them on, and every card and the species detail name the stratum of the MBPI's top item next to the value.
   const strat=await evaluate(`(()=>{const r={},before=selected.aphiaID;setUses([]);renderUseChips();
@@ -561,7 +561,7 @@ try{
     box.innerHTML=axisCards(wak);r.axis=box.textContent;r.kept=selected.aphiaID===before;
     renderCompareProfile();renderCompareDrawer(selected);r.profile=document.querySelector('#cmp-drawer #cdr-use')?.textContent||'';r.profileStratum=mbpiStratumOf(selected)?.short||'';return r})()`);
   check('MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts (혈압 14 from 4.11, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 assessed species have an MBPI stratum (13 ACE 펩타이드; 4.11: 감태 leads with a ChEMBL compound), shown in the detail, not on the 탐색 후보 card (2026-10-15); 미역 detail opens with the published post-hoc result, the 19.6–89.2 aggregation range and the AHTPDB stratum; the compare profile\'s 근거 자세히 보기 drawer names the selected species\' stratum too',
-    JSON.stringify(strat.rows)===JSON.stringify(['신약 활용 특성:virus,dementia,parasite,cancer,microbe,resistant,fungus,pain,diabetes','기능성(식품 소재) 활용 특성:ace,antioxidant','식량 활용 특성:protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed'])&&
+    JSON.stringify(strat.rows)===JSON.stringify(['신약 활용 특성:virus,dementia,parasite,cancer,microbe,resistant,fungus,pain,diabetes','기능성(식품 소재) 활용 특성:ace,antioxidant','식량 활용 특성:protein_g,mineral,calcium_mg,iron_mg,zinc_mg,omega3,whole,farmed,farmed_trial'])&&
     strat.title==='기능성(식품 소재)'&&strat.counts.ace===14&&strat.counts.antioxidant===2&&strat.counts.virus===7&&strat.counts.protein_g===16&&
     strat.links.ace==='ace'&&strat.links.antioxidant==='antioxidant'&&strat.links['ace,omega3']==='ace,omega3'&&
     strat.cards===30&&strat.cardStrata===0&&strat.strata.length===30&&strat.strata.every(t=>/^MBPI 근거 · /.test(t)&&!/미등록/.test(t))&&
