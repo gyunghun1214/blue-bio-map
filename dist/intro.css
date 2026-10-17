@@ -23,37 +23,38 @@ html.gate-on:not(.gate-leaving) body>:not(.gate){visibility:hidden}
    the first Tab or arrow key), not to a mouse or touch visitor who never pressed one */
 html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate button{font-family:inherit;cursor:pointer}
-.gate-sea{position:absolute;inset:0;width:100%;height:100%;opacity:0;transform:scale(.96);transform-origin:var(--kx,68%) var(--ky,45%);
-  transition:opacity 1.2s ease .1s,transform 1.6s cubic-bezier(.2,.7,.2,1) .1s}
-.gate.is-ready .gate-sea{opacity:1;transform:none}
+.gate-sea{position:absolute;inset:0;width:100%;height:100%;transform-origin:var(--kx,68%) var(--ky,45%)}
 
-/* loader: mark + word, the step line, a dotted orbit whose solid arc fills with the app's real steps */
-.gate-loader{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .5s ease,transform .9s cubic-bezier(.4,0,.2,1)}
+/* loader (2026-10-17): the whole screen is deep sea with the logo, the line and the loading step in the middle, over wide
+   ripples spreading up from below the screen (intro.js draws them into .gate-ripple; they show motion, not progress).
+   Logo, words and sea are plain markup and CSS, so they are in the first paint. The entry screen is drawn under it and
+   kept out of reach (intro.js) until the reveal: in --gf (360 ms, less near the 7 s limit, none when still) the words go
+   in the first third, the sea in the second while the ripples close onto the globe's rim, the ripples in the last. */
+.gate-loader{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
 .gate-loader:focus{outline:none}
-.gate.is-ready .gate-loader{opacity:0;transform:scale(1.6);pointer-events:none}
-.gate-orbit{position:absolute;width:min(320px,74vw);height:auto;overflow:visible}
-.gate-ring{fill:none;stroke:rgba(160,210,225,.32);stroke-width:1;stroke-dasharray:1 5}
-.gate-arc{fill:none;stroke:var(--g-teal);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;
-  transform:rotate(-90deg);transform-origin:160px 160px;transition:stroke-dashoffset .6s ease;opacity:.8}
-.gate-spin{transform-origin:160px 160px;animation:gate-orbit 2.6s linear infinite}
-.gate-spark{fill:var(--g-teal);filter:drop-shadow(0 0 6px rgba(140,215,208,.9))}
-@keyframes gate-orbit{to{transform:rotate(360deg)}}
-.gate-loader-body{position:relative;display:grid;justify-items:center;gap:12px;text-align:center}
-.gate-lockup{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:500;letter-spacing:-.01em}
+.gate-loader:before{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 106%,rgba(140,215,208,.13),rgba(140,215,208,0) 72%),
+    radial-gradient(ellipse 72% 66% at 50% 56%,var(--g-deep) 0,#061727 40%,var(--g-bg) 70%,#020a12 100%)}
+.gate-ripple{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
+.gate-ripple.is-on{opacity:1}
+.gate-loader-body{position:absolute;left:0;right:0;top:calc(30% - 20px);display:flex;flex-direction:column;align-items:center;
+  padding:0 max(24px,env(safe-area-inset-right)) 0 max(24px,env(safe-area-inset-left));text-align:center}
+.gate-lockup{display:flex;align-items:center;gap:12px;margin:0;font-size:28px;line-height:40px;font-weight:500;letter-spacing:-.01em}
+.gate-lockup svg{flex:none;width:40px;height:40px}
 .gate-lockup strong{font-weight:700}
-.gate-step{margin:0;font-size:13px;color:var(--g-ink2);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.gate-motto{margin:30px 0 0;font-size:clamp(30px,min(3.6vw,6.2vh),54px);font-weight:700;line-height:1.2;letter-spacing:-.03em;white-space:nowrap}
+.gate-step{margin:34px 0 0;font-size:16px;line-height:1.5;color:var(--g-ink2);letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.gate.is-revealing .gate-loader-body{opacity:0;transition:opacity calc(var(--gf,360ms)/3) cubic-bezier(.22,1,.36,1)}
+.gate.is-revealing .gate-loader:before{opacity:0;transition:opacity calc(var(--gf,360ms)/3) cubic-bezier(.22,1,.36,1) calc(var(--gf,360ms)/3)}
+/* the one motion switch: over the loader in its own corner of the bar while the rest of the entry screen waits */
+.gate-motion{position:relative;z-index:2}
 
 /* entry screen: bar / copy / source strip in a grid over the globe; shades keep the words off the globe */
 .gate-hero{position:absolute;inset:0;outline:none;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
   background:linear-gradient(180deg,rgba(4,16,27,.78),rgba(4,16,27,.5) 7%,rgba(4,16,27,0) 14%),linear-gradient(0deg,rgba(4,16,27,.88),rgba(4,16,27,0) 24%),
     linear-gradient(90deg,rgba(4,16,27,.96) 18%,rgba(4,16,27,.55) 30%,rgba(4,16,27,0) 44%)}
-/* 2026-10-15 load speed: the copy is on screen from the first paint (it used to wait for every data file, so the page's
-   largest text came seconds late on a slow network). The ways in stay dimmed until the data is in (intro.js still opens
-   only then, or after GATE_MAX_MS), and the loader's ring turns where the globe will come, not over the words. */
-.gate-actions,.gate-nav,.gate-card button{transition:opacity .5s ease}
-.gate:not(.is-ready) .gate-actions,.gate:not(.is-ready) .gate-nav,.gate:not(.is-ready) .gate-card button{opacity:.38;pointer-events:none}
-.gate-loader{z-index:1;left:44%;pointer-events:none}
-.gate-lockup{display:none}
+/* 2026-10-15 load speed: the copy is painted from the first paint (it used to wait for every data file). Since 2026-10-17
+   the loader covers it until the data is in (or GATE_MAX_MS); it opens all at once with the reveal, nothing dimmed. */
 /* the turning globe (intro.js): dragged with a mouse, or sideways with a finger (an upward swipe stays the page's) */
 .gate-hero{touch-action:pan-y pinch-zoom}
 .gate.is-grab .gate-hero{cursor:grab}
@@ -110,8 +111,8 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 
 /* the card is placed by intro.js beside its point on the globe; a line on the canvas joins them */
 .gate-globe{display:none}
-.gate-callout{position:absolute;left:0;top:0;width:clamp(196px,12.6vw,212px);opacity:0;transition:opacity .8s ease .9s}
-.gate.is-ready .gate-callout{opacity:1}
+.gate-callout{position:absolute;left:0;top:0;width:clamp(196px,12.6vw,212px);opacity:0}
+.gate.is-revealing .gate-callout,.gate.is-ready .gate-callout{opacity:1} /* placed by intro.js layout() as the reveal starts */
 .gate-card{padding:clamp(12px,1vw,16px) clamp(16px,1.3vw,22px) clamp(11px,.95vw,15px);border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(10,32,50,.78);box-shadow:0 12px 40px rgba(0,0,0,.28)}
 .gate-card p{margin:0}
 .gate-card-title{font-size:clamp(15px,1.02vw,17px);font-weight:700}
@@ -171,7 +172,6 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-use-go{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding:16px 0 8px;border:0;border-bottom:1px solid rgba(244,243,238,.5);
   background:none;color:var(--g-ink);font-size:clamp(14px,.96vw,16px);font-weight:600;text-decoration:none;white-space:nowrap}
 .gate-use-go:hover{color:var(--g-teal);border-bottom-color:var(--g-teal)}
-.gate:not(.is-ready) button.gate-use-go{opacity:.38;pointer-events:none}
 .gate-uses-note{margin:clamp(14px,2.4vh,24px) 0 0;font-size:clamp(14px,.96vw,16px);color:var(--g-ink2)}
 /* 2026-10-17 (#4) '다음 단계': where the map stands now, then the planned steps, one line each, a dot on one line */
 .gate-next{padding:0 var(--g-pad) clamp(52px,9vh,92px)}
@@ -195,12 +195,12 @@ html.gate-leaving .gate-center{transform:translateY(-28px);opacity:0}
 html.gate-leaving .gate.is-ready .gate-sea{transform:scale(1.22);transition:transform .8s cubic-bezier(.5,0,.25,1)}
 html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 
-/* still (the switch, first set from prefers-reduced-motion): no orbit, no fades or zooms; entering is instant */
-.gate.is-still .gate-spin{animation:none}
-.gate.is-still .gate-sea,.gate.is-still .gate-loader,.gate.is-still .gate-hero,.gate.is-still .gate-center,.gate.is-still .gate-callout,
-.gate.is-still .gate-arc,.gate.is-still .gate-enter,.gate.is-still .gate-switch,.gate.is-still .gate-switch:after{transition:none}
+/* still (the switch, first set from prefers-reduced-motion): ripples stand (one still picture), no fades or zooms;
+   the reveal and entering are instant */
+.gate.is-still .gate-sea,.gate.is-still .gate-ripple,.gate.is-still .gate-loader-body,.gate.is-still .gate-loader:before,.gate.is-still .gate-hero,
+.gate.is-still .gate-center,.gate.is-still .gate-callout,.gate.is-still .gate-enter,.gate.is-still .gate-switch,.gate.is-still .gate-switch:after{transition:none}
 /* before intro.js reads the setting (the loader can show first) */
-@media (prefers-reduced-motion:reduce){.gate-spin{animation:none}.gate-loader,.gate-arc{transition:none}}
+@media (prefers-reduced-motion:reduce){.gate-ripple,.gate-loader-body,.gate-loader:before{transition:none}}
 
 /* stacked: phones and upright tablets. Copy, then the globe band (intro.js centres Korea in it), the card, the strip. */
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
@@ -216,8 +216,6 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-title{font-size:clamp(34px,min(10.4vw,7vh),76px)}
   .gate-lead{font-size:clamp(14px,min(3.9vw,2.6vh),20px)}
   .gate-globe{display:block;flex:1 0 clamp(160px,32vh,320px)}
-  .gate-loader{left:0;top:50%;bottom:10%}
-  .gate-orbit{width:min(200px,52vw)}
   .gate-callout{position:relative;left:auto!important;top:auto!important;width:auto;max-width:440px;margin:0 var(--g-pad) 10px}
   .gate-foot{display:block;padding:10px var(--g-pad) 14px}
   .gate-sources{gap:4px 14px}
@@ -240,6 +238,13 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-down{display:none}
 }
 @media (max-width:760px){
+  /* the loader on a phone: the line in two, a little higher (the ripples keep to the lower 40%) */
+  .gate-loader-body{top:calc(27% - 17px)}
+  .gate-lockup{gap:10px;font-size:22px;line-height:34px}
+  .gate-lockup svg{width:34px;height:34px}
+  .gate-motto{margin-top:26px;font-size:clamp(28px,8.6vw,34px);white-space:normal}
+  .gate-motto span{display:block}
+  .gate-step{margin-top:28px;font-size:15px}
   .gate-bar{gap:14px;min-height:56px}
   .gate-brand{font-size:15px}
   .gate-motion{gap:0;padding-left:14px}
@@ -266,4 +271,6 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 /* short screens side by side (2026-10-17 #1): the count line first gives way (the solution line names the species total);
    on short landscape screens the copy keeps its button first */
 @media (min-width:761px) and (max-height:920px){.gate-counts{display:none}}
+/* a short landscape screen: the loader's words higher and closer, clear of the ripples */
+@media (min-width:761px) and (max-height:560px){.gate-loader-body{top:14%}.gate-motto{margin-top:18px}.gate-step{margin-top:20px}}
 @media (min-width:761px) and (max-height:560px){.gate-why,.gate-callout,.gate-sources{display:none}}
