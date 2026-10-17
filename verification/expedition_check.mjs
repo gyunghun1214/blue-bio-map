@@ -60,6 +60,10 @@ const shot=async(s,name)=>{const r=await s.send('Page.captureScreenshot',{format
 // sea can take longer than a minute to capture (CI 2026-10-08), so give up after 20 s and carry on.
 const sailShot=async(s,name)=>{try{const r=await s.send('Page.captureScreenshot',{format:'jpeg',quality:70},20000);fs.writeFileSync(path.join(OUT,name+'.jpg'),Buffer.from(r.data,'base64'));}catch(e){console.log(`note: ${name} screenshot skipped (${e.message})`);}};
 const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.textContent||'')";
+// Screen wording (team-lead decision 2026-10-17): no word that shows a weakness of the data or the method, no blank marker,
+// no check result and no negative guidance on the page (same list as verification/test_expedition_ui.mjs)
+const WEAK=String.raw`미충족|미통과|실패|불성립|사용 중단|제한적 확인|예비|공식 평가 전|공식 평가 아님|자체 평가|자체 예비|Rapid|역검증|서식국|다른 나라|재현 확인 중|독립 재현|근거 논문 1편|단일 논문|조사 필요|확인 필요|미확인|미산출|점수 없음|정보충분도|공백|사후 검증|사전 등록|결과를 본 뒤|결과 확인 후|검증|상업 이용 불가|조사 후보|운영 발행|판정 아님|우선 조사|탐색적 재검토|하한|자료 없음|링크 없음|인용 없음|미배정|아님|아닙니다|아니에요|아니라|않음|않습니다|않아요|뜻하지|연출용`;
+const weakIn=text=>`((${text}).match(new RegExp(${JSON.stringify(`.{0,20}(${WEAK}).{0,20}`)},'g'))||[]).join(' | ')`;
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
 const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13,' ':32,End:35}[k],...(type==='keyDown'&&(k==='Enter'||k===' ')?{text:k==='Enter'?String.fromCharCode(13):' '}:{})});};
 
@@ -74,25 +78,25 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
     await s.send('Page.navigate',{url:URL0+'expedition.html'});
     await waitFor(s,"document.readyState==='complete'&&!document.body.classList.contains('is-loading')");
     const note=await s.evaluate("(()=>{const e=document.getElementById('route-note');const r=e.getBoundingClientRect();return getComputedStyle(e).display!=='none'&&r.width>0&&r.bottom<=innerHeight?e.textContent:''})()");
-    check(`${tag}: route disclaimer always visible`,note.includes('연출용 항로')&&note.includes('실제 조사 항로나 선박 위치가 아님'),note);
+    check(`${tag}: route note (탐험 연출 항로) always visible`,note.includes('탐험 연출 항로'),note);
     const ov=await s.evaluate("({doc:document.documentElement.scrollWidth,vw:innerWidth})");
     check(`${tag}: no horizontal overflow`,ov.doc<=ov.vw,JSON.stringify(ov));
     if(!webgl){
       const cards=await s.evaluate("({cards:document.body.classList.contains('is-cards'),n:document.querySelectorAll('#cards-list .x-card').length,reason:document.getElementById('cards-reason').textContent,maps:[...document.querySelectorAll('#cards-list a.x-ghost')].map(a=>a.getAttribute('href'))})");
       check(`${tag}: WebGL failure falls back to the card list with every stop and map link`,cards.cards&&cards.n===stops.length&&cards.reason.includes('카드 목록')&&stops.every((st,i)=>cards.maps[i]===st.map_link),JSON.stringify(cards));
       await shot(s,`${tag}-cards`);
-      const oldWords=await s.evaluate("(document.getElementById('cards-list').innerText.match(/.{0,20}(검증 미통과|단일 논문).{0,20}/g)||[]).join(' | ')");
-      check(`${tag}: every card shows the neutral label wording (no 검증 미통과 or 단일 논문)`,oldWords==='',oldWords);
+      const oldWords=await s.evaluate(weakIn("document.getElementById('cards-list').innerText+' '+document.getElementById('stop-list').textContent"));
+      check(`${tag}: no card or stop-list text shows weakness wording or negative guidance (rules 2026-10-17)`,oldWords==='',oldWords);
       await s.evaluate(`document.querySelector('#cards-list [data-detail="${SEA_CUCUMBER}"]').click()`);
       const d=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
-      check(`${tag}: detail opens from a card (해삼 zinc shown as 자료 없음, not 0)`,d&&d.includes('해삼')&&/아연자료없음/.test(d.replace(/\s/g,'')),String(d).slice(0,200));
+      check(`${tag}: detail opens from a card (해삼 zinc shown as —, not 0)`,d&&d.includes('해삼')&&/아연—/.test(d.replace(/\s/g,''))&&!/아연0/.test(d.replace(/\s/g,'')),String(d).slice(0,200));
       await shot(s,`${tag}-detail`);
       await key(s,'Escape');
       check(`${tag}: Esc closes the detail`,!(await s.evaluate("document.getElementById('detail').open")));
       if(OFF>=0){
-        // the stop off the route: a card with its reason, values and a map link without a position
+        // the stop off the route: a card that says what it is (not why), its values and a map link without a position
         const off=await s.evaluate(`(()=>{const c=document.querySelector('#cards-list [data-stop="${OFF}"]');return c&&{text:c.innerText,map:c.querySelector('a.x-ghost')?.getAttribute('href')};})()`);
-        check(`${tag}: the stop off the route is a card (${stops[OFF].korean_name}, 항로 밖, map link without m=)`,!!off&&off.text.includes('항로 밖')&&off.text.includes(stops[OFF].cell_missing_reason)&&off.map===stops[OFF].map_link&&!/[&#]m=/.test(off.map),JSON.stringify(off).slice(0,300));
+        check(`${tag}: the stop off the route is a card (${stops[OFF].korean_name}, 항로 밖 지점, map link without m=)`,!!off&&off.text.includes('항로 밖 지점')&&off.text.includes('점수와 근거는 아래와 같습니다')&&!off.text.includes(stops[OFF].cell_missing_reason)&&off.map===stops[OFF].map_link&&!/[&#]m=/.test(off.map),JSON.stringify(off).slice(0,300));
         await s.evaluate(`document.querySelector('#cards-list [data-detail="${OFF}"]').click()`);
         const od=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
         check(`${tag}: the stop off the route opens its detail with scores and evidence`,!!od&&od.includes(stops[OFF].korean_name)&&od.includes('보전 평가 근거')&&od.includes('원논문 DOI'),String(od).slice(0,200));
@@ -155,8 +159,8 @@ async function run1(tag,{flags=[],width,height,mobile=false,reduced=false,webgl=
       const det=await waitFor(s,"document.getElementById('detail').open&&document.getElementById('detail-body').textContent");
       check(`${tag}: detail has observation, food, bioactivity, conservation and DOI links`,['관측 위치·기간','식량 가치 근거','생리활성 근거','보전 평가 근거','원논문 DOI'].every(t=>det?.includes(t)),String(det).slice(0,200));
       await shot(s,`${tag}-5-detail`);
-      const oldDetail=await s.evaluate("((document.getElementById('stop-card').innerText+' '+document.getElementById('detail-body').innerText).match(/.{0,20}(검증 미통과|단일 논문).{0,20}/g)||[]).join(' | ')");
-      check(`${tag}: stop 1 card and detail show the neutral label wording`,oldDetail==='',oldDetail);
+      const oldDetail=await s.evaluate(weakIn("document.getElementById('stop-card').innerText+' '+document.getElementById('detail-body').innerText"));
+      check(`${tag}: stop 1 card and detail show no weakness wording or negative guidance (rules 2026-10-17)`,oldDetail==='',oldDetail);
       const before=await s.evaluate("location.hash");
       await sleep(2500);
       const still=await s.evaluate("({hash:location.hash,open:document.getElementById('detail').open})");

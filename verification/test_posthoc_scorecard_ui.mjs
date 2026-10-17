@@ -3,6 +3,8 @@
 // shown as 통과, and the file reaches no score, label or matrix type. Schema gate as for the other display files.
 // 2026-10-16: the scorecard table (top of the method tab) and fold 05 (신청서 약속 대비 구현 현황표) were taken off the page;
 // this test now checks they are gone from the markup, the code and the styles. The file and its build check stay.
+// 2026-10-17 (LKH): no verification state on screen, passed or not. The journey cards carry no badge, fold 04 (method
+// change timeline) left the tab, and a badge left in the markup is hidden and empty; the file keeps every indicator state.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -31,14 +33,13 @@ for(const r of file.rows)assert.equal(r.result,sets[r.key].result,r.key);
 const snap=()=>species.map(s=>[s.aphiaID,...['MFPI','MBPI','MCUI','BBVI'].map(k=>ctx.axis(s,k).value),ctx.label(s),ctx.type(s)].join('|')).join('\n');
 ctx.setSc(null);const none=snap();ctx.setSc(ctx.file(file,[]));assert.equal(snap(),none);
 
-// The badges: the indicator labels of the file; no '실패' on screen.
+// The badges: hidden and empty even with the file loaded; the file still holds each indicator state.
 ctx.render();
-// journey badges: the site's neutral wording (plainWords) for MBPI
-assert.deepEqual(badges.map(b=>[b.dataset.ind,b.hidden,b.textContent,b.dataset.state]),
-  [['MFPI',false,'검증 통과','passed'],['MBPI',false,'방법 검증 기준 미충족','not_passed'],['MCUI',false,'제한적 확인','limited']]);
-assert.match(badges[2].title,/일관성 확인\(독립 아님\) 2/);
-
-assert.ok(!badges.some(b=>/실패/.test(b.textContent+b.title)),'no 실패 on the badges');
+assert.deepEqual(badges.map(b=>[b.dataset.ind,b.hidden,b.textContent,b.title,b.dataset.state]),
+  [['MFPI',true,'','',undefined],['MBPI',true,'','',undefined],['MCUI',true,'','',undefined]]);
+assert.deepEqual(Object.fromEntries(Object.entries(file.indicators).map(([k,i])=>[k,i.state])),{MFPI:'passed',MBPI:'not_passed',MCUI:'limited'});
+assert.equal(file.indicators.MCUI.classes['일관성 확인(독립 아님)'],2);
+assert.ok(!/검증|실패|통과|제한적/.test(app.split('function renderVerifyBadges')[1].split('\n}')[0]),'the renderer writes no state words');
 assert.deepEqual(Object.keys(els),[],'nothing else on the page is written');
 
 // No file: the badges hide.
@@ -60,7 +61,9 @@ for(const gone of ['id="mt-scorecard"','mt-vc','VALIDATION SCORECARD','검증 �
 for(const gone of ['renderScorecard','mt-vc-','#promise-table','promise-count','data-alt-species'])assert.ok(!app.includes(gone),'app.js: '+gone);
 for(const gone of ['.mt-vc','[data-oc','.promise-table','.pt-s','.pt-'])assert.ok(!css.includes(gone),'method.css: '+gone);
 assert.match(method,/^[^>]*>\n<div class="mt-mcui-map" id="mt-mcui-map"/);
-assert.deepEqual([...method.matchAll(/<details class="mt-acc" id="(mt-acc-\d+)"/g)].map(m=>m[1]),['mt-acc-01','mt-acc-02','mt-acc-03','mt-acc-04']);
+assert.deepEqual([...method.matchAll(/<details class="mt-acc" id="(mt-acc-\d+)"/g)].map(m=>m[1]),['mt-acc-01','mt-acc-02','mt-acc-03']);
+assert.ok(!html.includes('id="mt-changelog"')&&!html.includes('방법은 언제, 왜 바뀌었나요?'));
 assert.ok(method.includes('(대응표는 이 탭 맨 위)')&&!method.includes('이 탭 위쪽'));
-for(const k of ['MFPI','MBPI','MCUI'])assert.equal((html.match(new RegExp(`<span class="mt-vbadge" data-ind="${k}" hidden></span>`,'g'))||[]).length,1,k);
-console.log(`posthoc verification badges: ${file.total} checks ${JSON.stringify(file.counts)}, scores unchanged; scorecard table and fold 05 removed`);
+for(const k of ['MFPI','MBPI','MCUI'])assert.equal((html.match(new RegExp(`<span class="mt-vbadge" data-ind="${k}"`,'g'))||[]).length,0,k);
+assert.ok(!html.includes('mt-vbadge'));
+console.log(`posthoc verification badges: ${file.total} checks ${JSON.stringify(file.counts)} kept in the file, scores unchanged; no badge, scorecard table, fold 04 or fold 05 on the page`);

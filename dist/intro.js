@@ -39,12 +39,12 @@ function gateNote(g){
   if(!d)return g.phase==='ready'?'자료를 계속 불러오는 중입니다. 먼저 들어가도 됩니다.':'';
   if(d.state==='offline')return `오프라인 시연 · ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
   if(d.state==='snapshot')return `운영 DB에 연결하지 못해 ${d.snapshotAt||'저장된'} 기준 공개 자료 사본으로 엽니다.`;
-  if(d.state==='empty')return '운영 발행 자료가 0종입니다. 들어가면 조사 후보만 보입니다.';
+  if(d.state==='empty')return '공개 데이터 기준으로 엽니다.';
   if(d.state==='error')return '자료를 불러오지 못했어요. 들어가서 ↻ 다시 시도를 눌러 주세요.';
   return '';
 }
-// The design's "N종의 해양생물 · 공개 데이터 기반", with the published/candidate split kept in view. Empty until known.
-const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양생물(운영 발행 ${d.published} · 조사 후보 ${d.candidates}) · 공개 데이터 기반`;
+// The design's "N종의 해양생물 · 공개 데이터 기반" (2026-10-17, LKH: one count, no published/candidate split). Empty until known.
+const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양생물 · 공개 데이터 기반`;
 // Enter opens the map from anywhere on the entry screen, except when another control has focus (its own action wins).
 const keyAction=(key,{ready,onOtherControl})=>key==='Enter'&&ready&&!onOtherControl?'enter':null;
 // The ways in: the app tab each one opens and what gets focus there. A phone gets <main> rather than a search box (no

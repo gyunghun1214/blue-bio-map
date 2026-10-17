@@ -36,7 +36,8 @@ assert.match(ctx.ue(species.find(s=>s.aphiaID===371986),'pain').text,/^추출물
 assert.ok(!/^추출물/.test(ctx.ue(species.find(s=>s.aphiaID===836033),'fungus').text),'a single peptide is not labelled as an extract');
 for(const id of ['antioxidant','diabetes','fungus','pain']){
   assert.ok(ctx.only(id),id+' is display-only');
-  for(const s of species){const e=ctx.ue(s,id);if(e){assert.equal(e.score,null);assert.match(e.text,/표시 전용, 점수 미반영/);assert.match(e.text,/doi 10\./);}}
+  // 2026-10-17 (LKH): a display-only row ends ' · 참고 표시' (it never sets a score)
+  for(const s of species){const e=ctx.ue(s,id);if(e){assert.equal(e.score,null);assert.match(e.text,/ · 참고 표시$/);assert.match(e.text,/doi 10\./);}}
 }
 assert.equal(ctx.only('resistant'),false);
 assert.match(ctx.ue(species.find(s=>s.aphiaID===371986),'antioxidant').text,/^dieckol · DPPH 라디칼 소거\(ESR\) IC50 8\.28 µM · 시험값 6개/);
@@ -66,7 +67,9 @@ ctx.setTier(tier);
 assert.deepEqual(ids('farmed_trial'),[219984,234476,236157,372119,371986,413600,494853,506159,1666974].sort((a,b)=>a-b));
 assert.match(ctx.ue(species.find(s=>s.aphiaID===250680),'farmed').text,/^상업 양식 중 · KOSIS 해면양식 '우렁쉥이' 2022~2024년 생산 56,213톤/);
 for(const id of [342067,254538,534443]){assert.equal(ctx.ue(species.find(s=>s.aphiaID===id),'farmed'),null);assert.equal(ctx.ue(species.find(s=>s.aphiaID===id),'farmed_trial'),null);
-  assert.match(ctx.tierLine(id),/양식 단계<\/b> 기록 없음/);}
+  // 2026-10-17 (LKH): the 'none' tier is worded by what the record holds (a rearing attempt); the file keeps its label
+  assert.match(ctx.tierLine(id),/양식 단계<\/b> 사육 시도 · 보고서 양식 기록의 사육 시도 단계/);
+  assert.equal(tier.rows.find(r=>r.aphia_id===id).tier_label,'기록 없음');}
 assert.equal(species.filter(s=>s.assessment.food_trace.components.aquaculture_contribution===10).length,27,'MFPI farming term unchanged');
 assert.match(ctx.tierLine(250680),/href="https:\/\/kosis\.kr\/statHtml\/statHtml\.do\?orgId=101&amp;tblId=DT_1EW0004"[^>]*>KOSIS ↗/);
 assert.match(ctx.tierLine(275816),/상업 양식 중 · 국내 상업 넙치 양식장 71곳/);

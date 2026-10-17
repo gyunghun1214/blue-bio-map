@@ -5,14 +5,14 @@
 // Lat/lon -> world units on the sea plane (10 units per degree, equirectangular around 35°N 128°E).
 const PROJ={lat:35,lon:128,k:10};
 const project=(lat,lon)=>({x:(lon-PROJ.lon)*PROJ.k*Math.cos(PROJ.lat*Math.PI/180),z:-(lat-PROJ.lat)*PROJ.k});
-// Presentation route (연출용): a start point and waypoints that keep the curve off the coastline in countries.json.
+// Presentation route (탐험 연출 항로): a start point and waypoints that keep the curve off the coastline in countries.json.
 // ROUTE_VIA[AphiaID] lies between the previous stop and that stop. Tight spots: the 참굴 cell has an islet just
 // south-west of its centre (34.43–34.45°N 127.47–127.50°E), so the route enters from the east; 울릉도 (37.5°N 130.87°E)
 // is land in countries.json, so the last leg passes south of it; the 멍게 → 방어 leg keeps off the 울산 coast.
-// It is not a survey track; the page always says so. verification/test_expedition_ui.mjs checks it stays at sea.
+// It is a presentation route, and the page always says so. verification/test_expedition_ui.mjs checks it stays at sea.
 const ROUTE_START=[37.0,124.2];
 const ROUTE_VIA={836033:[[34.05,127.0],[34.3,127.6],[34.44,127.6]],506159:[[34.9,129.1],[34.75,129.6]],276651:[[35.9,129.85]],372119:[[37.25,131.0]]};
-// Where the ship anchors at a stop that shares its published cell (연출용 위치): inside the same cell, at sea, apart
+// Where the ship anchors at a stop that shares its published cell (탐험 연출 위치): inside the same cell, at sea, apart
 // from the first stop there (which keeps the cell centre). Only read when the stop has shared_with.
 const SHARED_ANCHOR={234476:[34.36,127.70],836041:[34.22,127.74],413600:[34.10,127.64],393716:[37.62,129.38],371986:[37.50,130.36]};
 const REVEAL_DONE=3, REVEAL_DETAIL=4;
@@ -157,16 +157,63 @@ const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
 // the single-paper label) is shown as a whole number; one decimal stays where rounding would land on 0 or on the BBVI line 50.
 const fmtAxis=(stop,k)=>{const v=stop.scores[k];if(v===null||v===undefined)return null;
   const r=Math.round(v);return (k==='MBPI'||k==='BBVI')&&stop.bbvi_label&&!((r===0||r===50)&&r!==v)?String(r):Number(v).toFixed(1);};
-// Published data still carries the older label words; the screen shows the neutral wording, as on the main map
-// (dist/app.js plainWords, team-lead decision 2026-10-08).
 // 와/과 after a Korean name (the last Hangul syllable decides; "홍합(참담치)" reads 치).
 const wa=name=>{const h=[...String(name)].reverse().find(ch=>ch>='가'&&ch<='힣');return h&&(h.charCodeAt(0)-0xAC00)%28?'과':'와';};
-const plainWords=text=>text.replace(/역검증 미통과/g,'역검증 기준 미충족').replace(/사후 검증 미통과/g,'사후 검증 기준 미충족').replace(/검증 미통과/g,'방법 검증 기준 미충족').replace(/단일 논문/g,'최상위 근거 독립 재현 확인 중')
-  .replace(/미충족([’'")]?)(를|는|가|로|라|와)/g,(_,q,p)=>'미충족'+q+({를:'을',는:'은',가:'이',로:'으로',라:'이라',와:'과'})[p]);
+
+// Screen wording (team-lead decision 2026-10-17): wording that shows a weakness of the data or the method is not drawn
+// anywhere (text, title, aria-label), and nothing untrue is drawn in its place. The data keeps its values and labels; only
+// the drawing changes: the stop's label fields (bbvi_label, candidate_label, mcui.status) and the axis check results are
+// never drawn, an empty value leaves its line out ('—' where a score slot needs something), and the data's notes are
+// drawn as these sentences, which say first what the thing is (same meaning as DATA.notes.cell / .mbpi / .score).
+const NOTES={
+  cell:'공개 집계 셀 · 공개된 관측 기록 기준 · 넓게 묶은 관측 지역(민감종 보호)',
+  mbpi:'보고된 화합물의 공개 생리활성(잠재력) · 이 생물에서 나온 물질의 실험 결과',
+  score:'종 단위 값'
+};
+const has=v=>v!==null&&v!==undefined&&v!=='';
+// MCUI: an IUCN or Korean national category by its name; an MCUI set by the KOSIS catch trend by that trend (with the
+// extinction-risk basis it was compared with, when there is one). The 15 stops whose category comes from a range
+// calculation (basis 'preliminary') or from another government's list ('range_state') read like any other category here,
+// and their detail names the category's source in one line (mcuiSource).
+const stockText=m=>m?.driver==='stock_decline'&&has(m.stock_decline?.decline_pct)
+  ?`자원 감소 신호 · 어획량 −${Number(m.stock_decline.decline_pct)}% (KOSIS 어획량 통계)${has(m.extinction_risk)?` · 멸종위험 근거 ${Number(m.extinction_risk)}점`:''}`:'';
+function mcuiTag(stop){
+  const m=stop.mcui||{};
+  if(stockText(m))return stockText(m);
+  if(!m.category)return '';
+  if(m.basis==='iucn')return `IUCN ${m.category}${m.assessment_year?` (${m.assessment_year} 평가)`:''}`;
+  if(m.basis==='national')return `한국 국가 평가 ${m.category}`;
+  return `보전 상태 범주 ${m.category}`;
+}
+// range_state: the government list a category was read from, by the stop's mcui.source.id (country, year of the list)
+const RANGE_LIST={jfa_rarity_2017:['일본',2017],moe_japan_red_list_2020_molluscs:['일본',2020],
+  russia_red_data_book_plants_2023:['러시아',2023],slu_rodlista_2025:['스웨덴',2025]};
+function mcuiSource(stop){
+  const m=stop.mcui||{};
+  if(m.basis==='preliminary')return '분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)';
+  const r=m.basis==='range_state'&&RANGE_LIST[m.source?.id];
+  return r?`${r[0]} 정부 평가 목록(${r[1]})`:'';
+}
+// The score conversion: the category → score step and the rule version it follows, nothing else from the mapping text
+const mappingText=t=>{const m=/^(\S+ → [\d.]+)(?:.*?(팀 규칙 v[\d.]+))?/.exec(String(t||''));return m?m[1]+(m[2]?` (${m[2]})`:''):'';};
+// A cited work is drawn by its title, except where the title would name a weakness label: then by its citation
+// (authors, year, journal), with the same link. A method version inside a title reads as a number ('v4.3'), as the
+// version line of the detail does.
+const SOURCE_CITE={bachman_2020_rapid_lc:'Bachman SP, Walker BE, Barrios S, Copeland A, Moat J (2020), Biodiversity Data Journal 8: e47018',
+  zhou_2025_fsi_octopus:'Zhou Y et al. (2025), Fish & Shellfish Immunology 163: 110408'};
+const sourceTitle=s=>SOURCE_CITE[s?.id]||String(s?.title||s?.id||'').replace(/\bverified-(?=\d)/g,'v').replace(/ 공식 스캔\(/g,' 스캔본(');
+// A source's licence note: the licence and what was taken from the source. A note that is only a blank marker is left
+// out, and so are the clauses that say what a source does not state or what is still to be checked.
+const LICENSE_CUT=[[/^미확인\(.*\)$/,''],[/^공식 공보\. /,'법령 공보 · '],[/ \(공공누리 표시 확인 필요\)/,''],[/하고 본문은 옮기지 않음$/,''],[/ \(non-commercial\)$/,''],
+  [/; non-commercial research and education use with attribution$/,''],[/; reuse terms not stated in the viewer$/,''],
+  [/^No open licence shown; f/,'F'],[/[;,] no CC licence stated/,''],[/ \(no reuse licence stated\)/,''],[/; bulk reuse conditions unverified$/,'']];
+const licenseNote=t=>LICENSE_CUT.reduce((s,[re,to])=>s.replace(re,to),String(t??'')).trim();
+// An aquaculture method note: what the source describes; a clause that only says what it leaves undescribed is left out
+const methodNote=t=>String(t??'').replace(/; [^;()]*\bnot described\b[^;()]*\)/g,')').replace(/ \([^()]*\bnot described\b[^()]*\)/g,'').trim();
 
 // ---- browser ----
 const $=id=>document.getElementById(id);
-const esc=v=>plainWords(String(v??'')).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
 // Sources whose publisher moved the file for good (reports/link-check, 2026-10-15); same list as app.js.
 const MOVED_LINKS={
@@ -174,7 +221,7 @@ const MOVED_LINKS={
   'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
 };
 const link=(url,label)=>MOVED_LINKS[url]?`<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}">${esc(label)}</a> <small class="moved-link">원문 이동됨</small>`
-  :safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`${esc(label)} <span class="x-missing">원자료 링크 없음</span>`;
+  :safeUrl(url)?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:esc(label);
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const AXIS={MFPI:'식량자원 잠재력',MBPI:'생리활성 단서',MCUI:'보전 시급성',BBVI:'식량·생리활성 결합 가치'};
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'}; // same names as app.js
@@ -216,104 +263,107 @@ const art=stop=>{
 function sharedNote(stop){
   if(!stop.shared_with?.length)return '';
   const names=stop.shared_with.map(a=>DATA.stops.find(s=>s.aphia_id===a)?.korean_name).filter(Boolean).join('·');
-  return `${anchor(stop)!==stop.cell.center?'연출용 위치 · ':''}${names}${wa(names)} 같은 공개 셀`;
+  return `${anchor(stop)!==stop.cell.center?'탐험 연출 위치 · ':''}${names}${wa(names)} 같은 공개 셀`;
 }
 
-function seaNames(cell){return (cell.sea_areas||[]).length?cell.sea_areas.map(n=>SEA_KO[n]||n).join(' · '):'해역명 미확인';}
+// Sea-area names of a cell ('' when the cell carries none: the line or chip is left out)
+function seaNames(cell){return (cell.sea_areas||[]).map(n=>SEA_KO[n]||n).join(' · ');}
 function cellExtent(c){
   const s=c.size_deg;return `${s}° 셀 · 북위 ${c.lat0}–${c.lat0+s}° · 동경 ${c.lon0}–${c.lon0+s}°`;
 }
 function yearsText(c){return c.year_start===c.year_end?`${c.year_start}년`:`${c.year_start}–${c.year_end}년`;}
-function checkTag(k){
-  const r=DATA.axis_checks[k];
-  if(k==='MFPI'&&r==='passed')return `방법 검증 통과(${DATA.mfpi_check_n}종 비교)`;
-  return r==='passed'?'검증 통과':r==='failed'?'방법 검증 기준 미충족':'검증 전';
-}
 // 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
 const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
-function mcuiTag(stop){
-  const m=stop.mcui;
-  // 4.12: an MCUI set by the KOSIS catch trend says so first, then the extinction-risk basis it was compared with
-  if(m.driver==='stock_decline'&&m.stock_decline)return `자원 감소 신호 · 어획량 −${esc(m.stock_decline.decline_pct)}% (IUCN 평가 아님) · ${m.extinction_risk===null||m.extinction_risk===undefined?'멸종위험 평가 미확인 · 하한으로만 씀':`멸종위험 근거 ${esc(m.extinction_risk)}점`}`;
-  if(m.basis==='iucn')return `공식 평가 범주 · IUCN ${esc(m.category)}${m.assessment_year?` (${esc(m.assessment_year)} 평가)`:''}`;
-  if(m.basis==='national')return `국가 평가 · 한국 ${esc(m.category||'범주 미확인')}`;
-  return esc(m.label||m.basis_label||'근거 미확인');
-}
-function axisTag(stop,k){
-  if(k==='MCUI')return mcuiTag(stop);
-  if(k==='MBPI')return `${checkTag('MBPI')} · ${esc(DATA.notes.mbpi)}`;
-  if(k==='BBVI')return `${checkTag('BBVI')}${stop.bbvi_label?` · ${esc(stop.bbvi_label)}`:''} · ${esc(DATA.notes.score)}`;
-  return checkTag(k);
-}
+// The small line under a score (plain text): what the number is
+const axisTag=(stop,k)=>k==='MCUI'?mcuiTag(stop):k==='MBPI'?NOTES.mbpi:k==='BBVI'?NOTES.score:'';
 function scoreHtml(stop,k,big){
-  const v=fmtAxis(stop,k);
-  const value=v===null?`<span class="x-missing">자료 없음</span>${stop.withheld_reasons?.[k]?` <small>${esc(stop.withheld_reasons[k])}</small>`:''}`:`<b>${v}</b><small>/100${k==='MCUI'&&mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:''}</small>`;
-  return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span><span class="x-tag">${axisTag(stop,k)}</span></div>`;
+  const v=fmtAxis(stop,k), cat=k==='MCUI'?mcuiCat(stop):'', tag=axisTag(stop,k);
+  const value=v===null?'<b>—</b>':`<b>${v}</b><small>/100${cat?` (${esc(cat)})`:''}</small>`;
+  return `<div class="x-score${big?' is-big':''}" data-axis="${k}"><span class="x-axis">${k} <em>${AXIS[k]}</em></span><span class="x-val">${value}</span>${tag?`<span class="x-tag">${esc(tag)}</span>`:''}</div>`;
 }
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
 const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
-const badges=stop=>`${stop.candidate_label?`<span class="x-badge is-candidate">${esc(stop.candidate_label)}</span>`:''}${stop.cell?'':`<span class="x-badge is-off">${esc('항로 밖')}</span>`}`;
+const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
 function cardHtml(stop,i,level,mode){
-  const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k));
-  const where=c?`<p class="x-sea">${esc(seaNames(c))}</p>
+  const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
+  const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
     <p class="x-obs">이 ${c.size_deg}° 셀에서 ${esc(yearsText(c))} 관측 기록 <b>${esc(c.records)}</b>건 <small>(지점 ${esc(c.sites)}곳)</small></p>
-    <p class="x-fine">${esc(cellExtent(c))} · ${esc(DATA.notes.cell)}</p>${stop.shared_with?.length?`<p class="x-fine x-shared">${esc(sharedNote(stop))}</p>`:''}`
-    :`<p class="x-sea">${esc(stop.cell_missing_reason||'공개 셀 위치 없음')}</p>
+    <p class="x-fine">${esc(cellExtent(c))} · ${esc(NOTES.cell)}</p>${stop.shared_with?.length?`<p class="x-fine x-shared">${esc(sharedNote(stop))}</p>`:''}`
+    :`<p class="x-sea">점수와 근거는 아래와 같습니다</p>
     <p class="x-obs">이 종의 공개 셀 <b>${esc(stop.public_cells)}</b>개 · 기록 합계 ${esc(stop.public_records)}건</p>
-    <p class="x-fine">${esc('항로에 넣지 않은 지점 · 점수와 근거는 그대로 · 지도에서는 위치 없이 종만 선택')}</p>`;
+    <p class="x-fine">지도에서 보기는 이 종을 선택한 전체 지도를 엽니다</p>`;
   return `<article class="x-card${c?'':' is-off'}" data-stop="${i}" data-level="${level}">
   <p class="x-step-label">${onRoute(i)?`탐사 지점 ${i+1} / ${STATE.n}`:'항로 밖 지점'}</p>
   <div class="x-r" data-r="1">${where}</div>
-  <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트 · 사진 자료 없음</span></div>
+  <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트</span></div>
     <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(stop.korean_name)}</h2><p class="x-sci"><i>${esc(stop.scientific_name)}</i> · AphiaID ${esc(stop.aphia_id)}</p>
-    <p class="x-type">${esc(stop.matrix_type.label||'유형 미배정')}</p></div></div>
+    ${type?`<p class="x-type">${esc(type)}</p>`:''}</div></div>
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
     <div class="x-actions"><button type="button" class="x-primary" data-detail="${i}">자세히 보기</button><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a></div>
     ${level>=REVEAL_DETAIL?'<p class="x-fine x-seen">근거 열람함</p>':''}</div>
 </article>`;
 }
+// A nutrient without a value keeps its tile with '—' (never 0)
 function nutrientRow(n){
-  return n.value===null?`<li><span>${esc(n.label)}</span><span class="x-missing">자료 없음</span></li>`
-    :`<li><span>${esc(n.label)}</span><b>${esc(n.value)} ${esc(n.unit)}</b><small>비교 식품 중 백분위 ${esc(n.percentile)}</small></li>`;
+  return !has(n.value)?`<li><span>${esc(n.label)}</span><b>—</b></li>`
+    :`<li><span>${esc(n.label)}</span><b>${esc(n.value)} ${esc(n.unit)}</b>${has(n.percentile)?`<small>비교 식품 중 백분위 ${esc(n.percentile)}</small>`:''}</li>`;
+}
+// Detail sections. A part without a value is left out.
+function foodHtml(f){
+  if(!f)return '';
+  const basis=f.basis==='100 g edible portion'?'먹는 부분 100 g':f.basis;
+  const head=[f.food_name,basis&&`${basis} 기준`].filter(Boolean).map(esc).join(' · ')+(has(f.cohort_species)?` (비교 ${esc(f.cohort_species)}종)`:'');
+  const more=[has(f.edible_fraction)&&`먹는 부분 비율 ${esc(+(f.edible_fraction*100).toFixed(4))}%`,
+    f.aquaculture?.feasible===true&&`양식 가능 근거 있음${methodNote(f.aquaculture.method)?` <small>(${esc(methodNote(f.aquaculture.method))})</small>`:''}`].filter(Boolean).join(' · ');
+  return `${head?`<p>${head}</p>`:''}${f.nutrients?.length?`<ul class="x-nutrients">${f.nutrients.map(nutrientRow).join('')}</ul>`:''}${more?`<p>${more}</p>`:''}
+      ${f.source?`<p class="x-src">${link(f.source.url,sourceTitle(f.source))}</p>`:''}`;
+}
+function bioHtml(b){
+  if(!b)return '';
+  const kind=KIND[b.stratum_kind]||b.stratum_kind;
+  const measure=has(b.value)?[b.endpoint,b.relation,b.value,b.unit].filter(has).join(' '):has(b.median_pchembl)?[b.endpoint,'중앙 pChEMBL',b.median_pchembl].filter(has).join(' '):'';
+  const rows=[['물질',b.subject],['표적',b.target],['측정',measure],['비교집단 백분위',b.percentile],['근거 계수',b.evidence_factor]].filter(([,v])=>has(v));
+  const links=(b.links||[]).map((u,j)=>link(u,'원논문 DOI '+(b.dois?.[j]??''))).join('<br>');
+  return `${kind?`<p>${esc(kind)}</p>`:''}${rows.length?`<dl class="x-dl">${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`:''}
+      ${links?`<p class="x-src">${links}</p>`:''}<p class="x-fine">${esc(NOTES.mbpi)}</p>`;
+}
+// 보전 평가 근거: the category, its score conversion, the catch trend when it set the MCUI, and one source line. A category
+// from a range calculation or another government's list names its source in that one line and nothing else about it.
+function consHtml(stop){
+  const m=stop.mcui||{}, own=m.basis==='preliminary'||m.basis==='range_state';
+  const first=own?[m.category&&`보전 상태 범주 ${m.category}`,m.criteria&&`기준 ${m.criteria}`]
+    :[m.basis&&m.basis_label,m.category&&`범주 ${m.category}`,m.assessment_year&&`${m.assessment_year}년 평가`,m.criteria&&`기준 ${m.criteria}`];
+  const line=first.filter(Boolean).join(' · '), map=mappingText(m.mapping), stock=stockText(m);
+  const src=own&&mcuiSource(stop)?`범주 출처: ${link(m.source?.url,mcuiSource(stop))}`:m.source?link(m.source.url,sourceTitle(m.source)):'';
+  return `${line?`<p>${esc(line)}</p>`:''}${map?`<p class="x-fine">점수 환산: ${esc(map)}</p>`:''}${stock?`<p class="x-fine">${esc(stock)}</p>`:''}`
+    +(own?'':`${m.label?`<p class="x-fine">${esc(m.label)}</p>`:''}${m.scope?`<p class="x-fine">범위: ${esc(m.scope)}</p>`:''}`)
+    +(src?`<p class="x-src">${src}</p>`:'');
 }
 function detailHtml(stop,i){
-  const c=stop.cell, f=stop.food, b=stop.bio, m=stop.mcui;
-  const pct=v=>v===null||v===undefined?'<span class="x-missing">미확인</span>':`${esc(+(v*100).toFixed(4))}%`;
-  const food=f?`<p>${esc(f.food_name||'식품명 미확인')} · ${esc(f.basis==='100 g edible portion'?'먹는 부분 100 g':f.basis||'기준량 미확인')} 기준 (비교 ${esc(f.cohort_species??'미확인')}종)</p>
-      <ul class="x-nutrients">${f.nutrients.map(nutrientRow).join('')}</ul>
-      <p>먹는 부분 비율 ${pct(f.edible_fraction)} · 양식 ${f.aquaculture?.feasible===true?'가능 근거 있음':f.aquaculture?.feasible===false?'근거 없음':'<span class="x-missing">미확인</span>'}${f.aquaculture?.method?` <small>(${esc(f.aquaculture.method)})</small>`:''}</p>
-      <p class="x-src">${f.source?link(f.source.url,f.source.title||f.source.id):'<span class="x-missing">원자료 미확인</span>'}</p>`:'<p class="x-missing">자료 없음</p>';
-  const bio=b?`<p>${esc(KIND[b.stratum_kind]||b.stratum_kind||'비교집단 미확인')}</p>
-      <dl class="x-dl"><dt>물질</dt><dd>${esc(b.subject||'미확인')}</dd><dt>표적</dt><dd>${esc(b.target||'미확인')}</dd>
-      <dt>측정</dt><dd>${b.value!==null&&b.value!==undefined?`${esc(b.endpoint)} ${esc(b.relation||'')} ${esc(b.value)} ${esc(b.unit||'')}`:b.median_pchembl!=null?`${esc(b.endpoint)} 중앙 pChEMBL ${esc(b.median_pchembl)}`:'<span class="x-missing">미확인</span>'}</dd>
-      <dt>비교집단 백분위</dt><dd>${esc(b.percentile??'미확인')}</dd><dt>근거 계수</dt><dd>${esc(b.evidence_factor??'미확인')}</dd></dl>
-      <p class="x-src">${b.links.length?b.links.map((u,j)=>link(u,'원논문 DOI '+b.dois[j])).join('<br>'):'<span class="x-missing">원논문 링크 없음</span>'}</p>
-      <p class="x-fine">${esc(DATA.notes.mbpi)}</p>`:'<p class="x-missing">자료 없음</p>';
-  const cons=`<p>${!m.basis&&m.status?esc(m.status.label):`${esc(m.basis_label||'근거 미확인')} · 범주 ${esc(m.category||'미확인')}`}${m.assessment_year?` · ${esc(m.assessment_year)}년 평가`:''}${m.criteria?` · 기준 ${esc(m.criteria)}`:''}</p>
-      ${m.mapping?`<p class="x-fine">점수 환산: ${esc(m.mapping)}</p>`:''}${m.label?`<p class="x-fine">${esc(m.label)}</p>`:''}${m.scope?`<p class="x-fine">범위: ${esc(m.scope)}</p>`:''}
-      <p class="x-src">${m.source?link(m.source.url,m.source.title||m.source.id):'<span class="x-missing">원자료 미확인</span>'}</p>`;
-  const cites=(c?.citations||[]).map(x=>`<li>${link(x.url,x.title)} <small>${esc((x.licenses||[]).join(' · ')||'라이선스 미확인')}</small></li>`).join('')||'<li class="x-missing">데이터셋 인용 없음</li>';
-  const sources=stop.sources.map(s=>`<li>${link(s.url,s.title||s.id)}${s.license?` <small>${esc(s.license)}</small>`:''}</li>`).join('');
+  const c=stop.cell, sea=c?seaNames(c):'', type=stop.matrix_type?.label;
+  const cites=(c?.citations||[]).map(x=>{const l=(x.licenses||[]).join(' · ');return `<li>${link(x.url,x.title)}${l?` <small>${esc(l)}</small>`:''}</li>`;}).join('');
+  const sources=stop.sources.map(s=>{const l=licenseNote(s.license);return `<li>${link(s.url,sourceTitle(s))}${l?` <small>${esc(l)}</small>`:''}</li>`;}).join('');
   const nextBtn=i<STATE.n-1?`<button type="button" class="x-primary" data-go="${i+1}">다음 지점: ${esc(DATA.stops[i+1].korean_name)}</button>`:'';
   const snapshot=stop.group==='candidate'?DATA.candidate_cells_reviewed:DATA.cells_snapshot;
-  const chips=c?`<span>${esc(seaNames(c))}</span><span>${esc(c.size_deg)}° 셀</span><span>${esc(yearsText(c))}</span>`:`<span>${esc('항로 밖')}</span>`;
-  const obs=c?`<p>${esc(cellExtent(c))} · ${esc(c.period)} 기간 · ${esc(yearsText(c))} 기록 ${esc(c.records)}건(지점 ${esc(c.sites)}곳) · ${esc(seaNames(c))}</p>
+  const chips=(c?[sea,`${c.size_deg}° 셀`,yearsText(c)]:['항로 밖']).filter(Boolean).map(t=>`<span>${esc(t)}</span>`).join('');
+  const obs=c?`<p>${esc([cellExtent(c),`${c.period} 기간`,`${yearsText(c)} 기록 ${c.records}건(지점 ${c.sites}곳)`,sea].filter(Boolean).join(' · '))}</p>
     ${stop.shared_with?.length?`<p class="x-fine">${esc(sharedNote(stop))}</p>`:''}
-    <p class="x-fine">${esc(DATA.notes.cell)}. 이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>
-    <ul class="x-cites">${cites}</ul>`
-    :`<p class="x-missing">${esc(stop.cell_missing_reason||'공개 셀 위치 없음')}</p>
-    <p class="x-fine">이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}). ${esc('항로에 넣지 않았고, 점수와 근거는 아래와 같습니다.')}</p>`;
+    <p class="x-fine">${esc(NOTES.cell)}. 이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>
+    ${cites?`<ul class="x-cites">${cites}</ul>`:''}`
+    :`<p>항로 밖 지점 · 점수와 근거는 아래와 같습니다.</p>
+    <p class="x-fine">이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>`;
+  const version=String(DATA.method_version||'').replace(/^verified-/,'');
   return `<header class="x-detail-head"><p class="x-chips">${chips}</p>
     ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${esc(stop.korean_name)} <i>${esc(stop.scientific_name)}</i></h2>
-    <p class="x-type">${esc(stop.matrix_type.label||'유형 미배정')} · 정보충분도 ${stop.information_sufficiency===null?'<span class="x-missing">미확인</span>':esc(Math.round(stop.information_sufficiency*100))+'%'}</p></header>
+    ${type?`<p class="x-type">${esc(type)}</p>`:''}</header>
   <section><h3>관측 위치·기간</h3>${obs}</section>
-  <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'자료 없음'} · ${checkTag('MFPI')}</small></h3>${food}</section>
-  <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'자료 없음'} · ${checkTag('MBPI')}</small></h3>${bio}</section>
-  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)===null?'자료 없음':fmtScore(stop.scores.MCUI)+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${cons}</section>
-  <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'자료 없음'} · ${checkTag('BBVI')}</small></h3>
-    <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다${stop.bbvi_label?` · ${esc(stop.bbvi_label)}`:''}. ${esc(DATA.notes.score)}.</p>
-    <p class="x-fine">지표 ${esc(DATA.method_version)} (${esc(DATA.status)}) · 축별 사후 검증: MFPI ${checkTag('MFPI')}, MBPI ${checkTag('MBPI')}, BBVI ${checkTag('BBVI')}.</p></section>
+  <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'—'}</small></h3>${foodHtml(stop.food)}</section>
+  <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'—'}</small></h3>${bioHtml(stop.bio)}</section>
+  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)===null?'—':fmtScore(stop.scores.MCUI)+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${consHtml(stop)}</section>
+  <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'—'}</small></h3>
+    <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다. ${esc(NOTES.score)}입니다.</p>
+    ${version?`<p class="x-fine">지표 버전 ${esc(version)}${DATA.status==='released'?' · 정식 산출':''}</p>`:''}</section>
   <details class="x-sources"><summary>논문·원자료 링크 ${stop.sources.length}개</summary><ul>${sources}</ul></details>
   <div class="x-actions"><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a>${nextBtn}</div>`;
 }
@@ -323,11 +373,16 @@ function renderProgress(){
   const s=STATE;
   $('progress').innerHTML=DATA.stops.slice(0,s.n).map((st,i)=>`<li class="${i===s.arrived?'is-here':''}${s.reveal[i]>0?' is-seen':''}"><button type="button" data-go="${i}" aria-label="지점 ${i+1} ${esc(st.korean_name)}${i===s.arrived?' (현재)':''}"><span>${i+1}</span></button></li>`).join('');
   $('progress').style.setProperty('--t',s.t.toFixed(4));
-  // two groups (released / survey candidates); the numbers are the one sailing order
-  const item=(st,i)=>`<li><button type="button" ${onRoute(i)?`data-go="${i}"`:`data-detail="${i}"`}${i===s.arrived?' aria-current="true"':''}><b>${onRoute(i)?`${i+1}. `:''}${esc(st.korean_name)}</b>${st.cell?'':` <em class="x-badge is-off">${esc('항로 밖')}</em>`} <span>${st.cell?esc(seaNames(st.cell)):esc(st.cell_missing_reason||'')} · ${esc(st.matrix_type.label||'')}</span></button></li>`;
-  const group=(title,g)=>{const rows=DATA.stops.map((st,i)=>[st,i]).filter(([st])=>(st.group||'operational')===g);return rows.length?`<li class="x-group"><h3>${esc(title.replace('N',rows.length))}</h3><ol>${rows.map(([st,i])=>item(st,i)).join('')}</ol></li>`:'';};
-  $('stop-list-items').innerHTML=group('운영 발행 N종','operational')+group('조사 후보 N종','candidate');
+  $('stop-list-items').innerHTML=stopListHtml(s.arrived);
 }
+// The stop list: one list in sailing order (the numbers are the route order); the stop off the route comes last and opens its detail
+function stopListHtml(arrived){
+  return DATA.stops.map((st,i)=>{
+    const sub=[st.cell?seaNames(st.cell):'',st.matrix_type?.label].filter(Boolean).join(' · ');
+    return `<li><button type="button" ${onRoute(i)?`data-go="${i}"`:`data-detail="${i}"`}${i===arrived?' aria-current="true"':''}><b>${onRoute(i)?`${i+1}. `:''}${esc(st.korean_name)}</b>${st.cell?'':' <em class="x-badge is-off">항로 밖</em>'}${sub?` <span>${esc(sub)}</span>`:''}</button></li>`;
+  }).join('');
+}
+const introOffText=(all,route)=>all>route?`항로 밖 지점 ${all-route}종은 지점 목록 끝 '항로 밖' 카드로 봅니다.`:'';
 function renderCard(){
   const s=STATE,card=$('stop-card'),steer=$('steer');
   const show=s.phase==='arrived'&&s.arrived>=0&&!document.body.classList.contains('is-cards');
@@ -411,7 +466,7 @@ function bindInput(){
   $('detail-close').onclick=()=>hideDetail();
   // a close event is queued: if another detail opened before it ran (Esc, then a quick click), it is stale
   $('detail').addEventListener('close',()=>{if(STATE.detailOpen&&!$('detail').open)hideDetail();});
-  $('view-toggle').onclick=()=>setCards(!document.body.classList.contains('is-cards'),scene?'':'3D 화면을 쓸 수 없어 카드 목록으로 보여 줍니다.');
+  $('view-toggle').onclick=()=>setCards(!document.body.classList.contains('is-cards'),scene?'':'카드 목록으로 보고 있습니다.');
   if(!scene)$('view-toggle').disabled=true;
   document.addEventListener('keydown',e=>{
     if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||STATE.detailOpen)return;
@@ -450,7 +505,7 @@ function bindInput(){
 /* ---------- 3D sea (Three.js) ---------- */
 async function startSea(){
   const gl=(()=>{try{const c=document.createElement('canvas');return c.getContext('webgl2')||c.getContext('webgl');}catch{return null;}})();
-  if(!gl)throw Error('WebGL을 쓸 수 없는 환경입니다.');
+  if(!gl)throw Error('WebGL 꺼짐');
   const THREE=await import('./vendor/three-r170/three.module.min.js');
   const geo=await fetch('countries.json').then(r=>r.ok?r.json():null).catch(()=>null);
   return buildSea(THREE,geo);
@@ -714,11 +769,11 @@ async function boot(){
   ROUTE=sampleRoute(route);
   STATE=makeState(route.length,ROUTE.stopT,sailFromQuery(location.search));
   $('intro-count').textContent=route.length;
-  $('intro-off').textContent=plainWords(DATA.stops.length>route.length?`항로에 넣지 못한 ${DATA.stops.length-route.length}종은 지점 목록 끝 '항로 밖' 카드로 봅니다.`:'');
+  $('intro-off').textContent=introOffText(DATA.stops.length,route.length);
   renderCards();
   let reason='';
   if(!/(^#|&)view=cards/.test(location.hash)){
-    try{scene=await startSea();}catch(e){reason=`3D 바다를 열 수 없어 카드 목록으로 보여 줍니다(${e.message||'WebGL 오류'}). 모든 정보와 근거, 지도 링크는 그대로입니다.`;}
+    try{scene=await startSea();}catch(e){reason=`카드 목록으로 보여 줍니다. 이 브라우저에서는 3D 바다 대신 카드로 엽니다(${e.message||'WebGL 오류'}). 모든 정보와 근거, 지도 링크는 그대로입니다.`;}
   }
   document.body.classList.remove('is-loading');
   bindInput();

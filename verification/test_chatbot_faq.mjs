@@ -1,5 +1,6 @@
 // 사용법 안내 챗봇(FAQ): id 중복 없음, '화면에서 보여주기' 선택자가 index.html에 있음, 대표 질문 매칭과 '모르겠어요',
-// 답변에 유형·탭 이름·판단문과 기준값 하드코딩 없음({plain:} 자리표시), chatbot.js/css의 ?v= 해시.
+// 답변에 유형·탭 이름·판단문과 기준값 하드코딩 없음({plain:} 자리표시), 화면에 나오는 글에 약점 낱말·'아님' 안내 없음(2026-10-17),
+// chatbot.js/css의 ?v= 해시.
 // Run: node verification/test_chatbot_faq.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -30,8 +31,9 @@ for(const [q,id] of [['지도가 뭘 보여줘?','overview'],['색깔이 무슨 
   assert.equal(match(q)?.id,id,`"${q}"`);
 for(const q of ['오늘 날씨 어때','점심 메뉴 추천해줘','안녕','','?!'])assert.equal(match(q),null,`"${q}"는 모르겠어요로 가야 함`);
 // (3b) 2026-10-15 심사 예상 질문: 키워드가 겹쳐 다른 항목으로 가지 않는지(질문 그대로와 말을 바꾼 것)
+// 2026-10-17: 근거 수준 항목은 화면에서 빠져 지웠고, 그 질문은 근거와 방법 탭을 가리키는 중립 안내(validation)로 간다.
 for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing'],['매트릭스에 없는 종이 있어요?','matrix-missing'],
-  ['‘근거 논문 1편’이 무슨 뜻이에요?','evidence-level'],["'근거 논문 1편'이 무슨 뜻이에요?",'evidence-level'],
+  ['‘근거 논문 1편’이 무슨 뜻이에요?','validation'],["'근거 논문 1편'이 무슨 뜻이에요?",'validation'],
   ['50점은 누가 정했어요?','threshold'],['구분선 50은 누가 정했나요','threshold'],
   ['참굴 10점과 고등어 10점은 같은 뜻이에요?','same-score'],['MCUI 같은 점수면 같은 뜻이야?','same-score'],
   ['살오징어는 IUCN에서 LC인데 왜 60점이에요?','squid'],['오징어는 왜 MCUI가 60점이야','squid'],
@@ -40,8 +42,8 @@ for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing
   assert.equal(match(q)?.id,id,`심사 질문 "${q}" → ${match(q)?.id}`);
 // (3c) 정해진 답만: AI·서버 호출 없음, 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
 assert.ok(!/fetch\(|['"]\/?api\/|Workers AI로/.test(js),'chatbot.js가 서버나 AI에 질문을 보내면 안 됨');
-assert.ok(js.includes('<p class="bbc-note">AI 아님 · 정해진 답변</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
-assert.ok(js.includes("'준비된 답이 없어요."),'매칭 실패 문구');
+assert.ok(js.includes('<p class="bbc-note">미리 준비한 답변으로 안내해요</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
+assert.ok(js.includes("'아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.'"),'매칭 실패 문구');
 assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
 // (3d) 값 자리표시: 아는 종류만, 종 이름은 자료에 있는 종, 앱 자료가 없을 때도 빈칸·undefined 없이 안내 문구
 const names=(a=>[...a.species,...a.candidate_species].map(s=>s.korean_name))(JSON.parse(read('assessments.json')));
@@ -51,6 +53,32 @@ for(const f of faq)for(const [tok,kind,arg] of f.a.matchAll(/\{(\w+)(?::([^}]+))
     const out=fact(kind,arg);assert.ok(out&&!/undefined|null|NaN/.test(out),`${f.id}: 자료 없을 때 ${tok} → ${out}`);}
 }
 assert.ok(fact('matrix')&&!/undefined/.test(fact('matrix')));
+// (3e) 2026-10-17 화면 약점 문구 정리: 화면에 나오는 글(답, 칩으로 보이는 질문, 시작 질문, 탭 바로가기, 입력창 표기, 앱 자료가 없을 때의 대체 문구)에
+// 약점 낱말과 '아님·않음' 안내를 쓰지 않는다. 검증 항목은 칩으로 내보내지 않고(입력으로만 닿음) 근거와 방법 탭만 가리킨다.
+const BANNED=['미충족','미통과','실패','불성립','사용 중단','제한적 확인','예비','공식 평가 전','공식 평가 아님','자체 평가','자체 예비','Rapid LC','역검증',
+  '서식국','다른 나라','재현','근거 논문 1편','단일 논문','조사 필요','확인 필요','미확인','미산출','점수 없음','정보충분도','공백','사후 검증','사전 등록',
+  '결과를 본 뒤','결과 확인 후','검증 진행 중','검증 전','상업 이용 불가','조사 후보','운영 발행','판정 아님','우선 조사','탐색적 재검토','하한',
+  '검증됨','검증된','근거 부족','자료 없음','링크 없음','탐색적 구분선'];
+const NEG=/아님|아닙니다|아니에요|아니라|아니고|아니요|않음|않습니다|않아요|않고|뜻하지/;
+const chipIds=[...new Set(faq.flatMap(f=>f.next||[]))];
+const shown=[...faq.map(f=>[f.id,f.a]),...chipIds.map(id=>[`${id} 칩`,faq.find(f=>f.id===id).q[0]]),...starters.map(([id,l])=>[`${id} 시작 질문`,l]),
+  ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),['입력창 표기',js.match(/<p class="bbc-note">([^<]*)<\/p>/)[1]],
+  ...[['matrix'],['score','참굴:MCUI'],['basis','참굴'],['mcuiwhy','살오징어']].map(a=>[`대체 문구 ${a[0]}`,fact(...a)]),['판단문 대체 문구',vm.runInContext("chatbotPlain('x')",ctx)]];
+for(const [where,text] of shown){
+  for(const w of BANNED)assert.ok(!text.includes(w),`${where}: 금지 낱말 '${w}'`);
+  assert.ok(!NEG.test(text),`${where}: '${text.match(NEG)?.[0]}' 안내 대신 무엇인지 먼저 말하기`);
+}
+assert.ok(!chipIds.includes('validation')&&!starters.some(s=>s[0]==='validation'),'검증 항목은 칩으로 내보내지 않음');
+assert.equal(faq.find(f=>f.id==='validation').a,'지표를 어떻게 계산했는지는 {tab:method} 탭에 출처와 함께 정리되어 있어요.','검증 질문은 중립 안내만');
+// 매트릭스는 놓인 종 수만(빠진 종의 이름·이유·빠진 수 없음). 자원 감소로 정해진 MCUI는 멸종위험 점수를 모르면 그 부분을 쓰지 않는다.
+Object.assign(ctx,{data:{species:['가','나','다'].map(label=>({label,assessment:{conservation_status:{category:'LC'},stock_decline:{decline_pct:40}}}))},
+  assessedForMatrix:s=>s.label!=='다',pilotScore:()=>35,scoreText:(s,k,v)=>v.toFixed(1),stockMcui:()=>true,extinctionMcui:()=>null,stockChange:d=>'−'+d.decline_pct.toFixed(1)+'%'});
+assert.equal(fact('matrix'),'지금은 매트릭스에 2종이 놓여 있어요.');
+assert.equal(fact('mcuiwhy','가'),'가의 MCUI는 자원 감소 신호(어획량 −40.0%)로 35.0점이 됐어요.');
+Object.assign(ctx,{assessedForMatrix:()=>true,extinctionMcui:()=>10});
+assert.equal(fact('matrix'),'지금은 3종 모두 매트릭스에 놓여 있어요.');
+assert.equal(fact('mcuiwhy','가'),'가의 멸종위험 범주(LC)만 보면 MCUI는 10.0점이지만, 자원 감소 신호(어획량 −40.0%)로 35.0점이 됐어요.');
+for(const k of ['data','assessedForMatrix','pilotScore','scoreText','stockMcui','extinctionMcui','stockChange'])delete ctx[k];
 
 // (4) 유형·탭 이름과 '높음' 기준값은 답변에 직접 쓰지 않고 자리표시로 읽어 옴
 const tabs=[...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g)].map(m=>m[1]);
@@ -107,4 +135,4 @@ for(const s of Object.keys(moods))for(const crop of [false,true]){
   }
 }
 assert.ok(mascot('unknown',40,true).includes('class="bbc-m-sweat"'),'잘 모르겠어요: 땀방울 클래스');
-console.log(`PASS: chatbot FAQ ${faq.length}개 · 심사 질문 매칭 · AI 호출 없음 · 값 자리표시 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);
+console.log(`PASS: chatbot FAQ ${faq.length}개 · 심사 질문 매칭 · AI 호출 없음 · 값 자리표시 · 약점 낱말·'아님' 안내 없음 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);

@@ -1,137 +1,129 @@
 'use strict';
 // 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답만 한다. AI나 서버는 쓰지 않는다.
-// 2026-10-15까지 FAQ가 못 찾은 질문을 보내던 /api/ask(Workers AI)는 지웠고, 이제는 '준비된 답이 없어요'와 세 탭 바로가기를 보인다.
+// 2026-10-15까지 FAQ가 못 찾은 질문을 보내던 /api/ask(Workers AI)는 지웠고, 이제는 '아래 탭에서 직접 찾아보거나…' 안내와 세 탭 바로가기를 보인다.
 // 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
 // 화면 이동은 상태를 직접 바꾸지 않고 기존 버튼을 .click()해서 앱의 처리 로직을 그대로 탄다.
 // app.js와 같은 전역 렉시컬 범위를 쓰므로 최상위 이름은 모두 CHATBOT_/chatbot 접두어를 붙인다.
+// 2026-10-17 팀장 결정(화면 약점 문구 정리): 우리 데이터·방법의 약점이 드러나는 낱말(검증 결과·예비 평가·재현·정보충분도, 미확인·미산출 같은
+// 빈칸 표시 등)은 사실이어도 답(a)·질문 칩(q[0])·시작 질문·탭 바로가기·대체 문구에 쓰지 않고, '아님·않음' 대신 무엇인지를 먼저 말한다.
+// 사실과 다른 말로 채우지도 않는다. 라벨·근거 수준·정보충분도 항목은 화면에서 빠져 지웠다. validation은 검증·재현을 묻는 입력이 엉뚱한 답으로
+// 가지 않게 남겨 두되, 근거와 방법 탭을 가리키는 중립 안내만 한다. q의 두 번째부터와 k는 입력을 맞추는 데만 쓰이고 화면에 나오지 않는다.
 const CHATBOT_FAQ=[
   {id:'overview',q:['이 지도는 뭘 보여주나요?','이 사이트는 뭐예요','무엇을 하는 지도인가요','처음인데 어떻게 봐요'],
     k:['지도','사이트','소개','처음','무엇','뭘보여','사용법','어떻게봐'],
-    a:'한반도 주변 바다의 해양생물을 종별로 골라 활용 근거와 보전 정보를 함께 비교하는 연구 프로토타입이에요. 화면은 {tab:explore}, {tab:compare}, {tab:method} 세 탭으로 나뉘어요. 지도는 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주며, 붉은 점은 실제 발견 좌표가 아니에요.',
+    a:'한반도 주변 바다의 해양생물을 종별로 골라 활용 근거와 보전 정보를 함께 비교하는 연구 프로토타입이에요. 화면은 {tab:explore}, {tab:compare}, {tab:method} 세 탭으로 나뉘어요. 지도는 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주며, 붉은 점은 기록이 있는 칸의 위치(넓게 묶음)예요.',
     show:{click:['[data-view="explore"]'],target:'.tabs'},next:['map-modes','colors','indices']},
   {id:'map-modes',q:['출현 기록과 활용 × 보전 모드는 뭐가 달라요','지도 모드 바꾸기','출현 기록 모드는 뭐예요'],
     k:['모드','출현기록','활용보전','왼쪽위','지도내용','전환'],
     a:'지도 위쪽(좁은 화면에서는 지도 왼쪽 위)의 ‘출현 기록’·‘활용 × 보전’ 버튼으로 바꿀 수 있어요. ‘출현 기록’은 선택한 종의 공개 출현기록(OBIS·GBIF)이 있는 격자를 보여 주고, ‘활용 × 보전’은 먼저 선택한 종의 셀만 그 종의 유형 색으로 칠해요. 지도 오른쪽 위의 ‘모든 종 겹쳐 보기’를 누르면 모든 종의 셀을 4가지 유형 색으로 겹쳐 볼 수 있어요.',
     show:{click:['[data-view="explore"]'],target:'.map-mode'},next:['colors','red-dots']},
-  {id:'colors',q:['색깔(4가지 유형)은 무슨 뜻이에요?','셀 색이 무슨 의미예요','네 가지 유형이 뭐예요','회색 셀은 뭐예요','점선 테두리는 뭐예요'],
-    k:['색','색깔','유형','4가지','네가지','회색','점선','셀색','범례'],
-    a:'‘활용 × 보전’의 색은 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형이에요. {rule} 처음 보기에서는 선택한 종의 셀만 그 종의 유형 색(같은 색 점선 테두리)으로 칠하고, ‘모든 종 겹쳐 보기’에서는 셀 색이 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나예요. 어느 쪽도 해역의 자원량이나 해역 점수가 아니에요. 겹쳐 보기에서 유형이 섞인 셀은 촘촘한 점선 테두리이고, 회색은 ‘유형 미산출’(보전평가 미확인 등으로 BBVI·MCUI 한 쌍이 없음)이에요.',
+  {id:'colors',q:['색깔(4가지 유형)은 무슨 뜻이에요?','셀 색이 무슨 의미예요','네 가지 유형이 뭐예요','점선 테두리는 뭐예요'],
+    k:['색','색깔','유형','4가지','네가지','점선','셀색','범례'],
+    a:'‘활용 × 보전’의 색은 {type:high_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}, {type:low_bbvi_low_mcui} 네 유형이에요. {rule} 처음 보기에서는 선택한 종의 셀만 그 종의 유형 색(같은 색 점선 테두리)으로 칠하고, ‘모든 종 겹쳐 보기’에서는 셀 색이 그 셀에 기록된 종 중 우선순위가 가장 높은 유형 하나예요. 두 보기 모두 색은 종 단위 값으로 정한 유형이에요. 겹쳐 보기에서 유형이 섞인 셀은 촘촘한 점선 테두리예요.',
     show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['verdict','mini-grid']},
   {id:'verdict',q:['‘활용 지표 높음’은 무슨 뜻이에요?','보전 지표 높음은 채집하면 안 된다는 뜻인가요','카드의 판단문은 어떻게 정해요'],
     k:['활용지표높음','보전지표높음','두지표','써도됨','지켜야함','판단문','권고','채집','지속가능'],
-    a:'종 카드와 근거 패널의 {plain:high_bbvi_low_mcui}, {plain:low_bbvi_low_mcui}, {plain:high_bbvi_high_mcui}, {plain:low_bbvi_high_mcui}은 네 유형 {type:high_bbvi_low_mcui}, {type:low_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}의 위치를 짧게 적은 말이에요. 유형은 연구 분류이고, 채집·이용 허용이나 지속가능성 판정이 아니에요. {rule} 이 값은 검증된 기준이 아니라 탐색적 구분선이에요. 보전평가가 확인되지 않아 MCUI가 없는 종은 ‘유형 미산출’이고, 보전 위험이 낮다는 뜻이 아니에요.',
+    a:'종 카드와 근거 패널의 {plain:high_bbvi_low_mcui}, {plain:low_bbvi_low_mcui}, {plain:high_bbvi_high_mcui}, {plain:low_bbvi_high_mcui}은 네 유형 {type:high_bbvi_low_mcui}, {type:low_bbvi_low_mcui}, {type:high_bbvi_high_mcui}, {type:low_bbvi_high_mcui}의 위치를 짧게 적은 말이에요. 유형은 연구 순서를 고르기 위한 분류예요. {rule} 이 값은 탐색용 기준선이에요.',
     show:{click:['[data-view="explore"]'],target:'#species-list'},next:['colors','indices']},
   {id:'mini-grid',q:['왼쪽 아래 2×2 범례는 뭐예요','오른쪽 위 2×2 아이콘은 뭐예요','사분면 아이콘 사용법','한 유형만 보고 싶어요','ⓘ 버튼은 뭐예요'],
     k:['2×2','2x2','사분면','아이콘','ⓘ','읽는법','한유형만','유형만','오른쪽위'],
-    a:'‘활용 × 보전’ 모드에서는 지도 왼쪽 아래에 2×2 범례가 나와요. 칸마다 유형 모양(▲ ◆ ● ■)과 위치 이름이 적혀 있고, 지금 칠한 셀 수는 마우스를 올리거나 화면 낭독기로 들을 수 있어요. 누르면 ‘모든 종 겹쳐 보기’에서 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ‘읽는 법 ⓘ’을 누르면 자세한 범례와 ‘우선 조사 대상’·‘미탐색 후보’ 체크박스가 나와요.',
-    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['sufficiency','unexplored']},
+    a:'‘활용 × 보전’ 모드에서는 지도 왼쪽 아래에 2×2 범례가 나와요. 칸마다 유형 모양(▲ ◆ ● ■)과 위치 이름이 적혀 있고, 지금 칠한 셀 수는 마우스를 올리거나 화면 낭독기로 들을 수 있어요. 누르면 ‘모든 종 겹쳐 보기’에서 그 유형 셀만 보여요. 여러 칸을 함께 켤 수 있고, ‘읽는 법 ⓘ’을 누르면 자세한 범례와 ‘같은 속 친척 종 · 다음 탐색 후보’ 체크박스가 나와요.',
+    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['unexplored','colors']},
   {id:'chips',q:['신약·기능성·식량 특성으로 종 찾기','신약·식량 특성으로 종 찾기','활용 특성 칩은 어떻게 써요','식량으로 쓸 수 있는 종만 보고 싶어요','칩을 여러 개 켜면 어떻게 돼요','결과가 하나도 없어요'],
     k:['칩','신약','기능성','식량','활용특성','특성','찾기','필터','결과없'],
     a:'왼쪽 ‘탐색 후보’ 목록 위의 활용 특성 칩(신약·기능성(식품 소재)·식량 세 줄, 넓은 화면에서는 ‘필터 더 보기’ 안)을 켜면 그 특성의 근거가 채택된 종만 남아요. 혈압(ACE 저해)과 항산화는 식품 기능성 성격이라 ‘기능성(식품 소재)’ 줄에 있어요. 여러 개를 켜면 모두 만족하는 종만 남아요. 결과가 없으면 안내에 나오는 ‘끄기’ 버튼으로 칩 하나를 꺼 보세요.',
     show:{click:['[data-view="explore"]','#filter-toggle'],target:'#use-chips'},next:['select-species','compare']},
   {id:'select-species',q:['종을 골라서 지도에서 보기','종 선택은 어떻게 해요','특정 종을 검색하고 싶어요','종 카드를 누르면 어떻게 돼요'],
     k:['종선택','고르','골라','검색','카드','학명','종이름','탐색후보'],
-    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 패널이 그 종으로 바뀌어요. 카드 앞의 체크 칸은 비교할 종을 담는 칸이고, 2종 이상 담은 뒤 ‘선택 종 비교하기’를 누르면 나란히 볼 수 있어요. 자세한 근거는 오른쪽 패널의 ‘근거 자세히 보기’에서 열려요. 검색창에 종 이름이나 학명을 넣거나 분류군·근거 상태(넓은 화면에서는 ‘필터 더 보기’ 안)로 좁힐 수 있어요. ‘활용 × 보전’에서는 처음에 선택한 종의 셀만 그 종의 유형 색으로 칠하고, 다른 카드를 누르면 그 종으로 다시 칠해요. 다른 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, ‘모든 종 겹쳐 보기’에서는 선택한 종의 셀이 노란 굵은 실선 테두리로 보여요.',
+    a:'왼쪽 ‘탐색 후보’ 목록에서 종 카드를 누르면 그 종이 선택되고 지도와 오른쪽 패널이 그 종으로 바뀌어요. 카드 앞의 체크 칸은 비교할 종을 담는 칸이고, 2종 이상 담은 뒤 ‘선택 종 비교하기’를 누르면 나란히 볼 수 있어요. 자세한 근거는 오른쪽 패널의 ‘근거 자세히 보기’에서 열려요. 검색창에 종 이름이나 학명을 넣거나 분류군(넓은 화면에서는 ‘필터 더 보기’ 안)으로 좁힐 수 있어요. ‘활용 × 보전’에서는 처음에 선택한 종의 셀만 그 종의 유형 색으로 칠하고, 다른 카드를 누르면 그 종으로 다시 칠해요. 다른 카드에 마우스를 올리면 그 종의 셀에 노란 점선이 생기고, ‘모든 종 겹쳐 보기’에서는 선택한 종의 셀이 노란 굵은 실선 테두리로 보여요.',
     show:{click:['[data-view="explore"]'],target:'#species-list'},next:['cell-click','compare']},
   {id:'cell-click',q:['셀을 누르면 뭐가 나와요','격자를 클릭하면 어떻게 돼요','확인 종 활용 지표 높은 종 숫자는 뭐예요'],
-    k:['셀','격자','클릭','누르면','확인종','활용가능종','보전우선종','근거부족종'],
-    a:'지도의 셀을 누르면 그 격자의 확인 종·활용 지표 높은 종·보전 지표 높은 종·보전평가 미확인 종·근거 부족 종 수와 종 이름이 나와요. 이 수는 종별 지표로 센 것이고, 셀이나 해역에 매긴 점수가 아니에요.',
+    k:['셀','격자','클릭','누르면','확인종','활용가능종','보전우선종'],
+    a:'지도의 셀을 누르면 그 격자의 확인 종·활용 지표 높은 종·보전 지표 높은 종 수와 종 이름이 나와요. 이 수는 종별 지표로 센 수예요.',
     show:{click:['[data-view="explore"]'],target:'#map'},next:['sea-score','colors']},
   {id:'compare',q:['종끼리 비교하기','여러 종을 비교하고 싶어요','비교표는 어떻게 봐요','근거 보기 버튼은 뭐예요'],
     k:['비교','비교표','데이터표','나란히','근거보기','지도셀목록','정렬','자세히','이전','다음','가로스크롤','담기','선택한생물'],
     a:'{tab:compare} 탭 위쪽의 ‘데이터 표’를 누르면 모든 종을 한 표에서 나란히 볼 수 있어요. 매트릭스에서 고른 종을 ‘+ 비교 담기’로 3종까지 담아 ‘선택한 생물 비교하기’로 볼 수도 있어요. 한 행이 한 종이고, 지표 머리글을 누르면 높은 순·낮은 순으로 정렬돼요(한 번 더 누르면 기본 순서). 값 칸을 누르면 그 종의 근거 패널이, ‘지도·셀 목록 보기’를 누르면 그 종의 지도 셀이 열려요. 비교집단·MCUI 기반 같은 긴 설명은 행 끝 ‘자세히’에서 펼쳐요.',
-    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['matrix','labels']},
+    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['matrix','indices']},
   {id:'matrix',q:['활용 × 보전 매트릭스는 뭐예요','매트릭스 점은 어떻게 읽어요','왜 두 지표를 합치지 않나요'],
     k:['매트릭스','합치지','따로','두축'],
-    a:'{tab:compare} 탭 첫 화면의 ‘활용 × 보전’ 매트릭스는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 합치지 않아요. 활용가치가 높다고 보전 필요성이 가려지면 안 되기 때문이에요. 사분면마다 쉬운 이름과 공식 유형 이름이 함께 적혀 있어요. 점 색은 그 종의 유형 색이고, 속이 빈 점은 최상위 근거 독립 재현 확인 중 라벨이 붙은 값(MBPI 최상위 항목의 독립 재현이 아직 없음)이에요. 한 줄에 몰린 점들은 ‘N종 밀집 · 펼치기’ 상자로 묶여 있고, 누르면 그 종 목록이 열려요. 나머지 같은 높이 점은 위아래로 조금 비켜 놓고 짧은 선으로 실제 높이를 가리켜요. 읽는 법은 그래프 오른쪽 위 ‘ⓘ 읽는 법’ 버튼에 있어요. MCUI 기반은 점 툴팁과 그래프 아래 ‘유형별 종 목록’에서 볼 수 있고, 이 목록으로 색 없이도 같은 내용을 읽을 수 있어요. 점을 누르면 오른쪽 종 프로필에 그 종의 값과 라벨이 나와요.',
+    a:'{tab:compare} 탭 첫 화면의 ‘활용 × 보전’ 매트릭스는 가로축 BBVI(활용가치)와 세로축 MCUI(보전 시급성)에 종을 점으로 놓아요. 두 값은 일부러 따로 두어요. 활용가치가 높아도 보전 필요성이 함께 보이게 하려는 거예요. 사분면마다 쉬운 이름과 공식 유형 이름이 함께 적혀 있어요. 점 색은 그 종의 유형 색이에요. 한 줄에 몰린 점들은 ‘N종 밀집 · 펼치기’ 상자로 묶여 있고, 누르면 그 종 목록이 열려요. 나머지 같은 높이 점은 위아래로 조금 비켜 놓고 짧은 선으로 실제 높이를 가리켜요. 읽는 법은 그래프 오른쪽 위 ‘ⓘ 읽는 법’ 버튼에 있어요. 그래프 아래 ‘유형별 종 목록’으로 색 없이도 같은 내용을 읽을 수 있어요. 점을 누르면 오른쪽 종 프로필에 그 종의 값이 나와요.',
     show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix-missing','threshold','indices']},
   // 2026-10-15 심사 예상 질문. 종 이름·값·근거는 {matrix}·{score:종:지표}·{basis:종}·{mcuiwhy:종}으로 화면 자료에서 읽는다.
-  {id:'matrix-missing',q:['매트릭스에 없는 종이 있어요?','왜 어떤 종은 매트릭스에 점이 없어요','매트릭스에는 몇 종이 있어요'],
+  {id:'matrix-missing',q:['매트릭스에는 몇 종이 있어요?','매트릭스에 없는 종이 있어요?','왜 어떤 종은 매트릭스에 점이 없어요'],
     k:['매트릭스없','점이없','빠진종','빠졌','몇종'],
-    a:'{tab:compare} 탭의 ‘활용 × 보전’ 매트릭스에는 BBVI(활용가치)와 MCUI(보전 시급성)가 둘 다 있는 종만 점으로 놓아요. {matrix}',
+    a:'{tab:compare} 탭의 ‘활용 × 보전’ 매트릭스는 종마다 BBVI(활용가치)와 MCUI(보전 시급성)를 짝지어 점 하나로 놓아요. {matrix}',
     show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix','mcui']},
   {id:'threshold',q:['50점은 누가 정했어요?','높음 기준은 왜 그 값이에요','구분선은 어떻게 정했어요','기준 50은 근거가 있어요?'],
     k:['50','누가정','구분선','기준값','높음기준','정했'],
-    a:'‘높음’을 가르는 선은 연구팀이 정한 규칙이에요. {rule} 이 선은 검증된 기준이 아니라 탐색적 구분선이고, 4.0부터 산식·가중치와 함께 고정해 결과를 보고 바꾸지 않아요. 선 가까이 있는 종은 유형이 쉽게 바뀔 수 있으니 유형 이름보다 값을 함께 봐 주세요. {tab:compare} 탭 ‘비교 기준’의 가중치 슬라이더로 BBVI가 어떻게 움직이는지 확인할 수 있어요.',
-    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix','validation']},
+    a:'‘높음’을 가르는 선은 연구팀이 정한 규칙이에요. {rule} 이 선은 탐색용 기준선이고, 4.0부터 산식·가중치와 함께 고정해 두었어요. 선 가까이 있는 종은 유형이 쉽게 바뀔 수 있으니 유형 이름보다 값을 함께 봐 주세요. {tab:compare} 탭 ‘비교 기준’의 가중치 슬라이더로 BBVI가 어떻게 움직이는지 확인할 수 있어요.',
+    show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]'],target:'#matrix'},next:['matrix','bbvi']},
   {id:'same-score',q:['참굴 10점과 고등어 10점은 같은 뜻이에요?','MCUI 점수가 같으면 같은 위험이에요','같은 점수는 같은 뜻인가요'],
     k:['같은뜻','같은점수','점수같','같은위험','참굴','고등어'],
-    a:'MCUI(보전 시급성)의 같은 숫자는 같은 범주 이름을 점수로 옮겼다는 뜻일 뿐, 같은 위험을 잰 값은 아니에요. 참굴 MCUI({score:참굴:MCUI})는 {basis:참굴}, 고등어 MCUI({score:고등어:MCUI})는 {basis:고등어}에서 왔어요. 평가 범위가 다르면 같은 숫자라도 같은 위험이 아니라서, 화면은 값 옆에 그 근거를 함께 적고 기반이 다른 값끼리 순위를 매기지 않아요. 종별 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.',
+    a:'MCUI(보전 시급성)의 숫자는 보전 상태 범주(LC·NT·VU·EN·CR)를 정해진 점수로 옮긴 값이에요(자원 감소 신호가 있는 종은 그 점수와 비교해 높은 값). 참굴 MCUI({score:참굴:MCUI})는 {basis:참굴}, 고등어 MCUI({score:고등어:MCUI})는 {basis:고등어}에서 왔어요. 범주를 매긴 평가(전 지구 평가·국가 평가 등)는 종마다 다르니, 같은 점수도 어느 평가에서 왔는지 함께 봐 주세요. 종별 범주와 출처는 종 상세의 MCUI 칸에서 볼 수 있어요.',
     show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['mcui','squid']},
   {id:'squid',q:['살오징어는 IUCN에서 LC인데 왜 60점이에요?','LC인데 MCUI가 왜 높아요','오징어 보전 점수가 왜 높아요'],
     k:['살오징어','오징어','lc인데','60점','왜높'],
-    a:'{mcuiwhy:살오징어} 4.12부터 KOSIS 연근해 어획량이 크게 줄어든 종에는 자원 감소 신호 점수를 매기고, 멸종위험 점수와 둘 중 높은 값을 MCUI로 써요. 이 점수는 IUCN 평가가 아니고 어획량은 개체수와 같지 않아서, 화면에는 ‘자원 감소 신호’로 따로 밝혀요.',
-    show:{click:['[data-view="method"]'],target:'#method-03'},next:['mcui','validation']},
-  {id:'indices',q:['BBVI·MCUI·정보충분도가 뭔가요?','지표가 뭐예요','점수는 어떻게 매겨요'],
-    k:['지표','bbvi','mcui','정보충분도','점수','약어'],
-    a:'BBVI(활용가치)는 식량 지표 MFPI와 생리활성 지표 MBPI를 합친 값이고, MCUI(보전 시급성)는 보전 평가 범주를 점수로 옮긴 값이에요(공식 평가가 없으면 자체 예비평가). 두 값은 합치지 않고 따로 보여 줘요. 정보충분도는 자료가 얼마나 갖춰졌는지 보여 주는 별도 표시로, 점수와 섞지 않아요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
+    a:'{mcuiwhy:살오징어} 4.12부터 KOSIS 연근해 어획량이 크게 줄어든 종에는 자원 감소 신호 점수를 매기고, 멸종위험 점수와 둘 중 높은 값을 MCUI로 써요. 자원 감소 신호 점수는 KOSIS 어획량 통계에서 온 값이라, 화면에는 ‘자원 감소 신호’로 따로 적어요.',
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['mcui','same-score']},
+  {id:'indices',q:['BBVI·MCUI가 뭔가요?','지표가 뭐예요','점수는 어떻게 매겨요'],
+    k:['지표','bbvi','mcui','점수','약어'],
+    a:'BBVI(활용가치)는 식량 지표 MFPI와 생리활성 지표 MBPI를 합친 값이고, MCUI(보전 시급성)는 보전 상태 범주를 점수로 옮기고 어획량이 크게 줄어든 종은 자원 감소 신호까지 함께 본 값이에요. 두 값은 각각 따로 보여 줘요.',
     show:{click:['[data-view="method"]'],target:'#method-02'},next:['mfpi','mbpi','mcui']},
   {id:'bbvi',q:['BBVI는 어떻게 계산해요','활용가치는 뭐예요','식량 가중치 슬라이더는 뭐예요'],
     k:['bbvi','활용가치','가중치','슬라이더','통합'],
-    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(생리활성)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 가중치 슬라이더와 프리셋(신약 중심 MBPI 0.75·균형·식량 중심 MFPI 0.75)으로 두 축의 비중을 바꿔 볼 수 있어요. 공식 산출값의 가중치는 고정이고, 바꾼 값은 ‘탐색 보기’ 표시와 함께 공식값을 나란히 보여 줘요. BBVI는 방법 검증 기준 미충족이라 참고값으로 봐 주세요.',
+    a:'BBVI(활용가치)는 MFPI(식량)와 MBPI(생리활성)를 합친 값이에요. {tab:compare} 탭 매트릭스의 ‘비교 기준’을 누르면 나오는 가중치 슬라이더와 프리셋(신약 중심 MBPI 0.75·균형·식량 중심 MFPI 0.75)으로 두 축의 비중을 바꿔 볼 수 있어요. 공식 산출값의 가중치는 고정이고, 바꾼 값은 ‘탐색 보기’ 표시와 함께 공식값을 나란히 보여 줘요.',
     show:{click:['[data-view="compare"]','[data-cmp-mode="matrix"]','#cmp-basis-toggle'],target:'.weight-control'},next:['mfpi','mbpi']},
   {id:'mfpi',q:['MFPI는 뭐예요','식량 지표는 어떻게 매겨요','EPA DHA는 점수에 들어가요'],
     k:['mfpi','식량지표','영양','식품성분','epa','dha','ufish'],
-    a:'MFPI(식량 지표)는 국가표준식품성분 DB 10.4의 고정 비교집단과 견줘 매긴 값이에요. 빠진 성분은 같은 종 부표본이나 FAO/INFOODS uFiSh 값으로 채우고 표시해요. EPA·DHA는 보여 주기만 하고 점수에는 넣지 않아요.',
-    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','mbpi']},
+    a:'MFPI(식량 지표)는 국가표준식품성분 DB 10.4의 고정 비교집단과 견줘 매긴 값이에요. 성분값은 이 DB를 먼저 쓰고, 같은 종 부표본이나 FAO/INFOODS uFiSh 값도 출처를 표시해 함께 써요. EPA·DHA는 점수와 따로 보여 주는 참고 정보예요.',
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['mbpi','bbvi']},
   {id:'mbpi',q:['MBPI는 뭐예요','신약 지표는 어떻게 매겨요','MBPI가 0점이면 효능이 없는 건가요'],
-    k:['mbpi','신약지표','생리활성','펩타이드','chembl','0점','하한값','효능'],
-    a:'MBPI(생리활성 단서 지표)는 ChEMBL 화합물, ACE 저해·항균·항암·잔틴 산화효소 억제 펩타이드, 감태 분리 화합물을 층별로 따로 백분위로 매겨요. 같은 표적·같은 시험 조건끼리만 비교하고, 근거 계수를 곱한 뒤 가장 높은 항목을 종의 값으로 써요. 근거가 없는 종은 0점(하한값)이고 효능이 없다는 뜻이 아니에요. 방법 검증 기준 미충족이라 참고값으로 봐 주세요. 종 프로필의 MBPI 아래에는 최상위 근거가 의약 표적(항균·항암·기타 표적)인지 기능성 펩타이드(ACE·XO)인지를 함께 보여 줘요. 의약 표적 항목만 모은 보조 값도 그 옆에 있어요.',
-    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','mcui']},
-  {id:'mcui',q:['MCUI는 뭐예요','보전 시급성은 어떻게 정해요','적색목록 평가가 없으면 어떻게 해요','보전평가 미확인은 무슨 뜻이에요','자원 감소 신호는 뭐예요'],
-    k:['mcui','보전','시급','적색목록','iucn','rapidlc','예비평가','멸종','어획량','자원감소','미확인','보전평가미확인'],
-    a:'MCUI(보전 시급성)의 멸종위험 성분은 IUCN 적색목록 2026-1 현행 전 지구 평가를 먼저 쓰고, 없으면 한국 국가 평가를 써요. 두 기관이 아직 평가하지 않은 종은 서식국 정부 평가나 자체 예비평가(Rapid LC)를 예비 평가로 쓰고, IUCN이나 국립해양생물자원관의 공식 결과가 나오면 바로 그 값으로 바꿔요. 어느 근거도 없으면 MCUI는 비워 두고, 0점이나 낮은 위험으로 바꾸지 않아요. 4.12부터는 KOSIS 연근해 어획량이 크게 줄어든 종에 자원 감소 신호 점수(35·60·80점)를 매겨 둘 중 높은 값을 MCUI로 써요. 멸종위험 성분이 없는 종은 그 점수가 매트릭스 구분선 이상일 때만 하한으로 써요. 이 점수는 IUCN 평가가 아니고, 어획량은 개체수와 같지 않아요. OBIS 출현 추세는 참고 요소이고, 출현기록 수만으로 판정하지 않아요.',
-    show:{click:['[data-view="method"]'],target:'#method-02'},next:['validation','matrix']},
+    k:['mbpi','신약지표','생리활성','펩타이드','chembl','0점','효능'],
+    a:'MBPI(생리활성 단서 지표)는 이 생물에서 나온 물질의 실험 결과로 매기는 값이에요. ChEMBL 화합물, ACE 저해·항균·항암·잔틴 산화효소 억제 펩타이드, 감태 분리 화합물을 층별로 따로 백분위로 매기고, 같은 표적·같은 시험 조건끼리만 비교해요. 근거 계수를 곱한 뒤 가장 높은 항목을 종의 값으로 써요. 어느 층에도 항목이 없을 때의 기본값은 0점이에요. 종 프로필의 MBPI 아래에는 최상위 근거가 의약 표적(항균·항암·기타 표적)인지 기능성 펩타이드(ACE·XO)인지를 함께 보여 줘요. 의약 표적 항목만 모은 보조 값도 그 옆에 있어요.',
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['bbvi','mcui']},
+  {id:'mcui',q:['MCUI는 뭐예요','보전 시급성은 어떻게 정해요','적색목록 평가가 없으면 어떻게 해요','자원 감소 신호는 뭐예요'],
+    k:['mcui','보전','시급','적색목록','iucn','멸종','어획량','자원감소'],
+    a:'MCUI(보전 시급성)는 보전 상태 범주(LC·NT·VU·EN·CR)를 점수로 옮기고, 어획량이 크게 줄어든 종은 자원 감소 신호 점수와 비교해 높은 값을 써요. 범주는 IUCN 적색목록 2026-1 전 지구 평가를 먼저 쓰고, 그다음 한국 국가 평가 등을 써요. 자원 감소 신호는 4.12부터 KOSIS 연근해 어획량 통계로 매기는 35·60·80점이에요. 종마다 쓴 범주와 출처는 종 상세의 MCUI 칸에서 볼 수 있어요.',
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['squid','matrix']},
+  // 검증을 묻는 입력의 자리: 검증 결과(통과·미충족)는 말하지 않고 근거와 방법 탭만 가리킨다(2026-10-17).
   {id:'validation',q:['검증은 통과했어요?','지표는 검증됐나요','방법 검증 기준 미충족은 무슨 뜻이에요','빈칸은 왜 없어요'],
-    k:['검증','미통과','미충족','통과','신뢰','빈칸','대체규칙'],
-    a:'MFPI(식량)는 같은 종을 국가표준식품성분 DB와 일본 식품성분표로 각각 계산해 순위를 비교하는 검증을 통과했어요. MBPI(생리활성)와 BBVI(활용가치)는 ‘방법 검증 기준 미충족’ 라벨이 붙어 있어 참고값으로 봐야 해요. 해양 유래 의약품의 기원종이 MBPI 상위에 오는지 본 사후 검증도 기준 미충족이에요. 결과는 {tab:method} 탭 ‘검증 결과’에 그대로 적혀 있어요. 4.3부터 빈칸은 없고, 공식 근거가 없는 칸은 미리 정한 대체 규칙으로 채운 뒤 라벨로 밝혀요.',
-    show:{click:['[data-view="method"]'],target:'#method-03'},next:['labels','indices']},
-  {id:'labels',q:['값 옆의 라벨은 무슨 뜻이에요','하한값 라벨이 뭐예요','지방 목록 예비평가 라벨'],
-    k:['라벨','하한값','예비평가','지방목록'],
-    a:'값 옆의 라벨(최상위 근거 독립 재현 확인 중·하한값·예비평가·지방 목록)은 근거의 수준을 알려 주는 표시이고, 가치가 높고 낮음을 뜻하지 않아요. 규칙을 다 채우지 못한 값에 붙어요.',
-    show:{click:['[data-view="compare"]','[data-cmp-mode="table"]'],target:'#comparison'},next:['evidence-level','validation']},
-  // 4.16 (2026-10-15): the old '근거 논문 1편' words read as "one paper"; they meant the top MBPI item has no independent replication
-  {id:'evidence-level',q:['‘근거 논문 1편’이 무슨 뜻이에요?','최상위 근거 독립 재현 확인 중은 무슨 뜻이에요','근거 프로필은 어떻게 읽어요'],
-    k:['근거논문','논문1편','단일논문','근거프로필','독립재현','재현','최상위근거','논문수','소수점','정수'],
-    a:'예전의 ‘근거 논문 1편’ 표시는 그 종의 논문이 1편뿐이라는 뜻이 아니었어요. MBPI를 정하는 최상위 항목을 다른 연구팀이 같은 종의 시료로 다시 재서 확인하는 일(독립 재현)이 아직 진행 중이라는 뜻이라, 지금은 ‘최상위 근거 독립 재현 확인 중’으로 적어요. 종 상세와 종 프로필의 근거 프로필 한 줄은 근거의 양(산출 항목 수·독립 논문 수)과 최상위 항목의 독립 재현 확인 여부를 따로 보여 줘요. 확인 전인 항목에는 근거 계수(0.75 등)가 곱해지고, 그런 MBPI·BBVI는 정수로 보여요. 같은 연구실의 후속 논문, 합성품이나 다른 생물 시료의 측정, DOI 없는 문헌은 재현으로 세지 않아요.',
-    show:{click:['[data-view="method"]'],target:'#method-evidence'},next:['labels','mbpi']},
-  {id:'sufficiency',q:['정보충분도는 뭐예요','우선 조사 대상은 뭐예요','우선 조사 체크박스는 뭐예요'],
-    k:['정보충분도','우선조사','조사대상','충분도','자료부족'],
-    a:'정보충분도는 지표에 필요한 자료가 얼마나 갖춰졌는지 보여 주는 표시예요. ‘우선 조사 대상’은 정보충분도가 낮거나 보전 평가가 없는 종으로, 2×2 범례의 ‘읽는 법 ⓘ’에서 체크박스로 지도에 켤 수 있어요. 둘 다 점수와 섞지 않는 별도 표시예요.',
-    show:{click:['[data-view="explore"]','[data-map-mode="value"]','#value-info'],target:'.value-layers'},next:['unexplored','indices']},
-  {id:'unexplored',q:['미탐색 후보는 뭐예요','30종 밖 미탐색 후보 목록','새로 발견된 종인가요'],
-    k:['미탐색','근연종','30종밖','같은속','발견'],
-    a:'‘미탐색 후보’는 BBVI(활용가치)가 높은 종과 같은 속인 근연종이에요. 근연종의 점수를 옮겨 추정하지 않아서 점수가 없고, 조사 단서일 뿐 발견이 아니에요. ⓘ 범례의 ‘미탐색 후보’ 체크박스와 30종 밖 목록에서 볼 수 있어요.',
-    show:{click:['[data-view="explore"]','[data-map-mode="value"]','#value-info'],target:'.value-layers'},next:['sufficiency','bbvi']},
+    k:['검증','미통과','미충족','통과','신뢰','빈칸','대체규칙','논문','재현'],
+    a:'지표를 어떻게 계산했는지는 {tab:method} 탭에 출처와 함께 정리되어 있어요.',
+    show:{click:['[data-view="method"]'],target:'#method-02'},next:['indices','sources']},
+  {id:'unexplored',q:['같은 속 친척 종은 뭐예요?','다음 탐색 후보는 뭐예요','미탐색 후보는 뭐예요','30종 밖 미탐색 후보 목록','새로 발견된 종인가요'],
+    k:['미탐색','근연종','30종밖','같은속','친척','다음탐색','발견'],
+    a:'‘같은 속 친척 종 · 다음 탐색 후보’는 BBVI(활용가치)가 높은 종과 같은 속인 근연종이에요. 이 종들은 같은 속 친척 종이라 다음 탐색 후보로 보여 줘요. ⓘ 범례의 같은 이름 체크박스와 30종 밖 목록에서 볼 수 있어요.',
+    show:{click:['[data-view="explore"]','[data-map-mode="value"]','#value-info'],target:'.value-layers'},next:['bbvi','mini-grid']},
   {id:'period-effort',q:['기간 필터는 뭐예요','회색 음영 조사량은 뭐예요','점이 없는 바다는 종이 없는 건가요'],
-    k:['기간','조사량','음영','회색음영','조사가부족','없는바다'],
-    a:'‘공개 집계 기간’ 버튼은 ‘출현 기록’·‘활용 × 보전’ 버튼 옆에 있고, 기록을 모은 기간이 여러 개인 종을 기간별로 나눠 볼 때 눌러서 골라요. 회색 음영 ‘조사량’은 그 바다가 얼마나 조사됐는지 보여 주며, 이 종의 기록 수와는 관계없어요. 처음 화면에서는 꺼져 있고, 지도 왼쪽 아래 범례의 ‘조사량’ 칸을 켜면 보여요. 음영이 옅은 바다에 점이 없다면 종이 없어서가 아니라 조사가 부족해서일 수 있어요.',
+    k:['기간','조사량','음영','회색','회색음영','조사가부족','없는바다'],
+    a:'‘공개 집계 기간’ 버튼은 ‘출현 기록’·‘활용 × 보전’ 버튼 옆에 있고, 기록을 모은 기간이 여러 개인 종을 기간별로 나눠 볼 때 눌러서 골라요. 회색 음영 ‘조사량’은 그 바다에 쌓인 모든 해양생물의 OBIS 관측 기록 양이에요(옅을수록 기록이 적은 바다). 처음 화면에서는 꺼져 있고, 지도 왼쪽 아래 범례의 ‘조사량’ 칸을 켜면 보여요. 점과 이 음영을 함께 보면 기록이 많이 쌓인 바다를 알 수 있어요.',
     show:{click:['[data-view="explore"]','[data-map-mode="occurrence"]'],target:'#occurrence-legend'},next:['red-dots','map-modes']},
   {id:'map-buttons',q:['위성 수심 배경 바꾸기','링크 복사는 뭐예요','전체 보기 버튼','확대 축소는 어떻게 해요'],
     k:['위성','수심','배경','링크복사','공유','전체보기','확대','축소'],
     a:'지도 오른쪽 위에서 ‘위성’과 ‘수심’ 배경을 바꿀 수 있어요. ‘링크 복사’는 지금 보는 종·탭·배경 지도·기간·지도 위치·활용 특성 칩을 링크 하나로 복사하고, ‘전체 보기’는 선택 종의 전체 범위로 지도를 돌려요. 확대·축소는 지도 오른쪽 아래의 +/− 버튼으로 해요.',
     show:{click:['[data-view="explore"]'],target:'.map-title'},next:['map-modes','select-species']},
-  {id:'red-dots',q:['붉은 점이 실제 발견 위치인가요','빨간 점은 뭐예요','버블은 뭐예요'],
+  {id:'red-dots',q:['붉은 점은 뭐예요?','붉은 점이 실제 발견 위치인가요','빨간 점은 뭐예요','버블은 뭐예요'],
     k:['붉은점','빨간점','좌표','위치','버블'],
-    a:'아니요, 붉은 점은 공개 격자 안에 고정한 도식적 무늬라서 실제 발견 좌표가 아니에요. 점과 기록 수로는 개체수나 자원량을 알 수 없어요. 축소한 지도의 붉은 버블은 공개 셀을 해역별로 묶은 표시예요.',
+    a:'지도의 붉은 점은 기록이 있는 칸의 위치(넓게 묶음)예요. 그 칸 안에 고정한 도식적 무늬로 그려요. 기록 수는 공개 관측 기록 건수예요. 축소한 지도의 붉은 버블은 공개 셀을 해역별로 묶은 표시예요.',
     show:{click:['[data-view="explore"]','[data-map-mode="occurrence"]'],target:'#occurrence-legend'},next:['period-effort','sea-score']},
   {id:'sea-score',q:['해역 점수나 자원량을 알 수 있나요','어느 바다가 가치가 높아요','이 바다를 개발해도 되나요'],
     k:['해역','자원량','해역점수','바다점수','개발','어느바다'],
-    a:'이 지도는 해역 점수나 자원량을 만들지 않아요. 지표는 종 단위이고, 종별 지표를 해역 단위로 합치지 않아요. 셀 색은 출현기록이 있는 셀에 그 셀에 기록된 종의 유형을 표시한 것일 뿐이에요.',
-    show:{click:['[data-view="method"]'],target:'.method-bottom'},next:['colors','indices']},
+    a:'이 지도의 지표는 모두 종 단위 값이에요. 셀 색은 출현기록이 있는 셀마다 그 셀에 기록된 종의 유형을 칠한 것이고, 유형은 연구 순서를 고르기 위한 분류예요. 셀의 기록 수는 공개 관측 기록 건수예요.',
+    show:{click:['[data-view="explore"]','[data-map-mode="value"]'],target:'#value-mini'},next:['colors','indices']},
   {id:'sources',q:['자료 출처는 어디예요','종과 화합물은 어떻게 연결해요','AphiaID는 뭐예요'],
     k:['출처','자료','데이터','aphiaid','worms','inchikey','pubchem','연결'],
     a:'종은 WoRMS AphiaID로, 화합물은 InChIKey·PubChem CID로 연결해요. 사용한 자료 목록은 {tab:method} 탭 아래 ‘사용한 자료와 수집 방법’에 있어요.',
-    show:{click:['[data-view="method"]'],target:'.source-section'},next:['validation','overview']},
+    show:{click:['[data-view="method"]'],target:'.source-section'},next:['indices','overview']},
   {id:'move-mascot',q:['멍이가 화면을 가려요','멍이 위치 옮기기','멍이 버튼을 다른 곳으로 옮기고 싶어요'],
     k:['멍이','옮기','옮겨','가려','가리','끌어','드래그'],
     a:'멍이 버튼을 누른 채 끌면 원하는 자리로 옮길 수 있어요. 놓은 자리는 이 브라우저에 기억되고, 대화창 위의 ‘멍이 원래 자리로’를 누르면 처음 자리로 돌아가요.',
     next:['overview']}
 ];
 const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colors','색깔(4가지 유형)은 무슨 뜻이에요?'],['chips','신약·기능성·식량 특성으로 종 찾기'],
-  ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI·정보충분도가 뭔가요?']];
+  ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI가 뭔가요?']];
 // 답이 없을 때 보여 줄 세 탭과 그 탭에서 볼 수 있는 것.
-const CHATBOT_TAB_LINKS=[['explore','종별 지도와 근거'],['compare','매트릭스와 데이터 표'],['method','산출 방법과 검증 결과']];
+const CHATBOT_TAB_LINKS=[['explore','종별 지도와 근거'],['compare','매트릭스와 데이터 표'],['method','산출 방법과 출처']];
 const CHATBOT_PARTICLES=['으로','에서','이랑','하고','까지','부터','한테','은','는','이','가','을','를','의','에','로','도','요','와','과','만'];
 // 소문자 → 낱말마다 끝 조사 하나 제거(조사보다 2글자 이상 긴 낱말만) → 공백·문장부호 없이 이어 붙임.
 function chatbotNormalize(text){
@@ -152,25 +144,26 @@ function chatbotPlain(key){
   return '종 카드에 적힌 판단문';
 }
 // {matrix}·{score:종:지표}·{basis:종}·{mcuiwhy:종}: 종의 값과 근거를 app.js가 화면에 쓰는 함수로 읽는다(숫자 하드코딩 없음).
-// 자료가 아직 없거나 종을 못 찾으면 화면을 보라는 말로 바꾼다. 예비 평가는 바깥 화면처럼 중립 낱말('멸종위험 평가')로만 부른다.
+// 자료가 아직 없거나 종을 못 찾으면 화면을 보라는 말로 바꾼다. MCUI 근거 낱말은 app.js의 mcuiBasisShortOf가 화면과 같은 말로 정한다.
+// 2026-10-17 문구 규칙: 매트릭스는 놓인 종 수만 말하고(빠진 종의 이름·이유·빠진 수는 쓰지 않음), 멸종위험 점수를 모르는 종은 그 부분을 쓰지 않는다.
 function chatbotFact(kind,arg){
   try{
     const list=typeof data!=='undefined'&&Array.isArray(data?.species)?data.species:null;
     if(kind==='matrix'){
       if(!list||typeof assessedForMatrix!=='function')return '몇 종이 놓였는지는 매트릭스 아래 ‘유형별 종 목록’에서 볼 수 있어요.';
-      const out=list.filter(s=>!assessedForMatrix(s));
-      if(!out.length)return `지금은 ${list.length}종 모두 매트릭스에 놓여 있어요.`;
-      const why=typeof untypedWhy==='function'?untypedWhy(out[0]):'유형 미산출';
-      return `지금은 ${list.length}종 중 ${list.length-out.length}종이 놓여 있어요. 빠진 종(${out.map(s=>`‘${s.label}’`).join('·')})은 ‘${why}’라서 점이 없어요.`;
+      const n=list.filter(s=>assessedForMatrix(s)).length;
+      return n===list.length?`지금은 ${list.length}종 모두 매트릭스에 놓여 있어요.`:`지금은 매트릭스에 ${n}종이 놓여 있어요.`;
     }
     const [name,key]=String(arg).split(':'),s=list?.find(x=>x.label===name);
     const score=k=>{const v=s&&pilotScore(s,k);return Number.isFinite(v)?scoreText(s,k,v):null;};
     if(kind==='score'&&score(key)!==null)return score(key)+'점';
     if(kind==='basis'&&s&&typeof mcuiBasisShortOf==='function'){const b=mcuiBasisShortOf(s);return b==='IUCN'?'IUCN 전 지구 평가':b;}
     if(kind==='mcuiwhy'&&score('MCUI')!==null){
-      const c=s.assessment?.conservation_status?.category,risk=extinctionMcui(s);
-      return stockMcui(s)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${Number.isFinite(risk)?risk.toFixed(1)+'점':'낮은 값'}이지만, 자원 감소 신호(어획량 ${stockChange(s.assessment.stock_decline)})로 ${score('MCUI')}점이 됐어요.`
-        :`${name}의 MCUI는 지금 ${score('MCUI')}점이고 ${chatbotFact('basis',name)}에서 왔어요.`;
+      if(!stockMcui(s))return `${name}의 MCUI는 지금 ${score('MCUI')}점이고 ${chatbotFact('basis',name)}에서 왔어요.`;
+      const c=s.assessment?.conservation_status?.category,risk=extinctionMcui(s),ch=stockChange(s.assessment.stock_decline);
+      const signal=`자원 감소 신호${ch?`(어획량 ${ch})`:''}`;
+      return Number.isFinite(risk)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${risk.toFixed(1)}점이지만, ${signal}로 ${score('MCUI')}점이 됐어요.`
+        :`${name}의 MCUI는 ${signal}로 ${score('MCUI')}점이 됐어요.`;
     }
   }catch{}
   return kind==='score'?'(값은 종 상세 참고)':kind==='basis'?'종 상세에 적힌 근거':kind==='mcuiwhy'?'값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.':'';
@@ -180,7 +173,8 @@ function chatbotMatch(text){
   let best=null,top=0;
   for(const f of CHATBOT_FAQ){
     const sim=Math.max(...f.q.map(e=>chatbotSimilar(q,chatbotNormalize(e))));
-    const hits=f.k.filter(k=>q.includes(chatbotNormalize(k))).length;
+    // 기호뿐인 키워드(ⓘ)는 정규화하면 빈 문자열이 되어 모든 질문에 걸리므로 세지 않는다.
+    const hits=f.k.filter(k=>{const w=chatbotNormalize(k);return !!w&&q.includes(w);}).length;
     const score=sim+.3*hits;
     if(score>top){top=score;best=f;}
   }
@@ -311,7 +305,7 @@ if(typeof document!=='undefined')(function(){
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
-    '<p class="bbc-note">AI 아님 · 정해진 답변</p>'+
+    '<p class="bbc-note">미리 준비한 답변으로 안내해요</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
     '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
     '<span class="bbc-safe" aria-hidden="true"></span>';
@@ -437,9 +431,9 @@ if(typeof document!=='undefined')(function(){
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
     log.scrollTop=log.scrollHeight;
   }
-  // FAQ가 못 찾은 질문: '준비된 답이 없어요'와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
+  // FAQ가 못 찾은 질문: 탭에서 찾아보라는 안내와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
   function unknown(){
-    add('bbc-bot','준비된 답이 없어요. 아래 탭에서 직접 보거나, 다른 말로 다시 물어봐 주세요.','unknown');
+    add('bbc-bot','아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.','unknown');
     const box=document.createElement('div');box.className='bbc-chips bbc-tabs';
     for(const [id,what] of CHATBOT_TAB_LINKS){
       const b=document.createElement('button');b.type='button';b.dataset.tab=id;

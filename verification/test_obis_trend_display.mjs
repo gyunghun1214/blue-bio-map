@@ -1,6 +1,8 @@
 // 2026-10-15 (개선 프롬프트 6): the OBIS trend is shown per species although its MCUI adjustment is off since 4.11. The species
 // profile carries the class, the effort-corrected ratio, the dominant-dataset check and the '점수 미반영' label; a decline signal
 // with an MCUI under the matrix line is marked ⚠ on its matrix point and listed in the method tab. No score or type changes.
+// 2026-10-17 (LKH): the trend is no longer drawn (no profile block, no ⚠, no method-tab list); the record keeps occurrence_trend
+// and the renderers below stay defined (checked here) but are not called.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -47,10 +49,11 @@ for(const a of rows){
 const p=ctx.api.profile(sp('멸치'));
 assert.ok(p.includes('감소 신호')&&p.includes('0.31')&&p.includes('주 데이터셋 감소 확인(0.20)')&&p.includes('<details class="cp-obis-more">'));
 
-// matrix point and legend carry the mark; the method tab explains the partial cross-check and why the adjustment is off
-assert.match(app,/class="mp-obis" aria-hidden="true">⚠<\/i>/);
-assert.match(app,/OBIS 감소 신호 · MCUI \$\{esc\(matrixRule\(\)\?\.mcui_threshold\)\} 미만/);
-for(const text of ['id="method-obis"','부분적으로','KOSIS 자원 감소 신호','조사 노력이 줄어든 것을 생물이 줄어든 것으로 잘못 읽을 위험','id="obis-warn-list"','prereg-draft-independent-decline-2026-10-15.md'])
-  assert.ok(html.includes(text),`method tab: ${text}`);
+// 2026-10-17 (LKH): no matrix point, legend or method-tab line carries the trend; the method card keeps the KOSIS signal only
+assert.doesNotMatch(app,/class="mp-obis"|OBIS 감소 신호 · MCUI/);
+for(const fn of ['cpObisTrend','occurrenceTrendDetail','obisWarnList'])assert.equal(app.split(fn).length-1,1,`${fn} is defined and never called`);
+for(const text of ['id="method-obis"','KOSIS 자원 감소 신호'])assert.ok(html.includes(text),`method tab: ${text}`);
+for(const text of ['부분적으로','조사 노력이 줄어든 것을 생물이 줄어든 것으로 잘못 읽을 위험','id="obis-warn-list"','prereg-draft-independent-decline-2026-10-15.md','OBIS 출현 추세'])
+  assert.ok(!html.includes(text),`method tab does not draw: ${text}`);
 assert.ok(fs.existsSync(new URL('../research/verified-indices/prereg-draft-independent-decline-2026-10-15.md',import.meta.url)));
 console.log(`ok OBIS trend display (${rows.length} species, ⚠ ${expected.join('·')})`);

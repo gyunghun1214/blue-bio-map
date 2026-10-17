@@ -31,7 +31,7 @@ const legendItems=[...legend.matchAll(/role="listitem" data-key="([^"]+)"><b>([^
 assert.deepEqual(legendItems.map(m=>m[2]),labels);
 for(const [,key,label] of legendItems)assert.equal(rule.types[key].label,label,key+': the fallback label is the report label of that key');
 assert.deepEqual(legendItems.map(m=>m[1]),['low_bbvi_high_mcui','high_bbvi_high_mcui','low_bbvi_low_mcui','high_bbvi_low_mcui']);
-assert.match(read('index.html'),/출현 기록이 있는 셀 × 그 셀에 기록된 종의 매트릭스 유형’입니다\. 해역의 자원량·분포·해역 점수가 아닙니다/);
+assert.match(read('index.html'),/출현 기록이 있는 셀 × 그 셀에 기록된 종의 매트릭스 유형’입니다\. 테두리는 공개 격자 범위이고, 지표는 종 단위로 봅니다/);
 assert.deepEqual(rule.cell_colour_precedence,['conservation_priority','alternative_production','sustainable_use','baseline_survey']);
 assert.deepEqual(Object.keys(ctx.matrixTypeColour).sort(),[...rule.cell_colour_precedence].sort());
 
@@ -71,8 +71,10 @@ assert.equal(ctx.cellMatrixType(cell(fake(null,80),fake(null,null))).type,null);
 
 // (5) Card text: type and information sufficiency stay separate labels.
 // 4.3: every species is typed and none is flagged, so the card wording is checked on a copy without an MCUI
+// 2026-10-17 (LKH): the card line names the type only; an untyped species gets no line (the survey flag stays in the record)
 const oneFlagged=next.species.find(s=>s.assessment?.priority_survey&&!ctx.matrixType(s))||(s=>({...s,assessment:{...s.assessment,priority_survey:true,priority_survey_reasons:['low_information_sufficiency'],scores:{...s.assessment.scores,MCUI:null}}}))(next.species[0]);
-assert.match(ctx.valueSpeciesType(oneFlagged),/매트릭스 유형 미산출[^]*우선 조사 대상[^]*점수와 별도/);
+assert.equal(ctx.valueSpeciesType(oneFlagged),'');
+assert.doesNotMatch(ctx.valueSpeciesType(next.species.find(s=>ctx.matrixType(s))),/미산출|우선 조사|정보충분도/);
 assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/활용 연구 검토[^]*한국 국가 평가 기반/);
 // (6) The BBVI slider moves the type: at w = 1 BBVI is MFPI alone, and the client re-types with it.
 const placed=next.species.find(s=>ctx.matrixType(s));
@@ -90,7 +92,7 @@ assert.equal(ctx.matrixType(fake(80,null)),null,'no MCUI, no type');
 // (7) National MCUI switched off: the cell is held and the card says why, instead of 'pair not computed'.
 ctx.setData({...next,assessmentInfo:{...next.assessmentInfo,method:{...next.assessmentInfo.method,matrix:{...rule,include_national_mcui:false}}}});
 assert.equal(ctx.cellMatrixType(cell(fake(80,10,'national'))).type,null);
-assert.match(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),/국가 평가 기반 MCUI는 이 규칙에서 매트릭스 제외/);
+assert.equal(ctx.valueSpeciesType({...fake(80,10,'national'),label:'x'}),'','2026-10-17 (LKH): a held species gets no card line');
 ctx.setData(next);
 assert.equal(ctx.nationalTyped(cell(fake(80,10,'national'),fake(80,10),fake(null,80,'national'))),1,'only typed national species count');
 
@@ -133,8 +135,8 @@ assert.deepEqual([...counts.unexplored.missing],flagged('unexplored_candidate').
 // (11) The candidate sentence uses Korean rank words and the relative's Korean name.
 // 3.15: 시카메굴 now has an MFPI (literature row) and a range-state MCUI, so its information sufficiency passes and no species is an unexplored candidate.
 assert.equal(flagged('unexplored_candidate').length,0);
-assert.equal(ctx.unexploredLine({rank:'genus',taxon:'Magallana',relatives:['참굴']}),'같은 속(Magallana)에 BBVI 50 이상인 근연종(참굴)이 있습니다');
-assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 근연종(Nomen novum)이 있습니다');
+assert.equal(ctx.unexploredLine({rank:'genus',taxon:'Magallana',relatives:['참굴']}),'같은 속(Magallana)에 BBVI 50 이상인 친척 종(참굴)이 있습니다');
+assert.equal(ctx.unexploredLine({rank:'family',taxon:'F',relatives:['Nomen novum']}),'같은 과(F)에 BBVI 50 이상인 친척 종(Nomen novum)이 있습니다');
 // (12) 2026-10-13 species view ('활용 × 보전' default): only the selected species' cells, in its type colour with a dashed border
 // of the same colour; the chosen cell is heavier; an untyped species keeps the held grey; never the selected/hover yellow.
 for(const t of rule.cell_colour_precedence){
@@ -154,10 +156,12 @@ for(const cell of [both,many,{lat:35,lon:129,size:1,species:new Map([[9,{...fake
 const heldOwn=ctx.speciesCellStyle(null,false);
 assert.deepEqual([heldOwn.color,heldOwn.fillColor,heldOwn.dashArray,heldOwn.fillOpacity],['#657588','#b7c0ca','5 4',.25],'untyped: the held grey of the all-species map');
 assert.ok([null,...rule.cell_colour_precedence].flatMap(t=>[false,true].map(a=>ctx.speciesCellStyle(t,a))).every(x=>x.color!==ctx.HOVER_OUTLINE.color&&x.fillColor!==ctx.HOVER_OUTLINE.color),'no yellow in the species view');
-// (13) Plain verdicts are display aliases of the type ids (data, hash and CSV keep the ids); anything else reads '유형 없음'.
+// (13) Plain verdicts are display aliases of the type ids (data, hash and CSV keep the ids); anything else reads '—' (2026-10-17).
 assert.deepEqual(Object.fromEntries(rule.cell_colour_precedence.map(t=>[t,ctx.matrixTypePlain(t)])),
   {conservation_priority:'보전 지표 높음',alternative_production:'두 지표 모두 높음',sustainable_use:'활용 지표 높음',baseline_survey:'두 지표 모두 낮음'});
-assert.equal(ctx.matrixTypePlain(null),'유형 미산출');assert.equal(ctx.matrixTypePlain('unknown_type'),'유형 미산출');
-assert.equal(ctx.matrixPlainNote(),`${rule.type_note} · ${rule.threshold_label}: BBVI ${rule.bbvi_threshold} 이상이면 활용 지표 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 지표 높음(검증된 기준 아님)`);
-ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구 분류 · 채집·이용 허용이나 지속가능성 판정이 아님','no rule: no thresholds');ctx.setData(next);
+assert.equal(ctx.matrixTypePlain(null),'—');assert.equal(ctx.matrixTypePlain('unknown_type'),'—');
+// 2026-10-17 (LKH): worded by what it is; the record keeps its note and label (rule.type_note, rule.threshold_label)
+assert.equal(ctx.matrixPlainNote(),`연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI ${rule.bbvi_threshold} 이상이면 활용 지표 높음, MCUI ${rule.mcui_threshold} 이상이면 보전 지표 높음`);
+assert.ok(rule.type_note.includes('판정이 아님')&&rule.threshold_label==='탐색적 구분선','the record keeps its wording');
+ctx.setData({assessmentInfo:{method:{}}});assert.equal(ctx.matrixPlainNote(),'연구 순서를 고르기 위한 분류','no rule: no thresholds');ctx.setData(next);
 console.log('PASS: matrix types follow the published 50/50 rule, national MCUI is marked, cell colour precedence and sufficiency layers are separate');
