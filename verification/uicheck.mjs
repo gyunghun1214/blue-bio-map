@@ -177,6 +177,17 @@ try{
       return {scroll:h.scrollTop,top:u.top,bottom:u.bottom,vh:innerHeight,lift:getComputedStyle(g.querySelector('.gate-sea')).translate,focus:document.activeElement?.id||''};})()`);
     check('G-1f the pill under the first screen scrolls down to 이렇게 쓸 수 있습니다 (all of it on screen, its heading focused), the globe riding up with the first screen',
       down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
+    // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps marked 계획
+    const next=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=g.querySelector('.gate-next'),b=n.getBoundingClientRect(),u=g.querySelector('.gate-uses').getBoundingClientRect();
+      return {h:n.querySelector('.gate-next-h').textContent,top:b.top,bottom:b.bottom,uses:u.bottom,vh:innerHeight,vw:innerWidth,
+        steps:[...n.querySelectorAll('.gate-next-list li')].map(li=>({now:li.classList.contains('is-now'),k:li.querySelector('.gate-next-k').textContent,t:li.querySelector('.gate-next-t').textContent,tag:li.querySelector('.gate-next-tag')?.textContent||'',
+          box:(r=>[r.left,r.right])(li.getBoundingClientRect())}))};})()`);
+    check('G-1g 다음 단계 after the uses: 지금 with the species total, then three steps each marked 계획, all on screen at the end of the scroll',
+      next.h==='다음 단계'&&next.top>=next.uses-1&&next.bottom<=next.vh+1&&JSON.stringify(next.steps.map(({box,...s})=>s))===JSON.stringify([
+        {now:true,k:'지금',t:`한반도 주변 ${total}종 공개`,tag:''},
+        {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'계획'},
+        {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'계획'},
+        {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'계획'}])&&next.steps.every(s=>s.box[0]>=0&&s.box[1]<=next.vw),JSON.stringify(next));
     await shot('gate-uses-desktop',false);
     await evaluate("document.querySelector('#site-gate .gate-hero').scrollTop=0;document.getElementById('gate-enter').focus();1");await sleep(500);
     await pressEnter();await sleep(1100);
@@ -1418,6 +1429,12 @@ try{
       cards:[...g.querySelectorAll('.gate-uses-list li')].map(li=>(b=>[b.left,b.right])(li.getBoundingClientRect())),pill:getComputedStyle(g.querySelector('.gate-down')).display,vw:innerWidth,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
   check('G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways',
     phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===3&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
+  // 2026-10-17 (#4): then 다음 단계, before the source strip, one step under another
+  const phoneNext=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect();
+    return {uses:r('.gate-uses').bottom,next:[r('.gate-next').top,r('.gate-next').bottom],foot:r('.gate-foot').top,vw:innerWidth,
+      steps:[...g.querySelectorAll('.gate-next-list li')].map(li=>(b=>[b.left,b.right,b.top])(li.getBoundingClientRect())),tags:g.querySelectorAll('.gate-next-tag').length};})()`);
+  check('G-5d phone 390px: 다음 단계 after the uses and before the source strip, the four steps one under another inside the width',
+    phoneNext.next[0]>=phoneNext.uses-1&&phoneNext.next[1]<=phoneNext.foot+1&&phoneNext.steps.length===4&&phoneNext.tags===3&&phoneNext.steps.every(([l,r],i,a)=>l>=0&&r<=phoneNext.vw&&(i===0||a[i][2]>a[i-1][2])),JSON.stringify(phoneNext));
   await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);gs=await gateState();
   check('G-5 phone: the button opens the map',!gs.on&&gs.hidden&&gs.inert===0,JSON.stringify(gs));
   // 2026-10-17 (#1): the smallest phone in common use (375×667): the problem lines, the solution and the button in the first

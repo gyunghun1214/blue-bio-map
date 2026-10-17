@@ -149,8 +149,10 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
   border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(6,23,39,.94);color:var(--g-ink2);font-size:13px;font-weight:600;white-space:nowrap;
   transition:color .2s,border-color .2s}
 .gate-down:hover{color:var(--g-ink);border-color:rgba(140,215,208,.65)}
-.gate-uses{position:absolute;top:100%;left:0;right:0;padding:clamp(44px,8vh,84px) var(--g-pad) clamp(52px,9vh,92px);border-top:1px solid var(--g-line);
-  background:radial-gradient(ellipse 60% 140% at 85% 0,#0b2439 0,rgba(4,16,27,0) 70%),var(--g-bg)}
+/* 2026-10-17 (#4): the uses and '다음 단계' share the part under the first screen (.gate-below) */
+.gate-below{position:absolute;top:100%;left:0;right:0;border-top:1px solid var(--g-line);
+  background:radial-gradient(ellipse 60% 70% at 85% 0,#0b2439 0,rgba(4,16,27,0) 70%),var(--g-bg)}
+.gate-uses{padding:clamp(44px,8vh,84px) var(--g-pad) clamp(30px,5vh,52px)}
 .gate-uses-in{max-width:1320px}
 .gate-uses-k{display:flex;align-items:center;gap:14px;margin:0 0 clamp(10px,1.6vh,16px);font-size:clamp(13px,min(1.02vw,1.85vh),17px);font-weight:500;color:var(--g-teal)}
 .gate-uses-k:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
@@ -171,6 +173,22 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-use-go:hover{color:var(--g-teal);border-bottom-color:var(--g-teal)}
 .gate:not(.is-ready) button.gate-use-go{opacity:.38;pointer-events:none}
 .gate-uses-note{margin:clamp(14px,2.4vh,24px) 0 0;font-size:clamp(14px,.96vw,16px);color:var(--g-ink2)}
+/* 2026-10-17 (#4) '다음 단계': where the map stands now, then the planned steps, one line each, a dot on one line */
+.gate-next{padding:0 var(--g-pad) clamp(52px,9vh,92px)}
+.gate-next-in{max-width:1320px;padding-top:clamp(26px,4.4vh,44px);border-top:1px solid rgba(255,255,255,.1)}
+.gate-next-h{margin:0;font-size:clamp(20px,min(1.8vw,3.2vh),28px);font-weight:800;letter-spacing:-.02em}
+.gate-next-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.6vw,28px);margin:clamp(18px,3vh,30px) 0 0;padding:0;list-style:none}
+.gate-next-list li{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-top:28px}
+.gate-next-list li:before{content:"";position:absolute;left:0;top:4px;width:9px;height:9px;border:1.5px solid rgba(140,215,208,.75);border-radius:50%;background:var(--g-bg)}
+.gate-next-list li:after{content:"";position:absolute;left:16px;right:calc(-1*clamp(14px,1.6vw,28px) + 6px);top:9px;border-top:1px dashed rgba(140,215,208,.35)}
+.gate-next-list li:last-child:after{display:none}
+.gate-next-list li.is-now:before{background:var(--g-teal);border-color:var(--g-teal);box-shadow:0 0 0 4px rgba(61,224,196,.16)}
+.gate-next-list li.is-now:after{border-top-style:solid}
+.gate-next-list p{margin:0}
+.gate-next-k{font-size:clamp(15px,1.1vw,17px);font-weight:700;color:var(--g-ink)}
+.is-now .gate-next-k{color:var(--g-teal)}
+.gate-next-t{margin-bottom:6px!important;font-size:clamp(14px,.96vw,15px);line-height:1.6;color:var(--g-ink2)}
+.gate-next-tag{margin-top:auto!important;padding:2px 9px;border:1px solid rgba(255,255,255,.26);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--g-ink2)}
 
 /* leaving: the copy lifts away, the globe leans in toward Korea, the screen fades and the map is there underneath */
 html.gate-leaving .gate-center{transform:translateY(-28px);opacity:0}
@@ -208,9 +226,17 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-meta{margin-top:8px;gap:6px 16px}
   .gate-trip{padding-left:16px}
   /* 2026-10-17 (#3): the uses after the card, before the source strip, one card a row */
-  .gate-uses{position:relative;top:auto;flex:none;order:1;padding:28px var(--g-pad)}
+  .gate-below{position:relative;top:auto;flex:none;order:1}
+  .gate-uses{padding:28px var(--g-pad)}
   .gate-foot{order:2}
   .gate-uses-list{grid-template-columns:minmax(0,1fr)}
+  /* (#4) the steps one under another, the line down the left */
+  .gate-next{padding:0 var(--g-pad) 28px}
+  .gate-next-list{grid-template-columns:minmax(0,1fr);gap:0}
+  .gate-next-list li{padding:0 0 18px 26px}
+  .gate-next-list li:before{top:5px}
+  .gate-next-list li:after{left:5px;right:auto;top:20px;bottom:0;border-top:0;border-left:1px dashed rgba(140,215,208,.35)}
+  .gate-next-list li.is-now:after{border-left-style:solid}
   .gate-down{display:none}
 }
 @media (max-width:760px){

@@ -386,7 +386,7 @@ void main(){
     q('.gate-step').textContent=gateStep(gate);
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
-    const total=speciesTotal(gate.done);if(total)q('.gate-total').textContent=String(total);
+    const total=speciesTotal(gate.done);if(total)for(const b of el.querySelectorAll('.gate-total'))b.textContent=String(total); // the solution line and '다음 단계' (#4)
     if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
       if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
     renderUseSpecies();
@@ -617,7 +617,7 @@ void main(){
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
   // ways; a finger only sideways (an upward swipe stays the page's, touch-action in intro.css).
   // never from the controls, the bars or the card; over the copy only off its words (on a phone the copy sits on the globe)
-  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-uses';
+  const NO_DRAG='button,a,input,.gate-bar,.gate-foot,.gate-callout,.gate-loader,.gate-below';
   const onWords=e=>{
     const t=e.target.closest?.('.gate-kicker,.gate-title,.gate-why-k,.gate-problems li,.gate-lead');if(!t)return false;
     const r=document.createRange();r.selectNodeContents(t);
@@ -673,7 +673,7 @@ void main(){
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
     // the pill on the source strip's line: down to the uses, focus on their heading
-    q('.gate-down').addEventListener('click',()=>{q('.gate-hero').scrollTo({top:q('.gate-uses').offsetTop,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
+    q('.gate-down').addEventListener('click',()=>{const h=q('.gate-hero');h.scrollTo({top:h.scrollTop+q('.gate-uses').getBoundingClientRect().top-h.getBoundingClientRect().top,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
     document.addEventListener('keydown',e=>{
       if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('kb'); // from now on the focus ring shows (intro.css)
       if(left||e.defaultPrevented)return;
