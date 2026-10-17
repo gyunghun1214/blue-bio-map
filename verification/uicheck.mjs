@@ -505,6 +505,13 @@ try{
     bub.bubbles>0&&bub.dots===0&&bub.tags===0&&bub.frames===0&&bub.bubbleMark&&bub.rows<=2&&bub.key.startsWith('버블 = 공개 셀 묶음')&&bub.key.includes('기록이 있는 칸의 위치(넓게 묶음)')&&!bub.key.includes('아님')&&split.zoom>=7&&split.dots>0&&split.tags===0&&split.dotMark&&
     // 2026-10-17 (LKH): the key line says what the marks are ('기록이 있는 칸의 위치(넓게 묶음)')
     split.key.startsWith('점선 = 1° 셀')&&split.key.includes('기록이 있는 칸의 위치(넓게 묶음)')&&!split.key.includes('아님')&&split.chip===split.want&&split.under===split.wantUnder&&split.dot===split.wantDot,JSON.stringify({bub,split}));
+  // 2026-10-17 (LKH): every species opens on bubbles, also few or close cells (참문어 2 cells, 시카메굴 1) and wide screens; the fit
+  // stops at BUBBLE_MAX_ZOOM, and zooming one step in still turns them into dots (the switch zoom is unchanged). lastFitted=null: a
+  // fresh pick, since re-picking the species already on screen keeps the view (the earlier checks leave 참굴 zoomed in).
+  const firstView=await evaluate(`(()=>{if(mapMode!=='occurrence')setMapMode('occurrence');const bad=[];let n=0;for(const s of data.species.filter(x=>x.cells?.length)){lastFitted=null;selectSpecies(s.aphiaID);n++;const ls=overlay.getLayers();
+    const bubbles=ls.filter(l=>l._zoomMark&&l instanceof L.CircleMarker).length,dots=ls.filter(l=>l._schematicDot).length;if(map.getZoom()>BUBBLE_MAX_ZOOM||!bubbles||dots)bad.push(s.label+' z'+map.getZoom()+' b'+bubbles+' d'+dots);}
+    map.setZoom(BUBBLE_MAX_ZOOM+1,{animate:false});const stepIn=overlay.getLayers().filter(l=>l._schematicDot).length;return {n,bad,stepIn,limit:BUBBLE_MAX_ZOOM}})()`);
+  check('Every species opens on bubbles (first fit stops at the last bubble zoom); one step in shows dots',firstView.n>=20&&!firstView.bad.length&&firstView.stepIn>0&&firstView.limit===6,JSON.stringify(firstView));
   // 2026-10-13 design 2, card shape A: a type dot, the name and latin name, then '활용 · 보전 · verdict', every value from the app
   const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
     const t=matrixType(s),v=k=>{const x=axisState(s,k).value;return x===null?'–':scoreText(s,k,x)},m=axisState(s,'MCUI').value,line=el.querySelector('.card-line');if(!line){bad.push(s.label+': no line');continue;}n++;

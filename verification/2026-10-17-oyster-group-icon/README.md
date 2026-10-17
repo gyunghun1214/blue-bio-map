@@ -2,7 +2,7 @@
 
 참굴 임시 그림만 제거하고 다른 29종과 같은 분류군 아이콘으로 통일했다. 값·문구는 그대로다.
 
-- 기준 커밋: main `350d643` (PR #226 머지)
+- 기준 커밋: main `350d643` (PR #226 머지). 작업 중 main에 PR #230(`945e891`, 첫 지도 버블)이 들어와 병합했고, `index.html` `?v=` 충돌은 main 쪽을 받은 뒤 `app.js?v=`를 다시 계산했다.
 - 지침: 원본 [`prompt-original.md`](prompt-original.md), 저장소와 대조해 고친 최종본 [`prompt-final.md`](prompt-final.md)
   (같은 최종본을 프로젝트 공유 폴더 `oyster-group-icon/prompt-final.md`에도 둠. 저장소에는 원본이 가리킨 `prompts/` 폴더가 없다).
   가장 큰 차이: 원본은 쓰는 곳이 없어진 CSS를 지우라고 했지만, `theme.css`의 `#explore .sp-art` 규칙은 다른 29종의 아이콘 칸

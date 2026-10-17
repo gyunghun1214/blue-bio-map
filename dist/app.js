@@ -2895,7 +2895,9 @@ function renderCellMap(s,color){
     addCellDots(c.lat0,c.lon0,c.sizeDeg,rows.reduce((a,r)=>a+r.records,0)); // one pattern per spatial cell
   }
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
-  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:7,animate:false});}
+  // 2026-10-17 (LKH): the first view of every species is bubbles, so the fit stops at the last bubble zoom (it was 7, one past it:
+  // few or close cells, or a wide screen, opened on dots). A shared link's own zoom (applyHash) still wins.
+  if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:BUBBLE_MAX_ZOOM,animate:false});}
   drawOccurrence();
   $('map-count').textContent=cellRecords(s).toLocaleString();$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=cellYears(s);
   setMapChip(s,chipCells(s),`기록 연도 ${cellYears(s)}`);
