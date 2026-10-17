@@ -217,10 +217,14 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .flow [data-step]:focus-visible rect{stroke:var(--mt-focus);stroke-width:2.6}
 #method .flow-wrap figcaption{max-width:90ch;color:var(--mt-ink3);font-size:13px;line-height:1.6}
 
-/* ---------- sources (not folded: the entry screen and 멍이 land here, uicheck reads #all-sources) ---------- */
+/* ---------- sources: the citation list sits in one fold (2026-10-17 #9); the entry screen, 자료 출처 보기 and the footer open it ---------- */
 #method .source-section{margin-top:44px;padding:34px 0 0;border:0;border-top:1px solid var(--mt-line);border-radius:0;background:none}
 #method .mt-src-names{margin-top:16px;color:var(--mt-ink2);font-size:14px;line-height:1.7}
 #method .source-section>#collection-note{margin-top:8px;color:var(--mt-ink2);font-size:14px}
+#method .mt-sources-fold{margin-top:20px;padding:0;border-bottom:1px solid var(--mt-line)}
+#method .mt-sources-fold[open]{padding-bottom:12px}
+#method .mt-sources-fold>summary{padding:10px 0;color:var(--mt-ink);font-size:14px;font-weight:600;cursor:pointer}
+#method .mt-sources-fold>summary span{color:var(--mt-ink2);font-weight:500}
 #method .mt-src-k{margin-top:20px;color:var(--mt-ink);font-size:14px;font-weight:600}
 #method #all-sources{max-height:min(46vh,420px);margin-top:10px;padding:2px 18px;border:1px solid var(--mt-line);border-radius:12px;background:var(--mt-low)}
 #method .citation{border-top-color:var(--mt-line);color:var(--mt-ink2)}

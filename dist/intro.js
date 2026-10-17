@@ -400,6 +400,7 @@ void main(){
       if(a.view!=='explore'&&typeof setView==='function')setView(a.view,!a.scroll);
       if(a.scroll)document.querySelector(a.scroll)?.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'});
       const t=document.querySelector(a.focus)||document.querySelector('main');if(!t)return;
+      t.closest('details')?.setAttribute('open',''); // the source list sits in a fold (2026-10-17 #9): the way in opens it
       if(t.tagName==='MAIN'){t.tabIndex=-1;t.addEventListener('blur',()=>t.removeAttribute('tabindex'),{once:true});}
       t.focus({preventScroll:true});
     };
