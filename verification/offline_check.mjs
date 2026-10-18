@@ -109,11 +109,11 @@ try{
     await new Promise(r=>setTimeout(r,500));return [...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1)?.textContent||'';})()`);
   check('O-7 chatbot: a question the FAQ cannot match gets the fixed no-answer note, no server request',reply.startsWith('아래 탭에서 직접 찾아보거나')&&!localPaths.some(p=>p.startsWith('/api/')),reply);
 
-  // ---------- 3. Reload without the flag: still offline in this tab; tiles present ----------
+  // ---------- 3. The address again without the flag: still offline in this tab; tiles present ----------
   fakeTiles=true;localPaths.length=0;
   await send('Page.navigate',{url:URL0});
   s=await (async()=>{for(let i=0;i<60;i++){const v=await state();if(v.conn.startsWith('오프라인')&&v.tiles>0)return v;await sleep(250);}return state();})();
-  check('O-8 a reload in the same tab stays in offline demo mode and skips the entry screen',s.conn.startsWith('오프라인 시연')&&await evaluate("document.getElementById('site-gate').hidden"),JSON.stringify(s));
+  check('O-8 the address opened again in the same tab (no ?offline=1) stays in offline demo mode and skips the entry screen',s.conn.startsWith('오프라인 시연')&&await evaluate("document.getElementById('site-gate').hidden"),JSON.stringify(s));
   await sleep(800);s=await state();
   check('O-9 with saved tiles the satellite map shows them and no fallback note',s.tiles>0&&!s.basemapStatus&&tilesOf('satellite').every(t=>planned(...t)),JSON.stringify(s));
   await evaluate("document.querySelector('[data-basemap=\"depth\"]').click();1");await sleep(1200);
@@ -124,6 +124,16 @@ try{
   check('O-11 the opening view at the closest zoom is covered by the saved tiles',z8.length>0&&z8.every(t=>planned(...t)),JSON.stringify(z8.filter(t=>!planned(...t)).slice(0,5)));
   await evaluate("document.querySelector('[data-basemap=\"satellite\"]').click();fitMap();1");await sleep(800);
   await shot('offline-tiles');
+  // ---------- 3b. F5 at the venue (2026-10-18): the entry screen again from the loader, still the offline demo ----------
+  await send('Page.reload',{});
+  // the old page may still answer for a moment, and the new one has no context while it starts: poll and skip errors
+  let rl=null;for(let i=0;i<150&&!rl;i++){await sleep(100);try{rl=await evaluate("document.documentElement.classList.contains('gate-on')&&performance.getEntriesByType('navigation')[0]?.type==='reload'?{loader:!document.querySelector('#site-gate .gate-loader').hidden,ready:document.getElementById('site-gate').classList.contains('is-ready')}:null");}catch{}}
+  await waitFor("document.getElementById('site-gate').classList.contains('is-ready')",v=>v,30000);
+  const rnote=await evaluate("document.querySelector('#site-gate .gate-note').hidden?'':document.querySelector('#site-gate .gate-note').textContent");
+  check('O-8b F5 in offline demo mode: the entry screen again from the loader, still saying it opens the dated saved copy',!!rl&&rl.loader&&!rl.ready&&rnote===`오프라인 시연 · ${snapshot.fetched_at} 기준 공개 자료 사본으로 엽니다.`,JSON.stringify({rl,rnote}));
+  await pressEnter();
+  const rback=await waitFor("document.getElementById('site-gate').hidden&&(document.getElementById('connection-state')?.textContent||'').startsWith('오프라인')",v=>v,8000);
+  check('O-8b Enter from there opens the offline map',rback===true,String(rback));
 
   // ---------- 4. Expedition page ----------
   // Poll rather than wait a fixed time: on a slow CI runner the page can still be loading its fonts after 3 s.

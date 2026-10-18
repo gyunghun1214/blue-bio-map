@@ -68,7 +68,9 @@ jobs:
   browser:
     runs-on: windows-2025
     needs: unit
-    timeout-minutes: 20
+    # About 17 min on main (2026-10-18: uicheck 7, expedition 8 with WebGL via SwiftShader, offline 1), and a slow runner
+    # adds 2–3 min to the expedition alone. The reload checks (G-11, O-8b) wait the 8 s first-visit piece each time.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v7

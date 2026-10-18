@@ -1,5 +1,7 @@
 // A data file newer than this page's code (a tab open across a deploy, a cached app.js) must never read as
-// 기술 오류 or 검수 자료 확인 실패: reload once per file and version, then show 새 버전 있음.
+// 기술 오류 or 검수 자료 확인 실패: reload once per file and version, then show 새 버전 있음. The reload leaves a one-time
+// mark (bbvm-app-reload) so intro.js shows no entry screen for it: the visitor did not press F5 (2026-10-18). While the
+// entry screen is up there is no mark: the reloaded page shows the screen again from the start.
 // Run: node verification/test_client_outdated.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -10,8 +12,8 @@ const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const json=f=>JSON.parse(read(f));
 const app=read('app.js');
 const report=json('assessments.json');
-const store=new Map();let reloads=0;
-const ctx={fetch:async()=>({ok:true,json:async()=>structuredClone(report)}),
+const store=new Map();let reloads=0;const gate=new Set(); // <html>'s classes: gate-on while the entry screen is up
+const ctx={fetch:async()=>({ok:true,json:async()=>structuredClone(report)}),document:{documentElement:{classList:{contains:c=>gate.has(c)}}},
   sessionStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v))},location:{reload:()=>reloads++}};
 vm.createContext(ctx);
 vm.runInContext(app.split('function setView')[0]+';Object.assign(globalThis,{attachPilotAssessments,axisState,newerVersion,'+
@@ -30,9 +32,12 @@ let next=await run('verified-4.20');
 assert.deepEqual(plain(next.outdated),[{file:'assessments.json',version:'verified-4.20'}]);
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,1,'first sight of a newer report reloads once');
+assert.equal(store.get('bbvm-app-reload'),'1','the reload is marked as the app\'s own (intro.js: no entry screen for it)');
+store.delete('bbvm-app-reload'); // intro.js reads and removes it on the reloaded page
 next=await run('verified-4.20');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),false);
 assert.equal(reloads,1,'no reload loop when the reload still serves an old app.js');
+assert.equal(store.has('bbvm-app-reload'),false,'no reload, no mark');
 for(const s of next.species)for(const k of axes){
   assert.equal(ctx.axisState(s,k).kind,'client_outdated',`${s.label} ${k}`);
   assert.equal(ctx.axisState(s,k).label,'새 버전 있음');
@@ -41,6 +46,17 @@ for(const s of next.species)for(const k of axes){
 next=await run('verified-4.21');
 assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
 assert.equal(reloads,2);
+store.delete('bbvm-app-reload');
+// With the entry screen up (first visit, logo, the visitor's F5) the reload leaves no mark: the screen comes back from the
+// start. While it is closing (gate-leaving, after Enter) the map is what the visitor sees, so the mark is left.
+gate.add('gate-on');next=await run('verified-4.22');
+assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
+assert.equal(reloads,3);
+assert.equal(store.has('bbvm-app-reload'),false,'entry screen up: no mark, the screen shows again');
+gate.add('gate-leaving');next=await run('verified-4.23');
+assert.equal(ctx.reloadOnceForNewData(next.outdated),true);
+assert.equal(store.get('bbvm-app-reload'),'1','entry screen closing: the map stays');
+store.delete('bbvm-app-reload');gate.clear();
 
 // (2) Numeric, not string, comparison; only the known dotted format is "newer".
 const latest=ctx.VERIFIED.at(-1);
@@ -64,7 +80,8 @@ store.clear();reloads=0;
 const both=[{file:'assessments.json',version:'verified-pilot-3.28'},{file:'matrix-readiness.json',version:2}];
 assert.equal(ctx.reloadOnceForNewData(both),true);
 assert.equal(reloads,1);
-assert.deepEqual([...store.keys()].sort(),['reload:assessments.json','reload:matrix-readiness.json']);
+assert.deepEqual([...store.keys()].filter(k=>k.startsWith('reload:')).sort(),['reload:assessments.json','reload:matrix-readiness.json']);
+assert.deepEqual([...store.keys()].filter(k=>!k.startsWith('reload:')),['bbvm-app-reload'],'one mark for the one reload, nothing else stored');
 assert.equal(ctx.reloadOnceForNewData(both),false);
 assert.equal(ctx.reloadOnceForNewData([{file:'matrix-readiness.json',version:3}]),true,'a readiness bump reloads on its own key');
 assert.equal(reloads,2);
@@ -99,7 +116,8 @@ for(const [version,newer] of [['trait-display-evidence-2',true],['trait-display-
 }
 ctx.sessionStorage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v))};store.clear();reloads=0;
 assert.equal(ctx.reloadOnceForNewData([{file:'trait-evidence.json',version:'trait-display-evidence-2'}]),true);
-assert.deepEqual([...store.keys()],['reload:trait-evidence.json']);
+assert.deepEqual([...store.keys()].filter(k=>k.startsWith('reload:')),['reload:trait-evidence.json']);
+assert.equal(store.get('bbvm-app-reload'),'1');
 delete ctx.sessionStorage;
 
 // (7) live-data.js schema gates: a higher number in the same family is newer; other values stay rejected.

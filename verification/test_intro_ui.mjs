@@ -1,7 +1,7 @@
 // Loading and entry screen of the main map (dist/intro.js), run on its pure part (no browser), plus static checks of
 // the markup in index.html, the progress events in app.js and the globe files in dist/vendor/globe-v1. The browser flow
-// is in uicheck.mjs (G-1…G-9: G-7 the logo going home, G-8 no example cards, G-9 a 375px phone) and
-// verification/2026-10-landing-globe/landing_check.mjs.
+// is in uicheck.mjs (G-1…G-11: G-7 the logo going home, G-8 no example cards, G-9 a 375px phone, G-11 a reload),
+// verification/2026-10-landing-globe/landing_check.mjs and verification/2026-10-18-reload-shows-intro/check.mjs.
 // Run: node verification/test_intro_ui.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -11,7 +11,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,INTRO_TIMELINE,GATE_STEPS,GLOBE_WAIT,GLOBE_FAIL,hasAppHash,shouldShowGate,makeGate,gateProgress,gateStep,RIPPLE_CENTER,rippleCenter,rippleReach,WAVE,ripplesAt,dropAt,revealAt,crossfadeAt,introEnd,introDone,introStatus,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,APP_RELOAD_KEY,navigationType,visitorNav,withoutTab,homeClick,INTRO_TIMELINE,GATE_STEPS,GLOBE_WAIT,GLOBE_FAIL,hasAppHash,shouldShowGate,makeGate,gateProgress,gateStep,RIPPLE_CENTER,rippleCenter,rippleReach,WAVE,ripplesAt,dropAt,revealAt,crossfadeAt,introEnd,introDone,introStatus,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -25,12 +25,55 @@ assert.equal(ctx.shouldShowGate('',null),true);
 const both=(entered,home)=>({getItem:k=>k===ctx.GATE_KEY?entered:k===ctx.HOME_KEY?home:null});
 assert.equal(ctx.HOME_KEY,'bbvm-intro-home');
 assert.equal(ctx.shouldShowGate('',both('1','1')),true,'logo clicked in a tab that entered: entry screen again');
-assert.equal(ctx.shouldShowGate('',both('1',null)),false,'signal used up: a reload opens the map as before');
+assert.equal(ctx.shouldShowGate('',both('1',null)),false,'signal used up: the address opened again opens the map as before (a reload shows the screen: 1b)');
 assert.equal(ctx.shouldShowGate('#s=241776',both('1','1')),false,'a shared link still opens the map');
 const click=(o={})=>({button:0,metaKey:false,ctrlKey:false,shiftKey:false,altKey:false,defaultPrevented:false,...o});
 assert.equal(ctx.homeClick(click()),true,'a plain click (or Enter on the link) goes home in this tab');
 for(const o of [{button:1},{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{defaultPrevented:true}])
   assert.equal(ctx.homeClick(click(o)),false,'new tab/window or cancelled: this tab stays as it is '+JSON.stringify(o));
+// (1b) 2026-10-18 (LKH): a reload (F5, pull to refresh) shows the screen from the loader whatever the address and the tab
+// hold; every other way in keeps the rules above (no navType: as before)
+const entered=()=>storage('1');
+assert.equal(ctx.shouldShowGate('#m=5/36/128',entered(),'reload'),true,'reload after entering, map moved: entry screen');
+assert.equal(ctx.shouldShowGate('#s=836033&v=compare',storage(null),'reload'),true,'reload of a shared link: entry screen');
+assert.equal(ctx.shouldShowGate('#s=836033&v=compare&b=basic&t=occurrence&m=7/34.60/127.90&',entered(),'reload'),true,'reload on 비교와 지표: entry screen');
+assert.equal(ctx.shouldShowGate('&v=compare',storage(null),'reload'),true,'reload of a query link: entry screen');
+assert.equal(ctx.shouldShowGate('',{getItem(){throw Error('blocked');}},'reload'),true,'reload, storage blocked: entry screen');
+assert.equal(ctx.shouldShowGate('#s=836033',storage(null),'navigate'),false,'a shared link opened afresh: the map');
+assert.equal(ctx.shouldShowGate('',entered(),'navigate'),false,'the address opened again in a tab that entered: the map');
+assert.equal(ctx.shouldShowGate('#m=5/36/128',entered(),'back_forward'),false,'Back or Forward: the map');
+assert.equal(ctx.shouldShowGate('',both('1','1'),'navigate'),true,'the logo: entry screen');
+for(const [h,st] of [['#s=241776',()=>storage(null)],['',entered],['',()=>storage(null)],['',()=>both('1','1')],['#s=241776',()=>both('1','1')],['',()=>null],['&offline=1',entered]])
+  for(const t of [undefined,'navigate','back_forward','prerender','bogus'])
+    assert.equal(ctx.shouldShowGate(h,st(),t),ctx.shouldShowGate(h,st()),`not a reload (${t}): the rules as before for ${JSON.stringify(h)}`);
+// how the page was opened: Navigation Timing first, the old interface (1 = reload) where it is missing, else navigate
+const perf=(entries,legacy)=>({getEntriesByType:k=>k==='navigation'?entries:[],...(legacy===undefined?{}:{navigation:{type:legacy}})});
+assert.equal(ctx.navigationType(perf([{type:'reload'}])),'reload');
+assert.equal(ctx.navigationType(perf([{type:'navigate'}],1)),'navigate','the new interface wins');
+assert.equal(ctx.navigationType(perf([{type:'back_forward'}])),'back_forward');
+assert.equal(ctx.navigationType(perf([{type:'reload'}],0)),'reload','Chromium: the same address (with its hash) opened again is a reload in the new interface, 0 in the old');
+assert.equal(ctx.navigationType(perf([],1)),'reload','no entry: the old interface, type 1 = reload');
+assert.equal(ctx.navigationType({navigation:{type:1}}),'reload','no getEntriesByType at all: the old interface');
+for(const p of [perf([],0),perf([],2),perf([]),{},null,undefined])assert.equal(ctx.navigationType(p),'navigate','nothing that says reload: navigate '+JSON.stringify(p));
+assert.equal(ctx.navigationType({getEntriesByType(){throw Error('no');}}),'navigate','an error: navigate (the rules as before)');
+// the app's own reload (app.js reloadOnceForNewData, a data file newer than its code) is not the visitor's: its mark makes it
+// count as the load before it, and is used once
+const marks=v=>{const m=new Map(v===undefined?[]:[[ctx.APP_RELOAD_KEY,v]]);return {m,getItem:k=>m.get(k)??null,removeItem:k=>m.delete(k)};};
+assert.equal(ctx.APP_RELOAD_KEY,'bbvm-app-reload');
+let mk=marks('1');assert.equal(ctx.visitorNav('reload',mk),'navigate','the app\'s own reload: the rules of the load before');assert.equal(mk.m.size,0,'the mark is used once');
+mk=marks();assert.equal(ctx.visitorNav('reload',mk),'reload','the visitor\'s F5');
+mk=marks('1');assert.equal(ctx.visitorNav('back_forward',mk),'back_forward');assert.equal(mk.m.size,0,'a mark left behind goes on the next load too');
+assert.equal(ctx.visitorNav('reload',{getItem(){throw Error('blocked');}}),'reload','storage blocked: the visitor\'s reload');
+assert.equal(ctx.visitorNav('reload',null),'reload');
+assert.ok(/try\{const c=document\.documentElement\.classList;if\(!c\.contains\('gate-on'\)\|\|c\.contains\('gate-leaving'\)\)sessionStorage\.setItem\('bbvm-app-reload','1'\);\}catch\{\}\s*location\.reload\(\);/.test(app),
+  'app.js marks its own reload right before it, with the same key, unless the entry screen is up (then it shows again)');
+// a reload's address keeps everything but the tab (v), in the query and the hash; without a tab it is left as it was
+assert.equal(ctx.withoutTab('','#s=241776&v=compare&b=basic&t=occurrence&m=7%2F34.60%2F127.90'),'#s=241776&b=basic&t=occurrence&m=7%2F34.60%2F127.90');
+assert.equal(ctx.withoutTab('?v=compare&s=241776',''),'?s=241776','a query link');
+assert.equal(ctx.withoutTab('?offline=1&v=method','#v=compare&s=1'),'?offline=1#s=1','both, other query keys stay');
+assert.equal(ctx.withoutTab('','#v=compare'),'','the tab alone: no hash left');
+assert.equal(ctx.withoutTab('?offline=1','#s=241776&m=7/35.50/128.00'),'?offline=1#s=241776&m=7/35.50/128.00','no tab: as it was, not re-encoded');
+for(const h of ['','#top','#x=1'])assert.equal(ctx.withoutTab('',h),h);
 
 // (2) loader steps follow the app's real steps, in words only; no percent, no step counter, no progress drawing
 let g=ctx.makeGate(0);
@@ -269,6 +312,17 @@ assert.match(brand,/class="brand-mark"[\s\S]*<svg[\s\S]*Blue-bio <strong>Value M
 const introBrowser=intro.split('// ---- browser ----')[1];
 assert.ok(introBrowser.indexOf("closest?.('a.brand')")>0&&introBrowser.indexOf("closest?.('a.brand')")<introBrowser.indexOf('if(!show)return;'),'the logo is marked on every load, not only when the screen shows');
 assert.ok(introBrowser.indexOf('removeItem(HOME_KEY)')<introBrowser.indexOf('if(!show)return;'),'the signal is used once');
+// 2026-10-18: the page gives the rule the visitor's type; a reload forgets 'entered' (enter() remembers it again), drops the
+// tab from the address before app.js reads it and holds the scroll at the top until the screen goes. app.js writes its hash
+// with replaceState only (no hashchange), so the link listener stays as it was and the screen is not closed by the app.
+assert.ok(introBrowser.includes('nav=visitorNav(navigationType(performance),store)'),'the visitor\'s navigation type');
+assert.ok(introBrowser.includes("shouldShowGate(location.hash+'&'+location.search.slice(1),store,nav)"),'the rule gets it');
+const reloadBlock=introBrowser.slice(introBrowser.indexOf("if(show&&nav==='reload')"),introBrowser.indexOf('if(!show)return;'));
+assert.ok(reloadBlock.length>0&&reloadBlock.includes('removeItem(GATE_KEY)')&&reloadBlock.includes("history.replaceState(history.state,'',location.pathname+rest)")&&reloadBlock.includes('withoutTab(location.search,location.hash)')&&reloadBlock.includes("history.scrollRestoration='manual'"),'a reload: not entered yet, no tab in the address, the scroll held');
+assert.equal((introBrowser.match(/removeItem\(GATE_KEY\)/g)||[]).length,1,'only a reload forgets that the tab entered');
+assert.ok(/function release\(\)\{[^\n]*\n\s*if\(heldScroll\)\{heldScroll=false;try\{history\.scrollRestoration='auto';\}catch\{\}\}\}/.test(introBrowser),'the scroll is given back when the screen goes (enter, skip, a link)');
+const code=t=>t.replace(/\/\/[^\n]*/g,'');
+assert.ok(!/location\.hash\s*=[^=]/.test(code(app))&&!/location\.hash\s*=[^=]/.test(code(intro))&&/history\.replaceState\(null,'',location\.pathname\+\(rest\?'\?'\+rest:''\)\+'#'\+p\.toString\(\)\)/.test(app),'app.js and intro.js never assign location.hash: no hashchange closes the screen after a reload');
 const xhtml=read('expedition.html'),xjs=read('expedition.js');
 assert.match(xhtml,/<a class="x-brand" href="index\.html" aria-label="Blue-bio Value Map 첫 화면으로">/);
 assert.match(xjs,/closest\?\.\('a\.x-brand'\)[\s\S]{0,140}sessionStorage\.setItem\('bbvm-intro-home','1'\)/,'expedition logo: same signal as intro.js HOME_KEY');
@@ -586,5 +640,5 @@ for(const w of ['비상업','상업 레이어','레이어','CC0','CC BY','라이
 assert.match(browser,/h\.scrollTo\(\{top:h\.scrollTop\+q\('\.gate-uses'\)\.getBoundingClientRect\(\)\.top-h\.getBoundingClientRect\(\)\.top,/);
 assert.match(browser,/const NO_DRAG='[^']*\.gate-below';/);
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, the 8 s first-visit piece, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards, uses and next steps under the first screen');
+console.log('PASS: entry screen skip rules, a reload from the loader (the app\'s own reload, the tab and the scroll), logo goes home, real loading steps, the 8 s first-visit piece, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards, uses and next steps under the first screen');
 

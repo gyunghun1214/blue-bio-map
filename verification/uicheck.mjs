@@ -98,6 +98,14 @@ async function pressEnter(){for(const type of ['keyDown','keyUp'])await send('In
 let mock='';
 async function load(){await send('Page.navigate',{url:URL0});
   for(let i=0;i<80;i++){await sleep(250);const st=await evaluate("document.getElementById('connection-state')?.textContent||''");if(/연결됨|불러오기 실패|연결 실패/.test(st))return st;}return 'timeout';}
+// A shared link opened afresh in this tab, as a link from another site or a new tab opens it: a new load from a blank page.
+// (2026-10-18: a reload shows the entry screen from the loader, so a reload no longer stands in for opening a link.)
+async function openLink(hash){await send('Page.navigate',{url:'about:blank'});await send('Page.navigate',{url:URL0+'#'+hash});
+  for(let i=0;i<80;i++){await sleep(250);if(/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''").catch(()=>'')))break;}}
+// F5 in this tab (2026-10-18): wait for the new page's entry screen (the old page may still answer for a moment)
+async function reloadToGate(how){if(how)await evaluate(how+';1');else await send('Page.reload',{});
+  for(let i=0;i<150;i++){await sleep(100);try{if(await evaluate("document.documentElement.classList.contains('gate-on')&&performance.getEntriesByType('navigation')[0]?.type==='reload'"))return true;}catch{}}return false;}
+const loaded=async()=>{for(let i=0;i<120;i++){if(/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''").catch(()=>'')))return;await sleep(250);}};
 async function shot(name,full=true){
   const m=await evaluate('({w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight})');
   const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:full,clip:full?{x:0,y:0,width:m.w,height:Math.min(m.h,6000),scale:1}:undefined});
@@ -449,12 +457,10 @@ try{
   await evaluate("document.querySelector('#comparison tr.cmp-row .cmp-more-btn').focus();1");await pressEnter();await sleep(150);
   dt.keyMore=await evaluate("(()=>{const b=document.querySelector('#comparison tr.cmp-row .cmp-more-btn'),r=document.getElementById(b.getAttribute('aria-controls'));const ok=b.getAttribute('aria-expanded')==='true'&&!r.hidden&&document.querySelector('#cmp-type-cards [data-cmp-type=baseline_survey]').getAttribute('aria-pressed')==='false';b.click();setCompareMode('matrix');return ok})()");
   check('Data table (dark, 2026-10-13): one weight slider moves to the tool row and back (MBPI + MFPI = 1.00), four type cards count the filtered species at the current weight and keep only their type (with the group), group counts in the table only, the expanded row sums BBVI at that weight, BBVI sort follows, keyboard toggles a card and a row',Object.values(dt).every(Boolean),JSON.stringify(dt));
-  await evaluate("location.hash='s=836033&v=compare&w=0.70';location.reload();1");
-  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await openLink('s=836033&v=compare&w=0.70');
   await sleep(800);
   const wl=await evaluate("({w:bbviWeight,text:document.getElementById('bbvi-weight-value').textContent,badge:document.getElementById('cmp-wline').classList.contains('off'),hash:location.hash})");
-  await evaluate("location.hash='s=836033&v=compare&w=abc';location.reload();1");
-  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await openLink('s=836033&v=compare&w=abc');
   await sleep(800);
   const wb=await evaluate("({w:bbviWeight,badge:document.getElementById('cmp-wline').classList.contains('off'),hash:location.hash})");
   check('BBVI weight link: #…&w=0.70 opens at MBPI 0.30 · MFPI 0.70 with the badge; w=abc opens at the official weight and drops w',wl.w===.7&&wl.text==='MBPI 0.30 · MFPI 0.70'&&wl.badge&&wl.hash.includes('w=0.70')&&wb.w===.5&&!wb.badge&&!wb.hash.includes('w='),JSON.stringify({wl,wb}));
@@ -960,14 +966,12 @@ try{
     await evaluate("wheelHints=0;map.setView([36,128],5,{animate:false});1");
   }
   // 2026-10-13: a shared t=value link opens on the species view of that species (no new hash key)
-  await evaluate("location.hash='s=372119&v=explore&t=value';location.reload();1");
-  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await openLink('s=372119&v=explore&t=value');
   await sleep(800);
   const sharedValue=await evaluate("({s:selected?.aphiaID,mode:mapMode,view:valueView,drawn:valueRects.length,cells:spatialCells(periodView(selected)).length,pressed:document.getElementById('value-view').getAttribute('aria-pressed')})");
   check('A shared t=value link opens the species view of that species',sharedValue.s===372119&&sharedValue.mode==='value'&&sharedValue.view==='species'&&sharedValue.drawn===sharedValue.cells&&sharedValue.pressed==='false',JSON.stringify(sharedValue));
-  // Shared link restores species, tab and basemap after a reload.
-  await evaluate("location.hash='s=241776&v=compare&b=depth';location.reload();1");
-  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  // Shared link restores species, tab and basemap when it is opened (a new load; a reload shows the entry screen: G-11).
+  await openLink('s=241776&v=compare&b=depth');
   await sleep(800);
   const restored=await evaluate("({s:selected?.aphiaID,v:currentView,b:basemap})");
   check('A-5 shared link restores species, tab and basemap',restored.s===241776&&restored.v==='compare'&&restored.b==='depth',JSON.stringify(restored));
@@ -1008,7 +1012,7 @@ try{
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);
   const plain=await evaluate("document.body.innerText");
   check('Page shows no raw coordinates',!/\d{2,3}\.\d{3,}/.test(plain),plain.match(/\d{2,3}\.\d{3,}/)?.[0]);
-  // The shared-link reload above starts the effort shading off again (2026-10-11): turn it on for the mode round-trip below.
+  // The shared link opened above (a new load) starts the effort shading off again (2026-10-11): turn it on for the mode round-trip below.
   await evaluate("(()=>{const t=document.getElementById('effort-toggle');if(!t.checked)t.click();return 1})()");
   // ---------- Map mode buttons: occurrence <-> utilization × conservation ----------
   const modeState=()=>evaluate(`(()=>{const q=s=>document.querySelector(s),pressed=m=>q('[data-map-mode="'+m+'"]').getAttribute('aria-pressed');
@@ -1149,8 +1153,7 @@ try{
   check('Repeated toggling leaves a single consistent value state',ms.mode==='value'&&ms.val==='true'&&ms.occ==='false'&&ms.valLegend&&!ms.occLegend&&ms.effort===0,JSON.stringify(ms));
   ms=await clickMode('occurrence');
   check('Back to occurrence mode restores the live map',ms.mode==='occurrence'&&ms.occLegend&&!ms.panel&&!ms.source.startsWith('활용')&&ms.shapes>0,JSON.stringify(ms));
-  await evaluate("location.hash='s=836033&v=explore&b=basic&t=value';location.reload();1");
-  for(let i=0;i<80;i++){await sleep(250);if((await evaluate("document.getElementById('connection-state')?.textContent||''")).includes('연결됨'))break;}
+  await openLink('s=836033&v=explore&b=basic&t=value');
   await sleep(800);ms=await modeState();
   check('Shared link with t=value restores the value map and its pressed button',ms.mode==='value'&&ms.val==='true'&&ms.valLegend,JSON.stringify(ms));
   await clickMode('occurrence');await evaluate("history.replaceState(null,'',location.pathname);1");
@@ -1395,8 +1398,8 @@ try{
     await evaluate("document.querySelector('.bbc-close').click();1");
     await mouseDrag(mid(await fabState()),{x:724,y:404});
     const dropped=await fabState();
-    await evaluate("location.reload();1");await sleep(400);
-    for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+    // 2026-10-18: a reload shows the entry screen from the loader; Enter goes through it to the map, as a visitor would
+    await reloadToGate('location.reload()');await gateReady();await pressEnter();await sleep(1100);await loaded();
     const reloaded=await fabState();
     await viewport(800,400,false);await sleep(400);const small=await fabState();
     await viewport(1560,900,false);await sleep(400);const big=await fabState();
@@ -1515,10 +1518,46 @@ try{
   // ---------- Entry screen: skip rules, phone, failed load ----------
   if(scriptId)await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:scriptId});
   await viewport(1560,900,false);
-  await evaluate("sessionStorage.removeItem('bbvm-intro-entered');location.hash='s=241776&v=explore';location.reload();1");await sleep(400);
-  for(let i=0;i<80&&!/연결됨|불러오기 실패|연결 실패/.test(await evaluate("document.getElementById('connection-state')?.textContent||''"));i++)await sleep(250);
+  await evaluate("sessionStorage.removeItem('bbvm-intro-entered');1");await openLink('s=241776&v=explore');
   let gs=await gateState();
   check('G-4 a shared link (#s=…) opens the map directly, even in a tab that never entered',!gs.on&&gs.hidden&&gs.inert===0&&await evaluate("selected?.aphiaID===241776"),JSON.stringify(gs));
+  // ---------- G-11 a reload (F5) shows the entry screen from the loader (2026-10-18, LKH), in a tab with a link or that entered ----------
+  {
+    // on 비교와 지표 with a species and a map view of its own, as a visitor leaves it before pressing F5
+    await evaluate("selectSpecies(241776);map.setView([34.6,127.9],7,{animate:false});setView('compare');1");await sleep(400);
+    const before=await evaluate("({hash:location.hash,s:selected?.aphiaID,z:map.getZoom(),lat:map.getCenter().lat,lng:map.getCenter().lng,view:currentView})");
+    const early=await reloadToGate()?await evaluate(`(()=>{const g=document.getElementById('site-gate');return {now:Math.round(performance.now()),loader:!g.querySelector('.gate-loader').hidden,ready:g.classList.contains('is-ready'),
+      stored:sessionStorage.getItem('bbvm-intro-entered'),hash:location.hash,y:scrollY,restore:history.scrollRestoration}})()`):null;
+    const eh=new URLSearchParams((early?.hash||'').slice(1));
+    check('G-11 F5 on 비교와 지표: the entry screen from the loader (not ready in its first seconds), not entered yet, the address keeps the species and the map view but not the tab, the page behind at the top',
+      !!early&&early.loader&&!early.ready&&early.now<3000&&early.stored===null&&eh.get('s')==='241776'&&eh.get('m')==='7/34.60/127.90'&&eh.get('v')!=='compare'&&early.y===0&&early.restore==='manual'&&before.view==='compare',JSON.stringify({before,early}));
+    // the screen stays up for the whole piece: nothing closes it (app.js writes its hash with replaceState, no hashchange)
+    let closed=false,g;for(let i=0;i<150;i++){g=await gateState();if(!g.on){closed=true;break;}if(g.ready)break;await sleep(200);}
+    const took=await evaluate("(()=>{const s=performance.getEntriesByName('intro:start')[0],d=performance.getEntriesByName('intro:done')[0];return s&&d?Math.round(d.startTime-s.startTime):null})()");
+    check('G-11 the reload runs the whole first-visit piece (8 s from its first paint) and the screen stays up until it is ready',!closed&&g.ready&&took>=7900,JSON.stringify({closed,took,ready:g.ready,on:g.on}));
+    await loaded();await pressEnter();await sleep(1100);
+    const after=await evaluate("({on:document.documentElement.classList.contains('gate-on'),view:currentView,s:selected?.aphiaID,z:map.getZoom(),lat:map.getCenter().lat,lng:map.getCenter().lng,stored:sessionStorage.getItem('bbvm-intro-entered'),restore:history.scrollRestoration,y:scrollY})");
+    check('G-11 Enter (바다 탐색하기) after the reload: 탐색 지도 with the species and the map view from before, entered again, the scroll given back',
+      !after.on&&after.view==='explore'&&after.s===before.s&&after.z===before.z&&Math.abs(after.lat-before.lat)<.01&&Math.abs(after.lng-before.lng)<.01&&after.stored==='1'&&after.restore==='auto'&&after.y===0,JSON.stringify({before,after}));
+    // F5 on 탐색 지도, then 지표 살펴보기: the button picks the tab
+    const ok2=await reloadToGate();await gateReady();await loaded();
+    await evaluate("document.querySelector('#site-gate .gate-more').click();1");await sleep(1300);
+    const cmp=await evaluate("({on:document.documentElement.classList.contains('gate-on'),view:currentView,s:selected?.aphiaID,hash:location.hash})");
+    check('G-11 F5 on 탐색 지도, then 지표 살펴보기: 비교와 지표 with the same species (the way in picks the tab)',ok2&&!cmp.on&&cmp.view==='compare'&&cmp.s===before.s&&cmp.hash.includes('v=compare'),JSON.stringify(cmp));
+    // another page, then Back: the map directly (Back and Forward keep their rule)
+    await send('Page.navigate',{url:URL0+'expedition.html'});
+    for(let i=0;i<120;i++){await sleep(250);if(await evaluate("location.pathname.endsWith('expedition.html')&&document.readyState==='complete'").catch(()=>false))break;}
+    await evaluate("history.back();1");
+    for(let i=0;i<120;i++){await sleep(250);if(await evaluate("!location.pathname.endsWith('expedition.html')&&document.readyState==='complete'&&/연결됨|불러오기 실패|연결 실패/.test(document.getElementById('connection-state')?.textContent||'')").catch(()=>false))break;}
+    g=await gateState();
+    check('G-11 after entering, another page and Back: the map directly, no entry screen',!g.on&&g.hidden&&g.inert===0&&await evaluate("currentView==='compare'&&selected?.aphiaID===241776"),JSON.stringify(g));
+    // the app's own reload (a data file newer than app.js: reloadOnceForNewData leaves its mark first) is not the visitor's F5
+    await evaluate("window.__beforeAppReload=1;sessionStorage.setItem('bbvm-app-reload','1');location.reload();1");
+    for(let i=0;i<120;i++){await sleep(250);if(await evaluate("window.__beforeAppReload===undefined&&document.readyState==='complete'").catch(()=>false))break;}
+    await loaded();g=await gateState();
+    const mark=await evaluate("({type:performance.getEntriesByType('navigation')[0]?.type,mark:sessionStorage.getItem('bbvm-app-reload'),view:currentView})");
+    check('G-11 the app\'s own reload (its one-time mark) opens the map as the load before it did, no entry screen, the mark used up',mark.type==='reload'&&!g.on&&g.hidden&&mark.mark===null&&mark.view==='compare',JSON.stringify({g,mark}));
+  }
   await viewport(390,844,true);
   await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
   await load();gs=await gateReady();
@@ -1615,9 +1654,9 @@ try{
     await pressEnter();g=await home();
     check('G-7 근거와 방법: the logo by keyboard (focus, Enter) shows the globe entry screen',met&&atGlobe(g,'v=method'),JSON.stringify({met,g}));
     await back();
-    // the signal is used once: a reload afterwards opens the map as before
+    // the signal is used once: the address opened again afterwards opens the map as before (a reload shows the screen: G-11)
     await load();g=await gateState();
-    check('G-7 a reload after coming back opens the map directly (the logo signal is used once)',!g.on&&g.hidden&&await evaluate("sessionStorage.getItem('bbvm-intro-home')===null"),JSON.stringify(g));
+    check('G-7 the logo signal is used once: the address opened again after coming back opens the map directly',!g.on&&g.hidden&&await evaluate("sessionStorage.getItem('bbvm-intro-home')===null"),JSON.stringify(g));
     // phone 390px, on 비교와 지표
     await viewport(390,844,true);
     await send('Page.navigate',{url:URL0+'#v=compare'});

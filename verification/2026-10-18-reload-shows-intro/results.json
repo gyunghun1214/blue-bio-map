@@ -1,0 +1,226 @@
+{
+ "results": [
+  [
+   true,
+   "1440 before: 비교와 지표, species, map position in the address"
+  ],
+  [
+   true,
+   "1440 F5: the entry screen from the loader, not usable yet; the piece from its start"
+  ],
+  [
+   true,
+   "1440 F5: entered forgotten, the tab (v) out of the address, species and map position kept"
+  ],
+  [
+   true,
+   "1440 F5: the page behind at the top, scroll restoration held"
+  ],
+  [
+   true,
+   "1440 F5: the whole piece plays (usable at 8 s), never closes, no hashchange, the page behind stays at the top"
+  ],
+  [
+   true,
+   "1440 F5: under the screen the app has the same species and map position"
+  ],
+  [
+   true,
+   "1440 Enter (바다 탐색하기): 탐색 지도 with the same species and map position, at the top, restoration back to auto"
+  ],
+  [
+   true,
+   "1440 F5 on 탐색 지도: the entry screen from the loader"
+  ],
+  [
+   true,
+   "1440 지표 살펴보기 after F5: 비교와 지표, same species and map position"
+  ],
+  [
+   true,
+   "1440 F5 on 근거와 방법: the entry screen from the loader"
+  ],
+  [
+   true,
+   "1440 전체 출처·방법 보기 after F5: 근거와 방법, same species"
+  ],
+  [
+   true,
+   "1440 Ctrl+F5: the entry screen from the loader"
+  ],
+  [
+   true,
+   "1440 Enter after Ctrl+F5: 탐색 지도, same species"
+  ],
+  [
+   true,
+   "1440 shared link in the same tab: no entry screen, the link's tab and species"
+  ],
+  [
+   true,
+   "1440 shared link as a new page in the same tab: no entry screen"
+  ],
+  [
+   true,
+   "1440 바다 탐험 then Back: no entry screen, the tab as left"
+  ],
+  [
+   true,
+   "1440 identical address again: the screen follows the type Chromium reports (observation)"
+  ],
+  [
+   true,
+   "1440 address without # opened again: the screen follows the type Chromium reports (observation)"
+  ],
+  [
+   true,
+   "1440 F5: still the screen once the data is in"
+  ],
+  [
+   true,
+   "1440 a link opened while the reload's screen is up: the screen closes, the link's tab and species"
+  ],
+  [
+   true,
+   "390 F5: the entry screen from the loader, the page behind at the top"
+  ],
+  [
+   true,
+   "390 F5: usable at 8 s, never closes, no scroll behind"
+  ],
+  [
+   true,
+   "390 지표 살펴보기: 비교와 지표 at the top, same species and map position, restoration auto"
+  ],
+  [
+   true,
+   "system reduced motion: F5 shows the entry screen, not usable yet"
+  ],
+  [
+   true,
+   "system reduced motion: becomes usable without closing"
+  ],
+  [
+   true,
+   "system reduced motion: 바다 탐색하기 opens 탐색 지도"
+  ],
+  [
+   true,
+   "the screen's 움직임 줄이기 switch: F5 shows the entry screen, not usable yet"
+  ],
+  [
+   true,
+   "the screen's 움직임 줄이기 switch: becomes usable without closing"
+  ],
+  [
+   true,
+   "the screen's 움직임 줄이기 switch: 바다 탐색하기 opens 탐색 지도"
+  ],
+  [
+   true,
+   "app's own reload with the map up: one reload, no entry screen, the mark used, same tab and species"
+  ],
+  [
+   true,
+   "app's own reload with the entry screen up: the screen again from the loader, no mark"
+  ],
+  [
+   true,
+   "app's own reload with the entry screen up: no second reload (no loop), usable"
+  ],
+  [
+   true,
+   "app's own reload with the entry screen up: 바다 탐색하기 opens the map"
+  ],
+  [
+   true,
+   "390 shared link in a new tab: no entry screen, 비교와 지표, the link's species and map position"
+  ],
+  [
+   true,
+   "no console errors on any page"
+  ]
+ ],
+ "ways": [
+  {
+   "name": "F5 (page.reload) on 비교와 지표",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "F5 on 탐색 지도",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "F5 on 근거와 방법",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "Ctrl+F5 (reload, cache skipped)",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "shared link opened in the tab showing the map (only # changes, same page)",
+   "type": "reload",
+   "gate": false
+  },
+  {
+   "name": "shared link, new page in the same tab",
+   "type": "navigate",
+   "gate": false
+  },
+  {
+   "name": "바다 탐험 → 뒤로",
+   "type": "back_forward",
+   "gate": false
+  },
+  {
+   "name": "the identical address opened again (with #…)",
+   "type": "back_forward",
+   "gate": false
+  },
+  {
+   "name": "the address without # opened again (entered before)",
+   "type": "navigate",
+   "gate": false
+  },
+  {
+   "name": "F5, then a link opened while the screen is up",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "390: F5 on 비교와 지표 (scrolled)",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "F5 with system reduced motion",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "F5 with the screen's 움직임 줄이기 switch",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "the app's own reload, map up",
+   "type": "reload",
+   "gate": false
+  },
+  {
+   "name": "the app's own reload, entry screen up",
+   "type": "reload",
+   "gate": true
+  },
+  {
+   "name": "390: shared link in a new tab",
+   "type": "navigate",
+   "gate": false
+  }
+ ]
+}
