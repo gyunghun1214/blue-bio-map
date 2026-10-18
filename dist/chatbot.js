@@ -300,7 +300,7 @@ if(typeof document!=='undefined')(function(){
   }
 
   const root=document.createElement('div');root.className='bbc';
-  root.innerHTML='<div class="bbc-hint" hidden><span>처음이세요? 멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
+  root.innerHTML='<div class="bbc-hint" hidden><span><span class="bbc-hint-lead">처음이세요? </span>멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
@@ -402,9 +402,26 @@ if(typeof document!=='undefined')(function(){
       const el=document.querySelector(s);if(!visible(el))continue;const r=el.getBoundingClientRect();
       if(r.right>p.left&&r.left<p.right&&r.bottom>top&&r.top<p.bottom)top=r.bottom+8;
     }
-    if(top>p.top)panel.style.maxHeight=Math.max(260,p.bottom-top)+'px';
+    // 휴대폰(767px 이하)에서는 대화창이 화면 아래 시트라 지도 컨트롤 위에 겹쳐도 되므로 줄이지 않는다(2026-10-18, LKH: 시트가 손가락 두 마디로 줄던 원인).
+    if(top>p.top&&!mobile())panel.style.maxHeight=Math.max(260,p.bottom-top)+'px';
   }
-  function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}}
+  function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}clearTimeout(hintTimer);}
+  // 처음 안내 말풍선(2026-10-18, LKH): 첫 화면(지구본)이 닫혀 지도가 보인 뒤 HINT_MS 동안만 보이고 스스로 접힌다. 그 전에 화면을 스크롤하거나
+  // 멍이 밖을 누르면 바로 접힌다. 한 번 접히면 다시 보이지 않는다(HINT_KEY). 멍이 버튼은 그대로 남는다.
+  const HINT_MS=7000;let hintTimer=0;
+  function showHint(){
+    hint.hidden=false;place();
+    hintTimer=setTimeout(dismissHint,HINT_MS);
+    const once={once:true,passive:true};
+    addEventListener('scroll',dismissHint,once);
+    document.addEventListener('pointerdown',e=>{if(!root.contains(e.target))dismissHint();},once);
+  }
+  function hintWhenGateGone(){
+    const html=document.documentElement;
+    if(!html.classList.contains('gate-on'))return showHint();
+    const mo=new MutationObserver(()=>{if(!html.classList.contains('gate-on')){mo.disconnect();showHint();}});
+    mo.observe(html,{attributes:true,attributeFilter:['class']});
+  }
   // state가 있으면(챗봇 말풍선) 왼쪽 아래 멍이 미니 아바타와 .bbc-row로 묶고 머리말 표정도 바꾼다. 돌려주는 값은 말풍선.
   // 답(answer·ai)과 첫 인사(welcome)는 뜬 직후 머리말과 그 말풍선 옆 멍이가 글 길이만큼 말한다(움직임 줄이기면 안 함).
   function add(cls,text,state){
@@ -429,7 +446,9 @@ if(typeof document!=='undefined')(function(){
     const m=add('bbc-bot',fill(f.a),'answer');
     if(f.show){const b=document.createElement('button');b.type='button';b.className='bbc-show';b.textContent='화면에서 보여주기';b.dataset.show=f.id;m.append(b);}
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
-    log.scrollTop=log.scrollHeight;
+    // 답의 첫 줄이 보이게 올린다(끝까지 내리면 긴 답의 앞부분이 잘림, 2026-10-18)
+    const row=m.closest('.bbc-row')||m;
+    log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
   // FAQ가 못 찾은 질문: 탭에서 찾아보라는 안내와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
   function unknown(){
@@ -541,6 +560,6 @@ if(typeof document!=='undefined')(function(){
   const explore=document.getElementById('explore');
   if(explore)new MutationObserver(()=>requestAnimationFrame(place)).observe(explore,{attributes:true,attributeFilter:['class']});
   addEventListener('load',()=>setTimeout(place,300));
-  if(!store.get(HINT_KEY))hint.hidden=false;
+  if(!store.get(HINT_KEY))hintWhenGateGone();
   place();
 })();
