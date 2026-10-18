@@ -1,0 +1,6949 @@
+{
+ "measuredAt": "2026-10-18T08:56:51.370Z",
+ "url": "http://127.0.0.1:8765/",
+ "enteredByButton": true,
+ "cases": {
+  "375": {
+   "cards": 30,
+   "listWidth": 375,
+   "list": {
+    "scrollWidth": 6856,
+    "clientWidth": 375
+   },
+   "page": {
+    "scrollWidth": 375,
+    "clientWidth": 375
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    151,
+    165
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "톳": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "우뭇가사리": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "살오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(68, 215, 192) 1px",
+     "shadow": "rgb(68, 215, 192) 3px 0px 0px 0px inset",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멍게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "해삼": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "미역": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "다시마": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "감태": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가시파래": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "괭생이모자반": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꼬시래기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "청각": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "바지락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "큰가리비": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "시카메굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "피조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가리맛조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "고등어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멸치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참조기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "넙치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "조피볼락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "방어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "대구": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꽃게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "갑오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "390": {
+   "cards": 30,
+   "listWidth": 390,
+   "list": {
+    "scrollWidth": 6856,
+    "clientWidth": 390
+   },
+   "page": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    151,
+    165
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "톳": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "우뭇가사리": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "살오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(68, 215, 192) 1px",
+     "shadow": "rgb(68, 215, 192) 3px 0px 0px 0px inset",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멍게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "해삼": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "미역": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "다시마": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "감태": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가시파래": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "괭생이모자반": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꼬시래기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "청각": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "바지락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "큰가리비": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "시카메굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "피조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가리맛조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "고등어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멸치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참조기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "넙치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "조피볼락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "방어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "대구": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꽃게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "갑오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(31, 58, 76) 1px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "768": {
+   "cards": 30,
+   "listWidth": 248,
+   "list": {
+    "scrollWidth": 248,
+    "clientWidth": 248
+   },
+   "page": {
+    "scrollWidth": 753,
+    "clientWidth": 753
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    133,
+    153
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "톳": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "우뭇가사리": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "살오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(68, 215, 192) 0px",
+     "shadow": "rgb(68, 215, 192) 3px 0px 0px 0px inset",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멍게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "해삼": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "미역": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "다시마": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "감태": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가시파래": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "괭생이모자반": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꼬시래기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "청각": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "바지락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "큰가리비": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "시카메굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "피조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가리맛조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "고등어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멸치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참조기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "넙치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "조피볼락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "방어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "대구": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꽃게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "갑오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "900": {
+   "cards": 30,
+   "listWidth": 248,
+   "list": {
+    "scrollWidth": 248,
+    "clientWidth": 248
+   },
+   "page": {
+    "scrollWidth": 885,
+    "clientWidth": 885
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    133,
+    153
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "톳": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "우뭇가사리": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "살오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(68, 215, 192) 0px",
+     "shadow": "rgb(68, 215, 192) 3px 0px 0px 0px inset",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멍게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "해삼": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "미역": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "다시마": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "감태": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가시파래": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "괭생이모자반": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꼬시래기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "청각": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "바지락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "큰가리비": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "시카메굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "피조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가리맛조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "고등어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멸치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참조기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "넙치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "조피볼락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "방어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "대구": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꽃게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "갑오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1100": {
+   "cards": 30,
+   "listWidth": 248,
+   "list": {
+    "scrollWidth": 248,
+    "clientWidth": 248
+   },
+   "page": {
+    "scrollWidth": 1085,
+    "clientWidth": 1085
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    133,
+    153
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "톳": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "우뭇가사리": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "살오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(68, 215, 192) 0px",
+     "shadow": "rgb(68, 215, 192) 3px 0px 0px 0px inset",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멍게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "해삼": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "미역": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "다시마": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "감태": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가시파래": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "괭생이모자반": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꼬시래기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "청각": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "바지락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "큰가리비": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "시카메굴": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "피조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "가리맛조개": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "고등어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "멸치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참조기": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "넙치": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "조피볼락": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "방어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "대구": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "꽃게": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    },
+    "갑오징어": {
+     "check": [
+      10,
+      28
+     ],
+     "numSize": [
+      "17px",
+      "17px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "12.5px",
+     "border": "rgb(234, 242, 246) 0px",
+     "shadow": "none",
+     "radius": "10px",
+     "padL": "46px",
+     "padR": "10px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1180": {
+   "cards": 30,
+   "listWidth": 292,
+   "list": {
+    "scrollWidth": 292,
+    "clientWidth": 292
+   },
+   "page": {
+    "scrollWidth": 1180,
+    "clientWidth": 1180
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1300": {
+   "cards": 30,
+   "listWidth": 292,
+   "list": {
+    "scrollWidth": 292,
+    "clientWidth": 292
+   },
+   "page": {
+    "scrollWidth": 1300,
+    "clientWidth": 1300
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1440": {
+   "cards": 30,
+   "listWidth": 310,
+   "list": {
+    "scrollWidth": 310,
+    "clientWidth": 310
+   },
+   "page": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1586": {
+   "cards": 30,
+   "listWidth": 345,
+   "list": {
+    "scrollWidth": 345,
+    "clientWidth": 345
+   },
+   "page": {
+    "scrollWidth": 1586,
+    "clientWidth": 1586
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1700": {
+   "cards": 30,
+   "listWidth": 352,
+   "list": {
+    "scrollWidth": 352,
+    "clientWidth": 352
+   },
+   "page": {
+    "scrollWidth": 1700,
+    "clientWidth": 1700
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1920": {
+   "cards": 30,
+   "listWidth": 352,
+   "list": {
+    "scrollWidth": 352,
+    "clientWidth": 352
+   },
+   "page": {
+    "scrollWidth": 1920,
+    "clientWidth": 1920
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1440-pane260px": {
+   "cards": 30,
+   "listWidth": 232,
+   "list": {
+    "scrollWidth": 232,
+    "clientWidth": 232
+   },
+   "page": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    149
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  },
+  "1440-pane320px": {
+   "cards": 30,
+   "listWidth": 292,
+   "list": {
+    "scrollWidth": 292,
+    "clientWidth": 292
+   },
+   "page": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440
+   },
+   "over": [],
+   "verdictCut": [],
+   "latinCut": [],
+   "verdictOwnLine": 30,
+   "height": [
+    115,
+    115
+   ],
+   "keep": {
+    "참굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "홍합(참담치)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "톳": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "우뭇가사리": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "살오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 높음",
+     "verdictSize": "14px",
+     "border": "rgb(142, 197, 215) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멍게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "해삼": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "미역": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "다시마": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "감태": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가시파래": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "괭생이모자반": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꼬시래기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "청각": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "바지락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "전복(종 수준)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "보전 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "큰가리비": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "시카메굴": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "피조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "가리맛조개": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "고등어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "멸치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참조기": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "넙치": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "조피볼락": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "방어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "대구": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "꽃게": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "두 지표 모두 낮음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "참문어(동아시아 종)": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    },
+    "갑오징어": {
+     "check": [
+      12,
+      28
+     ],
+     "numSize": [
+      "23px",
+      "23px"
+     ],
+     "verdict": "활용 지표 높음",
+     "verdictSize": "14px",
+     "border": "rgba(169, 187, 198, 0.18) 1px",
+     "shadow": "none",
+     "radius": "12px",
+     "padL": "46px",
+     "padR": "14px"
+    }
+   },
+   "hoverMoves": false,
+   "selectMoves": false
+  }
+ }
+}

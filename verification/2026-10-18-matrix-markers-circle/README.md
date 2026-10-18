@@ -3,7 +3,7 @@
 탐색 지도와 비교와 지표에서 2×2 유형 표시(▲ ◆ ● ■, 매트릭스의 마름모 점)를 모두 원으로 바꿨다. 유형은 색(`matrixTypeColour`),
 매트릭스에서의 위치, 옆에 붙은 유형 글자로 구분된다. 색·값·유형 판정·점 위치·데이터는 그대로다.
 
-- 기준 커밋: main `2c0e672` (PR #232 머지)
+- 기준 커밋: main `2c0e672` (PR #232 머지). 작업 중 main에 PR #234(탐색 후보 카드 배지, `4c4cc8d`)가 들어와 병합했고, `index.html` 충돌은 main 쪽을 받은 뒤 문장 두 개와 `?v=`를 다시 맞췄다. 병합 뒤 검사·after 캡처를 다시 돌린 결과가 아래 표다
 - 지침: 원본 [`prompt-original.md`](prompt-original.md), 저장소와 대조해 고친 최종본 [`prompt-final.md`](prompt-final.md)
   (저장소에는 `prompts/` 폴더가 없어서 이 폴더에 둠). 원본과 가장 큰 차이: 원본이 놓친 ◆ 두 곳(데이터 표 MCUI 옆, 프로필 자원 감소 상자 제목)과
   바뀌어야 할 문장 두 개(`#matrix-note`, 사용법 안내 도우미 FAQ 한 문장).
@@ -56,7 +56,7 @@
 |---|---|
 | CI `verify.yml`의 node 검사 전부(새 `test_type_marks_circle.mjs` 포함), `build_posthoc_scorecard.py --csv --check`, `build_aquaculture_tier.py --check`, `build_expedition_stops.py --check`, Python unittest(3.12) | 통과 |
 | `capture.mjs` after | 16 PASS / 0 FAIL ([`results.json`](results.json)) |
-| `uicheck.mjs` (클라우드) | 244 PASS / 4 FAIL. 4건은 위성(GIBS)·수심(GEBCO) 타일이 클라우드에서 막혀 생기는 환경 실패(A-5 공유 링크, 위성, 수심, 2026-10-03 전 '기본' 저장)로 main에서도 같다 |
+| `uicheck.mjs` (클라우드) | 245 PASS / 4 FAIL(#234 병합 뒤, 새 카드 배지 검사 포함). 4건은 위성(GIBS)·수심(GEBCO) 타일이 클라우드에서 막혀 생기는 환경 실패(A-5 공유 링크, 위성, 수심, 2026-10-03 전 '기본' 저장)로 main에서도 같다 |
 | `expedition_check.mjs`, `offline_check.mjs` | 75 PASS / 0 FAIL, 21 PASS / 0 FAIL |
 
 `capture.mjs`가 보는 것: 모든 매트릭스 점이 `::before` 없는 원 버튼 · 우뭇가사리·참조기 점이 다른 점과 같은 크기·자기 유형 색 ·

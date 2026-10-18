@@ -1206,29 +1206,27 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .filter-fold:not(.folded){border-bottom:0;padding:10px 2px}
   #explore #use-extra:empty{display:none}
   #explore .species-list{display:flex;flex-direction:column;gap:10px;margin:12px -6px 0;padding:2px 6px 12px;border:0;container:sclist/inline-size;scrollbar-width:thin;scrollbar-color:#2a4a5d transparent}
-  #explore .species-card,#explore .species-card+.species-card{box-sizing:border-box;display:grid;width:100%;min-height:90px;grid-template-columns:auto auto minmax(0,1fr);grid-template-areas:"dot name latin" "line line line";
+  #explore .species-card,#explore .species-card+.species-card{box-sizing:border-box;display:grid;width:100%;min-height:90px;grid-template-columns:auto minmax(0,max-content) minmax(0,1fr);grid-template-areas:"dot name latin" "line line line";
     align-items:center;align-content:center;column-gap:10px;row-gap:12px;margin:0;padding:14px 14px 14px 50px;border:1px solid var(--x-border);border-radius:12px;background:#031A29;color:#E5EDF1;text-align:left}
-  #explore .species-card>b{grid-area:name;font-size:18px;font-weight:800;line-height:1.2;white-space:nowrap}
+  #explore .species-card>b{grid-area:name;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:18px;font-weight:800;line-height:1.2;white-space:nowrap}
   #explore .species-card>em{grid-area:latin;min-width:0;font-size:14px;color:#C3D1D9}
-  #explore .species-card .card-line{grid-area:line;display:flex;flex-wrap:nowrap;align-items:baseline;column-gap:22px;row-gap:0;min-width:0;font-size:15px;color:#C3D1D9}
+  #explore .species-card .card-line{grid-area:line;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:22px;row-gap:10px;min-width:0;font-size:15px;color:#C3D1D9}
   #explore .species-card .card-line .cl-v{display:inline;flex:none;white-space:nowrap}
   #explore .species-card .card-line>.cl-v+.cl-v{flex:none;min-width:0}
   #explore .species-card .card-line .cl-v>b{margin-left:6px;color:#fff;font-size:23px;font-weight:800;line-height:1}
   #explore .species-card .card-line .cl-v.high>b{color:#fff}
   #explore .species-card .card-line .cl-v.single>b{text-decoration:none}
-  #explore .species-card .card-verdict{display:inline-flex;align-items:center;gap:7px;flex:none;margin-left:auto;font-size:14px;line-height:1.2}
-  #explore .species-card .card-verdict .verdict{color:#E5EDF1;font-weight:600}
+  /* 2026-10-18: the type words always sit on their own line under the two values, at every list width, so they never run
+     into the card's right padding or border and every card keeps one height (115px). The words are never cut on purpose:
+     the ellipsis is only a guard for a list far narrower than any real layout */
+  #explore .species-card .card-verdict{display:inline-flex;align-items:center;gap:7px;flex:0 0 100%;min-width:0;max-width:100%;margin-left:0;font-size:14px;line-height:1.2}
+  #explore .species-card .card-verdict .verdict{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#E5EDF1;font-weight:600}
   #explore .species-card .card-verdict .vd-baseline_survey{color:#8DB8F2}
   #explore .sc-wrap .species-card:hover{border-color:var(--x-border2);background:#072233}
   #explore .sc-wrap .species-card.selected{border-color:var(--x-fill);background:var(--x-accent-s);box-shadow:none}
   #explore .species-card.selected>b{color:#fff}
   #explore .species-card:focus-visible{outline:2px solid #fff;outline-offset:2px}
   #explore .sc-check{left:12px}
-  /* a narrow list keeps every card the same height: the type words move to their own line on every card */
-  @container sclist (max-width:340px){
-    #explore .species-card .card-line{flex-wrap:wrap;row-gap:10px}
-    #explore .species-card .card-verdict{flex:0 0 100%;margin-left:0}
-  }
   #explore .list-foot{flex:none;margin:0 -14px;padding:12px 14px 16px;border-top:0;background:none}
   #explore .list-foot .text-button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:50px;border:1.5px solid var(--x-fill);border-radius:10px;background:none;color:#E5EDF1;font-size:17px;font-weight:700;text-decoration:none}
   #explore .list-foot .text-button:hover{background:rgba(142,197,215,.08)}

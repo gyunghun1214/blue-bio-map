@@ -533,6 +533,24 @@ try{
       if(right>edge+0.5)over.push(card.querySelector(':scope>b').textContent+' +'+(right-edge).toFixed(1));}
     return {over,scroll:list.scrollWidth,client:list.clientWidth}})()`);
   check('Species cards fit: every card’s text stays inside its border and the species list has no horizontal scroll',!cardFit.over.length&&cardFit.scroll<=cardFit.client,JSON.stringify(cardFit));
+  // 2026-10-18 (LKH): from 1450px the list is wider than 340px and the type words used to share the values' line, running into the
+  // card's right padding and border (1586px: 30 cards, up to +26.5px). Now the type words sit on their own line at every width:
+  // every visible box ends inside the card's padding edge, the words are never cut, and cards keep one height
+  const padFit={};
+  for(const w of [1920,1586]){await viewport(w,w===1920?1080:992,false);await sleep(500);
+    padFit[w]=await evaluate(`(()=>{const over=[],cut=[],same=[],hs=new Set();
+      const hid=(el,card)=>{for(let n=el;n&&n!==card;n=n.parentElement){const cs=getComputedStyle(n);if(n.classList.contains('sr-only')||cs.clip!=='auto'||cs.display==='none')return true;}return false;};
+      const clip=(el,card,r)=>{for(let n=el;n&&n!==card;n=n.parentElement)if(getComputedStyle(n).overflowX!=='visible')r=Math.min(r,n.getBoundingClientRect().right);return r;};
+      for(const card of document.querySelectorAll('#species-list .species-card')){const cs=getComputedStyle(card),b=card.getBoundingClientRect(),edge=b.right-parseFloat(cs.borderRightWidth)-parseFloat(cs.paddingRight),name=card.querySelector(':scope>b').textContent;let right=-Infinity;
+        const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT);for(let t;(t=w.nextNode());){if(!t.textContent.trim()||hid(t.parentElement,card))continue;const rg=document.createRange();rg.selectNodeContents(t);for(const r of rg.getClientRects())if(r.width>0)right=Math.max(right,clip(t.parentElement,card,r.right));}
+        if(right>edge+0.5)over.push(name+' +'+(right-edge).toFixed(1));
+        const v=card.querySelector('.card-verdict .verdict'),n=card.querySelector('.card-line .cl-v>b');if(v&&v.scrollWidth>v.clientWidth+1)cut.push(name);
+        if(v&&n&&v.getBoundingClientRect().top<n.getBoundingClientRect().bottom-1)same.push(name);hs.add(Math.round(b.height));
+        const em=card.querySelector(':scope>em');if(em&&em.title!==em.textContent)cut.push(name+' (학명 title)');}
+      return {list:document.getElementById('species-list').clientWidth,over,cut,same,heights:[...hs]}})()`);}
+  await viewport(1560,900,false);await sleep(500);
+  check('Species cards keep their padding (2026-10-18): at 1920 and 1586px no text runs into a card’s right padding, the type words sit on their own line uncut, cards share one height, the latin name has its full name as title',
+    Object.values(padFit).every(f=>f.list>340&&!f.over.length&&!f.cut.length&&!f.same.length&&f.heights.length===1),JSON.stringify(padFit));
   const typeChip=await evaluate(`(()=>{const t=matrixType(selected),c=document.querySelector('#detail .ax-type'),x=c?.textContent||'';return {text:x,plain:matrixTypePlain(t),label:t?matrixTypeLabel(t):'',title:c?.title||'',first:c?.querySelector('.verdict')?.textContent||''}})()`);
   // 2026-10-17 (LKH): the tooltip says what the class is for ('연구 순서를 고르기 위한 분류') instead of what it is not
   check('Detail type chip (design 2): the verdict first, then the type name; its tooltip names the research class',typeChip.first===typeChip.plain&&!!typeChip.label&&typeChip.text.indexOf(typeChip.plain)<typeChip.text.indexOf(typeChip.label)&&typeChip.title.startsWith('연구 순서를 고르기 위한 분류')&&!typeChip.title.includes('아님'),JSON.stringify(typeChip));
