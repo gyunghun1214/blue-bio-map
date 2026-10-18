@@ -7,8 +7,9 @@ const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
 // The site logo (here and on expedition.html) goes home, as on most sites: a plain click on it leaves this one-time
 // signal and follows its link, and the next load shows the entry screen again although the tab already entered.
 const HOME_KEY='bbvm-intro-home';
-// app.js reloads the page by itself once when a data file is newer than its code (reloadOnceForNewData) and leaves this
-// one-time mark just before: that reload is the app's, not the visitor's, so it opens the way the load before it did.
+// app.js reloads the page by itself once when a data file is newer than its code (reloadOnceForNewData). With the map up
+// it leaves this one-time mark just before: that reload is the app's, not the visitor's, so it opens the way the load
+// before it did. With this screen up it leaves none, and the reload shows this screen again from the start.
 const APP_RELOAD_KEY='bbvm-app-reload';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 // (after '#' or, from 2026-10-15, as a query such as ?v=compare: the caller passes both)

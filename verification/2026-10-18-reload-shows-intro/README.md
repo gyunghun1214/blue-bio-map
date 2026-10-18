@@ -60,6 +60,7 @@
 | `dist/index.html` | `intro.js?v=`, `app.js?v=`(LF로 맞춘 내용의 sha256 앞 10자). 둘 다 `dist/_headers`의 immutable 목록에 있다 |
 | `README.md`, `docs/intro/design.md` | 시작 화면 줄·건너뛰기 규칙에 새로고침 규칙 |
 | `docs/offline-demo.md` | 오프라인 시연에서도 새로고침하면 첫 화면부터, 점검 항목 수 21 → 23 |
+| `.github/workflows/verify.yml` | 브라우저 일의 시간 제한 20분 → 30분(아래 '결과'의 CI) |
 
 그대로 둔 것: 공유 링크·뒤로/앞으로·로고 규칙(`hasAppHash`, `APP_HASH_KEYS`, `HOME_KEY`), 문구, 시간표, 다른 탭 화면, `expedition.html`, 멍이,
 `scripts/`, `config/`, `dist/*.json`.
@@ -81,7 +82,20 @@
   `build_expedition_stops.py --check` 통과. Python 3.12 `unittest` 484개 통과(건너뜀 3은 원래 있던 것: shapely 없음, lineage 메모, git 전체 이력).
 - 이 폴더 [`check.mjs`](check.mjs): 35/35([`results.json`](results.json)).
 - 프로젝트 폴더 `shared-link-mobile/repro.mjs`: 63/63. A2(새로고침) 9건 모두 진입 화면이 로딩부터 나오고, 그 탭의 버튼을 누르면 같은 탭·종·`m=`.
-- `uicheck.mjs`, `expedition_check.mjs`, `offline_check.mjs`, 날짜 폴더 스크립트 3개: 실행 중.
+- `uicheck.mjs`: GitHub CI(Windows) 255/0. 이 클라우드에서는 251개 통과, 바깥 지도 타일 서버가 막혀 타일 검사 4개가 실패(CI에서는 통과).
+- `expedition_check.mjs` 75/0, `offline_check.mjs` 23/0(전 21개 + O-8b 2개). 클라우드와 CI 모두.
+- 날짜 폴더 스크립트 3개는 main(`c8ed72c`)과 같은 클라우드에서 나란히 돌려 비교했다.
+  - `2026-10-landing-globe/landing_check.mjs`: 63개 통과, 10개 실패. 실패 10개는 main도 똑같다(2026-10-13 첫 화면 때의 기대값: 좁은 화면 4개,
+    첫 화면 문구, 지구 그림을 막았을 때 2개, 자료 오류·스냅숏·빈 자료 문구 3개). 결과가 다른 줄은 'Same tab, reload' 하나로, main은
+    'no entry screen', 이 브랜치는 'the entry screen again (2026-10-18 rule)'로 통과.
+  - `2026-10-18-intro-ripple-8s/check.mjs`: 이 클라우드에서는 main과 이 브랜치 모두 3번(지구 그림이 오지 않을 때의 '다시 시도')에서 버튼이
+    보이지 않아 멈춘다(둘 다 36개 통과한 뒤 같은 줄). 고친 5번은 1–4번을 뺀 사본으로 돌려 7/7 통과('a reload in the same tab plays it again
+    from the loader').
+  - `2026-10-18-mobile-polish/hint.mjs`: 통과. 새로고침 뒤 진입 화면을 지나도, 이미 본 멍이 안내는 다시 뜨지 않는다(`afterReloadHidden: true`).
+- GitHub CI: 첫 커밋(`929cc17`)은 전부 통과(브라우저 일 17분 40초). 기록만 고친 다음 커밋(`3bb1693`)은 검사가 다 통과하던 중 오프라인 검사
+  끝에서 브라우저 일의 20분 제한에 걸려 취소됐다. 바다 탐험 검사가 그 실행기에서 9분 57초 걸렸다(main `c8ed72c` 7분 47초). 이 PR로
+  uicheck가 1분쯤(main 7분 00초 → 8분 04초), 오프라인 검사가 10초쯤 늘어 main의 17분과 제한 사이 여유가 줄었다. 그래서 제한을 30분으로
+  올렸다. 검사는 그대로다.
 
 ## 여는 방법별 결과 (이 폴더 `check.mjs`, Chromium 141)
 
