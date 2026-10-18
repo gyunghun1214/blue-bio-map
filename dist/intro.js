@@ -8,10 +8,15 @@ const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
 const HOME_KEY='bbvm-intro-home';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 // (after '#' or, from 2026-10-15, as a query such as ?v=compare: the caller passes both)
-// GATE_FADE_MS: the reveal from the loader to the entry screen (the ripples turning onto the globe's rim), which ends by
-// GATE_MAX_MS at the latest
-const GATE_MIN_MS=600, GATE_MAX_MS=7000, GATE_FADE_MS=360;
+// The first visit (2026-10-18, LKH): one 8 s piece from the loader's first paint. The words stand still, one drop falls,
+// its rings spread, the entry screen opens inside them with the globe refracted only where a ring passes, then all
+// calms and the screen is usable at total. Every time of it is here (WAVE's times are shares of the ripple span).
+// late: a globe that comes after reveal[0] opens from that moment over max(late, total - then); timeout: no globe by
+// then (from the first paint or the last retry), the loader says so and offers a retry.
+const INTRO_TIMELINE={total:8000,drop:[1000,1800],ripple:[1800,4200],reveal:[4200,6800],settle:[6800,8000],late:1800,timeout:20000};
 const GATE_STEPS=[['page','페이지를 준비하는 중'],['map','지도를 불러오는 중'],['species','해양생물 자료를 불러오는 중']];
+// the loader's line once the time is up and the globe is not in yet, and what it says when the globe did not come
+const GLOBE_WAIT='지구 화면을 준비하는 중', GLOBE_FAIL='지구 화면을 불러오지 못했어요.'; // GLOBE_FAIL: index.html .gate-fail
 
 const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace(/^#/,''));return APP_HASH_KEYS.some(k=>q.get(k));}catch{return false;}};
 // No storage (private mode, blocked) only means the screen can't be remembered: it still shows once per load.
@@ -32,35 +37,71 @@ const speciesTotal=d=>Number.isInteger(d?.published)&&Number.isInteger(d?.candid
 // a total) is not said to be done: the line only says the screen opens, and the entry screen's note says the rest.
 const gateStep=g=>{const i=GATE_STEPS.findIndex(([k])=>!g.steps.has(k));if(i>=0)return GATE_STEPS[i][1];
   const t=g.done?.state==='error'?null:speciesTotal(g.done);return t?`해양생물 ${t}종 자료를 불러왔어요`:'첫 화면을 여는 중';};
-// Ready once the data is in (after a short minimum so the loader never flashes), or regardless just early enough that the
-// reveal still ends by the maximum wait.
-function gateTick(g,now){
-  if(g.phase==='loading'){const t=now-g.start;if((g.done&&t>=GATE_MIN_MS)||t>=GATE_MAX_MS-GATE_FADE_MS)g.phase='ready';}
-  return g.phase;
+// The timeline's pieces. smoother: 0 → 1 with no speed at either end, so one piece hands over to the next without a jolt.
+const clamp01=x=>Math.min(1,Math.max(0,x));
+const smoother=x=>{x=clamp01(x);return x*x*x*(x*(x*6-15)+10);};
+const spanOf=([a,b])=>b-a;
+// Where the drop lands, as shares of the screen: 52% · 61% as in the design (side by side); stacked (phones, upright
+// tablets) a little lower and never closer than 12% of the height under the loader's words (wordsBottom, px).
+const RIPPLE_CENTER={wide:[.52,.61],stacked:[.5,.66]};
+function rippleCenter(w,h,stacked,wordsBottom=0){const [x,y]=RIPPLE_CENTER[stacked?'stacked':'wide'];return {x:w*x,y:Math.max(h*y,wordsBottom+.12*h)};}
+// D: from the centre to the farthest corner, the distance the rings and the opening have to cover
+const rippleReach=(c,w,h)=>Math.hypot(Math.max(c.x,w-c.x),Math.max(c.y,h-c.y));
+// The rings of the one drop. s counts ripple spans since it lands; the front is at D·(a·s + b·s²), a little quicker as it
+// goes, and ring i follows i gaps behind it, so the rings start fine and close (about 20 px apart on a laptop) and open up
+// as they spread. A ring fades in as it is born, weakens as it widens (1/√ of its radius) and further back in the train,
+// and the whole train calms to nothing over settle. refract: a ring's push on the globe under it, px at full strength on
+// a 1440 px screen; width: a crest's half width as a share of its gap; lag: the opening follows the front this many
+// spans behind, opening over the first open share of reveal; feather: the opening's soft edge, a share of D; drop: how
+// far the drop falls, a share of the height.
+const WAVE={rings:12,gap:1/15,a:.2806,b:.1994,born:3,far:.15,tail:.5,splash:.125,refract:10,width:.28,lag:.1,open:.85,feather:.35,drop:.06};
+const rippleFront=(s,D)=>s>0?D*(WAVE.a*s+WAVE.b*s*s):0;
+// the rings at t ms: radius (px), strength 0..1, crest half width (px); the youngest last
+function ripplesAt(t,D){
+  const T=INTRO_TIMELINE,s=(t-T.ripple[0])/spanOf(T.ripple),calm=1-smoother((t-T.settle[0])/spanOf(T.settle)),out=[];
+  if(calm<=0)return out;
+  for(let i=0;i<WAVE.rings;i++){
+    const si=s-i*WAVE.gap;if(si<=0)break;
+    const r=rippleFront(si,D);
+    out.push({r,k:smoother(si/(WAVE.gap*WAVE.born))/Math.sqrt(1+r/(WAVE.far*D))*(1-WAVE.tail*i/WAVE.rings)*calm,
+      w:Math.max(1.5,D*(WAVE.a+2*WAVE.b*si)*WAVE.gap*WAVE.width)});
+  }
+  return out;
 }
-// How long the reveal runs from now: GATE_FADE_MS, cut short (to nothing) where it would pass GATE_MAX_MS (a late frame,
-// a tab that was hidden), nothing at all when still.
-const gateFade=(g,now,still)=>still?0:Math.round(Math.max(0,Math.min(GATE_FADE_MS,GATE_MAX_MS-(now-g.start))));
-// The loader's ripples (2026-10-17): RIPPLE.n wide rings, each living lifeMs and born lifeMs/n after the one before, so
-// they never stop. Their centre is under the screen, so only the tops of the ellipses show, spreading up through the
-// lower 40% of it and fading in and out with their life. They are only the sea's motion, not a progress bar: the
-// loading step is in the words alone.
-// span: at least .75× the height, so an upright phone shows the middle of a wide curve, not a narrow arch.
-const RIPPLE={n:7,lifeMs:9000,peak:.55,wobble:[1.8,.7]};
-function rippleArc(p,w,h){
-  const span=Math.max(w,h*.75),q=Math.min(1,Math.max(0,p));
-  return {cx:w/2,cy:h*1.22,rx:(.56+1.04*q)*span,ry:(.25+.37*q)*h,alpha:RIPPLE.peak*Math.sin(Math.PI*q)};
+// The drop over drop[]: falling the last WAVE.drop of the height onto the centre, quicker as it falls, a little smaller
+// as it nears the water (seen from above); then, as the first ring is born, a small light where it went in that fades.
+function dropAt(t,c,h){
+  const T=INTRO_TIMELINE,p=(t-T.drop[0])/spanOf(T.drop);
+  if(p>=0&&p<1)return {x:c.x,y:c.y-WAVE.drop*h*(1-p*p),r:4.2-1.6*p*p,a:smoother(p/.3),splash:0};
+  const q=(t-T.ripple[0])/(spanOf(T.ripple)*WAVE.splash);
+  return q>=0&&q<1?{x:c.x,y:c.y,r:2.6+3*q,a:0,splash:1-smoother(q)}:null;
 }
-// the lives (0 born, 1 gone) of the rings at t ms of motion; still (t null): one fixed set spread over a life
-const rippleLives=t=>Array.from({length:RIPPLE.n},(_,i)=>t===null?(i+.5)/RIPPLE.n:(t/RIPPLE.lifeMs+i/RIPPLE.n)%1);
-// The reveal (GATE_FADE_MS, k 0→1): the words go in the first third; in the second the rings close onto circles just
-// outside the globe's rim (frame: cx, cy, R on screen; an older ring a wider and fainter circle); in the last they fade.
-// m: how far a ring has closed; calm: what is left of its ripple.
-function rippleReveal(a,p,k,frame){
-  const f=frame||{cx:a.cx,cy:a.cy,R:0},m=frame?easeOut((k-1/3)*3):0,r=f.R*(1.01+.09*p),mix=(x,y)=>x+(y-x)*m;
-  return {cx:mix(a.cx,f.cx),cy:mix(a.cy,f.cy),rx:mix(a.rx,r),ry:mix(a.ry,r),
-    alpha:mix(a.alpha,RIPPLE.peak*(1-.6*p))*Math.min(1,Math.max(0,3-3*k)),calm:1-m};
+// The opening of the loader (the entry screen showing through it): r the edge of the clear disc round the centre, F its
+// soft edge (the loader is clear inside r−F, whole outside r), words the loader's words, over what is drawn over the
+// globe (coast, cells, frame, the card's point), which takes no refraction and so comes in as the rings calm. On time
+// (the globe in by reveal[0]) it follows the rings from nothing at reveal[0]; a late globe (readyAt, ms) opens from then
+// over lateSpan; null: no globe yet, the loader stays whole.
+const lateSpan=readyAt=>Math.max(INTRO_TIMELINE.late,INTRO_TIMELINE.total-readyAt);
+function revealAt(t,D,readyAt){
+  const T=INTRO_TIMELINE,F=WAVE.feather*D;
+  if(readyAt===null||readyAt===undefined||t<Math.max(T.reveal[0],readyAt))return {r:0,F,words:1,over:0};
+  if(readyAt<=T.reveal[0]){const k=smoother((t-T.reveal[0])/(spanOf(T.reveal)*WAVE.open)),s=(t-T.ripple[0])/spanOf(T.ripple);
+    return {r:k*rippleFront(s-WAVE.lag,D),F,words:1-smoother((t-T.reveal[0])/(spanOf(T.reveal)*.35)),over:smoother((t-T.settle[0])/spanOf(T.settle))};}
+  const L=lateSpan(readyAt),k=smoother((t-readyAt)/L);
+  return {r:k*(D+F)*1.02,F,words:1-smoother((t-readyAt)/(L*.35)),over:smoother((t-readyAt-L/2)/(L/2))};
 }
+// Still (the switch, or the system's reduce motion): no drop, rings or refraction; the loader cross-fades away over the
+// same window instead (its opacity, 1 → 0).
+function crossfadeAt(t,readyAt){
+  if(readyAt===null||readyAt===undefined)return 1;
+  const a=Math.max(INTRO_TIMELINE.reveal[0],readyAt);return 1-smoother((t-a)/(introEnd(readyAt)-a));
+}
+// The entry screen is usable once the time is up and the globe is there; the data never shortens or ends the piece.
+const introEnd=readyAt=>readyAt<=INTRO_TIMELINE.reveal[0]?INTRO_TIMELINE.total:readyAt+lateSpan(readyAt);
+const introDone=(t,readyAt)=>readyAt!==null&&readyAt!==undefined&&t>=introEnd(readyAt);
+// What the loader's line says for the globe: '' while the piece runs, wait past total without it, fail once it failed
+// (every picture failed, shown from total on) or the timeout passed without it (failAt: ms, from the first paint or a retry).
+const introStatus=(t,readyAt,failed,failAt)=>readyAt!==null&&readyAt!==undefined?'':(failed&&t>=INTRO_TIMELINE.total)||t>=failAt?'fail':t>=INTRO_TIMELINE.total?'wait':'';
 // One line under the buttons; the same meaning as the app's own connection state, never a softer one.
 function gateNote(g){
   const d=g.done;
@@ -248,13 +289,19 @@ const glf=v=>{const t=String(+v);return /[.e]/.test(t)?t:t+'.0';},glv=a=>`vec3($
 function globeShader(){
   const S=SHADE,n=Math.hypot(...S.light),l=S.light.map(v=>v/n),m=Math.hypot(l[0],l[1]);
   return `precision highp float;
-uniform vec2 u_org;uniform float u_scale,u_h,u_lon0,u_lat0,u_P,u_feather,u_alpha;uniform vec3 u_disc;uniform vec4 u_box;
+uniform vec2 u_org,u_rc;uniform float u_scale,u_h,u_lon0,u_lat0,u_P,u_feather,u_alpha;uniform vec3 u_disc;uniform vec4 u_box;
+uniform vec3 u_ring[${WAVE.rings}];
 uniform sampler2D u_detail,u_world;
 ${GLOBE_LONLAT}
 vec3 lin(vec3 c){return mix(c/12.92,pow((c+.055)/1.055,vec3(2.4)),step(.04045,c));}
 vec3 srgb(vec3 c){c=clamp(c,0.,1.);return mix(c*12.92,1.055*pow(c,vec3(1./2.4))-.055,step(.0031308,c));}
 void main(){
   vec2 p=u_org+vec2(gl_FragCoord.x,u_h-gl_FragCoord.y)/u_scale;
+  // the first visit's rings (u_ring: radius, push, half width in px round u_rc): each pushes the picture under it along
+  // its radius, one way on its outer flank and the other on its inner, so the globe bends only where a ring passes
+  vec2 dd=p-u_rc;float rr=length(dd),push=0.;
+  for(int i=0;i<${WAVE.rings};i++){vec3 g=u_ring[i];float x=(rr-g.x)/g.z;push+=g.y*x*exp(-.5*x*x);}
+  p-=dd/max(rr,1.)*push*1.6487;
   float u=(p.x-u_disc.x)/u_disc.z,v=(u_disc.y-p.y)/u_disc.z,r=sqrt(u*u+v*v);
   float cov=clamp((1.-r)*u_disc.z*u_scale+.5,0.,1.);
   vec2 q=r>1.?vec2(u,v)/r:vec2(u,v);
@@ -290,26 +337,32 @@ void main(){
   root.classList.add('gate-on');
   const stacked0=()=>matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
   // The turning globe (TEXTURES): a WebGL context and the shader are made now, before the page is parsed, and its two
-  // textures asked for, so they mostly arrive during the loader's 0.6 s minimum (a shared link, no screen, never asks).
+  // textures asked for, so they arrive while the first visit's words and drop are on (a shared link, no screen, never asks).
   // If any of it fails (no WebGL, the shader, a texture, a lost context) the still picture below is fetched instead.
   // shown: the globe is drawn (from the reveal on); opened: the entry screen is usable (the loader gone)
-  let el=null,raf=0,canvas=null,ctx=null,shown=false,opened=false,fade=null,behind=[],left=false,dirty=true,fading=false,drawnPhoto=false,bg=null;
+  let el=null,raf=0,canvas=null,ctx=null,shown=false,opened=false,left=false,dirty=true,fading=false,drawnPhoto=false,bg=null;
+  // the first visit (INTRO_TIMELINE): t0 its first paint (performance.now() ms), readyAt when the globe was there (ms
+  // from t0), failAt when the wait gives up, status the loader's globe line ('' | wait | fail); refr the rings that
+  // bend the globe this frame (px round rc), over what is drawn over the globe (0..1)
+  let t0=null,painted=false,marked=false,readyAt=null,failAt=INTRO_TIMELINE.timeout,status='',stillFailed=false,retries=0,refr=[],rc={x:0,y:0},over=1;
   // the motion (MOTION): offset is this frame's degrees from the start pose; clock the ms of motion so far
   let offset={lon:0,lat:0},clock=0,last=0,lastDraw=0,prevFrame=0,withEntry=true,started=false,drag=null,back=null,leave=null,slow=0,shownAt=0,glScale=1;
   const G={c:null,gl:null,prog:null,buf:null,tex:{},u:{},img:{},left:2,ready:false,failed:false,at:0,box:null};
   // The still picture (vendor/globe-v2, scripts/bake_globe.py) for screens without WebGL: its size comes from the globe
   // this window will draw (the stacked query is intro.css's). Until it is there, or if it fails, the vector globe below.
   let photo=null,photoAt=0,img=null;
-  function loadStill(){
-    if(img||photo||left)return;
+  function loadStill(again){
+    if(photo||left||(img&&!again))return;
+    if(img){img.onload=img.onerror=null;img=null;}
+    stillFailed=false;
     try{
       const file=globeFile(globeFrame(innerWidth,innerHeight,stacked0()?{top:0,bottom:0}:null).R,devicePixelRatio,navigator.connection);
       img=new Image();img.decoding='async';img.fetchPriority='high';
       img.onload=()=>img.decode().then(()=>{if(left||!img)return;photo={img,pad:GLOBE_PAD[file]/file};photoAt=shown?performance.now():0;
-        performance.mark?.('bbvm-globe-decoded');kick();},()=>{img=null;});
-      img.onerror=()=>{img=null;};
-      img.src=`vendor/globe-v2/globe-${file}.webp`;
-    }catch{img=null;}
+        performance.mark?.('bbvm-globe-decoded');kick();},()=>{img=null;stillFailed=true;kick();});
+      img.onerror=()=>{img=null;stillFailed=true;kick();};
+      img.src=`vendor/globe-v2/globe-${file}.webp`+(again?`?retry=${retries}`:''); // a retry asks past a failed answer
+    }catch{img=null;stillFailed=true;}
   }
   function glFail(){
     if(G.failed||left)return;G.failed=true;G.ready=false;freeGL();drag=back=leave=null;
@@ -338,7 +391,7 @@ void main(){
     gl.deleteShader(vs);gl.deleteShader(fs);gl.useProgram(prog);
     G.buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,G.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-    for(const k of ['u_org','u_scale','u_h','u_lon0','u_lat0','u_P','u_feather','u_alpha','u_disc','u_box','u_detail','u_world'])G.u[k]=gl.getUniformLocation(prog,k);
+    for(const k of ['u_org','u_scale','u_h','u_lon0','u_lat0','u_P','u_feather','u_alpha','u_disc','u_box','u_detail','u_world','u_rc','u_ring'])G.u[k]=gl.getUniformLocation(prog,k);
     gl.uniform1i(G.u.u_detail,0);gl.uniform1i(G.u.u_world,1);
     c.addEventListener('webglcontextlost',glFail);
     Object.assign(G,{c,gl,prog});
@@ -410,7 +463,8 @@ void main(){
   const q=s=>el.querySelector(s);
 
   function render(){
-    q('.gate-step').textContent=gateStep(gate);
+    // the step line: the data's step, or past total the wait for the globe; on failure the line gives way to the retry
+    const step=q('.gate-step');step.textContent=status==='wait'?GLOBE_WAIT:gateStep(gate);step.hidden=status==='fail';q('.gate-fail').hidden=status!=='fail';
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
     const total=speciesTotal(gate.done);if(total)for(const b of el.querySelectorAll('.gate-total'))b.textContent=String(total); // the solution line and '다음 단계' (#4)
@@ -424,25 +478,29 @@ void main(){
     const all=Array.isArray(gate.done.examples)?gate.done.examples:[];
     const red=exampleLinks(all.find(x=>x?.kind==='conservation'));if(red.length)sp.textContent=`(${red.map(l=>l.name).join('·')})`;
   }
-  // The data is in (or the wait is up): the globe is drawn under the loader, which gives way in fade.ms (the words, then
-  // its sea, then the ripples closing onto the globe's rim); the entry screen is usable once it is gone. One reveal: the
-  // globe does not fade in again after it.
+  // The globe is there and the opening starts (reveal[0], or later with a late globe): it is drawn under the loader from
+  // now on, the loader opens round the drop (drawIntro), and the entry screen is usable at introEnd (showHero). One
+  // reveal: the globe does not fade in again after it.
   function reveal(now){
     shown=true;shownAt=now;dirty=true;render();
-    fade={at:now,ms:gateFade(gate,now,reduce)};el.style.setProperty('--gf',fade.ms+'ms');
     el.classList.add('is-revealing');q('.gate-loader').setAttribute('aria-hidden','true');
-    if(fade.ms)setTimeout(showHero,fade.ms);else showHero(); // a timer, not transitionend: it ends even if no transition runs
   }
-  function showHero(){
-    if(opened||left)return;opened=true;
-    el.classList.remove('is-revealing');el.classList.add('is-ready');
-    q('.gate-loader').hidden=true;rip.width=rip.height=0;
-    for(const n of behind)n.inert=false;
-    const hero=q('.gate-hero');hero.hidden=false;hero.removeAttribute('aria-hidden');
+  // keep: the visitor moved the focus into the entry screen themselves (the piece is skipped), so it stays where it went
+  function showHero(keep){
+    if(opened||left)return;opened=true;gate.phase='ready';refr=[];over=1;dirty=true;
+    el.classList.remove('is-revealing');el.classList.add('is-ready');el.removeAttribute('aria-busy');
+    const loader=q('.gate-loader');loader.hidden=true;loader.style.opacity='';loader.style.webkitMaskImage=loader.style.maskImage='';
+    rip.hidden=true;rip.width=rip.height=0;render();
+    performance.mark?.('intro:done');
+    const hero=q('.gate-hero');hero.removeAttribute('aria-hidden');
+    if(keep)return kick();
     // keyboard and mouse: focus the button (Enter/Space act on it), its ring shown only once the keyboard is used (html.kb);
     // touch: the screen itself, so no focus ring on a tap device
     if(!touch())q('#gate-enter').focus({preventScroll:true});else{hero.tabIndex=-1;hero.focus({preventScroll:true});}
+    kick();
   }
+  // The keyboard reached the entry screen during the piece (it is never kept from it): the piece ends at once.
+  function skipIntro(){if(opened||left)return;if(!shown)reveal(performance.now());showHero(true);}
   // One way in, whichever button: 'explore' (default), 'compare' or 'method'. The app keeps its own state (species,
   // chips, map view); only the tab changes, through app.js setView (deferred, so it is there once the screen is ready).
   // how.hash: an example card's species link (#1); how.table: a use card's type in the data table (#3)
@@ -552,15 +610,35 @@ void main(){
     const u=G.u;gl.uniform2f(u.u_org,x0,y0);gl.uniform1f(u.u_scale,W/(x1-x0));gl.uniform1f(u.u_h,H);
     gl.uniform3f(u.u_disc,cx,cy,R);gl.uniform1f(u.u_lon0,cam.lon0);gl.uniform1f(u.u_lat0,cam.lat0);gl.uniform1f(u.u_P,cam.P);
     gl.uniform4f(u.u_box,...G.box);gl.uniform1f(u.u_feather,TEXTURES.feather);gl.uniform1f(u.u_alpha,1);
+    // the first visit's rings (none once it is over: every push 0)
+    const rings=new Float32Array(3*WAVE.rings);for(let i=0;i<WAVE.rings;i++){const g=refr[i];rings.set(g?[g.r,g.push,g.w]:[0,0,1],3*i);}
+    gl.uniform2f(u.u_rc,rc.x,rc.y);gl.uniform3fv(u.u_ring,rings);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,G.tex.detail);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,G.tex.world);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     ctx.globalAlpha=alpha;ctx.drawImage(G.c,x0,y0,x1-x0,y1-y0);ctx.globalAlpha=1;
   }
   const turning=()=>G.ready&&!G.failed&&!!G.gl;
+  // The still picture under the first visit's rings: drawn whole, then again in thin rings round rc, each scaled about rc
+  // by the push at its radius (what the shader does per pixel), only over the band where some ring pushes.
+  function bent(src,x,y,w,h){
+    ctx.drawImage(src,x,y,w,h);
+    if(!refr.length)return;
+    const lo=Math.min(...refr.map(g=>g.r-3*g.w)),hi=Math.max(...refr.map(g=>g.r+3*g.w));
+    const near=Math.hypot(Math.max(x-rc.x,0,rc.x-x-w),Math.max(y-rc.y,0,rc.y-y-h));
+    const far=Math.hypot(Math.max(Math.abs(x-rc.x),Math.abs(x+w-rc.x)),Math.max(Math.abs(y-rc.y),Math.abs(y+h-rc.y)));
+    const a0=Math.max(1,lo,near),a1=Math.min(hi,far),step=Math.max(2,(a1-a0)/160);
+    for(let a=a0;a<a1;a+=step){
+      const m=a+step/2;let push=0;for(const g of refr){const q=(m-g.r)/g.w;push+=g.push*q*Math.exp(-.5*q*q);}push*=1.6487;
+      if(Math.abs(push)<.15)continue;
+      const k=m/Math.max(1,m-push);
+      ctx.save();ctx.beginPath();ctx.arc(rc.x,rc.y,a+step+.5,0,2*Math.PI);ctx.arc(rc.x,rc.y,Math.max(0,a-.5),0,2*Math.PI,true);ctx.clip();
+      ctx.translate(rc.x,rc.y);ctx.scale(k,k);ctx.translate(-rc.x,-rc.y);ctx.drawImage(src,x,y,w,h);ctx.restore();
+    }
+  }
   function draw(){
     const {w,h,dpr}=size,{cx,cy,R}=frame,X=p=>cx+p.x*R,Y=p=>cy-p.y*R,geo=land&&!failed,gl=turning();
     const cam=gl?cameraAt(offset):CAMERA,at=(lon,lat,rim)=>project(lon,lat,rim,cam);
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.globalAlpha=1;
     if(!bg)background();
     ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(bg,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);
     // the globe: the turning one or the picture (faded in over 0.6 s if it comes after the screen is up), the vector
@@ -571,12 +649,14 @@ void main(){
       try{glDraw(cam,t);}catch{glFail();return draw();}
       if(t>=1&&!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
     }else if(photo){
-      try{const s=R*(1+2*photo.pad);ctx.globalAlpha=t;ctx.drawImage(photo.img,cx-s,cy-s,2*s,2*s);}
+      try{const s=R*(1+2*photo.pad);ctx.globalAlpha=t;bent(photo.img,cx-s,cy-s,2*s,2*s);}
       catch{photo=img=null;return draw();} // a picture that does not draw: the vector globe
       finally{ctx.globalAlpha=1;}
       if(t>=1&&!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
     }
     fading=t<1&&(gl||!!photo);
+    // what is drawn over the globe takes no refraction: during the first visit it comes in as the rings calm (over)
+    ctx.globalAlpha=over;
     if(gl||photo){
       // over the picture, only Korea's coast, a hairline (the land borders and the wider coasts are left to the picture)
       ctx.beginPath();for(const [p,o] of krCoast){const a=at(p[0],p[1]),b=at(o[0],o[1]);if(a&&b){ctx.moveTo(X(a),Y(a));ctx.lineTo(X(b),Y(b));}}
@@ -633,45 +713,90 @@ void main(){
     return !still&&shown;
   }
   const kick=()=>{dirty=true;if(el&&!raf&&!left)raf=requestAnimationFrame(frameLoop);};
-  // Runs every frame while the loader shows (the ready check, the ripples) and while the globe moves; otherwise only when
+  // Runs every frame while the loader shows (the first visit's piece) and while the globe moves; otherwise only when
   // kicked by a resize, new data or the motion switch.
   function frameLoop(now){
     raf=0;if(left&&!leave)return;
-    if(gateTick(gate,now)==='ready'&&!shown)reveal(now);
+    if(!opened)tick(now);
     const moving=shown&&advance(now),fast=!!(drag||back||leave);
     // a slow GPU shows as frames coming late while the globe moves: then it is drawn at a lower resolution
     if(moving&&prevFrame){slow=now-prevFrame>45?slow+1:Math.max(0,slow-1);if(slow>10&&glScale>.5){glScale=Math.max(.5,glScale-.15);slow=0;}}
     prevFrame=moving?now:0;
-    if(shown&&(dirty||fast||fading||(moving&&now-lastDraw>=1000/MOTION.fps-4))){
+    // during the first visit the globe is drawn every frame (the rings bend it); afterwards only while something changes
+    if(shown&&(dirty||fast||fading||!opened||(moving&&now-lastDraw>=1000/MOTION.fps-4))){
       if(dirty){dirty=false;resize();layout();bg=null;}
       paint();lastDraw=now;
     }
-    if(!opened)try{ripple(now);}catch{} // a drawing error leaves the loader's sea without its ripples, never the loader
     if(!opened||moving||dirty||fading)raf=requestAnimationFrame(frameLoop);
   }
 
-  // The loader's ripples (RIPPLE) on their own canvas over its sea: every frame while it shows (one still picture when
-  // still), then during the reveal closing onto the globe's rim while the sea fades out under them.
-  let rip=null,rctx=null,ripKey='',ripAt=0;
-  function ripple(now){
-    const dpr=Math.min(2,devicePixelRatio||1),w=innerWidth,h=innerHeight,W=Math.round(w*dpr),H=Math.round(h*dpr);
-    if(rip.width!==W||rip.height!==H){rip.width=W;rip.height=H;ripKey='';}
-    if(reduce&&!fade){if(ripKey==='still')return;ripKey='still';}else ripKey='';
-    const t=reduce?null:now-ripAt,k=fade?(fade.ms?Math.min(1,(now-fade.at)/fade.ms):1):0;
-    const ring=frame&&{cx:frame.cx,cy:frame.cy-lift,R:frame.R},amp=Math.max(.6,Math.min(1,w/1440)),tw=t??0,tau=2*Math.PI;
+  // The first visit (INTRO_TIMELINE), once a frame (and by timers in a hidden tab, which draws no frames): the time since
+  // the first paint, the globe's readiness, the opening, the end; then the drop and the rings on their canvas over the
+  // loader, the loader's opening and words. The data's progress events change only the words of the step line.
+  const globeReady=()=>turning()||!!photo, globeFailed=()=>G.failed&&stillFailed;
+  function tick(now){
+    if(t0===null)startAt(now);
+    const t=now-t0;
+    if(!marked&&(painted||t>=INTRO_TIMELINE.drop[0])){marked=true;try{performance.mark('intro:start',{startTime:t0});}catch{performance.mark?.('intro:start');}}
+    if(readyAt===null&&globeReady())readyAt=t;
+    if(!shown&&readyAt!==null&&t>=Math.max(INTRO_TIMELINE.reveal[0],readyAt))reveal(now);
+    if(introDone(t,readyAt))return showHero();
+    const st=introStatus(t,readyAt,globeFailed(),failAt);
+    if(st!==status){status=st;render();}
+    try{drawIntro(t);}catch{} // a drawing error leaves the loader without its rings, never the loader
+  }
+  // t0: the loader's first paint. Frames can run before anything is painted (the first ones here came half a second
+  // early), so the first frame only stands in until the browser's paint record arrives, which then sets t0 while the
+  // words still stand (before drop[0]); marked intro:start once known.
+  function startAt(at,paint){
+    if(painted||(t0!==null&&!paint)||(t0!==null&&performance.now()-t0>=INTRO_TIMELINE.drop[0]))return;
+    t0=at;painted=!!paint;
+  }
+  let rip=null,rctx=null,ripKey='',lastMask='';
+  function drawIntro(t){
+    const dpr=Math.min(2,devicePixelRatio||1),w=innerWidth,h=innerHeight,W=Math.round(w*dpr),H=Math.round(h*dpr),loader=q('.gate-loader'),body=q('.gate-loader-body');
+    if(rip.width!==W||rip.height!==H){rip.width=W;rip.height=H;}
+    // the drop's place: for this screen size, settled once the drop starts falling (a late web font moves the words)
+    const key=w+'x'+h;if(key!==ripKey||t<INTRO_TIMELINE.drop[0]){ripKey=key;rc=rippleCenter(w,h,stacked0(),body.getBoundingClientRect().bottom);}
+    const D=rippleReach(rc,w,h);
     rctx.setTransform(dpr,0,0,dpr,0,0);rctx.clearRect(0,0,w,h);
-    for(const p of rippleLives(t)){
-      const a=fade?rippleReveal(rippleArc(p,w,h),p,k,ring):{...rippleArc(p,w,h),calm:1};
-      if(a.alpha<.004)continue;
-      // the top half of the ellipse, with a small ripple of its own (at most 2.5 px on a desktop) that calms on the rim
-      const wob=a.calm*amp;rctx.beginPath();
-      for(let i=0;i<=180;i++){const th=Math.PI*(1+i/180),x=a.cx+a.rx*Math.cos(th),
-        y=a.cy+a.ry*Math.sin(th)+wob*(RIPPLE.wobble[0]*Math.sin(tau*1.6*x/w+p*9+tw/2600)+RIPPLE.wobble[1]*Math.sin(tau*3.1*x/w-tw/3900+p*5));
-        i?rctx.lineTo(x,y):rctx.moveTo(x,y);}
-      rctx.strokeStyle=`rgba(140,215,208,${(a.alpha*.1).toFixed(3)})`;rctx.lineWidth=7;rctx.stroke(); // a faint wide glow
-      rctx.strokeStyle=`rgba(140,215,208,${a.alpha.toFixed(3)})`;rctx.lineWidth=1.25;rctx.stroke();
-    }
-    rip.classList.add('is-on'); // fades in once drawn (intro.css), so the first frame's rings never pop up
+    if(reduce){refr=[];const o=crossfadeAt(t,readyAt);over=1-o;return setLoader(loader,body,o,null,1);}
+    const amp=Math.max(.6,Math.min(1,w/1440)),rings=ripplesAt(t,D),v=revealAt(t,D,readyAt);
+    refr=rings.map(g=>({r:g.r,push:g.k*WAVE.refract*amp,w:g.w}));over=v.over;
+    setLoader(loader,body,1,v,v.words);
+    const d=dropAt(t,rc,h);if(d)drawDrop(d);
+    for(const g of rings)drawRing(g,t,amp);
+  }
+  // The loader's opening: a wide soft-edged disc round the drop (clear inside r−F, whole from r, smootherstep between), its
+  // opacity when still, its words; written only when they change.
+  function setLoader(loader,body,o,v,words){
+    let m='';
+    if(v&&v.r>0){const {r,F}=v,st=(f,a)=>`rgba(0,0,0,${a}) ${(r-F*f).toFixed(1)}px`;
+      m=`radial-gradient(circle at ${rc.x.toFixed(1)}px ${rc.y.toFixed(1)}px,${st(1,0)},${st(.75,.1)},${st(.5,.5)},${st(.25,.9)},${st(0,1)})`;}
+    const key=m+'|'+o.toFixed(3)+'|'+words.toFixed(3);if(key===lastMask)return;lastMask=key;
+    loader.style.webkitMaskImage=loader.style.maskImage=m;
+    loader.style.opacity=o<1?o.toFixed(3):'';body.style.opacity=words<1?words.toFixed(3):'';
+  }
+  // The drop: a small soft light, a little longer than wide while it falls; where it went in, a small light that fades.
+  function drawDrop(d){
+    const glow=(x,y,r,a,sy)=>{const g=rctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,`rgba(214,244,240,${(.85*a).toFixed(3)})`);g.addColorStop(.35,`rgba(160,222,216,${(.3*a).toFixed(3)})`);g.addColorStop(1,'rgba(140,215,208,0)');
+      rctx.fillStyle=g;rctx.beginPath();rctx.ellipse(x,y,r,r*sy,0,0,2*Math.PI);rctx.fill();};
+    if(d.a>0)glow(d.x,d.y,d.r*2.6,d.a,1.35);
+    if(d.splash>0)glow(d.x,d.y,d.r*2,d.splash*.7,1);
+  }
+  // One ring: a soft dark trough just inside a fine light crest that is brighter on the side the light comes from (upper
+  // left), a faint wide glow, and an edge that wavers by under a pixel (never a bent shape).
+  function drawRing(g,t,amp){
+    if(g.r<2||g.k<.004)return;
+    const n=Math.max(64,Math.min(512,Math.round(g.r*.5))),wob=Math.min(.9,.004*g.r)*g.k*amp,ph=g.r*.013;
+    const path=r0=>{rctx.beginPath();for(let j=0;j<=n;j++){const th=2*Math.PI*j/n,rr=Math.max(0,r0+wob*(.6*Math.sin(5*th+ph+t/900)+.4*Math.sin(9*th-ph-t/1300)));
+      const x=rc.x+rr*Math.cos(th),y=rc.y+rr*Math.sin(th);j?rctx.lineTo(x,y):rctx.moveTo(x,y);}};
+    path(g.r-g.w*1.6);rctx.strokeStyle=`rgba(1,8,15,${(.3*g.k).toFixed(3)})`;rctx.lineWidth=g.w*1.6;rctx.stroke();
+    path(g.r);rctx.strokeStyle=`rgba(140,215,208,${(.07*g.k).toFixed(3)})`;rctx.lineWidth=Math.max(4,g.w*1.4);rctx.stroke();
+    const lit=rctx.createLinearGradient(rc.x-g.r*.7,rc.y-g.r*.7,rc.x+g.r*.7,rc.y+g.r*.7);
+    lit.addColorStop(0,`rgba(196,238,234,${(.66*g.k).toFixed(3)})`);lit.addColorStop(1,`rgba(140,215,208,${(.3*g.k).toFixed(3)})`);
+    rctx.strokeStyle=lit;rctx.lineWidth=1.2;rctx.stroke();
   }
 
   // Drag to turn: on the globe itself, not on the copy, a button, the card or the source strip. A mouse turns it both
@@ -715,19 +840,32 @@ void main(){
     for(const n of document.body.children)hold(n);
     observer=new MutationObserver(list=>{for(const m of list)for(const n of m.addedNodes)if(n.nodeType===1&&n.parentNode===document.body)hold(n);});
     observer.observe(document.body,{childList:true});
-    canvas=q('.gate-sea');ctx=canvas.getContext('2d');rip=q('.gate-ripple');rctx=rip.getContext('2d');ripAt=performance.now();
-    // while the loader shows, the entry screen under it is out of reach (keyboard, pointer, assistive tech), all but the
-    // motion switch, which the loader keeps in its corner
-    const bar=q('.gate-bar'),sw=q('.gate-motion');behind=[...q('.gate-hero').children,...bar.children].filter(n=>n!==bar&&n!==sw);
-    for(const n of behind)n.inert=true;
+    canvas=q('.gate-sea');ctx=canvas.getContext('2d');rip=q('.gate-ripple');rctx=rip.getContext('2d');
+    // t0: the loader is in the first paint (intro.css), so the browser's paint record is when the piece began (it may
+    // come after the first frames, startAt); a hidden tab, which paints none, starts now
+    try{new PerformanceObserver(l=>{const p=l.getEntries().map(e=>e.startTime);if(p.length)startAt(Math.min(...p),true);}).observe({type:'paint',buffered:true});}catch{}
+    if(document.hidden)startAt(performance.now());
+    // While the piece runs the entry screen is busy, not shut: assistive tech can read it and the keyboard can reach it;
+    // the loader takes the pointer (all but the motion switch over it), and a focus moved into the entry screen (not by
+    // the switch) ends the piece at once, so the focus is never on something hidden.
+    el.setAttribute('aria-busy','true');
+    el.addEventListener('focusin',e=>{if(!opened&&e.target.closest?.('.gate-hero')&&!e.target.closest('.gate-motion'))skipIntro();});
     gateProgress(gate,'page');render();
     q('.gate-loader').focus({preventScroll:true});
+    // no globe in time: ask for the picture again (the timeout starts over), or open the map without the entry screen
+    q('.gate-retry').addEventListener('click',()=>{
+      retries++;failAt=(t0===null?0:performance.now()-t0)+INTRO_TIMELINE.timeout;status='';stillFailed=false;
+      if(G.failed||!G.gl)loadStill(true);else loadStill(); // the turning globe may still come; the picture is asked for beside it
+      render();kick();setTimeout(()=>{if(!opened&&!left)tick(performance.now());},INTRO_TIMELINE.timeout+40);
+    });
+    q('.gate-skip').addEventListener('click',()=>{try{store?.setItem(GATE_KEY,'1');}catch{}fail();scrollTo(0,0);dispatchEvent(new Event('resize'));
+      const m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true});}});
     // the switch: still stops the turning at once (the start pose, no frames); moving again picks up the sway, no entry
     const motion=q('.gate-motion'),setMotion=(v,keep)=>{
       reduce=v;motion.setAttribute('aria-checked',String(v));el.classList.toggle('is-still',v);
       if(keep)try{local?.setItem(MOTION_KEY,v?'1':'0');}catch{}
       if(v){back=null;offset={lon:0,lat:0};}else if(started){withEntry=false;clock=0;}
-      ripKey='';kick();
+      lastMask='';kick();
     };
     setMotion(reduce);
     motion.addEventListener('click',()=>setMotion(!reduce,true));
@@ -757,9 +895,16 @@ void main(){
     // a hidden tab draws nothing; back in view the motion carries on from where it stood
     document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else kick();});
     raf=requestAnimationFrame(frameLoop);
-    // the wait's end without frames (a hidden tab draws none): the loader still goes by GATE_MAX_MS
-    setTimeout(()=>{const now=performance.now();if(!shown&&!left&&gateTick(gate,now)==='ready'){reveal(now);kick();}},GATE_MAX_MS-GATE_FADE_MS+40);
+    // the end and the timeout without frames (a hidden tab draws none): the entry screen still opens at total, or says
+    // the globe did not come
+    for(const at of [INTRO_TIMELINE.total,INTRO_TIMELINE.timeout])setTimeout(()=>{if(!opened&&!left)tick(performance.now());},at+40);
   }
-  const start=()=>{try{setup();}catch{fail();}};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  // As soon as the screen's markup is all in (the element after it exists), not at DOMContentLoaded: that waits for the
+  // deferred app scripts (seconds on a slow network) while the loader already shows, and the piece runs from its paint.
+  let begun=false,watch=null;
+  const start=()=>{if(begun)return;begun=true;watch?.disconnect();try{setup();}catch{fail();}};
+  const parsed=()=>document.readyState!=='loading'||!!document.getElementById('site-gate')?.nextElementSibling;
+  if(parsed())start();
+  else{watch=new MutationObserver(()=>{if(parsed())start();});watch.observe(document.documentElement,{childList:true,subtree:true});
+    document.addEventListener('DOMContentLoaded',start,{once:true});}
 })();

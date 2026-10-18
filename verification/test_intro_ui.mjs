@@ -11,7 +11,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const intro=read('intro.js'),html=read('index.html'),app=read('app.js');
 const ctx={URLSearchParams};vm.createContext(ctx);
-vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,GATE_MIN_MS,GATE_MAX_MS,GATE_FADE_MS,GATE_STEPS,hasAppHash,shouldShowGate,makeGate,gateProgress,gateStep,gateTick,gateFade,RIPPLE,rippleArc,rippleLives,rippleReveal,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
+vm.runInContext(intro.split('// ---- browser ----')[0]+';Object.assign(globalThis,{GATE_KEY,HOME_KEY,homeClick,INTRO_TIMELINE,GATE_STEPS,GLOBE_WAIT,GLOBE_FAIL,hasAppHash,shouldShowGate,makeGate,gateProgress,gateStep,RIPPLE_CENTER,rippleCenter,rippleReach,WAVE,ripplesAt,dropAt,revealAt,crossfadeAt,introEnd,introDone,introStatus,gateNote,countsLine,EVIDENCE_USES,evidenceSourceCount,exampleLinks,keyAction,arrival,motionPref,perspective,inversePerspective,project,simplifyRing,geographyRings,decodeRings,cutEdge,cellOf,globeFrame,cardPlace,globeFile,GLOBE_PAD,borderVertices,nearKorea,NEAR,CAMERA,FRAME,KOREA,ANCHOR,STUDY,COUNTRIES_CUT,leadLine,TEXTURES,textureSet,SHADE,MOTION,ambientAt,cameraAt,clampDrag,dragDegrees,GLOBE_LONLAT,globeShader,SOFTWARE_GL});',ctx);
 const storage=v=>({getItem:k=>k===ctx.GATE_KEY?v:null});
 
 // (1) skip rules: a shared link (any key app.js reads from the hash) and a tab that already entered open the map directly
@@ -41,26 +41,70 @@ for(const [,label] of ctx.GATE_STEPS)assert.doesNotMatch(label,/\d/,'no step cou
 ctx.gateProgress(g,'bogus');assert.equal(ctx.gateStep(g),'해양생물 자료를 불러오는 중','unknown steps are ignored');
 assert.ok(!/loadProgress\('species'/.test(app)&&!/step:'species'/.test(intro),"no made-up 'species' event: 'done' stands for it");
 
-// (3) the entry button opens only when the data is in (after the minimum) or at the maximum wait, which the reveal never passes
-assert.equal(ctx.GATE_MAX_MS,7000);assert.equal(ctx.GATE_MIN_MS,600);assert.equal(ctx.GATE_FADE_MS,360);
-assert.equal(ctx.gateTick(g,ctx.GATE_MAX_MS-ctx.GATE_FADE_MS-1),'loading','no data yet: still loading just before the maximum');
+// (3) the first visit (2026-10-18): one 8 s piece from the first paint. Its times live in INTRO_TIMELINE alone; it ends
+// at total once the globe is in, never sooner for the data and never total after the load
+const TL=ctx.INTRO_TIMELINE,spanTL=([a,b])=>b-a;
+assert.deepEqual(JSON.parse(JSON.stringify(TL)),{total:8000,drop:[1000,1800],ripple:[1800,4200],reveal:[4200,6800],settle:[6800,8000],late:1800,timeout:20000});
+assert.ok(TL.drop[1]===TL.ripple[0]&&TL.ripple[1]===TL.reveal[0]&&TL.reveal[1]===TL.settle[0]&&TL.settle[1]===TL.total,'the pieces follow one another to the end');
+const timesIn=src=>[...src.replace(/\/\/[^\n]*/g,'').matchAll(/\b(1800|4200|6800|20000)\b/g)].length; // (1000 and 8000 are also pixel sizes and the fps step)
+assert.equal(timesIn(intro.slice(intro.indexOf('const INTRO_TIMELINE'))) ,timesIn(intro.slice(intro.indexOf('const INTRO_TIMELINE'),intro.indexOf('\n',intro.indexOf('const INTRO_TIMELINE')))),'no timeline time typed in anywhere else');
+assert.ok(!/GATE_MIN_MS|GATE_MAX_MS|GATE_FADE_MS|gateTick|gateFade/.test(intro),'the old loader timing (data done + 0.6 s, 7 s maximum) is gone');
+for(const ready of [0,1200,4200])for(const t of [0,4000,7999])assert.equal(ctx.introDone(t,ready),false,`globe at ${ready} ms: not usable at ${t} ms`);
+for(const ready of [0,1200,4200])assert.equal(ctx.introDone(8000,ready),true,`globe at ${ready} ms: usable at 8 s`);
+assert.equal(ctx.introDone(60000,null),false,'no globe: never usable by the clock alone (the wait, then the error)');
+// a late globe opens from its moment, over at least late, and never before total (no short reveal then a still wait)
+for(const [ready,end] of [[4300,8000],[5000,8000],[6500,8300],[9000,10800],[15000,16800]]){
+  assert.equal(ctx.introDone(end-1,ready),false);assert.equal(ctx.introDone(end,ready),true,`globe at ${ready}: usable at ${end}`);}
+// the line: nothing while the piece runs, the wait past total, the error past the timeout or once every picture failed
+assert.equal(ctx.introStatus(7999,null,false,TL.timeout),'');assert.equal(ctx.introStatus(8000,null,false,TL.timeout),'wait');
+assert.equal(ctx.introStatus(19999,null,false,TL.timeout),'wait');assert.equal(ctx.introStatus(20000,null,false,TL.timeout),'fail');
+assert.equal(ctx.introStatus(3000,null,true,TL.timeout),'','failed pictures: the piece still runs to total first');
+assert.equal(ctx.introStatus(8000,null,true,TL.timeout),'fail');assert.equal(ctx.introStatus(30000,null,false,45000),'wait','a retry starts the timeout over');
+assert.equal(ctx.introStatus(30000,9000,true,TL.timeout),'','the globe is in: nothing to say');
+assert.equal(ctx.GLOBE_WAIT,'지구 화면을 준비하는 중');assert.ok(html.includes(`<p>${ctx.GLOBE_FAIL}</p>`),'the error line in the markup is GLOBE_FAIL');
+assert.match(html,/<div class="gate-fail" hidden><p>지구 화면을 불러오지 못했어요\.<\/p><p class="gate-fail-do"><button class="gate-retry" type="button">다시 시도<\/button><button class="gate-skip" type="button">지도 바로 열기<\/button><\/p><\/div>/);
+// the drop's place: 52% · 61% side by side; stacked, under the loader's words
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.RIPPLE_CENTER)),{wide:[.52,.61],stacked:[.5,.66]});
+assert.deepEqual(JSON.parse(JSON.stringify(ctx.rippleCenter(1440,900,false,300))),{x:1440*.52,y:900*.61});
+assert.ok(ctx.rippleCenter(390,844,true,520).y>=520+.12*844,'stacked: under the words');
+// the rings: none before the drop lands, then 6-12 fine close rings that open up as they spread, weaker as they widen,
+// none at total; every quantity moves smoothly from frame to frame (no jump where one piece hands over)
+for(const [w,h,st] of [[1440,900,false],[1280,720,false],[390,844,true]]){
+  const c=ctx.rippleCenter(w,h,st,h*.45),D=ctx.rippleReach(c,w,h);
+  assert.equal(ctx.ripplesAt(TL.ripple[0],D).length,0);assert.equal(ctx.ripplesAt(TL.total,D).length,0,'calm at total');
+  const at=t=>ctx.ripplesAt(t,D);
+  assert.ok(at(TL.ripple[1]).length>=6&&at(TL.ripple[1]).length<=12,`${w}×${h}: ${at(TL.ripple[1]).length} rings`);
+  const gap=t=>{const r=at(t);return r[0].r-r[1].r;};
+  assert.ok(gap(2300)<gap(4200)&&gap(4200)<gap(6800),'the rings open up as they spread');assert.ok(gap(2300)<=Math.max(18,w*.016),`fine at first: ${gap(2300)} px`);
+  assert.ok(at(3000)[0].k>at(6000)[0].k,'weaker as they widen');
+  for(let t=TL.ripple[0];t<TL.total;t+=16.7){const a=at(t),b=at(t+16.7);
+    a.forEach((g,i)=>{const q=b[i];assert.ok(q?q.r>=g.r&&q.r-g.r<D*.02&&Math.abs(q.k-g.k)<.08:g.k<.01,`${w}×${h} ring ${i} at ${t.toFixed(0)} ms`);});
+    for(const g of a)assert.ok(g.k>=0&&g.k<=1&&g.w>0);}
+  // the opening: closed before reveal[0] and with no globe; from nothing at reveal[0], inside the rings' front, growing,
+  // clear to the farthest corner by total; the loader's words gone in the first third of the reveal
+  assert.equal(ctx.revealAt(5000,D,null).r,0,'no globe: the loader stays whole');
+  assert.equal(ctx.revealAt(TL.reveal[0]-1,D,0).r,0);
+  let prev=0;for(let t=TL.reveal[0];t<=TL.total;t+=16.7){const v=ctx.revealAt(t,D,0),rings=at(t);
+    assert.ok(v.r>=prev&&v.r-prev<D*.03,`opening grows smoothly at ${t.toFixed(0)}`);prev=v.r;
+    if(rings.length)assert.ok(v.r<=rings[0].r+1,'the opening never runs ahead of the rings');}
+  const end=ctx.revealAt(TL.total,D,0);assert.ok(end.r-end.F>=D,'clear to the farthest corner at total');assert.ok(end.F>=D*.3,'a wide soft edge, not a hard hole');
+  assert.ok(ctx.revealAt(TL.reveal[0]+spanTL(TL.reveal)*.36,D,0).words<.01,'the words gone early in the reveal');
+  assert.ok(ctx.revealAt(TL.settle[0],D,0).over===0&&ctx.revealAt(TL.total,D,0).over===1,'what is drawn over the globe comes in over settle');
+  // late: opens from the globe's moment, clear by its end
+  const L=ctx.revealAt(9000+1800,D,9000);assert.ok(L.r-L.F>=D&&ctx.revealAt(9000,D,9000).r===0);
+  // the drop: falls in drop[], lands on the centre, then only a small light that fades as the rings start
+  assert.equal(ctx.dropAt(TL.drop[0]-1,c,h),null);const d1=ctx.dropAt(TL.drop[0]+400,c,h),d2=ctx.dropAt(TL.drop[1]-1,c,h);
+  assert.ok(d1.y<d2.y&&Math.abs(d2.y-c.y)<1&&d1.x===c.x,'falls straight onto the centre');assert.ok(d2.r<6&&d2.splash===0,'a small drop');
+  assert.ok(ctx.dropAt(TL.ripple[0]+100,c,h).splash>0&&ctx.dropAt(TL.ripple[0]+400,c,h)===null);
+}
+// still: a cross-fade over the same window, 1 → 0
+assert.equal(ctx.crossfadeAt(4000,0),1);assert.equal(ctx.crossfadeAt(8000,0),0);assert.ok(ctx.crossfadeAt(6000,0)>0&&ctx.crossfadeAt(6000,0)<1);assert.equal(ctx.crossfadeAt(9000,null),1);
 assert.equal(ctx.gateNote(g),'');
-assert.equal(ctx.gateTick(g,ctx.GATE_MAX_MS-ctx.GATE_FADE_MS),'ready','maximum wait: open anyway, early enough for the reveal');
-assert.equal(ctx.gateFade(g,ctx.GATE_MAX_MS-ctx.GATE_FADE_MS,false),ctx.GATE_FADE_MS,'the reveal then ends right at the maximum');
+g.phase='ready';
 assert.equal(ctx.gateStep(g),'해양생물 자료를 불러오는 중','the wait is up, not the loading: the step says so, never 불러왔어요');
 assert.match(ctx.gateNote(g),/계속 불러오는 중입니다. 먼저 들어가도 됩니다/);
-// a late frame (or a tab hidden over the limit) shortens the reveal or skips it; the loader is never left past the maximum
-for(const t of [0,600,3000,6640,6800,6999,7000,9000,60000])for(const still of [false,true]){
-  const f=ctx.gateFade(ctx.makeGate(0),t,still);
-  assert.ok(f>=0&&f<=ctx.GATE_FADE_MS&&t+f<=Math.max(t,ctx.GATE_MAX_MS),`reveal at ${t} ms (${still?'still':'moving'}): ${f} ms`);
-  if(still)assert.equal(f,0,'still: no reveal animation');
-}
-assert.equal(ctx.gateFade(ctx.makeGate(0),600,false),360,'fast data: 0.6 s of loader, then 0.36 s of reveal');
 g=ctx.makeGate(1000);
 ctx.gateProgress(g,'done',{state:'live',published:8,candidates:22});
-assert.equal(ctx.gateTick(g,1000+ctx.GATE_MIN_MS-1),'loading','fast data still keeps the loader for the minimum (no flash)');
-assert.equal(ctx.gateTick(g,1000+ctx.GATE_MIN_MS),'ready','data in and the minimum passed: no waiting for a wave');
-assert.equal(ctx.gateTick(g,0),'ready','ready stays ready');
 assert.equal(ctx.gateNote(g),'');
 assert.equal(ctx.gateStep(g),'해양생물 30종 자료를 불러왔어요','species total = published + candidates from the loaded data');
 // the design's line: one species count (2026-10-17, LKH: no published/candidate split on screen; was 30종의 해양생물(운영 발행 8 · 조사 후보 22) …)
@@ -77,7 +121,7 @@ assert.equal(ctx.countsLine({state:'error'}),'','no counts typed in when the app
 assert.equal(ctx.countsLine(null),'');
 
 // (4) every load outcome can enter; the note says the same thing as the app's connection state
-const note=d=>{const x=ctx.makeGate(0);ctx.gateProgress(x,'done',d);ctx.gateTick(x,ctx.GATE_MIN_MS);return [x.phase,ctx.gateNote(x)];};
+const note=d=>{const x=ctx.makeGate(0);ctx.gateProgress(x,'done',d);x.phase='ready';return [x.phase,ctx.gateNote(x)];};
 assert.deepEqual(note({state:'snapshot',snapshotAt:'2026-09-24'}),['ready','운영 DB에 연결하지 못해 2026-09-24 기준 공개 자료 사본으로 엽니다.']);
 // Offline demo (?offline=1): the saved copy is the plan, so the note says so instead of 연결하지 못해.
 assert.deepEqual(note({state:'offline',snapshotAt:'2026-10-01'}),['ready','오프라인 시연 · 2026-10-01 기준 공개 자료 사본으로 엽니다.']);
@@ -168,7 +212,7 @@ const css=read('intro.css');
 assert.match(css,/html\.gate-on \.gate,html\.gate-on \.gate\[hidden\]\{display:block!important\}/,'shown only with the class intro.js sets, from the first paint (outranks style.css [hidden]{display:none!important})');
 // 2026-10-15 load speed: the copy is not hidden until the data is in (it was the page's largest text, seconds late)
 assert.ok(!/<div class="gate-hero"[^>]*hidden/.test(html),'entry copy is in the first paint');
-assert.match(css,/prefers-reduced-motion:reduce/);
+assert.match(intro,/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/,'the system setting starts the motion switch');
 // the ways in are real buttons; the motion control is a switch; the globe picture is hidden from assistive tech
 const gateMarkup=html.slice(html.indexOf('<div id="site-gate"'),html.indexOf('<header'));
 assert.deepEqual([...gateMarkup.matchAll(/<button[^>]*data-go="(\w+)"/g)].map(m=>m[1]).sort(),['compare','compare','explore','explore','method']);
@@ -177,56 +221,43 @@ assert.match(gateMarkup,/<canvas class="gate-sea" aria-hidden="true">/);
 assert.match(gateMarkup,/<button class="gate-enter" id="gate-enter" type="button">바다 탐색하기/);
 assert.match(css,/\.gate\.is-still \.gate-sea/,'the switch stops the globe fading and zooming');
 
-// (7b) the loader (2026-10-17): the whole screen, logo + line + step in the markup (first paint), wide ripples drawn by the
-// one frame loop, no spinner, ring, arc or progress drawing; the ripples spread, fade at both ends of their life and close
-// onto the globe's rim in the reveal
+// (7b) the loader (2026-10-17, the 8 s piece 2026-10-18): the whole screen, logo + line + step in the markup (first
+// paint), the drop and its rings drawn by the one frame loop, no spinner or progress drawing
 const loader=gateMarkup.slice(gateMarkup.indexOf('<div class="gate-loader"'),gateMarkup.indexOf('<div class="gate-hero"'));
-assert.match(loader,/^<div class="gate-loader" role="status" tabindex="-1"><canvas class="gate-ripple" aria-hidden="true"><\/canvas>/,'the step line is a status; the ripples are decoration');
+assert.match(loader,/^<div class="gate-loader" role="status" tabindex="-1"><div class="gate-loader-body">/,'the step line is a status');
+assert.ok(gateMarkup.includes('</div></div><canvas class="gate-ripple" aria-hidden="true"></canvas><div class="gate-hero">'),'the rings are decoration, over the loader but outside it (its opening does not hide them)');
 const logoPath=gateMarkup.match(/<p class="gate-brand"><svg[^>]*>([\s\S]*?)<\/svg>/)[1];
 assert.ok(loader.includes(logoPath),'the loader shows the site logo itself (the bar\'s mark)');
 assert.match(loader,/<span>Blue-bio <strong>Value<\/strong> Map<\/span>/);
 assert.match(loader,/<p class="gate-motto"><span>바다의 가능성,<\/span> <span>근거에서부터\.<\/span><\/p>/);
 assert.ok(loader.includes(`<p class="gate-step">${ctx.GATE_STEPS[0][1]}</p>`),'the first step is in the first paint');
-for(const old of ['gate-orbit','gate-ring','gate-arc','gate-spin','gate-spark','gateFraction'])
-  assert.ok(![html,css,intro].some(t=>t.includes(old)),`the old ring loader is gone: ${old}`);
-assert.ok(!/@keyframes/.test(css),'no CSS loop animation on the entry screen (the ripples run in the frame loop)');
+for(const old of ['gate-orbit','gate-ring','gate-arc','gate-spin','gate-spark','gateFraction','rippleArc','rippleLives','rippleReveal','--gf'])
+  assert.ok(![html,css,intro].some(t=>t.includes(old)),`the old loaders are gone: ${old}`);
+assert.ok(!/@keyframes/.test(css),'no CSS loop animation on the entry screen (the piece runs in the frame loop)');
 assert.ok(!/%|\/\s*3\b/.test(ctx.gateStep(ctx.makeGate(0))),'no percent or step count');
 const ib=intro.split('// ---- browser ----')[1];
-assert.deepEqual([...ib.matchAll(/requestAnimationFrame\((\w+)\)/g)].map(m=>m[1]).filter(f=>f!=='frameLoop'),[],'one frame loop (frameLoop) for the loader, the reveal and the globe');
-assert.match(ib,/if\(fade\.ms\)setTimeout\(showHero,fade\.ms\);else showHero\(\);/,'the reveal ends on a timer (no waiting for transitionend), at once when still');
-assert.match(ib,/setTimeout\(\(\)=>\{const now=performance\.now\(\);if\(!shown&&!left&&gateTick\(gate,now\)==='ready'\)/,'the loader goes by the maximum even without frames (hidden tab)');
-assert.match(ib,/rip\.width=rip\.height=0/,'the ripple canvas is let go once the entry screen opens');
+assert.deepEqual([...ib.matchAll(/requestAnimationFrame\((\w+)\)/g)].map(m=>m[1]).filter(f=>f!=='frameLoop'),[],'one frame loop (frameLoop) for the piece and the globe');
+assert.match(ib,/if\(!opened\)tick\(now\);/,'the piece runs in the frame loop');
+assert.match(ib,/if\(introDone\(t,readyAt\)\)return showHero\(\);/,'usable at the end of the piece once the globe is in (introDone), nothing else');
+assert.ok(!/addEventListener\('bbvm:progress'[\s\S]{0,900}(reveal|showHero)\(/.test(ib.slice(ib.indexOf("addEventListener('bbvm:progress'"),ib.indexOf("addEventListener('bbvm:progress'")+900)),'the data never reveals or opens the screen');
+assert.match(ib,/for\(const at of \[INTRO_TIMELINE\.total,INTRO_TIMELINE\.timeout\]\)setTimeout\(\(\)=>\{if\(!opened&&!left\)tick\(performance\.now\(\)\);\},at\+40\);/,'the end and the timeout come without frames too (hidden tab)');
+assert.match(ib,/new PerformanceObserver\(l=>\{const p=l\.getEntries\(\)\.map\(e=>e\.startTime\);if\(p\.length\)startAt\(Math\.min\(\.\.\.p\),true\);\}\)\.observe\(\{type:'paint',buffered:true\}\)/,'t0 is the first paint the browser records (the first frame only stands in)');
+assert.match(ib,/performance\.mark\('intro:start',\{startTime:t0\}\)/);assert.match(ib,/performance\.mark\?\.\('intro:done'\)/);
+assert.match(ib,/const parsed=\(\)=>document\.readyState!=='loading'\|\|!!document\.getElementById\('site-gate'\)\?\.nextElementSibling;/,'set up as soon as the screen\'s markup is in, not at DOMContentLoaded');
+assert.match(ib,/rip\.hidden=true;rip\.width=rip\.height=0/,'the ripple canvas is let go once the entry screen opens');
+assert.match(ib,/el\.setAttribute\('aria-busy','true'\)/);assert.match(ib,/el\.removeAttribute\('aria-busy'\)/);
+assert.ok(!/\.inert=true/.test(ib.replace(/node\.inert=true/,'')),'the entry screen is never inert while the piece runs (only the page behind the screen is)');
+assert.match(ib,/el\.addEventListener\('focusin',e=>\{if\(!opened&&e\.target\.closest\?\.\('\.gate-hero'\)&&!e\.target\.closest\('\.gate-motion'\)\)skipIntro\(\);\}\);/,'the keyboard reaching the entry screen ends the piece');
+assert.match(css,/\.gate-loader\{position:absolute;inset:0;z-index:1;overflow:hidden\}/,'the loader takes the pointer while the piece runs');
+assert.match(css,/\.gate-ripple\{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none\}/);
 assert.match(css,/\.gate-motion\{position:relative;z-index:2\}/,'the one motion switch stays over the loader (no second switch)');
 assert.equal((gateMarkup.match(/class="gate-motion"/g)||[]).length,1);
-assert.match(css,/\.gate\.is-still \.gate-ripple/);assert.match(css,/@media \(prefers-reduced-motion:reduce\)\{\.gate-ripple/);
-assert.match(css,/\.gate\.is-revealing \.gate-loader-body\{opacity:0;transition:opacity calc\(var\(--gf,360ms\)\/3\) cubic-bezier\(\.22,1,\.36,1\)\}/);
 assert.ok(!/opacity:0;transform:scale\(\.96\)/.test(css),'the globe does not fade in a second time after the reveal');
-// the ripples: RIPPLE.n rings evenly spread over a life, so one is always coming and one going
-assert.equal(ctx.RIPPLE.n,7);assert.equal(ctx.RIPPLE.lifeMs,9000);
-for(const t of [0,1234,9000,45678.9]){const l=[...ctx.rippleLives(t)].sort((a,b)=>a-b);
-  assert.equal(l.length,7);assert.ok(l.every(p=>p>=0&&p<1));l.forEach((p,i)=>i&&assert.ok(Math.abs(p-l[i-1]-1/7)<1e-9,'evenly apart'));}
-assert.deepEqual([...ctx.rippleLives(null)].map(p=>+p.toFixed(4)),[...Array(7)].map((_,i)=>+((i+.5)/7).toFixed(4)),'still: one fixed set');
-// no pop at the loop's seam: a ring is born and gone with no light, and nothing moves far from one frame to the next
-for(const [w,h] of [[1440,900],[1280,720],[390,844]]){
-  assert.equal(ctx.rippleArc(0,w,h).alpha,0);assert.ok(ctx.rippleArc(1,w,h).alpha<1e-12);
-  const peak=Math.max(...[...Array(101)].map((_,i)=>ctx.rippleArc(i/100,w,h).alpha));assert.ok(peak>=.45&&peak<=.6,`brightest line 45-60% (${peak})`);
-  for(let t=0;t<18000;t+=16.7){const a=ctx.rippleLives(t),b=ctx.rippleLives(t+16.7);
-    a.forEach((p,i)=>{const q=b[i];if(q<p)assert.ok(ctx.rippleArc(p,w,h).alpha<.01&&ctx.rippleArc(q,w,h).alpha<.01,'a ring wraps only while dark');
-      else assert.ok(Math.abs(ctx.rippleArc(q,w,h).ry-ctx.rippleArc(p,w,h).ry)<h*.002,'smooth growth');});}
-  // they spread outward (both radii grow) from under the screen through its lower 40%
-  let prev=null;for(let p=0;p<=1;p+=.05){const a=ctx.rippleArc(p,w,h);assert.ok(a.cy>h&&a.cy-a.ry>=h*.59&&a.cy-a.ry<=h,`${w}×${h} p=${p}: top of the ring at ${(a.cy-a.ry)/h}`);
-    if(prev)assert.ok(a.rx>prev.rx&&a.ry>prev.ry);prev=a;}
-  // a wide, shallow curve on every screen (an upright phone sees the middle of it, not an arch): the ring's top at the
-  // screen's edges is under 15% of the height below its top in the middle, for the rings in the upper part of their life
-  for(const p of [.5,.75,1]){const a=ctx.rippleArc(p,w,h),dx=(w/2)/a.rx,drop=a.ry*(1-Math.sqrt(1-dx*dx));assert.ok(drop<h*.15,`${w}×${h} p=${p}: drop ${drop/h}`);}
-}
-// the reveal: k 0 the ring as it was; by 2/3 a circle just outside the globe's rim (older rings wider); at 1 gone
-const fr={cx:1080,cy:652,R:700},a0=ctx.rippleArc(.5,1440,900);
-assert.deepEqual(JSON.parse(JSON.stringify(ctx.rippleReveal(a0,.5,0,fr))),JSON.parse(JSON.stringify({cx:a0.cx,cy:a0.cy,rx:a0.rx,ry:a0.ry,alpha:a0.alpha,calm:1})));
-for(const p of [.05,.5,.95]){const r=ctx.rippleReveal(ctx.rippleArc(p,1440,900),p,2/3,fr);
-  assert.ok(Math.abs(r.cx-fr.cx)<1e-6&&Math.abs(r.cy-fr.cy)<1e-6&&Math.abs(r.rx-r.ry)<1e-6&&r.rx>=fr.R*1.01&&r.rx<=fr.R*1.1+1e-9&&r.calm<1e-9&&r.alpha>.15,`p=${p} on the rim: ${JSON.stringify(r)}`);}
-assert.ok(ctx.rippleReveal(a0,.5,1,fr).alpha===0,'gone at the end of the reveal');
-assert.ok(Object.values(ctx.rippleReveal(a0,.5,.5,null)).every(Number.isFinite),'no globe frame yet: the rings stay where they are');
+// the refraction: the shader pushes along each ring's radius (u_ring: radius, push, half width; WAVE.rings of them); the
+// still picture is drawn again in thin rings by the same push
+assert.match(ctx.globeShader(),/uniform vec3 u_ring\[12\];/);assert.equal(ctx.WAVE.rings,12);
+assert.match(ctx.globeShader(),/for\(int i=0;i<12;i\+\+\)\{vec3 g=u_ring\[i\];float x=\(rr-g\.x\)\/g\.z;push\+=g\.y\*x\*exp\(-\.5\*x\*x\);\}\s*p-=dd\/max\(rr,1\.\)\*push\*1\.6487;/);
+assert.match(ib,/try\{const s=R\*\(1\+2\*photo\.pad\);ctx\.globalAlpha=t;bent\(photo\.img,cx-s,cy-s,2\*s,2\*s\);\}/);
 assert.ok(!/three/i.test(intro)&&!/three/i.test(gateMarkup)&&!/<script[^>]+three/i.test(html),'no Three.js on the main page');
 assert.ok(!/https?:\/\//.test(intro.replace(/\/\/[^\n]*/g,'')),'intro.js loads nothing from another site');
 
@@ -524,8 +555,7 @@ assert.match(browser,/for\(const b of el\.querySelectorAll\('\[data-go-table\]'\
 assert.match(browser,/if\(how\.table\)document\.querySelector\(`#matrix-types \[data-mt-table="\$\{how\.table\}"\]`\)\?\.click\(\);/,'the table opens the way its type card\'s button opens it');
 assert.ok(browser.indexOf('setView(a.view,!a.scroll)')<browser.indexOf('if(how.table)'),'the tab first, then the table');
 assert.match(browser,/const red=exampleLinks\(all\.find\(x=>x\?\.kind==='conservation'\)\);if\(red\.length\)sp\.textContent=`\(\$\{red\.map\(l=>l\.name\)\.join\('·'\)\}\)`;/);
-// 2026-10-17 loader: every way in (the use buttons too) waits under the loader, out of reach, until the entry screen opens
-assert.match(browser,/behind=\[\.\.\.q\('\.gate-hero'\)\.children,\.\.\.bar\.children\]\.filter\(n=>n!==bar&&n!==sw\);\s*for\(const n of behind\)n\.inert=true;/,'the use buttons wait for the data like the other ways in');
+// 2026-10-18: no way in acts until the entry screen is usable (the loader takes the pointer; the keyboard ends the piece first)
 assert.match(browser,/if\(left\|\|!opened\)return;left=true;/,'no way in before the entry screen opens (not during the reveal either)');
 // nothing that reads as a sample, a claim that some body uses the map, or a weak point; 우뭇가사리 is not the example
 const usesText=usesHtml.replace(/<[^>]+>/g,' ');
@@ -556,5 +586,5 @@ for(const w of ['비상업','상업 레이어','레이어','CC0','CC BY','라이
 assert.match(browser,/h\.scrollTo\(\{top:h\.scrollTop\+q\('\.gate-uses'\)\.getBoundingClientRect\(\)\.top-h\.getBoundingClientRect\(\)\.top,/);
 assert.match(browser,/const NO_DRAG='[^']*\.gate-below';/);
 
-console.log('PASS: entry screen skip rules, logo goes home, real loading steps, min/max wait, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards, uses and next steps under the first screen');
+console.log('PASS: entry screen skip rules, logo goes home, real loading steps, the 8 s first-visit piece, every outcome can enter, Enter key, ways in, motion switch, projection, markup, copy, app.js events, globe files, layout, baked picture choice, Korea coast, leader angle, focus ring, turning globe (textures, shader inverse, motion range, drag, overlays, fallbacks), problem → solution, no example cards, uses and next steps under the first screen');
 
