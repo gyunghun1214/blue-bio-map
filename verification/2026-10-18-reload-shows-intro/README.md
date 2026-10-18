@@ -72,7 +72,7 @@
 | 고친 검사 | `uicheck.mjs`: 공유 링크를 `location.hash=…;location.reload()`로 열던 6곳(가중치 링크 2, `t=value` 2, A-5, G-4)을 새로 열기(`about:blank` → 링크, `openLink`)로. 기대값은 그대로. M-4: 새로고침 뒤 진입 화면을 Enter로 지나 같은 값 확인. G-7: 실제로는 주소를 다시 여는 검사라 이름만 |
 | 고친 검사 | `offline_check.mjs` O-8: 실제로는 같은 탭에서 주소를 다시 여는 검사라 이름만. 날짜 폴더 `2026-10-18-intro-ripple-8s/check.mjs` 5번, `2026-10-landing-globe/landing_check.mjs` 'Same tab, reload', `2026-10-18-mobile-polish/hint.mjs`, 프로젝트 폴더 `shared-link-mobile/repro.mjs` A2: 새로고침 = 진입 화면으로 기대를 고침(A2는 진입 화면 뒤 그 탭의 버튼까지) |
 | 새 검사 | `test_intro_ui.mjs` (1b): 원본 지침의 `shouldShowGate`·`navigationType` 경우 전부, 세 번째 인자 없을 때 결과가 전과 같음, `visitorNav`, `withoutTab`, app.js 표시 줄, 브라우저 부분 정적 검사(`nav` 전달, 새로고침일 때만 `GATE_KEY` 지움·`replaceState`, `release()` 스크롤 복원, `location.hash=` 없음). `test_client_outdated.mjs`: 새로고침 때 표시, 안 할 때 없음, 진입 화면이 떠 있으면 표시 없음, 닫히는 중이면 표시 |
-| 새 검사 | `uicheck.mjs` G-11(5개): 비교와 지표에서 F5 → 로딩부터 · 8초 동안 닫히지 않음 · Enter → 같은 종·지도 위치의 탐색 지도, 탐색 지도에서 F5 → 지표 살펴보기, 바다 탐험 → 뒤로, 앱이 한 새로고침. `offline_check.mjs` O-8b(2개): 오프라인 시연에서 F5 → 오프라인 문구가 있는 진입 화면 → Enter → 오프라인 지도. 이 폴더의 [`check.mjs`](check.mjs)(35개) |
+| 새 검사 | `uicheck.mjs` G-11(6개): 비교와 지표에서 F5 → 로딩부터 · 8초 동안 닫히지 않음 · Enter → 같은 종·지도 위치의 탐색 지도, 탐색 지도에서 F5 → 지표 살펴보기, 바다 탐험 → 뒤로, 앱이 한 새로고침. `offline_check.mjs` O-8b(2개): 오프라인 시연에서 F5 → 오프라인 문구가 있는 진입 화면 → Enter → 오프라인 지도. 이 폴더의 [`check.mjs`](check.mjs)(35개) |
 | 지운 검사 / 건너뛴 검사 | 없다 |
 
 ## 결과
