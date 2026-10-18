@@ -1830,8 +1830,9 @@ function weightSensitivity(s){
 function weightSensitivityLine(s){
   const rows=weightSensitivity(s);if(!rows)return '';
   const types=new Set(rows.map(r=>r.type));
-  return `<p class="ax-note ax-sens">MFPI 가중치별 BBVI: ${rows.map(r=>`${r.w.toFixed(1)}${r.w===officialWeight()?'(기본)':''} ${scoreText(s,'BBVI',r.value)} ${esc(r.type?matrixTypePlain(r.type):'—')}`).join(' · ')}`+
-    ` · ${types.size>1?'가중치에 따라 유형이 바뀜':'세 가중치에서 유형 같음'}</p>`;
+  // 2026-10-18 (LKH, 휴대폰): the line sits in a fold that only phones close (theme.css .detail-fold); wider screens show it as before
+  return `<details class="detail-fold ax-sens-fold"${foldOpen()}><summary>가중치별 BBVI</summary><p class="ax-note ax-sens">MFPI 가중치별 BBVI: ${rows.map(r=>`${r.w.toFixed(1)}${r.w===officialWeight()?'(기본)':''} ${scoreText(s,'BBVI',r.value)} ${esc(r.type?matrixTypePlain(r.type):'—')}`).join(' · ')}`+
+    ` · ${types.size>1?'가중치에 따라 유형이 바뀜':'세 가중치에서 유형 같음'}</p></details>`;
 }
 // species whose type differs between weights 0.2 · 0.5 · 0.8 (the method section count)
 const weightTypeChanges=()=>(data?.species||[]).filter(s=>{const r=weightSensitivity(s);return r&&new Set(r.map(x=>x.type)).size>1;});
@@ -2503,7 +2504,7 @@ function renderLiveDetail(s) {
   }).join('');
   const more=(title,body)=>`<details class="detail-more"><summary>${title}</summary><div class="detail-more-body">${body}</div></details>`;
   $('detail').innerHTML=`<div class="detail-head">${groupBadge(s)}<div class="detail-top"><span>공개 기준 적용 자료</span><span class="verified">학명 연결 확인</span></div><h2>${esc(s.label)}</h2><p class="latin">${esc(s.name)}</p></div>`+
-    `<div class="detail-summary"><div id="detail-map-summary">${mapSummaryHtml(periodView({...s,cells}))}</div><h3>근거 상태</h3>${axes}<p class="detail-limit">공개된 관측 기록 기준입니다.</p></div>`+
+    `<div class="detail-summary"><div id="detail-map-summary">${mapSummaryHtml(periodView({...s,cells}))}</div><details class="detail-fold"${foldOpen()}><summary>근거 상태</summary><h3>근거 상태</h3>${axes}<p class="detail-limit">공개된 관측 기록 기준입니다.</p></details></div>`+
     `<div class="detail-more-list">`+
     more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${pilot?(s.v2?'':`<p class="fine">${score}</p>`):`<div class="withheld"><b>통합점수 산출 보류</b>${withheld}</div>`}`)+
     more('활용 전 확인할 제도',institutionChecks(s))+
@@ -4468,6 +4469,8 @@ function statusPop(id){
 // Design 07 (2026-10-10): on a phone (≤740px) the map stays at the top and the species pane slides over it as a bottom
 // sheet. The page scroll is the drag; the handle button opens (sheet to the top) and closes (back to the map) for touch and keys.
 const phoneSheet=()=>globalThis.matchMedia?.('(max-width:740px)').matches;
+// detail folds (.detail-fold) render open everywhere but on a phone, where the user opens them (2026-10-18, LKH)
+const foldOpen=()=>phoneSheet()?'':' open';
 function sheetSummary(s){
   const box=$('sheet-summary');if(!box)return;
   const t=matrixType(s), v=k=>{const x=pilotScore(s,k);
@@ -4717,6 +4720,12 @@ for(const id of ['species-group'])$(id).addEventListener('change',()=>{if(data)r
 let comparisonFrame=0;const queueComparisonSync=()=>{if(data&&!comparisonFrame)comparisonFrame=requestAnimationFrame(()=>{comparisonFrame=0;syncComparison();});};
 $('comparison').addEventListener('scroll',queueComparisonSync,{passive:true});addEventListener('resize',queueComparisonSync);
 $('effort-toggle').addEventListener('change',e=>{effortOn=e.target.checked;drawEffort();});
+// 2026-10-18 (LKH, 휴대폰): phones start with the map legend folded to a '범례' pill and the map notes closed, so the map and the
+// species sheet get the first screen; both open with a tap as before. Decided once at load (not on resize).
+if(phoneSheet()){
+  const t=$('legend-toggle');if(t){t.parentElement.classList.add('legend-collapsed');t.setAttribute('aria-expanded','false');t.title=t.ariaLabel='범례 펼치기';}
+  document.querySelectorAll('details.map-notes[open]').forEach(d=>{d.open=false;});
+}
 $('legend-toggle').addEventListener('click',e=>{const folded=e.currentTarget.parentElement.classList.toggle('legend-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!folded));e.currentTarget.title=e.currentTarget.ariaLabel=folded?'범례 펼치기':'범례 접기';});
 document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
   b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')dimTypes(b.dataset.type);});
