@@ -1,0 +1,308 @@
+[
+ {
+  "name": "Matrix: every species point is a round <button> with no ::before diamond",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "Stock-decline species (우뭇가사리·참조기) draw like every other point: same element, same size, own type colour",
+  "ok": true,
+  "detail": [
+   [
+    "우뭇가사리",
+    14,
+    "conservation_priority",
+    "rgb(215, 57, 47)"
+   ],
+   [
+    "참조기",
+    14,
+    "baseline_survey",
+    "rgb(63, 127, 207)"
+   ]
+  ]
+ },
+ {
+  "name": "살오징어 (selected) is the large ring circle in its type colour; aria-label keeps 자원 감소",
+  "ok": true,
+  "detail": {
+   "w": 20,
+   "bg": "rgb(242, 178, 51)",
+   "aria": "살오징어 활용 지표 52, 보전 지표 60.0 (LC + 자원 감소) · MCUI 자원 감소 신호 · 어획량 −79.8% / 활용·보전 병행 검토"
+  }
+ },
+ {
+  "name": "Quadrant names: four marks, all circles of the same size in the type colour",
+  "ok": true,
+  "detail": [
+   [
+    "보전 지표 높음",
+    "none",
+    "50%",
+    "18px"
+   ],
+   [
+    "두 지표 모두 높음",
+    "none",
+    "50%",
+    "18px"
+   ],
+   [
+    "두 지표 모두 낮음",
+    "none",
+    "50%",
+    "18px"
+   ],
+   [
+    "활용 지표 높음",
+    "none",
+    "50%",
+    "18px"
+   ]
+  ]
+ },
+ {
+  "name": "Type marks (explore cards, panel, 2×2 key, type cards, profile, table): all circles, no clip-path or 45° turn",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "No ▲ ■ ◆ ◇ △ □ in the card list, quadrants, legend, type cards, data table, profile, map legend or side panel",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "Legend: no '자원 감소 신호' item; 선택한 종 stays",
+  "ok": true,
+  "detail": "선택한 종"
+ },
+ {
+  "name": "Data table: 살오징어 MCUI keeps 60.0 (LC + 자원 감소) and has no ◆ mark",
+  "ok": true,
+  "detail": "<button class=\"score-cell cv\" data-score-aphia=\"342067\" data-score-axis=\"MCUI\" aria-label=\"살오징어 MCUI 60.0 (LC + 자원 감소) · 자원 감소 신호 · 어획량 −79.8% · 정식 산출 근거 보기\"><span class=\"cv-num\">60.0<small class=\"cv-cat\">(LC + 자원 감소)</small></span><span class=\"cv-bar hi\" aria-hidden=\"true\"><i style=\"width:60%\"></i>"
+ },
+ {
+  "name": "'읽는 법' has the new sentence and no 마름모",
+  "ok": true
+ },
+ {
+  "name": "'자료를 읽을 때' has the new sentence and no 마름모",
+  "ok": true
+ },
+ {
+  "name": "Types, colours and positions of all points are the same as before",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "Weight slider ends: species that change type change colour and stay circles",
+  "ok": true,
+  "detail": [
+   [
+    "홍합(참담치)",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "우뭇가사리",
+    "conservation_priority",
+    "alternative_production"
+   ],
+   [
+    "살오징어",
+    "alternative_production",
+    "conservation_priority"
+   ],
+   [
+    "멍게",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "해삼",
+    "conservation_priority",
+    "alternative_production"
+   ],
+   [
+    "미역",
+    "sustainable_use",
+    "baseline_survey"
+   ],
+   [
+    "다시마",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "가시파래",
+    "sustainable_use",
+    "baseline_survey"
+   ],
+   [
+    "괭생이모자반",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "꼬시래기",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "전복(종 수준)",
+    "conservation_priority",
+    "alternative_production"
+   ],
+   [
+    "큰가리비",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "시카메굴",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "고등어",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "멸치",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "참조기",
+    "sustainable_use",
+    "baseline_survey"
+   ],
+   [
+    "넙치",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "방어",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "대구",
+    "sustainable_use",
+    "baseline_survey"
+   ],
+   [
+    "꽃게",
+    "baseline_survey",
+    "sustainable_use"
+   ],
+   [
+    "참문어(동아시아 종)",
+    "sustainable_use",
+    "baseline_survey"
+   ],
+   [
+    "갑오징어",
+    "sustainable_use",
+    "baseline_survey"
+   ]
+  ]
+ },
+ {
+  "name": "Dense cluster opened: listed marks are circles or plain names (no polygon, no 45° turn)",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "text": "BBVI 29.3–41.6 · MCUI 10 (LC) · 7종 · 점 위치 순(왼쪽부터)방어BBVI 29 · MCUI 10.0 (LC)IUCN 평가멍게BBVI 33 · MCUI 10.0 (LC)보전 평가 범주홍합(참담치)BBVI 36 · MCUI 10.0 (LC)한국 국가 평가괭생이모자반BBVI 38 · MCUI 10.0 (LC)보전 평가 범주조피볼락BBVI 40 · MCUI 10.0 (LC)보전 평가 범주큰가리비BBVI 42 · MCUI 10.0 (LC)한국 국가 평가다시마BBVI 42 · MCUI 10.0 (LC)보전 평가 범주",
+   "marks": [
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    },
+    {
+     "cls": "mc-dot",
+     "clip": "none",
+     "radius": "50%",
+     "transform": "none"
+    }
+   ]
+  }
+ },
+ {
+  "name": "390 matrix: points are circles",
+  "ok": true
+ },
+ {
+  "name": "No horizontal overflow at 390·768·1100·1440 (explore, matrix, table, method)",
+  "ok": true,
+  "detail": {
+   "390": {
+    "explore": 0,
+    "matrix": 0,
+    "table": 0,
+    "method": 0,
+    "errors": 0
+   },
+   "768": {
+    "explore": 0,
+    "matrix": 0,
+    "table": 0,
+    "method": 0,
+    "errors": 0
+   },
+   "1100": {
+    "explore": 0,
+    "matrix": 0,
+    "table": 0,
+    "method": 0,
+    "errors": 0
+   },
+   "1440": {
+    "explore": 0,
+    "matrix": 0,
+    "table": 0,
+    "method": 0,
+    "errors": 0
+   }
+  }
+ },
+ {
+  "name": "No console errors",
+  "ok": true,
+  "detail": []
+ }
+]
