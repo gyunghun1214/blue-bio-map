@@ -1008,3 +1008,11 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .cp-h{height:28px;min-height:0}
 #compare .cp-h h3{line-height:28px}
 #compare .cmp-limit{margin-top:16px}
+/* 2026-10-18 휴대폰(LKH, mobile-review): 가중치 슬라이더는 '비교 기준'을 열었을 때만, 밀집 구간 설명은 숨김, 담기 트레이는 아래 탭바(--bbc-bar, theme.css) 위로 */
+@media (max-width:740px){
+  #compare .cmp-weight:not(:has(#cmp-basis-toggle[aria-expanded=true])) :is(.cw-track,.cw-ends){display:none}
+  #compare .cmp-weight{padding-bottom:8px}
+  #compare .cmp-spread-note{display:none}
+  #compare .cmp-tray{bottom:calc(10px + var(--bbc-bar,0px))}
+  #compare{padding-bottom:calc(96px + var(--bbc-bar,0px))}
+}
