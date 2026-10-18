@@ -590,17 +590,9 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 @media (max-width:740px){
   #compare #comparison thead th:first-child,#compare #comparison tbody th{min-width:140px;width:140px}
 }
-/* 4.12: an MCUI set by the stock-decline signal is a diamond (the button keeps its box; the shape is drawn behind the label) */
-#compare .matrix-point.pilot.stock{border-color:transparent;background:transparent;box-shadow:none}
-#compare .matrix-point.pilot.stock::before{content:"";position:absolute;inset:-1px;z-index:-1;transform:rotate(45deg) scale(.82);border:2px solid var(--mp,#a9bbc6);background:var(--mp,#a9bbc6);box-shadow:0 0 0 1.5px rgba(8,29,46,.85),0 0 0 3px #f2b84b}
-#compare .matrix-point.pilot.stock.single::before{background:var(--cs-panel)}
-#compare .matrix-point.pilot.stock[aria-current=true]{box-shadow:none}
-#compare .matrix-point.pilot.stock[aria-current=true]::before{box-shadow:0 0 0 3px #f2b84b,0 0 0 8px color-mix(in srgb,var(--mp,#a9bbc6) 34%,transparent)}
-#compare .mt-dot.stock{background:#f2b84b;border-color:#f2b84b}
-#compare .cv-stock{margin-left:4px;color:#f2b84b;font-size:var(--fs-min);font-style:normal;vertical-align:1px}
+/* 4.12: the stock-decline box in the comparison profile (the point itself is a circle like every other since 2026-10-18) */
 #compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
 #compare #comparison .stock-decline.scored{border-color:#f2b84b}
-#compare .lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
 /* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) (theme.css holds the explore part) */
 @media(max-width:740px){#compare .cmp-i{font-size:var(--fs-min)}#compare .cp-id .cmp-eyebrow{font-size:var(--fs-min)}}
 /* 7/15 (2026-10-15): the MCUI category beside its number, the MCUI definition and the '보조 정보' line */
@@ -624,7 +616,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-obis-more{margin-top:6px}
 #compare .cp-obis-more summary{color:var(--cs-ink3);font-size:12px;cursor:pointer}
 #compare .cp-obis-more p{margin-top:6px}
-/* ⚠ beside a matrix point: a decline signal with an MCUI under the line. Distinct from the stock diamond and the hollow point */
+/* ⚠ beside a matrix point: a decline signal with an MCUI under the line. Distinct from the hollow point */
 #compare .matrix-point .mp-obis{position:absolute;right:calc(100% + 1px);bottom:calc(100% + 1px);color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
 #compare .matrix-point.pilot[data-clustered] .mp-obis,#compare .matrix-point.pilot[data-dim] .mp-obis{visibility:hidden}
 #compare .matrix-cluster-btn .mp-obis-pill{position:absolute;left:-5px;top:-8px;color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
@@ -758,20 +750,15 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .matrix .q2,#compare .matrix .q4{align-items:flex-end;text-align:right}
 #compare .matrix .q2 span,#compare .matrix .q4 span{padding-left:0}
 #compare .matrix .q3,#compare .matrix .q4{padding-bottom:28px}
-/* the type shapes ▲ ◆ ● ■ (the same shapes on the type cards and in the profile) */
-#compare .matrix .quadrant.typed strong::before{content:"";flex:none;width:18px;height:18px;background:var(--shape-c)}
-#compare :is(.cp-shape,.mt-shape){flex:none;display:inline-block;width:20px;height:20px;background:var(--shape-c,#5d6f7b)}
-#compare .matrix [data-type=conservation_priority] strong::before,#compare [data-type=conservation_priority] :is(.cp-shape,.mt-shape),#compare [data-type=conservation_priority].cp-typeline .cp-shape,#compare [data-type=conservation_priority].cdr-type .cp-shape{clip-path:polygon(50% 4%,100% 96%,0 96%)}
-#compare .matrix [data-type=alternative_production] strong::before,#compare [data-type=alternative_production] :is(.cp-shape,.mt-shape),#compare [data-type=alternative_production].cp-typeline .cp-shape,#compare [data-type=alternative_production].cdr-type .cp-shape{clip-path:polygon(50% 2%,98% 50%,50% 98%,2% 50%)}
-#compare .matrix [data-type=baseline_survey] strong::before,#compare [data-type=baseline_survey] :is(.cp-shape,.mt-shape),#compare [data-type=baseline_survey].cp-typeline .cp-shape,#compare [data-type=baseline_survey].cdr-type .cp-shape{border-radius:50%}
-#compare .matrix [data-type=sustainable_use] strong::before,#compare [data-type=sustainable_use] :is(.cp-shape,.mt-shape),#compare [data-type=sustainable_use].cp-typeline .cp-shape,#compare [data-type=sustainable_use].cdr-type .cp-shape{border-radius:2px}
-/* points: colour = type; fill, outline and shape = evidence label, stock signal, selection (unchanged meanings) */
+/* the type mark: one circle in the type colour for every type (2026-10-18; the same mark on the type cards and in the profile) */
+#compare .matrix .quadrant.typed strong::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;background:var(--shape-c)}
+#compare :is(.cp-shape,.mt-shape){flex:none;display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--shape-c,#5d6f7b)}
+/* points: a circle; colour = type; fill and outline = evidence label and selection */
 #compare .matrix-point.pilot{width:14px;min-width:14px;height:14px;box-shadow:0 0 0 1.5px rgba(13,39,55,.9)}
 #compare .matrix-point.pilot.single{background:var(--cs-panel)}
 /* the selected point: a light blue-grey ring outside the marker; a hollow (재현 확인 중) or floor point stays hollow */
 #compare .matrix-point.pilot[aria-current=true]{width:20px;min-width:20px;height:20px;box-shadow:0 0 0 3px var(--cs-panel),0 0 0 5.5px var(--cs-accent-hi)}
 #compare .matrix-point.pilot.single[aria-current=true],#compare .matrix-point.pilot.floor[aria-current=true]{background:var(--cs-panel)}
-#compare .matrix-point.pilot.stock[aria-current=true]::before{box-shadow:0 0 0 3px #f2b84b,0 0 0 6px var(--cs-panel),0 0 0 8px var(--cs-accent-hi)}
 #compare .matrix-point .point-label{background:rgba(13,39,55,.82);color:var(--cs-ink);font-size:14px}
 #compare .matrix-point[aria-current=true] .point-label{background:rgba(13,39,55,.92);font-size:16px;font-weight:700}
 #compare .matrix-cluster{border:1.5px dashed #6b8798;background:rgba(143,179,191,.04)}

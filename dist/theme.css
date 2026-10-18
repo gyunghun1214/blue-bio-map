@@ -889,7 +889,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .vd-alternative_production{color:#f6c453}
 #explore .vd-conservation_priority{color:#ff8079}
 #explore .vd-none{color:#9cb2c2;font-weight:600}
-/* type chip above the two axis cards: '■ 써도 됨 지속가능 활용 후보' */
+/* type chip above the two axis cards: '● 써도 됨 지속가능 활용 후보' */
 #explore .ax-type{gap:8px}
 #explore .ax-type .verdict{font-size:15px}
 #explore .ax-type-name{color:var(--muted);font-size:12.5px;font-weight:500}
@@ -1001,8 +1001,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .stock-decline h4{margin:0 0 6px;font-size:13.5px}
 .stock-decline h4 b{color:inherit}
 .stock-decline.scored h4 b{color:#f2b84b}
-.stock-decline .sd-mark{margin-right:6px;color:#8a959c;font-style:normal}
-.stock-decline.scored .sd-mark{color:#f2b84b}
 .stock-decline .sd-compare{margin:0 0 6px;font-weight:600}
 .stock-decline .sd-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
 .stock-decline .sd-row>div{flex:1 1 220px;min-width:0}
@@ -1014,8 +1012,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .sd-spark .sd-ref{fill:none;stroke:#8a959c;stroke-width:1.5;stroke-dasharray:3 3}
 .sd-spark .sd-refdot{fill:none;stroke:#8a959c;stroke-width:1.5}
 .sd-spark text{fill:currentColor;opacity:.7;font-size:var(--fs-min)}
-.mt-dot.stock,.lg-dot.stock{border-radius:1px;transform:rotate(45deg) scale(.85);border-color:#f2b84b;background:#f2b84b}
-.matrix-point.pilot.stock{border-radius:2px}
 .flow .bx.stock rect{fill:#fff8ea;stroke:#f2b84b;stroke-width:1.8}
 /* 4.14: the conservation state in words beside the value ('공식 LC' / '보전평가 미확인'), never only in a tooltip */
 .species-card .card-line .cl-cons{margin-left:4px;font-size:var(--fs-min);font-weight:500;color:var(--muted)}
@@ -1090,7 +1086,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .md-link:hover{color:var(--teal,#3dd6c3)}
 /* ==========================================================================================================================
    2026-10-15 explore design match (prompt explore-design-match v2, mockup explore-map-target.png 1586×992). The mockup decides
-   the look; data, scores, wording rules and the type colours (▲ #d7392f · ◆ #f2b233 · ● #3f7fcf · ■ #2f9a57) stay as they were.
+   the look; data, scores, wording rules and the type colours (#d7392f · #f2b233 · #3f7fcf · #2f9a57) stay as they were.
    From 1180px: an opaque left list, a full-bleed map, an opaque right panel (선택 종 / 선택 격자) and the evidence drawer over
    it. Below 1180px the earlier grid and the phone sheet stay; only the shared header, shapes and colours change there.
    No glass, glow, neon or white cards. Every font size is var(--fs-min) (12px) or more.
@@ -1126,12 +1122,9 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #go-compare .act-ico{width:17px;height:17px;margin-right:6px;vertical-align:-3px}
 .status-pop .pop-version{margin:-4px 0 10px;color:var(--ink2);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
 .status-pop .pop-version:empty{display:none}
-/* the type shapes, always beside their words */
-.shape{display:inline-block;flex:none;box-sizing:border-box;width:14px;height:14px;background:var(--tc,transparent);vertical-align:-1px}
-.shape-baseline_survey{border-radius:50%}
-.shape-conservation_priority{clip-path:polygon(50% 3%,100% 97%,0 97%)}
-.shape-alternative_production{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.shape-none{border:1.5px dashed #8193a4;border-radius:2px}
+/* the type mark beside its words: one circle in the type colour for every type (2026-10-18), an untyped species a dashed ring */
+.shape{display:inline-block;flex:none;box-sizing:border-box;width:14px;height:14px;border-radius:50%;background:var(--tc,transparent);vertical-align:-1px}
+.shape-none{border:1.5px dashed #8193a4}
 @media (forced-colors:active){.shape{forced-color-adjust:none}}
 /* the compare checkbox beside each card (all widths) */
 .sc-wrap{position:relative;flex:none}
